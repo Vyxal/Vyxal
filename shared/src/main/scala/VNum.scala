@@ -27,6 +27,8 @@ class VNum private (val underlying: Complex[Real]):
     val r = this - spire.math.floor(q.real.toDouble) * rhs
     r
 
+  def vabs: VNum = underlying.abs
+
   override def toString =
     if this.imag == 0 then
       if this.real.isWhole then this.real.toInt.toString

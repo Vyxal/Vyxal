@@ -51,9 +51,11 @@ object NumberHelpers:
   end gamma
 
   def multiplicity(a: VNum, b: VNum): VNum =
+    if a == VNum(0) || b == VNum(0) then return VNum(0)
+    if b.vabs == VNum(1) then return a.vabs
     var result = 0
     var current = a.toInt
-    while current % b.toInt == 0 do
+    while VNum(current) % VNum(b.toInt) == VNum(0) do
       result += 1
       current /= b.toInt
     result

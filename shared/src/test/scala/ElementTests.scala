@@ -327,16 +327,50 @@ class ElementTests extends VyxalTests:
 
   describe("Element M") {
     describe("when given two lists") {
-      it("should mold them properly") {
-        testCode(
-          "M",
-          VList(1, 2, VList(VList(VList(3, 4), 5, 1), 2)),
-          List(
-            VList(1, 2, VList(3, 4), 5),
-            VList(1, 2, VList(VList(3, 4, 6), 5))
-          )
+      testMulti("M")(
+        List[VAny](
+          VList(1, 2, VList(3, 4), 5),
+          VList(1, 2, VList(VList(3, 4, 6), 5))
+        ) -> VList(1, 2, VList(VList(VList(3, 4), 5, 1), 2)),
+        List[VAny](
+          VList(1, 2, 3, 4, 5, 6, 7),
+          VList(VList(8, 9), 10, 11, 12, VList(13, 14))
+        ) -> VList(VList(1, 2), 3, 4, 5, VList(6, 7)),
+        List[VAny](VList(1, 2, 3), VList(VList(4), VList(), VList(6))) -> VList(
+          VList(1),
+          VList(),
+          VList(2)
+        ),
+        List[VAny](VList(1, 2, 3), VList(4, 5, 6, 7, 8, 9, 10)) -> VList(1, 2,
+          3, 1, 2, 3, 1)
+      )
+    }
+    describe("when given a function and any value") {
+      it("should map the function over the value") {
+        testEquals(VList(2, 4, 6))(ctx ?=>
+          ctx.push(VList(1, 2, 3))
+          ctx.push(VFun(Elements.elements("+").impl, 2, List.empty, ctx))
+          Interpreter.execute(AST.Command("M"))
+          ctx.peek
         )
       }
+      it("should work with strings") {
+        testEquals(VList("aa", "bb", "cc"))(ctx ?=>
+          ctx.push("abc")
+          ctx.push(VFun(Elements.elements("+").impl, 2, List.empty, ctx))
+          Interpreter.execute(AST.Command("M"))
+          ctx.peek
+        )
+      }
+    }
+    describe("when given two numbers") {
+      testMulti("M")(
+        List[VAny](45, 3) -> 2,
+        List[VAny](1.125, 2) -> 0,
+        List[VAny](1.125, 3) -> 0,
+        List[VAny](0, 2) -> 0,
+        List[VAny](-3, 1) -> 3
+      )
     }
   }
 
