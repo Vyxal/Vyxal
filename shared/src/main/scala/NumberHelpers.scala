@@ -70,8 +70,13 @@ object NumberHelpers:
   def toBinary(a: VAny): VAny =
     a match
       case n: VNum =>
-        val binary = n.toInt.toBinaryString
-        VList(binary.map(_.asDigit: VNum)*)
+        val binary = n.toInt.abs.toBinaryString
+        val temp = VList(binary.map(_.asDigit: VNum)*)
+        if n.toInt < 0 then
+          VList(temp.map((_: @unchecked) match
+            case v: VNum => -v
+          )*)
+        else temp
       case s: String =>
         // get binary representation of each character
         var result = ListBuffer.empty[VAny]

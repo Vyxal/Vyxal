@@ -484,6 +484,41 @@ class ElementTests extends VyxalTests:
     }
   }
 
+  describe("Element _") {
+    testStackLike("_")(
+      List[VAny](1, 2, 3) -> List(1, 2),
+      List[VAny](1, 2, 3, 4, 5) -> List(1, 2, 3, 4),
+      List[VAny](1) -> List()
+    )
+  }
+
+  describe("Element b") {
+    describe("when given a number") {
+      testMulti("b")(
+        List[VAny](5) -> VList(1, 0, 1),
+        List[VAny](0) -> VList(0),
+        List[VAny](-10) -> VList(-1, 0, -1, 0)
+      )
+    }
+
+    describe("when given a string") {
+      testMulti("b")(
+        List[VAny]("VTI") -> VList(
+          VList(1, 0, 1, 0, 1, 1, 0),
+          VList(1, 0, 1, 0, 1, 0, 0),
+          VList(1, 0, 0, 1, 0, 0, 1)
+        ),
+        List[VAny](" ") -> VList(VList(1, 0, 0, 0, 0, 0))
+      )
+    }
+
+    describe("when given a list") {
+      testMulti("b")(
+        List[VAny](VList(2, 3)) -> VList(VList(1, 0), VList(1, 1))
+      )
+    }
+  }
+
   describe("Element Ė") {
     describe("when given a number") {
       testMulti("Ė")(

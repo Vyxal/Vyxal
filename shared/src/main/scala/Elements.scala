@@ -189,15 +189,21 @@ object Elements:
       "a: lst -> int(a, 2), using list of digits"
     )(NumberHelpers.fromBinary)
 
-    addFull(
+    val tobinary = addVect(
       Monad,
       "b",
       "Convert To Binary",
       List("to-binary", "dec->bin", "decimal->bin"),
-      true,
       "a: num -> convert a to binary",
       "a: str -> bin(ord(x) for x in a)"
-    )(NumberHelpers.toBinary)
+    ) {
+      case a: VNum => NumberHelpers.toBinary(a)
+      case a: String =>
+        VList(
+          a.map(x => StringHelpers.chrord(x.toString))
+            .map(NumberHelpers.toBinary(_))*
+        )
+    }
 
     val count = addElem(
       Dyad,
