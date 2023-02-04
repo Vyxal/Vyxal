@@ -32,8 +32,8 @@ $ (Swap) (non-vectorising)
 ---------------------
 - (Subtraction) (vectorising)
 - a: num, b: num -> a - b
-- a: str, b: num -> a + b '-'s
-- a: num, b: str -> a '-'s + b
+- a: str, b: num -> a + b '-'s (or '-'s + a if b < 0)
+- a: num, b: str -> a '-'s + b (or b + '-'s if a < 0)
 - a: str, b: str -> a with b removed
 ---------------------
 : (Duplicate) (non-vectorising)
