@@ -374,6 +374,33 @@ class ElementTests extends VyxalTests:
     }
   }
 
+  describe("Element N") {
+    describe("when given a number") {
+      testMulti("N")(
+        List[VAny](420) -> -420,
+        List[VAny](0) -> 0,
+        List[VAny](-69) -> 69
+      )
+    }
+    describe("when given a string") {
+      testMulti("N")(
+        List[VAny]("a") -> "A",
+        List[VAny]("A") -> "a",
+        List[VAny]("abc") -> "ABC",
+        List[VAny]("ABC") -> "abc",
+        List[VAny]("123") -> "123",
+        List[VAny]("abC123") -> "ABc123"
+      )
+    }
+
+    describe("when given a function") {
+      testMulti(
+        "λ×16=}N" -> 4,
+        "λ7×35=}N" -> 5
+      )
+    }
+  }
+
   describe("Element R") {
     describe("when given function and iterable") {
       it("should work with singleton lists") {
