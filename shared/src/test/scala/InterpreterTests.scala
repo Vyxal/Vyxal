@@ -36,6 +36,13 @@ class InterpreterTests extends VyxalTests:
         "10 ƛ m + }" -> VList(1, 3, 5, 7, 9, 11, 13, 15, 17, 19)
       )
     }
+
+    describe("Reduce lambda") {
+      testMulti(
+        "10 ₳ + }" -> VNum(55),
+        "10 ₳ n m + }" -> VNum(55)
+      )
+    }
   }
 
   describe("Vectorisation") {
