@@ -314,14 +314,14 @@ object Elements:
       "Get Context Variable M",
       List("get-context-m", "context-m", "c-var-m", "ctx-m", "ctx-secondary"),
       " -> context variable m"
-    ) { ctx ?=> ctx.contextVarSecondary }
+    ) { ctx ?=> ctx.ctxVarSecondary }
 
     val getContextVariableN = addNilad(
       "n",
       "Get Context Variable N",
       List("get-context-n", "context-n", "c-var-n", "ctx-n", "ctx-primary"),
       " -> context variable n"
-    ) { ctx ?=> ctx.contextVarPrimary }
+    ) { ctx ?=> ctx.ctxVarPrimary }
 
     val getInput = addNilad(
       "?",
