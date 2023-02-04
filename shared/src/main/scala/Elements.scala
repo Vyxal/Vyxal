@@ -425,7 +425,7 @@ object Elements:
     }
 
     val ordChr =
-      addVect(
+      addElem(
         Monad,
         "O",
         "Ord/Chr",
@@ -433,10 +433,16 @@ object Elements:
         "a: str -> ord(a)",
         "a: num -> chr(a)"
       ) {
-        case a: String =>
-          if a.length == 1 then a.codePointAt(0)
-          else VList(a.map(_.toInt: VNum)*)
-        case a: VNum => a.toInt.toChar.toString
+        case a: VNum   => StringHelpers.chrord(a)
+        case a: String => StringHelpers.chrord(a)
+        case a: VList =>
+          val temp = a.map(StringHelpers.chrord)
+          if temp.forall(_ match
+              case _: String => true
+              case _         => false
+            )
+          then temp.fold("")(_.asInstanceOf[String] + _.asInstanceOf[String])
+          else VList(temp*)
       }
 
     val pair =
@@ -474,9 +480,10 @@ object Elements:
       "a: str, b: num|str -> does regex pattern b match haystack a?"
     ) {
       case (a: VNum, b: VNum) =>
-        NumberHelpers.range(a, b - 1)
-      case (a: String, b: String) => a.r.findFirstIn(b).isDefined
-      case (a: String, b: VNum)   => a.r.findFirstIn(b.toString).isDefined
+        NumberHelpers.range(a, b).dropRight(1)
+      case (a: String, b: String) => b.r.findFirstIn(a).isDefined
+      case (a: String, b: VNum)   => (b.toString).r.findFirstIn(a).isDefined
+      case (a: VNum, b: String)   => b.r.findFirstIn(a.toString).isDefined
       case (a: VFun, b) =>
         MiscHelpers.reduce(b, a)
       case (a, b: VFun) =>

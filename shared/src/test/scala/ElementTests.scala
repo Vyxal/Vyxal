@@ -401,6 +401,48 @@ class ElementTests extends VyxalTests:
     }
   }
 
+  describe("Element O") {
+    describe("when given a number") {
+      testMulti("O")(
+        List[VAny](65) -> "A",
+        List[VAny](97) -> "a",
+        List[VAny](8482) -> "™",
+        List[VAny](VList(97, 98, 99)) -> "abc",
+        List[VAny](VList(49, 50, 51)) -> "123"
+      )
+    }
+    describe("when given a string") {
+      testMulti("O")(
+        List[VAny]("A") -> 65,
+        List[VAny]("a") -> 97,
+        List[VAny]("™") -> 8482,
+        List[VAny]("abc") -> VList(97, 98, 99),
+        List[VAny]("123") -> VList(49, 50, 51)
+      )
+    }
+
+    describe("when given a list of mixed types") {
+      testMulti("O")(
+        List[VAny](VList(49, "a", 50, "b", 51, "c")) -> VList(
+          "1",
+          97,
+          "2",
+          98,
+          "3",
+          99
+        ),
+        List[VAny](VList("1", 97, "2", 98, "3", 99)) -> VList(
+          49,
+          "a",
+          50,
+          "b",
+          51,
+          "c"
+        )
+      )
+    }
+  }
+
   describe("Element R") {
     describe("when given function and iterable") {
       it("should work with singleton lists") {
@@ -419,6 +461,26 @@ class ElementTests extends VyxalTests:
           ctx.peek
         )
       }
+    }
+
+    describe("when given two numbers") {
+      testMulti("R")(
+        List[VAny](1, 5) -> VList(1, 2, 3, 4),
+        List[VAny](5, 1) -> VList(5, 4, 3, 2),
+        List[VAny](1, 1) -> VList(),
+        List[VAny](1, 0) -> VList(1),
+        List[VAny](0, 1) -> VList(0),
+        List[VAny](-5, 5) -> VList(-5, -4, -3, -2, -1, 0, 1, 2, 3, 4)
+      )
+    }
+
+    describe("when given two strings") {
+      testMulti("R")(
+        List[VAny]("56.234", "\\d+\\.\\d+") -> 1,
+        List[VAny]("Hello, World", ".+") -> 1,
+        List[VAny]("Hello, World", "Hello, world") -> 0,
+        List[VAny]("https://www.google.com", "https?://.+") -> 1
+      )
     }
   }
 

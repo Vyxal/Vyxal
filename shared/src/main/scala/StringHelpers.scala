@@ -7,6 +7,14 @@ import VNum.given
 
 object StringHelpers:
 
+  def chrord(c: VAny): VAny =
+    c match
+      case a: String =>
+        if a.length == 1 then a.codePointAt(0)
+        else VList(a.map(_.toInt: VNum)*)
+      case a: VNum  => a.toInt.toChar.toString
+      case a: VList => VList(a.map(chrord)*)
+
   def countString(haystack: String, needle: String): Int =
     haystack.split(needle, -1).length - 1
 
