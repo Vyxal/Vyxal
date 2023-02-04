@@ -86,7 +86,7 @@ N (Negation | Swap Case | First Non-Negative Integer Where Predicate is True) (v
 - a: str -> a.swapcase()
 - a: fun -> first non-negative integer where predicate a is true
 ---------------------
-O (Ord/Chr) (vectorising)
+O (Ord/Chr) (non-vectorising)
 - a: str -> ord(a)
 - a: num -> chr(a)
 ---------------------
