@@ -200,8 +200,7 @@ object Elements:
       case a: VNum => NumberHelpers.toBinary(a)
       case a: String =>
         VList(
-          a.map(x => StringHelpers.chrord(x.toString))
-            .map(NumberHelpers.toBinary(_))*
+          a.map(x => NumberHelpers.toBinary(StringHelpers.chrord(x.toString)))*
         )
     }
 
