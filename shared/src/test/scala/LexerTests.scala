@@ -1,73 +1,98 @@
 package vyxal
 
-import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.exceptions.TestFailedException
 import VyxalToken.*
 
-class LexerTests extends AnyFunSuite:
-  test("Does the lexer recognise numbers?") {
-    assert(Lexer("123") == Right(List(Number("123"))))
-    assert(Lexer("6.") == Right(List(Number("6."))))
-    assert(Lexer("3.4ı1.2") == Right(List(Number("3.4ı1.2"))))
-    assert(Lexer("3.4ı1.") == Right(List(Number("3.4ı1."))))
-    assert(Lexer("3.4ı.2") == Right(List(Number("3.4ı.2"))))
-    assert(Lexer("3.4ı.") == Right(List(Number("3.4ı."))))
-    assert(Lexer(".ı.") == Right(List(Number(".ı."))))
-    assert(Lexer("3.4ı") == Right(List(Number("3.4ı"))))
-    assert(Lexer(".4") == Right(List(Number(".4"))))
-    assert(Lexer(".") == Right(List(Number("."))))
+class LexerTests extends VyxalTests:
+  def testLex(input: String, expected: List[VyxalToken]) =
+    Lexer(input) match
+      case Left(err)  => fail(s"Lexing failed due to $err")
+      case Right(res) => assertResult(expected)(res)
+
+  describe("Literals") {
+    it("should recognize numbers") {
+      group {
+        testLex("123", List(Number("123")))
+        testLex("6.", List(Number("6.")))
+        testLex("3.4ı1.2", List(Number("3.4ı1.2")))
+        testLex("3.4ı1.", List(Number("3.4ı1.")))
+        testLex("3.4ı.2", List(Number("3.4ı.2")))
+        testLex("3.4ı.", List(Number("3.4ı.")))
+        testLex(".ı.", List(Number(".ı.")))
+        testLex("3.4ı", List(Number("3.4ı")))
+        testLex(".4", List(Number(".4")))
+        testLex(".", List(Number(".")))
+      }
+    }
   }
 
-  test("Does the lexer recognise strings?") {
-    assert(
-      Lexer(""" "Hello, Vyxal!" """) == Right(List(Str("Hello, Vyxal!")))
-    )
-    assert(
-      Lexer(""" "Hello, Vyxal!" """) == Right(List(Str("Hello, Vyxal!")))
-    )
+  describe("Strings") {
+    it("should recognize strings") {
+      group {
+        testLex(""" "Hello, Vyxal!" """, List(Str("Hello, Vyxal!")))
+        testLex(""" "Hello, Vyxal!" """, List(Str("Hello, Vyxal!")))
 
-    assert(
-      Lexer(""" "Vyxal is what \"you\" want!" """) == Right(
-        List(Str("Vyxal is what \"you\" want!"))
-      )
-    )
+        testLex(
+          """ "Vyxal is what \"you\" want!" """,
+          List(Str("Vyxal is what \"you\" want!"))
+        )
 
-    assert(
-      Lexer(""" k"vy """) == Right(
-        List(Digraph("k\""), MonadicModifier("v"), Command("y"))
-      )
-    )
+        testLex(
+          """ k"vy """,
+          List(Digraph("k\""), MonadicModifier("v"), Command("y"))
+        )
+      }
+
+    }
+
+    it("should differentiate between strings and dictionary strings?") {
+      group {
+        testLex(""" "Hello, Vyxal!" """, List(Str("Hello, Vyxal!")))
+
+        testLex(
+          """ "Hello, Vyxal!” """,
+          List(DictionaryString("Hello, Vyxal!"))
+        )
+
+      }
+    }
   }
 
-  test("Does the lexer recognise a basic series of tokens?") {
-    assert(
-      Lexer("1 1 +") == Right(
-        List(Number("1"), Number("1"), Command("+"))
+  describe("Comments") {
+    it("should tokenize comments after code") {
+      testLex(
+        "1 1 + ##Hello, Vyxal!",
+        List(
+          Number("1"),
+          Number("1"),
+          Command("+"),
+          Comment("##Hello, Vyxal!")
+        )
       )
-    )
+    }
+    it("should stop comments at the newline") {
+      testLex(
+        "1 1 + ##Hello, Vyxal!\n 1 +",
+        List(
+          Number("1"),
+          Number("1"),
+          Command("+"),
+          Comment("##Hello, Vyxal!"),
+          Newline,
+          Number("1"),
+          Command("+")
+        )
+      )
+    }
+    it("should not treat single #s as comments") {
+      testLex("1 #a", List(Number("1"), Digraph("#a")))
+    }
   }
 
-  test("Does the lexer differentiate between strings and dictionary strings?") {
-    assert(
-      Lexer(""" "Hello, Vyxal!" """) == Right(List(Str("Hello, Vyxal!")))
-    )
-    assert(
-      Lexer(""" "Hello, Vyxal!” """) == Right(
-        List(DictionaryString("Hello, Vyxal!"))
-      )
-    )
-  }
-
-  test("Does the lexer recognise comments?") {
-    assert(
-      Lexer("1 1 + ##Hello, Vyxal!") == Right(
-        List(Number("1"), Number("1"), Command("+"), Comment("##Hello, Vyxal!"))
-      )
-    )
-  }
-
-  test("Does the lexer recognise monadic modifiers?") {
-    assert(
-      Lexer("1 2 3W +/") == Right(
+  describe("Modifiers") {
+    it("should recognize monadic modifiers") {
+      testLex(
+        "1 2 3W +/",
         List(
           Number("1"),
           Number("2"),
@@ -77,16 +102,21 @@ class LexerTests extends AnyFunSuite:
           MonadicModifier("/")
         )
       )
-    )
+    }
   }
 
-  test("Does the lexer recognise variable digraphs?") {
-    assert(
-      Lexer("3 #$my_var +") === Right(
-        List(Number("3"), GetVar("my_var"), Command("+"))
-      )
-    )
+  describe("Variable digraphs") {
+    it("should recognize `#$`/get var") {
+      testLex("3 #$my_var +", List(Number("3"), GetVar("my_var"), Command("+")))
+    }
+    it("should recognize `#=`/set var") {
+      testLex("42 #=answer", List(Number("42"), SetVar("answer")))
+    }
+  }
 
-    assert(Lexer("42 #=answer") === Right(List(Number("42"), SetVar("answer"))))
+  describe("Complex tests") {
+    it("should understand a basic series of tokens") {
+      testLex("1 1 +", List(Number("1"), Number("1"), Command("+")))
+    }
   }
 end LexerTests

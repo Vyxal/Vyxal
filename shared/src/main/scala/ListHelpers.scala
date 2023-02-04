@@ -31,11 +31,11 @@ object ListHelpers:
               .to(num.toInt - offset.toInt)
               .map(VNum(_))*
           )
-        else VList(num.toString.map(x => VNum.from(x.toString))*)
+        else VList(num.toString.map(x => VNum(x.toString))*)
 
   def map(f: VFun, to: VList)(using ctx: Context): VList =
     VList(to.zipWithIndex.map { (item, index) =>
-      f.execute(index, item, List(item))
+      f.execute(item, index, List(item))
     }*)
 
   /** Mold a list into a shape.

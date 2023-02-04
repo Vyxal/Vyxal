@@ -162,23 +162,20 @@ object Elements:
       "a: str -> is (a) a vowel? vectorises for strings len > 1",
       "a: list -> is (a) all truthy?"
     ) {
-      case a: VNum   => ListHelpers.makeIterable(a).forall(MiscHelpers.boolify)
-      case a: String => VList(a.map(StringHelpers.isVowel)*)
-      case a: VList  => a.forall(MiscHelpers.boolify)
+      case a: VNum => ListHelpers.makeIterable(a).forall(MiscHelpers.boolify)
+      case a: String if a.length == 1 => StringHelpers.isVowel(a.head)
+      case a: String                  => VList(a.map(StringHelpers.isVowel)*)
+      case a: VList                   => a.forall(MiscHelpers.boolify)
     }
 
-    val concatenate = addElem(
+    val append = addElem(
       Dyad,
       "&",
-      "Concatenate",
-      List("concat", "&&", "append"),
-      "a: any, b: any -> a ++ b"
-    ) {
-      case (a: VList, b: VList) => VList(a ++ b*)
-      case (a: VList, b)        => VList(a :+ b*)
-      case (a, b: VList)        => VList(a +: b*)
-      case (a: VNum, b: VNum)   => VNum.from(f"$a$b")
-      case (a, b)               => MiscHelpers.add(a, b)
+      "Append",
+      List("append"),
+      "a: any, b: any -> list(a) ++ [b]"
+    ) { case (a, b) =>
+      VList(ListHelpers.makeIterable(a) :+ b*)
     }
 
     addFull(
@@ -192,15 +189,20 @@ object Elements:
       "a: lst -> int(a, 2), using list of digits"
     )(NumberHelpers.fromBinary)
 
-    addFull(
+    val toBinary = addVect(
       Monad,
       "b",
       "Convert To Binary",
       List("to-binary", "dec->bin", "decimal->bin"),
-      true,
       "a: num -> convert a to binary",
-      "a: str -> bin(chr(x) for x in a)"
-    )(NumberHelpers.toBinary)
+      "a: str -> bin(ord(x) for x in a)"
+    ) {
+      case a: VNum => NumberHelpers.toBinary(a)
+      case a: String =>
+        VList(
+          a.map(x => NumberHelpers.toBinary(StringHelpers.chrord(x.toString)))*
+        )
+    }
 
     val count = addElem(
       Dyad,
@@ -247,35 +249,7 @@ object Elements:
       case (a: String, b: String) => a == b
     }
 
-    val exponentation = addVect(
-      Dyad,
-      "*",
-      "Exponentation | Remove Nth Letter | Trim",
-      List("exp", "**", "pow", "exponent", "remove-letter", "str-trim"),
-      "a: num, b: num -> a ^ b",
-      "a: str, b: num -> a with the bth letter removed",
-      "a: num, b: str -> b with the ath letter removed",
-      "a: str, b: str -> trim b from both sides of a"
-    ) {
-      case (a: VNum, b: VNum)   => a ** b
-      case (a: String, b: VNum) => StringHelpers.remove(a, b.toInt)
-      case (a: VNum, b: String) => StringHelpers.remove(b, a.toInt)
-      case (a: String, b: String) =>
-        a.dropWhile(_.toString == b)
-          .reverse
-          .dropWhile(_.toString == b)
-          .reverse // https://stackoverflow.com/a/17995686/9363594
-    }
-
-    val discard = addDirect(
-      "_",
-      "Pop and Discard",
-      List("pop", "discard"),
-      None,
-      "a ->"
-    ) { ctx ?=> ctx.pop() }
-
-    val execute = addElem(
+    val exec = addElem(
       Monad,
       "Ė",
       "Execute lambda | Evaluate as Vyxal | Power with base 10",
@@ -291,6 +265,36 @@ object Elements:
       case n: VNum => 10 ** n
     }
 
+    val exponentation = addVect(
+      Dyad,
+      "*",
+      "Exponentation | Remove Nth Letter | Trim",
+      List("exp", "**", "pow", "exponent", "remove-letter", "str-trim"),
+      "a: num, b: num -> a ^ b",
+      "a: str, b: num -> a with the bth letter removed",
+      "a: num, b: str -> b with the ath letter removed",
+      "a: str, b: str -> trim b from both sides of a"
+    ) {
+      case (a: VNum, b: VNum)   => a ** b
+      case (a: String, b: VNum) => StringHelpers.remove(a, b.toInt)
+      case (a: VNum, b: String) => StringHelpers.remove(b, a.toInt)
+      case (a: String, b: String) =>
+        if b == "" then a
+        else
+          var res = a
+          while res.startsWith(b) do res = res.drop(b.length)
+          while res.endsWith(b) do res = res.dropRight(b.length)
+          res
+    }
+
+    val discard = addDirect(
+      "_",
+      "Pop and Discard",
+      List("pop", "discard"),
+      None,
+      "a ->"
+    ) { ctx ?=> ctx.pop() }
+
     val factorial = addVect(
       Monad,
       "!",
@@ -299,23 +303,25 @@ object Elements:
       "a: num -> a!",
       "a: str -> a.toUpperCase()"
     ) {
-      case a: VNum   => spire.math.fact(a.toLong)
+      case a @ VNum(r, i) =>
+        if r.isWhole then spire.math.fact(spire.math.abs(a.toLong))
+        else NumberHelpers.gamma(spire.math.abs(a.underlying.real) + 1)
       case a: String => a.toUpperCase()
     }
 
     val getContextVariableM = addNilad(
       "m",
       "Get Context Variable M",
-      List("get-context-m", "context-m", "c-var-m", "ctx-m"),
+      List("get-context-m", "context-m", "c-var-m", "ctx-m", "ctx-secondary"),
       " -> context variable m"
-    ) { ctx ?=> ctx.contextVarM }
+    ) { ctx ?=> ctx.ctxVarSecondary }
 
     val getContextVariableN = addNilad(
       "n",
       "Get Context Variable N",
-      List("get-context-n", "context-n", "c-var-n", "ctx-n"),
+      List("get-context-n", "context-n", "c-var-n", "ctx-n", "ctx-primary"),
       " -> context variable n"
-    ) { ctx ?=> ctx.contextVarN }
+    ) { ctx ?=> ctx.ctxVarPrimary }
 
     val getInput = addNilad(
       "?",
@@ -370,7 +376,7 @@ object Elements:
         ListHelpers.map(a, ListHelpers.makeIterable(b, Some(true)))
     }
 
-    val modulo: Dyad = addVect(
+    val modulo: Dyad = addElem(
       Dyad,
       "%",
       "Modulo | String Formatting",
@@ -378,9 +384,15 @@ object Elements:
       "a: num, b: num -> a % b",
       "a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)"
     ) {
-      case (a: VNum, b: VNum) => a % b
-      case (a: String, b)     => StringHelpers.formatString(a, b)
-      case (a, b: String)     => StringHelpers.formatString(b, a)
+      case (_: VNum, VNum(0, _)) => 0
+      case (a: VNum, b: VNum)    => a % b
+      case (a: VList, b: VNum)   => a.vmap(Impls.modulo(_, b))
+      case (a: VNum, b: VList)   => b.vmap(Impls.modulo(a, _))
+      case (a: VList, b: VList)  => a.zipWith(b)(Impls.modulo)
+      case (a: String, b: VList) => StringHelpers.formatString(a, b*)
+      case (a: VList, b: String) => StringHelpers.formatString(b, a*)
+      case (a: String, b)        => StringHelpers.formatString(a, b)
+      case (a, b: String)        => StringHelpers.formatString(b, a)
     }
 
     val multiply = addFull(
@@ -418,7 +430,7 @@ object Elements:
     }
 
     val ordChr =
-      addVect(
+      addElem(
         Monad,
         "O",
         "Ord/Chr",
@@ -426,10 +438,13 @@ object Elements:
         "a: str -> ord(a)",
         "a: num -> chr(a)"
       ) {
-        case a: String =>
-          if a.length == 1 then a.codePointAt(0)
-          else VList(a.map(_.toInt: VNum)*)
-        case a: VNum => a.toInt.toChar.toString
+        case a: VNum   => StringHelpers.chrord(a)
+        case a: String => StringHelpers.chrord(a)
+        case a: VList =>
+          val temp = a.map(StringHelpers.chrord)
+          if temp.forall(_.isInstanceOf[String])
+          then temp.mkString
+          else VList(temp*)
       }
 
     val pair =
@@ -467,9 +482,10 @@ object Elements:
       "a: str, b: num|str -> does regex pattern b match haystack a?"
     ) {
       case (a: VNum, b: VNum) =>
-        NumberHelpers.range(a, b - 1)
-      case (a: String, b: String) => a.r.findFirstIn(b).isDefined
-      case (a: String, b: VNum)   => a.r.findFirstIn(b.toString).isDefined
+        NumberHelpers.range(a, b).dropRight(1)
+      case (a: String, b: String) => b.r.findFirstIn(a).isDefined
+      case (a: String, b: VNum)   => (b.toString).r.findFirstIn(a).isDefined
+      case (a: VNum, b: String)   => b.r.findFirstIn(a.toString).isDefined
       case (a: VFun, b) =>
         MiscHelpers.reduce(b, a)
       case (a, b: VFun) =>
@@ -491,17 +507,17 @@ object Elements:
         "-"
       ),
       "a: num, b: num -> a - b",
-      "a: str, b: num -> a + b '-'s",
-      "a: num, b: str -> a '-'s + b",
+      "a: str, b: num -> a + b '-'s (or '-'s + a if b < 0)",
+      "a: num, b: str -> a '-'s + b (or b + '-'s if a < 0)",
       "a: str, b: str -> a with b removed"
     ) {
       case (a: VNum, b: VNum) => a - b
       case (a: String, b: VNum) =>
-        a + "-" * b.toInt
-      case (a: VNum, b: String) => "-" * a.toInt + b
+        if b.toInt > 0 then a + "-" * b.toInt else "-" * b.toInt.abs + a
+      case (a: VNum, b: String) =>
+        if a.toInt > 0 then "-" * a.toInt + b else b + "-" * a.toInt.abs
       case (a: String, b: String) =>
         a.replace(b, "")
-      // todo consider doing something like APL's forks
     }
 
     val swap = addDirect("$", "Swap", List("swap"), None, "a, b -> b, a") {

@@ -23,7 +23,7 @@ case class Globals(
   * Implemented as a circular buffer to wrap around.
   */
 class Inputs(origInputs: Seq[VAny] = Seq.empty):
-  private var origArr = origInputs.toArray
+  private var origArr = origInputs.toArray.reverse
 
   /** Uses an array for constant access, not for mutating items */
   private var currInputs = origArr
@@ -86,6 +86,9 @@ enum EndPrintMode:
 
   /** Sum/concatenate the top of the stack */
   case Sum
+
+  /** Don't print anything - disable implicit output */
+  case None
 
 // todo use a proper logging library instead
 enum LogLevel:
