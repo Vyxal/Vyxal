@@ -189,7 +189,7 @@ object Elements:
       "a: lst -> int(a, 2), using list of digits"
     )(NumberHelpers.fromBinary)
 
-    val tobinary = addVect(
+    val toBinary = addVect(
       Monad,
       "b",
       "Convert To Binary",
