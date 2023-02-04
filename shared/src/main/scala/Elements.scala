@@ -442,11 +442,8 @@ object Elements:
         case a: String => StringHelpers.chrord(a)
         case a: VList =>
           val temp = a.map(StringHelpers.chrord)
-          if temp.forall(_ match
-              case _: String => true
-              case _         => false
-            )
-          then temp.fold("")(_.asInstanceOf[String] + _.asInstanceOf[String])
+          if temp.forall(_.isInstanceOf[String])
+          then temp.mkString
           else VList(temp*)
       }
 
