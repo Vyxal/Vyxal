@@ -44,21 +44,23 @@ object Interpreter:
         else if elseBody.nonEmpty then execute(elseBody.get)
       case AST.While(None, body) =>
         val loopCtx = ctx.makeChild()
-        loopCtx.contextVarN = true
-        loopCtx.contextVarM = ctx.settings.rangeStart
+        loopCtx.contextVarPrimary = true
+        loopCtx.contextVarSecondary = ctx.settings.rangeStart
         while true do
           execute(body)(using loopCtx)
-          loopCtx.contextVarM = loopCtx.contextVarM.asInstanceOf[VNum] + 1
+          loopCtx.contextVarSecondary =
+            loopCtx.contextVarSecondary.asInstanceOf[VNum] + 1
       case AST.While(Some(cond), body) =>
         execute(cond)
         given loopCtx: Context = ctx.makeChild()
-        loopCtx.contextVarN = ctx.peek
-        loopCtx.contextVarM = ctx.settings.rangeStart
+        loopCtx.contextVarPrimary = ctx.peek
+        loopCtx.contextVarSecondary = ctx.settings.rangeStart
         while MiscHelpers.boolify(ctx.pop()) do
           execute(body)
           execute(cond)
-          loopCtx.contextVarN = ctx.peek
-          loopCtx.contextVarM = loopCtx.contextVarM.asInstanceOf[VNum] + 1
+          loopCtx.contextVarPrimary = ctx.peek
+          loopCtx.contextVarSecondary =
+            loopCtx.contextVarSecondary.asInstanceOf[VNum] + 1
 
       case AST.For(None, body) =>
         val iterable =
@@ -66,8 +68,8 @@ object Interpreter:
         var index = 0
         given loopCtx: Context = ctx.makeChild()
         for elem <- iterable do
-          loopCtx.contextVarN = elem
-          loopCtx.contextVarM = index
+          loopCtx.contextVarPrimary = elem
+          loopCtx.contextVarSecondary = index
           index += 1
           execute(body)(using loopCtx)
 
@@ -78,8 +80,8 @@ object Interpreter:
         given loopCtx: Context = ctx.makeChild()
         for elem <- iterable do
           loopCtx.setVar(name, elem)
-          loopCtx.contextVarN = elem
-          loopCtx.contextVarM = index
+          loopCtx.contextVarPrimary = elem
+          loopCtx.contextVarSecondary = index
           index += 1
           execute(body)(using loopCtx)
 
@@ -115,8 +117,8 @@ object Interpreter:
     */
   def executeFn(
       fn: VFun,
-      contextVarM: Option[VAny] = None,
-      contextVarN: Option[VAny] = None,
+      contextVarPrimary: Option[VAny] = None,
+      contextVarSecondary: Option[VAny] = None,
       args: Option[Seq[VAny]] = None,
       popArgs: Boolean = true
   )(using ctx: Context): VAny =
@@ -126,7 +128,14 @@ object Interpreter:
       .toList
 
     given fnCtx: Context =
-      Context.makeFnCtx(origCtx, ctx, contextVarM, contextVarN, params, inputs)
+      Context.makeFnCtx(
+        origCtx,
+        ctx,
+        contextVarPrimary,
+        contextVarSecondary,
+        params,
+        inputs
+      )
 
     fn.impl()(using fnCtx)
 

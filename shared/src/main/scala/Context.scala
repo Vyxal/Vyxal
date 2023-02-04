@@ -8,12 +8,14 @@ import scala.io.StdIn
   *   Make a Context object for the current scope
   * @param stack
   *   The stack on which all operations happen
-  * @param _contextVarM
-  *   Context variable M. It's an Option because this scope might not have its
-  *   own context variable(s). See [[this.contextVarM]] for more information.
-  * @param _contextVarN
+  * @param _contextVarPrimary
   *   Context variable N. It's an Option because this scope might not have its
-  *   own context variable(s). See [[this.contextVarN]] for more information.
+  *   own context variable(s). See [[this.contextVarPrimary]] for more
+  *   information.
+  * @param _contextVarSecondary
+  *   Context variable M. It's an Option because this scope might not have its
+  *   own context variable(s). See [[this.contextVarSecondary]] for more
+  *   information.
   * @param vars
   *   The variables currently in scope, accessible by their names. Null values
   *   signify that the variable is nonlocal, i.e., it should be gotten from the
@@ -27,8 +29,8 @@ import scala.io.StdIn
   */
 class Context private (
     private var stack: mut.ArrayBuffer[VAny],
-    private var _contextVarM: Option[VAny] = None,
-    private var _contextVarN: Option[VAny] = None,
+    private var _contextVarPrimary: Option[VAny] = None,
+    private var _contextVarSecondary: Option[VAny] = None,
     private val vars: mut.Map[String, VAny] = mut.Map(),
     private var inputs: Inputs = Inputs(),
     private val parent: Option[Context] = None,
@@ -86,16 +88,16 @@ class Context private (
     *   - Inside for loops, this is the current loop item
     *   - Inside lambdas/named functions, this is the argument
     */
-  def contextVarN: VAny =
-    _contextVarN
-      .orElse(parent.map(_.contextVarN))
+  def contextVarPrimary: VAny =
+    _contextVarPrimary
+      .orElse(parent.map(_.contextVarPrimary))
       .getOrElse(settings.defaultValue)
 
   /** Setter for context variable N so that outsiders don't have to deal with it
     * being an Option
     */
-  def contextVarN_=(newCtx: VAny) =
-    _contextVarN = Some(newCtx)
+  def contextVarPrimary_=(newCtx: VAny) =
+    _contextVarPrimary = Some(newCtx)
 
   /** Get the context variable M for this scope if it exists. If it doesn't, get
     * its parent's. If there's no parent Context, just get the default value (0)
@@ -103,16 +105,16 @@ class Context private (
     *   - Inside both for loops and while loops, this is the current
     *     index/number of loop iterations
     */
-  def contextVarM: VAny =
-    _contextVarM
-      .orElse(parent.map(_.contextVarM))
+  def contextVarSecondary: VAny =
+    _contextVarSecondary
+      .orElse(parent.map(_.contextVarSecondary))
       .getOrElse(settings.defaultValue)
 
   /** Setter for context variable M so that outsiders don't have to deal with it
     * being an Option
     */
-  def contextVarM_=(newCtx: VAny) =
-    _contextVarM = Some(newCtx)
+  def contextVarSecondary_=(newCtx: VAny) =
+    _contextVarSecondary = Some(newCtx)
 
   /** Get a variable by the given name. If it doesn't exist in the current
     * context, looks in the parent context. If not found in any context, returns
@@ -139,8 +141,8 @@ class Context private (
   /** Make a new Context for a structure inside the current structure */
   def makeChild() = new Context(
     stack,
-    _contextVarN,
-    _contextVarM,
+    _contextVarPrimary,
+    _contextVarSecondary,
     vars,
     inputs,
     Some(this),
@@ -185,15 +187,15 @@ object Context:
   def makeFnCtx(
       origCtx: Context,
       currCtx: Context,
-      contextVarM: Option[VAny],
-      contextVarN: Option[VAny],
+      contextVarPrimary: Option[VAny],
+      contextVarSecondary: Option[VAny],
       params: Seq[String],
       inputs: Seq[VAny]
   ) =
     new Context(
       mut.ArrayBuffer.empty,
-      contextVarM.orElse(currCtx._contextVarM),
-      contextVarN.orElse(currCtx._contextVarN),
+      contextVarPrimary.orElse(currCtx._contextVarPrimary),
+      contextVarSecondary.orElse(currCtx._contextVarSecondary),
       mut.Map(params.zip(inputs)*),
       Inputs(inputs),
       Some(origCtx),

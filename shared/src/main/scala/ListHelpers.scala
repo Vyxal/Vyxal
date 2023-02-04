@@ -35,7 +35,7 @@ object ListHelpers:
 
   def map(f: VFun, to: VList)(using ctx: Context): VList =
     VList(to.zipWithIndex.map { (item, index) =>
-      f.execute(index, item, List(item))
+      f.execute(item, index, List(item))
     }*)
 
   /** Mold a list into a shape.
