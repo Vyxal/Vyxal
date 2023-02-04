@@ -8,12 +8,13 @@ import scala.io.StdIn
   *   Make a Context object for the current scope
   * @param stack
   *   The stack on which all operations happen
-  * @param _contextVarM
-  *   Context variable M. It's an Option because this scope might not have its
-  *   own context variable(s). See [[this.contextVarM]] for more information.
-  * @param _contextVarN
+  * @param _ctxVarPrimary
   *   Context variable N. It's an Option because this scope might not have its
-  *   own context variable(s). See [[this.contextVarN]] for more information.
+  *   own context variable(s). See [[this.ctxVarPrimary]] for more information.
+  * @param _ctxVarSecondary
+  *   Context variable M. It's an Option because this scope might not have its
+  *   own context variable(s). See [[this.ctxVarSecondary]] for more
+  *   information.
   * @param vars
   *   The variables currently in scope, accessible by their names. Null values
   *   signify that the variable is nonlocal, i.e., it should be gotten from the
@@ -27,14 +28,17 @@ import scala.io.StdIn
   */
 class Context private (
     private var stack: mut.ArrayBuffer[VAny],
-    private var _contextVarN: Option[VAny] = None,
-    private var _contextVarM: Option[VAny] = None,
+    private var _ctxVarPrimary: Option[VAny] = None,
+    private var _ctxVarSecondary: Option[VAny] = None,
     private val vars: mut.Map[String, VAny] = mut.Map(),
     private var inputs: Inputs = Inputs(),
     private val parent: Option[Context] = None,
-    val globals: Globals = Globals()
+    val globals: Globals = Globals(),
+    val testMode: Boolean = false
 ):
-  def settings: Settings = globals.settings
+  def settings: Settings = if testMode then
+    Settings(endPrintMode = EndPrintMode.None)
+  else globals.settings
 
   /** Pop the top of the stack
     *
@@ -53,7 +57,7 @@ class Context private (
     elem
 
   /** Pop n elements and wrap in a list */
-  def pop(n: Int): List[VAny] = List.fill(n)(this.pop())
+  def pop(n: Int): Seq[VAny] = Seq.fill(n)(this.pop()).reverse
 
   /** Get the top element on the stack without popping */
   def peek: VAny =
@@ -83,16 +87,16 @@ class Context private (
     *   - Inside for loops, this is the current loop item
     *   - Inside lambdas/named functions, this is the argument
     */
-  def contextVarN: VAny =
-    _contextVarN
-      .orElse(parent.map(_.contextVarN))
+  def ctxVarPrimary: VAny =
+    _ctxVarPrimary
+      .orElse(parent.map(_.ctxVarPrimary))
       .getOrElse(settings.defaultValue)
 
   /** Setter for context variable N so that outsiders don't have to deal with it
     * being an Option
     */
-  def contextVarN_=(newCtx: VAny) =
-    _contextVarN = Some(newCtx)
+  def ctxVarPrimary_=(newCtx: VAny) =
+    _ctxVarPrimary = Some(newCtx)
 
   /** Get the context variable M for this scope if it exists. If it doesn't, get
     * its parent's. If there's no parent Context, just get the default value (0)
@@ -100,16 +104,16 @@ class Context private (
     *   - Inside both for loops and while loops, this is the current
     *     index/number of loop iterations
     */
-  def contextVarM: VAny =
-    _contextVarM
-      .orElse(parent.map(_.contextVarM))
+  def ctxVarSecondary: VAny =
+    _ctxVarSecondary
+      .orElse(parent.map(_.ctxVarSecondary))
       .getOrElse(settings.defaultValue)
 
   /** Setter for context variable M so that outsiders don't have to deal with it
     * being an Option
     */
-  def contextVarM_=(newCtx: VAny) =
-    _contextVarM = Some(newCtx)
+  def ctxVarSecondary_=(newCtx: VAny) =
+    _ctxVarSecondary = Some(newCtx)
 
   /** Get a variable by the given name. If it doesn't exist in the current
     * context, looks in the parent context. If not found in any context, returns
@@ -136,24 +140,27 @@ class Context private (
   /** Make a new Context for a structure inside the current structure */
   def makeChild() = new Context(
     stack,
-    _contextVarN,
-    _contextVarM,
+    _ctxVarPrimary,
+    _ctxVarSecondary,
     vars,
     inputs,
     Some(this),
-    globals
+    globals,
+    testMode
   )
 end Context
 
 object Context:
   def apply(
       inputs: Seq[VAny] = Seq.empty,
-      globals: Globals = Globals()
+      globals: Globals = Globals(),
+      testMode: Boolean = false
   ): Context =
     new Context(
       stack = mut.ArrayBuffer(),
       inputs = Inputs(inputs),
-      globals = globals
+      globals = globals,
+      testMode = testMode
     )
 
   /** Find a parent that has a variable with the given name */
@@ -179,19 +186,20 @@ object Context:
   def makeFnCtx(
       origCtx: Context,
       currCtx: Context,
-      contextVarM: Option[VAny],
-      contextVarN: Option[VAny],
+      ctxVarPrimary: Option[VAny],
+      ctxVarSecondary: Option[VAny],
       params: Seq[String],
       inputs: Seq[VAny]
   ) =
     new Context(
       mut.ArrayBuffer.empty,
-      contextVarM.orElse(currCtx._contextVarN),
-      contextVarN.orElse(currCtx._contextVarM),
+      ctxVarPrimary.orElse(currCtx._ctxVarPrimary),
+      ctxVarSecondary.orElse(currCtx._ctxVarSecondary),
       mut.Map(params.zip(inputs)*),
       Inputs(inputs),
       Some(origCtx),
-      currCtx.globals
+      currCtx.globals,
+      currCtx.testMode
     )
   end makeFnCtx
 end Context

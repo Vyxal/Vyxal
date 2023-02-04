@@ -8,12 +8,12 @@
 $ (Swap) (non-vectorising)
 - a, b -> b, a
 ---------------------
-% (Modulo | String Formatting) (vectorising)
+% (Modulo | String Formatting) (non-vectorising)
 - a: num, b: num -> a % b
 - a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)
 ---------------------
-& (Concatenate) (non-vectorising)
-- a: any, b: any -> a ++ b
+& (Append) (non-vectorising)
+- a: any, b: any -> list(a) ++ [b]
 ---------------------
 * (Exponentation | Remove Nth Letter | Trim) (vectorising)
 - a: num, b: num -> a ^ b
@@ -32,8 +32,8 @@ $ (Swap) (non-vectorising)
 ---------------------
 - (Subtraction) (vectorising)
 - a: num, b: num -> a - b
-- a: str, b: num -> a + b '-'s
-- a: num, b: str -> a '-'s + b
+- a: str, b: num -> a + b '-'s (or '-'s + a if b < 0)
+- a: num, b: str -> a '-'s + b (or b + '-'s if a < 0)
 - a: str, b: str -> a with b removed
 ---------------------
 : (Duplicate) (non-vectorising)
@@ -86,7 +86,7 @@ N (Negation | Swap Case | First Non-Negative Integer Where Predicate is True) (v
 - a: str -> a.swapcase()
 - a: fun -> first non-negative integer where predicate a is true
 ---------------------
-O (Ord/Chr) (vectorising)
+O (Ord/Chr) (non-vectorising)
 - a: str -> ord(a)
 - a: num -> chr(a)
 ---------------------
@@ -101,7 +101,7 @@ _ (Pop and Discard) (non-vectorising)
 ---------------------
 b (Convert To Binary) (vectorising)
 - a: num -> convert a to binary
-- a: str -> bin(chr(x) for x in a)
+- a: str -> bin(ord(x) for x in a)
 ---------------------
 m (Get Context Variable M) (non-vectorising)
 - ->  -> context variable m
