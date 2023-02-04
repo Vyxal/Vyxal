@@ -162,6 +162,70 @@ class ElementTests extends VyxalTests:
     }
   }
 
+  describe("Element :") {
+    testStackLike(":")(
+      List[VAny](1, 2, 3) -> List[VAny](1, 2, 3, 3),
+      List[VAny](1, 2, 3, 4) -> List[VAny](1, 2, 3, 4, 4),
+      List[VAny](1, 2, 3, 4, 5) -> List[VAny](1, 2, 3, 4, 5, 5)
+    )
+  }
+
+  describe("Element ;") {
+    testMulti(";")(
+      List[VAny](1, 2, 3) -> VList(2, 3),
+      List[VAny](1, 2, 3, 4) -> VList(3, 4),
+      List[VAny](1, 2, 3, 4, 5) -> VList(4, 5)
+    )
+  }
+
+  describe("Element <") {
+    describe("With numbers") {
+      testMulti("<")(
+        Seq[VAny](1, 2) -> VNum(1),
+        Seq[VAny](1, 1) -> VNum(0),
+        Seq[VAny](2, 1) -> VNum(0),
+        Seq[VAny](VNum.complex(1, 50), 2) -> VNum(1)
+      )
+    }
+    describe("Should stringify") {
+      testMulti("<")(
+        Seq[VAny]("abc", 1) -> VNum(0),
+        Seq[VAny](20, "3") -> VNum(1),
+        Seq[VAny]("ABC", "abc") -> VNum(1)
+      )
+    }
+    describe("should vectorise") {
+      testMulti("<")(
+        Seq[VAny](VList(1, VList(2, 4), -5), 3) -> VList(1, VList(1, 0), 1),
+        Seq[VAny](VList(6, "foo"), VList(4, 20)) -> VList(0, 0)
+      )
+    }
+  }
+
+  describe("Element >") {
+    describe("With numbers") {
+      testMulti(">")(
+        Seq[VAny](1, 2) -> VNum(0),
+        Seq[VAny](1, 1) -> VNum(0),
+        Seq[VAny](2, 1) -> VNum(1),
+        Seq[VAny](VNum.complex(1, 50), 2) -> VNum(0)
+      )
+    }
+    describe("Should stringify") {
+      testMulti(">")(
+        Seq[VAny]("abc", 1) -> VNum(1),
+        Seq[VAny](20, "3") -> VNum(0),
+        Seq[VAny]("ABC", "abc") -> VNum(0)
+      )
+    }
+    describe("should vectorise") {
+      testMulti(">")(
+        Seq[VAny](VList(1, VList(2, 4), -5), 3) -> VList(0, VList(0, 1), 0),
+        Seq[VAny](VList(6, "foo"), VList(4, 20)) -> VList(1, 1)
+      )
+    }
+  }
+
   describe("Element A") {
     describe("when given lists") {
       testMulti("A")(
@@ -331,27 +395,4 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  describe("Element >") {
-    describe("With numbers") {
-      testMulti(">")(
-        Seq[VAny](1, 2) -> VNum(0),
-        Seq[VAny](1, 1) -> VNum(0),
-        Seq[VAny](2, 1) -> VNum(1),
-        Seq[VAny](VNum.complex(1, 50), 2) -> VNum(0)
-      )
-    }
-    describe("Should stringify") {
-      testMulti(">")(
-        Seq[VAny]("abc", 1) -> VNum(1),
-        Seq[VAny](20, "3") -> VNum(0),
-        Seq[VAny]("ABC", "abc") -> VNum(0)
-      )
-    }
-    describe("should vectorise") {
-      testMulti(">")(
-        Seq[VAny](VList(1, VList(2, 4), -5), 3) -> VList(0, VList(0, 1), 0),
-        Seq[VAny](VList(6, "foo"), VList(4, 20)) -> VList(1, 1)
-      )
-    }
-  }
 end ElementTests
