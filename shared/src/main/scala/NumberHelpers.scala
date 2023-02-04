@@ -73,9 +73,7 @@ object NumberHelpers:
         val binary = n.toInt.abs.toBinaryString
         val temp = VList(binary.map(_.asDigit: VNum)*)
         if n.toInt < 0 then
-          VList(temp.map((_: @unchecked) match
-            case v: VNum => -v
-          )*)
+          temp.vmap(v => -v.asInstanceOf[VNum])
         else temp
       case s: String =>
         // get binary representation of each character
