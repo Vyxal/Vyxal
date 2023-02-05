@@ -3298,12 +3298,16 @@
 - modifier: "ƒ"
   name: Reduce by
   description: Reduce by an element
+  keywords: ["reduce", "by", "fold", "foldl"]
+  tags: ["number", "string", "list", "function"]
   arity: 2
   usage: ƒ<element>
 
 - modifier: "ɖ"
   name: Scan by
   description: Cumulatively reduce by an element
+  keywords: ["scan", "by", "fold", "foldl"]
+  tags: ["number", "string", "list", "function"]
   arity: 2
   usage: ɖ<element>
 
@@ -3311,6 +3315,8 @@
   name: Set Union
   arity: 2
   description: Merge two arrays without duplicates
+  keywords: ["set", "union", "merge", "append", "join"]
+  tags: ["number", "string", "list"]
   overloads:
     any-any: list(set(a).union(set(b)))
   vectorise: false
@@ -3324,6 +3330,8 @@
   name: Transpose
   arity: 1
   description: Transpose an array
+  keywords: ["transpose", "rotate", "flip"]
+  tags: ["number", "string", "list"]
   overloads:
     any: transposed array
   vectorise: false
@@ -3339,6 +3347,8 @@
   name: Symmetric Set difference
   arity: 2
   description: Uncommon elements of two arrays
+  keywords: ["symmetric", "set", "difference", "uncommon", "exclusive", "xor"]
+  tags: ["number", "string", "list"]
   overloads:
     any-any: list(set(a) ^ set(b))
   vectorise: false
@@ -3352,6 +3362,8 @@
   name: Set Register
   arity: 1
   description: Set the register to argument value
+  keywords: ["set", "register"]
+  tags: ["register"]
   overloads:
     any: set_register(a)
   vectorise: false
@@ -3360,12 +3372,16 @@
   name: Push Register
   arity: 0
   description: Push the current register value
+  keywords: ["push", "register"]
+  tags: ["register"]
   vectorise: false
 
 - element: "⇧"
   name: Grade Up
   arity: 1
   description: Indices of elements to sort in ascending order / uppercase / increment number twice
+  keywords: ["grade", "up", "sort", "ascending", "order", "uppercase", "increment", "twice"]
+  tags: ["number", "string", "list"]
   overloads:
     lst: graded_up(a)
     str: a.upper()
@@ -3381,6 +3397,8 @@
   name: Grade Down
   arity: 1
   description: "Indices of elements to sort in descending order / lowercase / decrement number twice"
+  keywords: ["grade", "down", "sort", "descending", "order", "lowercase", "decrement", "twice"]
+  tags: ["number", "string", "list"]
   overloads:
     lst: graded_down(a)
     str: a.lower()
@@ -3396,6 +3414,8 @@
   name: Remove non-alphabets
   arity: 1
   description: Remove non-alphabetical characters / power with base 2
+  keywords: ["remove", "non", "alphabet", "power", "base", "2"]
+  tags: ["number", "string"]
   overloads:
     str: filter(isalpha, a)
     num: 2 ** a
@@ -3408,6 +3428,8 @@
   name: Nth prime
   arity: 1
   description: nth prime / all substrings
+  keywords: ["nth", "prime", "substrings"]
+  tags: ["number", "string", "prime"]
   overloads:
     str: substrings(a)
     num: nth_prime(a)
@@ -3421,6 +3443,8 @@
   name: Prime factorization
   arity: 1
   description: prime factorization / append first element
+  keywords: ["prime", "factorization", "append", "first", "element"]
+  tags: ["number", "string", "list", "prime"]
   overloads:
     num: prime_factorization(a) (distinct prime factors)
     str: a + a[0]
@@ -3436,6 +3460,8 @@
   name: Prime factors
   arity: 1
   description: all prime factors / Title Case string
+  keywords: ["prime", "factors", "title", "case", "string"]
+  tags: ["number", "string", "list", "prime"]
   overloads:
     num: prime_factors(a) (prime factors possibly with repetition)
     str: title_case(a)
@@ -3448,6 +3474,8 @@
   name: Multiplicity / Remove Fixpoint / First Truthy Index Under Function
   arity: 2
   description: Order, Multiplicity, Valuation / remove till fixpoint / First truthy index under function application
+  keywords: ["order", "multiplicity", "valuation", "remove", "till", "fixpoint", "first", "truthy", "index", "under", "function", "application"]
+  tags: ["number", "string", "list", "function"]
   overloads:
     num-num: multiplicity(a,b)
     str-str: remove_till_fixpoint(a,b)
@@ -3465,6 +3493,8 @@
   name: Modulo 3
   arity: 1
   description: Modulo 3 / Split into Length 2
+  keywords: ["modulo", "3", "split", "length", "2"]
+  tags: ["number", "string", "list"]
   overloads:
     num: a % 3
     str: a split into chunks of length 2
@@ -3478,6 +3508,8 @@
   name: Rotate Left
   arity: 2
   description: Rotate Left / Rotate Left Once
+  keywords: ["rotate", "left", "once"]
+  tags: ["number", "string", "list"]
   overloads:
     any-num: rotate_left(a,b)
     any-any: a,(b[1:]+b[:1])
@@ -3493,6 +3525,8 @@
   name: Rotate Right
   arity: 2
   description: Rotate Right / Rotate Right Once
+  keywords: ["rotate", "right", "once"]
+  tags: ["number", "string", "list"]
   overloads:
     any-num: rotate_right(a,b)
     any-any: a,(b[-1:]+b[:-1])
@@ -3504,34 +3538,43 @@
     - '[3, "abcd", 4] : "abcd"'
     - '[3, "abcd", -1] : "bcda"'
 
-- element: "⁽"
+- modifier: "⁽"
   name: One Element Lambda
   arity: 0
   description: One Element lambda function (prefix)
-  vectorise: false
+  keywords: ["one", "element", "lambda", "function", "prefix"]
+  tags: ["function"]
+  usage: "⁽<element>"
 
-- element: "‡"
+- modifier: "‡"
   name: Two Element Lambda
   arity: 0
   description: Two Element lambda function (prefix)
-  vectorise: false
+  keywords: ["two", "element", "lambda", "function", "prefix"]
+  tags: ["function"]
+  usage: "‡<element><element>"
 
-- element: "≬"
+- modifier: "≬"
   name: Three Element Lambda
   arity: 0
   description: Three Element lambda function (prefix)
-  vectorise: false
+  keywords: ["three", "element", "lambda", "function", "prefix"]
+  tags: ["function"]
+  usage: "≬<element><element><element>"
 
-- element: "⁺"
+- syntax: "⁺"
   name: Index of next character in codepage
   arity: 0
   description: Return the index of the next character in the vyxal code page + 101
-  vectorise: false
+  keywords: ["index", "next", "character", "codepage"]
+  tags: ["literal"]
 
 - element: "↵"
   name: Split On newlines
   arity: 1
   description: Split on newlines / Power with base 10
+  keywords: ["split", "on", "newlines", "power", "base", "10"]
+  tags: ["number", "string", "list"]
   overloads:
     str: a.split("\n")
     num: 10 ** a
@@ -3543,25 +3586,33 @@
 - element: "⅛"
   name: Push To Global Array
   arity: 1
-  description: Push to global array (no popping)
+  description: Push to global array
+  keywords: ["push", "to", "global", "array"]
+  tags: ["number", "string", "list"]
   vectorise: false
 
 - element: "¼"
   name: Pop From Global Array
   arity: 0
   description: Pop from global array, push to stack
+  keywords: ["pop", "from", "global", "array"]
+  tags: []
   vectorise: false
 
 - element: "¾"
   name: Push Global Array
   arity: 0
   description: Push global array, no modification of global array
+  keywords: ["push", "global", "array"]
+  tags: []
   vectorise: false
 
 - element: "Π"
   name: Product of Array / Cartesian product over list
   arity: 1
   description: Product of Array / Cartesian product over a list of lists
+  keywords: ["product", "array", "cartesian", "product", "over", "list"]
+  tags: ["number", "string", "list"]
   overloads:
     num: binary representation of a (shortcut for bṅ)
     lst[num]: reduce list by multiplication
@@ -3581,23 +3632,31 @@
   name: Rotate Stack Left
   arity: 0
   description: Rotate Stack Left
+  keywords: ["rotate", "stack", "left"]
+  tags: ["stack"]
   vectorise: false
 
 - element: "‟"
   name: Rotate Stack Right
   arity: 0
   description: Rotate Stack Right
+  keywords: ["rotate", "stack", "right"]
+  tags: ["stack"]
   vectorise: false
 
 - element: "🍪"
   name: Cookie
   description: print "cookie" forever
+  keywords: ["cookie"]
+  tags: ["easteregg"]
   vectorise: false
   arity: 0
 
 - element: "ඞ"
   name: sus
   description: print "sus"
+  keywords: ["sus", "AMONG US", "among us", "sussy", "baka", "impostor", "red", "vent", "venting", "crewmate", "electrical", "when", "the"]
+  tags: ["easteregg"]
   vectorise: false
   arity: 0
   tests:
