@@ -2471,6 +2471,8 @@
 - element: "⁋"
   name: Join On Newlines
   description: Join the top of the stack on newlines (insert "\n" between items)
+  keywords: ["join", "newline", "line", "break"]
+  tags: ["list", "string"]
   arity: 1
   overloads:
     any: '"\\n".join(a)'
@@ -2484,6 +2486,8 @@
   name: Vertical Join
   arity: 1
   description: Transpose (filling with spaces) and then join on newlines
+  keywords: ["join", "newline", "line", "break", "transpose", "vertical"]
+  tags: ["list", "string"]
   overloads:
     any: transpose a, join on newlines
   vectorise: false
