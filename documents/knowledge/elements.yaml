@@ -2054,10 +2054,10 @@
     - "[[]] : []"
 
 - element: "ḭ"
-  name: Floor Division / Fold Right / Into N Pieces
+  name: Floor Division / Fold Right / First equal-length piece
   description: Floor divide a by b
   keywords: ["floor", "division", "divide", "div", "foldr", "fold", "right", "reduce", "into", "pieces"]
-  tags: ["number"]
+  tags: ["number", "string", "function"]
   arity: 2
   overloads:
     num-num: a // b (floor division, floor(a / b))
@@ -2082,6 +2082,8 @@
 - element: "ŀ"
   name: Left Justify / Gridify / Infinite Replace / Collect until false
   description: Find one value inside another, starting from a certain index.
+  keywords: ["left", "justify", "gridify", "grid", "infinite", "replace", "collect", "until", "false"]
+  tags: ["number", "string", "list", "function"]
   arity: 3
   overloads:
     num-num-num: a <= c <= b
@@ -2109,6 +2111,8 @@
 - element: "ṁ"
   name: Mean
   description: Average of a list - sum / length
+  keywords: ["mean", "average", "sum", "length", "divide", "div", "divided", "by"]
+  tags: ["number", "list"]
   arity: 1
   overloads:
     str: palindromise(a) (a + a[:-1:-1])
@@ -2122,8 +2126,10 @@
     - "[[4,71,-63]] : 4"
 
 - element: "ṅ"
-  name: Join By Nothing
+  name: Join By Nothing / First Integer Where
   description: Join a list by the empty string. Vectorises if the list contains lists.
+  keywords: ["join", "by", "nothing", "first", "integer", "where"]
+  tags: ["number", "string", "list", "function"]
   arity: 1
   overloads:
     num: abs(a) <= 1
@@ -2143,8 +2149,10 @@
     - '[[1, ["abc", "def", "ghi"], [1, 2, 3], [0.5, 1.1, [1, 2, 3]]]] : [1, "abcdefghi", 123, [1, 0, 123]]'
 
 - element: "ȯ"
-  name: Slice
+  name: Slice / First N Truthy Integers
   description: Slice from an index to the end
+  keywords: ["slice", "from", "to", "end", "first", "n", "truthy", "integers"]
+  tags: ["number", "string", "list", "function"]
   arity: 2
   overloads:
     fun-num: first b positive integers for which a(x) is truthy
@@ -2165,6 +2173,8 @@
 - element: "ṗ"
   name: Powerset
   description: All possible combinations of a
+  keywords: ["powerset", "combinations", "all", "possible", "of"]
+  tags: ["number", "string", "list", "combinatorics"]
   arity: 1
   overloads:
     any: all subsets of a (including the empty subset)
@@ -2176,8 +2186,10 @@
     - "[[]] : [[]]"
 
 - element: "ṙ"
-  name: Round
-  description: Round a number to the nearest integer / real and imaginary part of complex number
+  name: Round / Quadruple Palindromise With Overlap
+  description: Round a number to the nearest integer / real and imaginary part of complex number / quadruple palindromise with overlap
+  keywords: ["round", "nearest", "integer", "real", "imaginary", "part", "of", "complex", "number", "quadruple", "palindromise", "with", "overlap"]
+  tags: ["number", "string"]
   arity: 1
   overloads:
     num: round(a)
