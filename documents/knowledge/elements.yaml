@@ -1461,14 +1461,18 @@
     - "[[[4,5],[6,7]],8] : [4,5,8,6,7]"
     - "[[4,5,6,7],8] : [4,8,5,8,6,8,7]"
 
-- element: "k"
+- syntax: "k"
   name: Constant Digraph
   description: Used for constant digraphs.
+  keywords: []
+  tags: []
   arity: 0
 
 - element: "l"
   name: Cumulative Groups / First Non-Negative Truthy Integers
   description: Cumulative groups (overlapping groups, aperture) / Equal length
+  keywords: ["cumulative", "groups", "aperture", "overlapping", "equal", "length", "first", "non-negative", "integers", "truthy"]
+  tags: ["number", "string", "list"]
   arity: 2
   overloads:
     any-num: "[a[0:b], a[1:b+1], a[2:b+2], ..., a[-b:]]"
@@ -1493,6 +1497,8 @@
 - element: "m"
   name: Mirror
   description: Append input reversed to itself.
+  keywords: ["mirror", "reverse", "reversed", "append", "concatenate", "concat"]
+  tags: ["number", "string", "list"]
   arity: 1
   overloads:
     num: a + reversed(a) (as number)
@@ -1507,11 +1513,15 @@
 - element: "n"
   name: Context
   description: Context variable, value of the current loop or function.
+  keywords: ["context", "variable", "value", "loop", "function"]
+  tags: ["literal"]
   arity: 0
 
 - element: "o"
   name: Remove
   description: Remove instances of b in a
+  keywords: ["remove", "delete"]
+  tags: ["number", "string", "list"]
   arity: 2
   overloads:
     num-fun: first a integers where b is truthy (0, 1, -1, ...)
@@ -1531,6 +1541,8 @@
 - element: "p"
   name: Prepend
   description: Prepend b to a
+  keywords: ["prepend"]
+  tags: ["number", "string", "list"]
   overloads:
     any-any: a.prepend(b) (prepend b to a)
   arity: 2
@@ -1548,6 +1560,8 @@
 - element: "q"
   name: Uneval
   description: Enclose in backticks, escape backslashes and backticks.
+  keywords: ["uneval", "backticks", "escape", "backslash", "backtick"]
+  tags: ["string"]
   arity: 1
   overloads:
     any: uneval(a) (enclose in backticks + escape)
@@ -1560,6 +1574,8 @@
 - element: "r"
   name: Range
   description: Range between two numbers, or cumulative reduce, or regex match
+  keywords: ["range", "cumulative", "reduce", "regex", "match"]
+  tags: ["number", "string", "regex"]
   arity: 2
   overloads:
     num-num: range(a,b) (range from a to b)
@@ -1580,6 +1596,8 @@
 - element: "s"
   name: sort
   description: Sort a list or string
+  keywords: ["sort", "sorted", "order"]
+  tags: ["string", "list"]
   arity: 1
   overloads:
     any: sorted(a) (sort)
@@ -1593,6 +1611,8 @@
 - element: "t"
   name: Tail
   description: Last item
+  keywords: ["tail", "last", "item", "[-1]"]
+  tags: ["number", "string", "list"]
   arity: 1
   overloads:
     any: a[-1] (last item)
