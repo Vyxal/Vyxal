@@ -1856,14 +1856,18 @@
   tests:
     - '[] : " "'
 
-- element: "→"
+- syntax: "→"
   name: Variable Set
   description: Set variable (→name)
+  keywords: ["variable", "set", "setvar"]
+  tags: []
   arity: 1
 
-- element: "←"
+- syntax: "←"
   name: Variable Get
   description: Get the value of a variable (←name)
+  keywords: ["variable", "get", "getvar"]
+  tags: []
   arity: 0
 
 - element: "β"
