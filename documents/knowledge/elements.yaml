@@ -2765,8 +2765,10 @@
     - '[123, [-1,0.1,1.9,"0"]] : [3,1,2,1]'
 
 - element: "Ŀ"
-  name: Transliterate
-  description: Replace each item of one value in another value with the corresponding element from a third value
+  name: Transliterate / Repeat Until False
+  description: Replace each item of one value in another value with the corresponding element from a third value / repeat a function until the result is false.
+  keywords: ["transliterate", "repeat", "until", "false"]
+  tags: ["number", "string", "list", "function"]
   arity: 3
   overloads:
     any-any-any: transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)
@@ -2786,6 +2788,8 @@
   description: >-
     Insert a value at a specified index /
     Map a function over every nth item of a list
+  keywords: ["insert", "map", "nth", "index"]
+  tags: ["number", "string", "list", "function"]
   arity: 3
   overloads:
     any-num-any: a.insert(b,c) (insert c at position b in a)
@@ -2802,6 +2806,8 @@
 - element: "Ṅ"
   name: Integer partitions / First Truthy Non-Negative Integer
   description: Integer partitions / join by space
+  keywords: ["integer", "partitions", "join", "space", "first", "truthy", "non-negative", "integer"]
+  tags: ["number", "string", "list", "function", "combinatorics"]
   arity: 1
   overloads:
     num: integer_partitions(a) (integer partitions)
@@ -2816,6 +2822,8 @@
 - element: "Ȯ"
   name: Over
   description: Push the second-last item of stack to the top
+  keywords: ["over"]
+  tags: ["stack"]
   arity: 0
   vectorise: false
   tests:
@@ -2825,6 +2833,8 @@
 - element: "Ṗ"
   name: Permutations
   description: Get all permutations of a value
+  keywords: ["permutations"]
+  tags: ["number", "string", "list", "combinatorics"]
   arity: 1
   overloads:
     any: permutations(a) (get all permutations)
@@ -2837,6 +2847,8 @@
 - element: "Ṙ"
   name: Reverse
   description: Reverse a value
+  keywords: ["reverse"]
+  tags: ["number", "string", "list"]
   arity: 1
   overloads:
     any: reversed(a)
@@ -2849,7 +2861,9 @@
 
 - element: "Ṡ"
   name: Vectorised sums / Strip whitespace from both sides / Is positive
-  description: Sum of each item in a list
+  description: Sum of each item in a list / Strip whitespace from both sides of a string / Is a number positive?
+  keywords: ["vectorised", "sums", "strip", "whitespace", "both", "sides", "is", "positive"]
+  tags: ["number", "string", "list", "vectorise"]
   arity: 1
   overloads:
     lst: vectorising_sum(a)
@@ -2868,6 +2882,8 @@
 - element: "Ṫ"
   name: Tail Remove / Truthy Under
   description: Cut off the last item of a list / push 1 under the top of the stack
+  keywords: ["tail", "remove", "truthy", "under"]
+  tags: ["number", "string", "list", "stack"]
   arity: 1
   overloads:
     num: push 1 then the popped item
@@ -2881,8 +2897,10 @@
     - "[-1234.56] : -1234.56"
 
 - element: "Ẇ"
-  name: Split And Keep Delimiter
-  description: Split a value and keep the delimiter
+  name: Split And Keep Delimiter / Apply To Every Second Item From Second
+  description: Split a value and keep the delimiter / apply a function to every second item of a list starting on the second item
+  keywords: ["split", "keep", "delimiter", "apply", "every", "second", "item", "from", "second"]
+  tags: ["number", "string", "list", "function"]
   arity: 2
   overloads:
     any-any: a.split_and_keep_delimiter(b) (split and keep the delimiter)
@@ -2901,6 +2919,8 @@
   description: >
     Take the Cartesian Product of two values, or apply a function until there is no change.
     If arguments are numbers, turns them into ranges.
+  keywords: ["cartesian", "product", "fixpoint"]
+  tags: ["number", "string", "list", "function"]
   arity: 2
   overloads:
     any-any: cartesian-product(a,b)
