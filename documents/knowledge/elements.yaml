@@ -1347,6 +1347,8 @@
 - element: "e"
   name: Exponentiation
   description: Exponentiate two numbers / extend string / get length of a regex match
+  keywords: ["exponentiate", "exponentiation", "extend", "length", "regex", "match"]
+  tags: ["number", "string", "regex"]
   arity: 2
   overloads:
     num-num: a ** b (exponentiation)

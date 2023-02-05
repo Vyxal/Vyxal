@@ -20,6 +20,7 @@ Tags:
 - prime
 - random
 - register
+- regex
 - stack
 - string
 - vectorise
