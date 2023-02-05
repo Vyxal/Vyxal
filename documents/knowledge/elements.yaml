@@ -1737,6 +1737,8 @@
 - element: "↑"
   name: Max by Tail
   description: Maximum by last item
+  keywords: ["max", "maximum", "tail", "last", "item", "[-1]"]
+  tags: ["number", "string", "list"]
   arity: 1
   overloads:
     any: "max(a, key=lambda x: x[-1]) (maximum by last item)"
@@ -1748,6 +1750,8 @@
 - element: "↓"
   name: Min by Tail
   description: Minimum by last item
+  keywords: ["min", "minimum", "tail", "last", "item", "[-1]"]
+  tags: ["number", "string", "list"]
   arity: 1
   overloads:
     any: "min(a, key=lambda x: x[-1]) (minimum by last item)"
@@ -1759,6 +1763,8 @@
 - element: "∴"
   name: Dyadic Maximum
   description: Maximum of two values / Maximum of a list by a function
+  keywords: ["max", "maximum", "dyadic", "dyad", "dyadic maximum", "maximum by", "maximum by function"]
+  tags: ["number", "string", "list", "function", "comparison"]
   arity: 2
   overloads:
     any-any: max(a,b)
@@ -1772,6 +1778,8 @@
 - element: "∵"
   name: Dyadic Minimum
   description: Minimum of two values / Minimum of a list by a function
+  keywords: ["min", "minimum", "dyadic", "dyad", "dyadic minimum", "minimum by", "minimum by function"]
+  tags: ["number", "string", "list", "function", "comparison"]
   arity: 2
   overloads:
     any-any: min(a,b)
