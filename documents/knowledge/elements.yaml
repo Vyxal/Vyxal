@@ -789,16 +789,22 @@
   name: Input
   arity: 0
   description: Get the next input from the input source
+  keywords: ["input", "get", "next", "readline"]
+  tags: ["io"]
   vectorise: false
 
-- element: "@"
+- structure: "@"
   name: Function Call / Declaration
   description: Call / declare function (@name; / @name|code;)
   arity: "* / NA"
+  keywords: ["function", "call", "declare", "lambda", "map lambda", "sort lambda"]
+  tags: ["function"]
 
 - element: "A"
   name: All
   description: Check if all items in a list are truthy / check if a character is a vowel
+  keywords: ["all", "vowel"]
+  tags: ["boolean", "list", "string"]
   arity: 1
   overloads:
     str: is_vowel(a) if a.length == 1 else [is_vowel(z) for z in a]
@@ -818,6 +824,8 @@
 - element: "B"
   name: Binary To Decimal
   description: Convert a binary string or list to base 10
+  keywords: ["binary", "decimal", "base 10", "base10", "base 2", "base2", "10 to 2"]
+  tags: ["number", "string", "list", "base"]
   arity: 1
   overloads:
     any: int(a,2) (convert from base 2 to base 10)
@@ -834,6 +842,8 @@
 - element: "C"
   name: Chr / Ord
   description: Convert between characters and ordinals
+  keywords: ["chr", "ord", "character", "ordinal", "ascii", "unicode"]
+  tags: ["number", "string"]
   arity: 1
   overloads:
     num: chr(a)

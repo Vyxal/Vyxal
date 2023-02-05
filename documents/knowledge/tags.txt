@@ -4,6 +4,7 @@ Tags:
 - bitwise
 - boolean
 - combinatorics
+- comparison
 - constant
 - digraph
   - math
