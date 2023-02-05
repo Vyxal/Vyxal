@@ -3668,6 +3668,8 @@
   name: Uppercase alphabet
   arity: 0
   description: '"ABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase alphabet)'
+  keywords: ["uppercase", "alphabet"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "ABCDEFGHIJKLMNOPQRSTUVWXYZ"'
@@ -3676,6 +3678,8 @@
   name: e, Euler's number
   arity: 0
   description: 2.718281828459045 (math.e, Euler's number)
+  keywords: ["e", "euler's", "number"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 2.7182818284590452354"
@@ -3684,6 +3688,8 @@
   name: Fizz
   arity: 0
   description: "Fizz"
+  keywords: ["fizz"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "Fizz"'
@@ -3692,6 +3698,8 @@
   name: Buzz
   arity: 0
   description: "Buzz"
+  keywords: ["buzz"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "Buzz"'
@@ -3700,6 +3708,8 @@
   name: FizzBuzz
   arity: 0
   description: "FizzBuzz"
+  keywords: ["fizz", "buzz"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "FizzBuzz"'
@@ -3708,6 +3718,8 @@
   name: Hello, World!
   arity: 0
   description: "Hello, World!"
+  keywords: ["hello", "world"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "Hello, World!"'
@@ -3716,6 +3728,8 @@
   name: Hello World (No Punctuation)
   arity: 0
   description: "Hello World"
+  keywords: ["hello", "world"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "Hello World"'
@@ -3724,6 +3738,8 @@
   name: 1000
   arity: 0
   description: 10^3 / 1000
+  keywords: ["1000"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 1000"
@@ -3732,6 +3748,8 @@
   name: 10000
   arity: 0
   description: 10^4 / 10000
+  keywords: ["10000"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 10000"
@@ -3740,6 +3758,8 @@
   name: 100000
   arity: 0
   description: 10^5 / 100000
+  keywords: ["100000"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 100000"
@@ -3748,6 +3768,8 @@
   name: 1000000
   arity: 0
   description: 10^6 / 1000000
+  keywords: ["1000000"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 1000000"
@@ -3756,6 +3778,8 @@
   name: Lowercase alphabet
   arity: 0
   description: '"abcdefghijklmnopqrstuvwxyz" (lowercase alphabet)'
+  keywords: ["lowercase", "alphabet"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "abcdefghijklmnopqrstuvwxyz"'
@@ -3764,6 +3788,8 @@
   name: Lowercase and uppercase alphabet
   arity: 0
   description: '"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase+lowercase alphabet)'
+  keywords: ["lowercase", "uppercase", "alphabet"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"'
@@ -3772,6 +3798,8 @@
   name: Digits
   arity: 0
   description: '"0123456789" (Digits 0-9)'
+  keywords: ["digits", "numbers"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "0123456789"'
@@ -3780,6 +3808,8 @@
   name: Hex digits (lowercase)
   arity: 0
   description: '"0123456789abcdef" (Hex digits)'
+  keywords: ["hex", "digits", "lowercase"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "0123456789abcdef"'
@@ -3788,6 +3818,8 @@
   name: Hex digits (uppercase)
   arity: 0
   description: '"0123456789ABCDEF" (Hex digits uppercase)'
+  keywords: ["hex", "digits", "uppercase"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "0123456789ABCDEF"'
@@ -3796,6 +3828,8 @@
   name: Octal digits
   arity: 0
   description: '"01234567" (Octal digits)'
+  keywords: ["octal", "digits"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "01234567"'
@@ -3804,6 +3838,8 @@
   name: Punctuation
   arity: 0
   description: string.punctuation (Punctuations)
+  keywords: ["punctuation"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : string.punctuation"
@@ -3812,6 +3848,8 @@
   name: Printable ASCII Without Space
   arity: 0
   description: printable ascii exluding space
+  keywords: ["printable", "ascii", "space"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : '!\"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'"
@@ -3820,6 +3858,8 @@
   name: Printable ASCII With Space
   arity: 0
   description: printable ascii with space
+  keywords: ["printable", "ascii", "space"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : ' !\"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'"
@@ -3828,6 +3868,8 @@
   name: ASCII Whitespace
   arity: 0
   description: All ASCII whitespace
+  keywords: ["whitespace", "ascii"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
 
   #TODO add a test
@@ -3835,6 +3877,8 @@
   name: Digits, lowercase alphabet, and uppercase alphabet
   arity: 0
   description: '"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (0-9A-Za-z)'
+  keywords: ["digits", "lowercase", "uppercase", "alphabet"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"'
@@ -3843,6 +3887,8 @@
   name: Uppercase and lowercase alphabet
   arity: 0
   description: '"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" (A-Za-z)'
+  keywords: ["lowercase", "uppercase", "alphabet"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"'
@@ -3851,6 +3897,8 @@
   name: Uppercase alphabet reversed
   arity: 0
   description: '"ZYXWVUTSRQPONMLKJIHGFEDCBA" (uppercase alphabet reversed)'
+  keywords: ["uppercase", "alphabet"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "ZYXWVUTSRQPONMLKJIHGFEDCBA"'
@@ -3859,6 +3907,8 @@
   name: Lowercase alphabet reversed
   arity: 0
   description: '"zyxwvutsrqponmlkjihgfedcba" (lowercase alphabet reversed)'
+  keywords: ["lowercase", "alphabet"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "zyxwvutsrqponmlkjihgfedcba"'
@@ -3867,6 +3917,8 @@
   name: Uppercase and lowercase alphabet, reversed
   arity: 0
   description: '"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba" (Z-Az-a)'
+  keywords: ["lowercase", "uppercase", "alphabet"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"'
@@ -3875,6 +3927,8 @@
   name: Pi
   arity: 0
   description: 3.141592653589793 (Pi)
+  keywords: ["pi"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 3.141592653589793"
@@ -3883,6 +3937,8 @@
   name: Golden ratio/phi
   arity: 0
   description: 1.618033988749895 (golden ratio/phi)
+  keywords: ["golden", "ratio", "phi"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 1.618033988749895"
@@ -3891,6 +3947,8 @@
   name: Current day in the format YYYY-MM-DD
   arity: 0
   description: Current day in the format YYYY-MM-DD
+  keywords: ["current", "day", "format", "YYYY-MM-DD"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
 
   #TODO add a test
@@ -3898,6 +3956,8 @@
   name: Current time as a list of ⟨hh|mm|ss⟩
   arity: 0
   description: Current time as a list of ⟨hh|mm|ss⟩
+  keywords: ["current", "time", "list", "⟨hh|mm|ss⟩"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
 
   #TODO add a test
@@ -3905,6 +3965,8 @@
   name: Current day in the format DD/MM/YYYY
   arity: 0
   description: Current day in the format DD/MM/YYYY
+  keywords: ["current", "day", "format", "DD/MM/YYYY"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
 
   #TODO add a test
@@ -3912,6 +3974,8 @@
   name: Current day in the format MM/DD/YYYY
   arity: 0
   description: Current day in the format MM/DD/YYYY
+  keywords: ["current", "day", "format", "MM/DD/YYYY"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
 
   #TODO add a test
@@ -3919,6 +3983,8 @@
   name: Current day in the format ⟨DD|MM|YYYY⟩
   arity: 0
   description: Current day in the format ⟨DD|MM|YYYY⟩
+  keywords: ["current", "day", "format", "⟨DD|MM|YYYY⟩"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
 
   #TODO add a test
@@ -3926,6 +3992,8 @@
   name: Braces, square brackets, angle brackets, and parentheses
   arity: 0
   description: "{}[]<>()"
+  keywords: ["braces", "square", "brackets", "angle", "brackets", "parentheses"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "{}[]<>()"'
@@ -3934,6 +4002,8 @@
   name: Parentheses, square brackets, and braces
   arity: 0
   description: '"()[]{}" (Brackets)'
+  keywords: ["parentheses", "square", "brackets", "braces"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "()[]{}"'
@@ -3942,6 +4012,8 @@
   name: Parentheses and square brackets
   arity: 0
   description: "()[]"
+  keywords: ["parentheses", "square", "brackets"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "()[]"'
@@ -3950,6 +4022,8 @@
   name: Opening brackets
   arity: 0
   description: '"([{" (Open brackets)'
+  keywords: ["opening", "brackets"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "([{"'
@@ -3958,6 +4032,8 @@
   name: Closing brackets
   arity: 0
   description: '")]}" (Close brackets)'
+  keywords: ["closing", "brackets"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : ")]}"'
@@ -3966,6 +4042,8 @@
   name: Opening brackets (with <)
   arity: 0
   description: '"([{<" (Fish bones :P)'
+  keywords: ["opening", "brackets", "fish", "bones"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "([{<"'
@@ -3974,6 +4052,8 @@
   name: Closing brackets (with >)
   arity: 0
   description: '")]}>" (Closing brackets)'
+  keywords: ["closing", "brackets"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : ")]}>"'
@@ -3982,6 +4062,8 @@
   name: Lowercase vowels
   arity: 0
   description: '"aeiou" (Vowels lowercase)'
+  keywords: ["lowercase", "vowels"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "aeiou"'
@@ -3990,6 +4072,8 @@
   name: Upercase vowels
   arity: 0
   description: '"AEIOU" (Vowels uppercase)'
+  keywords: ["uppercase", "vowels"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "AEIOU"'
@@ -3998,6 +4082,8 @@
   name: Lowercase and uppercase vowels
   arity: 0
   description: '"aeiouAEIOU" (vowelsVOWELS)'
+  keywords: ["lowercase", "uppercase", "vowels"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "aeiouAEIOU"'
@@ -4006,6 +4092,8 @@
   name: Vyxal codepage
   arity: 0
   description: Yields the Vyxal codepage
+  keywords: ["vyxal", "codepage"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
 
   #TODO add a test
@@ -4013,6 +4101,8 @@
   name: "[1, 2]"
   arity: 0
   description: "[1, 2]"
+  keywords: ["[1", "2]"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : [1, 2]"
@@ -4021,6 +4111,8 @@
   name: "4294967296"
   arity: 0
   description: 2 ** 32, 2^32, 4294967296
+  keywords: ["4294967296"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 4294967296"
@@ -4029,6 +4121,8 @@
   name: "[1, -1]"
   arity: 0
   description: "[1, -1]"
+  keywords: ["[1", "-1]"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : [1, -1]"
