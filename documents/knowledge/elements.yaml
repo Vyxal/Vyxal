@@ -2294,6 +2294,8 @@
 - element: "ẏ"
   name: Exclusive Range Length
   description: Range from 0 to length of a
+  keywords: ["range", "length", "exclusive"]
+  tags: ["number", "string", "list"]
   arity: 1
   overloads:
     any: range(0, len(a)) (exclusive range from 0 to length of a)
@@ -2307,6 +2309,8 @@
 - element: "ż"
   name: Inclusive Range Length
   description: Range from 1 to length of a inclusive
+  keywords: ["range", "length", "inclusive"]
+  tags: ["number", "string", "list"]
   arity: 1
   overloads:
     any: range(1, len(a)+1) (inclusive range from 1 to length of a)
@@ -2320,6 +2324,8 @@
 - element: "√"
   name: Square Root
   description: Square root a number / every second character of a
+  keywords: ["square", "root", "every", "second", "character", "sqrt"]
+  tags: ["number", "string"]
   arity: 1
   overloads:
     num: sqrt(a) (square root)
@@ -2330,24 +2336,32 @@
     - "[-4] : 2j"
     - '["hello"] : "hlo"'
 
-- element: "⟨"
+- syntax: "⟨"
   name: Open List
   description: Open a list - ⟨...⟩
+  keywords: []
+  tags: []
   arity: 0
 
-- element: "⟩"
+- syntax: "⟩"
   name: Close list
   description: Close a list - ⟨...⟩
+  keywords: []
+  tags: []
   arity: 1
 
-- element: "‛"
+- syntax: "‛"
   name: Two Character String
   description: Collect the next two characters as a string - ‛..
+  keywords: []
+  tags: []
   arity: 0
 
 - element: "₀"
   name: Ten
   description: Push 10 to the stack
+  keywords: ["ten"]
+  tags: ["constant"]
   arity: 0
   tests:
     - "[] : 10"
@@ -2355,6 +2369,8 @@
 - element: "₁"
   name: Hundred
   description: Push 100 to the stack
+  keywords: ["hundred"]
+  tags: ["constant"]
   arity: 0
   tests:
     - "[] : 100"
@@ -2362,6 +2378,8 @@
 - element: "₂"
   name: Is Even
   description: Check if a value is even
+  keywords: ["even", "odd", "parity", "divisible", "two"]
+  tags: ["number", "string", "list", "boolean"]
   arity: 1
   overloads:
     num: a % 2 == 0 (even?)
@@ -2376,6 +2394,8 @@
 - element: "₃"
   name: Divisible By Three
   description: Check if a is divisible by 3
+  keywords: ["divisible", "three"]
+  tags: ["number", "string", "list", "boolean"]
   arity: 1
   overloads:
     num: a % 3 == 0 (divisible by 3?)
@@ -2390,6 +2410,8 @@
 - element: "₄"
   name: Twenty Six
   description: Push 26 to the stack
+  keywords: ["twenty", "six"]
+  tags: ["constant"]
   arity: 0
   tests:
     - "[] : 26"
@@ -2397,6 +2419,8 @@
 - element: "₅"
   name: Divisible By Five
   description: Check if a is divisible by 5
+  keywords: ["divisible", "five"]
+  tags: ["number", "string", "list", "boolean"]
   arity: 1
   overloads:
     num: a % 5 == 0
@@ -2411,6 +2435,8 @@
 - element: "₆"
   name: Sixty Four
   description: Push 64 to the stack
+  keywords: ["sixty", "four"]
+  tags: ["constant"]
   arity: 0
   tests:
     - "[] : 64"
@@ -2418,6 +2444,8 @@
 - element: "₇"
   name: One Twenty Eight
   description: Push 128 to the stack
+  keywords: ["one", "twenty", "eight"]
+  tags: ["constant"]
   arity: 0
   tests:
     - "[] : 128"
@@ -2425,6 +2453,8 @@
 - element: "₈"
   name: Two Fifty Six
   description: Push 256 to the stack
+  keywords: ["two", "fifty", "six"]
+  tags: ["constant"]
   arity: 0
   tests:
     - "[] : 256"
@@ -2432,6 +2462,8 @@
 - element: "¶"
   name: Newline
   description: Push a newline to the stack
+  keywords: ["newline", "line", "break"]
+  tags: ["constant"]
   arity: 0
   tests:
     - '[] : "\n"'
