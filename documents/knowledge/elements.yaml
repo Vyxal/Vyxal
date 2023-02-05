@@ -3126,6 +3126,8 @@
 - element: "↳"
   name: Right Bit Shift
   description: Right-bitshift a value / right-justify a string
+  keywords: ["right", "bit", "shift", "right", "justify"]
+  tags: ["number", "string", "bitwise"]
   arity: 2
   overloads:
     num-num: a << b
@@ -3141,6 +3143,8 @@
 - element: "↲"
   name: Left Bit Shift
   description: Left-bitshift a value / left-justify a string
+  keywords: ["left", "bit", "shift", "left", "justify"]
+  tags: ["number", "string", "bitwise"]
   arity: 2
   overloads:
     num-num: a >> b
@@ -3157,6 +3161,8 @@
   name: Bitwise And
   arity: 2
   description: Performs bitwise and between two numbers / centre a string
+  keywords: ["bitwise", "and", "centre"]
+  tags: ["number", "string", "bitwise"]
   overloads:
     num-num: a & b
     num-str: b.center(a)
@@ -3172,6 +3178,8 @@
   name: Bitwise Or
   arity: 2
   description: Performs bitwise or between two numbers / Removes a character at nth index / Merges strings on longest common prefix and suffix
+  keywords: ["bitwise", "or", "remove", "character", "nth", "index", "merge", "strings", "longest", "common", "prefix", "suffix"]
+  tags: ["number", "string", "bitwise"]
   overloads:
     num-num: a | b
     num-str: b[:a]+b[a+1:]
@@ -3188,6 +3196,8 @@
   name: Bitwise Xor
   arity: 2
   description: Performs bitwise xor between two numbers / appends n spaces to a string / prepends n characters to a string / Levenshtein Distance
+  keywords: ["bitwise", "xor", "append", "spaces", "prepend", "characters", "levenshtein", "distance"]
+  tags: ["number", "string", "bitwise"]
   overloads:
     num-num: a ^ b
     num-str: \" \" * a + b
@@ -3204,6 +3214,8 @@
   name: Bitwise Not
   arity: 1
   description: Performs bitwise not on a number / check if any letters are uppercase / keep only truthy elements of a list
+  keywords: ["bitwise", "not", "uppercase", "letters", "keep", "truthy", "elements"]
+  tags: ["number", "string", "bitwise"]
   overloads:
     num: ~a
     str: any_upper(a)
@@ -3218,6 +3230,8 @@
   name: Random Choice
   arity: 1
   description: Random choice of single item from array
+  keywords: ["random", "choice"]
+  tags: ["random"]
   overloads:
     lst: random.choice(a)
     num: Random integer from 1 to a
@@ -3233,6 +3247,8 @@
   name: Lesser Than or Equal To
   arity: 2
   description: a is lesser than or equal to b?
+  keywords: ["lesser", "than", "equal", "to", "le"]
+  tags: ["number", "string", "copmarison", "boolean"]
   overloads:
     any-any: a <= b
   vectorise: true
@@ -3244,6 +3260,8 @@
   name: Greater Than or Equal To
   arity: 2
   description: a is greater than or equal to b?
+  keywords: ["greater", "than", "equal", "to", "ge"]
+  tags: ["number", "string", "copmarison", "boolean"]
   overloads:
     any-any: a >= b
   vectorise: true
@@ -3255,6 +3273,8 @@
   name: Not Equal To
   arity: 2
   description: a is not equal to b?
+  keywords: ["not", "equal", "to", "ne"]
+  tags: ["number", "string", "copmarison", "boolean"]
   overloads:
     any-any: a != b
   vectorise: false
@@ -3266,6 +3286,8 @@
   name: Exactly Equal To
   arity: 2
   description: a equal to b? (non-vectorizing)
+  keywords: ["exactly", "equal", "to", "ee"]
+  tags: ["number", "string", "copmarison", "boolean"]
   overloads:
     any-any: a == b
   vectorise: false
