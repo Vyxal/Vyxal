@@ -1986,6 +1986,8 @@
 - element: "ė"
   name: Enumerate
   description: Zip with a range of the same length
+  keywords: ["enumerate", "zip", "range"]
+  tags: ["number", "string", "list"]
   arity: 1
   overloads:
     any: enumerate(a) (zip with 1...len(a))
@@ -1998,6 +2000,8 @@
 - element: "ḟ"
   name: Find
   description: Find a value in another
+  keywords: ["find", "index", "indexing", "indexing", "locate", "position"]
+  tags: ["number", "string", "list", "function"]
   arity: 2
   overloads:
     any-any: a.find(b) (indexing, -1 if not found)
@@ -2015,6 +2019,8 @@
 - element: "ġ"
   name: Gcd / Group by Function
   description: Greatest Common Denominator of a list or some numbers
+  keywords: ["gcd", "greatest", "common", "denominator", "group", "by", "function"]
+  tags: ["number", "list", "function"]
   arity: "*"
   overloads:
     lst: GCD(a) (gcd of whole list)
@@ -2035,6 +2041,8 @@
 - element: "ḣ"
   name: Head Extract
   description: Separate the first item of something and push both to stack
+  keywords: ["head", "extract", "first", "[0]", "[1:]"]
+  tags: ["number", "string", "list"]
   arity: 1
   overloads:
     any: a[0], a[1:] (head extract)
@@ -2046,8 +2054,10 @@
     - "[[]] : []"
 
 - element: "ḭ"
-  name: Floor Division
+  name: Floor Division / Fold Right / Into N Pieces
   description: Floor divide a by b
+  keywords: ["floor", "division", "divide", "div", "foldr", "fold", "right", "reduce", "into", "pieces"]
+  tags: ["number"]
   arity: 2
   overloads:
     num-num: a // b (floor division, floor(a / b))
