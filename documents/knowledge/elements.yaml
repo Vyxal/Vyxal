@@ -4461,6 +4461,8 @@
   name: Binary String
   arity: 1
   description: Get a binary string of a number
+  keywords: ["binary", "string"]
+  tags: ["number", "digraph-math"]
   overloads:
     num: bin(a).replace("0b", "")
   vectorise: true
