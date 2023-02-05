@@ -2500,6 +2500,8 @@
   name: Absolute Difference / Repeat / Regex match
   arity: 2
   description: Returns the absolute difference / Fills an array of a certain length / Does a regex match
+  keywords: ["difference", "absolute", "repeat", "regex", "match"]
+  tags: ["number", "string", "list", "regex", "booleans"]
   overloads:
     num-num: abs(a - b)
     num-str: "[b] * a"
@@ -2519,9 +2521,11 @@
     - '["abcd", "efg"] : ""'
 
 - element: "¡"
-  name: Factorial
+  name: Factorial / Sentence Case
   arity: 1
   description: Returns the factorial of the top of the stack
+  keywords: ["factorial", "gamma", "sentence", "case"]
+  tags: ["number", "string"]
   overloads:
     num: factorial(a) (math.gamma(a + 1))
     str: a.sentence_case()
@@ -2535,6 +2539,8 @@
   name: Summate
   arity: 1
   description: Returns the sum of the top of the stack (reduce by addition)
+  keywords: ["sum", "summate"]
+  tags: ["number", "string", "list"]
   overloads:
     num: sum(digits of a)
     str: a
@@ -2552,6 +2558,8 @@
   name: Cumulative Sum
   arity: 1
   description: Returns the sums of the prefixes of the top of the stack (cumulatively reduce by addition)
+  keywords: ["sum", "summate", "cumulative", "cumsum"]
+  tags: ["number", "string", "list"]
   overloads:
     any: cumulative_sum(a) ([a[0], a[0]+a[1], a[0]+a[1]+a[2], ...])
   vectorise: false
@@ -2566,6 +2574,8 @@
   name: All Equal
   arity: 1
   description: Returns whether all items are equal
+  keywords: ["equal", "all", "same"]
+  tags: ["number", "string", "list", "boolean"]
   overloads:
     any: are all items in a equal?
   vectorise: false
@@ -2577,10 +2587,12 @@
     - "[[1, 2, 2, 1]] : 0"
     - "[[]] : 1"
 
-- element: "µ"
+- structure: "µ"
   name: Sorting Lambda
-  arity: NA
+  arity: 1
   description: Sort the top of the stack by the function µ...;
+  keywords: []
+  tags: []
 
 - element: "Ȧ"
   name: Assign
