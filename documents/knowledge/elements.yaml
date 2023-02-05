@@ -2598,6 +2598,8 @@
   name: Assign
   arity: 3
   description: The equivalent of a[b] = c
+  keywords: ["assign", "set"]
+  tags: ["number", "string", "list"]
   overloads:
     any-num-any: a but item b (0-indexed) is set to c
   vectorise: false
@@ -2614,6 +2616,8 @@
   name: Bifurcate
   arity: 1
   description: Pushes the top of the stack then its reverse. Literally duplicate and reverse
+  keywords: ["bifurcate", "duplicate", "reverse"]
+  tags: ["number", "string", "list"]
   overloads:
     any: a, reversed(a)
   vectorise: false
@@ -2627,6 +2631,8 @@
   name: Counts
   arity: 1
   description: Returns a list of [item, count of item in the top of stack]
+  keywords: ["count", "counts", "frequency", "frequencies"]
+  tags: ["number", "string", "list"]
   overloads:
     any: "[[x, a.count(x)] for x in a]"
   vectorise: false
