@@ -1292,6 +1292,8 @@
 - element: "b"
   name: Binary
   description: Convert a number or string to binary
+  keywords: ["binary", "decimal", "base 10", "base10", "base 2", "base2", "2 to 10"]
+  tags: ["number", "string", "base"]
   arity: 1
   overloads:
     num: bin(a) (list of binary digits of a)
@@ -1306,6 +1308,8 @@
 - element: "c"
   name: Contains / First Truthy Item Under Function Application
   description: Check if one thing contains another / returns the first truthy item in a list after applying a function
+  keywords: ["contains", "contain", "in", "first", "truthy", "item"]
+  tags: ["number", "string", "list", "function", "boolean"]
   arity: 2
   overloads:
     any-fun: first item of a where b(x) is truthy (shortcut for Fh)
@@ -1325,6 +1329,8 @@
 - element: "d"
   name: Double / Dyadify
   description: Double a number or repeat a string twice / make a function dyadic
+  keywords: ["double", "repeat", "dyadify", "dyad", "dyadic"]
+  tags: ["number", "string", "function"]
   arity: 1
   overloads:
     num: a * 2 (double)
