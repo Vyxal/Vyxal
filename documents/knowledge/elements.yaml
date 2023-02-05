@@ -544,10 +544,13 @@
     - '["x",5] : "xxxxx"'
     - '["aeiou","hello"] : "alihu"'
     - "[-4+9j, 2+2j] : -26+10j"
+  
 - element: "+"
   name: Addition
   arity: 2
   description: Adds the top two items on the stack
+  keywords: ["add", "plus", "concatenate"]
+  tags: ["number", "string"]
   overloads:
     num-num: a + b
     num-str: str(a) + b
@@ -566,15 +569,19 @@
 - element: ","
   name: Print
   description: Print a with trailing newline
+  keywords: ["print", "println"]
+  tags: ["io"]
   arity: 1
   overloads:
     any: print(a)
   vectorise: false
 
 - element: "-"
-  name: Subtract
+  name: Subtract / Dash Pad / Remove
   arity: 2
   description: Subtracts the top two items on the stack
+  keywords: ["subtract", "minus", "remove", "lines", "dashes", "pad"]
+  tags: ["number", "string"]
   overloads:
     num-num: a - b
     num-str: '("-" * a) + b'
@@ -592,14 +599,18 @@
     - "[[1, 2, 3], [1, 2, 3]] : [0, 0, 0]"
     - "[[10, 20, 30], 5] : [5, 15, 25]"
 
-- element: "."
+- syntax: "."
   name: Decimal Separator
   description: Decimal separator
   arity: NA
+  keywords: ["decimal", "separator", "point"]
+  tags: ["number"]
 
 - element: "/"
   name: Divide / Split
-  description: Divide two numbers or split strings
+  description: Divide two numbers or split strings either into n pieces or on a delimiter
+  keywords: ["divide", "split", "splitting", "into n pieces"]
+  tags: ["number", "string"]
   arity: 2
   overloads:
     num-num: a / b
@@ -621,69 +632,95 @@
 - element: "0"
   name: Literal digit 0
   description: Literal digit 0
+  keywords: []
+  tags: ["literal"]
   arity: 0
 
 - element: "1"
   name: Literal digit 1
   description: Literal digit 1
+  keywords: []
+  tags: ["literal"]
   arity: 0
 
 - element: "2"
   name: Literal digit 2
   description: Literal digit 2
+  keywords: []
+  tags: ["literal"]
   arity: 0
 
 - element: "3"
   name: Literal digit 3
   description: Literal digit 3
+  keywords: []
+  tags: ["literal"]
   arity: 0
 
 - element: "4"
   name: Literal digit 4
   description: Literal digit 4
+  keywords: []
+  tags: ["literal"]
   arity: 0
 
 - element: "5"
   name: Literal digit 5
   description: Literal digit 5
+  keywords: []
+  tags: ["literal"]
   arity: 0
 
 - element: "6"
   name: Literal digit 6
   description: Literal digit 6
+  keywords: []
+  tags: ["literal"]
   arity: 0
 
 - element: "7"
   name: Literal digit 7
   description: Literal digit 7
+  keywords: []
+  tags: ["literal"]
   arity: 0
 
 - element: "8"
   name: Literal digit 8
   description: Literal digit 8
+  keywords: []
+  tags: ["literal"]
   arity: 0
 
 - element: "9"
   name: Literal digit 9
   description: Literal digit 9
+  keywords: []
+  tags: ["literal"]
   arity: 0
 
 - element: ":"
   name: Duplicate
   description: Push a twice
+  keywords: ["duplicate", "copy", "twice"]
+  tags: ["stack"]
   arity: 1
   overloads:
     any: a,a
   vectorise: false
 
-- element: ";"
+- syntax: ";"
   name: Close Structure
   description: Close a lambda / map lambda / sort lambda / function
   arity: NA
+  keywords: ["close", "structure", "lambda", "map lambda", "sort lambda", "function"]
+  tags: []
 
 - element: "<"
   name: Less Than
   description: Basic comparison - less than
+  keywords: ["less", "than", "smaller", "lt"]
+  tags: ["number", "string", "comparison", "boolean"]
   arity: 2
   overloads:
     num-num: a < b
@@ -706,6 +743,8 @@
 - element: "="
   name: Equals
   description: Basic comparison - equals
+  keywords: ["equals", "equal", "eq"]
+  tags: ["number", "string", "comparison", "boolean"]
   arity: 2
   overloads:
     num-num: a == b
@@ -724,6 +763,8 @@
 - element: ">"
   name: Greater Than
   description: Basic comparison - greater than
+  keywords: ["greater", "than", "gt", "bigger"]
+  tags: ["number", "string", "comparison", "boolean"]
   arity: 2
   overloads:
     num-num: a > b
