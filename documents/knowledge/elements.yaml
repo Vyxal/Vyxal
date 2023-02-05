@@ -2935,6 +2935,8 @@
 - element: "Ẏ"
   name: Slice Until
   description: Slice a list until a certain index / find all results for a regex match
+  keywords: ["slice", "until"]
+  tags: ["number", "string", "list"]
   arity: 2
   overloads:
     any-num: a[0:b] (slice until b)
@@ -2954,6 +2956,8 @@
 - element: "Ż"
   name: Slice From One Until
   description: Slice from index 1 until a number / get groups of a regex match
+  keywords: ["slice", "from", "one", "until"]
+  tags: ["number", "string", "list"]
   arity: 2
   overloads:
     any-num: a[1:b] (slice from 1 until b)
@@ -2972,25 +2976,36 @@
 - modifier: "₌"
   name: Parallel Apply
   description: Parallel apply two elements to the top of the stack
+  keywords: ["parallel", "apply"]
+  tags: ["stack", "function"]
   usage: ₌<element><element>
+
 - modifier: "₍"
   name: Parallel Apply Wrap
   description: Parallel apply two elements and wrap the results in a list
+  keywords: ["parallel", "apply", "wrap"]
+  tags: ["stack", "function"]
   usage: ₍<element><element>
 
 - element: "⁰"
   name: Very Last Input
   description: Push the very last input (input[::-1][0]) to the stack
+  keywords: ["very", "last", "input"]
+  tags: ["io"]
   arity: 0
 
 - element: "¹"
   name: Second Last Input
   description: Push the very last input (input[::-1][1]) to the stack
+  keywords: ["second", "last", "input"]
+  tags: ["io"]
   arity: 0
 
 - element: "²"
   name: Square
   description: Square a number / Format a string into a square
+  keywords: ["square"]
+  tags: ["number", "string"]
   arity: 1
   overloads:
     num: a ** 2 (squared)
@@ -3006,6 +3021,8 @@
 - element: "∇"
   name: Shift
   description: Shift the top of stack two values down
+  keywords: ["shift"]
+  tags: ["stack"]
   arity: 3
   overloads:
     any-any-any: c,a,b (shift)
@@ -3015,8 +3032,10 @@
     - '["my","hi","bye"] : "hi"'
 
 - element: "⌈"
-  name: Ceiling
+  name: Ceiling / Imaginary Part / Split
   description: Take the ceiling of a number / Imaginary part of complex number / split a string on spaces
+  keywords: ["ceiling", "imaginary", "part", "split", "spaces"]
+  tags: ["number", "string"]
   arity: 1
   overloads:
     num: ceil(a) (ceiling)
@@ -3031,8 +3050,10 @@
     - "[2j+3] : 2"
 
 - element: "⌊"
-  name: "Floor"
+  name: "Floor" / Real Part / Integer Part
   description: Floor a number / real part of complex number / extract the integer part of a string
+  keywords: ["floor", "real", "part", "integer"]
+  tags: ["number", "string"]
   arity: 1
   overloads:
     num: floor(a) (floor)
@@ -3051,6 +3072,8 @@
 - element: "¯"
   name: Deltas
   description: Deltas (consecutive differences)
+  keywords: ["deltas"]
+  tags: ["list"]
   arity: 1
   overloads:
     any: deltas(a) ([a[1] - a[0], a[2] - a[1], ...])
@@ -3064,8 +3087,10 @@
     - '["abaabb"] : ["b","a","","b",""]'
 
 - element: "±"
-  name: Sign
-  description: Get the sign of a number
+  name: Sign / Is Numeric
+  description: Get the sign of a number / Is a string numeric
+  keywords: ["sign", "is", "numeric"]
+  tags: ["number", "string"]
   arity: 1
   overloads:
     num: sign_of(a) (positive = 1, 0 = 0; negative = -1)
@@ -3080,16 +3105,22 @@
 - element: "₴"
   name: Print Without Newline
   description: Print a value without a trailing newline
+  keywords: ["print", "without", "newline"]
+  tags: ["io"]
   arity: 1
 
 - element: "…"
   name: Print Without Popping
   description: Print a value without popping the stack
+  keywords: ["print", "without", "popping"]
+  tags: ["io"]
   arity: 0
 
 - element: "□"
   name: Input List
   description: All inputs wrapped in a list
+  keywords: ["input", "list"]
+  tags: ["io"]
   arity: 0
 
 - element: "↳"
