@@ -1793,6 +1793,8 @@
 - element: "›"
   name: Increment / Space Replace With 0
   description: Add 1 to a number / replace all spaces in a string with "0"
+  keywords: ["increment", "add", "plus", "space", "replace", "with", "0"]
+  tags: ["number", "string"]
   arity: 1
   overloads:
     num: a + 1
@@ -1806,6 +1808,8 @@
 - element: "‹"
   name: Decrement
   description: Subtract 1 from a number
+  keywords: ["decrement", "subtract", "minus", "from"]
+  tags: ["number", "string"]
   arity: 1
   overloads:
     num: a - 1
@@ -1819,6 +1823,8 @@
 - element: "∷"
   name: Parity
   description: A number modulo 2
+  keywords: ["parity", "modulo", "mod", "remainder", "even", "odd"]
+  tags: ["number", "string"]
   arity: 1
   overloads:
     num: a % 2 (odd?)
@@ -1835,6 +1841,8 @@
 - element: "¤"
   name: Empty String
   description: The empty string
+  keywords: ["empty", "string", "empty string"]
+  tags: ["constant"]
   arity: 0
   tests:
     - '[] : ""'
@@ -1842,6 +1850,8 @@
 - element: "ð"
   name: Space
   description: A Space
+  keywords: ["space", "space character"]
+  tags: ["constant"]
   arity: 0
   tests:
     - '[] : " "'
