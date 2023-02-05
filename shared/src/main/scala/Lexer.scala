@@ -1,5 +1,6 @@
 package vyxal
 
+import java.util.regex.Pattern
 import scala.util.matching.Regex
 import scala.util.parsing.combinator.*
 import VyxalToken.*
@@ -49,9 +50,9 @@ enum StructureType(val open: String):
   case LambdaSort extends StructureType("µ")
 
 val CODEPAGE = """ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ′″‴⁴ᵜ !"#$%&'()*+,-./0123456789:;
-<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\\[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~¦ȦḂĊḊĖḞĠḢİĿṀṄ
+<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~¦ȦḂĊḊĖḞĠḢİĿṀṄ
 ȮṖṘṠṪẆẊικȧḃċḋėḟġḣŀṁṅȯṗṙṡṫẋƒΘΦ§ẠḄḌḤỊḶṂṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«»⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λƛΩ₳µ∆øÞ½ʀɾ¯
-×÷£¥←↑→↓±‡†Π¬∧∨⁰¹²³¤¨∥∦ı„”ð€“¶ᶿᶲ•≈¿ꜝ"""
+×÷£¥←↑→↓±‡†Π¬∧∨⁰¹²³¤¨∥∦ı„”ð€“¶ᶿᶲ•≈¿ꜝ""".replaceAll("\n", "")
 
 val MONADIC_MODIFIERS = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻ¿′/\\~v@`ꜝ"
 val DYADIC_MODIFIERS = "″∥∦"
@@ -63,12 +64,13 @@ object Lexer extends RegexParsers:
   override def skipWhitespace = true
   override val whiteSpace: Regex = "[ \t\r\f]+".r
 
+  private def decimalRegex = raw"((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)"
   def number: Parser[VyxalToken] =
-    """(0(?=[^.ı])|\d*\.\d*(ı(\d*\.\d*|\d+)?)?|\.|ı|\d+)""".r ^^ { value =>
+    raw"($decimalRegex?ı$decimalRegex?)|$decimalRegex".r ^^ { value =>
       Number(value)
     }
 
-  def string: Parser[VyxalToken] = """("(?:[^"„”“\\\\]|\\.)*["„”“])""".r ^^ {
+  def string: Parser[VyxalToken] = raw"""("(?:[^"„”“\\]|\\.)*["„”“])""".r ^^ {
     value =>
       // If the last character of each token is ", then it's a normal string
       // If the last character of each token is „, then it's a compressed string
@@ -117,7 +119,10 @@ object Lexer extends RegexParsers:
       else SugarTrigraph(value)
     }
 
-  def command: Parser[VyxalToken] = s"[$CODEPAGE]".r ^^ { value =>
+  private val commandRegex = CODEPAGE
+    .replaceAll(raw"[|\[\](){}]", "")
+    .replace("^", "\\^")
+  def command: Parser[VyxalToken] = s"[$commandRegex]".r ^^ { value =>
     Command(value)
   }
 

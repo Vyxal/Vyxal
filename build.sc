@@ -2,9 +2,11 @@ import mill._
 import mill.scalajslib._
 import mill.scalajslib.api._
 import mill.scalalib._
+import mill.scalanativelib._
+import mill.scalanativelib.api._
 
 /** Shared settings for all modules */
-trait VyxalModule extends SbtModule {
+trait VyxalModule extends ScalaModule {
   def platform: String
 
   def scalaVersion = "3.2.1"
@@ -56,10 +58,25 @@ object jvm extends VyxalModule {
 }
 
 /** Shared and JS-specific code */
-object js extends VyxalModule with ScalaJSModule {
+object js extends ScalaJSModule with VyxalModule {
   def platform = "js"
   def scalaJSVersion = "1.12.0"
   def moduleKind = T { ModuleKind.NoModule }
 
   object test extends VyxalTestModule
+}
+
+/** Shared and native-specific code */
+object native extends ScalaNativeModule with VyxalModule {
+  def platform = "native"
+  def scalaNativeVersion = "0.4.9"
+
+  def ivyDeps = T { super.ivyDeps() ++ Seq(ivy"com.github.scopt::scopt::4.1.0") }
+
+  def releaseMode = ReleaseMode.ReleaseFast
+  def nativeLTO = LTO.Thin
+
+  object test extends ScalaNativeModule with VyxalTestModule {
+    def scalaNativeVersion = native.this.scalaNativeVersion
+  }
 }
