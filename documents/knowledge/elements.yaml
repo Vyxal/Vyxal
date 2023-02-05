@@ -1,17 +1,23 @@
-- element: "λ"
+- structure: "λ"
   name: Lambda
   arity: "*"
   description: Open a lambda - λ...;
+  keywords: ["lambda"]
+  tags: ["function"]
 
 - element: "ƛ"
   name: Lambda Map
   arity: 1
   description: Open a mapping lambda - ƛ
+  keywords: ["lambda", "map"]
+  tags: ["function"]
 
 - element: "¬"
   name: Logical Not
   arity: 1
   description: Return the inverse (negation) of the truthiness of an item.
+  keywords: ["logical", "not", "negation", "negate"]
+  tags: ["boolean"]
   overloads:
     num: not a
     str: a != "" | len(a) > 0
@@ -782,10 +788,10 @@
 
 - element: "I"
   name: Into Two Pieces
-  description: Push n spaces / quine cheese / into two pieces
+  description: N spaces / quine cheese / into two pieces
   arity: 1
   overloads:
-    num: push a spaces
+    num: " " * a (N spaces)
     str: equivalent to `qp`
     lst: split a list into two halves
   vectorise: false
