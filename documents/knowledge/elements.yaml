@@ -1368,6 +1368,8 @@
 - element: "f"
   name: Flatten
   description: Turn a number into a list of digits, split a string into a list of characters, or flatten a list.
+  keywords: ["flatten", "split", "digits", "characters"]
+  tags: ["number", "string", "list"]
   arity: 1
   overloads:
     num: digits of a
@@ -1384,6 +1386,8 @@
 - element: "g"
   name: Minimum
   description: Take the minimum of a list
+  keywords: ["minimum", "min", "smallest"]
+  tags: ["number", "string", "list"]
   arity: 1
   overloads:
     any: min(a)
@@ -1398,6 +1402,8 @@
 - element: "h"
   name: Head
   description: First item of something
+  keywords: ["head", "first", "item", "[0]"]
+  tags: ["number", "string", "list"]
   arity: 1
   overloads:
     any: a[0] (first item)
@@ -1408,8 +1414,10 @@
     - "[[]] : 0"
 
 - element: "i"
-  name: Index
-  description: Index into a list
+  name: Index / Enclose
+  description: Index into a list / enclose a string in another string
+  keywords: ["index", "enclose", "get", "item", "slice", "nth", "[b]", "[x]", "[::]", "[]"]
+  tags: ["number", "string", "list"]
   arity: 2
   overloads:
     any-num: a[b] (index)
@@ -1436,6 +1444,8 @@
 - element: "j"
   name: Join
   description: Join a by b.
+  keywords: ["join"]
+  tags: ["number", "string", "list"]
   arity: 2
   overloads:
     any-any: a.join(b)
