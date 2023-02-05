@@ -3,14 +3,14 @@
   arity: "*"
   description: Open a lambda - λ...;
   keywords: ["lambda"]
-  tags: ["function"]
+  tags: ["function", "lambda"]
 
 - element: "ƛ"
   name: Lambda Map
   arity: 1
   description: Open a mapping lambda - ƛ
   keywords: ["lambda", "map"]
-  tags: ["function"]
+  tags: ["function", "lambda"]
 
 - element: "¬"
   name: Logical Not
@@ -35,6 +35,8 @@
   name: Logical And
   arity: 2
   description: Returns the first truthy argument if both are truthy, otherwise returns the first falsy argument.
+  keywords: ["logical", "and"]
+  tags: ["boolean"]
   overloads:
     any-any: a and b
   vectorise: false
@@ -48,11 +50,15 @@
   name: Apply Lambda
   arity: 1
   description: Like a mapping lambda, but the results are evaluated immediately, instead of being lazily evaluated
+  keywords: ["lambda", "apply", "eager", "map"]
+  tags: ["function", "lambda"]
 
 - element: "∨"
   name: Logical Or
   arity: 2
   description: Returns the first truthy argument, otherwise the first falsy argument.
+  keywords: ["logical", "or"]
+  tags: ["boolean"]
   overloads:
     any-any: a or b
   vectorise: false
@@ -66,6 +72,8 @@
   name: Remove at Index
   arity: 2
   description: Returns every item in a list except the item at the given index.
+  keywords: ["remove", "index"]
+  tags: ["list"]
   overloads:
     any-num: Remove item b of a
     num-any: Remove item a of b
@@ -80,6 +88,8 @@
   name: Item Split
   arity: 1
   description: Pushes each item of the top of the stack onto the stack.
+  keywords: ["split", "item", "dump"]
+  tags: ["stack"]
   overloads:
     num: Push each digit of a
     str: Push each character of a
