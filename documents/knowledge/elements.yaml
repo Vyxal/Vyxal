@@ -860,12 +860,16 @@
 - element: "D"
   name: Triplicate
   description: Push three copies of a to stack
+  keywords: ["triplicate", "triple", "copy", "three"]
+  tags: ["stack"]
   arity: 1
   vectorise: false
 
 - element: "E"
   name: Two Power / Python Eval
   description: 2 ** a, or eval(a)
+  keywords: ["two", "power", "eval", "python", "safe"]
+  tags: ["number", "string"]
   arity: 1
   overloads:
     num: 2 ** a
@@ -879,6 +883,8 @@
 - element: "F"
   name: Filter
   description: Filter a list by another list or function.
+  keywords: ["filter", "set subtraction", "remove", "keep"]
+  tags: ["list", "function"]
   arity: 2
   overloads:
     any-fun: filter(b,a) (filter a by the ones that b returns a truthy result for)
@@ -897,6 +903,8 @@
 - element: "G"
   name: Max
   description: Maximum value or a
+  keywords: ["max", "maximum", "largest", "biggest", "greatest", "big", "large", "great"]
+  tags: ["number", "list", "string"]
   arity: 1
   overloads:
     any: max(a)
@@ -910,6 +918,8 @@
 - element: "H"
   name: Hex To Decimal
   description: Convert hexadecimal to decimal
+  keywords: ["hex", "hexadecimal", "decimal", "base 10", "base10", "base 16", "base16", "16 to 10"]
+  tags: ["number", "string", "list", "base"]
   arity: 1
   overloads:
     any: int(a,16) (from hexadecimal)
@@ -923,6 +933,8 @@
 - element: "I"
   name: Into Two Pieces
   description: N spaces / quine cheese / into two pieces
+  keywords: ["into", "two", "pieces", "split", "half", "space", "spaces", "quine", "cheese"]
+  tags: ["string", "list", "number"]
   arity: 1
   overloads:
     num: " " * a (N spaces)
@@ -939,6 +951,8 @@
 - element: "J"
   name: Merge
   description: Join two lists or items
+  keywords: ["merge", "append", "prepend", "concatenate"]
+  tags: ["list", "string", "number"]
   arity: 2
   overloads:
     lst-str: a.append(b) (append)
@@ -960,6 +974,8 @@
 - element: "K"
   name: Factors / Substrings / Prefixes
   description: Get either the factors of a, substrings that occur more than once, or prefixes
+  keywords: ["factors", "divisors", "substrings", "prefixes", "prefix", "substrings", "substring"]
+  tags: ["number", "string", "list"]
   arity: 1
   overloads:
     num: divisors(a) (positive integer factors)
@@ -978,6 +994,8 @@
 - element: "L"
   name: Length
   description: Get length of a
+  keywords: ["length", "size"]
+  tags: ["number", "string", "list"]
   arity: 1
   overloads:
     any: len(a)
@@ -992,6 +1010,8 @@
 - element: "M"
   name: Map Function
   description: Map function object b over a
+  keywords: ["map", "function", "apply", "each", "iterate", "iterate over", "iterate through"]
+  tags: ["function", "list", "string"]
   arity: 2
   vectorise: false
   overloads:
@@ -1006,6 +1026,8 @@
 - element: "N"
   name: Negate / Swap Case / First Integer Where Truthy
   description: Negate a number / swap case of a string / first integer where a function truthy
+  keywords: ["negate", "swap", "case", "toggle", "first", "integer", "where", "truthy"]
+  tags: ["number", "string", "function"]
   arity: 1
   overloads:
     num: -a  (negate)
@@ -1021,6 +1043,8 @@
 - element: "O"
   name: Count / Maximums-by
   description: Count number of times b occurs in a / Maximums-by
+  keywords: ["count", "maximums", "maximum", "by"]
+  tags: ["number", "string", "list", "function"]
   arity: 2
   overloads:
     any-any: a.count(b)
@@ -1036,6 +1060,8 @@
 - element: "P"
   name: Strip / Minimums-by
   description: Remove the set of elements in b from both ends of a / Minimums-by
+  keywords: ["strip", "minimums", "minimum", "by"]
+  tags: ["number", "string", "list", "function"]
   arity: 2
   overloads:
     any-any: a.strip(b)
@@ -1053,11 +1079,15 @@
 - element: "Q"
   name: Quit
   description: Quit the program
+  keywords: ["quit", "exit", "stop", "terminate"]
+  tags: ["io"]
   arity: NA
 
 - element: "R"
   name: Reduce
   description: Reduce a by b, or reverse each item of b
+  keywords: ["reduce", "reverse", "fold"]
+  tags: ["number", "string", "list", "function"]
   arity: 2
   overloads:
     num-num: a in base b, using a default alphabet 0-9A-Z
@@ -1077,6 +1107,8 @@
 - element: "S"
   name: Stringify
   description: Stringify a list or number
+  keywords: ["stringify", "string", "mkstr"]
+  tags: ["number", "string", "list"]
   arity: 1
   overloads:
     any: str(a) (Stringify)
@@ -1089,6 +1121,8 @@
 - element: "T"
   name: Truthy Indices / Triple / Triadify
   description: Get indices of truthy elements, triple, or make the arity of a function 3
+  keywords: ["truthy", "indices", "triple", "triadify"]
+  tags: ["number", "string", "list", "function"]
   arity: 1
   overloads:
     num: a * 3
@@ -1105,6 +1139,8 @@
 - element: "U"
   name: Uniquify
   description: Remove duplicates
+  keywords: ["uniquify", "unique", "dedupe", "deduplicate"]
+  tags: ["number", "string", "list"]
   arity: 1
   overloads:
     any: uniquify(a) (remove duplicates)
