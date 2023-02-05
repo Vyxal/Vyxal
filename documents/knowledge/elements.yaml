@@ -3655,7 +3655,7 @@
 - element: "ඞ"
   name: sus
   description: print "sus"
-  keywords: ["sus", "AMONG US", "among us", "sussy", "baka", "impostor", "red", "vent", "venting", "crewmate", "electrical", "when", "the"]
+  keywords: ["amogus", "sus", "AMONG US", "among us", "sussy", "baka", "impostor", "red", "vent", "venting", "crewmate", "electrical", "when", "the"]
   tags: ["easteregg"]
   vectorise: false
   arity: 0
@@ -4131,6 +4131,8 @@
   name: "[-1, 1]"
   arity: 0
   description: "[-1, 1]"
+  keywords: ["[-1", "1]"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : [-1, 1]"
@@ -4139,6 +4141,8 @@
   name: "[0, 1]"
   arity: 0
   description: "[0, 1]"
+  keywords: ["[0", "1]"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : [0, 1]"
@@ -4147,6 +4151,8 @@
   name: Slashes
   arity: 0
   description: '"/\\" (Forwardslash, backslash)'
+  keywords: ["slashes", "forwardslash", "backslash"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "/\\"'
@@ -4155,6 +4161,8 @@
   name: "360"
   arity: 0
   description: "360"
+  keywords: ["360"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 360"
@@ -4163,6 +4171,8 @@
   name: https://
   arity: 0
   description: "https://"
+  keywords: ["https://"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "https://"'
@@ -4171,6 +4181,8 @@
   name: http://
   arity: 0
   description: "http://"
+  keywords: ["http://"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "http://"'
@@ -4179,6 +4191,8 @@
   name: https://www.
   arity: 0
   description: "https://www."
+  keywords: ["https://www."]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "https://www."'
@@ -4187,6 +4201,8 @@
   name: http://www.
   arity: 0
   description: "http://www."
+  keywords: ["http://www."]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "http://www."'
@@ -4195,6 +4211,8 @@
   name: "512"
   arity: 0
   description: "512"
+  keywords: ["512"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 512"
@@ -4203,6 +4221,8 @@
   name: "1024"
   arity: 0
   description: "1024"
+  keywords: ["1024"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 1024"
@@ -4211,6 +4231,8 @@
   name: "2048"
   arity: 0
   description: "2048"
+  keywords: ["2048"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 2048"
@@ -4219,6 +4241,8 @@
   name: "4096"
   arity: 0
   description: "4096"
+  keywords: ["4096"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 4096"
@@ -4227,6 +4251,8 @@
   name: "8192"
   arity: 0
   description: "8192"
+  keywords: ["8192"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 8192"
@@ -4235,6 +4261,8 @@
   name: "16384"
   arity: 0
   description: "16384"
+  keywords: ["16384"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 16384"
@@ -4243,6 +4271,8 @@
   name: "32768"
   arity: 0
   description: "32768"
+  keywords: ["32768"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 32768"
@@ -4251,6 +4281,8 @@
   name: "65536"
   arity: 0
   description: "65536"
+  keywords: ["65536"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 65536"
@@ -4259,6 +4291,8 @@
   name: "2147483648"
   arity: 0
   description: "2147483648"
+  keywords: ["2147483648"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 2147483648"
@@ -4267,6 +4301,8 @@
   name: Lowercase consonants with y
   arity: 0
   description: "bcdfghjklmnpqrstvwxyz"
+  keywords: ["lowercase", "consonants", "with", "y"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "bcdfghjklmnpqrstvwxyz"'
@@ -4275,12 +4311,16 @@
   name: Lowercase consonants without y
   arity: 0
   description: "bcdfghjklmnpqrstvwxz"
+  keywords: ["lowercase", "consonants", "without", "y"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
 
 - element: "kT"
   name: BF command set
   arity: 0
   description: BF command set ("[]<>-+.,")
+  keywords: ["bf", "command", "set"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "[]<>-+.,"'
@@ -4289,6 +4329,8 @@
   name: Bracket pair list
   arity: 0
   description: List of bracket pairs ("[(),[],{},<>]")
+  keywords: ["bracket", "pair", "list"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : ["()","[]","{}","<>"]'
@@ -4297,6 +4339,8 @@
   name: Nested brackets
   arity: 0
   description: String of all brackets nested ("([{<>}])")
+  keywords: ["nested", "brackets"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "([{<>}])"'
@@ -4305,6 +4349,8 @@
   name: Amogus
   arity: 0
   description: Amogus ("ඞ")
+  keywords: ["amogus", "sus", "AMONG US", "among us", "sussy", "baka", "impostor", "red", "vent", "venting", "crewmate", "electrical", "when", "the"]
+  tags: ["easteregg"]
   vectorise: false
   tests:
     - '[] : "ඞ"'
@@ -4313,6 +4359,8 @@
   name: "[1, 1]"
   arity: 0
   description: The list [1, 1]
+  keywords: ["[1, 1]"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : [1, 1]"
@@ -4321,6 +4369,8 @@
   name: 2 ** 20
   arity: 0
   description: 2 to the power of 20, 1048576
+  keywords: ["2 ** 20"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 1048576"
@@ -4329,6 +4379,8 @@
   name: 2 ** 30
   arity: 0
   description: 2 to the power of 30, 1073741824
+  keywords: ["2 ** 30"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : 1073741824"
@@ -4337,6 +4389,8 @@
   name: Lowercase Vowels With Y
   arity: 0
   description: Lowercase vowels with y, "aeiouy"
+  keywords: ["lowercase", "vowels", "with", "y"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "aeiouy"'
@@ -4345,6 +4399,8 @@
   name: Uppercase Vowels With Y
   arity: 0
   description: Uppercase vowels with y, "AEIOUY"
+  keywords: ["uppercase", "vowels", "with", "y"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "AEIOUY"'
@@ -4353,6 +4409,8 @@
   name: Vowels With Y
   arity: 0
   description: Vowels with y, "aeiouyAEIOUY"
+  keywords: ["vowels", "with", "y"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "aeiouyAEIOUY"'
@@ -4361,6 +4419,8 @@
   name: Directions
   arity: 0
   description: Cardinal directions, [[0,1],[1,0],[0,-1],[-1,0]]
+  keywords: ["directions"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - "[] : [[0,1],[1,0],[0,-1],[-1,0]]"
@@ -4369,6 +4429,8 @@
   name: Roman Numerals
   arity: 0
   description: IVXLCDM
+  keywords: ["roman", "numerals"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : "IVXLCDM"'
@@ -4377,6 +4439,8 @@
   name: Qwerty Keyboard
   arity: 0
   description: The list ["qwertyuiop","asdfghjkl","zxcvbnm"]
+  keywords: ["qwerty", "keyboard"]
+  tags: ["constant", "diagraph-k"]
   vectorise: false
   tests:
     - '[] : ["qwertyuiop","asdfghjkl","zxcvbnm"]'
