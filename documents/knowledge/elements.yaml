@@ -1626,6 +1626,8 @@
 - element: "u"
   name: Minus One
   description: Push -1
+  keywords: ["minus", "one", "-1"]
+  tags: ["constant"]
   arity: 0
   tests:
     - "[] : -1"
@@ -1633,24 +1635,32 @@
 - modifier: "v"
   name: Vectorise
   description: Vectorise an element
+  keywords: ["vectorise", "vectorize", "vector", "vectorization"]
+  tags: ["vectorise"] # basically the only place this tag can be explicitly used
   arity: "*"
   usage: v<element>
 
 - modifier: "¨v"
   name: Simple vectorise
   description: Simple vectorise an element. Well, you'll have to look at the code to know what that means.
+  keywords: ["simple", "vectorise", "vectorize", "vector", "vectorization"]
+  tags: ["vectorise"] # basically the only place this tag can be explicitly used
   arity: "*"
   usage: ¨v<element>
 
 - modifier: "¨V"
   name: Right vectorize
   description: Right vectorize an element. Like `v`, but vectorizes on the rightmost list instead of the leftmost list.
+  keywords: ["right", "vectorise", "vectorize", "vector", "vectorization"]
+  tags: ["vectorise"] # basically the only place this tag can be explicitly used
   arity: "*"
   usage: ¨V<element>
 
 - element: "w"
   name: Listify
   description: a wrapped in a singleton list
+  keywords: ["listify", "list", "singleton", "wrap"]
+  tags: ["list"]
   arity: 1
   overloads:
     any: "[a] (wrap in singleton list)"
@@ -1663,10 +1673,15 @@
 - element: "x"
   name: Recurse / Continue / Print Stack
   description: Call current function (Functions/Lambdas) / Continue (For Loops) / Print the entire stack (otherwise)
+  keywords: ["recurse", "continue", "print", "stack"]
+  tags: ["stack"]
+  arity: NA
 
 - element: "y"
   name: Uninterleave
   description: Push every other item of a, and the rest.
+  keywords: ["uninterleave", "uninterleaved", "interleave", "interleaved", "every", "second", "item", "rest"]
+  tags: ["list", "string"]
   arity: 1
   overloads:
     any: a[::2], a[1::2] (every second item, the rest)
@@ -1681,6 +1696,8 @@
 - element: "z"
   name: Zip-self
   description: Zip a with itself
+  keywords: ["zip", "zip-self", "zippered", "self"]
+  tags: ["list", "string"]
   arity: 1
   overloads:
     any: zip(a,a)
@@ -1691,22 +1708,30 @@
     - '["zap"] : [["z","z"], ["a","a"],["p","p"]]'
     - '[""] : []'
 
-- element: "{"
+- structure: "{"
   name: Open While Loop
   description: Open a while loop - `{...}`
+  keywords: []
+  tags: []
   arity: NA
 
-- element: "|"
+- syntax: "|"
   name: Branch In Structure
+  keywords: ["branch", "else", "do"]
+  tags: []
   description: Branch the structure - means various things depending on context
 
-- element: "}"
+- structure: "}"
   name: Close While Loop
   description: Close a while loop
+  keywords: []
+  tags: []
 
 - modifier: "~"
   name: Filter / Execute Without Pop
   description: For monads, filter a list by that. For dyads, execute without popping from the stack.
+  keywords: ["filter", "execute", "without", "pop"]
+  tags: ["stack", "function"]
   usage: "~<element>"
 
 - element: "↑"
