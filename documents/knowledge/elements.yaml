@@ -1873,6 +1873,8 @@
 - element: "β"
   name: To Base Ten / From Custom Base
   description: Convert a number from a custom base to base 10
+  keywords: ["to", "base", "ten", "from", "custom", "base", "to base ten", "from custom base", "base to 10"]
+  tags: ["number", "string", "list", "base"]
   arity: 2
   overloads:
     any-num: a to base 10 from number base b, treating list items / string items as digits
@@ -1890,6 +1892,8 @@
 - element: "τ"
   name: From Base Ten / To Custom Base
   description: Convert a number to a different base from base 10.
+  keywords: ["from", "base", "ten", "to", "custom", "base", "from base ten", "to custom base", "10 to base"]
+  tags: ["number", "string", "list", "base"]
   arity: 2
   overloads:
     num-num: list of digits of a in base b
@@ -1913,6 +1917,8 @@
 - element: "ȧ"
   name: Absolute value
   description: Take the absolute value of a number, or remove whitespace from a string
+  keywords: ["abs", "remove", "whitespace"]
+  tags: ["number", "string"]
   arity: 1
   overloads:
     num: abs(a) (absolute value)
@@ -1927,6 +1933,8 @@
 - element: "ḃ"
   name: Boolify
   description: Convert an arbitrary value into a truthy or falsy value, vectorises with flag t
+  keywords: ["boolify", "bool", "boolean", "truthy", "falsy", "true", "false"]
+  tags: ["boolean"]
   arity: 1
   overloads:
     any: bool(a) (booliify)
@@ -1942,6 +1950,8 @@
 - element: "ċ"
   name: Not One
   description: Check if something is not equal to 1
+  keywords: ["not", "one"]
+  tags: ["boolean", "comparison"]
   arity: 1
   overloads:
     any: a != 1
@@ -1955,6 +1965,8 @@
 - element: "ḋ"
   name: Divmod
   description: Divmod / combinations / trim / chunk-while
+  keywords: ["divmod", "div", "mod", "modulo", "combinations", "trim", "chunk", "chunk-while", "without", "replacement"]
+  tags: ["number", "string", "list", "function", "combinatorics"]
   arity: 2
   overloads:
     num-num: "[a // b, a % b] (divmod - division and modulo)"
