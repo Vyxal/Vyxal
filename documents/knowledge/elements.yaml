@@ -5,7 +5,7 @@
   keywords: ["lambda"]
   tags: ["function", "lambda"]
 
-- element: "ƛ"
+- structure: "ƛ"
   name: Lambda Map
   arity: 1
   description: Open a mapping lambda - ƛ
@@ -46,7 +46,7 @@
     - "[[1,2,3], 0] : 0"
     - "[2, 1] : 2"
 
-- element: "⟑"
+- structure: "⟑"
   name: Apply Lambda
   arity: 1
   description: Like a mapping lambda, but the results are evaluated immediately, instead of being lazily evaluated
@@ -106,6 +106,8 @@
   name: Asterisk Literal
   arity: 0
   description: the string "*" (asterisk)
+  keywords: ["asterisk"]
+  tags: ["constant"]
   vectorise: false
   tests:
     - '[] : "*"'
@@ -114,26 +116,36 @@
   name: Base Compressed String
   arity: 0
   description: Open/close a bijective base-255 compressed string - «...«
+  keywords: ["compressed", "string", "base"]
+  tags: ["literal"]
 
-- element: "␤"
+- syntax: "␤"
   name: Newline
   arity: NA
   description: NOP
+  keywords: []
+  tags: []
 
 - element: "»"
   name: Base Compressed Number
   arity: 0
   description: Open/close a bijective base-255 compressed number - »...»
+  keywords: ["compressed", "number", "base"]
+  tags: ["literal"]
 
 - element: "°"
   name: Complex Number Separator
   description: Separates the real and imaginary parts of a complex number
   arity: NA
+  keywords: ["complex", "number", "separator"]
+  tags: ["literal"]
 
 - element: "•"
   name: MultiCommand
   arity: 2
-  description: "Logarithm / Repeat Character / Capitalisation transfer"
+  description: "Logarithm / Repeat Character / Capitalisation transfer / Mold"
+  keywords: ["logarithm", "repeat", "character", "capitalisation", "transfer", "mold", "reshape"]
+  tags: ["math", "string", "list"]
   overloads:
     num-num: log_a(b)
     num-str: "[char * a for char in b]"
@@ -154,11 +166,15 @@
   arity: "1 + *"
   usage: ß<element>
   description: Executes element A if the top of the stack is truthy
+  keywords: ["conditional", "execute", "if"]
+  tags: ["stack", "function"]
 
 - element: "†"
   name: Function Call
   arity: 1
   description: Calls a function / executes as python / number of distinct prime factors / vectorised not
+  keywords: ["function", "call", "execute", "python", "distinct", "prime", "factors", "not", "vectorised"]
+  tags: ["function", "prime", "list", "number", "string", "boolean"]
   overloads:
     fun: a()
     num: len(prime_factors(a))
@@ -173,6 +189,8 @@
   name: Split On / Fill By Coordinates
   arity: 2
   description: Split a on b (works on lists and numbers as well) / Fill a matrix by calling a function with the lists of coordinates in the matrix.
+  keywords: ["split", "on", "fill", "by", "coordinates"]
+  tags: ["list", "function"]
   overloads:
     any-any: a split on b
     any-fun: for each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a
@@ -189,6 +207,8 @@
   name: Halve
   arity: 1
   description: Halves an item
+  keywords: ["halve", "half", "divide", "two", "2"]
+  tags: ["math", "string"]
   overloads:
     num: a / 2
     str: a split into two strings of equal lengths (as close as possible)
@@ -201,12 +221,14 @@
     - "[[2, 4, 6, 8]] : [1, 2, 3, 4]"
     - '["abc"] : ["ab", "c"]'
 
-- element: "∆"
+- syntax: "∆"
   name: Mathematical Digraph
   arity: NA
   description: Used for mathematical digraphs
+  keywords: []
+  tags: []
 
-- element: "ø"
+- syntax: "ø"
   name: String Digraph
   arity: NA
   description: Used for string-based digraphs
@@ -215,6 +237,8 @@
   name: Combinations/Remove/Fixed Point Collection
   arity: 2
   description: Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing (including the initial value).
+  keywords: ["combinations", "remove", "fixed", "point", "collect", "with", "replacement"]
+  tags: ["list", "function"]
   overloads:
     any-num: combinations_with_replacement(a, length=b)
     fun-any: Apply a on b until the result does not change, yielding intermediate values. Includes the initial value.
@@ -230,6 +254,8 @@
   name: Infinite Replacement / Apply at Indices
   arity: 3
   description: Replace b in a with c until a does not change / Call a function on all elements at specified indices together and put that back in the list
+  keywords: ["infinite", "replacement", "apply", "at", "indices"]
+  tags: ["list", "string", "function"]
   overloads:
     any-any-any: replace b in a with c until a does not change
     lst-fun-lst: apply function b to items in c at indices in a
@@ -244,6 +270,8 @@
 - element: "⌐"
   name: Complement / Comma Split
   description: 1 - a if number, split by commas if string.
+  keywords: ["complement", "comma", "split", "one", "minus"]
+  tags: ["number", "string"]
   arity: 1
   overloads:
     num: 1 - a
@@ -257,6 +285,8 @@
 - element: "æ"
   name: Is Prime / Case Check
   description: (a is prime) if a is a number, else check which case a is
+  keywords: ["is", "prime", "case", "check"]
+  tags: ["number", "string", "prime", "boolean"]
   arity: 1
   overloads:
     num: is a prime?
@@ -272,6 +302,8 @@
 - element: "ʀ"
   name: Inclusive Zero Range
   description: Inclusive range or whether each character is alphabetical
+  keywords: ["inclusive", "zero", "range", "alphabetical", "character", "from"]
+  tags: ["number", "string", "boolean"]
   arity: 1
   overloads:
     num: range(0,a + 1) (inclusive range from 0)
@@ -285,6 +317,8 @@
 - element: "ʁ"
   name: Exclusive Zero Range
   description: Exclusive range or palindromise
+  keywords: ["exclusive", "zero", "range", "palindromise", "from"]
+  tags: ["number", "string"]
   arity: 1
   overloads:
     num: range(0,a) (exclusive range from 0)
@@ -298,6 +332,8 @@
 - element: "ɾ"
   name: Inclusive One Range
   description: Inclusive range or uppercase
+  keywords: ["inclusive", "one", "range", "uppercase", "from"]
+  tags: ["number", "string"]
   arity: 1
   overloads:
     num: range(1,a+1) (inclusive range from 1)
@@ -311,6 +347,8 @@
 - element: "ɽ"
   name: Exclusive One Range / Lowercase
   description: Exclusive range or lowercase
+  keywords: ["exclusive", "one", "range", "lowercase", "from"]
+  tags: ["number", "string"]
   arity: 1
   overloads:
     num: range(1,a) (exclusive range from 0)
@@ -321,14 +359,18 @@
     - "[[0]] : [[]]"
     - "[3] : [1,2]"
 
-- element: "Þ"
+- syntax: "Þ"
   name: List Digraph
   arity: NA
   description: Used for list-related digraphs
+  keywords: []
+  tags: []
 
 - element: "ƈ"
   name: Choose / random choice / set same / drop while
   description: Binomial coefficient / choose a random items from b / same except duplicates / drop while
+  keywords: ["choose", "random", "choice", "set", "same", "drop", "while"]
+  tags: ["number", "string", "list", "function", "combinatorics"]
   arity: 2
   overloads:
     num-num: a choose b (binomial coefficient)
@@ -348,6 +390,8 @@
 - element: "∞"
   name: Palindromise
   description: Palindromise a
+  keywords: ["palindromise"]
+  tags: ["string"]
   arity: 1
   overloads:
     any: palindromise a (a + a[:-1:-1])
@@ -359,19 +403,25 @@
     - "[[1,2,3,4,5,6]] : [1,2,3,4,5,6,5,4,3,2,1]"
     - '["hello"] : "hellolleh"'
 
-- element: "¨"
+- syntax: "¨"
   name: Other Digraphs
   arity: NA
   description: Used for various random digraphs
+  keywords: []
+  tags: []
 
-- element: " "
+- syntax: " "
   name: Space
   arity: NA
   description: NOP
+  keywords: []
+  tags: []
 
 - element: "!"
   name: Stack Length
   description: Push the length of the stack
+  keywords: ["stack", "length"]
+  tags: ["stack"]
   arity: 0
   tests:
     - "[0,1,2] : 3"
@@ -382,6 +432,8 @@
   name: Pair
   arity: 2
   description: Place the top two items into a single list
+  keywords: ["pair", "[a,b]", "a,b"]
+  tags: ["list"]
   overloads:
     any-any: "[a, b]"
   vectorise: false
@@ -390,20 +442,26 @@
     - "[1, 2, 3] : [2, 3]"
     - '[[1, 2, 3], "abc", 3] : ["abc", 3]'
 
-- element: "#"
+- syntax: "#"
   name: Comment
   description: The characters until the next newline are commented out
   arity: NA
+  keywords: []
+  tags: []
 
-- element: "#{"
+- syntax: "#{"
   name: Multiline Comment
   description: The characters until the next `}#` are commented out. Nestable.
   arity: NA
+  keywords: []
+  tags: []
 
 - element: "$"
   name: Swap
   arity: 2
   description: Swap the top two items
+  keywords: ["swap", "two", "top"]
+  tags: ["stack"]
   overloads:
     any-any: "b, a"
   vectorise: false
@@ -415,6 +473,8 @@
 - element: "%"
   name: Modulo / Format
   description: Modulo two numbers / format two strings
+  keywords: ["modulo", "format", "string"]
+  tags: ["number", "string"]
   arity: 2
   overloads:
     num-num: a % b
@@ -431,30 +491,43 @@
     - '["% and % and %",[1,2,3]] : "1 and 2 and 3"'
     - '["% and % and %",[1,2,3,4,5]] : "1 and 2 and 3"'
     - '["% and % and %",[1,2]] : "1 and 2 and 1"'
+
 - modifier: "&"
   name: Apply To Register
   arity: "*"
   description: Apply the next element to the register
+  keywords: ["apply", "register", "to"]
+  tags: ["register"]
   usage: "&<element>"
 
-- element: "'"
+- structure: "'"
   name: Lambda Filter
   arity: 1
   description: Open a filter lambda - '...;
+  keywords: ["lambda", "filter", "filtering"]
+  tags: ["lambda", "function"]
 
-- element: "("
+- structure: "("
   name: Open For Loop
   arity: 1
   description: Start a for loop, iterating over the popped top of stack.
+  keywords: ["for", "loop", "iterate", "iterating"]
+  tags: ["stack"]
 
-- element: ")"
-  name: "Close For loop"
-  description: Close a for loop
-  arity: NA
+- modifier: ")"
+  name: Lambda to Newline
+  description: Take all the elements until the previous newline and make them a lambda
+  keywords: ["lambda", "newline", "to"]
+  tags: ["lambda", "function"]
+  arity: 1
+  usage: "<elements>)"
+
 
 - element: "*"
   name: Multiplication / Arity Change
   description: Multiply two numbers or strings / Change the arity of a function
+  keywords: ["multiply", "times", "arity", "change", "function"]
+  tags: ["number", "string", "function"]
   arity: 2
   overloads:
     num-num: a * b

@@ -1,0 +1,24 @@
+Tags:
+
+- base
+- bitwise
+- boolean
+- combinatorics
+- constant
+- digraph
+  - math
+  - string
+  - list
+  - misc
+- function
+- io
+- lambda
+- list
+- literal
+- number
+- prime
+- random
+- register
+- stack
+- string
+- vectorise
