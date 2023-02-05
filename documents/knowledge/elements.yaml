@@ -2208,6 +2208,8 @@
 - element: "ṡ"
   name: Sort by Function
   description: Sort a list by a function / create a range / split on a regex
+  keywords: ["sort", "by", "function", "create", "range", "split", "on", "regex"]
+  tags: ["number", "string", "list", "function", "regex"]
   arity: 2
   overloads:
     any-fun: sorted(a, key=b) (sort by b)
@@ -2223,6 +2225,8 @@
 - element: "ṫ"
   name: Tail Extract
   description: Remove the last item and push both onto the stack
+  keywords: ["remove", "last", "item", "head", "[:-1]", "[-1]"]
+  tags: ["number", "string", "list"]
   arity: 1
   overloads:
     any: a[:-1],a[-1]
@@ -2236,6 +2240,8 @@
 - element: "ẇ"
   name: Chunk Wrap
   description: Wrap a list in chunks of a certain length / apply a function to every second item of a list
+  keywords: ["wrap", "chunks", "length", "apply", "function", "every", "second", "item"]
+  tags: ["number", "string", "list", "function"]
   arity: 2
   overloads:
     any-num: a wrapped in chunks of length b
@@ -2264,6 +2270,8 @@
 - element: "ẋ"
   name: Repeat
   description: Repeat a value several times
+  keywords: ["repeat", "value", "times"]
+  tags: ["number", "string", "list"]
   arity: "*"
   overloads:
     str-num: a * b
