@@ -2645,6 +2645,8 @@
   name: Is Divisible / Arbitrary Duplicate / Ordered Group By
   arity: 2
   description: Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order (adjacent group-by)
+  keywords: ["divisible", "divides", "n-dup", "duplicate", "group", "groupby"]
+  tags: ["number", "string", "list", "boolean", "function", "stack"]
   overloads:
     num-num: a % b == 0
     num-str: a copies of b
@@ -2663,6 +2665,8 @@
   name: Vyxal Exec / Reciprocal
   arity: 1
   description: Executes as Vyxal / Reciprocal of number
+  keywords: ["exec", "reciprocal", "inverse"]
+  tags: ["number", "string"]
   overloads:
     str: vy_exec(a)
     num: 1 / a
@@ -2676,6 +2680,8 @@
   name: Generator / Modulo Index / Format
   arity: 2
   description: Make a generator from function a with initial vector b, or get every nth item or format numbers as decimals.
+  keywords: ["generator", "format", "mod", "modulo", "index"]
+  tags: ["number", "string"]
   overloads:
     num-num: sympy.N(a, b) (evaluate a to b decimal places)
     str-num: every bth letter of a (a[::b])
@@ -2701,6 +2707,8 @@
   name: Group consecutive
   arity: 1
   description: Group consecutive identical items
+  keywords: ["group", "groupby", "adjacent"]
+  tags: ["number", "string", "list"]
   overloads:
     lst: group consecutive identical items
     str: group consecutive identical characters
@@ -2716,6 +2724,8 @@
   name: Head Remove / Behead
   arity: 1
   description: All but the first item of a list / Drop 1
+  keywords: ["head", "remove", "behead", "drop"]
+  tags: ["number", "string", "list"]
   overloads:
     lst: a[1:] or [] if empty
     str: a[1:] or '' if empty
@@ -2736,6 +2746,8 @@
   description: >-
     Index into list at indices /
     Collect values while values are unique (not including the initial value)
+  keywords: ["index", "collect", "unique", "complex", "number", "vectorised"]
+  tags: ["number", "string", "list"]
   overloads:
     num-num: a + b * i
     any-lst: "[a[item] for item in b]"
