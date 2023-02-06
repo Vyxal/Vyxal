@@ -4692,6 +4692,8 @@
   name: Euler's Number (e) raised to power a
   arity: 1
   description: Get the value of Euler's number (e) raised to the power of a
+  keywords: ["euler", "e", "number", "raised", "power", "simple", "simplify", "expression", "algebra"]
+  tags: ["number", "string", "digraph-math"]
   overloads:
     num: e ** a
     str: simplify expression a
@@ -4706,6 +4708,8 @@
   name: (Euler's Number (e) Raised to Power a) - 1
   arity: 1
   description: Get the value of Euler's number (e) raised to the power of a minus 1
+  keywords: ["euler", "e", "number", "raised", "power", "minus", "1"]
+  tags: ["number", "string", "digraph-math"]
   overloads:
     num: (e ** a) - 1
     str: expand expression a
