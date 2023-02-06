@@ -4475,6 +4475,8 @@
   name: Cosine
   arity: 1
   description: Get the cosine of an angle in radians
+  keywords: ["cosine"]
+  tags: ["number", "digraph-math"]
   overloads:
     num: math.cos(a)
   vectorise: true
@@ -4487,6 +4489,8 @@
   name: Arc Cosine
   arity: 1
   description: Get the arccosine of an angle in radians
+  keywords: ["arccosine"]
+  tags: ["number", "digraph-math"]
   overloads:
     num: math.arrcos(a)
   vectorise: true
@@ -4498,6 +4502,8 @@
   name: Quadratic Solver
   arity: 2
   description: Solve a quadratic equation of the form ax^2 + bx = 0
+  keywords: ["quadratic", "solver", "equation"]
+  tags: ["number", "string", "digraph-math"]
   overloads:
     num-num: x such that ax^2 + bx = 0
     num-str: solve for x such that a = b(x)
@@ -4513,6 +4519,8 @@
   name: General Quadratic Solver
   arity: 2
   description: Solve a quadratic equation of the form x^2 + ax + b = 0
+  keywords: ["quadratic", "solver", "equation"]
+  tags: ["number", "string", "digraph-math"]
   overloads:
     num-num: roots(a, b) / x^2 + ax + b = 0
     num-str: evaluate single variable expression b with x=a
@@ -4528,6 +4536,8 @@
   name: Sine
   arity: 1
   description: Get the sine of an angle in radians
+  keywords: ["sine"]
+  tags: ["number", "digraph-math"]
   overloads:
     num: math.sin(a)
   vectorise: true
@@ -4540,6 +4550,8 @@
   name: Arc Sine
   arity: 1
   description: Get the arcsine of an angle in radians
+  keywords: ["arcsine"]
+  tags: ["number", "digraph-math"]
   overloads:
     num: math.arcsin(a)
   vectorise: true
@@ -4551,6 +4563,8 @@
   name: Tangent
   arity: 1
   description: Get the tangent of an angle in radians
+  keywords: ["tangent"]
+  tags: ["number", "digraph-math"]
   overloads:
     num: math.tan(a)
   vectorise: true
@@ -4563,6 +4577,8 @@
   name: Arc Tangent
   arity: 1
   description: Get the arctangent of an angle in radians
+  keywords: ["arctangent"]
+  tags: ["number", "digraph-math"]
   overloads:
     num: math.arctan(a)
   vectorise: true
@@ -4574,6 +4590,8 @@
   name: Arc Tangent 2
   arity: 2
   description: Get the arctangent of an angle in radians
+  keywords: ["arctangent"]
+  tags: ["number", "digraph-math"]
   overloads:
     num-num: math.arctan2(a, b)
   vectorise: true
@@ -4586,6 +4604,8 @@
   name: Polynomial Solver
   arity: 1
   description: Solve a polynomial of the form a[0]x^len(a) + a[1]x^len(a)-1 ... = 0
+  keywords: ["polynomial", "solver", "equation"]
+  tags: ["number", "string", "digraph-math"]
   overloads:
     lst: roots(a)
   vectorise: false
@@ -4597,6 +4617,8 @@
   name: n Pick r (npr)
   arity: 2
   description: Get the number of combinations of r items from a set of n items
+  keywords: ["npr", "combinations", "permutations"]
+  tags: ["number", "digraph-math", "combinatorics"]
   overloads:
     num-num: n_pick_r(a, b)
     num-str: n_pick_r(a, len(b))
@@ -4611,6 +4633,8 @@
   name: Copy Sign
   arity: 2
   description: Copy the sign of one number to the other
+  keywords: ["sign", "copysign"]
+  tags: ["number", "digraph-math"]
   overloads:
     num-num: math.copysign(a, b)
   vectorise: true
@@ -4624,6 +4648,8 @@
   name: Sum of Proper Divisors / Stationary Points
   arity: 1
   description: Get the sum of all proper divisors of a number /  get the stationary points of a function
+  keywords: ["divisors", "proper", "sum", "stationary", "points"]
+  tags: ["number", "string", "digraph-math"]
   overloads:
     num: sum_of_proper_divisors(a)
     str: stationary_points(a)
@@ -4641,6 +4667,8 @@
   name: Perfect Square? / Square Expression
   arity: 1
   description: Is the number a perfect square? (1, 4, 9, 16, 25, 36) / Raise an algebraic expression to the power of 2
+  keywords: ["perfect", "square", "expression", "algebraic"]
+  tags: ["number", "string", "digraph-math"]
   overloads:
     num: is_perfect_square(a)
     str: expr ** 2
