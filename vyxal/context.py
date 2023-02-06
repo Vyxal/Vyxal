@@ -3,6 +3,7 @@
 from vyxal.Canvas import Canvas
 import sympy
 
+
 # Like a ctx but for transpilation
 # This has to be here because *fricking circular inputs*
 class TranspilationOptions:

@@ -712,7 +712,6 @@ def min_by(vec: VyList, key=None, cmp=None, ctx=DEFAULT_CTX):
 
 
 def mold(content: VyList, shape: VyList) -> VyList:
-
     """
     Mold a list into a shape.
 
@@ -751,7 +750,6 @@ def mold_without_repeat(
     content: VyList,
     shape: VyList,
 ) -> VyList:
-
     """
     Mold a list into a shape but don't reuse content.
 

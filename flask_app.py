@@ -37,7 +37,6 @@ def index():
 
 @app.route("/execute", methods=("POST",))
 def execute():
-
     print(sessions, request.json)
     if request.json is None:
         return {
@@ -102,7 +101,6 @@ def execute():
             ret[2] += "\nSession terminated upon user request"
 
         if sessions[session].is_alive():
-
             sessions[session].kill()
             if 2 in ret:
                 ret[2] += "\n" + f"Code timed out after {time} seconds"
