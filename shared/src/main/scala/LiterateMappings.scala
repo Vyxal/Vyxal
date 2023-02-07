@@ -1,6 +1,7 @@
 package vyxal
 
 val literateModeMappings = Map(
+
   "fact" -> "!",
   "factorial" -> "!",
   "to-upper" -> "!",
@@ -125,5 +126,5 @@ val literateModeMappings = Map(
   "ring-trans" -> "×",
   "divide" -> "÷",
   "div" -> "÷",
-  "split" -> "÷"
+  "split" -> "÷",
 )
