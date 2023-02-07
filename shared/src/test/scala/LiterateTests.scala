@@ -70,8 +70,8 @@ class LiterateTests extends VyxalTests:
 
   describe("Variable Augmentation") {
     it("should transpile them correctly") {
-      testLiteral("10 +:=x", "10 +#>x")
-      testLiteral("+:=x", "+#>x")
+      testLiteral("10 +:>x", "10 +#>x")
+      testLiteral("+:>x", "+#>x")
     }
   }
 
