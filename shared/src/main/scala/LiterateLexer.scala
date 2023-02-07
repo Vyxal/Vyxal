@@ -58,3 +58,6 @@ object LiterateLexer extends RegexParsers:
       case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
       case Success(result, next) => Right(result)
 end LiterateLexer
+
+def main(args: Array[String]): Unit =
+  println(LiterateLexer("1 2 3"))
