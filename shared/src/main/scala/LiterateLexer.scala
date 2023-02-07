@@ -149,10 +149,7 @@ def getRight(
     either: Either[VyxalCompilationError, List[LiterateToken]]
 ): List[LiterateToken] =
   // For when you know it's a right and don't want to have 20 thousand match statements
-  either match
-    case Right(value) => value
-    case Left(value) =>
-      List()
+  either.getOrElse(Nil)
 
 def litLex(code: String): String =
   sbcsify(getRight(LiterateLexer(code)))
