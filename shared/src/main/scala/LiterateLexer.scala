@@ -133,7 +133,7 @@ def getRight(
     case Right(value) => value
     case Left(value) =>
       println(value)
-      null
+      List()
 
 def litLex(code: String): String =
   sbcsify(getRight(LiterateLexer(code)))
