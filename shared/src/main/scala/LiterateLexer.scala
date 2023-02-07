@@ -80,15 +80,15 @@ object LiterateLexer extends RegexParsers:
     value => AlreadyCode("#" + value)
   }
 
-  def varSet: Parser[LiterateToken] = """_([_a-zA-Z][_a-zA-Z0-9]*)?""".r ^^ {
+  def varSet: Parser[LiterateToken] = """:=([_a-zA-Z][_a-zA-Z0-9]*)?""".r ^^ {
     value => AlreadyCode("#=" + value.substring(1))
   }
 
-  def augVar: Parser[LiterateToken] = """:_([a-zA-Z][_a-zA-Z0-9]*)?""".r ^^ {
+  def augVar: Parser[LiterateToken] = """:>([a-zA-Z][_a-zA-Z0-9]*)?""".r ^^ {
     value => AlreadyCode("#>" + value.substring(2))
   }
 
-  def unpackVar: Parser[LiterateToken] = "_" ~ list ^^ { case _ ~ value =>
+  def unpackVar: Parser[LiterateToken] = ":=" ~ list ^^ { case _ ~ value =>
     (value: @unchecked) match
       case ListToken(value) =>
         println(value.map(recHelp).mkString("[", "|", "]"))
