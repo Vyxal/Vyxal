@@ -15,4 +15,5 @@ $name -> get
 _name -> set
 f_=name -> name f= top of stack
 _[x|y|z] -> x, y, z = top of stack
+# ... #} -> raw sbcs 
 ```
