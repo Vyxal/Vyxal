@@ -87,4 +87,11 @@ class LiterateTests extends VyxalTests:
       testLiteral("(((((add)))))", "+")
     }
   }
+
+  describe("Misc") {
+    it("should not treat words with i as complex") {
+      testLiteral("is-vowel", "A")
+      testLiteral("is-vowel i", "A ı")
+    }
+  }
 end LiterateTests
