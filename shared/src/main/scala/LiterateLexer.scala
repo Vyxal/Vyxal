@@ -52,7 +52,7 @@ object LiterateLexer extends RegexParsers:
   }
 
   def singleCharString: Parser[LiterateToken] = """'.""".r ^^ { value =>
-    Word(value)
+    AlreadyCode(value)
   }
 
   def comment: Parser[LiterateToken] = """##[^\n]*""".r ^^ { value =>
