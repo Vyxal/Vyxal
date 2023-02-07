@@ -46,4 +46,15 @@ object LiterateLexer extends RegexParsers:
     """[a-zA-Z][a-zA-Z0-9?!*+=&%><\\-]*""".r ^^ { value =>
       Word(value)
     }
+
+  def tokens: Parser[List[LiterateToken]] = phrase(
+    rep(
+      number | string | singleCharString | comment | lambdaBlock | normalGroup | word
+    )
+  )
+
+  def apply(code: String): Either[VyxalCompilationError, List[LiterateToken]] =
+    (parse(tokens, code): @unchecked) match
+      case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
+      case Success(result, next) => Right(result)
 end LiterateLexer
