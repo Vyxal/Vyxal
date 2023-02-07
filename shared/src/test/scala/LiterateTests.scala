@@ -90,8 +90,9 @@ class LiterateTests extends VyxalTests:
 
   describe("Misc") {
     it("should not treat words with i as complex") {
-      testLiteral("is-vowel", "A")
-      testLiteral("is-vowel i", "A ı")
+      testLiteral("is-vowel?", "A")
+      testLiteral("is-vowel? i", "A ı")
+      testLiteral("i is-vowel?", "ı  A")
     }
   }
 end LiterateTests
