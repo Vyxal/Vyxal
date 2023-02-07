@@ -44,8 +44,8 @@ object LiterateLexer extends RegexParsers:
     }
 
   def list: Parser[LiterateToken] =
-    raw"\[".r ~ repsep(list | """[^[\\]]+""".r, "|".r) ~ raw"\]".r ^^ {
-      case _ ~ body ~ _ => ListToken(body.mkString)
+    "[" ~ repsep(list | """[^|[\\]]+""".r, "|") ~ "]" ^^ { case _ ~ body ~ _ =>
+      ListToken(body.mkString)
     }
 
   def word: Parser[LiterateToken] =
