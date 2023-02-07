@@ -48,7 +48,7 @@ object LiterateLexer extends RegexParsers:
     }
 
   def string: Parser[LiterateToken] = raw"""("(?:[^"\\]|\\.)*["])""".r ^^ {
-    value => Word(value.replaceAll("\\\\\"", "\""))
+    value => AlreadyCode(value)
   }
 
   def singleCharString: Parser[LiterateToken] = """'.""".r ^^ { value =>
