@@ -104,15 +104,17 @@ def sbcsify(token: Object): String =
     case AlreadyCode(value) => value
     case LitComment(value)  => ""
     case LambdaBlock(value) => value.map(sbcsify).mkString("λ", " ", "}")
-    case ListToken(value)   => value.map(sbcsify).mkString("[", "|", "]")
-    case value: String      => value
+    case ListToken(value)   => value.map(sbcsify).mkString("#[", "|", "#]")
+    case value: String      => litLex(value)
 
 def getRight(
     either: Either[VyxalCompilationError, List[LiterateToken]]
 ): List[LiterateToken] =
   either match
     case Right(value) => value
-    case Left(value)  => null
+    case Left(value) =>
+      println(value)
+      null
 
 def litLex(code: String): String =
   sbcsify(getRight(LiterateLexer(code)))
