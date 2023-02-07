@@ -58,7 +58,7 @@ object LiterateLexer extends RegexParsers:
   }
 
   def lambdaBlock: Parser[LiterateToken] =
-    """\{""".r ~ rep(lambdaBlock | """[^{}]+""".r) ~ """\}""".r ^^ {
+    """\{""".r ~ rep(lambdaBlock | """(#}|[^{}])+""".r) ~ """\}""".r ^^ {
       case _ ~ body ~ _ => LambdaBlock(body)
     }
   def normalGroup: Parser[LiterateToken] =
@@ -95,7 +95,7 @@ object LiterateLexer extends RegexParsers:
         AlreadyCode("#:" + value.map(recHelp).mkString("[", "|", "]"))
   }
 
-  def branch: Parser[LiterateToken] = """\|""".r ^^ { value =>
+  def branch: Parser[LiterateToken] = "|" ^^ { value =>
     AlreadyCode("|")
   }
 
