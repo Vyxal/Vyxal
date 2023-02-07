@@ -16,5 +16,11 @@ jobs:
       with:
         java-version: '17'
         distribution: 'adopt'
-    - name: Lint
-      run: sbt "vyxalJVM/scalafix --check"
+    - name: Lint and fix
+      run: sbt "vyxalJVM/scalafix"
+    - name: Stage changes
+      run: git add .
+    - name: Commit and push
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "Scalafix changes"
