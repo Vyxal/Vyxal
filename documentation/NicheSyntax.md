@@ -12,8 +12,8 @@ f#>name -> name f= top of stack
 
 ```
 $name -> get
-_name -> set
-f_=name -> name f= top of stack
-_[x|y|z] -> x, y, z = top of stack
+:=name -> set
+f:>name -> name f= top of stack
+:=[x|y|z] -> x, y, z = top of stack
 # ... #} -> raw sbcs
 ```
