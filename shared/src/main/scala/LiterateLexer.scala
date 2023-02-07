@@ -73,7 +73,7 @@ object LiterateLexer extends RegexParsers:
     }
 
   def list: Parser[LiterateToken] =
-    "[" ~ repsep(list | """[^\]\[|]+""".r, "|") ~ "]" ^^ { case _ ~ body ~ _ =>
+    "[" ~> repsep(list | """[^\]\[|]+""".r, "|") <~ "]" ^^ { body =>
       ListToken(body)
     }
 
