@@ -16,8 +16,10 @@ jobs:
       with:
         java-version: '17'
         distribution: 'adopt'
-    - name: Test
+    - name: Test JVM
       run: sbt vyxalJVM/test
+    - name: Test Native
+      run: sbt vyxalNative/test
     - name: Build jar
       run: sbt vyxalJVM/assembly
     - name: Upload artifact
