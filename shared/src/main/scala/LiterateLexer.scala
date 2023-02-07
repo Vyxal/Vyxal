@@ -41,7 +41,7 @@ object LiterateLexer extends RegexParsers:
 
   private def decimalRegex = raw"((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)"
   def number: Parser[LiterateToken] =
-    raw"($decimalRegex?ı$decimalRegex?)|$decimalRegex".r ^^ { value =>
+    raw"($decimalRegex?[ij]$decimalRegex?)|$decimalRegex".r ^^ { value =>
       AlreadyCode(value)
     }
 
@@ -63,7 +63,7 @@ object LiterateLexer extends RegexParsers:
     }
   def normalGroup: Parser[LiterateToken] =
     """\(""".r ~ rep(normalGroup | """[^()]+""".r) ~ """\)""".r ^^ {
-      case _ ~ body ~ _ => Word(body.mkString)
+      case _ ~ body ~ _ => Word(body.map(recHelp).mkString)
     }
 
   def list: Parser[LiterateToken] =
