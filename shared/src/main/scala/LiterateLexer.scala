@@ -27,17 +27,16 @@ val hardcodedKeywords = Map(
   "close-all" -> "]"
 )
 
-enum LiterateToken(val value: Object):
+enum LiterateToken:
   // Object instead of String like the normal lexer because it's way easier
-  case Word(override val value: String) extends LiterateToken(value)
-  case AlreadyCode(override val value: String) extends LiterateToken(value)
+  case Word(value: String)
+  case AlreadyCode(value: String)
   // This is for strings that are already in SBCS form
-  case LitComment(override val value: String) extends LiterateToken(value)
-  case LambdaBlock(override val value: List[Object])
-      extends LiterateToken(value.toString)
+  case LitComment(value: String)
+  case LambdaBlock(value: List[Object])
+  case ListToken(value: List[Object])
 
-  case ListToken(override val value: List[Object])
-      extends LiterateToken(value.toString)
+  def value: Any
 object LiterateLexer extends RegexParsers:
   override def skipWhitespace = true
   override val whiteSpace: Regex = "[ \t\r\f]+".r
