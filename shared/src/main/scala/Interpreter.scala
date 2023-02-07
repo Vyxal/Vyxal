@@ -5,6 +5,10 @@ import vyxal.impls.Elements
 import VNum.given
 
 object Interpreter:
+  def runLiterate(code: String)(using ctx: Context): Unit =
+    val sbcsified = litLex(code)
+    execute(sbcsified)
+
   def execute(code: String)(using ctx: Context): Unit =
     Parser.parse(code) match
       case Right(ast) =>

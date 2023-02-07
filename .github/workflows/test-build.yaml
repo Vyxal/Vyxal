@@ -16,8 +16,10 @@ jobs:
       with:
         java-version: '17'
         distribution: 'adopt'
-    - name: Test
+    - name: Test JVM
       run: sbt vyxalJVM/test
+    - name: Test Native
+      run: sbt vyxalNative/test
     - name: Build jar
       run: sbt vyxalJVM/assembly
     - name: Upload artifact
@@ -27,6 +29,8 @@ jobs:
         path: jvm/target/scala-*/vyxal-*.jar
     - name: Create elements.txt
       run: java -jar jvm/target/scala-*/vyxal-*.jar --docs > documentation/elements.txt
+    - name: Create literate mappings
+      run: java -jar jvm/target/scala-*/vyxal-*.jar --docsLiterate > shared/src/main/scala/LiterateMappings.scala
     - name: Stage changes
       run: git add .
     - name: Commit and push
