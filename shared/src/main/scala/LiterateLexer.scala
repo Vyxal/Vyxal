@@ -79,10 +79,10 @@ object LiterateLexer extends RegexParsers:
     )
   )
 
-  def apply(code: String): Either[VyxalCompilationError, List[LiterateToken]] =
+  def apply(code: String): Either[VyxalCompilationError, String] =
     (parse(tokens, code): @unchecked) match
       case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
-      case Success(result, next) => Right(result)
+      case Success(result, next) => Right(sbcsify(result))
 end LiterateLexer
 
 def recHelp(token: Object): String =
@@ -93,3 +93,19 @@ def recHelp(token: Object): String =
     case LambdaBlock(value) => value
     case ListToken(value)   => value.map(recHelp).mkString("[", "|", "]")
     case value: String      => value
+
+def sbcsify(tokens: List[LiterateToken]): String =
+  tokens.map(sbcsify).mkString("", " ", "")
+
+def sbcsify(token: LiterateToken): String =
+  token match
+    case Word(value)        => value
+    case AlreadyCode(value) => value
+    case LitComment(value)  => ""
+    case LambdaBlock(value) => getRight(LiterateLexer(value))
+    case ListToken(value)   => value.map(recHelp).mkString("[", "|", "]")
+
+def getRight(either: Either[VyxalCompilationError, String]): String =
+  either match
+    case Right(value) => value
+    case Left(value)  => value.toString

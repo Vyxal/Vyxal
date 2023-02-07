@@ -27,6 +27,8 @@ jobs:
         path: jvm/target/scala-*/vyxal-*.jar
     - name: Create elements.txt
       run: java -jar jvm/target/scala-*/vyxal-*.jar --docs > documentation/elements.txt
+    - name: Create literate mappings
+      run: java -jar jvm/target/scala-*/vyxal-*.jar --docsLiterate > shared/src/main/scala/LiterateMappings.scala
     - name: Stage changes
       run: git add .
     - name: Commit and push

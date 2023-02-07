@@ -23,6 +23,7 @@ case class CLIConfig(
     code: Option[String] = None,
     inputs: List[String] = List.empty,
     printDocs: Boolean = false,
+    printLiterate: Boolean = false,
     printHelp: Boolean = false,
     settings: Settings = Settings()
 )
@@ -41,6 +42,10 @@ object Main:
 
         if config.printDocs then
           printDocs()
+          return
+
+        if config.printLiterate then
+          printLiterateMap()
           return
 
         config.file.foreach { file =>
@@ -89,6 +94,32 @@ object Main:
           println("---------------------")
       }
 
+  private def printLiterateMap(): Unit =
+    println("package vyxal\n")
+    println("literateModeMappings = Map(\n")
+    Elements.elements.values.toSeq
+      .sortBy { elem =>
+        // Have to use tuple in case of digraphs
+        (
+          vyxal.CODEPAGE.indexOf(elem.symbol.charAt(0)),
+          vyxal.CODEPAGE.indexOf(elem.symbol.substring(1))
+        )
+      }
+      .foreach {
+        case Element(
+              symbol,
+              name,
+              keywords,
+              arity,
+              vectorises,
+              overloads,
+              impl
+            ) =>
+          for keyword <- keywords do println(s"""  "$keyword" -> "$symbol",""")
+      }
+    println(")")
+  end printLiterateMap
+
   private val builder = OParser.builder[CLIConfig]
 
   private val parser =
@@ -119,6 +150,10 @@ object Main:
       opt[Unit]('d', "docs")
         .action((_, cfg) => cfg.copy(printDocs = true))
         .text("Print documentation for elements and exit")
+        .optional(),
+      opt[Unit]('D', "docsLiterate")
+        .action((_, cfg) => cfg.copy(printLiterate = true))
+        .text("Print literate mode mappings and exit")
         .optional(),
       arg[String]("<input>...")
         .unbounded()
