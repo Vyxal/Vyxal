@@ -42,7 +42,9 @@ object LiterateLexer extends RegexParsers:
   private def decimalRegex = raw"((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)"
   def number: Parser[LiterateToken] =
     raw"($decimalRegex?[ij]$decimalRegex?)|$decimalRegex".r ^^ { value =>
-      AlreadyCode(value)
+      AlreadyCode(
+        value.replace("i", "ı").replace("j", "ı")
+      )
     }
 
   def string: Parser[LiterateToken] = raw"""("(?:[^"\\]|\\.)*["])""".r ^^ {
