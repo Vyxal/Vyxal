@@ -81,7 +81,7 @@ object LiterateLexer extends RegexParsers:
   }
 
   def varSet: Parser[LiterateToken] = """:=([_a-zA-Z][_a-zA-Z0-9]*)?""".r ^^ {
-    value => AlreadyCode("#=" + value.substring(1))
+    value => AlreadyCode("#" + value.substring(1))
   }
 
   def augVar: Parser[LiterateToken] = """:>([a-zA-Z][_a-zA-Z0-9]*)?""".r ^^ {
