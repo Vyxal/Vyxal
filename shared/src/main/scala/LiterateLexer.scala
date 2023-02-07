@@ -63,8 +63,8 @@ object LiterateLexer extends RegexParsers:
   }
 
   def lambdaBlock: Parser[LiterateToken] =
-    """\{""".r ~ rep(lambdaBlock | """(#}|[^{}])+""".r) ~ """\}""".r ^^ {
-      case _ ~ body ~ _ => LambdaBlock(body)
+    "{" ~ rep(lambdaBlock | """(#}|[^{}])+""".r) ~ "}" ^^ {
+      body => LambdaBlock(body)
     }
   def normalGroup: Parser[LiterateToken] =
     "(" ~> rep(normalGroup | """[^()]+""".r) <~ ")" ^^ {
