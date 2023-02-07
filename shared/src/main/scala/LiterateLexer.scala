@@ -9,7 +9,8 @@ enum LiterateToken(val value: Object):
   case Word(override val value: String) extends LiterateToken(value)
   case AlreadyCode(override val value: String) extends LiterateToken(value)
   case LitComment(override val value: String) extends LiterateToken(value)
-  case LambdaBlock(override val value: String) extends LiterateToken(value)
+  case LambdaBlock(override val value: List[Object])
+      extends LiterateToken(value.toString)
 
   case ListToken(override val value: List[Object])
       extends LiterateToken(value.toString)
@@ -37,7 +38,7 @@ object LiterateLexer extends RegexParsers:
 
   def lambdaBlock: Parser[LiterateToken] =
     """\{""".r ~ rep(lambdaBlock | """[^{}]+""".r) ~ """\}""".r ^^ {
-      case _ ~ body ~ _ => LambdaBlock(body.mkString)
+      case _ ~ body ~ _ => LambdaBlock(body)
     }
   def normalGroup: Parser[LiterateToken] =
     """\(""".r ~ rep(normalGroup | """[^()]+""".r) ~ """\)""".r ^^ {
@@ -79,10 +80,10 @@ object LiterateLexer extends RegexParsers:
     )
   )
 
-  def apply(code: String): Either[VyxalCompilationError, String] =
+  def apply(code: String): Either[VyxalCompilationError, List[LiterateToken]] =
     (parse(tokens, code): @unchecked) match
       case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
-      case Success(result, next) => Right(sbcsify(result))
+      case Success(result, next) => Right(result)
 end LiterateLexer
 
 def recHelp(token: Object): String =
@@ -90,22 +91,28 @@ def recHelp(token: Object): String =
     case Word(value)        => value
     case AlreadyCode(value) => value
     case LitComment(value)  => value
-    case LambdaBlock(value) => value
+    case LambdaBlock(value) => value.map(recHelp).mkString("λ", " ", "}")
     case ListToken(value)   => value.map(recHelp).mkString("[", "|", "]")
     case value: String      => value
 
 def sbcsify(tokens: List[LiterateToken]): String =
   tokens.map(sbcsify).mkString("", " ", "")
 
-def sbcsify(token: LiterateToken): String =
+def sbcsify(token: Object): String =
   token match
-    case Word(value)        => value
+    case Word(value)        => literateModeMappings.getOrElse(value, value)
     case AlreadyCode(value) => value
     case LitComment(value)  => ""
-    case LambdaBlock(value) => getRight(LiterateLexer(value))
-    case ListToken(value)   => value.map(recHelp).mkString("[", "|", "]")
+    case LambdaBlock(value) => value.map(sbcsify).mkString("λ", " ", "}")
+    case ListToken(value)   => value.map(sbcsify).mkString("[", "|", "]")
+    case value: String      => value
 
-def getRight(either: Either[VyxalCompilationError, String]): String =
+def getRight(
+    either: Either[VyxalCompilationError, List[LiterateToken]]
+): List[LiterateToken] =
   either match
     case Right(value) => value
-    case Left(value)  => value.toString
+    case Left(value)  => null
+
+def litLex(code: String): String =
+  sbcsify(getRight(LiterateLexer(code)))

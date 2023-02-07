@@ -96,7 +96,7 @@ object Main:
 
   private def printLiterateMap(): Unit =
     println("package vyxal\n")
-    println("literateModeMappings = Map(\n")
+    println("val literateModeMappings = Map(\n")
     Elements.elements.values.toSeq
       .sortBy { elem =>
         // Have to use tuple in case of digraphs
