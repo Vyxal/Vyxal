@@ -10,6 +10,7 @@ enum LiterateToken(val value: String):
   case AlreadyCode(override val value: String) extends LiterateToken(value)
   case LitComment(override val value: String) extends LiterateToken(value)
   case LambdaBlock(override val value: String) extends LiterateToken(value)
+  case ListToken(override val value: String) extends LiterateToken(value)
 
 object LiterateLexer extends RegexParsers:
   override def skipWhitespace = true
@@ -42,14 +43,19 @@ object LiterateLexer extends RegexParsers:
       case _ ~ body ~ _ => Word(body.mkString)
     }
 
+  def list: Parser[LiterateToken] =
+    raw"""\[""".r ~ repsep(list | """[^[\\]]+""".r, "|".r) ~ raw"""\]""".r ^^ {
+      case _ ~ body ~ _ => ListToken(body.mkString)
+    }
+
   def word: Parser[LiterateToken] =
-    """[a-zA-Z][a-zA-Z0-9?!*+=&%><\\-]*""".r ^^ { value =>
+    """[a-zA-Z?!*+=&%><-][a-zA-Z0-9?!*+=&%><-]*""".r ^^ { value =>
       Word(value)
     }
 
   def tokens: Parser[List[LiterateToken]] = phrase(
     rep(
-      number | string | singleCharString | comment | lambdaBlock | normalGroup | word
+      number | string | singleCharString | comment | lambdaBlock | normalGroup | list | word
     )
   )
 
@@ -58,6 +64,3 @@ object LiterateLexer extends RegexParsers:
       case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
       case Success(result, next) => Right(result)
 end LiterateLexer
-
-def main(args: Array[String]): Unit =
-  println(LiterateLexer("1 2 3"))
