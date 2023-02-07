@@ -54,9 +54,28 @@ object LiterateLexer extends RegexParsers:
       Word(value)
     }
 
+  def varGet: Parser[LiterateToken] = """\$([a-zA-Z][a-zA-Z0-9]*)?""".r ^^ {
+    value => AlreadyCode("#" + value)
+  }
+
+  def varSet: Parser[LiterateToken] = """=([a-zA-Z][a-zA-Z0-9]*)?""".r ^^ {
+    value => AlreadyCode("#" + value)
+  }
+
+  def augVar: Parser[LiterateToken] = """:=([a-zA-Z][a-zA-Z0-9]*)?""".r ^^ {
+    value => AlreadyCode("#>" + value.substring(2))
+  }
+
+  def unpackVar: Parser[LiterateToken] = "=" ~ list ^^ { case _ ~ value =>
+    (value: @unchecked) match
+      case ListToken(value) =>
+        println(value.map(recHelp).mkString("[", "|", "]"))
+        AlreadyCode("#:" + value.map(recHelp).mkString("[", "|", "]"))
+  }
+
   def tokens: Parser[List[LiterateToken]] = phrase(
     rep(
-      number | string | singleCharString | comment | list | lambdaBlock | normalGroup | word
+      number | string | singleCharString | comment | list | lambdaBlock | normalGroup | unpackVar | varGet | varSet | augVar | word
     )
   )
 
@@ -65,3 +84,12 @@ object LiterateLexer extends RegexParsers:
       case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
       case Success(result, next) => Right(result)
 end LiterateLexer
+
+def recHelp(token: Object): String =
+  token match
+    case Word(value)        => value
+    case AlreadyCode(value) => value
+    case LitComment(value)  => value
+    case LambdaBlock(value) => value
+    case ListToken(value)   => value.map(recHelp).mkString("[", "|", "]")
+    case value: String      => value
