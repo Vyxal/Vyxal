@@ -50,7 +50,6 @@ class Token:
         return f"Token({self.name.value!r}, {self.value!r})"
 
     def __eq__(self, rhs) -> bool:
-
         if not isinstance(rhs, Token):
             return NotImplemented
         return self.name == rhs.name and self.value == rhs.value
