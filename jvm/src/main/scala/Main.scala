@@ -119,6 +119,9 @@ object Main:
             ) =>
           for keyword <- keywords do println(s"""  "$keyword" -> "$symbol",""")
       }
+    Modifiers.modifiers.foreach { case (name, info) =>
+      for keyword <- info.keywords do println(s"""  "$keyword" -> "$name",""")
+    }
     println(")")
   end printLiterateMap
 

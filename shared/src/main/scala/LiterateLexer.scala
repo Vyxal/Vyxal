@@ -17,7 +17,13 @@ val hardcodedKeywords = Map(
   "end-while" -> "}",
   "lambda" -> "λ",
   "endlambda" -> "}",
-  "end-lambda" -> "}"
+  "end-lambda" -> "}",
+  "end" -> "}",
+  "else" -> "|",
+  "do-to-each" -> "(",
+  "body" -> "|",
+  "branch" -> "|",
+  "close-all" -> "]"
 )
 
 enum LiterateToken(val value: Object):
@@ -89,9 +95,13 @@ object LiterateLexer extends RegexParsers:
         AlreadyCode("#:" + value.map(recHelp).mkString("[", "|", "]"))
   }
 
+  def branch: Parser[LiterateToken] = """\|""".r ^^ { value =>
+    AlreadyCode("|")
+  }
+
   def tokens: Parser[List[LiterateToken]] = phrase(
     rep(
-      number | string | singleCharString | comment | list | lambdaBlock | normalGroup | unpackVar | varGet | varSet | augVar | word
+      number | string | singleCharString | comment | list | lambdaBlock | normalGroup | unpackVar | varGet | varSet | augVar | word | branch
     )
   )
 
