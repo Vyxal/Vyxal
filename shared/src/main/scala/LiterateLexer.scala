@@ -5,13 +5,14 @@ import scala.util.matching.Regex
 import scala.util.parsing.combinator.*
 import LiterateToken.*
 
-enum LiterateToken(val value: String):
+enum LiterateToken(val value: Object):
   case Word(override val value: String) extends LiterateToken(value)
   case AlreadyCode(override val value: String) extends LiterateToken(value)
   case LitComment(override val value: String) extends LiterateToken(value)
   case LambdaBlock(override val value: String) extends LiterateToken(value)
-  case ListToken(override val value: String) extends LiterateToken(value)
 
+  case ListToken(override val value: List[Object])
+      extends LiterateToken(value.toString)
 object LiterateLexer extends RegexParsers:
   override def skipWhitespace = true
   override val whiteSpace: Regex = "[ \t\r\f]+".r
@@ -44,8 +45,8 @@ object LiterateLexer extends RegexParsers:
     }
 
   def list: Parser[LiterateToken] =
-    "[" ~ repsep(list | """[^|[\\]]+""".r, "|") ~ "]" ^^ { case _ ~ body ~ _ =>
-      ListToken(body.mkString)
+    "[" ~ repsep(list | """[^\]\[|]+""".r, "|") ~ "]" ^^ { case _ ~ body ~ _ =>
+      ListToken(body)
     }
 
   def word: Parser[LiterateToken] =
@@ -55,7 +56,7 @@ object LiterateLexer extends RegexParsers:
 
   def tokens: Parser[List[LiterateToken]] = phrase(
     rep(
-      number | string | singleCharString | comment | lambdaBlock | normalGroup | list | word
+      number | string | singleCharString | comment | list | lambdaBlock | normalGroup | word
     )
   )
 
