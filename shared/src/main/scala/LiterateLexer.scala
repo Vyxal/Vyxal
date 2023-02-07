@@ -9,6 +9,7 @@ enum LiterateToken(val value: String):
   case Word(override val value: String) extends LiterateToken(value)
   case AlreadyCode(override val value: String) extends LiterateToken(value)
   case LitComment(override val value: String) extends LiterateToken(value)
+  case LambdaBlock(override val value: String) extends LiterateToken(value)
 
 object LiterateLexer extends RegexParsers:
   override def skipWhitespace = true
@@ -32,8 +33,17 @@ object LiterateLexer extends RegexParsers:
     LitComment(value)
   }
 
-  def lambdaBlock: Parser[LiterateToken] = // everything between balanced {}s
+  def lambdaBlock: Parser[LiterateToken] =
     """\{""".r ~ rep(lambdaBlock | """[^{}]+""".r) ~ """\}""".r ^^ {
-      case _ ~ body ~ _ => Word(body.mkString(""))
+      case _ ~ body ~ _ => LambdaBlock(body.mkString)
+    }
+  def normalGroup: Parser[LiterateToken] =
+    """\(""".r ~ rep(normalGroup | """[^()]+""".r) ~ """\)""".r ^^ {
+      case _ ~ body ~ _ => Word(body.mkString)
+    }
+
+  def word: Parser[LiterateToken] =
+    """[a-zA-Z][a-zA-Z0-9?!*+=&%><\\-]*""".r ^^ { value =>
+      Word(value)
     }
 end LiterateLexer
