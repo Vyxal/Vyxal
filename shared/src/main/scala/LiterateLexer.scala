@@ -94,7 +94,7 @@ object LiterateLexer extends RegexParsers:
     value => AlreadyCode("#>" + value.substring(2))
   }
 
-  def unpackVar: Parser[LiterateToken] = ":=" ~ list ^^ { case _ ~ value =>
+  def unpackVar: Parser[LiterateToken] = ":=" ~> list ^^ { value =>
     (value: @unchecked) match
       case ListToken(value) =>
         AlreadyCode("#:" + value.map(recHelp).mkString("[", "|", "]"))
