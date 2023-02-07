@@ -39,38 +39,52 @@ class LiterateTests extends VyxalTests:
   }
 
   describe("Lambdas") {
-    testLiteral("10 { context-n add } map", "10 λn +} M")
-    testLiteral("{{{}}{}}", "λλλ}} λ}}")
-    testLiteral("{}{}", "λ} λ}")
+    it("should transpile them correctly") {
+      testLiteral("10 { context-n add } map", "10 λn +} M")
+      testLiteral("{{{}}{}}", "λλλ}} λ}}")
+      testLiteral("{}{}", "λ} λ}")
+    }
   }
 
   describe("Lists") {
-    testLiteral("[1|2|3|4]", "#[1|2|3|4#]")
-    testLiteral("[]", "#[#]")
-    testLiteral("[[]|[]]", "#[#[#]|#[#]#]")
+    it("should transpile them correctly") {
+      testLiteral("[1|2|3|4]", "#[1|2|3|4#]")
+      testLiteral("[]", "#[#]")
+      testLiteral("[[]|[]]", "#[#[#]|#[#]#]")
+    }
   }
 
   describe("Variable Get") {
-    testLiteral("$a", "#$a")
-    testLiteral("$", "#$")
+    it("should transpile them correctly") {
+      testLiteral("$a", "#$a")
+      testLiteral("$", "#$")
+    }
   }
 
   describe("Variable Set") {
-    testLiteral("10 :=x", "10 #=x")
-    testLiteral(":=x", "#=x")
+    it("should transpile them correctly") {
+      testLiteral("10 :=x", "10 #=x")
+      testLiteral(":=x", "#=x")
+    }
   }
 
   describe("Variable Augmentation") {
-    testLiteral("10 +:=x", "10 +#>x")
-    testLiteral("+:=x", "+#>x")
+    it("should transpile them correctly") {
+      testLiteral("10 +:=x", "10 +#>x")
+      testLiteral("+:=x", "+#>x")
+    }
   }
 
   describe("Variable unpacking") {
-    testLiteral("[1|2|3] :=[x|y|z]", "#[1|2|3#] #:[x|y|z]")
+    it("should transpile them correctly") {
+      testLiteral("[1|2|3] :=[x|y|z]", "#[1|2|3#] #:[x|y|z]")
+    }
   }
 
   describe("Ungrouping") {
-    testLiteral("1 (3 4 add) times", "1 3 4 + ×")
-    testLiteral("(((((add)))))", "+")
+    it("should remove the parentheses") {
+      testLiteral("1 (3 4 add) times", "1 3 4 + ×")
+      testLiteral("(((((add)))))", "+")
+    }
   }
 end LiterateTests
