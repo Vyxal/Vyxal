@@ -129,4 +129,13 @@ val literateModeMappings = Map(
   "divide" -> "÷",
   "div" -> "÷",
   "split" -> "÷",
+  "*-" -> "′",
+  "**-" -> "″",
+  "vectorise-" -> "v",
+  "vec-" -> "v",
+  "***-" -> "‴",
+  "****-" -> "⁴",
+  "foldl-" -> "/",
+  "reduce-" -> "/",
+  "/-" -> "/",
 )
