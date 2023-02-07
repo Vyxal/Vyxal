@@ -5,6 +5,21 @@ import scala.util.matching.Regex
 import scala.util.parsing.combinator.*
 import LiterateToken.*
 
+val hardcodedKeywords = Map(
+  "if" -> "[",
+  "endif" -> "}",
+  "end-if" -> "}",
+  "for" -> "(",
+  "endfor" -> "}",
+  "end-for" -> "}",
+  "while" -> "{",
+  "endwhile" -> "}",
+  "end-while" -> "}",
+  "lambda" -> "λ",
+  "endlambda" -> "}",
+  "end-lambda" -> "}"
+)
+
 enum LiterateToken(val value: Object):
   case Word(override val value: String) extends LiterateToken(value)
   case AlreadyCode(override val value: String) extends LiterateToken(value)
@@ -55,19 +70,19 @@ object LiterateLexer extends RegexParsers:
       Word(value)
     }
 
-  def varGet: Parser[LiterateToken] = """\$([a-zA-Z][a-zA-Z0-9]*)?""".r ^^ {
+  def varGet: Parser[LiterateToken] = """\$([_a-zA-Z][_a-zA-Z0-9]*)?""".r ^^ {
     value => AlreadyCode("#" + value)
   }
 
-  def varSet: Parser[LiterateToken] = """=([a-zA-Z][a-zA-Z0-9]*)?""".r ^^ {
-    value => AlreadyCode("#" + value)
+  def varSet: Parser[LiterateToken] = """_([_a-zA-Z][_a-zA-Z0-9]*)?""".r ^^ {
+    value => AlreadyCode("#=" + value.substring(1))
   }
 
-  def augVar: Parser[LiterateToken] = """:=([a-zA-Z][a-zA-Z0-9]*)?""".r ^^ {
+  def augVar: Parser[LiterateToken] = """:_([a-zA-Z][_a-zA-Z0-9]*)?""".r ^^ {
     value => AlreadyCode("#>" + value.substring(2))
   }
 
-  def unpackVar: Parser[LiterateToken] = "=" ~ list ^^ { case _ ~ value =>
+  def unpackVar: Parser[LiterateToken] = "_" ~ list ^^ { case _ ~ value =>
     (value: @unchecked) match
       case ListToken(value) =>
         println(value.map(recHelp).mkString("[", "|", "]"))
@@ -100,7 +115,11 @@ def sbcsify(tokens: List[LiterateToken]): String =
 
 def sbcsify(token: Object): String =
   token match
-    case Word(value)        => literateModeMappings.getOrElse(value, value)
+    case Word(value) =>
+      literateModeMappings.getOrElse(
+        value,
+        hardcodedKeywords.getOrElse(value, value)
+      )
     case AlreadyCode(value) => value
     case LitComment(value)  => ""
     case LambdaBlock(value) => value.map(sbcsify).mkString("λ", " ", "}")

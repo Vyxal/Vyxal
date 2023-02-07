@@ -12,7 +12,7 @@ f#>name -> name f= top of stack
 
 ```
 $name -> get
-=name -> set
-f:=name -> name f= top of stack
-=[x|y|z] -> x, y, z = top of stack
+_name -> set
+f_=name -> name f= top of stack
+_[x|y|z] -> x, y, z = top of stack
 ```
