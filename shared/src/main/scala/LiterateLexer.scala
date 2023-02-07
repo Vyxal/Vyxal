@@ -65,7 +65,7 @@ object LiterateLexer extends RegexParsers:
     }
   def normalGroup: Parser[LiterateToken] =
     """\(""".r ~ rep(normalGroup | """[^()]+""".r) ~ """\)""".r ^^ {
-      case _ ~ body ~ _ => Word(body.map(recHelp).mkString)
+      case _ ~ body ~ _ => Word(sbcsify(body.map(recHelp).mkString))
     }
 
   def list: Parser[LiterateToken] =

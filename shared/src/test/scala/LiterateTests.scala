@@ -24,10 +24,10 @@ class LiterateTests extends VyxalTests:
     }
 
     it("should leave strings as-is") {
-      testLiteral(""" "Hello, Vyxal!" """, """ "Hello, Vyxal!" """)
+      testLiteral(""""Hello, Vyxal!"""", """"Hello, Vyxal!"""")
       testLiteral(
-        """ "Vyxal is what \"you\" want!" """,
-        """ "Vyxal is what \"you\" want!" """
+        raw""""Vyxal is what \"you\" want!"""",
+        raw""""Vyxal is what \"you\" want!""""
       )
     }
   }
@@ -70,7 +70,7 @@ class LiterateTests extends VyxalTests:
 
   describe("Variable Augmentation") {
     it("should transpile them correctly") {
-      testLiteral("10 +:>x", "10 +#>x")
+      testLiteral("10 +:>x", "10 + #>x")
       testLiteral("+:>x", "+#>x")
     }
   }
