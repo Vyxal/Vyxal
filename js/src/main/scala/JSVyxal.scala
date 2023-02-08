@@ -1,5 +1,7 @@
 package vyxal
 
+import org.scalajs.dom
+import org.scalajs.dom.document
 import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 import scala.scalajs.js.JSConverters.*
@@ -8,8 +10,14 @@ import scala.scalajs.js.JSConverters.*
 @JSExportTopLevel("Vyxal")
 object JSVyxal:
   @JSExport
-  def execute(code: String, inputs: String): Unit =
+  def execute(code: String, inputs: String, flags: String): Unit =
     // todo take flags to set settings
     // todo take functions to print to custom stdout and stderr
-    given Context = Context(inputs = inputs.split("\n").toIndexedSeq)
-    Interpreter.execute(code)
+    val settings = Settings(printFn = onlinePrint)
+    val globals = Globals(Inputs(inputs.split("\n").toIndexedSeq), settings)
+    val ctx = Context(globals = globals)
+    Interpreter.execute(code)(using ctx)
+
+  def onlinePrint(text: Any): Unit =
+    val output = document.getElementById("output")
+    output.textContent += text.toString

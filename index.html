@@ -1,10 +1,37 @@
 <!DOCTYPE html>
 <!-- This file is only for testing to see if the JS is properly generated -->
 <html>
-  <head>
-    <title>Page Title</title>
-  </head>
-  <body>
-    <script src="out/js/fastLinkJS.dest/main.js"></script>
-  </body>
+
+<head>
+  <title>Vyxal Intepreter</title>
+  <script src="js\lib\scalajs-3.0.0.js"></script>
+</head>
+
+<body>
+  <h1>Vyxal 3 Intepreter</h1>
+
+  <h2>Flags</h2>
+  <input type="text" id="flags" value="" />
+
+  <h2>Input</h2>
+  <textarea id="input" rows="10" cols="50"></textarea>
+
+  <h2>Program</h2>
+  <textarea id="program" rows="10" cols="50"></textarea>
+
+  <h2>Output</h2>
+  <p id="output"></p>
+
+  <script>
+    function run() {
+      var flags = document.getElementById("flags").value;
+      var input = document.getElementById("input").value;
+      var program = document.getElementById("program").value;
+      Vyxal.execute(program, flags, input);
+    }
+  </script>
+
+  <button onclick="run()">Run</button>
+</body>
+
 </html>
