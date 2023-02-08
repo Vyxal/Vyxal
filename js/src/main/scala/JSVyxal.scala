@@ -33,5 +33,7 @@ object JSVyxal:
 
   def onlinePrint(text: Any): Unit =
     val output = document.getElementById("output")
-    output.textContent += text.toString
+    // cast output object to textarea
+    val textarea = output.asInstanceOf[dom.html.TextArea]
+    textarea.value += text.toString
 end JSVyxal
