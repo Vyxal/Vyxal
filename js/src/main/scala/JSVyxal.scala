@@ -14,7 +14,9 @@ object JSVyxal:
     // todo take flags to set settings
     // todo take functions to print to custom stdout and stderr
     val output = document.getElementById("output")
-    output.textContent = ""
+    // cast output object to textarea
+    val textarea = output.asInstanceOf[dom.html.TextArea]
+    textarea.value = ""
     val settings = Settings(printFn = onlinePrint, online = true)
     val globals = Globals(
       settings = settings
@@ -30,6 +32,13 @@ object JSVyxal:
     if flags.contains("l") then Interpreter.runLiterate(code)(using ctx)
     else Interpreter.execute(code)(using ctx)
   end execute
+
+  @JSExport
+  def getSBCSified(code: String): Unit =
+    val output = document.getElementById("output")
+    // cast output object to textarea
+    val textarea = output.asInstanceOf[dom.html.TextArea]
+    textarea.value = litLex(code)
 
   def onlinePrint(text: Any): Unit =
     val output = document.getElementById("output")
