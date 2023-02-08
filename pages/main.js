@@ -624,7 +624,7 @@ function shareOptions(shareType) {
             output = url
             break
         case "cmc":
-            output = `[Vyxal 3, ${len} byte${"s".repeat(code.length != 1)}${utfable ? '' : ' (UTF-8)'}](${url})`
+            output = `[Vyxal 3, ${len} byte${"s".repeat(code.length != 1)}${utfable ? '' : ' (UTF-8)'}: \`${code.replaceAll("\`", "\\\`")}\`](${url})`
             break
         case "post-template":
             output = `# [Vyxal 3](https://github.com/Vyxal/Vyxal/tree/version-3)${flagAppendage} ${len} byte${"s".repeat(len != 1)}${utfable ? '' : ' (UTF-8)'}
