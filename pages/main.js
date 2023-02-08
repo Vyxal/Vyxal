@@ -717,6 +717,9 @@ window.addEventListener("DOMContentLoaded", e => {
     const filter = document.getElementById("filterBox")
 
     async function do_run() {
+        if (e_code.doc.getValue() == 'lyxal') {
+            location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+        }
         let runButton = $('run_button');
         if (runButton.innerHTML.includes('fa-spin')) return;
         runButton.innerHTML = '<i class="fa fa-cog fa-spin fa-2x"></i>';
