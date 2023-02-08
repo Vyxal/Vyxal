@@ -122,13 +122,14 @@ object Interpreter:
       fn: VFun,
       ctxVarPrimary: Option[VAny] = None,
       ctxVarSecondary: Option[VAny] = None,
-      args: Option[Seq[VAny]] = None,
+      args: Seq[VAny] | Null = null,
       popArgs: Boolean = true
   )(using ctx: Context): VAny =
     val VFun(impl, arity, params, origCtx) = fn
-    val inputs = args
-      .getOrElse(if popArgs then ctx.pop(arity) else ctx.peek(arity))
-      .toList
+    val inputs =
+      if args != null then args
+      else if popArgs then ctx.pop(arity)
+      else ctx.peek(arity)
 
     given fnCtx: Context =
       Context.makeFnCtx(

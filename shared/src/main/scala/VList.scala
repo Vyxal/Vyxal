@@ -15,9 +15,8 @@ class VList private (val lst: Seq[VAny])
       SeqOps[VAny, Seq, VList]:
 
   /** Map the list using a Vyxal function */
-  def vmap(f: VAny => Context ?=> VAny)(using Context): VList = new VList(
-    lst.map(f(_))
-  )
+  def vmap(f: VAny => Context ?=> VAny)(using Context): VList =
+    new VList(lst.map(f(_)))
 
   /** Zip two VLists together with a function. If one is longer than the other,
     * keep the longer one's elements as-is.
@@ -81,8 +80,35 @@ object VList extends SpecificIterableFactory[VAny, VList]:
     * The parameter is a `PartialFunction` instead of a function because it's
     * going to match on a list and assume it's a specific length
     */
-  def zipMulti(lists: VList*)(f: PartialFunction[Seq[VAny], VAny]): VList =
-    ???
+  def zipMulti(lists: VList*)(f: PartialFunction[Seq[VAny], VAny])(using
+      ctx: Context
+  ): VList =
+    val maxSize = lists.view.map(_.size).max
+    val padded = lists.map { list =>
+      if list.size == maxSize then list
+      else list ++ Seq.fill(maxSize - list.size)(null)
+    }
+    new VList(padded.transpose.map { lst => f(lst.filter(_ != null)) })
+
+  /** Turn some VAnys into iterables, then zip them together with a function. */
+  def zipValues(values: VAny*)(f: PartialFunction[Seq[VAny], VAny])(using
+      ctx: Context
+  ): VList =
+    val filteredLists = values.collect { case l: VList => l }
+    val lists =
+      if values.size == filteredLists.size then filteredLists
+      else if filteredLists.isEmpty then values.map(ListHelpers.makeIterable(_))
+      else
+        val maxSize = filteredLists.view.map(_.size).max
+        values.map {
+          case l: VList => l
+          case x        =>
+            // If one of the other elements is a list but this isn't, repeat
+            // this one to be as long as that list
+            VList.fill(maxSize)(x)
+        }
+    VList.zipMulti(lists*)(f)
+  end zipValues
 
   /** This lets us pattern match on `VList`s, silly as the implementation may
     * be.
