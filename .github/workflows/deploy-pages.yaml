@@ -38,21 +38,15 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
-      - name: Make pages directory
-        run: mkdir pages
+      - name: Scala to JS and build docs
+        run: sbt fullOptJS vyxalJVM/doc
 
-      - name: Scala to JS
-        run: sbt fullOptJS
-      - name: Move generated JS to pages/
-        run: mv js/lib/*.js pages/
-
-      - name: Move index.html to pages/
-        run: mv index.html pages/
-
-      - name: Build docs
-        run: sbt vyxalJVM/doc
-      - name: Move docs to pages directory
-        run: mv docs/ pages/docs/
+      - name: Move everything to pages/
+        run: |
+          mkdir -p pages/js/lib
+          mv index.html pages/
+          mv js/lib/*.js pages/
+          mv docs/ pages/docs/
 
       - name: Upload built HTML
         uses: actions/upload-pages-artifact@v1
