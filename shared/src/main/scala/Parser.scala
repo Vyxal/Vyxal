@@ -18,7 +18,10 @@ object Parser:
   type ParserRet[T] = Either[VyxalCompilationError, T]
 
   private def toValidName(name: String): String =
-    name.filter(_.isLetterOrDigit).dropWhile(!_.isLetter)
+    name
+      .filter(c => c.isLetterOrDigit || c.toString == "ı")
+      .replace("ı", "i")
+      .dropWhile(!_.isLetter)
 
   /** The parser takes a list of tokens and performs two sweeps of parsing:
     * structures + arity grouping and then modifiers. The first sweep deals
