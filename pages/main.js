@@ -603,7 +603,7 @@ function generateURL() {
     var footer = e_footer.doc.getValue()
 
     var url = [flags, header, code, footer, inputs];
-    return location.origin + "/#" + encode(url)
+    return location.origin + "/Vyxal/#" + encode(url)
 }
 
 // onclick event listener for sharing buttons
@@ -624,10 +624,10 @@ function shareOptions(shareType) {
             output = url
             break
         case "cmc":
-            output = `[Vyxal, ${len} byte${"s".repeat(code.length != 1)}${utfable ? '' : ' (UTF-8)'}](${url})`
+            output = `[Vyxal 3, ${len} byte${"s".repeat(code.length != 1)}${utfable ? '' : ' (UTF-8)'}](${url})`
             break
         case "post-template":
-            output = `# [Vyxal](https://github.com/Vyxal/Vyxal)${flagAppendage} ${len} byte${"s".repeat(len != 1)}${utfable ? '' : ' (UTF-8)'}
+            output = `# [Vyxal 3](https://github.com/Vyxal/Vyxal/tree/version-3)${flagAppendage} ${len} byte${"s".repeat(len != 1)}${utfable ? '' : ' (UTF-8)'}
 \`\`\`
 ${code}
 \`\`\`
