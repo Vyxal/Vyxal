@@ -16,8 +16,11 @@ object JSVyxal:
     val settings = Settings(printFn = onlinePrint)
     val globals = Globals(Inputs(inputs.split("\n").toIndexedSeq), settings)
     val ctx = Context(globals = globals)
+
+    // for flag <- flags do cfg.copy(settings = cfg.settings.withFlag(flag))
     Interpreter.execute(code)(using ctx)
 
   def onlinePrint(text: Any): Unit =
     val output = document.getElementById("output")
     output.textContent += text.toString
+end JSVyxal

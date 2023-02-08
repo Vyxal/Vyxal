@@ -39,6 +39,15 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
+      
+      - name: Scala to JS
+        run: sbt fastOptJS
+      - name: Stage changes
+        run: git add .
+      - name: Commit and push
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Reroll JS from Scala"
 
       - name: Build docs
         run: sbt vyxalJVM/doc
