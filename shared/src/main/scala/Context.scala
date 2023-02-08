@@ -50,11 +50,14 @@ class Context private (
       if stack.nonEmpty then stack.remove(stack.size - 1)
       else if inputs.nonEmpty then inputs.next()
       else
-        val temp = StdIn.readLine()
+        val temp =
+          if settings.online then settings.defaultValue.toString()
+          else StdIn.readLine()
         if temp.nonEmpty then Parser.parseInput(temp)
         else settings.defaultValue
     if settings.logLevel == LogLevel.Debug then println(s"Popped $elem")
     elem
+  end pop
 
   /** Pop n elements and wrap in a list */
   def pop(n: Int): Seq[VAny] = Seq.fill(n)(this.pop()).reverse

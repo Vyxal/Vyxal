@@ -15,13 +15,21 @@ object JSVyxal:
     // todo take functions to print to custom stdout and stderr
     val output = document.getElementById("output")
     output.textContent = ""
-    val settings = Settings(printFn = onlinePrint)
-    val globals = Globals(Inputs(inputs.split("\n").toIndexedSeq), settings)
-    val ctx = Context(globals = globals)
+    val settings = Settings(printFn = onlinePrint, online = true)
+    val globals = Globals(
+      settings = settings
+    )
+    val ctx = Context(
+      inputs = inputs.split("\n").map(Parser.parseInput).toIndexedSeq,
+      globals = globals
+    )
+
+    // println(ctx.globals.inputs.origArr.toList)
 
     for flag <- flags do settings.withFlag(flag)
     if flags.contains("l") then Interpreter.runLiterate(code)(using ctx)
     else Interpreter.execute(code)(using ctx)
+  end execute
 
   def onlinePrint(text: Any): Unit =
     val output = document.getElementById("output")

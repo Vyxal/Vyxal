@@ -1,5 +1,6 @@
 package vyxal
 
+import scala.io.StdIn
 import VNum.given
 
 /** Stuff that's shared across all contexts
@@ -114,7 +115,8 @@ case class Settings(
     rangeOffset: VNum = 0,
     numToRange: Boolean = false,
     printFn: Any => Unit = print,
-    logLevel: LogLevel = LogLevel.Normal
+    logLevel: LogLevel = LogLevel.Normal,
+    online: Boolean = false
 ):
 
   /** Add a flag to these settings
