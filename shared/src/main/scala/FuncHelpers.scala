@@ -10,9 +10,9 @@ object FuncHelpers:
       fn.arity match
         case 1 =>
           val a = ctx.pop()
-          VList(ListHelpers.makeIterable(a).map { a =>
+          ListHelpers.makeIterable(a).vmap { a =>
             Interpreter.executeFn(fn, args = Some(List(a)))
-          }*)
+          }
         case 2 =>
           val b, a = ctx.pop()
           VList(ListHelpers.makeIterable(a).zipWithIndex.map { (a, i) =>
