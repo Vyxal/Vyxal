@@ -4,7 +4,7 @@ Keywords: fact, factorial, to-upper, upper, uppercase, !
 - a: str -> a.toUpperCase()
 ---------------------
 #v (Vectorise (Element Form) [Internal Use]) (non-vectorising)
-Keywords: 
+Keywords:
 - *a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead
 ---------------------
 $ (Swap) (non-vectorising)
@@ -223,5 +223,5 @@ Description: Turn the next four elements (whether that be a structure/modifier/e
 Keywords: foldl-, reduce-, /-, fold-, reduceby-
 Description: Reduce a list by an element
 /f: reduce by element f
-      
+
 ---------------------
