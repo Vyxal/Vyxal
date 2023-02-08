@@ -47,18 +47,18 @@ class InterpreterTests extends VyxalTests:
 
   describe("Vectorisation") {
     describe("Simple monads") {
-      testMulti("#[100 | #[101 | 0#] #] vB" -> VList(4, VList(5, 0)))
+      testMulti("#[100 | #[101 | 0#] #] vB" -> VList(4, 202))
     }
 
     describe("Simple dyads") {
       testMulti(
         "#[4 | #[5 | 6#] #] 3 v;" -> VList(
           VList(4, 3),
-          VList(VList(5, 3), VList(6, 3))
+          VList(VList(5, 6), 3)
         ),
         "#[4 | #[5 | 6#] #] #[4#] v;" -> VList(
-          VList(4, 4),
-          VList(VList(5, 0), VList(6, 0))
+          VList(4, VList(4)),
+          VList(VList(5, 6), VList(4))
         )
       )
     }
@@ -81,7 +81,7 @@ class InterpreterTests extends VyxalTests:
           Modifiers
             .modifiers("v")
             .from(List(AST.Lambda(2, List.empty, AST.Command("-")))),
-          VList(-4, 1, VList(-4, -5)),
+          VList(VList(-4, -2, -6), VList(-1, 1, -3), VList(-2, -1, -6)),
           inputs = Seq(VList(0, 3, VList(2, 1)), VList(4, 2, 6))
         )
       }

@@ -10,24 +10,51 @@ object FuncHelpers:
       fn.arity match
         case 1 =>
           val a = ctx.pop()
-          Monad.vectoriseNoFill { a =>
+          VList(ListHelpers.makeIterable(a).map { a =>
             Interpreter.executeFn(fn, args = Some(List(a)))
-          }(a)
+          }*)
         case 2 =>
           val b, a = ctx.pop()
-          Dyad.vectoriseNoFill { (a, b) =>
-            Interpreter.executeFn(fn, args = Some(List(a, b)))
-          }(a, b)
+          VList(ListHelpers.makeIterable(a).zipWithIndex.map { (a, i) =>
+            Interpreter.executeFn(
+              fn,
+              args = Some(List(a, b))
+            )
+          }*)
         case 3 =>
           val c, b, a = ctx.pop()
-          Triad.vectoriseNoFill { (a, b, c) =>
-            Interpreter.executeFn(fn, args = Some(List(a, b, c)))
-          }(a, b, c)
+          val temp = ListHelpers.makeIterable(b).zipWithIndex.map { (b, i) =>
+            VList(b, ListHelpers.makeIterable(c)(i))
+          }
+          VList(
+            ListHelpers
+              .makeIterable(a)
+              .zipWithIndex
+              .map((a, i) =>
+                Interpreter
+                  .executeFn(fn, args = Some(List(a, temp(i)(0), temp(i)(1))))
+              )*
+          )
         case 4 =>
           val d, c, b, a = ctx.pop()
-          Tetrad.vectoriseNoFill { (a, b, c, d) =>
-            Interpreter.executeFn(fn, args = Some(List(a, b, c, d)))
-          }(a, b, c, d)
+          val temp = ListHelpers.makeIterable(b).zipWithIndex.map { (b, i) =>
+            VList(
+              b,
+              ListHelpers.makeIterable(c)(i),
+              ListHelpers.makeIterable(d)(i)
+            )
+          }
+          VList(
+            ListHelpers
+              .makeIterable(a)
+              .zipWithIndex
+              .map((a, i) =>
+                Interpreter.executeFn(
+                  fn,
+                  args = Some(List(a, temp(i)(0), temp(i)(1), temp(i)(2)))
+                )
+              )*
+          )
         case _ =>
           throw UnsupportedOperationException(
             s"Vectorising functions of arity ${fn.arity} not possible"

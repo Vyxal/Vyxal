@@ -31,6 +31,20 @@ class VList private (val lst: Seq[VAny])
         .map(f(_, _))
     )
 
+  /** Zip two VLists together without a function. If one is longer than the
+    * other, keep the longer one's elements as-is.
+    */
+
+  def zip(other: VList)(using ctx: Context): VList =
+    val temp = lst
+      .zipAll(
+        other.lst,
+        ctx.settings.defaultValue,
+        ctx.settings.defaultValue
+      )
+      .map(VList(_, _))
+    VList(temp*)
+
   /** Get the element at index `ind` */
   override def apply(ind: Int): VAny =
     if ind < 0 then

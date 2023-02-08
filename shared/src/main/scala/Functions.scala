@@ -81,22 +81,13 @@ object Dyad extends ImplHelpers[PartialDyad, Dyad](2):
 
   override def vectoriseNoFill(f: Dyad): Dyad =
     lazy val res: Dyad = {
-      case (lhs: VAtom, rhs: VAtom) =>
-        println("DYAD VATOM, VATOM CASE")
-        println(lhs)
-        println(rhs)
-        f(lhs, rhs)
+      case (lhs: VAtom, rhs: VAtom) => f(lhs, rhs)
       case (lhs: VAtom, rhs: VList) => rhs.vmap(res(lhs, _))
-      case (lhs: VList, rhs: VAtom) =>
-        println("DYAD VLIST, VATOM CASE")
-        println(lhs)
-        println(rhs)
-        lhs.vmap(res(_, rhs))
+      case (lhs: VList, rhs: VAtom) => lhs.vmap(res(_, rhs))
       case (lhs: VList, rhs: VList) => lhs.zipWith(rhs)(res(_, _))
     }
 
     res
-  end vectoriseNoFill
 end Dyad
 
 object Triad extends ImplHelpers[PartialTriad, Triad](3):
