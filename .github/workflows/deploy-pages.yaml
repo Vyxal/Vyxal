@@ -39,7 +39,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-      
+
       - name: Scala to JS
         run: sbt fastOptJS
       - name: Stage changes
