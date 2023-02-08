@@ -13,12 +13,15 @@ object JSVyxal:
   def execute(code: String, inputs: String, flags: String): Unit =
     // todo take flags to set settings
     // todo take functions to print to custom stdout and stderr
+    val output = document.getElementById("output")
+    output.textContent = ""
     val settings = Settings(printFn = onlinePrint)
     val globals = Globals(Inputs(inputs.split("\n").toIndexedSeq), settings)
     val ctx = Context(globals = globals)
 
-    // for flag <- flags do cfg.copy(settings = cfg.settings.withFlag(flag))
-    Interpreter.execute(code)(using ctx)
+    for flag <- flags do settings.withFlag(flag)
+    if flags.contains("l") then Interpreter.runLiterate(code)(using ctx)
+    else Interpreter.execute(code)(using ctx)
 
   def onlinePrint(text: Any): Unit =
     val output = document.getElementById("output")

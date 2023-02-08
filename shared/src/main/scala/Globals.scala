@@ -130,6 +130,7 @@ case class Settings(
     case 'M' => this.copy(rangeStart = 0)
     case 'm' => this.copy(rangeOffset = -1)
     case 'Ṁ' => this.copy(rangeStart = 0, rangeOffset = -1)
+    case 'l' => this
     // todo implement the others
     case _ => throw IllegalArgumentException(s"$flag is an invalid flag")
 end Settings
