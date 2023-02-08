@@ -21,6 +21,12 @@ Would turn into
 100 λ3 5 ; % 0 =} M λ/× ["Fizz"|"Buzz"}} M
 ```
 
+## Using Literate Mode
+
+Literate mode is avaliable with the `-l` flag. For example, `vyxal -l fizzbuzz.vyxal` will run the code
+in `fizzbuzz.vyxal` in literate mode. You can also use the `--literate` flag, which is the same as
+`-l`.
+
 ## Finer Details
 
 ### Keywords
