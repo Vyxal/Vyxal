@@ -32,7 +32,7 @@ object Modifiers:
       "Vectorise",
       """|Vectorises
          |vf: f but vectorised""".stripMargin,
-      List("vectorise-", "vec-")
+      List("vectorise-", "vec-", "v-")
     ) { case List(ast) =>
       val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))
       AST.makeSingle(lambdaAst, AST.Command("#v"))
@@ -42,7 +42,7 @@ object Modifiers:
       """|Reduce a list by an element
          |/f: reduce by element f
       """.stripMargin,
-      List("foldl-", "reduce-", "/-")
+      List("foldl-", "reduce-", "/-", "fold-", "reduceby-")
     ) { case List(ast) =>
       val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
       AST.makeSingle(lambdaAst, AST.Command("R"))

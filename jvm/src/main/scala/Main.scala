@@ -23,7 +23,9 @@ case class CLIConfig(
     code: Option[String] = None,
     inputs: List[String] = List.empty,
     printDocs: Boolean = false,
+    printLiterate: Boolean = false,
     printHelp: Boolean = false,
+    runLiterate: Boolean = false,
     settings: Settings = Settings()
 )
 
@@ -43,6 +45,10 @@ object Main:
           printDocs()
           return
 
+        if config.printLiterate then
+          printLiterateMap()
+          return
+
         config.file.foreach { file =>
           val source = io.Source.fromFile(config.file.get)
           try
@@ -52,11 +58,12 @@ object Main:
         }
 
         config.code.foreach { code =>
-          Interpreter.execute(code)
+          if config.runLiterate then Interpreter.runLiterate(code)
+          else Interpreter.execute(code)
         }
 
         if config.file.nonEmpty || config.code.nonEmpty then return
-        else Repl.startRepl()
+        else Repl.startRepl(config.runLiterate)
       case None => ???
     end match
   end main
@@ -89,6 +96,35 @@ object Main:
           println("---------------------")
       }
 
+  private def printLiterateMap(): Unit =
+    println("package vyxal\n")
+    println("val literateModeMappings = Map(\n")
+    Elements.elements.values.toSeq
+      .sortBy { elem =>
+        // Have to use tuple in case of digraphs
+        (
+          vyxal.CODEPAGE.indexOf(elem.symbol.charAt(0)),
+          vyxal.CODEPAGE.indexOf(elem.symbol.substring(1))
+        )
+      }
+      .foreach {
+        case Element(
+              symbol,
+              name,
+              keywords,
+              arity,
+              vectorises,
+              overloads,
+              impl
+            ) =>
+          for keyword <- keywords do println(s"""  "$keyword" -> "$symbol",""")
+      }
+    Modifiers.modifiers.foreach { case (name, info) =>
+      for keyword <- info.keywords do println(s"""  "$keyword" -> "$name",""")
+    }
+    println(")")
+  end printLiterateMap
+
   private val builder = OParser.builder[CLIConfig]
 
   private val parser =
@@ -119,6 +155,14 @@ object Main:
       opt[Unit]('d', "docs")
         .action((_, cfg) => cfg.copy(printDocs = true))
         .text("Print documentation for elements and exit")
+        .optional(),
+      opt[Unit]('D', "docsLiterate")
+        .action((_, cfg) => cfg.copy(printLiterate = true))
+        .text("Print literate mode mappings and exit")
+        .optional(),
+      opt[Unit]('l', "literate")
+        .action((_, cfg) => cfg.copy(runLiterate = true))
+        .text("Enable literate mode")
         .optional(),
       arg[String]("<input>...")
         .unbounded()
@@ -187,7 +231,7 @@ object Main:
       flag('O', "disable-implicit-output", "Disable implicit output"),
       flag('o', "force-implicit-output", "Force implicit output"),
       flag(
-        'l',
+        '!',
         "print-length",
         "Print length of top of stack on end of execution"
       ),

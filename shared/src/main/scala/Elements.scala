@@ -380,7 +380,7 @@ object Elements:
       Dyad,
       "%",
       "Modulo | String Formatting",
-      List("mod", "modulo", "str-format", "format", "%"),
+      List("mod", "modulo", "str-format", "format", "%", "strfmt"),
       "a: num, b: num -> a % b",
       "a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)"
     ) {
@@ -455,7 +455,7 @@ object Elements:
     val print = addDirect(
       ",",
       "Print",
-      List("print", "puts", "out"),
+      List("print", "puts", "out", "println"),
       None,
       "a -> printed to stdout"
     ) { ctx ?=>
