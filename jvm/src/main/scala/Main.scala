@@ -99,7 +99,7 @@ object Main:
 
     Modifiers.modifiers.foreach { case (name, info) =>
       print(s"$name\n")
-      println(s"Keywords: ${info.keywords.mkString(", ")}")
+      println(s"Keywords:${info.keywords.mkString(" ", ", ", "")}")
       println(s"Description: ${info.description}")
       println("---------------------")
     }
