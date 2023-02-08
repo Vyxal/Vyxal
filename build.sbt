@@ -69,7 +69,8 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     assembly / assemblyJarName := s"vyxal-$vyxalVersion.jar",
     libraryDependencies ++= Seq(
       // For command line parsing
-      "com.github.scopt" %% "scopt" % "4.1.0"
+      "com.github.scopt" %% "scopt" % "4.1.0",
+      "org.yaml" % "snakeyaml" % "1.33" % Test
     )
   )
   .jsSettings(
