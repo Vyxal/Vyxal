@@ -28,8 +28,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          ref: 'scaladoc'
 
       - name: Setup Pages
         uses: actions/configure-pages@v2
@@ -41,13 +39,14 @@ jobs:
           distribution: 'adopt'
 
       - name: Scala to JS
-        run: sbt fastOptJS
+        run: sbt fullOptJS
+      - name: Move generated JS to pages/
+        run: mv js/lib/*.js pages/
 
       - name: Build docs
         run: sbt vyxalJVM/doc
-
-        # Move docs to pages directory
-      - run: mkdir pages && mv docs/ pages/
+      - name: Move docs to pages directory
+        run: mkdir pages && mv docs/ pages/docs/
 
       - name: Upload built HTML
         uses: actions/upload-pages-artifact@v1
