@@ -45,7 +45,7 @@ jobs:
         run: |
           mkdir -p pages/js/lib
           mv index.html pages/
-          mv js/lib/*.js pages/
+          mv js/lib/*.js pages/js/lib
           mv docs/ pages/docs/
 
       - name: Upload built HTML
