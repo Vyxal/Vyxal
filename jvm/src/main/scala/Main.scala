@@ -90,7 +90,7 @@ object Main:
           print(
             s"$symbol ($name) (${if vectorises then "" else "non-"}vectorising)\n"
           )
-          println(s"Keywords: ${keywords.mkString(", ")}")
+          println(s"Keywords:${keywords.mkString(" ", ", ", "")}")
           overloads.foreach { overload =>
             println(s"- $overload")
           }
