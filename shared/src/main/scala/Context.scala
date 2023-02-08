@@ -34,7 +34,8 @@ class Context private (
     private var inputs: Inputs = Inputs(),
     private val parent: Option[Context] = None,
     val globals: Globals = Globals(),
-    val testMode: Boolean = false
+    val testMode: Boolean = false,
+    var onlineOutput: String = ""
 ):
   def settings: Settings = if testMode then
     Settings(endPrintMode = EndPrintMode.None)
@@ -151,6 +152,11 @@ class Context private (
     globals,
     testMode
   )
+
+  def getTopCxt(): Context =
+    parent match
+      case Some(p) => p.getTopCxt()
+      case None    => this
 end Context
 
 object Context:
@@ -205,4 +211,5 @@ object Context:
       currCtx.testMode
     )
   end makeFnCtx
+
 end Context

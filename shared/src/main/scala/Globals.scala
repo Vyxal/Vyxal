@@ -114,7 +114,6 @@ case class Settings(
     rangeStart: VNum = 1,
     rangeOffset: VNum = 0,
     numToRange: Boolean = false,
-    printFn: Any => Unit = print,
     logLevel: LogLevel = LogLevel.Normal,
     online: Boolean = false
 ):

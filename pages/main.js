@@ -725,7 +725,7 @@ window.addEventListener("DOMContentLoaded", e => {
         runButton.innerHTML = '<i class="fa fa-cog fa-spin fa-2x"></i>';
         $('output').value = '';
         $('debug').value = '';
-        await Vyxal.execute(
+        output.value = Vyxal.execute(
             (e_header.doc.getValue() ? e_header.doc.getValue() + '\n' : '')
             + e_code.doc.getValue() +
             (e_footer.doc.getValue() ? '\n' + e_footer.doc.getValue() : ''),
