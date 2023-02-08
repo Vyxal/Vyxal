@@ -118,6 +118,7 @@ object Interpreter:
     * @param popArgs
     *   Whether to pop the arguments from the stack (instead of merely peeking)
     */
+  @SuppressWarnings(Array("scalafix:DisableSyntax.null"))
   def executeFn(
       fn: VFun,
       ctxVarPrimary: Option[VAny] = None,
