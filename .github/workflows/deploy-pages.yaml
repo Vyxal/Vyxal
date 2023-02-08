@@ -42,7 +42,7 @@ jobs:
         run: sbt fullOptJS
       - name: Move generated JS to pages/
         run: mv js/lib/*.js pages/
-        
+
       - name: Move index.html to pages/
         run: mv index.html pages/
 
