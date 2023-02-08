@@ -19,7 +19,7 @@ object Parser:
 
   private def toValidName(name: String): String =
     name
-      .filter(c => c.isLetterOrDigit || c.toString == "ı")
+      .filter(c => c.isLetterOrDigit || c == 'ı')
       .replace("ı", "i")
       .dropWhile(!_.isLetter)
 
