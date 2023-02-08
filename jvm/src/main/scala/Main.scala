@@ -90,11 +90,20 @@ object Main:
           print(
             s"$symbol ($name) (${if vectorises then "" else "non-"}vectorising)\n"
           )
+          println(s"Keywords: ${keywords.mkString(", ")}")
           overloads.foreach { overload =>
             println(s"- $overload")
           }
           println("---------------------")
       }
+
+    Modifiers.modifiers.foreach { case (name, info) =>
+      print(s"$name\n")
+      println(s"Keywords: ${info.keywords.mkString(", ")}")
+      println(s"Description: ${info.description}")
+      println("---------------------")
+    }
+  end printDocs
 
   private def printLiterateMap(): Unit =
     println("package vyxal\n")

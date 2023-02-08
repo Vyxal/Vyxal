@@ -66,7 +66,7 @@ object MiscHelpers:
     var previous = operating(1)
 
     while remaining.length + operating.length != 1 do
-      val result = byFun.execute(current, previous, operating.reverse)
+      val result = byFun.execute(previous, current, operating)
       previous = remaining.headOption.getOrElse(result)
       current = result
       operating = result +: remaining.take(byFun.arity - 1)
