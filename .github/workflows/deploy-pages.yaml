@@ -3,7 +3,7 @@ name: Generate docs
 on:
   push:
     branches:
-      - scaladoc # todo change this to the "main" v3 branch
+      - v3-online-interpreter # todo change this to the "main" v3 branch
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -28,8 +28,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          ref: 'scaladoc'
 
       - name: Setup Pages
         uses: actions/configure-pages@v2
@@ -40,11 +38,15 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
-      - name: Build docs
-        run: sbt vyxalJVM/doc
+      - name: Scala to JS and build docs
+        run: sbt fullOptJS vyxalJVM/doc
 
-        # Move docs to pages directory
-      - run: mkdir pages && mv docs/ pages/
+      - name: Move everything to pages/
+        run: |
+          mkdir -p pages/js/lib
+          mv index.html pages/
+          mv js/lib/*.js pages/js/lib
+          mv docs/ pages/docs/
 
       - name: Upload built HTML
         uses: actions/upload-pages-artifact@v1
