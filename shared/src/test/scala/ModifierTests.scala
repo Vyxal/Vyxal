@@ -18,3 +18,17 @@ class ModifierTests extends VyxalTests:
       """#["abc"|"def"|"ghi"#] /+""" -> "abcdefghi"
     )
   }
+
+  describe("Function grouping modifiers") {
+    testMulti(
+      "#[1|2|3#] ′× M" -> VList(1, 4, 9),
+      "#[1|2|3#] ′2× M" -> VList(2, 4, 6),
+      "#[1|2|3#] ″×+ M" -> VList(2, 6, 12),
+      "#[1|2|3#] ″2×+ M" -> VList(3, 6, 9),
+      "#[1|2|3#] ‴×++ M" -> VList(3, 8, 15),
+      "#[1|2|3#] ‴2×++ M" -> VList(4, 8, 12),
+      "#[1|2|3#] ⁴×++× M" -> VList(3, 16, 45),
+      "#[1|2|3#] ⁴2×++× M" -> VList(4, 16, 36)
+    )
+  }
+end ModifierTests
