@@ -41,8 +41,4 @@ object JSVyxal:
   def getSBCSified(code: String): String =
     litLex(code)
 
-  @JSExport
-  def getOutput(): String =
-    output.toString()
-
 end JSVyxal
