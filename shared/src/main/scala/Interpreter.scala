@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.impls.Elements
+import vyxal.MiscHelpers.{vyPrint, vyPrintln}
 
 import VNum.given
 
@@ -17,7 +18,7 @@ object Interpreter:
         execute(ast)
         // todo implicit output according to settings
         if !ctx.isStackEmpty && ctx.settings.endPrintMode == EndPrintMode.Default
-        then println(ctx.peek)
+        then vyPrintln(ctx.peek)
       case Left(error) =>
         throw new Error(s"Error while executing $code: $error")
 

@@ -123,8 +123,8 @@ object MiscHelpers:
   end unpackHelper
 
   def vyPrint(x: VAny)(using ctx: Context): Unit =
-    // todo change later
-    ctx.settings.printFn(x)
+    if ctx.settings.online then ctx.getTopCxt().onlineOutput += x.toString
+    else print(x.toString)
 
   def vyPrintln(x: VAny)(using Context): Unit =
     vyPrint(x)

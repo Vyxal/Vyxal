@@ -34,7 +34,8 @@ class Context private (
     private var inputs: Inputs = Inputs(),
     private val parent: Option[Context] = None,
     val globals: Globals = Globals(),
-    val testMode: Boolean = false
+    val testMode: Boolean = false,
+    var onlineOutput: String = ""
 ):
   def settings: Settings = if testMode then
     Settings(endPrintMode = EndPrintMode.None)
@@ -50,11 +51,14 @@ class Context private (
       if stack.nonEmpty then stack.remove(stack.size - 1)
       else if inputs.nonEmpty then inputs.next()
       else
-        val temp = StdIn.readLine()
+        val temp =
+          if settings.online then settings.defaultValue.toString()
+          else StdIn.readLine()
         if temp.nonEmpty then Parser.parseInput(temp)
         else settings.defaultValue
     if settings.logLevel == LogLevel.Debug then println(s"Popped $elem")
     elem
+  end pop
 
   /** Pop n elements and wrap in a list */
   def pop(n: Int): Seq[VAny] = Seq.fill(n)(this.pop()).reverse
@@ -148,6 +152,11 @@ class Context private (
     globals,
     testMode
   )
+
+  def getTopCxt(): Context =
+    parent match
+      case Some(p) => p.getTopCxt()
+      case None    => this
 end Context
 
 object Context:
@@ -202,4 +211,5 @@ object Context:
       currCtx.testMode
     )
   end makeFnCtx
+
 end Context
