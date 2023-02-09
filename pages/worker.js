@@ -1,5 +1,8 @@
-
+importScripts("../js/lib/scalajs-3.0.0.js")
 self.addEventListener('message', function (e) {
     var data = e.data;
-    Vyxal.execute(data.code, data.inputs, data.flags)
+    if (data.mode == "stop") {
+        this.close();
+    }
+    this.postMessage(Vyxal.execute(data.code, data.inputs, data.flags))
 })

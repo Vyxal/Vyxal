@@ -15,7 +15,7 @@ object JSVyxal:
     val settings = flags.foldLeft(Settings(online = true))(_.withFlag(_))
     val globals = Globals(
       settings = settings,
-      printFn = output.append
+      printFn = (x: VAny) => output.append(x.toString)
     )
     val ctx = Context(
       inputs = inputs.split("\n").map(Parser.parseInput).toIndexedSeq,

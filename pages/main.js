@@ -1,4 +1,11 @@
 const $ = x => document.getElementById(x)
+
+worker = new Worker('/pages/worker.js');
+worker.onmessage = function (e) {
+    output.value = e.data;
+    expandBoxes()
+}
+
 var codepage = "λƛ¬∧⟑∨⟇÷×«␤»°•ß†€"
 codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨␠"
 codepage += "!\"#$%&'()*+,-./01"
@@ -721,19 +728,29 @@ window.addEventListener("DOMContentLoaded", e => {
             location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
         }
         let runButton = $('run_button');
-        if (runButton.innerHTML.includes('fa-spin')) return;
+        if (runButton.innerHTML.includes('fa-spin')) {
+            worker.postMessage({ "mode": "stop" })
+            return;
+        }
         runButton.innerHTML = '<i class="fa fa-cog fa-spin fa-2x"></i>';
         $('output').value = '';
         $('debug').value = '';
-        output.value = Vyxal.execute(
-            (e_header.doc.getValue() ? e_header.doc.getValue() + '\n' : '')
-            + e_code.doc.getValue() +
-            (e_footer.doc.getValue() ? '\n' + e_footer.doc.getValue() : ''),
-            $('inputs').value,
-            $('flag').value,
-        )
-        runButton.innerHTML = '<i class="fa fa-play-circle fa-2x"></i>';
-        expandBoxes()
+
+        worker = new Worker('/pages/worker.js');
+        worker.onmessage = function (e) {
+            output.value = e.data;
+            expandBoxes()
+        }
+        worker.postMessage({
+            "mode": "run",
+            "code": (e_header.doc.getValue() ? e_header.doc.getValue() + '\n' : '')
+                + e_code.doc.getValue() +
+                (e_footer.doc.getValue() ? '\n' + e_footer.doc.getValue() : ''),
+            "inputs": $('inputs').value,
+            "flags": $('flag').value,
+        })
+        runButton.innerHTML = '<i class="fas fa-play-circle"></i>';
+
     }
 
     run.addEventListener('click', do_run)
