@@ -474,7 +474,8 @@ object Elements:
         "a->b",
         "regex-match?",
         "re-match?",
-        "has-regex-match?"
+        "has-regex-match?",
+        "fold"
       ),
       "a: fun, b: any -> reduce iterable b by function a",
       "a: any, b: fun -> reduce iterable a by function b",

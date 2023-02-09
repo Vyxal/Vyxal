@@ -40,8 +40,7 @@ object Modifiers:
     "/" -> Modifier(
       "Foldl | Reduce By",
       """|Reduce a list by an element
-         |/f: reduce by element f
-      """.stripMargin,
+         |/f: reduce by element f""".stripMargin,
       List("foldl-", "reduce-", "/-", "fold-", "reduceby-")
     ) { case List(ast) =>
       val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
