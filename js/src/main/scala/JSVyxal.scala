@@ -42,6 +42,6 @@ object JSVyxal:
 
   @JSExport
   def getCodepage(): String =
-    Lexer.CODEPAGE
+    vyxal.CODEPAGE
 
 end JSVyxal
