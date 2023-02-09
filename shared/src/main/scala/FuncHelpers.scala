@@ -9,25 +9,24 @@ object FuncHelpers:
     val res =
       fn.arity match
         case 1 =>
-          val a = ctx.pop()
-          Monad.vectoriseNoFill { a =>
-            Interpreter.executeFn(fn, args = Some(List(a)))
-          }(a)
+          ListHelpers.makeIterable(ctx.pop()).vmap { a =>
+            Interpreter.executeFn(fn, args = List(a))
+          }
         case 2 =>
           val b, a = ctx.pop()
-          Dyad.vectoriseNoFill { (a, b) =>
-            Interpreter.executeFn(fn, args = Some(List(a, b)))
-          }(a, b)
+          ListHelpers.makeIterable(a).vmap { a =>
+            Interpreter.executeFn(fn, args = List(a, b))
+          }
         case 3 =>
           val c, b, a = ctx.pop()
-          Triad.vectoriseNoFill { (a, b, c) =>
-            Interpreter.executeFn(fn, args = Some(List(a, b, c)))
-          }(a, b, c)
+          VList.zipValues(a, b, c) { args =>
+            Interpreter.executeFn(fn, args = args)
+          }
         case 4 =>
           val d, c, b, a = ctx.pop()
-          Tetrad.vectoriseNoFill { (a, b, c, d) =>
-            Interpreter.executeFn(fn, args = Some(List(a, b, c, d)))
-          }(a, b, c, d)
+          VList.zipValues(a, b, c, d) { args =>
+            Interpreter.executeFn(fn, args = args)
+          }
         case _ =>
           throw UnsupportedOperationException(
             s"Vectorising functions of arity ${fn.arity} not possible"

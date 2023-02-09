@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.impls.Elements
+import vyxal.MiscHelpers.{vyPrint, vyPrintln}
 
 import VNum.given
 
@@ -17,7 +18,7 @@ object Interpreter:
         execute(ast)
         // todo implicit output according to settings
         if !ctx.isStackEmpty && ctx.settings.endPrintMode == EndPrintMode.Default
-        then println(ctx.peek)
+        then vyPrintln(ctx.peek)
       case Left(error) =>
         throw new Error(s"Error while executing $code: $error")
 
@@ -118,17 +119,19 @@ object Interpreter:
     * @param popArgs
     *   Whether to pop the arguments from the stack (instead of merely peeking)
     */
+  @SuppressWarnings(Array("scalafix:DisableSyntax.null"))
   def executeFn(
       fn: VFun,
       ctxVarPrimary: Option[VAny] = None,
       ctxVarSecondary: Option[VAny] = None,
-      args: Option[Seq[VAny]] = None,
+      args: Seq[VAny] | Null = null,
       popArgs: Boolean = true
   )(using ctx: Context): VAny =
     val VFun(impl, arity, params, origCtx) = fn
-    val inputs = args
-      .getOrElse(if popArgs then ctx.pop(arity) else ctx.peek(arity))
-      .toList
+    val inputs =
+      if args != null then args
+      else if popArgs then ctx.pop(arity)
+      else ctx.peek(arity)
 
     given fnCtx: Context =
       Context.makeFnCtx(

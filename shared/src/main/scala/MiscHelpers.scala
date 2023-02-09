@@ -62,17 +62,17 @@ object MiscHelpers:
     if operating.isEmpty then return 0
     if operating.length == 1 then return operating.head
 
-    var contextVarN = operating(0)
-    var contextVarM = operating(1)
+    var current = operating(0)
+    var previous = operating(1)
 
     while remaining.length + operating.length != 1 do
-      val result = byFun.execute(contextVarM, contextVarN, operating.reverse)
-      contextVarM = remaining.headOption.getOrElse(result)
-      contextVarN = result
+      val result = byFun.execute(previous, current, operating)
+      previous = remaining.headOption.getOrElse(result)
+      current = result
       operating = result +: remaining.take(byFun.arity - 1)
       remaining = remaining.drop(byFun.arity - 1)
 
-    contextVarN
+    current
   end reduce
 
   def unpack(names: List[(String, Int)])(using ctx: Context): Unit =
@@ -123,8 +123,8 @@ object MiscHelpers:
   end unpackHelper
 
   def vyPrint(x: VAny)(using ctx: Context): Unit =
-    // todo change later
-    ctx.settings.printFn(x)
+    if ctx.settings.online then ctx.getTopCxt().onlineOutput += x.toString
+    else print(x.toString)
 
   def vyPrintln(x: VAny)(using Context): Unit =
     vyPrint(x)

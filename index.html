@@ -1,10 +1,118 @@
-<!DOCTYPE html>
-<!-- This file is only for testing to see if the JS is properly generated -->
-<html>
-  <head>
-    <title>Page Title</title>
-  </head>
-  <body>
-    <script src="out/js/fastLinkJS.dest/main.js"></script>
-  </body>
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Vyxal 3 Interpreter</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"
+    integrity="sha512-EZLkOqwILORob+p0BXZc+Vm3RgJBOe1Iq/0fiI7r/wJgzOFZMlsqTa29UEl6v6U6gsV4uIpsNZoV32YZqrCRCQ=="
+    crossorigin="anonymous" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
+  <script defer src="https://kit.fontawesome.com/646af2e33b.js" crossorigin="anonymous"></script>
+  <link rel="shortcut icon" type="image/jpg"
+    href="https://raw.githubusercontent.com/Lyxal/Vyxal/master/templates/favicon.ico">
+
+  <script defer src='https://cdn.jsdelivr.net/npm/codemirror@5.62.0/lib/codemirror.min.js'></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.62.0/lib/codemirror.min.css">
+
+  <script defer src="https://vyxal.github.io/Vylight/mode-vyxal.js"></script>
+
+  <script defer src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script defer src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script defer src="https://unpkg.com/htm@3.1.1/dist/htm.umd.js"></script>
+  <script defer src="https://unpkg.com/@popperjs/core@2"></script>
+  <script defer src="https://unpkg.com/react-popper/dist/index.umd.js"></script>
+  <script defer src="https://unpkg.com/fuzzysort@2.0.1"></script>
+  <link rel="stylesheet" href="https://vyxal.github.io/Vylight/mode-vyxal.css">
+
+  <script defer src="js\lib\scalajs-3.0.0.js"></script>
+  <script defer src="main.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <script defer src="js\lib\scalajs-3.0.0.js"></script>
+  <script defer src="pages\main.js"></script>
+  <link rel="stylesheet" type="text/css" href="pages\style.css">
+</head>
+
+<body onload="initCodeMirror(); decodeURL();  updateCount();">
+  <textarea id=dummy style="visibility: hidden;position:absolute; height: 0px; font: size 20px;"></textarea>
+  <h2 style="display: inline-block;"><a href="https://github.com/Vyxal/Vyxal/tree/version-3" target="_blank">Vyxal 3</a>
+  </h2>
+  <button id="run_button" title="Run Program" type="button" onclick="this.blur()">
+    <i class="fas fa-play-circle"></i>
+  </button>
+
+  <button id="permalink" title="Generate Permalink" type="button"
+    onclick="shareOptions('permalink'); resizeCodeBox('output')">
+    <i class="fas fa-link"></i>
+  </button>
+
+  <button id="post-template" title="Generate Code Golf Submission" type="button"
+    onclick="shareOptions('post-template'); resizeCodeBox('output')">
+    <i class="fas fa-medal"></i>
+  </button>
+
+  <button id="markdown" title="Generate Inline Markdown" type="button"
+    onclick="shareOptions('markdown'); resizeCodeBox('output')">
+    <i class="fab fa-markdown"></i>
+  </button>
+
+  <button id="cmc" title="Generate CMC Markdown" type="button" onclick="shareOptions('cmc'); resizeCodeBox('output')">
+    <i class="fas fa-comment"></i>
+  </button>
+
+  <button id="sbcsify" title="Turn Literate into SBCS" type="button"
+    onclick="Vyxal.getSBCSified(e_code.doc.getValue()); resizeCodeBox('output')">
+    <i class="fas fa-code"></i>
+  </button>
+
+  <button id="clear" title="Clear all fields">
+    <i class="fas fa-redo"></i>
+  </button>
+
+  <details id="flag-detail">
+    <summary>Flags</summary>
+    <input type="text" name="flags" id="flag" style="min-height: 2em;">
+  </details>
+
+  <details id="header-detail">
+    <summary>Header</summary>
+    <textarea id="header" name="header" oninput="resizeCodeBox('header')"></textarea>
+  </details>
+
+  <details open id="code-detail">
+    <summary id="code-count">Code: 0 bytes</summary>
+    <textarea id="code" name="code" oninput="resizeCodeBox('code'); updateCount()" onkeyup="updateCount()"></textarea>
+  </details>
+
+  <details id="footer-detail">
+    <summary>Footer</summary>
+    <textarea id="footer" name="footer"></textarea>
+  </details>
+
+  <details open id="inputs-detail">
+    <summary>Inputs</summary>
+    <textarea id="inputs" name="inputs" oninput="resizeCodeBox('inputs')"></textarea>
+  </details>
+
+  <details id="output-detail">
+    <summary style="display: inline-block;">Output</summary>
+    <button onclick="copyToClipboard('output')" style="height:auto; display: inline-block;" type="button">Click to
+      copy</button>
+    <div id="html-rendered-output" hidden>
+    </div>
+    <textarea id="output" value="" readonly></textarea>
+  </details>
+
+  <details id="debug-detail">
+    <summary>Debug</summary>
+    <textarea value="" id="debug" readonly></textarea>
+  </details>
+</body>
+
 </html>
