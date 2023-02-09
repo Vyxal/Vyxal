@@ -1,37 +1,10 @@
 const $ = x => document.getElementById(x)
 
-var codepage = "λƛ¬∧⟑∨⟇÷×«␤»°•ß†€"
-codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨␠"
-codepage += "!\"#$%&'()*+,-./01"
-codepage += "23456789:;<=>?@A"
-codepage += "BCDEFGHIJKLMNOPQ"
-codepage += "RSTUVWXYZ[\\]`^_abc"
-codepage += "defghijklmnopqrs"
-codepage += "tuvwxyz{|}~↑↓∴∵›"
-codepage += "‹∷¤ð→←βτȧḃċḋėḟġḣ"
-codepage += "ḭŀṁṅȯṗṙṡṫẇẋẏż√⟨⟩"
-codepage += "‛₀₁₂₃₄₅₆₇₈¶⁋§ε¡"
-codepage += "∑¦≈µȦḂĊḊĖḞĠḢİĿṀṄ"
-codepage += "ȮṖṘṠṪẆẊẎŻ₌₍⁰¹²∇⌈"
-codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
-codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
-codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
+var codepage = Vyxal.getCodepage()
 
 search = window
 glyphQuery = String.fromCharCode(0162, 105, 0143, 107)
 this.prevQuery = ""
-secret = "dQw4"
-secret += secret[2]
-temp = "9WgXc"
-secret += temp + secret[1]
-temp = "out"
-temp += temp[1] + "."
-temp += "be"
-temp = "y" + temp
-temp = codepage[47] + temp
-temp = codepage[115] + codepage[58] + temp[0] + temp
-secret = "tp" + temp + "/" + secret
-secret = "h" + codepage[116] + secret
 
 const aliases = {
     "λ": ["la", "`l", "A\\"],

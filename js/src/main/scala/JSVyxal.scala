@@ -40,4 +40,8 @@ object JSVyxal:
   def getSBCSified(code: String): String =
     litLex(code)
 
+  @JSExport
+  def getCodepage(): String =
+    Lexer.CODEPAGE
+
 end JSVyxal
