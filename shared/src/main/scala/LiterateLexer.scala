@@ -23,6 +23,7 @@ val hardcodedKeywords = Map(
   "else" -> "|",
   "do-to-each" -> "(",
   "body" -> "|",
+  "do" -> "|",
   "branch" -> "|",
   "close-all" -> "]"
 )
@@ -43,10 +44,10 @@ object LiterateLexer extends RegexParsers:
 
   private def decimalRegex = raw"((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)"
   def number: Parser[LiterateToken] =
-    raw"($decimalRegex[ij]$decimalRegex?)|([ij]$decimalRegex)|$decimalRegex|([ij]( |$$))".r ^^ {
+    raw"(${decimalRegex}i$decimalRegex?)|(i$decimalRegex)|$decimalRegex|(i( |$$))".r ^^ {
       value =>
         AlreadyCode(
-          value.replace("i", "ı").replace("j", "ı")
+          value.replace("i", "ı")
         )
     }
 
@@ -63,12 +64,12 @@ object LiterateLexer extends RegexParsers:
   }
 
   def lambdaBlock: Parser[LiterateToken] =
-    "{" ~> rep(lambdaBlock | """(#}|[^{}])+""".r) <~ "}" ^^ {
-      body => LambdaBlock(body)
+    "{" ~> rep(lambdaBlock | """(#}|[^{}])+""".r) <~ "}" ^^ { body =>
+      LambdaBlock(body)
     }
   def normalGroup: Parser[LiterateToken] =
-    "(" ~> rep(normalGroup | """[^()]+""".r) <~ ")" ^^ {
-      body => Word(sbcsify(body.map(recHelp).mkString))
+    "(" ~> rep(normalGroup | """[^()]+""".r) <~ ")" ^^ { body =>
+      Word(sbcsify(body.map(recHelp).mkString))
     }
 
   def list: Parser[LiterateToken] =
