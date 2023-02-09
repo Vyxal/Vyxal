@@ -89,6 +89,7 @@ val literateModeMappings = Map(
   "regex-match?" -> "R",
   "re-match?" -> "R",
   "has-regex-match?" -> "R",
+  "fold" -> "R",
   "pop" -> "_",
   "discard" -> "_",
   "to-binary" -> "b",

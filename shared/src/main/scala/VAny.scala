@@ -45,7 +45,7 @@ case class VFun(
       this,
       Some(contextVarM),
       Some(contextVarN),
-      Some(args)
+      args = args
     )
 
   def apply(args: VAny*)(using ctx: Context): VAny =
