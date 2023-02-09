@@ -3,7 +3,7 @@ name: Generate docs
 on:
   push:
     branches:
-      - v3-online-interpreter # todo change this to the "main" v3 branch
+      - version-3
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
