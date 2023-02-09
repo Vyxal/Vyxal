@@ -1,5 +1,6 @@
 package vyxal
 
+import scala.annotation.static
 import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 import scala.scalajs.js.JSConverters.*
@@ -7,11 +8,11 @@ import scala.scalajs.js.JSConverters.*
 /** A bridge between the interpreter and JS */
 @JSExportTopLevel("Vyxal")
 object JSVyxal:
+  val output: StringBuilder = StringBuilder()
   @JSExport
   def execute(code: String, inputs: String, flags: String): String =
     // todo take flags to set settings
     // todo take functions to print to custom stdout and stderr
-    val output = StringBuilder()
     val settings = flags.foldLeft(Settings(online = true))(_.withFlag(_))
     val globals = Globals(
       settings = settings,
@@ -31,4 +32,9 @@ object JSVyxal:
   @JSExport
   def getSBCSified(code: String): String =
     litLex(code)
+
+  @JSExport
+  def getOutput(): String =
+    output.toString()
+
 end JSVyxal

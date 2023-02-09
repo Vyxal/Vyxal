@@ -3,7 +3,9 @@ const $ = x => document.getElementById(x)
 worker = new Worker('/pages/worker.js');
 worker.onmessage = function (e) {
     output.value = e.data;
+    runButton.innerHTML = '<i class="fas fa-play-circle"></i>';
     expandBoxes()
+
 }
 
 var codepage = "λƛ¬∧⟑∨⟇÷×«␤»°•ß†€"
@@ -729,16 +731,22 @@ window.addEventListener("DOMContentLoaded", e => {
         }
         let runButton = $('run_button');
         if (runButton.innerHTML.includes('fa-spin')) {
-            worker.postMessage({ "mode": "stop" })
+            console.log("Stopping")
+            output.value = Vyxal.getOutput();
+            worker.terminate()
+            runButton.innerHTML = '<i class="fas fa-play-circle"></i>';
+            expandBoxes()
             return;
         }
-        runButton.innerHTML = '<i class="fa fa-cog fa-spin fa-2x"></i>';
+        runButton.innerHTML = '<i class="fa fa-cog fa-spin"></i>';
+        console.log
         $('output').value = '';
         $('debug').value = '';
 
         worker = new Worker('/pages/worker.js');
         worker.onmessage = function (e) {
             output.value = e.data;
+            runButton.innerHTML = '<i class="fas fa-play-circle"></i>';
             expandBoxes()
         }
         worker.postMessage({
@@ -749,8 +757,6 @@ window.addEventListener("DOMContentLoaded", e => {
             "inputs": $('inputs').value,
             "flags": $('flag').value,
         })
-        runButton.innerHTML = '<i class="fas fa-play-circle"></i>';
-
     }
 
     run.addEventListener('click', do_run)
