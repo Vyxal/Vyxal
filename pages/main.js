@@ -2,10 +2,11 @@ const $ = x => document.getElementById(x)
 
 worker = new Worker('/pages/worker.js');
 worker.onmessage = function (e) {
-    output.value = e.data;
-    runButton.innerHTML = '<i class="fas fa-play-circle"></i>';
-    expandBoxes()
-
+    if (e.data.command == "done") { runButton.innerHTML = '<i class="fas fa-play-circle"></i>'; }
+    else {
+        output.value += e.data.val; resizeCodeBox("output");
+        expandBoxes()
+    }
 }
 
 var codepage = "λƛ¬∧⟑∨⟇÷×«␤»°•ß†€"
@@ -722,32 +723,41 @@ window.addEventListener("DOMContentLoaded", e => {
     const stdin = document.getElementById("inputs")
     const flags = document.getElementById("flag")
     const output = document.getElementById("output")
-    const extra = document.getElementById("extra")
+    const extra = document.getElementById("debug")
     const filter = document.getElementById("filterBox")
 
     async function do_run() {
+        timeout = 10000
+        if (flags.value.includes("5")) {
+            timeout = 5000;
+        } else if (flags.value.includes("b")) {
+            timeout = 15000;
+        } else if (flags.value.includes("B")) {
+            timeout = 30000;
+        } else if (flags.value.includes("T")) {
+            timeout = 60000;
+        }
         if (e_code.doc.getValue() == 'lyxal') {
             location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
         }
         let runButton = $('run_button');
         if (runButton.innerHTML.includes('fa-spin')) {
             console.log("Stopping")
-            output.value = Vyxal.getOutput();
             worker.terminate()
             runButton.innerHTML = '<i class="fas fa-play-circle"></i>';
+            resizeCodeBox("output")
             expandBoxes()
             return;
         }
         runButton.innerHTML = '<i class="fa fa-cog fa-spin"></i>';
-        console.log
-        $('output').value = '';
-        $('debug').value = '';
+
+        output.value = ""
+        extra.value = ""
 
         worker = new Worker('/pages/worker.js');
         worker.onmessage = function (e) {
-            output.value = e.data;
-            runButton.innerHTML = '<i class="fas fa-play-circle"></i>';
-            expandBoxes()
+            if (e.data.command == "done") { runButton.innerHTML = '<i class="fas fa-play-circle"></i>'; }
+            else { output.value += e.data.val; expandBoxes() }
         }
         worker.postMessage({
             "mode": "run",
@@ -755,8 +765,19 @@ window.addEventListener("DOMContentLoaded", e => {
                 + e_code.doc.getValue() +
                 (e_footer.doc.getValue() ? '\n' + e_footer.doc.getValue() : ''),
             "inputs": $('inputs').value,
-            "flags": $('flag').value,
+            "flags": $('flag').value
         })
+
+        setTimeout(() => {
+            // only execute if worker isn't terminated
+            if (runButton.innerHTML.includes('fa-spin')) {
+                worker.terminate();
+                runButton.innerHTML = '<i class="fas fa-play-circle"></i>';
+                extra.value = `Code terminated after ${timeout / 1000} seconds`;
+                resizeCodeBox("output")
+                expandBoxes()
+            }
+        }, timeout);
     }
 
     run.addEventListener('click', do_run)
