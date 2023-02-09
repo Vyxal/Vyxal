@@ -1,14 +1,5 @@
 const $ = x => document.getElementById(x)
 
-worker = new Worker('/pages/worker.js');
-worker.onmessage = function (e) {
-    if (e.data.command == "done") { runButton.innerHTML = '<i class="fas fa-play-circle"></i>'; }
-    else {
-        output.value += e.data.val; resizeCodeBox("output");
-        expandBoxes()
-    }
-}
-
 var codepage = "λƛ¬∧⟑∨⟇÷×«␤»°•ß†€"
 codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨␠"
 codepage += "!\"#$%&'()*+,-./01"
@@ -715,6 +706,18 @@ function copyToClipboard(arg) {
     document.execCommand("copy")
 }
 
+function cancelWorker(why) {
+    let runButton = $('run_button');
+    const extra = document.getElementById("debug")
+    worker.terminate()
+    runButton.innerHTML = '<i class="fas fa-play-circle"></i>';
+    extra.value = why
+    resizeCodeBox("output")
+    resizeCodeBox("debug")
+    expandBoxes()
+    return;
+}
+
 // set up event listeners for execution
 window.addEventListener("DOMContentLoaded", e => {
     const run = document.getElementById("run_button")
@@ -741,12 +744,13 @@ window.addEventListener("DOMContentLoaded", e => {
             location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
         }
         let runButton = $('run_button');
+        worker = new Worker('/pages/worker.js');
+        worker.onmessage = function (e) {
+            if (e.data.command == "done") { runButton.innerHTML = '<i class="fas fa-play-circle"></i>'; }
+            else { output.value += e.data.val; expandBoxes() }
+        }
         if (runButton.innerHTML.includes('fa-spin')) {
-            console.log("Stopping")
-            worker.terminate()
-            runButton.innerHTML = '<i class="fas fa-play-circle"></i>';
-            resizeCodeBox("output")
-            expandBoxes()
+            cancelWorker("Code terminated by user")
             return;
         }
         runButton.innerHTML = '<i class="fa fa-cog fa-spin"></i>';
@@ -754,11 +758,7 @@ window.addEventListener("DOMContentLoaded", e => {
         output.value = ""
         extra.value = ""
 
-        worker = new Worker('/pages/worker.js');
-        worker.onmessage = function (e) {
-            if (e.data.command == "done") { runButton.innerHTML = '<i class="fas fa-play-circle"></i>'; }
-            else { output.value += e.data.val; expandBoxes() }
-        }
+
         worker.postMessage({
             "mode": "run",
             "code": (e_header.doc.getValue() ? e_header.doc.getValue() + '\n' : '')
@@ -771,11 +771,7 @@ window.addEventListener("DOMContentLoaded", e => {
         setTimeout(() => {
             // only execute if worker isn't terminated
             if (runButton.innerHTML.includes('fa-spin')) {
-                worker.terminate();
-                runButton.innerHTML = '<i class="fas fa-play-circle"></i>';
-                extra.value = `Code terminated after ${timeout / 1000} seconds`;
-                resizeCodeBox("output")
-                expandBoxes()
+                cancelWorker(`Code terminated after ${timeout / 1000} seconds`);
             }
         }, timeout);
     }
