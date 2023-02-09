@@ -8,7 +8,6 @@ import scala.scalajs.js.JSConverters.*
 /** A bridge between the interpreter and JS */
 @JSExportTopLevel("Vyxal")
 object JSVyxal:
-  val output: StringBuilder = StringBuilder()
   @JSExport
   def execute(
       code: String,
