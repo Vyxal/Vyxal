@@ -1,4 +1,4 @@
-name: Test and upload jar
+name: Test and upload native executables
 
 on:
   push:
@@ -28,5 +28,5 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
-        name: vyxal-native
+        name: vyxal-${{ matrix.os }}
         path: native/target/scala-*/vyxal-out
