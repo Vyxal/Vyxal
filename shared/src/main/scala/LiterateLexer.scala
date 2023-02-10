@@ -36,11 +36,14 @@ enum LiterateToken:
   // This is for strings that are already in SBCS form
   case Number(value: String)
   case Variable(value: String)
+
+  case Group(value: List[Object])
   case LitComment(value: String)
   case LambdaBlock(value: List[Object])
   case ListToken(value: List[Object])
 
   def value: Any
+end LiterateToken
 object LiterateLexer extends RegexParsers:
   override def skipWhitespace = true
   override val whiteSpace: Regex = "[ \t\r\f]+".r
@@ -72,7 +75,7 @@ object LiterateLexer extends RegexParsers:
     }
   def normalGroup: Parser[LiterateToken] =
     "(" ~> rep(normalGroup | """[^()]+""".r) <~ ")" ^^ { body =>
-      Word(sbcsify(body.map(recHelp).mkString))
+      Group(body)
     }
 
   def list: Parser[LiterateToken] =
@@ -128,6 +131,8 @@ def recHelp(token: Object): String =
     case Word(value)        => value
     case AlreadyCode(value) => value
     case LitComment(value)  => value
+    case Number(value)      => value
+    case Variable(value)    => value
     case LambdaBlock(value) => value.map(recHelp).mkString("λ", " ", "}")
     case ListToken(value)   => value.map(recHelp).mkString("[", "|", "]")
     case value: String      => value
@@ -151,7 +156,15 @@ def sbcsify(tokens: List[LiterateToken]): String =
         else
           next match
             case Some(Number(_)) => out.append(value + " ")
-            case _               => out.append(value)
+            case Some(Group(items)) =>
+              if items.length == 1 && getRight(
+                  LiterateLexer(
+                    items.head.toString
+                  )
+                ).head.isInstanceOf[Number]
+              then out.append(value + " ")
+              else out.append(value)
+            case _ => out.append(value)
       case Variable(value) =>
         next match
           case Some(Number(_)) => out.append(value + " ")
@@ -166,7 +179,9 @@ def sbcsify(tokens: List[LiterateToken]): String =
             else out.append(value)
           case _ => out.append(value)
       case AlreadyCode(value) => out.append(value)
-      case LitComment(value)  => out.append(value)
+      case Group(value) =>
+        out.append(value.map(sbcsify).mkString)
+      case LitComment(value) => out.append(value)
       case LambdaBlock(value) =>
         out.append(value.map(sbcsify).mkString("λ", "", "}"))
       case ListToken(value) =>
@@ -187,8 +202,9 @@ def sbcsify(token: Object): String =
     case AlreadyCode(value) => value
     case Variable(value)    => value
     case Number(value)      => value
+    case Group(value)       => value.map(sbcsify).mkString
     case LitComment(value)  => ""
-    case LambdaBlock(value) => value.map(sbcsify).mkString("λ", " ", "}")
+    case LambdaBlock(value) => value.map(sbcsify).mkString("λ", "", "}")
     case ListToken(value)   => value.map(sbcsify).mkString("#[", "|", "#]")
     case value: String      => litLex(value)
 
