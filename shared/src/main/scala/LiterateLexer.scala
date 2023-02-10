@@ -40,9 +40,8 @@ enum LiterateToken:
   case LitComment(value: String)
   case LambdaBlock(value: List[Object])
   case ListToken(value: List[Object])
-
-  def value: Any
 end LiterateToken
+
 object LiterateLexer extends RegexParsers:
   override def skipWhitespace = true
   override val whiteSpace: Regex = "[ \t\r\f]+".r
