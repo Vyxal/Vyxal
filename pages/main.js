@@ -549,11 +549,16 @@ function updateCount() {
     var byte_box = document.getElementById("code-count")
 
     var code = e_code.getValue()
+    if (flag.value.includes('l')) {
+        code = Vyxal.getSBCSified(code)
+    }
     if ([...code].every(x => (codepage + ' ' + '\n').includes(x))) {
-        byte_box.innerText = `Code: ${code.length} byte` + "s".repeat(code.length != 1)
+        byte_box.innerText = `Code: ${code.length} ${flag.value.includes('l') ? 'literate ' : ''
+            }byte` + "s".repeat(code.length != 1)
     } else {
         var x = new Blob([code]).size
-        byte_box.innerText = `Code: ${x} byte${"s".repeat(x != 1)}` + ' (UTF-8)'
+        byte_box.innerText = `Code: ${x} ${flag.value.includes('l') ? 'literate ' : ''
+            }byte${"s".repeat(x != 1)} ` + ' (UTF-8)'
     }
 }
 
@@ -582,7 +587,7 @@ function generateURL() {
 
 // onclick event listener for sharing buttons
 function shareOptions(shareType) {
-    const code = e_code.doc.getValue()
+    var code = e_code.doc.getValue()
     const url = generateURL()
     const flags = document.getElementById("flag").value
     let flagAppendage = ","
@@ -592,7 +597,7 @@ function shareOptions(shareType) {
     }
     let output = ""
     const utfable = [...code].every(x => (codepage + ' ' + '\n').includes(x))
-    const len = utfable ? code.length : new Blob([code]).size
+    var len = utfable ? code.length : new Blob([code]).size
     switch (shareType) {
         case "permalink":
             output = url
@@ -601,11 +606,16 @@ function shareOptions(shareType) {
             output = `[Vyxal 3, ${len} byte${"s".repeat(code.length != 1)}${utfable ? '' : ' (UTF-8)'}: \`${code.replaceAll("\`", "\\\`")}\`](${url})`
             break
         case "post-template":
+            if (flags.includes("l")) {
+                flagAppendage = ""
+                code = Vyxal.getSBCSified(code)
+                len = code.length
+            }
             output = `# [Vyxal 3](https://github.com/Vyxal/Vyxal/tree/version-3)${flagAppendage} ${len} byte${"s".repeat(len != 1)}${utfable ? '' : ' (UTF-8)'}
 \`\`\`
 ${code}
 \`\`\`
-[Try it Online!](${url})`;
+[Try it Online!${flags.includes("l") ? " (link is to literate version)" : ""}](${url})`;
             break
         case "markdown":
             output = `[Try it Online!](${url})`
