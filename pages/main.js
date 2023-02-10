@@ -688,6 +688,7 @@ function cancelWorker(why) {
     resizeCodeBox("output")
     resizeCodeBox("debug")
     expandBoxes()
+    worker = null
     return;
 }
 
@@ -703,6 +704,8 @@ window.addEventListener("DOMContentLoaded", e => {
     const filter = document.getElementById("filterBox")
 
     async function do_run() {
+        // generate random 32 character session string
+        sessioncode = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         timeout = 10000
         if (flags.value.includes("5")) {
             timeout = 5000;
@@ -719,6 +722,7 @@ window.addEventListener("DOMContentLoaded", e => {
         let runButton = $('run_button');
         worker = new Worker('/pages/worker.js');
         worker.onmessage = function (e) {
+            if (e.data.session != sessioncode) { return; }
             if (e.data.command == "done") { runButton.innerHTML = '<i class="fas fa-play-circle"></i>'; }
             else { output.value += e.data.val; expandBoxes() }
         }
@@ -738,7 +742,8 @@ window.addEventListener("DOMContentLoaded", e => {
                 + e_code.doc.getValue() +
                 (e_footer.doc.getValue() ? '\n' + e_footer.doc.getValue() : ''),
             "inputs": $('inputs').value,
-            "flags": $('flag').value
+            "flags": $('flag').value,
+            "session": sessioncode
         })
 
         setTimeout(() => {
