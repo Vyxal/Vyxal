@@ -1,4 +1,4 @@
-importScripts("../js/lib/scalajs-3.0.0.js")
+importScripts("../js/lib/vyxal.js")
 self.addEventListener('message', function (e) {
     var data = e.data;
     console.log("Worker received: " + data.mode);
