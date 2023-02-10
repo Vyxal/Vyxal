@@ -22,6 +22,8 @@ jobs:
     - name: Test JVM
       run: sbt vyxalJVM/test
 
+    - name: Build jar
+      run: sbt vyxalJVM/assembly
     - name: Create elements.txt
       run: java -jar jvm/target/scala-*/vyxal-*.jar --docs > documentation/elements.txt
     - name: Create literate mappings
@@ -33,10 +35,8 @@ jobs:
       with:
         commit_message: "Refresh element documentation from recent commit"
 
-    - name: Build jar if on ${{ env.V3_MAIN }}
+    - name: Upload jar if on ${{ env.V3_MAIN }}
       if: github.ref == 'refs/heads/${{ env.V3_MAIN }}'
-      run: sbt vyxalJVM/assembly
-    - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: vyxal-jvm
