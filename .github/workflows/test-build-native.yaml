@@ -22,8 +22,8 @@ jobs:
     - name: Test Native
       run: sbt vyxalNative/test
 
-    - name: Build executable if on ${{ V3_MAIN }}
-      if: github.ref == 'refs/heads/${{ V3_MAIN }}'
+    - name: Build executable if on ${{ env.V3_MAIN }}
+      if: github.ref == 'refs/heads/${{ env.V3_MAIN }}'
       run: sbt vyxalNative/nativeLink
     - name: Upload artifact
       uses: actions/upload-artifact@v3
