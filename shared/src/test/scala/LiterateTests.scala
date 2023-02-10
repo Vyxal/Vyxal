@@ -33,14 +33,14 @@ class LiterateTests extends VyxalTests:
   }
   describe("Comments") {
     it("should ignore them") {
-      testLiteral("1 2 3 ## This is a comment", "1 2 3 ")
+      testLiteral("1 2 3 ## This is a comment", "1 2 3")
       testLiteral("## Hello, World!", "")
     }
   }
 
   describe("Lambdas") {
     it("should transpile them correctly") {
-      testLiteral("10 { context-n add } map", "10 λn +} M")
+      testLiteral("10 { context-n add } map", "10λn+}M")
       testLiteral("{{{}}{}}", "λλλ}} λ}}")
       testLiteral("{}{}", "λ} λ}")
     }
@@ -63,21 +63,21 @@ class LiterateTests extends VyxalTests:
 
   describe("Variable Set") {
     it("should transpile them correctly") {
-      testLiteral("10 :=x", "10 #=x")
+      testLiteral("10 :=x", "10#=x")
       testLiteral(":=x", "#=x")
     }
   }
 
   describe("Variable Augmentation") {
     it("should transpile them correctly") {
-      testLiteral("10 +:>x", "10 + #>x")
-      testLiteral("+:>x", "+ #>x")
+      testLiteral("10 +:>x", "10+#>x")
+      testLiteral("+:>x", "+#>x")
     }
   }
 
   describe("Variable unpacking") {
     it("should transpile them correctly") {
-      testLiteral("[1|2|3] :=[x|y|z]", "#[1|2|3#] #:[x|y|z]")
+      testLiteral("[1|2|3] :=[x|y|z]", "#[1|2|3#]#:[x|y|z]")
     }
   }
 
