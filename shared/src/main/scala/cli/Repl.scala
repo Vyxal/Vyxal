@@ -1,4 +1,6 @@
-package vyxal
+package vyxal.cli
+
+import vyxal.{Context, Interpreter}
 
 import scala.io.StdIn
 
