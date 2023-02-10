@@ -1,6 +1,7 @@
 package vyxal
 
 import java.util.regex.Pattern
+import scala.collection.mutable
 import scala.util.matching.Regex
 import scala.util.parsing.combinator.*
 import LiterateToken.*
@@ -33,6 +34,8 @@ enum LiterateToken:
   case Word(value: String)
   case AlreadyCode(value: String)
   // This is for strings that are already in SBCS form
+  case Number(value: String)
+  case Variable(value: String)
   case LitComment(value: String)
   case LambdaBlock(value: List[Object])
   case ListToken(value: List[Object])
@@ -46,7 +49,7 @@ object LiterateLexer extends RegexParsers:
   def number: Parser[LiterateToken] =
     raw"(${decimalRegex}i$decimalRegex?)|(i$decimalRegex)|$decimalRegex|(i( |$$))".r ^^ {
       value =>
-        AlreadyCode(
+        Number(
           value.replace("i", "ı")
         )
     }
@@ -83,15 +86,15 @@ object LiterateLexer extends RegexParsers:
     }
 
   def varGet: Parser[LiterateToken] = """\$([_a-zA-Z][_a-zA-Z0-9]*)?""".r ^^ {
-    value => AlreadyCode("#" + value)
+    value => Variable("#" + value)
   }
 
   def varSet: Parser[LiterateToken] = """:=([_a-zA-Z][_a-zA-Z0-9]*)?""".r ^^ {
-    value => AlreadyCode("#" + value.substring(1))
+    value => Variable("#" + value.substring(1))
   }
 
   def augVar: Parser[LiterateToken] = """:>([a-zA-Z][_a-zA-Z0-9]*)?""".r ^^ {
-    value => AlreadyCode("#>" + value.substring(2))
+    value => Variable("#>" + value.substring(2))
   }
 
   def unpackVar: Parser[LiterateToken] = ":=" ~> list ^^ { value =>
@@ -130,7 +133,49 @@ def recHelp(token: Object): String =
     case value: String      => value
 
 def sbcsify(tokens: List[LiterateToken]): String =
-  tokens.map(sbcsify).mkString("", " ", "")
+  val out = mutable.StringBuilder()
+
+  for i <- tokens.indices do
+    val token = tokens(i)
+    val next = if i == tokens.length - 1 then None else Some(tokens(i + 1))
+    token match
+      case Word(value) =>
+        out.append(
+          literateModeMappings.getOrElse(
+            value,
+            hardcodedKeywords.getOrElse(value, value)
+          )
+        )
+      case Number(value) =>
+        if value == "0" then out.append("0")
+        else
+          next match
+            case Some(Number(_)) => out.append(value + " ")
+            case _               => out.append(value)
+      case Variable(value) =>
+        next match
+          case Some(Number(_)) => out.append(value + " ")
+          case Some(Word(w)) =>
+            if "[a-zA-Z0-9_]+".r.matches(
+                literateModeMappings.getOrElse(
+                  w,
+                  hardcodedKeywords.getOrElse(w, "")
+                )
+              )
+            then out.append(value + " ")
+            else out.append(value)
+          case _ => out.append(value)
+      case AlreadyCode(value) => out.append(value)
+      case LitComment(value)  => out.append(value)
+      case LambdaBlock(value) =>
+        out.append(value.map(sbcsify).mkString("λ", "", "}"))
+      case ListToken(value) =>
+        out.append(value.map(sbcsify).mkString("[", "|", "]"))
+    end match
+  end for
+
+  out.mkString
+end sbcsify
 
 def sbcsify(token: Object): String =
   token match
@@ -140,6 +185,8 @@ def sbcsify(token: Object): String =
         hardcodedKeywords.getOrElse(value, value)
       )
     case AlreadyCode(value) => value
+    case Variable(value)    => value
+    case Number(value)      => value
     case LitComment(value)  => ""
     case LambdaBlock(value) => value.map(sbcsify).mkString("λ", " ", "}")
     case ListToken(value)   => value.map(sbcsify).mkString("#[", "|", "#]")
