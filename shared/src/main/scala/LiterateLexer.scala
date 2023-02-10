@@ -181,7 +181,7 @@ def sbcsify(tokens: List[LiterateToken]): String =
       case AlreadyCode(value) => out.append(value)
       case Group(value) =>
         out.append(value.map(sbcsify).mkString)
-      case LitComment(value) => out.append(value)
+      case LitComment(value) => ""
       case LambdaBlock(value) =>
         out.append(value.map(sbcsify).mkString("λ", "", "}"))
       case ListToken(value) =>

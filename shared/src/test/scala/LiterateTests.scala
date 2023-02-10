@@ -41,8 +41,8 @@ class LiterateTests extends VyxalTests:
   describe("Lambdas") {
     it("should transpile them correctly") {
       testLiteral("10 { context-n add } map", "10λn+}M")
-      testLiteral("{{{}}{}}", "λλλ}} λ}}")
-      testLiteral("{}{}", "λ} λ}")
+      testLiteral("{{{}}{}}", "λλλ}}λ}}")
+      testLiteral("{}{}", "λ}λ}")
     }
   }
 
