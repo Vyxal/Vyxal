@@ -12,17 +12,13 @@ object JSVyxal:
       code: String,
       inputs: String,
       flags: String,
-      printFunc: String
+      printFunc: js.Function1[String, Unit]
   ): Unit =
     // todo take functions to print to custom stdout and stderr
     val settings = flags.foldLeft(Settings(online = true))(_.withFlag(_))
     val globals = Globals(
       settings = settings,
-      printFn = (x: VAny) =>
-        val f = js
-          .eval(s"$printFunc")
-          .asInstanceOf[js.Function1[String, Unit]]
-        f.apply(x.toString)
+      printFn = printFunc
     )
 
     val ctx = Context(
