@@ -14,7 +14,6 @@ object JSVyxal:
       flags: String,
       printFunc: String
   ): Unit =
-    // todo take flags to set settings
     // todo take functions to print to custom stdout and stderr
     val settings = flags.foldLeft(Settings(online = true))(_.withFlag(_))
     val globals = Globals(
@@ -23,7 +22,7 @@ object JSVyxal:
         val f = js
           .eval(s"$printFunc")
           .asInstanceOf[js.Function1[String, Unit]]
-        f.apply(if x.toString.isEmpty then "" else x.toString)
+        f.apply(x.toString)
     )
 
     val ctx = Context(
@@ -36,11 +35,9 @@ object JSVyxal:
 
   /** Bridge to turn literate code into SBCS */
   @JSExport
-  def getSBCSified(code: String): String =
-    litLex(code)
+  def getSBCSified(code: String): String = litLex(code)
 
   @JSExport
-  def getCodepage(): String =
-    vyxal.CODEPAGE
+  def getCodepage(): String = vyxal.CODEPAGE
 
 end JSVyxal
