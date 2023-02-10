@@ -185,7 +185,7 @@ def sbcsify(tokens: List[LiterateToken]): String =
       case LambdaBlock(value) =>
         out.append(value.map(sbcsify).mkString("λ", "", "}"))
       case ListToken(value) =>
-        out.append(value.map(sbcsify).mkString("[", "|", "]"))
+        out.append(value.map(sbcsify).mkString("#[", "|", "#]"))
     end match
   end for
 
