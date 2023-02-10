@@ -1,7 +1,6 @@
 package vyxal
 
 import java.util.regex.Pattern
-import scala.collection.mutable
 import scala.util.matching.Regex
 import scala.util.parsing.combinator.*
 import LiterateToken.*
@@ -138,7 +137,7 @@ def recHelp(token: Object): String =
     case value: String      => value
 
 def sbcsify(tokens: List[LiterateToken]): String =
-  val out = mutable.StringBuilder()
+  val out = StringBuilder()
 
   for i <- tokens.indices do
     val token = tokens(i)
