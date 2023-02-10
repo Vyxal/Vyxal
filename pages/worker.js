@@ -1,4 +1,4 @@
-importScripts("../js/lib/vyxal.js")
+importScripts("./vyxal.js")
 self.addEventListener('message', function (e) {
     var data = e.data;
     console.log("Worker received: " + data.mode);

@@ -14,7 +14,7 @@ import org.scalajs.linker.interface.OutputPatterns
 // Suppresses output from successful tests
 Test / testOptions += Tests.Argument("-oNCXEHLOPQRM")
 
-lazy val root = project
+lazy val root: Project = project
   .in(file("."))
   .aggregate(vyxal.js, vyxal.jvm, vyxal.native)
   .settings(
@@ -78,8 +78,8 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "org.scala-js" %%% "scalajs-dom" % "2.2.0"
     ),
     // Where the compiled JS is output
-    Compile / fastOptJS / artifactPath := baseDirectory.value / "lib" / s"vyxal.js",
-    Compile / fullOptJS / artifactPath := baseDirectory.value / "lib" / s"vyxal.js"
+    Compile / fastOptJS / artifactPath := baseDirectory.value.getParentFile / "pages" / "vyxal.js",
+    Compile / fullOptJS / artifactPath := baseDirectory.value.getParentFile / "pages" / "vyxal.js",
   )
   .nativeSettings(
     // Scala Native-specific settings
