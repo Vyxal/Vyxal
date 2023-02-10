@@ -2,7 +2,6 @@ name: Test and upload jar
 
 on:
   push:
-  pull_request:
 
 env:
   V3_MAIN: version-3
