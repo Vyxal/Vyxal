@@ -1,6 +1,7 @@
 package vyxal.cli
 
 import vyxal.{Context, Interpreter}
+
 import scala.io.StdIn
 
 object Repl:
