@@ -7,6 +7,7 @@ import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Queue
 import scala.collection.mutable.Stack
 import scala.compiletime.ops.double
+
 import spire.syntax.truncatedDivision
 
 object Parser:

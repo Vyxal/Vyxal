@@ -1,7 +1,8 @@
 package vyxal
 
-import collection.mutable.StringBuilder
 import scala.util.matching.Regex
+
+import collection.mutable.StringBuilder
 import spire.implicits.*
 import VNum.given
 

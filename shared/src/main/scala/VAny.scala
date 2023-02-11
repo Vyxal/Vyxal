@@ -4,6 +4,7 @@ import vyxal.impls.Element
 import vyxal.Interpreter.executeFn
 
 import scala.reflect.TypeTest
+
 import spire.algebra.*
 import spire.implicits.*
 import spire.math.{Complex, Real}
