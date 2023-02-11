@@ -2,6 +2,9 @@ name: Lint with Scalafix
 
 on:
   push:
+    paths-ignore:
+      - 'documentation/**'
+      - 'pages/**'
 
 jobs:
   build:

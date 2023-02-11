@@ -2,6 +2,11 @@ name: Test and upload native executables
 
 on:
   push:
+    paths-ignore:
+      - 'documentation/**'
+      - 'js/**'
+      - 'jvm/**'
+      - 'pages/**'
 
 jobs:
   test:

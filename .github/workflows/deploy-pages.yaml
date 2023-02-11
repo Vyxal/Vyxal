@@ -1,9 +1,13 @@
-name: Generate docs
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
       - version-3
+    paths-ignore:
+      - 'documentation/**'
+      - 'jvm/**'
+      - 'native/**'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
