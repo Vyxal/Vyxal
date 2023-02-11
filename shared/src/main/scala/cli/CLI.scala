@@ -78,7 +78,7 @@ object CLI:
               impl
             ) =>
           print(
-            s"$symbol ($name) (${if vectorises then "" else "non-"}vectorising)\n\n"
+            s"$symbol ($name) (${if vectorises then "" else "non-"}vectorising)\n"
           )
           println(s"Keywords:${keywords.mkString(" ", ", ", "")}")
           overloads.foreach { overload =>
@@ -97,7 +97,7 @@ object CLI:
 
   private def printLiterateMap(): Unit =
     println("package vyxal\n")
-    println("val literateModeMappings = Map(\n")
+    println("val literateModeMappings = Map(")
     Elements.elements.values.toSeq
       .sortBy { elem =>
         // Have to use tuple in case of digraphs
