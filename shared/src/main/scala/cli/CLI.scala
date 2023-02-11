@@ -9,6 +9,8 @@ import scopt.OParser
 object CLI:
   /** Configuration for the command line argument parser
     *
+    * @param filename
+    *   File to read code from (optional)
     * @param code
     *   Code to run (optional)
     * @param inputs
@@ -19,6 +21,7 @@ object CLI:
     *   Extra settings passed on to the Context
     */
   case class CLIConfig(
+      filename: Option[String] = None,
       code: Option[String] = None,
       inputs: List[String] = List.empty,
       printDocs: Boolean = false,
@@ -28,7 +31,7 @@ object CLI:
       settings: Settings = Settings()
   )
 
-  def run(args: Array[String], program: Option[String]): Unit =
+  def run(args: Array[String]): Unit =
     OParser.parse(parser, args, CLIConfig()) match
       case Some(config) =>
         given Context = Context(
@@ -47,16 +50,29 @@ object CLI:
           printLiterateMap()
           return
 
-        config.code.foreach { code =>
-          if config.runLiterate then Interpreter.runLiterate(code)
-          else Interpreter.execute(code)
+        config.filename.foreach { filename =>
+          val source = io.Source.fromFile(filename)
+          try
+            runCode(source.mkString, config.runLiterate)
+          finally
+            source.close()
         }
 
-        if config.code.nonEmpty || program.nonEmpty then return
+        config.code.foreach { code => runCode(code, config.runLiterate) }
+
+        if config.filename.nonEmpty || config.code.nonEmpty then return
         else Repl.startRepl(config.runLiterate)
       case None => ???
     end match
   end run
+
+  private def runCode(code: String, literate: Boolean)(using Context): Unit =
+    try
+      Interpreter.execute(code, literate)
+    catch
+      case e: Error =>
+        println(s"Error: ${e.getMessage()}")
+        e.printStackTrace()
 
   private def printDocs(): Unit =
     Elements.elements.values.toSeq
@@ -142,6 +158,10 @@ object CLI:
       opt[Unit]('h', "help")
         .action((_, cfg) => cfg.copy(printHelp = true))
         .text("Print this help message and exit")
+        .optional(),
+      opt[String]('f', "file")
+        .action((file, cfg) => cfg.copy(filename = Some(file)))
+        .text("The file to read the program from")
         .optional(),
       opt[String]('c', "code")
         .action((code, cfg) => cfg.copy(code = Some(code)))
