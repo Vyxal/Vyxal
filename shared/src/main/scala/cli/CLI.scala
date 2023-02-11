@@ -9,7 +9,7 @@ import scopt.OParser
 object CLI:
   /** Configuration for the command line argument parser
     *
-    * @param file
+    * @param filename
     *   File to read code from (optional)
     * @param code
     *   Code to run (optional)
@@ -21,7 +21,7 @@ object CLI:
     *   Extra settings passed on to the Context
     */
   case class CLIConfig(
-      file: Option[File] = None,
+      filename: Option[String] = None,
       code: Option[String] = None,
       inputs: List[String] = List.empty,
       printDocs: Boolean = false,
@@ -50,24 +50,28 @@ object CLI:
           printLiterateMap()
           return
 
-        config.file.foreach { file =>
-          val source = io.Source.fromFile(config.file.get)
+        config.filename.foreach { filename =>
+          val source = io.Source.fromFile(filename)
           try
-            Interpreter.execute(source.mkString)
+            runCode(source.mkString, config.runLiterate)
           finally
             source.close()
         }
 
-        config.code.foreach { code =>
-          if config.runLiterate then Interpreter.runLiterate(code)
-          else Interpreter.execute(code)
-        }
+        config.code.foreach { code => runCode(code, config.runLiterate) }
 
-        if config.file.nonEmpty || config.code.nonEmpty then return
+        if config.filename.nonEmpty || config.code.nonEmpty then return
         else Repl.startRepl(config.runLiterate)
       case None => ???
     end match
   end run
+
+  private def runCode(code: String, literate: Boolean)(using Context): Unit =
+    try Interpreter.execute(code, literate)
+    catch
+      case e: Error =>
+        println(s"Error: ${e.getMessage()}")
+        e.printStackTrace()
 
   private def printDocs(): Unit =
     Elements.elements.values.toSeq
@@ -108,7 +112,7 @@ object CLI:
 
   private def printLiterateMap(): Unit =
     println("package vyxal\n")
-    println("val literateModeMappings = Map(\n")
+    println("val literateModeMappings = Map(")
     Elements.elements.values.toSeq
       .sortBy { elem =>
         // Have to use tuple in case of digraphs
@@ -154,8 +158,8 @@ object CLI:
         .action((_, cfg) => cfg.copy(printHelp = true))
         .text("Print this help message and exit")
         .optional(),
-      opt[File]('f', "file")
-        .action((file, cfg) => cfg.copy(file = Some(file)))
+      opt[String]('f', "file")
+        .action((file, cfg) => cfg.copy(filename = Some(file)))
         .text("The file to read the program from")
         .optional(),
       opt[String]('c', "code")

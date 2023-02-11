@@ -6,12 +6,11 @@ import vyxal.MiscHelpers.{vyPrint, vyPrintln}
 import VNum.given
 
 object Interpreter:
-  def runLiterate(code: String)(using ctx: Context): Unit =
-    val sbcsified = litLex(code)
-    execute(sbcsified)
-
-  def execute(code: String)(using ctx: Context): Unit =
-    Parser.parse(code) match
+  def execute(code: String, literate: Boolean = false)(using
+      ctx: Context
+  ): Unit =
+    val sbcsified = if literate then litLex(code) else code
+    Parser.parse(sbcsified) match
       case Right(ast) =>
         if ctx.settings.logLevel == LogLevel.Debug then
           println(s"Executing '$code' (ast: $ast)")

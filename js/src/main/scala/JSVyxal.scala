@@ -25,8 +25,7 @@ object JSVyxal:
       inputs = inputs.split("\n").map(Parser.parseInput).toIndexedSeq,
       globals = globals
     )
-    if flags.contains("l") then Interpreter.runLiterate(code)(using ctx)
-    else Interpreter.execute(code)(using ctx)
+    Interpreter.execute(code, literate = flags.contains("l"))(using ctx)
   end execute
 
   /** Bridge to turn literate code into SBCS */

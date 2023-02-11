@@ -2,9 +2,11 @@ name: Test and upload native executables
 
 on:
   push:
-
-env:
-  V3_MAIN: version-3
+    paths-ignore:
+      - 'documentation/**'
+      - 'js/**'
+      - 'jvm/**'
+      - 'pages/**'
 
 jobs:
   test:
@@ -22,13 +24,13 @@ jobs:
       run: sbt vyxalNative/test
 
   build:
-    name: Build native executable on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    needs: test
-    if: github.ref == 'refs/heads/${{ env.V3_MAIN }}'
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+    name: Build native executable on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    needs: test
+    if: github.ref == 'refs/heads/version-3'
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 17

@@ -2,9 +2,11 @@ name: Test and upload jar
 
 on:
   push:
-
-env:
-  V3_MAIN: version-3
+    paths-ignore:
+      - 'documentation/**'
+      - 'js/**'
+      - 'native/**'
+      - 'pages/**'
 
 jobs:
   test-build:
@@ -34,8 +36,8 @@ jobs:
       with:
         commit_message: "Refresh element documentation from recent commit"
 
-    - name: Upload jar if on ${{ env.V3_MAIN }}
-      if: github.ref == 'refs/heads/${{ env.V3_MAIN }}'
+    - name: Upload jar if on version-3
+      if: github.ref == 'refs/heads/version-3'
       uses: actions/upload-artifact@v3
       with:
         name: vyxal-jvm
