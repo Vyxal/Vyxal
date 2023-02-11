@@ -43,8 +43,6 @@ jobs:
 
       - name: Move docs to pages/
         run: |
-          rm -rf pages
-          mkdir pages
           mv docs/ pages/docs/
 
       - name: Upload built HTML
