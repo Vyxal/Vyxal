@@ -2,6 +2,12 @@ package vyxal
 
 import vyxal.cli.CLI
 
+import java.io.File
+
 object Main:
   def main(args: Array[String]): Unit =
-    CLI.run(args)
+    if args.nonEmpty && args(0).charAt(0) != '-' then
+      val source = io.Source.fromFile(args(0))
+      CLI.run(args, Some(source.mkString))
+    else CLI.run(args, None)
+    end if

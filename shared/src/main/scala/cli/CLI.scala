@@ -9,8 +9,6 @@ import scopt.OParser
 object CLI:
   /** Configuration for the command line argument parser
     *
-    * @param file
-    *   File to read code from (optional)
     * @param code
     *   Code to run (optional)
     * @param inputs
@@ -21,7 +19,6 @@ object CLI:
     *   Extra settings passed on to the Context
     */
   case class CLIConfig(
-      file: Option[File] = None,
       code: Option[String] = None,
       inputs: List[String] = List.empty,
       printDocs: Boolean = false,
@@ -31,7 +28,7 @@ object CLI:
       settings: Settings = Settings()
   )
 
-  def run(args: Array[String]): Unit =
+  def run(args: Array[String], program: Option[String]): Unit =
     OParser.parse(parser, args, CLIConfig()) match
       case Some(config) =>
         given Context = Context(
@@ -50,20 +47,12 @@ object CLI:
           printLiterateMap()
           return
 
-        config.file.foreach { file =>
-          val source = io.Source.fromFile(config.file.get)
-          try
-            Interpreter.execute(source.mkString)
-          finally
-            source.close()
-        }
-
         config.code.foreach { code =>
           if config.runLiterate then Interpreter.runLiterate(code)
           else Interpreter.execute(code)
         }
 
-        if config.file.nonEmpty || config.code.nonEmpty then return
+        if config.code.nonEmpty || program.nonEmpty then return
         else Repl.startRepl(config.runLiterate)
       case None => ???
     end match
@@ -153,10 +142,6 @@ object CLI:
       opt[Unit]('h', "help")
         .action((_, cfg) => cfg.copy(printHelp = true))
         .text("Print this help message and exit")
-        .optional(),
-      opt[File]('f', "file")
-        .action((file, cfg) => cfg.copy(file = Some(file)))
-        .text("The file to read the program from")
         .optional(),
       opt[String]('c', "code")
         .action((code, cfg) => cfg.copy(code = Some(code)))
