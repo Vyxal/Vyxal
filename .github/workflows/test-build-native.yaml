@@ -3,9 +3,6 @@ name: Test and upload native executables
 on:
   push:
 
-env:
-  V3_MAIN: version-3
-
 jobs:
   test:
     name: Test
