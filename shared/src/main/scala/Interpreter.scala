@@ -6,7 +6,9 @@ import vyxal.MiscHelpers.{vyPrint, vyPrintln}
 import VNum.given
 
 object Interpreter:
-  def execute(code: String, literate: Boolean = false)(using ctx: Context): Unit =
+  def execute(code: String, literate: Boolean = false)(using
+      ctx: Context
+  ): Unit =
     val sbcsified = if literate then litLex(code) else code
     Parser.parse(sbcsified) match
       case Right(ast) =>

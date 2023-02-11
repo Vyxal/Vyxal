@@ -67,8 +67,7 @@ object CLI:
   end run
 
   private def runCode(code: String, literate: Boolean)(using Context): Unit =
-    try
-      Interpreter.execute(code, literate)
+    try Interpreter.execute(code, literate)
     catch
       case e: Error =>
         println(s"Error: ${e.getMessage()}")
