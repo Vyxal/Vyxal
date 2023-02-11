@@ -33,6 +33,8 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       // For number stuff
       "org.typelevel" %%% "spire" % "0.18.0",
       "org.scala-lang.modules" %%% "scala-parser-combinators" % "2.1.1",
+      // For command line parsing
+      "com.github.scopt" %%% "scopt" % "4.1.0",
       // Used by ScalaTest
       "org.scalactic" %%% "scalactic" % "3.2.14",
       "org.scalatest" %%% "scalatest" % "3.2.14" % Test
@@ -66,11 +68,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     // JVM-specific settings
     Compile / mainClass := Some("vyxal.Main"),
     assembly / mainClass := Some("vyxal.Main"),
-    assembly / assemblyJarName := s"vyxal-$vyxalVersion.jar",
-    libraryDependencies ++= Seq(
-      // For command line parsing
-      "com.github.scopt" %% "scopt" % "4.1.0"
-    )
+    assembly / assemblyJarName := s"vyxal-$vyxalVersion.jar"
   )
   .jsSettings(
     // JS-specific settings
@@ -83,8 +81,4 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   )
   .nativeSettings(
     // Scala Native-specific settings
-    libraryDependencies ++= Seq(
-      // For command line parsing
-      "com.github.scopt" %%% "scopt" % "4.1.0"
-    )
   )

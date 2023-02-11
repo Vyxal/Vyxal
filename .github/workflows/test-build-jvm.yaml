@@ -2,11 +2,12 @@ name: Test and upload jar
 
 on:
   push:
-  pull_request:
+
+env:
+  V3_MAIN: version-3
 
 jobs:
-  build:
-
+  test-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,17 +17,12 @@ jobs:
       with:
         java-version: '17'
         distribution: 'adopt'
+
     - name: Test JVM
       run: sbt vyxalJVM/test
-    - name: Test Native
-      run: sbt vyxalNative/test
+
     - name: Build jar
       run: sbt vyxalJVM/assembly
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: jar
-        path: jvm/target/scala-*/vyxal-*.jar
     - name: Create elements.txt
       run: java -jar jvm/target/scala-*/vyxal-*.jar --docs > documentation/elements.txt
     - name: Create literate mappings
@@ -37,3 +33,10 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: "Refresh element documentation from recent commit"
+
+    - name: Upload jar if on ${{ env.V3_MAIN }}
+      if: github.ref == 'refs/heads/${{ env.V3_MAIN }}'
+      uses: actions/upload-artifact@v3
+      with:
+        name: vyxal-jvm
+        path: jvm/target/scala-*/vyxal-*.jar

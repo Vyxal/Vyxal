@@ -40,7 +40,6 @@ enum LiterateToken:
   case LitComment(value: String)
   case LambdaBlock(value: List[Object])
   case ListToken(value: List[Object])
-end LiterateToken
 
 object LiterateLexer extends RegexParsers:
   override def skipWhitespace = true

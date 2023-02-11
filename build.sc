@@ -14,6 +14,7 @@ trait VyxalModule extends ScalaModule {
   def ivyDeps = Agg(
     ivy"org.typelevel::spire::0.18.0",
     ivy"org.scala-lang.modules::scala-parser-combinators::2.1.1",
+    ivy"com.github.scopt::scopt::4.1.0",
     ivy"org.scalactic::scalactic::3.2.14"
   )
 
@@ -51,8 +52,6 @@ trait VyxalModule extends ScalaModule {
 /** Shared and JVM-specific code */
 object jvm extends VyxalModule {
   def platform = "jvm"
-
-  def ivyDeps = T { super.ivyDeps() ++ Seq(ivy"com.github.scopt::scopt:4.1.0") }
 
   object test extends VyxalTestModule
 }
