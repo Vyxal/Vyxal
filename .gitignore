@@ -166,3 +166,7 @@ tests/test_log.txt
 tests/test_extras.py
 
 temp.vy
+
+node_modules/
+package.json
+package-lock.json

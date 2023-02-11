@@ -2,6 +2,9 @@ name: Lint with Scalafix
 
 on:
   push:
+    paths-ignore:
+      - 'documentation/**'
+      - 'pages/**'
 
 jobs:
   build:
@@ -15,8 +18,8 @@ jobs:
       with:
         java-version: '17'
         distribution: 'adopt'
-    - name: Lint and fix
-      run: sbt "vyxalJVM/scalafix"
+    - name: Lint, fix, and format
+      run: sbt vyxalJVM/scalafix vyxalJVM/scalafmt
     - name: Stage changes
       run: git add .
     - name: Commit and push

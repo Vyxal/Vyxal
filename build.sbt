@@ -14,7 +14,7 @@ import org.scalajs.linker.interface.OutputPatterns
 // Suppresses output from successful tests
 Test / testOptions += Tests.Argument("-oNCXEHLOPQRM")
 
-lazy val root = project
+lazy val root: Project = project
   .in(file("."))
   .aggregate(vyxal.js, vyxal.jvm, vyxal.native)
   .settings(
@@ -33,6 +33,8 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       // For number stuff
       "org.typelevel" %%% "spire" % "0.18.0",
       "org.scala-lang.modules" %%% "scala-parser-combinators" % "2.1.1",
+      // For command line parsing
+      "com.github.scopt" %%% "scopt" % "4.1.0",
       // Used by ScalaTest
       "org.scalactic" %%% "scalactic" % "3.2.14",
       "org.scalatest" %%% "scalatest" % "3.2.14" % Test
@@ -68,24 +70,19 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     assembly / mainClass := Some("vyxal.Main"),
     assembly / assemblyJarName := s"vyxal-$vyxalVersion.jar",
     libraryDependencies ++= Seq(
-      // For command line parsing
-      "com.github.scopt" %% "scopt" % "4.1.0",
       "org.yaml" % "snakeyaml" % "1.33" % Test
     )
   )
   .jsSettings(
     // JS-specific settings
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "2.2.0"
+      "org.scala-js" %%% "scalajs-dom" % "2.2.0",
+      "com.github.scopt" %%% "scopt" % "4.1.0"
     ),
     // Where the compiled JS is output
-    Compile / fastOptJS / artifactPath := baseDirectory.value / "lib" / s"scalajs-$vyxalVersion.js",
-    Compile / fullOptJS / artifactPath := baseDirectory.value / "lib" / s"scalajs-$vyxalVersion.js"
+    Compile / fastOptJS / artifactPath := baseDirectory.value.getParentFile / "pages" / "vyxal.js",
+    Compile / fullOptJS / artifactPath := baseDirectory.value.getParentFile / "pages" / "vyxal.js"
   )
   .nativeSettings(
     // Scala Native-specific settings
-    libraryDependencies ++= Seq(
-      // For command line parsing
-      "com.github.scopt" %%% "scopt" % "4.1.0"
-    )
   )
