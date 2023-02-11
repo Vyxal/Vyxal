@@ -78,7 +78,7 @@ object CLI:
               impl
             ) =>
           print(
-            s"$symbol ($name) (${if vectorises then "" else "non-"}vectorising)\n"
+            s"$symbol ($name) (${if vectorises then "" else "non-"}vectorising)\n\n"
           )
           println(s"Keywords:${keywords.mkString(" ", ", ", "")}")
           overloads.foreach { overload =>
