@@ -1,36 +1,10 @@
 const $ = x => document.getElementById(x)
-var codepage = "λƛ¬∧⟑∨⟇÷×«␤»°•ß†€"
-codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨␠"
-codepage += "!\"#$%&'()*+,-./01"
-codepage += "23456789:;<=>?@A"
-codepage += "BCDEFGHIJKLMNOPQ"
-codepage += "RSTUVWXYZ[\\]`^_abc"
-codepage += "defghijklmnopqrs"
-codepage += "tuvwxyz{|}~↑↓∴∵›"
-codepage += "‹∷¤ð→←βτȧḃċḋėḟġḣ"
-codepage += "ḭŀṁṅȯṗṙṡṫẇẋẏż√⟨⟩"
-codepage += "‛₀₁₂₃₄₅₆₇₈¶⁋§ε¡"
-codepage += "∑¦≈µȦḂĊḊĖḞĠḢİĿṀṄ"
-codepage += "ȮṖṘṠṪẆẊẎŻ₌₍⁰¹²∇⌈"
-codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
-codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
-codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
+
+var codepage = Vyxal.getCodepage()
 
 search = window
 glyphQuery = String.fromCharCode(0162, 105, 0143, 107)
 this.prevQuery = ""
-secret = "dQw4"
-secret += secret[2]
-temp = "9WgXc"
-secret += temp + secret[1]
-temp = "out"
-temp += temp[1] + "."
-temp += "be"
-temp = "y" + temp
-temp = codepage[47] + temp
-temp = codepage[115] + codepage[58] + temp[0] + temp
-secret = "tp" + temp + "/" + secret
-secret = "h" + codepage[116] + secret
 
 const aliases = {
     "λ": ["la", "`l", "A\\"],
@@ -575,11 +549,16 @@ function updateCount() {
     var byte_box = document.getElementById("code-count")
 
     var code = e_code.getValue()
+    if (flag.value.includes('l')) {
+        code = Vyxal.getSBCSified(code)
+    }
     if ([...code].every(x => (codepage + ' ' + '\n').includes(x))) {
-        byte_box.innerText = `Code: ${code.length} byte` + "s".repeat(code.length != 1)
+        byte_box.innerText = `Code: ${code.length} ${flag.value.includes('l') ? 'literate ' : ''
+            }byte` + "s".repeat(code.length != 1)
     } else {
         var x = new Blob([code]).size
-        byte_box.innerText = `Code: ${x} byte${"s".repeat(x != 1)}` + ' (UTF-8)'
+        byte_box.innerText = `Code: ${x} ${flag.value.includes('l') ? 'literate ' : ''
+            }byte${"s".repeat(x != 1)} ` + ' (UTF-8)'
     }
 }
 
@@ -608,7 +587,7 @@ function generateURL() {
 
 // onclick event listener for sharing buttons
 function shareOptions(shareType) {
-    const code = e_code.doc.getValue()
+    var code = e_code.doc.getValue()
     const url = generateURL()
     const flags = document.getElementById("flag").value
     let flagAppendage = ","
@@ -618,7 +597,7 @@ function shareOptions(shareType) {
     }
     let output = ""
     const utfable = [...code].every(x => (codepage + ' ' + '\n').includes(x))
-    const len = utfable ? code.length : new Blob([code]).size
+    var len = utfable ? code.length : new Blob([code]).size
     switch (shareType) {
         case "permalink":
             output = url
@@ -627,11 +606,16 @@ function shareOptions(shareType) {
             output = `[Vyxal 3, ${len} byte${"s".repeat(code.length != 1)}${utfable ? '' : ' (UTF-8)'}: \`${code.replaceAll("\`", "\\\`")}\`](${url})`
             break
         case "post-template":
+            if (flags.includes("l")) {
+                flagAppendage = ""
+                code = Vyxal.getSBCSified(code)
+                len = code.length
+            }
             output = `# [Vyxal 3](https://github.com/Vyxal/Vyxal/tree/version-3)${flagAppendage} ${len} byte${"s".repeat(len != 1)}${utfable ? '' : ' (UTF-8)'}
 \`\`\`
 ${code}
 \`\`\`
-[Try it Online!](${url})`;
+[Try it Online!${flags.includes("l") ? " (link is to literate version)" : ""}](${url})`;
             break
         case "markdown":
             output = `[Try it Online!](${url})`
@@ -705,6 +689,19 @@ function copyToClipboard(arg) {
     document.execCommand("copy")
 }
 
+function cancelWorker(why) {
+    let runButton = $('run_button');
+    const extra = document.getElementById("debug")
+    worker.terminate()
+    runButton.innerHTML = '<i class="fas fa-play-circle"></i>';
+    extra.value = why
+    resizeCodeBox("output")
+    resizeCodeBox("debug")
+    expandBoxes()
+    worker = null
+    return;
+}
+
 // set up event listeners for execution
 window.addEventListener("DOMContentLoaded", e => {
     const run = document.getElementById("run_button")
@@ -713,27 +710,58 @@ window.addEventListener("DOMContentLoaded", e => {
     const stdin = document.getElementById("inputs")
     const flags = document.getElementById("flag")
     const output = document.getElementById("output")
-    const extra = document.getElementById("extra")
+    const extra = document.getElementById("debug")
     const filter = document.getElementById("filterBox")
 
     async function do_run() {
+        // generate random 32 character session string
+        sessioncode = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        timeout = 10000
+        if (flags.value.includes("5")) {
+            timeout = 5000;
+        } else if (flags.value.includes("b")) {
+            timeout = 15000;
+        } else if (flags.value.includes("B")) {
+            timeout = 30000;
+        } else if (flags.value.includes("T")) {
+            timeout = 60000;
+        }
         if (e_code.doc.getValue() == 'lyxal') {
             location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
         }
         let runButton = $('run_button');
-        if (runButton.innerHTML.includes('fa-spin')) return;
-        runButton.innerHTML = '<i class="fa fa-cog fa-spin fa-2x"></i>';
-        $('output').value = '';
-        $('debug').value = '';
-        output.value = Vyxal.execute(
-            (e_header.doc.getValue() ? e_header.doc.getValue() + '\n' : '')
-            + e_code.doc.getValue() +
-            (e_footer.doc.getValue() ? '\n' + e_footer.doc.getValue() : ''),
-            $('inputs').value,
-            $('flag').value,
-        )
-        runButton.innerHTML = '<i class="fa fa-play-circle fa-2x"></i>';
-        expandBoxes()
+        worker = new Worker('/worker.js');
+        worker.onmessage = function (e) {
+            if (e.data.session != sessioncode) { return; }
+            if (e.data.command == "done") { runButton.innerHTML = '<i class="fas fa-play-circle"></i>'; }
+            else { output.value += e.data.val; expandBoxes() }
+        }
+        if (runButton.innerHTML.includes('fa-spin')) {
+            cancelWorker("Code terminated by user")
+            return;
+        }
+        runButton.innerHTML = '<i class="fa fa-cog fa-spin"></i>';
+
+        output.value = ""
+        extra.value = ""
+
+
+        worker.postMessage({
+            "mode": "run",
+            "code": (e_header.doc.getValue() ? e_header.doc.getValue() + '\n' : '')
+                + e_code.doc.getValue() +
+                (e_footer.doc.getValue() ? '\n' + e_footer.doc.getValue() : ''),
+            "inputs": $('inputs').value,
+            "flags": $('flag').value,
+            "session": sessioncode
+        })
+
+        setTimeout(() => {
+            // only execute if worker isn't terminated
+            if (runButton.innerHTML.includes('fa-spin')) {
+                cancelWorker(`Code terminated after ${timeout / 1000} seconds`);
+            }
+        }, timeout);
     }
 
     run.addEventListener('click', do_run)

@@ -1,7 +1,5 @@
 package vyxal
 
-import org.scalajs.dom
-import org.scalajs.dom.document
 import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 import scala.scalajs.js.JSConverters.*
@@ -10,33 +8,32 @@ import scala.scalajs.js.JSConverters.*
 @JSExportTopLevel("Vyxal")
 object JSVyxal:
   @JSExport
-  def execute(code: String, inputs: String, flags: String): String =
-    // todo take flags to set settings
+  def execute(
+      code: String,
+      inputs: String,
+      flags: String,
+      printFunc: js.Function1[String, Unit]
+  ): Unit =
     // todo take functions to print to custom stdout and stderr
-    val output = document.getElementById("output")
-    // cast output object to textarea
-    val textarea = output.asInstanceOf[dom.html.TextArea]
-    textarea.value = ""
-    val settings =
-      Settings(online = true)
+    val settings = flags.foldLeft(Settings(online = true))(_.withFlag(_))
     val globals = Globals(
-      settings = settings
+      settings = settings,
+      printFn = printFunc
     )
+
     val ctx = Context(
       inputs = inputs.split("\n").map(Parser.parseInput).toIndexedSeq,
       globals = globals
     )
-    for flag <- flags do settings.withFlag(flag)
     if flags.contains("l") then Interpreter.runLiterate(code)(using ctx)
     else Interpreter.execute(code)(using ctx)
-
-    ctx.onlineOutput
   end execute
 
+  /** Bridge to turn literate code into SBCS */
   @JSExport
-  def getSBCSified(code: String): Unit =
-    val output = document.getElementById("output")
-    // cast output object to textarea
-    val textarea = output.asInstanceOf[dom.html.TextArea]
-    textarea.value = litLex(code)
+  def getSBCSified(code: String): String = litLex(code)
+
+  @JSExport
+  def getCodepage(): String = vyxal.CODEPAGE
+
 end JSVyxal
