@@ -64,12 +64,12 @@ jobs:
         with:
           name: ${{ env.LINUX_NAME }}
           path: artifacts/
-          
+
       - uses: actions/download-artifact@v3
         with:
           name: ${{ env.WINDOWS_NAME }}
           path: artifacts/
-          
+
       - uses: actions/download-artifact@v3
         with:
           name: ${{ env.MACOS_NAME }}
