@@ -136,7 +136,7 @@ object Lexer extends RegexParsers:
       SetVar(value.substring(2))
   }
 
-  def augVariable: Parser[VyxalToken] = """(\#\>)[0-9A-Za-z_]""".r ^^ { value =>
+  def augVariable: Parser[VyxalToken] = """(\#\>)[0-9A-Za-z_]*""".r ^^ { value =>
     AugmentVar(value.substring(2, value.length))
   }
 
