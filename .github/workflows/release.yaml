@@ -74,17 +74,17 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: ${{ env.LINUX_NAME }}
-          path: artifacts/${{ env.LINUX_NAME }}-*
+          path: artifacts/
 
       - uses: actions/download-artifact@v3
         with:
           name: ${{ env.WINDOWS_NAME }}
-          path: artifacts/${{ env.WINDOWS_NAME }}-*
+          path: artifacts/
 
       - uses: actions/download-artifact@v3
         with:
           name: ${{ env.MACOS_NAME }}
-          path: artifacts/${{ env.MACOS_NAME }}-*
+          path: artifacts/
 
       - name: Release 🚀
         uses: softprops/action-gh-release@v1
