@@ -69,17 +69,17 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: ${{ env.LINUX_NAME }}-${{ steps.tagName.outputs.tag }}
+          name: ${{ env.LINUX_NAME }}
           path: artifacts/
 
       - uses: actions/download-artifact@v3
         with:
-          name: ${{ env.WINDOWS_NAME }}-${{ steps.tagName.outputs.tag }}
+          name: ${{ env.WINDOWS_NAME }}
           path: artifacts/
 
       - uses: actions/download-artifact@v3
         with:
-          name: ${{ env.MACOS_NAME }}-${{ steps.tagName.outputs.tag }}
+          name: ${{ env.MACOS_NAME }}
           path: artifacts/
 
       - name: Release 🚀
