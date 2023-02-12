@@ -44,7 +44,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.exe-name }}
-          path: ${{ matrix.exe-name }}-*
+          path: ${{ matrix.exe-name }}-${{ steps.tagName.outputs.tag }}
 
   release:
     name: Release
