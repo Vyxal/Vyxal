@@ -21,11 +21,11 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         include:
           - os: ubuntu-latest
-            exe-name: ${{ env.LINUX_NAME }}
+            exe-name: vyxal-linux
           - os: windows-latest
-            exe-name: ${{ env.WINDOWS_NAME }}
+            exe-name: vyxal-windows
           - os: macos-latest
-            exe-name: ${{ env.MACOS_NAME }}
+            exe-name: vyxal-macos
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
