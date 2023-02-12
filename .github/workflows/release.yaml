@@ -45,7 +45,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           $out_dir=Get-ChildItem native/target/scala-*
-          mv $out_dir/vyxal-out ${{ matrix.exe-name }}-${{ steps.tagName.outputs.tag }}.exe
+          mv $out_dir/vyxal-out.exe ${{ matrix.exe-name }}-${{ steps.tagName.outputs.tag }}.exe
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
