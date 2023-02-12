@@ -51,8 +51,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: olegtarasov/get-tag@v2.1.2
-        id: tagName
       - uses: actions/checkout@v3
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -70,17 +68,17 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: ${{ env.LINUX_NAME }}
-          path: artifacts/
+          path: artifacts/${{ env.LINUX_NAME }}-*
 
       - uses: actions/download-artifact@v3
         with:
           name: ${{ env.WINDOWS_NAME }}
-          path: artifacts/
+          path: artifacts/${{ env.WINDOWS_NAME }}-*
 
       - uses: actions/download-artifact@v3
         with:
           name: ${{ env.MACOS_NAME }}
-          path: artifacts/
+          path: artifacts/${{ env.MACOS_NAME }}-*
 
       - name: Release 🚀
         uses: softprops/action-gh-release@v1
