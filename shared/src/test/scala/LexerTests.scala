@@ -112,6 +112,13 @@ class LexerTests extends VyxalTests:
     it("should recognize `#=`/set var") {
       testLex("42 #=answer", List(Number("42"), SetVar("answer")))
     }
+
+    it("should recognise `#>`/augmented assignment") {
+      testLex(
+        "45 +#>answer",
+        List(Number("45"), Command("+"), AugmentVar("answer"))
+      )
+    }
   }
 
   describe("Complex tests") {
