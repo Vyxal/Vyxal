@@ -126,7 +126,7 @@ object Interpreter:
       args: Seq[VAny] | Null = null,
       popArgs: Boolean = true
   )(using ctx: Context): VAny =
-    val VFun(impl, arity, params, origCtx) = fn
+    val VFun(impl, arity, params, origCtx, origAST) = fn
     val inputs =
       if args != null then args
       else if popArgs then ctx.pop(arity)

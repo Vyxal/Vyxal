@@ -26,7 +26,7 @@ object Modifiers:
   private def astToLambda(ast: AST, arity: Int): AST =
     ast match
       case _: AST.Lambda => ast
-      case _             => AST.Lambda(arity, List(), ast)
+      case _             => AST.Lambda(arity, List(), List(ast))
   val modifiers: Map[String, Modifier] = Map(
     "v" -> Modifier(
       "Vectorise",

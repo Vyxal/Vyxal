@@ -44,7 +44,7 @@ enum StructureType(val open: String):
   case While extends StructureType("{")
   case For extends StructureType("(")
   case Lambda extends StructureType("λ")
-  case LambdaMap extends StructureType("ƛ")
+  case LambdaMap extends StructureType("H")
   case LambdaFilter extends StructureType("Ω")
   case LambdaReduce extends StructureType("₳")
   case LambdaSort extends StructureType("µ")
@@ -98,7 +98,7 @@ object Lexer extends RegexParsers:
     Str(value.substring(1))
   }
 
-  def structureOpen: Parser[VyxalToken] = """[\[\(\{λƛΩ₳µ]|#@""".r ^^ { value =>
+  def structureOpen: Parser[VyxalToken] = """[\[\(\{λHΩ₳µ]|#@""".r ^^ { value =>
     StructureOpen(StructureType.values.find(_.open == value).get)
   }
 

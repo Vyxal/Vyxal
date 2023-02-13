@@ -2,6 +2,7 @@ package vyxal
 
 import vyxal.impls.Elements
 
+import java.sql.Struct
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Queue
@@ -143,7 +144,7 @@ object Parser:
                 AST.Lambda(
                   1,
                   List(),
-                  AST.makeSingle(lambdaAsts.toList.reverse*)
+                  List(AST.makeSingle(lambdaAsts.toList.reverse*))
                 )
               )
             case "ᵗ" => ??? // TODO: Implement tie
@@ -302,12 +303,25 @@ object Parser:
         case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
             StructureType.LambdaFilter | StructureType.LambdaReduce |
             StructureType.LambdaSort) =>
-          val lambda = branches match
-            // todo actually parse arity and parameters
-            case List(body) => AST.Lambda(1, List.empty, body)
-            case _          => ???
+          println(branches)
+          val lambda =
+            if lambdaType == StructureType.Lambda then
+              branches match
+                // todo actually parse arity and parameters
+                case List()     => AST.Lambda(1, List.empty, List.empty)
+                case List(body) => AST.Lambda(1, List.empty, List(body))
+                case List(params, body) =>
+                  val arity = 1 // getArity
+                  val params = List.empty // getParams
+                  AST.Lambda(arity, params, List(body))
+                case _ =>
+                  val arity = 1 // get from first branch
+                  val params = List.empty // get from first branch
+                  AST.Lambda(arity, params, branches.drop(1))
+            else AST.Lambda(1, List.empty, branches)
           // todo using the command names is a bit brittle
           //   maybe refer to the functions directly
+
           Right(lambdaType match
             case StructureType.Lambda => lambda
             case StructureType.LambdaMap =>

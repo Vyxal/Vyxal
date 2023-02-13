@@ -28,7 +28,8 @@ case class VFun(
     impl: DirectFn,
     arity: Int,
     params: List[String],
-    ctx: Context
+    ctx: Context,
+    originalAST: Option[AST.Lambda] = None
 ):
 
   /** Make a copy of this function with a different arity. */
@@ -56,15 +57,17 @@ object VFun:
   def fromLambda(lam: AST.Lambda)(using origCtx: Context): VFun =
     val AST.Lambda(arity, params, body) = lam
     VFun(
-      () => ctx ?=> Interpreter.execute(body)(using ctx),
+      () => ctx ?=> Interpreter.execute(body(0))(using ctx),
       arity,
       params,
-      origCtx
+      origCtx,
+      Some(lam)
     )
 
   def fromElement(elem: Element)(using origCtx: Context): VFun =
     val Element(symbol, name, _, arity, _, _, impl) = elem
     VFun(impl, arity.getOrElse(1), List.empty, origCtx)
+end VFun
 
 extension (self: VAny)
   def ===(that: VAny): Boolean =
