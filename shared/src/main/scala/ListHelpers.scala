@@ -6,24 +6,23 @@ import VNum.given
 object ListHelpers:
 
   def filter(iterable: VAny, predicate: VFun)(using ctx: Context): VList =
-    var list = makeIterable(iterable)
+    val list = makeIterable(iterable)
     val branches = predicate.originalAST match
       case Some(lam) => lam.body
       case None      => List.empty
 
-    for branch <- branches do
-      list = VList(
-        list.zipWithIndex
-          .filter { (item, index) =>
-            MiscHelpers.boolify(
-              VFun
-                .fromLambda(AST.Lambda(1, List.empty, List(branch)))
-                .execute(item, index, List(item))
-            )
-          }
-          .map(_._1)*
-      )
-    list
+    val filtered = list.zipWithIndex.filter((item, index) =>
+      var temp = true
+      for branch <- branches do
+        temp = temp && MiscHelpers.boolify(
+          VFun
+            .fromLambda(AST.Lambda(1, List.empty, List(branch)))
+            .execute(item, index, List(item))
+        )
+      temp
+    )
+
+    VList(filtered.map(_._1)*)
   end filter
 
   /** Make an iterable from a value
