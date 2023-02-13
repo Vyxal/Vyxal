@@ -303,7 +303,6 @@ object Parser:
         case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
             StructureType.LambdaFilter | StructureType.LambdaReduce |
             StructureType.LambdaSort) =>
-          println(branches)
           val lambda =
             if lambdaType == StructureType.Lambda then
               branches match

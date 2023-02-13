@@ -5,6 +5,27 @@ import VNum.given
 
 object ListHelpers:
 
+  def filter(iterable: VAny, predicate: VFun)(using ctx: Context): VList =
+    var list = makeIterable(iterable)
+    val branches = predicate.originalAST match
+      case Some(lam) => lam.body
+      case None      => List.empty
+
+    for branch <- branches do
+      list = VList(
+        list.zipWithIndex
+          .filter { (item, index) =>
+            MiscHelpers.boolify(
+              VFun
+                .fromLambda(AST.Lambda(1, List.empty, List(branch)))
+                .execute(item, index, List(item))
+            )
+          }
+          .map(_._1)*
+      )
+    list
+  end filter
+
   /** Make an iterable from a value
     *
     * @param value
@@ -34,9 +55,17 @@ object ListHelpers:
         else VList(num.toString.map(x => VNum(x.toString))*)
 
   def map(f: VFun, to: VList)(using ctx: Context): VList =
-    VList(to.zipWithIndex.map { (item, index) =>
-      f.execute(item, index, List(item))
-    }*)
+    val branches = f.originalAST match
+      case Some(lam) => lam.body
+      case None      => List.empty
+    var temp: VList = to
+    for branch <- branches do
+      temp = VList(temp.zipWithIndex.map { (item, index) =>
+        VFun
+          .fromLambda(AST.Lambda(1, List.empty, List(branch)))
+          .execute(item, index, List(item))
+      }*)
+    temp
 
   /** Mold a list into a shape.
     * @param content

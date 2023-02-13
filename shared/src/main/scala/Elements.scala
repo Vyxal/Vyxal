@@ -319,6 +319,20 @@ object Elements:
       case a: String => a.toUpperCase()
     }
 
+    val filterElement: Dyad = addElem(
+      Dyad,
+      "F",
+      "Filter by Function | From Base",
+      List("filter", "keep-by", "from-base", "10->b"),
+      "a: fun, b: lst -> Filter b by truthy results of a",
+      "a: lst, b: fun -> Filter a by truthy results of b",
+      "a: num, b: num -> a in base b - list of digits",
+      "a: num, b: str|lst -> a in base with alphabet b",
+    ) {
+      case (a: VFun, b: VAny) => ListHelpers.filter(b, a)
+      case (a: VAny, b: VFun) => ListHelpers.filter(a, b)
+    }
+
     val getContextVariableM = addNilad(
       "m",
       "Get Context Variable M",
