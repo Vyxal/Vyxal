@@ -28,6 +28,26 @@ object MiscHelpers:
     case (a: VNum, b: String)   => a.toString.compareTo(b)
     case (a: String, b: String) => a.compareTo(b)
 
+  def compareExact(
+      a: VAny,
+      b: VAny
+  )(using ctx: Context): Int = (a, b) match
+    case (a: VVal, b: VVal) => compare(a, b)
+    case (a, b)             =>
+      // Lexographically compare the two values after converting both to iterable
+      val aIter = ListHelpers.makeIterable(a)
+      val bIter = ListHelpers.makeIterable(b)
+
+      if aIter.length != bIter.length then
+        return aIter.length.compare(bIter.length)
+
+      var ind = 0
+      var result = -1
+      while ind < aIter.length && result != 0 do
+        result = compareExact(aIter(ind), bIter(ind))
+        ind += 1
+      return 0
+
   def firstNonNegative(f: VFun)(using ctx: Context): Int =
     var i = 0
     while true do

@@ -101,6 +101,20 @@ object ListHelpers:
     moldHelper(content, shape, 0)
   end mold
 
+  def sortBy(iterable: VList, key: VFun)(using ctx: Context): VList =
+    return VList(
+      iterable.zipWithIndex
+        .sorted((a, b) =>
+          MiscHelpers.compareExact(
+            key.execute(a(0), a(1), List(a(0))),
+            key.execute(b(0), b(1), List(b(0)))
+          )
+        )
+        .map(_._1)*
+    )
+
+  end sortBy
+
   /** Split a list on a sublist
     *
     * @param sep

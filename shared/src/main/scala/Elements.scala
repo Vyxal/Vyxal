@@ -519,6 +519,27 @@ object Elements:
         MiscHelpers.reduce(a, b)
     }
 
+    val sortByFunction: Dyad = addElem(
+      Dyad,
+      "ṡ",
+      "Sort by Function Object | Reshape (APL Style)",
+      List(
+        "sort-by",
+        "sortby",
+        "sort-by-fun",
+        "sortbyfun",
+        "sort-fun",
+        "sortfun"
+      ),
+      "a: fun, b: any -> sort iterable b by function a",
+      "a: any, b: fun -> sort iterable a by function b"
+    ) {
+      case (a: VFun, b) =>
+        ListHelpers.sortBy(ListHelpers.makeIterable(b, Some(true)), a)
+      case (a, b: VFun) =>
+        ListHelpers.sortBy(ListHelpers.makeIterable(a, Some(true)), b)
+    }
+
     val subtraction = addVect(
       Dyad,
       "-",

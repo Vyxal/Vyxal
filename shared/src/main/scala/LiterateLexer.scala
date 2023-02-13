@@ -22,6 +22,8 @@ val hardcodedKeywords = Map(
   "map-lam" -> "ƛ",
   "filter-lambda" -> "Ω",
   "filter-lam" -> "Ω",
+  "sort-lambda" -> "µ",
+  "sort-lam" -> "µ",
   "endlambda" -> "}",
   "end-lambda" -> "}",
   "end" -> "}",
@@ -40,7 +42,7 @@ enum LiterateToken:
   // This is for strings that are already in SBCS form
   case Number(value: String)
   case Variable(value: String)
-
+  case Newline(value: String)
   case Group(value: List[Object])
   case LitComment(value: String)
   case LambdaBlock(value: List[Object])
@@ -108,6 +110,10 @@ object LiterateLexer extends RegexParsers:
         AlreadyCode("#:" + value.map(recHelp).mkString("[", "|", "]"))
   }
 
+  def newline: Parser[LiterateToken] = "\n" ^^ { value =>
+    Newline(value)
+  }
+
   def branch: Parser[LiterateToken] = "|" ^^ { value =>
     AlreadyCode("|")
   }
@@ -118,7 +124,7 @@ object LiterateLexer extends RegexParsers:
 
   def tokens: Parser[List[LiterateToken]] = phrase(
     rep(
-      number | string | singleCharString | comment | rawCode | list | lambdaBlock | normalGroup | unpackVar | varGet | varSet | augVar | word | branch
+      number | string | singleCharString | comment | rawCode | list | lambdaBlock | normalGroup | unpackVar | varGet | varSet | augVar | word | branch | newline
     )
   )
 
@@ -137,6 +143,7 @@ def recHelp(token: Object): String =
     case Variable(value)    => value
     case LambdaBlock(value) => value.map(recHelp).mkString("λ", " ", "}")
     case ListToken(value)   => value.map(recHelp).mkString("[", "|", "]")
+    case Newline(value)     => value
     case value: String      => value
 
 def sbcsify(tokens: List[LiterateToken]): String =
@@ -181,6 +188,7 @@ def sbcsify(tokens: List[LiterateToken]): String =
             else out.append(value)
           case _ => out.append(value)
       case AlreadyCode(value) => out.append(value)
+      case Newline(value)     => out.append(value)
       case Group(value) =>
         out.append(value.map(sbcsify).mkString)
       case LitComment(value) => ""
