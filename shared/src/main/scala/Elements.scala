@@ -204,6 +204,16 @@ object Elements:
         )
     }
 
+    val cookie = addDirect(
+      "🍪",
+      "Cookie",
+      List("cookie"),
+      None,
+      "cookie."
+    ) { ctx ?=>
+      while true do MiscHelpers.vyPrintln("cookie")
+    }
+
     val count = addElem(
       Dyad,
       "C",
