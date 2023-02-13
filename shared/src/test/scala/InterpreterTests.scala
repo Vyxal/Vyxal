@@ -281,4 +281,16 @@ class InterpreterTests extends VyxalTests:
     }
   }
 
+  describe("Lambda types") {
+    testMulti(
+      "#[1|2|3#] ƛ5R}" -> VList(VList(1, 2, 3, 4), VList(2, 3, 4), VList(3, 4)),
+      "#[1|2|3#] ƛ2+|+|-}" -> VList(0, 0, 0)
+    )
+
+    testMulti(
+      "10 Ω2%0=}" -> VList(2, 4, 6, 8, 10),
+      "10 Ω2%0=|5<}" -> VList(2, 4)
+    )
+  }
+
 end InterpreterTests

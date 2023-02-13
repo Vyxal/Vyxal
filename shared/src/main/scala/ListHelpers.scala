@@ -5,16 +5,15 @@ import VNum.given
 
 object ListHelpers:
 
-  def filter(iterable: VAny, predicate: VFun)(using ctx: Context): VList =
-    val list = makeIterable(iterable)
+  def filter(iterable: VList, predicate: VFun)(using ctx: Context): VList =
     val branches = predicate.originalAST match
       case Some(lam) => lam.body
       case None =>
-        return VList(list.zipWithIndex.map { (item, index) =>
+        return VList(iterable.zipWithIndex.map { (item, index) =>
           predicate.execute(item, index, List(item))
         }*)
 
-    val filtered = list.zipWithIndex.filter((item, index) =>
+    val filtered = iterable.zipWithIndex.filter((item, index) =>
       var temp = true
       for branch <- branches do
         temp = temp && MiscHelpers.boolify(
