@@ -329,8 +329,8 @@ object Elements:
       "a: num, b: num -> a in base b - list of digits",
       "a: num, b: str|lst -> a in base with alphabet b",
     ) {
-      case (a: VFun, b: VAny) => ListHelpers.filter(b, a)
-      case (a: VAny, b: VFun) => ListHelpers.filter(a, b)
+      case (a: VFun, b) => ListHelpers.filter(b, a)
+      case (a, b: VFun) => ListHelpers.filter(a, b)
     }
 
     val getContextVariableM = addNilad(
