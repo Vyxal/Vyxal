@@ -9,7 +9,10 @@ object ListHelpers:
     val list = makeIterable(iterable)
     val branches = predicate.originalAST match
       case Some(lam) => lam.body
-      case None      => List.empty
+      case None =>
+        return VList(list.zipWithIndex.map { (item, index) =>
+          predicate.execute(item, index, List(item))
+        }*)
 
     val filtered = list.zipWithIndex.filter((item, index) =>
       var temp = true
@@ -56,7 +59,10 @@ object ListHelpers:
   def map(f: VFun, to: VList)(using ctx: Context): VList =
     val branches = f.originalAST match
       case Some(lam) => lam.body
-      case None      => List.empty
+      case None =>
+        return VList(to.zipWithIndex.map { (item, index) =>
+          f.execute(item, index, List(item))
+        }*)
     var temp: VList = to
     for branch <- branches do
       temp = VList(temp.zipWithIndex.map { (item, index) =>
@@ -65,6 +71,7 @@ object ListHelpers:
           .execute(item, index, List(item))
       }*)
     temp
+  end map
 
   /** Mold a list into a shape.
     * @param content
