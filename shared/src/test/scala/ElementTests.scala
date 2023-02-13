@@ -121,7 +121,9 @@ class ElementTests extends VyxalTests:
           AST.Lambda(
             1,
             List.empty,
-            AST.makeSingle(AST.Number(8), AST.Command("-"))
+            List(
+              AST.makeSingle(AST.Number(8), AST.Command("-"))
+            )
           )
         )
         ctx.push(3, f, g)
