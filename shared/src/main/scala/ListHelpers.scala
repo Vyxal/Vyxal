@@ -114,6 +114,18 @@ object ListHelpers:
             .map(_._1)*
         )
 
+    if branches.length < 2 then
+      return VList(
+        iterable.zipWithIndex
+          .sorted((a, b) =>
+            MiscHelpers.compareExact(
+              key.execute(a(0), a(1), List(a(0))),
+              key.execute(b(0), b(1), List(b(0)))
+            )
+          )
+          .map(_._1)*
+      )
+
     val out = iterable.zipWithIndex
       .sortWith { (a, b) =>
         val (aRes, bRes) =
