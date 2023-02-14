@@ -26,7 +26,7 @@ enum AST(val arity: Option[Int]):
 
   /** A function definition, basically sugar a lambda assigned to a variable */
   case FnDef(name: String, lam: Lambda) extends AST(Some(0))
-  case GetVar(name: String) extends AST(Some(0))
+  case GetVar(name: String) extends AST(None)
   case SetVar(name: String) extends AST(Some(1))
   case AuxAugmentVar(name: String) extends AST(None)
   case AugmentVar(name: String, what: AST) extends AST(None)
