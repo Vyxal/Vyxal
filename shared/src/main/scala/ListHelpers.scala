@@ -102,16 +102,38 @@ object ListHelpers:
   end mold
 
   def sortBy(iterable: VList, key: VFun)(using ctx: Context): VList =
-    return VList(
-      iterable.zipWithIndex
-        .sorted((a, b) =>
-          MiscHelpers.compareExact(
-            key.execute(a(0), a(1), List(a(0))),
-            key.execute(b(0), b(1), List(b(0)))
-          )
+    val branches = key.originalAST match
+      case Some(lam) => lam.body
+      case None =>
+        return VList(
+          iterable.zipWithIndex
+            .sorted((a, b) =>
+              MiscHelpers.compareExact(
+                key.execute(a(0), a(1), List(a(0))),
+                key.execute(b(0), b(1), List(b(0)))
+              )
+            )
+            .map(_._1)*
         )
-        .map(_._1)*
-    )
+
+    val out = iterable.zipWithIndex
+      .sortWith { (a, b) =>
+        val (aRes, bRes) =
+          branches
+            .map { branch =>
+              val f = VFun.fromLambda(AST.Lambda(1, List.empty, List(branch)))
+              (
+                f.execute(a(0), a(1), List(a(0))),
+                f.execute(b(0), b(1), List(b(0)))
+              )
+            }
+            .dropWhile(_ == _)
+            .head
+        MiscHelpers.compareExact(aRes, bRes) < 0
+      }
+      .map(_._1)
+
+    VList(out*)
 
   end sortBy
 

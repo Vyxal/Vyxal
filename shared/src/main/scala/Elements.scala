@@ -268,7 +268,8 @@ object Elements:
       "a: str -> Evaluate a as Vyxal",
       "a: num -> 10 ** n"
     ) {
-      case fn: VFun => Interpreter.executeFn(fn)
+      case fn: VFun =>
+        Interpreter.executeFn(fn)
       case code: String =>
         Interpreter.execute(code)
         summon[Context].pop()
