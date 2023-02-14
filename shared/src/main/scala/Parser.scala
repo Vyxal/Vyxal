@@ -310,12 +310,12 @@ object Parser:
                 case List()     => AST.Lambda(1, List.empty, List.empty)
                 case List(body) => AST.Lambda(1, List.empty, List(body))
                 case List(params, body) =>
-                  val arity = 1 // getArity
                   val params = List.empty // getParams
+                  val arity = 1 // getArity
                   AST.Lambda(arity, params, List(body))
                 case _ =>
-                  val arity = 1 // get from first branch
                   val params = List.empty // get from first branch
+                  val arity = 1 // get from first branch
                   AST.Lambda(arity, params, branches.drop(1))
             else AST.Lambda(1, List.empty, branches)
           // todo using the command names is a bit brittle

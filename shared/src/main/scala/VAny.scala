@@ -27,7 +27,7 @@ type VVal = VNum | String
 case class VFun(
     impl: DirectFn,
     arity: Int,
-    params: List[String],
+    params: List[String | Int],
     ctx: Context,
     originalAST: Option[AST.Lambda] = None
 ):

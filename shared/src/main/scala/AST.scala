@@ -21,7 +21,7 @@ enum AST(val arity: Option[Int]):
   case If(thenBody: AST, elseBody: Option[AST]) extends AST(Some(1))
   case For(loopVar: Option[String], body: AST) extends AST(None)
   case While(cond: Option[AST], body: AST) extends AST(None)
-  case Lambda(lambdaArity: Int, params: List[String], body: List[AST])
+  case Lambda(lambdaArity: Int, params: List[String | Int], body: List[AST])
       extends AST(Some(lambdaArity))
 
   /** A function definition, basically sugar a lambda assigned to a variable */
