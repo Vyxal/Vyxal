@@ -130,6 +130,7 @@ object ListHelpers:
       .sortWith { (a, b) =>
         val (aRes, bRes) =
           branches
+            .view
             .map { branch =>
               val f = VFun.fromLambda(AST.Lambda(1, List.empty, List(branch)))
               (
