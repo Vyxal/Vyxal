@@ -46,7 +46,7 @@ object MiscHelpers:
       while ind < aIter.length && result != 0 do
         result = compareExact(aIter(ind), bIter(ind))
         ind += 1
-      return 0
+      return result
 
   def firstNonNegative(f: VFun)(using ctx: Context): Int =
     var i = 0

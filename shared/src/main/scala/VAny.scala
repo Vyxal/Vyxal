@@ -38,14 +38,14 @@ case class VFun(
   /** Call this function on the given arguments, using custom context variables.
     */
   def execute(
-      contextVarM: VAny,
-      contextVarN: VAny,
+      contextVarPrimary: VAny,
+      contextVarSecondary: VAny,
       args: Seq[VAny]
   )(using ctx: Context): VAny =
     Interpreter.executeFn(
       this,
-      Some(contextVarM),
-      Some(contextVarN),
+      Some(contextVarPrimary),
+      Some(contextVarSecondary),
       args = args
     )
 
