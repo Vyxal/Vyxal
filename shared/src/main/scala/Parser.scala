@@ -350,7 +350,7 @@ object Parser:
           // operate on entire stack
           arity = -1
           paramList.drop(paramList.length)
-        else if component == "*" then
+        else if component == "*" || component == "×" then
           // varargs - pop n and pop n items onto lambda stack
           arity += 1
           paramList += "*"

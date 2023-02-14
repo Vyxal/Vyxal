@@ -174,7 +174,9 @@ def sbcsify(tokens: List[LiterateToken]): String =
         if value == "0" then out.append("0")
         else
           next match
-            case Some(Number(_)) => out.append(value + " ")
+            case Some(Number(nextNumber)) =>
+              if nextNumber == "." && value.endsWith(".") then out.append(value)
+              else out.append(value + " ")
             case Some(Group(items)) =>
               if items.length == 1 && getRight(
                   LiterateLexer(
