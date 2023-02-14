@@ -259,23 +259,35 @@ object Elements:
       case (a: String, b: String) => a == b
     }
 
-    val exec = addElem(
-      Monad,
+    val exec = addDirect(
       "Ė",
       "Execute lambda | Evaluate as Vyxal | Power with base 10",
       List("execute-lambda", "evaluate-as-vyxal", "power-base-10", "call", "@"),
+      Some(1),
       "a: fun -> Execute a",
       "a: str -> Evaluate a as Vyxal",
       "a: num -> 10 ** n"
-    ) {
-      case fn: VFun =>
-        Interpreter.executeFn(fn)
-      case code: String =>
-        Interpreter.execute(code)
-        summon[Context].pop()
-      case n: VNum => 10 ** n
+    ) { ctx ?=>
+      ctx.pop() match
+        case fn: VFun =>
+          ctx.push(Interpreter.executeFn(fn))
+          if fn.arity == -1 then ctx.pop()
+        case code: String =>
+          Interpreter.execute(code)
+        case n: VNum => ctx.push(10 ** n)
+        case list: VList =>
+          ctx.push(execHelper(list))
     }
 
+    def execHelper(value: VAny)(using ctx: Context): VAny =
+      value match
+        case code: String =>
+          Interpreter.execute(code)
+          summon[Context].pop()
+        case n: VNum => 10 ** n
+        case list: VList =>
+          VList(list.map(execHelper)*)
+        case _: VAny => throw new Exception("Can't exec on functions in lists")
     val exponentation = addVect(
       Dyad,
       "*",

@@ -134,8 +134,12 @@ object Interpreter:
     val vars: mut.Map[String, VAny] = mut.Map()
     val inputs =
       if args != null then args
+      else if arity == -1 then
+        useStack = true
+        List.empty
       else if params.length == 0 then
-        if popArgs then ctx.pop(arity) else ctx.peek(arity)
+        val temp = if popArgs then ctx.pop(arity) else ctx.peek(arity)
+        temp.toList
       else
         val popFn = (x: Int) => if popArgs then ctx.pop(x) else ctx.peek(x)
         val temp = ListBuffer.empty[VAny]
@@ -143,14 +147,13 @@ object Interpreter:
           param match
             case n: Int =>
               if n == 1 then temp += popFn(1)(0)
-              else temp += VList(popFn(n)*)
+              else temp ++= popFn(n)
             case name: String =>
               if name == "*" then
                 val terms = popFn(1)(0)
                 terms match
                   case n: VNum => temp += VList(popFn(n.toInt)*)
                   case _       => throw RuntimeException(s"Can't unpack $terms")
-              else if name == "~" then useStack = true
               else vars(name) = popFn(1)(0)
         temp.toList
 
@@ -165,11 +168,11 @@ object Interpreter:
         ),
         Some(ctxVarSecondary.getOrElse(VList(inputs*))),
         vars,
-        inputs
+        inputs,
+        useStack
       )
 
     fn.impl()(using fnCtx)
-
     fnCtx.peek
   end executeFn
 end Interpreter
