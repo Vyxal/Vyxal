@@ -136,8 +136,8 @@ object Interpreter:
       Context.makeFnCtx(
         origCtx,
         ctx,
-        Some(inputs(0)),
-        Some(VList(inputs*)),
+        Some(ctxVarPrimary.getOrElse(inputs(0))),
+        Some(ctxVarSecondary.getOrElse(VList(inputs*))),
         params,
         inputs
       )
