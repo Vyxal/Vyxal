@@ -49,6 +49,29 @@ case class VFun(
       args = args
     )
 
+  def executeResult(
+      contextVarPrimary: VAny,
+      contextVarSecondary: VAny,
+      args: Seq[VAny]
+  )(using ctx: Context): VAny =
+    val res = Interpreter.executeFn(
+      this,
+      Some(contextVarPrimary),
+      Some(contextVarSecondary),
+      args = args
+    )
+
+    res match
+      case f: VFun =>
+        Interpreter.executeFn(
+          f,
+          Some(contextVarPrimary),
+          Some(contextVarSecondary),
+          args = args
+        )
+      case _ => res
+  end executeResult
+
   def apply(args: VAny*)(using ctx: Context): VAny =
     Interpreter.executeFn(this)
 end VFun
