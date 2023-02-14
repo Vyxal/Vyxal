@@ -263,7 +263,7 @@ object Elements:
       Monad,
       "Ė",
       "Execute lambda | Evaluate as Vyxal | Power with base 10",
-      List("execute-lambda", "evaluate-as-vyxal", "power-base-10"),
+      List("execute-lambda", "evaluate-as-vyxal", "power-base-10", "call", "@"),
       "a: fun -> Execute a",
       "a: str -> Evaluate a as Vyxal",
       "a: num -> 10 ** n"
@@ -339,14 +339,28 @@ object Elements:
     val getContextVariableM = addNilad(
       "m",
       "Get Context Variable M",
-      List("get-context-m", "context-m", "c-var-m", "ctx-m", "ctx-secondary"),
+      List(
+        "get-context-m",
+        "context-m",
+        "c-var-m",
+        "ctx-m",
+        "ctx-secondary",
+        "m"
+      ),
       " -> context variable m"
     ) { ctx ?=> ctx.ctxVarSecondary }
 
     val getContextVariableN = addNilad(
       "n",
       "Get Context Variable N",
-      List("get-context-n", "context-n", "c-var-n", "ctx-n", "ctx-primary"),
+      List(
+        "get-context-n",
+        "context-n",
+        "c-var-n",
+        "ctx-n",
+        "ctx-primary",
+        "n"
+      ),
       " -> context variable n"
     ) { ctx ?=> ctx.ctxVarPrimary }
 

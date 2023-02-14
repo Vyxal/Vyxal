@@ -127,8 +127,9 @@ object LiterateLexer extends RegexParsers:
   }
 
   def lambdaArgs: Parser[LiterateToken] =
-    """((\*|\~|[a-zA-Z][_a-zA-Z0-9]*)|, ?)+""".r ^^ { value =>
-      AlreadyCode(value)
+    """(\*|\~|[a-zA-Z][_a-zA-Z0-9]*), ?((\*|\~|[a-zA-Z][_a-zA-Z0-9]*)|, ?)*""".r ^^ {
+      value =>
+        AlreadyCode(value)
     }
 
   def tokens: Parser[List[LiterateToken]] = phrase(

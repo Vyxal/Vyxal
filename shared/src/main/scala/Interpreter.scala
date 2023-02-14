@@ -134,8 +134,8 @@ object Interpreter:
     val vars: mut.Map[String, VAny] = mut.Map()
     val inputs =
       if args != null then args
-      else if arity == 1 && !params.nonEmpty then
-        if popArgs then ctx.pop(1) else ctx.peek(1)
+      else if params.length == 0 then
+        if popArgs then ctx.pop(arity) else ctx.peek(arity)
       else
         val popFn = (x: Int) => if popArgs then ctx.pop(x) else ctx.peek(x)
         val temp = ListBuffer.empty[VAny]
