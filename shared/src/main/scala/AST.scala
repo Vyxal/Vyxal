@@ -56,7 +56,7 @@ enum AST(val arity: Option[Int]):
     case For(loopVar, body)      => s"(${loopVar.getOrElse("")}|${body.toVyxal}"
     case While(cond, body) => s"{${cond.fold("")(_.toVyxal)}|${body.toVyxal}}"
     case Lambda(arity, params, body) =>
-      s"λ${body.map(_.toVyxal).mkString("|")}}"
+      body.map(_.toVyxal).mkString("λ", "|", "}")
     case FnDef(name, lam) => ???
     case GetVar(name)     => s"#<$name"
     case SetVar(name)     => s"#>$name"
