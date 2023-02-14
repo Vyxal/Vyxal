@@ -345,7 +345,7 @@ object Parser:
           val num = component.toInt
           arity += num
           paramList += num
-        else if component == "!" then
+        else if component.startsWith("!") then
           // operate on entire stack
           arity = -1
           paramList.drop(paramList.length)
