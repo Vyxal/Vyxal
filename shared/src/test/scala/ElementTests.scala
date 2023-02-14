@@ -122,7 +122,8 @@ class ElementTests extends VyxalTests:
             1,
             List.empty,
             List(
-              AST.makeSingle(AST.Number(8), AST.Command("-"))
+              AST.Number(8), AST.Command("-")
+
             )
           )
         )
