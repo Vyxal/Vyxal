@@ -137,8 +137,8 @@ object ListHelpers:
                 f.execute(b(0), b(1), List(b(0)))
               )
             }
-            .dropWhile(_ == _)
-            .head
+            .find(_ != _)
+            .getOrElse((ctx.settings.defaultValue, ctx.settings.defaultValue))
         MiscHelpers.compareExact(aRes, bRes) < 0
       }
       .map(_._1)
