@@ -37,9 +37,9 @@ class Context private (
     val testMode: Boolean = false,
     val useStack: Boolean = false
 ):
-  def settings: Settings = if testMode then
-    Settings(endPrintMode = EndPrintMode.None)
-  else globals.settings
+  def settings: Settings =
+    if testMode then Settings(endPrintMode = EndPrintMode.None)
+    else globals.settings
 
   /** Pop the top of the stack
     *
@@ -198,20 +198,24 @@ object Context:
     *   The context in which the function was defined
     * @param currCtx
     *   The context where the function is currently executing
+    * @param ctxVarSecondary
+    *   Secondary context var. Not an Option because if not explicitly
+    *   overridden, the inputs are wrapped in a VList and used as the secondary
+    *   context var.
     */
   def makeFnCtx(
       origCtx: Context,
       currCtx: Context,
       ctxVarPrimary: Option[VAny],
-      ctxVarSecondary: Option[VAny],
+      ctxVarSecondary: VAny,
       variables: mut.Map[String, VAny],
       inputs: Seq[VAny],
-      useStack: Boolean = false
+      useStack: Boolean
   ) =
-    val temp = new Context(
-      mut.ArrayBuffer.empty,
+    new Context(
+      if useStack then currCtx.stack else mut.ArrayBuffer.empty,
       ctxVarPrimary.orElse(currCtx._ctxVarPrimary),
-      ctxVarSecondary.orElse(currCtx._ctxVarSecondary),
+      Some(ctxVarSecondary),
       variables,
       Inputs(inputs),
       Some(origCtx),
@@ -219,8 +223,5 @@ object Context:
       currCtx.testMode,
       useStack
     )
-
-    temp
-  end makeFnCtx
 
 end Context

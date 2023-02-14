@@ -121,15 +121,12 @@ class ElementTests extends VyxalTests:
           AST.Lambda(
             1,
             List.empty,
-            List(
-              AST.Number(8), AST.Command("-")
-
-            )
+            List(AST.Number(8), AST.Command("-"))
           )
         )
         ctx.push(3, f, g)
         Interpreter.execute(AST.Command("+"))
-        Interpreter.execute(AST.ExecuteFn)
+        Impls.exec()
         assertResult(VNum(1))(ctx.pop())
       }
     }
@@ -540,7 +537,9 @@ class ElementTests extends VyxalTests:
       it("should use the same context for executing the code") {
         // Doesn't use the test helpers because of context handling
         given ctx: Context = Context(inputs = List(3, 4), testMode = true)
-        assertResult(7: VNum)(Impls.exec("+"))
+        ctx.push("+")
+        Impls.exec()
+        assertResult(7: VNum)(ctx.peek)
       }
     }
 

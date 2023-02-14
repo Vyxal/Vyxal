@@ -131,7 +131,7 @@ object Elements:
         keywords: Seq[String],
         arity: Option[Int],
         overloads: String*
-    )(impl: Context ?=> Unit): Unit =
+    )(impl: Context ?=> Unit): () => Context ?=> Unit =
       elements += symbol -> Element(
         symbol,
         name,
@@ -141,6 +141,7 @@ object Elements:
         overloads,
         () => impl
       )
+      () => impl
 
     addFull(
       Dyad,
@@ -272,22 +273,19 @@ object Elements:
         case fn: VFun =>
           ctx.push(Interpreter.executeFn(fn))
           if fn.arity == -1 then ctx.pop()
-        case code: String =>
-          Interpreter.execute(code)
-        case n: VNum => ctx.push(10 ** n)
-        case list: VList =>
-          ctx.push(execHelper(list))
+        case code: String => Interpreter.execute(code)
+        case x => ctx.push(execHelper(x))
     }
 
     def execHelper(value: VAny)(using ctx: Context): VAny =
       value match
         case code: String =>
           Interpreter.execute(code)
-          summon[Context].pop()
+          ctx.pop()
         case n: VNum => 10 ** n
-        case list: VList =>
-          VList(list.map(execHelper)*)
-        case _: VAny => throw new Exception("Can't exec on functions in lists")
+        case list: VList => list.vmap(execHelper)
+        case _ => throw new Exception("Can't exec on functions in lists")
+
     val exponentation = addVect(
       Dyad,
       "*",

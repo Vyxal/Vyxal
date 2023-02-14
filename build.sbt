@@ -10,9 +10,9 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 
 import org.scalajs.linker.interface.OutputPatterns
 
-// From https://github.com/scalatest/scalatest/issues/405
-// Suppresses output from successful tests
-Test / testOptions += Tests.Argument("-oNCXEHLOPQRM")
+// From https://www.scalatest.org/user_guide/using_the_runner
+// Suppress output from successful tests
+Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-oNCXELOPQRM")
 
 lazy val root: Project = project
   .in(file("."))

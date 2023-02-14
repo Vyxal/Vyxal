@@ -130,17 +130,35 @@ object Interpreter:
       popArgs: Boolean = true
   )(using ctx: Context): VAny =
     val VFun(impl, arity, params, origCtx, origAST) = fn
-    var useStack: Boolean = false
+    val useStack = arity == -1
     val vars: mut.Map[String, VAny] = mut.Map()
     val inputs =
       if args != null then args
-      else if arity == -1 then
-        useStack = true
-        List.empty
-      else if params.length == 0 then
-        val temp = if popArgs then ctx.pop(arity) else ctx.peek(arity)
+      else if arity == -1 then List.empty
+      else if params.isEmpty then
+        if popArgs then ctx.pop(arity) else ctx.peek(arity)
+      else if !params.contains("*") then
+        // This branch is a way to temporarily make things work when popArgs is
+        // false, but it won't work for *
+        val numToPop = params.map {
+          case n: Int => n
+          case _ => 1
+        }.sum
+        // todo this is ugly
+        var popped = if popArgs then ctx.pop(numToPop) else ctx.peek(numToPop)
+        val temp = ListBuffer.empty[VAny]
+        for param <- params do
+          param match
+            case n: Int =>
+              temp ++= popped.take(n)
+              popped = popped.drop(n)
+            case name: String =>
+              vars(name) = popped.head
+              popped = popped.tail
         temp.toList
       else
+        // todo this won't work if popArgs is false because peeking repeatedly
+        //      will return the same value
         val popFn = (x: Int) => if popArgs then ctx.pop(x) else ctx.peek(x)
         val temp = ListBuffer.empty[VAny]
         for param <- params do
@@ -161,12 +179,8 @@ object Interpreter:
       Context.makeFnCtx(
         origCtx,
         ctx,
-        Some(
-          ctxVarPrimary.getOrElse(
-            if inputs.nonEmpty then inputs(0) else ctx.settings.defaultValue
-          )
-        ),
-        Some(ctxVarSecondary.getOrElse(VList(inputs*))),
+        ctxVarPrimary.orElse(inputs.headOption),
+        ctxVarSecondary.getOrElse(VList(inputs*)),
         vars,
         inputs,
         useStack

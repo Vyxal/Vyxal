@@ -80,7 +80,7 @@ object VFun:
   def fromLambda(lam: AST.Lambda)(using origCtx: Context): VFun =
     val AST.Lambda(arity, params, body) = lam
     VFun(
-      () => ctx ?=> Interpreter.execute(body(0))(using ctx),
+      () => ctx ?=> body.foreach(Interpreter.execute(_)(using ctx)),
       arity,
       params,
       origCtx,

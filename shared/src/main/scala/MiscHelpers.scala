@@ -8,7 +8,6 @@ import scala.collection.mutable.Stack
 import spire.algebra.*
 
 object MiscHelpers:
-  // todo consider doing something like APL's forks so this doesn't have to be a partial function
   val add = Dyad.vectorise("add")(forkify {
     case (a: VNum, b: VNum)     => a + b
     case (a: String, b: VNum)   => s"$a$b"
