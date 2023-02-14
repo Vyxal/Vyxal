@@ -2,7 +2,6 @@ package vyxal
 
 import vyxal.impls.Elements
 
-import java.sql.Struct
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Queue
