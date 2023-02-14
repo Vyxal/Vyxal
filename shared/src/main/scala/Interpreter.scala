@@ -142,7 +142,7 @@ object Interpreter:
         // false, but it won't work for *
         val numToPop = params.map {
           case n: Int => n
-          case _ => 1
+          case _      => 1
         }.sum
         // todo this is ugly
         var popped = if popArgs then ctx.pop(numToPop) else ctx.peek(numToPop)

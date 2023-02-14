@@ -142,6 +142,7 @@ object Elements:
         () => impl
       )
       () => impl
+    end addDirect
 
     addFull(
       Dyad,
@@ -274,7 +275,7 @@ object Elements:
           ctx.push(Interpreter.executeFn(fn))
           if fn.arity == -1 then ctx.pop()
         case code: String => Interpreter.execute(code)
-        case x => ctx.push(execHelper(x))
+        case x            => ctx.push(execHelper(x))
     }
 
     def execHelper(value: VAny)(using ctx: Context): VAny =
@@ -282,7 +283,7 @@ object Elements:
         case code: String =>
           Interpreter.execute(code)
           ctx.pop()
-        case n: VNum => 10 ** n
+        case n: VNum     => 10 ** n
         case list: VList => list.vmap(execHelper)
         case _ => throw new Exception("Can't exec on functions in lists")
 
