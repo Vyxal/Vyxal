@@ -129,8 +129,7 @@ object ListHelpers:
     val out = iterable.zipWithIndex
       .sortWith { (a, b) =>
         val (aRes, bRes) =
-          branches
-            .view
+          branches.view
             .map { branch =>
               val f = VFun.fromLambda(AST.Lambda(1, List.empty, List(branch)))
               (
