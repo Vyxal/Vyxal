@@ -13,16 +13,15 @@ object ListHelpers:
           predicate.execute(item, index, List(item))
         }*)
 
-    val filtered = iterable.zipWithIndex.filter((item, index) =>
-      var temp = true
-      for branch <- branches do
-        temp = temp && MiscHelpers.boolify(
+    val filtered = iterable.zipWithIndex.filter { (item, index) =>
+      branches.forall { branch =>
+        MiscHelpers.boolify(
           VFun
             .fromLambda(AST.Lambda(1, List.empty, List(branch)))
             .execute(item, index, List(item))
         )
-      temp
-    )
+      }
+    }
 
     VList(filtered.map(_._1)*)
   end filter
@@ -62,14 +61,13 @@ object ListHelpers:
         return VList(to.zipWithIndex.map { (item, index) =>
           f.execute(item, index, List(item))
         }*)
-    var temp: VList = to
-    for branch <- branches do
-      temp = VList(temp.zipWithIndex.map { (item, index) =>
+    branches.foldLeft(to) { (mapped, branch) =>
+      VList(mapped.zipWithIndex.map { (item, index) =>
         VFun
           .fromLambda(AST.Lambda(1, List.empty, List(branch)))
           .execute(item, index, List(item))
       }*)
-    temp
+    }
   end map
 
   /** Mold a list into a shape.
