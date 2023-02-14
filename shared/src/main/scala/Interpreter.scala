@@ -3,6 +3,9 @@ package vyxal
 import vyxal.impls.Elements
 import vyxal.MiscHelpers.{vyPrint, vyPrintln}
 
+import scala.annotation.varargs
+import scala.collection.mutable.ListBuffer
+import scala.collection.mutable as mut
 import VNum.given
 
 object Interpreter:
@@ -127,18 +130,39 @@ object Interpreter:
       popArgs: Boolean = true
   )(using ctx: Context): VAny =
     val VFun(impl, arity, params, origCtx, origAST) = fn
+    var useStack: Boolean = false
+    val vars: mut.Map[String, VAny] = mut.Map()
     val inputs =
       if args != null then args
-      else if popArgs then ctx.pop(arity)
-      else ctx.peek(arity)
+      else
+        val popFn = (x: Int) => if popArgs then ctx.pop(x) else ctx.peek(x)
+        val temp = ListBuffer.empty[VAny]
+        for param <- params do
+          param match
+            case n: Int =>
+              if n == 1 then temp += popFn(1)(0)
+              else temp += VList(popFn(n)*)
+            case name: String =>
+              if name == "*" then
+                val terms = popFn(1)(0)
+                terms match
+                  case n: VNum => temp += VList(popFn(n.toInt)*)
+                  case _       => throw RuntimeException(s"Can't unpack $terms")
+              else if name == "~" then useStack = true
+              else vars(name) = popFn(1)(0)
+        temp.toList
 
     given fnCtx: Context =
       Context.makeFnCtx(
         origCtx,
         ctx,
-        Some(ctxVarPrimary.getOrElse(inputs(0))),
+        Some(
+          ctxVarPrimary.getOrElse(
+            if inputs.nonEmpty then inputs(0) else ctx.settings.defaultValue
+          )
+        ),
         Some(ctxVarSecondary.getOrElse(VList(inputs*))),
-        params,
+        vars,
         inputs
       )
 

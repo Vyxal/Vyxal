@@ -186,7 +186,9 @@ object Parser:
       program: Queue[VyxalToken]
   ): ParserRet[AST] =
     Elements.elements.get(name) match
-      case None => Left(VyxalCompilationError(s"No such element: $name"))
+      case None =>
+        Right(AST.Command(name))
+      // Left(VyxalCompilationError(s"No such element: $name"))
       case Some(element) =>
         if asts.isEmpty then Right(AST.Command(name))
         else
@@ -306,17 +308,14 @@ object Parser:
           val lambda =
             if lambdaType == StructureType.Lambda then
               branches match
-                // todo actually parse arity and parameters
                 case List()     => AST.Lambda(1, List.empty, List.empty)
                 case List(body) => AST.Lambda(1, List.empty, List(body))
                 case List(params, body) =>
-                  val params = List.empty // getParams
-                  val arity = 1 // getArity
-                  AST.Lambda(arity, params, List(body))
+                  val (param, arity) = parseParameters(params)
+                  AST.Lambda(arity, param, List(body))
                 case _ =>
-                  val params = List.empty // get from first branch
-                  val arity = 1 // get from first branch
-                  AST.Lambda(arity, params, branches.drop(1))
+                  val (param, arity) = parseParameters(branches.head)
+                  AST.Lambda(arity, param, branches.drop(1))
             else AST.Lambda(1, List.empty, branches)
           // todo using the command names is a bit brittle
           //   maybe refer to the functions directly
@@ -334,6 +333,35 @@ object Parser:
           )
     }
   end parseStructure
+
+  private def parseParameters(params: AST): (List[String | Int], Int) =
+    val paramString = params.toVyxal
+    val components = paramString.split(",")
+    var arity = 0
+    val paramList = ListBuffer.empty[String | Int]
+    for component <- components do
+      if arity != -1 then
+        if component.forall(_.isDigit) then
+          // Pop n from stack onto lambda stack
+          val num = component.toInt
+          arity += num
+          paramList += num
+        else if component == "~" then
+          // operate on entire stack
+          arity = -1
+          paramList.drop(paramList.length)
+        else if component == "*" then
+          // varargs - pop n and pop n items onto lambda stack
+          arity += 1
+          paramList += "*"
+        else
+          // named parameter
+          val name = toValidName(component)
+          arity += 1
+          paramList += name
+    end for
+    paramList.toList -> arity
+  end parseParameters
 
   /** Parse an identifier for for loops. Consume only if there are 2 branches */
   private def parseIdentifier(program: Queue[VyxalToken]): Option[String] =

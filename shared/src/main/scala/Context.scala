@@ -197,21 +197,20 @@ object Context:
       currCtx: Context,
       ctxVarPrimary: Option[VAny],
       ctxVarSecondary: Option[VAny],
-      params: Seq[String | Int],
+      variables: mut.Map[String, VAny],
       inputs: Seq[VAny]
   ) =
     val temp = new Context(
       mut.ArrayBuffer.empty,
       ctxVarPrimary.orElse(currCtx._ctxVarPrimary),
       ctxVarSecondary.orElse(currCtx._ctxVarSecondary),
-      mut.Map(),
+      variables,
       Inputs(inputs),
       Some(origCtx),
       currCtx.globals,
       currCtx.testMode
     )
 
-    // todo: set vars here based on params
     temp
   end makeFnCtx
 
