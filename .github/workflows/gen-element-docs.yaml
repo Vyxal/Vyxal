@@ -16,8 +16,9 @@ jobs:
         distribution: 'adopt'
     - name: Create elements.txt and literate mappings
       run: |
-        sbt --client "vyxalJVM/run --docs" > documentation/elements.txt
-        sbt --client "vyxalJVM/run --docsLiterate" > shared/src/main/scala/LiterateMappings.scala
+        sbt vyxalJVM/assembly
+        java -jar jvm/target/scala-*/vyxal-*.jar --docs > documentation/elements.txt
+        java -jar jvm/target/scala-*/vyxal-*.jar --docsLiterate > shared/src/main/scala/LiterateMappings.scala
     - name: Stage changes
       run: git add .
     - name: Commit and push
