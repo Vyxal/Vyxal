@@ -297,7 +297,7 @@ object Elements:
     ) { ctx ?=>
       (ctx.pop(): @unchecked) match
         case fn: VFun =>
-          Interpreter.executeFn(fn, popArgs = false)
+          ctx.push(Interpreter.executeFn(fn, popArgs = false))
           if fn.arity == -1 then
             ctx.pop() // Handle the extra value pushed by lambdas that operate on the stack
         case code: String => Interpreter.execute(code)

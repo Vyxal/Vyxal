@@ -133,7 +133,8 @@ object Interpreter:
     val useStack = arity == -1
     val vars: mut.Map[String, VAny] = mut.Map()
     val inputs =
-      if args != null then args
+      if args != null then
+        args // TODO: If a function has args and params, then do the whole process below but with the args as the stack instead of the actual stack
       else if arity == -1 then List.empty // operates on entire stack
       else if params.isEmpty then // no params, so just pop the args
         if popArgs then ctx.pop(arity) else ctx.peek(arity)
@@ -167,7 +168,6 @@ object Interpreter:
         end for
         if !popArgs then ctx.push(popped.toList.reverse*)
         temp.toList
-
     given fnCtx: Context =
       Context.makeFnCtx(
         origCtx,

@@ -61,10 +61,14 @@ object ListHelpers:
         return VList(to.zipWithIndex.map { (item, index) =>
           f.execute(item, index, List(item))
         }*)
+
+    val params = f.originalAST match
+      case Some(lam) => lam.params
+      case None      => List.empty
     branches.foldLeft(to) { (mapped, branch) =>
       VList(mapped.zipWithIndex.map { (item, index) =>
         VFun
-          .fromLambda(AST.Lambda(1, List.empty, List(branch)))
+          .fromLambda(AST.Lambda(1, params, List(branch)))
           .execute(item, index, List(item))
       }*)
     }
