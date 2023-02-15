@@ -194,11 +194,15 @@ object LiterateLexer extends RegexParsers:
           else
             next match
               case Some(Number(nextNumber)) =>
-                if nextNumber == "." && value.endsWith(".") then out.append(value)
+                if nextNumber == "." && value.endsWith(".") then
+                  out.append(value)
                 else out.append(value + " ")
               case Some(Group(items)) =>
                 if items.length == 1 &&
-                  LiterateLexer(items.head.toString).getOrElse(Nil).head.isInstanceOf[Number]
+                  LiterateLexer(items.head.toString)
+                    .getOrElse(Nil)
+                    .head
+                    .isInstanceOf[Number]
                 then out.append(value + " ")
                 else out.append(value)
               case _ => out.append(value)
