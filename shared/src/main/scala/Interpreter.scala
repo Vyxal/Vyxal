@@ -12,7 +12,7 @@ object Interpreter:
   def execute(code: String, literate: Boolean = false)(using
       ctx: Context
   ): Unit =
-    val sbcsified = if literate then litLex(code) else code
+    val sbcsified = if literate then LiterateLexer.litLex(code) else code
     Parser.parse(sbcsified) match
       case Right(ast) =>
         if ctx.settings.logLevel == LogLevel.Debug then

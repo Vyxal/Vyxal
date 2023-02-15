@@ -50,7 +50,7 @@ object CLI:
 
         if config.litInfoFor.nonEmpty then
           val keywords =
-            Elements.literateModeMappings.get(config.litInfoFor.get)
+            LiterateLexer.literateModeMappings.get(config.litInfoFor.get)
           println(keywords.mkString(", "))
           return
 

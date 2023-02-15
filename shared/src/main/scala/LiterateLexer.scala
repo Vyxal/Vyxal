@@ -61,6 +61,13 @@ enum LiterateToken:
   case ListToken(value: List[Object])
 
 object LiterateLexer extends RegexParsers:
+  lazy val literateModeMappings: Map[String, String] =
+    Elements.elements.values.view.flatMap { elem =>
+      elem.keywords.map(_ -> elem.symbol)
+    }.toMap ++ Modifiers.modifiers.view.flatMap { (symbol, mod) =>
+      mod.keywords.map(_ -> symbol)
+    }.toMap
+
   override def skipWhitespace = true
   override val whiteSpace: Regex = "[ \t\r\f]+".r
 
@@ -155,99 +162,90 @@ object LiterateLexer extends RegexParsers:
     (parse(tokens, code): @unchecked) match
       case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
       case Success(result, next) => Right(result)
-end LiterateLexer
 
-def recHelp(token: Object): String =
-  token match
-    case Word(value)        => value
-    case AlreadyCode(value) => value
-    case LitComment(value)  => value
-    case Number(value)      => value
-    case Variable(value)    => value
-    case LambdaBlock(value) => value.map(recHelp).mkString("λ", " ", "}")
-    case ListToken(value)   => value.map(recHelp).mkString("[", "|", "]")
-    case Newline(value)     => value
-    case value: String      => value
-
-def sbcsify(tokens: List[LiterateToken]): String =
-  val out = StringBuilder()
-
-  for i <- tokens.indices do
-    val token = tokens(i)
-    val next = if i == tokens.length - 1 then None else Some(tokens(i + 1))
+  def recHelp(token: Object): String =
     token match
-      case Word(value) =>
-        out.append(
-          Elements.literateModeMappings.getOrElse(
-            value,
-            hardcodedKeywords.getOrElse(value, value)
+      case Word(value)        => value
+      case AlreadyCode(value) => value
+      case LitComment(value)  => value
+      case Number(value)      => value
+      case Variable(value)    => value
+      case LambdaBlock(value) => value.map(recHelp).mkString("λ", " ", "}")
+      case ListToken(value)   => value.map(recHelp).mkString("[", "|", "]")
+      case Newline(value)     => value
+      case value: String      => value
+
+  def sbcsify(tokens: List[LiterateToken]): String =
+    val out = StringBuilder()
+
+    for i <- tokens.indices do
+      val token = tokens(i)
+      val next = if i == tokens.length - 1 then None else Some(tokens(i + 1))
+      token match
+        case Word(value) =>
+          out.append(
+            literateModeMappings.getOrElse(
+              value,
+              hardcodedKeywords.getOrElse(value, value)
+            )
           )
-        )
-      case Number(value) =>
-        if value == "0" then out.append("0")
-        else
+        case Number(value) =>
+          if value == "0" then out.append("0")
+          else
+            next match
+              case Some(Number(nextNumber)) =>
+                if nextNumber == "." && value.endsWith(".") then out.append(value)
+                else out.append(value + " ")
+              case Some(Group(items)) =>
+                if items.length == 1 &&
+                  LiterateLexer(items.head.toString).getOrElse(Nil).head.isInstanceOf[Number]
+                then out.append(value + " ")
+                else out.append(value)
+              case _ => out.append(value)
+        case Variable(value) =>
           next match
-            case Some(Number(nextNumber)) =>
-              if nextNumber == "." && value.endsWith(".") then out.append(value)
-              else out.append(value + " ")
-            case Some(Group(items)) =>
-              if items.length == 1 && getRight(
-                  LiterateLexer(
-                    items.head.toString
+            case Some(Number(_)) => out.append(value + " ")
+            case Some(Word(w)) =>
+              if "[a-zA-Z0-9_]+".r.matches(
+                  literateModeMappings.getOrElse(
+                    w,
+                    hardcodedKeywords.getOrElse(w, "")
                   )
-                ).head.isInstanceOf[Number]
+                )
               then out.append(value + " ")
               else out.append(value)
             case _ => out.append(value)
-      case Variable(value) =>
-        next match
-          case Some(Number(_)) => out.append(value + " ")
-          case Some(Word(w)) =>
-            if "[a-zA-Z0-9_]+".r.matches(
-                Elements.literateModeMappings.getOrElse(
-                  w,
-                  hardcodedKeywords.getOrElse(w, "")
-                )
-              )
-            then out.append(value + " ")
-            else out.append(value)
-          case _ => out.append(value)
-      case AlreadyCode(value) => out.append(value)
-      case Newline(value)     => out.append(value)
-      case Group(value) =>
-        out.append(value.map(sbcsify).mkString)
-      case LitComment(value) => ""
-      case LambdaBlock(value) =>
-        out.append(value.map(sbcsify).mkString("λ", "", "}"))
-      case ListToken(value) =>
-        out.append(value.map(sbcsify).mkString("#[", "|", "#]"))
-    end match
-  end for
+        case AlreadyCode(value) => out.append(value)
+        case Newline(value)     => out.append(value)
+        case Group(value) =>
+          out.append(value.map(sbcsify).mkString)
+        case LitComment(value) => ""
+        case LambdaBlock(value) =>
+          out.append(value.map(sbcsify).mkString("λ", "", "}"))
+        case ListToken(value) =>
+          out.append(value.map(sbcsify).mkString("#[", "|", "#]"))
+      end match
+    end for
 
-  out.mkString
-end sbcsify
+    out.mkString
+  end sbcsify
 
-def sbcsify(token: Object): String =
-  token match
-    case Word(value) =>
-      Elements.literateModeMappings.getOrElse(
-        value,
-        hardcodedKeywords.getOrElse(value, value)
-      )
-    case AlreadyCode(value) => value
-    case Variable(value)    => value
-    case Number(value)      => value
-    case Group(value)       => value.map(sbcsify).mkString
-    case LitComment(value)  => ""
-    case LambdaBlock(value) => value.map(sbcsify).mkString("λ", "", "}")
-    case ListToken(value)   => value.map(sbcsify).mkString("#[", "|", "#]")
-    case value: String      => litLex(value)
+  def sbcsify(token: Object): String =
+    token match
+      case Word(value) =>
+        literateModeMappings.getOrElse(
+          value,
+          hardcodedKeywords.getOrElse(value, value)
+        )
+      case AlreadyCode(value) => value
+      case Variable(value)    => value
+      case Number(value)      => value
+      case Group(value)       => value.map(sbcsify).mkString
+      case LitComment(value)  => ""
+      case LambdaBlock(value) => value.map(sbcsify).mkString("λ", "", "}")
+      case ListToken(value)   => value.map(sbcsify).mkString("#[", "|", "#]")
+      case value: String      => litLex(value)
 
-def getRight(
-    either: Either[VyxalCompilationError, List[LiterateToken]]
-): List[LiterateToken] =
-  // For when you know it's a right and don't want to have 20 thousand match statements
-  either.getOrElse(Nil)
-
-def litLex(code: String): String =
-  sbcsify(getRight(LiterateLexer(code)))
+  def litLex(code: String): String =
+    sbcsify(LiterateLexer(code).getOrElse(Nil))
+end LiterateLexer
