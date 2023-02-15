@@ -295,7 +295,7 @@ object Elements:
       Some(1),
       "a: fun -> Execute a without popping"
     ) { ctx ?=>
-      ctx.pop() match
+      (ctx.pop(): @unchecked) match
         case fn: VFun =>
           Interpreter.executeFn(fn, popArgs = false)
           if fn.arity == -1 then

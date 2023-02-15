@@ -142,20 +142,18 @@ object LiterateLexer extends RegexParsers:
     AlreadyCode("|")
   }
 
+  def comma: Parser[LiterateToken] = "," ^^ { value =>
+    AlreadyCode(",")
+  }
   def rawCode: Parser[LiterateToken] = "#([^#]|#[^}])*#}".r ^^ { value =>
     AlreadyCode(value.substring(1, value.length - 2))
   }
 
-  def lambdaArgs: Parser[LiterateToken] =
-    """(\*|\~|[a-zA-Z0-9][_a-zA-Z0-9]*), ?((\*|\~|[a-zA-Z0-9][_a-zA-Z0-9]*)|, ?)*""".r ^^ {
-      value =>
-        AlreadyCode(value)
-    }
-
   def tokens: Parser[List[LiterateToken]] = phrase(
     rep(
       number | string | singleCharString | comment | rawCode | list | lambdaBlock | normalGroup |
-        unpackVar | varGet | varSet | augVar | word | branch | newline | lambdaArgs | tilde | colon
+        unpackVar | varGet | varSet | augVar | word | branch | newline | tilde | colon |
+        comma
     )
   )
 
