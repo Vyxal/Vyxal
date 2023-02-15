@@ -14,10 +14,10 @@ jobs:
       with:
         java-version: '17'
         distribution: 'adopt'
-    - name: Create elements.txt
-      run: sbtn vyxalJVM/run --docs > documentation/elements.txt
-    - name: Create literate mappings
-      run: sbtn vyxalJVM/run --docsLiterate > shared/src/main/scala/LiterateMappings.scala
+    - name: Create elements.txt and literate mappings
+      run: |
+        sbt --client "vyxalJVM/run --docs" > documentation/elements.txt
+        sbt --client "vyxalJVM/run --docsLiterate" > shared/src/main/scala/LiterateMappings.scala
     - name: Stage changes
       run: git add .
     - name: Commit and push
