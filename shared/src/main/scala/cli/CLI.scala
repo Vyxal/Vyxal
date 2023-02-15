@@ -17,6 +17,8 @@ object CLI:
     *   Inputs to program (optional)
     * @param printDocs
     *   Whether to print descriptions of all the elements
+    * @param litInfoFor
+    *   Element to print literate mode keywords for (optional)
     * @param settings
     *   Extra settings passed on to the Context
     */
@@ -25,7 +27,7 @@ object CLI:
       code: Option[String] = None,
       inputs: List[String] = List.empty,
       printDocs: Boolean = false,
-      printLiterate: Boolean = false,
+      litInfoFor: Option[String] = None,
       printHelp: Boolean = false,
       runLiterate: Boolean = false,
       settings: Settings = Settings()
@@ -46,8 +48,9 @@ object CLI:
           printDocs()
           return
 
-        if config.printLiterate then
-          printLiterateMap()
+        if config.litInfoFor.nonEmpty then
+          val keywords = Elements.literateModeMappings.get(config.litInfoFor.get)
+          println(keywords.mkString(", "))
           return
 
         config.filename.foreach { filename =>
@@ -110,35 +113,6 @@ object CLI:
     }
   end printDocs
 
-  private def printLiterateMap(): Unit =
-    println("package vyxal\n")
-    println("val literateModeMappings = Map(")
-    Elements.elements.values.toSeq
-      .sortBy { elem =>
-        // Have to use tuple in case of digraphs
-        (
-          vyxal.CODEPAGE.indexOf(elem.symbol.charAt(0)),
-          vyxal.CODEPAGE.indexOf(elem.symbol.substring(1))
-        )
-      }
-      .foreach {
-        case Element(
-              symbol,
-              name,
-              keywords,
-              arity,
-              vectorises,
-              overloads,
-              impl
-            ) =>
-          for keyword <- keywords do println(s"""  "$keyword" -> "$symbol",""")
-      }
-    Modifiers.modifiers.foreach { case (name, info) =>
-      for keyword <- info.keywords do println(s"""  "$keyword" -> "$name",""")
-    }
-    println(")")
-  end printLiterateMap
-
   private val builder = OParser.builder[CLIConfig]
 
   private val parser =
@@ -170,8 +144,8 @@ object CLI:
         .action((_, cfg) => cfg.copy(printDocs = true))
         .text("Print documentation for elements and exit")
         .optional(),
-      opt[Unit]('D', "docsLiterate")
-        .action((_, cfg) => cfg.copy(printLiterate = true))
+      opt[String]('D', "docsLiterate")
+        .action((symbol, cfg) => cfg.copy(litInfoFor = Some(symbol)))
         .text("Print literate mode mappings and exit")
         .optional(),
       opt[Unit]('l', "literate")

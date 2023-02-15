@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.impls.Elements
+
 import java.util.regex.Pattern
 import scala.util.matching.Regex
 import scala.util.parsing.combinator.*
@@ -176,7 +178,7 @@ def sbcsify(tokens: List[LiterateToken]): String =
     token match
       case Word(value) =>
         out.append(
-          literateModeMappings.getOrElse(
+          Elements.literateModeMappings.getOrElse(
             value,
             hardcodedKeywords.getOrElse(value, value)
           )
@@ -202,7 +204,7 @@ def sbcsify(tokens: List[LiterateToken]): String =
           case Some(Number(_)) => out.append(value + " ")
           case Some(Word(w)) =>
             if "[a-zA-Z0-9_]+".r.matches(
-                literateModeMappings.getOrElse(
+                Elements.literateModeMappings.getOrElse(
                   w,
                   hardcodedKeywords.getOrElse(w, "")
                 )
@@ -228,7 +230,7 @@ end sbcsify
 def sbcsify(token: Object): String =
   token match
     case Word(value) =>
-      literateModeMappings.getOrElse(
+      Elements.literateModeMappings.getOrElse(
         value,
         hardcodedKeywords.getOrElse(value, value)
       )

@@ -29,6 +29,11 @@ case class UnimplementedOverloadException(element: String, args: Seq[VAny])
 object Elements:
   val elements: Map[String, Element] = Impls.elements.toMap
 
+  val literateModeMappings: Map[String, String] =
+    elements.values.view.flatMap { elem =>
+      elem.keywords.map { keyword => keyword -> elem.symbol }
+    }.toMap
+
   private[impls] object Impls:
     val elements = collection.mutable.Map.empty[String, Element]
 
