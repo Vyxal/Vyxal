@@ -335,7 +335,10 @@ object Parser:
 
   private def parseParameters(params: AST): (List[String | Int], Int) =
     val paramString = params.toVyxal
-    val components = paramString.split(",")
+    val components = paramString.split(
+      ","
+    ) // may leave extra spaces, but that's okay, because
+    // spaces are removed when converting to a valid name
     var arity = 0
     val paramList = ListBuffer.empty[String | Int]
     for component <- components do
@@ -346,7 +349,8 @@ object Parser:
           arity += num
           paramList += num
         else if component.startsWith("!") then
-          // operate on entire stack
+          // operate on entire stack, so set arity to -1 and remove all other parameters
+          // also, process no other parameters
           arity = -1
           paramList.drop(paramList.length)
         else if component == "*" || component == "×" then

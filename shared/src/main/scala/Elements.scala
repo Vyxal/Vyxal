@@ -273,7 +273,8 @@ object Elements:
       ctx.pop() match
         case fn: VFun =>
           ctx.push(Interpreter.executeFn(fn))
-          if fn.arity == -1 then ctx.pop()
+          if fn.arity == -1 then
+            ctx.pop() // Handle the extra value pushed by lambdas that operate on the stack
         case code: String => Interpreter.execute(code)
         case x            => ctx.push(execHelper(x))
     }
