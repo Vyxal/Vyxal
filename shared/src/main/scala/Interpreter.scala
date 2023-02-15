@@ -134,8 +134,8 @@ object Interpreter:
     val vars: mut.Map[String, VAny] = mut.Map()
     val inputs =
       if args != null then args
-      else if arity == -1 then List.empty
-      else if params.isEmpty then
+      else if arity == -1 then List.empty // operates on entire stack
+      else if params.isEmpty then // no params, so just pop the args
         if popArgs then ctx.pop(arity) else ctx.peek(arity)
       else if !params.contains("*") then
         // This branch is a way to temporarily make things work when popArgs is
@@ -163,16 +163,17 @@ object Interpreter:
         val temp = ListBuffer.empty[VAny]
         for param <- params do
           param match
-            case n: Int =>
+            case n: Int => // number parameter, so pop from stack to lambda stack
               if n == 1 then temp += popFn(1)(0)
               else temp ++= popFn(n)
             case name: String =>
               if name == "*" then
-                val terms = popFn(1)(0)
+                val terms =
+                  popFn(1)(0) // varargs - pop N from stack, pop N items
                 terms match
                   case n: VNum => temp += VList(popFn(n.toInt)*)
                   case _       => throw RuntimeException(s"Can't unpack $terms")
-              else vars(name) = popFn(1)(0)
+              else vars(name) = popFn(1)(0) // set variable
         temp.toList
 
     given fnCtx: Context =

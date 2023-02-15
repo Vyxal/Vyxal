@@ -41,6 +41,7 @@ val hardcodedKeywords = Map(
   "do" -> "|",
   "branch" -> "|",
   "->" -> "|",
+  ":" -> "|",
   "close-all" -> "]"
 )
 
@@ -138,6 +139,10 @@ object LiterateLexer extends RegexParsers:
     AlreadyCode("!")
   }
 
+  def colon: Parser[LiterateToken] = ":" ^^ { value =>
+    AlreadyCode("|")
+  }
+
   def rawCode: Parser[LiterateToken] = "#([^#]|#[^}])*#}".r ^^ { value =>
     AlreadyCode(value.substring(1, value.length - 2))
   }
@@ -151,7 +156,7 @@ object LiterateLexer extends RegexParsers:
   def tokens: Parser[List[LiterateToken]] = phrase(
     rep(
       number | string | singleCharString | comment | rawCode | list | lambdaBlock | normalGroup |
-        unpackVar | varGet | varSet | augVar | word | branch | newline | lambdaArgs | tilde
+        unpackVar | varGet | varSet | augVar | word | branch | newline | lambdaArgs | tilde | colon
     )
   )
 
