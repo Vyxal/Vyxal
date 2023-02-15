@@ -130,6 +130,10 @@ Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has
 - a: num, b: num -> the range [a, b)
 - a: str, b: num|str -> does regex pattern b match haystack a?
 ---------------------
+W (Wrap) (non-vectorising)
+Keywords: wrap
+- a, b, c, ..., -> [a, b, c, ...]
+---------------------
 _ (Pop and Discard) (non-vectorising)
 Keywords: pop, discard
 - a ->
@@ -146,6 +150,10 @@ Keywords: get-context-m, context-m, c-var-m, ctx-m, ctx-secondary, m
 n (Get Context Variable N) (non-vectorising)
 Keywords: get-context-n, context-n, c-var-n, ctx-n, ctx-primary, n
 - ->  -> context variable n
+---------------------
+Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
+Keywords: peek-call
+- a: fun -> Execute a without popping
 ---------------------
 Ė (Execute lambda | Evaluate as Vyxal | Power with base 10) (non-vectorising)
 Keywords: execute-lambda, evaluate-as-vyxal, power-base-10, call, @
