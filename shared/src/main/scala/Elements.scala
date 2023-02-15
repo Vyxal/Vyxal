@@ -288,6 +288,21 @@ object Elements:
         case list: VList => list.vmap(execHelper)
         case _ => throw new Exception("Can't exec on functions in lists")
 
+    val execNotPop = addDirect(
+      "Ḃ",
+      "Execute lambda without popping | Evaluate as Vyxal without popping",
+      List("peek-call"),
+      Some(1),
+      "a: fun -> Execute a without popping"
+    ) { ctx ?=>
+      ctx.pop() match
+        case fn: VFun =>
+          Interpreter.executeFn(fn, popArgs = false)
+          if fn.arity == -1 then
+            ctx.pop() // Handle the extra value pushed by lambdas that operate on the stack
+        case code: String => Interpreter.execute(code)
+    }
+
     val exponentation = addVect(
       Dyad,
       "*",
@@ -622,6 +637,17 @@ object Elements:
           throw IllegalArgumentException(
             "Vectorise: First argument should be a function"
           )
+    }
+
+    val wrap = addDirect(
+      "W",
+      "Wrap",
+      List("wrap"),
+      None,
+      "a, b, c, ..., -> [a, b, c, ...]"
+    ) { ctx ?=>
+      val args = ctx.pop(ctx.length())
+      ctx.push(VList(args*))
     }
 
     // Constants

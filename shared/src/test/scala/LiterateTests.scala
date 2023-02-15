@@ -44,6 +44,10 @@ class LiterateTests extends VyxalTests:
       testLiteral("{{{}}{}}", "λλλ}}λ}}")
       testLiteral("{}{}", "λ}λ}")
     }
+
+    it("should do arguments correctly") {
+      testLiteral("lambda x, y -> $x $y add end", "λx,y|#$x#$y+}")
+    }
   }
 
   describe("Lists") {

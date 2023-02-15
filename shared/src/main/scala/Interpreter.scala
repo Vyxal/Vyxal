@@ -137,43 +137,35 @@ object Interpreter:
       else if arity == -1 then List.empty // operates on entire stack
       else if params.isEmpty then // no params, so just pop the args
         if popArgs then ctx.pop(arity) else ctx.peek(arity)
-      else if !params.contains("*") then
-        // This branch is a way to temporarily make things work when popArgs is
-        // false, but it won't work for *
-        val numToPop = params.map {
-          case n: Int => n
-          case _      => 1
-        }.sum
-        // todo this is ugly
-        var popped = if popArgs then ctx.pop(numToPop) else ctx.peek(numToPop)
-        val temp = ListBuffer.empty[VAny]
-        for param <- params do
-          param match
-            case n: Int =>
-              temp ++= popped.take(n)
-              popped = popped.drop(n)
-            case name: String =>
-              vars(name) = popped.head
-              popped = popped.tail
-        temp.toList
       else
         // todo this won't work if popArgs is false because peeking repeatedly
         //      will return the same value
-        val popFn = (x: Int) => if popArgs then ctx.pop(x) else ctx.peek(x)
+        val popped = ListBuffer.empty[VAny]
         val temp = ListBuffer.empty[VAny]
         for param <- params do
           param match
             case n: Int => // number parameter, so pop from stack to lambda stack
-              if n == 1 then temp += popFn(1)(0)
-              else temp ++= popFn(n)
+              if n == 1 then
+                val top = ctx.pop()
+                temp += top
+                popped += top
+              else
+                val top = ctx.pop(n)
+                temp ++= top
+                popped ++= top
             case name: String =>
               if name == "*" then
-                val terms =
-                  popFn(1)(0) // varargs - pop N from stack, pop N items
-                terms match
-                  case n: VNum => temp += VList(popFn(n.toInt)*)
-                  case _       => throw RuntimeException(s"Can't unpack $terms")
-              else vars(name) = popFn(1)(0) // set variable
+                val termCount = ctx.pop().asInstanceOf[VNum].toInt
+                popped += termCount
+                val terms = ctx.pop(termCount)
+                popped ++= terms
+                temp += VList(terms*)
+              else
+                val top = ctx.pop()
+                vars(name) = top // set variable
+                popped += top
+        end for
+        if !popArgs then ctx.push(popped.toList.reverse*)
         temp.toList
 
     given fnCtx: Context =
