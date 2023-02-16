@@ -180,10 +180,7 @@ object LiterateLexer extends RegexParsers:
       token match
         case Word(value) =>
           out.append(
-            literateModeMappings.getOrElse(
-              value,
-              hardcodedKeywords.getOrElse(value, value)
-            )
+            literateModeMappings.getOrElse(value, value)
           )
         case Number(value) =>
           if value == "0" then out.append("0")
