@@ -49,6 +49,8 @@ enum StructureType(val open: String):
   case LambdaReduce extends StructureType("₳")
   case LambdaSort extends StructureType("µ")
   case IfStatement extends StructureType("#{")
+  case DecisionStructure extends StructureType("Ḍ")
+  case GeneratorStructure extends StructureType("Ṇ")
 
 val CODEPAGE = """ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ′″‴⁴ᵜ !"#$%&'()*+,-./0123456789:;
 <=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~¦ȦḂĊḊĖḞĠḢİĿṀṄ
@@ -99,7 +101,7 @@ object Lexer extends RegexParsers:
     Str(value.substring(1))
   }
 
-  def structureOpen: Parser[VyxalToken] = """[\[\(\{λƛΩ₳µ]|#@|#\{""".r ^^ {
+  def structureOpen: Parser[VyxalToken] = """[\[\(\{λƛΩ₳µḌṆ]|#@|#\{""".r ^^ {
     value =>
       StructureOpen(StructureType.values.find(_.open == value).get)
   }

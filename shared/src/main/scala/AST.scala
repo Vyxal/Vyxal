@@ -26,6 +26,11 @@ enum AST(val arity: Option[Int]):
   case Lambda(lambdaArity: Int, params: List[String | Int], body: List[AST])
       extends AST(Some(lambdaArity))
 
+  case DecisionStructure(predicate: AST, container: Option[AST])
+      extends AST(Some(1))
+  case GeneratorStructure(relation: AST, inital: Option[AST])
+      extends AST(Some(1))
+
   /** A function definition, basically sugar a lambda assigned to a variable */
   case FnDef(name: String, lam: Lambda) extends AST(Some(0))
   case GetVar(name: String) extends AST(None)

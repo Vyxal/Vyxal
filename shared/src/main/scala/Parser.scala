@@ -348,6 +348,19 @@ object Parser:
             case StructureType.LambdaSort =>
               AST.makeSingle(lambda, AST.Command("ṡ"))
           )
+        case StructureType.DecisionStructure =>
+          branches match
+            case List(pred, container) =>
+              Right(AST.DecisionStructure(pred, Some(container)))
+            case List(pred) => Right(AST.DecisionStructure(pred, None))
+            case _ =>
+              Left(VyxalCompilationError("Invalid decision structure"))
+        case StructureType.GeneratorStructure =>
+          branches match
+            case List(relation, initial) =>
+              Right(AST.GeneratorStructure(relation, Some(initial)))
+            case List(relation) => Right(AST.GeneratorStructure(relation, None))
+            case _ => Left(VyxalCompilationError("Invalid generator structure"))
     }
   end parseStructure
 
