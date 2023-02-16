@@ -138,13 +138,9 @@ object LiterateLexer extends RegexParsers:
     AlreadyCode("!")
   }
 
-  def colon: Parser[LiterateToken] = ":" ^^ { value =>
-    AlreadyCode("|")
-  }
+  def colon: Parser[LiterateToken] = ":" ^^^ AlreadyCode("|")
 
-  def comma: Parser[LiterateToken] = "," ^^ { value =>
-    AlreadyCode(",")
-  }
+  def comma: Parser[LiterateToken] = "," ^^^ AlreadyCode(",")
   def rawCode: Parser[LiterateToken] = "#([^#]|#[^}])*#}".r ^^ { value =>
     AlreadyCode(value.substring(1, value.length - 2))
   }
