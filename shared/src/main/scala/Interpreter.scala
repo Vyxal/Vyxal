@@ -140,23 +140,20 @@ object Interpreter:
       else
         var argIndex: Int = 0
         val origLength = ctx.length
-        def popFunction(n: Option[Int]): VAny | Seq[VAny] =
-          n match
-            case Some(n) =>
-              if args.nonEmpty then
-                val res =
-                  (argIndex until argIndex + n).map(ind =>
-                    args(ind % args.length)
-                  )
-                argIndex += n
-                res
-              else ctx.pop(n)
-            case None =>
-              if args.nonEmpty then
-                val res = args(argIndex % args.length)
-                argIndex += 1
-                res
-              else ctx.pop()
+        def popFunction(n: Int): Seq[VAny] =
+          if args.nonEmpty then
+            val res =
+              (argIndex until argIndex + n).map(ind => args(ind % args.length))
+            argIndex += n
+            res
+          else ctx.pop(n)
+
+        def popOneFunction(): VAny =
+          if args.nonEmpty then
+            val res = args(argIndex % args.length)
+            argIndex += 1
+            res
+          else ctx.pop()
 
         val popped = ListBuffer.empty[VAny]
         val temp = ListBuffer.empty[VAny]
@@ -164,15 +161,11 @@ object Interpreter:
           param match
             case n: Int => // number parameter, so pop from stack to lambda stack
               if n == 1 then
-                val top = popFunction(None) match
-                  case x: VAny => x
-                  case _       => throw new Exception("Impossible case")
+                val top = popOneFunction()
                 temp += top
                 popped += top
               else
-                val top = popFunction(Some(n)) match
-                  case x: Seq[VAny] => x
-                  case _            => throw new Exception("Impossible case")
+                val top = popFunction(n)
 
                 temp ++= top
                 popped ++= top
@@ -180,15 +173,11 @@ object Interpreter:
               if name == "*" then
                 val termCount = ctx.pop().asInstanceOf[VNum].toInt
                 popped += termCount
-                val terms = popFunction(Some(termCount)) match
-                  case x: Seq[VAny] => x
-                  case _            => throw new Exception("Impossible case")
+                val terms = popFunction(termCount)
                 popped ++= terms
                 temp += VList(terms*)
               else
-                val top = popFunction(None) match
-                  case x: VAny => x
-                  case _       => throw new Exception("Impossible case")
+                val top = popOneFunction()
                 vars(name) = top // set variable
                 popped += top
         end for
