@@ -170,13 +170,13 @@ z = [0, n] / is lowercase?
 Φ = a[1:b]
 § = print without newline
 Ạ = a[b] = c
-Ḍ = divides?
+Ḍ = Decision problem structure
 Ẹ = partition at truthy indices
 Ḥ = a[1:], a[0]
 Ị = insert b at index c into a
 Ḷ = sort by lengths
 Ṃ = matrix inverse
-Ṇ = apply func to the elements in a where the index in b is truthy
+Ṇ = Generator structure
 Ọ = Print without popping
 Ṛ = Reverse
 Ṣ = sublists
