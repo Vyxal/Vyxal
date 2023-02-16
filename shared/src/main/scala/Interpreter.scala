@@ -133,40 +133,67 @@ object Interpreter:
     val useStack = arity == -1
     val vars: mut.Map[String, VAny] = mut.Map()
     val inputs =
-      if args != null then
-        args // TODO: If a function has args and params, then do the whole process below but with the args as the stack instead of the actual stack
+      if args != null && params.isEmpty then args
       else if arity == -1 then List.empty // operates on entire stack
       else if params.isEmpty then // no params, so just pop the args
         if popArgs then ctx.pop(arity) else ctx.peek(arity)
       else
-        // todo this won't work if popArgs is false because peeking repeatedly
-        //      will return the same value
+        var argIndex: Int = 0
+        val origLength = ctx.length
+        val popFunction = (n: Option[Int]) =>
+          n match
+            case Some(n) =>
+              if args.nonEmpty then
+                val res =
+                  (argIndex until argIndex + n).map(ind =>
+                    args(ind % args.length)
+                  )
+                argIndex += n
+                res
+              else ctx.pop(n)
+            case None =>
+              if args.nonEmpty then
+                val res = args(argIndex % args.length)
+                argIndex += 1
+                res
+              else ctx.pop()
+
         val popped = ListBuffer.empty[VAny]
         val temp = ListBuffer.empty[VAny]
         for param <- params do
           param match
             case n: Int => // number parameter, so pop from stack to lambda stack
               if n == 1 then
-                val top = ctx.pop()
+                val top = popFunction(None) match
+                  case x: VAny => x
+                  case _       => throw new Exception("Impossible case")
                 temp += top
                 popped += top
               else
-                val top = ctx.pop(n)
+                val top = popFunction(Some(n)) match
+                  case x: Seq[VAny] => x
+                  case _            => throw new Exception("Impossible case")
+
                 temp ++= top
                 popped ++= top
             case name: String =>
               if name == "*" then
                 val termCount = ctx.pop().asInstanceOf[VNum].toInt
                 popped += termCount
-                val terms = ctx.pop(termCount)
+                val terms = popFunction(Some(termCount)) match
+                  case x: Seq[VAny] => x
+                  case _            => throw new Exception("Impossible case")
                 popped ++= terms
                 temp += VList(terms*)
               else
-                val top = ctx.pop()
+                val top = popFunction(None) match
+                  case x: VAny => x
+                  case _       => throw new Exception("Impossible case")
                 vars(name) = top // set variable
                 popped += top
         end for
-        if !popArgs then ctx.push(popped.toList.reverse*)
+        if !popArgs && args.isEmpty then
+          ctx.push(popped.toList.take(origLength).reverse*)
         temp.toList
     given fnCtx: Context =
       Context.makeFnCtx(
