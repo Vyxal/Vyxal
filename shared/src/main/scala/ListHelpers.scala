@@ -123,8 +123,7 @@ object ListHelpers:
 
         val out = iterable.zipWithIndex
           .sortWith { (a, b) =>
-            val (aRes, bRes) =
-              branches.view
+            branches.view
                 .map { branch =>
                   val f =
                     VFun.fromLambda(AST.Lambda(1, List.empty, List(branch)))
@@ -134,10 +133,8 @@ object ListHelpers:
                   )
                 }
                 .find(_ != _)
-                .getOrElse(
-                  (ctx.settings.defaultValue, ctx.settings.defaultValue)
-                )
-            MiscHelpers.compareExact(aRes, bRes) < 0
+                .map { case (aRes, bRes) => MiscHelpers.compareExact(aRes, bRes) < 0 }
+                .getOrElse(false)
           }
           .map(_._1)
 
