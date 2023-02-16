@@ -124,17 +124,19 @@ object ListHelpers:
         val out = iterable.zipWithIndex
           .sortWith { (a, b) =>
             branches.view
-                .map { branch =>
-                  val f =
-                    VFun.fromLambda(AST.Lambda(1, List.empty, List(branch)))
-                  (
-                    f.execute(a(0), a(1), List(a(0))),
-                    f.execute(b(0), b(1), List(b(0)))
-                  )
-                }
-                .find(_ != _)
-                .map { case (aRes, bRes) => MiscHelpers.compareExact(aRes, bRes) < 0 }
-                .getOrElse(false)
+              .map { branch =>
+                val f =
+                  VFun.fromLambda(AST.Lambda(1, List.empty, List(branch)))
+                (
+                  f.execute(a(0), a(1), List(a(0))),
+                  f.execute(b(0), b(1), List(b(0)))
+                )
+              }
+              .find(_ != _)
+              .map { case (aRes, bRes) =>
+                MiscHelpers.compareExact(aRes, bRes) < 0
+              }
+              .getOrElse(false)
           }
           .map(_._1)
 
