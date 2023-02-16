@@ -64,7 +64,7 @@ object LiterateLexer extends RegexParsers:
       elem.keywords.map(_ -> elem.symbol)
     }.toMap ++ Modifiers.modifiers.view.flatMap { (symbol, mod) =>
       mod.keywords.map(_ -> symbol)
-    }.toMap
+    }.toMap ++ hardcodedKeywords
 
   override def skipWhitespace = true
   override val whiteSpace: Regex = "[ \t\r\f]+".r
