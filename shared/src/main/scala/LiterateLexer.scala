@@ -18,6 +18,14 @@ val hardcodedKeywords = Map(
   "while" -> "{",
   "endwhile" -> "}",
   "end-while" -> "}",
+  "is-there?" -> "Ḍ",
+  "does-exist?" -> "Ḍ",
+  "is-there" -> "Ḍ",
+  "does-exist" -> "Ḍ",
+  "any-in" -> "Ḍ",
+  "relation" -> "Ṇ",
+  "generate-from" -> "Ṇ",
+  "generate" -> "Ṇ",
   "lambda" -> "λ",
   "lam" -> "λ",
   "map-lambda" -> "ƛ",
@@ -42,6 +50,7 @@ val hardcodedKeywords = Map(
   "branch" -> "|",
   "->" -> "|",
   "then" -> "|",
+  "in" -> "|",
   "close-all" -> "]"
 )
 

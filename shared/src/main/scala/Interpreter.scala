@@ -131,6 +131,29 @@ object Interpreter:
         ctx.pop() match
           case fn: VFun => ctx.push(executeFn(fn))
           case _        => ???
+      case AST.DecisionStructure(predicate, container) =>
+        val iterable = container match
+          case Some(ast) =>
+            executeFn(VFun.fromLambda(AST.Lambda(1, List.empty, List(ast))))
+          case None => ctx.pop()
+
+        val list = ListHelpers.makeIterable(iterable, Some(true))(using ctx)
+        if ListHelpers
+            .filter(
+              list,
+              VFun.fromLambda(AST.Lambda(1, List.empty, List(predicate)))
+            )
+            .nonEmpty
+        then ctx.push(VNum(1))
+        else ctx.push(VNum(0))
+      case AST.GeneratorStructure(relation, initial) =>
+        val initVals = initial match
+          case Some(ast) =>
+            executeFn(VFun.fromLambda(AST.Lambda(1, List.empty, List(ast))))
+          case None => ctx.pop()
+
+        val list = ListHelpers.makeIterable(initVals, Some(true))(using ctx)
+
       case _ => throw NotImplementedError(s"$ast not implemented")
     end match
     if ctx.settings.logLevel == LogLevel.Debug then
