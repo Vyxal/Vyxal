@@ -41,6 +41,7 @@ val hardcodedKeywords = Map(
   "do" -> "|",
   "branch" -> "|",
   "->" -> "|",
+  "then" -> "|",
   "close-all" -> "]"
 )
 
