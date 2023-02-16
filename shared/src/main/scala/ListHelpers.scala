@@ -6,24 +6,25 @@ import VNum.given
 object ListHelpers:
 
   def filter(iterable: VList, predicate: VFun)(using ctx: Context): VList =
-    val branches = predicate.originalAST match
-      case Some(lam) => lam.body
+    predicate.originalAST match
+      case Some(lam) =>
+        val branches = lam.body
+        val filtered = iterable.zipWithIndex.filter { (item, index) =>
+          branches.forall { branch =>
+            MiscHelpers.boolify(
+              VFun
+                .fromLambda(AST.Lambda(1, List.empty, List(branch)))
+                .execute(item, index, List(item))
+            )
+          }
+        }
+
+        VList(filtered.map(_._1)*)
       case None =>
         return VList(iterable.zipWithIndex.map { (item, index) =>
           predicate.execute(item, index, List(item))
         }*)
 
-    val filtered = iterable.zipWithIndex.filter { (item, index) =>
-      branches.forall { branch =>
-        MiscHelpers.boolify(
-          VFun
-            .fromLambda(AST.Lambda(1, List.empty, List(branch)))
-            .execute(item, index, List(item))
-        )
-      }
-    }
-
-    VList(filtered.map(_._1)*)
   end filter
 
   /** Make an iterable from a value
@@ -55,23 +56,24 @@ object ListHelpers:
         else VList(num.toString.map(x => VNum(x.toString))*)
 
   def map(f: VFun, to: VList)(using ctx: Context): VList =
-    val branches = f.originalAST match
-      case Some(lam) => lam.body
+    f.originalAST match
+      case Some(lam) =>
+        val branches = lam.body
+        val params = f.originalAST match
+          case Some(lam) => lam.params
+          case None      => List.empty
+        branches.foldLeft(to) { (mapped, branch) =>
+          VList(mapped.zipWithIndex.map { (item, index) =>
+            VFun
+              .fromLambda(AST.Lambda(1, params, List(branch)))
+              .execute(item, index, List(item))
+          }*)
+        }
       case None =>
         return VList(to.zipWithIndex.map { (item, index) =>
           f.execute(item, index, List(item))
         }*)
 
-    val params = f.originalAST match
-      case Some(lam) => lam.params
-      case None      => List.empty
-    branches.foldLeft(to) { (mapped, branch) =>
-      VList(mapped.zipWithIndex.map { (item, index) =>
-        VFun
-          .fromLambda(AST.Lambda(1, params, List(branch)))
-          .execute(item, index, List(item))
-      }*)
-    }
   end map
 
   /** Mold a list into a shape.
@@ -104,8 +106,42 @@ object ListHelpers:
   end mold
 
   def sortBy(iterable: VList, key: VFun)(using ctx: Context): VList =
-    val branches = key.originalAST match
-      case Some(lam) => lam.body
+    key.originalAST match
+      case Some(lam) =>
+        val branches = lam.body
+        if branches.length < 2 then
+          return VList(
+            iterable.zipWithIndex
+              .sorted((a, b) =>
+                MiscHelpers.compareExact(
+                  key.executeResult(a(0), a(1), List(a(0))),
+                  key.executeResult(b(0), b(1), List(b(0)))
+                )
+              )
+              .map(_._1)*
+          )
+
+        val out = iterable.zipWithIndex
+          .sortWith { (a, b) =>
+            val (aRes, bRes) =
+              branches.view
+                .map { branch =>
+                  val f =
+                    VFun.fromLambda(AST.Lambda(1, List.empty, List(branch)))
+                  (
+                    f.execute(a(0), a(1), List(a(0))),
+                    f.execute(b(0), b(1), List(b(0)))
+                  )
+                }
+                .find(_ != _)
+                .getOrElse(
+                  (ctx.settings.defaultValue, ctx.settings.defaultValue)
+                )
+            MiscHelpers.compareExact(aRes, bRes) < 0
+          }
+          .map(_._1)
+
+        VList(out*)
       case None =>
         return VList(
           iterable.zipWithIndex
@@ -117,37 +153,6 @@ object ListHelpers:
             )
             .map(_._1)*
         )
-
-    if branches.length < 2 then
-      return VList(
-        iterable.zipWithIndex
-          .sorted((a, b) =>
-            MiscHelpers.compareExact(
-              key.executeResult(a(0), a(1), List(a(0))),
-              key.executeResult(b(0), b(1), List(b(0)))
-            )
-          )
-          .map(_._1)*
-      )
-
-    val out = iterable.zipWithIndex
-      .sortWith { (a, b) =>
-        val (aRes, bRes) =
-          branches.view
-            .map { branch =>
-              val f = VFun.fromLambda(AST.Lambda(1, List.empty, List(branch)))
-              (
-                f.execute(a(0), a(1), List(a(0))),
-                f.execute(b(0), b(1), List(b(0)))
-              )
-            }
-            .find(_ != _)
-            .getOrElse((ctx.settings.defaultValue, ctx.settings.defaultValue))
-        MiscHelpers.compareExact(aRes, bRes) < 0
-      }
-      .map(_._1)
-
-    VList(out*)
 
   end sortBy
 
