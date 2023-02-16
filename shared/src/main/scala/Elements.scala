@@ -280,7 +280,7 @@ object Elements:
           ctx.pop()
         case n: VNum     => 10 ** n
         case list: VList => list.vmap(execHelper)
-        case fn: VFun    =>
+        case fn: VFun =>
           ctx.push(Interpreter.executeFn(fn))
           if fn.arity == -1 then
             ctx.pop() // Handle the extra value pushed by lambdas that operate on the stack
