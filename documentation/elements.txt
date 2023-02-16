@@ -144,11 +144,11 @@ Keywords: to-binary, dec->bin, decimal->bin
 - a: str -> bin(ord(x) for x in a)
 ---------------------
 m (Get Context Variable M) (non-vectorising)
-Keywords: get-context-m, context-m, c-var-m, ctx-m, ctx-secondary, m
+Keywords: get-context-m, context-m, c-var-m, ctx-m, ctx-secondary
 - ->  -> context variable m
 ---------------------
 n (Get Context Variable N) (non-vectorising)
-Keywords: get-context-n, context-n, c-var-n, ctx-n, ctx-primary, n
+Keywords: get-context-n, context-n, c-var-n, ctx-n, ctx-primary
 - ->  -> context variable n
 ---------------------
 Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
