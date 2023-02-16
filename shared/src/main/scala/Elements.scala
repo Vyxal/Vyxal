@@ -394,6 +394,7 @@ object Elements:
       " -> input"
     ) { ctx ?=>
       if ctx.globals.inputs.nonEmpty then ctx.globals.inputs.next()
+      else if ctx.settings.online then ctx.settings.defaultValue
       else
         val temp = StdIn.readLine()
         if temp.nonEmpty then Parser.parseInput(temp)

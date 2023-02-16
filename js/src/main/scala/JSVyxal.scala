@@ -18,7 +18,8 @@ object JSVyxal:
     val settings = flags.foldLeft(Settings(online = true))(_.withFlag(_))
     val globals = Globals(
       settings = settings,
-      printFn = printFunc
+      printFn = printFunc,
+      inputs = Inputs(inputs.split("\n").map(Parser.parseInput).toIndexedSeq)
     )
 
     val ctx = Context(
