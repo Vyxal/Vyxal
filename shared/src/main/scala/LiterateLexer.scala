@@ -127,17 +127,11 @@ object LiterateLexer extends RegexParsers:
         AlreadyCode("#:" + value.map(recHelp).mkString("[", "|", "]"))
   }
 
-  def newline: Parser[LiterateToken] = "\n" ^^ { value =>
-    Newline(value)
-  }
+  def newline: Parser[LiterateToken] = "\n" ^^^ Newline("\n")
 
-  def branch: Parser[LiterateToken] = "|" ^^ { value =>
-    AlreadyCode("|")
-  }
+  def branch: Parser[LiterateToken] = "|" ^^^ AlreadyCode("|")
 
-  def tilde: Parser[LiterateToken] = "~" ^^ { value =>
-    AlreadyCode("!")
-  }
+  def tilde: Parser[LiterateToken] = "~" ^^^ AlreadyCode("!")
 
   def colon: Parser[LiterateToken] = ":" ^^^ AlreadyCode("|")
 
