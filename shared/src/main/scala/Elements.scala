@@ -371,8 +371,7 @@ object Elements:
         "context-m",
         "c-var-m",
         "ctx-m",
-        "ctx-secondary",
-        "m"
+        "ctx-secondary"
       ),
       " -> context variable m"
     ) { ctx ?=> ctx.ctxVarSecondary }
@@ -385,8 +384,7 @@ object Elements:
         "context-n",
         "c-var-n",
         "ctx-n",
-        "ctx-primary",
-        "n"
+        "ctx-primary"
       ),
       " -> context variable n"
     ) { ctx ?=> ctx.ctxVarPrimary }
