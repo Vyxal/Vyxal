@@ -140,7 +140,7 @@ object Interpreter:
       else
         var argIndex: Int = 0
         val origLength = ctx.length
-        val popFunction = (n: Option[Int]) =>
+        def popFunction(n: Option[Int]): VAny | Seq[VAny] =
           n match
             case Some(n) =>
               if args.nonEmpty then
