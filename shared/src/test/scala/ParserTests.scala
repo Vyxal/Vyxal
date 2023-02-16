@@ -102,7 +102,7 @@ class ParserTests extends AnyFunSuite:
   test("Does the parser understand basic structures?") {
     assert(
       Parser.parse("""[1 1 +|"nice" """) === Right(
-        If(
+        Ternary(
           Group(List(Number(1), Number(1), Command("+")), Some(0)),
           Some(Str("nice"))
         )

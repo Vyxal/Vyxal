@@ -45,9 +45,33 @@ object Interpreter:
         elems.foreach(Interpreter.execute(_))
       case AST.CompositeNilad(elems) =>
         elems.foreach(Interpreter.execute(_))
-      case AST.If(thenBody, elseBody) =>
+      case AST.Ternary(thenBody, elseBody) =>
         if MiscHelpers.boolify(ctx.pop()) then execute(thenBody)
         else if elseBody.nonEmpty then execute(elseBody.get)
+
+      case AST.IfStatement(conds, bodies, None) =>
+        var conditions = conds
+        var branches = bodies
+        var truthy = false
+        while !truthy && conditions.nonEmpty do
+          execute(conditions.head)
+          truthy = MiscHelpers.boolify(ctx.pop())
+          if truthy then execute(branches.head)
+          else
+            conditions = conditions.tail
+            branches = branches.tail
+      case AST.IfStatement(conds, bodies, Some(elseBody)) =>
+        var conditions = conds
+        var branches = bodies
+        var truthy = false
+        while !truthy && conditions.nonEmpty do
+          execute(conditions.head)
+          truthy = MiscHelpers.boolify(ctx.pop())
+          if truthy then execute(branches.head)
+          else
+            conditions = conditions.tail
+            branches = branches.tail
+        if !truthy then execute(elseBody)
       case AST.While(None, body) =>
         val loopCtx = ctx.makeChild()
         loopCtx.ctxVarPrimary = true

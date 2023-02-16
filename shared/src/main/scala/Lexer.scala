@@ -40,7 +40,7 @@ enum VyxalToken(val value: String):
 end VyxalToken
 
 enum StructureType(val open: String):
-  case If extends StructureType("[")
+  case Ternary extends StructureType("[")
   case While extends StructureType("{")
   case For extends StructureType("(")
   case Lambda extends StructureType("λ")
@@ -48,6 +48,7 @@ enum StructureType(val open: String):
   case LambdaFilter extends StructureType("Ω")
   case LambdaReduce extends StructureType("₳")
   case LambdaSort extends StructureType("µ")
+  case IfStatement extends StructureType("#{")
 
 val CODEPAGE = """ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ′″‴⁴ᵜ !"#$%&'()*+,-./0123456789:;
 <=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~¦ȦḂĊḊĖḞĠḢİĿṀṄ
@@ -98,8 +99,9 @@ object Lexer extends RegexParsers:
     Str(value.substring(1))
   }
 
-  def structureOpen: Parser[VyxalToken] = """[\[\(\{λƛΩ₳µ]|#@""".r ^^ { value =>
-    StructureOpen(StructureType.values.find(_.open == value).get)
+  def structureOpen: Parser[VyxalToken] = """[\[\(\{λƛΩ₳µ]|#@|#\{""".r ^^ {
+    value =>
+      StructureOpen(StructureType.values.find(_.open == value).get)
   }
 
   def structureClose: Parser[VyxalToken] = """[\}\)]""".r ^^ { value =>
@@ -113,7 +115,7 @@ object Lexer extends RegexParsers:
   def listClose: Parser[VyxalToken] = """(#\])|⟩""".r ^^^ ListClose
 
   def multigraph: Parser[VyxalToken] =
-    "([∆øÞk].)|(#:\\[)|(#[:.,]?[^\\[\\]$=#>@])".r ^^ { value =>
+    "([∆øÞk].)|(#:\\[)|(#[:.,]?[^\\[\\]$=#>@{])".r ^^ { value =>
       if value.length == 2 then Digraph(value)
       else if value.charAt(1) == ':' then SyntaxTrigraph(value)
       else SugarTrigraph(value)

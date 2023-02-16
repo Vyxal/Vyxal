@@ -282,14 +282,32 @@ object Parser:
     }.flatMap { branches =>
       // Now, we can create the appropriate AST for the structure
       structureType match
-        case StructureType.If =>
+        case StructureType.Ternary =>
           branches match
-            case List(thenBranch) => Right(AST.If(thenBranch, None))
+            case List(thenBranch) => Right(AST.Ternary(thenBranch, None))
             case List(thenBranch, elseBranch) =>
-              Right(AST.If(thenBranch, Some(elseBranch)))
+              Right(AST.Ternary(thenBranch, Some(elseBranch)))
             case _ =>
               Left(VyxalCompilationError("Invalid if statement"))
-        // TODO: One day make this extended elif
+        case StructureType.IfStatement =>
+          if branches.size < 2 then
+            Left(VyxalCompilationError("Invalid if statement"))
+          else if branches.size % 2 == 0 && branches.size != 2 then
+            Right(
+              AST.IfStatement(
+                branches.grouped(2).map(_.head).toList,
+                branches.grouped(2).map(_.last).toList,
+                None
+              )
+            )
+          else
+            Right(
+              AST.IfStatement(
+                branches.grouped(2).toList.dropRight(1).map(_.head),
+                branches.grouped(2).toList.dropRight(1).map(_.last),
+                Some(branches.last)
+              )
+            )
         case StructureType.While =>
           branches match
             case List(cond, body) => Right(AST.While(Some(cond), body))
@@ -426,9 +444,9 @@ object Parser:
           while depth != 0 do
             val top = lineup.dequeue()
             (top: @unchecked) match
-              case VyxalToken.StructureOpen(StructureType.If) => depth += 1
-              case VyxalToken.StructureAllClose               => depth -= 1
-              case _                                          => None
+              case VyxalToken.StructureOpen(StructureType.Ternary) => depth += 1
+              case VyxalToken.StructureAllClose                    => depth -= 1
+              case _                                               => None
             contents.++=(top.value)
           processed += VyxalToken.UnpackVar(contents.toString())
         case _ => processed += temp

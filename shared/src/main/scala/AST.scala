@@ -18,7 +18,9 @@ enum AST(val arity: Option[Int]):
   case CompressedString(value: String) extends AST(Some(0))
   case CompressedNumber(value: String) extends AST(Some(0))
   case DictionaryString(value: String) extends AST(Some(0))
-  case If(thenBody: AST, elseBody: Option[AST]) extends AST(Some(1))
+  case Ternary(thenBody: AST, elseBody: Option[AST]) extends AST(Some(1))
+  case IfStatement(conds: List[AST], bodies: List[AST], elseBody: Option[AST])
+      extends AST(Some(1))
   case For(loopVar: Option[String], body: AST) extends AST(None)
   case While(cond: Option[AST], body: AST) extends AST(None)
   case Lambda(lambdaArity: Int, params: List[String | Int], body: List[AST])
@@ -48,13 +50,13 @@ enum AST(val arity: Option[Int]):
     case Group(elems, _) => elems.map(_.toVyxal).mkString
     // case SpecialModifier(modi, value) => s"$modi"
     // ^ Might not need this because it'll be converted into different ASTs
-    case CompositeNilad(elems)   => elems.map(_.toVyxal).mkString
-    case CompressedString(value) => s"\"$value“"
-    case CompressedNumber(value) => s"\"$value„"
-    case DictionaryString(value) => s"\"$value”"
-    case If(thenBody, elseBody)  => s"[$thenBody|$elseBody}"
-    case For(loopVar, body)      => s"(${loopVar.getOrElse("")}|${body.toVyxal}"
-    case While(cond, body) => s"{${cond.fold("")(_.toVyxal)}|${body.toVyxal}}"
+    case CompositeNilad(elems)       => elems.map(_.toVyxal).mkString
+    case CompressedString(value)     => s"\"$value“"
+    case CompressedNumber(value)     => s"\"$value„"
+    case DictionaryString(value)     => s"\"$value”"
+    case Ternary(thenBody, elseBody) => s"[$thenBody|$elseBody}"
+    case For(loopVar, body) => s"(${loopVar.getOrElse("")}|${body.toVyxal}"
+    case While(cond, body)  => s"{${cond.fold("")(_.toVyxal)}|${body.toVyxal}}"
     case Lambda(arity, params, body) =>
       body.map(_.toVyxal).mkString("λ", "|", "}")
     case FnDef(name, lam) => ???
