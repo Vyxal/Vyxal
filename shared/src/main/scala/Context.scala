@@ -35,11 +35,11 @@ class Context private (
     private val parent: Option[Context] = None,
     val globals: Globals = Globals(),
     val testMode: Boolean = false,
-    var onlineOutput: String = ""
+    val useStack: Boolean = false
 ):
-  def settings: Settings = if testMode then
-    Settings(endPrintMode = EndPrintMode.None)
-  else globals.settings
+  def settings: Settings =
+    if testMode then Settings(endPrintMode = EndPrintMode.None)
+    else globals.settings
 
   /** Pop the top of the stack
     *
@@ -47,6 +47,7 @@ class Context private (
     * inputs, read a line of input from stdin.
     */
   def pop(): VAny =
+    if useStack then return getTopCxt().pop()
     val elem =
       if stack.nonEmpty then stack.remove(stack.size - 1)
       else if inputs.nonEmpty then inputs.next()
@@ -61,16 +62,20 @@ class Context private (
   end pop
 
   /** Pop n elements and wrap in a list */
-  def pop(n: Int): Seq[VAny] = Seq.fill(n)(this.pop()).reverse
+  def pop(n: Int): Seq[VAny] =
+    if useStack then return getTopCxt().pop(n)
+    Seq.fill(n)(this.pop()).reverse
 
   /** Get the top element on the stack without popping */
   def peek: VAny =
+    if useStack then getTopCxt().peek
     if stack.nonEmpty then stack.last
     else if inputs.nonEmpty then inputs.peek
     else settings.defaultValue
 
   /** Get the top n elements on the stack without popping */
   def peek(n: Int): List[VAny] =
+    if useStack then getTopCxt().peek(n)
     // Number of elements peekable from the stack
     val numStack = n.max(stack.length)
     // Number of elements that need to be taken from the input
@@ -79,7 +84,11 @@ class Context private (
     inputs.peek(numInput) ++ stack.slice(stack.length - numStack, stack.length)
 
   /** Push items onto the stack. The first argument will be pushed first. */
-  def push(items: VAny*): Unit = stack ++= items
+  def push(items: VAny*): Unit =
+    if useStack then getTopCxt().push(items*)
+    else stack ++= items
+
+  def length: Int = stack.length
 
   /** Whether the stack is empty */
   def isStackEmpty: Boolean = stack.isEmpty
@@ -150,7 +159,7 @@ class Context private (
     inputs,
     Some(this),
     globals,
-    testMode
+    testMode // child shouldn't use stack just because parent does
   )
 
   def getTopCxt(): Context =
@@ -191,25 +200,30 @@ object Context:
     *   The context in which the function was defined
     * @param currCtx
     *   The context where the function is currently executing
+    * @param ctxVarSecondary
+    *   Secondary context var. Not an Option because if not explicitly
+    *   overridden, the inputs are wrapped in a VList and used as the secondary
+    *   context var.
     */
   def makeFnCtx(
       origCtx: Context,
       currCtx: Context,
       ctxVarPrimary: Option[VAny],
-      ctxVarSecondary: Option[VAny],
-      params: Seq[String],
-      inputs: Seq[VAny]
+      ctxVarSecondary: VAny,
+      variables: mut.Map[String, VAny],
+      inputs: Seq[VAny],
+      useStack: Boolean
   ) =
     new Context(
-      mut.ArrayBuffer.empty,
+      if useStack then currCtx.stack else mut.ArrayBuffer.empty,
       ctxVarPrimary.orElse(currCtx._ctxVarPrimary),
-      ctxVarSecondary.orElse(currCtx._ctxVarSecondary),
-      mut.Map(params.zip(inputs)*),
+      Some(ctxVarSecondary),
+      variables,
       Inputs(inputs),
       Some(origCtx),
       currCtx.globals,
-      currCtx.testMode
+      currCtx.testMode,
+      useStack
     )
-  end makeFnCtx
 
 end Context

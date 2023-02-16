@@ -27,8 +27,9 @@ type VVal = VNum | String
 case class VFun(
     impl: DirectFn,
     arity: Int,
-    params: List[String],
-    ctx: Context
+    params: List[String | Int],
+    ctx: Context,
+    originalAST: Option[AST.Lambda] = None
 ):
 
   /** Make a copy of this function with a different arity. */
@@ -37,16 +38,39 @@ case class VFun(
   /** Call this function on the given arguments, using custom context variables.
     */
   def execute(
-      contextVarM: VAny,
-      contextVarN: VAny,
+      contextVarPrimary: VAny,
+      contextVarSecondary: VAny,
       args: Seq[VAny]
   )(using ctx: Context): VAny =
     Interpreter.executeFn(
       this,
-      Some(contextVarM),
-      Some(contextVarN),
+      Some(contextVarPrimary),
+      Some(contextVarSecondary),
       args = args
     )
+
+  def executeResult(
+      contextVarPrimary: VAny,
+      contextVarSecondary: VAny,
+      args: Seq[VAny]
+  )(using ctx: Context): VAny =
+    val res = Interpreter.executeFn(
+      this,
+      Some(contextVarPrimary),
+      Some(contextVarSecondary),
+      args = args
+    )
+
+    res match
+      case f: VFun =>
+        Interpreter.executeFn(
+          f,
+          Some(contextVarPrimary),
+          Some(contextVarSecondary),
+          args = args
+        )
+      case _ => res
+  end executeResult
 
   def apply(args: VAny*)(using ctx: Context): VAny =
     Interpreter.executeFn(this)
@@ -56,15 +80,17 @@ object VFun:
   def fromLambda(lam: AST.Lambda)(using origCtx: Context): VFun =
     val AST.Lambda(arity, params, body) = lam
     VFun(
-      () => ctx ?=> Interpreter.execute(body)(using ctx),
+      () => ctx ?=> body.foreach(Interpreter.execute(_)(using ctx)),
       arity,
       params,
-      origCtx
+      origCtx,
+      Some(lam)
     )
 
   def fromElement(elem: Element)(using origCtx: Context): VFun =
     val Element(symbol, name, _, arity, _, _, impl) = elem
     VFun(impl, arity.getOrElse(1), List.empty, origCtx)
+end VFun
 
 extension (self: VAny)
   def ===(that: VAny): Boolean =

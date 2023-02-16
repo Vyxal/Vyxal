@@ -6,7 +6,7 @@ import org.scalatest.funspec.AnyFunSpec
 
 class LiterateTests extends VyxalTests:
   def testLiteral(input: String, expected: String) =
-    assertResult(expected)(litLex(input))
+    assertResult(expected)(LiterateLexer.litLex(input))
   describe("Literals") {
     it("should leave numbers as-is") {
       group {
@@ -43,6 +43,10 @@ class LiterateTests extends VyxalTests:
       testLiteral("10 { context-n add } map", "10λn+}M")
       testLiteral("{{{}}{}}", "λλλ}}λ}}")
       testLiteral("{}{}", "λ}λ}")
+    }
+
+    it("should do arguments correctly") {
+      testLiteral("lambda x, y -> $x $y add end", "λx,y|#$x#$y+}")
     }
   }
 

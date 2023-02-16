@@ -143,7 +143,7 @@ object Parser:
                 AST.Lambda(
                   1,
                   List(),
-                  AST.makeSingle(lambdaAsts.toList.reverse*)
+                  List(AST.makeSingle(lambdaAsts.toList.reverse*))
                 )
               )
             case "ᵗ" => ??? // TODO: Implement tie
@@ -185,7 +185,9 @@ object Parser:
       program: Queue[VyxalToken]
   ): ParserRet[AST] =
     Elements.elements.get(name) match
-      case None => Left(VyxalCompilationError(s"No such element: $name"))
+      case None =>
+        Right(AST.Command(name))
+      // Left(VyxalCompilationError(s"No such element: $name"))
       case Some(element) =>
         if asts.isEmpty then Right(AST.Command(name))
         else
@@ -302,12 +304,21 @@ object Parser:
         case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
             StructureType.LambdaFilter | StructureType.LambdaReduce |
             StructureType.LambdaSort) =>
-          val lambda = branches match
-            // todo actually parse arity and parameters
-            case List(body) => AST.Lambda(1, List.empty, body)
-            case _          => ???
+          val lambda =
+            if lambdaType == StructureType.Lambda then
+              branches match
+                case List()     => AST.Lambda(1, List.empty, List.empty)
+                case List(body) => AST.Lambda(1, List.empty, List(body))
+                case List(params, body) =>
+                  val (param, arity) = parseParameters(params)
+                  AST.Lambda(arity, param, List(body))
+                case _ =>
+                  val (param, arity) = parseParameters(branches.head)
+                  AST.Lambda(arity, param, branches.drop(1))
+            else AST.Lambda(1, List.empty, branches)
           // todo using the command names is a bit brittle
           //   maybe refer to the functions directly
+
           Right(lambdaType match
             case StructureType.Lambda => lambda
             case StructureType.LambdaMap =>
@@ -321,6 +332,38 @@ object Parser:
           )
     }
   end parseStructure
+
+  private def parseParameters(params: AST): (List[String | Int], Int) =
+    val paramString = params.toVyxal
+    val components = paramString.split(",")
+    // ^ may leave extra spaces, but that's okay, because
+    // spaces are removed when converting to a valid name
+    var arity = 0
+    val paramList = ListBuffer.empty[String | Int]
+    for component <- components do
+      if arity != -1 then
+        if component.forall(_.isDigit) then
+          // Pop n from stack onto lambda stack
+          val num = component.toInt
+          arity += num
+          paramList += num
+        else if component.startsWith("!") then
+          // operate on entire stack, so set arity to -1 and remove all other parameters
+          // also, process no other parameters
+          arity = -1
+          paramList.drop(paramList.length)
+        else if component == "*" || component == "×" then
+          // varargs - pop n and push n items onto lambda stack
+          arity += 1
+          paramList += "*"
+        else
+          // named parameter
+          val name = toValidName(component)
+          arity += 1
+          paramList += name
+    end for
+    paramList.toList -> arity
+  end parseParameters
 
   /** Parse an identifier for for loops. Consume only if there are 2 branches */
   private def parseIdentifier(program: Queue[VyxalToken]): Option[String] =

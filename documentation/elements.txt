@@ -1,3 +1,7 @@
+🍪 (Cookie) (non-vectorising)
+Keywords: cookie
+- cookie.
+---------------------
 ! (Factorial | To Uppercase) (vectorising)
 Keywords: fact, factorial, to-upper, upper, uppercase, !
 - a: num -> a!
@@ -94,6 +98,13 @@ D (Triplicate) (non-vectorising)
 Keywords: trip
 - a -> [a, a, a]
 ---------------------
+F (Filter by Function | From Base) (non-vectorising)
+Keywords: filter, keep-by, from-base, 10->b
+- a: fun, b: lst -> Filter b by truthy results of a
+- a: lst, b: fun -> Filter a by truthy results of b
+- a: num, b: num -> a in base b - list of digits
+- a: num, b: str|lst -> a in base with alphabet b
+---------------------
 M (Map Function | Mold Lists | Multiplicity) (non-vectorising)
 Keywords: map, mold, multiplicity, times-divide
 - a: any, b: fun -> a.map(b)
@@ -119,6 +130,10 @@ Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has
 - a: num, b: num -> the range [a, b)
 - a: str, b: num|str -> does regex pattern b match haystack a?
 ---------------------
+W (Wrap) (non-vectorising)
+Keywords: wrap
+- a, b, c, ..., -> [a, b, c, ...]
+---------------------
 _ (Pop and Discard) (non-vectorising)
 Keywords: pop, discard
 - a ->
@@ -136,11 +151,20 @@ n (Get Context Variable N) (non-vectorising)
 Keywords: get-context-n, context-n, c-var-n, ctx-n, ctx-primary
 - ->  -> context variable n
 ---------------------
+Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
+Keywords: peek-call
+- a: fun -> Execute a without popping
+---------------------
 Ė (Execute lambda | Evaluate as Vyxal | Power with base 10) (non-vectorising)
-Keywords: execute-lambda, evaluate-as-vyxal, power-base-10
+Keywords: execute-lambda, evaluate-as-vyxal, power-base-10, call, @
 - a: fun -> Execute a
 - a: str -> Evaluate a as Vyxal
 - a: num -> 10 ** n
+---------------------
+ṡ (Sort by Function Object | Reshape (APL Style)) (non-vectorising)
+Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun
+- a: fun, b: any -> sort iterable b by function a
+- a: any, b: fun -> sort iterable a by function b
 ---------------------
 ₀ (Ten) (non-vectorising)
 Keywords: ten

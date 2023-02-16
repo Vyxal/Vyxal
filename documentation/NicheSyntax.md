@@ -6,6 +6,11 @@ This is simply all the niche syntax bits for making look nice later.
 #=name -> set variable
 f#>name -> name f= top of stack
 #:[x|y|z] -> x, y, z = top of stack
+λN|...} -> lambda that takes N arguments
+λname|...} -> lambda that takes 1 argument and sets name
+λ*|...} -> lambda that pops N and takes N arguments in a list
+λ!|...} -> lambda that operates on the stack
+λ|...} -> lambda that takes 1 argument
 ```
 
 ## Literate
@@ -16,6 +21,7 @@ $name -> get
 f:>name -> name f= top of stack
 :=[x|y|z] -> x, y, z = top of stack
 # ... #} -> raw sbcs
+lambda !stack | ... } -> lambda that operates on the stack
 ```
 
 - Lists and lambdas (`[...]` and `{...}`) must be closed

@@ -21,12 +21,12 @@ enum AST(val arity: Option[Int]):
   case If(thenBody: AST, elseBody: Option[AST]) extends AST(Some(1))
   case For(loopVar: Option[String], body: AST) extends AST(None)
   case While(cond: Option[AST], body: AST) extends AST(None)
-  case Lambda(lambdaArity: Int, params: List[String], body: AST)
+  case Lambda(lambdaArity: Int, params: List[String | Int], body: List[AST])
       extends AST(Some(lambdaArity))
 
   /** A function definition, basically sugar a lambda assigned to a variable */
   case FnDef(name: String, lam: Lambda) extends AST(Some(0))
-  case GetVar(name: String) extends AST(Some(0))
+  case GetVar(name: String) extends AST(None)
   case SetVar(name: String) extends AST(Some(1))
   case AuxAugmentVar(name: String) extends AST(None)
   case AugmentVar(name: String, what: AST) extends AST(None)
@@ -55,11 +55,12 @@ enum AST(val arity: Option[Int]):
     case If(thenBody, elseBody)  => s"[$thenBody|$elseBody}"
     case For(loopVar, body)      => s"(${loopVar.getOrElse("")}|${body.toVyxal}"
     case While(cond, body) => s"{${cond.fold("")(_.toVyxal)}|${body.toVyxal}}"
-    case Lambda(arity, params, body) => s"λ${body.toVyxal}}"
-    case FnDef(name, lam)            => ???
-    case GetVar(name)                => s"#<$name"
-    case SetVar(name)                => s"#>$name"
-    case ast                         => ast.toString
+    case Lambda(arity, params, body) =>
+      body.map(_.toVyxal).mkString("λ", "|", "}")
+    case FnDef(name, lam) => ???
+    case GetVar(name)     => s"#<$name"
+    case SetVar(name)     => s"#>$name"
+    case ast              => ast.toString
 end AST
 
 object AST:

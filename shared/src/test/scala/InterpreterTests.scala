@@ -68,7 +68,7 @@ class InterpreterTests extends VyxalTests:
         testAST(
           Modifiers
             .modifiers("v")
-            .from(List(AST.Lambda(1, List.empty, AST.Command("!")))),
+            .from(List(AST.Lambda(1, List.empty, List(AST.Command("!"))))),
           VList(1, 6, VList(2, 1)),
           inputs = Seq(VList(0, 3, VList(2, 1)))
         )
@@ -80,7 +80,7 @@ class InterpreterTests extends VyxalTests:
         testAST(
           Modifiers
             .modifiers("v")
-            .from(List(AST.Lambda(2, List.empty, AST.Command("-")))),
+            .from(List(AST.Lambda(2, List.empty, List(AST.Command("-"))))),
           VList(VList(-4, -2, -6), VList(-1, 1, -3), VList(-2, -1, -6)),
           inputs = Seq(VList(0, 3, VList(2, 1)), VList(4, 2, 6))
         )
@@ -92,7 +92,7 @@ class InterpreterTests extends VyxalTests:
     it("should execute a simple named function") {
       testAST(
         AST.makeSingle(
-          AST.FnDef("f", AST.Lambda(2, List.empty, AST.Command("-"))),
+          AST.FnDef("f", AST.Lambda(2, List.empty, List(AST.Command("-")))),
           AST.GetVar("f"),
           AST.Command("Ė")
         ),
@@ -105,7 +105,7 @@ class InterpreterTests extends VyxalTests:
       it("Simple lambda") {
         testAST(
           AST.makeSingle(
-            AST.Lambda(1, List.empty, AST.Command("!")),
+            AST.Lambda(1, List.empty, List(AST.Command("!"))),
             AST.ExecuteFn
           ),
           VNum(6),
@@ -118,13 +118,56 @@ class InterpreterTests extends VyxalTests:
       it("Simple lambda") {
         testAST(
           AST.makeSingle(
-            AST.Lambda(2, List.empty, AST.Command("-")),
+            AST.Lambda(2, List.empty, List(AST.Command("-"))),
             AST.ExecuteFn
           ),
           VNum(2),
           inputs = Seq(3, 1)
         )
       }
+    }
+
+    describe("Multibranch lambdas") {
+      testMulti(
+        "#[1|2|3|4#]ƛ5+|×}" -> VList(36, 49, 64, 81),
+        "#[1|2|3|4#]ƛ5+×}" -> VList(6, 14, 24, 36),
+        "#[1|2|3|4#]ƛ5+|×|÷}" -> VList(1, 1, 1, 1),
+      )
+
+      testMulti(
+        """#["Hello"|"World"|"Gaming"|"Test String"#]Ω"o"C1=|m0=}""" -> VList(
+          "Hello"
+        ),
+        """#["Hello"|"World"|"Goming"|"Test String"#]Ω"o"C1=|m2%0=}""" -> VList(
+          "Hello",
+          "Goming"
+        )
+      )
+
+      testMulti(
+        "#[4|3N|1|5|3|7|5N#]µ0<[N}|N" -> VList(1, 3, -3, 4, 5, -5, 7),
+        "#[4|3N|1|5|3|7|5N#]µ0<[N}N" -> VList(7, 5, -5, 4, -3, 3, 1)
+      )
+    }
+
+    describe("Lambda arguments") {
+      testMulti(
+        "#[1|2|3|4|5#]λx|#$x 5+}M" -> VList(6, 7, 8, 9, 10),
+        "#[1|2|3|4|5#]λ5+}M" -> VList(6, 7, 8, 9, 10),
+        "#[1|2|3|4|5#]λ1|5+}M" -> VList(6, 7, 8, 9, 10)
+      )
+    }
+
+    describe("Operating on the stack") {
+      testMulti(
+        "3 6 1λ!|+}ĖW" -> VList(3, 7),
+        "3 6 1λ!|++}ĖW" -> VList(10),
+        "3 6 1λ!|n}ĖW" -> VList(3, 6, 1, 0)
+      )
+    }
+
+    describe("Varargs") {
+      testMulti("1 2 3 3λ*|/+}Ė" -> 6, "1 2 3 2λ*|/+}Ė" -> 5)
     }
   }
 
@@ -189,7 +232,7 @@ class InterpreterTests extends VyxalTests:
         ctx.push(1)
         assertResult(VNum(5))(
           Interpreter.executeFn(
-            VFun.fromLambda(AST.Lambda(1, Nil, AST.GetVar("x")))
+            VFun.fromLambda(AST.Lambda(1, Nil, List(AST.GetVar("x"))))
           )
         )
       }
@@ -199,7 +242,7 @@ class InterpreterTests extends VyxalTests:
         ctx.push(1)
         Interpreter.executeFn(
           VFun.fromLambda(
-            AST.Lambda(1, Nil, AST.AugmentVar("x", AST.Command("+")))
+            AST.Lambda(1, Nil, List(AST.AugmentVar("x", AST.Command("+"))))
           )
         )
         assertResult(VNum(6))(ctx.getVar("x"))
@@ -210,7 +253,7 @@ class InterpreterTests extends VyxalTests:
         val ctx1 = Context()
         ctx1.setVar("x", 5)
         Interpreter.execute(
-          AST.Lambda(1, Nil, AST.AugmentVar("x", AST.Command("+")))
+          AST.Lambda(1, Nil, List(AST.AugmentVar("x", AST.Command("+"))))
         )(using ctx1)
         val ctx2 = Context()
         ctx2.setVar("x", "foo")
@@ -279,6 +322,18 @@ class InterpreterTests extends VyxalTests:
         assert(VNum(0.01) != VNum(0))
       }
     }
+  }
+
+  describe("Lambda types") {
+    testMulti(
+      "#[1|2|3#] ƛ5R}" -> VList(VList(1, 2, 3, 4), VList(2, 3, 4), VList(3, 4)),
+      "#[1|2|3#] ƛ2+|+|-}" -> VList(0, 0, 0)
+    )
+
+    testMulti(
+      "10 Ω2%0=}" -> VList(2, 4, 6, 8, 10),
+      "10 Ω2%0=|5<}" -> VList(2, 4)
+    )
   }
 
 end InterpreterTests

@@ -3,13 +3,16 @@ package vyxal
 import vyxal.impls.Elements
 import vyxal.MiscHelpers.{vyPrint, vyPrintln}
 
+import scala.annotation.varargs
+import scala.collection.mutable.ListBuffer
+import scala.collection.mutable as mut
 import VNum.given
 
 object Interpreter:
   def execute(code: String, literate: Boolean = false)(using
       ctx: Context
   ): Unit =
-    val sbcsified = if literate then litLex(code) else code
+    val sbcsified = if literate then LiterateLexer.litLex(code) else code
     Parser.parse(sbcsified) match
       case Right(ast) =>
         if ctx.settings.logLevel == LogLevel.Debug then
@@ -126,24 +129,73 @@ object Interpreter:
       args: Seq[VAny] | Null = null,
       popArgs: Boolean = true
   )(using ctx: Context): VAny =
-    val VFun(impl, arity, params, origCtx) = fn
+    val VFun(impl, arity, params, origCtx, origAST) = fn
+    val useStack = arity == -1
+    val vars: mut.Map[String, VAny] = mut.Map()
     val inputs =
-      if args != null then args
-      else if popArgs then ctx.pop(arity)
-      else ctx.peek(arity)
+      if args != null && params.isEmpty then args
+      else if arity == -1 then List.empty // operates on entire stack
+      else if params.isEmpty then // no params, so just pop the args
+        if popArgs then ctx.pop(arity) else ctx.peek(arity)
+      else
+        var argIndex: Int = 0
+        val origLength = ctx.length
+        def popFunction(n: Int): Seq[VAny] =
+          if args != null && args.nonEmpty then
+            val res =
+              (argIndex until argIndex + n).map(ind => args(ind % args.length))
+            argIndex += n
+            res
+          else ctx.pop(n)
 
+        def popOneFunction(): VAny =
+          if args != null && args.nonEmpty then
+            val res = args(argIndex % args.length)
+            argIndex += 1
+            res
+          else ctx.pop()
+
+        val popped = ListBuffer.empty[VAny]
+        val temp = ListBuffer.empty[VAny]
+        for param <- params do
+          param match
+            case n: Int => // number parameter, so pop from stack to lambda stack
+              if n == 1 then
+                val top = popOneFunction()
+                temp += top
+                popped += top
+              else
+                val top = popFunction(n)
+
+                temp ++= top
+                popped ++= top
+            case name: String =>
+              if name == "*" then
+                val termCount = ctx.pop().asInstanceOf[VNum].toInt
+                popped += termCount
+                val terms = popFunction(termCount)
+                popped ++= terms
+                temp += VList(terms*)
+              else
+                val top = popOneFunction()
+                vars(name) = top // set variable
+                popped += top
+        end for
+        if !popArgs && args.isEmpty then
+          ctx.push(popped.toList.take(origLength).reverse*)
+        temp.toList
     given fnCtx: Context =
       Context.makeFnCtx(
         origCtx,
         ctx,
-        ctxVarPrimary,
-        ctxVarSecondary,
-        params,
-        inputs
+        ctxVarPrimary.orElse(inputs.headOption),
+        ctxVarSecondary.getOrElse(VList(inputs*)),
+        vars,
+        inputs,
+        useStack
       )
 
     fn.impl()(using fnCtx)
-
     fnCtx.peek
   end executeFn
 end Interpreter
