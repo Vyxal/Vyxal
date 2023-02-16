@@ -335,9 +335,8 @@ object Parser:
 
   private def parseParameters(params: AST): (List[String | Int], Int) =
     val paramString = params.toVyxal
-    val components = paramString.split(
-      ","
-    ) // may leave extra spaces, but that's okay, because
+    val components = paramString.split(",")
+    // ^ may leave extra spaces, but that's okay, because
     // spaces are removed when converting to a valid name
     var arity = 0
     val paramList = ListBuffer.empty[String | Int]
