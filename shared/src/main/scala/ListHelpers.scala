@@ -21,7 +21,7 @@ object ListHelpers:
 
         VList(filtered.map(_._1)*)
       case None =>
-        return VList(iterable.zipWithIndex.map { (item, index) =>
+        VList(iterable.zipWithIndex.map { (item, index) =>
           predicate.execute(item, index, List(item))
         }*)
 
@@ -70,7 +70,7 @@ object ListHelpers:
           }*)
         }
       case None =>
-        return VList(to.zipWithIndex.map { (item, index) =>
+        VList(to.zipWithIndex.map { (item, index) =>
           f.execute(item, index, List(item))
         }*)
 
@@ -112,12 +112,12 @@ object ListHelpers:
         if branches.length < 2 then
           return VList(
             iterable.zipWithIndex
-              .sorted((a, b) =>
+              .sorted { (a, b) =>
                 MiscHelpers.compareExact(
                   key.executeResult(a(0), a(1), List(a(0))),
                   key.executeResult(b(0), b(1), List(b(0)))
                 )
-              )
+              }
               .map(_._1)*
           )
 
@@ -133,10 +133,10 @@ object ListHelpers:
                 )
               }
               .find(_ != _)
-              .map { case (aRes, bRes) =>
+              // If they compare equal with all branches, a < b is false
+              .fold(false) { case (aRes, bRes) =>
                 MiscHelpers.compareExact(aRes, bRes) < 0
               }
-              .getOrElse(false)
           }
           .map(_._1)
 
@@ -144,12 +144,12 @@ object ListHelpers:
       case None =>
         return VList(
           iterable.zipWithIndex
-            .sorted((a, b) =>
+            .sorted { (a, b) =>
               MiscHelpers.compareExact(
                 key.executeResult(a(0), a(1), List(a(0))),
                 key.executeResult(b(0), b(1), List(b(0)))
               )
-            )
+            }
             .map(_._1)*
         )
 
