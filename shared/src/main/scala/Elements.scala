@@ -270,13 +270,7 @@ object Elements:
       "a: str -> Evaluate a as Vyxal",
       "a: num -> 10 ** n"
     ) { ctx ?=>
-      ctx.pop() match
-        case fn: VFun =>
-          ctx.push(Interpreter.executeFn(fn))
-          if fn.arity == -1 then
-            ctx.pop() // Handle the extra value pushed by lambdas that operate on the stack
-        case code: String => Interpreter.execute(code)
-        case x            => ctx.push(execHelper(x))
+      ctx.push(execHelper(ctx.pop())
     }
 
     def execHelper(value: VAny)(using ctx: Context): VAny =
@@ -286,7 +280,11 @@ object Elements:
           ctx.pop()
         case n: VNum     => 10 ** n
         case list: VList => list.vmap(execHelper)
-        case _ => throw new Exception("Can't exec on functions in lists")
+        case fn: VFun =>
+          ctx.push(Interpreter.executeFn(fn))
+          if fn.arity == -1 then
+            ctx.pop() // Handle the extra value pushed by lambdas that operate on the stack
+          ctx.pop()
 
     val execNotPop = addDirect(
       "Ḃ",
