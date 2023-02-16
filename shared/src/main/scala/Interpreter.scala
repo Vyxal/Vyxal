@@ -154,6 +154,23 @@ object Interpreter:
 
         val list = ListHelpers.makeIterable(initVals, Some(true))(using ctx)
 
+        def gen(m: VAny, n: VAny): LazyList[VAny] =
+          LazyList.empty :++ initVals #:: executeFn(
+            VFun.fromLambda(AST.Lambda(2, List.empty, List(relation))),
+            Some(n),
+            Some(m)
+          ) #:: gen(
+            n,
+            executeFn(
+              VFun.fromLambda(AST.Lambda(2, List.empty, List(relation))),
+              Some(n),
+              Some(m)
+            )
+          )
+
+      // TODO: Push gen(initalValues(0), initialValues(1)) to the stack
+      // also, make sure context variables are in the right order
+
       case _ => throw NotImplementedError(s"$ast not implemented")
     end match
     if ctx.settings.logLevel == LogLevel.Debug then
