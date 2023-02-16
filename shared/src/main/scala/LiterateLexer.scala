@@ -204,10 +204,7 @@ object LiterateLexer extends RegexParsers:
             case Some(Number(_)) => out.append(value + " ")
             case Some(Word(w)) =>
               if "[a-zA-Z0-9_]+".r.matches(
-                  literateModeMappings.getOrElse(
-                    w,
-                    hardcodedKeywords.getOrElse(w, "")
-                  )
+                  literateModeMappings.getOrElse(w, "")
                 )
               then out.append(value + " ")
               else out.append(value)
