@@ -126,6 +126,49 @@ class InterpreterTests extends VyxalTests:
         )
       }
     }
+
+    describe("Multibranch lambdas") {
+      testMulti(
+        "#[1|2|3|4#]ƛ5+|×}" -> VList(36, 49, 64, 81),
+        "#[1|2|3|4#]ƛ5+×}" -> VList(6, 14, 24, 36),
+        "#[1|2|3|4#]ƛ5+|×|÷}" -> VList(1, 1, 1, 1),
+      )
+
+      testMulti(
+        """#["Hello"|"World"|"Gaming"|"Test String"#]Ω"o"C1=|m0=}""" -> VList(
+          "Hello"
+        ),
+        """#["Hello"|"World"|"Goming"|"Test String"#]Ω"o"C1=|m2%0=}""" -> VList(
+          "Hello",
+          "Goming"
+        )
+      )
+
+      testMulti(
+        "#[4|3N|1|5|3|7|5N#]µ0<[N}|N" -> VList(1, 3, -3, 4, 5, -5, 7),
+        "#[4|3N|1|5|3|7|5N#]µ0<[N}N" -> VList(7, 5, -5, 4, -3, 3, 1)
+      )
+    }
+
+    describe("Lambda arguments") {
+      testMulti(
+        "#[1|2|3|4|5#]λx|#$x 5+}M" -> VList(6, 7, 8, 9, 10),
+        "#[1|2|3|4|5#]λ5+}M" -> VList(6, 7, 8, 9, 10),
+        "#[1|2|3|4|5#]λ1|5+}M" -> VList(6, 7, 8, 9, 10)
+      )
+    }
+
+    describe("Operating on the stack") {
+      testMulti(
+        "3 6 1λ!|+}ĖW" -> VList(3, 7),
+        "3 6 1λ!|++}ĖW" -> VList(10),
+        "3 6 1λ!|n}ĖW" -> VList(3, 6, 1, 0)
+      )
+    }
+
+    describe("Varargs") {
+      testMulti("1 2 3 3λ*|/+}Ė" -> 6, "1 2 3 2λ*|/+}Ė" -> 5)
+    }
   }
 
   describe("Variables") {

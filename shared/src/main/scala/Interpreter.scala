@@ -141,7 +141,7 @@ object Interpreter:
         var argIndex: Int = 0
         val origLength = ctx.length
         def popFunction(n: Int): Seq[VAny] =
-          if args.nonEmpty then
+          if args != null && args.nonEmpty then
             val res =
               (argIndex until argIndex + n).map(ind => args(ind % args.length))
             argIndex += n
@@ -149,7 +149,7 @@ object Interpreter:
           else ctx.pop(n)
 
         def popOneFunction(): VAny =
-          if args.nonEmpty then
+          if args != null && args.nonEmpty then
             val res = args(argIndex % args.length)
             argIndex += 1
             res
