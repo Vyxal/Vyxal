@@ -88,7 +88,7 @@ class Context private (
     if useStack then getTopCxt().push(items*)
     else stack ++= items
 
-  def length(): Int = stack.length
+  def length: Int = stack.length
 
   /** Whether the stack is empty */
   def isStackEmpty: Boolean = stack.isEmpty
