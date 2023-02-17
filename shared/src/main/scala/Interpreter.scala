@@ -142,22 +142,8 @@ object Interpreter:
           case None => ctx.pop()
 
         val list = ListHelpers.makeIterable(initVals, Some(true))(using ctx)
-
-        def gen(m: VAny, n: VAny): LazyList[VAny] =
-          executeFn(
-            VFun.fromLambda(AST.Lambda(2, List.empty, List(relation))),
-            Some(n),
-            Some(m),
-            Seq(m, n)
-          ) #:: gen(
-            n,
-            executeFn(
-              VFun.fromLambda(AST.Lambda(2, List.empty, List(relation))),
-              Some(n),
-              Some(m),
-              Seq(m, n)
-            )
-          )
+        val relationFn =
+          VFun.fromLambda(AST.Lambda(2, List.empty, List(relation)))
 
         val firstN = list.length match
           case 0 => ctx.settings.defaultValue
@@ -169,7 +155,7 @@ object Interpreter:
           case 1 => list.head
           case _ => list.init.last
 
-        val temp = gen(firstM, firstN)
+        val temp = generator(relationFn, firstN, firstM)
 
         val res = temp.prependedAll(list)
 
@@ -182,6 +168,25 @@ object Interpreter:
     if ctx.settings.logLevel == LogLevel.Debug then
       println(s"res was ${ctx.peek}")
   end execute
+
+  def generator(relation: VFun, ctxVarPrimary: VAny, ctxVarSecondary: VAny)(
+      using ctx: Context
+  ): LazyList[VAny] =
+    executeFn(
+      relation,
+      Some(ctxVarPrimary),
+      Some(ctxVarSecondary),
+      Seq(ctxVarSecondary, ctxVarPrimary)
+    ) #:: generator(
+      relation,
+      ctxVarPrimary,
+      executeFn(
+        relation,
+        Some(ctxVarPrimary),
+        Some(ctxVarSecondary),
+        Seq(ctxVarSecondary, ctxVarPrimary)
+      )
+    )
 
   /** Execute a function and return what was on the top of the stack, if there
     * was anything
