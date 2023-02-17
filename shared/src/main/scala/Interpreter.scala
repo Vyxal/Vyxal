@@ -49,7 +49,7 @@ object Interpreter:
         if MiscHelpers.boolify(ctx.pop()) then execute(thenBody)
         else if elseBody.nonEmpty then execute(elseBody.get)
 
-      case AST.IfStatement(conds, bodies, None) =>
+      case AST.IfStatement(conds, bodies, elseBody) =>
         var conditions = conds
         var branches = bodies
         var truthy = false
@@ -60,18 +60,7 @@ object Interpreter:
           else
             conditions = conditions.tail
             branches = branches.tail
-      case AST.IfStatement(conds, bodies, Some(elseBody)) =>
-        var conditions = conds
-        var branches = bodies
-        var truthy = false
-        while !truthy && conditions.nonEmpty do
-          execute(conditions.head)
-          truthy = MiscHelpers.boolify(ctx.pop())
-          if truthy then execute(branches.head)
-          else
-            conditions = conditions.tail
-            branches = branches.tail
-        if !truthy then execute(elseBody)
+        if !truthy && elseBody.nonEmpty then execute(elseBody.head)
       case AST.While(None, body) =>
         val loopCtx = ctx.makeChild()
         loopCtx.ctxVarPrimary = true
