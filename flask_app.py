@@ -35,6 +35,13 @@ def index():
     return render_template("index.html", session=session, codepage_info="No.")
 
 
+@app.route("/session", methods=("POST", "GET"))
+def new_session():
+    session = secrets.token_hex(64)
+    sessions[session] = None
+    return session
+
+
 @app.route("/execute", methods=("POST",))
 def execute():
     print(sessions, request.json)
