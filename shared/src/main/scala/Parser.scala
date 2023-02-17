@@ -417,7 +417,7 @@ object Parser:
     val lineup = Queue(doubleClose.toList*)
     val processed = ListBuffer[VyxalToken]()
 
-    while (lineup.nonEmpty) do
+    while lineup.nonEmpty do
       val temp = lineup.dequeue()
       (temp: @unchecked) match
         case VyxalToken.SyntaxTrigraph("#:[") =>
