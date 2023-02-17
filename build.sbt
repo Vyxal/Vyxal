@@ -37,7 +37,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "com.github.scopt" %%% "scopt" % "4.1.0",
       // Used by ScalaTest
       "org.scalactic" %%% "scalactic" % "3.2.14",
-      "org.scalatest" %%% "scalatest" % "3.2.14" % Test
+      "org.scalatest" %%% "scalatest" % "3.2.15" % Test
     ),
     scalacOptions ++= Seq(
       "-deprecation", // Emit warning and location for usages of deprecated APIs.
