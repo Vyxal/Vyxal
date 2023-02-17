@@ -73,7 +73,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .jsSettings(
     // JS-specific settings
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "2.2.0",
+      "org.scala-js" %%% "scalajs-dom" % "2.4.0",
       "com.github.scopt" %%% "scopt" % "4.1.0"
     ),
     // Where the compiled JS is output
