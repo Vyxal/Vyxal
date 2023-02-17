@@ -22,7 +22,7 @@ object MiscHelpers:
     case l: VList  => l.nonEmpty
 
   def collectUnique(function: VFun, initial: VAny)(using ctx: Context): VList =
-    val seen = ListBuffer[VAny]()
+    val seen = collection.mutable.Set.empty[VAny]
     val result = ListBuffer[VAny]()
     var current = initial
     while !seen.contains(current) do
