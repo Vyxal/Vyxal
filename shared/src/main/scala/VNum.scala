@@ -25,8 +25,7 @@ class VNum private (val underlying: Complex[Real]):
   def %(rhs: VNum): VNum =
     // implement floating point floored modulus
     val q = this / rhs
-    val r = this - spire.math.floor(q.real) * rhs
-    r
+    this - spire.math.floor(q.real) * rhs
 
   def vabs: VNum = underlying.abs
 
