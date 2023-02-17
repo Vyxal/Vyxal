@@ -60,7 +60,7 @@ object Interpreter:
           else
             conditions = conditions.tail
             branches = branches.tail
-        if !truthy && elseBody.nonEmpty then execute(elseBody.head)
+        if !truthy && elseBody.nonEmpty then execute(elseBody.get)
       case AST.While(None, body) =>
         val loopCtx = ctx.makeChild()
         loopCtx.ctxVarPrimary = true
