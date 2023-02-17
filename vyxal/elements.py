@@ -4550,7 +4550,7 @@ def optimal_number_compress(lhs, ctx):
         (lambda x: x - 2, "⇩"),
     ]
     # Brute force functions applied to constants
-    for (fun, name) in funs:
+    for fun, name in funs:
         for key in num_dict:
             # safeguard to avoid calculating huge numbers
             if (name not in "E↵" or key < 100) and fun(key) == lhs:
@@ -4558,8 +4558,8 @@ def optimal_number_compress(lhs, ctx):
     if lhs <= 356:
         return "⁺" + codepage[lhs - 101]
     # Brute force functions applied to constants twice
-    for (fun, name) in funs:
-        for (fun2, name2) in funs:
+    for fun, name in funs:
+        for fun2, name2 in funs:
             for key in num_dict:
                 # safeguard to avoid calculating huge numbers
                 if (
@@ -5105,7 +5105,6 @@ def regex_sub(lhs, rhs, other, ctx):
         out = ""
         switch = 1
         for item in parts:
-
             if switch % 2:
                 out += item
             else:
@@ -6906,7 +6905,6 @@ def vy_floor(lhs, ctx):
 
 
 def vy_gcd(lhs, rhs=None, ctx=None):
-
     ts = vy_type(lhs, rhs)
 
     if rhs is None:

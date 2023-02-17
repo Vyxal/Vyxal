@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vyxal"
-version = "2.19.0"
+version = "2.19.1"
 description = "A golfing language that has aspects of traditional programming languages."
 authors = []
 license = "MIT"
@@ -19,7 +19,7 @@ numpy = "^1.24.1"
 
 [tool.poetry.dev-dependencies]
 black = "^21.12b0"
-pytest = "^6.2.5"
+pytest = "^7.2.0"
 isort = "^5.10.1"
 
 [build-system]
