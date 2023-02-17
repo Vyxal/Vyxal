@@ -647,6 +647,25 @@ object Elements:
       ctx.push(VList(args*))
     }
 
+    val zeroSliceUntil: Dyad = addElem(
+      Dyad,
+      "Θ",
+      "Zero Slice Until",
+      List(
+        "0>b",
+        "zero-slice",
+        "zero-slice-until",
+        "take",
+        "slice-to",
+        "lst-truncate",
+        "first-n-items",
+        "first"
+      ),
+      "a: lst, b: num -> [a[0], a[1], ..., a[b-1]]"
+    ) { case (a, b: VNum) =>
+      ListHelpers.makeIterable(a, Some(true)).take(b.toInt)
+    }
+
     // Constants
     addNilad("₀", "Ten", List("ten"), "10") { 10 }
     addNilad("₁", "Sixteen", List("sixteen"), "16") { 26 }
