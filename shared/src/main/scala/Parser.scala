@@ -459,7 +459,7 @@ object Parser:
             (top: @unchecked) match
               case VyxalToken.StructureOpen(StructureType.Ternary) => depth += 1
               case VyxalToken.StructureAllClose                    => depth -= 1
-              case _                                               => None
+              case _                                               =>
             contents.++=(top.value)
           processed += VyxalToken.UnpackVar(contents.toString())
         case _ => processed += temp
