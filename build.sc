@@ -9,7 +9,7 @@ import mill.scalanativelib.api._
 trait VyxalModule extends ScalaModule {
   def platform: String
 
-  def scalaVersion = "3.2.1"
+  def scalaVersion = "3.2.2"
 
   def ivyDeps = Agg(
     ivy"org.typelevel::spire::0.18.0",
