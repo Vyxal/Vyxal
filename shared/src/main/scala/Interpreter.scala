@@ -123,7 +123,7 @@ object Interpreter:
       case AST.DecisionStructure(predicate, container) =>
         val iterable = container match
           case Some(ast) =>
-            executeFn(VFun.fromLambda(AST.Lambda(1, List.empty, List(ast))))
+            executeFn(VFun.fromLambda(AST.Lambda(0, List.empty, List(ast))))
           case None => ctx.pop()
 
         val list = ListHelpers.makeIterable(iterable, Some(true))(using ctx)
@@ -138,8 +138,9 @@ object Interpreter:
       case AST.GeneratorStructure(relation, initial) =>
         val initVals = initial match
           case Some(ast) =>
-            executeFn(VFun.fromLambda(AST.Lambda(1, List.empty, List(ast))))
-          case None => ctx.pop()
+            executeFn(VFun.fromLambda(AST.Lambda(0, List.empty, List(ast))))
+          case None =>
+            ctx.pop()
 
         val list = ListHelpers.makeIterable(initVals)(using ctx)
         val relationFn =
