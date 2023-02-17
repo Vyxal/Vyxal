@@ -19,7 +19,7 @@ object JSVyxal:
     val globals = Globals(
       settings = settings,
       printFn = printFunc,
-      inputs = Inputs(inputs.split("\n").map(Parser.parseInput).toIndexedSeq)
+      inputs = Inputs(inputs.split("\n").map(Parser.parseInput).toSeq)
     )
 
     val ctx = Context(
