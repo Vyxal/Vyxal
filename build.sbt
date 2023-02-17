@@ -36,7 +36,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       // For command line parsing
       "com.github.scopt" %%% "scopt" % "4.1.0",
       // Used by ScalaTest
-      "org.scalactic" %%% "scalactic" % "3.2.14",
+      "org.scalactic" %%% "scalactic" % "3.2.15",
       "org.scalatest" %%% "scalatest" % "3.2.14" % Test
     ),
     scalacOptions ++= Seq(
