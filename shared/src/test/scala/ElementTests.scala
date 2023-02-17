@@ -107,7 +107,8 @@ class ElementTests extends VyxalTests:
         List[VAny](VNum("5.1"), VNum("-45.4")) -> VNum("-40.3"),
         List[VAny]("foo", "bar") -> "foobar",
         List[VAny]("foo", 3) -> "foo3",
-        List[VAny](3, "foo") -> "3foo"
+        List[VAny](3, "foo") -> "3foo",
+        List[VAny](VNum("0.1"), VNum("0.2")) -> VNum("0.3"),
       )
     }
 

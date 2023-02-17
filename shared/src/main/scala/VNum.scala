@@ -30,7 +30,9 @@ class VNum private (val underlying: Complex[Real]):
   def vabs: VNum = underlying.abs
 
   override def toString =
-    if this.imag == 0 then this.real.toString
+    if this.imag == 0 then
+      if this.underlying.isWhole then underlying.real.toString
+      else underlying.real.toFloat.toString
     else this.underlying.toString
 
   override def equals(obj: Any) = obj match
