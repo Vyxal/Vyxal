@@ -141,7 +141,7 @@ object Interpreter:
             executeFn(VFun.fromLambda(AST.Lambda(1, List.empty, List(ast))))
           case None => ctx.pop()
 
-        val list = ListHelpers.makeIterable(initVals, Some(true))(using ctx)
+        val list = ListHelpers.makeIterable(initVals)(using ctx)
         val relationFn =
           VFun.fromLambda(AST.Lambda(2, List.empty, List(relation)))
 
@@ -156,7 +156,6 @@ object Interpreter:
           case _ => list.init.last
 
         val temp = generator(relationFn, firstN, firstM)
-
         val res = temp.prependedAll(list)
 
         ctx.push(
@@ -172,21 +171,18 @@ object Interpreter:
   def generator(relation: VFun, ctxVarPrimary: VAny, ctxVarSecondary: VAny)(
       using ctx: Context
   ): LazyList[VAny] =
-    executeFn(
+    val next = executeFn(
       relation,
       Some(ctxVarPrimary),
       Some(ctxVarSecondary),
       Seq(ctxVarSecondary, ctxVarPrimary)
-    ) #:: generator(
-      relation,
-      ctxVarPrimary,
-      executeFn(
-        relation,
-        Some(ctxVarPrimary),
-        Some(ctxVarSecondary),
-        Seq(ctxVarSecondary, ctxVarPrimary)
-      )
     )
+    next #:: generator(
+      relation,
+      next,
+      ctxVarPrimary
+    )
+  end generator
 
   /** Execute a function and return what was on the top of the stack, if there
     * was anything
