@@ -9,7 +9,7 @@ import mill.scalanativelib.api._
 trait VyxalModule extends ScalaModule {
   def platform: String
 
-  def scalaVersion = "3.2.1"
+  def scalaVersion = "3.2.2"
 
   def ivyDeps = Agg(
     ivy"org.typelevel::spire::0.18.0",
@@ -70,7 +70,9 @@ object native extends ScalaNativeModule with VyxalModule {
   def platform = "native"
   def scalaNativeVersion = "0.4.9"
 
-  def ivyDeps = T { super.ivyDeps() ++ Seq(ivy"com.github.scopt::scopt::4.1.0") }
+  def ivyDeps = T {
+    super.ivyDeps() ++ Seq(ivy"com.github.scopt::scopt::4.1.0")
+  }
 
   def releaseMode = ReleaseMode.ReleaseFast
   def nativeLTO = LTO.Thin
