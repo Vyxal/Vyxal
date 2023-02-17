@@ -28,7 +28,7 @@ object ListHelpers:
   end filter
 
   def index(iterable: VList, ind: VAny)(using ctx: Context): VAny =
-    index match
+    ind match
       case ind: VNum =>
         val pos = spire.math.Number(ind.real.toString).toBigInt
         iterable.applyBig(pos)

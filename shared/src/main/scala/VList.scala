@@ -1,8 +1,11 @@
 package vyxal
 
+import vyxal.VNum.given
+
 import collection.immutable.SeqOps
 import collection.mutable
 import scala.collection.SpecificIterableFactory
+import spire.algebra.*
 
 /** A Vyxal list. It simply wraps around another list and could represent a
   * completely evaluated list, a finite lazy list that is in the process of
@@ -54,11 +57,14 @@ class VList private (val lst: Seq[VAny])
       catch case _: IndexOutOfBoundsException => lst(ind % lst.length)
 
   def applyBig(ind: BigInt): VAny =
+    if ind < 2147483647 && ind > -2147483647 then return apply(ind.toInt)
     val pos = VNum(ind.toString) % VNum(lst.length.toString)
-    val i = VNum("0")
-    lst.find(_ => i == pos) match
-      case Some(x) => x
-      case None    => throw new IndexOutOfBoundsException
+    var i = VNum("2147483647")
+    var temp = lst
+    while MiscHelpers.compare(i, pos) < 0 do
+      temp = temp.tail
+      i += VNum(1)
+    temp.head
 
   override def iterator: Iterator[VAny] = lst.iterator
 

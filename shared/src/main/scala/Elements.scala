@@ -422,10 +422,12 @@ object Elements:
       "a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value."
     ) {
       case (a: VNum, b: VList) => ListHelpers.index(b, a)
-      case (a, b: VNum)  => ListHelpers.index(ListHelpers.makeIterable(a), b)
-      case (a, b: VList) => ListHelpers.index(ListHelpers.makeIterable(a), b)
-      case (a, b: VFun)  => MiscHelpers.collectUnique(b, a)
-      case (a: VFun, b)  => MiscHelpers.collectUnique(a, b)
+      case (a, b: VNum) => ListHelpers.index(ListHelpers.makeIterable(a), b)
+      case (a: VList, b: VList) =>
+        ListHelpers.index(a, b)
+      case (a: String, b: VList) => ListHelpers.index(b, a)
+      case (a, b: VFun)          => MiscHelpers.collectUnique(b, a)
+      case (a: VFun, b)          => MiscHelpers.collectUnique(a, b)
     }
 
     val lessThan: Dyad = addVect(
