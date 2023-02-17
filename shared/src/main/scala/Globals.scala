@@ -29,7 +29,7 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
   private var origArr = origInputs.toArray.reverse
 
   /** Uses an array for constant access, not for mutating items */
-  var currInputs = origArr
+  private var currInputs = origArr
 
   /** Keeps track of the next input's index */
   private var ind = 0
