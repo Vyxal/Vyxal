@@ -3,7 +3,7 @@
 
 val vyxalVersion = "3.0.0"
 
-ThisBuild / scalaVersion := "3.2.1"
+ThisBuild / scalaVersion := "3.2.2"
 
 //Automatically reload SBT when build.sbt changes
 Global / onChangedBuildSource := ReloadOnSourceChanges
@@ -32,12 +32,12 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     libraryDependencies ++= Seq(
       // For number stuff
       "org.typelevel" %%% "spire" % "0.18.0",
-      "org.scala-lang.modules" %%% "scala-parser-combinators" % "2.1.1",
+      "org.scala-lang.modules" %%% "scala-parser-combinators" % "2.2.0",
       // For command line parsing
       "com.github.scopt" %%% "scopt" % "4.1.0",
       // Used by ScalaTest
-      "org.scalactic" %%% "scalactic" % "3.2.14",
-      "org.scalatest" %%% "scalatest" % "3.2.14" % Test
+      "org.scalactic" %%% "scalactic" % "3.2.15",
+      "org.scalatest" %%% "scalatest" % "3.2.15" % Test
     ),
     scalacOptions ++= Seq(
       "-deprecation", // Emit warning and location for usages of deprecated APIs.
@@ -73,7 +73,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .jsSettings(
     // JS-specific settings
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "2.2.0",
+      "org.scala-js" %%% "scalajs-dom" % "2.4.0",
       "com.github.scopt" %%% "scopt" % "4.1.0"
     ),
     // Where the compiled JS is output
