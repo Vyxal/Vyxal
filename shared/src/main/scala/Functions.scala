@@ -69,10 +69,9 @@ end Monad
 object Dyad extends ImplHelpers[PartialDyad, Dyad](2):
   override def toDirectFn(impl: Dyad): DirectFn =
     () =>
-      ctx ?=> {
+      ctx ?=>
         val arg2, arg1 = ctx.pop()
         ctx.push(impl(arg1, arg2))
-      }
 
   override def fill(name: String, fn: PartialDyad): Dyad = (a, b) =>
     val args = (a, b)
@@ -93,10 +92,9 @@ end Dyad
 object Triad extends ImplHelpers[PartialTriad, Triad](3):
   override def toDirectFn(impl: Triad): DirectFn =
     () =>
-      ctx ?=> {
+      ctx ?=>
         val arg3, arg2, arg1 = ctx.pop()
         ctx.push(impl(arg1, arg2, arg3))
-      }
 
   override def fill(name: String, fn: PartialTriad): Triad = (a, b, c) =>
     val args = (a, b, c)
@@ -129,10 +127,9 @@ end Triad
 object Tetrad extends ImplHelpers[PartialTetrad, Tetrad](4):
   override def toDirectFn(impl: Tetrad): DirectFn =
     () =>
-      ctx ?=> {
+      ctx ?=>
         val arg4, arg3, arg2, arg1 = ctx.pop()
         ctx.push(impl(arg1, arg2, arg3, arg4))
-      }
 
   override def fill(name: String, fn: PartialTetrad): Tetrad = (a, b, c, d) =>
     val args = (a, b, c, d)
