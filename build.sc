@@ -59,7 +59,7 @@ object jvm extends VyxalModule {
 /** Shared and JS-specific code */
 object js extends ScalaJSModule with VyxalModule {
   def platform = "js"
-  def scalaJSVersion = "1.12.0"
+  def scalaJSVersion = "1.13.0"
   def moduleKind = T { ModuleKind.NoModule }
 
   object test extends VyxalTestModule
