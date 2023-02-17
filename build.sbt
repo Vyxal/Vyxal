@@ -32,7 +32,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     libraryDependencies ++= Seq(
       // For number stuff
       "org.typelevel" %%% "spire" % "0.18.0",
-      "org.scala-lang.modules" %%% "scala-parser-combinators" % "2.1.1",
+      "org.scala-lang.modules" %%% "scala-parser-combinators" % "2.2.0",
       // For command line parsing
       "com.github.scopt" %%% "scopt" % "4.1.0",
       // Used by ScalaTest

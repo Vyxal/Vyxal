@@ -13,7 +13,7 @@ trait VyxalModule extends ScalaModule {
 
   def ivyDeps = Agg(
     ivy"org.typelevel::spire::0.18.0",
-    ivy"org.scala-lang.modules::scala-parser-combinators::2.1.1",
+    ivy"org.scala-lang.modules::scala-parser-combinators::2.2.0",
     ivy"com.github.scopt::scopt::4.1.0",
     ivy"org.scalactic::scalactic::3.2.14"
   )
