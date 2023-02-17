@@ -182,8 +182,10 @@ object Interpreter:
 
         val temp = gen(firstM, firstN)
 
+        val res = temp.prependedAll(list)
+
         ctx.push(
-          VList.fromSpecific(LazyList.empty.appendedAll(list) #::: temp)
+          VList.fromIterable(res)
         )
 
       case _ => throw NotImplementedError(s"$ast not implemented")

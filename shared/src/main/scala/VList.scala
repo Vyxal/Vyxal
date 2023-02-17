@@ -71,6 +71,9 @@ class VList private (val lst: Seq[VAny])
     VList.newBuilder
 
   override def empty: VList = VList.empty
+
+  protected def fromIterable(it: Seq[VAny]): VList =
+    VList.fromIterable(it)
 end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:
@@ -126,4 +129,6 @@ object VList extends SpecificIterableFactory[VAny, VList]:
   override def fromSpecific(it: IterableOnce[VAny]): VList = new VList(
     it.iterator.toSeq
   )
+
+  def fromIterable(it: Seq[VAny]): VList = new VList(it)
 end VList
