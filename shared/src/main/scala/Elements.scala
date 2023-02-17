@@ -647,7 +647,7 @@ object Elements:
       ctx.push(VList(args*))
     }
 
-    val zeroSliceUntil: Dyad = addElem(
+    val zeroSliceUntil = addElem(
       Dyad,
       "Θ",
       "Zero Slice Until",
