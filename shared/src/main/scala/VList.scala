@@ -57,7 +57,7 @@ class VList private (val lst: Seq[VAny])
       catch case _: IndexOutOfBoundsException => lst(ind % lst.length)
 
   def applyBig(ind: BigInt): VAny =
-    if ind < 2147483647 && ind > -2147483647 then return apply(ind.toInt)
+    if ind <= Int.MaxValue && ind >= Int.MinValue then return apply(ind.toInt)
     val pos = VNum(ind.toString) % VNum(lst.length.toString)
     var i = VNum("2147483647")
     var temp = lst
