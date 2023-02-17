@@ -166,6 +166,10 @@ Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun
 - a: fun, b: any -> sort iterable b by function a
 - a: any, b: fun -> sort iterable a by function b
 ---------------------
+Θ (Zero Slice Until) (non-vectorising)
+Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first
+- a: lst, b: num -> [a[0], a[1], ..., a[b-1]]
+---------------------
 ₀ (Ten) (non-vectorising)
 Keywords: ten
 - -> 10
