@@ -28,11 +28,15 @@ enum AST(val arity: Option[Int]):
 
   case DecisionStructure(predicate: AST, container: Option[AST])
       extends AST(Some(1))
-  case GeneratorStructure(relation: AST, inital: Option[AST])
-      extends AST(Some(1))
+  case GeneratorStructure(
+      relation: AST,
+      inital: Option[AST],
+      lookbackArity: Int
+  ) extends AST(Some(1))
 
   /** A function definition, basically sugar a lambda assigned to a variable */
   case FnDef(name: String, lam: Lambda) extends AST(Some(0))
+  case ContextIndex(index: Int) extends AST(Some(0))
   case GetVar(name: String) extends AST(None)
   case SetVar(name: String) extends AST(Some(1))
   case AuxAugmentVar(name: String) extends AST(None)

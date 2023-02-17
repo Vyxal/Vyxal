@@ -36,9 +36,12 @@ object CLI:
   def run(args: Array[String]): Unit =
     OParser.parse(parser, args, CLIConfig()) match
       case Some(config) =>
-        given Context = Context(
-          config.inputs.reverse.map(Parser.parseInput)
+        val inputList = config.inputs.reverse.map(Parser.parseInput)
+        given ctx: Context = Context(
+          inputList
         )
+
+        ctx._ctxArgs = Some(inputList)
 
         if config.printHelp then
           println(OParser.usage(parser))

@@ -30,6 +30,7 @@ enum VyxalToken(val value: String):
   case CompressedString(override val value: String) extends VyxalToken(value)
   case CompressedNumber(override val value: String) extends VyxalToken(value)
   case DictionaryString(override val value: String) extends VyxalToken(value)
+  case ContextIndex(override val value: String) extends VyxalToken(value)
   case Comment(override val value: String) extends VyxalToken(value)
   case GetVar(override val value: String) extends VyxalToken(value)
   case SetVar(override val value: String) extends VyxalToken(value)
@@ -55,7 +56,7 @@ enum StructureType(val open: String):
 val CODEPAGE = """ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ′″‴⁴ᵜ !"#$%&'()*+,-./0123456789:;
 <=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~¦ȦḂĊḊĖḞĠḢİĿṀṄ
 ȮṖṘṠṪẆẊικȧḃċḋėḟġḣŀṁṅȯṗṙṡṫẋƒΘΦ§ẠḄḌḤỊḶṂṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«»⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λƛΩ₳µ∆øÞ½ʀɾ¯
-×÷£¥←↑→↓±‡†Π¬∧∨⁰¹²³¤¨∥∦ı„”ð€“¶ᶿᶲ•≈¿ꜝ""".replaceAll("\n", "")
+×÷£¥←↑→↓±¤†Π¬∧∨⁰¹²³Ɠɠ∥∦ı„”ð€“¶ᶿᶲ•≈¿ꜝ""".replaceAll("\n", "")
 
 val MONADIC_MODIFIERS = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻ¿′/\\~v@`ꜝ"
 val DYADIC_MODIFIERS = "″∥∦"
@@ -91,6 +92,10 @@ object Lexer extends RegexParsers:
         case '”' => DictionaryString(text)
         case '“' => CompressedNumber(text)
         case _   => throw Exception("Invalid string")
+  }
+
+  def contextIndex: Parser[VyxalToken] = """(\d+| )¤""".r ^^ { value =>
+    ContextIndex(value.substring(0, value.length - 1).trim)
   }
 
   def singleCharString: Parser[VyxalToken] = """'.""".r ^^ { value =>
@@ -170,7 +175,7 @@ object Lexer extends RegexParsers:
 
   def tokens: Parser[List[VyxalToken]] = phrase(
     rep(
-      comment | multigraph | branch | number | string | augVariable | getVariable | setVariable
+      comment | multigraph | branch | contextIndex | number | string | augVariable | getVariable | setVariable
         | twoCharString | singleCharString
         | monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
         | specialModifier | structureOpen | structureClose | structureAllClose

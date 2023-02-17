@@ -100,6 +100,10 @@ object LiterateLexer extends RegexParsers:
     LitComment(value)
   }
 
+  def contextIndex: Parser[LiterateToken] = """`[0-9]+`""".r ^^ { value =>
+    AlreadyCode(value.tail.init + "¤")
+  }
+
   def lambdaBlock: Parser[LiterateToken] =
     "{" ~> rep(lambdaBlock | """(#}|[^{}])+""".r) <~ "}" ^^ { body =>
       LambdaBlock(body)
@@ -152,7 +156,7 @@ object LiterateLexer extends RegexParsers:
 
   def tokens: Parser[List[LiterateToken]] = phrase(
     rep(
-      number | string | singleCharString | comment | rawCode | list | lambdaBlock | normalGroup |
+      number | string | singleCharString | comment | rawCode | list | contextIndex | lambdaBlock | normalGroup |
         unpackVar | varGet | varSet | augVar | word | branch | newline | tilde | colon |
         comma
     )

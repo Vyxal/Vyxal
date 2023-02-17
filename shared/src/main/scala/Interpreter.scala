@@ -135,7 +135,7 @@ object Interpreter:
             .nonEmpty
         then ctx.push(VNum(1))
         else ctx.push(VNum(0))
-      case AST.GeneratorStructure(relation, initial) =>
+      case AST.GeneratorStructure(relation, initial, arity) =>
         val initVals = initial match
           case Some(ast) =>
             executeFn(VFun.fromLambda(AST.Lambda(0, List.empty, List(ast))))
@@ -144,7 +144,7 @@ object Interpreter:
 
         val list = ListHelpers.makeIterable(initVals)(using ctx)
         val relationFn =
-          VFun.fromLambda(AST.Lambda(2, List.empty, List(relation)))
+          VFun.fromLambda(AST.Lambda(arity, List.empty, List(relation)))
 
         val firstN = list.length match
           case 0 => ctx.settings.defaultValue
@@ -162,6 +162,8 @@ object Interpreter:
         ctx.push(
           VList.fromIterable(res)
         )
+      case AST.ContextIndex(index) =>
+        ctx.push(ctx._ctxArgs.getOrElse(Seq.empty)(index))
 
       case _ => throw NotImplementedError(s"$ast not implemented")
     end match
@@ -169,19 +171,25 @@ object Interpreter:
       println(s"res was ${ctx.peek}")
   end execute
 
-  def generator(relation: VFun, ctxVarPrimary: VAny, ctxVarSecondary: VAny)(
-      using ctx: Context
+  def generator(
+      relation: VFun,
+      ctxVarPrimary: VAny,
+      ctxVarSecondary: VAny,
+      previous: Seq[VAny] = Seq.empty
+  )(using
+      ctx: Context
   ): LazyList[VAny] =
     val next = executeFn(
       relation,
       Some(ctxVarPrimary),
       Some(ctxVarSecondary),
-      Seq(ctxVarSecondary, ctxVarPrimary)
+      previous :+ ctxVarSecondary :+ ctxVarPrimary
     )
     next #:: generator(
       relation,
       next,
-      ctxVarPrimary
+      ctxVarPrimary,
+      previous :+ next
     )
   end generator
 
@@ -199,7 +207,7 @@ object Interpreter:
       ctxVarPrimary: Option[VAny] = None,
       ctxVarSecondary: Option[VAny] = None,
       args: Seq[VAny] | Null = null,
-      popArgs: Boolean = true
+      popArgs: Boolean = true,
   )(using ctx: Context): VAny =
     val VFun(impl, arity, params, origCtx, origAST) = fn
     val useStack = arity == -1
@@ -262,6 +270,7 @@ object Interpreter:
         ctx,
         ctxVarPrimary.orElse(inputs.headOption),
         ctxVarSecondary.getOrElse(VList(inputs*)),
+        inputs,
         vars,
         inputs,
         useStack

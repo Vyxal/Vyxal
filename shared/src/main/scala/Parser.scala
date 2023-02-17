@@ -87,8 +87,10 @@ object Parser:
         case VyxalToken.TetradicModifier(v) =>
           asts.push(AST.JunkModifier(v, 4))
         case VyxalToken.SpecialModifier(v) => asts.push(AST.SpecialModifier(v))
-        case VyxalToken.GetVar(v)          => asts.push(AST.GetVar(v))
-        case VyxalToken.SetVar(v)          => asts.push(AST.SetVar(v))
+        case VyxalToken.ContextIndex(value) =>
+          asts.push(AST.ContextIndex(value.toInt))
+        case VyxalToken.GetVar(v)         => asts.push(AST.GetVar(v))
+        case VyxalToken.SetVar(v)         => asts.push(AST.SetVar(v))
         case VyxalToken.AugmentVar(value) => asts.push(AST.AuxAugmentVar(value))
         case VyxalToken.UnpackVar(value) =>
           val names = ListBuffer[(String, Int)]()
@@ -358,8 +360,21 @@ object Parser:
         case StructureType.GeneratorStructure =>
           branches match
             case List(relation, initial) =>
-              Right(AST.GeneratorStructure(relation, Some(initial)))
-            case List(relation) => Right(AST.GeneratorStructure(relation, None))
+              Right(
+                AST.GeneratorStructure(
+                  relation,
+                  Some(initial),
+                  relation.arity.getOrElse(2)
+                )
+              )
+            case List(relation) =>
+              Right(
+                AST.GeneratorStructure(
+                  relation,
+                  None,
+                  relation.arity.getOrElse(2)
+                )
+              )
             case _ => Left(VyxalCompilationError("Invalid generator structure"))
     }
   end parseStructure
