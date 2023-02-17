@@ -53,6 +53,13 @@ class VList private (val lst: Seq[VAny])
       try lst(ind)
       catch case _: IndexOutOfBoundsException => lst(ind % lst.length)
 
+  def applyBig(ind: BigInt): VAny =
+    val pos = VNum(ind.toString) % VNum(lst.length.toString)
+    val i = VNum("0")
+    lst.find(_ => i == pos) match
+      case Some(x) => x
+      case None    => throw new IndexOutOfBoundsException
+
   override def iterator: Iterator[VAny] = lst.iterator
 
   /** Get the length of this `VList`. A word of caution: this fully evaluates

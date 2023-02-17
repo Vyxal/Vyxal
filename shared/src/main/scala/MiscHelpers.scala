@@ -21,6 +21,16 @@ object MiscHelpers:
     case f: VFun   => true
     case l: VList  => l.nonEmpty
 
+  def collectUnique(function: VFun, initial: VAny)(using ctx: Context): VList =
+    val seen = ListBuffer[VAny]()
+    val result = ListBuffer[VAny]()
+    var current = initial
+    while !seen.contains(current) do
+      seen += current
+      result += current
+      current = executeFn(function, Some(current), None, Seq(current))
+    VList.fromIterable(result.toList)
+
   def compare(a: VVal, b: VVal): Int = (a, b) match
     case (a: VNum, b: VNum)     => a.real.compare(b.real)
     case (a: String, b: VNum)   => a.compareTo(b.toString)

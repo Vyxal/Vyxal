@@ -10,6 +10,7 @@ class VNum private (val underlying: Complex[Real]):
 
   def toInt = underlying.toInt
   def toLong = underlying.toLong
+  def toBigInt = underlying.real.toRational.toBigInt
 
   /** Round the real and imaginary parts */
   def toIntegral = underlying.round
@@ -24,7 +25,7 @@ class VNum private (val underlying: Complex[Real]):
   def %(rhs: VNum): VNum =
     // implement floating point floored modulus
     val q = this / rhs
-    val r = this - spire.math.floor(q.real.toDouble) * rhs
+    val r = this - spire.math.floor(q.real) * rhs
     r
 
   def vabs: VNum = underlying.abs

@@ -412,6 +412,22 @@ object Elements:
       "a: str, b: str -> a > b"
     ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) > 0 }
 
+    val index: Dyad = addElem(
+      Dyad,
+      "i",
+      "Index | Collect Unique Application Values",
+      List("index", "at", "item-at", "nth-item", "collect-unique"),
+      "a: lst, b: num -> a[b]",
+      "a: lst, b: lst -> a[_] for _ in b",
+      "a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value."
+    ) {
+      case (a: VNum, b: VList) => ListHelpers.index(b, a)
+      case (a, b: VNum)  => ListHelpers.index(ListHelpers.makeIterable(a), b)
+      case (a, b: VList) => ListHelpers.index(ListHelpers.makeIterable(a), b)
+      case (a, b: VFun)  => MiscHelpers.collectUnique(b, a)
+      case (a: VFun, b)  => MiscHelpers.collectUnique(a, b)
+    }
+
     val lessThan: Dyad = addVect(
       Dyad,
       "<",
