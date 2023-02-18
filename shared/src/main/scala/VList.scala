@@ -64,6 +64,7 @@ class VList private (val lst: Seq[VAny])
     var i = VNum("2147483647")
     var temp = lst
     while MiscHelpers.compare(i, pos) < 0 do
+      // Instead of use modulo, reset the list if out of bounds
       if temp.isEmpty then temp = lst
       temp = temp.tail
       i += VNum(1)
