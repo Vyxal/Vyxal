@@ -7,6 +7,7 @@ import org.scalatest.funspec.AnyFunSpec
 class LiterateTests extends VyxalTests:
   def testLiteral(input: String, expected: String) =
     assertResult(expected)(LiterateLexer.litLex(input))
+
   describe("Literals") {
     it("should leave numbers as-is") {
       group {

@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.impls.Elements
+
 import java.util.regex.Pattern
 import scala.util.matching.Regex
 import scala.util.parsing.combinator.*
@@ -30,6 +32,7 @@ enum VyxalToken(val value: String):
   case CompressedString(override val value: String) extends VyxalToken(value)
   case CompressedNumber(override val value: String) extends VyxalToken(value)
   case DictionaryString(override val value: String) extends VyxalToken(value)
+  case ContextIndex(override val value: String) extends VyxalToken(value)
   case Comment(override val value: String) extends VyxalToken(value)
   case GetVar(override val value: String) extends VyxalToken(value)
   case SetVar(override val value: String) extends VyxalToken(value)
@@ -40,7 +43,7 @@ enum VyxalToken(val value: String):
 end VyxalToken
 
 enum StructureType(val open: String):
-  case If extends StructureType("[")
+  case Ternary extends StructureType("[")
   case While extends StructureType("{")
   case For extends StructureType("(")
   case Lambda extends StructureType("λ")
@@ -48,11 +51,14 @@ enum StructureType(val open: String):
   case LambdaFilter extends StructureType("Ω")
   case LambdaReduce extends StructureType("₳")
   case LambdaSort extends StructureType("µ")
+  case IfStatement extends StructureType("#{")
+  case DecisionStructure extends StructureType("Ḍ")
+  case GeneratorStructure extends StructureType("Ṇ")
 
 val CODEPAGE = """ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ′″‴⁴ᵜ !"#$%&'()*+,-./0123456789:;
 <=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~¦ȦḂĊḊĖḞĠḢİĿṀṄ
 ȮṖṘṠṪẆẊικȧḃċḋėḟġḣŀṁṅȯṗṙṡṫẋƒΘΦ§ẠḄḌḤỊḶṂṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«»⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λƛΩ₳µ∆øÞ½ʀɾ¯
-×÷£¥←↑→↓±‡†Π¬∧∨⁰¹²³¤¨∥∦ı„”ð€“¶ᶿᶲ•≈¿ꜝ""".replaceAll("\n", "")
+×÷£¥←↑→↓±¤†Π¬∧∨⁰¹²³Ɠɠ∥∦ı„”ð€“¶ᶿᶲ•≈¿ꜝ""".replaceAll("\n", "")
 
 val MONADIC_MODIFIERS = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻ¿′/\\~v@`ꜝ"
 val DYADIC_MODIFIERS = "″∥∦"
@@ -82,12 +88,15 @@ object Lexer extends RegexParsers:
       // btw thanks to @pxeger and @mousetail for the regex
       val text = value.substring(1, value.length - 1).replaceAll("\\\\\"", "\"")
 
-      value.charAt(value.length - 1) match
+      (value.last: @unchecked) match
         case '"' => Str(text)
         case '„' => CompressedString(text)
         case '”' => DictionaryString(text)
         case '“' => CompressedNumber(text)
-        case _   => throw Exception("Invalid string")
+  }
+
+  def contextIndex: Parser[VyxalToken] = """\d*¤""".r ^^ { value =>
+    ContextIndex(value.substring(0, value.length - 1).trim)
   }
 
   def singleCharString: Parser[VyxalToken] = """'.""".r ^^ { value =>
@@ -98,8 +107,9 @@ object Lexer extends RegexParsers:
     Str(value.substring(1))
   }
 
-  def structureOpen: Parser[VyxalToken] = """[\[\(\{λƛΩ₳µ]|#@""".r ^^ { value =>
-    StructureOpen(StructureType.values.find(_.open == value).get)
+  def structureOpen: Parser[VyxalToken] = """[\[\(\{λƛΩ₳µḌṆ]|#@|#\{""".r ^^ {
+    value =>
+      StructureOpen(StructureType.values.find(_.open == value).get)
   }
 
   def structureClose: Parser[VyxalToken] = """[\}\)]""".r ^^ { value =>
@@ -113,8 +123,8 @@ object Lexer extends RegexParsers:
   def listClose: Parser[VyxalToken] = """(#\])|⟩""".r ^^^ ListClose
 
   def multigraph: Parser[VyxalToken] =
-    "([∆øÞk].)|(#:\\[)|(#[:.,]?[^\\[\\]$=#>@])".r ^^ { value =>
-      if value.length == 2 then Digraph(value)
+    "([∆øÞk].)|(#:\\[)|(#[:.,]?[^\\[\\]$=#>@{])".r ^^ { value =>
+      if value.length == 2 then processDigraph(value)
       else if value.charAt(1) == ':' then SyntaxTrigraph(value)
       else SugarTrigraph(value)
     }
@@ -166,7 +176,7 @@ object Lexer extends RegexParsers:
 
   def tokens: Parser[List[VyxalToken]] = phrase(
     rep(
-      comment | multigraph | branch | number | string | augVariable | getVariable | setVariable
+      comment | multigraph | branch | contextIndex | number | string | augVariable | getVariable | setVariable
         | twoCharString | singleCharString
         | monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
         | specialModifier | structureOpen | structureClose | structureAllClose
@@ -178,4 +188,17 @@ object Lexer extends RegexParsers:
     (parse(tokens, code): @unchecked) match
       case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
       case Success(result, next) => Right(result)
+
+  def processDigraph(digraph: String): VyxalToken =
+    if Elements.elements.contains(digraph) then Command(digraph)
+    else if Modifiers.modifiers.contains(digraph) then
+      val modifier = Modifiers.modifiers(digraph)
+      modifier.arity match
+        case 1     => MonadicModifier(digraph)
+        case 2     => DyadicModifier(digraph)
+        case 3     => TriadicModifier(digraph)
+        case 4     => TetradicModifier(digraph)
+        case -1    => SpecialModifier(digraph)
+        case arity => throw Exception(s"Invalid modifier arity: $arity")
+    else Digraph(digraph)
 end Lexer

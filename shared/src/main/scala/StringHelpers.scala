@@ -8,7 +8,7 @@ import VNum.given
 object StringHelpers:
 
   def chrord(c: VAny): VAny =
-    c match
+    (c: @unchecked) match
       case a: String =>
         if a.length == 1 then a.codePointAt(0)
         else VList(a.map(_.toInt: VNum)*)

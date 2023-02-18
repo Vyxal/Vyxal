@@ -143,6 +143,12 @@ Keywords: to-binary, dec->bin, decimal->bin
 - a: num -> convert a to binary
 - a: str -> bin(ord(x) for x in a)
 ---------------------
+i (Index | Collect Unique Application Values) (non-vectorising)
+Keywords: index, at, item-at, nth-item, collect-unique
+- a: lst, b: num -> a[b]
+- a: lst, b: lst -> a[_] for _ in b
+- a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value.
+---------------------
 m (Get Context Variable M) (non-vectorising)
 Keywords: get-context-m, context-m, c-var-m, ctx-m, ctx-secondary
 - ->  -> context variable m
@@ -165,6 +171,10 @@ Keywords: execute-lambda, evaluate-as-vyxal, power-base-10, call, @
 Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun
 - a: fun, b: any -> sort iterable b by function a
 - a: any, b: fun -> sort iterable a by function b
+---------------------
+Θ (Zero Slice Until) (non-vectorising)
+Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first
+- a: lst, b: num -> [a[0], a[1], ..., a[b-1]]
 ---------------------
 ₀ (Ten) (non-vectorising)
 Keywords: ten

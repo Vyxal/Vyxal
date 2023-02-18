@@ -45,9 +45,22 @@ object Interpreter:
         elems.foreach(Interpreter.execute(_))
       case AST.CompositeNilad(elems) =>
         elems.foreach(Interpreter.execute(_))
-      case AST.If(thenBody, elseBody) =>
+      case AST.Ternary(thenBody, elseBody) =>
         if MiscHelpers.boolify(ctx.pop()) then execute(thenBody)
         else if elseBody.nonEmpty then execute(elseBody.get)
+
+      case AST.IfStatement(conds, bodies, elseBody) =>
+        var conditions = conds
+        var branches = bodies
+        var truthy = false
+        while !truthy && conditions.nonEmpty do
+          execute(conditions.head)
+          truthy = MiscHelpers.boolify(ctx.pop())
+          if truthy then execute(branches.head)
+          else
+            conditions = conditions.tail
+            branches = branches.tail
+        if !truthy && elseBody.nonEmpty then execute(elseBody.get)
       case AST.While(None, body) =>
         val loopCtx = ctx.makeChild()
         loopCtx.ctxVarPrimary = true
@@ -103,15 +116,85 @@ object Interpreter:
         ctx.setVar(name, ctx.pop())
       case AST.UnpackVar(names) =>
         MiscHelpers.unpack(names)
-      case AST.ExecuteFn =>
-        ctx.pop() match
-          case fn: VFun => ctx.push(executeFn(fn))
-          case _        => ???
+      case AST.DecisionStructure(predicate, container) =>
+        val iterable = container match
+          case Some(ast) =>
+            executeFn(VFun.fromLambda(AST.Lambda(0, List.empty, List(ast))))
+          case None => ctx.pop()
+
+        val list = ListHelpers.makeIterable(iterable, Some(true))
+        if ListHelpers
+            .filter(
+              list,
+              VFun.fromLambda(AST.Lambda(1, List.empty, List(predicate)))
+            )
+            .nonEmpty
+        then ctx.push(VNum(1))
+        else ctx.push(VNum(0))
+      case AST.GeneratorStructure(relation, initial, arity) =>
+        val initVals = initial match
+          case Some(ast) =>
+            executeFn(VFun.fromLambda(AST.Lambda(0, List.empty, List(ast))))
+          case None =>
+            ctx.pop()
+
+        val list = ListHelpers.makeIterable(initVals)
+        val relationFn =
+          VFun.fromLambda(AST.Lambda(arity, List.empty, List(relation)))
+
+        val firstN = list.length match
+          case 0 => ctx.settings.defaultValue
+          case 1 => list.head
+          case _ => list.last
+
+        val firstM = list.length match
+          case 0 => ctx.settings.defaultValue
+          case 1 => list.head
+          case _ => list.init.last
+
+        val temp =
+          generator(
+            relationFn,
+            firstN,
+            firstM,
+            arity,
+            list,
+          )
+
+        ctx.push(VList.from(list ++: temp))
+      case AST.ContextIndex(index) =>
+        val args = ctx.ctxArgs.getOrElse(Seq.empty).reverse
+        if index == -1 then ctx.push(VList.from(args.reverse))
+        else if args.length < index then ctx.push(ctx.settings.defaultValue)
+        else ctx.push(args(index))
       case _ => throw NotImplementedError(s"$ast not implemented")
     end match
     if ctx.settings.logLevel == LogLevel.Debug then
       println(s"res was ${ctx.peek}")
   end execute
+
+  def generator(
+      relation: VFun,
+      ctxVarPrimary: VAny,
+      ctxVarSecondary: VAny,
+      arity: Int,
+      previous: Seq[VAny] = Seq.empty
+  )(using ctx: Context): LazyList[VAny] =
+    val next = executeFn(
+      relation,
+      Some(ctxVarPrimary),
+      Some(ctxVarSecondary),
+      previous.takeRight(arity),
+      overrideCtxArgs = previous :+ ctxVarSecondary :+ ctxVarPrimary
+    )
+    next #:: generator(
+      relation,
+      next,
+      ctxVarPrimary,
+      arity,
+      previous :+ next
+    )
+  end generator
 
   /** Execute a function and return what was on the top of the stack, if there
     * was anything
@@ -127,7 +210,8 @@ object Interpreter:
       ctxVarPrimary: Option[VAny] = None,
       ctxVarSecondary: Option[VAny] = None,
       args: Seq[VAny] | Null = null,
-      popArgs: Boolean = true
+      popArgs: Boolean = true,
+      overrideCtxArgs: Seq[VAny] = Seq.empty
   )(using ctx: Context): VAny =
     val VFun(impl, arity, params, origCtx, origAST) = fn
     val useStack = arity == -1
@@ -190,6 +274,7 @@ object Interpreter:
         ctx,
         ctxVarPrimary.orElse(inputs.headOption),
         ctxVarSecondary.getOrElse(VList(inputs*)),
+        if overrideCtxArgs.isEmpty then inputs else overrideCtxArgs,
         vars,
         inputs,
         useStack

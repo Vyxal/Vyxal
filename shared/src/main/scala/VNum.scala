@@ -10,6 +10,7 @@ class VNum private (val underlying: Complex[Real]):
 
   def toInt = underlying.toInt
   def toLong = underlying.toLong
+  def toBigInt = underlying.real.toRational.toBigInt
 
   /** Round the real and imaginary parts */
   def toIntegral = underlying.round
@@ -24,15 +25,14 @@ class VNum private (val underlying: Complex[Real]):
   def %(rhs: VNum): VNum =
     // implement floating point floored modulus
     val q = this / rhs
-    val r = this - spire.math.floor(q.real.toDouble) * rhs
-    r
+    this - spire.math.floor(q.real) * rhs
 
   def vabs: VNum = underlying.abs
 
   override def toString =
     if this.imag == 0 then
-      if this.real.isWhole then this.real.toInt.toString
-      else this.real.toDouble.toString
+      if this.underlying.isWhole then underlying.real.toString
+      else underlying.real.toFloat.toString
     else this.underlying.toString
 
   override def equals(obj: Any) = obj match

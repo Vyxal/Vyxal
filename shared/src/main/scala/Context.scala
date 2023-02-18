@@ -30,6 +30,7 @@ class Context private (
     private var stack: mut.ArrayBuffer[VAny],
     private var _ctxVarPrimary: Option[VAny] = None,
     private var _ctxVarSecondary: Option[VAny] = None,
+    val ctxArgs: Option[Seq[VAny]] = None,
     private val vars: mut.Map[String, VAny] = mut.Map(),
     private var inputs: Inputs = Inputs(),
     private val parent: Option[Context] = None,
@@ -89,6 +90,13 @@ class Context private (
     else stack ++= items
 
   def length: Int = stack.length
+
+  def wrap: Unit =
+    if useStack then getTopCxt().wrap
+    else
+      val temp = stack.toList
+      stack.clear()
+      stack += VList.from(temp)
 
   /** Whether the stack is empty */
   def isStackEmpty: Boolean = stack.isEmpty
@@ -155,6 +163,7 @@ class Context private (
     stack,
     _ctxVarPrimary,
     _ctxVarSecondary,
+    ctxArgs,
     vars,
     inputs,
     Some(this),
@@ -172,13 +181,15 @@ object Context:
   def apply(
       inputs: Seq[VAny] = Seq.empty,
       globals: Globals = Globals(),
-      testMode: Boolean = false
+      testMode: Boolean = false,
+      ctxArgs: Option[Seq[VAny]] = None
   ): Context =
     new Context(
       stack = mut.ArrayBuffer(),
       inputs = Inputs(inputs),
       globals = globals,
-      testMode = testMode
+      testMode = testMode,
+      ctxArgs = ctxArgs
     )
 
   /** Find a parent that has a variable with the given name */
@@ -210,14 +221,18 @@ object Context:
       currCtx: Context,
       ctxVarPrimary: Option[VAny],
       ctxVarSecondary: VAny,
+      ctxArgs: Seq[VAny],
       variables: mut.Map[String, VAny],
       inputs: Seq[VAny],
       useStack: Boolean
   ) =
+    val stack =
+      if useStack then currCtx.stack else mut.ArrayBuffer.from(inputs)
     new Context(
-      if useStack then currCtx.stack else mut.ArrayBuffer.empty,
+      stack,
       ctxVarPrimary.orElse(currCtx._ctxVarPrimary),
       Some(ctxVarSecondary),
+      Some(ctxArgs),
       variables,
       Inputs(inputs),
       Some(origCtx),
@@ -225,5 +240,6 @@ object Context:
       currCtx.testMode,
       useStack
     )
+  end makeFnCtx
 
 end Context

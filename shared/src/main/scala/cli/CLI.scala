@@ -30,14 +30,18 @@ object CLI:
       litInfoFor: Option[String] = None,
       printHelp: Boolean = false,
       runLiterate: Boolean = false,
-      settings: Settings = Settings()
+      runLexer: Boolean = false,
+      runParser: Boolean = false,
+      settings: Settings = Settings(),
   )
 
   def run(args: Array[String]): Unit =
     OParser.parse(parser, args, CLIConfig()) match
       case Some(config) =>
-        given Context = Context(
-          config.inputs.reverse.map(Parser.parseInput)
+        val inputList = config.inputs.reverse.map(Parser.parseInput)
+        given ctx: Context = Context(
+          inputs = inputList,
+          ctxArgs = Some(inputList)
         )
 
         if config.printHelp then
@@ -53,6 +57,18 @@ object CLI:
             LiterateLexer.literateModeMappings.get(config.litInfoFor.get)
           println(keywords.mkString(", "))
           return
+
+        if config.runLexer then
+          while true do
+            val line = io.StdIn.readLine(">")
+            if line == "" then return
+            println(Lexer(line))
+
+        if config.runParser then
+          while true do
+            val line = io.StdIn.readLine(">")
+            if line == "" then return
+            println(Parser.parse(line))
 
         config.filename.foreach { filename =>
           val source = io.Source.fromFile(filename)
@@ -152,6 +168,14 @@ object CLI:
       opt[Unit]('l', "literate")
         .action((_, cfg) => cfg.copy(runLiterate = true))
         .text("Enable literate mode")
+        .optional(),
+      opt[Unit]('L', "lexer")
+        .action((_, cfg) => cfg.copy(runLexer = true))
+        .text("Run the lexer on input")
+        .optional(),
+      opt[Unit]('P', "parser")
+        .action((_, cfg) => cfg.copy(runParser = true))
+        .text("Run the parser on input")
         .optional(),
       arg[String]("<input>...")
         .unbounded()

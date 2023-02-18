@@ -394,6 +394,7 @@ object Elements:
       " -> input"
     ) { ctx ?=>
       if ctx.globals.inputs.nonEmpty then ctx.globals.inputs.next()
+      else if ctx.settings.online then ctx.settings.defaultValue
       else
         val temp = StdIn.readLine()
         if temp.nonEmpty then Parser.parseInput(temp)
@@ -410,6 +411,22 @@ object Elements:
       "a: num, b: str -> str(a) > b",
       "a: str, b: str -> a > b"
     ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) > 0 }
+
+    val index: Dyad = addElem(
+      Dyad,
+      "i",
+      "Index | Collect Unique Application Values",
+      List("index", "at", "item-at", "nth-item", "collect-unique"),
+      "a: lst, b: num -> a[b]",
+      "a: lst, b: lst -> a[_] for _ in b",
+      "a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value."
+    ) {
+      case (a: VList, b: VList)           => a.index(b)
+      case (a: (VNum | String), b: VList) => b.index(a)
+      case (a, b: VNum) => ListHelpers.makeIterable(a).index(b)
+      case (a, b: VFun) => MiscHelpers.collectUnique(b, a)
+      case (a: VFun, b) => MiscHelpers.collectUnique(a, b)
+    }
 
     val lessThan: Dyad = addVect(
       Dyad,
@@ -642,8 +659,26 @@ object Elements:
       None,
       "a, b, c, ..., -> [a, b, c, ...]"
     ) { ctx ?=>
-      val args = ctx.pop(ctx.length)
-      ctx.push(VList(args*))
+      ctx.wrap
+    }
+
+    val zeroSliceUntil = addElem(
+      Dyad,
+      "Θ",
+      "Zero Slice Until",
+      List(
+        "0>b",
+        "zero-slice",
+        "zero-slice-until",
+        "take",
+        "slice-to",
+        "lst-truncate",
+        "first-n-items",
+        "first"
+      ),
+      "a: lst, b: num -> [a[0], a[1], ..., a[b-1]]"
+    ) { case (a, b: VNum) =>
+      ListHelpers.makeIterable(a, Some(true)).take(b.toInt)
     }
 
     // Constants
