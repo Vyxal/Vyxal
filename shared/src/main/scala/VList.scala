@@ -10,7 +10,7 @@ import spire.algebra.*
 /** A Vyxal list. It simply wraps around another list and could represent a
   * completely evaluated list, a finite lazy list that is in the process of
   * being evaluated, or an infinite list.
-  * 
+  *
   * To construct a VList, use VList.apply or VList.from
   * @param lst
   *   The wrapped list actually holdings this VList's elements.
