@@ -58,7 +58,13 @@ class VList private (val lst: Seq[VAny])
       try lst(ind)
       catch case _: IndexOutOfBoundsException => lst(ind % lst.length)
 
-  def applyBig(ind: BigInt): VAny =
+  def index(ind: VAny)(using ctx: Context): VAny =
+    ind match
+      case ind: VNum => this.indexBig(ind.real.toBigInt)
+      case inds: VList => inds.vmap(this.index)
+      case _           => throw new Exception("Index must be a number")
+
+  private def indexBig(ind: BigInt): VAny =
     if ind <= Int.MaxValue && ind >= Int.MinValue then return apply(ind.toInt)
     val pos =
       if ind < 0 then VNum(ind.toString) % VNum(lst.length.toString)

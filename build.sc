@@ -42,6 +42,10 @@ trait VyxalModule extends ScalaModule {
 
     def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.2.15")
 
+    // Task to only show output from failed tests
+    def testQuiet(args: String*) =
+      T.command { testOnly(args :+ "-oNCXELOPQRM": _*)() }
+
     def sources = T.sources(
       build.millSourcePath / platform / "src" / "test" / "scala",
       build.millSourcePath / "shared" / "src" / "test" / "scala"

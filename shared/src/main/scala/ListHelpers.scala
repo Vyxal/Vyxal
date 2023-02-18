@@ -27,17 +27,6 @@ object ListHelpers:
 
   end filter
 
-  def index(iterable: VList, ind: VAny)(using ctx: Context): VAny =
-    ind match
-      case ind: VNum =>
-        val pos = spire.math.Number(ind.real.toString).toBigInt
-        iterable.applyBig(pos)
-      case inds: VList => index(iterable, inds)
-      case _           => throw new Exception("Index must be a number")
-
-  def index(iterable: VList, indices: VList)(using ctx: Context): VList =
-    VList(indices.map(v => index(iterable, v))*)
-
   /** Make an iterable from a value
     *
     * @param value
