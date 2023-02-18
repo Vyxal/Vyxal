@@ -44,10 +44,10 @@ object JSVyxal:
             symbol,
             name,
             keywords,
-            arity,
+            _,
             vectorises,
             overloads,
-            impl
+            _
           ) =>
         js.Dynamic.literal(
           "symbol" -> symbol,
