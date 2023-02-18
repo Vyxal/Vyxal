@@ -167,11 +167,11 @@ object Interpreter:
         val res = temp.prependedAll(list)
 
         ctx.push(
-          VList.fromIterable(res)
+          VList.from(res)
         )
       case AST.ContextIndex(index) =>
         val args = ctx._ctxArgs.getOrElse(Seq.empty).reverse
-        if index == -1 then ctx.push(VList.fromIterable(args.reverse))
+        if index == -1 then ctx.push(VList.from(args.reverse))
         else if args.length < index then ctx.push(ctx.settings.defaultValue)
         else ctx.push(args(index))
       case _ => throw NotImplementedError(s"$ast not implemented")

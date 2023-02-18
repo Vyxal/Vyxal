@@ -29,7 +29,7 @@ object MiscHelpers:
       seen += current
       result += current
       current = executeFn(function, Some(current), None, Seq(current))
-    VList.fromIterable(result.toList)
+    VList.from(result.toList)
 
   def compare(a: VVal, b: VVal): Int = (a, b) match
     case (a: VNum, b: VNum)     => a.real.compare(b.real)

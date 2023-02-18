@@ -10,6 +10,8 @@ import spire.algebra.*
 /** A Vyxal list. It simply wraps around another list and could represent a
   * completely evaluated list, a finite lazy list that is in the process of
   * being evaluated, or an infinite list.
+  * 
+  * To construct a VList, use VList.apply or VList.from
   * @param lst
   *   The wrapped list actually holdings this VList's elements.
   */
@@ -89,11 +91,12 @@ class VList private (val lst: Seq[VAny])
 
   override def empty: VList = VList.empty
 
-  protected def fromIterable(it: Seq[VAny]): VList =
-    VList.fromIterable(it)
+  protected def from(it: Seq[VAny]): VList =
+    VList.from(it)
 end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:
+  def from(it: Seq[VAny]): VList = new VList(it)
 
   /** Zip multiple VLists together with a function.
     *
@@ -146,6 +149,4 @@ object VList extends SpecificIterableFactory[VAny, VList]:
   override def fromSpecific(it: IterableOnce[VAny]): VList = new VList(
     it.iterator.toSeq
   )
-
-  def fromIterable(it: Seq[VAny]): VList = new VList(it)
 end VList
