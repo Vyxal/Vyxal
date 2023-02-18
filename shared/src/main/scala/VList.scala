@@ -60,7 +60,7 @@ class VList private (val lst: Seq[VAny])
 
   def index(ind: VAny)(using ctx: Context): VAny =
     ind match
-      case ind: VNum => this.indexBig(ind.real.toBigInt)
+      case ind: VNum   => this.indexBig(ind.real.toBigInt)
       case inds: VList => inds.vmap(this.index)
       case _           => throw new Exception("Index must be a number")
 
