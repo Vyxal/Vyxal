@@ -58,10 +58,13 @@ class VList private (val lst: Seq[VAny])
 
   def applyBig(ind: BigInt): VAny =
     if ind <= Int.MaxValue && ind >= Int.MinValue then return apply(ind.toInt)
-    val pos = VNum(ind.toString) % VNum(lst.length.toString)
+    val pos =
+      if ind < 0 then VNum(ind.toString) % VNum(lst.length.toString)
+      else VNum(ind)
     var i = VNum("2147483647")
     var temp = lst
     while MiscHelpers.compare(i, pos) < 0 do
+      if temp.isEmpty then temp = lst
       temp = temp.tail
       i += VNum(1)
     temp.head
