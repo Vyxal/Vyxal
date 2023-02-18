@@ -1,6 +1,9 @@
 package vyxal
 
+import vyxal.impls.Elements
+
 import java.util.regex.Pattern
+import javax.lang.model.element.Modifier
 import scala.util.matching.Regex
 import scala.util.parsing.combinator.*
 import VyxalToken.*
@@ -123,7 +126,7 @@ object Lexer extends RegexParsers:
 
   def multigraph: Parser[VyxalToken] =
     "([∆øÞk].)|(#:\\[)|(#[:.,]?[^\\[\\]$=#>@{])".r ^^ { value =>
-      if value.length == 2 then Command(value)
+      if value.length == 2 then processDigraph(value)
       else if value.charAt(1) == ':' then SyntaxTrigraph(value)
       else SugarTrigraph(value)
     }
@@ -187,4 +190,17 @@ object Lexer extends RegexParsers:
     (parse(tokens, code): @unchecked) match
       case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
       case Success(result, next) => Right(result)
+
+  def processDigraph(digraph: String): VyxalToken =
+    if Elements.elements.contains(digraph) then Command(digraph)
+    else if Modifiers.modifiers.contains(digraph) then
+      val modifier = Modifiers.modifiers(digraph)
+      modifier.arity match
+        case 1  => MonadicModifier(digraph)
+        case 2  => DyadicModifier(digraph)
+        case 3  => TriadicModifier(digraph)
+        case 4  => TetradicModifier(digraph)
+        case -1 => SpecialModifier(digraph)
+        case _  => throw Exception("Invalid modifier arity")
+    else Digraph(digraph)
 end Lexer
