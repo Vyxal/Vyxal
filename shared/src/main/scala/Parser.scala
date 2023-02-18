@@ -278,7 +278,6 @@ object Parser:
     val id =
       Option.when(structureType == StructureType.For)(parseIdentifier(program))
 
-    println(structureType)
     parseBranches(program, false) {
       case VyxalToken.StructureAllClose | VyxalToken.StructureClose(_) => true
       case _                                                           => false
