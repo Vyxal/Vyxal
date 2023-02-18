@@ -268,6 +268,18 @@ class ParserTests extends AnyFunSuite:
     )
   }
 
+  test("Does the parser identify for loop branches correctly?") {
+    assert(
+      Parser.parse("(hello|++}") ===
+        Right(For(Some("hello"), Group(List(Command("+"), Command("+")), None)))
+    )
+
+    assert(
+      Parser.parse("([1|2}}") ===
+        Right(For(None, Ternary(Number(1), Some(Number(2)))))
+    )
+  }
+
   test("Does the parser handle nested modifiers?") {
     assert(
       Parser.parse("#[#[1|2|3#]|#[4|5|6#]#] v/+") === Right(
