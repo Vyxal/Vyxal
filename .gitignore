@@ -166,6 +166,8 @@ tests/test_log.txt
 tests/test_extras.py
 
 temp.vy
+vyxal.js
+vyxal.js.map
 
 node_modules/
 package.json
