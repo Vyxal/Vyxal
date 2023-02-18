@@ -3,7 +3,6 @@ package vyxal
 import vyxal.impls.Elements
 
 import java.util.regex.Pattern
-import javax.lang.model.element.Modifier
 import scala.util.matching.Regex
 import scala.util.parsing.combinator.*
 import VyxalToken.*
@@ -89,12 +88,11 @@ object Lexer extends RegexParsers:
       // btw thanks to @pxeger and @mousetail for the regex
       val text = value.substring(1, value.length - 1).replaceAll("\\\\\"", "\"")
 
-      value.charAt(value.length - 1) match
+      (value.last: @unchecked) match
         case '"' => Str(text)
         case '„' => CompressedString(text)
         case '”' => DictionaryString(text)
         case '“' => CompressedNumber(text)
-        case _   => throw Exception("Invalid string")
   }
 
   def contextIndex: Parser[VyxalToken] = """\d*¤""".r ^^ { value =>
@@ -201,6 +199,6 @@ object Lexer extends RegexParsers:
         case 3  => TriadicModifier(digraph)
         case 4  => TetradicModifier(digraph)
         case -1 => SpecialModifier(digraph)
-        case _  => throw Exception("Invalid modifier arity")
+        case arity  => throw Exception(s"Invalid modifier arity: $arity")
     else Digraph(digraph)
 end Lexer

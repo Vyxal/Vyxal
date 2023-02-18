@@ -3,11 +3,7 @@ package vyxal
 import vyxal.impls.Elements
 
 import scala.collection.mutable
-import scala.collection.mutable.ListBuffer
-import scala.collection.mutable.Queue
-import scala.collection.mutable.Stack
-import scala.compiletime.ops.double
-import spire.syntax.truncatedDivision
+import scala.collection.mutable.{ListBuffer, Queue, Stack}
 
 object Parser:
 
@@ -293,20 +289,16 @@ object Parser:
         case StructureType.IfStatement =>
           if branches.size < 2 then
             Left(VyxalCompilationError("Invalid if statement"))
-          else if branches.size % 2 == 0 then
-            Right(
-              AST.IfStatement(
-                branches.grouped(2).map(_.head).toList,
-                branches.grouped(2).map(_.last).toList,
-                None
-              )
-            )
           else
+            val odd = branches.size % 2 == 1
+            val grouped =
+              if odd then branches.init.grouped(2).toList
+              else branches.grouped(2).toList
             Right(
               AST.IfStatement(
-                branches.grouped(2).toList.dropRight(1).map(_.head),
-                branches.grouped(2).toList.dropRight(1).map(_.last),
-                Some(branches.last)
+                grouped.map(_(0)),
+                grouped.map(_(1)),
+                Option.when(odd)(branches.last)
               )
             )
         case StructureType.While =>
@@ -318,7 +310,7 @@ object Parser:
         case StructureType.For =>
           branches match
             case List(name, body) =>
-              Right(AST.For(Some(parseIdentifier(name)), body))
+              Right(AST.For(Some(toValidName(name.toVyxal)), body))
             case List(body) => Right(AST.For(None, body))
             case _ =>
               Left(VyxalCompilationError("Invalid for statement"))
@@ -429,10 +421,6 @@ object Parser:
     end for
     paramList.toList -> arity
   end parseParameters
-
-  /** Parse an identifier from an AST */
-  private def parseIdentifier(program: AST): String =
-    toValidName(program.toVyxal)
 
   /** Whether this token is a branch or a structure/list closer */
   def isCloser(token: VyxalToken): Boolean =
