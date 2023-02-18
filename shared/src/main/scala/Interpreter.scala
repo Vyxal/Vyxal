@@ -156,15 +156,17 @@ object Interpreter:
           case 1 => list.head
           case _ => list.init.last
 
-        val temp = generator(relationFn, firstN, firstM)
+        val temp =
+          generator(relationFn, firstN, firstM, list.take(list.length - arity))
         val res = temp.prependedAll(list)
 
         ctx.push(
           VList.fromIterable(res)
         )
       case AST.ContextIndex(index) =>
-        ctx.push(ctx._ctxArgs.getOrElse(Seq.empty)(index))
-
+        val args = ctx._ctxArgs.getOrElse(Seq.empty).reverse
+        if args.length < index then ctx.push(ctx.settings.defaultValue)
+        else ctx.push(args(index))
       case _ => throw NotImplementedError(s"$ast not implemented")
     end match
     if ctx.settings.logLevel == LogLevel.Debug then
