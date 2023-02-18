@@ -329,8 +329,6 @@ object Parser:
                   val (param, arity) = parseParameters(branches.head)
                   AST.Lambda(arity, param, branches.drop(1))
             else AST.Lambda(1, List.empty, branches)
-          // todo using the command names is a bit brittle
-          //   maybe refer to the functions directly
 
           Right(lambdaType match
             case StructureType.Lambda => lambda
@@ -354,19 +352,15 @@ object Parser:
           if branches.size > 2 then
             Left(VyxalCompilationError("Invalid generator structure"))
           else
-            var (rel: AST, vals: Option[AST]) = (branches: @unchecked) match
-              case List(relation, initial) =>
-                (relation, Some(initial))
-              case List(relation) =>
-                (relation, None)
+            var rel = branches.head
+            var vals = (branches: @unchecked) match
+              case List(_, initial) => Some(initial)
+              case List(_) => None
 
             val arity = rel match
               case AST.Group(elems, _) =>
-                if elems.last match
-                    case AST.Number(_) => true
-                    case _             => false
-                then
-                  rel = AST.Group(elems.dropRight(1), None)
+                if elems.last.isInstanceOf[AST.Number] then
+                  rel = AST.Group(elems.init, None)
                   elems.last.asInstanceOf[AST.Number].value.toInt
                 else
                   var stackItems = 0

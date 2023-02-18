@@ -42,7 +42,6 @@ enum AST(val arity: Option[Int]):
   case AuxAugmentVar(name: String) extends AST(None)
   case AugmentVar(name: String, what: AST) extends AST(None)
   case UnpackVar(names: List[(String, Int)]) extends AST(None)
-  case ExecuteFn extends AST(None)
 
   /** Junk newline AST that is removed in post-processing */
   case Newline extends AST(None)

@@ -107,7 +107,7 @@ class InterpreterTests extends VyxalTests:
         testAST(
           AST.makeSingle(
             AST.Lambda(1, List.empty, List(AST.Command("!"))),
-            AST.ExecuteFn
+            AST.Command("Ė")
           ),
           VNum(6),
           inputs = Seq(3)
@@ -120,7 +120,7 @@ class InterpreterTests extends VyxalTests:
         testAST(
           AST.makeSingle(
             AST.Lambda(2, List.empty, List(AST.Command("-"))),
-            AST.ExecuteFn
+            AST.Command("Ė")
           ),
           VNum(2),
           inputs = Seq(3, 1)
@@ -260,7 +260,7 @@ class InterpreterTests extends VyxalTests:
         ctx2.setVar("x", "foo")
         ctx2.push(1)
         ctx2.push(ctx1.pop()) // Push the lambda defined earlier
-        Interpreter.execute(AST.ExecuteFn)(using ctx2)
+        Interpreter.execute(AST.Command("Ė"))(using ctx2)
         assertResult((VNum(6), "foo"))((ctx1.getVar("x"), ctx2.getVar("x")))
       }
     }

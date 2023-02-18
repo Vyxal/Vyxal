@@ -116,17 +116,13 @@ object Interpreter:
         ctx.setVar(name, ctx.pop())
       case AST.UnpackVar(names) =>
         MiscHelpers.unpack(names)
-      case AST.ExecuteFn =>
-        ctx.pop() match
-          case fn: VFun => ctx.push(executeFn(fn))
-          case _        => ???
       case AST.DecisionStructure(predicate, container) =>
         val iterable = container match
           case Some(ast) =>
             executeFn(VFun.fromLambda(AST.Lambda(0, List.empty, List(ast))))
           case None => ctx.pop()
 
-        val list = ListHelpers.makeIterable(iterable, Some(true))(using ctx)
+        val list = ListHelpers.makeIterable(iterable, Some(true))
         if ListHelpers
             .filter(
               list,
@@ -142,7 +138,7 @@ object Interpreter:
           case None =>
             ctx.pop()
 
-        val list = ListHelpers.makeIterable(initVals)(using ctx)
+        val list = ListHelpers.makeIterable(initVals)
         val relationFn =
           VFun.fromLambda(AST.Lambda(arity, List.empty, List(relation)))
 
@@ -164,11 +160,8 @@ object Interpreter:
             arity,
             list,
           )
-        val res = temp.prependedAll(list)
 
-        ctx.push(
-          VList.from(res)
-        )
+        ctx.push(VList.from(list ++: temp))
       case AST.ContextIndex(index) =>
         val args = ctx.ctxArgs.getOrElse(Seq.empty).reverse
         if index == -1 then ctx.push(VList.from(args.reverse))
