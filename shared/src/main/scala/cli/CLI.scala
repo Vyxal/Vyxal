@@ -62,13 +62,13 @@ object CLI:
         if config.runLexer then
           while true do
             val line = io.StdIn.readLine(">")
-            if line == null then return
+            if line == "" then return
             println(Lexer(line))
 
         if config.runParser then
           while true do
             val line = io.StdIn.readLine(">")
-            if line == null then return
+            if line == "" then return
             println(Parser.parse(line))
 
         config.filename.foreach { filename =>
