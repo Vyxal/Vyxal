@@ -97,7 +97,7 @@ object Lexer extends RegexParsers:
         case _   => throw Exception("Invalid string")
   }
 
-  def contextIndex: Parser[VyxalToken] = """(\d+| )¤""".r ^^ { value =>
+  def contextIndex: Parser[VyxalToken] = """\d*¤""".r ^^ { value =>
     ContextIndex(value.substring(0, value.length - 1).trim)
   }
 

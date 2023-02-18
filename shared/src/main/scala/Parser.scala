@@ -88,7 +88,9 @@ object Parser:
           asts.push(AST.JunkModifier(v, 4))
         case VyxalToken.SpecialModifier(v) => asts.push(AST.SpecialModifier(v))
         case VyxalToken.ContextIndex(value) =>
-          asts.push(AST.ContextIndex(value.toInt))
+          asts.push(
+            AST.ContextIndex(if value.nonEmpty then value.toInt else -1)
+          )
         case VyxalToken.GetVar(v)         => asts.push(AST.GetVar(v))
         case VyxalToken.SetVar(v)         => asts.push(AST.SetVar(v))
         case VyxalToken.AugmentVar(value) => asts.push(AST.AuxAugmentVar(value))
@@ -357,26 +359,44 @@ object Parser:
             case _ =>
               Left(VyxalCompilationError("Invalid decision structure"))
         case StructureType.GeneratorStructure =>
-          branches match
-            case List(relation, initial) =>
-              Right(
-                AST.GeneratorStructure(
-                  relation,
-                  Some(initial),
-                  relation.arity.getOrElse(2)
-                )
+          if branches.size > 2 then
+            Left(VyxalCompilationError("Invalid generator structure"))
+          else
+            var (rel: AST, vals: Option[AST]) = (branches: @unchecked) match
+              case List(relation, initial) =>
+                (relation, Some(initial))
+              case List(relation) =>
+                (relation, None)
+
+            val arity = rel match
+              case AST.Group(elems, _) =>
+                if elems.last match
+                    case AST.Number(_) => true
+                    case _             => false
+                then
+                  rel = AST.Group(elems.dropRight(1), None)
+                  elems.last.asInstanceOf[AST.Number].value.toInt
+                else
+                  var stackItems = 0
+                  var popped = 0
+                  for elem <- elems do
+                    val elemArity = elem.arity.getOrElse(0)
+                    if elemArity < stackItems then
+                      stackItems -= elemArity + 1 // assume everything only returns one value
+                    else
+                      popped += elemArity - stackItems
+                      stackItems = 1
+                  popped
+              case _ => rel.arity.getOrElse(2)
+
+            Right(
+              AST.GeneratorStructure(
+                rel,
+                vals,
+                arity
               )
-            case List(relation) =>
-              Right(
-                AST.GeneratorStructure(
-                  relation,
-                  None,
-                  relation.arity.getOrElse(2)
-                )
-              )
-            case _ => Left(VyxalCompilationError("Invalid generator structure"))
+            )
     }
-  end parseStructure
 
   private def parseParameters(params: AST): (List[String | Int], Int) =
     val paramString = params.toVyxal

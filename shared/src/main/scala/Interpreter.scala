@@ -157,7 +157,13 @@ object Interpreter:
           case _ => list.init.last
 
         val temp =
-          generator(relationFn, firstN, firstM, list.take(list.length - arity))
+          generator(
+            relationFn,
+            firstN,
+            firstM,
+            arity,
+            list,
+          )
         val res = temp.prependedAll(list)
 
         ctx.push(
@@ -165,7 +171,8 @@ object Interpreter:
         )
       case AST.ContextIndex(index) =>
         val args = ctx._ctxArgs.getOrElse(Seq.empty).reverse
-        if args.length < index then ctx.push(ctx.settings.defaultValue)
+        if index == -1 then ctx.push(VList.fromIterable(args.reverse))
+        else if args.length < index then ctx.push(ctx.settings.defaultValue)
         else ctx.push(args(index))
       case _ => throw NotImplementedError(s"$ast not implemented")
     end match
@@ -177,20 +184,24 @@ object Interpreter:
       relation: VFun,
       ctxVarPrimary: VAny,
       ctxVarSecondary: VAny,
+      arity: Int,
       previous: Seq[VAny] = Seq.empty
   )(using
       ctx: Context
   ): LazyList[VAny] =
+
     val next = executeFn(
       relation,
       Some(ctxVarPrimary),
       Some(ctxVarSecondary),
-      previous :+ ctxVarSecondary :+ ctxVarPrimary
+      previous.takeRight(arity),
+      overrideCtxArgs = previous :+ ctxVarSecondary :+ ctxVarPrimary
     )
     next #:: generator(
       relation,
       next,
       ctxVarPrimary,
+      arity,
       previous :+ next
     )
   end generator
@@ -210,6 +221,7 @@ object Interpreter:
       ctxVarSecondary: Option[VAny] = None,
       args: Seq[VAny] | Null = null,
       popArgs: Boolean = true,
+      overrideCtxArgs: Seq[VAny] = Seq.empty
   )(using ctx: Context): VAny =
     val VFun(impl, arity, params, origCtx, origAST) = fn
     val useStack = arity == -1
@@ -272,7 +284,7 @@ object Interpreter:
         ctx,
         ctxVarPrimary.orElse(inputs.headOption),
         ctxVarSecondary.getOrElse(VList(inputs*)),
-        inputs,
+        if overrideCtxArgs.isEmpty then inputs else overrideCtxArgs,
         vars,
         inputs,
         useStack

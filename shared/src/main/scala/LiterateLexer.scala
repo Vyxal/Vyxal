@@ -100,7 +100,7 @@ object LiterateLexer extends RegexParsers:
     LitComment(value)
   }
 
-  def contextIndex: Parser[LiterateToken] = """`[0-9]+`""".r ^^ { value =>
+  def contextIndex: Parser[LiterateToken] = """`[0-9]*`""".r ^^ { value =>
     AlreadyCode(value.tail.init + "¤")
   }
 

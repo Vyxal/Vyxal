@@ -661,8 +661,7 @@ object Elements:
       None,
       "a, b, c, ..., -> [a, b, c, ...]"
     ) { ctx ?=>
-      val args = ctx.pop(ctx.length)
-      ctx.push(VList(args*))
+      ctx.wrap
     }
 
     val zeroSliceUntil = addElem(

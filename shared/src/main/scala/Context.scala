@@ -91,6 +91,13 @@ class Context private (
 
   def length: Int = stack.length
 
+  def wrap: Unit =
+    if useStack then getTopCxt().wrap
+    else
+      val temp = stack.toList
+      stack.clear()
+      stack += VList.fromIterable(temp)
+
   /** Whether the stack is empty */
   def isStackEmpty: Boolean = stack.isEmpty
 
@@ -217,8 +224,10 @@ object Context:
       inputs: Seq[VAny],
       useStack: Boolean
   ) =
+    val stack =
+      if useStack then currCtx.stack else mut.ArrayBuffer.empty.addAll(inputs)
     new Context(
-      if useStack then currCtx.stack else mut.ArrayBuffer.empty,
+      stack,
       ctxVarPrimary.orElse(currCtx._ctxVarPrimary),
       Some(ctxVarSecondary),
       Some(ctxArgs),
@@ -229,5 +238,6 @@ object Context:
       currCtx.testMode,
       useStack
     )
+  end makeFnCtx
 
 end Context
