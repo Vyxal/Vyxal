@@ -123,7 +123,7 @@ object Lexer extends RegexParsers:
 
   def multigraph: Parser[VyxalToken] =
     "([∆øÞk].)|(#:\\[)|(#[:.,]?[^\\[\\]$=#>@{])".r ^^ { value =>
-      if value.length == 2 then Digraph(value)
+      if value.length == 2 then Command(value)
       else if value.charAt(1) == ':' then SyntaxTrigraph(value)
       else SugarTrigraph(value)
     }
