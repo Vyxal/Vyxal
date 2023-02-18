@@ -291,7 +291,7 @@ object Parser:
         case StructureType.IfStatement =>
           if branches.size < 2 then
             Left(VyxalCompilationError("Invalid if statement"))
-          else if branches.size % 2 == 0 && branches.size != 2 then
+          else if branches.size % 2 == 0 then
             Right(
               AST.IfStatement(
                 branches.grouped(2).map(_.head).toList,
