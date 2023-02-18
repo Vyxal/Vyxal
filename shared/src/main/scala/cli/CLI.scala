@@ -40,10 +40,9 @@ object CLI:
       case Some(config) =>
         val inputList = config.inputs.reverse.map(Parser.parseInput)
         given ctx: Context = Context(
-          inputList
+          inputs = inputList,
+          ctxArgs = Some(inputList)
         )
-
-        ctx._ctxArgs = Some(inputList)
 
         if config.printHelp then
           println(OParser.usage(parser))

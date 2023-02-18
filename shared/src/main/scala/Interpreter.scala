@@ -170,7 +170,7 @@ object Interpreter:
           VList.from(res)
         )
       case AST.ContextIndex(index) =>
-        val args = ctx._ctxArgs.getOrElse(Seq.empty).reverse
+        val args = ctx.ctxArgs.getOrElse(Seq.empty).reverse
         if index == -1 then ctx.push(VList.from(args.reverse))
         else if args.length < index then ctx.push(ctx.settings.defaultValue)
         else ctx.push(args(index))
@@ -186,10 +186,7 @@ object Interpreter:
       ctxVarSecondary: VAny,
       arity: Int,
       previous: Seq[VAny] = Seq.empty
-  )(using
-      ctx: Context
-  ): LazyList[VAny] =
-
+  )(using ctx: Context): LazyList[VAny] =
     val next = executeFn(
       relation,
       Some(ctxVarPrimary),

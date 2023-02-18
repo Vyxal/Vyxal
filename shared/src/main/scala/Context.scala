@@ -30,7 +30,7 @@ class Context private (
     private var stack: mut.ArrayBuffer[VAny],
     private var _ctxVarPrimary: Option[VAny] = None,
     private var _ctxVarSecondary: Option[VAny] = None,
-    var _ctxArgs: Option[Seq[VAny]] = None,
+    val ctxArgs: Option[Seq[VAny]] = None,
     private val vars: mut.Map[String, VAny] = mut.Map(),
     private var inputs: Inputs = Inputs(),
     private val parent: Option[Context] = None,
@@ -163,7 +163,7 @@ class Context private (
     stack,
     _ctxVarPrimary,
     _ctxVarSecondary,
-    _ctxArgs,
+    ctxArgs,
     vars,
     inputs,
     Some(this),
@@ -181,13 +181,15 @@ object Context:
   def apply(
       inputs: Seq[VAny] = Seq.empty,
       globals: Globals = Globals(),
-      testMode: Boolean = false
+      testMode: Boolean = false,
+      ctxArgs: Option[Seq[VAny]] = None
   ): Context =
     new Context(
       stack = mut.ArrayBuffer(),
       inputs = Inputs(inputs),
       globals = globals,
-      testMode = testMode
+      testMode = testMode,
+      ctxArgs = ctxArgs
     )
 
   /** Find a parent that has a variable with the given name */
@@ -225,7 +227,7 @@ object Context:
       useStack: Boolean
   ) =
     val stack =
-      if useStack then currCtx.stack else mut.ArrayBuffer.empty.addAll(inputs)
+      if useStack then currCtx.stack else mut.ArrayBuffer.from(inputs)
     new Context(
       stack,
       ctxVarPrimary.orElse(currCtx._ctxVarPrimary),
