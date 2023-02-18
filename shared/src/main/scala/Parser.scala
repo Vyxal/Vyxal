@@ -355,7 +355,7 @@ object Parser:
             var rel = branches.head
             var vals = (branches: @unchecked) match
               case List(_, initial) => Some(initial)
-              case List(_) => None
+              case List(_)          => None
 
             val arity = rel match
               case AST.Group(elems, _) =>
