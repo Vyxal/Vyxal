@@ -66,16 +66,13 @@ class VList private (val lst: Seq[VAny])
 
   private def indexBig(ind: BigInt): VAny =
     if ind <= Int.MaxValue && ind >= Int.MinValue then return apply(ind.toInt)
-    val pos =
-      if ind < 0 then VNum(ind.toString) % VNum(lst.length.toString)
-      else VNum(ind)
-    var i = VNum("2147483647")
+    var pos = if ind < 0 then ind % lst.length else ind
     var temp = lst
-    while MiscHelpers.compare(i, pos) < 0 do
-      // Instead of use modulo, reset the list if out of bounds
+    while pos > 0 do
+      // Instead of using modulo, reset the list if out of bounds
       if temp.isEmpty then temp = lst
       temp = temp.tail
-      i += VNum(1)
+      pos -= 1
     temp.head
 
   override def iterator: Iterator[VAny] = lst.iterator
