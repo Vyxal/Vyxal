@@ -275,9 +275,6 @@ object Parser:
       structureType: StructureType,
       program: Queue[VyxalToken]
   ): ParserRet[AST] =
-    val id =
-      Option.when(structureType == StructureType.For)(parseIdentifier(program))
-
     parseBranches(program, false) {
       case VyxalToken.StructureAllClose | VyxalToken.StructureClose(_) => true
       case _                                                           => false
@@ -318,7 +315,9 @@ object Parser:
               Left(VyxalCompilationError("Invalid while statement"))
         case StructureType.For =>
           branches match
-            case List(body) => Right(AST.For(id.get, body))
+            case List(name, body) =>
+              Right(AST.For(Some(parseIdentifier(name)), body))
+            case List(body) => Right(AST.For(None, body))
             case _ =>
               Left(VyxalCompilationError("Invalid for statement"))
         case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
@@ -411,19 +410,9 @@ object Parser:
     paramList.toList -> arity
   end parseParameters
 
-  /** Parse an identifier for for loops. Consume only if there are 2 branches */
-  private def parseIdentifier(program: Queue[VyxalToken]): Option[String] =
-    val idEnd = program.indexWhere(isCloser)
-    if idEnd == -1 || program(idEnd) != VyxalToken.Branch then None
-    else
-      // There are two branches, so get the name and consume the first branch
-      val id = StringBuilder()
-      var i = 0
-      while i < idEnd do
-        id ++= program.dequeue().value.filter(c => c.isLetter || c.isDigit)
-        i += 1
-      program.dequeue() // Get rid of the `|`
-      Some(toValidName(id.toString()))
+  /** Parse an identifier from an AST */
+  private def parseIdentifier(program: AST): String =
+    toValidName(program.toVyxal)
 
   /** Whether this token is a branch or a structure/list closer */
   def isCloser(token: VyxalToken): Boolean =
