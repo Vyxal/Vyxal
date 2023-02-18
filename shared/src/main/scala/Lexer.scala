@@ -194,11 +194,11 @@ object Lexer extends RegexParsers:
     else if Modifiers.modifiers.contains(digraph) then
       val modifier = Modifiers.modifiers(digraph)
       modifier.arity match
-        case 1  => MonadicModifier(digraph)
-        case 2  => DyadicModifier(digraph)
-        case 3  => TriadicModifier(digraph)
-        case 4  => TetradicModifier(digraph)
-        case -1 => SpecialModifier(digraph)
-        case arity  => throw Exception(s"Invalid modifier arity: $arity")
+        case 1     => MonadicModifier(digraph)
+        case 2     => DyadicModifier(digraph)
+        case 3     => TriadicModifier(digraph)
+        case 4     => TetradicModifier(digraph)
+        case -1    => SpecialModifier(digraph)
+        case arity => throw Exception(s"Invalid modifier arity: $arity")
     else Digraph(digraph)
 end Lexer
