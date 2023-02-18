@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.impls.*
+
 import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 import scala.scalajs.js.JSConverters.*
@@ -35,5 +37,38 @@ object JSVyxal:
 
   @JSExport
   def getCodepage(): String = vyxal.CODEPAGE
+
+  @JSExport
+  def getElements() =
+    Elements.elements.values.map {
+      case Element(
+            symbol,
+            name,
+            keywords,
+            _,
+            vectorises,
+            overloads,
+            _
+          ) =>
+        js.Dynamic.literal(
+          "symbol" -> symbol,
+          "name" -> name,
+          "keywords" -> keywords.toJSArray,
+          "vectorises" -> vectorises,
+          "overloads" -> overloads.toJSArray
+        )
+    }.toJSArray
+
+  @JSExport
+  def getModifiers() =
+    Modifiers.modifiers.map {
+      case (symbol, info) =>
+        js.Dynamic.literal(
+          "symbol" -> symbol,
+          "name" -> info.name,
+          "description" -> info.description,
+          "keywords" -> info.keywords.toJSArray,
+        )
+    }.toJSArray
 
 end JSVyxal
