@@ -10,13 +10,20 @@ object ListHelpers:
       case Some(lam) =>
         val branches = lam.body
         val filtered = iterable.zipWithIndex.filter { (item, index) =>
-          branches.forall { branch =>
-            MiscHelpers.boolify(
-              VFun
-                .fromLambda(AST.Lambda(1, List.empty, List(branch)))
-                .execute(item, index, List(item))
+          var keep = true
+          var branchList = branches
+          var subctx: Option[Context] = None
+
+          while branchList.nonEmpty && keep do
+            val fun =
+              VFun.fromLambda(AST.Lambda(1, List.empty, List(branchList.head)))
+            keep = MiscHelpers.boolify(
+              fun.execute(item, index, List(item))(using subctx.getOrElse(ctx))
             )
-          }
+            branchList = branchList.tail
+            subctx = Some(fun.ctx)
+
+          keep
         }
 
         VList(filtered.map(_._1)*)
@@ -62,13 +69,17 @@ object ListHelpers:
         val params = f.originalAST match
           case Some(lam) => lam.params
           case None      => List.empty
-        branches.foldLeft(to) { (mapped, branch) =>
-          VList(mapped.zipWithIndex.map { (item, index) =>
-            VFun
-              .fromLambda(AST.Lambda(1, params, List(branch)))
-              .execute(item, index, List(item))
-          }*)
-        }
+        VList.from(to.zipWithIndex.map { (item, index) =>
+          var subctx: Option[Context] = None
+          var out = item
+          for branch <- branches do
+            val fun = VFun.fromLambda(AST.Lambda(1, List.empty, List(branch)))
+            out =
+              fun.execute(out, index, List(out))(using subctx.getOrElse(ctx))
+            subctx = Some(fun.ctx)
+          out
+        })
+
       case None =>
         VList(to.zipWithIndex.map { (item, index) =>
           f.execute(item, index, List(item))

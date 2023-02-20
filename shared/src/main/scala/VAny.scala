@@ -28,7 +28,7 @@ case class VFun(
     impl: DirectFn,
     arity: Int,
     params: List[String | Int],
-    ctx: Context,
+    var ctx: Context,
     originalAST: Option[AST.Lambda] = None
 ):
 

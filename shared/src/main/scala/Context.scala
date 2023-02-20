@@ -31,7 +31,7 @@ class Context private (
     private var _ctxVarPrimary: Option[VAny] = None,
     private var _ctxVarSecondary: Option[VAny] = None,
     val ctxArgs: Option[Seq[VAny]] = None,
-    private val vars: mut.Map[String, VAny] = mut.Map(),
+    val vars: mut.Map[String, VAny] = mut.Map(),
     private var inputs: Inputs = Inputs(),
     private val parent: Option[Context] = None,
     val globals: Globals = Globals(),

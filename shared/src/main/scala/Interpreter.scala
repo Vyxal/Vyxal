@@ -268,6 +268,7 @@ object Interpreter:
         if !popArgs && args.isEmpty then
           ctx.push(popped.toList.take(origLength).reverse*)
         temp.toList
+    vars ++= ctx.vars
     given fnCtx: Context =
       Context.makeFnCtx(
         origCtx,
@@ -279,8 +280,8 @@ object Interpreter:
         inputs,
         useStack
       )
-
     fn.impl()(using fnCtx)
+    fn.ctx = fnCtx
     fnCtx.peek
   end executeFn
 end Interpreter
