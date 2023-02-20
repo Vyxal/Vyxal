@@ -269,6 +269,7 @@ object Interpreter:
           ctx.push(popped.toList.take(origLength).reverse*)
         temp.toList
     vars ++= ctx.vars
+    vars ++= fn.ctx.vars
     given fnCtx: Context =
       Context.makeFnCtx(
         origCtx,
@@ -281,7 +282,8 @@ object Interpreter:
         useStack
       )
     fn.impl()(using fnCtx)
+    val temp = fnCtx.peek
     fn.ctx = fnCtx
-    fnCtx.peek
+    temp
   end executeFn
 end Interpreter

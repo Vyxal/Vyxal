@@ -73,7 +73,7 @@ object ListHelpers:
           var subctx: Option[Context] = None
           var out = item
           for branch <- branches do
-            val fun = VFun.fromLambda(AST.Lambda(1, List.empty, List(branch)))
+            val fun = VFun.fromLambda(AST.Lambda(1, params, List(branch)))
             out =
               fun.execute(out, index, List(out))(using subctx.getOrElse(ctx))
             subctx = Some(fun.ctx)
