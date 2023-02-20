@@ -1,10 +1,9 @@
 # Using sbt
 
 This file is for documenting how to use the build tool [sbt](https://www.scala-sbt.org/)
-in this project and the different sbt tasks we've defined. This guide will
-likely be inconsistent in its capitalization of sbt/SBT. Sorry about that in advance.
+in this project and the different sbt tasks we've defined.
 
-If you know how to use SBT and everything already, you can skip to the [Vyxal-specific stuff](#vyxal-specific-stuff).
+If you know how to use sbt and everything already, you can skip to the [Vyxal-specific stuff](#vyxal-specific-stuff).
 
 ## Installation
 
@@ -22,7 +21,7 @@ installing sbt.
 
 ## The sbt shell
 
-If you've never used SBT, you should know that it has a shell.
+If you've never used sbt, you should know that it has a shell.
 If you run `sbt` (no arguments), you should see a prompt like this:
 
 ```bash
@@ -58,14 +57,6 @@ task to communicate with the outside world, but if you do need it, you can alway
 do `sbt <sometask> | outputfile`. It does take a few seconds for sbt to start up
 each time, but it's manageable.
 
-We're using SBT since it's the standard in the
-Scala world, but we might consider [Mill](https://com-lihaoyi.github.io/mill/)
-in the future, since it's (supposedly) simpler, it uses a daemon so you don't
-need to enter a shell, and it's made by Li Haoyi, which doesn't really count as
-an advantage but he's a huge contributor to the Scala ecosystem. Unfortunately,
-right now, Mill simply doesn't have as many contributors, as large as an
-ecosystem, or as good IDE support as SBT does.
-
 ## `build.sbt`
 
 Nearly all the configuration for sbt goes in [build.sbt](/build.sbt). build.sbt
@@ -76,7 +67,7 @@ plugins, declared in [projects/plugins.sbt](/project/plugins.sbt).
 
 ## Vyxal-specific stuff
 
-Okay, enough about SBT, on to what you came here for!
+Okay, enough about sbt, on to what you came here for!
 
 ### Projects
 
@@ -96,13 +87,8 @@ We only need to use a handful of them, though:
 - `compile`: Compile your code to see if there's any errors or warnings
 - `run`: Run the Vyxal CLI/REPL
   - Note that if you want to run `vyxalJS` directly, you need Node.js on your computer
-- `test`: Run all tests in the project
-  - `testOnly *ClassName`: Run only the tests in a specific class, e.g.
-    `testOnly *ParserTests` to only run the tests in `ParserTests`
-  - `testOnly *ClassName -- -t "text"`: Run only tests inside a specific class
-    whose names contain some specific test, e.g. `testOnly *ParserTests -- -z "for loops"`
-  - `testOnly *ClassName -- -z "text"`: Same as before, but look for an exact match
-    instead of just tests containing the text
+- `test`: Run all tests. See [Tests.md](Tests.md) for more info.
+- `testOnly`: Run specific tests. See [Tests.md](Tests.md) for more info.
 - `scalafix` - Run Scalafix to lint/refactor your code
   - If you don't want Scalafix modifying your code, run `scalafix --check` so it'll
     just give you errors and you can fix them manually
