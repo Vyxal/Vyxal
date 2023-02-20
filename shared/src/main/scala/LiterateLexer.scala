@@ -210,7 +210,7 @@ object LiterateLexer extends RegexParsers:
                 )
               case AlreadyCode(value) if value == "|" =>
                 ret += AlreadyCode(
-                  lambdaArgs.map(recHelp).mkString("", ",", "")
+                  lambdaArgs.map(recHelp).mkString(",")
                 )
               case _ =>
                 ret ++= lambdaArgs.toList
