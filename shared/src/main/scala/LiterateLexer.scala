@@ -206,7 +206,7 @@ object LiterateLexer extends RegexParsers:
             subtoken match
               case Word(value) if branchKeywords.contains(value) =>
                 ret += AlreadyCode(
-                  lambdaArgs.map(recHelp).mkString("", ",", "")
+                  lambdaArgs.map(recHelp).mkString(",")
                 )
               case AlreadyCode(value) if value == "|" =>
                 ret += AlreadyCode(
