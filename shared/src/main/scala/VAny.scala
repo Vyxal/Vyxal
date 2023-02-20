@@ -40,19 +40,22 @@ case class VFun(
   def execute(
       contextVarPrimary: VAny,
       contextVarSecondary: VAny,
-      args: Seq[VAny]
+      args: Seq[VAny],
+      overwriteCtx: Boolean = false
   )(using ctx: Context): VAny =
     Interpreter.executeFn(
       this,
       Some(contextVarPrimary),
       Some(contextVarSecondary),
-      args = args
+      args = args,
+      overwriteCtx = overwriteCtx
     )
 
   def executeResult(
       contextVarPrimary: VAny,
       contextVarSecondary: VAny,
-      args: Seq[VAny]
+      args: Seq[VAny],
+      overwriteCtx: Boolean = false
   )(using ctx: Context): VAny =
     val res = Interpreter.executeFn(
       this,

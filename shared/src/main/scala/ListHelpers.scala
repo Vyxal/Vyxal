@@ -18,7 +18,9 @@ object ListHelpers:
             val fun =
               VFun.fromLambda(AST.Lambda(1, List.empty, List(branchList.head)))
             keep = MiscHelpers.boolify(
-              fun.execute(item, index, List(item))(using subctx.getOrElse(ctx))
+              fun.execute(item, index, List(item), true)(using
+                subctx.getOrElse(ctx)
+              )
             )
             branchList = branchList.tail
             subctx = Some(fun.ctx)
@@ -74,8 +76,9 @@ object ListHelpers:
           var out = item
           for branch <- branches do
             val fun = VFun.fromLambda(AST.Lambda(1, params, List(branch)))
-            out =
-              fun.execute(out, index, List(out))(using subctx.getOrElse(ctx))
+            out = fun.execute(out, index, List(out), true)(using
+              subctx.getOrElse(ctx)
+            )
             subctx = Some(fun.ctx)
           out
         })

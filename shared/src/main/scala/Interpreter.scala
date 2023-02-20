@@ -185,7 +185,7 @@ object Interpreter:
       Some(ctxVarPrimary),
       Some(ctxVarSecondary),
       previous.takeRight(arity),
-      overrideCtxArgs = previous :+ ctxVarSecondary :+ ctxVarPrimary
+      overrideCtxArgs = previous :+ ctxVarSecondary :+ ctxVarPrimary,
     )
     next #:: generator(
       relation,
@@ -211,7 +211,8 @@ object Interpreter:
       ctxVarSecondary: Option[VAny] = None,
       args: Seq[VAny] | Null = null,
       popArgs: Boolean = true,
-      overrideCtxArgs: Seq[VAny] = Seq.empty
+      overrideCtxArgs: Seq[VAny] = Seq.empty,
+      overwriteCtx: Boolean = false,
   )(using ctx: Context): VAny =
     val VFun(impl, arity, params, origCtx, origAST) = fn
     val useStack = arity == -1
@@ -283,7 +284,7 @@ object Interpreter:
       )
     fn.impl()(using fnCtx)
     val temp = fnCtx.peek
-    fn.ctx = fnCtx
+    if overwriteCtx then fn.ctx = fnCtx
     temp
   end executeFn
 end Interpreter
