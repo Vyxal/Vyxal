@@ -187,8 +187,9 @@ object LiterateLexer extends RegexParsers:
             val lambdaArgs = ListBuffer[LiterateToken]()
             var depth = 1
             var continue = true
-            var subtoken = tokenQueue.dequeue()
+            var subtoken = LiterateToken.AlreadyCode("")
             while continue && tokenQueue.nonEmpty && depth > 0 do
+              subtoken = tokenQueue.dequeue()
               subtoken match
                 case Word(value) if endKeywords.contains(value) =>
                   if depth == 1 then continue = false else depth -= 1
@@ -200,21 +201,32 @@ object LiterateLexer extends RegexParsers:
                   if depth == 1 then continue = false
                 case _ => ()
               lambdaArgs += subtoken
-              if continue then subtoken = tokenQueue.dequeue()
-            println(lambdaArgs)
-            println(subtoken)
-            subtoken match
-              case Word(value) if branchKeywords.contains(value) =>
-                ret += AlreadyCode(
-                  lambdaArgs.map(recHelp).mkString(",")
-                )
-              case AlreadyCode(value) if value == "|" =>
-                ret += AlreadyCode(
-                  lambdaArgs.map(recHelp).mkString(",")
-                )
-              case _ =>
-                ret ++= lambdaArgs.toList
-            ret += subtoken
+            if lambdaArgs.nonEmpty && depth == 1 then
+              lambdaArgs.last match
+                case Word(value) if endKeywords.contains(value) =>
+                  ret ++= postProcess(lambdaArgs.init.toList)
+                  ret += lambdaArgs.last
+                case Word(value) if branchKeywords.contains(value) =>
+                  ret += AlreadyCode(
+                    postProcess(lambdaArgs.init.toList)
+                      .map(recHelp)
+                      .filter(_ != ",")
+                      .mkString(",")
+                  )
+                  ret += lambdaArgs.last
+                case AlreadyCode(value) if value == "|" =>
+                  ret += AlreadyCode(
+                    postProcess(lambdaArgs.init.toList)
+                      .map(recHelp)
+                      .filter(_ != ",")
+                      .mkString(",")
+                  )
+                  ret += lambdaArgs.last
+                case _ =>
+                  ret ++= postProcess(lambdaArgs.toList)
+            else ret ++= postProcess(lambdaArgs.toList)
+
+            end if
           else ret += token
         case _ => ret += token
       end match
