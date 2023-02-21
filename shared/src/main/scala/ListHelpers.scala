@@ -1,6 +1,7 @@
 package vyxal
 
 import collection.mutable.ArrayBuffer
+import scala.collection.mutable as mut
 import VNum.given
 
 object ListHelpers:
@@ -77,7 +78,11 @@ object ListHelpers:
           for branch <- branches do
             val fun = VFun.fromLambda(AST.Lambda(1, params, List(branch)))
             subctx = Some(
-              fun.executeGetContext(out, index, List(out), vars = subctx.getOrElse(ctx).vars)
+              fun.executeGetContext(
+                out,
+                index,
+                List(out),
+                vars = subctx.getOrElse(ctx).vars
               )
             )
             out = subctx.get.peek

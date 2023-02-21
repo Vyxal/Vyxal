@@ -212,7 +212,7 @@ object Interpreter:
       args: Seq[VAny] | Null = null,
       popArgs: Boolean = true,
       overrideCtxArgs: Seq[VAny] = Seq.empty,
-      overwriteCtx: Boolean = false,
+      variables: mut.Map[String, VAny] = mut.Map(),
   )(using ctx: Context): VAny =
     executeFnGetContext(
       fn,
@@ -221,6 +221,7 @@ object Interpreter:
       args,
       popArgs,
       overrideCtxArgs,
+      variables
     ).peek
   end executeFn
 
@@ -232,10 +233,11 @@ object Interpreter:
       args: Seq[VAny] | Null = null,
       popArgs: Boolean = true,
       overrideCtxArgs: Seq[VAny] = Seq.empty,
+      variables: mut.Map[String, VAny] = mut.Map()
   )(using ctx: Context): Context =
     val VFun(impl, arity, params, origCtx, origAST) = fn
     val useStack = arity == -1
-    val vars: mut.Map[String, VAny] = mut.Map()
+    val vars: mut.Map[String, VAny] = variables
     val inputs =
       if args != null && params.isEmpty then args
       else if arity == -1 then List.empty // operates on entire stack

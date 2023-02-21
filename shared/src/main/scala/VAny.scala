@@ -3,6 +3,7 @@ package vyxal
 import vyxal.impls.Element
 import vyxal.Interpreter.executeFn
 
+import scala.collection.mutable as mut
 import scala.reflect.TypeTest
 import spire.algebra.*
 import spire.implicits.*
@@ -41,39 +42,43 @@ case class VFun(
       contextVarPrimary: VAny,
       contextVarSecondary: VAny,
       args: Seq[VAny],
-      vars: Map[String, VAny] = Map.empty
+      vars: mut.Map[String, VAny] = mut.Map()
   )(using ctx: Context): VAny =
     Interpreter.executeFn(
       this,
       Some(contextVarPrimary),
       Some(contextVarSecondary),
       args = args,
+      variables = vars
     )
 
   def executeGetContext(
       contextVarPrimary: VAny,
       contextVarSecondary: VAny,
       args: Seq[VAny],
-      vars: Map[String, VAny] = Map.empty
+      vars: mut.Map[String, VAny] = mut.Map()
   )(using ctx: Context): Context =
     Interpreter.executeFnGetContext(
       this,
       Some(contextVarPrimary),
       Some(contextVarSecondary),
       args = args,
+      variables = vars
     )
 
   def executeResult(
       contextVarPrimary: VAny,
       contextVarSecondary: VAny,
       args: Seq[VAny],
-      overwriteCtx: Boolean = false
+      overwriteCtx: Boolean = false,
+      vars: mut.Map[String, VAny] = mut.Map()
   )(using ctx: Context): VAny =
     val res = Interpreter.executeFn(
       this,
       Some(contextVarPrimary),
       Some(contextVarSecondary),
-      args = args
+      args = args,
+      variables = vars
     )
 
     res match
@@ -82,7 +87,8 @@ case class VFun(
           f,
           Some(contextVarPrimary),
           Some(contextVarSecondary),
-          args = args
+          args = args,
+          variables = vars
         )
       case _ => res
   end executeResult
