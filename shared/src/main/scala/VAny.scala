@@ -41,14 +41,26 @@ case class VFun(
       contextVarPrimary: VAny,
       contextVarSecondary: VAny,
       args: Seq[VAny],
-      overwriteCtx: Boolean = false
+      vars: Map[String, VAny] = Map.empty
   )(using ctx: Context): VAny =
     Interpreter.executeFn(
       this,
       Some(contextVarPrimary),
       Some(contextVarSecondary),
       args = args,
-      overwriteCtx = overwriteCtx
+    )
+
+  def executeGetContext(
+      contextVarPrimary: VAny,
+      contextVarSecondary: VAny,
+      args: Seq[VAny],
+      vars: Map[String, VAny] = Map.empty
+  )(using ctx: Context): Context =
+    Interpreter.executeFnGetContext(
+      this,
+      Some(contextVarPrimary),
+      Some(contextVarSecondary),
+      args = args,
     )
 
   def executeResult(

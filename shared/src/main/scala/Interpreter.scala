@@ -214,6 +214,25 @@ object Interpreter:
       overrideCtxArgs: Seq[VAny] = Seq.empty,
       overwriteCtx: Boolean = false,
   )(using ctx: Context): VAny =
+    executeFnGetContext(
+      fn,
+      ctxVarPrimary,
+      ctxVarSecondary,
+      args,
+      popArgs,
+      overrideCtxArgs,
+    ).peek
+  end executeFn
+
+  @SuppressWarnings(Array("scalafix:DisableSyntax.null"))
+  def executeFnGetContext(
+      fn: VFun,
+      ctxVarPrimary: Option[VAny] = None,
+      ctxVarSecondary: Option[VAny] = None,
+      args: Seq[VAny] | Null = null,
+      popArgs: Boolean = true,
+      overrideCtxArgs: Seq[VAny] = Seq.empty,
+  )(using ctx: Context): Context =
     val VFun(impl, arity, params, origCtx, origAST) = fn
     val useStack = arity == -1
     val vars: mut.Map[String, VAny] = mut.Map()
@@ -269,7 +288,6 @@ object Interpreter:
         if !popArgs && args.isEmpty then
           ctx.push(popped.toList.take(origLength).reverse*)
         temp.toList
-    vars ++= ctx.vars
     vars ++= fn.ctx.vars
     given fnCtx: Context =
       Context.makeFnCtx(
@@ -283,8 +301,6 @@ object Interpreter:
         useStack
       )
     fn.impl()(using fnCtx)
-    val temp = fnCtx.peek
-    if overwriteCtx then fn.ctx = fnCtx
-    temp
-  end executeFn
+    fnCtx
+  end executeFnGetContext
 end Interpreter

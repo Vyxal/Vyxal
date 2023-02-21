@@ -17,13 +17,13 @@ object ListHelpers:
           while branchList.nonEmpty && keep do
             val fun =
               VFun.fromLambda(AST.Lambda(1, List.empty, List(branchList.head)))
-            keep = MiscHelpers.boolify(
-              fun.execute(item, index, List(item), true)(using
+            subctx = Some(
+              fun.executeGetContext(item, index, List(item))(using
                 subctx.getOrElse(ctx)
               )
             )
+            keep = MiscHelpers.boolify(subctx.get.peek)
             branchList = branchList.tail
-            subctx = Some(fun.ctx)
 
           keep
         }
@@ -76,10 +76,11 @@ object ListHelpers:
           var out = item
           for branch <- branches do
             val fun = VFun.fromLambda(AST.Lambda(1, params, List(branch)))
-            out = fun.execute(out, index, List(out), true)(using
-              subctx.getOrElse(ctx)
+            subctx = Some(
+              fun.executeGetContext(out, index, List(out), vars = subctx.getOrElse(ctx).vars)
+              )
             )
-            subctx = Some(fun.ctx)
+            out = subctx.get.peek
           out
         })
 
