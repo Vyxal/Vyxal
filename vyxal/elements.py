@@ -2852,13 +2852,11 @@ def index_indices_or_cycle(lhs, rhs, ctx):
         @lazylist
         def gen():
             curr = lhs
-            first = True
             while True:
                 curr = deep_copy(safe_apply(rhs, curr, ctx=ctx))
                 if curr in prevs:
                     yield from prevs
                     break
-                first = False
 
                 prevs.append(curr)
 
