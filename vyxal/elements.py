@@ -2855,8 +2855,6 @@ def index_indices_or_cycle(lhs, rhs, ctx):
             first = True
             while True:
                 curr = deep_copy(safe_apply(rhs, curr, ctx=ctx))
-                if curr == lhs and not first:
-                    break
                 if curr in prevs:
                     yield from prevs
                     break
