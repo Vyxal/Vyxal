@@ -19,12 +19,18 @@ object ListHelpers:
             val fun =
               VFun.fromLambda(AST.Lambda(1, List.empty, List(branchList.head)))
             subctx = Some(
-              fun.executeGetContext(item, index, List(item))(using
+              fun.executeGetContext(
+                item,
+                index,
+                List(item),
+                vars = subctx.getOrElse(ctx).vars
+              )(using
                 subctx.getOrElse(ctx)
               )
             )
             keep = MiscHelpers.boolify(subctx.get.peek)
             branchList = branchList.tail
+          end while
 
           keep
         }
