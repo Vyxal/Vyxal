@@ -290,7 +290,7 @@ object Interpreter:
         if !popArgs && args.isEmpty then
           ctx.push(popped.toList.take(origLength).reverse*)
         temp.toList
-    vars ++= fn.ctx.vars
+    vars ++= fn.ctx.allVars
     given fnCtx: Context =
       Context.makeFnCtx(
         origCtx,

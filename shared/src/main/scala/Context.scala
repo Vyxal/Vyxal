@@ -27,12 +27,12 @@ import scala.io.StdIn
   *   the function was *defined* in, not the one it is executing inside.
   */
 class Context private (
-    private var stack: mut.ArrayBuffer[VAny],
+    private val stack: mut.ArrayBuffer[VAny],
     private var _ctxVarPrimary: Option[VAny] = None,
     private var _ctxVarSecondary: Option[VAny] = None,
     val ctxArgs: Option[Seq[VAny]] = None,
-    val vars: mut.Map[String, VAny] = mut.Map(),
-    private var inputs: Inputs = Inputs(),
+    private val vars: mut.Map[String, VAny] = mut.Map(),
+    private val inputs: Inputs = Inputs(),
     private val parent: Option[Context] = None,
     val globals: Globals = Globals(),
     val testMode: Boolean = false,
@@ -152,11 +152,10 @@ class Context private (
     * current context.
     */
   def setVar(name: String, value: VAny): Unit =
-    if vars.contains(name) then vars(name) = value
-    else
-      Context.findParentWithVar(this, name) match
-        case Some(parent) => parent.setVar(name, value)
-        case None         => vars(name) = value
+    vars(name) = value
+
+  /** Get all variables in this Context (parent variables not included) */
+  def allVars: Map[String, VAny] = vars.toMap
 
   /** Make a new Context for a structure inside the current structure */
   def makeChild() = new Context(
@@ -191,18 +190,6 @@ object Context:
       testMode = testMode,
       ctxArgs = ctxArgs
     )
-
-  /** Find a parent that has a variable with the given name */
-  @annotation.tailrec
-  private def findParentWithVar(
-      ctx: Context,
-      varName: String
-  ): Option[Context] =
-    ctx.parent match
-      case Some(parent) =>
-        if parent.vars.contains(varName) then Some(parent)
-        else findParentWithVar(parent, varName)
-      case None => None
 
   /** Make a new Context for a function that was defined inside `origCtx` but is
     * now executing inside `currCtx`

@@ -23,7 +23,7 @@ object ListHelpers:
                 item,
                 index,
                 List(item),
-                vars = subctx.getOrElse(ctx).vars
+                vars = mut.Map(subctx.getOrElse(ctx).allVars.toSeq*)
               )(using
                 subctx.getOrElse(ctx)
               )
@@ -88,7 +88,7 @@ object ListHelpers:
                 out,
                 index,
                 List(out),
-                vars = subctx.getOrElse(ctx).vars
+                vars = mut.Map(subctx.getOrElse(ctx).allVars.toSeq*)
               )
             )
             out = subctx.get.peek
