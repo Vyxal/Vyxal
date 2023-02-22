@@ -84,11 +84,11 @@ object ListHelpers:
           for branch <- branches do
             val fun = VFun.fromLambda(AST.Lambda(1, params, List(branch)))
             subctx = fun.executeGetContext(
-                out,
-                index,
-                List(out),
-                vars = mut.Map(subctx.allVars.toSeq*)
-              )
+              out,
+              index,
+              List(out),
+              vars = mut.Map(subctx.allVars.toSeq*)
+            )
             out = subctx.peek
           out
         })
