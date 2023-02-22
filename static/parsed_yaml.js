@@ -316,6 +316,12 @@ var codepage_descriptions =
       "description": "Get the number of combinations of r items from a set of n items",
       "overloads": "num, num -> n_pick_r(a, b)\nnum, str -> n_pick_r(a, len(b))\nstr, num -> n_pick_r(len(a), b)\nstr, str -> n_pick_r(len(a), len(b))",
       "token": "\u2206\u0188"
+    },
+    {
+      "name": "Jelly-style Convolution",
+      "description": "Return two-dimensional convolution of matrices, in the style of Jelly's \u00e6c",
+      "overloads": "lst, lst -> 2D-Convolution of a and b",
+      "token": "\u00de\u0188"
     }
   ],
   "30": [

@@ -3553,6 +3553,14 @@ Return two-dimensional convolution of matrices
 
 - lst a, lst b: `2D-Convolution of a and b`
 -------------------------------
+## `` Þƈ `` (Jelly-style Convolution)
+
+Return two-dimensional convolution of matrices, in the style of Jelly's æc
+
+### Overloads
+
+- lst a, lst b: `2D-Convolution of a and b`
+-------------------------------
 ## `` Þi `` (Multidimensional Indexing)
 
 Index a list of coordinates into a value.
