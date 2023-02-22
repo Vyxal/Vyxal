@@ -28,7 +28,7 @@ object MiscHelpers:
     while !seen.contains(current) do
       seen += current
       result += current
-      current = executeFn(function, Some(current), None, Seq(current))
+      current = executeFn(function, current, null, Seq(current))
     VList.from(result.toList)
 
   def compare(a: VVal, b: VVal): Int = (a, b) match

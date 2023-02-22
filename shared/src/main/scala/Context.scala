@@ -16,9 +16,9 @@ import scala.io.StdIn
   *   own context variable(s). See [[this.ctxVarSecondary]] for more
   *   information.
   * @param vars
-  *   The variables currently in scope, accessible by their names. Null values
-  *   signify that the variable is nonlocal, i.e., it should be gotten from the
-  *   parent context
+  *   The variables currently in scope, accessible by their names. Since it's a
+  *   mutable Map, the same object may be shared by a Context, its children, and
+  *   its children's children.
   * @param inputs
   *   The inputs available in this scope
   * @param parent
@@ -146,17 +146,9 @@ class Context private (
       .orElse(parent.map(_.getVar(name)))
       .getOrElse(settings.defaultValue)
 
-  /** Set a variable to a given value. If found in this context, changes its
-    * value. If it's not found in the current context but it exists in the
-    * parent context, sets it there. Otherwise, creates a new variable in the
-    * current context.
-    */
+  /** Set a variable to a given value. */
   def setVar(name: String, value: VAny): Unit =
-    if vars.contains(name) then vars(name) = value
-    else
-      Context.findParentWithVar(this, name) match
-        case Some(parent) => parent.setVar(name, value)
-        case None         => vars(name) = value
+    vars(name) = value
 
   /** Get all variables in this Context (parent variables not included) */
   def allVars: Map[String, VAny] = vars.toMap
@@ -167,7 +159,7 @@ class Context private (
     _ctxVarPrimary,
     _ctxVarSecondary,
     ctxArgs,
-    vars,
+    vars, // Share the same variables Map with the child
     inputs,
     Some(this),
     globals,
@@ -225,18 +217,20 @@ object Context:
       ctxVarPrimary: Option[VAny],
       ctxVarSecondary: VAny,
       ctxArgs: Seq[VAny],
-      variables: mut.Map[String, VAny],
+      vars: mut.Map[String, VAny],
       inputs: Seq[VAny],
       useStack: Boolean
   ) =
     val stack =
       if useStack then currCtx.stack else mut.ArrayBuffer.from(inputs)
+    vars ++= origCtx.vars
+
     new Context(
       stack,
       ctxVarPrimary.orElse(currCtx._ctxVarPrimary),
       Some(ctxVarSecondary),
       Some(ctxArgs),
-      variables,
+      vars,
       Inputs(inputs),
       Some(origCtx),
       currCtx.globals,

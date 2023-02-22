@@ -13,24 +13,20 @@ object ListHelpers:
         val filtered = iterable.zipWithIndex.filter { (item, index) =>
           var keep = true
           var branchList = branches
-          var subctx: Option[Context] = None
+          val sharedVars = mut.Map.empty[String, VAny]
 
           while branchList.nonEmpty && keep do
             val fun =
               VFun.fromLambda(AST.Lambda(1, List.empty, List(branchList.head)))
-            subctx = Some(
-              fun.executeGetContext(
-                item,
-                index,
-                List(item),
-                vars = mut.Map(subctx.getOrElse(ctx).allVars.toSeq*)
-              )(using
-                subctx.getOrElse(ctx)
-              )
+            val res = Interpreter.executeFn(
+              fun,
+              ctxVarPrimary = item,
+              ctxVarSecondary = index,
+              args = List(item),
+              vars = sharedVars
             )
-            keep = MiscHelpers.boolify(subctx.get.peek)
+            keep = MiscHelpers.boolify(res)
             branchList = branchList.tail
-          end while
 
           keep
         }
@@ -79,18 +75,16 @@ object ListHelpers:
           case Some(lam) => lam.params
           case None      => List.empty
         VList.from(to.zipWithIndex.map { (item, index) =>
-          var subctx = ctx
-          var out = item
-          for branch <- branches do
-            val fun = VFun.fromLambda(AST.Lambda(1, params, List(branch)))
-            subctx = fun.executeGetContext(
-              out,
-              index,
-              List(out),
-              vars = mut.Map(subctx.allVars.toSeq*)
+          val sharedVars = mut.Map.empty[String, VAny]
+          branches.foldLeft(item) { (out, branch) =>
+            Interpreter.executeFn(
+              VFun.fromLambda(AST.Lambda(1, params, List(branch))),
+              ctxVarPrimary = out,
+              ctxVarSecondary = index,
+              args = List(out),
+              vars = sharedVars
             )
-            out = subctx.peek
-          out
+          }
         })
 
       case None =>
