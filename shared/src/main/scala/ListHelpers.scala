@@ -79,19 +79,17 @@ object ListHelpers:
           case Some(lam) => lam.params
           case None      => List.empty
         VList.from(to.zipWithIndex.map { (item, index) =>
-          var subctx: Option[Context] = None
+          var subctx = ctx
           var out = item
           for branch <- branches do
             val fun = VFun.fromLambda(AST.Lambda(1, params, List(branch)))
-            subctx = Some(
-              fun.executeGetContext(
+            subctx = fun.executeGetContext(
                 out,
                 index,
                 List(out),
-                vars = mut.Map(subctx.getOrElse(ctx).allVars.toSeq*)
+                vars = mut.Map(subctx.allVars.toSeq*)
               )
-            )
-            out = subctx.get.peek
+            out = subctx.peek
           out
         })
 
