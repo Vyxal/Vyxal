@@ -182,10 +182,10 @@ object Interpreter:
   )(using ctx: Context): LazyList[VAny] =
     val next = executeFn(
       relation,
-      Some(ctxVarPrimary),
-      Some(ctxVarSecondary),
+      ctxVarPrimary,
+      ctxVarSecondary,
       previous.takeRight(arity),
-      overrideCtxArgs = previous :+ ctxVarSecondary :+ ctxVarPrimary
+      overrideCtxArgs = previous :+ ctxVarSecondary :+ ctxVarPrimary,
     )
     next #:: generator(
       relation,
@@ -207,15 +207,15 @@ object Interpreter:
   @SuppressWarnings(Array("scalafix:DisableSyntax.null"))
   def executeFn(
       fn: VFun,
-      ctxVarPrimary: Option[VAny] = None,
-      ctxVarSecondary: Option[VAny] = None,
+      ctxVarPrimary: VAny | Null = null,
+      ctxVarSecondary: VAny | Null = null,
       args: Seq[VAny] | Null = null,
       popArgs: Boolean = true,
-      overrideCtxArgs: Seq[VAny] = Seq.empty
+      overrideCtxArgs: Seq[VAny] = Seq.empty,
+      vars: mut.Map[String, VAny] = mut.Map(),
   )(using ctx: Context): VAny =
     val VFun(impl, arity, params, origCtx, origAST) = fn
     val useStack = arity == -1
-    val vars: mut.Map[String, VAny] = mut.Map()
     val inputs =
       if args != null && params.isEmpty then args
       else if arity == -1 then List.empty // operates on entire stack
@@ -272,14 +272,13 @@ object Interpreter:
       Context.makeFnCtx(
         origCtx,
         ctx,
-        ctxVarPrimary.orElse(inputs.headOption),
-        ctxVarSecondary.getOrElse(VList(inputs*)),
+        Option(ctxVarPrimary).orElse(inputs.headOption),
+        if ctxVarSecondary == null then VList(inputs*) else ctxVarSecondary,
         if overrideCtxArgs.isEmpty then inputs else overrideCtxArgs,
         vars,
         inputs,
         useStack
       )
-
     fn.impl()(using fnCtx)
     fnCtx.peek
   end executeFn

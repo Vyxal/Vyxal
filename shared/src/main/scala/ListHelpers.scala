@@ -1,6 +1,7 @@
 package vyxal
 
 import collection.mutable.ArrayBuffer
+import scala.collection.mutable as mut
 import VNum.given
 
 object ListHelpers:
@@ -10,13 +11,24 @@ object ListHelpers:
       case Some(lam) =>
         val branches = lam.body
         val filtered = iterable.zipWithIndex.filter { (item, index) =>
-          branches.forall { branch =>
-            MiscHelpers.boolify(
-              VFun
-                .fromLambda(AST.Lambda(1, List.empty, List(branch)))
-                .execute(item, index, List(item))
+          var keep = true
+          var branchList = branches
+          val sharedVars = mut.Map.empty[String, VAny]
+
+          while branchList.nonEmpty && keep do
+            val fun =
+              VFun.fromLambda(AST.Lambda(1, List.empty, List(branchList.head)))
+            val res = Interpreter.executeFn(
+              fun,
+              ctxVarPrimary = item,
+              ctxVarSecondary = index,
+              args = List(item),
+              vars = sharedVars
             )
-          }
+            keep = MiscHelpers.boolify(res)
+            branchList = branchList.tail
+
+          keep
         }
 
         VList(filtered.map(_._1)*)
@@ -62,13 +74,19 @@ object ListHelpers:
         val params = f.originalAST match
           case Some(lam) => lam.params
           case None      => List.empty
-        branches.foldLeft(to) { (mapped, branch) =>
-          VList(mapped.zipWithIndex.map { (item, index) =>
-            VFun
-              .fromLambda(AST.Lambda(1, params, List(branch)))
-              .execute(item, index, List(item))
-          }*)
-        }
+        VList.from(to.zipWithIndex.map { (item, index) =>
+          val sharedVars = mut.Map.empty[String, VAny]
+          branches.foldLeft(item) { (out, branch) =>
+            Interpreter.executeFn(
+              VFun.fromLambda(AST.Lambda(1, params, List(branch))),
+              ctxVarPrimary = out,
+              ctxVarSecondary = index,
+              args = List(out),
+              vars = sharedVars
+            )
+          }
+        })
+
       case None =>
         VList(to.zipWithIndex.map { (item, index) =>
           f.execute(item, index, List(item))
