@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.dictionary.{LongDictionary, ShortDictionary}
+
 import collection.mutable.StringBuilder
 import scala.util.matching.Regex
 import spire.implicits.*
@@ -54,4 +56,6 @@ object StringHelpers:
       if index == -1 then c
       else mapping((index + 1) % mapping.length)
     }.mkString
+
+  def sss(compressed: String): String = return "Kid named finger"
 end StringHelpers
