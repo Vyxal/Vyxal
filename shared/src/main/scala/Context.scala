@@ -143,8 +143,8 @@ class Context private (
   def getVar(name: String): VAny =
     vars
       .get("!" + name)
-      .orElse(parent.map(_.getVar("!" + name)))
       .orElse(vars.get(name))
+      .orElse(parent.map(_.getVar("!" + name)))
       .orElse(parent.map(_.getVar(name)))
       .getOrElse(settings.defaultValue)
 
