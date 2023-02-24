@@ -181,7 +181,7 @@ object Lexer extends RegexParsers:
   def tokens: Parser[List[VyxalToken]] = phrase(
     rep(
       comment | multigraph | branch | contextIndex | number | string | augVariable | getVariable | setVariable
-        setConstant | twoCharString | singleCharString
+      |  setConstant | twoCharString | singleCharString
         | monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
         | specialModifier | structureOpen | structureClose | structureAllClose
         | listOpen | listClose | newlines | command
