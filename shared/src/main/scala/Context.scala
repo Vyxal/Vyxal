@@ -142,10 +142,10 @@ class Context private (
     */
   def getVar(name: String): VAny =
     vars
-      .get(name)
-      .orElse(parent.map(_.getVar(name)))
-      .orElse(vars.get("!" + name))
+      .get("!" + name)
       .orElse(parent.map(_.getVar("!" + name)))
+      .orElse(vars.get(name))
+      .orElse(parent.map(_.getVar(name)))
       .getOrElse(settings.defaultValue)
 
   /** Set a variable to a given value. */

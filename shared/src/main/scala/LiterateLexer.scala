@@ -141,6 +141,11 @@ object LiterateLexer extends RegexParsers:
     value => Variable("#" + value.substring(1))
   }
 
+  def constSet: Parser[LiterateToken] =
+    """:!=([_a-zA-Z][_a-zA-Z0-9]*)?""".r ^^ { value =>
+      Variable("#!" + value.substring(3))
+    }
+
   def augVar: Parser[LiterateToken] = """:>([a-zA-Z][_a-zA-Z0-9]*)?""".r ^^ {
     value => Variable("#>" + value.substring(2))
   }
@@ -167,7 +172,7 @@ object LiterateLexer extends RegexParsers:
   def tokens: Parser[List[LiterateToken]] = phrase(
     rep(
       number | string | singleCharString | comment | rawCode | list | contextIndex | lambdaBlock | normalGroup |
-        unpackVar | varGet | varSet | augVar | word | branch | newline | tilde | colon |
+        unpackVar | varGet | varSet | constSet | augVar | word | branch | newline | tilde | colon |
         comma
     )
   )
