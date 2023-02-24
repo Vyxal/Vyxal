@@ -61,14 +61,13 @@ object JSVyxal:
 
   @JSExport
   def getModifiers() =
-    Modifiers.modifiers.map {
-      case (symbol, info) =>
-        js.Dynamic.literal(
-          "symbol" -> symbol,
-          "name" -> info.name,
-          "description" -> info.description,
-          "keywords" -> info.keywords.toJSArray,
-        )
+    Modifiers.modifiers.map { case (symbol, info) =>
+      js.Dynamic.literal(
+        "symbol" -> symbol,
+        "name" -> info.name,
+        "description" -> info.description,
+        "keywords" -> info.keywords.toJSArray,
+      )
     }.toJSArray
 
 end JSVyxal
