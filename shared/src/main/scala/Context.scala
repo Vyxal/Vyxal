@@ -144,11 +144,21 @@ class Context private (
     vars
       .get(name)
       .orElse(parent.map(_.getVar(name)))
+      .orElse(vars.get("!" + name))
+      .orElse(parent.map(_.getVar("!" + name)))
       .getOrElse(settings.defaultValue)
 
   /** Set a variable to a given value. */
   def setVar(name: String, value: VAny): Unit =
-    vars(name) = value
+    if vars.contains("!" + name) then
+      throw new Exception(s"Variable $name is constant")
+    else vars(name) = value
+
+  /** Set a constant variable to a given value */
+  def setConst(name: String, value: VAny): Unit =
+    if vars.contains("!" + name) then
+      throw new Exception(s"Variable $name already exists")
+    else vars("!" + name) = value
 
   /** Get all variables in this Context (parent variables not included) */
   def allVars: Map[String, VAny] = vars.toMap

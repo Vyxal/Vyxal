@@ -124,7 +124,7 @@ object Lexer extends RegexParsers:
   def listClose: Parser[VyxalToken] = """(#\])|⟩""".r ^^^ ListClose
 
   def multigraph: Parser[VyxalToken] =
-    "([∆øÞk].)|(#:\\[)|(#[:.,]?[^\\[\\]$=#>@{])".r ^^ { value =>
+    "([∆øÞk].)|(#:\\[)|(#[:.,]?[^\\[\\]$!=#>@{])".r ^^ { value =>
       if value.length == 2 then processDigraph(value)
       else if value.charAt(1) == ':' then SyntaxTrigraph(value)
       else SugarTrigraph(value)
@@ -147,8 +147,9 @@ object Lexer extends RegexParsers:
       SetVar(value.substring(2))
   }
 
-  def setConstant: Parser[VyxalToken] = """(\#\:\=)[0-9A-Za-z]*""".r ^^ {
-    value => Constant(value.substring(3))
+  def setConstant: Parser[VyxalToken] = """(\#\!)[0-9A-Za-z_]*""".r ^^ {
+    value =>
+      Constant(value.substring(2))
   }
 
   def augVariable: Parser[VyxalToken] = """(\#\>)[0-9A-Za-z_]*""".r ^^ {

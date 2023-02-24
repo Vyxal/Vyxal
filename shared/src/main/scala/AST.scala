@@ -39,6 +39,7 @@ enum AST(val arity: Option[Int]):
   case ContextIndex(index: Int) extends AST(Some(0))
   case GetVar(name: String) extends AST(None)
   case SetVar(name: String) extends AST(Some(1))
+  case SetConstant(name: String) extends AST(Some(1))
   case AuxAugmentVar(name: String) extends AST(None)
   case AugmentVar(name: String, what: AST) extends AST(None)
   case UnpackVar(names: List[(String, Int)]) extends AST(None)
