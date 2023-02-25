@@ -226,6 +226,22 @@ class InterpreterTests extends VyxalTests:
         }
       }
     }
+
+    describe("Constants") {
+      it("should allow first assignment as normal") {
+        given ctx: Context = Context()
+        Interpreter.execute("1 #!x")
+        assertResult(VNum(1))(ctx.getVar("x"))
+      }
+
+      it("should not allow reassignment") {
+        given ctx: Context = Context()
+        Interpreter.execute("1 #!x")
+        assertThrows[Exception] {
+          Interpreter.execute("2 #!x")
+        }
+      }
+    }
     describe("Nonlocal variables") {
       it("should be able to get nonlocal variables inside lambdas") {
         given ctx: Context = Context()
