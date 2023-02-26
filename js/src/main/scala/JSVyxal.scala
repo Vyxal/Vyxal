@@ -10,7 +10,9 @@ import scala.scalajs.js.JSConverters.*
 @JSExportTopLevel("Vyxal")
 object JSVyxal:
 
+  @JSExport
   var shortDict: Seq[String] = Seq()
+  @JSExport
   var longDict: Seq[String] = Seq()
 
   @JSExport
