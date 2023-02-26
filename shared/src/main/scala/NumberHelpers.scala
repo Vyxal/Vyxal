@@ -15,15 +15,14 @@ object NumberHelpers:
       case (a: String, b: String) => fromBaseAlphabet(a, b)
       case _ => fromBaseDigits(ListHelpers.makeIterable(a), b)
 
+  /** Returns value in base 10 using base len(alphabet) [bijective base] */
   def fromBaseAlphabet(value: String, alphabet: String): VAny =
-    // Returns value in base 10 using base len(alphabet)
-    // [bijective base]
     var ret = 0
     for digit <- value do ret += alphabet.size * ret + alphabet.indexOf(digit)
     ret
 
+  /** Returns digits in base 10 using arbitrary base `base` */
   def fromBaseDigits(digits: VList, base: VAny)(using ctx: Context): VAny =
-    // Returns digits in base 10 using arbitrary base 'base'
     var ret: VAny = VNum(0)
     for digit <- digits do
       ctx.push(digit, ret)
