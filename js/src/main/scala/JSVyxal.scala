@@ -9,6 +9,10 @@ import scala.scalajs.js.JSConverters.*
 /** A bridge between the interpreter and JS */
 @JSExportTopLevel("Vyxal")
 object JSVyxal:
+
+  var shortDict: Seq[String] = Seq()
+  var longDict: Seq[String] = Seq()
+
   @JSExport
   def execute(
       code: String,
@@ -21,7 +25,9 @@ object JSVyxal:
     val globals = Globals(
       settings = settings,
       printFn = printFunc,
-      inputs = Inputs(inputs.split("\n").map(Parser.parseInput).toSeq)
+      inputs = Inputs(inputs.split("\n").map(Parser.parseInput).toSeq),
+      shortDictionary = shortDict,
+      longDictionary = longDict
     )
 
     val ctx = Context(
@@ -61,14 +67,21 @@ object JSVyxal:
 
   @JSExport
   def getModifiers() =
-    Modifiers.modifiers.map {
-      case (symbol, info) =>
-        js.Dynamic.literal(
-          "symbol" -> symbol,
-          "name" -> info.name,
-          "description" -> info.description,
-          "keywords" -> info.keywords.toJSArray,
-        )
+    Modifiers.modifiers.map { case (symbol, info) =>
+      js.Dynamic.literal(
+        "symbol" -> symbol,
+        "name" -> info.name,
+        "description" -> info.description,
+        "keywords" -> info.keywords.toJSArray,
+      )
     }.toJSArray
+
+  @JSExport
+  def setShortDict(dict: js.Array[String]): Unit =
+    shortDict = dict.toSeq
+
+  @JSExport
+  def setLongDict(dict: js.Array[String]): Unit =
+    longDict = dict.toSeq
 
 end JSVyxal

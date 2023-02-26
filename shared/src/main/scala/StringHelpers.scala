@@ -55,5 +55,9 @@ object StringHelpers:
       else mapping((index + 1) % mapping.length)
     }.mkString
 
-  def sss(compressed: String): String = return "Kid named finger"
+  // https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L1055
+  def sss(compressed: String): String =
+    val decompressed: StringBuilder = StringBuilder()
+
+    decompressed.mkString
 end StringHelpers
