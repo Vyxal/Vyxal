@@ -40,9 +40,9 @@ object CLI:
       case Some(config) =>
         val inputList = config.inputs.reverse.map(Parser.parseInput)
         val shortDict =
-          io.Source.fromFile("resources/ShortDictionary.txt").getLines()
+          io.Source.fromResource("ShortDictionary.txt").getLines()
         val longDict =
-          io.Source.fromFile("resources/LongDictionary.txt").getLines()
+          io.Source.fromResource("LongDictionary.txt").getLines()
 
         val dictGlobal = Globals(
           shortDictionary = shortDict.toSeq,
