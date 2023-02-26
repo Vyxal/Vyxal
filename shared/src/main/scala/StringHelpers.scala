@@ -1,7 +1,5 @@
 package vyxal
 
-import vyxal.dictionary.{LongDictionary, ShortDictionary}
-
 import collection.mutable.StringBuilder
 import scala.util.matching.Regex
 import spire.implicits.*

@@ -16,6 +16,8 @@ case class Globals(
     inputs: Inputs = Inputs(),
     settings: Settings = Settings(),
     printFn: String => Unit = print,
+    shortDictionary: Seq[String] = Seq.empty,
+    longDictionary: Seq[String] = Seq.empty,
     var register: VAny = 0
 ):
   register = settings.defaultValue
