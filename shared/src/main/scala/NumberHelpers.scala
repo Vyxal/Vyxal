@@ -3,7 +3,6 @@ package vyxal
 import vyxal.*
 import vyxal.impls.Elements
 
-import scala.annotation.retains
 import scala.collection.mutable.ListBuffer
 import scala.math
 
