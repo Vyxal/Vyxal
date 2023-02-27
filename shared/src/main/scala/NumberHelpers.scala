@@ -23,7 +23,7 @@ object NumberHelpers:
 
   /** Returns digits in base 10 using arbitrary base `base` */
   def fromBaseDigits(digits: VList, base: VAny)(using ctx: Context): VAny =
-    digits.foldLeft(VNum(0)) { (ret, digit) =>
+    digits.foldLeft(VNum(0): VAny) { (ret, digit) =>
       MiscHelpers.add(MiscHelpers.multiply(base, ret), digit)
     }
 

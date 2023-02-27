@@ -48,7 +48,9 @@ object Parser:
         case VyxalToken.Number(value) =>
           asts.push(AST.Number(VNum(value)))
         case VyxalToken.Str(value) => asts.push(AST.Str(value))
-        case VyxalToken.Newline    => asts.push(AST.Newline)
+        case VyxalToken.DictionaryString(value) =>
+          asts.push(AST.DictionaryString(value))
+        case VyxalToken.Newline => asts.push(AST.Newline)
         case VyxalToken.StructureOpen(open) =>
           parseStructure(open, program) match
             case Right(ast) => asts.push(ast)

@@ -206,6 +206,16 @@ object Elements:
         )
     }
 
+    val compressDictionary = addElem(
+      Monad,
+      "Compress String Using Dictionary",
+      "#C",
+      List("compress-dict", "dict-comp", "compress"),
+      "a: str -> compress a using the dictionary"
+    ) { case a: String =>
+      StringHelpers.compressDictionary(a)
+    }
+
     val cookie = addDirect(
       "🍪",
       "Cookie",
