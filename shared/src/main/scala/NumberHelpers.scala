@@ -17,20 +17,15 @@ object NumberHelpers:
 
   /** Returns value in base 10 using base len(alphabet) [bijective base] */
   def fromBaseAlphabet(value: String, alphabet: String): VAny =
-    var ret = 0
-    for digit <- value do ret += alphabet.size * ret + alphabet.indexOf(digit)
-    ret
+    value.foldLeft(VNum(0)) { (ret, digit) =>
+      alphabet.size * ret + alphabet.indexOf(digit): VNum
+    }
 
   /** Returns digits in base 10 using arbitrary base `base` */
   def fromBaseDigits(digits: VList, base: VAny)(using ctx: Context): VAny =
-    var ret: VAny = VNum(0)
-    for digit <- digits do
-      ctx.push(digit, ret)
-      Interpreter.execute("×")
-      ctx.push(base, ret)
-      Interpreter.execute("+")
-      ret = ctx.pop()
-    ret
+    digits.foldLeft(VNum(0)) { (ret, digit) =>
+      MiscHelpers.add(MiscHelpers.multiply(base, ret), digit)
+    }
 
   def fromBinary(a: VAny)(using ctx: Context): VAny =
     a match
