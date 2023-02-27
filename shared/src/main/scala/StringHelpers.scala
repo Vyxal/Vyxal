@@ -43,10 +43,12 @@ object StringHelpers:
         else
           val first = w.charAt(0)
           val rest = w.substring(1)
-          val firstToggled = if first.isUpper then first.toLower else first.toUpper
+          val firstToggled =
+            if first.isUpper then first.toLower else first.toUpper
           firstToggled.toString + rest
 
-      if !dictionary.contains(word) then throw new Exception(s"Invalid word $word")
+      if !dictionary.contains(word) then
+        throw new Exception(s"Invalid word $word")
       val f = ts || swapcase
       val j = if swapcase then 2 else 1
       val i = dictionary.indexOf(word)
@@ -57,6 +59,7 @@ object StringHelpers:
         res = 3 * res + 2
       else res = 3 * res + 1
       res
+    end dictionary
 
     def go(z: Int) =
       val compressed = StringBuilder()
