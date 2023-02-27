@@ -20,16 +20,15 @@ object StringHelpers:
   def compressDictionary(s: String)(using ctx: Context): String =
     val endLength = 2 + ctx.globals.longDictionary.map(_.length).max
 
-    val character = (z: Int, c: Char) =>
+    def character(z: Int, c: Char) =
       val o =
         if c.toInt == 10 then 95
         else if ' ' <= c && c <= '~' then c.toInt - 32
-        else -1
+        else throw new Exception(s"Invalid character $c")
 
-      if o == -1 then throw new Exception("Invalid character")
       3 * 96 * z + o
 
-    val dictionary = (z: Int, w: String, nonempty: Boolean) =>
+    def dictionary(z: Int, w: String, nonempty: Boolean) =
       var ts = nonempty
       var subW = w
       if w.headOption.exists(_ == ' ') then
@@ -38,15 +37,16 @@ object StringHelpers:
       val dictionary =
         if w.size < 6 then ctx.globals.shortDictionary
         else ctx.globals.longDictionary
-      val (word, swapcase) = dictionary.find(_ == w) match
-        case Some(_) => (w, false)
-        case None =>
-          val first = w.head
-          val rest = w.tail
-          (if first.isUpper then first.toLower
-           else first.toUpper).toString + rest -> true
+      val swapcase = !dictionary.exists(_ == w)
+      val word =
+        if !swapcase then w
+        else
+          val first = w.charAt(0)
+          val rest = w.substring(1)
+          val firstToggled = if first.isUpper then first.toLower else first.toUpper
+          firstToggled.toString + rest
 
-      if !dictionary.contains(word) then throw new Exception("Invalid word")
+      if !dictionary.contains(word) then throw new Exception(s"Invalid word $word")
       val f = ts || swapcase
       val j = if swapcase then 2 else 1
       val i = dictionary.indexOf(word)
@@ -58,7 +58,7 @@ object StringHelpers:
       else res = 3 * res + 1
       res
 
-    val go = (z: Int) =>
+    def go(z: Int) =
       val compressed = StringBuilder()
       var z1 = z
       while z1 != 0 do
@@ -77,7 +77,7 @@ object StringHelpers:
             dp(i),
             dictionary(dp(i + j), s.substring(i, i + j), i != 0)
           )
-        catch case _: Exception => ()
+        catch case _: Exception => () // todo (lyxal): is this necessary?
 
     s""""${go(dp(0))}”"""
   end compressDictionary
