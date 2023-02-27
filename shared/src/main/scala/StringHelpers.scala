@@ -131,7 +131,7 @@ object StringHelpers:
     var integer =
       NumberHelpers
         .fromBase(
-          VList.from(compressed.map(CODEPAGE.indexOf(_))),
+          VList.from(compressed.map(CODEPAGE.indexOf(_): VNum)),
           250
         ) match
         case a: VNum => a.toInt
