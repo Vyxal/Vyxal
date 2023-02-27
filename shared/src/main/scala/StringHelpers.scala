@@ -72,8 +72,13 @@ object StringHelpers:
     for i <- (s.length - 1) to 0 by -1 do
       dp(i) = character(dp(i + 1), s(i))
       for j <- 1 to Math.min(endLength, s.length - i) do
-        dp(i) =
-          Math.min(dp(i), dictionary(dp(i + j), s.substring(i, i + j), i != 0))
+        try
+          dp(i) = Math.min(
+            dp(i),
+            dictionary(dp(i + j), s.substring(i, i + j), i != 0)
+          )
+        catch case _: Exception => ()
+
     s""""${go(dp(0))}”"""
   end compressDictionary
 

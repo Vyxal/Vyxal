@@ -51,7 +51,8 @@ object CLI:
 
         given ctx: Context = Context(
           inputs = inputList,
-          ctxArgs = Some(inputList)
+          ctxArgs = Some(inputList),
+          globals = dictGlobal,
         )
 
         if config.printHelp then
