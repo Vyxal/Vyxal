@@ -208,8 +208,8 @@ object Elements:
 
     val compressDictionary = addElem(
       Monad,
-      "Compress String Using Dictionary",
       "#C",
+      "Compress String Using Dictionary",
       List("compress-dict", "dict-comp", "compress"),
       "a: str -> compress a using the dictionary"
     ) { case a: String =>
