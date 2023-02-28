@@ -42,8 +42,7 @@ object StringHelpers:
         if toggleCase then swapcase(subW.head.toString) + subW.substring(1)
         else subW
 
-      if !dict.contains(ww) then
-        return None
+      if !dict.contains(ww) then return None
 
       val j =
         if ts then if toggleCase then 2 else 1
@@ -52,14 +51,12 @@ object StringHelpers:
 
       var z1 = dict.length * z + i
       z1 = 2 * z1
-      if useShort then
-        z1 += 1
+      if useShort then z1 += 1
       z1 *= 3
       if ts || toggleCase then
         z1 += j
         z1 = 3 * z1 + 2
-      else
-        z1 += 1
+      else z1 += 1
       Some(z1)
 
     end dictionary
