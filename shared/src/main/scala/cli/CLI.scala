@@ -39,20 +39,9 @@ object CLI:
     OParser.parse(parser, args, CLIConfig()) match
       case Some(config) =>
         val inputList = config.inputs.reverse.map(Parser.parseInput)
-        val shortDict =
-          io.Source.fromResource("ShortDictionary.txt").getLines()
-        val longDict =
-          io.Source.fromResource("LongDictionary.txt").getLines()
-
-        val dictGlobal = Globals(
-          shortDictionary = shortDict.toSeq,
-          longDictionary = longDict.toSeq
-        )
-
         given ctx: Context = Context(
           inputs = inputList,
           ctxArgs = Some(inputList),
-          globals = dictGlobal,
         )
 
         if config.printHelp then

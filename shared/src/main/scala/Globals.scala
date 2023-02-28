@@ -16,11 +16,17 @@ case class Globals(
     inputs: Inputs = Inputs(),
     settings: Settings = Settings(),
     printFn: String => Unit = print,
-    shortDictionary: Seq[String] = Seq.empty,
-    longDictionary: Seq[String] = Seq.empty,
-    var register: VAny = 0
+    shortDictionary: Seq[String] =
+      io.Source.fromResource(Globals.ShortDictionaryFile).getLines().toSeq,
+    longDictionary: Seq[String] =
+      io.Source.fromResource(Globals.LongDictionaryFile).getLines().toSeq,
 ):
-  register = settings.defaultValue
+  var register: VAny = settings.defaultValue
+end Globals
+
+object Globals:
+  val ShortDictionaryFile = "ShortDictionary.txt"
+  val LongDictionaryFile = "LongDictionary.txt"
 end Globals
 
 /** Stores the inputs for some Context. Inputs can be overridden.
