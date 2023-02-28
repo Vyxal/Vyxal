@@ -15,6 +15,8 @@ class VNum private (val underlying: Complex[Real]):
   /** Round the real and imaginary parts */
   def toIntegral = underlying.round
 
+  def floor = underlying.floor
+
   def unary_- : VNum = -underlying
   def +(rhs: VNum): VNum = underlying + rhs.underlying
   def -(rhs: VNum): VNum = underlying - rhs.underlying

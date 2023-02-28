@@ -20,67 +20,65 @@ object StringHelpers:
   def compressDictionary(s: String)(using ctx: Context): String =
     val endLength = 2 + ctx.globals.longDictionary.map(_.length).max
 
-    def character(z: Int, c: Char) =
+    def character(z: VNum, c: Char) =
       val o =
         if c.toInt == 10 then 95
         else if ' ' <= c && c <= '~' then c.toInt - 32
         else throw new Exception(s"Invalid character $c")
 
-      3 * 96 * z + o
+      3 * (96 * z + o)
 
-    def dictionary(z: Int, w: String, nonempty: Boolean) =
+    def dictionary(z: VNum, w: String, nonempty: Boolean): VNum =
       var ts = nonempty
       var subW = w
-      if w.headOption.exists(_ == ' ') then
+      if w.head == ' ' then
         subW = w.substring(1)
         ts = !ts
-      val dictionary =
-        if w.size < 6 then ctx.globals.shortDictionary
+      val dict =
+        if subW.size < 6 then ctx.globals.shortDictionary
         else ctx.globals.longDictionary
-      val swapcase = !dictionary.exists(_ == w)
-      val word =
-        if !swapcase then w
-        else
-          val first = w.charAt(0)
-          val rest = w.substring(1)
-          val firstToggled =
-            if first.isUpper then first.toLower else first.toUpper
-          firstToggled.toString + rest
+      val (ww, sc) =
+        if dict.contains(subW) then (subW, false)
+        else (swapcase(subW.head.toString) + subW.substring(1), true)
 
-      if !dictionary.contains(word) then
-        throw new Exception(s"Invalid word $word")
-      val f = ts || swapcase
-      val j = if swapcase then 2 else 1
-      val i = dictionary.indexOf(word)
+      if !dict.contains(ww) then
+        throw new Exception(s"Invalid dictionary word $ww")
 
-      var res = dictionary.size * z + i
+      val f = ts || sc
+      val j =
+        if ts then if sc then 2 else 1
+        else 0
+      val i = dict.indexOf(ww)
+
+      var z1 = dict.length * z + i
+      z1 = 2 * z1 + (ww.length < 6).toInt
       if f then
-        res = 3 * res + j
-        res = 3 * res + 2
-      else res = 3 * res + 1
-      res
+        z1 = 3 * z1 + j
+        z1 = 3 * z1 + 2
+      else z1 = 3 * z1 + 1
+      z1
+
     end dictionary
 
-    def go(z: Int) =
+    def go(z: VNum) =
       val compressed = StringBuilder()
       var z1 = z
-      while z1 != 0 do
-        val c = z1 % 250
-        z1 = z1 / 250
-        compressed.append(CODEPAGE(c))
+      while !(z1 == VNum(0)) do
+        val c = (z1 - 1) % 250
+        z1 = ((z1 - 1) / 250).floor
+        compressed.append(CODEPAGE(c.toInt))
       compressed.toString.reverse
 
-    val dp = Array.fill(s.length + 1)(0)
+    val dp = Array.fill(s.length + 1)(VNum(0))
     // scala equivalent of for i in range(len(str) -1,-1,-1)
     for i <- (s.length - 1) to 0 by -1 do
       dp(i) = character(dp(i + 1), s(i))
       for j <- 1 to Math.min(endLength, s.length - i) do
         try
-          dp(i) = Math.min(
-            dp(i),
-            dictionary(dp(i + j), s.substring(i, i + j), i != 0)
-          )
-        catch case _: Exception => () // todo (lyxal): is this necessary?
+          val temp = dictionary(dp(i + j), s.substring(i, i + j), i != 0)
+          dp(i) = if dp(i).real < temp.real then dp(i) else temp
+
+        catch case _: Exception => ()
 
     s""""${go(dp(0))}”"""
   end compressDictionary
@@ -134,42 +132,46 @@ object StringHelpers:
           VList.from(compressed.map(CODEPAGE.indexOf(_) + 1: VNum)),
           250
         ) match
-        case a: VNum => a.toInt
+        case a: VNum => a
         case _       => throw new Exception("InternalError: SSS failed")
 
-    while integer > 0 do
-      val mode = integer % 3
-      integer = integer / 3
+    while integer.real > 0 do
+      val mode = (integer % 3).toInt
+      integer = (integer / 3).floor
 
       if mode == 0 then
         val code = integer % 96
-        integer = integer / 96
-        decompressed.append(CODEPAGE(code + 32))
+        integer = (integer / 96).floor
+        decompressed.append(CODEPAGE(code.toInt + 32))
       else
         var flagSwap = false
-        var flagSpace = decompressed.isEmpty
+        var flagSpace = !decompressed.isEmpty
         if mode == 2 then
-          val flag = integer % 3
-          integer = integer / 3
+          val flag = (integer % 3).toInt
+          integer = (integer / 3).floor
           flagSwap = flag != 1
-          flagSpace = flagSpace ^ (flag != 0)
-        val useShort = integer % 2 == 0
-        integer = integer / 2
+          flagSpace = flagSpace != (flag != 0)
+        val useShort = (integer % 2).toInt == 1
+        integer = (integer / 2).floor
         val words =
           if useShort then ctx.globals.shortDictionary
           else ctx.globals.longDictionary
         val index = integer % words.length
-        integer = integer / words.length
-        var word = words(index)
-        if flagSwap then
-          word = (
-            word.map(c => if c.isUpper then c.toLower else c.toUpper)
-          )
-        if flagSpace then word += " "
+        integer = (integer / words.length).floor
+        var word = words(index.toInt)
+        if flagSwap then word = swapcase(word.head.toString) + word.substring(1)
+        if flagSpace then word = " " + word
         decompressed.append(word)
       end if
     end while
 
     decompressed.mkString
   end sss
+
+  def swapcase(s: String): String =
+    s.map { c =>
+      if c.isUpper then c.toLower
+      else if c.isLower then c.toUpper
+      else c
+    }.mkString
 end StringHelpers
