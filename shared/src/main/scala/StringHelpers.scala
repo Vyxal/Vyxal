@@ -3,8 +3,6 @@ package vyxal
 import collection.mutable.StringBuilder
 import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
-import spire.implicits.*
-import VNum.given
 
 object StringHelpers:
 
@@ -34,8 +32,9 @@ object StringHelpers:
       if w.head == ' ' then
         subW = w.substring(1)
         ts = !ts
+      val useShort = subW.size < 6
       val dict =
-        if subW.size < 6 then ctx.globals.shortDictionary
+        if useShort then ctx.globals.shortDictionary
         else ctx.globals.longDictionary
       val toggleCase = !dict.contains(subW)
       // If the word isn't in the dictionary, see if its lowercase/uppercase version is
@@ -46,18 +45,21 @@ object StringHelpers:
       if !dict.contains(ww) then
         return None
 
-      val f = ts || toggleCase
       val j =
         if ts then if toggleCase then 2 else 1
         else 0
       val i = dict.indexOf(ww)
 
       var z1 = dict.length * z + i
-      z1 = 2 * z1 + (ww.length < 6).toInt
-      if f then
-        z1 = 3 * z1 + j
+      z1 = 2 * z1
+      if useShort then
+        z1 += 1
+      z1 *= 3
+      if ts || toggleCase then
+        z1 += j
         z1 = 3 * z1 + 2
-      else z1 = 3 * z1 + 1
+      else
+        z1 += 1
       Some(z1)
 
     end dictionary
@@ -65,7 +67,7 @@ object StringHelpers:
     def go(z: BigInt) =
       val compressed = StringBuilder()
       var z1 = z
-      while !(z1 == 0) do
+      while z1 != 0 do
         val c = (z1 - 1) % 250
         z1 = (z1 - 1) / 250
         compressed.append(CODEPAGE(c.toInt))
@@ -127,37 +129,31 @@ object StringHelpers:
   def sss(compressed: String)(using ctx: Context): String =
     val decompressed = StringBuilder()
     var integer =
-      NumberHelpers
-        .fromBase(
-          VList.from(compressed.map(CODEPAGE.indexOf(_) + 1: VNum)),
-          250
-        ) match
-        case a: VNum => a
-        case _       => throw new Exception("InternalError: SSS failed")
+      compressed.map(CODEPAGE.indexOf(_) + 1).foldLeft(BigInt(0))(_ * 250 + _)
 
-    while integer.real > 0 do
-      val mode = (integer % 3).toInt
-      integer = (integer / 3).floor
+    while integer > 0 do
+      val mode = integer % 3
+      integer = integer / 3
 
       if mode == 0 then
         val code = integer % 96
-        integer = (integer / 96).floor
+        integer = integer / 96
         decompressed.append(CODEPAGE(code.toInt + 32))
       else
         var flagSwap = false
         var flagSpace = !decompressed.isEmpty
         if mode == 2 then
-          val flag = (integer % 3).toInt
-          integer = (integer / 3).floor
+          val flag = integer % 3
+          integer = integer / 3
           flagSwap = flag != 1
           flagSpace = flagSpace != (flag != 0)
         val useShort = (integer % 2).toInt == 1
-        integer = (integer / 2).floor
+        integer = integer / 2
         val words =
           if useShort then ctx.globals.shortDictionary
           else ctx.globals.longDictionary
         val index = integer % words.length
-        integer = (integer / words.length).floor
+        integer = integer / words.length
         var word = words(index.toInt)
         if flagSwap then word = swapcase(word.head.toString) + word.substring(1)
         if flagSpace then word = " " + word
