@@ -27,7 +27,6 @@ end Globals
 object Globals:
   val ShortDictionaryFile = "ShortDictionary.txt"
   val LongDictionaryFile = "LongDictionary.txt"
-end Globals
 
 /** Stores the inputs for some Context. Inputs can be overridden.
   *

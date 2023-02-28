@@ -32,8 +32,7 @@ object StringHelpers:
       if w.head == ' ' then
         subW = w.substring(1)
         ts = !ts
-      if subW.isEmpty then
-        return None
+      if subW.isEmpty then return None
       val useShort = subW.size < 6
       val dict =
         if useShort then ctx.globals.shortDictionary
