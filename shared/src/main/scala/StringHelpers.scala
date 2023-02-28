@@ -41,8 +41,7 @@ object StringHelpers:
         if dict.contains(subW) then (subW, false)
         else (swapcase(subW.head.toString) + subW.substring(1), true)
 
-      if !dict.contains(ww) then
-        return None
+      if !dict.contains(ww) then return None
 
       val f = ts || sc
       val j =
