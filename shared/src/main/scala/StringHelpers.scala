@@ -20,7 +20,7 @@ object StringHelpers:
   def compressDictionary(s: String)(using ctx: Context): String =
     val endLength = 2 + ctx.globals.longDictionary.map(_.length).max
 
-    def character(z: VNum, c: Char) =
+    def character(z: BigInt, c: Char) =
       val o =
         if c.toInt == 10 then 95
         else if ' ' <= c && c <= '~' then c.toInt - 32
@@ -28,7 +28,7 @@ object StringHelpers:
 
       3 * (96 * z + o)
 
-    def dictionary(z: VNum, w: String, nonempty: Boolean): Option[VNum] =
+    def dictionary(z: BigInt, w: String, nonempty: Boolean): Option[BigInt] =
       var ts = nonempty
       var subW = w
       if w.head == ' ' then
@@ -37,15 +37,18 @@ object StringHelpers:
       val dict =
         if subW.size < 6 then ctx.globals.shortDictionary
         else ctx.globals.longDictionary
-      val (ww, sc) =
-        if dict.contains(subW) then (subW, false)
-        else (swapcase(subW.head.toString) + subW.substring(1), true)
+      val toggleCase = !dict.contains(subW)
+      // If the word isn't in the dictionary, see if its lowercase/uppercase version is
+      val ww =
+        if toggleCase then swapcase(subW.head.toString) + subW.substring(1)
+        else subW
 
-      if !dict.contains(ww) then return None
+      if !dict.contains(ww) then
+        return None
 
-      val f = ts || sc
+      val f = ts || toggleCase
       val j =
-        if ts then if sc then 2 else 1
+        if ts then if toggleCase then 2 else 1
         else 0
       val i = dict.indexOf(ww)
 
@@ -59,22 +62,22 @@ object StringHelpers:
 
     end dictionary
 
-    def go(z: VNum) =
+    def go(z: BigInt) =
       val compressed = StringBuilder()
       var z1 = z
-      while !(z1 == VNum(0)) do
+      while !(z1 == 0) do
         val c = (z1 - 1) % 250
-        z1 = ((z1 - 1) / 250).floor
+        z1 = (z1 - 1) / 250
         compressed.append(CODEPAGE(c.toInt))
       compressed.toString.reverse
 
-    val dp = Array.fill(s.length + 1)(VNum(0))
+    val dp = Array.fill(s.length + 1)(BigInt(0))
     // scala equivalent of for i in range(len(str) -1,-1,-1)
     for i <- (s.length - 1) to 0 by -1 do
       dp(i) = character(dp(i + 1), s(i))
       for j <- 1 to Math.min(endLength, s.length - i) do
         dictionary(dp(i + j), s.substring(i, i + j), i != 0).map { temp =>
-          if dp(i).real < temp.real then dp(i) = temp
+          if dp(i) < temp then dp(i) = temp
         }
 
     s""""${go(dp(0))}”"""
