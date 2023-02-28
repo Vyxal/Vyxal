@@ -28,7 +28,7 @@ object StringHelpers:
 
       3 * (96 * z + o)
 
-    def dictionary(z: VNum, w: String, nonempty: Boolean): VNum =
+    def dictionary(z: VNum, w: String, nonempty: Boolean): Option[VNum] =
       var ts = nonempty
       var subW = w
       if w.head == ' ' then
@@ -42,7 +42,7 @@ object StringHelpers:
         else (swapcase(subW.head.toString) + subW.substring(1), true)
 
       if !dict.contains(ww) then
-        throw new Exception(s"Invalid dictionary word $ww")
+        return None
 
       val f = ts || sc
       val j =
@@ -56,7 +56,7 @@ object StringHelpers:
         z1 = 3 * z1 + j
         z1 = 3 * z1 + 2
       else z1 = 3 * z1 + 1
-      z1
+      Some(z1)
 
     end dictionary
 
@@ -74,11 +74,9 @@ object StringHelpers:
     for i <- (s.length - 1) to 0 by -1 do
       dp(i) = character(dp(i + 1), s(i))
       for j <- 1 to Math.min(endLength, s.length - i) do
-        try
-          val temp = dictionary(dp(i + j), s.substring(i, i + j), i != 0)
-          dp(i) = if dp(i).real < temp.real then dp(i) else temp
-
-        catch case _: Exception => ()
+        dictionary(dp(i + j), s.substring(i, i + j), i != 0).map { temp =>
+          if dp(i).real < temp.real then dp(i) = temp
+        }
 
     s""""${go(dp(0))}”"""
   end compressDictionary
