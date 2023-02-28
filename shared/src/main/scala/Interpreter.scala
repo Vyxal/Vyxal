@@ -105,10 +105,11 @@ object Interpreter:
           index += 1
           execute(body)(using loopCtx)
 
-      case lam: AST.Lambda      => ctx.push(VFun.fromLambda(lam))
-      case AST.FnDef(name, lam) => ctx.setVar(name, VFun.fromLambda(lam))
-      case AST.GetVar(name)     => ctx.push(ctx.getVar(name))
-      case AST.SetVar(name)     => ctx.setVar(name, ctx.pop())
+      case lam: AST.Lambda       => ctx.push(VFun.fromLambda(lam))
+      case AST.FnDef(name, lam)  => ctx.setVar(name, VFun.fromLambda(lam))
+      case AST.GetVar(name)      => ctx.push(ctx.getVar(name))
+      case AST.SetVar(name)      => ctx.setVar(name, ctx.pop())
+      case AST.SetConstant(name) => ctx.setConst(name, ctx.pop())
       case AST.AugmentVar(name, op) =>
         ctx.push(ctx.getVar(name))
         op match

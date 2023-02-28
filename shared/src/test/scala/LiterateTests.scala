@@ -76,6 +76,13 @@ class LiterateTests extends VyxalTests:
     }
   }
 
+  describe("Constants") {
+    it("should transpile them correctly") {
+      testLiteral(":!=x", "#!x")
+      testLiteral("10 :!=x", "10#!x")
+    }
+  }
+
   describe("Variable Augmentation") {
     it("should transpile them correctly") {
       testLiteral("10 +:>x", "10+#>x")

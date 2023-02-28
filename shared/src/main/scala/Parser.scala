@@ -91,6 +91,7 @@ object Parser:
           )
         case VyxalToken.GetVar(v)         => asts.push(AST.GetVar(v))
         case VyxalToken.SetVar(v)         => asts.push(AST.SetVar(v))
+        case VyxalToken.Constant(v)       => asts.push(AST.SetConstant(v))
         case VyxalToken.AugmentVar(value) => asts.push(AST.AuxAugmentVar(value))
         case VyxalToken.UnpackVar(value) =>
           val names = ListBuffer[(String, Int)]()
