@@ -69,10 +69,14 @@ object StringHelpers:
       val compressed = StringBuilder()
       var z1 = z
       while z1 != 0 do
-        val c = (z1 - 1) % 250
-        z1 = (z1 - 1) / 250
+        val c = (z1 - 1) % 252
+        z1 = (z1 - 1) / 252
         compressed.append(CODEPAGE(c.toInt))
-      compressed.toString.reverse
+      compressed.toString
+        .replace('"', '•')
+        .replace('„', '≈')
+        .replace('”', '¿')
+        .replace('“', 'ꜝ')
 
     val dp = Array.fill(s.length + 1)(BigInt(0))
     // scala equivalent of for i in range(len(str) -1,-1,-1)
@@ -129,8 +133,14 @@ object StringHelpers:
   // https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L1055
   def sss(compressed: String)(using ctx: Context): String =
     val decompressed = StringBuilder()
+    val comp = compressed
+      .replace('•', '"')
+      .replace('≈', '„')
+      .replace('¿', '”')
+      .replace('ꜝ', '“')
+      .reverse
     var integer =
-      compressed.map(CODEPAGE.indexOf(_) + 1).foldLeft(BigInt(0))(_ * 250 + _)
+      comp.map(CODEPAGE.indexOf(_) + 1).foldLeft(BigInt(0))(_ * 252 + _)
 
     while integer > 0 do
       val mode = integer % 3
