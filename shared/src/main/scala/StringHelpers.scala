@@ -77,7 +77,7 @@ object StringHelpers:
       dp(i) = character(dp(i + 1), s(i))
       for j <- 1 to Math.min(endLength, s.length - i) do
         dictionary(dp(i + j), s.substring(i, i + j), i != 0).map { temp =>
-          if dp(i) < temp then dp(i) = temp
+          if temp < dp(i) then dp(i) = temp
         }
 
     s""""${go(dp(0))}”"""
