@@ -379,7 +379,9 @@ class InterpreterTests extends VyxalTests:
       it("should handle Hello World") {
         given Context = Context()
         val compressed = StringHelpers.compressDictionary("Hello World")
-        assertResult("Hello World")(StringHelpers.sss(compressed))
+        assertResult("Hello World")(
+          StringHelpers.sss(compressed.substring(1, compressed.length - 1))
+        )
       }
     }
   }
