@@ -18,6 +18,9 @@ object StringHelpers:
   def compressDictionary(s: String)(using ctx: Context): String =
     val endLength = 2 + ctx.globals.longDictionary.map(_.length).max
 
+    val shortInds = ctx.globals.shortDictionary.zipWithIndex.toMap
+    val longInds = ctx.globals.longDictionary.zipWithIndex.toMap
+
     def character(z: BigInt, c: Char) =
       val o =
         if c.toInt == 10 then 95
@@ -35,8 +38,8 @@ object StringHelpers:
       if subW.isEmpty then return None
       val useShort = subW.size < 6
       val dict =
-        if useShort then ctx.globals.shortDictionary
-        else ctx.globals.longDictionary
+        if useShort then shortInds
+        else longInds
       val toggleCase = !dict.contains(subW)
       // If the word isn't in the dictionary, see if its lowercase/uppercase version is
       val ww =
@@ -48,9 +51,9 @@ object StringHelpers:
       val j =
         if ts then if toggleCase then 2 else 1
         else 0
-      val i = dict.indexOf(ww)
+      val i = dict.getOrElse(ww, 0)
 
-      var z1 = dict.length * z + i
+      var z1 = dict.keys.size * z + i
       z1 = 2 * z1
       if useShort then z1 += 1
       z1 *= 3
