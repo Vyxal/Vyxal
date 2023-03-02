@@ -3,6 +3,9 @@ package vyxal
 import scala.io.StdIn
 import VNum.given
 
+def readFile(path: String): Seq[String] =
+  io.Source.fromFile("shared/src/main/resources/" + path).getLines().toSeq
+
 /** Stuff that's shared across all contexts
   *
   * @param inputs
@@ -16,10 +19,8 @@ case class Globals(
     inputs: Inputs = Inputs(),
     settings: Settings = Settings(),
     printFn: String => Unit = print,
-    shortDictionary: Seq[String] =
-      io.Source.fromResource(Globals.ShortDictionaryFile).getLines().toSeq,
-    longDictionary: Seq[String] =
-      io.Source.fromResource(Globals.LongDictionaryFile).getLines().toSeq,
+    shortDictionary: Seq[String] = readFile(Globals.ShortDictionaryFile),
+    longDictionary: Seq[String] = readFile(Globals.LongDictionaryFile)
 ):
   var register: VAny = settings.defaultValue
 end Globals
