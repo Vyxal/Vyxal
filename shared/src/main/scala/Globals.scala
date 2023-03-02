@@ -4,7 +4,7 @@ import scala.io.StdIn
 import VNum.given
 
 def readFile(path: String): Seq[String] =
-  io.Source.fromFile("shared/src/main/resources/" + path).getLines().toSeq
+  io.Source.fromInputStream(getClass.getResourceAsStream(path)).getLines().toSeq
 
 /** Stuff that's shared across all contexts
   *
@@ -26,8 +26,8 @@ case class Globals(
 end Globals
 
 object Globals:
-  val ShortDictionaryFile = "ShortDictionary.txt"
-  val LongDictionaryFile = "LongDictionary.txt"
+  val ShortDictionaryFile = "/ShortDictionary.txt"
+  val LongDictionaryFile = "/LongDictionary.txt"
 
 /** Stores the inputs for some Context. Inputs can be overridden.
   *
