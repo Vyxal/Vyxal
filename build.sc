@@ -1,4 +1,5 @@
 import mill._
+import mill.define.Target
 import mill.scalajslib._
 import mill.scalajslib.api._
 import mill.scalalib._
@@ -66,6 +67,10 @@ object js extends ScalaJSModule with VyxalModule {
   def scalaJSVersion = "1.13.0"
   def moduleKind = T { ModuleKind.NoModule }
 
+  override def scalaJSOutputPatterns = T {
+    OutputPatterns.fromJSFile("pages/vyxal.js")
+  }
+
   object test extends VyxalTestModule
 }
 
@@ -77,6 +82,8 @@ object native extends ScalaNativeModule with VyxalModule {
   def ivyDeps = T {
     super.ivyDeps() ++ Seq(ivy"com.github.scopt::scopt::4.1.0")
   }
+
+  def nativeEmbedResources = true
 
   def releaseMode = ReleaseMode.ReleaseFast
   def nativeLTO = LTO.Thin
