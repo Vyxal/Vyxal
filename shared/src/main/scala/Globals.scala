@@ -16,21 +16,23 @@ case class Globals(
     inputs: Inputs = Inputs(),
     settings: Settings = Settings(),
     printFn: String => Unit = print,
-    shortDictionary: Seq[String] = io.Source
-      .fromInputStream(getClass.getResourceAsStream(ShortDictionaryFile))
-      .getLines()
-      .toSeq,
-    longDictionary: Seq[String] = io.Source
-      .fromInputStream(getClass.getResourceAsStream(LongDictionaryFile))
-      .getLines()
-      .toSeq
+    shortDictionary: Seq[String] =
+      Globals.readResource(Globals.ShortDictionaryFile),
+    longDictionary: Seq[String] =
+      Globals.readResource(Globals.LongDictionaryFile)
 ):
   var register: VAny = settings.defaultValue
 end Globals
 
 object Globals:
-  val ShortDictionaryFile = "/ShortDictionary.txt"
-  val LongDictionaryFile = "/LongDictionary.txt"
+  private val ShortDictionaryFile = "/ShortDictionary.txt"
+  private val LongDictionaryFile = "/LongDictionary.txt"
+
+  private def readResource(path: String) =
+    io.Source
+      .fromInputStream(getClass.getResourceAsStream(path))
+      .getLines()
+      .toSeq
 
 /** Stores the inputs for some Context. Inputs can be overridden.
   *
