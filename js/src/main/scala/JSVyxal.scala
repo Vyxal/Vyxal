@@ -39,6 +39,20 @@ object JSVyxal:
     Interpreter.execute(code, literate = flags.contains("l"))(using ctx)
   end execute
 
+  @JSExport
+  def compress(text: String): String =
+    given Context = Context(globals =
+      Globals(shortDictionary = shortDict, longDictionary = longDict)
+    )
+    StringHelpers.compressDictionary(text)
+
+  @JSExport
+  def decompress(compressed: String): String =
+    given Context = Context(globals =
+      Globals(shortDictionary = shortDict, longDictionary = longDict)
+    )
+    StringHelpers.sss(compressed)
+
   /** Bridge to turn literate code into SBCS */
   @JSExport
   def getSBCSified(code: String): String = LiterateLexer.litLex(code)
