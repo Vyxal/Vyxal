@@ -37,6 +37,10 @@ trait VyxalModule extends ScalaModule {
     build.millSourcePath / platform / "src" / "main" / "scala",
     build.millSourcePath / "shared" / "src" / "main" / "scala"
   )
+  def resources = T.sources(
+    build.millSourcePath / platform / "src" / "main" / "resources",
+    build.millSourcePath / "shared" / "src" / "main" / "resources"
+  )
 
   trait VyxalTestModule extends Tests with TestModule.ScalaTest {
     def scalaVersion = VyxalModule.this.scalaVersion()
@@ -50,6 +54,10 @@ trait VyxalModule extends ScalaModule {
     def sources = T.sources(
       build.millSourcePath / platform / "src" / "test" / "scala",
       build.millSourcePath / "shared" / "src" / "test" / "scala"
+    )
+    def resources = T.sources(
+      build.millSourcePath / platform / "src" / "test" / "resources",
+      build.millSourcePath / "shared" / "src" / "test" / "resources"
     )
   }
 }

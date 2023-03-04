@@ -1,7 +1,5 @@
 package vyxal
 
-import vyxal.Globals.ShortDictionaryFile
-
 import scala.io.StdIn
 import VNum.given
 
