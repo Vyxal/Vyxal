@@ -1,10 +1,9 @@
 package vyxal
 
+import vyxal.Globals.ShortDictionaryFile
+
 import scala.io.StdIn
 import VNum.given
-
-def readFile(path: String): Seq[String] =
-  io.Source.fromInputStream(getClass.getResourceAsStream(path)).getLines().toSeq
 
 /** Stuff that's shared across all contexts
   *
@@ -19,8 +18,14 @@ case class Globals(
     inputs: Inputs = Inputs(),
     settings: Settings = Settings(),
     printFn: String => Unit = print,
-    shortDictionary: Seq[String] = readFile(Globals.ShortDictionaryFile),
-    longDictionary: Seq[String] = readFile(Globals.LongDictionaryFile)
+    shortDictionary: Seq[String] = io.Source
+      .fromInputStream(getClass.getResourceAsStream(ShortDictionaryFile))
+      .getLines()
+      .toSeq,
+    longDictionary: Seq[String] = io.Source
+      .fromInputStream(getClass.getResourceAsStream(LongDictionaryFile))
+      .getLines()
+      .toSeq
 ):
   var register: VAny = settings.defaultValue
 end Globals
