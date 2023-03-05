@@ -1493,6 +1493,19 @@ def convolve(lhs, rhs, ctx=None):
     return output.tolist()
 
 
+@element("Þƈ", 2)
+def convolve_jelly(lhs, rhs, ctx=None):
+    # https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L88
+    left, right = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
+    result = [0] * (len(left) + len(right) - 1)
+    for i, x in enumerate(left):
+        for j, y in enumerate(right):
+            result[i + j] = add(result[i + j], multiply(x, y, ctx=ctx), ctx=ctx)
+            # Need to use the add and multiply functions here because
+            # python add/multiply doesn't play nice with type overloads
+    return result
+
+
 @element("🍪", 0)
 def cookie(_, ctx):
     while 1:
@@ -2851,16 +2864,16 @@ def index_indices_or_cycle(lhs, rhs, ctx):
 
         @lazylist
         def gen():
+            if deep_copy(safe_apply(rhs, lhs, ctx=ctx)) == lhs:
+                yield from ()
+                return
+
             curr = lhs
-            first = True
             while True:
                 curr = deep_copy(safe_apply(rhs, curr, ctx=ctx))
-                if curr == lhs and not first:
-                    break
                 if curr in prevs:
                     yield from prevs
                     break
-                first = False
 
                 prevs.append(curr)
 
