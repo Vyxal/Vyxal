@@ -32,8 +32,12 @@ class VNum private (val underlying: Complex[Real]):
   override def toString =
     if this.imag == 0 then
       if this.underlying.isWhole then underlying.real.toString
-      else underlying.real.toFloat.toString
-    else this.underlying.toString
+      else toStringHelper(this.real)
+    else toStringHelper(this.real) + "ı" + toStringHelper(this.imag)
+
+  def toStringHelper(n: Real): String =
+    if n.isWhole then n.toString
+    else n.floor.toString + "." + (n - n.floor).toDouble.toString().substring(2)
 
   override def equals(obj: Any) = obj match
     case n: VNum =>
