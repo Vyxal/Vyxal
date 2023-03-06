@@ -3357,6 +3357,12 @@ var codepage_descriptions =
       "name": "Opening brackets (with <)",
       "description": "\"([{<\" (Fish bones :P)",
       "token": "k\u2264"
+    },
+    {
+      "name": "Strict Less Than or Equal To",
+      "description": "Non-vectorising greater than or equal to - useful for lists. Note that all corresponding elements should be of the same type.",
+      "overloads": "any, any -> Non-vectorising greater than or equal to - useful for lists",
+      "token": "\u00a8\u2264"
     }
   ],
   "225": [
@@ -3370,6 +3376,12 @@ var codepage_descriptions =
       "name": "Closing brackets",
       "description": "\")]}\" (Close brackets)",
       "token": "k\u2265"
+    },
+    {
+      "name": "Strict Greater Than or Equal To",
+      "description": "Non-vectorising greater than or equal to - useful for lists. Note that all corresponding elements should be of the same type.",
+      "overloads": "any, any -> Non-vectorising greater than or equal to - useful for lists",
+      "token": "\u00a8\u2265"
     }
   ],
   "226": [
