@@ -4152,6 +4152,14 @@ Non-vectorising greater than - useful for lists. Note that all corresponding ele
 
 - any a, any b: `Non-vectorising greater than - useful for lists`
 -------------------------------
+## `` ¨≥ `` (Strict Greater Than or Equal To)
+
+Non-vectorising greater than or equal to - useful for lists. Note that all corresponding elements should be of the same type.
+
+### Overloads
+
+- any a, any b: `Non-vectorising greater than or equal to - useful for lists`
+-------------------------------
 ## `` ¨< `` (Strict Less Than)
 
 Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
@@ -4159,6 +4167,14 @@ Non-vectorising greater than - useful for lists. Note that all corresponding ele
 ### Overloads
 
 - any a, any b: `a > b (non-vectorising)`
+-------------------------------
+## `` ¨≤ `` (Strict Less Than or Equal To)
+
+Non-vectorising greater than or equal to - useful for lists. Note that all corresponding elements should be of the same type.
+
+### Overloads
+
+- any a, any b: `Non-vectorising greater than or equal to - useful for lists`
 -------------------------------
 ## `` ¨* `` (All Multiples)
 
