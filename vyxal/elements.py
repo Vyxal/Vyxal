@@ -5870,28 +5870,6 @@ def starts_with_set(lhs, rhs, ctx):
     )
 
 
-@element("¨≥", 2)
-def strict_greater_than_or_equal(lhs, rhs, ctx):
-    """Element ¨≥
-    Non-vectorising greater than or equal
-    """
-    ts = vy_type(lhs, rhs)
-    return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs >= rhs)),
-        (NUMBER_TYPE, str): lambda: int(str(lhs) >= rhs),
-        (str, NUMBER_TYPE): lambda: int(lhs >= str(rhs)),
-        (str, str): lambda: int(lhs >= rhs),
-    }.get(
-        ts,
-        lambda: int(
-            bool(
-                LazyList(iterable(lhs, ctx=ctx))
-                >= LazyList(iterable(rhs, ctx=ctx))
-            )
-        ),
-    )()
-
-
 @element("¨>", 2)
 def strict_greater_than(lhs, rhs, ctx):
     """Element ¨>
@@ -5914,23 +5892,23 @@ def strict_greater_than(lhs, rhs, ctx):
     )()
 
 
-@element("¨≤", 2)
-def strict_less_than_or_equal(lhs, rhs, ctx):
-    """Element ¨≤
-    Non-vectorising less than or equal
+@element("¨≥", 2)
+def strict_greater_than_or_equal(lhs, rhs, ctx):
+    """Element ¨≥
+    Non-vectorising greater than or equal
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs <= rhs)),
-        (NUMBER_TYPE, str): lambda: int(str(lhs) <= rhs),
-        (str, NUMBER_TYPE): lambda: int(lhs <= str(rhs)),
-        (str, str): lambda: int(lhs <= rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs >= rhs)),
+        (NUMBER_TYPE, str): lambda: int(str(lhs) >= rhs),
+        (str, NUMBER_TYPE): lambda: int(lhs >= str(rhs)),
+        (str, str): lambda: int(lhs >= rhs),
     }.get(
         ts,
         lambda: int(
             bool(
                 LazyList(iterable(lhs, ctx=ctx))
-                <= LazyList(iterable(rhs, ctx=ctx))
+                >= LazyList(iterable(rhs, ctx=ctx))
             )
         ),
     )()
@@ -5953,6 +5931,28 @@ def strict_less_than(lhs, rhs, ctx):
             bool(
                 LazyList(iterable(lhs, ctx=ctx))
                 < LazyList(iterable(rhs, ctx=ctx))
+            )
+        ),
+    )()
+
+
+@element("¨≤", 2)
+def strict_less_than_or_equal(lhs, rhs, ctx):
+    """Element ¨≤
+    Non-vectorising less than or equal
+    """
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs <= rhs)),
+        (NUMBER_TYPE, str): lambda: int(str(lhs) <= rhs),
+        (str, NUMBER_TYPE): lambda: int(lhs <= str(rhs)),
+        (str, str): lambda: int(lhs <= rhs),
+    }.get(
+        ts,
+        lambda: int(
+            bool(
+                LazyList(iterable(lhs, ctx=ctx))
+                <= LazyList(iterable(rhs, ctx=ctx))
             )
         ),
     )()

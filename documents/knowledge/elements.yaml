@@ -6421,7 +6421,7 @@
     - "[[1, 1, 1], [9, 9, 9]] : 0"
     - "[[1, 2, '3'], [1, 2, '2']] : 1"
     - "[[], []] : 0"
-  
+
 - element: "¨≥"
   name: Strict Greater Than or Equal To
   description: Non-vectorising greater than or equal to - useful for lists. Note that all corresponding elements should be of the same type.
