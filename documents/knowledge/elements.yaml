@@ -6421,6 +6421,18 @@
     - "[[1, 1, 1], [9, 9, 9]] : 0"
     - "[[1, 2, '3'], [1, 2, '2']] : 1"
     - "[[], []] : 0"
+  
+- element: "¨≥"
+  name: Strict Greater Than or Equal To
+  description: Non-vectorising greater than or equal to - useful for lists. Note that all corresponding elements should be of the same type.
+  arity: 2
+  overloads:
+    any-any: Non-vectorising greater than or equal to - useful for lists
+  vectorise: false
+  tests:
+    - "[[1, 1, 1], [9, 9, 9]] : 0"
+    - "[[1, 2, '3'], [1, 2, '2']] : 1"
+    - "[[], []] : 1"
 
 - element: "¨<"
   name: Strict Less Than
@@ -6433,6 +6445,18 @@
     - "[[1, 1, 1], [9, 9, 9]] : 1"
     - "[[1, 2, '3'], [1, 2, '2']] : 0"
     - "[[], []] : 0"
+
+- element: "¨≤"
+  name: Strict Less Than or Equal To
+  description: Non-vectorising greater than or equal to - useful for lists. Note that all corresponding elements should be of the same type.
+  arity: 2
+  overloads:
+    any-any: Non-vectorising greater than or equal to - useful for lists
+  vectorise: false
+  tests:
+    - "[[1, 1, 1], [9, 9, 9]] : 1"
+    - "[[1, 2, '3'], [1, 2, '2']] : 0"
+    - "[[], []] : 1"
 
 - element: "¨*"
   name: All Multiples

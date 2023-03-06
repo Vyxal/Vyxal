@@ -218,11 +218,22 @@ class LazyList:
         # Returns -1 / 0 / 1 depending on whether this is smaller / equal /
         # greater than `other`
 
+        if not other:
+            if not self:
+                return 0
+            else:
+                return 1
+
+        if not self:
+            return -1
+
         # Should work for infinite lists
         self_clone = vyxal.helpers.deep_copy(self)
         other_clone = vyxal.helpers.deep_copy(other)
+
         item = next(self_clone)
         other_item = next(other_clone)
+
         while item == other_item:
             try:
                 item = next(self_clone)
@@ -266,6 +277,10 @@ class LazyList:
                 except StopIteration:
                     return False
             return True
+
+    def has_next(self):
+        """Whether or not this list has a next element"""
+        return self.has_ind(len(self.generated))
 
     def listify(self):
         temp = self.generated[::]
