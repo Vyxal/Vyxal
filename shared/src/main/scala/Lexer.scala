@@ -136,7 +136,7 @@ object Lexer extends RegexParsers:
   private val commandRegex = CODEPAGE
     .replaceAll(raw"[|\[\](){}]", "")
     .replace("^", "\\^")
-  def command: Parser[VyxalToken] = s"[$commandRegex🍪]".r ^^ { value =>
+  def command: Parser[VyxalToken] = s"[$commandRegex🍪ඞ]".r ^^ { value =>
     Command(value)
   }
 
