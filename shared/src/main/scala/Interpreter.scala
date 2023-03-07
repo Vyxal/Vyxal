@@ -28,9 +28,10 @@ object Interpreter:
     if ctx.settings.logLevel == LogLevel.Debug then
       println(s"Executing AST $ast, stack = ${ctx.peek(5)}")
     ast match
-      case AST.Number(value)           => ctx.push(value)
-      case AST.Str(value)              => ctx.push(value)
-      case AST.DictionaryString(value) => ctx.push(StringHelpers.decompress(value))
+      case AST.Number(value) => ctx.push(value)
+      case AST.Str(value)    => ctx.push(value)
+      case AST.DictionaryString(value) =>
+        ctx.push(StringHelpers.decompress(value))
       case AST.Lst(elems) =>
         val list = collection.mutable.ListBuffer.empty[VAny]
         for elem <- elems do
