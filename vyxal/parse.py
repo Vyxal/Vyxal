@@ -486,3 +486,17 @@ def _get_branches(tokens: deque[lexer.Token], bracket_stack: list[str]):
             branches[-1].append(token)
 
     return branches
+
+
+def is_literal(struct: structure.Structure) -> bool:
+    """Returns whether a structure is a literal."""
+    return isinstance(struct, structure.ListLiteral) or (
+        isinstance(struct, structure.GenericStatement)
+        and struct.branches[0][0].name
+        in (
+            lexer.TokenType.NUMBER,
+            lexer.TokenType.STRING,
+            lexer.TokenType.COMPRESSED_NUMBER,
+            lexer.TokenType.COMPRESSED_STRING,
+        )
+    )

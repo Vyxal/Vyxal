@@ -18,7 +18,12 @@ from vyxal.LazyList import *
 
 def run_vyxal(vy_code, inputs=[], *, debug=False):
     ctx = Context()
-    stack = list(map(vyxalify, map(lambda x: vy_eval(x, ctx), inputs)))
+    stack = list(
+        map(
+            vyxalify,
+            map(lambda x: vy_eval(x, ctx) if isinstance(x, str) else x, inputs),
+        )
+    )
     ctx.stacks.append(stack)
 
     py_code = transpile(vy_code)
