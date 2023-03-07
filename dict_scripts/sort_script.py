@@ -4,11 +4,12 @@ with open(r"words.txt", "r", encoding="utf-8") as f:
     lines = f.readlines()
     lines = map(lambda x: x.split(), lines)
     lines = list(filter(lambda x: int(x[1]) > 10, lines))
+    lines = list(filter(lambda x: all(" " <= c <= "~" for c in x[0]), lines))
     short = list(filter(lambda x: len(x) < 6, map(lambda x: x[0], lines)))[
-        :10000
+        :20000
     ]
     long = list(filter(lambda x: len(x) > 5, map(lambda x: x[0], lines)))[
-        :100000
+        :20000
     ]
     print("short length:" + str(len(short)))
     print("long length:" + str(len(long)))
