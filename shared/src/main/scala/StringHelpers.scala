@@ -131,7 +131,7 @@ object StringHelpers:
     }.mkString
 
   // https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L1055
-  def sss(compressed: String)(using ctx: Context): String =
+  def decompress(compressed: String)(using ctx: Context): String =
     val decompressed = StringBuilder()
     val comp = compressed
       .replace('•', '"')
@@ -173,7 +173,7 @@ object StringHelpers:
     end while
 
     decompressed.mkString
-  end sss
+  end decompress
 
   def swapcase(s: String): String =
     s.map { c =>

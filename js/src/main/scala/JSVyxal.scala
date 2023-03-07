@@ -51,7 +51,7 @@ object JSVyxal:
     given Context = Context(globals =
       Globals(shortDictionary = shortDict, longDictionary = longDict)
     )
-    StringHelpers.sss(compressed)
+    StringHelpers.decompress(compressed)
 
   /** Bridge to turn literate code into SBCS */
   @JSExport

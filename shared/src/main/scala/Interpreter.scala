@@ -30,7 +30,7 @@ object Interpreter:
     ast match
       case AST.Number(value)           => ctx.push(value)
       case AST.Str(value)              => ctx.push(value)
-      case AST.DictionaryString(value) => ctx.push(StringHelpers.sss(value))
+      case AST.DictionaryString(value) => ctx.push(StringHelpers.decompress(value))
       case AST.Lst(elems) =>
         val list = collection.mutable.ListBuffer.empty[VAny]
         for elem <- elems do
