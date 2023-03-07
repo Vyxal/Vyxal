@@ -1,5 +1,3 @@
-"""For testing flags"""
-
 from vyxal.main import execute_vyxal
 
 
