@@ -183,7 +183,7 @@ def transpile_token(
             parts = parts + "* I"
 
         return indent_str(
-            f'stack.append(sympy.nsimplify("{parts}", rational=True))', indent
+            f'stack.append(sympy.S("{parts}", rational=True))', indent
         )
     elif token.name == TokenType.GENERAL:
         return indent_str(elements.get(token.value, ("pass\n", -1))[0], indent)
