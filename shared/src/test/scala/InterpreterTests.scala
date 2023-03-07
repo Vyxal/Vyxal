@@ -374,4 +374,25 @@ class InterpreterTests extends VyxalTests:
     }
   }
 
+  describe("String compression") {
+    describe("Dictionary compression") {
+      it("should handle Hello World") {
+        given Context = Context()
+        val compressed = StringHelpers.compressDictionary("Hello World")
+        assertResult("Hello World")(
+          StringHelpers.decompress(compressed.substring(1, compressed.length - 1))
+        )
+      }
+      it("should handle a really long string", Slow) {
+        given Context = Context()
+        val temp =
+          "We're no strangers to love. You know the rules and so do I. A full commitment's what I'm thinking of. You wouldn't get this from any other guy."
+        val compressed = StringHelpers.compressDictionary(temp)
+        assertResult(temp)(
+          StringHelpers.decompress(compressed.substring(1, compressed.length - 1))
+        )
+      }
+    }
+  }
+
 end InterpreterTests

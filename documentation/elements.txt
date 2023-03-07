@@ -7,6 +7,10 @@ Keywords: fact, factorial, to-upper, upper, uppercase, !
 - a: num -> a!
 - a: str -> a.toUpperCase()
 ---------------------
+#C (Compress String Using Dictionary) (non-vectorising)
+Keywords: compress-dict, dict-comp, compress
+- a: str -> compress a using the dictionary
+---------------------
 #v (Vectorise (Element Form) [Internal Use]) (non-vectorising)
 Keywords: 
 - *a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead

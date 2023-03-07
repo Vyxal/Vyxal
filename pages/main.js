@@ -753,6 +753,7 @@ window.addEventListener("DOMContentLoaded", e => {
                 (e_footer.doc.getValue() ? '\n' + e_footer.doc.getValue() : ''),
             "inputs": $('inputs').value,
             "flags": $('flag').value,
+            "dictionary": dictionary,
             "session": sessioncode
         })
 
