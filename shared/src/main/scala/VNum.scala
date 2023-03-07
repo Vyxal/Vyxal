@@ -31,7 +31,8 @@ class VNum private (val underlying: Complex[Real]):
 
   override def toString =
     if this.imag == 0 then this.real.getString(Real.digits)
-    else s"${this.real.getString(Real.digits)}ı${this.imag.getString(Real.digits)}"
+    else
+      s"${this.real.getString(Real.digits)}ı${this.imag.getString(Real.digits)}"
 
   override def equals(obj: Any) = obj match
     case n: VNum =>
