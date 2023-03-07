@@ -10,10 +10,6 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 
 import org.scalajs.linker.interface.OutputPatterns
 
-// From https://www.scalatest.org/user_guide/using_the_runner
-// Suppress output from successful tests
-Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-oNCXELOPQRM")
-
 lazy val root: Project = project
   .in(file("."))
   .aggregate(vyxal.js, vyxal.jvm, vyxal.native)
@@ -62,19 +58,23 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "-external-mappings:.*scala.util.parsing.*::scaladoc3::https://scala-lang.org/api/2.12.8/scala-parser-combinators/",
       "-external-mappings:.*scala(?!.util.parsing).*::scaladoc3::https://scala-lang.org/api/3.x/",
       "-external-mappings:.*java.*::javadoc::https://docs.oracle.com/javase/8/docs/api/"
-    )
+    ),
+    // From https://www.scalatest.org/user_guide/using_the_runner
+    // Suppress output from successful tests
+    Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-oNCXELOPQRM")
   )
   .jvmSettings(
     // JVM-specific settings
     Compile / mainClass := Some("vyxal.Main"),
     assembly / mainClass := Some("vyxal.Main"),
-    assembly / assemblyJarName := s"vyxal-$vyxalVersion.jar"
+    assembly / assemblyJarName := s"vyxal-$vyxalVersion.jar",
+    // Necessary for tests to be able to access src/main/resources
+    Test / fork := true,
   )
   .jsSettings(
     // JS-specific settings
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "2.4.0",
-      "com.github.scopt" %%% "scopt" % "4.1.0"
+      "org.scala-js" %%% "scalajs-dom" % "2.4.0"
     ),
     // Where the compiled JS is output
     Compile / fastOptJS / artifactPath := baseDirectory.value.getParentFile / "pages" / "vyxal.js",
@@ -82,4 +82,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   )
   .nativeSettings(
     // Scala Native-specific settings
+    nativeConfig ~= {
+      _.withEmbedResources(true)
+    },
   )

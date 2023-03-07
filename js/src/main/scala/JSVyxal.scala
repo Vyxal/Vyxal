@@ -9,6 +9,12 @@ import scala.scalajs.js.JSConverters.*
 /** A bridge between the interpreter and JS */
 @JSExportTopLevel("Vyxal")
 object JSVyxal:
+
+  @JSExport
+  var shortDict: Seq[String] = Seq()
+  @JSExport
+  var longDict: Seq[String] = Seq()
+
   @JSExport
   def execute(
       code: String,
@@ -21,7 +27,9 @@ object JSVyxal:
     val globals = Globals(
       settings = settings,
       printFn = printFunc,
-      inputs = Inputs(inputs.split("\n").map(Parser.parseInput).toSeq)
+      inputs = Inputs(inputs.split("\n").map(Parser.parseInput).toSeq),
+      shortDictionary = shortDict,
+      longDictionary = longDict
     )
 
     val ctx = Context(
@@ -30,6 +38,20 @@ object JSVyxal:
     )
     Interpreter.execute(code, literate = flags.contains("l"))(using ctx)
   end execute
+
+  @JSExport
+  def compress(text: String): String =
+    given Context = Context(globals =
+      Globals(shortDictionary = shortDict, longDictionary = longDict)
+    )
+    StringHelpers.compressDictionary(text)
+
+  @JSExport
+  def decompress(compressed: String): String =
+    given Context = Context(globals =
+      Globals(shortDictionary = shortDict, longDictionary = longDict)
+    )
+    StringHelpers.decompress(compressed)
 
   /** Bridge to turn literate code into SBCS */
   @JSExport
@@ -69,5 +91,13 @@ object JSVyxal:
         "keywords" -> info.keywords.toJSArray,
       )
     }.toJSArray
+
+  @JSExport
+  def setShortDict(dict: js.Array[String]): Unit =
+    shortDict = dict.toSeq
+
+  @JSExport
+  def setLongDict(dict: js.Array[String]): Unit =
+    longDict = dict.toSeq
 
 end JSVyxal

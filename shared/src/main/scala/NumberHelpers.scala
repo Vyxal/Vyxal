@@ -1,11 +1,31 @@
 package vyxal
 
 import vyxal.*
+import vyxal.impls.Elements
 
 import scala.collection.mutable.ListBuffer
 import scala.math
 
 object NumberHelpers:
+
+  def fromBase(a: VAny, b: VAny)(using ctx: Context): VAny =
+    (a, b) match
+      case (a: VNum, b: VNum)     => toInt(a.toString(), b.toInt)
+      case (n: VNum, _)           => fromBase(b, a)
+      case (a: String, b: String) => fromBaseAlphabet(a, b)
+      case _ => fromBaseDigits(ListHelpers.makeIterable(a), b)
+
+  /** Returns value in base 10 using base len(alphabet) [bijective base] */
+  def fromBaseAlphabet(value: String, alphabet: String): VAny =
+    value.foldLeft(VNum(0)) { (ret, digit) =>
+      alphabet.size * ret + alphabet.indexOf(digit): VNum
+    }
+
+  /** Returns digits in base 10 using arbitrary base `base` */
+  def fromBaseDigits(digits: VList, base: VAny)(using ctx: Context): VAny =
+    digits.foldLeft(VNum(0): VAny) { (ret, digit) =>
+      MiscHelpers.add(MiscHelpers.multiply(base, ret), digit)
+    }
 
   def fromBinary(a: VAny)(using ctx: Context): VAny =
     a match
