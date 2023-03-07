@@ -1,13 +1,5 @@
 """For testing flags"""
 
-import multiprocessing
-import os
-import sys
-import sympy
-
-THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
-sys.path.insert(1, THIS_FOLDER)
-
 from vyxal.main import execute_vyxal
 
 
