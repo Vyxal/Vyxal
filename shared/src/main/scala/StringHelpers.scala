@@ -172,7 +172,7 @@ object StringHelpers:
       end if
     end while
 
-    decompressed.mkString
+    decompressed.mkString.replace("¦", "\n")
   end decompress
 
   def swapcase(s: String): String =
