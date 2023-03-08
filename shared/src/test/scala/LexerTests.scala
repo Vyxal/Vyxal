@@ -22,6 +22,8 @@ class LexerTests extends VyxalTests:
         testLex("3.4ı", List(Number("3.4ı")))
         testLex(".4", List(Number(".4")))
         testLex(".", List(Number(".")))
+        testLex("1_000_000", List(Number("1000000")))
+        testLex("1_0___0", List(Number("100")))
       }
     }
   }

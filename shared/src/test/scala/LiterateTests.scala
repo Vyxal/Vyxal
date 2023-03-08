@@ -21,6 +21,8 @@ class LiterateTests extends VyxalTests:
         testLiteral("3.4i", "3.4ı")
         testLiteral(".4", ".4")
         testLiteral(".", ".")
+        testLiteral("1_000_000", "1000000")
+        testLiteral("1_0______0", "100")
       }
     }
 
