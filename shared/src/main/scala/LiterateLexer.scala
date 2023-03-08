@@ -89,12 +89,12 @@ object LiterateLexer extends RegexParsers:
   override def skipWhitespace = true
   override val whiteSpace: Regex = "[ \t\r\f]+".r
 
-  private def decimalRegex = raw"((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)"
+  private def decimalRegex = raw"((0|[1-9][0-9_]*)?\.[0-9]*|0|[1-9][0-9_]*)"
   def number: Parser[LiterateToken] =
     raw"(${decimalRegex}i$decimalRegex?)|(i$decimalRegex)|$decimalRegex|(i( |$$))".r ^^ {
       value =>
         Number(
-          value.replace("i", "ı")
+          value.replace("i", "ı").replace("_", "")
         )
     }
 
