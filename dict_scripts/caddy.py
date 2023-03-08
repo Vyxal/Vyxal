@@ -37,3 +37,17 @@ for short, long in CARTESIAN_PRODUCT:
     print(
         f"greatest difference: {max(differences_in_lengths)}, smallest difference: {min(differences_in_lengths)}, avg: {sum(differences_in_lengths) / len(differences_in_lengths)}"
     )
+
+    print(
+        "string shortest than jelly: "
+        + corpus.STRINGS[
+            differences_in_lengths.index(max(differences_in_lengths))
+        ][0][:30].replace("\n", "\\n")
+    )
+
+    print(
+        "string least shortest than jelly: "
+        + corpus.STRINGS[
+            differences_in_lengths.index(min(differences_in_lengths))
+        ][0][:30].replace("\n", "\\n")
+    )
