@@ -127,10 +127,14 @@ object Lexer extends RegexParsers:
   def listClose: Parser[VyxalToken] = """(#\])|⟩""".r ^^^ ListClose
 
   def multigraph: Parser[VyxalToken] =
-    "([∆øÞk].)|(#:\\[)|(#[:.,]?[^\\[\\]$!=#>@{])".r ^^ { value =>
+    "([∆øÞk].)|(#:\\[)|(#(([:.,^].)|([^\\[\\]$!=#>@{])))".r ^^ { value =>
       if value.length == 2 then processDigraph(value)
       else if value.charAt(1) == ':' then SyntaxTrigraph(value)
-      else SugarTrigraph(value)
+      else
+        val temp = SugarMap(value)
+        apply(temp) match
+          case Left(value)  => Command(temp)
+          case Right(value) => value(0)
     }
 
   private val commandRegex = CODEPAGE

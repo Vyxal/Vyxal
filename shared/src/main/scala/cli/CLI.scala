@@ -27,6 +27,7 @@ object CLI:
       code: Option[String] = None,
       inputs: List[String] = List.empty,
       printDocs: Boolean = false,
+      printSugar: Boolean = false,
       litInfoFor: Option[String] = None,
       printHelp: Boolean = false,
       runLiterate: Boolean = false,
@@ -50,6 +51,10 @@ object CLI:
 
         if config.printDocs then
           printDocs()
+          return
+
+        if config.printSugar then
+          printSugar()
           return
 
         if config.litInfoFor.nonEmpty then
@@ -130,6 +135,10 @@ object CLI:
     }
   end printDocs
 
+  private def printSugar(): Unit =
+    val sugar = SugarMap.internalMap
+    sugar.foreach((key, value) => println(s"$key -> $value"))
+
   private val builder = OParser.builder[CLIConfig]
 
   private val parser =
@@ -164,6 +173,10 @@ object CLI:
       opt[String]('D', "docsLiterate")
         .action((symbol, cfg) => cfg.copy(litInfoFor = Some(symbol)))
         .text("Print literate mode mappings and exit")
+        .optional(),
+      opt[String]('#', "sugar")
+        .action((_, cfg) => cfg.copy(printSugar = true))
+        .text("Print sugar mappings and exit")
         .optional(),
       opt[Unit]('l', "literate")
         .action((_, cfg) => cfg.copy(runLiterate = true))
