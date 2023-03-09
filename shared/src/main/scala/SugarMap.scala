@@ -3,8 +3,8 @@ object SugarMap:
   def internalMap: Map[String, String] =
     val out = Map.newBuilder[String, String]
 
-    val lowerUpdot = "abcdefghlmnoprsx" -> "ȧḃċḋėḟġḣŀṁṅȯṗṙṡṫẋ"
-    val upperUpdot = "ABCDEFGHLMNOPRSTWX" -> "ȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊ"
+    val lowerUpdot = "abcdefghlmnoprstx" -> "ȧḃċḋėḟġḣŀṁṅȯṗṙṡṫẋ"
+    val upperUpdot = "ABCDEFGHILMNOPRSTWX" -> "ȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊ"
     val upperDowndot = "BDHILMNORST" -> "ḄḌḤỊḶṂṆỌṚṢṬ"
     val subscriptNumbers = "0123456789" -> "₀₁₂₃₄₅₆₇₈₉"
     val commaExtra = "<>+=o(*:v!/{(~&|\"\n." -> "≤≥±₌§∑√∵⊻¬ø₳µɾ∧∨„¶•"
