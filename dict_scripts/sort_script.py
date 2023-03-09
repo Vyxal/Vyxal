@@ -41,4 +41,4 @@ def gen(shortlen, longlen):
 
 
 if __name__ == "__main__":
-    gen(5000, 69420)
+    gen(10000, 50000)
