@@ -26,7 +26,7 @@ def gen(shortlen, longlen):
 
     # import dictionary
     # turn off while testing
-    """
+
     with open("ShortDictionary.txt", "w", encoding="utf-8") as out:
         out.write("\n".join(short))
 
@@ -36,6 +36,9 @@ def gen(shortlen, longlen):
     with open("dictionary.js", "w", encoding="utf-8") as out:
         out.write("const dictionary = ")
         out.write(json.dumps({"short": short, "long": long}))
-    """
 
     return {"short": short, "long": long}
+
+
+if __name__ == "__main__":
+    gen(5000, 69420)
