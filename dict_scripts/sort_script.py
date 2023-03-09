@@ -9,20 +9,16 @@ def gen(shortlen, longlen):
         "r",
         encoding="utf-8",
     ) as f:
-        lines = f.readlines()
-        lines = map(lambda x: x.split(), lines)
-        lines = list(filter(lambda x: int(x[1]) > 10, lines))
-        lines = list(
-            filter(lambda x: all(" " <= c <= "~" for c in x[0]), lines)
-        )
-        short = list(filter(lambda x: len(x) < 6, map(lambda x: x[0], lines)))[
-            :shortlen
+        lines = map(str.split, f.readlines())
+        lines = [
+            x
+            for x in lines
+            if int(x[1]) > 10 and all(" " <= c <= "~" for c in x[0])
         ]
-        long = list(filter(lambda x: len(x) > 5, map(lambda x: x[0], lines)))[
-            :longlen
-        ]
-        # print("short length:" + str(len(short)))
-        # print("long length:" + str(len(long)))
+        short = [x[0] for x in lines if len(x[0]) < 6][:shortlen]
+        long = [x[0] for x in lines if len(x[0]) > 5][:longlen]
+        print("short length:" + str(len(short)))
+        print("long length:" + str(len(long)))
 
     # import dictionary
     # turn off while testing
@@ -34,9 +30,10 @@ def gen(shortlen, longlen):
         out.write("\n".join(long))
 
     with open("dictionary.js", "w", encoding="utf-8") as out:
-        out.write("const dictionary = ")
-        out.write(json.dumps({"short": short, "long": long}))
-
+        out.write(
+            "const dictionary={short:%s.split('|'),long:%s.split('|')}"
+            % (json.dumps("|".join(short)), json.dumps("|".join(long)))
+        )
     return {"short": short, "long": long}
 
 
