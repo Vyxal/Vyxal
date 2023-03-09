@@ -174,7 +174,7 @@ object CLI:
         .action((symbol, cfg) => cfg.copy(litInfoFor = Some(symbol)))
         .text("Print literate mode mappings and exit")
         .optional(),
-      opt[String]('#', "sugar")
+      opt[Unit]('#', "sugar")
         .action((_, cfg) => cfg.copy(printSugar = true))
         .text("Print sugar mappings and exit")
         .optional(),
