@@ -137,3 +137,8 @@ def test_multiline_comments():
     )
     assert token_equal("#{#", [])
     assert token_equal("#{}", [])
+
+
+def test_underscored_numbers():
+    assert token_equal("1_000_000", [Token(TokenType.NUMBER, "1000000")])
+    assert token_equal("1_0______0", [Token(TokenType.NUMBER, "100")])
