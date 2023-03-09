@@ -23,4 +23,4 @@ jobs:
     - name: Commit and push
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: "Refresh element documentation from recent commit"
+        commit_message: "Refresh sugar documentation from recent commit"
