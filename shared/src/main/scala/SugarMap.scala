@@ -39,6 +39,7 @@ object SugarMap:
 
     out.result()
   end internalMap
+
   def apply(trigraph: String): String =
     internalMap.get(trigraph) match
       case Some(value) => value
