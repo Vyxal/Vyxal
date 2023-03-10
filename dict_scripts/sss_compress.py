@@ -57,7 +57,7 @@ def g(s, d):
         return "“{0}»".format("".join(compressed[::-1]))
 
     def optimal(str):
-        dp = [0] * -~len(str)
+        dp = [0] * (len(str) + 1)
         for i in range(len(str) - 1, -1, -1):
             dp[i] = character(dp[i + 1], str[i])
             for j in range(1, min(len(dp) - i, end_len)):
