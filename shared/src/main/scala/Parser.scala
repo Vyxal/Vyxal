@@ -51,7 +51,6 @@ object Parser:
         case VyxalToken.DictionaryString(value) =>
           asts.push(AST.DictionaryString(value))
         case VyxalToken.Newline => asts.push(AST.Newline)
-        case VyxalToken.Sugared => asts.push(AST.Sugared)
         case VyxalToken.StructureOpen(open) =>
           parseStructure(open, program) match
             case Right(ast) => asts.push(ast)

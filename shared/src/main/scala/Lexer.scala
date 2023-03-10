@@ -203,10 +203,8 @@ object Lexer extends RegexParsers:
 
   def apply(code: String): Either[VyxalCompilationError, List[VyxalToken]] =
     (parse(tokens, code): @unchecked) match
-      case NoSuccess(msg, next) => Left(VyxalCompilationError(msg))
-      case Success(result, next) =>
-        if sugared then Right(result :+ Sugared)
-        else Right(result)
+      case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
+      case Success(result, next) => Right(result)
 
   def processDigraph(digraph: String): VyxalToken =
     if Elements.elements.contains(digraph) then Command(digraph)
