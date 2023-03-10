@@ -27,6 +27,7 @@ object CLI:
       code: Option[String] = None,
       inputs: List[String] = List.empty,
       printDocs: Boolean = false,
+      printSugar: Boolean = false,
       litInfoFor: Option[String] = None,
       printHelp: Boolean = false,
       runLiterate: Boolean = false,
