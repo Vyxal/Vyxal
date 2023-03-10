@@ -74,7 +74,7 @@ val SPECIAL_MODIFIERS = "ᵗᵜ"
 object Lexer extends RegexParsers:
   override def skipWhitespace = true
   override val whiteSpace: Regex = "[ \t\r\f]+".r
-
+  var sugarUsed = false
   private def decimalRegex = raw"((0|[1-9][0-9_]*)?\.[0-9]*|0|[1-9][0-9_]*)"
   def number: Parser[VyxalToken] =
     raw"($decimalRegex?ı$decimalRegex?)|$decimalRegex".r ^^ { value =>
@@ -132,6 +132,7 @@ object Lexer extends RegexParsers:
       if value.length == 2 then processDigraph(value)
       else if value.charAt(1) == ':' then SyntaxTrigraph(value)
       else
+        sugarUsed = true
         val temp = SugarMap(value)
         apply(temp) match
           case Left(value)  => Command(temp)
@@ -215,4 +216,9 @@ object Lexer extends RegexParsers:
         case -1    => SpecialModifier(digraph)
         case arity => throw Exception(s"Invalid modifier arity: $arity")
     else Digraph(digraph)
+
+  def hasSugar(code: String): Boolean =
+    sugarUsed = false
+    apply(code)
+    sugarUsed
 end Lexer

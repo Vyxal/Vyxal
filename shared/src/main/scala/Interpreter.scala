@@ -15,6 +15,7 @@ object Interpreter:
     val sbcsified = if literate then LiterateLexer.litLex(code) else code
     Parser.parse(sbcsified) match
       case Right(ast) =>
+        if Lexer.hasSugar(sbcsified) then ctx.globals.printFn(ast.toVyxal)
         if ctx.settings.logLevel == LogLevel.Debug then
           println(s"Executing '$code' (ast: $ast)")
         execute(ast)
@@ -23,6 +24,7 @@ object Interpreter:
         then vyPrintln(ctx.peek)
       case Left(error) =>
         throw new Error(s"Error while executing $code: $error")
+  end execute
 
   def execute(ast: AST)(using ctx: Context): Unit =
     if ctx.settings.logLevel == LogLevel.Debug then

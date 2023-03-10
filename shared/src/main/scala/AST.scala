@@ -56,7 +56,18 @@ enum AST(val arity: Option[Int]):
     case Str(value)      => s"\"$value\""
     case Lst(elems)      => elems.map(_.toVyxal).mkString("#[", "|", "#]")
     case Command(value)  => value
-    case Group(elems, _) => elems.map(_.toVyxal).mkString
+    case Group(elems, _) =>
+      // replace instances of Number, Number with Number, Space, Number
+      elems
+        .groupBy(_ match
+          case Number(_) => true
+          case _         => false
+        )
+        .map((k, v) =>
+          if k then v.map(_.toVyxal).mkString(" ")
+          else v.map(_.toVyxal).mkString
+        )
+        .mkString
     // case SpecialModifier(modi, value) => s"$modi"
     // ^ Might not need this because it'll be converted into different ASTs
     case CompositeNilad(elems)       => elems.map(_.toVyxal).mkString
