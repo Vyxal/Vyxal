@@ -123,6 +123,20 @@ class LexerTests extends VyxalTests:
     }
   }
 
+  describe("Sugar Trigraphs") {
+    it("should turn them into normal form") {
+      testLex(
+        "5 #.[5+",
+        List(
+          Number("5"),
+          StructureOpen(StructureType.LambdaMap),
+          Number("5"),
+          Command("+"),
+        )
+      )
+    }
+  }
+
   describe("Complex tests") {
     it("should understand a basic series of tokens") {
       testLex("1 1 +", List(Number("1"), Number("1"), Command("+")))
