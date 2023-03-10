@@ -93,6 +93,9 @@ object CLI:
         println(s"Error: ${e.getMessage()}")
         e.printStackTrace()
 
+  private def printSugar(): Unit =
+    val sugar = SugarMap.internalMap
+    sugar.foreach((key, value) => println(s"$key -> $value"))
   private def printDocs(): Unit =
     Elements.elements.values.toSeq
       .sortBy { elem =>
@@ -164,6 +167,10 @@ object CLI:
       opt[String]('D', "docsLiterate")
         .action((symbol, cfg) => cfg.copy(litInfoFor = Some(symbol)))
         .text("Print literate mode mappings and exit")
+        .optional(),
+      opt[Unit]('#', "sugar")
+        .action((_, cfg) => cfg.copy(printSugar = true))
+        .text("Print sugar mappings and exit")
         .optional(),
       opt[Unit]('l', "literate")
         .action((_, cfg) => cfg.copy(runLiterate = true))
