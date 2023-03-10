@@ -52,9 +52,9 @@ object CLI:
         if config.printDocs then
           printDocs()
           return
-          
+
         if config.printSugar then
-          printSugar() 
+          printSugar()
           return
 
         if config.litInfoFor.nonEmpty then
