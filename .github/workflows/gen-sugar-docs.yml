@@ -14,7 +14,7 @@ jobs:
       with:
         java-version: '17'
         distribution: 'adopt'
-    - name: Create elements.txt
+    - name: Create trigraphs.txt
       run: |
         sbt vyxalJVM/assembly
         java -jar jvm/target/scala-*/vyxal-*.jar --sugar > documentation/trigraphs.txt
