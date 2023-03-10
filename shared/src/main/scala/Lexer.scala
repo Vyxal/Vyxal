@@ -41,6 +41,7 @@ enum VyxalToken(val value: String):
   case UnpackVar(override val value: String) extends VyxalToken(value)
   case Branch extends VyxalToken("|")
   case Newline extends VyxalToken("\n")
+  case Sugared extends VyxalToken("")
 end VyxalToken
 
 enum StructureType(val open: String):
@@ -73,6 +74,8 @@ val SPECIAL_MODIFIERS = "ᵗᵜ"
 object Lexer extends RegexParsers:
   override def skipWhitespace = true
   override val whiteSpace: Regex = "[ \t\r\f]+".r
+
+  private var sugared: Boolean = false
 
   private def decimalRegex = raw"((0|[1-9][0-9_]*)?\.[0-9]*|0|[1-9][0-9_]*)"
   def number: Parser[VyxalToken] =
@@ -131,6 +134,7 @@ object Lexer extends RegexParsers:
       if value.length == 2 then processDigraph(value)
       else if value.charAt(1) == ':' then SyntaxTrigraph(value)
       else
+        sugared = true
         val temp = SugarMap(value)
         apply(temp) match
           case Left(value)  => Command(temp)
@@ -199,8 +203,10 @@ object Lexer extends RegexParsers:
 
   def apply(code: String): Either[VyxalCompilationError, List[VyxalToken]] =
     (parse(tokens, code): @unchecked) match
-      case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
-      case Success(result, next) => Right(result)
+      case NoSuccess(msg, next) => Left(VyxalCompilationError(msg))
+      case Success(result, next) =>
+        if sugared then Right(result :+ Sugared)
+        else Right(result)
 
   def processDigraph(digraph: String): VyxalToken =
     if Elements.elements.contains(digraph) then Command(digraph)
