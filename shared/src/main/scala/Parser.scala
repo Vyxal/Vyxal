@@ -85,6 +85,7 @@ object Parser:
         case VyxalToken.TetradicModifier(v) =>
           asts.push(AST.JunkModifier(v, 4))
         case VyxalToken.SpecialModifier(v) => asts.push(AST.SpecialModifier(v))
+        case VyxalToken.Comment(_)         => None
         case VyxalToken.ContextIndex(value) =>
           asts.push(
             AST.ContextIndex(if value.nonEmpty then value.toInt else -1)
