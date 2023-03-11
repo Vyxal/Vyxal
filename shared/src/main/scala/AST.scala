@@ -59,10 +59,10 @@ enum AST(val arity: Option[Int]):
     case Group(elems, _) =>
       // replace instances of Number, Number with Number, Space, Number
       elems
-        .groupBy(_ match
+        .groupBy {
           case Number(_) => true
           case _         => false
-        )
+        }
         .map((k, v) =>
           if k then v.map(_.toVyxal).mkString(" ")
           else v.map(_.toVyxal).mkString
