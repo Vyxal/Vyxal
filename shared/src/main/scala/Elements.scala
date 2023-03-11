@@ -663,8 +663,8 @@ object Elements:
       List("two^", "two**", "eval"),
       "a: num -> 2^a",
       "a: str -> evaluate (not execute) a"
-    ) { case a: VNum =>
-      exponentation(VNum(2), a)
+    ) {
+      case a: VNum   => exponentation(VNum(2), a)
       case a: String => MiscHelpers.eval(a)
     }
 

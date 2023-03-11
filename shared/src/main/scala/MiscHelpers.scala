@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.Interpreter.executeFn
+import vyxal.Lexer.decimalRegex
 import vyxal.VNum.given
 
 import scala.collection.mutable.ListBuffer
@@ -57,6 +58,22 @@ object MiscHelpers:
         result = compareExact(aIter(ind), bIter(ind))
         ind += 1
       return result
+
+  def eval(s: String): VAny =
+    if s.matches(raw"($decimalRegex?ı$decimalRegex?)|$decimalRegex") then
+      VNum(s)
+    else if s.matches(raw"""("(?:[^"\\]|\\.)*["])""") then s.substring(1).tail
+    else if LiterateLexer.isList(s) then
+      val tempContext = Context()
+      val lambdaAST = Parser.parse(LiterateLexer.litLex(s)) match
+        case Right(x) => x
+        case Left(_)  => throw new Exception("Failed to parse list")
+      Interpreter.executeFn(
+        VFun.fromLambda(AST.Lambda(0, List(), List(lambdaAST)))(using
+          tempContext
+        )
+      )(using tempContext)
+    else s
 
   def firstNonNegative(f: VFun)(using ctx: Context): Int =
     var i = 0
