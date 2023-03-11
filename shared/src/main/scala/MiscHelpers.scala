@@ -62,7 +62,7 @@ object MiscHelpers:
   def eval(s: String): VAny =
     if s.matches(raw"-?($decimalRegex?ı$decimalRegex?)|-?$decimalRegex") then
       VNum(s)
-    else if s.matches(raw"""("(?:[^"\\]|\\.)*["])""") then s.substring(1).tail
+    else if s.matches(raw"""("(?:[^"\\]|\\.)*["])""") then s.substring(1).init
     else if LiterateLexer.isList(s) then
       val tempContext = Context()
       val lambdaAST = Parser.parse(LiterateLexer.litLex(s)) match
