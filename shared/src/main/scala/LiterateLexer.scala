@@ -124,8 +124,14 @@ object LiterateLexer extends RegexParsers:
     }
 
   def list: Parser[LiterateToken] =
-    "[" ~> repsep(list | """[^\]\[|]+""".r, "|") <~ "]" ^^ { body =>
+    "[" ~> repsep(list | """[^\]\[|,]+""".r, "[|,]".r) <~ "]" ^^ { body =>
       ListToken(body)
+    }
+
+  def isList(code: String): Boolean =
+    apply(code).getOrElse(Nil).exists {
+      case ListToken(_) => true
+      case _            => false
     }
 
   def word: Parser[LiterateToken] =

@@ -656,6 +656,18 @@ object Elements:
           ctx.push(a, a, a)
       }
 
+    val twoPower = addVect(
+      Monad,
+      "E",
+      "2 Power | Evaluate",
+      List("two^", "two**", "eval"),
+      "a: num -> 2^a",
+      "a: str -> evaluate (not execute) a"
+    ) {
+      case a: VNum   => exponentation(VNum(2), a)
+      case a: String => MiscHelpers.eval(a)
+    }
+
     val vectoriseAsElement = addDirect(
       "#v",
       "Vectorise (Element Form) [Internal Use]",

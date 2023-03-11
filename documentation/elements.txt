@@ -106,6 +106,11 @@ D (Triplicate) (non-vectorising)
 Keywords: trip
 - a -> [a, a, a]
 ---------------------
+E (2 Power | Evaluate) (vectorising)
+Keywords: two^, two**, eval
+- a: num -> 2^a
+- a: str -> evaluate (not execute) a
+---------------------
 F (Filter by Function | From Base) (non-vectorising)
 Keywords: filter, keep-by, from-base, 10->b
 - a: fun, b: lst -> Filter b by truthy results of a

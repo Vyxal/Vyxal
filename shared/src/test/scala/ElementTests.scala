@@ -326,6 +326,34 @@ class ElementTests extends VyxalTests:
     }
   }
 
+  describe("Element E") {
+    describe("when given a number") {
+      testMulti("E")(
+        List[VAny](1) -> VNum(2),
+        List[VAny](2) -> VNum(4),
+        List[VAny](3) -> VNum(8),
+        List[VAny](4) -> VNum(16),
+        List[VAny](VNum("6.9")) -> VNum(
+          "119.4282229167113492456119380671925973794854"
+        ),
+        List[VAny](VNum(-234)) -> VNum(0)
+      )
+    }
+
+    describe("when given a string") {
+      testMulti("E")(
+        List[VAny]("1") -> VNum(1),
+        List[VAny]("2") -> VNum(2),
+        List[VAny]("3243") -> VNum(3243),
+        List[VAny]("-234") -> VNum(-234),
+        List[VAny]("0") -> VNum(0),
+        List[VAny]("[1, 2, 3, 4, 5, 6]") -> VList(1, 2, 3, 4, 5, 6),
+        List[VAny]("[]") -> VList(),
+        List[VAny]("\"lol\"") -> String("lol")
+      )
+    }
+  }
+
   describe("Element M") {
     describe("when given two lists") {
       testMulti("M")(
