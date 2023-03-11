@@ -41,7 +41,5 @@ object SugarMap:
   end internalMap
 
   def apply(trigraph: String): String =
-    internalMap.get(trigraph) match
-      case Some(value) => value
-      case None        => trigraph
+    internalMap.getOrElse(trigraph, trigraph)
 end SugarMap
