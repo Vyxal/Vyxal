@@ -63,10 +63,10 @@ enum AST(val arity: Option[Int]):
           case Number(_) => true
           case _         => false
         }
-        .map((k, v) =>
+        .map { (k, v) =>
           if k then v.map(_.toVyxal).mkString(" ")
           else v.map(_.toVyxal).mkString
-        )
+        }
         .mkString
     // case SpecialModifier(modi, value) => s"$modi"
     // ^ Might not need this because it'll be converted into different ASTs
