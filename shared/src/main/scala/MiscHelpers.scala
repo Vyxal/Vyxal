@@ -60,7 +60,7 @@ object MiscHelpers:
       return result
 
   def eval(s: String): VAny =
-    if s.matches(raw"($decimalRegex?ı$decimalRegex?)|$decimalRegex") then
+    if s.matches(raw"-?($decimalRegex?ı$decimalRegex?)|-?$decimalRegex") then
       VNum(s)
     else if s.matches(raw"""("(?:[^"\\]|\\.)*["])""") then s.substring(1).tail
     else if LiterateLexer.isList(s) then
