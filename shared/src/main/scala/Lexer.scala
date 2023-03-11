@@ -74,6 +74,7 @@ val SPECIAL_MODIFIERS = "ᵗᵜ"
 object Lexer extends RegexParsers:
   override def skipWhitespace = true
   override val whiteSpace: Regex = "[ \t\r\f]+".r
+
   /** Whether the code lexed so far has sugar trigraphs */
   private var sugarUsed = false
   private def decimalRegex = raw"((0|[1-9][0-9_]*)?\.[0-9]*|0|[1-9][0-9_]*)"
