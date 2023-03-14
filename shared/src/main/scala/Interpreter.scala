@@ -12,6 +12,7 @@ object Interpreter:
   def execute(code: String, literate: Boolean = false)(using
       ctx: Context
   ): Unit =
+    if !Dictionary.initalised then throw new Error("Dictionary not initalised")
     val sbcsified = if literate then LiterateLexer.litLex(code) else code
     Parser.parse(sbcsified) match
       case Right(ast) =>
@@ -23,6 +24,7 @@ object Interpreter:
         then vyPrintln(ctx.peek)
       case Left(error) =>
         throw new Error(s"Error while executing $code: $error")
+  end execute
 
   def execute(ast: AST)(using ctx: Context): Unit =
     if ctx.settings.logLevel == LogLevel.Debug then
