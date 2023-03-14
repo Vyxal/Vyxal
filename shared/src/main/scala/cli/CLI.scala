@@ -78,11 +78,6 @@ object CLI:
             source.close()
         }
 
-        Dictionary.initalise(
-          readResource(ShortDictionaryFile),
-          readResource(LongDictionaryFile)
-        )
-
         config.code.foreach { code => runCode(code, config.runLiterate) }
 
         if config.filename.nonEmpty || config.code.nonEmpty then return
@@ -97,15 +92,6 @@ object CLI:
       case e: Error =>
         println(s"Error: ${e.getMessage()}")
         e.printStackTrace()
-
-  private val ShortDictionaryFile = "/ShortDictionary.txt"
-  private val LongDictionaryFile = "/LongDictionary.txt"
-
-  private def readResource(path: String) =
-    io.Source
-      .fromInputStream(getClass.getResourceAsStream(path))
-      .getLines()
-      .toSeq
 
   private def printDocs(): Unit =
     Elements.elements.values.toSeq
