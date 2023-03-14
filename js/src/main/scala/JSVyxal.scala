@@ -28,9 +28,9 @@ object JSVyxal:
       settings = settings,
       printFn = printFunc,
       inputs = Inputs(inputs.split("\n").map(Parser.parseInput).toSeq),
-      shortDictionary = shortDict,
-      longDictionary = longDict
     )
+
+    Dictionary.initalise(shortDict, longDict)
 
     val ctx = Context(
       inputs = inputs.split("\n").map(Parser.parseInput).toIndexedSeq,
@@ -41,16 +41,14 @@ object JSVyxal:
 
   @JSExport
   def compress(text: String): String =
-    given Context = Context(globals =
-      Globals(shortDictionary = shortDict, longDictionary = longDict)
-    )
+    if !Dictionary.initalised then Dictionary.initalise(shortDict, longDict)
+    given Context = Context()
     StringHelpers.compressDictionary(text)
 
   @JSExport
   def decompress(compressed: String): String =
-    given Context = Context(globals =
-      Globals(shortDictionary = shortDict, longDictionary = longDict)
-    )
+    if !Dictionary.initalised then Dictionary.initalise(shortDict, longDict)
+    given Context = Context()
     StringHelpers.decompress(compressed)
 
   /** Bridge to turn literate code into SBCS */
