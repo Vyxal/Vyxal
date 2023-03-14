@@ -16,10 +16,10 @@ object StringHelpers:
 
   // https://codegolf.stackexchange.com/a/151721/78850
   def compressDictionary(s: String)(using ctx: Context): String =
-    val endLength = 2 + ctx.globals.longDictionary.map(_.length).max
+    val endLength = 2 + Dictionary.longDictionary.map(_.length).max
 
-    val shortInds = ctx.globals.shortDictionary.zipWithIndex.toMap
-    val longInds = ctx.globals.longDictionary.zipWithIndex.toMap
+    val shortInds = Dictionary.shortDictionary.zipWithIndex.toMap
+    val longInds = Dictionary.longDictionary.zipWithIndex.toMap
 
     def character(z: BigInt, c: Char) =
       val o =
@@ -161,8 +161,8 @@ object StringHelpers:
         val useShort = (integer % 2).toInt == 1
         integer = integer / 2
         val words =
-          if useShort then ctx.globals.shortDictionary
-          else ctx.globals.longDictionary
+          if useShort then Dictionary.shortDictionary
+          else Dictionary.longDictionary
         val index = integer % words.length
         integer = integer / words.length
         var word = words(index.toInt)
