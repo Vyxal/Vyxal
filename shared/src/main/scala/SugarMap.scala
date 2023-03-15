@@ -1,6 +1,6 @@
 package vyxal
 object SugarMap:
-  def internalMap: Map[String, String] =
+  val internalMap: Map[String, String] =
     val out = Map.newBuilder[String, String]
 
     val lowerUpdot = "abcdefghlmnoprstx" -> "ȧḃċḋėḟġḣŀṁṅȯṗṙṡṫẋ"
