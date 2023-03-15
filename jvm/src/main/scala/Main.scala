@@ -5,7 +5,7 @@ import vyxal.cli.CLI
 object Main:
   def main(args: Array[String]): Unit =
 
-    Dictionary.initalise(
+    Dictionary.initialise(
       readResource(ShortDictionaryFile),
       readResource(LongDictionaryFile)
     )

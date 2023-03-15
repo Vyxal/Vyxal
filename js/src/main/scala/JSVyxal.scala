@@ -30,7 +30,7 @@ object JSVyxal:
       inputs = Inputs(inputs.split("\n").map(Parser.parseInput).toSeq),
     )
 
-    Dictionary.initalise(shortDict, longDict)
+    Dictionary.initialise(shortDict, longDict)
 
     val ctx = Context(
       inputs = inputs.split("\n").map(Parser.parseInput).toIndexedSeq,
@@ -41,13 +41,13 @@ object JSVyxal:
 
   @JSExport
   def compress(text: String): String =
-    if !Dictionary.initalised then Dictionary.initalise(shortDict, longDict)
+    if !Dictionary.initialised then Dictionary.initialise(shortDict, longDict)
     given Context = Context()
     StringHelpers.compressDictionary(text)
 
   @JSExport
   def decompress(compressed: String): String =
-    if !Dictionary.initalised then Dictionary.initalise(shortDict, longDict)
+    if !Dictionary.initialised then Dictionary.initialise(shortDict, longDict)
     given Context = Context()
     StringHelpers.decompress(compressed)
 

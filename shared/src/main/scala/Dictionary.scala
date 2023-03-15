@@ -2,9 +2,9 @@ package vyxal
 object Dictionary:
   var shortDictionary: Seq[String] = Seq()
   var longDictionary: Seq[String] = Seq()
-  var initalised: Boolean = false
+  var initialised: Boolean = false
 
-  def initalise(short: Seq[String], long: Seq[String]): Unit =
+  def initialise(short: Seq[String], long: Seq[String]): Unit =
     shortDictionary = short
     longDictionary = long
-    initalised = true
+    initialised = true
