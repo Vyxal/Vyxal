@@ -77,7 +77,7 @@ object Lexer extends RegexParsers:
 
   /** Whether the code lexed so far has sugar trigraphs */
   private var sugarUsed = false
-  private def decimalRegex = raw"((0|[1-9][0-9_]*)?\.[0-9]*|0|[1-9][0-9_]*)"
+  def decimalRegex = raw"((0|[1-9][0-9_]*)?\.[0-9]*|0|[1-9][0-9_]*)"
   def number: Parser[VyxalToken] =
     raw"($decimalRegex?ı$decimalRegex?)|$decimalRegex".r ^^ { value =>
       Number(value.replace("_", ""))
