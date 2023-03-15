@@ -9,17 +9,7 @@ import scala.quoted.*
 
 trait VyxalTests extends AnyFunSpec:
 
-  private val ShortDictionaryFile = "/ShortDictionary.txt"
-  private val LongDictionaryFile = "/LongDictionary.txt"
-  private def readResource(path: String) =
-    io.Source
-      .fromInputStream(getClass.getResourceAsStream(path))
-      .getLines()
-      .toSeq
-  Dictionary.initialise(
-    readResource(ShortDictionaryFile),
-    readResource(LongDictionaryFile)
-  )
+  Dictionary.fileInitialise()
 
   def testEquals(expected: VAny)(getRes: Context ?=> VAny): Assertion =
     assertResult(expected)(getRes(using Context(testMode = true)))
