@@ -41,6 +41,7 @@ enum VyxalToken(val value: String):
   case UnpackVar(override val value: String) extends VyxalToken(value)
   case Branch extends VyxalToken("|")
   case Newline extends VyxalToken("\n")
+  case Sugared extends VyxalToken("")
 end VyxalToken
 
 enum StructureType(val open: String):
@@ -74,6 +75,8 @@ object Lexer extends RegexParsers:
   override def skipWhitespace = true
   override val whiteSpace: Regex = "[ \t\r\f]+".r
 
+  /** Whether the code lexed so far has sugar trigraphs */
+  private var sugarUsed = false
   def decimalRegex = raw"((0|[1-9][0-9_]*)?\.[0-9]*|0|[1-9][0-9_]*)"
   def number: Parser[VyxalToken] =
     raw"($decimalRegex?ı$decimalRegex?)|$decimalRegex".r ^^ { value =>
@@ -127,10 +130,15 @@ object Lexer extends RegexParsers:
   def listClose: Parser[VyxalToken] = """(#\])|⟩""".r ^^^ ListClose
 
   def multigraph: Parser[VyxalToken] =
-    "([∆øÞk].)|(#:\\[)|(#[:.,]?[^\\[\\]$!=#>@{])".r ^^ { value =>
+    "([∆øÞk].)|(#:\\[)|(#(([:.,^].)|([^\\[\\]$!=#>@{])))".r ^^ { value =>
       if value.length == 2 then processDigraph(value)
       else if value.charAt(1) == ':' then SyntaxTrigraph(value)
-      else SugarTrigraph(value)
+      else
+        sugarUsed = true
+        val temp = SugarMap(value)
+        apply(temp) match
+          case Left(value)  => Command(temp)
+          case Right(value) => value(0)
     }
 
   private val commandRegex = CODEPAGE
@@ -210,4 +218,9 @@ object Lexer extends RegexParsers:
         case -1    => SpecialModifier(digraph)
         case arity => throw Exception(s"Invalid modifier arity: $arity")
     else Digraph(digraph)
+
+  def hasSugar(code: String): Boolean =
+    sugarUsed = false
+    apply(code)
+    sugarUsed
 end Lexer
