@@ -16,7 +16,7 @@ trait VyxalTests extends AnyFunSpec:
       .fromInputStream(getClass.getResourceAsStream(path))
       .getLines()
       .toSeq
-  Dictionary.initalise(
+  Dictionary.initialise(
     readResource(ShortDictionaryFile),
     readResource(LongDictionaryFile)
   )
