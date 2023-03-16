@@ -12,6 +12,7 @@ object Interpreter:
   def execute(code: String, literate: Boolean = false)(using
       ctx: Context
   ): Unit =
+    if !Dictionary.initialised then throw new Error("Dictionary not initalised")
     val sbcsified = if literate then LiterateLexer.litLex(code) else code
     Parser.parse(sbcsified) match
       case Right(ast) =>
