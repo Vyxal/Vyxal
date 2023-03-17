@@ -118,6 +118,11 @@ Keywords: filter, keep-by, from-base, 10->b
 - a: num, b: num -> a in base b - list of digits
 - a: num, b: str|lst -> a in base with alphabet b
 ---------------------
+H (Hexadecimal | To Hexadecimal) (vectorising)
+Keywords: hex, hexadecimal, to-hex, to-hexadecimal
+- a: num -> a in hexadecimal
+- a: str -> a as a hexadecimal number to base 10
+---------------------
 M (Map Function | Mold Lists | Multiplicity) (non-vectorising)
 Keywords: map, mold, multiplicity, times-divide
 - a: any, b: fun -> a.map(b)
