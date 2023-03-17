@@ -58,7 +58,7 @@ class VList private (val lst: Seq[VAny])
       try lst(ind)
       catch
         case _: IndexOutOfBoundsException =>
-          if lst.length == 0 then 0 else lst(ind % lst.length)
+          if lst.isEmpty then 0 else lst(ind % lst.length)
 
   def index(ind: VAny)(using ctx: Context): VAny =
     ind match
