@@ -56,7 +56,9 @@ class VList private (val lst: Seq[VAny])
       lst(Math.floorMod(ind, lst.length))
     else
       try lst(ind)
-      catch case _: IndexOutOfBoundsException => lst(ind % lst.length)
+      catch
+        case _: IndexOutOfBoundsException =>
+          if lst.length == 0 then 0 else lst(ind % lst.length)
 
   def index(ind: VAny)(using ctx: Context): VAny =
     ind match
