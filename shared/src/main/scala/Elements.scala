@@ -351,6 +351,26 @@ object Elements:
       "a ->"
     ) { ctx ?=> ctx.pop() }
 
+    val factors: Monad = addVect(
+      Monad,
+      "K",
+      "Factors | Is Numeric?",
+      List(
+        "factors",
+        "divisors",
+        "is-numeric",
+        "is-num",
+        "is-number",
+        "is-num?",
+        "is-number?"
+      ),
+      "a: num -> Factors of a",
+      "a: str -> Is a numeric?"
+    ) {
+      case a: VNum   => NumberHelpers.factors(a)
+      case a: String => VNum(a.matches(Lexer.decimalRegex))
+    }
+
     val factorial = addVect(
       Monad,
       "!",

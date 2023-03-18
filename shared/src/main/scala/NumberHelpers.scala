@@ -8,6 +8,11 @@ import scala.math
 
 object NumberHelpers:
 
+  def factors(a: VNum): VList =
+    VList.from(
+      VNum(1).toBigInt.to(a.toBigInt).filter(a % _ == VNum(0)).map(VNum(_))
+    )
+
   def fromBase(a: VAny, b: VAny)(using ctx: Context): VAny =
     (a, b) match
       case (a: VNum, b: VNum)     => toInt(a.toString(), b.toInt)
