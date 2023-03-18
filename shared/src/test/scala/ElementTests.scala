@@ -354,6 +354,19 @@ class ElementTests extends VyxalTests:
     }
   }
 
+  describe("Element K") {
+    testMulti("K")(
+      List[VAny](20) -> VList(1, 2, 4, 5, 10, 20),
+      List[VAny](100) -> VList(1, 2, 4, 5, 10, 20, 25, 50, 100),
+      List[VAny](1) -> VList(1),
+      List[VAny](0) -> VList(),
+      List[VAny](-1) -> VList(-1),
+      List[VAny]("23423") -> VNum(1),
+      List[VAny]("0") -> VNum(1),
+      List[VAny]("ljlkerg23423") -> VNum(0)
+    )
+  }
+
   describe("Element M") {
     describe("when given two lists") {
       testMulti("M")(

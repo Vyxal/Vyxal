@@ -10,7 +10,10 @@ object NumberHelpers:
 
   def factors(a: VNum): VList =
     VList.from(
-      VNum(1).toBigInt.to(a.toBigInt).filter(a % _ == VNum(0)).map(VNum(_))
+      VNum(1).toBigInt
+        .to(a.toBigInt.abs)
+        .filter(a % _ == VNum(0))
+        .map(_ * a.toBigInt.signum)
     )
 
   def fromBase(a: VAny, b: VAny)(using ctx: Context): VAny =
