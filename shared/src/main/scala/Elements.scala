@@ -459,7 +459,7 @@ object Elements:
         ListHelpers.makeIterable(a),
         ListHelpers.makeIterable(b)
       )
-      if a.isInstanceOf[String] && b.isInstanceOf[String] then temp.mkString("")
+      if a.isInstanceOf[String] && b.isInstanceOf[String] then temp.mkString
       else temp
     }
 
