@@ -52,8 +52,6 @@ object ListHelpers:
 
     VList(out.toSeq*)
 
-  end interleave
-
   /** Make an iterable from a value
     *
     * @param value
