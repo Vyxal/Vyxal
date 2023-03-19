@@ -121,6 +121,7 @@ Keywords: filter, keep-by, from-base, 10->b
 I (Interleave) (non-vectorising)
 Keywords: interleave
 - a: lst, b: lst -> Interleave a and b
+---------------------
 J (Merge) (non-vectorising)
 Keywords: merge
 - a: lst, b: lst -> Merge a and b
