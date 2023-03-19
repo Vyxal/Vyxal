@@ -5493,7 +5493,8 @@ def rotate_left(lhs, rhs, ctx):
         return lhs
 
     if ts is str:
-        return lhs[rhs:] + lhs[:rhs]
+        rot = rhs % len(lhs)
+        return lhs[rot:] + lhs[:rot]
 
     @lazylist
     def gen():
@@ -5517,7 +5518,8 @@ def rotate_right(lhs, rhs, ctx):
         return lhs
 
     if ts is str:
-        return lhs[-rhs:] + lhs[:-rhs]
+        rot = rhs % len(lhs)
+        return lhs[-rot:] + lhs[:-rot]
 
     @lazylist
     def gen():
