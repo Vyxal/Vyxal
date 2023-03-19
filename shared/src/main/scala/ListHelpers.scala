@@ -41,16 +41,14 @@ object ListHelpers:
 
   def interleave(left: VList, right: VList)(using ctx: Context): VList =
     val out = ArrayBuffer.empty[VAny]
-    var mutLeft = left.toList
-    var mutRight = right.toList
-    while mutLeft.nonEmpty && mutRight.nonEmpty do
-      out += mutLeft.head
-      out += mutRight.head
-      mutLeft = mutLeft.tail
-      mutRight = mutRight.tail
+    val leftIter = left.iterator
+    val rightIter = right.iterator
+    while leftIter.hasNext && rightIter.hasNext do
+      out += leftIter.next()
+      out += rightIter.next()
 
-    out ++= mutLeft
-    out ++= mutRight
+    out ++= leftIter
+    out ++= rightIter
 
     VList(out.toSeq*)
 
