@@ -477,6 +477,20 @@ object Elements:
         ListHelpers.map(a, ListHelpers.makeIterable(b, Some(true)))
     }
 
+    val merge: Dyad = addElem(
+      Dyad,
+      "J",
+      "Merge",
+      List("merge"),
+      "a: lst, b: lst -> Merge a and b",
+    ) {
+      case (a: VNum, b: VNum)   => MiscHelpers.eval(a.toString + b.toString)
+      case (a: VVal, b: VVal)   => MiscHelpers.add(a, b)
+      case (a: VList, b: VList) => VList.from(a ++ b)
+      case (a, b: VList)        => VList.from(a +: b)
+      case (a: VList, b)        => VList.from(a :+ b)
+    }
+
     val modulo: Dyad = addElem(
       Dyad,
       "%",
