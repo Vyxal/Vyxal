@@ -354,6 +354,19 @@ class ElementTests extends VyxalTests:
     }
   }
 
+  describe("Element I") {
+    testMulti("I")(
+      List[VAny](VList(1, 2, 3), VList(4, 5, 6)) -> VList(1, 4, 2, 5, 3, 6),
+      List[VAny](VList(1, 2, 3), VList(4, 5, 6, 7)) -> VList(1, 4, 2, 5, 3, 6,
+        7),
+      List[VAny](VList(1, 2, 3), VList(4, 5)) -> VList(1, 4, 2, 5, 3),
+      List[VAny]("srn", "tig") -> String("string"),
+      List[VAny]("aaaa", "") -> String("aaaa"),
+      List[VAny]("aaa", VList(1)) -> VList("a", 1, "a", "a"),
+      List[VAny](123, 456) -> VList(1, 4, 2, 5, 3, 6)
+    )
+  }
+
   describe("Element J") {
     testMulti("J")(
       List[VAny](VList(1, 2, 3), 4) -> VList(1, 2, 3, 4),
