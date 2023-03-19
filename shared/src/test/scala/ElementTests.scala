@@ -538,6 +538,23 @@ class ElementTests extends VyxalTests:
     }
   }
 
+  describe("Element S") {
+    testMulti("S")(
+      List[VAny]("qzqadbA;z") -> VList(";Aabdqqzz".map(_.toString)*),
+      List[VAny](891738) -> VList(1, 3, 7, 8, 8, 9),
+      List[VAny](VList(8, 9, "acb", "abc", 1, 9, 2, VList(1, 2))) -> VList(
+        1,
+        2,
+        8,
+        9,
+        9,
+        VList(1, 2),
+        "abc",
+        "acb"
+      ),
+    )
+  }
+
   describe("Element _") {
     testStackLike("_")(
       List[VAny](1, 2, 3) -> List(1, 2),

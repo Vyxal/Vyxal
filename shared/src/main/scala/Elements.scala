@@ -623,6 +623,24 @@ object Elements:
         MiscHelpers.reduce(a, b)
     }
 
+    val sort: Monad = addElem(
+      Monad,
+      "S",
+      "Sort ascending",
+      List(
+        "sort",
+        "sortasc",
+        "sort-asc",
+      ),
+      "a: any -> convert to list and sort ascending",
+    ) {
+      // should do something else for num overload later
+      case (a: VAny) =>
+        VList(
+          ListHelpers.makeIterable(a).sorted(MiscHelpers.compareExact(_, _))*
+        )
+    }
+
     val sortByFunction: Dyad = addElem(
       Dyad,
       "ṡ",
