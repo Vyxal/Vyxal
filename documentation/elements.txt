@@ -151,6 +151,10 @@ Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has
 - a: num, b: num -> the range [a, b)
 - a: str, b: num|str -> does regex pattern b match haystack a?
 ---------------------
+S (Sort ascending) (non-vectorising)
+Keywords: sort, sortasc, sort-asc
+- a: any -> convert to list and sort ascending
+---------------------
 W (Wrap) (non-vectorising)
 Keywords: wrap
 - a, b, c, ..., -> [a, b, c, ...]
