@@ -117,7 +117,7 @@ object NumberHelpers:
   def toBaseAlphabet(value: VNum, alphabet: VIter)(using ctx: Context): VAny =
     val indexes = toBaseDigits(value, alphabet.iterLength)
     val alphalist = VList((alphabet match
-      case a: String => a.toString.toList.map(_.toString())
+      case a: String => a.toString.toList.map(_.toString)
       case l: VList  => l
     )*)
 
