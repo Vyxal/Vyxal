@@ -153,7 +153,7 @@ object NumberHelpers:
           if digit < 0 then
             current += 1
             digit -= base.toBigInt
-          VNum(digit * sign) +=: digits
+          digits.prepend(digit * sign)
         VList(digits.toList*)
 
   def toInt(value: VAny, radix: Int)(using ctx: Context): VAny =
