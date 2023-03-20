@@ -194,7 +194,8 @@ def ivyDeps = Agg(
 ```
 
 They are declared in a fashion very similar to sbt: `ivy"groupId::artifactId::version"`.
-JVM-specific dependencies use a single colon between the group and artifact (`ivy"groupId:artifactId::version"`).
+
+**Note**: Java dependencies use a single colon between the group and artifact (`ivy"groupId:artifactId::version"`).
 
 ---
 

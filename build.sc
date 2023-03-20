@@ -66,7 +66,11 @@ trait VyxalModule extends ScalaModule {
 object jvm extends VyxalModule {
   def platform = "jvm"
 
-  object test extends VyxalTestModule
+  object test extends VyxalTestModule {
+    def ivyDeps = T {
+      super.ivyDeps() ++ Seq(ivy"org.yaml:snakeyaml::1.33")
+    }
+  }
 }
 
 /** Shared and JS-specific code */

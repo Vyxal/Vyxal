@@ -3,3 +3,8 @@
     - ["1", 2] : "12"
     - ["foo", "bar"]: "foobar"
     - [[1, "a", []], 3]: [4, "a3", []]
+
+- element: "B"
+  tests:
+    - "shouldn't do string multiplication with string lists":
+      - [["1", "0", ["0", "1"]]]: 5
