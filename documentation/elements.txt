@@ -126,6 +126,11 @@ J (Merge) (non-vectorising)
 Keywords: merge
 - a: lst, b: lst -> Merge a and b
 ---------------------
+K (Factors | Is Numeric?) (vectorising)
+Keywords: factors, divisors, is-numeric, is-num, is-number, is-num?, is-number?
+- a: num -> Factors of a
+- a: str -> Is a numeric?
+---------------------
 M (Map Function | Mold Lists | Multiplicity) (non-vectorising)
 Keywords: map, mold, multiplicity, times-divide
 - a: any, b: fun -> a.map(b)
