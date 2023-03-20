@@ -39,6 +39,19 @@ object ListHelpers:
 
   end filter
 
+  def interleave(left: VList, right: VList)(using ctx: Context): VList =
+    val out = ArrayBuffer.empty[VAny]
+    val leftIter = left.iterator
+    val rightIter = right.iterator
+    while leftIter.hasNext && rightIter.hasNext do
+      out += leftIter.next()
+      out += rightIter.next()
+
+    out ++= leftIter
+    out ++= rightIter
+
+    VList(out.toSeq*)
+
   /** Make an iterable from a value
     *
     * @param value
