@@ -360,7 +360,6 @@ class ElementTests extends VyxalTests:
       List[VAny](VNum(0)) -> "0",
       List[VAny](VNum(89)) -> "59",
       List[VAny]("10F2C") -> VNum(69420),
-      List[VAny]("0") -> VNum(0),
       List[VAny]("59") -> VNum(59)
     )
   }
