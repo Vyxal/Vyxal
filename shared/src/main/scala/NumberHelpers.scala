@@ -137,18 +137,10 @@ object NumberHelpers:
   def toBaseDigits(value: VNum, base: VNum): VList =
     if value == VNum(0) then VList(List(VNum(0))*)
     else if base.toBigInt == -1 then
-      val out = ListBuffer[VNum]()
-      if value.toBigInt > 0 then
-        out += 1
-        for _ <- 1 until value.toInt do
-          out += 0
-          out += 1
-      else
-        val out = ListBuffer[VNum]()
-        for _ <- 1 until value.toInt.abs do
-          out += 1
-          out += 0
-      VList(out.toList*)
+      VList.from(
+        (1 until value.toInt.abs * 2 - (if value.toBigInt > 0 then 0 else 1))
+          .map(_ % 2)
+      )
     else
       val sign = if value.toBigInt < 0 && base.toBigInt > 0 then -1 else 1
       var current = sign * value.toBigInt
@@ -160,9 +152,9 @@ object NumberHelpers:
           current = current / base.toBigInt
           if digit < 0 then
             current += 1
-            digit = digit - base.toBigInt
-          digits += VNum(digit * sign)
-        VList(digits.reverse.toList*)
+            digit -= base.toBigInt
+          VNum(digit * sign) +=: digits
+        VList(digits.toList*)
 
   def toInt(value: VAny, radix: Int)(using ctx: Context): VAny =
     value match
