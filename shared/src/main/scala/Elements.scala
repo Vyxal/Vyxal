@@ -351,6 +351,26 @@ object Elements:
       "a ->"
     ) { ctx ?=> ctx.pop() }
 
+    val factors: Monad = addVect(
+      Monad,
+      "K",
+      "Factors | Is Numeric?",
+      List(
+        "factors",
+        "divisors",
+        "is-numeric",
+        "is-num",
+        "is-number",
+        "is-num?",
+        "is-number?"
+      ),
+      "a: num -> Factors of a",
+      "a: str -> Is a numeric?"
+    ) {
+      case a: VNum   => NumberHelpers.factors(a)
+      case a: String => VNum(a.matches(Lexer.decimalRegex))
+    }
+
     val factorial = addVect(
       Monad,
       "!",
@@ -460,6 +480,21 @@ object Elements:
       case (a: VFun, b) => MiscHelpers.collectUnique(a, b)
     }
 
+    val interleave: Dyad = addElem(
+      Dyad,
+      "I",
+      "Interleave",
+      List("interleave"),
+      "a: lst, b: lst -> Interleave a and b"
+    ) { case (a, b) =>
+      val temp = ListHelpers.interleave(
+        ListHelpers.makeIterable(a),
+        ListHelpers.makeIterable(b)
+      )
+      if a.isInstanceOf[String] && b.isInstanceOf[String] then temp.mkString
+      else temp
+    }
+
     val lessThan: Dyad = addVect(
       Dyad,
       "<",
@@ -487,6 +522,20 @@ object Elements:
         ListHelpers.map(b, ListHelpers.makeIterable(a, Some(true)))
       case (a: VFun, b) =>
         ListHelpers.map(a, ListHelpers.makeIterable(b, Some(true)))
+    }
+
+    val merge: Dyad = addElem(
+      Dyad,
+      "J",
+      "Merge",
+      List("merge"),
+      "a: lst, b: lst -> Merge a and b",
+    ) {
+      case (a: VNum, b: VNum)   => MiscHelpers.eval(a.toString + b.toString)
+      case (a: VVal, b: VVal)   => MiscHelpers.add(a, b)
+      case (a: VList, b: VList) => VList.from(a ++ b)
+      case (a, b: VList)        => VList.from(a +: b)
+      case (a: VList, b)        => VList.from(a :+ b)
     }
 
     val modulo: Dyad = addElem(
