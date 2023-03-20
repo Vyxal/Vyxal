@@ -353,7 +353,7 @@ class ElementTests extends VyxalTests:
       )
     }
   }
-  
+
   describe("Element I") {
     testMulti("I")(
       List[VAny](VList(1, 2, 3), VList(4, 5, 6)) -> VList(1, 4, 2, 5, 3, 6),
@@ -378,7 +378,7 @@ class ElementTests extends VyxalTests:
       List[VAny]("123", 4568) -> String("1234568")
     )
   }
-  
+
     describe("Element K") {
     testMulti("K")(
       List[VAny](20) -> VList(1, 2, 4, 5, 10, 20),
