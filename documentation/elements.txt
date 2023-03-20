@@ -1,7 +1,19 @@
+🍪 (Cookie) (non-vectorising)
+Keywords: cookie
+- cookie.
+---------------------
+ඞ (ඞ) (non-vectorising)
+Keywords: sus
+- ඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞ
+---------------------
 ! (Factorial | To Uppercase) (vectorising)
 Keywords: fact, factorial, to-upper, upper, uppercase, !
 - a: num -> a!
 - a: str -> a.toUpperCase()
+---------------------
+#C (Compress String Using Dictionary) (non-vectorising)
+Keywords: compress-dict, dict-comp, compress
+- a: str -> compress a using the dictionary
 ---------------------
 #v (Vectorise (Element Form) [Internal Use]) (non-vectorising)
 Keywords: 
@@ -94,6 +106,31 @@ D (Triplicate) (non-vectorising)
 Keywords: trip
 - a -> [a, a, a]
 ---------------------
+E (2 Power | Evaluate) (vectorising)
+Keywords: two^, two**, eval
+- a: num -> 2^a
+- a: str -> evaluate (not execute) a
+---------------------
+F (Filter by Function | From Base) (non-vectorising)
+Keywords: filter, keep-by, from-base, 10->b
+- a: fun, b: lst -> Filter b by truthy results of a
+- a: lst, b: fun -> Filter a by truthy results of b
+- a: num, b: num -> a in base b - list of digits
+- a: num, b: str|lst -> a in base with alphabet b
+---------------------
+I (Interleave) (non-vectorising)
+Keywords: interleave
+- a: lst, b: lst -> Interleave a and b
+---------------------
+J (Merge) (non-vectorising)
+Keywords: merge
+- a: lst, b: lst -> Merge a and b
+---------------------
+K (Factors | Is Numeric?) (vectorising)
+Keywords: factors, divisors, is-numeric, is-num, is-number, is-num?, is-number?
+- a: num -> Factors of a
+- a: str -> Is a numeric?
+---------------------
 M (Map Function | Mold Lists | Multiplicity) (non-vectorising)
 Keywords: map, mold, multiplicity, times-divide
 - a: any, b: fun -> a.map(b)
@@ -119,6 +156,10 @@ Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has
 - a: num, b: num -> the range [a, b)
 - a: str, b: num|str -> does regex pattern b match haystack a?
 ---------------------
+W (Wrap) (non-vectorising)
+Keywords: wrap
+- a, b, c, ..., -> [a, b, c, ...]
+---------------------
 _ (Pop and Discard) (non-vectorising)
 Keywords: pop, discard
 - a ->
@@ -128,6 +169,12 @@ Keywords: to-binary, dec->bin, decimal->bin
 - a: num -> convert a to binary
 - a: str -> bin(ord(x) for x in a)
 ---------------------
+i (Index | Collect Unique Application Values) (non-vectorising)
+Keywords: index, at, item-at, nth-item, collect-unique
+- a: lst, b: num -> a[b]
+- a: lst, b: lst -> a[_] for _ in b
+- a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value.
+---------------------
 m (Get Context Variable M) (non-vectorising)
 Keywords: get-context-m, context-m, c-var-m, ctx-m, ctx-secondary
 - ->  -> context variable m
@@ -136,11 +183,24 @@ n (Get Context Variable N) (non-vectorising)
 Keywords: get-context-n, context-n, c-var-n, ctx-n, ctx-primary
 - ->  -> context variable n
 ---------------------
+Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
+Keywords: peek-call
+- a: fun -> Execute a without popping
+---------------------
 Ė (Execute lambda | Evaluate as Vyxal | Power with base 10) (non-vectorising)
-Keywords: execute-lambda, evaluate-as-vyxal, power-base-10
+Keywords: execute-lambda, evaluate-as-vyxal, power-base-10, call, @
 - a: fun -> Execute a
 - a: str -> Evaluate a as Vyxal
 - a: num -> 10 ** n
+---------------------
+ṡ (Sort by Function Object | Reshape (APL Style)) (non-vectorising)
+Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun
+- a: fun, b: any -> sort iterable b by function a
+- a: any, b: fun -> sort iterable a by function b
+---------------------
+Θ (Zero Slice Until) (non-vectorising)
+Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first
+- a: lst, b: num -> [a[0], a[1], ..., a[b-1]]
 ---------------------
 ₀ (Ten) (non-vectorising)
 Keywords: ten

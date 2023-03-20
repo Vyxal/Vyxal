@@ -107,7 +107,8 @@ class ElementTests extends VyxalTests:
         List[VAny](VNum("5.1"), VNum("-45.4")) -> VNum("-40.3"),
         List[VAny]("foo", "bar") -> "foobar",
         List[VAny]("foo", 3) -> "foo3",
-        List[VAny](3, "foo") -> "3foo"
+        List[VAny](3, "foo") -> "3foo",
+        List[VAny](VNum("0.1"), VNum("0.2")) -> VNum("0.3"),
       )
     }
 
@@ -121,12 +122,12 @@ class ElementTests extends VyxalTests:
           AST.Lambda(
             1,
             List.empty,
-            AST.makeSingle(AST.Number(8), AST.Command("-"))
+            List(AST.Number(8), AST.Command("-"))
           )
         )
         ctx.push(3, f, g)
         Interpreter.execute(AST.Command("+"))
-        Interpreter.execute(AST.ExecuteFn)
+        Impls.exec()
         assertResult(VNum(1))(ctx.pop())
       }
     }
@@ -324,6 +325,70 @@ class ElementTests extends VyxalTests:
       }
     }
   }
+
+  describe("Element E") {
+    describe("when given a number") {
+      testMulti("E")(
+        List[VAny](1) -> VNum(2),
+        List[VAny](2) -> VNum(4),
+        List[VAny](3) -> VNum(8),
+        List[VAny](4) -> VNum(16),
+        List[VAny](VNum("6.9")) -> VNum(
+          "119.4282229167113492456119380671925973794854"
+        ),
+        List[VAny](VNum(-234)) -> VNum(0)
+      )
+    }
+
+    describe("when given a string") {
+      testMulti("E")(
+        List[VAny]("1") -> VNum(1),
+        List[VAny]("2") -> VNum(2),
+        List[VAny]("3243") -> VNum(3243),
+        List[VAny]("-234") -> VNum(-234),
+        List[VAny]("0") -> VNum(0),
+        List[VAny]("[1, 2, 3, 4, 5, 6]") -> VList(1, 2, 3, 4, 5, 6),
+        List[VAny]("[]") -> VList(),
+        List[VAny]("\"lol\"") -> String("lol")
+      )
+    }
+  }
+
+  describe("Element I") {
+    testMulti("I")(
+      List[VAny](VList(1, 2, 3), VList(4, 5, 6)) -> VList(1, 4, 2, 5, 3, 6),
+      List[VAny](VList(1, 2, 3), VList(4, 5, 6, 7)) -> VList(1, 4, 2, 5, 3, 6,
+        7),
+      List[VAny](VList(1, 2, 3), VList(4, 5)) -> VList(1, 4, 2, 5, 3),
+      List[VAny]("srn", "tig") -> String("string"),
+      List[VAny]("aaaa", "") -> String("aaaa"),
+      List[VAny]("aaa", VList(1)) -> VList("a", 1, "a", "a"),
+      List[VAny](123, 456) -> VList(1, 4, 2, 5, 3, 6)
+    )
+  }
+
+  describe("Element J") {
+    testMulti("J")(
+      List[VAny](VList(1, 2, 3), 4) -> VList(1, 2, 3, 4),
+      List[VAny]("abc", "def") -> String("abcdef"),
+      List[VAny](1, VList(2, 3, 4)) -> VList(1, 2, 3, 4),
+      List[VAny](VList(1, 2), VList(3, 4)) -> VList(1, 2, 3, 4),
+      List[VAny](123, 456) -> VNum(123456),
+      List[VAny](123, "4567") -> String("1234567"),
+      List[VAny]("123", 4568) -> String("1234568")
+    )
+  }
+
+    describe("Element K") {
+    testMulti("K")(
+      List[VAny](20) -> VList(1, 2, 4, 5, 10, 20),
+      List[VAny](100) -> VList(1, 2, 4, 5, 10, 20, 25, 50, 100),
+      List[VAny](1) -> VList(1),
+      List[VAny](0) -> VList(),
+      List[VAny](-1) -> VList(-1),
+      List[VAny]("23423") -> VNum(1),
+      List[VAny]("0") -> VNum(1),
+      List[VAny]("ljlkerg23423") -> VNum(0))}
 
   describe("Element M") {
     describe("when given two lists") {
@@ -537,7 +602,9 @@ class ElementTests extends VyxalTests:
       it("should use the same context for executing the code") {
         // Doesn't use the test helpers because of context handling
         given ctx: Context = Context(inputs = List(3, 4), testMode = true)
-        assertResult(7: VNum)(Impls.exec("+"))
+        ctx.push("+")
+        Impls.exec()
+        assertResult(7: VNum)(ctx.peek)
       }
     }
 

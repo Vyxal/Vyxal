@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.Interpreter.executeFn
+import vyxal.Lexer.decimalRegex
 import vyxal.VNum.given
 
 import scala.collection.mutable.ListBuffer
@@ -9,7 +10,6 @@ import scala.collection.mutable.Stack
 import spire.algebra.*
 
 object MiscHelpers:
-  // todo consider doing something like APL's forks so this doesn't have to be a partial function
   val add = Dyad.vectorise("add")(forkify {
     case (a: VNum, b: VNum)     => a + b
     case (a: String, b: VNum)   => s"$a$b"
@@ -23,11 +23,58 @@ object MiscHelpers:
     case f: VFun   => true
     case l: VList  => l.nonEmpty
 
+  def collectUnique(function: VFun, initial: VAny)(using ctx: Context): VList =
+    val seen = collection.mutable.Set.empty[VAny]
+    val result = ListBuffer[VAny]()
+    var current = initial
+    while !seen.contains(current) do
+      seen += current
+      result += current
+      current =
+        executeFn(function, ctxVarPrimary = current, args = Seq(current))
+    VList.from(result.toList)
+
   def compare(a: VVal, b: VVal): Int = (a, b) match
     case (a: VNum, b: VNum)     => a.real.compare(b.real)
     case (a: String, b: VNum)   => a.compareTo(b.toString)
     case (a: VNum, b: String)   => a.toString.compareTo(b)
     case (a: String, b: String) => a.compareTo(b)
+
+  def compareExact(
+      a: VAny,
+      b: VAny
+  )(using ctx: Context): Int = (a, b) match
+    case (a: VVal, b: VVal) => compare(a, b)
+    case (a, b)             =>
+      // Lexographically compare the two values after converting both to iterable
+      val aIter = ListHelpers.makeIterable(a)
+      val bIter = ListHelpers.makeIterable(b)
+
+      if aIter.length != bIter.length then
+        return aIter.length.compare(bIter.length)
+
+      var ind = 0
+      var result = -1
+      while ind < aIter.length && result != 0 do
+        result = compareExact(aIter(ind), bIter(ind))
+        ind += 1
+      return result
+
+  def eval(s: String): VAny =
+    if s.matches(raw"-?($decimalRegex?ı$decimalRegex?)|-?$decimalRegex") then
+      VNum(s)
+    else if s.matches(raw"""("(?:[^"\\]|\\.)*["])""") then s.substring(1).init
+    else if LiterateLexer.isList(s) then
+      val tempContext = Context()
+      val lambdaAST = Parser.parse(LiterateLexer.litLex(s)) match
+        case Right(x) => x
+        case Left(_)  => throw new Exception("Failed to parse list")
+      Interpreter.executeFn(
+        VFun.fromLambda(AST.Lambda(0, List(), List(lambdaAST)))(using
+          tempContext
+        )
+      )(using tempContext)
+    else s
 
   def firstNonNegative(f: VFun)(using ctx: Context): Int =
     var i = 0

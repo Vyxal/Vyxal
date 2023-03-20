@@ -1,13 +1,17 @@
 package vyxal
 
-import scala.collection.SpecificIterableFactory
+import vyxal.VNum.given
 
 import collection.immutable.SeqOps
 import collection.mutable
+import scala.collection.SpecificIterableFactory
+import spire.algebra.*
 
 /** A Vyxal list. It simply wraps around another list and could represent a
   * completely evaluated list, a finite lazy list that is in the process of
   * being evaluated, or an infinite list.
+  *
+  * To construct a VList, use VList.apply or VList.from
   * @param lst
   *   The wrapped list actually holdings this VList's elements.
   */
@@ -54,6 +58,23 @@ class VList private (val lst: Seq[VAny])
       try lst(ind)
       catch case _: IndexOutOfBoundsException => lst(ind % lst.length)
 
+  def index(ind: VAny)(using ctx: Context): VAny =
+    ind match
+      case ind: VNum   => this.indexBig(ind.real.toBigInt)
+      case inds: VList => inds.vmap(this.index)
+      case _           => throw new Exception("Index must be a number")
+
+  private def indexBig(ind: BigInt): VAny =
+    if ind <= Int.MaxValue && ind >= Int.MinValue then return apply(ind.toInt)
+    var pos = if ind < 0 then ind % lst.length else ind
+    var temp = lst
+    while pos > 0 do
+      // Instead of using modulo, reset the list if out of bounds
+      if temp.isEmpty then temp = lst
+      temp = temp.tail
+      pos -= 1
+    temp.head
+
   override def iterator: Iterator[VAny] = lst.iterator
 
   /** Get the length of this `VList`. A word of caution: this fully evaluates
@@ -72,9 +93,13 @@ class VList private (val lst: Seq[VAny])
     VList.newBuilder
 
   override def empty: VList = VList.empty
+
+  protected def from(it: Seq[VAny]): VList =
+    VList.from(it)
 end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:
+  def from(it: Seq[VAny]): VList = new VList(it)
 
   /** Zip multiple VLists together with a function.
     *

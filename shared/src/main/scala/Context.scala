@@ -16,9 +16,9 @@ import scala.io.StdIn
   *   own context variable(s). See [[this.ctxVarSecondary]] for more
   *   information.
   * @param vars
-  *   The variables currently in scope, accessible by their names. Null values
-  *   signify that the variable is nonlocal, i.e., it should be gotten from the
-  *   parent context
+  *   The variables currently in scope, accessible by their names. Since it's a
+  *   mutable Map, the same object may be shared by a Context, its children, and
+  *   its children's children.
   * @param inputs
   *   The inputs available in this scope
   * @param parent
@@ -27,19 +27,20 @@ import scala.io.StdIn
   *   the function was *defined* in, not the one it is executing inside.
   */
 class Context private (
-    private var stack: mut.ArrayBuffer[VAny],
+    private val stack: mut.ArrayBuffer[VAny],
     private var _ctxVarPrimary: Option[VAny] = None,
     private var _ctxVarSecondary: Option[VAny] = None,
+    val ctxArgs: Option[Seq[VAny]] = None,
     private val vars: mut.Map[String, VAny] = mut.Map(),
-    private var inputs: Inputs = Inputs(),
+    private val inputs: Inputs = Inputs(),
     private val parent: Option[Context] = None,
     val globals: Globals = Globals(),
     val testMode: Boolean = false,
-    var onlineOutput: String = ""
+    val useStack: Boolean = false
 ):
-  def settings: Settings = if testMode then
-    Settings(endPrintMode = EndPrintMode.None)
-  else globals.settings
+  def settings: Settings =
+    if testMode then Settings(endPrintMode = EndPrintMode.None)
+    else globals.settings
 
   /** Pop the top of the stack
     *
@@ -47,6 +48,7 @@ class Context private (
     * inputs, read a line of input from stdin.
     */
   def pop(): VAny =
+    if useStack then return getTopCxt().pop()
     val elem =
       if stack.nonEmpty then stack.remove(stack.size - 1)
       else if inputs.nonEmpty then inputs.next()
@@ -61,16 +63,20 @@ class Context private (
   end pop
 
   /** Pop n elements and wrap in a list */
-  def pop(n: Int): Seq[VAny] = Seq.fill(n)(this.pop()).reverse
+  def pop(n: Int): Seq[VAny] =
+    if useStack then return getTopCxt().pop(n)
+    Seq.fill(n)(this.pop()).reverse
 
   /** Get the top element on the stack without popping */
   def peek: VAny =
+    if useStack then getTopCxt().peek
     if stack.nonEmpty then stack.last
     else if inputs.nonEmpty then inputs.peek
     else settings.defaultValue
 
   /** Get the top n elements on the stack without popping */
   def peek(n: Int): List[VAny] =
+    if useStack then getTopCxt().peek(n)
     // Number of elements peekable from the stack
     val numStack = n.max(stack.length)
     // Number of elements that need to be taken from the input
@@ -79,7 +85,18 @@ class Context private (
     inputs.peek(numInput) ++ stack.slice(stack.length - numStack, stack.length)
 
   /** Push items onto the stack. The first argument will be pushed first. */
-  def push(items: VAny*): Unit = stack ++= items
+  def push(items: VAny*): Unit =
+    if useStack then getTopCxt().push(items*)
+    else stack ++= items
+
+  def length: Int = stack.length
+
+  def wrap: Unit =
+    if useStack then getTopCxt().wrap
+    else
+      val temp = stack.toList
+      stack.clear()
+      stack += VList.from(temp)
 
   /** Whether the stack is empty */
   def isStackEmpty: Boolean = stack.isEmpty
@@ -125,32 +142,38 @@ class Context private (
     */
   def getVar(name: String): VAny =
     vars
-      .get(name)
+      .get("!" + name)
+      .orElse(vars.get(name))
+      .orElse(parent.map(_.getVar("!" + name)))
       .orElse(parent.map(_.getVar(name)))
       .getOrElse(settings.defaultValue)
 
-  /** Set a variable to a given value. If found in this context, changes its
-    * value. If it's not found in the current context but it exists in the
-    * parent context, sets it there. Otherwise, creates a new variable in the
-    * current context.
-    */
+  /** Set a variable to a given value. */
   def setVar(name: String, value: VAny): Unit =
-    if vars.contains(name) then vars(name) = value
-    else
-      Context.findParentWithVar(this, name) match
-        case Some(parent) => parent.setVar(name, value)
-        case None         => vars(name) = value
+    if vars.contains("!" + name) then
+      throw new Exception(s"Variable $name is constant")
+    else vars(name) = value
+
+  /** Set a constant variable to a given value */
+  def setConst(name: String, value: VAny): Unit =
+    if vars.contains("!" + name) then
+      throw new Exception(s"Variable $name already exists")
+    else vars("!" + name) = value
+
+  /** Get all variables in this Context (parent variables not included) */
+  def allVars: Map[String, VAny] = vars.toMap
 
   /** Make a new Context for a structure inside the current structure */
   def makeChild() = new Context(
     stack,
     _ctxVarPrimary,
     _ctxVarSecondary,
-    vars,
+    ctxArgs,
+    vars, // Share the same variables Map with the child
     inputs,
     Some(this),
     globals,
-    testMode
+    testMode // child shouldn't use stack just because parent does
   )
 
   def getTopCxt(): Context =
@@ -163,13 +186,15 @@ object Context:
   def apply(
       inputs: Seq[VAny] = Seq.empty,
       globals: Globals = Globals(),
-      testMode: Boolean = false
+      testMode: Boolean = false,
+      ctxArgs: Option[Seq[VAny]] = None
   ): Context =
     new Context(
       stack = mut.ArrayBuffer(),
       inputs = Inputs(inputs),
       globals = globals,
-      testMode = testMode
+      testMode = testMode,
+      ctxArgs = ctxArgs
     )
 
   /** Find a parent that has a variable with the given name */
@@ -191,24 +216,36 @@ object Context:
     *   The context in which the function was defined
     * @param currCtx
     *   The context where the function is currently executing
+    * @param ctxVarSecondary
+    *   Secondary context var. Not an Option because if not explicitly
+    *   overridden, the inputs are wrapped in a VList and used as the secondary
+    *   context var.
     */
   def makeFnCtx(
       origCtx: Context,
       currCtx: Context,
       ctxVarPrimary: Option[VAny],
-      ctxVarSecondary: Option[VAny],
-      params: Seq[String],
-      inputs: Seq[VAny]
+      ctxVarSecondary: VAny,
+      ctxArgs: Seq[VAny],
+      vars: mut.Map[String, VAny],
+      inputs: Seq[VAny],
+      useStack: Boolean
   ) =
+    val stack =
+      if useStack then currCtx.stack else mut.ArrayBuffer.from(inputs)
+    vars ++= origCtx.vars
+
     new Context(
-      mut.ArrayBuffer.empty,
+      stack,
       ctxVarPrimary.orElse(currCtx._ctxVarPrimary),
-      ctxVarSecondary.orElse(currCtx._ctxVarSecondary),
-      mut.Map(params.zip(inputs)*),
+      Some(ctxVarSecondary),
+      Some(ctxArgs),
+      vars,
       Inputs(inputs),
       Some(origCtx),
       currCtx.globals,
-      currCtx.testMode
+      currCtx.testMode,
+      useStack
     )
   end makeFnCtx
 

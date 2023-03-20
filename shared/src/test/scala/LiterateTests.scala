@@ -6,7 +6,8 @@ import org.scalatest.funspec.AnyFunSpec
 
 class LiterateTests extends VyxalTests:
   def testLiteral(input: String, expected: String) =
-    assertResult(expected)(litLex(input))
+    assertResult(expected)(LiterateLexer.litLex(input))
+
   describe("Literals") {
     it("should leave numbers as-is") {
       group {
@@ -20,6 +21,8 @@ class LiterateTests extends VyxalTests:
         testLiteral("3.4i", "3.4ı")
         testLiteral(".4", ".4")
         testLiteral(".", ".")
+        testLiteral("1_000_000", "1000000")
+        testLiteral("1_0______0", "100")
       }
     }
 
@@ -44,6 +47,13 @@ class LiterateTests extends VyxalTests:
       testLiteral("{{{}}{}}", "λλλ}}λ}}")
       testLiteral("{}{}", "λ}λ}")
     }
+
+    it("should do arguments correctly") {
+      testLiteral("lambda x, y -> $x $y add end", "λx,y|#$x#$y+}")
+      testLiteral("lambda add -> $add", "λadd|#$add")
+      testLiteral("lambda lambda add -> $add end end", "λλadd|#$add}}")
+      testLiteral("lambda add lambda add ->", "λ+λadd|")
+    }
   }
 
   describe("Lists") {
@@ -65,6 +75,13 @@ class LiterateTests extends VyxalTests:
     it("should transpile them correctly") {
       testLiteral("10 :=x", "10#=x")
       testLiteral(":=x", "#=x")
+    }
+  }
+
+  describe("Constants") {
+    it("should transpile them correctly") {
+      testLiteral(":!=x", "#!x")
+      testLiteral("10 :!=x", "10#!x")
     }
   }
 

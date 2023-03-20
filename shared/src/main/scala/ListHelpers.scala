@@ -1,9 +1,56 @@
 package vyxal
 
 import collection.mutable.ArrayBuffer
+import scala.collection.mutable as mut
 import VNum.given
 
 object ListHelpers:
+
+  def filter(iterable: VList, predicate: VFun)(using ctx: Context): VList =
+    predicate.originalAST match
+      case Some(lam) =>
+        val branches = lam.body
+        val filtered = iterable.zipWithIndex.filter { (item, index) =>
+          var keep = true
+          var branchList = branches
+          val sharedVars = mut.Map.empty[String, VAny]
+
+          while branchList.nonEmpty && keep do
+            val fun =
+              VFun.fromLambda(AST.Lambda(1, List.empty, List(branchList.head)))
+            val res = Interpreter.executeFn(
+              fun,
+              ctxVarPrimary = item,
+              ctxVarSecondary = index,
+              args = List(item),
+              vars = sharedVars
+            )
+            keep = MiscHelpers.boolify(res)
+            branchList = branchList.tail
+
+          keep
+        }
+
+        VList(filtered.map(_._1)*)
+      case None =>
+        VList(iterable.zipWithIndex.map { (item, index) =>
+          predicate.execute(item, index, List(item))
+        }*)
+
+  end filter
+
+  def interleave(left: VList, right: VList)(using ctx: Context): VList =
+    val out = ArrayBuffer.empty[VAny]
+    val leftIter = left.iterator
+    val rightIter = right.iterator
+    while leftIter.hasNext && rightIter.hasNext do
+      out += leftIter.next()
+      out += rightIter.next()
+
+    out ++= leftIter
+    out ++= rightIter
+
+    VList(out.toSeq*)
 
   /** Make an iterable from a value
     *
@@ -34,9 +81,31 @@ object ListHelpers:
         else VList(num.toString.map(x => VNum(x.toString))*)
 
   def map(f: VFun, to: VList)(using ctx: Context): VList =
-    VList(to.zipWithIndex.map { (item, index) =>
-      f.execute(item, index, List(item))
-    }*)
+    f.originalAST match
+      case Some(lam) =>
+        val branches = lam.body
+        val params = f.originalAST match
+          case Some(lam) => lam.params
+          case None      => List.empty
+        VList.from(to.zipWithIndex.map { (item, index) =>
+          val sharedVars = mut.Map.empty[String, VAny]
+          branches.foldLeft(item) { (out, branch) =>
+            Interpreter.executeFn(
+              VFun.fromLambda(AST.Lambda(1, params, List(branch))),
+              ctxVarPrimary = out,
+              ctxVarSecondary = index,
+              args = List(out),
+              vars = sharedVars
+            )
+          }
+        })
+
+      case None =>
+        VList(to.zipWithIndex.map { (item, index) =>
+          f.execute(item, index, List(item))
+        }*)
+
+  end map
 
   /** Mold a list into a shape.
     * @param content
@@ -66,6 +135,56 @@ object ListHelpers:
     end moldHelper
     moldHelper(content, shape, 0)
   end mold
+
+  def sortBy(iterable: VList, key: VFun)(using ctx: Context): VList =
+    key.originalAST match
+      case Some(lam) =>
+        val branches = lam.body
+        if branches.length < 2 then
+          return VList(
+            iterable.zipWithIndex
+              .sorted { (a, b) =>
+                MiscHelpers.compareExact(
+                  key.executeResult(a(0), a(1), List(a(0))),
+                  key.executeResult(b(0), b(1), List(b(0)))
+                )
+              }
+              .map(_._1)*
+          )
+
+        val out = iterable.zipWithIndex
+          .sortWith { (a, b) =>
+            branches.view
+              .map { branch =>
+                val f =
+                  VFun.fromLambda(AST.Lambda(1, List.empty, List(branch)))
+                (
+                  f.execute(a(0), a(1), List(a(0))),
+                  f.execute(b(0), b(1), List(b(0)))
+                )
+              }
+              .find(_ != _)
+              // If they compare equal with all branches, a < b is false
+              .fold(false) { case (aRes, bRes) =>
+                MiscHelpers.compareExact(aRes, bRes) < 0
+              }
+          }
+          .map(_._1)
+
+        VList(out*)
+      case None =>
+        return VList(
+          iterable.zipWithIndex
+            .sorted { (a, b) =>
+              MiscHelpers.compareExact(
+                key.executeResult(a(0), a(1), List(a(0))),
+                key.executeResult(b(0), b(1), List(b(0)))
+              )
+            }
+            .map(_._1)*
+        )
+
+  end sortBy
 
   /** Split a list on a sublist
     *

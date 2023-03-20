@@ -16,11 +16,9 @@ import VNum.given
 case class Globals(
     inputs: Inputs = Inputs(),
     settings: Settings = Settings(),
-    printFn: String => Unit = print,
-    var register: VAny = 0
+    printFn: String => Unit = print
 ):
-  register = settings.defaultValue
-end Globals
+  var register: VAny = settings.defaultValue
 
 /** Stores the inputs for some Context. Inputs can be overridden.
   *

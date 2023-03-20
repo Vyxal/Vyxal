@@ -132,7 +132,7 @@ object Elements:
         keywords: Seq[String],
         arity: Option[Int],
         overloads: String*
-    )(impl: Context ?=> Unit): Unit =
+    )(impl: Context ?=> Unit): () => Context ?=> Unit =
       elements += symbol -> Element(
         symbol,
         name,
@@ -142,6 +142,8 @@ object Elements:
         overloads,
         () => impl
       )
+      () => impl
+    end addDirect
 
     addFull(
       Dyad,
@@ -205,6 +207,36 @@ object Elements:
         )
     }
 
+    val compressDictionary = addElem(
+      Monad,
+      "#C",
+      "Compress String Using Dictionary",
+      List("compress-dict", "dict-comp", "compress"),
+      "a: str -> compress a using the dictionary"
+    ) { case a: String =>
+      StringHelpers.compressDictionary(a)
+    }
+
+    val cookie = addDirect(
+      "🍪",
+      "Cookie",
+      List("cookie"),
+      None,
+      "cookie."
+    ) { ctx ?=>
+      while true do MiscHelpers.vyPrintln("cookie")
+    }
+
+    val sus = addDirect(
+      "ඞ",
+      "ඞ",
+      List("sus"),
+      None,
+      "ඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞ"
+    ) { ctx ?=>
+      MiscHelpers.vyPrintln("sus")
+    }
+
     val count = addElem(
       Dyad,
       "C",
@@ -250,20 +282,44 @@ object Elements:
       case (a: String, b: String) => a == b
     }
 
-    val exec = addElem(
-      Monad,
+    val exec = addDirect(
       "Ė",
       "Execute lambda | Evaluate as Vyxal | Power with base 10",
-      List("execute-lambda", "evaluate-as-vyxal", "power-base-10"),
+      List("execute-lambda", "evaluate-as-vyxal", "power-base-10", "call", "@"),
+      Some(1),
       "a: fun -> Execute a",
       "a: str -> Evaluate a as Vyxal",
       "a: num -> 10 ** n"
-    ) {
-      case fn: VFun => Interpreter.executeFn(fn)
-      case code: String =>
-        Interpreter.execute(code)
-        summon[Context].pop()
-      case n: VNum => 10 ** n
+    ) { ctx ?=>
+      ctx.push(execHelper(ctx.pop()))
+    }
+
+    def execHelper(value: VAny)(using ctx: Context): VAny =
+      value match
+        case code: String =>
+          Interpreter.execute(code)
+          ctx.pop()
+        case n: VNum     => 10 ** n
+        case list: VList => list.vmap(execHelper)
+        case fn: VFun =>
+          ctx.push(Interpreter.executeFn(fn))
+          if fn.arity == -1 then
+            ctx.pop() // Handle the extra value pushed by lambdas that operate on the stack
+          ctx.pop()
+
+    val execNotPop = addDirect(
+      "Ḃ",
+      "Execute lambda without popping | Evaluate as Vyxal without popping",
+      List("peek-call"),
+      Some(1),
+      "a: fun -> Execute a without popping"
+    ) { ctx ?=>
+      (ctx.pop(): @unchecked) match
+        case fn: VFun =>
+          ctx.push(Interpreter.executeFn(fn, popArgs = false))
+          if fn.arity == -1 then
+            ctx.pop() // Handle the extra value pushed by lambdas that operate on the stack
+        case code: String => Interpreter.execute(code)
     }
 
     val exponentation = addVect(
@@ -296,6 +352,26 @@ object Elements:
       "a ->"
     ) { ctx ?=> ctx.pop() }
 
+    val factors: Monad = addVect(
+      Monad,
+      "K",
+      "Factors | Is Numeric?",
+      List(
+        "factors",
+        "divisors",
+        "is-numeric",
+        "is-num",
+        "is-number",
+        "is-num?",
+        "is-number?"
+      ),
+      "a: num -> Factors of a",
+      "a: str -> Is a numeric?"
+    ) {
+      case a: VNum   => NumberHelpers.factors(a)
+      case a: String => VNum(a.matches(Lexer.decimalRegex))
+    }
+
     val factorial = addVect(
       Monad,
       "!",
@@ -310,17 +386,45 @@ object Elements:
       case a: String => a.toUpperCase()
     }
 
+    val filterElement: Dyad = addElem(
+      Dyad,
+      "F",
+      "Filter by Function | From Base",
+      List("filter", "keep-by", "from-base", "10->b"),
+      "a: fun, b: lst -> Filter b by truthy results of a",
+      "a: lst, b: fun -> Filter a by truthy results of b",
+      "a: num, b: num -> a in base b - list of digits",
+      "a: num, b: str|lst -> a in base with alphabet b",
+    ) {
+      case (a: VFun, b) =>
+        ListHelpers.filter(ListHelpers.makeIterable(b, Some(true)), a)
+      case (a, b: VFun) =>
+        ListHelpers.filter(ListHelpers.makeIterable(a, Some(true)), b)
+    }
+
     val getContextVariableM = addNilad(
       "m",
       "Get Context Variable M",
-      List("get-context-m", "context-m", "c-var-m", "ctx-m", "ctx-secondary"),
+      List(
+        "get-context-m",
+        "context-m",
+        "c-var-m",
+        "ctx-m",
+        "ctx-secondary"
+      ),
       " -> context variable m"
     ) { ctx ?=> ctx.ctxVarSecondary }
 
     val getContextVariableN = addNilad(
       "n",
       "Get Context Variable N",
-      List("get-context-n", "context-n", "c-var-n", "ctx-n", "ctx-primary"),
+      List(
+        "get-context-n",
+        "context-n",
+        "c-var-n",
+        "ctx-n",
+        "ctx-primary"
+      ),
       " -> context variable n"
     ) { ctx ?=> ctx.ctxVarPrimary }
 
@@ -331,6 +435,7 @@ object Elements:
       " -> input"
     ) { ctx ?=>
       if ctx.globals.inputs.nonEmpty then ctx.globals.inputs.next()
+      else if ctx.settings.online then ctx.settings.defaultValue
       else
         val temp = StdIn.readLine()
         if temp.nonEmpty then Parser.parseInput(temp)
@@ -347,6 +452,37 @@ object Elements:
       "a: num, b: str -> str(a) > b",
       "a: str, b: str -> a > b"
     ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) > 0 }
+
+    val index: Dyad = addElem(
+      Dyad,
+      "i",
+      "Index | Collect Unique Application Values",
+      List("index", "at", "item-at", "nth-item", "collect-unique"),
+      "a: lst, b: num -> a[b]",
+      "a: lst, b: lst -> a[_] for _ in b",
+      "a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value."
+    ) {
+      case (a: VList, b: VList)           => a.index(b)
+      case (a: (VNum | String), b: VList) => b.index(a)
+      case (a, b: VNum) => ListHelpers.makeIterable(a).index(b)
+      case (a, b: VFun) => MiscHelpers.collectUnique(b, a)
+      case (a: VFun, b) => MiscHelpers.collectUnique(a, b)
+    }
+
+    val interleave: Dyad = addElem(
+      Dyad,
+      "I",
+      "Interleave",
+      List("interleave"),
+      "a: lst, b: lst -> Interleave a and b"
+    ) { case (a, b) =>
+      val temp = ListHelpers.interleave(
+        ListHelpers.makeIterable(a),
+        ListHelpers.makeIterable(b)
+      )
+      if a.isInstanceOf[String] && b.isInstanceOf[String] then temp.mkString
+      else temp
+    }
 
     val lessThan: Dyad = addVect(
       Dyad,
@@ -375,6 +511,20 @@ object Elements:
         ListHelpers.map(b, ListHelpers.makeIterable(a, Some(true)))
       case (a: VFun, b) =>
         ListHelpers.map(a, ListHelpers.makeIterable(b, Some(true)))
+    }
+
+    val merge: Dyad = addElem(
+      Dyad,
+      "J",
+      "Merge",
+      List("merge"),
+      "a: lst, b: lst -> Merge a and b",
+    ) {
+      case (a: VNum, b: VNum)   => MiscHelpers.eval(a.toString + b.toString)
+      case (a: VVal, b: VVal)   => MiscHelpers.add(a, b)
+      case (a: VList, b: VList) => VList.from(a ++ b)
+      case (a, b: VList)        => VList.from(a +: b)
+      case (a: VList, b)        => VList.from(a :+ b)
     }
 
     val modulo: Dyad = addElem(
@@ -494,6 +644,27 @@ object Elements:
         MiscHelpers.reduce(a, b)
     }
 
+    val sortByFunction: Dyad = addElem(
+      Dyad,
+      "ṡ",
+      "Sort by Function Object | Reshape (APL Style)",
+      List(
+        "sort-by",
+        "sortby",
+        "sort-by-fun",
+        "sortbyfun",
+        "sort-fun",
+        "sortfun"
+      ),
+      "a: fun, b: any -> sort iterable b by function a",
+      "a: any, b: fun -> sort iterable a by function b"
+    ) {
+      case (a: VFun, b) =>
+        ListHelpers.sortBy(ListHelpers.makeIterable(b, Some(true)), a)
+      case (a, b: VFun) =>
+        ListHelpers.sortBy(ListHelpers.makeIterable(a, Some(true)), b)
+    }
+
     val subtraction = addVect(
       Dyad,
       "-",
@@ -535,6 +706,18 @@ object Elements:
           ctx.push(a, a, a)
       }
 
+    val twoPower = addVect(
+      Monad,
+      "E",
+      "2 Power | Evaluate",
+      List("two^", "two**", "eval"),
+      "a: num -> 2^a",
+      "a: str -> evaluate (not execute) a"
+    ) {
+      case a: VNum   => exponentation(VNum(2), a)
+      case a: String => MiscHelpers.eval(a)
+    }
+
     val vectoriseAsElement = addDirect(
       "#v",
       "Vectorise (Element Form) [Internal Use]",
@@ -549,6 +732,35 @@ object Elements:
           throw IllegalArgumentException(
             "Vectorise: First argument should be a function"
           )
+    }
+
+    val wrap = addDirect(
+      "W",
+      "Wrap",
+      List("wrap"),
+      None,
+      "a, b, c, ..., -> [a, b, c, ...]"
+    ) { ctx ?=>
+      ctx.wrap
+    }
+
+    val zeroSliceUntil = addElem(
+      Dyad,
+      "Θ",
+      "Zero Slice Until",
+      List(
+        "0>b",
+        "zero-slice",
+        "zero-slice-until",
+        "take",
+        "slice-to",
+        "lst-truncate",
+        "first-n-items",
+        "first"
+      ),
+      "a: lst, b: num -> [a[0], a[1], ..., a[b-1]]"
+    ) { case (a, b: VNum) =>
+      ListHelpers.makeIterable(a, Some(true)).take(b.toInt)
     }
 
     // Constants

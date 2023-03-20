@@ -22,6 +22,8 @@ class LexerTests extends VyxalTests:
         testLex("3.4ı", List(Number("3.4ı")))
         testLex(".4", List(Number(".4")))
         testLex(".", List(Number(".")))
+        testLex("1_000_000", List(Number("1000000")))
+        testLex("1_0___0", List(Number("100")))
       }
     }
   }
@@ -111,6 +113,27 @@ class LexerTests extends VyxalTests:
     }
     it("should recognize `#=`/set var") {
       testLex("42 #=answer", List(Number("42"), SetVar("answer")))
+    }
+
+    it("should recognise `#>`/augmented assignment") {
+      testLex(
+        "45 +#>answer",
+        List(Number("45"), Command("+"), AugmentVar("answer"))
+      )
+    }
+  }
+
+  describe("Sugar Trigraphs") {
+    it("should turn them into normal form") {
+      testLex(
+        "5 #.[5+",
+        List(
+          Number("5"),
+          StructureOpen(StructureType.LambdaMap),
+          Number("5"),
+          Command("+"),
+        )
+      )
     }
   }
 

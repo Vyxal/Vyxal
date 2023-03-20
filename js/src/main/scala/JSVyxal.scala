@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.impls.*
+
 import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 import scala.scalajs.js.JSConverters.*
@@ -7,6 +9,12 @@ import scala.scalajs.js.JSConverters.*
 /** A bridge between the interpreter and JS */
 @JSExportTopLevel("Vyxal")
 object JSVyxal:
+
+  @JSExport
+  var shortDict: Seq[String] = Seq()
+  @JSExport
+  var longDict: Seq[String] = Seq()
+
   @JSExport
   def execute(
       code: String,
@@ -18,8 +26,11 @@ object JSVyxal:
     val settings = flags.foldLeft(Settings(online = true))(_.withFlag(_))
     val globals = Globals(
       settings = settings,
-      printFn = printFunc
+      printFn = printFunc,
+      inputs = Inputs(inputs.split("\n").map(Parser.parseInput).toSeq),
     )
+
+    Dictionary.manualInitialise(shortDict, longDict)
 
     val ctx = Context(
       inputs = inputs.split("\n").map(Parser.parseInput).toIndexedSeq,
@@ -28,11 +39,65 @@ object JSVyxal:
     Interpreter.execute(code, literate = flags.contains("l"))(using ctx)
   end execute
 
+  @JSExport
+  def compress(text: String): String =
+    if !Dictionary.initialised then
+      Dictionary.manualInitialise(shortDict, longDict)
+    given Context = Context()
+    StringHelpers.compressDictionary(text)
+
+  @JSExport
+  def decompress(compressed: String): String =
+    if !Dictionary.initialised then
+      Dictionary.manualInitialise(shortDict, longDict)
+    given Context = Context()
+    StringHelpers.decompress(compressed)
+
   /** Bridge to turn literate code into SBCS */
   @JSExport
-  def getSBCSified(code: String): String = litLex(code)
+  def getSBCSified(code: String): String = LiterateLexer.litLex(code)
 
   @JSExport
   def getCodepage(): String = vyxal.CODEPAGE
+
+  @JSExport
+  def getElements() =
+    Elements.elements.values.map {
+      case Element(
+            symbol,
+            name,
+            keywords,
+            _,
+            vectorises,
+            overloads,
+            _
+          ) =>
+        js.Dynamic.literal(
+          "symbol" -> symbol,
+          "name" -> name,
+          "keywords" -> keywords.toJSArray,
+          "vectorises" -> vectorises,
+          "overloads" -> overloads.toJSArray
+        )
+    }.toJSArray
+
+  @JSExport
+  def getModifiers() =
+    Modifiers.modifiers.map { case (symbol, info) =>
+      js.Dynamic.literal(
+        "symbol" -> symbol,
+        "name" -> info.name,
+        "description" -> info.description,
+        "keywords" -> info.keywords.toJSArray,
+      )
+    }.toJSArray
+
+  @JSExport
+  def setShortDict(dict: js.Array[String]): Unit =
+    shortDict = dict.toSeq
+
+  @JSExport
+  def setLongDict(dict: js.Array[String]): Unit =
+    longDict = dict.toSeq
 
 end JSVyxal

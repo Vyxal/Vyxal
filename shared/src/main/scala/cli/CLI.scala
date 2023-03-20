@@ -18,6 +18,8 @@ object CLI:
     *   Inputs to program (optional)
     * @param printDocs
     *   Whether to print descriptions of all the elements
+    * @param litInfoFor
+    *   Element to print literate mode keywords for (optional)
     * @param settings
     *   Extra settings passed on to the Context
     */
@@ -26,17 +28,22 @@ object CLI:
       code: Option[String] = None,
       inputs: List[String] = List.empty,
       printDocs: Boolean = false,
-      printLiterate: Boolean = false,
+      printSugar: Boolean = false,
+      litInfoFor: Option[String] = None,
       printHelp: Boolean = false,
       runLiterate: Boolean = false,
-      settings: Settings = Settings()
+      runLexer: Boolean = false,
+      runParser: Boolean = false,
+      settings: Settings = Settings(),
   )
 
   def run(args: Array[String]): Unit =
     OParser.parse(parser, args, CLIConfig()) match
       case Some(config) =>
-        given Context = Context(
-          config.inputs.reverse.map(Parser.parseInput)
+        val inputList = config.inputs.reverse.map(Parser.parseInput)
+        given ctx: Context = Context(
+          inputs = inputList,
+          ctxArgs = Some(inputList),
         )
 
         if config.printHelp then
@@ -47,9 +54,27 @@ object CLI:
           printDocs()
           return
 
-        if config.printLiterate then
-          printLiterateMap()
+        if config.printSugar then
+          printSugar()
           return
+
+        if config.litInfoFor.nonEmpty then
+          val keywords =
+            LiterateLexer.literateModeMappings.get(config.litInfoFor.get)
+          println(keywords.mkString(", "))
+          return
+
+        if config.runLexer then
+          while true do
+            val line = io.StdIn.readLine(">")
+            if line == "" then return
+            println(Lexer(line))
+
+        if config.runParser then
+          while true do
+            val line = io.StdIn.readLine(">")
+            if line == "" then return
+            println(Parser.parse(line))
 
         config.filename.foreach { filename =>
           val source = io.Source.fromFile(filename)
@@ -74,6 +99,9 @@ object CLI:
         println(s"Error: ${e.getMessage()}")
         e.printStackTrace()
 
+  private def printSugar(): Unit =
+    val sugar = SugarMap.internalMap
+    sugar.foreach((key, value) => println(s"$key -> $value"))
   private def printDocs(): Unit =
     Elements.elements.values.toSeq
       .sortBy { elem =>
@@ -111,35 +139,6 @@ object CLI:
     }
   end printDocs
 
-  private def printLiterateMap(): Unit =
-    println("package vyxal\n")
-    println("val literateModeMappings = Map(")
-    Elements.elements.values.toSeq
-      .sortBy { elem =>
-        // Have to use tuple in case of digraphs
-        (
-          vyxal.CODEPAGE.indexOf(elem.symbol.charAt(0)),
-          vyxal.CODEPAGE.indexOf(elem.symbol.substring(1))
-        )
-      }
-      .foreach {
-        case Element(
-              symbol,
-              name,
-              keywords,
-              arity,
-              vectorises,
-              overloads,
-              impl
-            ) =>
-          for keyword <- keywords do println(s"""  "$keyword" -> "$symbol",""")
-      }
-    Modifiers.modifiers.foreach { case (name, info) =>
-      for keyword <- info.keywords do println(s"""  "$keyword" -> "$name",""")
-    }
-    println(")")
-  end printLiterateMap
-
   private val builder = OParser.builder[CLIConfig]
 
   private val parser =
@@ -171,13 +170,25 @@ object CLI:
         .action((_, cfg) => cfg.copy(printDocs = true))
         .text("Print documentation for elements and exit")
         .optional(),
-      opt[Unit]('D', "docsLiterate")
-        .action((_, cfg) => cfg.copy(printLiterate = true))
+      opt[String]('D', "docsLiterate")
+        .action((symbol, cfg) => cfg.copy(litInfoFor = Some(symbol)))
         .text("Print literate mode mappings and exit")
+        .optional(),
+      opt[Unit]('#', "sugar")
+        .action((_, cfg) => cfg.copy(printSugar = true))
+        .text("Print sugar mappings and exit")
         .optional(),
       opt[Unit]('l', "literate")
         .action((_, cfg) => cfg.copy(runLiterate = true))
         .text("Enable literate mode")
+        .optional(),
+      opt[Unit]('L', "lexer")
+        .action((_, cfg) => cfg.copy(runLexer = true))
+        .text("Run the lexer on input")
+        .optional(),
+      opt[Unit]('P', "parser")
+        .action((_, cfg) => cfg.copy(runParser = true))
+        .text("Run the parser on input")
         .optional(),
       arg[String]("<input>...")
         .unbounded()
