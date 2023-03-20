@@ -2,9 +2,10 @@ package vyxal
 
 import vyxal.VNum.given
 
+import scala.collection.SpecificIterableFactory
+
 import collection.immutable.SeqOps
 import collection.mutable
-import scala.collection.SpecificIterableFactory
 import spire.algebra.*
 
 /** A Vyxal list. It simply wraps around another list and could represent a

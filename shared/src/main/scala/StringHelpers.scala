@@ -1,8 +1,9 @@
 package vyxal
 
-import collection.mutable.StringBuilder
 import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
+
+import collection.mutable.StringBuilder
 
 object StringHelpers:
 
