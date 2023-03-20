@@ -146,7 +146,7 @@ object NumberHelpers:
       var current = sign * value.toBigInt
       if base.toBigInt == 1 then VList(List.fill(current.toInt.abs)(sign)*)
       else
-        val digits = ListBuffer[VAny]()
+        val digits = ListBuffer[VNum]()
         while current > 0 do
           var digit = current % base.toBigInt
           current = current / base.toBigInt
