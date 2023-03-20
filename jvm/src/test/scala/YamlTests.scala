@@ -50,7 +50,7 @@ class YamlTests extends AnyFunSpec:
     }
 
   private def execTests(element: String, testGroup: TestGroup): Unit =
-    for YamlTest(inputs, code, criteria) <- testGroup.tests do
+    for YamlTest(inputs, codeOverride, criteria) <- testGroup.tests do
       val code = codeOverride.getOrElse(element)
       it(s"Execute `$code` on inputs ${inputs.mkString(", ")}") {
         given ctx: Context = Context(inputs = inputs)

@@ -4,6 +4,13 @@
     - ["foo", "bar"]: "foobar"
     - [[1, "a", []], 3]: [4, "a3", []]
 
+- element: "-"
+  tests:
+    - "when given a string and a number":
+      - ["Hello, World", 5]: "Hello, World-----"
+      - ["Hello, World", 5.2]: "Hello, World-----"
+      - ["Hello, World", -5]: "-----Hello, World"
+
 - element: "B"
   tests:
     - "shouldn't do string multiplication with string lists":
