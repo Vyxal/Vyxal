@@ -1441,17 +1441,18 @@
     - "[[]] : []"
 
 - element: "z"
-  name: Zip-self
-  description: Zip a with itself
+  name: Group Indices
+  description: Group indices by their corresponding values
   arity: 1
   overloads:
-    any: zip(a,a)
+    any: Group indices of identical items. Like Ġ in Jelly
   vectorise: false
   tests:
-    - "[[1,2,3]] : [[1,1],[2,2],[3,3]]"
-    - "[123] : [[1,1],[2,2],[3,3]]"
-    - '["zap"] : [["z","z"], ["a","a"],["p","p"]]'
-    - '[""] : []'
+    - "[[1,2,2,3,3,3]] : [[0],[1,2],[3,4,5]]"
+    - "[[1,2,3,4,5]] : [[0],[1],[2],[3],[4]]"
+    - "[[1,1,1,1,1]] : [[0,1,2,3,4]]"
+    - "[[]] : []"
+    - "[[8,8,8,8,8,8,6,6,6,6,6,8,8,8,8,8,3,3]] : [[16, 17], [6, 7, 8, 9, 10], [0, 1, 2, 3, 4, 5, 11, 12, 13, 14, 15]]"
 
 - element: "{"
   name: Open While Loop
