@@ -3690,6 +3690,12 @@ var codepage_descriptions =
       "name": "Rotate Stack Left",
       "description": "Rotate Stack Left",
       "token": "\u201e"
+    },
+    {
+      "name": "List from Diagonals",
+      "description": "List of lists from diagonals of a list",
+      "overloads": "lst -> List of lists from diagonals of a list",
+      "token": "\u00de\u201e"
     }
   ],
   "255": [
@@ -3697,6 +3703,12 @@ var codepage_descriptions =
       "name": "Rotate Stack Right",
       "description": "Rotate Stack Right",
       "token": "\u201f"
+    },
+    {
+      "name": "List from Anti-Diagonals",
+      "description": "List of lists from anti-diagonals of a list",
+      "overloads": "lst -> List of lists from anti-diagonals of a list",
+      "token": "\u00de\u201f"
     }
   ]
 }
