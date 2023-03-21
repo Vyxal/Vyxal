@@ -3562,6 +3562,38 @@ def lift(lhs, ctx):
     return gen()
 
 
+@element("Þ‟", 1)
+def list_from_anti_diagonals(lhs, ctx):
+    """ELement Þ‟
+    (lst) -> Turn a list of anti-diagonals into a list of lists. Expects shortest anti-diagonal to be first.
+    """
+
+    f = lambda x: map(
+        lambda a: [x[z[-1] + b - a][min(a, b)] for b in z],
+        z := range(len(x) // 2 + 1),
+    )
+
+    return LazyList(
+        vectorise(reverse, transpose(vyxalify(f(lhs)), ctx=ctx), ctx=ctx)
+    )
+
+
+@element("Þ„", 1)
+def list_from_diagonals(lhs, ctx):
+    """ELement Þ„
+    (lst) -> Turn a list of diagonals into a list of lists. Expects shortest diagonal to be first.
+    """
+
+    # https://codegolf.stackexchange.com/questions/252082/reconstruct-matrix-from-its-diagonals#comment561235_252088
+
+    f = lambda x: map(
+        lambda a: [x[z[-1] + b - a][min(a, b)] for b in z],
+        z := range(len(x) // 2 + 1),
+    )
+
+    return LazyList(transpose(vyxalify(f(lhs)), ctx=ctx))
+
+
 @element("ŀ", 3)
 def ljust(lhs, rhs, other, ctx):
     """Element ŀ
