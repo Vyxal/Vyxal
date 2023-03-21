@@ -203,13 +203,13 @@ else:
         "    stack.append(0)\n"
         "else:\n"
         "    stack.append(ctx.inputs[0][0][-1])"
-    )
-    "¹":  (
+    ),
+    "¹": (
         "if not ctx.inputs[0][0]:\n"
         "    stack.append(0)\n"
         "else:\n"
         "    stack.append(ctx.inputs[0][0][-2])"
-    )
+    ),
     "∇": (
         "third, second, first = pop(stack, 3, ctx); "
         "stack.append(third); stack.append(first); "
