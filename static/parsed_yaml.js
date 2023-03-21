@@ -1922,9 +1922,9 @@ var codepage_descriptions =
   ],
   "122": [
     {
-      "name": "Zip-self",
-      "description": "Zip a with itself",
-      "overloads": "any -> zip(a,a)",
+      "name": "Group Indices",
+      "description": "Group indices by their corresponding values",
+      "overloads": "any -> Group indices of identical items. Like \u0120 in Jelly",
       "token": "z"
     },
     {

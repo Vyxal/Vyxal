@@ -976,13 +976,13 @@ Push every other item of a, and the rest.
 
 - any a: `a[::2], a[1::2] (every second item, the rest)`
 -------------------------------
-## `` z `` (Zip-self)
+## `` z `` (Group Indices)
 
-Zip a with itself
+Group indices by their corresponding values
 
 ### Overloads
 
-- any a: `zip(a,a)`
+- any a: `Group indices of identical items. Like Ġ in Jelly`
 -------------------------------
 ## `` { `` (Open While Loop)
 
