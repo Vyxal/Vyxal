@@ -202,13 +202,15 @@ else:
         "if not ctx.inputs[0][0]:\n"
         "    stack.append(0)\n"
         "else:\n"
-        "    stack.append(ctx.inputs[0][0][-1])"
+        "    stack.append(ctx.inputs[0][0][-1])",
+        0,
     ),
     "¹": (
         "if not ctx.inputs[0][0]:\n"
         "    stack.append(0)\n"
         "else:\n"
-        "    stack.append(ctx.inputs[0][0][-2])"
+        "    stack.append(ctx.inputs[0][0][-2])",
+        0,
     ),
     "∇": (
         "third, second, first = pop(stack, 3, ctx); "
