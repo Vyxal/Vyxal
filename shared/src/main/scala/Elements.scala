@@ -623,7 +623,7 @@ object Elements:
         MiscHelpers.reduce(a, b)
     }
 
-    val sort: Monad = addElem(
+    val sort: Monad = addFull(
       Monad,
       "S",
       "Sort ascending",
@@ -632,13 +632,13 @@ object Elements:
         "sortasc",
         "sort-asc",
       ),
+      false,
       "a: any -> convert to list and sort ascending",
-    ) {
+    ) { a =>
       // should do something else for num overload later
-      case (a: VAny) =>
-        VList(
-          ListHelpers.makeIterable(a).sorted(MiscHelpers.compareExact(_, _))*
-        )
+      VList.from(
+        ListHelpers.makeIterable(a).sorted(MiscHelpers.compareExact(_, _))
+      )
     }
 
     val sortByFunction: Dyad = addElem(
