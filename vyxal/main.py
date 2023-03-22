@@ -221,7 +221,9 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                     out_val = vyxalify(out_val)
             except:
                 pass
-            ctx.inputs[0][0] = inps
+            print(inps)
+            ctx.inputs[0][0] = inps[::]
+            ctx.inputs[0][1] = 0
             try:
                 exec(code, locals() | globals())
                 ret = pop(stack, 1, ctx)
