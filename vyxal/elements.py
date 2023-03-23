@@ -3568,10 +3568,17 @@ def list_from_anti_diagonals(lhs, ctx):
     (lst) -> Turn a list of anti-diagonals into a list of lists. Expects shortest anti-diagonal to be first.
     """
 
-    f = lambda x: map(
-        lambda a: [x[z[-1] + b - a][min(a, b)] for b in z],
-        z := range(len(x) // 2 + 1),
-    )
+    def f(x):
+        n = len(x) // 2 + 1
+        result = []
+        for a in range(n):
+            row = []
+            for b in range(n):
+                index = z[-1] + b - a
+                value = x[index][min(a, b)]
+                row.append(value)
+            result.append(row)
+        return result
 
     return LazyList(
         vectorise(reverse, transpose(vyxalify(f(lhs)), ctx=ctx), ctx=ctx)
@@ -3586,10 +3593,17 @@ def list_from_diagonals(lhs, ctx):
 
     # https://codegolf.stackexchange.com/questions/252082/reconstruct-matrix-from-its-diagonals#comment561235_252088
 
-    f = lambda x: map(
-        lambda a: [x[z[-1] + b - a][min(a, b)] for b in z],
-        z := range(len(x) // 2 + 1),
-    )
+    def f(x):
+        n = len(x) // 2 + 1
+        result = []
+        for a in range(n):
+            row = []
+            for b in range(n):
+                index = z[-1] + b - a
+                value = x[index][min(a, b)]
+                row.append(value)
+            result.append(row)
+        return result
 
     return LazyList(transpose(vyxalify(f(lhs)), ctx=ctx))
 
