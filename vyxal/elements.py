@@ -3574,7 +3574,7 @@ def list_from_anti_diagonals(lhs, ctx):
         for a in range(n):
             row = []
             for b in range(n):
-                index = z[-1] + b - a
+                index = list(range(z[-1])) + b - a
                 value = x[index][min(a, b)]
                 row.append(value)
             result.append(row)
@@ -3599,7 +3599,7 @@ def list_from_diagonals(lhs, ctx):
         for a in range(n):
             row = []
             for b in range(n):
-                index = z[-1] + b - a
+                index = list(range(z[-1])) + b - a
                 value = x[index][min(a, b)]
                 row.append(value)
             result.append(row)
