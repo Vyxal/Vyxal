@@ -546,7 +546,9 @@ Maximum value or a
 
 ### Overloads
 
-- any a: `max(a)`
+- num a: `Max number with same count of digits. E.g. max(123) → 999.`
+- str a: `max(a)`
+- lst a: `max(a)`
 -------------------------------
 ## `` H `` (Hex To Decimal)
 
@@ -806,7 +808,9 @@ Take the minimum of a list
 
 ### Overloads
 
-- any a: `min(a)`
+- num a: `Min number with same count of digits. E.g. min(123)→100.`
+- str a: `min(a)`
+- lst a: `min(a)`
 -------------------------------
 ## `` h `` (Head)
 

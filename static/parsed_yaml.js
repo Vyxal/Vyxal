@@ -884,7 +884,7 @@ var codepage_descriptions =
     {
       "name": "Max",
       "description": "Maximum value or a",
-      "overloads": "any -> max(a)",
+      "overloads": "num -> Max number with same count of digits. E.g. max(123) \u2192 999.\nstr -> max(a)\nlst -> max(a)",
       "token": "G"
     },
     {
@@ -1548,7 +1548,7 @@ var codepage_descriptions =
     {
       "name": "Minimum",
       "description": "Take the minimum of a list",
-      "overloads": "any -> min(a)",
+      "overloads": "num -> Min number with same count of digits. E.g. min(123)\u2192100.\nstr -> min(a)\nlst -> min(a)",
       "token": "g"
     },
     {
