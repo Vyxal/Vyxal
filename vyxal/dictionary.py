@@ -23442,6 +23442,8 @@ Undergo
 Weigh
 Pant
 Athlete
+bingus
+Bingus
 """.split(
     "\n"
 )
