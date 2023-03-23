@@ -759,10 +759,16 @@
   description: Maximum value or a
   arity: 1
   overloads:
-    any: max(a)
+    num: Max number with same count of digits. E.g. max(123) → 999.
+    str: max(a)
+    lst: max(a)
   vectorise: false
   tests:
     - "[[1,3,2]] : 3"
+    - "[555] : 999"
+    - "[32423] : 99999"
+    - "[-34] : -10"
+    - "[-23423] : -10000"
     - '["python"] : "y"'
     - "[[]] : []"
     - '[""] : []'
@@ -1178,12 +1184,17 @@
   description: Take the minimum of a list
   arity: 1
   overloads:
-    any: min(a)
+    num: Min number with same count of digits. E.g. min(123)→100.
+    str: min(a)
+    lst: min(a)
   vectorise: false
   tests:
     - '["abc"] : "a"'
     - "[[1,4,-2]] : -2"
     - "[[5,3,9]] : 3"
+    - "[435] : 100"
+    - "[53456] : 10000"
+    - "[-234] : -999"
     - "[[]] : []"
     - '[""] : []'
 
