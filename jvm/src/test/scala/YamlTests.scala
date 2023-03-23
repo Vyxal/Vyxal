@@ -56,13 +56,13 @@ class YamlTests extends AnyFunSpec:
         given ctx: Context = Context(inputs = inputs)
         Interpreter.execute(code)
         val output = ctx.peek
-        val cp = Checkpoint()
+        val checkpoint = Checkpoint()
 
         criteria.foreach {
           case Criterion.Equals(expected) =>
-            cp { assertResult(expected)(output) }
+            checkpoint { assertResult(expected)(output) }
           case crit =>
-            cp {
+            checkpoint {
               output match
                 case lst: VList =>
                   (crit: @unchecked) match
@@ -81,7 +81,7 @@ class YamlTests extends AnyFunSpec:
             }
         }
 
-        cp.reportAll()
+        checkpoint.reportAll()
       }
     end for
 
