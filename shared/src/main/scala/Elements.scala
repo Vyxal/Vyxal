@@ -636,9 +636,12 @@ object Elements:
       "a: any -> convert to list and sort ascending",
     ) { a =>
       // should do something else for num overload later
-      VList.from(
-        ListHelpers.makeIterable(a).sorted(MiscHelpers.compareExact(_, _))
-      )
+      a match
+        case s: String => s.sorted
+        case _ =>
+          VList.from(
+            ListHelpers.makeIterable(a).sorted(MiscHelpers.compareExact(_, _))
+          )
     }
 
     val sortByFunction: Dyad = addElem(
