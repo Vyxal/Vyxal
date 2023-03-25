@@ -6688,6 +6688,11 @@ def vectorise(
         )
 
 
+@element("@", 1)
+def vectorised_length(lhs, ctx):
+    return vectorise(length, lhs, ctx=ctx)
+
+
 def vectorised_not(lhs, ctx):
     """List overload for element †"""
     return {NUMBER_TYPE: lambda: int(not lhs), str: lambda: int(not lhs)}.get(

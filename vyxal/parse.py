@@ -22,7 +22,7 @@ STRUCTURE_INFORMATION = {
     "[": (structure.IfStatement, "]"),
     "(": (structure.ForLoop, ")"),
     "{": (structure.WhileLoop, "}"),
-    "@": (structure.FunctionCall, ";"),
+    "¨@": (structure.FunctionCall, ";"),
     "λ": (structure.Lambda, ";"),
     "ƛ": (structure.LambdaMap, ";"),
     "¨2": (structure.LambdaMapDyadic, ";"),
