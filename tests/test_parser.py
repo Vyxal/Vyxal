@@ -136,7 +136,7 @@ def test_structures():
         ]
     )
 
-    assert str(fully_parse("@triple:1|3*;")) == str(
+    assert str(fully_parse("¨@triple:1|3*;")) == str(
         [
             FunctionDef(
                 "triple",
