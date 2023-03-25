@@ -911,7 +911,7 @@ def test_multidimensional_truthy_indices_infinite():
 
 
 def test_varargs():
-    stack = run_vyxal("@f:*|!; 1 2 3 3 @f;")
+    stack = run_vyxal("¨@f:*|!; 1 2 3 3 ¨@f;")
     assert stack[-1] == 3
 
 
