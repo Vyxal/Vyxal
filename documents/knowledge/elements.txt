@@ -437,7 +437,14 @@ $ (Swap)
 - Get the next input from the input source
 
 -------------------------------
-@ (Function Call / Declaration)
+@ (Vectorised Length)
+
+- Lengths of each item in a list
+
+    lst a: ['len(x) for x in a']
+    otherwise: vectorise
+-------------------------------
+¨@ (Function Call / Declaration)
 
 - Call / declare function (@name; / @name|code;)
 
