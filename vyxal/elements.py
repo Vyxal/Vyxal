@@ -198,8 +198,20 @@ else:
         "    stack.append(tail_remove(top, ctx))",
         1,
     ),
-    "⁰": process_element("ctx.inputs[0][0][-1]", 0),
-    "¹": process_element("ctx.inputs[0][0][-2]", 0),
+    "⁰": (
+        "if not ctx.inputs[0][0]:\n"
+        "    stack.append(0)\n"
+        "else:\n"
+        "    stack.append(ctx.inputs[0][0][-1])",
+        0,
+    ),
+    "¹": (
+        "if not ctx.inputs[0][0]:\n"
+        "    stack.append(0)\n"
+        "else:\n"
+        "    stack.append(ctx.inputs[0][0][-2])",
+        0,
+    ),
     "∇": (
         "third, second, first = pop(stack, 3, ctx); "
         "stack.append(third); stack.append(first); "
@@ -6674,6 +6686,11 @@ def vectorise(
             vectorise_helper(),
             isinf=any(type(x) is LazyList and x.infinite for x in args),
         )
+
+
+@element("@", 1)
+def vectorised_length(lhs, ctx):
+    return vectorise(length, lhs, ctx=ctx)
 
 
 def vectorised_not(lhs, ctx):

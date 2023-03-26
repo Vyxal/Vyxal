@@ -17,7 +17,7 @@ class Context:
     """Context objects hold flags and semi-global variables to pass around."""
 
     def __init__(self):
-        self.context_values = [0]
+        self.context_values = ["abcdefghijklmnopqrstuvwxyz"]
         self.empty_input_is_zero = True
         self.inputs_as_strings = False
         self.default_arity = 1
