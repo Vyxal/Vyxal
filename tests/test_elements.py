@@ -8603,10 +8603,10 @@ def test_Uninterleave():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_GroupIndices():
+def test_Overlappingpairs():
 
-    stack = [vyxalify(item) for item in [[1,2,2,3,3,3]]]
-    expected = vyxalify([[0],[1,2],[3,4,5]])
+    stack = [vyxalify(item) for item in ["abcde"]]
+    expected = vyxalify(["ab", "bc", "cd", "de"])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -8626,8 +8626,8 @@ def test_GroupIndices():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [[1,2,3,4,5]]]
-    expected = vyxalify([[0],[1],[2],[3],[4]])
+    stack = [vyxalify(item) for item in [[1,2,3,4]]]
+    expected = vyxalify([[1, 2], [2, 3], [3, 4]])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -8647,8 +8647,29 @@ def test_GroupIndices():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [[1,1,1,1,1]]]
-    expected = vyxalify([[0,1,2,3,4]])
+    stack = [vyxalify(item) for item in [123]]
+    expected = vyxalify([])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('z')
+    # print('z', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in [""]]
+    expected = vyxalify("")
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -8670,27 +8691,6 @@ def test_GroupIndices():
 
     stack = [vyxalify(item) for item in [[]]]
     expected = vyxalify([])
-    ctx = Context()
-
-    ctx.stacks.append(stack)
-
-    code = transpile('z')
-    # print('z', code)
-    exec(code)
-
-    ctx.stacks.pop()
-    actual = vyxalify(stack[-1])
-
-    print(simplify(expected), simplify(actual))
-
-    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
-    else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
-
-
-    stack = [vyxalify(item) for item in [[8,8,8,8,8,8,6,6,6,6,6,8,8,8,8,8,3,3]]]
-    expected = vyxalify([[16, 17], [6, 7, 8, 9, 10], [0, 1, 2, 3, 4, 5, 11, 12, 13, 14, 15]])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -37512,6 +37512,113 @@ def test_MultidimensonalEnumeration():
 
     code = transpile('Þė')
     # print('Þė', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+def test_GroupIndices():
+
+    stack = [vyxalify(item) for item in [[1,2,2,3,3,3]]]
+    expected = vyxalify([[0],[1,2],[3,4,5]])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Þz')
+    # print('Þz', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in [[1,2,3,4,5]]]
+    expected = vyxalify([[0],[1],[2],[3],[4]])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Þz')
+    # print('Þz', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in [[1,1,1,1,1]]]
+    expected = vyxalify([[0,1,2,3,4]])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Þz')
+    # print('Þz', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in [[]]]
+    expected = vyxalify([])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Þz')
+    # print('Þz', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in [[8,8,8,8,8,8,6,6,6,6,6,8,8,8,8,8,3,3]]]
+    expected = vyxalify([[16, 17], [6, 7, 8, 9, 10], [0, 1, 2, 3, 4, 5, 11, 12, 13, 14, 15]])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Þz')
+    # print('Þz', code)
     exec(code)
 
     ctx.stacks.pop()

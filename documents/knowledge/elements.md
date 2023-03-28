@@ -976,13 +976,13 @@ Push every other item of a, and the rest.
 
 - any a: `a[::2], a[1::2] (every second item, the rest)`
 -------------------------------
-## `` z `` (Group Indices)
+## `` z `` (Overlapping pairs)
 
-Group indices by their corresponding values
+Push overlapping pairs of a. Equivalent to 2l
 
 ### Overloads
 
-- any a: `Group indices of identical items. Like Ġ in Jelly`
+- any a: `a[i:i+2] for i in range(len(a)-1) (overlapping pairs)`
 -------------------------------
 ## `` { `` (Open While Loop)
 
@@ -4085,6 +4085,14 @@ Enumerate a list and all its sublists
 ### Overloads
 
 - lst a: `Enumerate a list and all its sublists`
+-------------------------------
+## `` Þz `` (Group Indices)
+
+Group indices by their corresponding values
+
+### Overloads
+
+- any a: `Group indices of identical items. Like Ġ in Jelly`
 -------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 
