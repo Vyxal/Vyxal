@@ -2597,7 +2597,7 @@ def group_consecutive(lhs, ctx):
     return res
 
 
-@element("z", 1)
+@element("Þz", 1)
 def group_indices(lhs, ctx):
     """Element z
     (lst) -> Group indices of identical items. Like Ġ in Jelly
@@ -4693,6 +4693,14 @@ def overlapping_groups(lhs, rhs, ctx):
                 window = window[1:]
 
     return gen()
+
+
+@element("z", 1)
+def overlapping_pairs(lhs, ctx):
+    """Element z
+    (any) -> Overlapping pairs of a
+    """
+    return overlapping_groups(lhs, 2, ctx=ctx)
 
 
 def overloaded_canvas_draw(lhs, rhs, other, ctx):

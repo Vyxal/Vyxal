@@ -1441,18 +1441,18 @@
     - "[[]] : []"
 
 - element: "z"
-  name: Group Indices
-  description: Group indices by their corresponding values
+  name: Overlapping pairs
+  description: Push overlapping pairs of a. Equivalent to 2l
   arity: 1
   overloads:
-    any: Group indices of identical items. Like Ġ in Jelly
+    any: a[i:i+2] for i in range(len(a)-1) (overlapping pairs)
   vectorise: false
   tests:
-    - "[[1,2,2,3,3,3]] : [[0],[1,2],[3,4,5]]"
-    - "[[1,2,3,4,5]] : [[0],[1],[2],[3],[4]]"
-    - "[[1,1,1,1,1]] : [[0,1,2,3,4]]"
+    - '["abcde"] : ["ab", "bc", "cd", "de"]'
+    - "[[1,2,3,4]] : [[1, 2], [2, 3], [3, 4]]"
+    - "[123] : []"
+    - '[""] : ""'
     - "[[]] : []"
-    - "[[8,8,8,8,8,8,6,6,6,6,6,8,8,8,8,8,3,3]] : [[16, 17], [6, 7, 8, 9, 10], [0, 1, 2, 3, 4, 5, 11, 12, 13, 14, 15]]"
 
 - element: "{"
   name: Open While Loop
@@ -6345,6 +6345,21 @@
     - "[[69, [69, 69, 69], 69, [69, 69]]] : [[0, 69], [[1, 0], 69], [[1, 1], 69], [[1, 2], 69], [2, 69], [[3, 0], 69], [[3, 1], 69]]"
     - "[[]] : []"
     - "[[[], [], []]] : [[0, []], [1, []], [2, []]]"
+
+- element: "Þz"
+  name: Group Indices
+  description: Group indices by their corresponding values
+  arity: 1
+  overloads:
+    any: Group indices of identical items. Like Ġ in Jelly
+  vectorise: false
+  tests:
+    - "[[1,2,2,3,3,3]] : [[0],[1,2],[3,4,5]]"
+    - "[[1,2,3,4,5]] : [[0],[1],[2],[3],[4]]"
+    - "[[1,1,1,1,1]] : [[0,1,2,3,4]]"
+    - "[[]] : []"
+    - "[[8,8,8,8,8,8,6,6,6,6,6,8,8,8,8,8,3,3]] : [[16, 17], [6, 7, 8, 9, 10], [0, 1, 2, 3, 4, 5, 11, 12, 13, 14, 15]]"
+
 
 - element: "¨□"
   name: Parse direction arrow to integer
