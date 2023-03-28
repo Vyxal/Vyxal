@@ -662,6 +662,17 @@
   vectorise: false
 
 - element: "@"
+  name: Vectorised Length
+  description: Lengths of each item in a list
+  arity: 1
+  overloads:
+    lst: [len(x) for x in a]
+  vectorise: true
+  tests:
+    - '[["abc", "defg", "h"]] : [3, 4, 1]'
+    - '[[[1, 2, 3], [4], [5, 6, 7, 8]]] : [3, 1, 4]'
+
+- element: "¨@"
   name: Function Call / Declaration
   description: Call / declare function (@name; / @name|code;)
   arity: "* / NA"

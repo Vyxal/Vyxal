@@ -725,9 +725,15 @@ var codepage_descriptions =
   ],
   "64": [
     {
+      "name": "Vectorised Length",
+      "description": "Lengths of each item in a list",
+      "overloads": "lst -> ['len(x) for x in a']",
+      "token": "@"
+    },
+    {
       "name": "Function Call / Declaration",
       "description": "Call / declare function (@name; / @name|code;)",
-      "token": "@"
+      "token": "\u00a8@"
     }
   ],
   "65": [

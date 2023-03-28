@@ -486,7 +486,15 @@ Basic comparison - greater than
 Get the next input from the input source
 
 -------------------------------
-## `` @ `` (Function Call / Declaration)
+## `` @ `` (Vectorised Length)
+
+Lengths of each item in a list
+
+### Overloads
+
+- lst a: `['len(x) for x in a']`
+-------------------------------
+## `` ¨@ `` (Function Call / Declaration)
 
 Call / declare function (@name; / @name|code;)
 
