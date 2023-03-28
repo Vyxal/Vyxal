@@ -137,7 +137,6 @@ else:
     "w": process_element("[lhs]", 1),
     "x": process_element("", 2),
     "y": ("stack += uninterleave(pop(stack, 1, ctx), ctx)", 1),
-    "z": process_element("vy_zip(lhs, deep_copy(lhs), ctx)", 1),
     "¤": process_element("''", 0),
     "ð": process_element("' '", 0),
     "ġ": (
@@ -2610,6 +2609,31 @@ def group_consecutive(lhs, ctx):
     return res
 
 
+@element("Þz", 1)
+def group_indices(lhs, ctx):
+    """Element z
+    (lst) -> Group indices of identical items. Like Ġ in Jelly
+    """
+
+    lhs = iterable(lhs, range, ctx)
+    if not lhs:
+        return lhs
+
+    def gen():
+        grouped = {}
+        for i, item in enumerate(lhs):
+            grouped.setdefault(repr(item), []).append(i)
+        yield from (
+            grouped[repr(key)]
+            for key in sorted(map(lambda x: vy_eval(x, ctx), grouped))
+        )
+
+    if isinstance(lhs, LazyList):
+        return LazyList(gen(), isinf=lhs.infinite)
+
+    return list(gen())
+
+
 @element("øW", 1)
 def group_on_words(lhs, ctx):
     """Element øW
@@ -4681,6 +4705,14 @@ def overlapping_groups(lhs, rhs, ctx):
                 window = window[1:]
 
     return gen()
+
+
+@element("z", 1)
+def overlapping_pairs(lhs, ctx):
+    """Element z
+    (any) -> Overlapping pairs of a
+    """
+    return overlapping_groups(lhs, 2, ctx=ctx)
 
 
 def overloaded_canvas_draw(lhs, rhs, other, ctx):
