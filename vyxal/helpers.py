@@ -1251,11 +1251,11 @@ def transpose(
             if type(matrix[r]) is str:
                 yield "".join(this_row)
             else:
-                yield this_row
+                yield LazyList(this_row)
+            r += 1
 
         else:
             break
-        r += 1
 
 
 def uncompress(token: lexer.Token) -> Union[int, str]:
