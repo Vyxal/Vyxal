@@ -25,7 +25,7 @@ from sympy.parsing.sympy_parser import (
 
 import vyxal.dictionary
 import vyxal.encoding
-from vyxal import lexer
+from vyxal import lexer, parse
 from vyxal.context import DEFAULT_CTX, Context
 from vyxal.LazyList import *
 
@@ -949,6 +949,14 @@ def ring_translate(string: str, map_source: Union[str, list]) -> str:
     return ret
 
 
+def run(ast: vyxal.structure):
+    code = vyxal.transpile.transpile_ast(ast)
+    stack = []
+    ctx = Context()
+    exec(code, locals() | globals())
+    return pop(stack, 1, ctx)
+
+
 def safe_apply(
     function: types.FunctionType, *args, ctx, arity_override=None
 ) -> Any:
@@ -1353,13 +1361,19 @@ def vy_eval(item: str, ctx: Context) -> Any:
         fn = ctx.stacks.pop().pop()
         return fn
     if ctx.online:
+        print("evaluating", item, parse.parse(lexer.tokenise(item)))
         try:
             t = ast.literal_eval(item)
             if type(t) is float:
                 t = sympy.Rational(str(t))
             return vyxalify(t)
         except Exception:  # skipcq: PYL-W0703
-            # TODO: eval as vyxal
+            vyobj = parse.parse(lexer.tokenise(item))
+            if len(vyobj) == 1 and parse.is_literal(vyobj[0]):
+                try:
+                    return run(vyobj)
+                except Exception as e:
+                    pass
             t = item
             pobj = re.compile(r"(\d+)/(\d+)")
             mobj = pobj.match(t)
@@ -1378,6 +1392,12 @@ def vy_eval(item: str, ctx: Context) -> Any:
                 t = sympy.Rational(str(t))
             return vyxalify(t)
         except Exception:  # skipcq: PYL-W0703
+            vyobj = parse.parse(lexer.tokenise(item))
+            if len(vyobj) == 1 and parse.is_literal(vyobj[0]):
+                try:
+                    return run(vyobj)
+                except Exception as e:
+                    pass
             return item
 
 
