@@ -11,6 +11,7 @@ import spire.math.{Complex, Real}
 
 // todo check if these names or this whole way of structuring need to be changed
 type VAny = VAtom | VList
+type VIter = String | VList
 type VAtom = VVal | VFun
 type VVal = VNum | String
 
@@ -101,3 +102,9 @@ extension (self: VAny)
       case (a: VVal, b: VVal)   => MiscHelpers.compare(a, b) == 0
       case (a: VList, b: VList) => a == b
       case _                    => false
+
+extension (iterable: VIter)
+  def iterLength: VNum =
+    iterable match
+      case s: String => s.length
+      case l: VList  => l.size

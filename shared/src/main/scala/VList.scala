@@ -51,7 +51,8 @@ class VList private (val lst: Seq[VAny])
 
   /** Get the element at index `ind` */
   override def apply(ind: Int): VAny =
-    if ind < 0 then
+    if lst.isEmpty then 0
+    else if ind < 0 then
       // floorMod because % gives negative results with negative dividends
       lst(Math.floorMod(ind, lst.length))
     else

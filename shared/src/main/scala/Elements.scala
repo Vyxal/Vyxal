@@ -452,6 +452,18 @@ object Elements:
       "a: str, b: str -> a > b"
     ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) > 0 }
 
+    val hexadecimal: Monad = addVect(
+      Monad,
+      "H",
+      "Hexadecimal | To Hexadecimal",
+      List("hex", "hexadecimal", "to-hex", "to-hexadecimal"),
+      "a: num -> a in hexadecimal",
+      "a: str -> a as a hexadecimal number to base 10"
+    ) {
+      case a: VNum   => NumberHelpers.toBaseAlphabet(a, "0123456789ABCDEF")
+      case a: String => NumberHelpers.fromBaseAlphabet(a, "0123456789ABCDEF")
+    }
+
     val index: Dyad = addElem(
       Dyad,
       "i",
