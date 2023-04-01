@@ -4094,6 +4094,14 @@ Enumerate a list and all its sublists
 
 - lst a: `Enumerate a list and all its sublists`
 -------------------------------
+## `` Þz `` (Group Indices)
+
+Group indices by their corresponding values
+
+### Overloads
+
+- any a: `Group indices of identical items. Like Ġ in Jelly`
+-------------------------------
 ## `` Þ‟ `` (List from Anti-Diagonals)
 
 List of lists from anti-diagonals of a list
@@ -4109,14 +4117,6 @@ List of lists from diagonals of a list
 ### Overloads
 
 - lst a: `List of lists from diagonals of a list`
--------------------------------
-## `` Þz `` (Group Indices)
-
-Group indices by their corresponding values
-
-### Overloads
-
-- any a: `Group indices of identical items. Like Ġ in Jelly`
 -------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 
