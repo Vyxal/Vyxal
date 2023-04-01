@@ -61,6 +61,7 @@ FLAG_STRING = """ALL flags should be used as is (no '-' prefix)
     2    Make the default arity of lambdas 2
     3    Make the default arity of lambdas 3
     A    Run test cases on all inputs
+    ~    Run test cases on all inputs and report whether results match expected outputs
     …    Limit list output to the first 100 items of that list
     5    Make the interpreter timeout after 5 seconds (online interpreter only)
     b    Make the interpreter timeout after 15 seconds (online interpreter only)
@@ -191,6 +192,60 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             print(code + "\n")
 
     ctx.stacks.append(stack)
+    if "~" in flags:
+        case_regex = r"""(.+) ?(?:=>|-+>) ?(.+)"""
+        if inputs[0][0] == "!":
+            case_regex = inputs[0][1:]
+            inputs = inputs[1:]
+
+        for inp in inputs:
+            mobj = re.match(case_regex, inp)
+            if mobj is None or len(mobj.groups()) < 2:
+                raise ValueError("Invalid test case: " + inp)
+            in_val, out_val = mobj.groups()[0], mobj.groups()[1]
+            try:
+                inps = ast.literal_eval(in_val)
+                if isinstance(inps, tuple):
+                    inps = list(inps)
+                else:
+                    inps = [inps]
+                inps = [vyxalify(x) for x in inps]
+            except:
+                inps = [vyxalify(x) for x in in_val.split(", ")]
+
+            try:
+                out_val = ast.literal_eval(out_val)
+                if isinstance(out_val, tuple):
+                    out_val = [vyxalify(x) for x in out_val]
+                else:
+                    out_val = vyxalify(out_val)
+            except:
+                pass
+            print(inps)
+            ctx.inputs[0][0] = inps[::]
+            ctx.inputs[0][1] = 0
+            try:
+                exec(code, locals() | globals())
+                ret = pop(stack, 1, ctx)
+                passes = out_val == ret
+                message = f"({inp}) ==> " + (
+                    "PASS ✅"
+                    if passes
+                    else "FAIL ❌" + f" (expected {ret}, got {out_val})"
+                )
+                if online_mode:
+                    ctx.online_output[1] += message + "\n"
+                else:
+                    print(message)
+            except Exception as e:  # skipcq: PYL-W0703
+                if ctx.online:
+                    ctx.online_output[1] += (
+                        "\n" + inp + "\n" + traceback.format_exc()
+                    )
+                    sys.exit(1)
+                else:
+                    raise
+        return
     try:
         exec(code, locals() | globals())
     except Exception as e:  # skipcq: PYL-W0703

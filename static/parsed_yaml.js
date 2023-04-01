@@ -725,9 +725,15 @@ var codepage_descriptions =
   ],
   "64": [
     {
+      "name": "Vectorised Length",
+      "description": "Lengths of each item in a list",
+      "overloads": "lst -> ['len(x) for x in a']",
+      "token": "@"
+    },
+    {
       "name": "Function Call / Declaration",
       "description": "Call / declare function (@name; / @name|code;)",
-      "token": "@"
+      "token": "\u00a8@"
     }
   ],
   "65": [
@@ -1922,15 +1928,21 @@ var codepage_descriptions =
   ],
   "122": [
     {
-      "name": "Zip-self",
-      "description": "Zip a with itself",
-      "overloads": "any -> zip(a,a)",
+      "name": "Overlapping pairs",
+      "description": "Push overlapping pairs of a. Equivalent to 2l",
+      "overloads": "any -> a[i:i+2] for i in range(len(a)-1) (overlapping pairs)",
       "token": "z"
     },
     {
       "name": "Lowercase alphabet reversed",
       "description": "\"zyxwvutsrqponmlkjihgfedcba\" (lowercase alphabet reversed)",
       "token": "kz"
+    },
+    {
+      "name": "Group Indices",
+      "description": "Group indices by their corresponding values",
+      "overloads": "any -> Group indices of identical items. Like \u0120 in Jelly",
+      "token": "\u00dez"
     }
   ],
   "123": [

@@ -137,7 +137,6 @@ else:
     "w": process_element("[lhs]", 1),
     "x": process_element("", 2),
     "y": ("stack += uninterleave(pop(stack, 1, ctx), ctx)", 1),
-    "z": process_element("vy_zip(lhs, deep_copy(lhs), ctx)", 1),
     "¤": process_element("''", 0),
     "ð": process_element("' '", 0),
     "ġ": (
@@ -198,8 +197,20 @@ else:
         "    stack.append(tail_remove(top, ctx))",
         1,
     ),
-    "⁰": process_element("ctx.inputs[0][0][-1]", 0),
-    "¹": process_element("ctx.inputs[0][0][-2]", 0),
+    "⁰": (
+        "if not ctx.inputs[0][0]:\n"
+        "    stack.append(0)\n"
+        "else:\n"
+        "    stack.append(ctx.inputs[0][0][-1])",
+        0,
+    ),
+    "¹": (
+        "if not ctx.inputs[0][0]:\n"
+        "    stack.append(0)\n"
+        "else:\n"
+        "    stack.append(ctx.inputs[0][0][-2])",
+        0,
+    ),
     "∇": (
         "third, second, first = pop(stack, 3, ctx); "
         "stack.append(third); stack.append(first); "
@@ -2598,6 +2609,31 @@ def group_consecutive(lhs, ctx):
     return res
 
 
+@element("Þz", 1)
+def group_indices(lhs, ctx):
+    """Element z
+    (lst) -> Group indices of identical items. Like Ġ in Jelly
+    """
+
+    lhs = iterable(lhs, range, ctx)
+    if not lhs:
+        return lhs
+
+    def gen():
+        grouped = {}
+        for i, item in enumerate(lhs):
+            grouped.setdefault(repr(item), []).append(i)
+        yield from (
+            grouped[repr(key)]
+            for key in sorted(map(lambda x: vy_eval(x, ctx), grouped))
+        )
+
+    if isinstance(lhs, LazyList):
+        return LazyList(gen(), isinf=lhs.infinite)
+
+    return list(gen())
+
+
 @element("øW", 1)
 def group_on_words(lhs, ctx):
     """Element øW
@@ -3970,6 +4006,8 @@ def monadic_maximum(lhs, ctx):
     """Element G
     (any) -> Maximal element of the input
     """
+    if vy_type(lhs) == NUMBER_TYPE:
+        return lhs
     if len(lhs) == 0:
         return []
     else:
@@ -3981,6 +4019,8 @@ def monadic_minimum(lhs, ctx):
     """Element g
     (any) -> Smallest item of a
     """
+    if vy_type(lhs) == NUMBER_TYPE:
+        return lhs
     if len(lhs) == 0:
         return []
     else:
@@ -4711,6 +4751,14 @@ def overlapping_groups(lhs, rhs, ctx):
                 window = window[1:]
 
     return gen()
+
+
+@element("z", 1)
+def overlapping_pairs(lhs, ctx):
+    """Element z
+    (any) -> Overlapping pairs of a
+    """
+    return overlapping_groups(lhs, 2, ctx=ctx)
 
 
 def overloaded_canvas_draw(lhs, rhs, other, ctx):
@@ -6716,6 +6764,11 @@ def vectorise(
             vectorise_helper(),
             isinf=any(type(x) is LazyList and x.infinite for x in args),
         )
+
+
+@element("@", 1)
+def vectorised_length(lhs, ctx):
+    return vectorise(length, lhs, ctx=ctx)
 
 
 def vectorised_not(lhs, ctx):
