@@ -124,10 +124,9 @@ object NumberHelpers:
   /** Returns value in base len(alphabet) using base 10 [bijective base] */
   def toBaseAlphabet(value: VNum, alphabet: VIter)(using ctx: Context): VAny =
     val indexes = toBaseDigits(value, alphabet.iterLength)
-    val alphalist = VList.from(alphabet match
-      case a: String => a.toString.toList.map(_.toString)
+    val alphalist = alphabet match
+      case a: String => VList.from(a.toString.toList.map(_.toString))
       case l: VList  => l
-    )
 
     val temp = indexes.map(alphalist.index(_).toString())
     alphabet match
