@@ -18,7 +18,9 @@ from vyxal.LazyList import *
 
 def run_vyxal(vy_code, inputs=[], *, debug=False):
     ctx = Context()
-    stack = list(map(vyxalify, map(lambda x: vy_eval(x, ctx), inputs)))
+    stack = [
+        vyxalify(vy_eval(x, ctx) if isinstance(x, str) else x) for x in inputs
+    ]
     ctx.stacks.append(stack)
 
     py_code = transpile(vy_code)
@@ -911,7 +913,7 @@ def test_multidimensional_truthy_indices_infinite():
 
 
 def test_varargs():
-    stack = run_vyxal("@f:*|!; 1 2 3 3 @f;")
+    stack = run_vyxal("¨@f:*|!; 1 2 3 3 ¨@f;")
     assert stack[-1] == 3
 
 
