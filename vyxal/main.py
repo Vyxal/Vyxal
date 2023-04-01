@@ -228,25 +228,15 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                 exec(code, locals() | globals())
                 ret = pop(stack, 1, ctx)
                 passes = out_val == ret
+                message = f"({inp}) ==> " + (
+                    "PASS ✅"
+                    if passes
+                    else "FAIL ❌" + f" (expected {ret}, got {out_val})"
+                )
                 if online_mode:
-                    ctx.online_output[1] += (
-                        f"({inp}) ==> "
-                        + (
-                            "PASS ✅"
-                            if passes
-                            else "FAIL ❌" + f"(expected {ret}, got {out_val})"
-                        )
-                        + "\n"
-                    )
+                    ctx.online_output[1] += message + "\n"
                 else:
-                    print(
-                        f"({inp}) ==> "
-                        + (
-                            "PASS ✅"
-                            if passes
-                            else "FAIL ❌" + f"(expected {ret}, got {out_val})"
-                        )
-                    )
+                    print(message)
             except Exception as e:  # skipcq: PYL-W0703
                 if ctx.online:
                     ctx.online_output[1] += (
