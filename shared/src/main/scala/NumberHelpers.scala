@@ -119,7 +119,10 @@ object NumberHelpers:
         else toBaseDigits(a, b)
       case (n: VNum, _)  => toBaseAlphabet(n, ListHelpers.makeIterable(b))
       case (a: VList, _) => VList(a.map(toBase(_, b))*)
-      case _ => throw new Exception("toBase only works on numbers and lists")
+      case _ =>
+        throw new Exception(
+          s"toBase only works on numbers and lists, was given $a and $b instead"
+        )
 
   /** Returns value in base len(alphabet) using base 10 [bijective base] */
   def toBaseAlphabet(value: VNum, alphabet: VIter)(using ctx: Context): VAny =
