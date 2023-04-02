@@ -3577,11 +3577,16 @@ def letter_to_number(lhs, ctx):
     return {
         NUMBER_TYPE: lambda: chr(lhs + 96),
         str: lambda: (
-            ord(lhs) - 96 if lhs > "Z" else ord(lhs) - 64
+            ord(lhs) - 96
+            if "a" <= lhs <= "z"
+            else (ord(lhs) - 64 if "A" <= lhs <= "Z" else 0)
         )  # No, I'm not making this less cursed
         if len(lhs) == 1
         else LazyList(
-            ord(char) - 96 if char > "Z" else ord(char) - 64 for char in lhs
+            ord(char) - 96
+            if "a" <= char <= "z"
+            else (ord(char) - 64 if "A" <= char <= "Z" else 0)
+            for char in lhs
         )
         if len(lhs)
         else [],
