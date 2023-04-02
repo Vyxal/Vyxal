@@ -3508,9 +3508,15 @@ def left_bit_shift(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) << int(rhs),
-        (NUMBER_TYPE, str): lambda: rhs.ljust(lhs),
-        (str, NUMBER_TYPE): lambda: lhs.ljust(rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) << int(rhs)
+        if rhs > 0
+        else int(lhs) >> int(rhs),
+        (NUMBER_TYPE, str): lambda: rhs.ljust(lhs)
+        if lhs > 0
+        else rhs.rjust(int(lhs), " "),
+        (str, NUMBER_TYPE): lambda: lhs.ljust(rhs)
+        if rhs > 0
+        else lhs.rjust(int(rhs), " "),
         (str, str): lambda: lhs.ljust(len(rhs)),
     }.get(ts, lambda: vectorise(left_bit_shift, lhs, rhs, ctx=ctx))()
 
@@ -5417,9 +5423,15 @@ def right_bit_shift(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) >> int(rhs),
-        (str, NUMBER_TYPE): lambda: lhs.rjust(int(rhs), " "),
-        (NUMBER_TYPE, str): lambda: rhs.rjust(int(lhs), " "),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) >> int(rhs)
+        if rhs > 0
+        else int(lhs) << int(rhs),
+        (str, NUMBER_TYPE): lambda: lhs.rjust(int(rhs), " ")
+        if rhs > 0
+        else lhs.ljust(int(rhs), " "),
+        (NUMBER_TYPE, str): lambda: rhs.rjust(int(lhs), " ")
+        if lhs > 0
+        else rhs.ljust(int(lhs), " "),
         (str, str): lambda: lhs.rjust(len(rhs), " "),
     }.get(ts, lambda: vectorise(right_bit_shift, lhs, rhs, ctx=ctx))()
 
