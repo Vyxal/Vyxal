@@ -3508,7 +3508,7 @@ def left_bit_shift(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) << int(rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) << int(rhs) if rhs > 0 else int(lhs) >> int(rhs),
         (NUMBER_TYPE, str): lambda: rhs.ljust(lhs),
         (str, NUMBER_TYPE): lambda: lhs.ljust(rhs),
         (str, str): lambda: lhs.ljust(len(rhs)),
@@ -5417,7 +5417,7 @@ def right_bit_shift(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) >> int(rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) >> int(rhs) if rhs > 0 else int(lhs) << int(rhs),
         (str, NUMBER_TYPE): lambda: lhs.rjust(int(rhs), " "),
         (NUMBER_TYPE, str): lambda: rhs.rjust(int(lhs), " "),
         (str, str): lambda: lhs.rjust(len(rhs), " "),
