@@ -3512,11 +3512,11 @@ def left_bit_shift(lhs, rhs, ctx):
         if rhs > 0
         else int(lhs) >> int(rhs),
         (NUMBER_TYPE, str): lambda: rhs.ljust(lhs)
-        if rhs > 0
-        else rhs.rjust(lhs),
-        (str, NUMBER_TYPE): lambda: lhs.ljust(rhs)
         if lhs > 0
-        else lhs.rjust(rhs),
+        else rhs.rjust(int(lhs), " "),
+        (str, NUMBER_TYPE): lambda: lhs.ljust(rhs)
+        if rhs > 0
+        else lhs.rjust(int(rhs), " "),
         (str, str): lambda: lhs.ljust(len(rhs)),
     }.get(ts, lambda: vectorise(left_bit_shift, lhs, rhs, ctx=ctx))()
 
