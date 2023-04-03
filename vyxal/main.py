@@ -231,7 +231,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                 message = f"({inp}) ==> " + (
                     "PASS ✅"
                     if passes
-                    else "FAIL ❌" + f" (expected {ret}, got {out_val})"
+                    else "FAIL ❌" + f" (expected {out_val}, got {ret})"
                 )
                 if online_mode:
                     ctx.online_output[1] += message + "\n"

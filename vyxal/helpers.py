@@ -1361,7 +1361,6 @@ def vy_eval(item: str, ctx: Context) -> Any:
         fn = ctx.stacks.pop().pop()
         return fn
     if ctx.online:
-        print("evaluating", item, parse.parse(lexer.tokenise(item)))
         try:
             t = ast.literal_eval(item)
             if type(t) is float:
