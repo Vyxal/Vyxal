@@ -1248,7 +1248,7 @@ def transpose(
     while True:
         if any(has_ind(row, r) for row in matrix):
             this_row = gen_row(r)
-            if type(matrix[r]) is str:
+            if all(type(row[r]) is str for row in matrix):
                 yield "".join(this_row)
             else:
                 yield this_row
