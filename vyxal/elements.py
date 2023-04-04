@@ -112,13 +112,13 @@ elements: dict[str, tuple[str, int]] = {
         """
 count_input_popped = 2 - len(stack) if len(stack) < 2 else 0
 rhs, lhs = pop(stack, 2, ctx)
-ctx.inputs[-1][1] -= count_input_popped
 ts = vy_type(lhs, rhs)
 if ts == (NUMBER_TYPE, NUMBER_TYPE):
     stack.append(string_base_convert(lhs, rhs, ctx))
 elif types.FunctionType in ts:
     stack.append(vy_reduce(lhs, rhs, ctx))
 else:
+    ctx.inputs[-1][1] -= count_input_popped + 1
     stack.append(vectorise(reverse, rhs, ctx=ctx))
 """,
         2,
