@@ -3931,6 +3931,10 @@ def mode(lhs, ctx):
     item_counts = [
         (item, count_item(lhs, item, ctx)) for item in uniquify(lhs, ctx)
     ]
+    if (
+        not item_counts
+    ):  # Otherwise we get "ValueError: max() arg is an empty sequence"
+        return []
     return max(item_counts, key=lambda x: x[1])[0]
 
 
