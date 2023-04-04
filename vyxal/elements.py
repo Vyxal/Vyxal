@@ -110,6 +110,7 @@ elements: dict[str, tuple[str, int]] = {
     "Q": process_element("exit()", 0),
     "R": (
         """
+inputs_used = len(stack) < 2
 rhs, lhs = pop(stack, 2, ctx)
 ts = vy_type(lhs, rhs)
 if ts == (NUMBER_TYPE, NUMBER_TYPE):
@@ -117,7 +118,8 @@ if ts == (NUMBER_TYPE, NUMBER_TYPE):
 elif types.FunctionType in ts:
     stack.append(vy_reduce(lhs, rhs, ctx))
 else:
-    ctx.inputs[-1][1] -= 1
+    if inputs_used: ctx.inputs[-1][1] -= 1
+    else: stack.append(lhs)
     stack.append(vectorise(reverse, rhs, ctx=ctx))
 """,
         2,
