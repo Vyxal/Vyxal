@@ -110,14 +110,15 @@ elements: dict[str, tuple[str, int]] = {
     "Q": process_element("exit()", 0),
     "R": (
         """
-rhs, lhs = pop(stack, 2, ctx)
-ts = vy_type(rhs), vy_type(lhs)
-if ts == (NUMBER_TYPE, NUMBER_TYPE):
+lhs = pop(stack, 1, ctx)
+ts = vy_type(lhs)
+if ts == NUMBER_TYPE:
+    rhs = pop(stack, 1, ctx)
     stack.append(string_base_convert(lhs, rhs, ctx))
-elif types.FunctionType in ts:
+elif ts == types.FunctionType:
+    rhs = pop(stack, 1, ctx)
     stack.append(vy_reduce(lhs, rhs, ctx))
 else:
-    stack.append(rhs)
     stack.append(vectorise(reverse, lhs, ctx=ctx))
 """,
         2,
