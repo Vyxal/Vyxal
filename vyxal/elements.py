@@ -110,15 +110,15 @@ elements: dict[str, tuple[str, int]] = {
     "Q": process_element("exit()", 0),
     "R": (
         """
-ts = (vy_type(stack[-1]),) if len(stack) < 2 else (vy_type(stack[-2]), vy_type(stack[-1]))
+rhs, lhs = pop(stack, 2, ctx)
+ts = vy_type(lhs, rhs)
 if ts == (NUMBER_TYPE, NUMBER_TYPE):
-    rhs, lhs = pop(stack, 2, ctx)
     stack.append(string_base_convert(lhs, rhs, ctx))
 elif types.FunctionType in ts:
-    rhs, lhs = pop(stack, 2, ctx)
     stack.append(vy_reduce(lhs, rhs, ctx))
 else:
-    stack.append(vectorise(reverse, pop(stack, 1, ctx), ctx=ctx))
+    ctx.inputs[-1][1] -= 1
+    stack.append(vectorise(reverse, rhs, ctx=ctx))
 """,
         2,
     ),
@@ -3508,9 +3508,15 @@ def left_bit_shift(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) << int(rhs),
-        (NUMBER_TYPE, str): lambda: rhs.ljust(lhs),
-        (str, NUMBER_TYPE): lambda: lhs.ljust(rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) << int(rhs)
+        if rhs > 0
+        else int(lhs) >> int(rhs),
+        (NUMBER_TYPE, str): lambda: rhs.ljust(lhs)
+        if lhs > 0
+        else rhs.rjust(int(lhs), " "),
+        (str, NUMBER_TYPE): lambda: lhs.ljust(rhs)
+        if rhs > 0
+        else lhs.rjust(int(rhs), " "),
         (str, str): lambda: lhs.ljust(len(rhs)),
     }.get(ts, lambda: vectorise(left_bit_shift, lhs, rhs, ctx=ctx))()
 
@@ -3571,11 +3577,16 @@ def letter_to_number(lhs, ctx):
     return {
         NUMBER_TYPE: lambda: chr(lhs + 96),
         str: lambda: (
-            ord(lhs) - 96 if lhs > "Z" else ord(lhs) - 64
+            ord(lhs) - 96
+            if "a" <= lhs <= "z"
+            else (ord(lhs) - 64 if "A" <= lhs <= "Z" else 0)
         )  # No, I'm not making this less cursed
         if len(lhs) == 1
         else LazyList(
-            ord(char) - 96 if char > "Z" else ord(char) - 64 for char in lhs
+            ord(char) - 96
+            if "a" <= char <= "z"
+            else (ord(char) - 64 if "A" <= char <= "Z" else 0)
+            for char in lhs
         )
         if len(lhs)
         else [],
@@ -5417,9 +5428,15 @@ def right_bit_shift(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) >> int(rhs),
-        (str, NUMBER_TYPE): lambda: lhs.rjust(int(rhs), " "),
-        (NUMBER_TYPE, str): lambda: rhs.rjust(int(lhs), " "),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) >> int(rhs)
+        if rhs > 0
+        else int(lhs) << int(rhs),
+        (str, NUMBER_TYPE): lambda: lhs.rjust(int(rhs), " ")
+        if rhs > 0
+        else lhs.ljust(int(rhs), " "),
+        (NUMBER_TYPE, str): lambda: rhs.rjust(int(lhs), " ")
+        if lhs > 0
+        else rhs.ljust(int(lhs), " "),
         (str, str): lambda: lhs.rjust(len(rhs), " "),
     }.get(ts, lambda: vectorise(right_bit_shift, lhs, rhs, ctx=ctx))()
 
