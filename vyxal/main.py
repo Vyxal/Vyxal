@@ -212,13 +212,14 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                 inps = [vyxalify(x) for x in inps]
             except:
                 inps = [vyxalify(x) for x in in_val.split(", ")]
-
+            repred_inps = [repr(x) for x in inps]
             try:
                 out_val = ast.literal_eval(out_val)
                 if isinstance(out_val, tuple):
                     out_val = [vyxalify(x) for x in out_val]
                 else:
                     out_val = vyxalify(out_val)
+                out_val = repr(out_val)
             except:
                 pass
             print(inps)
@@ -236,9 +237,10 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                         output_var,
                         online_mode,
                     )
-                    ret = ctx.online_output[1][
-                        slice_start:
+                    ret = ctx.online_output[1][slice_start:][
+                        :-1
                     ]  # That's what was printed when we called execute_vyxal
+                    ctx.online_output[1] = ctx.online_output[1][:slice_start]
                     passes = out_val == ret
                     message = f"({inp}) ==> " + (
                         "PASS ✅"
