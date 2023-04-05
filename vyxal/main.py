@@ -224,27 +224,51 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             print(inps)
             ctx.inputs[0][0] = inps[::]
             ctx.inputs[0][1] = 0
-            try:
-                exec(code, locals() | globals())
-                ret = pop(stack, 1, ctx)
-                passes = out_val == ret
-                message = f"({inp}) ==> " + (
-                    "PASS ✅"
-                    if passes
-                    else "FAIL ❌" + f" (expected {out_val}, got {ret})"
-                )
-                if online_mode:
+            if online_mode:
+                slice_start = len(ctx.online_output[1]) # The number of characters already printed
+                try:
+                    execute_vyxal(
+                        file_name,
+                        flags.replace("~", ""),
+                        "\n".join(repred_inps),
+                        output_var,
+                        online_mode,
+                    )
+                    ret = ctx.online_output[1][slice_start:] # That's what was printed when we called execute_vyxal
+                    passes = out_val == ret
+                    message = f"({inp}) ==> " + (
+                        "PASS ✅"
+                        if passes
+                        else "FAIL ❌" + f" (expected {out_val}, got {ret})"
+                    )
                     ctx.online_output[1] += message + "\n"
-                else:
-                    print(message)
-            except Exception as e:  # skipcq: PYL-W0703
-                if ctx.online:
+                except Exception as e:  # skipcq: PYL-W0703
                     ctx.online_output[1] += (
                         "\n" + inp + "\n" + traceback.format_exc()
                     )
                     sys.exit(1)
-                else:
-                    raise
+            else:
+                try:
+                    exec(code, locals() | globals())
+                    ret = pop(stack, 1, ctx)
+                    passes = out_val == ret
+                    message = f"({inp}) ==> " + (
+                        "PASS ✅"
+                        if passes
+                        else "FAIL ❌" + f" (expected {out_val}, got {ret})"
+                    )
+                    #if online_mode:
+                    #    ctx.online_output[1] += message + "\n"
+                    else:
+                        print(message)
+                except Exception as e:  # skipcq: PYL-W0703
+                    #if ctx.online:
+                    #    ctx.online_output[1] += (
+                    #        "\n" + inp + "\n" + traceback.format_exc()
+                    #    )
+                    #    sys.exit(1)
+                    else:
+                        raise
         return
     try:
         exec(code, locals() | globals())
