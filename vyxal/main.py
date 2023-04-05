@@ -225,7 +225,9 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             ctx.inputs[0][0] = inps[::]
             ctx.inputs[0][1] = 0
             if online_mode:
-                slice_start = len(ctx.online_output[1]) # The number of characters already printed
+                slice_start = len(
+                    ctx.online_output[1]
+                )  # The number of characters already printed
                 try:
                     execute_vyxal(
                         file_name,
@@ -234,7 +236,9 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                         output_var,
                         online_mode,
                     )
-                    ret = ctx.online_output[1][slice_start:] # That's what was printed when we called execute_vyxal
+                    ret = ctx.online_output[1][
+                        slice_start:
+                    ]  # That's what was printed when we called execute_vyxal
                     passes = out_val == ret
                     message = f"({inp}) ==> " + (
                         "PASS ✅"
@@ -257,11 +261,11 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                         if passes
                         else "FAIL ❌" + f" (expected {out_val}, got {ret})"
                     )
-                    #if online_mode:
+                    # if online_mode:
                     #    ctx.online_output[1] += message + "\n"
                     print(message)
                 except Exception as e:  # skipcq: PYL-W0703
-                    #if ctx.online:
+                    # if ctx.online:
                     #    ctx.online_output[1] += (
                     #        "\n" + inp + "\n" + traceback.format_exc()
                     #    )
