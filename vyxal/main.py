@@ -259,16 +259,14 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                     )
                     #if online_mode:
                     #    ctx.online_output[1] += message + "\n"
-                    else:
-                        print(message)
+                    print(message)
                 except Exception as e:  # skipcq: PYL-W0703
                     #if ctx.online:
                     #    ctx.online_output[1] += (
                     #        "\n" + inp + "\n" + traceback.format_exc()
                     #    )
                     #    sys.exit(1)
-                    else:
-                        raise
+                    raise
         return
     try:
         exec(code, locals() | globals())
