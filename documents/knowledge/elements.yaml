@@ -2880,6 +2880,7 @@
     - "[1234] : [[1, 2, 3, 4]]"
     - '[["abc", "def", "ghi"]] : ["adg", "beh", "cfi"]'
     - '[["abcde", "fgh"]] : ["af", "bg", "ch", "d", "e"]'
+    - '[[123, "abc"]] : [[1, "a"], [2, "b"], [3, "c"]]'
 
 - element: "⊍"
   name: Symmetric Set difference
