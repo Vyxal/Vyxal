@@ -4579,6 +4579,8 @@ def optimal_number_compress(lhs, ctx):
     """Element øċ
     (num) -> Semi-optimally compress a number
     """
+    if lhs == -1:
+        return "u" # Otherwise it gives "1N"
     if lhs < 0:
         return optimal_number_compress(-lhs, ctx) + "N"
     num_dict = {
