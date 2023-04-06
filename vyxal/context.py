@@ -30,7 +30,7 @@ class Context:
         # inputs[1] = index
         self.number_as_range = False
         self.online = False
-        self.online_output = ""
+        self.online_output = ["", "", ""]
         self.print_decimals = False
         self.printed = False
         self.range_start = 1  # Where do auto ranges start?
