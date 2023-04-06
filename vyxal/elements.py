@@ -3931,6 +3931,10 @@ def mode(lhs, ctx):
     item_counts = [
         (item, count_item(lhs, item, ctx)) for item in uniquify(lhs, ctx)
     ]
+    if (
+        not item_counts
+    ):  # Otherwise we get "ValueError: max() arg is an empty sequence"
+        return []
     return max(item_counts, key=lambda x: x[1])[0]
 
 
@@ -4575,6 +4579,8 @@ def optimal_number_compress(lhs, ctx):
     """Element øċ
     (num) -> Semi-optimally compress a number
     """
+    if lhs == -1:
+        return "u"  # Otherwise it gives "1N"
     if lhs < 0:
         return optimal_number_compress(-lhs, ctx) + "N"
     num_dict = {
