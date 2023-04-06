@@ -31,6 +31,8 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "org.scala-lang.modules" %%% "scala-parser-combinators" % "2.2.0",
       // For command line parsing
       "com.github.scopt" %%% "scopt" % "4.1.0",
+      // For reading tests.yaml
+      "org.virtuslab" %%% "scala-yaml" % "0.0.6" % Test,
       // Used by ScalaTest
       "org.scalactic" %%% "scalactic" % "3.2.15",
       "org.scalatest" %%% "scalatest" % "3.2.15" % Test
@@ -61,16 +63,13 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     ),
     // From https://www.scalatest.org/user_guide/using_the_runner
     // Suppress output from successful tests
-    Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-oNCXELOPQRM")
+    Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-oNCXELOPQRMF")
   )
   .jvmSettings(
     // JVM-specific settings
     Compile / mainClass := Some("vyxal.Main"),
     assembly / mainClass := Some("vyxal.Main"),
     assembly / assemblyJarName := s"vyxal-$vyxalVersion.jar",
-    libraryDependencies ++= Seq(
-      "org.yaml" % "snakeyaml" % "1.33" % Test
-    ),
     // Necessary for tests to be able to access src/main/resources
     Test / fork := true,
   )

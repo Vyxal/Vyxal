@@ -1,12 +1,11 @@
 package vyxal
 
-import java.util.{ArrayList, Map as JavaMap}
 import scala.collection.mutable
 import scala.jdk.CollectionConverters.*
 
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.Checkpoints.Checkpoint
-import org.yaml.snakeyaml.Yaml
+import org.virtuslab.yaml.*
 
 /** Tests for specific elements. The format is something like this:
   * {{{
@@ -93,56 +92,57 @@ class YamlTests extends AnyFunSpec:
 
   /** Load all the tests, mapping elements to test groups */
   private def loadTests(): Map[String, TestGroup] =
-    val yaml = new Yaml()
-    val inputStream = this
-      .getClass()
-      .getClassLoader()
-      .getResourceAsStream(TestsFile)
-    val parsed: ArrayList[JavaMap[String, Any]] = yaml.load(inputStream)
+    val yaml = io.Source
+      .fromInputStream(
+        this
+          .getClass()
+          .getClassLoader()
+          .getResourceAsStream(TestsFile)
+      )
+      .mkString
 
-    parsed.asScala.map { elemInfo =>
-      val symbol = elemInfo.get("element").asInstanceOf[String]
-      val testsInfo = elemInfo.get("tests").asInstanceOf[ArrayList[Any]]
-      symbol -> getTestGroup(testsInfo)
-    }.toMap
+    yaml.as[List[Map[String, Any]]] match
+      case Right(parsed) =>
+        parsed.map { elemInfo =>
+          val symbol = elemInfo("element").asInstanceOf[String]
+          val testsInfo = elemInfo("tests")
+          symbol -> getTestGroup(testsInfo.asInstanceOf[List[Any]])
+        }.toMap
+      case Left(err) => throw Error(s"Parsing tests failed: ${err.msg}")
+  end loadTests
 
   /** Load a TestGroup from a part of the parsed YAML */
-  private def getTestGroup(testsInfo: ArrayList[Any]): TestGroup =
+  private def getTestGroup(testsInfo: List[Any]): TestGroup =
     val tests = mutable.ArrayBuffer.empty[YamlTest]
     val subgroups = mutable.Map.empty[String, TestGroup]
-    for possibleTestInfo <- testsInfo.asScala do
-      val testInfo = possibleTestInfo.asInstanceOf[JavaMap[Any, Any]]
-      if testInfo.containsKey("inputs") then
+    for possibleTestInfo <- testsInfo do
+      val testInfo = possibleTestInfo.asInstanceOf[Map[Any, Any]]
+      if testInfo.contains("inputs") then
         // A test that looks like
         // - inputs: ["foo", "bar"]
         //   outupt: "foobar"
         val inputs = testInfo
           .get("inputs")
-          .asInstanceOf[ArrayList[Any]]
-          .asScala
-          .toSeq
+          .asInstanceOf[List[Any]]
           .map(javaToVyxal)
         val code = Option(testInfo.get("code").asInstanceOf[String])
         tests.append(YamlTest(inputs, code, getOutputCriteria(testInfo)))
-      else if testInfo.size() == 1 then
+      else if testInfo.size == 1 then
         // Either a test group or a v2-style [...input]: output test
-        val firstEntry = testInfo
-          .entrySet()
-          .iterator()
-          .next()
-        firstEntry.getKey() match
+        val (firstKey, firstValue) = testInfo.head
+        firstKey match
           case groupName: String =>
             // It's a nested group of tests
             subgroups.put(
               groupName,
-              getTestGroup(firstEntry.getValue().asInstanceOf[ArrayList[Any]])
+              getTestGroup(firstValue.asInstanceOf[List[Any]])
             )
-          case inputs: ArrayList[?] =>
+          case inputs: List[?] =>
             // It's a v2-style test
-            val output = javaToVyxal(firstEntry.getValue())
+            val output = javaToVyxal(firstValue)
             tests.append(
               YamlTest(
-                inputs.asScala.toSeq.map(javaToVyxal),
+                inputs.map(javaToVyxal),
                 None,
                 Seq(Criterion.Equals(output))
               )
@@ -158,7 +158,7 @@ class YamlTests extends AnyFunSpec:
     TestGroup(tests.toSeq, subgroups.toMap)
   end getTestGroup
 
-  private def getOutputCriteria(testInfo: JavaMap[Any, Any]): Seq[Criterion] =
+  private def getOutputCriteria(testInfo: Map[Any, Any]): Seq[Criterion] =
     val criteria = mutable.ArrayBuffer.empty[Criterion]
     val output = testInfo.get("output")
     if output != null then criteria += Criterion.Equals(javaToVyxal(output))
@@ -180,14 +180,16 @@ class YamlTests extends AnyFunSpec:
   end getOutputCriteria
 
   private def javaToVyxal(obj: Any): VAny = obj match
-    case s: String          => s
-    case i: Int             => VNum(i)
-    case d: Double          => VNum(d)
-    case list: ArrayList[?] => VList.from(list.asScala.toSeq.map(javaToVyxal))
+    case s: String     => s
+    case i: Int        => VNum(i)
+    case d: Double     => VNum(d)
+    case list: List[?] => VList.from(list.map(javaToVyxal))
 
   private def javaListToVyxal(list: Any): Seq[VAny] =
-    list.asInstanceOf[ArrayList[Any]].asScala.toSeq.map(javaToVyxal)
+    list.asInstanceOf[List[Any]].map(javaToVyxal)
 end YamlTests
+
+// case class ElementTests(element: String, tests: List[Any]) derives YamlCodec
 
 /** A list of tests. Can be nested
   *

@@ -45,7 +45,10 @@ trait VyxalModule extends ScalaModule {
   trait VyxalTestModule extends Tests with TestModule.ScalaTest {
     def scalaVersion = VyxalModule.this.scalaVersion()
 
-    def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.2.15")
+    def ivyDeps = Agg(
+      ivy"org.scalatest::scalatest:3.2.15",
+      ivy"org.virtuslab::scala-yaml:0.0.6"
+    )
 
     // Task to only show output from failed tests
     def testQuiet(args: String*) =
