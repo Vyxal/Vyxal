@@ -1248,7 +1248,7 @@ def transpose(
     while True:
         if any(has_ind(row, r) for row in matrix):
             this_row = gen_row(r)
-            if type(matrix[r]) is str:
+            if all(type(x) is str for x in this_row):
                 yield "".join(this_row)
             else:
                 yield this_row
@@ -1361,7 +1361,6 @@ def vy_eval(item: str, ctx: Context) -> Any:
         fn = ctx.stacks.pop().pop()
         return fn
     if ctx.online:
-        print("evaluating", item, parse.parse(lexer.tokenise(item)))
         try:
             t = ast.literal_eval(item)
             if type(t) is float:

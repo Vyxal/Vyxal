@@ -212,38 +212,68 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                 inps = [vyxalify(x) for x in inps]
             except:
                 inps = [vyxalify(x) for x in in_val.split(", ")]
-
+            repred_inps = [repr(x) for x in inps]
             try:
                 out_val = ast.literal_eval(out_val)
                 if isinstance(out_val, tuple):
                     out_val = [vyxalify(x) for x in out_val]
                 else:
                     out_val = vyxalify(out_val)
+                out_val = repr(out_val)
             except:
                 pass
-            print(inps)
             ctx.inputs[0][0] = inps[::]
             ctx.inputs[0][1] = 0
-            try:
-                exec(code, locals() | globals())
-                ret = pop(stack, 1, ctx)
-                passes = out_val == ret
-                message = f"({inp}) ==> " + (
-                    "PASS ✅"
-                    if passes
-                    else "FAIL ❌" + f" (expected {ret}, got {out_val})"
-                )
-                if online_mode:
+            if online_mode:
+                slice_start = len(
+                    ctx.online_output[1]
+                )  # The number of characters already printed
+                try:
+                    execute_vyxal(
+                        file_name,
+                        flags.replace("~", ""),
+                        "\n".join(repred_inps),
+                        output_var,
+                        online_mode,
+                    )
+                    ret = ctx.online_output[1][slice_start:][
+                        :-1
+                    ]  # That's what was printed when we called execute_vyxal
+                    ctx.online_output[1] = ctx.online_output[1][:slice_start]
+                    passes = out_val == ret
+                    message = f"({inp}) ==> " + (
+                        "PASS ✅"
+                        if passes
+                        else "FAIL ❌" + f" (expected {out_val}, got {ret})"
+                    )
                     ctx.online_output[1] += message + "\n"
-                else:
-                    print(message)
-            except Exception as e:  # skipcq: PYL-W0703
-                if ctx.online:
+                except Exception as e:  # skipcq: PYL-W0703
                     ctx.online_output[1] += (
                         "\n" + inp + "\n" + traceback.format_exc()
                     )
                     sys.exit(1)
-                else:
+            else:
+                try:
+                    output = ["", ""]
+                    execute_vyxal(
+                        file_name,
+                        flags.replace("~", ""),
+                        "\n".join(repred_inps),
+                        output,
+                        True,
+                    )
+                    ret = output[1][
+                        :-1
+                    ]  # That's what was printed when we called execute_vyxal
+                    passes = out_val == ret
+                    message = f"({inp}) ==> " + (
+                        "PASS ✅"
+                        if passes
+                        else "FAIL ❌" + f" (expected {out_val}, got {ret})"
+                    )
+                    print(message)
+                except Exception as e:  # skipcq: PYL-W0703
+                    print(traceback.format_exc())
                     raise
         return
     try:
