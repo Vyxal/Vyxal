@@ -4102,6 +4102,22 @@ Group indices by their corresponding values
 
 - any a: `Group indices of identical items. Like Ġ in Jelly`
 -------------------------------
+## `` Þ‟ `` (List from Anti-Diagonals)
+
+List of lists from anti-diagonals of a list
+
+### Overloads
+
+- lst a: `List of lists from anti-diagonals of a list`
+-------------------------------
+## `` Þ„ `` (List from Diagonals)
+
+List of lists from diagonals of a list
+
+### Overloads
+
+- lst a: `List of lists from diagonals of a list`
+-------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 
 Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)

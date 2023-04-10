@@ -37697,6 +37697,52 @@ def test_GroupIndices():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
+def test_ListfromAnti_Diagonals():
+
+    stack = [vyxalify(item) for item in [[[1], [2, 6], [3, 7, 11], [4, 8, 12, 16], [5, 9, 13, 17, 21], [10, 14, 18, 22], [15, 19, 23], [20, 24], [25]]]]
+    expected = vyxalify([[1, 2, 3, 4, 5], [6, 7, 8, 9, 10], [11, 12, 13, 14, 15], [16, 17, 18, 19, 20], [21, 22, 23, 24, 25]])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Þ‟')
+    # print('Þ‟', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+def test_ListfromDiagonals():
+
+    stack = [vyxalify(item) for item in [[[5], [4, 10], [3, 9, 15], [2, 8, 14, 20], [1, 7, 13, 19, 25], [6, 12, 18, 24], [11, 17, 23], [16, 22], [21]]]]
+    expected = vyxalify([[1, 2, 3, 4, 5], [6, 7, 8, 9, 10], [11, 12, 13, 14, 15], [16, 17, 18, 19, 20], [21, 22, 23, 24, 25]])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Þ„')
+    # print('Þ„', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
 def test_Parsedirectionarrowtointeger():
 
     stack = [vyxalify(item) for item in ["v"]]
