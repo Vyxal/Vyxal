@@ -545,9 +545,11 @@ object Elements:
               ctx.push(ListHelpers.generate(b, a))
             case (a: VFun, b: VList) =>
               ctx.push(ListHelpers.generate(a, b))
-            case (a: VList, b: VVal) =>
-              ctx.push(ListHelpers.vectorisedMaximum(a, b))
-            case _ => throw new Exception("Invalid arguments for maximum")
+            case (a: VVal, b: VList) =>
+              ctx.push(ListHelpers.vectorisedMaximum(b, a))
+            case _ =>
+              throw new Exception("Invalid arguments for maximum")
+      end match
     }
 
     val merge: Dyad = addElem(

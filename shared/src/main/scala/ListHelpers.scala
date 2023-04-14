@@ -52,7 +52,7 @@ object ListHelpers:
       case 1 => initial.head
       case _ => initial.init.last
     VList.from(
-      Interpreter.generator(
+      initial ++: Interpreter.generator(
         function,
         firstN,
         firstM,
