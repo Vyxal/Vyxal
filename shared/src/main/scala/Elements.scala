@@ -533,7 +533,7 @@ object Elements:
       "a: non-lst, b: non-lst -> Maximum of a and b",
       "a: lst, b: fun -> Call b infinitely with items of a as starting values"
     ) { ctx ?=>
-      val top = ctx.pop();
+      val top = ctx.pop()
       top match
         case a: VList =>
           ctx.push(ListHelpers.maximum(a))
