@@ -133,9 +133,9 @@ object ListHelpers:
   def maximum(iterable: VList)(using ctx: Context): VAny =
     if iterable.isEmpty then VList()
     else
-        iterable.reduce { (a, b) =>
-          if MiscHelpers.compareExact(a, b) > 0 then a else b
-        }
+      iterable.reduce { (a, b) =>
+        if MiscHelpers.compareExact(a, b) > 0 then a else b
+      }
 
   /** Mold a list into a shape.
     * @param content
