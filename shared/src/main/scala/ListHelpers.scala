@@ -131,10 +131,9 @@ object ListHelpers:
   end map
 
   def maximum(iterable: VList)(using ctx: Context): VAny =
-    iterable match
-      case VList() => VList()
-      case VList(list*) =>
-        list.reduce { (a, b) =>
+    if iterable.isEmpty then VList()
+    else
+        iterable.reduce { (a, b) =>
           if MiscHelpers.compareExact(a, b) > 0 then a else b
         }
 
