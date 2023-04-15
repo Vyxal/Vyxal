@@ -541,15 +541,12 @@ object Elements:
           val next = ctx.pop()
           (top, next) match
             case (a: VVal, b: VVal) => ctx.push(MiscHelpers.dyadicMaximum(a, b))
-            case (a: VList, b: VFun) =>
-              ctx.push(ListHelpers.generate(b, a))
             case (a: VFun, b: VList) =>
               ctx.push(ListHelpers.generate(a, b))
             case (a: VVal, b: VList) =>
               ctx.push(ListHelpers.vectorisedMaximum(b, a))
             case _ =>
               throw new Exception("Invalid arguments for maximum")
-      end match
     }
 
     val merge: Dyad = addElem(
