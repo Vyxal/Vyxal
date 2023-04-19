@@ -524,6 +524,31 @@ object Elements:
         ListHelpers.map(a, ListHelpers.makeIterable(b, Some(true)))
     }
 
+    val maximum = addDirect(
+      "G",
+      "Monadic Maximum | Dyadic Maximum | Generate From Function | Vectorised Maximum",
+      List("max", "maximum", "generator"),
+      Some(2),
+      "a: lst -> Maximum of a",
+      "a: non-lst, b: non-lst -> Maximum of a and b",
+      "a: lst, b: fun -> Call b infinitely with items of a as starting values"
+    ) { ctx ?=>
+      val top = ctx.pop()
+      top match
+        case a: VList =>
+          ctx.push(ListHelpers.maximum(a))
+        case _ =>
+          val next = ctx.pop()
+          (top, next) match
+            case (a: VVal, b: VVal) => ctx.push(MiscHelpers.dyadicMaximum(a, b))
+            case (a: VFun, b: VList) =>
+              ctx.push(ListHelpers.generate(a, b))
+            case (a: VVal, b: VList) =>
+              ctx.push(ListHelpers.vectorisedMaximum(b, a))
+            case _ =>
+              throw new Exception("Invalid arguments for maximum")
+    }
+
     val merge: Dyad = addElem(
       Dyad,
       "J",

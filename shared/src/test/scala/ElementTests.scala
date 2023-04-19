@@ -354,6 +354,21 @@ class ElementTests extends VyxalTests:
     }
   }
 
+  describe("Element G") {
+    testMulti("G")(
+      List[VAny](VList(1, 2, 3, 4, 5, 6, 7)) -> VNum(7),
+      List[VAny](VList()) -> VList(),
+      List[VAny](VNum(6), VNum(9)) -> VNum(9),
+      List[VAny](VNum(9), VNum(6)) -> VNum(9),
+      List[VAny](VList(1, 2, 3, 4, 5, 6, 7), VNum(3)) -> VList(3, 3, 3, 4, 5, 6,
+        7)
+    )
+    testCode(
+      "#[1|1#]λ2|+}G10Θ",
+      VList(1, 1, 2, 3, 5, 8, 13, 21, 34, 55)
+    )
+  }
+
   describe("Element H") {
     testMulti("H")(
       List[VAny](VNum(69420)) -> "10F2C",

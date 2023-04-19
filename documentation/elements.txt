@@ -118,6 +118,12 @@ Keywords: filter, keep-by, from-base, 10->b
 - a: num, b: num -> a in base b - list of digits
 - a: num, b: str|lst -> a in base with alphabet b
 ---------------------
+G (Monadic Maximum | Dyadic Maximum | Generate From Function | Vectorised Maximum) (non-vectorising)
+Keywords: max, maximum, generator
+- a: lst -> Maximum of a
+- a: non-lst, b: non-lst -> Maximum of a and b
+- a: lst, b: fun -> Call b infinitely with items of a as starting values
+---------------------
 H (Hexadecimal | To Hexadecimal) (vectorising)
 Keywords: hex, hexadecimal, to-hex, to-hexadecimal
 - a: num -> a in hexadecimal

@@ -39,6 +39,29 @@ object ListHelpers:
 
   end filter
 
+  /** A wrapper call to the generator method in interpreter */
+
+  def generate(function: VFun, initial: VList)(using ctx: Context): VList =
+    val firstN = initial.length match
+      case 0 => ctx.settings.defaultValue
+      case 1 => initial.head
+      case _ => initial.last
+
+    val firstM = initial.length match
+      case 0 => ctx.settings.defaultValue
+      case 1 => initial.head
+      case _ => initial.init.last
+    VList.from(
+      initial ++: Interpreter.generator(
+        function,
+        firstN,
+        firstM,
+        function.arity,
+        initial
+      )
+    )
+  end generate
+
   def interleave(left: VList, right: VList)(using ctx: Context): VList =
     val out = ArrayBuffer.empty[VAny]
     val leftIter = left.iterator
@@ -106,6 +129,13 @@ object ListHelpers:
         }*)
 
   end map
+
+  def maximum(iterable: VList)(using ctx: Context): VAny =
+    if iterable.isEmpty then VList()
+    else
+      iterable.reduce { (a, b) =>
+        if MiscHelpers.compareExact(a, b) > 0 then a else b
+      }
 
   /** Mold a list into a shape.
     * @param content
@@ -211,4 +241,11 @@ object ListHelpers:
 
     parts.toSeq
   end split
+
+  def vectorisedMaximum(iterable: VList, b: VVal): VList =
+    VList.from(iterable.map { a =>
+      (a: @unchecked) match
+        case a: VList => vectorisedMaximum(a, b)
+        case a: VVal  => MiscHelpers.dyadicMaximum(a, b)
+    })
 end ListHelpers
