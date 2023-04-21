@@ -4,7 +4,9 @@ from . import config
 frequencies = [0 for _ in range(256)]
 pairs = [[0 for _ in range(256)] for __ in range(257)]
 
-data_path = "vycoder/TrainingData.csv" if config.training else "vycoder/Data.csv"
+data_path = (
+    "vycoder/TrainingData.csv" if config.training else "vycoder/Data.csv"
+)
 
 with open(data_path, newline="") as f:
     for row in csv.reader(f):
@@ -16,7 +18,7 @@ with open(data_path, newline="") as f:
 
 
 def uniform(x):
-    return [1]*256
+    return [1] * 256
 
 
 def frequency(x):
@@ -24,28 +26,47 @@ def frequency(x):
 
 
 def frequency_plus_uniform(alpha):
-    return lambda x: [x+alpha*sum(frequencies)/256 for x in frequencies]
+    return lambda x: [x + alpha * sum(frequencies) / 256 for x in frequencies]
 
 
 def pair_frequency(alpha, beta):
-    lookup = [[pairs[x][y]*sum(frequencies) + alpha*frequencies[y]*sum(pairs[x]) + sum(frequencies)*sum(pairs[x])*beta for y in range(256)] for x in range(257)]
-    assert all(max(row)/sum(row) < 0.5 for row in lookup)
+    lookup = [
+        [
+            pairs[x][y] * sum(frequencies)
+            + alpha * frequencies[y] * sum(pairs[x])
+            + sum(frequencies) * sum(pairs[x]) * beta
+            for y in range(256)
+        ]
+        for x in range(257)
+    ]
+    assert all(max(row) / sum(row) < 0.5 for row in lookup)
+
     def f(lst):
         if len(lst):
             x = lst[-1]
         else:
             x = 256
         return lookup[x]
+
     return f
 
 
 def pair_frequency2(alpha, beta):
-    lookup = [[pairs[x][y]*(sum(frequencies)+256*alpha) + beta*(frequencies[y] + alpha) for y in range(256)] for x in range(257)]
-    assert all(max(row)/sum(row) < 0.5 for row in lookup)
+    lookup = [
+        [
+            pairs[x][y] * (sum(frequencies) + 256 * alpha)
+            + beta * (frequencies[y] + alpha)
+            for y in range(256)
+        ]
+        for x in range(257)
+    ]
+    assert all(max(row) / sum(row) < 0.5 for row in lookup)
+
     def f(lst):
         if len(lst):
             x = lst[-1]
         else:
             x = 256
         return lookup[x]
+
     return f

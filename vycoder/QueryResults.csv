@@ -159,7 +159,7 @@ lhs, rhs = stack.pop(2); stack.push(int((rhs % lhs) == 0))
 "
 "212348","<h1>4. <a href=""https://github.com/Lyxal/Vyxal"" rel=""noreferrer"">Vyxal</a>, 245 available bytes</h1>
 <pre><code>#λ¬∧⟑∨⟇÷«»°․⍎½∆øÏÔÇæʀʁɾɽÞƈ∞⫙ß⎝⎠ !&quot;#$%&amp;'()*+,-./:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_abcdefghijklmnopqrstuvwxyz{|}~⎡⎣⨥⨪∺❝ð£¥§¦¡∂ÐřŠč√∖ẊȦȮḊĖẸṙ∑Ṡİ•Ĥ⟨⟩ƛıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘŚśŜŝŞşšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſƀƁƂƃƄƅƆƇƊƋƌƍƎ¢≈Ωªº
-    
+
 ĳ
 </code></pre>
 <p>This outputs <code>10</code>.</p>
@@ -225,7 +225,7 @@ lhs, rhs = stack.pop(2); stack.push(int((rhs % lhs) == 0))
 <pre><code>ƛSt\2=
 ƛ      map range 1..n to the following:
  S     convert to string
-  t    get last character 
+  t    get last character
    \2= is it equal to '2'?
        sum the results(s flag)
 </code></pre>
@@ -381,8 +381,8 @@ kA        # &quot;ABCDEF....XYZ&quot;
 "
 "217329","<h1><a href=""https://github.com/Lyxal/Vyxal"" rel=""noreferrer"">Vyxal</a>, 309 bytes</h1>
 <pre><code>In this answer, I coded it so that the program errors when executed․
-Also, according to code-golf statistics, only a small percentage of people who view my answers actually upvote․ 
-So if you enjoy this answer, please consider upvoting - it's free, and you can change your mind at any time․ 
+Also, according to code-golf statistics, only a small percentage of people who view my answers actually upvote․
+So if you enjoy this answer, please consider upvoting - it's free, and you can change your mind at any time․
 Enjoy the answer․
 </code></pre>
 <p>I request that you imagine <a href=""https://www.youtube.com/watch?v=beCC9xJjLZQ"" rel=""noreferrer"">Epic Dawn</a> by Bobby Cole is playing while reading this answer.</p>
@@ -484,7 +484,7 @@ y      # un-interleave
 <pre><code>4(?℅)
 </code></pre>
 <p>From each list of possible lines, choose a random line.</p>
-<pre><code>?_) 
+<pre><code>?_)
 </code></pre>
 <p>Skip over the next input (which would be the number of stanzas again - input is cyclical in Vyxal, meaning that it loops around if EOI is reached [not applicable when using STDIN, only when passing input through command line])</p>
 <pre><code>`(λ≗ ƛΐ æ∺ up)`
@@ -629,7 +629,7 @@ R÷   # vectorise reverse over the input (wrapped in an array by the -a flag) an
 <p><a href=""http://lyxal.pythonanywhere.com?flags=&amp;code=3%C9%BD%C3%B7%C2%ABee%C8%AE%C7%92%E1%B8%8Bp%C2%AB%E2%82%81%E2%80%B9%E2%82%81W%E2%80%9B%2C%20j&amp;inputs=&amp;header=&amp;footer="" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <h2>Explained</h2>
 <pre class=""lang-python prettyprint-override""><code>3ɽ÷      # stack = [1, 2]
-«eeȮǒḋp« # stack = [1, 2, &quot;miss a few&quot;] 
+«eeȮǒḋp« # stack = [1, 2, &quot;miss a few&quot;]
 ₁‹₁      # stack = [1, 2, &quot;miss a few&quot;, 99, 100]
 W‛, j    # join stack on &quot;, &quot;
 </code></pre>
@@ -661,7 +661,7 @@ W‛, j    # join stack on &quot;, &quot;
 </code></pre>
 <p><a href=""http://lyxal.pythonanywhere.com?flags=&amp;code=%60kh%23%60kH%2B&amp;inputs=&amp;header=&amp;footer="" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <p>Outputs:</p>
-<pre><code>kh#Hello, World! 
+<pre><code>kh#Hello, World!
 </code></pre>
 <p><a href=""http://lyxal.pythonanywhere.com?flags=&amp;code=kh%23Hello%2C%20World!&amp;inputs=&amp;header=&amp;footer="" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <p>Outputs:</p>
@@ -944,7 +944,7 @@ kd    # &quot;0123456789&quot;
 <h2>Explained</h2>
 <pre><code>⁽Π↔
 ⁽Π  # lambda x: product(x) // treats numbers as a list of digits
- ↔ # repeat the above function until the result doesn't change, collecting intermediate results. 
+ ↔ # repeat the above function until the result doesn't change, collecting intermediate results.
 </code></pre>
 "
 "223094","<h1><a href=""https://github.com/Lyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 2 bytes</h1>
@@ -1205,7 +1205,7 @@ First input is <code>k</code>, second input is <code>n</code>.</p>
 <h2>Explained (old)</h2>
 <pre><code>:I₌₴-ƒ\/j`...`$%,
 :I                # int(input)
-  ₌₴-             # print(top, end=&quot;&quot;), input - int(input) [gets the fractional part] 
+  ₌₴-             # print(top, end=&quot;&quot;), input - int(input) [gets the fractional part]
      ƒ            # Turn the decimal into a simplified fraction
       \/j         # Join that on &quot;/&quot;
          `...`    # The string &quot; + (%)&quot; -&gt; this will be used for formatting the output
@@ -1824,7 +1824,7 @@ s
 -------
  ¤    - Push empty string to the stack
   \!  - Push exclamation mark to the stack, better than `!`
-    V - take implicit input and replace the empty 
+    V - take implicit input and replace the empty
         string with the exclamation point
 </code></pre>
 <p>For an empty input, it will produce <code>!0!</code> because it considers the empty input 0, but I don't believe this can be fixed since taking input plainly returns 0 for &quot;&quot;.</p>
@@ -2104,7 +2104,7 @@ the program takes in the string, breaks it into chunks, transliterates to the co
 <p>Based on <a href=""https://codegolf.stackexchange.com/a/225302/80050"">@Makonede's 05AB1E answer</a>.</p>
 <p><a href=""http://lyxal.pythonanywhere.com?flags=&amp;code=%C2%AB_sa%7D%5D%E2%88%B7%C2%AB%E2%87%A7%3D%60%2B30%20%C3%A6%C2%A7%5C7%60*&amp;inputs=UUDDLRLRBA&amp;header=&amp;footer="" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <p>Explained:</p>
-<pre><code>«_sa}]∷«⇧=`+30 æ§\7`*    
+<pre><code>«_sa}]∷«⇧=`+30 æ§\7`*
                     *    # Repeat...
           `+30 æ§\7`     # the string '+30 lives␇'... (escape code \7 is BEL)
                          # once if ...
@@ -2126,7 +2126,7 @@ the program takes in the string, breaks it into chunks, transliterates to the co
 ƛ    ;  # Lambda map (1...input inclusive)
  ÞF     # All fibbonacci numbers
    $    # Swap stack
-    i   # Item 
+    i   # Item
       Π # Reduce by product
         # Implicit output
 </code></pre>
@@ -2164,7 +2164,7 @@ the program takes in the string, breaks it into chunks, transliterates to the co
  D        three times.
   t       Take the last one,
    ½      halve it,
-    -     subtract it from each of the cumulative sums, 
+    -     subtract it from each of the cumulative sums,
      ∩    and take the intersection of the differences and the cumulative sums.
 </code></pre>
 "
@@ -2212,26 +2212,26 @@ I λ¾ ₂Ḣ ×↓ λ• λ₴ I'm ∵µ
 ›⌐'t ×↓ me λ•'re ⟑↲ ġ• to λ¡
 #
 #
- 
+
 (Ooh, ⟇∵ λ• up)
 (Ooh, ⟇∵ λ• up)
 (Ooh)$⟇∵, ∨⋎ ṙƈ ⟇∵
 (⟇› λ• up)
 (Ooh)$⟇∵, ∨⋎ ṙƈ ⟇∵
 (⟇› λ• up)
- 
+
 We've ¬λ ƛṖ λṁ λ⟑ so ¬□
 λ⌐ »‹'s λ⌈ aching λė
 λß're ⟑↲ ∪ǐ to ∨¶ it
 •∇ we ∧ɽ ¬λ λ⟨'s λ⌈ ∨µ on
 We ¬λ λλ ∧∵ λ¬ we're ṙƈ ∨¯ it
- 
+
 I λ¾ ₂Ḣ ×↓ λ• λ₴ I'm ∵µ
 İ≬ ƛ∵ λ• €ṙ
 #
 #
 #`\@`
- 
+
 We've »² ƛṖ λṁ λ⟑ so ¬□
 λ⌐ »‹'s λ⌈ aching λė
 λß're ⟑↲ ∪ǐ to ∨¶ it
@@ -2246,7 +2246,7 @@ We ¬λ λλ ∧∵ λ¬ we're ṙƈ ∨¯ it`V\#` $⟇∵ λ• up$⟇» λ• 
 <pre><code>₆25(›D:C$C„›C+$+,
 </code></pre>
 <p><a href=""http://lyxal.pythonanywhere.com?flags=&amp;code=%E2%82%8625%28%E2%80%BAD%3AC%24C%E2%80%9E%E2%80%BAC%2B%24%2B%2C&amp;inputs=&amp;header=&amp;footer="" rel=""nofollow noreferrer"">Try it Online!</a></p>
-<pre><code>₆                 # Push 64 
+<pre><code>₆                 # Push 64
  25(              # Repeat 25 times
     ›             # Increment (left with last number from last time) [65]
      D:           # Quadruple [65,65,65,65]
@@ -2301,7 +2301,7 @@ USS ⟑«iḊꜝrXArk›ǎXC≥ẋo∩ȧeX⟩ẇ λλ DJX∆↑÷≠X¬⁼ ¢⁋
 Ẇ± Ŀʀ□ẊX€∧□Ṅ↳¾X₄ð, ¢…, λ¬ §⋏ ⟑⋏`↵\X/?i?i
 </code></pre>
 <p><a href=""http://lyxal.pythonanywhere.com?flags=&amp;code=%60%CE%BB%C6%9B%20%C2%AC%CE%B5%20%E1%B9%AA%E1%B9%85%C2%A5%E1%B9%97X%E1%B9%A0%E2%86%B3%20%C3%B7%E2%81%8B%20%E1%B9%96%E2%89%88sX%CE%BB%C6%9B%20%E2%88%86%C9%BE%20%E2%88%A7%C4%A0%20of%20%CE%BB%C3%9F%0ABe%20%C2%AC%E1%BA%8F%20%CE%BB%C7%91X%E2%88%A7%E2%80%A6%20%E2%88%9E%E2%86%91X%CE%BB%C6%9B%20W%E2%80%A6%C2%B1o%20%C9%BD%E2%81%8B%0A%E2%82%81%E1%B8%A3%C2%A6%E1%B8%ADX%E2%88%A8%C2%B1%E2%88%A8%E1%B8%8AX%C5%BC%E2%89%AC%20Up%20%CE%BB%C2%AC%20%E2%86%94%C3%B7X%E2%9F%91%C9%96%20%E2%88%A8%C7%8F%20%C2%B0%E2%86%94X%E2%86%90%C4%A0d%20in%20%CE%BB%CE%BB%20%E2%8C%90%C2%B1%0AUSS%20%E2%9F%91%C2%ABi%E1%B8%8A%EA%9C%9DrXArk%E2%80%BA%C7%8EXC%E2%89%A5%E1%BA%8Bo%E2%88%A9%C8%A7eX%E2%9F%A9%E1%BA%87%20%CE%BB%CE%BB%20DJX%E2%88%86%E2%86%91%C3%B7%E2%89%A0X%C2%AC%E2%81%BC%20%C2%A2%E2%81%8B%0A%E1%BA%86%C2%B1%20%C4%BF%CA%80%E2%96%A1%E1%BA%8AX%E2%82%AC%E2%88%A7%E2%96%A1%E1%B9%84%E2%86%B3%C2%BEX%E2%82%84%C3%B0%2C%20%C2%A2%E2%80%A6%2C%20%CE%BB%C2%AC%20%C2%A7%E2%8B%8F%20%E2%9F%91%E2%8B%8F%60%E2%86%B5%5CX%2F%3Fi%3Fi&amp;inputs=3%0A1&amp;header=&amp;footer="" rel=""nofollow noreferrer"">Try it Online!</a></p>
-<pre><code>`...`         # Dictionary-compressed string 
+<pre><code>`...`         # Dictionary-compressed string
      ↵        # Split on newlines
       \X/     # Split on Xs (vectorised)
          ?i?i # Index input twice
@@ -2342,7 +2342,7 @@ USS ⟑«iḊꜝrXArk›ǎXC≥ẋo∩ȧeX⟩ẇ λλ DJX∆↑÷≠X¬⁼ ¢⁋
 <p>Dictionary compression FTW!!!</p>
 "
 "226251","<h1><a href=""https://github.com/Lyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 43 bytes</h1>
-<pre><code>⌐ƛ⟨⟩n£¥Lʀ(x|n¬₀r(¥CC←x nSṀṅIJ));ḣhẊ'∑k2=   
+<pre><code>⌐ƛ⟨⟩n£¥Lʀ(x|n¬₀r(¥CC←x nSṀṅIJ));ḣhẊ'∑k2=
 </code></pre>
 <p><a href=""http://lyxal.pythonanywhere.com?flags=&amp;code=%E2%8C%90%C6%9B%E2%9F%A8%E2%9F%A9n%C2%A3%C2%A5L%CA%80%28x%7Cn%C2%AC%E2%82%80r%28%C2%A5CC%E2%86%90x%20nS%E1%B9%80%E1%B9%85IJ%29%29%3B%E1%B8%A3h%E1%BA%8A%27%E2%88%91k2%3D%20%20%20&amp;inputs=%22288%2C711%22&amp;header=&amp;footer=%3BU"" rel=""nofollow noreferrer"">Try it Online!</a> Takes input of the form: <code>&quot;a,b&quot;</code></p>
 <p><strong>Explanation:</strong></p>
@@ -2404,7 +2404,7 @@ USS ⟑«iḊꜝrXArk›ǎXC≥ẋo∩ȧeX⟩ẇ λλ DJX∆↑÷≠X¬⁼ ¢⁋
                              :                          # Duplicate
                               L‹\e*                     # (Length - 1) es
                                    $ṅ+                  # Prepended (so es are bubbled to start
-                                       Ẋ                # Repeat on input until result doesn't change 
+                                       Ẋ                # Repeat on input until result doesn't change
                                         ‛eeo            # Get rid of double es
                                             :\erß       # If result is a substring of 'e'
                                                  ›      # Append a 1
@@ -2456,7 +2456,7 @@ USS ⟑«iḊꜝrXArk›ǎXC≥ẋo∩ȧeX⟩ẇ λλ DJX∆↑÷≠X¬⁼ ¢⁋
 <p><a href=""http://lyxal.pythonanywhere.com?flags=&amp;code=9%5C*%EA%98%8D%E2%82%80%28%2C9n-%5C0n%E2%80%BA*%EA%98%8D%C3%B8m&amp;inputs=&amp;header=&amp;footer="" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <p>Fairly well golfed.</p>
 <pre><code>9                  # 9
- \*                # '*'  
+ \*                # '*'
    ꘍               # ' ' * 9 + '*'
     ₀(             # 10 times
       ,            # output
@@ -2469,15 +2469,15 @@ USS ⟑«iḊꜝrXArk›ǎXC≥ẋo∩ȧeX⟩ẇ λλ DJX∆↑÷≠X¬⁼ ¢⁋
 </code></pre>
 <p>Tree:</p>
 <pre><code>         *
-         0         
-        000        
-       00000       
-      0000000      
-     000000000     
-    00000000000    
-   0000000000000   
-  000000000000000  
- 00000000000000000 
+         0
+        000
+       00000
+      0000000
+     000000000
+    00000000000
+   0000000000000
+  000000000000000
+ 00000000000000000
 </code></pre>
 "
 "226387","<h1><a href=""https://github.com/Lyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, <s>17</s> 16 bytes</h1>
@@ -2622,7 +2622,7 @@ To ɾ₃ an ĿẎ ¡⁺ꜝµẏḂ in λλ ⟇Ṡ, λλ →æ ∧□ λ• λʁ 
 <pre><code>ṖU
 </code></pre>
 <p><a href=""http://lyxal.pythonanywhere.com?flags=&amp;code=%E1%B9%96U&amp;inputs=%5B1%2C1%2C3%5D&amp;header=&amp;footer="" rel=""nofollow noreferrer"">Try it Online!</a></p>
-<pre><code>Ṗ  # All permutations of input 
+<pre><code>Ṗ  # All permutations of input
  U # Filtered by unique
 </code></pre>
 "
@@ -2641,7 +2641,7 @@ To ɾ₃ an ĿẎ ¡⁺ꜝµẏḂ in λλ ⟇Ṡ, λλ →æ ∧□ λ• λʁ 
 </code></pre>
 <p><a href=""http://lyxal.pythonanywhere.com?flags=&amp;code=%C6%9BI%3B%E2%81%B0Le%E2%88%91%3D&amp;inputs=153&amp;header=&amp;footer="" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <pre><code>f      # Map each digit to integer
-   e   # (for each) to the power of 
+   e   # (for each) to the power of
  ⁰L    # Input length
     ∑  # Is sum...
      = # Equal to
@@ -2764,7 +2764,7 @@ To ɾ₃ an ĿẎ ¡⁺ꜝµẏḂ in λλ ⟇Ṡ, λλ →æ ∧□ λ• λʁ 
 </code></pre>
 <p><a href=""http://lyxal.pythonanywhere.com?flags=&amp;code=%C6%9B%5C%2F%3D%26-%C3%B0%C2%A5*n%2B%2CC%E2%82%82%26%2B&amp;inputs=%5C%5C%5C%2F%2F%2F%5C%2F%5C%2F%5C%2F%5C%5C%2F%5C%2F%5C%5C%5C%5C%5C%5C%2F%5C%5C%5C%5C%5C%2F%5C%5C%5C%5C%5C%2F%2F%5C%5C%5C%5C%5C%5C%2F%5C%5C%2F%2F%2F%2F%2F%5C%2F%2F%2F%2F%2F%5C%2F%5C%5C%5C%5C%5C%2F%2F%2F%5C%5C%5C%5C%5C%5C%5C%5C%2F%5C%5C%5C%5C%5C%5C&amp;header=&amp;footer="" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <pre><code>ƛ                # Map by...
-    &amp;-           # Decrement register by 
+    &amp;-           # Decrement register by
  \/=             # (is a forward-slash)
       ð¥*        # (register) spaces
          n+,     # prepended to n and outputted
@@ -2917,7 +2917,7 @@ To ɾ₃ an ĿẎ ¡⁺ꜝµẏḂ in λλ ⟇Ṡ, λλ →æ ∧□ λ• λʁ 
 ʀ~æ      # From the all numbers in the range [0, input], keep only those that are prime
    ~Ǒ    # Without popping anything, get the multiplicity of each prime divisor - this leaves the stack as [divisors, multiplicities]
      $ẋ  # Swap the two items and repeat each divisor multiplicity times
-       f # Flatten and output that   
+       f # Flatten and output that
 </code></pre>
 "
 "226561","<h1><a href=""https://github.com/Lyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 85 bytes</h1>
@@ -2931,7 +2931,7 @@ To ɾ₃ an ĿẎ ¡⁺ꜝµẏḂ in λλ ⟇Ṡ, λλ →æ ∧□ λ• λʁ 
             4ẇ                  # Split into four pieces
               ƛ      ;          # Foreach...
                ÷W               # To list of characters
-                 ‛  j           # Joined by double spaces 
+                 ‛  j           # Joined by double spaces
                       ⁋⇧        # Joined by newlines and uppercased
                         ‛Q ‛QuV # Replace `Q ` with `Qu`
 </code></pre>
@@ -2964,7 +2964,7 @@ To ɾ₃ an ĿẎ ¡⁺ꜝµẏḂ in λλ ⟇Ṡ, λλ →æ ∧□ λ• λʁ 
  ɾ     # 1...3
   ×*   # That many asterisks, for each
     ⁋  # Joined by newlines
-     , # Outputted. 
+     , # Outputted.
 </code></pre>
 <p>Making an asterisk triangle.</p>
 "
@@ -3085,7 +3085,7 @@ vτ             # Convert x and y to base b
      0   # 0
       |  # Do..
        { # Forever loop, never executed
- 
+
 </code></pre>
 "
 "226717","<h1><a href=""https://github.com/Lyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 5 bytes</h1>
@@ -3253,9 +3253,9 @@ print 'Red quit;' * 0+'Python', 1&gt;0#&lt;0x1B&gt;}dHiVim
             ⁰L        # Original string's length
                -      # And...
               n       # Iteration number
-                ꘍     # Spaces. 
+                ꘍     # Spaces.
                  øm   # Palindromised
-                   ,  # And outputted. 
+                   ,  # And outputted.
 </code></pre>
 "
 "228911","<h1><a href=""https://github.com/Lyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 108 bytes</h1>
@@ -3350,7 +3350,7 @@ print 'Red quit;' * 0+'Python', 1&gt;0#&lt;0x1B&gt;}dHiVim
                   Ḃ      # Duplicate and get reverse
                    v⇧    # Uppercase all pieces in the revers
                      J   # Joined
-                      ≠  # Is not equal to original?  
+                      ≠  # Is not equal to original?
                        ⅛ # Push to global array
 hDs«4cð↔Ṗ«≠⅛ # Part 2 - are all the pieces here?
 h            # First element
@@ -3454,7 +3454,7 @@ Needed to optimize the string little to compress it well</p>
 </code></pre>
 <p><a href=""http://lyxal.pythonanywhere.com?flags=&amp;code=0%E2%85%9B3%3F%28%3A%C2%BD%E2%8C%8A%C2%BE%24%E1%B8%9Fu%3D%5B%C2%BD%E2%8C%8A%7C3*%5D%3A%E2%85%9B&amp;inputs=5&amp;header=&amp;footer="" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <p>1-indexed.</p>
-<pre><code>0⅛                     # Push 0 to glob. arr. 
+<pre><code>0⅛                     # Push 0 to glob. arr.
   3                    # Push 3
    ?(                  # Iteration times
              [     ]   # If...
@@ -3463,7 +3463,7 @@ Needed to optimize the string little to compress it well</p>
               ½⌊       # Halved and floored
                 |      # Else
                  3*    # Tripled
-                    :⅛ # And pushed to glob. arr. 
+                    :⅛ # And pushed to glob. arr.
 </code></pre>
 "
 "229248","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 6 bytes</h1>
@@ -3606,9 +3606,9 @@ Needed to optimize the string little to compress it well</p>
             ƛ          # Foreach...
              ƛ  ;      # Foreach character
               ⁰*       # Repeat as necesarry
-                 ṅ     # Join 
+                 ṅ     # Join
                   m    # Palindromise
-                   ¹(… # Print (input) times             
+                   ¹(… # Print (input) times
 </code></pre>
 "
 "229475","<h1><a href=""https://github.com/Lyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 214 bytes</h1>
@@ -3621,7 +3621,7 @@ Needed to optimize the string little to compress it well</p>
 <pre><code>Ṫƛ¥n꘍⁰L‹↲$+&amp;›;$Jvømøm⁋
 </code></pre>
 <p><a href=""http://lyxal.pythonanywhere.com?flags=&amp;code=%E1%B9%AA%C6%9B%C2%A5n%EA%98%8D%E2%81%B0L%E2%80%B9%E2%86%B2%24%2B%26%E2%80%BA%3B%24Jv%C3%B8m%C3%B8m%E2%81%8B&amp;inputs=Hello&amp;header=&amp;footer="" rel=""nofollow noreferrer"">Try it Online!</a></p>
-<pre><code>Ṫ                      # String[:-1] 
+<pre><code>Ṫ                      # String[:-1]
  ƛ           ;         # Map...
   ¥n꘍                  # Prepend (register) spaces
      ⁰L‹↲              # Justify to the left by correct spacing
@@ -3787,7 +3787,7 @@ EEE¡
 ₌⇧⇩       # grade up input, grade down input
    ⇧$⇧    # grade each of those up
       ∵d  # 2 * the minimum of those two lists
-        + # added to the input   
+        + # added to the input
 </code></pre>
 "
 "229699","<h1><a href=""https://github.com/Lyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 3 bytes</h1>
@@ -3811,7 +3811,7 @@ EEE¡
 </code></pre>
 <p><a href=""http://lyxal.pythonanywhere.com?flags=&amp;code=%E2%8C%88%27%26%E2%80%BA%C2%A5%C3%A6%3B%E1%B9%84&amp;inputs=Please%20read%20primes%20elephant%20help%20you%20me%20like%20cold&amp;header=&amp;footer="" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <pre><code>⌈        # Split on spaces
- '    ;  # Filter by 
+ '    ;  # Filter by
   &amp;›     # Increment register
     ¥æ   # Register prime?
        Ṅ # Join on spaces
@@ -3837,7 +3837,7 @@ EEE¡
 <h2>Explained</h2>
 <pre><code>(:₴Ṙ
 (    # for each character in the input:
- :₴  #     print the top of the stack without a newline, preserving it. For the first iteration, this will be the original input. 
+ :₴  #     print the top of the stack without a newline, preserving it. For the first iteration, this will be the original input.
    Ṙ #     reverse the top of the stack. This achieves the string reversing effect, as it alternates the direction of the string each iteration
 </code></pre>
 "
@@ -3862,7 +3862,7 @@ EEE¡
       ₌ḢṪ           # a[1:], a[:-1]
          Z          # zip
           :U⁼       # check if the zip is unique
-              tṅ    # tail joined by &quot;&quot;          
+              tṅ    # tail joined by &quot;&quot;
 </code></pre>
 <p>This is really slow, so it will only finish for n &lt;= 3 probably, but it works in theory.</p>
 "
@@ -3876,7 +3876,7 @@ EEE¡
 :ÞTJ           # merge the input list with itself transposed.
     v∑s        # sort the list that results from getting the sum of each item
        2Nȯ     # take the last two items of that list
-          1?&quot;⁼ # and check for equality with the list [1, second_input]   
+          1?&quot;⁼ # and check for equality with the list [1, second_input]
 </code></pre>
 "
 "229888","<h1><a href=""https://github.com/Lyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 12 bytes</h1>
@@ -3946,7 +3946,7 @@ vḟ             # Vectorized find index in list           -&gt; [2,4,3]
    '          # Filtered by
     Ǐ         # Prime factors
      '   ;    # Filtered by
-      ›       # Incremented 
+      ›       # Incremented
        4Ḋ     # Is divisible by 4?
           ÷   # Push all to the stack separately
            *  # Product of the top two
@@ -4072,7 +4072,7 @@ k§      # Monday to Sunday
 === Part 2: What day does it start? ===
 4ȯI                                          # Last two (month) as integer
    :£                                        # Store a copy to register
-     3&lt;?4ẎIε                                 # Decrement the year if the month is Jan or Feb 
+     3&lt;?4ẎIε                                 # Decrement the year if the month is Jan or Feb
             D                                # Calculate:
              4/⌊‟                            # floor(y/4)
                  ₁/⌊N‟                       # -floor(y/100)
@@ -4403,7 +4403,7 @@ Xnor port. -2 thanks to Aaron Miller.</p>
 </code></pre>
 <p><a href=""https://lyxal.pythonanywhere.com?flags=&amp;code=dh-&amp;inputs=%5B1%2C3%2C4%2C2%2C8%5D&amp;header=&amp;footer="" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <p>Dennis port</p>
-<pre><code>   
+<pre><code>
 d   # Double the array
  h  # Take the first
   - # Subtract
@@ -4488,7 +4488,7 @@ d   # Double the array
 <pre><code>λ?neSUL₀=;ṅ
 </code></pre>
 <p><a href=""https://lyxal.pythonanywhere.com?flags=&amp;code=%CE%BB%3FneSUL%E2%82%80%3D%3B%E1%B9%85&amp;inputs=2&amp;header=&amp;footer="" rel=""nofollow noreferrer"">Try it Online!</a></p>
-<pre><code>λ               ;ṅ                # First truthy integer n where  
+<pre><code>λ               ;ṅ                # First truthy integer n where
   ?ne                              # When raised to input^n
         SUL₀=                   # Length of unique digits is 10
 </code></pre>
@@ -5081,7 +5081,7 @@ a ↔Ŀized τ⟇.
 <pre><code>ƛ¹Ḋ⁰*∑∴,
 ƛ        # for each n in the range [1, L]:
  ¹Ḋ      #     Push n % D == 0 (epicly vectorised)
-   ⁰*    #     Push ^ * S (which is vectorised python string multiplication) 
+   ⁰*    #     Push ^ * S (which is vectorised python string multiplication)
      ∑∴  #     Push max(sum(^), n)
        , #     and print ^ with a newline
 </code></pre>
@@ -5240,7 +5240,7 @@ a ↔Ŀized τ⟇.
       ƛ             ;   # Map...
        C÷               # Iterate out charcodes
          ∇꘍⋎            # XOROR
-            :₇⇩&gt;[  ]    # If greater than 126  
+            :₇⇩&gt;[  ]    # If greater than 126
                  32     # Push 32
                      C∑ # Stringify and concatenate
 </code></pre>
@@ -5310,7 +5310,7 @@ a ↔Ŀized τ⟇.
          :                              # Duplicate this
           va                            # Foreach, check if any are true
             Th                          # Find the only truthy index - this is the correct keyboard row
-              D£                        # Duplicate and store a copy to register 
+              D£                        # Duplicate and store a copy to register
                 ɾ0p∑4/                  # Horizontal offset of this row - nth triangle number/4 (There's probably a better way to do this, `0p` because Vyxal)
                       ∇                 # Shift, putting a copy of the  row number above the list of indices on the stack
                        i                # Index this into the list of indices
@@ -5425,7 +5425,7 @@ a ↔Ŀized τ⟇.
         ƛ       ;         # Foreach
          vɾ:?f$•          # Mold input to those pieces (see above link)
                  '     ;L # Number of values where
-                  ƛḂ≠;A   # All aren't palindromes. 
+                  ƛḂ≠;A   # All aren't palindromes.
 </code></pre>
 "
 "233954","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 17 bytes</h1>
@@ -5445,7 +5445,7 @@ a ↔Ŀized τ⟇.
 </code></pre>
 <p><a href=""https://lyxal.pythonanywhere.com?flags=&amp;code=%60%C6%9B%E2%81%8B%E1%B9%96%E2%8A%8D%20Cr%EA%9C%9D%E2%88%9E%20%C6%9B%E2%82%AC!%60kh%5C!%2B%E2%86%90&amp;inputs=&amp;header=&amp;footer="" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <pre><code>`...`        # Push 'Goodbye Cruel World!' as a compressed string
-     kh\!+,  # Push 'Hello World!', which will be implicitly output even though the program errors.      
+     kh\!+,  # Push 'Hello World!', which will be implicitly output even though the program errors.
            ← # Crash by accessing a nonexistent variable, Vyxal logs the stack on erroring
 </code></pre>
 "
@@ -5467,7 +5467,7 @@ a ↔Ŀized τ⟇.
 <p>Very cool and good. Outputs as <code>[constant, surd]</code></p>
 <h2>Explained</h2>
 <pre><code>K'∆²;t₍√/
-K        # from the factors of the input, 
+K        # from the factors of the input,
  '∆²;    # keep only square numbers
      t   # and keep the last.
       ₍√/ # Push [sqrt(^), input / ^]
@@ -5546,7 +5546,7 @@ K        # from the factors of the input,
 </code></pre>
 <p><a href=""https://lyxal.pythonanywhere.com?flags=&amp;code=%C5%BC%C6%9Bw%3F%24i&amp;inputs=Among%20Us&amp;header=&amp;footer="" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <h2>Explained</h2>
-<pre><code>żƛw?$i  
+<pre><code>żƛw?$i
         # Implicit input of string
 żƛ      # Over each integer n in range(1, len(input) + 1):
    ?    #   input[
@@ -5710,7 +5710,7 @@ K        # from the factors of the input,
 <p><a href=""https://tio.run/##NYzbDoIwEER/pYEYdgG5PBf8B5@BpKRUXYEWoRgT47djNToPM8nJyVzbe7vImSa716ZT23YyM1CZcSryzHUUIchSGr2YQSWDOSMEvjTjqLQNkEsIqmkmbcH7Uw@Z@2DESLO51WcF7ijDhrOfKNJQxH0O4iH6PIxRhKmIhU9aDmunWLHYjkxyOTjofDa2pAGf02oXqGvvs2x3q6IqSprGAeQvEXsYYJoev9m2Nw"" rel=""noreferrer"" title=""JavaScript (Node.js) – Try It Online"">Try it online!</a></p>
 <h2><a href=""https://docs.python.org/3/"" rel=""noreferrer"">Python 3</a>, 1033 bytes</h2>
 
-<pre class=""lang-python prettyprint-override""><code>#comment 
+<pre class=""lang-python prettyprint-override""><code>#comment
 [print(&quot;#comment&quot;) for i in range(1000)]; print(&quot;`/*`,k1(`x`k1*,)`*/`,`#include &lt;stdio.h&gt;`,`int main(){puts(\&quot;puts %q[+[+.]]\&quot;);}`,&quot;)
 </code></pre>
 <p><a href=""https://tio.run/##LcrtCoIwFIDhWzlMgm0OP@in0o3o4IhaDtvZmhOK6NqXQb9eeHn8Ky6Ozil1PhiKnGWjs3amyARcXQADhiAMdJt5XVWV0A38IZYS1VpzfOJaSyVQlqgwMzTe92mGdouTccVyOebhwQ6GuHj7PW68Z7/A6dHlXV5o3TPRfFAxkdIX"" rel=""noreferrer"" title=""Python 3 – Try It Online"">Try it online!</a></p>
@@ -5876,7 +5876,7 @@ $ƛC›‛uε*\ip`kP'bfBu`75‛uε*+‛=)++;∑+            # Here's the rest of
 kP      # Printable ASCII (not actually, length = 100)
       Ė # Evaluate the code snippet
    ‛∧∑  # &quot;Big&quot; (Compressed)
-        
+
 B   # Convert from binary - 100 -&gt; 4
  i  # Index into string
   g # Get minimum (useless)
@@ -6273,7 +6273,7 @@ kv         P      # Remove from `aeiou`, giving us `iou`
 </code></pre>
 <p><a href=""https://vyxal.pythonanywhere.com/#WyIiLCIiLCLDtyHigLkow7hiKyIsIiIsImFiYyJd"" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <pre><code>÷       # Push each to the stack
- !‹(    # (input-1) times... 
+ !‹(    # (input-1) times...
     øb  # Parenthesise what's currently on the stack
       + # and append it
 </code></pre>
@@ -6383,7 +6383,7 @@ L‹      # Push the length of the input, but decremented
 </code></pre>
 <p><a href=""https://lyxal.pythonanywhere.com?flags=&amp;code=%28s%C3%B8eRf%E2%88%91&amp;inputs=10%0A%271%27&amp;header=&amp;footer="" rel=""noreferrer"">Try it Online!</a></p>
 <pre><code>(       # k times...
- s      # Sort 
+ s      # Sort
   øe    # Run length encode
     R   # Reverse each
      f  # Flatten
@@ -6505,7 +6505,7 @@ L‹      # Push the length of the input, but decremented
 <h2>Explained</h2>
 <pre><code>KḂZƛṅL;?Lc
 K            # factors_of(input)
- Ḃ           # that, and that reversed 
+ Ḃ           # that, and that reversed
   Z          # zip those two -&gt; pairs of factors that have product = input
    ƛṅL;      # join each on spaces and take lengths
        ?L    # input length
@@ -6690,24 +6690,24 @@ K            # factors_of(input)
 <p>Because I forgot to make integer division account for division by 0.</p>
 <h2>Better Explanation</h2>
 <p>Okay so normal division (<code>/</code>) accounts for division by 0 - it just always returns 0 (which has helpful uses for code golf). This is done in the overloads internally:</p>
-<pre class=""lang-py prettyprint-override""><code>​def​ ​divide​(​lhs​, ​rhs​): 
- ​    ​types​ ​=​ ​vy_type​(​lhs​), ​vy_type​(​rhs​) 
-  
- ​    ​def​ ​handle_numbers​(​lhs​, ​rhs​): 
- ​        ​if​ ​rhs​ ​==​ ​0​: 
- ​            ​return​ ​0 
- ​        ​normal​, ​int_div​ ​=​ ​lhs​ ​/​ ​rhs​, ​lhs​ ​//​ ​rhs 
- ​        ​return​ [​normal​, ​int_div​][​normal​ ​==​ ​int_div​] 
-  
- ​    ​return​ { 
+<pre class=""lang-py prettyprint-override""><code>​def​ ​divide​(​lhs​, ​rhs​):
+ ​    ​types​ ​=​ ​vy_type​(​lhs​), ​vy_type​(​rhs​)
+
+ ​    ​def​ ​handle_numbers​(​lhs​, ​rhs​):
+ ​        ​if​ ​rhs​ ​==​ ​0​:
+ ​            ​return​ ​0
+ ​        ​normal​, ​int_div​ ​=​ ​lhs​ ​/​ ​rhs​, ​lhs​ ​//​ ​rhs
+ ​        ​return​ [​normal​, ​int_div​][​normal​ ​==​ ​int_div​]
+
+ ​    ​return​ {
  ​        (​Number​, ​Number​): ​lambda​: ​handle_numbers​(​lhs​, ​rhs​),
 </code></pre>
 <p>That's taken directly from the vyxal source code btw.</p>
 <p>Now the problem is that I never actually special cased division by 0 in the overloads for integer division:</p>
-<pre class=""lang-py prettyprint-override""><code> 
- ​def​ ​integer_divide​(​lhs​, ​rhs​): 
- ​    ​types​ ​=​ ​vy_type​(​lhs​), ​vy_type​(​rhs​) 
- ​    ​return​ { 
+<pre class=""lang-py prettyprint-override""><code>
+ ​def​ ​integer_divide​(​lhs​, ​rhs​):
+ ​    ​types​ ​=​ ​vy_type​(​lhs​), ​vy_type​(​rhs​)
+ ​    ​return​ {
  ​        (​Number​, ​Number​): ​lambda​: ​lhs​ ​//​ ​rhs​,
 </code></pre>
 <p>As you can see, it just straight up tries to do python integer division without accounting for the special case normal division handles.</p>
@@ -6945,7 +6945,7 @@ kv     # Lowercase vowels
 C       # push [ord(char) for char in S]
  ₆-     # and subtract 64 from each
    ∑    # and get the sum of that.
-    ₁=  # does that equal 100? 
+    ₁=  # does that equal 100?
 </code></pre>
 "
 "238221","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""noreferrer"">Vyxal</a>, <s>24</s>,  18 bytes</h1>
@@ -7001,7 +7001,7 @@ C       # push [ord(char) for char in S]
  ǒ      # modulo each by 3 to get the chunk sizes
   ʀ     # cast each to range [0...n] for shape
    Þṁ   # mold the input to that, without repeating elements
-     vs # sort each sublist 
+     vs # sort each sublist
 </code></pre>
 "
 "238404","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 9 bytes</h1>
@@ -7010,11 +7010,11 @@ C       # push [ord(char) for char in S]
 <p><a href=""https://vyxal.pythonanywhere.com/#WyIiLCIiLCJ2TDrigLkkwqbiiLcqYSIsIiIsIltcIk5FXCIsIFwiU0VcIiwgXCJTV1wiLCBcIk5XXCIsIFwiTlwiLCBcIkVcIiwgXCJTXCIsIFwiV1wiXSJd"" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <p>There's got to be a better way to do this. Outputs reversed - 1 for invalid, 0 for valid,</p>
 <pre><code>vL        # Lengths
-     ¦∷   # Cumulative sums modulo 2, tracking when on a square and when not  
+     ¦∷   # Cumulative sums modulo 2, tracking when on a square and when not
     $  *  # Multiplied by
   :‹      # Those same lengths decremented
           # Each one is only true when on a square *and* trying to move diagonally
-          # Which is invalid    
+          # Which is invalid
         a # Are any true? If so, there's an invalid one somewhere.
 </code></pre>
 "
@@ -7109,7 +7109,7 @@ Outputs as a list of lists of bits.</p>
 <p>Posting this as a separate answer because it's so golfed, and uses the latest version of Vyxal.</p>
 <h2>Explanation</h2>
 <pre><code>----------------- TOP ------------
-3∵£                                  # Store min(input, 3) into the register for later use 
+3∵£                                  # Store min(input, 3) into the register for later use
    \.\|                              # Push a . and a |
        ?›ƛ                       ;   # Map 1...input+1 to
           ⇧\.$꘍                      # That+2 spaces after a dot
@@ -7121,14 +7121,14 @@ Outputs as a list of lists of bits.</p>
 ------------------- Doorway ------------------
 ?⇧Ẏ                                            # To the last of what was pushed in the previous, take the first input+2 characters
    \]+                                         # Append a ]
-      ?⇩1∴\#*+                                 # Append min(input-2,1) hashes 
+      ?⇩1∴\#*+                                 # Append min(input-2,1) hashes
               \.+                              # Append a .
                  ¥-                            # Append min(input,3) -
                         ?:3&gt;[d‹|⇧]             # Input*2-1 if input&gt;3 else input+2
                    `|__`          Ẏ            # Repeat '|__' to that length
                                    ‛_|+        # Append '_|'
                                        ¥꘍      # Append min(input,3) spaces
-                                         :ð\_V # Make a copy, and replace spaces with underscores 
+                                         :ð\_V # Make a copy, and replace spaces with underscores
 
 ---------- Entrance ------------
 ȮȧL‹\#*\/+
@@ -7171,7 +7171,7 @@ f:               # Push two copies of the letters of the input
       ḣv⇩        #     push L[0] and [lower(x) for x in L[1:]] - on single length strings this just leaves L[0] on the stack.
          $⇧p     #     uppercase L[0] and prepend it to the other list
             ;    # close map
-             f∑  # deep flatten and summate to get a single string - the `d` flag would save 3 bytes here by removing this pair and allowing structure autocompletion to save a byte.      
+             f∑  # deep flatten and summate to get a single string - the `d` flag would save 3 bytes here by removing this pair and allowing structure autocompletion to save a byte.
 </code></pre>
 "
 "239784","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 30 bytes</h1>
@@ -7367,7 +7367,7 @@ K          # Prefixes of the input
  '       # Range 1...n filtered by
   ?ẏ+    # Add 0...input length to that
       ḊA # All divisible by
-     ?   # Input   
+     ?   # Input
 </code></pre>
 "
 "240150","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 10 bytes</h1>
@@ -7403,7 +7403,7 @@ K          # Prefixes of the input
 <pre><code>żɾÞṁ
 ż    # the range [1... len(input)]
  ɾ    # range [1...n] for each n in that
- Þṁ  # mold the input to the shape of that, stopping after elements start to be repeated. 
+ Þṁ  # mold the input to the shape of that, stopping after elements start to be repeated.
 </code></pre>
 "
 "240193","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 56 bytes</h1>
@@ -7414,7 +7414,7 @@ K          # Prefixes of the input
        `-.,`τ⌐                        # Decompressed with the key `-.,`and split on commas
 ka            Ŀ                       # Replace letters with those
                  5ɾ\.*                # 1..5 .
-                      5ʁṘ-            # With 4..0 - appended 
+                      5ʁṘ-            # With 4..0 - appended
                           :ƛ‛.-ḂĿ;J   # Make a copy with `.-` swapped
                kd                  Ŀ  # Replace digits with those
                                     Ṅ # Join on spaces and implicitly output
@@ -7501,10 +7501,10 @@ ka            Ŀ                       # Replace letters with those
 <p>I do like the Sympy wrappers vyxal now has. Takes denominator, numerator then index.</p>
 <h2>Explained</h2>
 <pre><code>/$›ḞṪt
-/      # divide the numerator by the denominator. This is fine because vyxal stores floats as Rationals internally. 
- $     # place the index at the top of the stack 
+/      # divide the numerator by the denominator. This is fine because vyxal stores floats as Rationals internally.
+ $     # place the index at the top of the stack
   ›Ḟ   # Sympy.evalf(fraction, n=index+1). This avoids rounding issues
-    Ṫt # get the second last item  
+    Ṫt # get the second last item
 </code></pre>
 "
 "240359","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 13 bytes</h1>
@@ -7534,8 +7534,8 @@ Wow this is a mess.</p>
 <pre><code>Kvṁ&lt;≈
 K     # prefixes of the input
  vṁ   # the mean of each of those prefixes
-   &lt;  # is the input less than each of those means? 
-    ≈ # and is everything the same? 
+   &lt;  # is the input less than each of those means?
+    ≈ # and is everything the same?
 </code></pre>
 "
 "240427","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 5 bytes</h1>
@@ -7592,7 +7592,7 @@ AT       # indices of vowels
 <p><a href=""https://vyxal.pythonanywhere.com/#WyIiLCIiLCIoU0Nm4bmFIiwiIiwiM1xuMCJd"" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <pre><code>(     # Input times...
  S    # Stringify
-  C   # Charcodes 
+  C   # Charcodes
    fṅ # Join together (Should just be ṅ, but bugs)
 </code></pre>
 "
@@ -7648,7 +7648,7 @@ AT       # indices of vowels
                                       # 3√17 + 17 - √(34 - 2√17)
                       34¥d+√d-        # √(34 + 2√17) subtracted from above
                [             ]        # Results in 3√17 + 17 - √(34 - 2√17) - 2√(34 + 2√17)
-                              √d      # Take the square root of that doubled 
+                              √d      # Take the square root of that doubled
                                 +16/S # Add to previous, divide by 16 and format.
 </code></pre>
 "
@@ -7741,7 +7741,7 @@ AT       # indices of vowels
 <pre><code>(λ¾₌‡¯ȧtnεc¾nc∨¬;ṅ…⅛
 (                     # input times:
  λ..............;ṅ    #   find the first number N where:
-   ₌                  #     the 
+   ₌                  #     the
   ¾ ‡¯ȧ               #     absolute values of the deltas of the global array
           c           #     contains
   ¾    tnε            #     the absolute difference of the last item of the global array and N
@@ -7757,7 +7757,7 @@ AT       # indices of vowels
 <p>Why reduce by things when you can just vectorise.</p>
 <h2>Explained</h2>
 <pre><code>lvGg
-l    # overlaps of input list of size input integer. 
+l    # overlaps of input list of size input integer.
  vG  # maximum of each window
    g # minimum of that
 </code></pre>
@@ -7811,11 +7811,11 @@ L                   # Push the length of the input
       A       #   and returns whether all items are truthy under that
               # ----------------------------------------------------
               # N.B. The ≬ modifier (next 3 elements as a lambda) is used here because of the way map lambdas are parsed:
-              # Rather than treating them as their own structure type internally, 
-              # they are converted to a lambda structure 
+              # Rather than treating them as their own structure type internally,
+              # they are converted to a lambda structure
               # followed immediately by a token representing the `M` (map) element.
               # This means that map lambdas are considered to be 2 elements
-              # ‡ doesn't work because it doesn't catch the extra `M` 
+              # ‡ doesn't work because it doesn't catch the extra `M`
               # token generated while parsing.
               # ------------------------------------------------------
         ⁽Þf   # a function that flattens its argument by 1 depth
@@ -8107,7 +8107,7 @@ si½ǔ`
 <pre><code>Π      # Cartesian product - get all possibilties
  v     # Over each...
   ‡--  # Do the next two elements
-   U   # Uniquify 
+   U   # Uniquify
     L  # Get length
      G # Maximum
 </code></pre>
@@ -8137,7 +8137,7 @@ si½ǔ`
 <pre><code>ÞẊ         # Cartesian product; all ways to choose n items from k
   -----    # Next bit contains only vectorising elements, applied to each
   ǎ:       # Get substrings and duplicate
-    ---    # Next bit over each substring 
+    ---    # Next bit over each substring
     ∷      # Get the second half
      d     # Double it
       =    # Is it equal to the original?
@@ -8184,7 +8184,7 @@ si½ǔ`
 s²     # sort and square the input
   Ṙ    # reverse the list so that it's in descending order
    ḣ   # push the head of that, and the rest of that to the stack
-    ∑= # does the sum of the list equal the other item? 
+    ∑= # does the sum of the list equal the other item?
 </code></pre>
 "
 "241842","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 8 bytes</h1>
@@ -8253,7 +8253,7 @@ In the online interpreter the code times out (for understandable reasons). Does 
 <pre><code>₌Ǎ⌊∆o$c
 ₌Ǎ⌊     # Push the letters and numbers of the input
 ∆o      # Push the corresponding ordinal string
-$c      # are the letters of the string contained in the ordinal string? 
+$c      # are the letters of the string contained in the ordinal string?
 </code></pre>
 "
 "242061","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 8 bytes</h1>
@@ -8344,7 +8344,7 @@ kh       # push 'Hello World' onto the stack
 ## Quine (6)
 
 `I^`     # push 'I^' on the stack
-    I    # string -&gt; `string`string 
+    I    # string -&gt; `string`string
      ^   # reverse the stack
          # implicit output
 
@@ -8438,12 +8438,12 @@ kh\!+          # push `Hello World!` onto the stack
 <p><a href=""https://vyxal.pythonanywhere.com/#WyIiLCIiLCIxNMm+MzY04oaUJzThuoczduG4i8OeZjpV4oG8O2giLCIiLCIiXQ=="" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <p>This is a horrendously inefficient bruteforcer. It computes all <span class=""math-container"">\$14^{364}\$</span><sup>*</sup> sets of 14 symbols of length 364, for each gets combinations of three elements and checks if they all appear once.</p>
 <p>The last two bytes can be removed if we're allowed to output all such sets.</p>
-<pre><code>14ɾ                  # 1...14 
+<pre><code>14ɾ                  # 1...14
    364↔              # Combinations of length 364
        '          ;h # Find one such that...
         4ẇ           # When grouped into lengths of 4
           3vḋÞf      # And all subsets of length 3 within those lists
-               :U⁼   # Does it include all subsets exactly once? 
+               :U⁼   # Does it include all subsets exactly once?
 </code></pre>
 <p><sup>*</sup> Roughly 10^400, so give it a few universe lifetimes</p>
 "
@@ -8627,7 +8627,7 @@ I think the time complexity is <span class=""math-container"">\$O(2*\mathrm{len}
 </code></pre>
 <p>Explanation:</p>
 <pre><code>Lʁƛ?fnȯṅ:h⌊[⌊|3]∆²→?fẎṅ:h⌊[⌊|3]∆²←∧;a
-Lʁ                                     Exclusive 0 range of length(n)                                    
+Lʁ                                     Exclusive 0 range of length(n)
   ƛ                                    Map through range
    ?f                                  Push stringified n
      nȯṅ                               Slice from loop index to end
@@ -8655,7 +8655,7 @@ Lʁ                                     Exclusive 0 range of length(n)
     Ẋ      # Cartesian product of those ranges
      ²     # Square each number in each pair
       vṅ⌊  # Integer version of each pair concatenated into a single string
-         c # Does that contain the original input? 
+         c # Does that contain the original input?
 </code></pre>
 "
 "242784","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 16 bytes</h1>
@@ -8694,9 +8694,9 @@ Lʁ                                     Exclusive 0 range of length(n)
 <pre><code>↵ƛðv≠TgI;g
 ↵ƛ          # For each item n in the input split on newlines:
   ðv≠       #   Is each character not a space?
-     Tg     #   Smallest index where ^ is truthy. Returns an empty list if all spaces. 
+     Tg     #   Smallest index where ^ is truthy. Returns an empty list if all spaces.
        I    #   Push that many spaces or two empty lists if it's all spaces.
-        ;g  #   Return the smallest item of that. 
+        ;g  #   Return the smallest item of that.
 </code></pre>
 "
 "242837","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 8 bytes -15% = 6.8</h1>
@@ -8966,7 +8966,7 @@ Lyxal epic speed bug fix done</p>
 ɾ                 # By 1...n
       ?ɾ          # 1...n
         ꘍         # Spaces appended to...
-    \\            # &quot;\&quot; 
+    \\            # &quot;\&quot;
          $Y       # Interleave them
            vøM    # Mirror each line, leaving the middle alone and flipping slashes
               øĊ  # Align each line to the center
@@ -9029,7 +9029,7 @@ Lyxal epic speed bug fix done</p>
   2(      #   Getting the result of
    ?~İ    #   [input[x] for x on tos]
       )   #   twice
-       ⁼  #   equals the original item. 
+       ⁼  #   equals the original item.
 </code></pre>
 "
 "243479","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, <s>14</s> <s>12</s> 10 bytes</h1>
@@ -9215,8 +9215,8 @@ Lyxal epic speed bug fix done</p>
 /|
 .|
 .|
-__`øM↵*` 
- 
+__`øM↵*`
+
 /
 /.
 __`øṀ↵½Zƛ÷$j
@@ -9224,7 +9224,7 @@ __`øṀ↵½Zƛ÷$j
 <p><a href=""https://vyxal.pythonanywhere.com/#WyJDIiwiIiwiYCBeXG4vfFxuLnxcbi58XG5fX2DDuE3ihrUqYCBcbiBcbi9cbi8uXG5fX2DDuOG5gOKGtcK9Wsabw7ckaiIsIiIsIjQiXQ=="" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <p>This is quite elegant but somewhat messy approach. I'm unsatisfied with the last bit, <code>vj</code> should work but it doesn't.</p>
 <p>The first bit produces the string</p>
-<pre><code> ^ 
+<pre><code> ^
 /|\
 .|.
 .|.
@@ -9284,8 +9284,8 @@ ____
 <pre><code>bǔǔB
 b    # convert input to binary
  ǔ   # rotate that right once
-  ǔ  # and rotate that right all over again. 
-   B # convert back to base 10 
+  ǔ  # and rotate that right all over again.
+   B # convert back to base 10
 </code></pre>
 "
 "244168","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 38 bytes</h1>
@@ -9309,7 +9309,7 @@ b    # convert input to binary
 <h2>Explained</h2>
 <pre><code>₀S*
 ₀S  # The string &quot;10&quot;
-  * # Ring translate the input according to that - change 0 to 1, 1 to 0 and leave newlines as they are. 
+  * # Ring translate the input according to that - change 0 to 1, 1 to 0 and leave newlines as they are.
 </code></pre>
 "
 "244201","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, <s>16</s> <s>15</s> 10 bytes</h1>
@@ -9398,13 +9398,13 @@ b    # convert input to binary
 BBc&quot;&lt;&lt;x
 2**66
 x
-#??92a5*2p@^54┘#--2'3k:'2k*.@2(#&quot;#28@P2*Jp;math 2\^45#2^41 NB.#(expt 2 39); ^ 
+#??92a5*2p@^54┘#--2'3k:'2k*.@2(#&quot;#28@P2*Jp;math 2\^45#2^41 NB.#(expt 2 39); ^
 qut()
 @n.out (*2 32#e#a44******O@) //2 25)
 &quot;e
 &quot;2ej
 :
-py 
+py
 p
 r1ker
 s
@@ -9623,7 +9623,7 @@ b4vβ       This has the effect of interleaving with a bit pattern of all zeroes
                 = # Is the original string equal to...
                ↔  # The string with the following chars removed
            ðkB+   # &quot; ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz&quot;
-           
+
 </code></pre>
 "
 "246010","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, <s>9</s> <s>7</s> <s>6</s> 5 bytes</h1>
@@ -10482,7 +10482,7 @@ vT                  # For each row, get the indices of truthy elements
 ɽ›       # the range [2, x)
   Ė      # the reciprocal of each number in that range - no need to worry about floating point accuracy errors because everything is stored as fractions internally
    e     # x to the power of each of those reciprocals - this is taking every nth root of x which is less than x
-    :⌊=  # determine whether each item is a whole integer.    
+    :⌊=  # determine whether each item is a whole integer.
 </code></pre>
 "
 "247196","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 3 bytes</h1>
@@ -10931,7 +10931,7 @@ kA                          # Push the uppercase alphabet
 <pre><code>b                # Convert each from binary
  8∆Z             # Pad each to length 8
     f            # Flatten
-         ẇ       # Split into chunks of length... 
+         ẇ       # Split into chunks of length...
      ⁰LbL        # Length of the encoder string, in binary
           vBꜝ‹   # Convert each from binary, remove 0s and decrement
               İ∑ # Index those into the encoder and sum
@@ -11393,7 +11393,7 @@ k-                                         # Push [-1, 1] (will be used later)
 <p>The <code>½⌈</code> is because of the requirement to handle reversed lists.</p>
 <pre><code>ɾṖ          # Permutations of 1...n
   ƛ    ;∑   # Count where...
-     ¯      # Deltas of... 
+     ¯      # Deltas of...
     ±       # Signs of ...
    ¯        # Deltas
       A     # Are all nonzero
@@ -12160,7 +12160,7 @@ I bet you can't golf this anymore.<br />
 #       | | \ / \ /  _  |
 #       \ /  |   X  /_\ |
 #        v   |  / \ | | |__
-#             
+#
 #   Terse, elegant and readable.
 #   <a href=""https://github.com/vyxal/vyxal"" rel=""nofollow noreferrer"">https://github.com/vyxal/vyxal</a>
 </code></pre>
@@ -12180,7 +12180,7 @@ I bet you can't golf this anymore.<br />
 print(ord(&quot;P&quot;)-ord(&quot;D&quot;))
 '''
 ...{}   ({}+{}+{}+{})*({}+{}+{})
-''' 
+'''
 </code></pre>
 <p>100% ascii too</p>
 <p><a href=""https://tio.run/##y05N//9fSUmJS1FbLz4mwDnGxVk3xtkZiHQVomt0YpUTQJLq6uoKISHx8S7a2jqFQA5XQVFmXolGflGKhlKAkqYumOGipKkJUsmlp6dXXcupUV2rDUOaWnAeWInC//8A"" rel=""nofollow noreferrer"">Try Keg online!</a></p>
@@ -12374,8 +12374,8 @@ print(ord(&quot;P&quot;)-ord(&quot;D&quot;))
 <h2>Explained</h2>
 <pre><code>ɾ¦c
 ɾ    # The range [1..n]
- ¦  # Cumulative sums of that - this creates a list of the first n triangular numbers, which is guaranteed to include at least one number bigger than the input. 
-  c # is the input in that list? The arguments popped are [input, triangles] but Vyxal is smart enough to realise that because a list will never be in a number, it can swap the arguments and perform the membership test. 
+ ¦  # Cumulative sums of that - this creates a list of the first n triangular numbers, which is guaranteed to include at least one number bigger than the input.
+  c # is the input in that list? The arguments popped are [input, triangles] but Vyxal is smart enough to realise that because a list will never be in a number, it can swap the arguments and perform the membership test.
 </code></pre>
 "
 "249093","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 3 bytes</h1>
@@ -13015,7 +13015,7 @@ c    # Does the list contain the input?
      ƛ                     #   for [i,7] [i,8]    [77,7]
       ÷                    #     split            77 7
        ₍                   #     parallel apply
-        Ǒ                  #       multiplicity   1     
+        Ǒ                  #       multiplicity   1
          O                 #       count          2
                            #     end              [1,2]
           ∑                #     sum              3
@@ -13080,10 +13080,10 @@ c    # Does the list contain the input?
 <pre><code>‛oe₀Ŀ∑ṘṄĖ₂∆ċt
 </code></pre>
 <p><a href=""https://vyxal.pythonanywhere.com/#WyIiLCIiLCLigJtvZeKCgMS/4oiR4bmY4bmExJbigoLiiIbEi3QiLCIiLCIqbytlbyJd"" rel=""noreferrer"">Try it Online!</a></p>
-<pre><code>    Ŀ∑        # Replace each of 
+<pre><code>    Ŀ∑        # Replace each of
 ‛oe           # o and e
    ₀          # With 1 and 0
-      Ṙ       # Reverse 
+      Ṙ       # Reverse
        Ṅ      # Join by spaces
         Ė     # Eval
          ₂    # Even? (1-n%2)
@@ -13285,7 +13285,7 @@ L  # Length of that list
 ‹  # Subtract 1
 ¡  # Factorial
 ²  # Square
-$  # Swap 
+$  # Swap
 %  # Modulo - this will be (n-1)!² % n
 ;  # Close lambda
 ∑  # Sum
@@ -13403,7 +13403,7 @@ g          # Minimum (&quot;.&quot;)
     ∑        #   Sum
       =      #   Equals
      ?       #   The input
-       c     # First truthy item under function application 
+       c     # First truthy item under function application
           j  # Join by:
         \+   # &quot;+&quot;
 </code></pre>
@@ -13823,7 +13823,7 @@ ka     # Lowercase alphabet
                      HH       # Convert to/from hex to remove leading zeroes
                        2∆Z    # zfill each to length 2
                           2Ẏ  # Get the first two chars of each
-                            ₴ # Print 
+                            ₴ # Print
 </code></pre>
 "
 "250676","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 14 bytes</h1>
@@ -14348,7 +14348,7 @@ f           # Input flattened
 <h2>Explained</h2>
 <pre><code>⇩¨=‡Us
 ⇩¨=    # is the lowercase version of the input invariant under:
-  ‡Us  # uniquify and sort? 
+  ‡Us  # uniquify and sort?
 </code></pre>
 "
 "251658","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 6 bytes</h1>
@@ -14410,14 +14410,14 @@ f           # Input flattened
 <h2>Explained (old)</h2>
 <pre><code>1₀?(~p)f:ẏu$ed*ÞR8%2×ø∧
 1₀                        # Push 1 and 10 to the stack. These will form the initial terms for the Fibonacci words
-  ?(  )                   # Input number of times: 
+  ?(  )                   # Input number of times:
     ~p                    #   Without popping the top two items on the stack, prepend the top to the second-top. This gives [1, 10, 101, 10110, 10110101, 1011010110110, ...] - the sequence but with inverted bits
        f:                 # Push two copies of the top of the stack as a list of digits
          ẏu$e             # Push -1 to the power of each index in the range [0, len(top)]. This determines both a) whether a turn is needed and b) which general direction to make the turn if a turn is needed for each bit in the Fibonacci word. The result will be 0 (no turn, keep going), 1 (turn to the right) or -1 (turn to the left).
              d*           # Double the list so it can be used with the canvas drawing element and multiply the bit list by the direction list. More on the canvas a little later
                ÞR         # Take the cumulative sums of the list, remove the last item, and prepend a 0. Yes, that's a thing that's 2 bytes in Vyxal.
                  8%       # Modulo each item by 8. This is so that each number can be mapped to a canvas direction that is one of [0, 2, 4, 6]. 0 = up, 2 = right, 4 = down, 6 = left
-                   2×ø∧   # For each direction in that list, draw a line of *s of length 2 on the global canvas in that direction. Think of the canvas as a kind of turtle but ascii thing, where each direction moves the turtle and leaves a trail of *s behind. The global canvas is implicitly printed at end of execution. This could also be ø^, but ø∧ looks better :p    
+                   2×ø∧   # For each direction in that list, draw a line of *s of length 2 on the global canvas in that direction. Think of the canvas as a kind of turtle but ascii thing, where each direction moves the turtle and leaves a trail of *s behind. The global canvas is implicitly printed at end of execution. This could also be ø^, but ø∧ looks better :p
 </code></pre>
 "
 "251776","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, <s>16</s> <s>14</s> 13 bytes</h1>
@@ -14461,7 +14461,7 @@ m              # Mirror the input - append its reverse
 9'        # From the range [1, 9], keep only items n where:
   ∆ċ      #   n as a word
      ?Þ∩  #   under multiset intersection with the input
-    :   = #   is the same. 
+    :   = #   is the same.
 </code></pre>
 "
 "251827","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 11 bytes</h1>
@@ -14514,8 +14514,8 @@ m              # Mirror the input - append its reverse
 <h2>Explained</h2>
 <pre><code>↵2vβO
 ↵      # 10 to the power of the input - this will always be longer than the binary representation of the input
- 2vβ   # convert each item in the range [1, that] to base 2 - the base converter just happens to be nice with digits greater than the base. 
-    O  # Count how many items in that list are equal to the input 
+ 2vβ   # convert each item in the range [1, that] to base 2 - the base converter just happens to be nice with digits greater than the base.
+    O  # Count how many items in that list are equal to the input
 </code></pre>
 "
 "252010","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 3 bytes</h1>
@@ -14622,7 +14622,7 @@ kaf                # The lowercase alphabet, as a list of characters
 <p>Takes input as a flattened list and outputs a flattened list.</p>
 <h2>Explained (old)</h2>
 <pre><code>f₌ṖL√vẇ'ÞD?⁼;h
-f₌ṖL√           # Push all permutations of the flattened input, as well as the square root of the length of the flattened input  
+f₌ṖL√           # Push all permutations of the flattened input, as well as the square root of the length of the flattened input
      vẇ         # Split each permutation into chunks of that length
        'ÞD?⁼;   # Keep those only where the diagonals equal the input (this basically means try each and every single possible matrix from the input until one is found with the same diagonals)
               h # Get the first (and only) item
@@ -14830,7 +14830,7 @@ s flag  # Join together
 <pre><code>Þxs?ḟ
 Þx    All possible combinations of the set (without replacements)
   s   Sort
-   ?ḟ Output index of the word 
+   ?ḟ Output index of the word
 </code></pre>
 "
 "252722","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 11 bytes</h1>
@@ -14881,7 +14881,7 @@ s flag  # Join together
   ∑       # Join as a single string
    \A     # Push the string &quot;A&quot; to the stack
      5    # Push the number 5 to the stack
-      ø↳  # And left pad the single string from early with &quot;A&quot;s until it's 5 characters long 
+      ø↳  # And left pad the single string from early with &quot;A&quot;s until it's 5 characters long
 </code></pre>
 "
 "252819","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, score 4, 8 bytes</h1>
@@ -15241,7 +15241,7 @@ L       *        # Repeat it input-length number of times
 <pre><code>fḊg
 f   # flatten input to get list of digits
  Ḋ  # divisible by
-  g # minimum value of the individual lists whether the digit is divisible or not. 
+  g # minimum value of the individual lists whether the digit is divisible or not.
     #   If it is, `1`, if not `0`. So if 1 digit is not divisible, it returns `0` in the list, and the program takes it as the minimum.
 </code></pre>
 "
@@ -15529,7 +15529,7 @@ Basically <a href=""https://en.wikipedia.org/wiki/Wilson%27s_theorem"" rel=""nof
 <p><span class=""math-container"">\$\large{(n-1)!+1 } \equiv 0 \left(\mod n\right)\$</span></p>
 <p><a href=""https://vyxal.pythonanywhere.com/#WyIiLCIiLCLigLnCoeKAuiQlwqwiLCIiLCIxMSJd"" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <p><strong>Explanation</strong>:</p>
-<pre><code>‹¡›$%¬ 
+<pre><code>‹¡›$%¬
 ‹¡       push n-1 factorial
   ›      push n+1
    $%    modulo top two items swapped
@@ -15852,7 +15852,7 @@ W        # []
      ḣ   #  split head from the rest
       ḟ  #  find its index on the list (-1 if none)
        › #  increment
-         # as we didn't prepend the last item, output it 
+         # as we didn't prepend the last item, output it
 </code></pre>
 "
 "253501","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 5 bytes</h1>
@@ -15937,7 +15937,7 @@ kr           # Alphanumeric chars
 <pre><code>ʀEĖeæa)ȯ  # takes a single integer n
       )ȯ  # first n numbers where:
 ʀ         #   the range [0, that number]
- EĖe      #   to the power of 1/(2 to the power of each number in that range) 
+ EĖe      #   to the power of 1/(2 to the power of each number in that range)
     æa    #   contains a prime number
 </code></pre>
 "
@@ -16036,13 +16036,13 @@ fG     #   Get the biggest digit of the current value - should just be G, but bu
 <pre><code>ÞKvḟǓṘ†Tt~ȯẋJ # whole program
 
 ÞK            # get all suffixes of implicit input
-  vḟ          # then find each first occurrence in the input 
+  vḟ          # then find each first occurrence in the input
     Ǔ         # rotate the list to the left
      Ṙ        # then reverse
       †       # logical NOT each item
        T      # get indices of elements which are truthy
         t     # get tail
-          ȯ   # slice the input from it until the end 
+          ȯ   # slice the input from it until the end
          ~    #  just push it, do not pop the used items yet
            ẋ  # repeat the sliced input tail amount of times
             J # then join with the input
@@ -16172,7 +16172,7 @@ fG     #   Get the biggest digit of the current value - should just be G, but bu
 <p>Outputs the whole list. I may have forgotten there's a built in for 26 lol.</p>
 <h2>Explained</h2>
 <pre><code>f026V∑)↔
-      )↔ # Until applying the following doesn't result in a different value, collect intermittent values. 
+      )↔ # Until applying the following doesn't result in a different value, collect intermittent values.
 f         #   flatten the function argument
  026V     #   and replace 0s with 26 (the 0 and 26 are pushed separately)
      ∑    #   sum the resulting list
@@ -16318,7 +16318,7 @@ f         #   flatten the function argument
 <pre><code>eʁ'?τÞu
 </code></pre>
 <p><a href=""https://vyxal.pythonanywhere.com/#WyIiLCIiLCJlyoEnP8+Ew551IiwiIiwiMyJd"" rel=""nofollow noreferrer"">Try it Online!</a></p>
-<pre><code> ʁ      # Range(0, 
+<pre><code> ʁ      # Range(0,
 e       # n**n
   '     # Filtered by...
    ?τ   # Convert to base n
@@ -16567,7 +16567,7 @@ v        # For each in a range [1, n]:
 <pre><code>≈[¤|G
 </code></pre>
 <p><a href=""https://vyxal.pythonanywhere.com/#WyIiLCIiLCLiiYhbwqR8RyIsIiIsIjYyNywzODk0LDg2Myw1MTk1LDc3ODksNTI2OSw4ODg3LDMyNjIsMTQ0OCwzMTkyIl0="" rel=""nofollow noreferrer"">Try it Online!</a></p>
-<pre><code>≈[    # If all same 
+<pre><code>≈[    # If all same
   ¤   # &quot;&quot;
    |G # Else max
 </code></pre>
@@ -16599,7 +16599,7 @@ v        # For each in a range [1, n]:
                     $vcT›h          #    Get the 1-based index of where the character is in the +- grouped string (u and m will return 0)
                           3ɾḂNJ0p   #    The list [0, 1, 2, 3, -3, -2, -1]
                                  i  #    Indexed by the previous number
-# At the end of execution, the `s` flag sums the list of numbers                          
+# At the end of execution, the `s` flag sums the list of numbers
 </code></pre>
 "
 "254855","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 8 bytes</h1>
@@ -16915,7 +16915,7 @@ b        # Binary
  I       # Split into two halves
   ∩      # Transposed
      A   # Are all...
-   v     # Pairs... 
+   v     # Pairs...
     ≈    # Each all the same element?
 </code></pre>
 "
@@ -16959,7 +16959,7 @@ b        # Binary
 `° ß`       # The string `[aeiou] [bcdfghjklmnpqrstvwxyz]`
      $      # Make the stack input, ^
       ‡ǐN   # Push a function that title cases a string and then swapscase.
-            # This is because regex matches will be vowel-consonant, and title case makes the vowel uppercase, consonant lowercase, swapcase inverts that for the desired result 
+            # This is because regex matches will be vowel-consonant, and title case makes the vowel uppercase, consonant lowercase, swapcase inverts that for the desired result
          øṙ # Apply that function to regex matches in the input
 </code></pre>
 "
@@ -17104,7 +17104,7 @@ f       # Digits
 <p><a href=""https://vyxal.pythonanywhere.com/#WyIiLCIiLCJr4pahMDJ2VjpOSiIsIiIsIiJd"" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <pre><code>    k□   # [[0,1],[1,0],[0,-1],[-1,0]]
    02vV # replace all 0 with 2 in elements of list (v applies next operation to elents of list)
-    :    # duplicate 
+    :    # duplicate
     N  # negation (* -1) in  elements of list
     J    # join it
 </code></pre>
@@ -17552,16 +17552,16 @@ Cv+C # To a list of ordinal points of where the horsey is, add each horsey move
 # endif/*   v 1 &gt;&gt;&gt;&gt;@::c&gt;&gt;""&gt;r""{\&gt;&gt;&gt;&gt;&gt; @ 0:8:8/_}\(*[&gt;]R 10G|'53'S  1111    \)\[ &gt;&gt;&gt;&gt;&gt;#####&gt;#######&gt;&gt;&gt;#&gt;#&gt;&gt;&gt;&gt;#####&gt;&gt;#&gt;&gt;&gt;#&gt;&gt;&gt;#&gt;&gt;&gt;&gt;#####&gt;####&gt;&gt;###&gt;&gt;&gt;####&gt;#&gt;&gt;# #####  #    ##### ####  ###   #### #  # #####  #    #
 #comment -[v&gt;]-main=-[165]-   ###[@,,,""279""_]#-$y2222]&gt;252O @&gt;&gt;&gt;&gt;&gt;&gt;&gt; h$s o#&gt;&gt;&gt;326&gt;########&gt;&gt;&gt;&gt;##&gt;###&gt;######&gt;########&gt;####&gt;#####&gt;#######&gt;#####&gt;###&gt;&gt;&gt;&gt;#&gt;#&gt;####&gt;###&gt;#####&gt;#######&gt;#####&gt;###&gt;&gt;&gt;&gt;#&gt;#&gt;####&gt;###&gt;#####&gt;#&gt;&gt;&gt;&gt;&gt;&gt;&gt;9
 #[[/]e]    &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; @!:!8:6:2/_&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;;  &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;_&gt;&gt;&gt;&gt;eeePs#v##########; ### ## #####  ## #### ## # #####  ##^##### ####   ##### ## # ##  ## ####  ## ##### ####   ##### ## # ##  ## ####
-#cse                            2222 @,,,""361"";@,,,""362_"" ;&gt;# 23-2g_""01"",,@_       #  ????!?!??!??!!!!???!?!??!!?!?!!!!!?!!!!?????!????????????????????! :1*23/5%6E2 iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii            
+#cse                            2222 @,,,""361"";@,,,""362_"" ;&gt;# 23-2g_""01"",,@_       #  ????!?!??!??!!!!???!?!??!!?!?!!!!!?!!!!?????!????????????????????! :1*23/5%6E2 iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 #11 cbbbzcba aaabaca1tauaxayatbubxbtcuc 11         xx xx r3o5o8ox xx xx .-#351$#&amp;  # 329284   38839237137637028538937437711 37239942236736836636911 289364373   375393
 #~[! R++++++] +++++++++\++++++++++++++++++++++++++++++++++U.._+++++++._+++o+++o--ox#
 ####################################################################################&gt;121 *1220*1211k*1220 2 2 2 11
  #{{{{]~*[~* -[&gt;+&lt;-----]&gt;-._+++++._+._@]+-}}[._+;;+;;+;;+&lt;&gt;;;+;;+;;+;;;;;;+;;+;;.._]}++&lt;^&gt;--[^&gt;[+[&gt;+^-----]&gt;.- ._+++._&gt;]&lt;[+[&gt;+&lt;-----]&gt;--._++++._+++._&lt;] ]+-+&lt;[&lt;=oC&lt;=oC&lt;._&gt;&gt;&gt;&gt;-'4o'6o@]^&gt;[&lt;-[&gt;+&lt;-----]&gt;-@@+.---@._+&gt;$]  )++$--![+++[&gt;+++++++&lt;-]&gt;+._+++++.._&gt;](  {{{ {{{ {{{ {{{ {{{ {{{ {{{ {{{ {{{ {{{ {{{ {{{ {{{ {{{ {{ &lt;&lt;&gt;&gt; }&lt;}&gt;}[&lt;}}&lt;&lt;}&lt;&lt;&lt;&lt;&lt;}&lt;&lt;}&lt;&lt;&lt;&lt;}&lt;&lt;&lt;}}}&lt;}}&lt;}}&lt;}}&lt;}}&lt;}}&lt;}}}&lt;}}&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;}}}&lt;}}&lt;}}&lt;}}&lt;}}&lt;}}&lt;}}}&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;}]  &gt;&gt;\[/&gt;\/\&gt;&gt;&gt;&gt;&gt;&gt;&gt;]&gt;\[./&gt;&gt;\/\./\/&gt;&gt;&gt;\./]  [328][]  [[[[.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.][.].,][.].,][.][.][.].,]  [[].[[[
 #* *#p 173#*
 #`⟪`⟪\⟫9999 9 9e:
-#{  
+#{
 #/*9 999 99 9999  nMn MMMMMMMnnMnnnMnMMMMMMMnMMnnnnnM&gt;MnMnMnnMnMnnnn   //`. :-print(186). end_of_file. `MnM             @,,, ""286""_+1y2 #&lt;""67"",,@_␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋'''␌`297'print quit`sssMMMMMMMMnnMnMnnnMnMMMM''';201-1|&gt;print;exit 0␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␌␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋␋
-#|9 e: 
+#|9 e:
 #( 9 9999
 #&lt;&lt;&lt;#//--&gt;
 #&gt;&lt;meta http-equiv=X-UA-Compatible content=IE=99&gt;&lt;!--e$P+++++*D*+++1++1E!sss \font\f=cmr12\f352\end
@@ -17571,38 +17571,38 @@ Cv+C # To a list of ordinal points of where the horsey is, add each horsey move
 ###\MoOMoOMoOMoOMOOmoOMoOMoOMoOMoOMoOMoOMoOMoOMoOMoOMoOMoOMoOmOoMOomoomoOOOM  e&gt;+@+-@@@@=&gt;+&lt;@@@=&gt;+&lt;?#&gt;;?\:-._++._++++._#/&lt;?\&gt;3-++._6+---2._#/++++++++++++++++++++++++++++++++++++++++++++++++._++._++++++.&gt;!\
 'wWWWw;WW;(W;Ww;v;;wW;Ww;WW;Ww;vw;W_;WW;wW;WW;WW;WW;Ww;WW;WW;w;WW;WWWWWw;;;WWWWWWWWwwwwvwWWWwWWWWwvwWWwW\WWwvwWWwWWWwvwW/Ww\WWW ho ho ho ho // ho ho ho ho ho ho ho ho ho ho ho ho ho ho ho ho ho ho ho ho ho ho ho ho ho ho hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi hi MU ) ([])({}&lt;(((((()()())){}{})){}{})&gt;)(({})){}{(&lt;(&lt;()&gt;)({})({}&lt;{}&gt;({}){})&gt;){({}[()])}}({}){}({}()&lt;()()()&gt;) (&lt;&gt;&lt;()&gt;){({}[()])}{  #(((()()()()())()())(()()())(()()())(()()())(()()())(()()())(()()())(()()())(()()())(()()())(()()())) ((((((((\'; "";echo 350;exit#""; a=$(printf \\x00);b=$(echo -n $a|wc -c);case $b[1]¢ in 1?)echo 54;;1* )echo 242;;4* )echo 78;;8* )echo $((9999999999999999999&gt;0?166:244));;0?1??)echo 50;;0* )[ ~+ = \~+ ]&amp;&amp;echo 282||echo $((346+010));;* )echo 58;;esac;exit;#{IO.puts 295#';  print (0and eval('"":""&amp;&amp;(defined?A)&amp;&amp;290||(defined?pp)&amp;&amp;190||(defined?__dir__)&amp;&amp;13||""_""[0]==95&amp;&amp;108||109+1')or(None and(-1 %2&gt;0and 9or 247)or eval('5&lt;&lt;64&gt;&gt;64or 68'))); [exit];  '""';""#{puts 187;exit}"";'""';       # wWWssss {}#(prin 45)(bye){{{}#}#}#r""\""print(355);400#{}""(prin 199)(bye)) 46(8+9+9+9+9+=!) &gt;* * * * *[[[[3+4*7*@] ] ] ]sxxxxxxxxxxxxxxxxxxxxx
 ###;{e=1}={e:null};console.log e&amp;&amp;39||180;\
-__DATA__='''  
+__DATA__='''
 #'  \
 __END__
 se pr':;@echo 185 #';se pr'-';pr 89+1/2*518;exi
-ifdef ss 
+ifdef ss
 1     ! !
 2   !    !
 9      !!
 2#
-#  
+#
 dddd d b ggggg g iii i llllll l dddd ddddd cc ggggg g ooooooo dddd d ooooooo iii iiiii ooooooo eeeeeeeeee
 echo 353;exit;'
 #PLACET,2&lt;- #2FAC,2SUB#1&lt;- #52FAC,2SUB#2&lt;- #32FACREADOUT,2PLEASEGIVEUPFACs wwwwwwwwwwwWWWwWWWWWwWWWWWWWwWWWWWWWWWwWWWWWWWWWWWWWWWwWWWWWWWWWWWWw W
 jrzaeeaeuee_wuuwq jii_iullluiiiogr se_eeepaeeeeeeeeee;eeecisajjarpppppp ⠆⠄⡒⡆⡘😆😨😒😨💬95💬👥➡😻😹😸🙀🙀😹😼😿🙀🙀😼😼😸🙀🙀🙀🙀
-👋🔢🌚🌝🌝🌚🌚🌚🌚🌚🐸🐸🐸🐸🐸🐸😂😂😂😂😂😂😂🌚🔥😂😂😂😂😂😂😂💯💩🐸🔥😂💞💩💞😂😂😂😂💞🔥🌚▲▲▲²²²²▲¡▼¡▲▲¡⎚¿⁵228¦ₔ₁₉₃2♦10♦10♦10♥☰䷩䷏䷏䷨䷏䷩䷩䷩䷩䷩䷩䷩䷩䷩䷩䷩䷩䷩⚎ֱֲֵֶֶֶֶַַַָָ  
-밠밠따빠빠맣박다맣받다맣희맣희吾有一數曰二百八十一書之うんたんたんたんたんうんうんうんうんうんたんうんうんうんたんうんたんたんうんたんたんうんたんたんうんたんたんうんたんたんたんたんたんうんうんうんうんたんたんうんたんたんたんうんうんうんたんうんうんたんうんうんたんうんうんたんうんたんうんうんうんたんたんうんたんたんうんたんたんうんたんたんうんたんたんたんうんうん  
+👋🔢🌚🌝🌝🌚🌚🌚🌚🌚🐸🐸🐸🐸🐸🐸😂😂😂😂😂😂😂🌚🔥😂😂😂😂😂😂😂💯💩🐸🔥😂💞💩💞😂😂😂😂💞🔥🌚▲▲▲²²²²▲¡▼¡▲▲¡⎚¿⁵228¦ₔ₁₉₃2♦10♦10♦10♥☰䷩䷏䷏䷨䷏䷩䷩䷩䷩䷩䷩䷩䷩䷩䷩䷩䷩䷩⚎ֱֲֵֶֶֶֶַַַָָ
+밠밠따빠빠맣박다맣받다맣희맣희吾有一數曰二百八十一書之うんたんたんたんたんうんうんうんうんうんたんうんうんうんたんうんたんたんうんたんたんうんたんたんうんたんたんうんたんたんたんたんたんうんうんうんうんたんたんうんたんたんたんうんうんうんたんうんうんたんうんうんたんうんうんたんうんたんうんうんうんたんたんうんたんたんうんたんたんうんたんたんうんたんたんたんうんうん
 😊♈💖  ↨↑1↑↑↑↑↑↑↑↑↨21↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑↨↨↑2↨↑1↑↑↑↨↨0↑0↕→
-😇♈♈  
-😊♉♈  
-😇♈♈  
-😇♈♉  
-😇♈💜  
-😊♉♈  
+😇♈♈
+😊♉♈
+😇♈♈
+😇♈♉
+😇♈💜
+😊♉♈
 😊📢♈  #e:&gt;*****[[[[828+*+@+*99] ] ] ]*****&lt;
-😈♈💜  
-😊📢♈  
-😇♉💞  
-😊📢♉🐸⠀⢃⠛⠋  
+😈♈💜
+😊📢♈
+😇♉💞
+😊📢♉🐸⠀⢃⠛⠋
 #-49,A,-1                              #
 #-5,A,-1                               #
 #6,A,-1                                #
-#X  
+#X
 _+------+XX  !X583nnn;XXX
 _|/0110@| X X  XXXXXXXXX X
 _|/00011| X X   XXXXXXX
@@ -17619,7 +17619,7 @@ x  x  x  7  8 3  n  n  n;
  +xx xxxxxxx +x xxxxxxx  xxxx
 x  x   x      x   x
 51  +xx        xxx
-#  
+#
 1   *     x``   x  x
 49 #+  xx+x=&gt;+  x+x + x B+ ===+
 #  =x x  x===  x x &gt;8 xxx +++= +
@@ -17636,7 +17636,7 @@ x  x   x      x   x
 1    ! x xx --... ...--  ? @ ?
 x +   ++ xx  ++ ++     +
  +xxxxx  +     +
-  
+
 #= +
 + *   +
 #= + *
@@ -17656,54 +17656,54 @@ $'main' *****+ %++ %++ @@* %-- @@* %++ %++ @@*
 +`` 231 =#
 #  #uuu#
 ,,..,.,,,,..,.,.,,..,,.,,,...,,.,,..,,,,,,..,,,.$
-  
-write 224;bye; 
-  
+
+write 224;bye;
+
  console.log 178;
-  
-~~~x  
-main:Int  
-main =248 
-~~~  
+
+~~~x
+main:Int
+main =248
+~~~
 literally, print 249
 (print 164  (exit    ) )
   (  *)
 begin write         ('288'    )end.(*)
 print 61
 51 outputascii 57 outputascii 48 outputascii quit
-#&lt;&lt;&lt;##&gt;  
+#&lt;&lt;&lt;##&gt;
          print(85)
-#&lt;&lt;&lt;##&gt;CO COMMENTp]] 
+#&lt;&lt;&lt;##&gt;CO COMMENTp]]
 execute_process(COMMAND echo 296)#[[
-  
-T:251  
-E:0  
+
+T:251
+E:0
 #+IDRIS: main:IO      (    );main=print 291
 #ppW&lt;#require""stdio""Stdio:write     (293  )#&gt;
 #ceppp  ;  ;   ; ;
 MsgBox (0,"""",169   )
-#cs  
-You can see an x here.&lt;&lt;  
-  
-&gt;{-&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;  
+#cs
+You can see an x here.&lt;&lt;
+
+&gt;{-&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
 &gt;&gt; R2
-  
+
 &gt;&gt; -1
-  
+
 &gt; 398
-  
+
 &gt; 397
-  
+
 &gt; 176
 &gt;&gt; Output 3
 &gt;SET x TO 120.
 &gt;X x.   ;-}
 &gt;l=length$show""\0"";main=print$[0,0,0,233,0,146,157]!!l{-
-  
-\begin{code}  
-{- ;  ␉␉␉␉ 
+
+\begin{code}
+{- ;  ␉␉␉␉
 ␉
- ␉  
+ ␉
 
 
 
@@ -18003,7 +18003,7 @@ let d=""""""#\"""""";echo 21#"" """""";log 380
 &lt;b&gt;305&lt;/b&gt;
 &lt;i&gt;309&lt;/i&gt;
 &lt;u&gt;310&lt;/u&gt;
- 
+
 &lt;script type=""text/tiscript""&gt;self.html=""&lt;p&gt;302""&lt;/script&gt;
 &lt;script&gt;d=document;d.innerHTML=""&lt;p&gt;344"";onload=function  (){
 g=window
@@ -18012,7 +18012,7 @@ d.body.style.color='000'
 d.body.innerHTML=e===null?334:[ ].pop?
 257+[10,,,0,,,18,2,!e?77:d.clear?5:58,d.compatible?50:g.XMLHttpRequest?49:d.nodeType?8:55][[""""+[].pop][0].length-!!d.head-!d.fonts-28]:d.dir==''?312-1:308}
 &lt;/script&gt;
- 
+
 &lt;style&gt;
 head+body,text{display:none}
 :,a,i{color:fff}*{+color:fff}
@@ -18020,22 +18020,22 @@ a{-color:000}-a,b{color:000;-color:fff}
 : u,-i{color:000}
 :after{content:""258"";[;content:""276"";]}
 @media all\0{
-:after{content:""260"";color:#fff\ 
+:after{content:""260"";color:#fff\
 }:root:before{content:""316"";color:fff}
 :before{content:""314""}}
 @media \0 all{:after{content:""266""}}
 @media x{:before{content:""345""}:after{color:#fff
 }}&lt;/style&gt;
- 
+
 &lt;attache&gt;Print[194]Exit[ ]&lt;/attache&gt;
- 
+
 #^^
 #*RV3&gt;&gt;[0]{472454523665721469465830106052219449897} ()//~#class C{function:Main (a:String[] )~Nil{83-&gt;Print();}} #~
 #%RV2&gt;&gt;                          ()
 #V2-&gt;=359
 #V3-&gt;=323
- 
- 
+
+
 22-23-31-13-13-31-13-13-31-13-13-31-13-13-31-12-12-23-31-13-13-31-13-13-31-13-13-31-13-13-31-21-22-21-12-32
 Take Northern Line to Tooting Bec
 Take Northern Line to Charing Cross
@@ -18095,9 +18095,9 @@ red down one blue up red down one blue up red up one red right two blue up
 baa baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bleeeeeeeeeeeeet bleeeeeeeeeeeeet bleeeeeeeeeet baaaa bleet bleeeeeeeeeet bleeet bleeeeeeeeeet
 #
 #85""""C""""Hata;re7^0::Prullasge&gt;Ex Cr Uithary,8,3""t""F :n^*2giogrlopstdisp[]!!48 ?\在ｕg=1-2\0C05+---&lt;?ML42yalet d=/;~ 16mb|&gt;^ 5:
- 
+
 */
- 
+
 #1""""
 #if!1
 .int 2298589328,898451655,12,178790,1018168591,84934449,12597
@@ -18109,19 +18109,19 @@ baa baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bleeeeeeeeeeeeet bleeeee
 const char*i=""25 10 37 1""""a c #FFC0FF""""B c #0000C0""""d c #58007B""""e c #0C8302""""o c #FF8000""""t c #FF00BC""""u c #008080""""h c #E60001""""i c #CAFFFF""""f c #280000""""k c #CA0000""""l c #CA007F""""n c #330001""""q c #E60000""""A c #0040C0""""E c #808000""""F c #00C040""""G c #008000""""R c #800000""""H c #0000AA""""I c #00AA00""""C c #55FFFF""""K c #AAAAAA""""r c red""""g c green""""b c blue""""c c cyan""""m c magenta""""y c #FFFF00""""x c black""""_ c #FFFFFF""""V c #000502"""": c #010001""""@ c #090909""""2 c #000002""""3 c #000003""""4 c #000004""""HHHVahtdegggggggyrggggggc""""IHH3aixuEFbGGbggbryAEGRgc""""CCH:afyurbgbgggggggb____o""""ICH2akmyyyyyyyyyyyyyyyyye""""I__:almyyyyyyyyyyyyyyyyye""""K__4anmyyyyyyyyyyyyyy_y_e""""HH_:aqggyyyyyyyyg____m_Ce""""CH_@axxxxxxxxxxxxxxxxxxxx""""K___aaaam___bbbbbBm_bbBab""""K___________bbbbb___bbxbb"";//""
 //\(
 typedef int known,macro;int x= 0,    y[60];macro m(){0;}int f(int a,...){y[x=0]=x=72;printf(""\x25i"",!m?195:!a?124+x:sizeof' '-1? (1&amp;*z (N)?234:""\??-""[1]?218:67^*u""""):*u""""?37:z(0'0  0'0 )[7]?75:""\??-""[1]?77+a/2:77);}__attribute__((weak))int main (){known y;int i;f(x,x=sizeof y);x=1;return 0;}__attribute__((destructor))int g(){x?0:puts(""198"");}//())*/
- 
+
 #1""""/*/
 &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;WQTkTTX
- 
- 
+
+
 &gt;import Prelude;import GHC.IO;import Data.Functor.Const;import Data.String;import Text.Heredoc;import Control.Exception;import Language.Haskell.TH;import Text.Show.Functions;instance Monoid a=&gt;Monad (Const a)where _&gt;&gt;=_=mempty
 &gt;instance K Float;instance IsString Integer where{fromString _=0};b=x#x
 &gt;i_= -1`mod`2+c;data B=B Int;_=B b;e=error""#//"";f?n=unsafePerformIO$ catch (f e)$ \ErrorCall{}-&gt;r n;instance Num(a-&gt;b);instance Num(  );instance Show(Q a)where{show _=""""};f= (^ );q _=r$ (d.B)?4;d (B _)=r$0`f`f 2 64;class(Show a,Floating a )=&gt;K a where{k::a-&gt;String;k _=show$ (id::a-&gt;a )pi};c=l (- x )`mod`4;g=[here|here&lt;-""""]--[|]
 &gt;--W
 &gt;x=0;y#a=subtract 0b1206;x#a=174;h a=a^x;r=pure;l a=length$ show a;forall=0;z|(∀)&lt;-5=forall;b1206|let _._=x;negate _=3=206+[40,58,0,57,55,26,16,3,4,-78,0,1,8,5,6,12-1]!!(l(""  "",0x0.1,1e1,(0`id`),k(0::Float ),toEnum 0::Num a=&gt;Enum a=&gt;a )+2*l  (do a&lt;-Const[1];pure a,h pi,h(0::Real a=&gt;a))- 3*(l$(pure$TupE[]::ExpQ))-(-q?6+70+z));(!)=seq
 &gt;;
-&gt;main|let p!_=0=print$ sum[last$ 172:[[b,0,170,303]!!i_|g&lt;""&gt;""],0!61]--} 
- 
+&gt;main|let p!_=0=print$ sum[last$ 172:[[b,0,170,303]!!i_|g&lt;""&gt;""],0!61]--}
+
 #1 """"/*/
 #if!1
 #endif//*
@@ -18241,10 +18241,10 @@ Expects <code>-1</code> for 'A' and <code>1</code> for 'B'. Returns <code>1</cod
 <p><a href=""https://vyxal.pythonanywhere.com/#WyJUIiwiIiwi4oKMTOKGtXLihZvihZtrMlQw4bqL4oWba+KJiE7ihpIwezpr4pahaeKGkCs6wr5ow57huo8kY8Ksw59R4oaSwr5o4oaQw55pOsKo4pah4oC6W8Ko4pahTiRffGA/LiwrLV1bYCR2PcO3TismK04rXsK8wqVrMlQlOsKjfmnigJ4r4oCeW8K84bij4oWbOltDJF1fXeKCiCU64oCfyKbin5E74oWbXiRbOkPigrRd4oinW+KAuSIsIiIsIlwiKysrKysrdlsuKysrPFxcbiAgICAgID8tXSsrK15cIlxuXCJhYmNkXFwwXCIiXQ=="" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <p>It takes the program as a string and the input as a string. <a href=""https://vyxal.pythonanywhere.com/#WyJUIiwiIiwi4oKMTOKGtXLihZvihZszMFQw4bqL4oWba+KJiE7ihpIwezpr4pahaeKGkCs6wr5ow57huo8kY8Ksw59R4oaSwr5o4oaQw55pOsKo4pah4oC6W8Ko4pahTiRffGA/LiwrLV1bYCR2PcO3TismK04rXsK8wqUzMFQlOsKjfmnigJ4r4oCeW8K84bij4oWbOltDJF1fXeKCiCU64oCfyKbin5E74oWbXiRbOkPigrRd4oinW+KAuSIsIiIsIlwiKysrKysrdlsuKysrPFxcbiAgICAgID8tXSsrK15cIlxuXCJhYmNkXFwwXCIiXQ=="" rel=""nofollow noreferrer"">Here</a> is a version with 90 cells.</p>
 <pre><code>₌L↵            # parallel apply length and split on newline
-   r           # pad with spaces to given length 
+   r           # pad with spaces to given length
     ⅛          # push to global array
      ⅛         # push input to global array
-k2T0ẋ⅛         # push a list of 30000 zeros to global array 
+k2T0ẋ⅛         # push a list of 30000 zeros to global array
 k≈N→           # save [0, -1] to a variable with empty name
     0          # push 0
 # Together this sets up the global array as [code, input, tape],
@@ -18329,8 +18329,8 @@ N              #   negate
   Ṅ             # Rejoin the split list with spaces
     ?           # Take third input (list of lists of substitute words)
      vÞ℅        # Randomly permute each of the lists in the third input
-        ∩       # Transpose 
-         vṄ     # Join each row of transposed list  
+        ∩       # Transpose
+         vṄ     # Join each row of transposed list
            %    # Format string: replace all &quot;%&quot; from original string with entries from the transposed list
 </code></pre>
 "
@@ -18341,7 +18341,7 @@ N              #   negate
 <p>Can't believe I never answered this challenge despite the fact it was asked by one of the greatest golfers I ever knew</p>
 <h2>Explained</h2>
 <pre><code>ɾɾR
-ɾ   # the range [1, input] 
+ɾ   # the range [1, input]
  ɾ  # and that for each item in the range
   R # vectorised reverse
 </code></pre>
@@ -18417,7 +18417,7 @@ k6           # The string &quot;0123456789abcdef&quot;
       2l        # Get all adjacent pairs of items
         vs      # Sort each pair (so, e.g. (1,2) and (2,1) become the same)
           Þu    # Check if there are any duplicates
-            ;c  # Take first item from list of permutations which satisfies the lambda above 
+            ;c  # Take first item from list of permutations which satisfies the lambda above
 </code></pre>
 "
 "257413","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, <s>8</s> <s>5</s> 3 bytes</h1>
@@ -18431,7 +18431,7 @@ k6           # The string &quot;0123456789abcdef&quot;
 </code></pre>
 <p><a href=""https://vyxal.pythonanywhere.com/#WyJBIiwiIiwifuKIt+KAueKIkSIsIiIsIlsxLCAyLCAzLCA0LCA1XVxuWzIsIDRdXG5bNSwgNl0iXQ=="" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <pre><code>~    # Filter by
- ∷   # Odd? 
+ ∷   # Odd?
   ‹  # Decrement
    ∑ # Sum
 </code></pre>
@@ -18713,7 +18713,7 @@ c d
 <pre><code>Þn                      # all integers
   :                     # duplicate
    Ẋ                    # cartesian product
-    λ               ;c  # find first pair [m,b] such that:  
+    λ               ;c  # find first pair [m,b] such that:
      ⁰∩                 #   transposed input [x-coords, y-coords]
        Y                #   interleave [m, x-coords, b, y-coords]
         Ṙ               #   reverse [y-coords, b, x-coords, m]
@@ -18773,7 +18773,7 @@ c d
    k□                # push cardinal directions [[0,1],[1,0],[0,-1],[-1,0]]
      &quot;               # pair
       λ           ;Ẋ # apply the following function until a fixed point:
-                         Takes a pair [coordinates of all spaces,  coordinates spaces reached so far]  
+                         Takes a pair [coordinates of all spaces,  coordinates spaces reached so far]
        h             #   head
         n            #   argument
          ÷           #   push each to stack
@@ -18886,7 +18886,7 @@ c d
 ÷-     # Calculate value
 $      # Swap
 ∩R     # Transpose + Reverse = Rotate
-)      # Close loop 
+)      # Close loop
 _      # Pop unnecessary
 W      # Wrap stack into list
 ÞM     # Find all indices of maximum
@@ -19187,7 +19187,7 @@ C∑       Sum codepoints of each word
 C     #  ASCII values
  ∑    #  Sum
     h # First item
-      # Implicit output 
+      # Implicit output
 </code></pre>
 "
 "258754","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 7 bytes</h1>
@@ -19211,7 +19211,7 @@ C     #  ASCII values
 <pre><code>ǍɽĊs
 Ǎɽ    Remove non-alphabetical chars and lowercase
   Ċ   Count of each element
-   s  Sorted 
+   s  Sorted
 </code></pre>
 "
 "258813","<h1><a href=""https://github.com/Vyxal/Vyxal"" rel=""nofollow noreferrer"">Vyxal</a>, 12 bytes</h1>
@@ -19756,7 +19756,7 @@ q        # Repr (Vyxal strings are
 <p>Maximum by tail is useless they said. No one ever uses it they said. Well look who's laughing now.</p>
 <h2>Explained</h2>
 <pre><code>ḢλǏ²∑-;Z↑Ṅ
-Ḣ      Z   # Create a list of [x, f(x)] from range(2, input + 1) where f(x) = 
+Ḣ      Z   # Create a list of [x, f(x)] from range(2, input + 1) where f(x) =
  λ    ;    # lambda x:
   Ǐ        #  prime factors
    ²       #  squared
@@ -19805,7 +19805,7 @@ q        # Repr (Vyxal strings are
 <p>Surprisingly it only times out for the longest test case despite using a brute force method.</p>
 <pre><code>a:[                     # if the input doesn't contain a 1 return 0
    λ                ;Ṅ  # find the first n where the following is truthy:
-    ?żD›v+$Ẋvƒḭ         #   get all waves as lists of numbers 
+    ?żD›v+$Ẋvƒḭ         #   get all waves as lists of numbers
                              where odd numbers represent 1 and even 0
     ?ż                  #   range [1, len(input)]
       D                 #   triplicate
@@ -20038,7 +20038,7 @@ J          #  Append to the string
 Þp                     #   The list of all primes
   ¥(     )             #   #register times (starts at 0):
     ¨₂  ;              #     Filter the top of the stack by:
-      ›                #       item index + 1         
+      ›                #       item index + 1
        æ               #       is prime
                        #   This gets the (register)th order super primes
           ḟ›           #   Find the index of the function argument in that list
@@ -20073,7 +20073,7 @@ Hope one of Vyxal' experts helps...</p>
 <p>Every input must be list of lists, so first test case should be <code>[[1, 1, 1]]</code> etc.</p>
 <p>-2 bytes thanks @emanresu (Vyxal chat)</p>
 <pre>
-ƛ                       #Begin lambda map 
+ƛ                       #Begin lambda map
  Iȧ                     #Condition for If: is it list?
      [                  #Begin If
       :L›               #If list - get length and add 1
@@ -20135,7 +20135,7 @@ J    # the joining of the two strings
 <p><a href=""https://vyxal.pythonanywhere.com/#WyJ+IiwiIiwiyb7CoXXOsiIsIiIsIiEoXFxkKykgKyhcXGQrKVxuMCAgIDBcbjEgICAxXG4yICAgMVxuMyAgIDVcbjQgICAxOVxuNSAgIDEwMVxuNiAgIDYxOVxuNyAgIDQ0MjFcbjggICAzNTg5OVxuOSAgIDMyNjk4MSJd"" rel=""nofollow noreferrer"">Try it Online!</a></p>
 <p>Port of the 4 byte jelly answer</p>
 <h2>Explained</h2>
-<pre><code>ɾ¡uβ 
+<pre><code>ɾ¡uβ
 ɾ    # range [1, n]
  ¡   # factorial of each
   uβ # converted from base -1
