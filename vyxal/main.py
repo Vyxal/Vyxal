@@ -8,6 +8,8 @@ import sys
 import traceback
 import types
 
+import vycoder.coder
+import vycoder.predictions
 import vyxal.encoding
 from vyxal.context import Context, TranspilationOptions
 from vyxal.elements import *
@@ -63,6 +65,9 @@ FLAG_STRING = """ALL flags should be used as is (no '-' prefix)
     A    Run test cases on all inputs
     ~    Run test cases on all inputs and report whether results match expected outputs
     …    Limit list output to the first 100 items of that list
+    !    Read program file as bitstring
+    _    Read program file as string representing a bitstring
+    =    Print bitstring of program
     5    Make the interpreter timeout after 5 seconds (online interpreter only)
     b    Make the interpreter timeout after 15 seconds (online interpreter only)
     B    Make the interpreter timeout after 30 seconds (online interpreter only)
@@ -85,6 +90,18 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     if "h" in flags:  # Help flag
         vy_print(FLAG_STRING, ctx=ctx)
         sys.exit(0)
+
+    if "=" in flags:  # Print bitstring of program
+        if not online_mode:
+            with open(file_name) as f:
+                code = f.read()
+        else:
+            code = file_name
+        pred = vycoder.predictions.pair_frequency2(16, 128)
+
+        code = vycoder.coder.encode([codepage.find(c) for c in code], pred)
+        vy_print("".join(str(b) for b in code), ctx=ctx)
+        return
 
     if "A" in flags:
         for inp in inputs:
@@ -111,8 +128,24 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             )
         return
 
-    if "e" in flags:  # Program is file name
+    if "e" in flags and "_" not in flags:  # Program is file name
         code = file_name
+    elif "!" in flags:  # Open file as bitstring
+        with open(file_name, "rb") as f:
+            code = f.read()
+            pred = vycoder.predictions.pair_frequency2(16, 128)
+            code = vycoder.coder.decode([int(b) for b in code], pred)
+    elif "_" in flags:  # Open file as string representing a bitstring
+        if not online_mode:
+            with open(file_name) as f:
+                code = f.read()
+        else:
+            code = file_name
+        pred = vycoder.predictions.pair_frequency2(16, 128)
+        code = vycoder.coder.decode([int(b) for b in code], pred)
+        code = "".join(codepage[c] for c in code)
+        if online_mode:
+            ctx.online_output[2] += "Encoded program: " + code
     elif "v" in flags:  # Open file using Vyxal encoding
         with open(file_name, "rb") as f:
             code = f.read()

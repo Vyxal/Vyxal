@@ -575,11 +575,16 @@ function updateCount() {
     var byte_box = document.getElementById("code-count")
 
     var code = e_code.getValue()
-    if ([...code].every(x => (codepage + ' ' + '\n').includes(x))) {
+    var flags = document.getElementById("flag").value
+
+    if (flags.includes('_') && [...code].every(x => "01".includes(x))) {
+        byte_box.innerText = `Code: ${code.length / 8} byte` + "s".repeat(code.length != 1) + ` (bitstring) (${code.length} bits)`
+    }
+    else if ([...code].every(x => (codepage + ' ' + '\n').includes(x))) {
         byte_box.innerText = `Code: ${code.length} byte` + "s".repeat(code.length != 1)
     } else {
         var x = new Blob([code]).size
-        byte_box.innerText = `Code: ${x} byte${"s".repeat(x != 1)}` + ' (UTF-8)'
+        byte_box.innerText = `Code: ${x} byte${"s".repeat(x != 1)} ` + ' (UTF-8)'
     }
 }
 
@@ -612,13 +617,20 @@ function shareOptions(shareType) {
     const url = generateURL()
     const flags = document.getElementById("flag").value
     let flagAppendage = ","
-    const flagsThatMatter = flags.replace(/[5bBTAP…aṠ~]/g, "");
+    const flagsThatMatter = flags.replace(/[5bBTAP…aṠ~_=!]/g, "");
     if (flagsThatMatter) {
         flagAppendage = " `" + flagsThatMatter + "`,"
     }
     let output = ""
     const utfable = [...code].every(x => (codepage + ' ' + '\n').includes(x))
-    const len = utfable ? code.length : new Blob([code]).size
+    let len = 0
+    if (flags.includes("_") && [...code].every(x => ("10").includes(x))) {
+        len = code.length / 8
+    } else if (utfable) {
+        len = new Blob([code]).size
+    } else {
+        len = code.length
+    }
     switch (shareType) {
         case "permalink":
             output = url
@@ -627,7 +639,7 @@ function shareOptions(shareType) {
             output = `[Vyxal, ${len} byte${"s".repeat(code.length != 1)}${utfable ? '' : ' (UTF-8)'}](${url})`
             break
         case "post-template":
-            output = `# [Vyxal](https://github.com/Vyxal/Vyxal)${flagAppendage} ${len} byte${"s".repeat(len != 1)}${utfable ? '' : ' (UTF-8)'}
+            output = `#[Vyxal](https://github.com/Vyxal/Vyxal)${flagAppendage} ${len} byte${"s".repeat(len != 1)}${utfable ? '' : ' (UTF-8)'}
 \`\`\`
 ${code}
 \`\`\`
