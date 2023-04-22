@@ -577,7 +577,7 @@ function updateCount() {
     var code = e_code.getValue()
     var flags = document.getElementById("flag").value
 
-    if (flags.includes('_') && [...code].every(x => "01".includes(x))) {
+    if ((flags.includes('_') || flags.includes('=')) && [...code].every(x => "01".includes(x))) {
         byte_box.innerText = `Code: ${code.length / 8} byte` + "s".repeat(code.length != 1) + ` (bitstring) (${code.length} bits)`
     }
     else if ([...code].every(x => (codepage + ' ' + '\n').includes(x))) {
@@ -624,7 +624,7 @@ function shareOptions(shareType) {
     let output = ""
     const utfable = [...code].every(x => (codepage + ' ' + '\n').includes(x))
     let len = 0
-    if (flags.includes("_") && [...code].every(x => ("10").includes(x))) {
+    if (flags.includes("_") || flags.includes("=")) {
         len = code.length / 8
     } else if (utfable) {
         len = new Blob([code]).size
