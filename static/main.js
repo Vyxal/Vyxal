@@ -657,18 +657,16 @@ function shareOptions(shareType) {
     } else if (flags.includes("=")) {
         len = Vyncode.encode(code).length / 8
     } else if (utfable) {
-        len = new Blob([code]).size
-    } else {
         len = code.length
+    } else {
+        len = new Blob([code]).size
     }
 
     let bytesLink = "";
     if (flags.includes("!") || flags.includes("=")) {
-        bytesLink = `${code.length} bits<sup>${bitver.value}</sup>, ${len} [byte${"s".repeat(code.length != 1)}](https://github.com/Vyxal/Vyncode) `
-    } else if (utfable) {
-        bytesLink = `${len} byte${"s".repeat(code.length != 1)}`
+        bytesLink = `${code.length} bits<sup>${bitver.value}</sup>, ${len} [byte${"s".repeat(code.length != 1)}](https://github.com/Vyxal/Vyncode)`
     } else {
-        bytesLink = `${len} [byte${"s".repeat(code.length != 1)}]()`
+        bytesLink = `${len} byte${"s".repeat(code.length != 1)}`
     }
     switch (shareType) {
         case "permalink":
