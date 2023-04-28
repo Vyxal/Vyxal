@@ -89,9 +89,6 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         vy_print(FLAG_STRING, ctx=ctx)
         sys.exit(0)
 
-    if "=" in flags:  # Print bitstring of program
-        return
-
     if "A" in flags:
         for inp in inputs:
             try:
@@ -202,6 +199,27 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         ctx.default_arity = 3
     else:
         ctx.default_arity = 1
+
+    if "=" in flags:
+        if not online_mode:
+            from subprocess import PIPE, Popen
+
+            process = Popen(
+                [
+                    "java",
+                    "-jar",
+                    "vyxal/vycoder-1.0.0.jar",
+                    "-m",
+                    "encode",
+                    "-p",
+                    code,
+                ],
+                stdout=PIPE,
+                stderr=PIPE,
+            )
+            result = process.communicate()
+            print(result[0].decode("utf-8"))
+            print("---")
 
     try:
         code = transpile(code, options)
