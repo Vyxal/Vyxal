@@ -6,7 +6,7 @@ import secrets
 import shutil
 import sys
 
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request
 from flask_cors import CORS
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."

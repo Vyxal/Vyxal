@@ -121,8 +121,25 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         code = file_name
     elif "!" in flags:  # Open file as bitstring
         if not online_mode:
-            return
+            from subprocess import PIPE, Popen
 
+            with open(file_name, "r", encoding="utf-8") as f:
+                code = f.read()
+            process = Popen(
+                [
+                    "java",
+                    "-jar",
+                    "vyxal/vycoder-1.0.0.jar",
+                    "-m",
+                    "decode",
+                    "-p",
+                    code,
+                ],
+                stdout=PIPE,
+                stderr=PIPE,
+            )
+            result = process.communicate()
+            code = result[0].decode("utf-8")
     elif "v" in flags:  # Open file using Vyxal encoding
         with open(file_name, "rb") as f:
             code = f.read()
