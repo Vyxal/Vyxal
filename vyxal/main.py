@@ -126,7 +126,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                 [
                     "java",
                     "-jar",
-                    "vyxal/vycoder-1.0.0.jar",
+                    "vyxal/vyncode-1.0.0.jar",
                     "-m",
                     "decode",
                     "-p",
@@ -208,7 +208,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                 [
                     "java",
                     "-jar",
-                    "vyxal/vycoder-1.0.0.jar",
+                    "vyxal/vyncode.jar",
                     "-m",
                     "encode",
                     "-p",

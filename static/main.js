@@ -15,7 +15,7 @@ codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
 codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
 codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
 
-Vycoder.setVersion(1)
+Vyncode.setVersion(1)
 
 search = window
 glyphQuery = String.fromCharCode(0162, 105, 0143, 107)
@@ -583,7 +583,7 @@ function updateCount() {
         byte_box.innerText = `Code: ${code.length / 8} byte` + "s".repeat(code.length != 1) + ` (bitstring) (${code.length} bits)`
     }
     else if (flags.includes("=") && [...code].every(x => (codepage + ' ' + '\n').includes(x))) {
-        let bits = Vycoder.encode(code)
+        let bits = Vyncode.encode(code)
         byte_box.innerText = `Code: ${bits.length / 8} byte` + "s".repeat(bits.length != 1) + ` (encoded) (${bits.length} bits)`
     }
     else if ([...code].every(x => (codepage + ' ' + '\n').includes(x))) {
@@ -632,7 +632,7 @@ function generateURL() {
 function setVersion() {
     let version = document.getElementById("bitver").value
     try {
-        Vycoder.setVersion(version)
+        Vyncode.setVersion(version)
     } catch (error) {
         return
     }
@@ -655,7 +655,7 @@ function shareOptions(shareType) {
     if (flags.includes("!")) {
         len = code.length / 8
     } else if (flags.includes("=")) {
-        len = Vycoder.encode(code).length / 8
+        len = Vyncode.encode(code).length / 8
     } else if (utfable) {
         len = new Blob([code]).size
     } else {
@@ -786,7 +786,7 @@ window.addEventListener("DOMContentLoaded", e => {
             var program = ""
 
             if (flags.value.includes("!")) {
-                program = Vycoder.decode(e_code.doc.getValue())
+                program = Vyncode.decode(e_code.doc.getValue())
             } else {
                 program = e_code.doc.getValue()
             }
@@ -815,7 +815,7 @@ window.addEventListener("DOMContentLoaded", e => {
                             }
                         }
                     } else if (flags.value.includes("=")) {
-                        res.stderr = "Bitstring: " + Vycoder.encode(program)
+                        res.stderr = "Bitstring: " + Vyncode.encode(program)
                     }
                     output.value = res.stdout
                     extra.value = res.stderr
