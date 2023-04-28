@@ -664,21 +664,21 @@ function shareOptions(shareType) {
 
     let bytesLink = "";
     if (flags.includes("!") || flags.includes("=")) {
-        bytesLink = `[byte${"s".repeat(code.length != 1)}](https://github.com/Vyxal/Vyncode) (${code.length} bits})`
+        bytesLink = `${code.length} bits<sup>${bitver.value}</sup>, ${len} [byte${"s".repeat(code.length != 1)}](https://github.com/Vyxal/Vyncode) `
     } else if (utfable) {
-        bytesLink = `byte${"s".repeat(code.length != 1)}`
+        bytesLink = `${len} byte${"s".repeat(code.length != 1)}`
     } else {
-        bytesLink = `[byte${"s".repeat(code.length != 1)}]()`
+        bytesLink = `${len} [byte${"s".repeat(code.length != 1)}]()`
     }
     switch (shareType) {
         case "permalink":
             output = url
             break
         case "cmc":
-            output = `[Vyxal, ${len} byte${"s".repeat(code.length != 1)}${utfable ? '' : ' (UTF-8)'}](${url})`
+            output = `[Vyxal, ${bytesLink} ${utfable ? '' : ' (UTF-8)'}](${url})`
             break
         case "post-template":
-            output = `# [Vyxal](https://github.com/Vyxal/Vyxal)${flagAppendage} ${len} byte${"s".repeat(len != 1)}${utfable ? '' : ' (UTF-8)'}
+            output = `# [Vyxal](https://github.com/Vyxal/Vyxal)${flagAppendage} ${bytesLink} ${utfable ? '' : ' (UTF-8)'}
 \`\`\`
 ${code}
 \`\`\`
