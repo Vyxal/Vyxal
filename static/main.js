@@ -15,6 +15,8 @@ codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
 codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
 codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
 
+Vycoder.setVersion(1)
+
 search = window
 glyphQuery = String.fromCharCode(0162, 105, 0143, 107)
 this.prevQuery = ""
@@ -577,14 +579,28 @@ function updateCount() {
     var code = e_code.getValue()
     var flags = document.getElementById("flag").value
 
-    if ((flags.includes('_') || flags.includes('=')) && [...code].every(x => "01".includes(x))) {
+    if (flags.includes('!') && [...code].every(x => "01".includes(x))) {
         byte_box.innerText = `Code: ${code.length / 8} byte` + "s".repeat(code.length != 1) + ` (bitstring) (${code.length} bits)`
+    }
+    else if (flags.includes("=") && [...code].every(x => (codepage + ' ' + '\n').includes(x))) {
+        let bits = Vycoder.encode(code)
+        byte_box.innerText = `Code: ${bits.length / 8} byte` + "s".repeat(bits.length != 1) + ` (encoded) (${bits.length} bits)`
     }
     else if ([...code].every(x => (codepage + ' ' + '\n').includes(x))) {
         byte_box.innerText = `Code: ${code.length} byte` + "s".repeat(code.length != 1)
     } else {
         var x = new Blob([code]).size
         byte_box.innerText = `Code: ${x} byte${"s".repeat(x != 1)} ` + ' (UTF-8)'
+    }
+}
+
+
+function handleBitVerBox() {
+    let flags = document.getElementById("flag").value
+    if (flags.includes("!") || flags.includes("=")) {
+        document.getElementById("bitver-detail").hidden = false
+    } else {
+        document.getElementById("bitver-detail").hidden = true
     }
 }
 
@@ -606,9 +622,21 @@ function generateURL() {
     var inputs = document.getElementById("inputs").value
     var header = e_header.doc.getValue()
     var footer = e_footer.doc.getValue()
+    var version = document.getElementById("bitver").value
 
     var url = [flags, header, code, footer, inputs];
-    return location.origin + "/#" + encode(url)
+    return location.origin + "/" + (version ? "?v=" + version : "") + "#" + encode(url)
+}
+
+
+function setVersion() {
+    let version = document.getElementById("bitver").value
+    try {
+        Vycoder.setVersion(version)
+    } catch (error) {
+        return
+    }
+    updateCount()
 }
 
 // onclick event listener for sharing buttons
@@ -624,8 +652,10 @@ function shareOptions(shareType) {
     let output = ""
     const utfable = [...code].every(x => (codepage + ' ' + '\n').includes(x))
     let len = 0
-    if (flags.includes("_") || flags.includes("=")) {
+    if (flags.includes("!")) {
         len = code.length / 8
+    } else if (flags.includes("=")) {
+        len = Vycoder.encode(code).length / 8
     } else if (utfable) {
         len = new Blob([code]).size
     } else {
@@ -633,8 +663,8 @@ function shareOptions(shareType) {
     }
 
     let bytesLink = "";
-    if (flags.includes("_") || flags.includes("=")) {
-        bytesLink = `[byte${"s".repeat(code.length != 1)}](https://github.com/AndrovT/Vycoder) (${code.length} bits})`
+    if (flags.includes("!") || flags.includes("=")) {
+        bytesLink = `[byte${"s".repeat(code.length != 1)}](https://github.com/Vyxal/Vyncode) (${code.length} bits})`
     } else if (utfable) {
         bytesLink = `byte${"s".repeat(code.length != 1)}`
     } else {
@@ -667,6 +697,8 @@ ${code}
 }
 
 function decodeURL() {
+    // get v parameter from url
+    var version = new URLSearchParams(window.location.search).get("v")
     var [flags, header, code, footer, inputs] = decode(window.location.hash.substring(1));
 
     var flag_box = document.getElementById("flag")
@@ -679,6 +711,9 @@ function decodeURL() {
 
     if (queryIsNonEmpty && allBoxesAreEmpty) {
         flag_box.value = flags
+        bitver.value = version
+        handleBitVerBox()
+        setVersion()
         e_code.doc.setValue(code)
         inputs_box.value = inputs
         e_header.doc.setValue(header)
@@ -739,19 +774,29 @@ window.addEventListener("DOMContentLoaded", e => {
     const extra = document.getElementById("extra")
     const filter = document.getElementById("filterBox")
 
+
+
     function do_run() {
         if (!run.innerHTML.includes("fa-spin")) {
             run.innerHTML =
                 `<svg class="fa-spin" style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/>
                 </svg>`;
+
+            var program = ""
+
+            if (flags.value.includes("!")) {
+                program = Vycoder.decode(e_code.doc.getValue())
+            } else {
+                program = e_code.doc.getValue()
+            }
             fetch("/execute", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    code: e_code.doc.getValue(),
+                    code: program,
                     inputs: stdin.value,
-                    flags: flags.value,
+                    flags: flags.value.replace("!", "").replace("=", ""),
                     session: session,
                     footer: e_footer.doc.getValue(),
                     header: e_header.doc.getValue()
@@ -769,6 +814,8 @@ window.addEventListener("DOMContentLoaded", e => {
                                 res.stdout = e
                             }
                         }
+                    } else if (flags.value.includes("=")) {
+                        res.stderr = "Bitstring: " + Vycoder.encode(program)
                     }
                     output.value = res.stdout
                     extra.value = res.stderr
