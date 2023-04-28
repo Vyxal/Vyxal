@@ -631,6 +631,15 @@ function shareOptions(shareType) {
     } else {
         len = code.length
     }
+
+    let bytesLink = "";
+    if (flags.includes("_") || flags.includes("=")) {
+        bytesLink = `[byte${"s".repeat(code.length != 1)}](https://github.com/AndrovT/Vycoder) (${code.length} bits})`
+    } else if (utfable) {
+        bytesLink = `byte${"s".repeat(code.length != 1)}`
+    } else {
+        bytesLink = `[byte${"s".repeat(code.length != 1)}]()`
+    }
     switch (shareType) {
         case "permalink":
             output = url
