@@ -881,6 +881,8 @@ def anti_diagonal(lhs, ctx):
     (lst) -> Antidiagonal of matrix
     """
     lhs = [iterable(elem, ctx=ctx) for elem in iterable(lhs, ctx=ctx)]
+    if not lhs:
+        return []
     m = min(len(lhs), len(lhs[0]))
     return [lhs[i][m - i - 1] for i in range(m)]
 
