@@ -599,8 +599,10 @@ function handleBitVerBox() {
     let flags = document.getElementById("flag").value
     if (flags.includes("!") || flags.includes("=")) {
         document.getElementById("bitver-detail").hidden = false
+        document.getElementById("vyncode-utls-detail").hidden = false
     } else {
         document.getElementById("bitver-detail").hidden = true
+        document.getElementById("vyncode-utls-detail").hidden = true
     }
 }
 
@@ -617,14 +619,14 @@ function decode(str) {
 }
 
 function generateURL() {
-    var flags = document.getElementById("flag").value
-    var code = e_code.doc.getValue()
-    var inputs = document.getElementById("inputs").value
-    var header = e_header.doc.getValue()
-    var footer = e_footer.doc.getValue()
-    var version = document.getElementById("bitver").value
+    const flags = document.getElementById("flag").value;
+    const code = e_code.doc.getValue();
+    const inputs = document.getElementById("inputs").value;
+    const header = e_header.doc.getValue();
+    const footer = e_footer.doc.getValue();
+    const version = document.getElementById("bitver").value
 
-    var url = [flags, header, code, footer, inputs];
+    const url = [flags, header, code, footer, inputs];
     return location.origin + "/" + (version ? "?v=" + version : "") + "#" + encode(url)
 }
 
@@ -697,22 +699,26 @@ ${code}
 
 function decodeURL() {
     // get v parameter from url
-    var version = new URLSearchParams(window.location.search).get("v")
-    var [flags, header, code, footer, inputs] = decode(window.location.hash.substring(1));
+    const version = new URLSearchParams(window.location.search).get("v");
+    const [flags, header, code, footer, inputs] = decode(window.location.hash.substring(1));
 
-    var flag_box = document.getElementById("flag")
-    var inputs_box = document.getElementById("inputs")
+    const flag_box = document.getElementById("flag");
+    const inputs_box = document.getElementById("inputs");
 
-    var queryIsNonEmpty = code || flags || inputs || header || footer
-    var allBoxesAreEmpty = !(flag_box.value
-        || e_header.getValue() || e_code.getValue()
-        || e_footer.getValue() || inputs_box.value)
+    const queryIsNonEmpty = code || flags || inputs || header || footer;
+    const allBoxesAreEmpty = !(flag_box.value
+        || e_header.getValue()
+        || e_code.getValue()
+        || e_footer.getValue()
+        || inputs_box.value);
 
     if (queryIsNonEmpty && allBoxesAreEmpty) {
         flag_box.value = flags
         bitver.value = version
         handleBitVerBox()
-        setVersion()
+        if (Vyncode.getVersion().toString() !== version) {
+            setVersion();
+        }
         e_code.doc.setValue(code)
         inputs_box.value = inputs
         e_header.doc.setValue(header)
@@ -978,3 +984,13 @@ function initCodeMirror() {
         }
     }
 }
+
+function utilEncode() {
+    const inProg = vyncodein.value; vyncodeout.value = Vyncode.encode(inProg);
+}
+
+function utilDecode() { const inProg = vyncodein.value; vyncodeout.value = Vyncode.decode(inProg); }
+
+handleBitVerBox()
+resizeCodeBox()
+expandBoxes()
