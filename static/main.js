@@ -641,7 +641,7 @@ function setVersion() {
 
 // onclick event listener for sharing buttons
 function shareOptions(shareType) {
-    const code = e_code.doc.getValue()
+    let code = e_code.doc.getValue()
     const url = generateURL()
     const flags = document.getElementById("flag").value
     let flagAppendage = ","
@@ -682,7 +682,7 @@ function shareOptions(shareType) {
 ${code}
 \`\`\`
 
-[Try it Online!${flags.includes("!")? " (link is to bitstring)" : ""}](${url})`;
+[Try it Online!${flags.includes("!") ? " (link is to bitstring)" : ""}](${url})`;
             break
         case "markdown":
             output = `[Try it Online!](${url})`
