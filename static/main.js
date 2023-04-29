@@ -654,6 +654,7 @@ function shareOptions(shareType) {
     let len = 0
     if (flags.includes("!")) {
         len = code.length / 8
+        code = Vyncode.decode(code)
     } else if (flags.includes("=")) {
         len = Vyncode.encode(code).length / 8
     } else if (utfable) {
@@ -664,9 +665,9 @@ function shareOptions(shareType) {
 
     let bytesLink = "";
     if (flags.includes("!") || flags.includes("=")) {
-        bytesLink = `${len * 8} bits<sup>${bitver.value}</sup>, ${len} [byte${"s".repeat(code.length != 1)}](https://github.com/Vyxal/Vyncode)`
+        bytesLink = `${len * 8} bits<sup>${bitver.value}</sup>, ${len} [byte${"s".repeat(len != 1)}](https://github.com/Vyxal/Vyncode)`
     } else {
-        bytesLink = `${len} byte${"s".repeat(code.length != 1)}`
+        bytesLink = `${len} byte${"s".repeat(len != 1)}`
     }
     switch (shareType) {
         case "permalink":
@@ -681,7 +682,7 @@ function shareOptions(shareType) {
 ${code}
 \`\`\`
 
-[Try it Online!](${url})`;
+[Try it Online!${flags.includes("!")? " (link is to bitstring)" : ""}](${url})`;
             break
         case "markdown":
             output = `[Try it Online!](${url})`
