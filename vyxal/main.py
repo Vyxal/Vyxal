@@ -63,6 +63,8 @@ FLAG_STRING = """ALL flags should be used as is (no '-' prefix)
     A    Run test cases on all inputs
     ~    Run test cases on all inputs and report whether results match expected outputs
     …    Limit list output to the first 100 items of that list
+    !    Read program file as bitstring
+    =    Print bitstring of program (online interpreter also updates byte count)
     5    Make the interpreter timeout after 5 seconds (online interpreter only)
     b    Make the interpreter timeout after 15 seconds (online interpreter only)
     B    Make the interpreter timeout after 30 seconds (online interpreter only)
@@ -113,6 +115,27 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     if "e" in flags:  # Program is file name
         code = file_name
+    elif "!" in flags:  # Open file as bitstring
+        if not online_mode:
+            from subprocess import PIPE, Popen
+
+            with open(file_name, "r", encoding="utf-8") as f:
+                code = f.read()
+            process = Popen(
+                [
+                    "java",
+                    "-jar",
+                    "vyxal/vyncode-1.0.0.jar",
+                    "-m",
+                    "decode",
+                    "-p",
+                    code,
+                ],
+                stdout=PIPE,
+                stderr=PIPE,
+            )
+            result = process.communicate()
+            code = result[0].decode("utf-8")
     elif "v" in flags:  # Open file using Vyxal encoding
         with open(file_name, "rb") as f:
             code = f.read()
@@ -175,6 +198,27 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         ctx.default_arity = 3
     else:
         ctx.default_arity = 1
+
+    if "=" in flags:
+        if not online_mode:
+            from subprocess import PIPE, Popen
+
+            process = Popen(
+                [
+                    "java",
+                    "-jar",
+                    "vyxal/vyncode.jar",
+                    "-m",
+                    "encode",
+                    "-p",
+                    code,
+                ],
+                stdout=PIPE,
+                stderr=PIPE,
+            )
+            result = process.communicate()
+            print(result[0].decode("utf-8"))
+            print("---")
 
     try:
         code = transpile(code, options)

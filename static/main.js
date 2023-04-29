@@ -15,6 +15,8 @@ codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
 codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
 codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
 
+Vyncode.setVersion(1)
+
 search = window
 glyphQuery = String.fromCharCode(0162, 105, 0143, 107)
 this.prevQuery = ""
@@ -575,11 +577,32 @@ function updateCount() {
     var byte_box = document.getElementById("code-count")
 
     var code = e_code.getValue()
-    if ([...code].every(x => (codepage + ' ' + '\n').includes(x))) {
+    var flags = document.getElementById("flag").value
+
+    if (flags.includes('!') && [...code].every(x => "01".includes(x))) {
+        byte_box.innerText = `Code: ${code.length / 8} byte` + "s".repeat(code.length != 1) + ` (bitstring) (${code.length} bits)`
+    }
+    else if (flags.includes("=") && [...code].every(x => (codepage + ' ' + '\n').includes(x))) {
+        let bits = Vyncode.encode(code)
+        byte_box.innerText = `Code: ${bits.length / 8} byte` + "s".repeat(bits.length != 1) + ` (encoded) (${bits.length} bits)`
+    }
+    else if ([...code].every(x => (codepage + ' ' + '\n').includes(x))) {
         byte_box.innerText = `Code: ${code.length} byte` + "s".repeat(code.length != 1)
     } else {
         var x = new Blob([code]).size
-        byte_box.innerText = `Code: ${x} byte${"s".repeat(x != 1)}` + ' (UTF-8)'
+        byte_box.innerText = `Code: ${x} byte${"s".repeat(x != 1)} ` + ' (UTF-8)'
+    }
+}
+
+
+function handleBitVerBox() {
+    let flags = document.getElementById("flag").value
+    if (flags.includes("!") || flags.includes("=")) {
+        document.getElementById("bitver-detail").hidden = false
+        document.getElementById("vyncode-utls-detail").hidden = false
+    } else {
+        document.getElementById("bitver-detail").hidden = true
+        document.getElementById("vyncode-utls-detail").hidden = true
     }
 }
 
@@ -596,42 +619,72 @@ function decode(str) {
 }
 
 function generateURL() {
-    var flags = document.getElementById("flag").value
-    var code = e_code.doc.getValue()
-    var inputs = document.getElementById("inputs").value
-    var header = e_header.doc.getValue()
-    var footer = e_footer.doc.getValue()
+    const flags = document.getElementById("flag").value;
+    const code = e_code.doc.getValue();
+    const inputs = document.getElementById("inputs").value;
+    const header = e_header.doc.getValue();
+    const footer = e_footer.doc.getValue();
+    const version = document.getElementById("bitver").value
 
-    var url = [flags, header, code, footer, inputs];
-    return location.origin + "/#" + encode(url)
+    const url = [flags, header, code, footer, inputs];
+    return location.origin + "/" + (version ? "?v=" + version : "") + "#" + encode(url)
+}
+
+
+function setVersion() {
+    let version = document.getElementById("bitver").value
+    try {
+        Vyncode.setVersion(version)
+    } catch (error) {
+        return
+    }
+    updateCount()
 }
 
 // onclick event listener for sharing buttons
 function shareOptions(shareType) {
-    const code = e_code.doc.getValue()
+    let code = e_code.doc.getValue()
     const url = generateURL()
     const flags = document.getElementById("flag").value
     let flagAppendage = ","
-    const flagsThatMatter = flags.replace(/[5bBTAP…aṠ~]/g, "");
+    const flagsThatMatter = flags.replace(/[5bBTAP…aṠ~_=!]/g, "");
     if (flagsThatMatter) {
         flagAppendage = " `" + flagsThatMatter + "`,"
     }
     let output = ""
     const utfable = [...code].every(x => (codepage + ' ' + '\n').includes(x))
-    const len = utfable ? code.length : new Blob([code]).size
+    let len = 0
+    if (flags.includes("!")) {
+        len = code.length / 8
+        code = Vyncode.decode(code)
+    } else if (flags.includes("=")) {
+        len = Vyncode.encode(code).length / 8
+    } else if (utfable) {
+        len = code.length
+    } else {
+        len = new Blob([code]).size
+    }
+
+    let bytesLink = "";
+    if (flags.includes("!") || flags.includes("=")) {
+        bytesLink = `${len * 8} bits<sup>${bitver.value}</sup>, ${len} [byte${"s".repeat(len != 1)}](https://github.com/Vyxal/Vyncode/blob/main/README.md)`
+    } else {
+        bytesLink = `${len} byte${"s".repeat(len != 1)}`
+    }
     switch (shareType) {
         case "permalink":
             output = url
             break
         case "cmc":
-            output = `[Vyxal, ${len} byte${"s".repeat(code.length != 1)}${utfable ? '' : ' (UTF-8)'}](${url})`
+            output = `[Vyxal, ${bytesLink} ${utfable ? '' : ' (UTF-8)'}](${url})`
             break
         case "post-template":
-            output = `# [Vyxal](https://github.com/Vyxal/Vyxal)${flagAppendage} ${len} byte${"s".repeat(len != 1)}${utfable ? '' : ' (UTF-8)'}
+            output = `# [Vyxal](https://github.com/Vyxal/Vyxal)${flagAppendage} ${bytesLink} ${utfable ? '' : ' (UTF-8)'}
 \`\`\`
 ${code}
 \`\`\`
-[Try it Online!](${url})`;
+
+[Try it Online!${flags.includes("!") ? " (link is to bitstring)" : ""}](${url})`;
             break
         case "markdown":
             output = `[Try it Online!](${url})`
@@ -645,18 +698,27 @@ ${code}
 }
 
 function decodeURL() {
-    var [flags, header, code, footer, inputs] = decode(window.location.hash.substring(1));
+    // get v parameter from url
+    const version = new URLSearchParams(window.location.search).get("v");
+    const [flags, header, code, footer, inputs] = decode(window.location.hash.substring(1));
 
-    var flag_box = document.getElementById("flag")
-    var inputs_box = document.getElementById("inputs")
+    const flag_box = document.getElementById("flag");
+    const inputs_box = document.getElementById("inputs");
 
-    var queryIsNonEmpty = code || flags || inputs || header || footer
-    var allBoxesAreEmpty = !(flag_box.value
-        || e_header.getValue() || e_code.getValue()
-        || e_footer.getValue() || inputs_box.value)
+    const queryIsNonEmpty = code || flags || inputs || header || footer;
+    const allBoxesAreEmpty = !(flag_box.value
+        || e_header.getValue()
+        || e_code.getValue()
+        || e_footer.getValue()
+        || inputs_box.value);
 
     if (queryIsNonEmpty && allBoxesAreEmpty) {
         flag_box.value = flags
+        bitver.value = version
+        handleBitVerBox()
+        if (Vyncode.getVersion().toString() !== version) {
+            setVersion();
+        }
         e_code.doc.setValue(code)
         inputs_box.value = inputs
         e_header.doc.setValue(header)
@@ -717,19 +779,29 @@ window.addEventListener("DOMContentLoaded", e => {
     const extra = document.getElementById("extra")
     const filter = document.getElementById("filterBox")
 
+
+
     function do_run() {
         if (!run.innerHTML.includes("fa-spin")) {
             run.innerHTML =
                 `<svg class="fa-spin" style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/>
                 </svg>`;
+
+            var program = ""
+
+            if (flags.value.includes("!")) {
+                program = Vyncode.decode(e_code.doc.getValue())
+            } else {
+                program = e_code.doc.getValue()
+            }
             fetch("/execute", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    code: e_code.doc.getValue(),
+                    code: program,
                     inputs: stdin.value,
-                    flags: flags.value,
+                    flags: flags.value.replace("!", "").replace("=", ""),
                     session: session,
                     footer: e_footer.doc.getValue(),
                     header: e_header.doc.getValue()
@@ -747,6 +819,8 @@ window.addEventListener("DOMContentLoaded", e => {
                                 res.stdout = e
                             }
                         }
+                    } else if (flags.value.includes("=")) {
+                        res.stderr = "Bitstring: " + Vyncode.encode(program)
                     }
                     output.value = res.stdout
                     extra.value = res.stderr
@@ -910,3 +984,13 @@ function initCodeMirror() {
         }
     }
 }
+
+function utilEncode() {
+    const inProg = vyncodein.value; vyncodeout.value = Vyncode.encode(inProg);
+}
+
+function utilDecode() { const inProg = vyncodein.value; vyncodeout.value = Vyncode.decode(inProg); }
+
+handleBitVerBox()
+resizeCodeBox()
+expandBoxes()
