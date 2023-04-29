@@ -30,6 +30,7 @@
     <script defer src="https://unpkg.com/fuzzysort@2.0.1"></script>
     <link rel="stylesheet" href="https://vyxal.github.io/Vylight/mode-vyxal.css">
 
+    <script src="{{url_for('static', filename='vyncode.js')}}"></script>
     <script defer src="{{url_for('static', filename='main.js')}}"></script>
     <script defer src="{{url_for('static', filename='parsed_yaml.js')}}"></script>
     <script type="module" src="{{url_for('static', filename='keyboard.js')}}"></script>
@@ -71,7 +72,12 @@
 
     <details id="flag-detail">
         <summary>Flags</summary>
-        <input type="text" name="flags" id="flag" style="min-height: 2em;">
+        <input type="text" name="flags" id="flag" style="min-height: 2em;" oninput="handleBitVerBox(); updateCount()">
+    </details>
+
+    <details id="bitver-detail" hidden>
+        <summary>Vyncode Version</summary>
+        <input type="text" name="bitver" id="bitver" style="min-height: 2em;" oninput="setVersion()" value="1">
     </details>
 
     <details id="header-detail">
@@ -107,5 +113,15 @@
     <details id="extra-detail">
         <summary>Debug</summary>
         <textarea value="" id="extra" readonly></textarea>
+    </details>
+
+    <details id="vyncode-utls-detail" hidden>
+        <summary>Vyncode Utilities</summary>
+        <h5>In</h5>
+        <textarea value="" id="vyncodein"></textarea>
+        <button onclick="utilEncode()">Encode/Compress</button>
+        <button onclick="utilDecode()">Decode/Decompress</button>
+        <h5>Out</h5>
+        <textarea value="" id="vyncodeout" readonly></textarea>
     </details>
 </body>
