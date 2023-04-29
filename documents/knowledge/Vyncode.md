@@ -20,4 +20,4 @@ To decompress and execute programs that have been run through Vyncode, use the `
 
 Different versions of vyxal may use different versions of Vyncode, as the corpus and prediction algorithm used may change over time. The offline interpreter will always use the latest version, but (soon) you will be able to specify which version to use.
 
-The online interpreter also uses the latest version of Vyncode, but you can change it in the Vyncode version box that appears just under the flag box when using the `=` or `!` flag. 
+The online interpreter also uses the latest version of Vyncode, but you can change it in the Vyncode version box that appears just under the flag box when using the `=` or `!` flag.
