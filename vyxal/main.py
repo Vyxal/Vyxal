@@ -64,8 +64,7 @@ FLAG_STRING = """ALL flags should be used as is (no '-' prefix)
     ~    Run test cases on all inputs and report whether results match expected outputs
     …    Limit list output to the first 100 items of that list
     !    Read program file as bitstring
-    _    Read program file as string representing a bitstring
-    =    Print bitstring of program
+    =    Print bitstring of program (online interpreter also updates byte count)
     5    Make the interpreter timeout after 5 seconds (online interpreter only)
     b    Make the interpreter timeout after 15 seconds (online interpreter only)
     B    Make the interpreter timeout after 30 seconds (online interpreter only)
