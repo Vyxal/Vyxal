@@ -5590,7 +5590,9 @@ def roman_numeral(lhs, ctx):
         return result
     elif vy_type(lhs) is str:
         if lhs[:1] == "-":  # lhs[:1] is used to avoid the error if lhs is empty
-            return -roman_numeral(lhs[1:], ctx=ctx)  # If it starts with a minus sign, negate it
+            return -roman_numeral(
+                lhs[1:], ctx=ctx
+            )  # If it starts with a minus sign, negate it
         lhs = lhs.upper()
         result = 0
         for i, n in enumerate(big_nums):
