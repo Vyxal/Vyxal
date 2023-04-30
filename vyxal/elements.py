@@ -528,10 +528,10 @@ def align_left(lhs, ctx):
     (str) -> left-aligned string
     (lst) -> left-align lines
     """
-    
+
     if not lhs:
         return []
-    
+
     ts = vy_type(lhs)
 
     if ts == str:
@@ -555,10 +555,10 @@ def align_right(lhs, ctx):
     (str) -> right-aligned string
     (lst) -> right-align lines
     """
-    
+
     if not lhs:
         return []
-    
+
     ts = vy_type(lhs)
 
     if ts == str:
