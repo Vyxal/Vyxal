@@ -5580,6 +5580,8 @@ def roman_numeral(lhs, ctx):
         "I",
     )
     if vy_type(lhs) is NUMBER_TYPE:
+        if lhs < 0:  # If it's less than 0, just prepend a minus sign
+            return "-" + roman_numeral(-lhs, ctx=ctx)
         result = ""
         for i, n in enumerate(ints):
             count = int(lhs / n)
@@ -5587,6 +5589,10 @@ def roman_numeral(lhs, ctx):
             lhs -= n * count
         return result
     elif vy_type(lhs) is str:
+        if lhs[:1] == "-":  # lhs[:1] is used to avoid the error if lhs is empty
+            return -roman_numeral(
+                lhs[1:], ctx=ctx
+            )  # If it starts with a minus sign, negate it
         lhs = lhs.upper()
         result = 0
         for i, n in enumerate(big_nums):
