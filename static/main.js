@@ -676,7 +676,7 @@ function shareOptions(shareType) {
             output = url
             break
         case "cmc":
-            output = `[Vyxal, ${bytesLink} ${utfable ? '' : ' (UTF-8)'}](${url})`
+            output = `[Vyxal, ${bytesLink}${utfable ? '' : ' (UTF-8)'}: \`${code.replaceAll("`", "\\`")}\`](${url})`
             break
         case "post-template":
             output = `# [Vyxal](https://github.com/Vyxal/Vyxal)${flagAppendage} ${bytesLink} ${utfable ? '' : ' (UTF-8)'}
