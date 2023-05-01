@@ -528,6 +528,10 @@ def align_left(lhs, ctx):
     (str) -> left-aligned string
     (lst) -> left-align lines
     """
+
+    if not lhs:
+        return []
+
     ts = vy_type(lhs)
 
     if ts == str:
@@ -551,6 +555,10 @@ def align_right(lhs, ctx):
     (str) -> right-aligned string
     (lst) -> right-align lines
     """
+
+    if not lhs:
+        return []
+
     ts = vy_type(lhs)
 
     if ts == str:
@@ -2574,6 +2582,8 @@ def gridify(lhs, ctx):
     Gridify
     """
     lhs = [[vy_str(x, ctx=ctx) for x in x] for x in lhs]
+    if not lhs:
+        return ""
     width = max(max(map(len, x)) for x in lhs)
     return "\n".join(" ".join(x.rjust(width) for x in x) for x in lhs)
 
@@ -5087,6 +5097,8 @@ def prime_exponents_all(lhs, ctx):
     if ts == NUMBER_TYPE:
         # Get ALL primes less than lhs and then their exponents in the prime
         factors = sympy.ntheory.factor_.factorint(lhs)
+        if lhs < 2:
+            return []
         return [
             factors.get(x, 0)
             for x in sympy.primerange(
@@ -5580,6 +5592,8 @@ def roman_numeral(lhs, ctx):
         "I",
     )
     if vy_type(lhs) is NUMBER_TYPE:
+        if lhs < 0:  # If it's less than 0, just prepend a minus sign
+            return "-" + roman_numeral(-lhs, ctx=ctx)
         result = ""
         for i, n in enumerate(ints):
             count = int(lhs / n)
@@ -5587,6 +5601,10 @@ def roman_numeral(lhs, ctx):
             lhs -= n * count
         return result
     elif vy_type(lhs) is str:
+        if lhs[:1] == "-":  # lhs[:1] is used to avoid the error if lhs is empty
+            return -roman_numeral(
+                lhs[1:], ctx=ctx
+            )  # If it starts with a minus sign, negate it
         lhs = lhs.upper()
         result = 0
         for i, n in enumerate(big_nums):
