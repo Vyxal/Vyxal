@@ -19,7 +19,7 @@ const onMobile = window.matchMedia("(any-hover: none)").matches;
 const typeKey = (chr) => {
   const cm = globalThis[`e_${selectedBox}`];
   if (!cm || !chr) return;
-  cm.replaceSelection(chr);
+  cm.replaceSelection(chr.replace("␠", " ").replace("␤", "\n"));
   cm.save();
   if (!onMobile) {
     cm.focus();
@@ -45,7 +45,7 @@ function Key({ chr, isFocused, addRef }) {
     className=${isFocused ? "key touched" : "key"}
     onPointerUp=${pointerUp}
   >
-    ${chr}
+    ${chr.replace(" ", "␠").replace("\n", "␤")}
   </span>`;
 }
 
@@ -56,16 +56,16 @@ function Description({ result, token, name, description, overloads }) {
       resultItem &&
       fuzzysort.highlight(
         resultItem,
-        (match, i) => html`<span key=${i} className="highlight">${match}</span>`
+        (match, i) => html`<span key=${i} className="highlight">${match.replace(" ", "␠").replace("\n", "␤")}</span>`
       );
     return highlight?.length > 0 ? highlight : defaultItem;
   };
   return html`<div className="description">
     <button class="insertToken" onClick=${() => typeKey(token)}>${token}</button>${" "}
     (${highlightResult(name, result?.[0])})${"\n"}${highlightResult(
-      description,
-      result?.[1]
-    )}${"\n"}${highlightResult(overloads, result?.[2])}
+    description,
+    result?.[1]
+  )}${"\n"}${highlightResult(overloads, result?.[2])}
   </div>`;
 }
 
@@ -305,9 +305,9 @@ function Keyboard() {
           id="keyboard"
           ref=${keyboardRef}
           style=${{
-            touchAction: showTooltips ? "pinch-zoom" : "auto",
-            userSelect: isPointerDown ? "none" : "auto",
-          }}
+      touchAction: showTooltips ? "pinch-zoom" : "auto",
+      userSelect: isPointerDown ? "none" : "auto",
+    }}
           onPointerDown=${pointerDown}
           onPointerUp=${pointerUp}
           onTouchStart=${touchStart}
