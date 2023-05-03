@@ -639,6 +639,40 @@ object Elements:
         VList(_, _)
       }
 
+    val prefixes =
+      addElem(
+        Monad,
+        "P",
+        "Prefixes",
+        List("prefixes"),
+        "a: lst -> Prefixes of a"
+      ) {
+        case a: VList => ListHelpers.prefixes(a)
+        case a: String =>
+          VList.from(
+            ListHelpers
+              .prefixes(
+                VList.from(ListHelpers.makeIterable(a))
+              )
+              .map(_ match
+                case b: VList => b.mkString
+                case _1       => _1.toString
+              )
+          )
+        case a: VNum =>
+          VList.from(
+            ListHelpers
+              .prefixes(
+                VList.from(ListHelpers.makeIterable(a))
+              )
+              .map(_ match
+                case b: VList => b.mkString
+                case b        => b.toString
+              )
+              .map(MiscHelpers.eval)
+          )
+      }
+
     val print = addDirect(
       ",",
       "Print",

@@ -216,6 +216,14 @@ object ListHelpers:
 
   end sortBy
 
+  def prefixes(iterable: VList)(using ctx: Context): VList =
+    return VList(
+      iterable.indices
+        .map { i =>
+          VList(iterable.take(i + 1)*)
+        }*
+    )
+
   /** Split a list on a sublist
     *
     * @param sep
