@@ -160,6 +160,10 @@ Keywords: ord, chr
 - a: str -> ord(a)
 - a: num -> chr(a)
 ---------------------
+P (Prefixes) (non-vectorising)
+Keywords: prefixes
+- a: lst -> Prefixes of a
+---------------------
 R (Reduce by Function Object | Dyadic Range | Regex Match) (non-vectorising)
 Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has-regex-match?, fold
 - a: fun, b: any -> reduce iterable b by function a
