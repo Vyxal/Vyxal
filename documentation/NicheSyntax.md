@@ -11,6 +11,7 @@ f#>name -> name f= top of stack
 λ*|...} -> lambda that pops N and takes N arguments in a list
 λ!|...} -> lambda that operates on the stack
 λ|...} -> lambda that takes 1 argument
+¤number -> index n of context parameters
 ```
 
 ## Literate
@@ -22,6 +23,7 @@ f:>name -> name f= top of stack
 :=[x|y|z] -> x, y, z = top of stack
 # ... #} -> raw sbcs
 lambda !stack | ... } -> lambda that operates on the stack
+`number` -> index n of context parameters
 ```
 
 - Lists and lambdas (`[...]` and `{...}`) must be closed
