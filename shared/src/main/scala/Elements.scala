@@ -495,6 +495,17 @@ object Elements:
       else temp
     }
 
+    val length: Monad = addElem(
+      Monad,
+      "L",
+      "Length | Length of List",
+      List("length", "len", "length-of", "len-of", "size"),
+      "a: any -> Length of a"
+    ) {
+      case a: VList => a.length
+      case a        => ListHelpers.makeIterable(a).length
+    }
+
     val lessThan: Dyad = addVect(
       Dyad,
       "<",
