@@ -142,6 +142,10 @@ Keywords: factors, divisors, is-numeric, is-num, is-number, is-num?, is-number?
 - a: num -> Factors of a
 - a: str -> Is a numeric?
 ---------------------
+L (Length | Length of List) (non-vectorising)
+Keywords: length, len, length-of, len-of, size
+- a: any -> Length of a
+---------------------
 M (Map Function | Mold Lists | Multiplicity) (non-vectorising)
 Keywords: map, mold, multiplicity, times-divide
 - a: any, b: fun -> a.map(b)
