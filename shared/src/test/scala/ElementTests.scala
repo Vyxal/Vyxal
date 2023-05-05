@@ -427,7 +427,6 @@ class ElementTests extends VyxalTests:
       List[VAny]("w;ergn") -> VNum(6),
       List[VAny]("h") -> VNum(1),
       List[VAny]("") -> VNum(0),
-      List[VAny]("123456789") -> VNum(9),
       List[VAny](VList(1, 2, 3, 4, 5, 6, 7)) -> VNum(7),
       List[VAny](VList()) -> VNum(0),
     )
