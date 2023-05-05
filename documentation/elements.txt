@@ -175,6 +175,12 @@ S (Sort ascending) (non-vectorising)
 Keywords: sort, sortasc, sort-asc
 - a: any -> convert to list and sort ascending
 ---------------------
+T (Triple | Contains Only Alphabet | Transpose) (non-vectorising)
+Keywords: triple, alphabet?, alphabetical?, contains-only-alphabet?, contains-only-alphabetical?, transpose, flip
+- a: num -> 3 * a
+- a: str -> does a contain only alphabet characters?
+- a: any -> transpose a
+---------------------
 W (Wrap) (non-vectorising)
 Keywords: wrap
 - a, b, c, ..., -> [a, b, c, ...]
