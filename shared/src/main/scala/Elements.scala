@@ -812,7 +812,11 @@ object Elements:
         "contains-only-alphabet?",
         "contains-only-alphabetical?",
         "transpose",
-        "flip"
+        "flip",
+        "reverse-axes",
+        "flip-axes",
+        "permute-axes",
+        "^T"
       ),
       "a: num -> 3 * a",
       "a: str -> does a contain only alphabet characters?",

@@ -135,7 +135,7 @@ object LiterateLexer extends RegexParsers:
     }
 
   def word: Parser[LiterateToken] =
-    """[a-zA-Z?!*+=&%><-][a-zA-Z0-9?!*+=&%><-]*""".r ^^ { value =>
+    """[a-zA-Z?!*+=&%><-^][a-zA-Z0-9?!*+=&%><-^]*""".r ^^ { value =>
       Word(value)
     }
 
