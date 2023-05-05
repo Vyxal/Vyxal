@@ -663,7 +663,7 @@ object Elements:
           VList.from(
             ListHelpers
               .prefixes(
-                VList.from(ListHelpers.makeIterable(a))
+                VList.from(ListHelpers.makeIterable(a.vabs))
               )
               .map(_ match
                 case b: VList => b.mkString
@@ -788,6 +788,28 @@ object Elements:
       ctx ?=>
         val b, a = ctx.pop()
         ctx.push(b, a)
+    }
+
+    val triple = addElem(
+      Monad,
+      "T",
+      "Triple | Contains Only Alphabet | Transpose",
+      List(
+        "triple",
+        "alphabet?",
+        "alphabetical?",
+        "contains-only-alphabet?",
+        "contains-only-alphabetical?",
+        "transpose",
+        "flip"
+      ),
+      "a: num -> 3 * a",
+      "a: str -> does a contain only alphabet characters?",
+      "a: any -> transpose a"
+    ) {
+      case a: VNum   => a * 3
+      case a: String => a.forall(_.isLetter)
+      case a: VList  => ListHelpers.transpose(a)
     }
 
     val triplicate =

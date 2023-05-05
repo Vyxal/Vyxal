@@ -535,6 +535,53 @@ class ElementTests extends VyxalTests:
     }
   }
 
+  describe("Element P") {
+    describe("when given a number") {
+      it("should give a list of prefixes as numbers") {
+        testMulti("P")(
+          List[VAny](VNum(4824)) -> VList(
+            VNum(4),
+            VNum(48),
+            VNum(482),
+            VNum(4824)
+          ),
+          List[VAny](VNum(-342)) -> VList(VNum(3), VNum(34), VNum(342))
+        )
+      }
+    }
+
+    describe("when given a string") {
+      it("should give a list of prefixes as strings") {
+        testMulti("P")(
+          List[VAny]("Hello") -> VList("H", "He", "Hel", "Hell", "Hello"),
+          List[VAny]("abc") -> VList("a", "ab", "abc"),
+          List[VAny]("123") -> VList("1", "12", "123"),
+          List[VAny]("") -> VList("")
+        )
+      }
+    }
+
+    describe("when given a list") {
+      it("should give a list of prefixes") {
+        testMulti("P")(
+          List[VAny](VList(1, 2, 3)) -> VList(
+            VList(1),
+            VList(1, 2),
+            VList(1, 2, 3)
+          ),
+          List[VAny](VList(1, 2, 3, 4, 5)) -> VList(
+            VList(1),
+            VList(1, 2),
+            VList(1, 2, 3),
+            VList(1, 2, 3, 4),
+            VList(1, 2, 3, 4, 5)
+          ),
+          List[VAny](VList(1)) -> VList(VList(1))
+        )
+      }
+    }
+  }
+
   describe("Element R") {
     describe("when given function and iterable") {
       it("should work with singleton lists") {

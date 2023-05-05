@@ -245,6 +245,11 @@ object ListHelpers:
     parts.toSeq
   end split
 
+  def transpose(iterable: VList)(using ctx: Context): VList =
+    VList.from(
+      iterable.map(ListHelpers.makeIterable(_)).transpose.map(VList.from)
+    )
+
   def vectorisedMaximum(iterable: VList, b: VVal): VList =
     VList.from(iterable.map { a =>
       (a: @unchecked) match
