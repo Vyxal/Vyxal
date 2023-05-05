@@ -563,7 +563,7 @@ class ElementTests extends VyxalTests:
         List[VAny]("Hello") -> VList("H", "He", "Hel", "Hell", "Hello"),
         List[VAny]("abc") -> VList("a", "ab", "abc"),
         List[VAny]("123") -> VList("1", "12", "123"),
-        List[VAny]("") -> VList(""),
+        List[VAny]("") -> VList(),
         List[VAny](VList(1, 2, 3)) -> VList(
           VList(1),
           VList(1, 2),
