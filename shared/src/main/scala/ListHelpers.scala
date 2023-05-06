@@ -246,9 +246,22 @@ object ListHelpers:
   end split
 
   def transpose(iterable: VList)(using ctx: Context): VList =
-    VList.from(
-      iterable.map(ListHelpers.makeIterable(_)).transpose.map(VList.from)
-    )
+    val lst = iterable.map(ListHelpers.makeIterable(_).lst.map(Some(_)))
+    val maxSize = lst.map(_.length).max
+
+    // pad each item in lst with 0s to be length maxSize
+
+    val padded = lst.map { item =>
+      val padding = List.fill(maxSize - item.length)(None)
+      item ++ padding
+    }
+
+    val res = padded.transpose
+
+    VList.from(res.map { x =>
+      VList.from(x.filter(_.isDefined).map(_.get))
+    })
+  end transpose
 
   def vectorisedMaximum(iterable: VList, b: VVal): VList =
     VList.from(iterable.map { a =>

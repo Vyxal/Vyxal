@@ -639,6 +639,35 @@ class ElementTests extends VyxalTests:
     )
   }
 
+  describe("Element T") {
+    testMulti("T")(
+      // triple overload
+      List[VAny](5) -> VNum(15),
+      List[VAny](0) -> VNum(0),
+      List[VAny](-5) -> VNum(-15),
+      // string overload
+      List[VAny]("hello") -> VNum(1),
+      List[VAny]("") -> VNum(1),
+      List[VAny]("Hello, World!") -> VNum(0),
+
+      // list overload
+      List[VAny](VList(VList(1, 2, 3), VList(4, 5, 6))) -> VList(
+        VList(1, 4),
+        VList(2, 5),
+        VList(3, 6)
+      ),
+      List[VAny](
+        VList(VList(1, 2, 3), VList(4, 5, 6), VList(7, 8, 9))
+      ) -> VList(VList(1, 4, 7), VList(2, 5, 8), VList(3, 6, 9)),
+      List[VAny](VList(VList(1, 2, 3))) -> VList(VList(1), VList(2), VList(3)),
+      List[VAny](VList(VList(1, 2, 3), VList(4, 5))) -> VList(
+        VList(1, 4),
+        VList(2, 5),
+        VList(3)
+      ),
+    )
+  }
+
   describe("Element _") {
     testStackLike("_")(
       List[VAny](1, 2, 3) -> List(1, 2),
