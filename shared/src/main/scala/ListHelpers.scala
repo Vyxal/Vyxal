@@ -258,9 +258,7 @@ object ListHelpers:
 
     val res = padded.transpose
 
-    VList.from(res.map { x =>
-      VList.from(x.filter(_.isDefined).map(_.get))
-    })
+    VList.from(res.map { x => VList.from(x.flatten) })
   end transpose
 
   def vectorisedMaximum(iterable: VList, b: VVal): VList =
