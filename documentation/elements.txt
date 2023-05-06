@@ -184,7 +184,7 @@ Keywords: sort, sortasc, sort-asc
 - a: any -> convert to list and sort ascending
 ---------------------
 T (Triple | Contains Only Alphabet | Transpose) (non-vectorising)
-Keywords: triple, alphabet?, alphabetical?, contains-only-alphabet?, contains-only-alphabetical?, transpose, flip, reverse-axes, flip-axes, permute-axes, ^T
+Keywords: triple, alphabet?, alphabetical?, contains-only-alphabet?, contains-only-alphabetical?, transpose, flip, reverse-axes, flip-axes, permute-axes
 - a: num -> 3 * a
 - a: str -> does a contain only alphabet characters?
 - a: any -> transpose a
