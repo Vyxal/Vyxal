@@ -299,9 +299,8 @@ object Elements:
       List("exit", "quit"),
       None,
       "a -> Stop program execution"
-    ) {
-      ctx ?=>
-        // System.exit(0)
+    ) { ctx ?=>
+      throw new Exception("Program exited")
     }
 
     def execHelper(value: VAny)(using ctx: Context): VAny =
@@ -827,7 +826,6 @@ object Elements:
         "reverse-axes",
         "flip-axes",
         "permute-axes",
-        "^T"
       ),
       "a: num -> 3 * a",
       "a: str -> does a contain only alphabet characters?",
