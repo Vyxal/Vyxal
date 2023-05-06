@@ -293,7 +293,7 @@ object Elements:
       ctx.push(execHelper(ctx.pop()))
     }
 
-    val exit = addDirect(
+    val exitProgram = addDirect(
       "Q",
       "Exit | Quit",
       List("exit", "quit"),
