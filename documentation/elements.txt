@@ -168,6 +168,10 @@ P (Prefixes) (non-vectorising)
 Keywords: prefixes
 - a: lst -> Prefixes of a
 ---------------------
+Q (Exit | Quit) (non-vectorising)
+Keywords: exit, quit
+- a -> Stop program execution
+---------------------
 R (Reduce by Function Object | Dyadic Range | Regex Match) (non-vectorising)
 Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has-regex-match?, fold
 - a: fun, b: any -> reduce iterable b by function a
