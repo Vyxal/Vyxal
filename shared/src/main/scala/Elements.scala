@@ -299,8 +299,9 @@ object Elements:
       List("exit", "quit"),
       None,
       "a -> Stop program execution"
-    ) { ctx ?=>
-      System.exit(0)
+    ) {
+      ctx ?=>
+        // System.exit(0)
     }
 
     def execHelper(value: VAny)(using ctx: Context): VAny =
