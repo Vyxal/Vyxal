@@ -684,7 +684,7 @@ object Elements:
           VList.from(
             ListHelpers
               .prefixes(
-                VList.from(ListHelpers.makeIterable(a.vabs))
+                ListHelpers.makeIterable(a.vabs)
               )
               .map(_ match
                 case b: VList => b.mkString
