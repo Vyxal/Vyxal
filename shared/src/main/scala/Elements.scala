@@ -293,6 +293,16 @@ object Elements:
       ctx.push(execHelper(ctx.pop()))
     }
 
+    val exit = addDirect(
+      "Q",
+      "Exit | Quit",
+      List("exit", "quit"),
+      None,
+      "a -> Stop program execution"
+    ) { ctx ?=>
+      System.exit(0)
+    }
+
     def execHelper(value: VAny)(using ctx: Context): VAny =
       value match
         case code: String =>
