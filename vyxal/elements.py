@@ -5293,11 +5293,11 @@ def remove_at_index(lhs, rhs, ctx):
 def remove_non_alphabets(lhs, ctx):
     """Element Ǎ
     (str) -> filter(isalpha, a)
-    (num) -> 2 ** a
+    (num) -> -1 ** a
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: 2**lhs,
+        NUMBER_TYPE: lambda: (-1)**lhs,
         str: lambda: "".join(filter(str.isalpha, lhs)),
     }.get(ts, lambda: vectorise(remove_non_alphabets, lhs, ctx=ctx))()
 
