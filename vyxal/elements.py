@@ -5297,7 +5297,7 @@ def remove_non_alphabets(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: (-1)**lhs,
+        NUMBER_TYPE: lambda: (-1) ** lhs,
         str: lambda: "".join(filter(str.isalpha, lhs)),
     }.get(ts, lambda: vectorise(remove_non_alphabets, lhs, ctx=ctx))()
 
