@@ -1961,12 +1961,12 @@ Indices of elements to sort in descending order / lowercase / decrement number t
 -------------------------------
 ## `` Ǎ `` (Remove non-alphabets)
 
-Remove non-alphabetical characters / power with base 2
+Remove non-alphabetical characters / power with base -1
 
 ### Overloads
 
 - str a: `filter(isalpha, a)`
-- num a: `2 ** a`
+- num a: `(-1) ** a`
 -------------------------------
 ## `` ǎ `` (Nth prime)
 
