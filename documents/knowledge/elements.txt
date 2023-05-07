@@ -1673,10 +1673,10 @@ z (Overlapping pairs)
 -------------------------------
 Ǎ (Remove non-alphabets)
 
-- Remove non-alphabetical characters / power with base 2
+- Remove non-alphabetical characters / power with base -1
 
     str a: filter(isalpha, a)
-    num a: 2 ** a
+    num a: (-1) ** a
     otherwise: vectorise
 -------------------------------
 ǎ (Nth prime)

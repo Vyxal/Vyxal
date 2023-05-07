@@ -3536,8 +3536,8 @@ var codepage_descriptions =
   "237": [
     {
       "name": "Remove non-alphabets",
-      "description": "Remove non-alphabetical characters / power with base 2",
-      "overloads": "str -> filter(isalpha, a)\nnum -> 2 ** a",
+      "description": "Remove non-alphabetical characters / power with base -1",
+      "overloads": "str -> filter(isalpha, a)\nnum -> (-1) ** a",
       "token": "\u01cd"
     }
   ],
