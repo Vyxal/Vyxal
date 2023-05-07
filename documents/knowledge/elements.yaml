@@ -2942,10 +2942,10 @@
 - element: "Ǎ"
   name: Remove non-alphabets
   arity: 1
-  description: Remove non-alphabetical characters / power with base 2
+  description: Remove non-alphabetical characters / power with base -1
   overloads:
     str: filter(isalpha, a)
-    num: 2 ** a
+    num: (-1) ** a
   vectorise: true
   tests:
     - '["Helo1233adc__"] : "Heloadc"'
