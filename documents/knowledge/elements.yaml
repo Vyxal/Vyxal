@@ -2949,7 +2949,8 @@
   vectorise: true
   tests:
     - '["Helo1233adc__"] : "Heloadc"'
-    - "[8] : 256"
+    - "[8] : 1"
+    - "[5] : -1"
 
 - element: "ǎ"
   name: Nth prime
