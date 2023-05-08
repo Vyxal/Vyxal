@@ -12,6 +12,7 @@ import vyxal.encoding
 from vyxal.context import Context, TranspilationOptions
 from vyxal.elements import *
 from vyxal.helpers import *
+from vyxal.LazyList import *
 from vyxal.transpile import transpile
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
@@ -99,7 +100,12 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                 inps = [vyxalify(x) for x in inps]
             except:
                 inps = inp.split(", ")
-            repred_inps = [repr(x) for x in inps]
+            repred_inps = [
+                repr(x)
+                if not isinstance(x, LazyList)
+                else repr(list(x))
+                for x in inps
+            ]
             if online_mode:
                 ctx.online_output[1] += ", ".join(repred_inps) + " => "
             else:
