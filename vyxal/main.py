@@ -101,9 +101,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             except:
                 inps = inp.split(", ")
             repred_inps = [
-                repr(x)
-                if not isinstance(x, LazyList)
-                else repr(list(x))
+                repr(x) if not isinstance(x, LazyList) else repr(list(x))
                 for x in inps
             ]
             if online_mode:
