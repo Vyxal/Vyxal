@@ -667,7 +667,7 @@ function shareOptions(shareType) {
 
     let bytesLink = "";
     if (flags.includes("!") || flags.includes("=")) {
-        bytesLink = `${len * 8} bits<sup>[v${bitver.value}](https://github.com/Vyxal/Vyncode/blob/main/README.md)</sup>, ${len} byte${"s".repeat(len != 1)}`
+        bytesLink = `${len * 8} [bits<sup>v${bitver.value}](https://github.com/Vyxal/Vyncode/blob/main/README.md)</sup>, ${len} byte${"s".repeat(len != 1)}`
     } else {
         bytesLink = `${len} byte${"s".repeat(len != 1)}`
     }
