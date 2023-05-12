@@ -5,6 +5,9 @@
 ![Vyxal Logo](./documents/logo/vylogo.png)
 
 ![Test status](https://github.com/Vyxal/Vyxal/actions/workflows/run-tests.yaml/badge.svg)
+![Pypi Monthly Downloads](https://img.shields.io/pypi/dm/vyxal)
+![Last Commit](https://img.shields.io/github/last-commit/vyxal/vyxal)
+![Contributors](https://img.shields.io/github/contributors/vyxal/vyxal)
 
 **Vyxal** is a golfing language that takes the idea that conciseness comes at the cost of practicality and throws it out the window. That's right - where other golflangs throw you into the deep-end of keyboard mashing, Vyxal eases you into the concept of elegantly crafting built-ins into a functioning program.
 
