@@ -84,7 +84,7 @@ class VList private (val lst: Seq[VAny])
   override def length: Int = lst.length
 
   override def isDefinedAt(ind: BigInt): Boolean =
-    if ind <= Int.MaxValue && ind >= Int.MinValue then
+    if ind <= Int.MaxValue && ind >= 0 then
       return lst.isDefinedAt(ind.toInt)
     var pos = if ind < 0 then ind % lst.length else ind
     var temp = lst
