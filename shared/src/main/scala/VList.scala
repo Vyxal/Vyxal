@@ -112,7 +112,10 @@ class VList private (val lst: Seq[VAny])
 end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:
-  def from(it: Seq[VAny]): VList = new VList(it)
+  def from(it: Seq[VAny]): VList = 
+    if it.isInstanceOf[VList] then it
+    else new VList(it)
+  
 
   /** Zip multiple VLists together with a function.
     *
