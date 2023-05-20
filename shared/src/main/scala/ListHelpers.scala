@@ -245,7 +245,7 @@ object ListHelpers:
     parts.toSeq
   end split
 
-  def transpose(iterable: VList, filler: Option[VAny])(using
+  def transpose(iterable: VList, filler: Option[VAny] = None)(using
       ctx: Context
   ): VList =
     /*Transposes a matrix
