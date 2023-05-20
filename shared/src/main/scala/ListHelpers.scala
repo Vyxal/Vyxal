@@ -245,20 +245,36 @@ object ListHelpers:
     parts.toSeq
   end split
 
-  def transpose(iterable: VList)(using ctx: Context): VList =
-    val lst = iterable.map(ListHelpers.makeIterable(_).lst.map(Some(_)))
-    val maxSize = lst.map(_.length).max
+  def transpose(iterable: VList, filler: Option[VAny])(using
+      ctx: Context
+  ): VList =
+    /*Transposes a matrix
+    In order to handle infinite lists, it generates the transpose
+    antidiagonal by antidiagonal.
+     */
 
-    // pad each item in lst with 0s to be length maxSize
+    val matrix = iterable.map(makeIterable(_))
 
-    val padded = lst.map { item =>
-      val padding = List.fill(maxSize - item.length)(None)
-      item ++ padding
-    }
+    val genRow = (r: BigInt) =>
+      val temp: LazyList[Option[VAny]] = LazyList
+        .unfold(0) { c =>
+          if !matrix.isDefinedAt(c) then None
+          if matrix(c).isDefinedAt(r) then Some((Some(matrix(c)), c + 1))
+          else if filler.isDefined then
+            Some((Some(filler.getOrElse(VNum(0))), c + 1))
+          else Some((None, c + 1))
+        }
+      VList.from(temp.flatten)
 
-    val res = padded.transpose
-
-    VList.from(res.map { x => VList.from(x.flatten) })
+    VList.from(LazyList.unfold(0) { r =>
+      Option.when(matrix.exists(row => row.isDefinedAt(r))) {
+        val thisRow = genRow(r)
+        val newRow: VAny =
+          if thisRow.forall(_.isInstanceOf[String]) then thisRow.mkString("")
+          else thisRow
+        (newRow, r + 1)
+      }
+    })
   end transpose
 
   def vectorisedMaximum(iterable: VList, b: VVal): VList =

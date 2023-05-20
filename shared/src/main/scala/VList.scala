@@ -83,9 +83,8 @@ class VList private (val lst: Seq[VAny])
     */
   override def length: Int = lst.length
 
-  override def isDefinedAt(ind: BigInt): Boolean =
-    if ind <= Int.MaxValue && ind >= 0 then
-      return lst.isDefinedAt(ind.toInt)
+  def isDefinedAt(ind: BigInt): Boolean =
+    if ind <= Int.MaxValue && ind >= 0 then return lst.isDefinedAt(ind.toInt)
     var pos = if ind < 0 then ind % lst.length else ind
     var temp = lst
     while pos >= Int.MaxValue do
@@ -113,9 +112,9 @@ end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:
   def from(it: Seq[VAny]): VList =
-    if it.isInstanceOf[VList] then it
-    else new VList(it)
-
+    it match
+      case temp: VList => temp
+      case _           => new VList(it)
 
   /** Zip multiple VLists together with a function.
     *
