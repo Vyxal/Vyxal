@@ -83,6 +83,18 @@ class VList private (val lst: Seq[VAny])
     */
   override def length: Int = lst.length
 
+  override def isDefinedAt(ind: BigInt): Boolean =
+    if ind <= Int.MaxValue && ind >= Int.MinValue then
+      return lst.isDefinedAt(ind.toInt)
+    var pos = if ind < 0 then ind % lst.length else ind
+    var temp = lst
+    while pos > 0 do
+      // Instead of using modulo, reset the list if out of bounds
+      if temp.isEmpty then return false
+      temp = temp.tail
+      pos -= 1
+    return true
+
   override def toString(): String =
     lst.map(_.toString).mkString("[ ", " | ", " ]")
 
