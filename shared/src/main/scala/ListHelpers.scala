@@ -255,7 +255,7 @@ object ListHelpers:
 
     val matrix = iterable.map(makeIterable(_))
 
-    val genRow = (r: BigInt) =>
+    def genRow(r: BigInt) =
       val temp: LazyList[Option[VAny]] = LazyList
         .unfold(0) { c =>
           if !matrix.isDefinedAt(c) then None
