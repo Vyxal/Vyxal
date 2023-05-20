@@ -259,22 +259,24 @@ object ListHelpers:
       val temp: LazyList[Option[VAny]] = LazyList
         .unfold(0) { c =>
           if !matrix.isDefinedAt(c) then None
-          if matrix(c).isDefinedAt(r) then Some((Some(matrix(c)), c + 1))
+          else if matrix(c).isDefinedAt(r) then
+            Some((Some(matrix(c).index(r)), c + 1))
           else if filler.isDefined then
             Some((Some(filler.getOrElse(VNum(0))), c + 1))
           else Some((None, c + 1))
         }
       VList.from(temp.flatten)
 
-    VList.from(LazyList.unfold(0) { r =>
-      Option.when(matrix.exists(row => row.isDefinedAt(r))) {
-        val thisRow = genRow(r)
-        val newRow: VAny =
-          if thisRow.forall(_.isInstanceOf[String]) then thisRow.mkString("")
-          else thisRow
-        (newRow, r + 1)
+    val out: LazyList[VAny] = LazyList
+      .unfold(0) { r =>
+        if !matrix.exists(_.isDefinedAt(r)) then None
+        else
+          val row = genRow(r)
+          if row.forall(_.isInstanceOf[String]) then Some((row.mkString, r + 1))
+          else Some((row, r + 1))
       }
-    })
+    VList.from(out)
+
   end transpose
 
   def vectorisedMaximum(iterable: VList, b: VVal): VList =
