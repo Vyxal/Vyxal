@@ -811,7 +811,7 @@ object Elements:
         ctx.push(b, a)
     }
 
-    val triple = addElem(
+    val triple: Monad = addElem(
       Monad,
       "T",
       "Triple | Contains Only Alphabet | Transpose",
@@ -833,7 +833,7 @@ object Elements:
     ) {
       case a: VNum   => a * 3
       case a: String => a.forall(_.isLetter)
-      case a: VList  => ListHelpers.transpose(a)
+      case a: VList  => ListHelpers.transpose(a, None)
     }
 
     val triplicate =
