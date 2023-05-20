@@ -88,11 +88,11 @@ class VList private (val lst: Seq[VAny])
       return lst.isDefinedAt(ind.toInt)
     var pos = if ind < 0 then ind % lst.length else ind
     var temp = lst
-    while pos > 0 do
+    while pos >= Int.MaxValue do
       // Instead of using modulo, reset the list if out of bounds
       if temp.isEmpty then return false
-      temp = temp.tail
-      pos -= 1
+      temp = temp.drop(Int.MaxValue)
+      pos -= Int.MaxValue
     return true
 
   override def toString(): String =
