@@ -15,7 +15,7 @@ codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
 codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
 codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
 
-Vyncode.setVersion(1)
+Vyncode.setVersion(-1)
 
 search = window
 glyphQuery = String.fromCharCode(0162, 105, 0143, 107)
@@ -633,11 +633,10 @@ function generateURL() {
 
 function setVersion() {
     let version = document.getElementById("bitver").value
+    // convert to number
     try {
-        Vyncode.setVersion(version)
-    } catch (error) {
-        return
-    }
+        Vyncode.setVersion(parseInt(version))
+    } catch { Vyncode.setVersion(-1) }
     updateCount()
 }
 
