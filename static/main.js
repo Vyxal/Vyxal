@@ -636,7 +636,9 @@ function setVersion() {
     // convert to number
     try {
         Vyncode.setVersion(parseInt(version))
-    } catch { Vyncode.setVersion(-1) }
+    } catch {
+        Vyncode.setVersion(-1)
+    }
     updateCount()
 }
 
