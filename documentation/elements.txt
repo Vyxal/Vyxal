@@ -287,30 +287,30 @@ Keywords: divide, div, split
 - a: num, b: num -> a / b
 - a: str, b: str -> Split a on the regex b
 ---------------------
-′
+⥑
 Keywords: *-
 Description: Turn the next element (whether that be a structure/modifier/element) into a lambda
-′f: Push the equivalent of λf} to the stack
+⥑f: Push the equivalent of λf} to the stack
 ---------------------
-″
+Ч
+Keywords: ****-
+Description: Turn the next four elements (whether that be a structure/modifier/element) into a lambda
+Чfghi: Push the equivalent of λfghi} to the stack
+---------------------
+ϩ
 Keywords: **-
 Description: Turn the next two elements (whether that be a structure/modifier/element) into a lambda
-″fg: Push the equivalent of λfg} to the stack
+ϩfg: Push the equivalent of λfg} to the stack
 ---------------------
 v
 Keywords: vectorise-, vec-, v-
 Description: Vectorises
 vf: f but vectorised
 ---------------------
-‴
+э
 Keywords: ***-
 Description: Turn the next three elements (whether that be a structure/modifier/element) into a lambda
-‴fgh: Push the equivalent of λfgh} to the stack
----------------------
-⁴
-Keywords: ****-
-Description: Turn the next four elements (whether that be a structure/modifier/element) into a lambda
-⁴fghi: Push the equivalent of λfghi} to the stack
+эfgh: Push the equivalent of λfgh} to the stack
 ---------------------
 /
 Keywords: foldl-, reduce-, /-, fold-, reduceby-
