@@ -49,35 +49,35 @@ object Modifiers:
       val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
       AST.makeSingle(lambdaAst, AST.Command("R"))
     },
-    "′" -> Modifier(
+    "⥑" -> Modifier(
       "Single Element Lambda",
       """|Turn the next element (whether that be a structure/modifier/element) into a lambda
-         |′f: Push the equivalent of λf} to the stack""".stripMargin,
+         |⥑f: Push the equivalent of λf} to the stack""".stripMargin,
       List("*-"),
       1
     ) { case List(ast) => AST.makeSingle(astToLambda(ast, 1)) },
-    "″" -> Modifier(
+    "ϩ" -> Modifier(
       "Double Element Lambda",
       """|Turn the next two elements (whether that be a structure/modifier/element) into a lambda
-         |″fg: Push the equivalent of λfg} to the stack""".stripMargin,
+         |ϩfg: Push the equivalent of λfg} to the stack""".stripMargin,
       List("**-"),
       2
     ) { case List(ast1, ast2) =>
       AST.makeSingle(astToLambda(AST.makeSingle(ast1, ast2), 1))
     },
-    "‴" -> Modifier(
+    "э" -> Modifier(
       "Triple Element Lambda",
       """|Turn the next three elements (whether that be a structure/modifier/element) into a lambda
-         |‴fgh: Push the equivalent of λfgh} to the stack""".stripMargin,
+         |эfgh: Push the equivalent of λfgh} to the stack""".stripMargin,
       List("***-"),
       3
     ) { case List(ast1, ast2, ast3) =>
       astToLambda(AST.makeSingle(ast1, ast2, ast3), 1)
     },
-    "⁴" -> Modifier(
+    "Ч" -> Modifier(
       "Quadruple Element Lambda",
       """|Turn the next four elements (whether that be a structure/modifier/element) into a lambda
-         |⁴fghi: Push the equivalent of λfghi} to the stack""".stripMargin,
+         |Чfghi: Push the equivalent of λfghi} to the stack""".stripMargin,
       List("****-"),
       4
     ) { case List(ast1, ast2, ast3, ast4) =>
