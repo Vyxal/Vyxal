@@ -258,12 +258,14 @@ object ListHelpers:
       case None => LazyList.unfold(matrix) { matrix =>
           val remaining = matrix.filter(_.nonEmpty)
           Option.when(remaining.nonEmpty) {
-            (remaining.map(_.head), remaining.map(_.tail))
+            val col = VList.from(remaining.map(_.head))
+            (col, remaining.map(_.tail))
           }
         }
       case Some(filler) => LazyList.unfold(matrix) { matrix =>
           Option.when(matrix.exists(_.nonEmpty)) {
-            (matrix.flatMap(_.headOption.getOrElse(filler)), matrix.map(_.tail))
+            val col = VList.from(matrix.map(_.headOption.getOrElse(filler)))
+            (col, matrix.map(_.tail))
           }
         }
     VList.from(out)
