@@ -52,7 +52,8 @@ class VList private (val lst: Seq[VAny])
 
   /** Get the element at index `ind` */
   override def apply(ind: Int): VAny =
-    if ind < 0 then
+    if lst.isEmpty then 0
+    else if ind < 0 then
       // floorMod because % gives negative results with negative dividends
       lst(Math.floorMod(ind, lst.length))
     else
@@ -100,7 +101,10 @@ class VList private (val lst: Seq[VAny])
 end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:
-  def from(it: Seq[VAny]): VList = new VList(it)
+  def from(it: Seq[VAny]): VList = 
+    if it.isInstanceOf[VList] then it
+    else new VList(it)
+  
 
   /** Zip multiple VLists together with a function.
     *

@@ -118,6 +118,17 @@ Keywords: filter, keep-by, from-base, 10->b
 - a: num, b: num -> a in base b - list of digits
 - a: num, b: str|lst -> a in base with alphabet b
 ---------------------
+G (Monadic Maximum | Dyadic Maximum | Generate From Function | Vectorised Maximum) (non-vectorising)
+Keywords: max, maximum, generator
+- a: lst -> Maximum of a
+- a: non-lst, b: non-lst -> Maximum of a and b
+- a: lst, b: fun -> Call b infinitely with items of a as starting values
+---------------------
+H (Hexadecimal | To Hexadecimal) (vectorising)
+Keywords: hex, hexadecimal, to-hex, to-hexadecimal
+- a: num -> a in hexadecimal
+- a: str -> a as a hexadecimal number to base 10
+---------------------
 I (Interleave) (non-vectorising)
 Keywords: interleave
 - a: lst, b: lst -> Interleave a and b
@@ -148,6 +159,10 @@ O (Ord/Chr) (non-vectorising)
 Keywords: ord, chr
 - a: str -> ord(a)
 - a: num -> chr(a)
+---------------------
+P (Prefixes) (non-vectorising)
+Keywords: prefixes
+- a: lst -> Prefixes of a
 ---------------------
 R (Reduce by Function Object | Dyadic Range | Regex Match) (non-vectorising)
 Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has-regex-match?, fold

@@ -3,6 +3,7 @@ package vyxal
 import vyxal.*
 import vyxal.impls.Elements
 
+import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.math
 
@@ -110,6 +111,52 @@ object NumberHelpers:
           result += VList(binary.map(_.asDigit).map(VNum(_)).toList*)
         VList(result.toList*)
       case _ => throw new Exception("Cannot convert to binary")
+
+  def toBase(a: VAny, b: VAny)(using ctx: Context): VAny =
+    (a, b) match
+      case (a: VNum, b: VNum) =>
+        if b.toBigInt == 0 then 0
+        else toBaseDigits(a, b)
+      case (n: VNum, _)  => toBaseAlphabet(n, ListHelpers.makeIterable(b))
+      case (a: VList, _) => VList(a.map(toBase(_, b))*)
+      case _ =>
+        throw new Exception(
+          s"toBase only works on numbers and lists, was given $a and $b instead"
+        )
+
+  /** Returns value in base len(alphabet) using base 10 [bijective base] */
+  def toBaseAlphabet(value: VNum, alphabet: VIter)(using ctx: Context): VAny =
+    val indexes = toBaseDigits(value, alphabet.iterLength)
+    val alphalist = alphabet match
+      case a: String => VList.from(a.toString.toList.map(_.toString))
+      case l: VList  => l
+
+    val temp = indexes.map(alphalist.index(_).toString())
+    alphabet match
+      case a: String => temp.mkString("")
+      case l: VList  => l
+
+  def toBaseDigits(value: VNum, base: VNum): VList =
+    if value == VNum(0) then VList(List(VNum(0))*)
+    else if base.toBigInt == -1 then
+      VList.from(
+        (1 until value.toInt.abs * 2 - (if value.toBigInt > 0 then 0 else 1))
+          .map(_ % 2)
+      )
+    else
+      val sign = if value.toBigInt < 0 && base.toBigInt > 0 then -1 else 1
+      var current = sign * value.toBigInt
+      if base.toBigInt == 1 then VList(List.fill(current.toInt.abs)(sign)*)
+      else
+        val digits = ListBuffer[VNum]()
+        while current > 0 do
+          var digit = current % base.toBigInt
+          current = current / base.toBigInt
+          if digit < 0 then
+            current += 1
+            digit -= base.toBigInt
+          digits.prepend(digit * sign)
+        VList(digits.toList*)
 
   def toInt(value: VAny, radix: Int)(using ctx: Context): VAny =
     value match

@@ -453,6 +453,18 @@ object Elements:
       "a: str, b: str -> a > b"
     ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) > 0 }
 
+    val hexadecimal: Monad = addVect(
+      Monad,
+      "H",
+      "Hexadecimal | To Hexadecimal",
+      List("hex", "hexadecimal", "to-hex", "to-hexadecimal"),
+      "a: num -> a in hexadecimal",
+      "a: str -> a as a hexadecimal number to base 10"
+    ) {
+      case a: VNum   => NumberHelpers.toBaseAlphabet(a, "0123456789ABCDEF")
+      case a: String => NumberHelpers.fromBaseAlphabet(a, "0123456789ABCDEF")
+    }
+
     val index: Dyad = addElem(
       Dyad,
       "i",
@@ -511,6 +523,31 @@ object Elements:
         ListHelpers.map(b, ListHelpers.makeIterable(a, Some(true)))
       case (a: VFun, b) =>
         ListHelpers.map(a, ListHelpers.makeIterable(b, Some(true)))
+    }
+
+    val maximum = addDirect(
+      "G",
+      "Monadic Maximum | Dyadic Maximum | Generate From Function | Vectorised Maximum",
+      List("max", "maximum", "generator"),
+      Some(2),
+      "a: lst -> Maximum of a",
+      "a: non-lst, b: non-lst -> Maximum of a and b",
+      "a: lst, b: fun -> Call b infinitely with items of a as starting values"
+    ) { ctx ?=>
+      val top = ctx.pop()
+      top match
+        case a: VList =>
+          ctx.push(ListHelpers.maximum(a))
+        case _ =>
+          val next = ctx.pop()
+          (top, next) match
+            case (a: VVal, b: VVal) => ctx.push(MiscHelpers.dyadicMaximum(a, b))
+            case (a: VFun, b: VList) =>
+              ctx.push(ListHelpers.generate(a, b))
+            case (a: VVal, b: VList) =>
+              ctx.push(ListHelpers.vectorisedMaximum(b, a))
+            case _ =>
+              throw new Exception("Invalid arguments for maximum")
     }
 
     val merge: Dyad = addElem(
@@ -601,6 +638,40 @@ object Elements:
     val pair =
       addFull(Dyad, ";", "Pair", List("pair"), false, "a, b -> [a, b]") {
         VList(_, _)
+      }
+
+    val prefixes =
+      addElem(
+        Monad,
+        "P",
+        "Prefixes",
+        List("prefixes"),
+        "a: lst -> Prefixes of a"
+      ) {
+        case a: VList => ListHelpers.prefixes(a)
+        case a: String =>
+          VList.from(
+            ListHelpers
+              .prefixes(
+                VList.from(ListHelpers.makeIterable(a))
+              )
+              .map(_ match
+                case b: VList => b.mkString
+                case _1       => _1.toString
+              )
+          )
+        case a: VNum =>
+          VList.from(
+            ListHelpers
+              .prefixes(
+                VList.from(ListHelpers.makeIterable(a))
+              )
+              .map(_ match
+                case b: VList => b.mkString
+                case b        => b.toString
+              )
+              .map(MiscHelpers.eval)
+          )
       }
 
     val print = addDirect(
