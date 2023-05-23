@@ -246,8 +246,9 @@ object ListHelpers:
 
   /** Transpose a matrix.
     *
-    * Hangs on infinite lists of finite lists. See [[transposeSafe]] for a version that handles those.
-    * Based on [[https://github.com/Adriandmen/05AB1E/blob/master/lib/commands/matrix_commands.ex 05AB1E's implementation]].
+    * Hangs on infinite lists of finite lists. See [[transposeSafe]] for a
+    * version that handles those. Based on
+    * [[https://github.com/Adriandmen/05AB1E/blob/master/lib/commands/matrix_commands.ex 05AB1E's implementation]].
     */
   def transpose(iterable: VList, filler: Option[VAny] = None)(using
       ctx: Context
@@ -255,14 +256,16 @@ object ListHelpers:
     val matrix = iterable.map(makeIterable(_))
 
     val out = filler match
-      case None => LazyList.unfold(matrix) { matrix =>
+      case None =>
+        LazyList.unfold(matrix) { matrix =>
           val remaining = matrix.filter(_.nonEmpty)
           Option.when(remaining.nonEmpty) {
             val col = VList.from(remaining.map(_.head))
             (col, remaining.map(_.tail))
           }
         }
-      case Some(filler) => LazyList.unfold(matrix) { matrix =>
+      case Some(filler) =>
+        LazyList.unfold(matrix) { matrix =>
           Option.when(matrix.exists(_.nonEmpty)) {
             val col = VList.from(matrix.map(_.headOption.getOrElse(filler)))
             (col, matrix.map(_.tail))
@@ -271,17 +274,17 @@ object ListHelpers:
     VList.from(out)
   end transpose
 
-  /** Transpose a matrix. Uses the length of the first row of the inputted matrix
-    * as the number of columns in the resulting matrix.
+  /** Transpose a matrix. Uses the length of the first row of the inputted
+    * matrix as the number of columns in the resulting matrix.
     *
-    * @see transpose
+    * @see
+    *   transpose
     */
   def transposeSafe(iterable: VList, filler: Option[VAny] = None)(using
       ctx: Context
   ): VList =
     val matrix = iterable.map(makeIterable(_))
     ???
-  end transposeSafe
 
   def vectorisedMaximum(iterable: VList, b: VVal): VList =
     VList.from(iterable.map { a =>
