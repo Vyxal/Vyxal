@@ -16,6 +16,7 @@ codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
 codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
 
 Vyncode.setVersion(-1)
+bitver.value = Vyncode.getVersion()
 
 search = window
 glyphQuery = String.fromCharCode(0162, 105, 0143, 107)
