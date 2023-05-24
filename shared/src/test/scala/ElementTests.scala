@@ -560,10 +560,20 @@ class ElementTests extends VyxalTests:
           VNum(4824)
         ),
         List[VAny](VNum(-342)) -> VList(VNum(3), VNum(34), VNum(342)),
+      )
+    }
+
+    describe("when given a string") {
+      testMulti("P")(
         List[VAny]("Hello") -> VList("H", "He", "Hel", "Hell", "Hello"),
         List[VAny]("abc") -> VList("a", "ab", "abc"),
         List[VAny]("123") -> VList("1", "12", "123"),
         List[VAny]("") -> VList(),
+      )
+    }
+
+    describe("when given a list") {
+      testMulti("P")(
         List[VAny](VList(1, 2, 3)) -> VList(
           VList(1),
           VList(1, 2),

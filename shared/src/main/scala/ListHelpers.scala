@@ -202,7 +202,7 @@ object ListHelpers:
 
         VList(out*)
       case None =>
-        return VList(
+        VList(
           iterable.zipWithIndex
             .sorted { (a, b) =>
               MiscHelpers.compareExact(
@@ -215,8 +215,8 @@ object ListHelpers:
 
   end sortBy
 
-  def prefixes(iterable: VList)(using ctx: Context): VList =
-    return VList.from(iterable.inits.toSeq.reverse.tail)
+  def prefixes(iterable: VList): Seq[VList] =
+    iterable.inits.toSeq.reverse.tail
 
   /** Split a list on a sublist
     *

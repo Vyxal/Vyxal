@@ -1,7 +1,5 @@
 package vyxal
 
-import vyxal.impls.UnimplementedOverloadException
-
 //These represent normal Scala functions, not functions operating on the stack
 type Monad = VAny => Context ?=> VAny
 type Dyad = (VAny, VAny) => Context ?=> VAny
@@ -30,9 +28,8 @@ sealed abstract class ImplHelpers[P, F](val arity: Int):
 
   /** Turn a partial implementation into a complete one
     *
-    * The returned function throws an
-    * [[vyxal.impls.UnimplementedOverloadException]] when passed an argument for
-    * which it's not defined
+    * The returned function throws an [[vyxal.UnimplementedOverloadException]]
+    * when passed an argument for which it's not defined
     */
   def fill(symbol: String, impl: P): F
 

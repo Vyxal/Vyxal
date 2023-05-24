@@ -19,7 +19,8 @@ object Interpreter:
         if Lexer.hasSugar(sbcsified) then ctx.globals.printFn(ast.toVyxal)
         if ctx.settings.logLevel == LogLevel.Debug then
           println(s"Executing '$code' (ast: $ast)")
-        execute(ast)
+        try execute(ast)
+        catch case _: QuitException => {}
         // todo implicit output according to settings
         if !ctx.isStackEmpty && ctx.settings.endPrintMode == EndPrintMode.Default
         then vyPrintln(ctx.peek)

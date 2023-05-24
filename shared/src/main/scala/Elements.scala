@@ -21,11 +21,6 @@ case class Element(
     impl: DirectFn
 )
 
-case class UnimplementedOverloadException(element: String, args: Seq[VAny])
-    extends RuntimeException(
-      s"$element not supported for input(s) ${args.mkString("(", ", ", ")")}"
-    )
-
 object Elements:
   val elements: Map[String, Element] = Impls.elements.toMap
 
@@ -177,7 +172,7 @@ object Elements:
       List("append"),
       "a: any, b: any -> list(a) ++ [b]"
     ) { case (a, b) =>
-      VList(ListHelpers.makeIterable(a) :+ b*)
+      VList.from(ListHelpers.makeIterable(a) :+ b)
     }
 
     addFull(
@@ -299,9 +294,7 @@ object Elements:
       List("exit", "quit"),
       None,
       "a -> Stop program execution"
-    ) { ctx ?=>
-      throw new Exception("Program exited")
-    }
+    ) { ctx ?=> throw new QuitException }
 
     def execHelper(value: VAny)(using ctx: Context): VAny =
       value match
@@ -668,29 +661,18 @@ object Elements:
         List("prefixes"),
         "a: lst -> Prefixes of a"
       ) {
-        case a: VList => ListHelpers.prefixes(a)
+        case a: VList => VList.from(ListHelpers.prefixes(a))
         case a: String =>
           VList.from(
             ListHelpers
-              .prefixes(
-                VList.from(ListHelpers.makeIterable(a))
-              )
-              .map(_ match
-                case b: VList => b.mkString
-                case _1       => _1.toString
-              )
+              .prefixes(ListHelpers.makeIterable(a))
+              .map(_.mkString)
           )
         case a: VNum =>
           VList.from(
             ListHelpers
-              .prefixes(
-                ListHelpers.makeIterable(a.vabs)
-              )
-              .map(_ match
-                case b: VList => b.mkString
-                case b        => b.toString
-              )
-              .map(MiscHelpers.eval)
+              .prefixes(ListHelpers.makeIterable(a.vabs))
+              .map(n => MiscHelpers.eval(n.mkString))
           )
       }
 
@@ -833,7 +815,7 @@ object Elements:
     ) {
       case a: VNum   => a * 3
       case a: String => a.forall(_.isLetter)
-      case a: VList  => ListHelpers.transpose(a, None)
+      case a: VList  => ListHelpers.transpose(a)
     }
 
     val triplicate =
