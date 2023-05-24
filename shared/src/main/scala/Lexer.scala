@@ -5,6 +5,7 @@ import vyxal.impls.Elements
 import java.util.regex.Pattern
 import scala.util.matching.Regex
 import scala.util.parsing.combinator.*
+
 import VyxalToken.*
 
 case class VyxalCompilationError(msg: String)

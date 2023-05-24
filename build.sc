@@ -45,7 +45,10 @@ trait VyxalModule extends ScalaModule {
   trait VyxalTestModule extends Tests with TestModule.ScalaTest {
     def scalaVersion = VyxalModule.this.scalaVersion()
 
-    def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.2.15")
+    def ivyDeps = Agg(
+      ivy"org.scalatest::scalatest:3.2.15",
+      ivy"io.circe::circe-yaml:0.14.2"
+    )
 
     // Task to only show output from failed tests
     def testQuiet(args: String*) =
@@ -66,7 +69,11 @@ trait VyxalModule extends ScalaModule {
 object jvm extends VyxalModule {
   def platform = "jvm"
 
-  object test extends VyxalTestModule
+  object test extends VyxalTestModule {
+    def ivyDeps = T {
+      super.ivyDeps() ++ Seq(ivy"org.yaml:snakeyaml::1.33")
+    }
+  }
 }
 
 /** Shared and JS-specific code */
