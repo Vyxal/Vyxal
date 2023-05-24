@@ -284,7 +284,29 @@ object ListHelpers:
       ctx: Context
   ): VList =
     val matrix = iterable.map(makeIterable(_))
-    ???
+
+    if matrix.isEmpty then VList.empty
+    else
+      val out = filler match
+        case None =>
+          LazyList.unfold(matrix) { matrix =>
+            Option.when(matrix.head.nonEmpty) {
+              // The first row must be preserved so we know when to stop,
+              // so it isn't included in the filter.
+              val remaining = matrix.head +: matrix.tail.filter(_.nonEmpty)
+              val col = VList.from(remaining.map(_.head))
+              (col, remaining.map(_.tail))
+            }
+          }
+        case Some(filler) =>
+          LazyList.unfold(matrix) { matrix =>
+            Option.when(matrix.head.nonEmpty) {
+              val col = VList.from(matrix.map(_.headOption.getOrElse(filler)))
+              (col, matrix.map(_.tail))
+            }
+          }
+      VList.from(out)
+  end transposeSafe
 
   def vectorisedMaximum(iterable: VList, b: VVal): VList =
     VList.from(iterable.map { a =>
