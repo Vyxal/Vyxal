@@ -8,6 +8,32 @@ import io.circe.{yaml, Decoder, HCursor, Json}
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.Checkpoints.Checkpoint
 
+
+/** A list of tests. Can be nested */
+enum TestGroup:
+  case Subgroups(subgroups: Map[String, TestGroup])
+  case Tests(tests: Iterable[YamlTest])
+
+/** A single test
+  *
+  * @param code
+  *   Specific bit of code to be run, in case the element cannot be used
+  *   directly
+  */
+case class YamlTest(
+    inputs: Seq[VAny],
+    code: Option[String],
+    criteria: Seq[Criterion]
+)
+
+/** A criterion for the output of a test to meet */
+enum Criterion:
+  case Equals(expected: VAny)
+  case StartsWith(prefix: Seq[VAny])
+  case EndsWith(suffix: Seq[VAny])
+  /** The output must be a list containing all of the given elements */
+  case Contains(elems: Seq[VAny], monotonic: Boolean = false)
+
 /** Tests for specific elements. The format is something like this:
   * {{{
   * # The element itself
@@ -182,29 +208,3 @@ class YamlTests extends AnyFunSpec:
     criteria.toSeq
   end getOutputCriteria
 end YamlTests
-
-// case class ElementTests(element: String, tests: List[Any]) derives YamlCodec
-
-/** A list of tests. Can be nested */
-enum TestGroup:
-  case Subgroups(subgroups: Map[String, TestGroup])
-  case Tests(tests: Iterable[YamlTest])
-
-/** A single test
-  *
-  * @param code
-  *   Specific bit of code to be run, in case the element cannot be used
-  *   directly
-  */
-case class YamlTest(
-    inputs: Seq[VAny],
-    code: Option[String],
-    criteria: Seq[Criterion]
-)
-
-/** A criterion for the output of a test to meet */
-enum Criterion:
-  case Equals(expected: VAny)
-  case StartsWith(prefix: Seq[VAny])
-  case EndsWith(suffix: Seq[VAny])
-  case Contains(elems: Seq[VAny], monotonic: Boolean = false)
