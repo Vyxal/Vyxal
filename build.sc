@@ -47,7 +47,7 @@ trait VyxalModule extends ScalaModule {
 
     def ivyDeps = Agg(
       ivy"org.scalatest::scalatest:3.2.15",
-      ivy"org.virtuslab::scala-yaml:0.0.6"
+      ivy"io.circe::circe-yaml:0.14.2"
     )
 
     // Task to only show output from failed tests

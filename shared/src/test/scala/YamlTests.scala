@@ -1,41 +1,48 @@
 package vyxal
 
+import java.io.InputStreamReader
 import scala.collection.mutable
 import scala.jdk.CollectionConverters.*
 
+import io.circe.{yaml, Decoder, HCursor, Json}
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.Checkpoints.Checkpoint
-import org.virtuslab.yaml.*
 
 /** Tests for specific elements. The format is something like this:
   * {{{
-  * - element: "ඞ"
-  *   tests:
-  *     # A simple v2-style test
-  *     - [1, [2, 4]]: [3, 5]
-  *     # In case you have lots of inputs or you just want to be explicit
-  *     - inputs:
-  *         - "foo"
-  *         - 2
-  *         - ["nested"]
-  *     - output: "asdf"
-  *     # If you want to specify some conditions about the output
-  *     - inputs: "gimme all the primes"
-  *       # Ensure the output starts with a certain prefix
-  *       starts-with: [2, 3, 5]
-  *       # Make sure it contains 0 and 1
-  *       contains: [0, 1]
-  *       # Same as contains, but assume the list is monotonic (useful for infinite lists)
-  *       contains-monotonic: [2]
-  *       # To make sure the output *doesn't* meet some conditions
-  *       not:
-  *         contains: [3]
-  *         # Make sure the output *doesn't* end with -9, -10
-  *         ends-with: [-9, -10]
-  *     # In case you want to group tests
-  *     - "should work on numbers":
-  *       - [0.1, 4.5]: 42
-  *       - [1, 2]: 5
+  * # The element itself
+  * "ඞ":
+  *   # For relatively small cases
+  *   - { in: [1, 2], out: 3 }
+  *   # In case you have lots of inputs or you just want to be explicit
+  *   - in:
+  *     - "foo"
+  *     - 2
+  *     - ["nested"]
+  *   - out: "asdf"
+  *   # If you want to specify some conditions about the output
+  *   - in: ["gimme all the primes"]
+  *     # Ensure the output starts with a certain prefix
+  *     starts-with: [2, 3, 5]
+  *     # Make sure it contains 0 and 1
+  *     contains: [0, 1]
+  *     # Same as contains, but assume the list is monotonic (useful for infinite lists)
+  *     contains-monotonic: [2]
+  *     # To make sure the output *doesn't* meet some conditions
+  *     not:
+  *       contains: [3]
+  *       # Make sure the output *doesn't* end with -9, -10
+  *       ends-with: [-9, -10]
+  * "+":
+  *   # You can also make groups of tests
+  *   should work on numbers:
+  *     nested:
+  *       - { in: [0.1, 4.5], out: 42 }
+  *       - { in: [1, 2], out: 5 }
+  *   other group of tests:
+  *     - { in: [1], out: 5 }
+  *   # But you can't mix test groups and test lists
+  *   - { in: [], out: [] } # This line isn't allowed here
   * }}}
   */
 class YamlTests extends AnyFunSpec:
@@ -49,154 +56,139 @@ class YamlTests extends AnyFunSpec:
     }
 
   private def execTests(element: String, testGroup: TestGroup): Unit =
-    for YamlTest(inputs, codeOverride, criteria) <- testGroup.tests do
-      val code = codeOverride.getOrElse(element)
-      it(s"Execute `$code` on inputs ${inputs.mkString(", ")}") {
-        given ctx: Context = Context(inputs = inputs)
-        Interpreter.execute(code)
-        val output = ctx.peek
-        val checkpoint = Checkpoint()
+    testGroup match
+      case TestGroup.Subgroups(subgroups) =>
+        for (desc, subgroup) <- subgroups do
+          describe(desc) {
+            execTests(element, subgroup)
+          }
+      case TestGroup.Tests(tests) =>
+        for YamlTest(inputs, codeOverride, criteria) <- tests do
+          val code = codeOverride.getOrElse(element)
+          it(s"Execute `$code` on inputs ${inputs.mkString(", ")}") {
+            given ctx: Context = Context(inputs = inputs)
+            Interpreter.execute(code)
+            val output = ctx.peek
+            val checkpoint = Checkpoint()
 
-        criteria.foreach {
-          case Criterion.Equals(expected) =>
-            checkpoint { assertResult(expected)(output) }
-          case crit =>
-            checkpoint {
-              output match
-                case lst: VList =>
-                  (crit: @unchecked) match
-                    case Criterion.StartsWith(prefix) =>
-                      assertResult(prefix)(lst.slice(0, prefix.length))
-                    case Criterion.EndsWith(suffix) =>
-                      assertResult(suffix)(
-                        lst.slice(lst.length - suffix.length, lst.length)
-                      )
-                    case Criterion.Contains(elems, false) =>
-                      val notFound = elems.filter(lst.contains)
-                      fail(s"$lst does not contain ${notFound.mkString(",")}")
-                    case Criterion.Contains(elems, true) =>
-                      ???
-                case _ => fail(s"$output is not a list")
+            criteria.foreach {
+              case Criterion.Equals(expected) =>
+                checkpoint { assertResult(expected)(output) }
+              case crit =>
+                checkpoint {
+                  output match
+                    case lst: VList =>
+                      (crit: @unchecked) match
+                        case Criterion.StartsWith(prefix) =>
+                          assertResult(prefix)(lst.slice(0, prefix.length))
+                        case Criterion.EndsWith(suffix) =>
+                          assertResult(suffix)(
+                            lst.slice(lst.length - suffix.length, lst.length)
+                          )
+                        case Criterion.Contains(elems, false) =>
+                          val notFound = elems.filter(lst.contains)
+                          fail(
+                            s"$lst does not contain ${notFound.mkString(",")}"
+                          )
+                        case Criterion.Contains(elems, true) =>
+                          ???
+                    case _ => fail(s"$output is not a list")
+                }
             }
-        }
 
-        checkpoint.reportAll()
-      }
-    end for
+            checkpoint.reportAll()
+          }
+        end for
 
-    for (desc, subgroup) <- testGroup.subgroups do
-      describe(desc) {
-        execTests(element, subgroup)
-      }
   end execTests
 
   /** Load all the tests, mapping elements to test groups */
   private def loadTests(): Map[String, TestGroup] =
-    val yaml = io.Source
-      .fromInputStream(
-        this
-          .getClass()
-          .getClassLoader()
-          .getResourceAsStream(TestsFile)
+    val json = yaml.parser.parse(
+      new InputStreamReader(
+        getClass().getClassLoader().getResourceAsStream(TestsFile)
       )
-      .mkString
+    )
 
-    yaml.as[List[Map[String, Any]]] match
+    json match
       case Right(parsed) =>
-        parsed.map { elemInfo =>
-          val symbol = elemInfo("element").asInstanceOf[String]
-          val testsInfo = elemInfo("tests")
-          symbol -> getTestGroup(testsInfo.asInstanceOf[List[Any]])
+        val elemInfos = parsed.asObject.getOrElse(
+          throw Error(s"Expected tests.yaml to be a map")
+        )
+        elemInfos.keys.map { symbol =>
+          val elem = elemInfos(symbol).get
+          symbol -> parseOrThrow[TestGroup](elem)
         }.toMap
-      case Left(err) => throw Error(s"Parsing tests failed: ${err.msg}")
+      case Left(e) => throw Error("Parsing tests.yaml failed", e)
   end loadTests
 
-  /** Load a TestGroup from a part of the parsed YAML */
-  private def getTestGroup(testsInfo: List[Any]): TestGroup =
-    val tests = mutable.ArrayBuffer.empty[YamlTest]
-    val subgroups = mutable.Map.empty[String, TestGroup]
-    for possibleTestInfo <- testsInfo do
-      val testInfo = possibleTestInfo.asInstanceOf[Map[Any, Any]]
-      if testInfo.contains("inputs") then
-        // A test that looks like
-        // - inputs: ["foo", "bar"]
-        //   outupt: "foobar"
-        val inputs = testInfo
-          .get("inputs")
-          .asInstanceOf[List[Any]]
-          .map(javaToVyxal)
-        val code = Option(testInfo.get("code").asInstanceOf[String])
-        tests.append(YamlTest(inputs, code, getOutputCriteria(testInfo)))
-      else if testInfo.size == 1 then
-        // Either a test group or a v2-style [...input]: output test
-        val (firstKey, firstValue) = testInfo.head
-        firstKey match
-          case groupName: String =>
-            // It's a nested group of tests
-            subgroups.put(
-              groupName,
-              getTestGroup(firstValue.asInstanceOf[List[Any]])
-            )
-          case inputs: List[?] =>
-            // It's a v2-style test
-            val output = javaToVyxal(firstValue)
-            tests.append(
-              YamlTest(
-                inputs.map(javaToVyxal),
-                None,
-                Seq(Criterion.Equals(output))
-              )
-            )
-        end match
-      else
-        throw new Error(
-          s"Invalid test format (no inputs given): $testInfo"
-        )
-      end if
-    end for
+  /** Try parsing some JSON as type `A` and throw if parsing failed */
+  private def parseOrThrow[A](json: Json)(using Decoder[A]): A =
+    json.as[A] match
+      case Right(v) => v
+      case Left(e)  => throw e
 
-    TestGroup(tests.toSeq, subgroups.toMap)
-  end getTestGroup
+  given Decoder[VAny] = new Decoder:
+    override def apply(c: HCursor): Decoder.Result[VAny] =
+      // todo make this return an Either instead
+      def fromJson(json: Json): VAny =
+        if json.isArray then VList.from(json.asArray.get.map(fromJson))
+        else if json.isNumber then json.asNumber.get.toDouble
+        else if json.isString then json.asString.get
+        else throw Error(s"Invalid Vyxal value: $json")
+      Right(fromJson(c.value))
 
-  private def getOutputCriteria(testInfo: Map[Any, Any]): Seq[Criterion] =
+  given Decoder[TestGroup] = new Decoder:
+    override def apply(c: HCursor): Decoder.Result[TestGroup] =
+      c.values match
+        case Some(testInfos) =>
+          val tests = testInfos.map { test =>
+            val inputs = (test \\ "in").head.asArray.get.map(parseOrThrow[VAny])
+            val code = (test \\ "code").headOption.map(_.asString.get)
+            val output = getOutputCriteria(test)
+            YamlTest(inputs, code, output)
+          }
+          Right(TestGroup.Tests(tests))
+        case None =>
+          val subgroups = c.keys.get.map { groupName =>
+            groupName -> parseOrThrow[TestGroup](
+              c
+                .downField(groupName)
+                .success
+                .get
+                .value
+            )
+          }.toMap
+          // todo return a Left if errors were found instead of throwing immediately
+          Right(TestGroup.Subgroups(subgroups))
+    end apply
+
+  private def getOutputCriteria(testInfo: Json): Seq[Criterion] =
     val criteria = mutable.ArrayBuffer.empty[Criterion]
-    val output = testInfo.get("output")
-    if output != null then criteria += Criterion.Equals(javaToVyxal(output))
-    val startsWith = testInfo.get("starts-with")
-    if startsWith != null then
-      criteria += Criterion.StartsWith(javaListToVyxal(startsWith))
-    val endsWith = testInfo.get("starts-with")
-    if endsWith != null then
-      criteria += Criterion.EndsWith(javaListToVyxal(endsWith))
-    val contains = testInfo.get("contains")
-    if contains != null then
-      criteria += Criterion.Contains(javaListToVyxal(contains))
-    val containsMonotonic = testInfo.get("contains-monotonic")
-    if containsMonotonic != null then
-      criteria +=
-        Criterion.Contains(javaListToVyxal(containsMonotonic), monotonic = true)
+    for output <- testInfo \\ "out" do
+      criteria += Criterion.Equals(parseOrThrow(output))
+    for startsWith <- testInfo \\ "starts-with" do
+      criteria += Criterion.StartsWith(parseOrThrow[List[VAny]](startsWith))
+    for endsWith <- testInfo \\ "ends-with" do
+      criteria += Criterion.EndsWith(parseOrThrow[List[VAny]](endsWith))
+    for contains <- testInfo \\ "contains" do
+      criteria += Criterion.Contains(parseOrThrow[List[VAny]](contains))
+    for contains <- testInfo \\ "contains-monotonic" do
+      criteria += Criterion.Contains(
+        parseOrThrow[List[VAny]](contains),
+        monotonic = true
+      )
 
     criteria.toSeq
   end getOutputCriteria
-
-  private def javaToVyxal(obj: Any): VAny = obj match
-    case s: String     => s
-    case i: Int        => VNum(i)
-    case d: Double     => VNum(d)
-    case list: List[?] => VList.from(list.map(javaToVyxal))
-
-  private def javaListToVyxal(list: Any): Seq[VAny] =
-    list.asInstanceOf[List[Any]].map(javaToVyxal)
 end YamlTests
 
 // case class ElementTests(element: String, tests: List[Any]) derives YamlCodec
 
-/** A list of tests. Can be nested
-  *
-  * @param subgroups
-  *   Maps descriptions of test groups to the tests themselves
-  */
-case class TestGroup(tests: Seq[YamlTest], subgroups: Map[String, TestGroup])
+/** A list of tests. Can be nested */
+enum TestGroup:
+  case Subgroups(subgroups: Map[String, TestGroup])
+  case Tests(tests: Iterable[YamlTest])
 
 /** A single test
   *

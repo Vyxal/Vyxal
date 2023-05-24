@@ -1,17 +1,14 @@
-- element: "+"
-  tests:
-    - ["1", 2] : "12"
-    - ["foo", "bar"]: "foobar"
-    - [[1, "a", []], 3]: [4, "a3", []]
+"+":
+  - { in: ["1", 2], out: "12" }
+  - { in: ["foo", "bar"], out: "foobar" }
+  - { in: [[1, "a", []], 3], out: [4, "a3", []] }
 
-- element: "-"
-  tests:
-    - "when given a string and a number":
-      - ["Hello, World", 5]: "Hello, World-----"
-      - ["Hello, World", 5.2]: "Hello, World-----"
-      - ["Hello, World", -5]: "-----Hello, World"
+"-":
+  when given a string and a number:
+    - { in: ["Hello, World", 5], out: "Hello, World-----" }
+    - { in: ["Hello, World", 5.2], out: "Hello, World-----" }
+    - { in: ["Hello, World", -5], out: "-----Hello, World" }
 
-- element: "B"
-  tests:
-    - "shouldn't do string multiplication with string lists":
-      - [["1", "0", ["0", "1"]]]: 5
+"B":
+  shouldn't do string multiplication with string lists:
+    - { in: [["1", "0", ["0", "1"]]], out: 5 }

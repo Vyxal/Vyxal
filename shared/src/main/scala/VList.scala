@@ -102,8 +102,9 @@ end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:
   def from(it: Seq[VAny]): VList =
-    if it.isInstanceOf[VList] then it
-    else new VList(it)
+    it match
+      case temp: VList => temp
+      case _           => new VList(it)
 
 
   /** Zip multiple VLists together with a function.
