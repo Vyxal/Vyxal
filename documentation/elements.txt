@@ -302,15 +302,15 @@ Keywords: vectorise-, vec-, v-
 Description: Vectorises
 vf: f but vectorised
 ---------------------
+⸠
+Keywords: *-
+Description: Turn the next element (whether that be a structure/modifier/element) into a lambda
+⸠f: Push the equivalent of λf} to the stack
+---------------------
 э
 Keywords: ***-
 Description: Turn the next three elements (whether that be a structure/modifier/element) into a lambda
 эfgh: Push the equivalent of λfgh} to the stack
----------------------
-ߣ
-Keywords: *-
-Description: Turn the next element (whether that be a structure/modifier/element) into a lambda
-⥑f: Push the equivalent of λf} to the stack
 ---------------------
 /
 Keywords: foldl-, reduce-, /-, fold-, reduceby-
