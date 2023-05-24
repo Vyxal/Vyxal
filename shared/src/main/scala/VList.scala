@@ -106,7 +106,6 @@ object VList extends SpecificIterableFactory[VAny, VList]:
       case temp: VList => temp
       case _           => new VList(it)
 
-
   /** Zip multiple VLists together with a function.
     *
     * The parameter is a `PartialFunction` instead of a function because it's
