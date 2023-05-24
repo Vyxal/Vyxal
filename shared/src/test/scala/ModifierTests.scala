@@ -21,8 +21,8 @@ class ModifierTests extends VyxalTests:
 
   describe("Function grouping modifiers") {
     testMulti(
-      "#[1|2|3#] ⥑× M" -> VList(1, 4, 9),
-      "#[1|2|3#] ⥑2× M" -> VList(2, 4, 6),
+      "#[1|2|3#] ⸠× M" -> VList(1, 4, 9),
+      "#[1|2|3#] ⸠2× M" -> VList(2, 4, 6),
       "#[1|2|3#] ϩ×+ M" -> VList(2, 6, 12),
       "#[1|2|3#] ϩ2×+ M" -> VList(3, 6, 9),
       "#[1|2|3#] э×++ M" -> VList(3, 8, 15),
