@@ -49,7 +49,7 @@ object Modifiers:
       val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
       AST.makeSingle(lambdaAst, AST.Command("R"))
     },
-    "⥑" -> Modifier(
+    "ߣ" -> Modifier(
       "Single Element Lambda",
       """|Turn the next element (whether that be a structure/modifier/element) into a lambda
          |⥑f: Push the equivalent of λf} to the stack""".stripMargin,
