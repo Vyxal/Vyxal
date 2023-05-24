@@ -25,7 +25,7 @@
 ᵞ = vertical scan
 ᶻ = zipwith
 ᶴ = Two character string
-⥑ = Next Element as Function
+⸠ = Next Element as Function
 ϩ = Next Two Elements as Function
 э = Next Three Elements as Function
 Ч = Next Four Elements as Function
