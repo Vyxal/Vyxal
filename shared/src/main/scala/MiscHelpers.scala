@@ -6,6 +6,7 @@ import vyxal.VNum.given
 
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Stack
+
 import spire.algebra.*
 
 object MiscHelpers:

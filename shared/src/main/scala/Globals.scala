@@ -1,6 +1,7 @@
 package vyxal
 
 import scala.io.StdIn
+
 import VNum.given
 
 /** Stuff that's shared across all contexts

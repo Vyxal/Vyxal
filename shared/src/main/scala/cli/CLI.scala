@@ -4,6 +4,7 @@ import vyxal.*
 import vyxal.impls.{Element, Elements}
 
 import java.io.File
+
 import scopt.OParser
 
 object CLI:

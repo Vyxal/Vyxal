@@ -5,6 +5,7 @@ import vyxal.Interpreter.executeFn
 
 import scala.collection.mutable as mut
 import scala.reflect.TypeTest
+
 import spire.algebra.*
 import spire.implicits.*
 import spire.math.{Complex, Real}

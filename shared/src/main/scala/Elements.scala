@@ -7,6 +7,7 @@ import vyxal.*
 
 import scala.io.StdIn
 import scala.language.implicitConversions
+
 import spire.algebra.*
 import VNum.given
 

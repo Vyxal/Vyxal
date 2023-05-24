@@ -2,9 +2,10 @@ package vyxal
 
 import vyxal.VNum.given
 
+import scala.collection.SpecificIterableFactory
+
 import collection.immutable.SeqOps
 import collection.mutable
-import scala.collection.SpecificIterableFactory
 import spire.algebra.*
 
 /** A Vyxal list. It simply wraps around another list and could represent a
@@ -100,10 +101,10 @@ class VList private (val lst: Seq[VAny])
 end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:
-  def from(it: Seq[VAny]): VList = 
-    if it.isInstanceOf[VList] then it
-    else new VList(it)
-  
+  def from(it: Seq[VAny]): VList =
+    it match
+      case temp: VList => temp
+      case _           => new VList(it)
 
   /** Zip multiple VLists together with a function.
     *
