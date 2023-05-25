@@ -313,7 +313,7 @@ class ParserTests extends AnyFunSuite:
       )
     )
     assert(
-      Parser.parse("″″*O+OO") === Right(
+      Parser.parse("ϩϩ*O+OO") === Right(
         Group(
           List(
             Lambda(
