@@ -141,7 +141,7 @@ case class Settings(
     case _ => throw IllegalArgumentException(s"$flag is an invalid flag")
 
   /** Helper to update these settings with multiple flags
-   * 
+   *
    * @see withFlag
    */
   def withFlags(flags: List[Char]): Settings =
