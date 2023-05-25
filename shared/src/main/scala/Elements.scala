@@ -794,6 +794,17 @@ object Elements:
         ctx.push(b, a)
     }
 
+    val transposeSafe = addElem(
+      Monad,
+      "ÞT",
+      "Transpose Safe",
+      List("transpose-safe"),
+      "a: any -> transpose a"
+    ) {
+      case a: VFun => throw RuntimeException(s"Can't transpose (ÞT) function: $a")
+      case a => ListHelpers.transposeSafe(a)
+    }
+
     val triple: Monad = addElem(
       Monad,
       "T",
