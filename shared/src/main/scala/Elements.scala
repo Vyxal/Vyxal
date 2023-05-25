@@ -801,8 +801,9 @@ object Elements:
       List("transpose-safe"),
       "a: any -> transpose a"
     ) {
-      case a: VFun => throw RuntimeException(s"Can't transpose (ÞT) function: $a")
-      case a => ListHelpers.transposeSafe(a)
+      case a: VFun =>
+        throw RuntimeException(s"Can't transpose (ÞT) function: $a")
+      case a => ListHelpers.transposeSafe(ListHelpers.makeIterable(a))
     }
 
     val triple: Monad = addElem(
