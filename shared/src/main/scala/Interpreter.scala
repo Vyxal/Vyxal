@@ -20,12 +20,16 @@ object Interpreter:
         if Lexer.hasSugar(sbcsified) then ctx.globals.printFn(ast.toVyxal)
         if ctx.settings.logLevel == LogLevel.Debug then
           println(s"Executing '$code' (ast: $ast)")
+
         try execute(ast)
         catch
-          case _: QuitException => // Program quit using Q
-            // todo implicit output according to settings
-            if !ctx.isStackEmpty && ctx.settings.endPrintMode == EndPrintMode.Default
-            then vyPrintln(ctx.peek)
+          case _: QuitException =>
+            if ctx.settings.logLevel == LogLevel.Debug then
+              println(s"Program quit using Q")
+
+        // todo implicit output according to settings
+        if !ctx.isStackEmpty && ctx.settings.endPrintMode == EndPrintMode.Default
+        then vyPrintln(ctx.peek)
       case Left(error) =>
         throw new Error(s"Error while executing $code: $error")
   end execute
