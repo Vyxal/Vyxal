@@ -58,7 +58,7 @@ enum StructureType(val open: String):
   case DecisionStructure extends StructureType("Ḍ")
   case GeneratorStructure extends StructureType("Ṇ")
 
-val CODEPAGE = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨ\nᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ′″‴⁴ᵜ !"
+val CODEPAGE = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨ\nᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ⸠ϩэЧᵜ !"
   + "\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFG"
   + "HIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmn"
   + "opqrstuvwxyz{|}~¦ȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊικȧḃċ"
@@ -66,10 +66,10 @@ val CODEPAGE = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨ\nᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘ�
   + "⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λƛΩ₳µ∆øÞ½ʀɾ¯×÷£¥←↑→↓±¤†Π¬∧∨⁰"
   + "¹²³Ɠɠ∥∦ı„”ð€“¶ᶿᶲ•≈¿ꜝ"
 
-val MONADIC_MODIFIERS = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻ¿′/\\~v@`ꜝ"
-val DYADIC_MODIFIERS = "″∥∦"
-val TRIADIC_MODIFIERS = "‴"
-val TETRADIC_MODIFIERS = "⁴"
+val MONADIC_MODIFIERS = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻ¿⸠/\\~v@`ꜝ"
+val DYADIC_MODIFIERS = "ϩ∥∦"
+val TRIADIC_MODIFIERS = "э"
+val TETRADIC_MODIFIERS = "Ч"
 val SPECIAL_MODIFIERS = "ᵗᵜ"
 
 object Lexer extends RegexParsers:

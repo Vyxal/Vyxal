@@ -41,7 +41,6 @@ object ListHelpers:
   end filter
 
   /** A wrapper call to the generator method in interpreter */
-
   def generate(function: VFun, initial: VList)(using ctx: Context): VList =
     val firstN = initial.length match
       case 0 => ctx.settings.defaultValue
@@ -204,7 +203,7 @@ object ListHelpers:
 
         VList(out*)
       case None =>
-        return VList(
+        VList(
           iterable.zipWithIndex
             .sorted { (a, b) =>
               MiscHelpers.compareExact(
@@ -217,8 +216,8 @@ object ListHelpers:
 
   end sortBy
 
-  def prefixes(iterable: VList)(using ctx: Context): VList =
-    return VList.from(iterable.inits.toSeq.reverse.tail)
+  def prefixes(iterable: VList): Seq[VList] =
+    iterable.inits.toSeq.reverse.tail
 
   /** Split a list on a sublist
     *
@@ -245,6 +244,71 @@ object ListHelpers:
 
     parts.toSeq
   end split
+
+  /** Transpose a matrix.
+    *
+    * Hangs on infinite lists of finite lists. See [[transposeSafe]] for a
+    * version that handles those. Based on
+    * [[https://github.com/Adriandmen/05AB1E/blob/master/lib/commands/matrix_commands.ex 05AB1E's implementation]].
+    */
+  def transpose(iterable: VList, filler: Option[VAny] = None)(using
+      ctx: Context
+  ): VList =
+    val matrix = iterable.map(makeIterable(_))
+
+    val out = filler match
+      case None =>
+        LazyList.unfold(matrix) { matrix =>
+          val remaining = matrix.filter(_.nonEmpty)
+          Option.when(remaining.nonEmpty) {
+            val col = VList.from(remaining.map(_.head))
+            (col, remaining.map(_.tail))
+          }
+        }
+      case Some(filler) =>
+        LazyList.unfold(matrix) { matrix =>
+          Option.when(matrix.exists(_.nonEmpty)) {
+            val col = VList.from(matrix.map(_.headOption.getOrElse(filler)))
+            (col, matrix.map(_.tail))
+          }
+        }
+    VList.from(out)
+  end transpose
+
+  /** Transpose a matrix. Uses the length of the first row of the inputted
+    * matrix as the number of columns in the resulting matrix.
+    *
+    * @see
+    *   transpose
+    */
+  def transposeSafe(iterable: VList, filler: Option[VAny] = None)(using
+      ctx: Context
+  ): VList =
+    val matrix = iterable.map(makeIterable(_))
+
+    if matrix.isEmpty then VList.empty
+    else
+      val out = filler match
+        case None =>
+          LazyList.unfold(matrix) { matrix =>
+            Option.when(matrix.head.nonEmpty) {
+              // The first row must be preserved so we know when to stop,
+              // so it isn't included in the filter.
+              val remaining = matrix.head +: matrix.tail.filter(_.nonEmpty)
+              val col = VList.from(remaining.map(_.head))
+              (col, remaining.map(_.tail))
+            }
+          }
+        case Some(filler) =>
+          LazyList.unfold(matrix) { matrix =>
+            Option.when(matrix.head.nonEmpty) {
+              val col = VList.from(matrix.map(_.headOption.getOrElse(filler)))
+              (col, matrix.map(_.tail))
+            }
+          }
+      VList.from(out)
+    end if
+  end transposeSafe
 
   def vectorisedMaximum(iterable: VList, b: VVal): VList =
     VList.from(iterable.map { a =>

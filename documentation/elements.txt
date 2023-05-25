@@ -142,6 +142,10 @@ Keywords: factors, divisors, is-numeric, is-num, is-number, is-num?, is-number?
 - a: num -> Factors of a
 - a: str -> Is a numeric?
 ---------------------
+L (Length | Length of List) (non-vectorising)
+Keywords: length, len, length-of, len-of, size
+- a: any -> Length of a
+---------------------
 M (Map Function | Mold Lists | Multiplicity) (non-vectorising)
 Keywords: map, mold, multiplicity, times-divide
 - a: any, b: fun -> a.map(b)
@@ -164,6 +168,10 @@ P (Prefixes) (non-vectorising)
 Keywords: prefixes
 - a: lst -> Prefixes of a
 ---------------------
+Q (Exit | Quit) (non-vectorising)
+Keywords: exit, quit
+- a -> Stop program execution
+---------------------
 R (Reduce by Function Object | Dyadic Range | Regex Match) (non-vectorising)
 Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has-regex-match?, fold
 - a: fun, b: any -> reduce iterable b by function a
@@ -174,6 +182,12 @@ Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has
 S (Sort ascending) (non-vectorising)
 Keywords: sort, sortasc, sort-asc
 - a: any -> convert to list and sort ascending
+---------------------
+T (Triple | Contains Only Alphabet | Transpose) (non-vectorising)
+Keywords: triple, alphabet?, alphabetical?, contains-only-alphabet?, contains-only-alphabetical?, transpose, flip, reverse-axes, flip-axes, permute-axes
+- a: num -> 3 * a
+- a: str -> does a contain only alphabet characters?
+- a: any -> transpose a
 ---------------------
 W (Wrap) (non-vectorising)
 Keywords: wrap
@@ -261,6 +275,10 @@ Keywords: alphabet, a-z
 Keywords: empty-list, nil-list, new-list
 - -> []
 ---------------------
+ÞT (Transpose Safe) (non-vectorising)
+Keywords: transpose-safe
+- a: any -> transpose a
+---------------------
 × (Multiplication) (vectorising)
 Keywords: mul, multiply, times, str-repeat, *, ring-trans
 - a: num, b: num -> a * b
@@ -273,30 +291,30 @@ Keywords: divide, div, split
 - a: num, b: num -> a / b
 - a: str, b: str -> Split a on the regex b
 ---------------------
-′
-Keywords: *-
-Description: Turn the next element (whether that be a structure/modifier/element) into a lambda
-′f: Push the equivalent of λf} to the stack
+Ч
+Keywords: ****-
+Description: Turn the next four elements (whether that be a structure/modifier/element) into a lambda
+Чfghi: Push the equivalent of λfghi} to the stack
 ---------------------
-″
+ϩ
 Keywords: **-
 Description: Turn the next two elements (whether that be a structure/modifier/element) into a lambda
-″fg: Push the equivalent of λfg} to the stack
+ϩfg: Push the equivalent of λfg} to the stack
 ---------------------
 v
 Keywords: vectorise-, vec-, v-
 Description: Vectorises
 vf: f but vectorised
 ---------------------
-‴
+⸠
+Keywords: *-
+Description: Turn the next element (whether that be a structure/modifier/element) into a lambda
+⸠f: Push the equivalent of λf} to the stack
+---------------------
+э
 Keywords: ***-
 Description: Turn the next three elements (whether that be a structure/modifier/element) into a lambda
-‴fgh: Push the equivalent of λfgh} to the stack
----------------------
-⁴
-Keywords: ****-
-Description: Turn the next four elements (whether that be a structure/modifier/element) into a lambda
-⁴fghi: Push the equivalent of λfghi} to the stack
+эfgh: Push the equivalent of λfgh} to the stack
 ---------------------
 /
 Keywords: foldl-, reduce-, /-, fold-, reduceby-

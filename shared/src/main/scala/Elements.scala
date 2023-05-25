@@ -22,11 +22,6 @@ case class Element(
     impl: DirectFn
 )
 
-case class UnimplementedOverloadException(element: String, args: Seq[VAny])
-    extends RuntimeException(
-      s"$element not supported for input(s) ${args.mkString("(", ", ", ")")}"
-    )
-
 object Elements:
   val elements: Map[String, Element] = Impls.elements.toMap
 
@@ -178,7 +173,7 @@ object Elements:
       List("append"),
       "a: any, b: any -> list(a) ++ [b]"
     ) { case (a, b) =>
-      VList(ListHelpers.makeIterable(a) :+ b*)
+      VList.from(ListHelpers.makeIterable(a) :+ b)
     }
 
     addFull(
@@ -293,6 +288,14 @@ object Elements:
     ) { ctx ?=>
       ctx.push(execHelper(ctx.pop()))
     }
+
+    val exitProgram = addDirect(
+      "Q",
+      "Exit | Quit",
+      List("exit", "quit"),
+      None,
+      "a -> Stop program execution"
+    ) { ctx ?=> throw new QuitException }
 
     def execHelper(value: VAny)(using ctx: Context): VAny =
       value match
@@ -496,6 +499,17 @@ object Elements:
       else temp
     }
 
+    val length: Monad = addElem(
+      Monad,
+      "L",
+      "Length | Length of List",
+      List("length", "len", "length-of", "len-of", "size"),
+      "a: any -> Length of a"
+    ) {
+      case a: VList => a.length
+      case a        => ListHelpers.makeIterable(a).length
+    }
+
     val lessThan: Dyad = addVect(
       Dyad,
       "<",
@@ -648,29 +662,18 @@ object Elements:
         List("prefixes"),
         "a: lst -> Prefixes of a"
       ) {
-        case a: VList => ListHelpers.prefixes(a)
+        case a: VList => VList.from(ListHelpers.prefixes(a))
         case a: String =>
           VList.from(
             ListHelpers
-              .prefixes(
-                VList.from(ListHelpers.makeIterable(a))
-              )
-              .map(_ match
-                case b: VList => b.mkString
-                case _1       => _1.toString
-              )
+              .prefixes(ListHelpers.makeIterable(a))
+              .map(_.mkString)
           )
         case a: VNum =>
           VList.from(
             ListHelpers
-              .prefixes(
-                VList.from(ListHelpers.makeIterable(a))
-              )
-              .map(_ match
-                case b: VList => b.mkString
-                case b        => b.toString
-              )
-              .map(MiscHelpers.eval)
+              .prefixes(ListHelpers.makeIterable(a.vabs))
+              .map(n => MiscHelpers.eval(n.mkString))
           )
       }
 
@@ -789,6 +792,43 @@ object Elements:
       ctx ?=>
         val b, a = ctx.pop()
         ctx.push(b, a)
+    }
+
+    val transposeSafe = addElem(
+      Monad,
+      "ÞT",
+      "Transpose Safe",
+      List("transpose-safe"),
+      "a: any -> transpose a"
+    ) {
+      case a: VFun =>
+        throw RuntimeException(s"Can't transpose (ÞT) function: $a")
+      case a => ListHelpers.transposeSafe(ListHelpers.makeIterable(a))
+    }
+
+    val triple: Monad = addElem(
+      Monad,
+      "T",
+      "Triple | Contains Only Alphabet | Transpose",
+      List(
+        "triple",
+        "alphabet?",
+        "alphabetical?",
+        "contains-only-alphabet?",
+        "contains-only-alphabetical?",
+        "transpose",
+        "flip",
+        "reverse-axes",
+        "flip-axes",
+        "permute-axes",
+      ),
+      "a: num -> 3 * a",
+      "a: str -> does a contain only alphabet characters?",
+      "a: any -> transpose a"
+    ) {
+      case a: VNum   => a * 3
+      case a: String => a.forall(_.isLetter)
+      case a: VList  => ListHelpers.transpose(a)
     }
 
     val triplicate =

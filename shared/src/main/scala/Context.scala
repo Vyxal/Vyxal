@@ -77,12 +77,9 @@ class Context private (
   /** Get the top n elements on the stack without popping */
   def peek(n: Int): List[VAny] =
     if useStack then getTopCxt().peek(n)
-    // Number of elements peekable from the stack
-    val numStack = n.max(stack.length)
-    // Number of elements that need to be taken from the input
-    val numInput = n - numStack
-    // todo repeat the inputs or something?
-    inputs.peek(numInput) ++ stack.slice(stack.length - numStack, stack.length)
+    else if n <= stack.length then
+      stack.slice(stack.length - n, stack.length).toList
+    else inputs.peek(n - stack.length) ::: stack.toList
 
   /** Push items onto the stack. The first argument will be pushed first. */
   def push(items: VAny*): Unit =

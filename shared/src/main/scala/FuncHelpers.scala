@@ -1,7 +1,5 @@
 package vyxal
 
-import vyxal.impls.UnimplementedOverloadException
-
 /** Helpers for function-related stuff */
 object FuncHelpers:
   /** Vectorise a function object */
