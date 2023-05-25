@@ -1430,9 +1430,9 @@ Transpose (filling with spaces) and then join on newlines
 
 - any a: `transpose a, join on newlines`
 -------------------------------
-## `` ε `` (Absolute Difference / Repeat / Regex match)
+## `` ε `` (Absolute Difference / Repeat / Regex match / Uniquify by Function)
 
-Returns the absolute difference / Fills an array of a certain length / Does a regex match
+Returns the absolute difference / Fills an array of a certain length / Does a regex match / Uniquify by function
 
 ### Overloads
 
@@ -1440,6 +1440,7 @@ Returns the absolute difference / Fills an array of a certain length / Does a re
 - num a, str b: `[b] * a`
 - str a, num b: `[a] * b`
 - str a, str b: `regex.match(b, a) (first match of regex b on a)`
+- any a, fun b: `keep only unique elements of a, where f(x) is unique`
 -------------------------------
 ## `` ¡ `` (Factorial)
 

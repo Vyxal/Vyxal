@@ -957,6 +957,16 @@ def test_if_modifier():
     assert stack[-1] == [1]
 
 
+def test_uniquify_by_function():
+    stack = run_vyxal("1 10 ṡ ⁽∷ ε")
+    assert stack[-1] == [1, 2]
+
+    stack = run_vyxal(
+        "`abc kfjhdg smdfb n dkfjf mnd weiqwop j wkej qkej madma` ⌈⁽Lε"
+    )
+    assert stack[-1] == ["abc", "kfjhdg", "smdfb", "n", "weiqwop", "wkej"]
+
+
 def test_set_intersect():
     stack = run_vyxal("Þ∞:↔")
     assert stack[-1][:10] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]

@@ -2146,14 +2146,15 @@
     - '[[1, 22, 333]] : "  3\n 23\n123"'
     - '[[]] : ""'
 - element: "ε"
-  name: Absolute Difference / Repeat / Regex match
+  name: Absolute Difference / Repeat / Regex match / Uniquify by Function
   arity: 2
-  description: Returns the absolute difference / Fills an array of a certain length / Does a regex match
+  description: Returns the absolute difference / Fills an array of a certain length / Does a regex match / Uniquify by function
   overloads:
     num-num: abs(a - b)
     num-str: "[b] * a"
     str-num: "[a] * b"
     str-str: regex.match(b, a) (first match of regex b on a)
+    any-fun: keep only unique elements of a, where f(x) is unique
   vectorise: false
   tests:
     - "[5, 1] : 4"
