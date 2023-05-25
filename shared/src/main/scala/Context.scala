@@ -79,8 +79,7 @@ class Context private (
     if useStack then getTopCxt().peek(n)
     else if n <= stack.length then
       stack.slice(stack.length - n, stack.length).toList
-    else
-      inputs.peek(n - stack.length) ::: stack.toList
+    else inputs.peek(n - stack.length) ::: stack.toList
 
   /** Push items onto the stack. The first argument will be pushed first. */
   def push(items: VAny*): Unit =

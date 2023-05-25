@@ -126,7 +126,8 @@ case class Settings(
 
   /** Add a flag to these settings
     *
-    * @return An updated `Settings` object
+    * @return
+    *   An updated `Settings` object
     */
   def withFlag(flag: Char): Settings = flag match
     case 'H' => this.copy(presetStack = true)
@@ -141,9 +142,10 @@ case class Settings(
     case _ => throw IllegalArgumentException(s"$flag is an invalid flag")
 
   /** Helper to update these settings with multiple flags
-   *
-   * @see withFlag
-   */
+    *
+    * @see
+    *   withFlag
+    */
   def withFlags(flags: List[Char]): Settings =
     flags.foldLeft(this)(_.withFlag(_))
 end Settings
