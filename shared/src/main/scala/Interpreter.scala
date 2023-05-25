@@ -21,9 +21,7 @@ object Interpreter:
         if ctx.settings.logLevel == LogLevel.Debug then
           println(s"Executing '$code' (ast: $ast)")
         try execute(ast)
-        catch
-          case _: QuitException => // Program quit using Q
-
+        catch case _: QuitException => // Program quit using Q
         // todo implicit output according to settings
         if !ctx.isStackEmpty && ctx.settings.endPrintMode == EndPrintMode.Default
         then vyPrintln(ctx.peek)
