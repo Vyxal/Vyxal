@@ -275,6 +275,10 @@ Keywords: alphabet, a-z
 Keywords: empty-list, nil-list, new-list
 - -> []
 ---------------------
+ÞT (Transpose Safe) (non-vectorising)
+Keywords: transpose-safe
+- a: any -> transpose a
+---------------------
 × (Multiplication) (vectorising)
 Keywords: mul, multiply, times, str-repeat, *, ring-trans
 - a: num, b: num -> a * b
