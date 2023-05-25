@@ -25,13 +25,14 @@ object Interpreter:
         catch
           case _: QuitException =>
             if ctx.settings.logLevel == LogLevel.Debug then
-              println(s"Program quit using Q")
+              println("Program quit using Q")
 
         // todo implicit output according to settings
         if !ctx.isStackEmpty && ctx.settings.endPrintMode == EndPrintMode.Default
         then vyPrintln(ctx.peek)
       case Left(error) =>
         throw new Error(s"Error while executing $code: $error")
+    end match
   end execute
 
   def execute(ast: AST)(using ctx: Context): Unit =
