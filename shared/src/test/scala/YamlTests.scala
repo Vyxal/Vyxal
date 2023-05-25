@@ -33,6 +33,7 @@ enum Criterion:
   case EndsWith(suffix: Seq[VAny])
   /** The output must be a list containing all of the given elements */
   case Contains(elems: Seq[VAny], monotonic: Boolean = false)
+  case Stack(elems: Seq[VAny])
 
 /** Tests for specific elements. The format is something like this:
   * {{{
@@ -100,6 +101,8 @@ class YamlTests extends AnyFunSpec:
             criteria.foreach {
               case Criterion.Equals(expected) =>
                 checkpoint { assertResult(expected)(output) }
+              case Criterion.Stack(elems) =>
+                assertResult(elems)(ctx.pop(elems.length))
               case crit =>
                 checkpoint {
                   output match
@@ -159,7 +162,7 @@ class YamlTests extends AnyFunSpec:
       // todo make this return an Either instead
       def fromJson(json: Json): VAny =
         if json.isArray then VList.from(json.asArray.get.map(fromJson))
-        else if json.isNumber then json.asNumber.get.toDouble
+        else if json.isNumber then VNum(json.asNumber.get.toBigDecimal.get)
         else if json.isString then json.asString.get
         else throw Error(s"Invalid Vyxal value: $json")
       Right(fromJson(c.value))
@@ -204,6 +207,11 @@ class YamlTests extends AnyFunSpec:
         parseOrThrow[List[VAny]](contains),
         monotonic = true
       )
+    for stack <- testInfo \\ "stack" do
+      criteria += Criterion.Stack(parseOrThrow[List[VAny]](stack))
+
+    if criteria.isEmpty then
+      throw Error(s"No criteria given for test case $testInfo")
 
     criteria.toSeq
   end getOutputCriteria

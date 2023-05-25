@@ -1,3 +1,6 @@
+# Replace List\[VAny\]\((.+)\) -> (.+),?
+# with - { in: [$1], out: $2 }
+
 "+":
   - { in: ["1", 2], out: "12" }
   - { in: ["foo", "bar"], out: "foobar" }
@@ -12,3 +15,30 @@
 "B":
   shouldn't do string multiplication with string lists:
     - { in: [["1", "0", ["0", "1"]]], out: 5 }
+
+"!":
+  - { in: [0], out: 1 }
+  - { in: [10], out: 3628800 }
+  - { in: [-5], out: 120 }
+  - { in: [5.1], out: 142.4519440656788 }
+  - { in: [1.654], out: 1.4898045048177275 }
+
+"$":
+  - { in: [1, 2, 3, 4, 5], stack: [5, 4] }
+  - { in: [4], stack: [4, 4] }
+
+"%":
+  when given two numbers:
+    - { in: [5, 2], out: 1 }
+    - { in: [5, 3], out: 2 }
+    - { in: [0, 1], out: 0 }
+    - { in: [1, 0], out: 0 }
+    - { in: [6.9, 4.2], out: 2.7 }
+    - { in: [420, -69], out: -63 }
+    - { in: [420, -69.69], out: -67.83 }
+  when given a string and any value:
+      - { in: ["Hello, %", "World"], out: "Hello, World", }
+      - { in: ["Hello, %", 69], out: "Hello, 69", }
+      - { in: ["Hello, %", [[1, 2, 3]]], out: "Hello, [ 1 | 2 | 3 ]", }
+      - { in: ["Hello, %", 69.69], out: "Hello, 69.69", }
+      - { in: ["% + % = %", [1, 2, 3]], out: "1 + 2 = 3" }

@@ -8,46 +8,6 @@ import Elements.Impls
 /** Tests for specific elements */
 class ElementTests extends VyxalTests:
 
-  describe("Element !") {
-    testMulti("!")(
-      List[VAny](0) -> 1,
-      List[VAny](10) -> 3628800,
-      List[VAny](-5) -> 120,
-      List[VAny](VNum("5.1")) -> VNum("142.4519440656788"),
-      List[VAny](VNum("1.654")) -> VNum("1.4898045048177275")
-    )
-  }
-
-  describe("Element $") {
-    testStackLike("$")(
-      List[VAny](1, 2, 3, 4, 5) -> List[VAny](5, 4),
-      List[VAny](4) -> List[VAny](4, 4)
-    )
-  }
-
-  describe("Element %") {
-    describe("When given two numbers") {
-      testMulti("%")(
-        List[VAny](5, 2) -> 1,
-        List[VAny](5, 3) -> 2,
-        List[VAny](0, 1) -> 0,
-        List[VAny](1, 0) -> 0,
-        List[VAny](VNum("6.9"), VNum("4.2")) -> VNum("2.7"),
-        List[VAny](420, -69) -> -63,
-        List[VAny](420, -69.69) -> VNum("-67.83")
-      )
-    }
-    describe("When given a string and any value") {
-      testMulti("%")(
-        List[VAny]("Hello, %", "World") -> "Hello, World",
-        List[VAny]("Hello, %", 69) -> "Hello, 69",
-        List[VAny]("Hello, %", VList(VList(1, 2, 3))) -> "Hello, [ 1 | 2 | 3 ]",
-        List[VAny]("Hello, %", VNum("69.69")) -> "Hello, 69.69",
-        List[VAny]("% + % = %", VList(1, 2, 3)) -> "1 + 2 = 3"
-      )
-    }
-  }
-
   describe("Element &") {
     testMulti("&")(
       List[VAny](VList(1, 2, 3), VList(4, 5)) -> VList(1, 2, 3, VList(4, 5)),

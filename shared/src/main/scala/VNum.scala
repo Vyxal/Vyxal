@@ -110,6 +110,7 @@ object VNum:
   given Conversion[Double, VNum] = n => complex(n, 0)
   given Conversion[Long, VNum] = n => complex(n, 0)
   given Conversion[BigInt, VNum] = n => complex(n, 0)
+  given Conversion[BigDecimal, VNum] = n => complex(n, 0)
   given Conversion[Real, VNum] = n => complex(n, 0)
   given Conversion[Complex[Real], VNum] = new VNum(_)
   given Conversion[Boolean, VNum] =
