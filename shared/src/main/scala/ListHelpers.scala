@@ -307,6 +307,7 @@ object ListHelpers:
             }
           }
       VList.from(out)
+    end if
   end transposeSafe
 
   def vectorisedMaximum(iterable: VList, b: VVal): VList =

@@ -84,7 +84,8 @@ class VList private (val lst: Seq[VAny])
     */
   override def length: Int = lst.length
 
-  /** This isn't an overload of isDefinedAt because it needs to take a `BigInt` */
+  /** This isn't an overload of isDefinedAt because it needs to take a `BigInt`
+    */
   def hasIndex(ind: BigInt): Boolean =
     if ind <= Int.MaxValue && ind >= 0 then return lst.isDefinedAt(ind.toInt)
     var pos = if ind < 0 then ind % lst.length else ind
