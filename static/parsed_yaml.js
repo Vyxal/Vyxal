@@ -2276,6 +2276,12 @@ var codepage_descriptions =
       "name": "4294967296",
       "description": "2 ** 32, 2^32, 4294967296",
       "token": "k\u1e2d"
+    },
+    {
+      "name": "Non-Modular Index",
+      "description": "Get the nth item of a list, but without modular arithmetic. Negative indices are allowed.",
+      "overloads": "lst, int -> nth item of a list (errors if out of bounds)",
+      "token": "\u00de\u1e2d"
     }
   ],
   "149": [
