@@ -1016,6 +1016,15 @@ def test_maximums_by():
     assert stack[-1] == [8, 9, 10, 11]
 
 
+def test_non_modular_index_out_of_bounds():
+    try:
+        stack = run_vyxal("`short` 420 Þḭ")
+    except IndexError:
+        pass
+    else:
+        assert False
+
+
 def test_minimums_by():
     stack = run_vyxal("λ∆l⌊;P", inputs=[[2, 3, 4, 5, 6, 7, 8, 9, 10, 11]])
     assert stack[-1] == [2, 3]
