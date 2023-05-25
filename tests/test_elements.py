@@ -13128,7 +13128,7 @@ def test_VerticalJoin():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_AbsoluteDifferenceRepeatRegexmatch():
+def test_AbsoluteDifferenceRepeatRegexmatchUniquifybyFunction():
 
     stack = [vyxalify(item) for item in [5, 1]]
     expected = vyxalify(4)

@@ -463,8 +463,27 @@ def absolute_difference(lhs, rhs, ctx):
     (num, str) -> Array of length a filled with b
     (str, num) -> Array of length b filled with a
     (str, str) -> single regex match of b against a
+    (lst, fun) -> unique list of results of applying fun to each element of lst
     """
     ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        # Uniquify by function result
+        lst, fun = (
+            (lhs, rhs) if isinstance(rhs, types.FunctionType) else (rhs, lhs)
+        )
+        lst = iterable(lst, ctx)
+
+        @lazylist_from(lst)
+        def gen():
+            seen = set()
+            for item in lst:
+                res = safe_apply(fun, item, ctx=ctx)
+                if res not in seen:
+                    seen.add(res)
+                    yield item
+
+        return gen()
+
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: abs(lhs - rhs),
         (NUMBER_TYPE, str): lambda: [rhs] * lhs,
