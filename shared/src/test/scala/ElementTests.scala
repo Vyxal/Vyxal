@@ -7,15 +7,6 @@ import Elements.Impls
 
 /** Tests for specific elements */
 class ElementTests extends VyxalTests:
-
-  describe("Element &") {
-    testMulti("&")(
-      List[VAny](VList(1, 2, 3), VList(4, 5)) -> VList(1, 2, 3, VList(4, 5)),
-      List[VAny](VList(1, 2, 3), 69) -> VList(1, 2, 3, 69),
-      List[VAny]("abc", VList()) -> VList("a", "b", "c", VList())
-    )
-  }
-
   describe("Element *") {
     describe("when given two numbers") {
       testMulti("*")(
@@ -93,44 +84,6 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  describe("Element -") {
-    describe("when given two numbers") {
-      testMulti("-")(
-        List[VAny](420, 69) -> 351,
-        List[VAny](420, -69) -> 489,
-        List[VAny](VNum("6.9"), VNum("4.2")) -> VNum("2.7")
-      )
-    }
-    describe("when given a string and a number") {
-      testMulti("-")(
-        List[VAny]("Hello, World", 5) -> "Hello, World-----",
-        List[VAny]("Hello, World", -5) -> "-----Hello, World",
-        List[VAny]("Hello, World", 0) -> "Hello, World",
-        List[VAny](5, "Hello, World") -> "-----Hello, World",
-        List[VAny]("Hello, World", 5.2) -> "Hello, World-----"
-      )
-    }
-    describe("when given two strings") {
-      testMulti("-")(
-        List[VAny]("Hello, World", "Hello, ") -> "World",
-        List[VAny]("Hello, World", "World") -> "Hello, ",
-        List[VAny]("Hello, World", "Hello, World") -> "",
-        List[VAny]("Hello, World", "Hello, World!") -> "Hello, World",
-        List[VAny]("abcbde", "b") -> "acde",
-        List[VAny]("aaa", "a") -> "",
-        List[VAny]("Hello, World", "") -> "Hello, World"
-      )
-    }
-  }
-
-  describe("Element :") {
-    testStackLike(":")(
-      List[VAny](1, 2, 3) -> List[VAny](1, 2, 3, 3),
-      List[VAny](1, 2, 3, 4) -> List[VAny](1, 2, 3, 4, 4),
-      List[VAny](1, 2, 3, 4, 5) -> List[VAny](1, 2, 3, 4, 5, 5)
-    )
-  }
-
   describe("Element ;") {
     testMulti(";")(
       List[VAny](1, 2, 3) -> VList(2, 3),
@@ -205,44 +158,6 @@ class ElementTests extends VyxalTests:
 
     describe("when given a multi-character string") {
       testMulti("A")(List[VAny]("asdEy") -> VList(1, 0, 0, 1, 0))
-    }
-  }
-
-  describe("Element B") {
-    describe("when given a number") {
-      testMulti("B")(
-        List[VAny](110) -> VNum(6),
-        List[VAny](1000) -> VNum(8),
-        List[VAny](69) -> VNum(21),
-        List[VAny](69420) -> VNum(188),
-        List[VAny](-7654) -> VNum(-94),
-        List[VAny](-111) -> VNum(-7)
-      )
-    }
-    describe("when given a string") {
-      testMulti("B")(
-        List[VAny]("110") -> VNum(6),
-        List[VAny]("1000") -> VNum(8),
-        List[VAny]("69") -> VNum(21),
-        List[VAny]("69420") -> VNum(188),
-        List[VAny]("-7654") -> VNum(-94),
-        List[VAny]("-111") -> VNum(-7)
-      )
-    }
-    describe("when given a list") {
-      testMulti("B")(
-        List[VAny](VList(1, 1, 0)) -> VNum(6),
-        List[VAny](VList(1, 0, 0, 0)) -> VNum(8),
-        List[VAny](VList(6, 9)) -> VNum(21),
-        List[VAny](VList(6, 9, 4, 2, 0)) -> VNum(188),
-        List[VAny](VList(-7, -6, -5, -4)) -> VNum(-94),
-        List[VAny](VList(-1, -1, -1)) -> VNum(-7)
-      )
-    }
-    describe("With lists of strings and lists") {
-      it("Shouldn't do string multiplication") {
-        testCode("B", 5, inputs = List(VList("1", "0", VList("0", "1"))))
-      }
     }
   }
 

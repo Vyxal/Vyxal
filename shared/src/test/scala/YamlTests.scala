@@ -22,6 +22,7 @@ enum TestGroup:
   */
 case class YamlTest(
     inputs: Seq[VAny],
+    flags: List[Char],
     code: Option[String],
     criteria: Seq[Criterion]
 )
@@ -33,6 +34,7 @@ enum Criterion:
   case EndsWith(suffix: Seq[VAny])
   /** The output must be a list containing all of the given elements */
   case Contains(elems: Seq[VAny], monotonic: Boolean = false)
+  /** The top of the stack must match `elems` */
   case Stack(elems: Seq[VAny])
 
 /** Tests for specific elements. The format is something like this:
@@ -90,10 +92,10 @@ class YamlTests extends AnyFunSpec:
             execTests(element, subgroup)
           }
       case TestGroup.Tests(tests) =>
-        for YamlTest(inputs, codeOverride, criteria) <- tests do
+        for YamlTest(inputs, flags, codeOverride, criteria) <- tests do
           val code = codeOverride.getOrElse(element)
           it(s"Execute `$code` on inputs ${inputs.mkString(", ")}") {
-            given ctx: Context = Context(inputs = inputs)
+            given ctx: Context = Context(testMode = true, inputs = inputs, globals = Globals(settings = Settings().withFlags(flags)))
             Interpreter.execute(code)
             val output = ctx.peek
             val checkpoint = Checkpoint()
@@ -102,7 +104,7 @@ class YamlTests extends AnyFunSpec:
               case Criterion.Equals(expected) =>
                 checkpoint { assertResult(expected)(output) }
               case Criterion.Stack(elems) =>
-                assertResult(elems)(ctx.pop(elems.length))
+                checkpoint { assertResult(elems)(ctx.peek(elems.length)) }
               case crit =>
                 checkpoint {
                   output match
@@ -173,9 +175,10 @@ class YamlTests extends AnyFunSpec:
         case Some(testInfos) =>
           val tests = testInfos.map { test =>
             val inputs = (test \\ "in").head.asArray.get.map(parseOrThrow[VAny])
+            val flags = (test \\ "flags").headOption.fold(Nil)(_.asString.get.toList)
             val code = (test \\ "code").headOption.map(_.asString.get)
             val output = getOutputCriteria(test)
-            YamlTest(inputs, code, output)
+            YamlTest(inputs, flags, code, output)
           }
           Right(TestGroup.Tests(tests))
         case None =>

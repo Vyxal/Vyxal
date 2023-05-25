@@ -62,18 +62,23 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
     val numNonWrapping = n.max(currInputs.length - ind)
     val nonWrapping = currInputs.slice(ind, ind + numNonWrapping + 1).toList
 
-    if n <= numNonWrapping then nonWrapping
-    else
-      // The number of times the entire inputs array has to be repeated
-      val numRepeats = (n - numNonWrapping) / currInputs.size
-      val repeats = List.fill(numRepeats)(currInputs.toList)
+    val res =
+      if n <= numNonWrapping then nonWrapping
+      else
+        // The number of times the entire inputs array has to be repeated
+        val numRepeats = (n - numNonWrapping) / currInputs.size
+        val repeats = List.fill(numRepeats)(currInputs.toList)
 
-      // The number of extra elems needed at the end of wrapping
-      val numEnd = n - numNonWrapping - numRepeats * currInputs.size
-      val end = currInputs.take(numEnd).toList
+        // The number of extra elems needed at the end of wrapping
+        val numEnd = n - numNonWrapping - numRepeats * currInputs.size
+        val end = currInputs.take(numEnd).toList
 
-      nonWrapping ::: repeats.flatten ::: end
+        nonWrapping ::: repeats.flatten ::: end
+
+    res.reverse
   end peek
+
+  override def toString() = origArr.mkString("Inputs(", ", ", ")")
 end Inputs
 
 /** What kind of implicit output is wanted at the end */
@@ -121,8 +126,7 @@ case class Settings(
 
   /** Add a flag to these settings
     *
-    * @return
-    *   A Some with the new settings, or None if the flag is invalid
+    * @return An updated `Settings` object
     */
   def withFlag(flag: Char): Settings = flag match
     case 'H' => this.copy(presetStack = true)
@@ -135,4 +139,11 @@ case class Settings(
     case 'l' => this
     // todo implement the others
     case _ => throw IllegalArgumentException(s"$flag is an invalid flag")
+
+  /** Helper to update these settings with multiple flags
+   * 
+   * @see withFlag
+   */
+  def withFlags(flags: List[Char]): Settings =
+    flags.foldLeft(this)(_.withFlag(_))
 end Settings

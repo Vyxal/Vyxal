@@ -23,7 +23,7 @@ object JSVyxal:
       printFunc: js.Function1[String, Unit]
   ): Unit =
     // todo take functions to print to custom stdout and stderr
-    val settings = flags.foldLeft(Settings(online = true))(_.withFlag(_))
+    val settings = Settings(online = true).withFlags(flags)
     val globals = Globals(
       settings = settings,
       printFn = printFunc,

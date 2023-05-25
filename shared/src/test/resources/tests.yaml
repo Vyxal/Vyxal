@@ -1,5 +1,5 @@
-# Replace List\[VAny\]\((.+)\) -> (.+),?
-# with - { in: [$1], out: $2 }
+# Replace List\[VAny\]\((.+)\) -> (.+?),?$ with - { in: [$1], out: $2 }
+# Replace VNum\((-?\d+)\) with $1
 
 "+":
   - { in: ["1", 2], out: "12" }
@@ -7,12 +7,55 @@
   - { in: [[1, "a", []], 3], out: [4, "a3", []] }
 
 "-":
+  when given two numbers:
+    - { in: [420, 69], out: 351 }
+    - { in: [420, -69], out: 489 }
+    - { in: [6.9, 4.2], out: 2.7 }
   when given a string and a number:
     - { in: ["Hello, World", 5], out: "Hello, World-----" }
     - { in: ["Hello, World", 5.2], out: "Hello, World-----" }
     - { in: ["Hello, World", -5], out: "-----Hello, World" }
+    - { in: ["Hello, World", 0], out: "Hello, World" }
+    - { in: [5, "Hello, World"], out: "-----Hello, World" }
+  when given two strings:
+    - { in: ["Hello, World", "Hello, "], out: "World" }
+    - { in: ["Hello, World", "World"], out: "Hello, " }
+    - { in: ["Hello, World", "Hello, World"], out: "" }
+    - { in: ["Hello, World", "Hello, World!"], out: "Hello, World" }
+    - { in: ["abcbde", "b"], out: "acde" }
+    - { in: ["aaa", "a"], out: "" }
+    - { in: ["Hello, World", ""], out: "Hello, World" }
+
+":":
+  # todo(lyxal): make flag to give default value when popping off empty stack
+  #              without having to set online = true
+  # - { in: [], stack: [0] }
+  - { in: [1], stack: [1, 1] }
+  - { in: [1, [2, 3]], stack: [1, [2, 3], [2, 3]] }
+  - { in: [1, 2, 3, 4, 5], stack: [1, 2, 3, 4, 5, 5] }
 
 "B":
+  when given a number:
+    - { in: [110], out: 6 }
+    - { in: [1000], out: 8 }
+    - { in: [69], out: 21 }
+    - { in: [69420], out: 188 }
+    - { in: [-7654], out: -94 }
+    - { in: [-111], out: -7 }
+  when given a string:
+    - { in: ["110"], out: 6 }
+    - { in: ["1000"], out: 8 }
+    - { in: ["69"], out: 21 }
+    - { in: ["69420"], out: 188 }
+    - { in: ["-7654"], out: -94 }
+    - { in: ["-111"], out: -7 }
+  when given a list:
+    - { in: [[1, 1, 0]], out: 6 }
+    - { in: [[1, 0, 0, 0]], out: 8 }
+    - { in: [[6, 9]], out: 21 }
+    - { in: [[6, 9, 4, 2, 0]], out: 188 }
+    - { in: [[-7, -6, -5, -4]], out: -94 }
+    - { in: [[-1, -1, -1]], out: -7 }
   shouldn't do string multiplication with string lists:
     - { in: [["1", "0", ["0", "1"]]], out: 5 }
 
@@ -42,3 +85,8 @@
       - { in: ["Hello, %", [[1, 2, 3]]], out: "Hello, [ 1 | 2 | 3 ]", }
       - { in: ["Hello, %", 69.69], out: "Hello, 69.69", }
       - { in: ["% + % = %", [1, 2, 3]], out: "1 + 2 = 3" }
+
+"&":
+  - { in: [[1, 2, 3], [4, 5]], out: [1, 2, 3, [4, 5]], }
+  - { in: [[1, 2, 3], 69], out: [1, 2, 3, 69], }
+  - { in: ["abc", []], out: ["a", "b", "c", []] }
