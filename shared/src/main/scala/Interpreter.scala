@@ -23,9 +23,10 @@ object Interpreter:
         try execute(ast)
         catch
           case _: QuitException => // Program quit using Q
-            // todo implicit output according to settings
-            if !ctx.isStackEmpty && ctx.settings.endPrintMode == EndPrintMode.Default
-            then vyPrintln(ctx.peek)
+
+        // todo implicit output according to settings
+        if !ctx.isStackEmpty && ctx.settings.endPrintMode == EndPrintMode.Default
+        then vyPrintln(ctx.peek)
       case Left(error) =>
         throw new Error(s"Error while executing $code: $error")
   end execute
