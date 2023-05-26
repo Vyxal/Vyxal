@@ -2659,9 +2659,9 @@ var codepage_descriptions =
   ],
   "177": [
     {
-      "name": "Absolute Difference / Repeat / Regex match",
-      "description": "Returns the absolute difference / Fills an array of a certain length / Does a regex match",
-      "overloads": "num, num -> abs(a - b)\nnum, str -> [b] * a\nstr, num -> [a] * b\nstr, str -> regex.match(b, a) (first match of regex b on a)",
+      "name": "Absolute Difference / Repeat / Regex match / Uniquify by Function",
+      "description": "Returns the absolute difference / Fills an array of a certain length / Does a regex match / Uniquify by function",
+      "overloads": "num, num -> abs(a - b)\nnum, str -> [b] * a\nstr, num -> [a] * b\nstr, str -> regex.match(b, a) (first match of regex b on a)\nany, fun -> keep only unique elements of a, where f(x) is unique",
       "token": "\u03b5"
     },
     {
