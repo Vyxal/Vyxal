@@ -303,28 +303,30 @@ def get_input(ctx: Context, explicit=False, evaluated=True) -> Any:
         if ctx.array_inputs and not explicit:
             return vyxalify(ctx.inputs[0][0])
         if ctx.inputs[0][0]:
-            if not evaluated:
-                ret = vyxalify(
-                    ctx.original_args[ctx.inputs[0][1] % len(ctx.inputs[0][0])]
-                )
-            else:
+            if evaluated:
                 ret = ctx.inputs[0][0][ctx.inputs[0][1] % len(ctx.inputs[0][0])]
-            ctx.inputs[0][1] += 1
-            return ret
+                ctx.inputs[0][1] += 1
+                return vyxalify(ret)
+            else:
+                ret = ctx.original_args[
+                    ctx.inputs[0][1] % len(ctx.inputs[0][0])
+                ]
+                ctx.inputs[0][1] += 1
+                return ret
         else:
             try:
                 temp = input("> " * ctx.repl_mode)
+                if evaluated:
+                    temp = vy_eval(temp, ctx)
                 if ctx.empty_input_is_zero and temp == "":
                     return 0
             except Exception:  # skipcq: PYL-W0703
                 temp = 0
-            if evaluated:
-                temp = vy_eval(temp, ctx)
             return temp
     else:
         if len(ctx.inputs) == 1:
             ctx.use_top_input = True
-            temp = get_input(ctx, explicit=explicit, evaluated=evaluated)
+            temp = get_input(ctx)
             ctx.use_top_input = False
             return vyxalify(temp)
         elif ctx.inputs[-1][0]:
