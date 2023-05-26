@@ -850,6 +850,18 @@ object Elements:
       case a: String => MiscHelpers.eval(a)
     }
 
+    val uninterleave = addDirect(
+      "U",
+      "Uninterleave",
+      List("uninterleave"),
+      None,
+      "a: any -> uninterleave a"
+    ) { ctx ?=>
+      val a = ListHelpers.makeIterable(ctx.pop())
+      val (evens, odds) = a.zipWithIndex.partition(_._2 % 2 == 0)
+      ctx.push(VList.from(evens.map(_._1)), VList.from(odds.map(_._1)))
+    }
+
     val vectoriseAsElement = addDirect(
       "#v",
       "Vectorise (Element Form) [Internal Use]",
