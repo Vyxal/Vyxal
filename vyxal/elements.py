@@ -4437,6 +4437,23 @@ def next_prime(lhs, ctx):
     }.get(ts, lambda: vectorise(next_prime, lhs, ctx=ctx))()
 
 
+@element("Þḭ", 2)
+def non_modular_index(lhs, rhs, ctx):
+    """Element Þḭ
+    Basically, `i` but it doesn't wrap around and errors instead.
+    """
+
+    haystack, position = (
+        (rhs, lhs) if vy_type(lhs, simple=True) is list else (lhs, rhs)
+    )
+    haystack = LazyList(iterable(haystack, ctx))
+
+    if haystack.has_ind(int(position)):
+        return haystack[int(position)]
+    else:
+        raise IndexError(f"Index {position} out of range for {haystack}")
+
+
 @element("⁼", 2)
 def non_vectorising_equals(lhs, rhs, ctx):
     """Element ⁼
