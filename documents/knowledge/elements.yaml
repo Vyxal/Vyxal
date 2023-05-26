@@ -6607,3 +6607,8 @@
   name: If/Else
   description: If the top of the stack is truthy, run the first element, otherwise the second.
   usage: "¨i<element><element>"
+
+- element: "¨ḭ"
+  name: Unevaluated Input
+  description: Push the next input as a string, unevaluated. Like ? but without implicit conversions
+  arity: 0

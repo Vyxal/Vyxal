@@ -296,23 +296,30 @@ def from_base_digits(digit_list: List[NUMBER_TYPE], base: int) -> int:
     return ret
 
 
-def get_input(ctx: Context, explicit=False) -> Any:
+def get_input(ctx: Context, explicit=False, evaluated=True) -> Any:
     """Returns the next input depending on where ctx tells to get the
     input from."""
     if ctx.use_top_input:
         if ctx.array_inputs and not explicit:
             return vyxalify(ctx.inputs[0][0])
         if ctx.inputs[0][0]:
-            ret = ctx.inputs[0][0][ctx.inputs[0][1] % len(ctx.inputs[0][0])]
+            if not evaluated:
+                ret = ctx.original_args[
+                    ctx.inputs[0][1] % len(ctx.inputs[0][0])
+                ]
+            else:
+                ret = ctx.inputs[0][0][ctx.inputs[0][1] % len(ctx.inputs[0][0])]
             ctx.inputs[0][1] += 1
             return vyxalify(ret)
         else:
             try:
-                temp = vy_eval(input("> " * ctx.repl_mode), ctx)
+                temp = input("> " * ctx.repl_mode)
                 if ctx.empty_input_is_zero and temp == "":
                     return 0
             except Exception:  # skipcq: PYL-W0703
                 temp = 0
+            if evaluated:
+                temp = vy_eval(temp, ctx)
             return temp
     else:
         if len(ctx.inputs) == 1:
