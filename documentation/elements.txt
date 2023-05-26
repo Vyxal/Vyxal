@@ -301,6 +301,12 @@ Keywords: **-
 Description: Turn the next two elements (whether that be a structure/modifier/element) into a lambda
 ϩfg: Push the equivalent of λfg} to the stack
 ---------------------
+ᵃ
+Keywords: apply-to-neighbours
+Description: To each overlapping pair, reduce it by an element
+Apply a dyadic link or a monadic chain for all pairs of neighboring elements.
+ᵃf: equivalent to 2ov/f
+---------------------
 v
 Keywords: vectorise-, vec-, v-
 Description: Vectorises
