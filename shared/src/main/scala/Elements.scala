@@ -729,14 +729,13 @@ object Elements:
       ),
       false,
       "a: any -> convert to list and sort ascending",
-    ) { a =>
+    ) {
       // should do something else for num overload later
-      a match
-        case s: String => s.sorted
-        case _ =>
-          VList.from(
-            ListHelpers.makeIterable(a).sorted(MiscHelpers.compareExact(_, _))
-          )
+      case s: String => s.sorted
+      case a =>
+        VList.from(
+          ListHelpers.makeIterable(a).sorted(MiscHelpers.compareExact(_, _))
+        )
     }
 
     val sortByFunction: Dyad = addElem(
