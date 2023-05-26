@@ -324,7 +324,7 @@ def get_input(ctx: Context, explicit=False, evaluated=True) -> Any:
     else:
         if len(ctx.inputs) == 1:
             ctx.use_top_input = True
-            temp = get_input(ctx)
+            temp = get_input(ctx, explicit=explicit, evaluated=evaluated)
             ctx.use_top_input = False
             return vyxalify(temp)
         elif ctx.inputs[-1][0]:
