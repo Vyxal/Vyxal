@@ -304,13 +304,13 @@ def get_input(ctx: Context, explicit=False, evaluated=True) -> Any:
             return vyxalify(ctx.inputs[0][0])
         if ctx.inputs[0][0]:
             if not evaluated:
-                ret = ctx.original_args[
-                    ctx.inputs[0][1] % len(ctx.inputs[0][0])
-                ]
+                ret = vyxalify(
+                    ctx.original_args[ctx.inputs[0][1] % len(ctx.inputs[0][0])]
+                )
             else:
                 ret = ctx.inputs[0][0][ctx.inputs[0][1] % len(ctx.inputs[0][0])]
             ctx.inputs[0][1] += 1
-            return vyxalify(ret)
+            return ret
         else:
             try:
                 temp = input("> " * ctx.repl_mode)
