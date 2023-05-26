@@ -189,6 +189,10 @@ Keywords: triple, alphabet?, alphabetical?, contains-only-alphabet?, contains-on
 - a: str -> does a contain only alphabet characters?
 - a: any -> transpose a
 ---------------------
+U (Uninterleave) (non-vectorising)
+Keywords: uninterleave
+- a: any -> uninterleave a
+---------------------
 W (Wrap) (non-vectorising)
 Keywords: wrap
 - a, b, c, ..., -> [a, b, c, ...]
