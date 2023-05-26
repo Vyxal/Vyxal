@@ -2276,6 +2276,11 @@ var codepage_descriptions =
       "name": "4294967296",
       "description": "2 ** 32, 2^32, 4294967296",
       "token": "k\u1e2d"
+    },
+    {
+      "name": "Unevaluated Input",
+      "description": "Push the next input as a string, unevaluated. Like ? but without implicit conversions",
+      "token": "\u00a8\u1e2d"
     }
   ],
   "149": [

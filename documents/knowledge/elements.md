@@ -4318,3 +4318,8 @@ Usage:
 ```
 
 -------------------------------
+## `` ¨ḭ `` (Unevaluated Input)
+
+Push the next input as a string, unevaluated. Like ? but without implicit conversions
+
+-------------------------------
