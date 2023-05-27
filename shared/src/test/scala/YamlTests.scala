@@ -75,7 +75,7 @@ enum Criterion:
   * }}}
   */
 class YamlTests extends AnyFunSpec:
-  val TestsFile = "tests.yaml"
+  val TestsFile = "/tests.yaml"
 
   Dictionary.fileInitialise()
 
@@ -136,7 +136,7 @@ class YamlTests extends AnyFunSpec:
   /** Load all the tests, mapping elements to test groups */
   private def loadTests(): Map[String, TestGroup] =
     val yaml = Source.fromInputStream(
-        getClass().getClassLoader().getResourceAsStream(TestsFile)
+        getClass().getResourceAsStream(TestsFile)
       ).mkString
 
     yaml.as[Map[String, TestGroup]] match
@@ -162,7 +162,7 @@ class YamlTests extends AnyFunSpec:
         else if tag == Tag.str then text
         else throw Error(s"Invalid Vyxal value: $text")
       case Node.SequenceNode(lst, _) => VList.from(lst.map(decodeNode))
-      case Node.MappingNode(_, _) => throw Error(s"Invalid Vyxal value (cannot be map): $node")
+      case _ => throw Error(s"Invalid Vyxal value (cannot be map): $node")
 
   given YamlDecoder[VAny] = new YamlDecoder:
     override def construct(node: Node)(using LoadSettings) =
@@ -171,7 +171,6 @@ class YamlTests extends AnyFunSpec:
   given YamlDecoder[TestGroup] = new YamlDecoder:
     override def construct(node: Node)(using LoadSettings) =
       node match
-        case Node.ScalarNode(_, _) => throw Error(s"Test groups cannot be scalars: $node")
         case Node.SequenceNode(testInfos, _) =>
           val tests = testInfos.map { test =>
             val Node.SequenceNode(inputs, _) = getValue(test, "in").get: @unchecked
@@ -188,6 +187,7 @@ class YamlTests extends AnyFunSpec:
           }.toMap
           // todo return a Left if errors were found instead of throwing immediately
           Right(TestGroup.Subgroups(subgroups))
+        case _ => throw Error(s"Test groups cannot be scalars: $node")
 
   private def getOutputCriteria(testInfo: Node): Seq[Criterion] =
     val criteria = mutable.ArrayBuffer.empty[Criterion]
