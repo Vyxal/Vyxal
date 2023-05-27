@@ -2,7 +2,7 @@
 # Replace VNum\((-?\d+)\) with $1
 
 "+":
-  - { in: ["1", 2], out: "12" }
+  - { in: ['"1"', 2], out: "12" }
   - { in: ["foo", "bar"], out: "foobar" }
   - { in: [[1, "a", []], 3], out: [4, "a3", []] }
 
@@ -80,13 +80,13 @@
     - { in: [420, -69], out: -63 }
     - { in: [420, -69.69], out: -67.83 }
   when given a string and any value:
-      - { in: ["Hello, %", "World"], out: "Hello, World", }
-      - { in: ["Hello, %", 69], out: "Hello, 69", }
-      - { in: ["Hello, %", [[1, 2, 3]]], out: "Hello, [ 1 | 2 | 3 ]", }
-      - { in: ["Hello, %", 69.69], out: "Hello, 69.69", }
-      - { in: ["% + % = %", [1, 2, 3]], out: "1 + 2 = 3" }
+    - { in: ["Hello, %", "World"], out: "Hello, World" }
+    - { in: ["Hello, %", 69], out: "Hello, 69" }
+    - { in: ["Hello, %", [[1, 2, 3]]], out: "Hello, [ 1 | 2 | 3 ]" }
+    - { in: ["Hello, %", 69.69], out: "Hello, 69.69" }
+    - { in: ["% + % = %", [1, 2, 3]], out: "1 + 2 = 3" }
 
 "&":
-  - { in: [[1, 2, 3], [4, 5]], out: [1, 2, 3, [4, 5]], }
-  - { in: [[1, 2, 3], 69], out: [1, 2, 3, 69], }
+  - { in: [[1, 2, 3], [4, 5]], out: [1, 2, 3, [4, 5]] }
+  - { in: [[1, 2, 3], 69], out: [1, 2, 3, 69] }
   - { in: ["abc", []], out: ["a", "b", "c", []] }
