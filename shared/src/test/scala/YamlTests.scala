@@ -4,9 +4,9 @@ import java.io.InputStreamReader
 import scala.collection.mutable
 import scala.io.Source
 
-import io.circe.{scalayaml => yaml, Decoder, HCursor, Json}
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.Checkpoints.Checkpoint
+import org.virtuslab.yaml.*
 
 
 /** A list of tests. Can be nested */
@@ -24,7 +24,7 @@ case class YamlTest(
     inputs: Seq[VAny],
     flags: List[Char],
     code: Option[String],
-    criteria: Seq[Criterion]
+    criterion: Seq[Criterion]
 )
 
 /** A criterion for the output of a test to meet */
@@ -135,81 +135,77 @@ class YamlTests extends AnyFunSpec:
 
   /** Load all the tests, mapping elements to test groups */
   private def loadTests(): Map[String, TestGroup] =
-    val json = yaml.parser.parse(
-      Source.fromInputStream(getClass().getClassLoader().getResourceAsStream(TestsFile)).mkString
-    )
+    val yaml = Source.fromInputStream(
+        getClass().getClassLoader().getResourceAsStream(TestsFile)
+      ).mkString
 
-    json match
-      case Right(parsed) =>
-        val elemInfos = parsed.asObject.getOrElse(
-          throw Error(s"Expected tests.yaml to be a map")
-        )
-        elemInfos.keys.map { symbol =>
-          val elem = elemInfos(symbol).get
-          symbol -> parseOrThrow[TestGroup](elem)
-        }.toMap
-      case Left(e) => throw Error("Parsing tests.yaml failed", e)
+    yaml.as[Map[String, TestGroup]] match
+      case Right(elemInfos) => elemInfos
+      case Left(e) => throw Error(s"Parsing tests.yaml failed: $e")
   end loadTests
 
-  /** Try parsing some JSON as type `A` and throw if parsing failed */
-  private def parseOrThrow[A](json: Json)(using Decoder[A]): A =
-    json.as[A] match
-      case Right(v) => v
-      case Left(e)  => throw e
+  /** Assume a Node is a scalar, and get its text */
+  private def scalarText(node: Node): String =
+    val Node.ScalarNode(text, _) = node: @unchecked
+    text
 
-  given Decoder[VAny] = new Decoder:
-    override def apply(c: HCursor): Decoder.Result[VAny] =
-      // todo make this return an Either instead
-      def fromJson(json: Json): VAny =
-        if json.isArray then VList.from(json.asArray.get.map(fromJson))
-        else if json.isNumber then VNum(json.asNumber.get.toBigDecimal.get)
-        else if json.isString then json.asString.get
-        else throw Error(s"Invalid Vyxal value: $json")
-      Right(fromJson(c.value))
+  /** Assumes a Node is a mapping, and gets a value from it given the corresponding key */
+  private def getValue(node: Node, key: String): Option[Node] =
+    val Node.MappingNode(map, _) = node: @unchecked
+    map.find((k, _) => scalarText(k) == key).map(_._2)
 
-  given Decoder[TestGroup] = new Decoder:
-    override def apply(c: HCursor): Decoder.Result[TestGroup] =
-      c.values match
-        case Some(testInfos) =>
+  def decodeNode(node: Node): VAny =
+    // todo make this use Lefts instead of throwing
+    node match
+      case Node.ScalarNode(text, tag) =>
+        if tag == Tag.int || tag == Tag.float then VNum(text)
+        else if tag == Tag.str then text
+        else throw Error(s"Invalid Vyxal value: $text")
+      case Node.SequenceNode(lst, _) => VList.from(lst.map(decodeNode))
+      case Node.MappingNode(_, _) => throw Error(s"Invalid Vyxal value (cannot be map): $node")
+
+  given YamlDecoder[VAny] = new YamlDecoder:
+    override def construct(node: Node)(using LoadSettings) =
+      Right(decodeNode(node))
+
+  given YamlDecoder[TestGroup] = new YamlDecoder:
+    override def construct(node: Node)(using LoadSettings) =
+      node match
+        case Node.ScalarNode(_, _) => throw Error(s"Test groups cannot be scalars: $node")
+        case Node.SequenceNode(testInfos, _) =>
           val tests = testInfos.map { test =>
-            val inputs = (test \\ "in").head.asArray.get.map(parseOrThrow[VAny])
-            val flags = (test \\ "flags").headOption.fold(Nil)(_.asString.get.toList)
-            val code = (test \\ "code").headOption.map(_.asString.get)
+            val Node.SequenceNode(inputs, _) = getValue(test, "in").get: @unchecked
+            val flags = getValue(test, "flags").fold(Nil)(scalarText(_).toList)
+            val code = getValue(test, "code").map(scalarText)
             val output = getOutputCriteria(test)
-            YamlTest(inputs, flags, code, output)
+            YamlTest(inputs.map(decodeNode), flags, code, output)
           }
           Right(TestGroup.Tests(tests))
-        case None =>
-          val subgroups = c.keys.get.map { groupName =>
-            groupName -> parseOrThrow[TestGroup](
-              c
-                .downField(groupName)
-                .success
-                .get
-                .value
-            )
+        case Node.MappingNode(subgroupNodes, _) =>
+          val subgroups = subgroupNodes.map { (nameNode, groupInfo) =>
+            val Node.ScalarNode(name, _) = nameNode: @unchecked
+            name -> this.construct(groupInfo).toOption.getOrElse(throw Error(s"Error encountered parsing group $name"))
           }.toMap
           // todo return a Left if errors were found instead of throwing immediately
           Right(TestGroup.Subgroups(subgroups))
-    end apply
 
-  private def getOutputCriteria(testInfo: Json): Seq[Criterion] =
+  private def getOutputCriteria(testInfo: Node): Seq[Criterion] =
     val criteria = mutable.ArrayBuffer.empty[Criterion]
-    for output <- testInfo \\ "out" do
-      criteria += Criterion.Equals(parseOrThrow(output))
-    for startsWith <- testInfo \\ "starts-with" do
-      criteria += Criterion.StartsWith(parseOrThrow[List[VAny]](startsWith))
-    for endsWith <- testInfo \\ "ends-with" do
-      criteria += Criterion.EndsWith(parseOrThrow[List[VAny]](endsWith))
-    for contains <- testInfo \\ "contains" do
-      criteria += Criterion.Contains(parseOrThrow[List[VAny]](contains))
-    for contains <- testInfo \\ "contains-monotonic" do
+    for output <- getValue(testInfo, "out") do
+      criteria += Criterion.Equals(decodeNode(output))
+    for case Node.SequenceNode(startsWith, _) <- getValue(testInfo, "starts-with") do
+      criteria += Criterion.StartsWith(startsWith.map(decodeNode))
+    for case Node.SequenceNode(endsWith, _) <- getValue(testInfo, "ends-with") do
+      criteria += Criterion.EndsWith(endsWith.map(decodeNode))
+    for case Node.SequenceNode(contains, _) <- getValue(testInfo, "contains") do
+      criteria += Criterion.Contains(contains.map(decodeNode))
+    for case Node.SequenceNode(contains, _) <- getValue(testInfo, "contains-monotonic") do
       criteria += Criterion.Contains(
-        parseOrThrow[List[VAny]](contains),
+        contains.map(decodeNode),
         monotonic = true
       )
-    for stack <- testInfo \\ "stack" do
-      criteria += Criterion.Stack(parseOrThrow[List[VAny]](stack))
+    for case Node.SequenceNode(stack, _) <- getValue(testInfo, "stack") do
+      criteria += Criterion.Stack(stack.map(decodeNode))
 
     if criteria.isEmpty then
       throw Error(s"No criteria given for test case $testInfo")

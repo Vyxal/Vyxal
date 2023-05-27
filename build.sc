@@ -47,7 +47,7 @@ trait VyxalModule extends ScalaModule {
 
     def ivyDeps = Agg(
       ivy"org.scalatest::scalatest:3.2.15",
-      ivy"com.armanbilge::circe-scala-yaml:0.0.4"
+      ivy"org.virtuslab::scala-yaml:0.0.7"
     )
 
     // Task to only show output from failed tests
@@ -86,7 +86,9 @@ object js extends ScalaJSModule with VyxalModule {
     OutputPatterns.fromJSFile("pages/vyxal.js")
   }
 
-  object test extends VyxalTestModule with ScalaJSModule
+  object test extends VyxalTestModule with ScalaJSModule {
+    def scalaJSVersion = "1.13.0"
+  }
 }
 
 /** Shared and native-specific code */
