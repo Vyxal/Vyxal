@@ -84,6 +84,17 @@ when given two strings:
     - { in: [[1, [2, 4], -5], 3], out: [0, [0, 1], 0] }
     - { in: [[6, "foo"], [4, 20]], out: [1, 1] }
 
+"A":
+  when given a list:
+    - { in: [[1, 391, "dqw4w9wgxcq", []]], out: 1 }
+    - { in: [[0, 69420, []]], out: 0 }
+  when given a single-character string:
+    - { in: ["a"], out: 1 }
+    - { in: ["E"], out: 1 }
+    - { in: ["y"], out: 0 }
+  when given a multi-character string:
+    - { in: ["asdEy"], out: [1, 0, 0, 1, 0] }
+
 ":":
   # todo(lyxal): make flag to give default value when popping off empty stack
   #              without having to set online = true
