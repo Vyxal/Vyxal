@@ -5,6 +5,11 @@
   - { in: ["1", 2], out: "12" }
   - { in: ["foo", "bar"], out: "foobar" }
   - { in: [[1, "a", []], 3], out: [4, "a3", []] }
+  - { in: [[[2, 5], "foo"], [[3, 4]]], out: [[7, 9], "foo0"] }
+  - { in: [5.1, -45.4], out: -40.3 }
+  - { in: ["foo", 3], out: "foo3" }
+  - { in: [3, "foo"], out: "3foo" }
+  - { in: [0.1, 0.2], out: 0.3 }
 
 "-":
   when given two numbers:
