@@ -1,6 +1,26 @@
 # Replace List\[VAny\]\((.+)\) -> (.+?),?$ with - { in: [$1], out: $2 }
 # Replace VNum\((-?\d+)\) with $1
 
+"*":
+when given two numbers:
+  - { in: [3, 2], out: 9 }
+  - { in: [0, 1], out: 0 }
+  - { in: [2, -1], out: 0.5 }
+  - { in: [5.1, 4.2], out: 937.11899215207 }
+  - { in: [3, 0], out: 1 }
+  - { in: [0, 0], out: 1 }
+when given a string and a number:
+  - { in: ["the fitnessgram pacer test", 6], out: "the finessgram pacer test" }
+  - { in: [4.2, "airpod shotty"], out: "airpd shotty" }
+  - { in: ["sussy baka", 0], out: "ussy baka" }
+  - { in: ["sussy baka", -1], out: "sussy bak" }
+  - { in: ["vyxal", 7], out: "vyal" }
+when given two strings:
+  - { in: ["abcdefabc", "abc"], out: "def" }
+  - { in: ["abc", "abcdefabc"], out: "abc" }
+  - { in: ["abc", "abc"], out: "" }
+  - { in: ["abcdefabc", ""], out: "abcdefabc" }
+
 "+":
   - { in: ["1", 2], out: "12" }
   - { in: ["foo", "bar"], out: "foobar" }
