@@ -101,6 +101,11 @@ elements: dict[str, tuple[str, int]] = {
         "ctx.use_top_input = False; stack.append(lhs)",
         0,
     ),
+    "¨ḭ": (
+        "ctx.use_top_input = True; lhs = get_input(ctx, explicit=True, evaluated=False); "
+        "ctx.use_top_input = False; stack.append(lhs)",
+        0,
+    ),
     "B": process_element("vy_int(lhs, 2)", 1),
     "D": (
         "top = pop(stack, 1, ctx); stack.append(top);"

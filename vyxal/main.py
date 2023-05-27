@@ -154,6 +154,8 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         with open(inputs[0], "r", encoding="utf-8") as f:
             inputs = [x.replace("\r", "") for x in f.readlines()]
 
+    ctx.original_args = inputs
+
     if "Ṡ" in flags:  # All inputs as strings
         inputs = list(map(str, inputs))
         ctx.inputs_as_strings = True
