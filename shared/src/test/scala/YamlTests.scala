@@ -2,9 +2,9 @@ package vyxal
 
 import java.io.InputStreamReader
 import scala.collection.mutable
-import scala.jdk.CollectionConverters.*
+import scala.io.Source
 
-import io.circe.{yaml, Decoder, HCursor, Json}
+import io.circe.{scalayaml => yaml, Decoder, HCursor, Json}
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.Checkpoints.Checkpoint
 
@@ -136,9 +136,7 @@ class YamlTests extends AnyFunSpec:
   /** Load all the tests, mapping elements to test groups */
   private def loadTests(): Map[String, TestGroup] =
     val json = yaml.parser.parse(
-      new InputStreamReader(
-        getClass().getClassLoader().getResourceAsStream(TestsFile)
-      )
+      Source.fromInputStream(getClass().getClassLoader().getResourceAsStream(TestsFile)).mkString
     )
 
     json match

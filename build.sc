@@ -86,7 +86,7 @@ object js extends ScalaJSModule with VyxalModule {
     OutputPatterns.fromJSFile("pages/vyxal.js")
   }
 
-  object test extends VyxalTestModule
+  object test extends VyxalTestModule with ScalaJSModule
 }
 
 /** Shared and native-specific code */
@@ -103,7 +103,7 @@ object native extends ScalaNativeModule with VyxalModule {
   def releaseMode = ReleaseMode.ReleaseFast
   def nativeLTO = LTO.Thin
 
-  object test extends ScalaNativeModule with VyxalTestModule {
+  object test extends VyxalTestModule with ScalaNativeModule {
     def scalaNativeVersion = native.this.scalaNativeVersion
   }
 }
