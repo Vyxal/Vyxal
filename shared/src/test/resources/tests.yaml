@@ -235,6 +235,33 @@ when given two strings:
     - { in: [0, 2], out: 0 }
     - { in: [-3, 1], out: 3 }
 
+"N":
+  When given a number:
+    - { in: [420], out: -420 }
+    - { in: [0], out: 0 }
+    - { in: [-69], out: 69 }
+  When given a string:
+    - { in: ["a"], out: "A" }
+    - { in: ["A"], out: "a" }
+    - { in: ["abc"], out: "ABC" }
+    - { in: ["ABC"], out: "abc" }
+    - { in: ["123"], out: "123" }
+    - { in: ["abC123"], out: "ABc123" }
+
+"O":
+  When given a number:
+    - { in: [65], out: "A" }
+    - { in: [97], out: "a" }
+    - { in: [8482], out: "™" }
+    - { in: [[97, 98, 99]], out: "abc" }
+    - { in: [[49, 59, 51]], out: "123" }
+  When given a string:
+    - { in: ["A"], out: 65 }
+    - { in: ["a"], out: 97 }
+    - { in: ["™"], out: 8482 }
+    - { in: ["abc"], out: [97, 98, 99] }
+    - { in: ["123"], out: [49, 50, 51] }
+
 ":":
   # todo(lyxal): make flag to give default value when popping off empty stack
   #              without having to set online = true
