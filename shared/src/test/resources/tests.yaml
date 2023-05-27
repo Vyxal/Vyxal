@@ -51,6 +51,25 @@ when given two strings:
     - { in: ["aaa", "a"], out: "" }
     - { in: ["Hello, World", ""], out: "Hello, World" }
 
+";":
+  - { in: [1, 2, 3], out: [2, 3] }
+  - { in: [1, 2, 3, 4], out: [3, 4] }
+  - { in: [1, 2, 3, 4, 5], out: [4, 5] }
+
+"<":
+  With numbers:
+    - { in: [1, 2], out: 1 }
+    - { in: [1, 1], out: 0 }
+    - { in: [2, 1], out: 0 }
+    - { in: [1.5, 2], out: 1 } # How to represent complex numbers?
+  Should stringify:
+    - { in: ["abc", 1], out: 0 }
+    - { in: [20, "3"], out: 1 }
+    - { in: ["ABC", "abc"], out: 1 }
+  Should vectorise:
+    - { in: [[1, [2, 4], -5], 3], out: [1, [1, 0], 1] }
+    - { in: [[6, "foo"], [4, 20]], out: [0, 0] }
+
 ":":
   # todo(lyxal): make flag to give default value when popping off empty stack
   #              without having to set online = true
