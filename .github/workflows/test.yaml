@@ -21,3 +21,6 @@ jobs:
 
       - name: Test JVM
         run: sbt vyxalJVM/test
+
+      - name: Test Native
+        run: sbt vyxalNative/test
