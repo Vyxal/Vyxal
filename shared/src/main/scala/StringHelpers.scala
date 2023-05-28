@@ -120,6 +120,14 @@ object StringHelpers:
     val wrapped = (i + s.length) % s.length
     s.substring(0, wrapped) + s.substring(wrapped + 1)
 
+  /** Get the string representation of a value (opposite of eval) */
+  def repr(v: VAny): String =
+    v match
+      case n: VNum => n.toString
+      case s: String => "\"" + s.replace("\\", "\\\\").replace("\"", "\\\"") + "\""
+      case l: VList => l.map(repr).mkString("#[", ",", "#]")
+      case f: VFun => throw IllegalArgumentException(s"Cannot get repr for function: $f")
+
   /** Ring translates a given string according to the provided mapping \- that
     * is, map matching elements to the subsequent element in the translation
     * ring. The ring wraps around.

@@ -8,7 +8,6 @@ import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.Checkpoints.Checkpoint
 import org.virtuslab.yaml.*
 
-
 /** A list of tests. Can be nested */
 enum TestGroup:
   case Subgroups(subgroups: Map[String, TestGroup])
@@ -32,47 +31,15 @@ enum Criterion:
   case Equals(expected: VAny)
   case StartsWith(prefix: Seq[VAny])
   case EndsWith(suffix: Seq[VAny])
+
   /** The output must be a list containing all of the given elements */
   case Contains(elems: Seq[VAny], monotonic: Boolean = false)
+
   /** The top of the stack must match `elems` */
   case Stack(elems: Seq[VAny])
 
-/** Tests for specific elements. The format is something like this:
-  * {{{
-  * # The element itself
-  * "ඞ":
-  *   # For relatively small cases
-  *   - { in: [1, 2], out: 3 }
-  *   # In case you have lots of inputs or you just want to be explicit
-  *   - in:
-  *     - "foo"
-  *     - 2
-  *     - ["nested"]
-  *   - out: "asdf"
-  *   # If you want to specify some conditions about the output
-  *   - in: ["gimme all the primes"]
-  *     # Ensure the output starts with a certain prefix
-  *     starts-with: [2, 3, 5]
-  *     # Make sure it contains 0 and 1
-  *     contains: [0, 1]
-  *     # Same as contains, but assume the list is monotonic (useful for infinite lists)
-  *     contains-monotonic: [2]
-  *     # To make sure the output *doesn't* meet some conditions
-  *     not:
-  *       contains: [3]
-  *       # Make sure the output *doesn't* end with -9, -10
-  *       ends-with: [-9, -10]
-  * "+":
-  *   # You can also make groups of tests
-  *   should work on numbers:
-  *     nested:
-  *       - { in: [0.1, 4.5], out: 42 }
-  *       - { in: [1, 2], out: 5 }
-  *   other group of tests:
-  *     - { in: [1], out: 5 }
-  *   # But you can't mix test groups and test lists
-  *   - { in: [], out: [] } # This line isn't allowed here
-  * }}}
+/** Tests for specific elements, loaded from tests.yaml. See the documentation
+  * for information about the format.
   */
 class YamlTests extends AnyFunSpec:
   val TestsFile = "/tests.yaml"
@@ -94,8 +61,16 @@ class YamlTests extends AnyFunSpec:
       case TestGroup.Tests(tests) =>
         for YamlTest(inputs, flags, codeOverride, criteria) <- tests do
           val code = codeOverride.getOrElse(element)
-          it(s"Execute `$code` on inputs ${inputs.mkString(", ")}") {
-            given ctx: Context = Context(testMode = true, inputs = inputs, globals = Globals(settings = Settings().withFlags(flags)))
+          val inputStr = inputs.map(StringHelpers.repr).mkString(", ")
+          val msg =
+            if codeOverride.isEmpty then s"Inputs: $inputStr"
+            else s"Code: `$code, inputs: $inputStr"
+          it(msg) {
+            given ctx: Context = Context(
+              testMode = true,
+              inputs = inputs,
+              globals = Globals(settings = Settings().withFlags(flags))
+            )
             Interpreter.execute(code)
             val output = ctx.peek
             val checkpoint = Checkpoint()
@@ -135,21 +110,24 @@ class YamlTests extends AnyFunSpec:
 
   /** Load all the tests, mapping elements to test groups */
   private def loadTests(): Map[String, TestGroup] =
-    val yaml = Source.fromInputStream(
+    val yaml = Source
+      .fromInputStream(
         getClass().getResourceAsStream(TestsFile)
-      ).mkString
+      )
+      .mkString
 
     yaml.as[Map[String, TestGroup]] match
       case Right(elemInfos) => elemInfos
-      case Left(e) => throw Error(s"Parsing tests.yaml failed: $e")
-  end loadTests
+      case Left(e)          => throw Error(s"Parsing tests.yaml failed: $e")
 
   /** Assume a Node is a scalar, and get its text */
   private def scalarText(node: Node): String =
     val Node.ScalarNode(text, _) = node: @unchecked
     text
 
-  /** Assumes a Node is a mapping, and gets a value from it given the corresponding key */
+  /** Assumes a Node is a mapping, and gets a value from it given the
+    * corresponding key
+    */
   private def getValue(node: Node, key: String): Option[Node] =
     val Node.MappingNode(map, _) = node: @unchecked
     map.find((k, _) => scalarText(k) == key).map(_._2)
@@ -173,7 +151,8 @@ class YamlTests extends AnyFunSpec:
       node match
         case Node.SequenceNode(testInfos, _) =>
           val tests = testInfos.map { test =>
-            val Node.SequenceNode(inputs, _) = getValue(test, "in").get: @unchecked
+            val Node.SequenceNode(inputs, _) =
+              getValue(test, "in").get: @unchecked
             val flags = getValue(test, "flags").fold(Nil)(scalarText(_).toList)
             val code = getValue(test, "code").map(scalarText)
             val output = getOutputCriteria(test)
@@ -183,7 +162,10 @@ class YamlTests extends AnyFunSpec:
         case Node.MappingNode(subgroupNodes, _) =>
           val subgroups = subgroupNodes.map { (nameNode, groupInfo) =>
             val Node.ScalarNode(name, _) = nameNode: @unchecked
-            name -> this.construct(groupInfo).toOption.getOrElse(throw Error(s"Error encountered parsing group $name"))
+            name -> this
+              .construct(groupInfo)
+              .toOption
+              .getOrElse(throw Error(s"Error encountered parsing group $name"))
           }.toMap
           // todo return a Left if errors were found instead of throwing immediately
           Right(TestGroup.Subgroups(subgroups))
@@ -193,13 +175,16 @@ class YamlTests extends AnyFunSpec:
     val criteria = mutable.ArrayBuffer.empty[Criterion]
     for output <- getValue(testInfo, "out") do
       criteria += Criterion.Equals(decodeNode(output))
-    for case Node.SequenceNode(startsWith, _) <- getValue(testInfo, "starts-with") do
-      criteria += Criterion.StartsWith(startsWith.map(decodeNode))
-    for case Node.SequenceNode(endsWith, _) <- getValue(testInfo, "ends-with") do
-      criteria += Criterion.EndsWith(endsWith.map(decodeNode))
+    for case Node
+        .SequenceNode(startsWith, _) <- getValue(testInfo, "starts-with")
+    do criteria += Criterion.StartsWith(startsWith.map(decodeNode))
+    for case Node.SequenceNode(endsWith, _) <- getValue(testInfo, "ends-with")
+    do criteria += Criterion.EndsWith(endsWith.map(decodeNode))
     for case Node.SequenceNode(contains, _) <- getValue(testInfo, "contains") do
       criteria += Criterion.Contains(contains.map(decodeNode))
-    for case Node.SequenceNode(contains, _) <- getValue(testInfo, "contains-monotonic") do
+    for case Node
+        .SequenceNode(contains, _) <- getValue(testInfo, "contains-monotonic")
+    do
       criteria += Criterion.Contains(
         contains.map(decodeNode),
         monotonic = true
