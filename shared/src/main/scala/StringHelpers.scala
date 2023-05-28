@@ -195,11 +195,15 @@ object StringHelpers:
 
   def titlecase(s: String): String =
     // Split on "words" (sequences of letters) and capitalize each word.
-    // regex from https://stackoverflow.com/a/2206432/9363594
-    s.split("((?<=[^A-Za-z]+)|(?=[^A-Za-z]+))")
-      .map { word =>
-        if word.isEmpty then word
-        else s"${word.head.toUpper}${word.tail.toLowerCase}"
-      }
-      .mkString
+    val splitOnWords = ListHelpers
+      .groupConsecutiveBy[String](
+        s.toSeq.map(_.toString),
+        (x: String) => x.matches("[a-zA-Z]")
+      )
+
+    val words = splitOnWords.map(_.mkString)
+    words.map { word =>
+      if word.length == 1 then word.toUpperCase
+      else s"${word.head.toUpper}${word.tail.toLowerCase}"
+    }.mkString
 end StringHelpers

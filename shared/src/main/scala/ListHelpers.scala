@@ -62,6 +62,39 @@ object ListHelpers:
     )
   end generate
 
+  def groupConsecutive(iterable: VList): VList =
+    val out = ArrayBuffer.empty[VList]
+    var current = ArrayBuffer.empty[VAny]
+    var last: Option[VAny] = None
+    iterable.foreach { item =>
+      if last.isEmpty || last.get == item then current += item
+      else
+        out += VList(current.toSeq*)
+        current = ArrayBuffer(item)
+      last = Some(item)
+    }
+    if current.nonEmpty then out += VList(current.toSeq*)
+    VList(out.toSeq*)
+
+  def groupConsecutiveBy[T](
+      iterable: Seq[T],
+      function: (T) => Any
+  ): Seq[Seq[T]] =
+    val out = ArrayBuffer.empty[Seq[T]]
+    var current = ArrayBuffer.empty[T]
+    var last: Option[Any] = None
+    iterable.foreach { item =>
+      val key = function(item)
+      if last.isEmpty || last.get == key then current += item
+      else
+        out += current.toSeq
+        current = ArrayBuffer(item)
+      last = Some(key)
+    }
+    if current.nonEmpty then out += current.toSeq
+    out.toSeq
+  end groupConsecutiveBy
+
   def interleave(left: VList, right: VList)(using ctx: Context): VList =
     val out = ArrayBuffer.empty[VAny]
     val leftIter = left.iterator
