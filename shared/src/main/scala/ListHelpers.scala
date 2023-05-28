@@ -73,8 +73,8 @@ object ListHelpers:
         current = ArrayBuffer(item)
       last = Some(item)
     }
-    if current.nonEmpty then out += VList(current.toSeq*)
-    VList(out.toSeq*)
+    if current.nonEmpty then out += VList.from(current.toSeq)
+    VList.from(out.toSeq)
 
   def groupConsecutiveBy[T](
       iterable: Seq[T],
