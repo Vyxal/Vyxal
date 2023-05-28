@@ -856,9 +856,21 @@ object Elements:
       None,
       "a: any -> uninterleave a"
     ) { ctx ?=>
-      val a = ListHelpers.makeIterable(ctx.pop())
-      val (evens, odds) = a.zipWithIndex.partition(_._2 % 2 == 0)
-      ctx.push(VList.from(evens.map(_._1)), VList.from(odds.map(_._1)))
+      val a = ctx.pop()
+      val lst = ListHelpers.makeIterable(a)
+      val (evens, odds) = lst.zipWithIndex.partition(_._2 % 2 == 0)
+      val (pushEven, pushOdd) = a match
+        case _: VList =>
+          VList.from(evens.map(_._1)) -> VList.from(odds.map(_._1))
+        case _: VNum =>
+          MiscHelpers.eval(evens.map(_._1).mkString) -> MiscHelpers.eval(
+            odds.map(_._1).mkString
+          )
+        case _: String => evens.map(_._1).mkString -> odds.map(_._1).mkString
+        case _ =>
+          throw RuntimeException("Uninterleave: Can't uninterleave this type")
+
+      ctx.push(pushEven, pushOdd)
     }
 
     val vectoriseAsElement = addDirect(
