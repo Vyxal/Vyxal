@@ -332,11 +332,11 @@
     - { in: [[[], []]], out: [[[], []]]}
     - { in: [[1, 2]], out: [1, 2]}
   When given a string:
-    - { in: "hello world", out: "Hello World"}
-    - { in: "vyxal Golfing", out: "Vyxal Golfing"}
-    - { in: "VYXAL GOLFING", out: "Vyxal Golfing"}
-    - { in: "h#*j", out: "H#*J"}
-    - { in: "sk(*@lkbjthIU@#YN$UHl)", out: "Sk(*@Lkbjthiu@#Yn$Uhl)"}
+    - { in: ["hello world"], out: "Hello World"}
+    - { in: ["vyxal Golfing"], out: "Vyxal Golfing"}
+    - { in: ["VYXAL GOLFING"], out: "Vyxal Golfing"}
+    - { in: ["h#*j"], out: "H#*J"}
+    - { in: ["sk(*@lkbjthIU@#YN$UHl)"], out: "Sk(*@Lkbjthiu@#Yn$Uhl)"}
   When given a number:
     - { in: 123, out: -122}
     - { in: 0, out: 1}
