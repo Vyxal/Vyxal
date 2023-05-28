@@ -42,7 +42,10 @@ enum Criterion:
   * for information about the format.
   */
 class YamlTests extends AnyFunSpec:
+  /** The file to load tests from */
   val TestsFile = "/tests.yaml"
+  /** YAML tag for scalars to be parsed as VNums */
+  val NumTag = CustomTag("!num")
 
   Dictionary.fileInitialise()
 
@@ -136,9 +139,9 @@ class YamlTests extends AnyFunSpec:
     // todo make this use Lefts instead of throwing
     node match
       case Node.ScalarNode(text, tag) =>
-        if tag == Tag.int || tag == Tag.float then VNum(text)
+        if tag == Tag.int || tag == Tag.float || tag == NumTag then VNum(text)
         else if tag == Tag.str then text
-        else throw Error(s"Invalid Vyxal value: $text")
+        else throw Error(s"Invalid Vyxal value: $text $tag")
       case Node.SequenceNode(lst, _) => VList.from(lst.map(decodeNode))
       case _ => throw Error(s"Invalid Vyxal value (cannot be map): $node")
 

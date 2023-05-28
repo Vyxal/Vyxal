@@ -1,3 +1,5 @@
+%TAG !num! num # Tag for VNums
+---
 # Replace List\[VAny\]\((.+)\) -> (.+?),?$ with - { in: [$1], out: $2 }
 # Replace VNum\((-?\d+)\) with $1
 
@@ -61,7 +63,10 @@
     - { in: [1, 2], out: 1 }
     - { in: [1, 1], out: 0 }
     - { in: [2, 1], out: 0 }
-    - { in: [1.5, 2], out: 1 } # How to represent complex numbers?
+    - in:
+        - !num 1ı50
+        - 2
+      out: 1
   Should stringify:
     - { in: ["abc", 1], out: 0 }
     - { in: [20, "3"], out: 1 }
