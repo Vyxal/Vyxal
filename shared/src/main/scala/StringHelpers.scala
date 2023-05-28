@@ -194,8 +194,9 @@ object StringHelpers:
     }.mkString
 
   def titlecase(s: String): String =
-    // Split on "words" (sequences of letters) and capitalize each word
-    s.split("([^a-zA-Z]+)")
+    // Split on "words" (sequences of letters) and capitalize each word.
+    // regex from https://stackoverflow.com/a/2206432/9363594
+    s.split("((?<=[^A-Za-z]+)|(?=[^A-Za-z]+))")
       .map { word =>
         if word.isEmpty then word
         else s"${word.head.toUpper}${word.tail.toLowerCase}"
