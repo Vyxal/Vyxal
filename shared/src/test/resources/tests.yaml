@@ -337,6 +337,8 @@
     - { in: ["VYXAL GOLFING"], out: "Vyxal Golfing"}
     - { in: ["h#*j"], out: "H#*J"}
     - { in: ["sk(*@lkbjthIU@#YN$UHl)"], out: "Sk(*@Lkbjthiu@#Yn$Uhl)"}
+    - { in: ["Hello, World!"], out: "Hello, World!"}
+    - { in: ["this i!!!!s A TESt!!!!   sentENCE"], out: "This I!!!!S A Test!!!!   Sentence"}
   When given a number:
     - { in: [123], out: -122}
     - { in: [0], out: 1}
