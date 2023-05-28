@@ -859,6 +859,7 @@ object Elements:
       val a = ctx.pop()
       val lst = ListHelpers.makeIterable(a)
       val (evens, odds) = lst.zipWithIndex.partition(_._2 % 2 == 0)
+      // Make sure to preserve type
       val (pushEven, pushOdd) = a match
         case _: VList =>
           VList.from(evens.map(_._1)) -> VList.from(odds.map(_._1))
