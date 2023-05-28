@@ -890,6 +890,26 @@ object Elements:
           )
     }
 
+    val vectorisedReverse = addElem(
+      Monad,
+      "V",
+      "Vectorised Reverse / Complement / Title Case",
+      List(
+        "vectorised-reverse",
+        "vec-reverse",
+        "complement",
+        "titlecase",
+        "title-case"
+      ),
+      "a: lst -> each element of a reversed",
+      "a: num -> 1 - a",
+      "a: str -> a converted to title case"
+    ) {
+      case a: VList  => VList.from(a.map(ListHelpers.reverse))
+      case a: VNum   => 1 - a
+      case a: String => StringHelpers.titlecase(a)
+    }
+
     val wrap = addDirect(
       "W",
       "Wrap",

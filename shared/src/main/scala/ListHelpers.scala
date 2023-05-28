@@ -219,6 +219,20 @@ object ListHelpers:
   def prefixes(iterable: VList): Seq[VList] =
     iterable.inits.toSeq.reverse.tail
 
+  /** Reverse a VAny - if it's a list, reverse the list, if it's a string,
+    * reverse the string, if it's a number, reverse the number. Different to the
+    * VList.reverse method because this preserves the type of the input.
+    * @param iterable
+    * @return
+    *   The reversed iterable
+    */
+  def reverse(iterable: VAny): VAny =
+    iterable match
+      case list: VList => VList(list.reverse*)
+      case str: String => str.reverse
+      case num: VNum   => VNum(num.toString.reverse)
+      case _           => iterable
+
   /** Split a list on a sublist
     *
     * @param sep
