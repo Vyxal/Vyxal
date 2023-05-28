@@ -869,7 +869,7 @@ object Elements:
           )
         case _: String => evens.map(_._1).mkString -> odds.map(_._1).mkString
         case _ =>
-          throw RuntimeException("Uninterleave: Can't uninterleave this type")
+          throw RuntimeException("Uninterleave: Can't uninterleave functions")
 
       ctx.push(pushEven, pushOdd)
     }
