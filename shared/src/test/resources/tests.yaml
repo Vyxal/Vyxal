@@ -340,7 +340,7 @@
   When given a number:
     - { in: 123, out: -122}
     - { in: 0, out: 1}
- 
+
 "_":
   - { in: [1, 2, 3], stack: [1, 2] }
   - { in: [1, 2, 3, 4, 5], stack: [1, 2, 3, 4] }
