@@ -124,9 +124,11 @@ object StringHelpers:
   def repr(v: VAny): String =
     v match
       case n: VNum => n.toString
-      case s: String => "\"" + s.replace("\\", "\\\\").replace("\"", "\\\"") + "\""
+      case s: String =>
+        "\"" + s.replace("\\", "\\\\").replace("\"", "\\\"") + "\""
       case l: VList => l.map(repr).mkString("#[", ",", "#]")
-      case f: VFun => throw IllegalArgumentException(s"Cannot get repr for function: $f")
+      case f: VFun =>
+        throw IllegalArgumentException(s"Cannot get repr for function: $f")
 
   /** Ring translates a given string according to the provided mapping \- that
     * is, map matching elements to the subsequent element in the translation
