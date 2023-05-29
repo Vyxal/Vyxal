@@ -3,11 +3,12 @@ import mill.define.Target
 import mill.scalajslib._
 import mill.scalajslib.api._
 import mill.scalalib._
+import mill.scalalib.scalafmt.ScalafmtModule
 import mill.scalanativelib._
 import mill.scalanativelib.api._
 
 /** Shared settings for all modules */
-trait VyxalModule extends ScalaModule {
+trait VyxalModule extends ScalaModule with ScalafmtModule {
   def platform: String
 
   def scalaVersion = "3.2.2"
@@ -42,7 +43,10 @@ trait VyxalModule extends ScalaModule {
     build.millSourcePath / "shared" / "src" / "main" / "resources"
   )
 
-  trait VyxalTestModule extends Tests with TestModule.ScalaTest {
+  trait VyxalTestModule
+      extends Tests
+      with TestModule.ScalaTest
+      with ScalafmtModule {
     def scalaVersion = VyxalModule.this.scalaVersion()
 
     def ivyDeps = Agg(
