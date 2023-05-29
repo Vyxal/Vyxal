@@ -67,8 +67,7 @@ object ListHelpers:
 
   def groupConsecutiveBy[T](
       iterable: Seq[T],
-      function: (T) => Any
-  ): Seq[Seq[T]] =
+  )(function: T => Any): Seq[Seq[T]] =
     val out = ArrayBuffer.empty[Seq[T]]
     var current = ArrayBuffer.empty[T]
     var last: Option[Any] = None
