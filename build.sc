@@ -52,7 +52,7 @@ trait VyxalModule extends ScalaModule {
 
     // Task to only show output from failed tests
     def testQuiet(args: String*) =
-      T.command { testOnly(args :+ "-oNCXELOPQRM": _*)() }
+      T.command { testOnly(args :+ "-oNCXEHLOPQRMF": _*)() }
 
     def sources = T.sources(
       build.millSourcePath / platform / "src" / "test" / "scala",

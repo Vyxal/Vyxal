@@ -55,7 +55,7 @@ object CLI:
           return
 
         if config.printSugar then
-          printSugar()
+          for (key, value) <- SugarMap.trigraphs do println(s"$key -> $value")
           return
 
         if config.litInfoFor.nonEmpty then
@@ -99,9 +99,6 @@ object CLI:
         println(s"Error: ${e.getMessage()}")
         e.printStackTrace()
 
-  private def printSugar(): Unit =
-    val sugar = SugarMap.internalMap
-    sugar.foreach((key, value) => println(s"$key -> $value"))
   private def printDocs(): Unit =
     Elements.elements.values.toSeq
       .sortBy { elem =>

@@ -136,7 +136,7 @@ object Lexer extends RegexParsers:
       else if value.charAt(1) == ':' then SyntaxTrigraph(value)
       else
         sugarUsed = true
-        val temp = SugarMap(value)
+        val temp = SugarMap.trigraphs.getOrElse(value, value)
         apply(temp) match
           case Left(value)  => Command(temp)
           case Right(value) => value(0)
