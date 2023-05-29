@@ -63,7 +63,7 @@ object ListHelpers:
   end generate
 
   def groupConsecutive(iterable: VList): VList =
-    VList.from(groupConsecutiveBy(iterable, x => x).map(VList.from))
+    VList.from(groupConsecutiveBy(iterable)(Predef.identity).map(VList.from))
 
   def groupConsecutiveBy[T](
       iterable: Seq[T],
