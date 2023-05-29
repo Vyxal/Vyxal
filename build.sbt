@@ -63,7 +63,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     ),
     // From https://www.scalatest.org/user_guide/using_the_runner
     // Suppress output from successful tests
-    Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-oNCXELOPQRMF")
+    Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-oNCXEOPQRMF")
   )
   .jvmSettings(
     // JVM-specific settings
