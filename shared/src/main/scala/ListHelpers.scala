@@ -62,6 +62,27 @@ object ListHelpers:
     )
   end generate
 
+  def groupConsecutive(iterable: VList): VList =
+    VList.from(groupConsecutiveBy(iterable)(Predef.identity).map(VList.from))
+
+  def groupConsecutiveBy[T](
+      iterable: Seq[T],
+  )(function: T => Any): Seq[Seq[T]] =
+    val out = ArrayBuffer.empty[Seq[T]]
+    var current = ArrayBuffer.empty[T]
+    var last: Option[Any] = None
+    iterable.foreach { item =>
+      val key = function(item)
+      if last.isEmpty || last.get == key then current += item
+      else
+        out += current.toSeq
+        current = ArrayBuffer(item)
+      last = Some(key)
+    }
+    if current.nonEmpty then out += current.toSeq
+    out.toSeq
+  end groupConsecutiveBy
+
   def interleave(left: VList, right: VList)(using ctx: Context): VList =
     val out = ArrayBuffer.empty[VAny]
     val leftIter = left.iterator
@@ -218,6 +239,20 @@ object ListHelpers:
 
   def prefixes(iterable: VList): Seq[VList] =
     iterable.inits.toSeq.reverse.tail
+
+  /** Reverse a VAny - if it's a list, reverse the list, if it's a string,
+    * reverse the string, if it's a number, reverse the number. Different to the
+    * VList.reverse method because this preserves the type of the input.
+    * @param iterable
+    * @return
+    *   The reversed iterable
+    */
+  def reverse(iterable: VAny): VAny =
+    iterable match
+      case list: VList => VList(list.reverse*)
+      case str: String => str.reverse
+      case num: VNum   => VNum(num.toString.reverse)
+      case _           => iterable
 
   /** Split a list on a sublist
     *

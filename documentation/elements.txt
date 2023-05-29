@@ -193,6 +193,12 @@ U (Uninterleave) (non-vectorising)
 Keywords: uninterleave
 - a: any -> uninterleave a
 ---------------------
+V (Vectorised Reverse / Complement / Title Case) (non-vectorising)
+Keywords: vectorised-reverse, vec-reverse, complement, titlecase, title-case
+- a: lst -> each element of a reversed
+- a: num -> 1 - a
+- a: str -> a converted to title case
+---------------------
 W (Wrap) (non-vectorising)
 Keywords: wrap
 - a, b, c, ..., -> [a, b, c, ...]

@@ -20,7 +20,7 @@
 ᵗ = Tie. Cycle through a number of (default 2) elements each time called.
 ᵘ = run func on the prev result until the result no longer changes returning all intermediate results
 ᵛ = vectorise over rows (map with each row as entire input)
-ᵂ =
+ᵂ = Pop the top value of the stack, apply a function to the rest, and push the popped value back.
 ᵡ = scan fixedpoint [apply until a previous value is repeated, collecting intermediate results]
 ᵞ = vertical scan
 ᶻ = zipwith

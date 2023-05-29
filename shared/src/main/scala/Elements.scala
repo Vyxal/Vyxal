@@ -856,9 +856,22 @@ object Elements:
       None,
       "a: any -> uninterleave a"
     ) { ctx ?=>
-      val a = ListHelpers.makeIterable(ctx.pop())
-      val (evens, odds) = a.zipWithIndex.partition(_._2 % 2 == 0)
-      ctx.push(VList.from(evens.map(_._1)), VList.from(odds.map(_._1)))
+      val a = ctx.pop()
+      val lst = ListHelpers.makeIterable(a)
+      val (evens, odds) = lst.zipWithIndex.partition(_._2 % 2 == 0)
+      // Make sure to preserve type
+      val (pushEven, pushOdd) = a match
+        case _: VList =>
+          VList.from(evens.map(_._1)) -> VList.from(odds.map(_._1))
+        case _: VNum =>
+          MiscHelpers.eval(evens.map(_._1).mkString) -> MiscHelpers.eval(
+            odds.map(_._1).mkString
+          )
+        case _: String => evens.map(_._1).mkString -> odds.map(_._1).mkString
+        case _ =>
+          throw RuntimeException("Uninterleave: Can't uninterleave functions")
+
+      ctx.push(pushEven, pushOdd)
     }
 
     val vectoriseAsElement = addDirect(
@@ -875,6 +888,26 @@ object Elements:
           throw IllegalArgumentException(
             "Vectorise: First argument should be a function"
           )
+    }
+
+    val vectorisedReverse = addElem(
+      Monad,
+      "V",
+      "Vectorised Reverse / Complement / Title Case",
+      List(
+        "vectorised-reverse",
+        "vec-reverse",
+        "complement",
+        "titlecase",
+        "title-case"
+      ),
+      "a: lst -> each element of a reversed",
+      "a: num -> 1 - a",
+      "a: str -> a converted to title case"
+    ) {
+      case a: VList  => VList.from(a.map(ListHelpers.reverse))
+      case a: VNum   => 1 - a
+      case a: String => StringHelpers.titlecase(a)
     }
 
     val wrap = addDirect(
