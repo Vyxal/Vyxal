@@ -56,7 +56,7 @@ object JSVyxal:
   /** Bridge to turn literate code into SBCS */
   @JSExport
   def getSBCSified(code: String): String =
-    LiterateLexer.processLitOptionless(code)
+    LiterateLexer.processLit(code).getOrElse(code)
 
   @JSExport
   def getCodepage(): String = vyxal.CODEPAGE
