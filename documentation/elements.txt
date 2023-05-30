@@ -23,6 +23,10 @@ Keywords: break
 Keywords: 
 - *a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead
 ---------------------
+#x (Loop Continue) (non-vectorising)
+Keywords: continue
+-  -> continue the current loop
+---------------------
 $ (Swap) (non-vectorising)
 Keywords: swap
 - a, b -> b, a
@@ -206,6 +210,10 @@ Keywords: vectorised-reverse, vec-reverse, complement, titlecase, title-case
 W (Wrap) (non-vectorising)
 Keywords: wrap
 - a, b, c, ..., -> [a, b, c, ...]
+---------------------
+X (Return Statement) (non-vectorising)
+Keywords: return, ret
+- a -> return a
 ---------------------
 _ (Pop and Discard) (non-vectorising)
 Keywords: pop, discard
