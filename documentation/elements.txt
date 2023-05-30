@@ -156,7 +156,7 @@ Keywords: map, mold, multiplicity, times-divide
 N (Negation | Swap Case | First Non-Negative Integer Where Predicate is True) (vectorising)
 Keywords: neg, negate, swap-case, caseswap, first-non-negative, first-nonneg, first>-1
 - a: num -> -a
-- a: str -> a.swapcase()
+- a: str -> a.swapCase()
 - a: fun -> first non-negative integer where predicate a is true
 ---------------------
 O (Ord/Chr) (non-vectorising)
