@@ -176,9 +176,6 @@ object LiterateLexer:
   def processLit(code: String): Either[VyxalCompilationError, String] =
     LiterateLexer(code).map(sbcsify)
 
-  def processLitOptionless(code: String): String =
-    sbcsify(LiterateLexer(code).getOrElse(Nil))
-
   private def sbcsify(tokens: List[LiterateToken]): String =
     val out = StringBuilder()
 
