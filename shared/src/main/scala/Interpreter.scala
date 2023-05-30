@@ -80,47 +80,64 @@ object Interpreter:
             branches = branches.tail
         if !truthy && elseBody.nonEmpty then execute(elseBody.get)
       case AST.While(None, body) =>
-        val loopCtx = ctx.makeChild()
-        loopCtx.ctxVarPrimary = true
-        loopCtx.ctxVarSecondary = ctx.settings.rangeStart
-        while true do
-          execute(body)(using loopCtx)
-          loopCtx.ctxVarSecondary =
-            loopCtx.ctxVarSecondary.asInstanceOf[VNum] + 1
+        try
+          val loopCtx = ctx.makeChild()
+          loopCtx.ctxVarPrimary = true
+          loopCtx.ctxVarSecondary = ctx.settings.rangeStart
+          while true do
+            try
+              execute(body)(using loopCtx)
+              loopCtx.ctxVarSecondary =
+                loopCtx.ctxVarSecondary.asInstanceOf[VNum] + 1
+            catch case _: ContinueLoopException => ()
+        catch case _: BreakLoopException => return
       case AST.While(Some(cond), body) =>
-        execute(cond)
-        given loopCtx: Context = ctx.makeChild()
-        loopCtx.ctxVarPrimary = ctx.peek
-        loopCtx.ctxVarSecondary = ctx.settings.rangeStart
-        while MiscHelpers.boolify(ctx.pop()) do
-          execute(body)
+        try
           execute(cond)
+          given loopCtx: Context = ctx.makeChild()
           loopCtx.ctxVarPrimary = ctx.peek
-          loopCtx.ctxVarSecondary =
-            loopCtx.ctxVarSecondary.asInstanceOf[VNum] + 1
+          loopCtx.ctxVarSecondary = ctx.settings.rangeStart
+          while MiscHelpers.boolify(ctx.pop()) do
+            try
+              execute(body)
+              execute(cond)
+              loopCtx.ctxVarPrimary = ctx.peek
+              loopCtx.ctxVarSecondary =
+                loopCtx.ctxVarSecondary.asInstanceOf[VNum] + 1
+            catch case _: ContinueLoopException => ()
+
+        catch case _: BreakLoopException => return
 
       case AST.For(None, body) =>
         val iterable =
           ListHelpers.makeIterable(ctx.pop(), Some(true))(using ctx)
         var index = 0
         given loopCtx: Context = ctx.makeChild()
-        for elem <- iterable do
-          loopCtx.ctxVarPrimary = elem
-          loopCtx.ctxVarSecondary = index
-          index += 1
-          execute(body)(using loopCtx)
+        try
+          for elem <- iterable do
+            try
+              loopCtx.ctxVarPrimary = elem
+              loopCtx.ctxVarSecondary = index
+              index += 1
+              execute(body)(using loopCtx)
+            catch case _: ContinueLoopException => ()
+        catch case _: BreakLoopException => return
 
       case AST.For(Some(name), body) =>
         val iterable =
           ListHelpers.makeIterable(ctx.pop(), Some(true))(using ctx)
         var index = 0
         given loopCtx: Context = ctx.makeChild()
-        for elem <- iterable do
-          loopCtx.setVar(name, elem)
-          loopCtx.ctxVarPrimary = elem
-          loopCtx.ctxVarSecondary = index
-          index += 1
-          execute(body)(using loopCtx)
+        try
+          for elem <- iterable do
+            try
+              loopCtx.setVar(name, elem)
+              loopCtx.ctxVarPrimary = elem
+              loopCtx.ctxVarSecondary = index
+              index += 1
+              execute(body)(using loopCtx)
+            catch case _: ContinueLoopException => ()
+        catch case _: BreakLoopException => return
 
       case lam: AST.Lambda       => ctx.push(VFun.fromLambda(lam))
       case AST.FnDef(name, lam)  => ctx.setVar(name, VFun.fromLambda(lam))
@@ -298,7 +315,8 @@ object Interpreter:
         inputs,
         useStack
       )
-    fn.impl()(using fnCtx)
+    try fn.impl()(using fnCtx)
+    catch case _: ReturnFromFunctionException => ()
     fnCtx.peek
   end executeFn
 end Interpreter

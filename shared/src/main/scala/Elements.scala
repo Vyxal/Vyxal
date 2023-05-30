@@ -531,6 +531,16 @@ object Elements:
       throw new BreakLoopException
     }
 
+    val loopContinue = addDirect(
+      "#x",
+      "Loop Continue",
+      List("continue"),
+      Some(0),
+      " -> continue the current loop"
+    ) { ctx ?=>
+      throw new ContinueLoopException
+    }
+
     val mapElement: Dyad = addElem(
       Dyad,
       "M",
@@ -726,6 +736,16 @@ object Elements:
         MiscHelpers.reduce(b, a)
       case (a, b: VFun) =>
         MiscHelpers.reduce(a, b)
+    }
+
+    val returnStatement = addDirect(
+      "X",
+      "Return Statement",
+      List("return", "ret"),
+      None,
+      "a -> return a"
+    ) { ctx ?=>
+      throw new ReturnFromFunctionException
     }
 
     val sort: Monad = addFull(
