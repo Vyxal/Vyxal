@@ -9,8 +9,6 @@ import scala.quoted.*
 
 trait VyxalTests extends AnyFunSpec:
 
-  Dictionary.fileInitialise()
-
   def testEquals(expected: VAny)(getRes: Context ?=> VAny): Assertion =
     assertResult(expected)(getRes(using Context(testMode = true)))
 

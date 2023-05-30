@@ -16,7 +16,7 @@ object StringHelpers:
       case a: VList => VList(a.map(chrord)*)
 
   // https://codegolf.stackexchange.com/a/151721/78850
-  def compressDictionary(s: String)(using ctx: Context): String =
+  def compressDictionary(s: String): String =
     val endLength = 2 + Dictionary.longDictionary.map(_.length).max
 
     val shortInds = Dictionary.shortDictionary.zipWithIndex.toMap
@@ -142,7 +142,7 @@ object StringHelpers:
     }.mkString
 
   // https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L1055
-  def decompress(compressed: String)(using ctx: Context): String =
+  def decompress(compressed: String): String =
     val decompressed = StringBuilder()
     val comp = compressed
       .replace('•', '"')

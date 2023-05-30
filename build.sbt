@@ -63,7 +63,8 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     ),
     // From https://www.scalatest.org/user_guide/using_the_runner
     // Suppress output from successful tests
-    Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-oNCXEOPQRM")
+    Test / testOptions += Tests
+      .Argument(TestFrameworks.ScalaTest, "-oNCXEOPQRM")
   )
   .jvmSettings(
     // JVM-specific settings
@@ -80,7 +81,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     ),
     // Where the compiled JS is output
     Compile / fastOptJS / artifactPath := baseDirectory.value.getParentFile / "pages" / "vyxal.js",
-    Compile / fullOptJS / artifactPath := baseDirectory.value.getParentFile / "pages" / "vyxal.js"
+    Compile / fullOptJS / artifactPath := baseDirectory.value.getParentFile / "pages" / "vyxal.js",
   )
   .nativeSettings(
     // Scala Native-specific settings

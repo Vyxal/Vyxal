@@ -1,4 +1,4 @@
-name: Lint with Scalafix
+name: Lint and format
 
 on:
   push:
@@ -7,8 +7,7 @@ on:
       - 'pages/**'
 
 jobs:
-  build:
-
+  lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,7 +17,7 @@ jobs:
       with:
         java-version: '17'
         distribution: 'adopt'
-    - name: Lint, fix, and format
+    - name: Run Scalafix and Scalafmt
       run: sbt vyxalJVM/scalafix vyxalJVM/scalafmt
     - name: Stage changes
       run: git add .

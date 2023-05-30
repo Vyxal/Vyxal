@@ -47,8 +47,6 @@ class YamlTests extends AnyFunSpec:
   /** YAML tag for scalars to be parsed as VNums */
   val NumTag = CustomTag("!num")
 
-  Dictionary.fileInitialise()
-
   for (element, testGroup) <- loadTests() do
     describe(s"Element $element") {
       execTests(element, testGroup)
