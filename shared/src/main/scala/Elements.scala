@@ -521,6 +521,16 @@ object Elements:
       "a: str, b: str -> a < b"
     ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) < 0 }
 
+    val loopBreak = addDirect(
+      "#X",
+      "Loop Break",
+      List("break"),
+      Some(0),
+      " -> break out of the current loop"
+    ) { ctx ?=>
+      throw new BreakLoopException
+    }
+
     val mapElement: Dyad = addElem(
       Dyad,
       "M",
