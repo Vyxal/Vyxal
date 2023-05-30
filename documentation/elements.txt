@@ -15,6 +15,10 @@ Keywords: fact, factorial, to-upper, upper, uppercase, !
 Keywords: compress-dict, dict-comp, compress
 - a: str -> compress a using the dictionary
 ---------------------
+#X (Loop Break) (non-vectorising)
+Keywords: break
+-  -> break out of the current loop
+---------------------
 #v (Vectorise (Element Form) [Internal Use]) (non-vectorising)
 Keywords: 
 - *a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead
