@@ -60,7 +60,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule with ScalafixModule {
     // Task to only show output from failed tests
     def testQuiet(args: String*) = {
       val newArgs = if (args.contains("--")) args else args :+ "--"
-      T.command { testOnly(newArgs :+ "-oNCXEOPQRMF": _*)() }
+      T.command { testOnly(newArgs :+ "-oNCXEOPQRM": _*)() }
     }
 
     def sources = T.sources(

@@ -44,7 +44,7 @@ object StringHelpers:
       val toggleCase = !dict.contains(subW)
       // If the word isn't in the dictionary, see if its lowercase/uppercase version is
       val ww =
-        if toggleCase then swapcase(subW.head.toString) + subW.substring(1)
+        if toggleCase then swapCase(subW.head.toString) + subW.substring(1)
         else subW
 
       if !dict.contains(ww) then return None
@@ -177,7 +177,7 @@ object StringHelpers:
         val index = integer % words.length
         integer = integer / words.length
         var word = words(index.toInt)
-        if flagSwap then word = swapcase(word.head.toString) + word.substring(1)
+        if flagSwap then word = swapCase(word.head.toString) + word.substring(1)
         if flagSpace then word = " " + word
         decompressed.append(word)
       end if
@@ -186,15 +186,16 @@ object StringHelpers:
     decompressed.mkString.replace("¦", "\n")
   end decompress
 
-  def swapcase(s: String): String =
+  /** Toggle case of each character in the string */
+  def swapCase(s: String): String =
     s.map { c =>
       if c.isUpper then c.toLower
       else if c.isLower then c.toUpper
       else c
     }.mkString
 
+  /** Split on "words" (sequences of letters) and capitalize each word. */
   def titlecase(s: String): String =
-    // Split on "words" (sequences of letters) and capitalize each word.
     val splitOnWords =
       ListHelpers.groupConsecutiveBy(s.toSeq)(_.isLetter)
     val words = splitOnWords.map(_.mkString)

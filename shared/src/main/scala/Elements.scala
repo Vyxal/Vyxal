@@ -623,7 +623,7 @@ object Elements:
         "first>-1"
       ),
       "a: num -> -a",
-      "a: str -> a.swapcase()",
+      "a: str -> a.swapCase()",
       "a: fun -> first non-negative integer where predicate a is true"
     ) {
       case a: VNum   => -a

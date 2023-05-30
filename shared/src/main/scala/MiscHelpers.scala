@@ -69,9 +69,10 @@ object MiscHelpers:
     else if s.matches(raw"""("(?:[^"\\]|\\.)*["])""") then s.substring(1).init
     else if LiterateLexer.isList(s) then
       val tempContext = Context()
-      val lambdaAST = Parser.parse(LiterateLexer.litLex(s)) match
-        case Right(x) => x
-        case Left(_)  => throw new Exception("Failed to parse list")
+      val lambdaAST =
+        Parser.parse(LiterateLexer.processLit(s).toOption.get) match
+          case Right(x) => x
+          case Left(_)  => throw new Exception("Failed to parse list")
       Interpreter.executeFn(
         VFun.fromLambda(AST.Lambda(0, List(), List(lambdaAST)))(using
           tempContext

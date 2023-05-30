@@ -14,7 +14,12 @@ object Interpreter:
       ctx: Context
   ): Unit =
     if !Dictionary.initialised then throw new Error("Dictionary not initalised")
-    val sbcsified = if literate then LiterateLexer.litLex(code) else code
+    val sbcsified =
+      if !literate then code
+      else
+        LiterateLexer.processLit(code) match
+          case Right(code) => code
+          case Left(err) => throw new Error(s"Couldn't lex literate code: $err")
     Parser.parse(sbcsified) match
       case Right(ast) =>
         if Lexer.hasSugar(sbcsified) then ctx.globals.printFn(ast.toVyxal)
