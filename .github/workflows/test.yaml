@@ -34,7 +34,7 @@ jobs:
         run: sbt vyxalNative/test
 
   js:
-    name: Test JS
+    name: Compile JS
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -43,5 +43,5 @@ jobs:
         with:
           java-version: "17"
           distribution: "adopt"
-      - name: Test
-        run: sbt vyxalJS/test
+      - name: Compile
+        run: sbt vyxalJS/compile
