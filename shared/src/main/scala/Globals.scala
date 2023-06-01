@@ -20,7 +20,8 @@ case class Globals(
 ):
   var register: VAny = settings.defaultValue
 
-/** Stores the inputs for some Context. Inputs can be overridden (see [[Inputs#overrideInputs]]).
+/** Stores the inputs for some Context. Inputs can be overridden (see
+  * [[Inputs#overrideInputs]]).
   *
   * Implemented as a circular buffer to wrap around.
   */
@@ -42,17 +43,19 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
     res
 
   /** Temporarily replace inputs with the given `Seq`
-   *
-   * @see [[reset]]
-  */
+    *
+    * @see
+    *   [[reset]]
+    */
   def overrideInputs(newInputs: Seq[VAny]): Unit =
     currInputs = newInputs.toArray
     ind = 0
 
   /** Use the original inputs again
-   *
-   * @see [[overrideInputs]]
-  */
+    *
+    * @see
+    *   [[overrideInputs]]
+    */
   def reset(): Unit =
     currInputs = origArr
     ind = 0
