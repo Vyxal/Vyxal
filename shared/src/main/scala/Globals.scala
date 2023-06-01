@@ -42,7 +42,7 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
     res
 
   /** Temporarily replace inputs with the given `Seq`
-   * 
+   *
    * @see [[reset]]
   */
   def overrideInputs(newInputs: Seq[VAny]): Unit =
@@ -50,7 +50,7 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
     ind = 0
 
   /** Use the original inputs again
-   * 
+   *
    * @see [[overrideInputs]]
   */
   def reset(): Unit =
