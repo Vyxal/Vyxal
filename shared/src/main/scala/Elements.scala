@@ -539,7 +539,7 @@ object Elements:
               .zip(ListHelpers.makeIterable(a))
               .map((x, y) => VList.fill(x)(y))
           )
-          if a.isInstanceOf[String] then temp.mkString
+          if a.isInstanceOf[String] then temp.flatten.mkString
           else temp
         else
           throw new IllegalArgumentException(
