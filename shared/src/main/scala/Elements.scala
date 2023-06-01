@@ -521,6 +521,36 @@ object Elements:
       "a: str, b: str -> a < b"
     ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) < 0 }
 
+    val listRepeat: Dyad = addElem(
+      Dyad,
+      "Y",
+      "List Repeat",
+      List("wrap-repeat"),
+      "a: any, b: num -> a repeated b times, wrapped in a list",
+      "a: num, b: any -> b repeated a times, wrapped in a list",
+      "a: lst|str, b: lst[num] -> a[_] repeated b[_] times, wrapped in a list",
+    ) {
+      case (a, b: VNum) => VList.fill(b.toInt)(a)
+      case (a: VNum, b) => VList.fill(a.toInt)(b)
+      case (a: (VList | String), b: VList) =>
+        if b.forall(_.isInstanceOf[VNum]) then
+          val temp = VList.from(
+            b.map(_.asInstanceOf[VNum].toInt)
+              .zip(ListHelpers.makeIterable(a))
+              .map((x, y) => VList.fill(x)(y))
+          )
+          if a.isInstanceOf[String] then temp.mkString
+          else temp
+        else
+          throw new IllegalArgumentException(
+            "Can't repeat an item a non-integer number of times"
+          )
+      case _ =>
+        throw new IllegalArgumentException(
+          "Can't repeat an item a non-integer number of times"
+        )
+    }
+
     val loopBreak = addDirect(
       "#X",
       "Loop Break",
