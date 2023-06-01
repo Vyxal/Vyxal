@@ -7,37 +7,37 @@ import Elements.Impls
 
 /** Tests for specific elements */
 class ElementTests extends VyxalTests:
+  /** Helper to avoid doing List[VAny](...) */
+  private def in(inputs: VAny*): Seq[VAny] = inputs
+
   describe("Element *") {
     describe("when given two numbers") {
       testMulti("*")(
-        List[VAny](3, 2) -> 9,
-        List[VAny](0, 1) -> 0,
-        List[VAny](2, -1) -> VNum(0.5),
-        List[VAny](VNum("5.1"), VNum("4.2")) -> VNum("937.11899215207"),
-        List[VAny](3, 0) -> 1,
-        List[VAny](0, 0) -> 1
+        in(3, 2) -> 9,
+        in(0, 1) -> 0,
+        in(2, -1) -> 0.5,
+        in(VNum("5.1"), VNum("4.2")) -> VNum("937.11899215207"),
+        in(3, 0) -> 1,
+        in(0, 0) -> 1
       )
     }
 
     describe("when given a string and a number") {
       testMulti("*")(
-        List[VAny](
-          "the fitnessgram pacer test",
-          6
-        ) -> "the finessgram pacer test",
-        List[VAny](4.2, "airpod shotty") -> "airpd shotty",
-        List[VAny]("sussy baka", 0) -> "ussy baka",
-        List[VAny]("sussy baka", -1) -> "sussy bak",
-        List[VAny]("vyxal", 7) -> "vyal"
+        in("the fitnessgram pacer test", 6) -> "the finessgram pacer test",
+        in(4.2, "airpod shotty") -> "airpd shotty",
+        in("sussy baka", 0) -> "ussy baka",
+        in("sussy baka", -1) -> "sussy bak",
+        in("vyxal", 7) -> "vyal"
       )
     }
 
     describe("when given two strings") {
       testMulti("*")(
-        List[VAny]("abcdefabc", "abc") -> "def",
-        List[VAny]("abc", "abcdefabc") -> "abc",
-        List[VAny]("abc", "abc") -> "",
-        List[VAny]("abcdefabc", "") -> "abcdefabc"
+        in("abcdefabc", "abc") -> "def",
+        in("abc", "abcdefabc") -> "abc",
+        in("abc", "abc") -> "",
+        in("abcdefabc", "") -> "abcdefabc"
       )
     }
   }
@@ -45,7 +45,7 @@ class ElementTests extends VyxalTests:
   describe("Element +") {
     describe("when given lists") {
       testMulti("+")(
-        List[VAny](VList(VList(2, 5), "foo"), VList(VList(3, 4))) -> VList(
+        in(VList(VList(2, 5), "foo"), VList(VList(3, 4))) -> VList(
           VList(5, 9),
           "foo0"
         )
@@ -53,13 +53,13 @@ class ElementTests extends VyxalTests:
     }
     describe("when given two non-list values") {
       testMulti("+")(
-        List[VAny](2, 3) -> 5,
-        List[VAny](0, 0) -> 0,
-        List[VAny](VNum("5.1"), VNum("-45.4")) -> VNum("-40.3"),
-        List[VAny]("foo", "bar") -> "foobar",
-        List[VAny]("foo", 3) -> "foo3",
-        List[VAny](3, "foo") -> "3foo",
-        List[VAny](VNum("0.1"), VNum("0.2")) -> VNum("0.3"),
+        in(2, 3) -> 5,
+        in(0, 0) -> 0,
+        in(VNum("5.1"), VNum("-45.4")) -> VNum("-40.3"),
+        in("foo", "bar") -> "foobar",
+        in("foo", 3) -> "foo3",
+        in(3, "foo") -> "3foo",
+        in(VNum("0.1"), VNum("0.2")) -> VNum("0.3"),
       )
     }
 
@@ -86,26 +86,26 @@ class ElementTests extends VyxalTests:
 
   describe("Element ;") {
     testMulti(";")(
-      List[VAny](1, 2, 3) -> VList(2, 3),
-      List[VAny](1, 2, 3, 4) -> VList(3, 4),
-      List[VAny](1, 2, 3, 4, 5) -> VList(4, 5)
+      in(1, 2, 3) -> VList(2, 3),
+      in(1, 2, 3, 4) -> VList(3, 4),
+      in(1, 2, 3, 4, 5) -> VList(4, 5)
     )
   }
 
   describe("Element <") {
     describe("With numbers") {
       testMulti("<")(
-        Seq[VAny](1, 2) -> VNum(1),
-        Seq[VAny](1, 1) -> VNum(0),
-        Seq[VAny](2, 1) -> VNum(0),
-        Seq[VAny](VNum.complex(1, 50), 2) -> VNum(1)
+        Seq[VAny](1, 2) -> 1,
+        Seq[VAny](1, 1) -> 0,
+        Seq[VAny](2, 1) -> 0,
+        Seq[VAny](VNum.complex(1, 50), 2) -> 1
       )
     }
     describe("Should stringify") {
       testMulti("<")(
-        Seq[VAny]("abc", 1) -> VNum(0),
-        Seq[VAny](20, "3") -> VNum(1),
-        Seq[VAny]("ABC", "abc") -> VNum(1)
+        Seq[VAny]("abc", 1) -> 0,
+        Seq[VAny](20, "3") -> 1,
+        Seq[VAny]("ABC", "abc") -> 1
       )
     }
     describe("should vectorise") {
@@ -119,17 +119,17 @@ class ElementTests extends VyxalTests:
   describe("Element >") {
     describe("With numbers") {
       testMulti(">")(
-        Seq[VAny](1, 2) -> VNum(0),
-        Seq[VAny](1, 1) -> VNum(0),
-        Seq[VAny](2, 1) -> VNum(1),
-        Seq[VAny](VNum.complex(1, 50), 2) -> VNum(0)
+        Seq[VAny](1, 2) -> 0,
+        Seq[VAny](1, 1) -> 0,
+        Seq[VAny](2, 1) -> 1,
+        Seq[VAny](VNum.complex(1, 50), 2) -> 0
       )
     }
     describe("Should stringify") {
       testMulti(">")(
-        Seq[VAny]("abc", 1) -> VNum(1),
-        Seq[VAny](20, "3") -> VNum(0),
-        Seq[VAny]("ABC", "abc") -> VNum(0)
+        Seq[VAny]("abc", 1) -> 1,
+        Seq[VAny](20, "3") -> 0,
+        Seq[VAny]("ABC", "abc") -> 0
       )
     }
     describe("should vectorise") {
@@ -143,30 +143,30 @@ class ElementTests extends VyxalTests:
   describe("Element A") {
     describe("when given lists") {
       testMulti("A")(
-        List[VAny](VList(1, 391, "dqw4w9wgxcq", VList(0))) -> 1,
-        List[VAny](VList(0, 69420, VList())) -> 0
+        in(VList(1, 391, "dqw4w9wgxcq", VList(0))) -> 1,
+        in(VList(0, 69420, VList())) -> 0
       )
     }
 
     describe("when given a single-character string") {
       testMulti("A")(
-        List[VAny]("a") -> 1,
-        List[VAny]("E") -> 1,
-        List[VAny]("y") -> 0
+        in("a") -> 1,
+        in("E") -> 1,
+        in("y") -> 0
       )
     }
 
     describe("when given a multi-character string") {
-      testMulti("A")(List[VAny]("asdEy") -> VList(1, 0, 0, 1, 0))
+      testMulti("A")(in("asdEy") -> VList(1, 0, 0, 1, 0))
     }
   }
 
   describe("Element C") {
     describe("when given lists") {
       testMulti("C")(
-        List[VAny](VNum(3), VList(1, 3, 30, 2, 33, 4, 3, 3)) -> 3,
-        List[VAny](VList(1, 30, 2, 33, 4), VNum(3)) -> 0,
-        List[VAny](
+        in(3, VList(1, 3, 30, 2, 33, 4, 3, 3)) -> 3,
+        in(VList(1, 30, 2, 33, 4), 3) -> 0,
+        in(
           VList(1, 30, VList(VList("h"), VList("e"), VList("c")), 33, 4),
           VList(VList("h"), VList("e"), VList("c"))
         ) -> 1
@@ -175,17 +175,17 @@ class ElementTests extends VyxalTests:
 
     describe("when given strings") {
       testMulti("C")(
-        List[VAny]("lolollol lol asd", "lol") -> 3,
-        List[VAny]("lolollol lol asd", "asdf") -> 0
+        in("lolollol lol asd", "lol") -> 3,
+        in("lolollol lol asd", "asdf") -> 0
       )
     }
 
     describe("when given mixed types") {
       testMulti("C")(
-        List[VAny](VNum(12), VNum(1)) -> 1,
-        List[VAny]("ab1111ab", VNum(1)) -> 4,
-        List[VAny](VNum(12341234), VNum(2)) -> 2,
-        List[VAny](VNum(23432423), "3") -> 3
+        in(12, 1) -> 1,
+        in("ab1111ab", 1) -> 4,
+        in(12341234, 2) -> 2,
+        in(23432423, "3") -> 3
       )
     }
   }
@@ -204,39 +204,36 @@ class ElementTests extends VyxalTests:
   describe("Element E") {
     describe("when given a number") {
       testMulti("E")(
-        List[VAny](1) -> VNum(2),
-        List[VAny](2) -> VNum(4),
-        List[VAny](3) -> VNum(8),
-        List[VAny](4) -> VNum(16),
-        List[VAny](VNum("6.9")) -> VNum(
-          "119.4282229167113492456119380671925973794854"
-        ),
-        List[VAny](VNum(-234)) -> VNum(0)
+        in(1) -> 2,
+        in(2) -> 4,
+        in(3) -> 8,
+        in(4) -> 16,
+        in(VNum("6.9")) -> VNum("119.4282229167113492456119380671925973794854"),
+        in(-234) -> 0
       )
     }
 
     describe("when given a string") {
       testMulti("E")(
-        List[VAny]("1") -> VNum(1),
-        List[VAny]("2") -> VNum(2),
-        List[VAny]("3243") -> VNum(3243),
-        List[VAny]("-234") -> VNum(-234),
-        List[VAny]("0") -> VNum(0),
-        List[VAny]("[1, 2, 3, 4, 5, 6]") -> VList(1, 2, 3, 4, 5, 6),
-        List[VAny]("[]") -> VList(),
-        List[VAny]("\"lol\"") -> String("lol")
+        in("1") -> 1,
+        in("2") -> 2,
+        in("3243") -> 3243,
+        in("-234") -> -234,
+        in("0") -> 0,
+        in("[1, 2, 3, 4, 5, 6]") -> VList(1, 2, 3, 4, 5, 6),
+        in("[]") -> VList(),
+        in("\"lol\"") -> String("lol")
       )
     }
   }
 
   describe("Element G") {
     testMulti("G")(
-      List[VAny](VList(1, 2, 3, 4, 5, 6, 7)) -> VNum(7),
-      List[VAny](VList()) -> VList(),
-      List[VAny](VNum(6), VNum(9)) -> VNum(9),
-      List[VAny](VNum(9), VNum(6)) -> VNum(9),
-      List[VAny](VList(1, 2, 3, 4, 5, 6, 7), VNum(3)) -> VList(3, 3, 3, 4, 5, 6,
-        7)
+      in(VList(1, 2, 3, 4, 5, 6, 7)) -> 7,
+      in(VList()) -> VList(),
+      in(6, 9) -> 9,
+      in(9, 6) -> 9,
+      in(VList(1, 2, 3, 4, 5, 6, 7), 3) -> VList(3, 3, 3, 4, 5, 6, 7)
     )
     testCode(
       "#[1|1#]λ2|+}G10Θ",
@@ -246,85 +243,84 @@ class ElementTests extends VyxalTests:
 
   describe("Element H") {
     testMulti("H")(
-      List[VAny](VNum(69420)) -> "10F2C",
-      List[VAny](VNum(0)) -> "0",
-      List[VAny](VNum(89)) -> "59",
-      List[VAny]("10F2C") -> VNum(69420),
-      List[VAny]("59") -> VNum(89)
+      in(69420) -> "10F2C",
+      in(0) -> "0",
+      in(89) -> "59",
+      in("10F2C") -> 69420,
+      in("59") -> 89
     )
   }
 
   describe("Element I") {
     testMulti("I")(
-      List[VAny](VList(1, 2, 3), VList(4, 5, 6)) -> VList(1, 4, 2, 5, 3, 6),
-      List[VAny](VList(1, 2, 3), VList(4, 5, 6, 7)) -> VList(1, 4, 2, 5, 3, 6,
-        7),
-      List[VAny](VList(1, 2, 3), VList(4, 5)) -> VList(1, 4, 2, 5, 3),
-      List[VAny]("srn", "tig") -> String("string"),
-      List[VAny]("aaaa", "") -> String("aaaa"),
-      List[VAny]("aaa", VList(1)) -> VList("a", 1, "a", "a"),
-      List[VAny](123, 456) -> VList(1, 4, 2, 5, 3, 6)
+      in(VList(1, 2, 3), VList(4, 5, 6)) -> VList(1, 4, 2, 5, 3, 6),
+      in(VList(1, 2, 3), VList(4, 5, 6, 7)) -> VList(1, 4, 2, 5, 3, 6, 7),
+      in(VList(1, 2, 3), VList(4, 5)) -> VList(1, 4, 2, 5, 3),
+      in("srn", "tig") -> String("string"),
+      in("aaaa", "") -> String("aaaa"),
+      in("aaa", VList(1)) -> VList("a", 1, "a", "a"),
+      in(123, 456) -> VList(1, 4, 2, 5, 3, 6)
     )
   }
 
   describe("Element J") {
     testMulti("J")(
-      List[VAny](VList(1, 2, 3), 4) -> VList(1, 2, 3, 4),
-      List[VAny]("abc", "def") -> String("abcdef"),
-      List[VAny](1, VList(2, 3, 4)) -> VList(1, 2, 3, 4),
-      List[VAny](VList(1, 2), VList(3, 4)) -> VList(1, 2, 3, 4),
-      List[VAny](123, 456) -> VNum(123456),
-      List[VAny](123, "4567") -> String("1234567"),
-      List[VAny]("123", 4568) -> String("1234568")
+      in(VList(1, 2, 3), 4) -> VList(1, 2, 3, 4),
+      in("abc", "def") -> String("abcdef"),
+      in(1, VList(2, 3, 4)) -> VList(1, 2, 3, 4),
+      in(VList(1, 2), VList(3, 4)) -> VList(1, 2, 3, 4),
+      in(123, 456) -> 123456,
+      in(123, "4567") -> String("1234567"),
+      in("123", 4568) -> String("1234568")
     )
   }
 
   describe("Element K") {
     testMulti("K")(
-      List[VAny](20) -> VList(1, 2, 4, 5, 10, 20),
-      List[VAny](100) -> VList(1, 2, 4, 5, 10, 20, 25, 50, 100),
-      List[VAny](1) -> VList(1),
-      List[VAny](0) -> VList(),
-      List[VAny](-1) -> VList(-1),
-      List[VAny]("23423") -> VNum(1),
-      List[VAny]("0") -> VNum(1),
-      List[VAny]("ljlkerg23423") -> VNum(0)
+      in(20) -> VList(1, 2, 4, 5, 10, 20),
+      in(100) -> VList(1, 2, 4, 5, 10, 20, 25, 50, 100),
+      in(1) -> VList(1),
+      in(0) -> VList(),
+      in(-1) -> VList(-1),
+      in("23423") -> 1,
+      in("0") -> 1,
+      in("ljlkerg23423") -> 0
     )
   }
 
   describe("Element L") {
     testMulti("L")(
-      List[VAny](VNum(-234)) -> VNum(4),
-      List[VAny](VNum(0)) -> VNum(1),
-      List[VAny](VNum(1)) -> VNum(1),
-      List[VAny](VNum(6782342)) -> VNum(7),
-      List[VAny](VNum(123456789)) -> VNum(9),
-      List[VAny]("w;ergn") -> VNum(6),
-      List[VAny]("h") -> VNum(1),
-      List[VAny]("") -> VNum(0),
-      List[VAny](VList(1, 2, 3, 4, 5, 6, 7)) -> VNum(7),
-      List[VAny](VList()) -> VNum(0),
+      in(-234) -> 4,
+      in(0) -> 1,
+      in(1) -> 1,
+      in(6782342) -> 7,
+      in(123456789) -> 9,
+      in("w;ergn") -> 6,
+      in("h") -> 1,
+      in("") -> 0,
+      in(VList(1, 2, 3, 4, 5, 6, 7)) -> 7,
+      in(VList()) -> 0,
     )
   }
 
   describe("Element M") {
     describe("when given two lists") {
       testMulti("M")(
-        List[VAny](
+        in(
           VList(1, 2, VList(3, 4), 5),
           VList(1, 2, VList(VList(3, 4, 6), 5))
         ) -> VList(1, 2, VList(VList(VList(3, 4), 5, 1), 2)),
-        List[VAny](
+        in(
           VList(1, 2, 3, 4, 5, 6, 7),
           VList(VList(8, 9), 10, 11, 12, VList(13, 14))
         ) -> VList(VList(1, 2), 3, 4, 5, VList(6, 7)),
-        List[VAny](VList(1, 2, 3), VList(VList(4), VList(), VList(6))) -> VList(
+        in(VList(1, 2, 3), VList(VList(4), VList(), VList(6))) -> VList(
           VList(1),
           VList(),
           VList(2)
         ),
-        List[VAny](VList(1, 2, 3), VList(4, 5, 6, 7, 8, 9, 10)) -> VList(1, 2,
-          3, 1, 2, 3, 1)
+        in(VList(1, 2, 3), VList(4, 5, 6, 7, 8, 9, 10)) -> VList(1, 2, 3, 1, 2,
+          3, 1)
       )
     }
     describe("when given a function and any value") {
@@ -347,11 +343,11 @@ class ElementTests extends VyxalTests:
     }
     describe("when given two numbers") {
       testMulti("M")(
-        List[VAny](45, 3) -> 2,
-        List[VAny](1.125, 2) -> 0,
-        List[VAny](1.125, 3) -> 0,
-        List[VAny](0, 2) -> 0,
-        List[VAny](-3, 1) -> 3
+        in(45, 3) -> 2,
+        in(1.125, 2) -> 0,
+        in(1.125, 3) -> 0,
+        in(0, 2) -> 0,
+        in(-3, 1) -> 3
       )
     }
   }
@@ -359,19 +355,19 @@ class ElementTests extends VyxalTests:
   describe("Element N") {
     describe("when given a number") {
       testMulti("N")(
-        List[VAny](420) -> -420,
-        List[VAny](0) -> 0,
-        List[VAny](-69) -> 69
+        in(420) -> -420,
+        in(0) -> 0,
+        in(-69) -> 69
       )
     }
     describe("when given a string") {
       testMulti("N")(
-        List[VAny]("a") -> "A",
-        List[VAny]("A") -> "a",
-        List[VAny]("abc") -> "ABC",
-        List[VAny]("ABC") -> "abc",
-        List[VAny]("123") -> "123",
-        List[VAny]("abC123") -> "ABc123"
+        in("a") -> "A",
+        in("A") -> "a",
+        in("abc") -> "ABC",
+        in("ABC") -> "abc",
+        in("123") -> "123",
+        in("abC123") -> "ABc123"
       )
     }
 
@@ -386,26 +382,26 @@ class ElementTests extends VyxalTests:
   describe("Element O") {
     describe("when given a number") {
       testMulti("O")(
-        List[VAny](65) -> "A",
-        List[VAny](97) -> "a",
-        List[VAny](8482) -> "™",
-        List[VAny](VList(97, 98, 99)) -> "abc",
-        List[VAny](VList(49, 50, 51)) -> "123"
+        in(65) -> "A",
+        in(97) -> "a",
+        in(8482) -> "™",
+        in(VList(97, 98, 99)) -> "abc",
+        in(VList(49, 50, 51)) -> "123"
       )
     }
     describe("when given a string") {
       testMulti("O")(
-        List[VAny]("A") -> 65,
-        List[VAny]("a") -> 97,
-        List[VAny]("™") -> 8482,
-        List[VAny]("abc") -> VList(97, 98, 99),
-        List[VAny]("123") -> VList(49, 50, 51)
+        in("A") -> 65,
+        in("a") -> 97,
+        in("™") -> 8482,
+        in("abc") -> VList(97, 98, 99),
+        in("123") -> VList(49, 50, 51)
       )
     }
 
     describe("when given a list of mixed types") {
       testMulti("O")(
-        List[VAny](VList(49, "a", 50, "b", 51, "c")) -> VList(
+        in(VList(49, "a", 50, "b", 51, "c")) -> VList(
           "1",
           97,
           "2",
@@ -413,7 +409,7 @@ class ElementTests extends VyxalTests:
           "3",
           99
         ),
-        List[VAny](VList("1", 97, "2", 98, "3", 99)) -> VList(
+        in(VList("1", 97, "2", 98, "3", 99)) -> VList(
           49,
           "a",
           50,
@@ -428,40 +424,35 @@ class ElementTests extends VyxalTests:
   describe("Element P") {
     describe("when given a number") {
       testMulti("P")(
-        List[VAny](VNum(4824)) -> VList(
-          VNum(4),
-          VNum(48),
-          VNum(482),
-          VNum(4824)
-        ),
-        List[VAny](VNum(-342)) -> VList(VNum(3), VNum(34), VNum(342)),
+        in(4824) -> VList(4, 48, 482, 4824),
+        in(-342) -> VList(3, 34, 342),
       )
     }
 
     describe("when given a string") {
       testMulti("P")(
-        List[VAny]("Hello") -> VList("H", "He", "Hel", "Hell", "Hello"),
-        List[VAny]("abc") -> VList("a", "ab", "abc"),
-        List[VAny]("123") -> VList("1", "12", "123"),
-        List[VAny]("") -> VList(),
+        in("Hello") -> VList("H", "He", "Hel", "Hell", "Hello"),
+        in("abc") -> VList("a", "ab", "abc"),
+        in("123") -> VList("1", "12", "123"),
+        in("") -> VList(),
       )
     }
 
     describe("when given a list") {
       testMulti("P")(
-        List[VAny](VList(1, 2, 3)) -> VList(
+        in(VList(1, 2, 3)) -> VList(
           VList(1),
           VList(1, 2),
           VList(1, 2, 3)
         ),
-        List[VAny](VList(1, 2, 3, 4, 5)) -> VList(
+        in(VList(1, 2, 3, 4, 5)) -> VList(
           VList(1),
           VList(1, 2),
           VList(1, 2, 3),
           VList(1, 2, 3, 4),
           VList(1, 2, 3, 4, 5)
         ),
-        List[VAny](VList(1)) -> VList(VList(1))
+        in(VList(1)) -> VList(VList(1))
       )
     }
   }
@@ -488,30 +479,30 @@ class ElementTests extends VyxalTests:
 
     describe("when given two numbers") {
       testMulti("R")(
-        List[VAny](1, 5) -> VList(1, 2, 3, 4),
-        List[VAny](5, 1) -> VList(5, 4, 3, 2),
-        List[VAny](1, 1) -> VList(),
-        List[VAny](1, 0) -> VList(1),
-        List[VAny](0, 1) -> VList(0),
-        List[VAny](-5, 5) -> VList(-5, -4, -3, -2, -1, 0, 1, 2, 3, 4)
+        in(1, 5) -> VList(1, 2, 3, 4),
+        in(5, 1) -> VList(5, 4, 3, 2),
+        in(1, 1) -> VList(),
+        in(1, 0) -> VList(1),
+        in(0, 1) -> VList(0),
+        in(-5, 5) -> VList(-5, -4, -3, -2, -1, 0, 1, 2, 3, 4)
       )
     }
 
     describe("when given two strings") {
       testMulti("R")(
-        List[VAny]("56.234", "\\d+\\.\\d+") -> 1,
-        List[VAny]("Hello, World", ".+") -> 1,
-        List[VAny]("Hello, World", "Hello, world") -> 0,
-        List[VAny]("https://www.google.com", "https?://.+") -> 1
+        in("56.234", "\\d+\\.\\d+") -> 1,
+        in("Hello, World", ".+") -> 1,
+        in("Hello, World", "Hello, world") -> 0,
+        in("https://www.google.com", "https?://.+") -> 1
       )
     }
   }
 
   describe("Element S") {
     testMulti("S")(
-      List[VAny]("qzqadbA;z") -> ";Aabdqqzz",
-      List[VAny](891738) -> VList(1, 3, 7, 8, 8, 9),
-      List[VAny](VList(8, 9, "acb", "abc", 1, 9, 2, VList(1, 2))) -> VList(
+      in("qzqadbA;z") -> ";Aabdqqzz",
+      in(891738) -> VList(1, 3, 7, 8, 8, 9),
+      in(VList(8, 9, "acb", "abc", 1, 9, 2, VList(1, 2))) -> VList(
         1,
         2,
         8,
@@ -527,25 +518,25 @@ class ElementTests extends VyxalTests:
   describe("Element T") {
     testMulti("T")(
       // triple overload
-      List[VAny](5) -> VNum(15),
-      List[VAny](0) -> VNum(0),
-      List[VAny](-5) -> VNum(-15),
+      in(5) -> 15,
+      in(0) -> 0,
+      in(-5) -> -15,
       // string overload
-      List[VAny]("hello") -> VNum(1),
-      List[VAny]("") -> VNum(1),
-      List[VAny]("Hello, World!") -> VNum(0),
+      in("hello") -> 1,
+      in("") -> 1,
+      in("Hello, World!") -> 0,
 
       // list overload
-      List[VAny](VList(VList(1, 2, 3), VList(4, 5, 6))) -> VList(
+      in(VList(VList(1, 2, 3), VList(4, 5, 6))) -> VList(
         VList(1, 4),
         VList(2, 5),
         VList(3, 6)
       ),
-      List[VAny](
+      in(
         VList(VList(1, 2, 3), VList(4, 5, 6), VList(7, 8, 9))
       ) -> VList(VList(1, 4, 7), VList(2, 5, 8), VList(3, 6, 9)),
-      List[VAny](VList(VList(1, 2, 3))) -> VList(VList(1), VList(2), VList(3)),
-      List[VAny](VList(VList(1, 2, 3), VList(4, 5))) -> VList(
+      in(VList(VList(1, 2, 3))) -> VList(VList(1), VList(2), VList(3)),
+      in(VList(VList(1, 2, 3), VList(4, 5))) -> VList(
         VList(1, 4),
         VList(2, 5),
         VList(3)
@@ -556,26 +547,26 @@ class ElementTests extends VyxalTests:
   describe("Element b") {
     describe("when given a number") {
       testMulti("b")(
-        List[VAny](5) -> VList(1, 0, 1),
-        List[VAny](0) -> VList(0),
-        List[VAny](-10) -> VList(-1, 0, -1, 0)
+        in(5) -> VList(1, 0, 1),
+        in(0) -> VList(0),
+        in(-10) -> VList(-1, 0, -1, 0)
       )
     }
 
     describe("when given a string") {
       testMulti("b")(
-        List[VAny]("VTI") -> VList(
+        in("VTI") -> VList(
           VList(1, 0, 1, 0, 1, 1, 0),
           VList(1, 0, 1, 0, 1, 0, 0),
           VList(1, 0, 0, 1, 0, 0, 1)
         ),
-        List[VAny](" ") -> VList(VList(1, 0, 0, 0, 0, 0))
+        in(" ") -> VList(VList(1, 0, 0, 0, 0, 0))
       )
     }
 
     describe("when given a list") {
       testMulti("b")(
-        List[VAny](VList(2, 3)) -> VList(VList(1, 0), VList(1, 1))
+        in(VList(2, 3)) -> VList(VList(1, 0), VList(1, 1))
       )
     }
   }
@@ -583,10 +574,10 @@ class ElementTests extends VyxalTests:
   describe("Element Ė") {
     describe("when given a number") {
       testMulti("Ė")(
-        List[VAny](0) -> 1,
-        List[VAny](1) -> 10,
-        List[VAny](2) -> 100,
-        List[VAny](-3) -> VNum(1) / 1000
+        in(0) -> 1,
+        in(1) -> 10,
+        in(2) -> 100,
+        in(-3) -> VNum(1) / 1000
       )
     }
 
