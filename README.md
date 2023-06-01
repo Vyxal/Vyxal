@@ -15,4 +15,4 @@ Directory Guide (for people who aren't the best at mentally parsing nested folde
    JVM-specific stuff is. It's the `__main__.py` of the project in a sort of a way.
 - `js` is where all the JS-specific stuff is.
 
-* The second pre-release/beta version will be made when up to and including `z` is implemented
+* The second pre-release/beta version will be made when up to and including `Z` is implemented
