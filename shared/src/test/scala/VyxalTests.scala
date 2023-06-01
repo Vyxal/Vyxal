@@ -84,7 +84,7 @@ trait VyxalTests extends AnyFunSpec:
         given ctx: Context = Context(inputs = inputs, testMode = true)
         for i <- inputs do ctx.push(i)
         Interpreter.execute(code)
-        assertResult(ctx.pop(stackEnd.length))(stackEnd)
+        assertResult(stackEnd)(ctx.pop(stackEnd.length))
       }
 
   // TODO figure out how to do group without macros

@@ -20,7 +20,7 @@ case class Globals(
 ):
   var register: VAny = settings.defaultValue
 
-/** Stores the inputs for some Context. Inputs can be overridden.
+/** Stores the inputs for some Context. Inputs can be overridden (see [[Inputs#overrideInputs]]).
   *
   * Implemented as a circular buffer to wrap around.
   */
@@ -41,12 +41,18 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
     ind = (ind + 1) % currInputs.size
     res
 
-  /** Temporarily replace inputs with the given `Seq` */
+  /** Temporarily replace inputs with the given `Seq`
+   * 
+   * @see [[reset]]
+  */
   def overrideInputs(newInputs: Seq[VAny]): Unit =
     currInputs = newInputs.toArray
     ind = 0
 
-  /** Use the original inputs again */
+  /** Use the original inputs again
+   * 
+   * @see [[overrideInputs]]
+  */
   def reset(): Unit =
     currInputs = origArr
     ind = 0
@@ -62,20 +68,17 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
     val numNonWrapping = n.min(currInputs.length - ind)
     val nonWrapping = currInputs.slice(ind, ind + numNonWrapping).toList
 
-    val res =
-      if n <= numNonWrapping then nonWrapping
-      else
-        // The number of times the entire inputs array has to be repeated
-        val numRepeats = (n - numNonWrapping) / currInputs.size
-        val repeats = List.fill(numRepeats)(currInputs.toList)
+    if n == numNonWrapping then nonWrapping
+    else
+      // The number of times the entire inputs array has to be repeated
+      val numRepeats = (n - numNonWrapping) / currInputs.size
+      val repeats = List.fill(numRepeats)(currInputs.toList)
 
-        // The number of extra elems needed at the end of wrapping
-        val numEnd = n - numNonWrapping - numRepeats * currInputs.size
-        val end = currInputs.take(numEnd).toList
+      // The number of extra elems needed at the end of wrapping
+      val numEnd = n - numNonWrapping - numRepeats * currInputs.size
+      val end = currInputs.take(numEnd).toList
 
-        nonWrapping ::: repeats.flatten ::: end
-
-    res.reverse
+      nonWrapping ::: repeats.flatten ::: end
   end peek
 
   override def toString() = origArr.mkString("Inputs(", ", ", ")")

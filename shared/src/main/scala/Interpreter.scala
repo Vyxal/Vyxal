@@ -219,15 +219,15 @@ object Interpreter:
       relation,
       ctxVarPrimary,
       ctxVarSecondary,
-      previous.takeRight(arity),
-      overrideCtxArgs = previous :+ ctxVarSecondary :+ ctxVarPrimary,
+      args = previous.take(arity),
+      overrideCtxArgs = ctxVarPrimary +: ctxVarSecondary +: previous,
     )
     next #:: generator(
       relation,
       next,
       ctxVarPrimary,
       arity,
-      previous :+ next
+      next +: previous
     )
   end generator
 
@@ -311,7 +311,7 @@ object Interpreter:
         if ctxVarSecondary == null then VList(inputs*) else ctxVarSecondary,
         if overrideCtxArgs.isEmpty then inputs else overrideCtxArgs,
         vars,
-        inputs,
+        inputs.reverse,
         useStack
       )
     try fn.impl()(using fnCtx)

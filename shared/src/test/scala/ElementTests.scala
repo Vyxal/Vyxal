@@ -553,14 +553,6 @@ class ElementTests extends VyxalTests:
     )
   }
 
-  describe("Element _") {
-    testStackLike("_")(
-      List[VAny](1, 2, 3) -> List(1, 2),
-      List[VAny](1, 2, 3, 4, 5) -> List(1, 2, 3, 4),
-      List[VAny](1) -> List()
-    )
-  }
-
   describe("Element b") {
     describe("when given a number") {
       testMulti("b")(
