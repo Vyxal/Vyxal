@@ -215,6 +215,12 @@ X (Return Statement) (non-vectorising)
 Keywords: return, ret
 - a -> return a
 ---------------------
+Y (List Repeat) (non-vectorising)
+Keywords: wrap-repeat
+- a: any, b: num -> a repeated b times, wrapped in a list
+- a: num, b: any -> b repeated a times, wrapped in a list
+- a: lst|str, b: lst[num] -> a[_] repeated b[_] times, wrapped in a list
+---------------------
 _ (Pop and Discard) (non-vectorising)
 Keywords: pop, discard
 - a ->
