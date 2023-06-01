@@ -31,8 +31,9 @@ A comprehensive list of all flags is in the ScalaTest
 **Important**: Mill treats the tests as being in their own module (`jvm.test`, `js.test`, `native.test`),
 so when running `testOnly`, you'll have to run `jvm.test.testOnly`, not `jvm.testOnly`.
 
-We have a `testQuick` task defined only for Mill that's equivalent to `testOnly` but with
-`-oNCXELOPQRM` so that all passed and skipped tests are ignored.
+We have a `testQuiet` task defined only for Mill that's equivalent to `testOnly` but with
+`-oNCXELOPQRM` so that all passed and skipped tests are ignored. You can still use
+all the arguments that you use with `testOnly` (e.g. `jvm.test.testQuiet "*YamlTests" -- -z "Element +"`).
 
 ## Writing Tests
 

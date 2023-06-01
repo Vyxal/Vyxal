@@ -59,8 +59,8 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
     */
   def peek(n: Int): List[VAny] =
     // The number of elems that can be gotten without wrapping
-    val numNonWrapping = n.max(currInputs.length - ind)
-    val nonWrapping = currInputs.slice(ind, ind + numNonWrapping + 1).toList
+    val numNonWrapping = n.min(currInputs.length - ind)
+    val nonWrapping = currInputs.slice(ind, ind + numNonWrapping).toList
 
     val res =
       if n <= numNonWrapping then nonWrapping
