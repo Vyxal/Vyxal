@@ -533,19 +533,19 @@ object Elements:
       case (a, b: VNum) => VList.fill(b.toInt)(a)
       case (a: VNum, b) => VList.fill(a.toInt)(b)
       case (a: (VList | String), b: VList) =>
-        if b.forall(_.isInstanceOf[VNum]) then
-          val temp = VList.from(
-            b.map(_.asInstanceOf[VNum].toInt)
-              .zip(ListHelpers.makeIterable(a))
-              .map((x, y) => VList.fill(x)(y))
-          )
-          if a.isInstanceOf[String] then
-            temp.lst.map(_.asInstanceOf[VList].mkString).mkString
-          else temp
-        else
-          throw new IllegalArgumentException(
-            "Can't repeat an item a non-integer number of times"
-          )
+        val temp = b.map {
+            case n: VNum => n.toInt
+            case x =>
+              // todo(lyxal): Are we sure we don't want to convert to VNum or
+              //              something instead of erroring?
+              throw new IllegalArgumentException(
+                s"Can't repeat an item a non-integer number of times (found $x in $b)"
+              )
+          }.lazyZip(ListHelpers.makeIterable(a))
+            .map((n, item) => VList.fill(n)(item))
+        if a.isInstanceOf[String] then
+          temp.map(_.mkString).mkString
+        else VList.from(temp)
       case _ =>
         throw new IllegalArgumentException(
           "Can't repeat an item a non-integer number of times"
