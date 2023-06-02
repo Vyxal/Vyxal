@@ -241,6 +241,10 @@ Keywords: to-binary, dec->bin, decimal->bin
 - a: num -> convert a to binary
 - a: str -> bin(ord(x) for x in a)
 ---------------------
+c (Contains) (non-vectorising)
+Keywords: contains, in
+- a: any, b: any -> is (b) in (a)?
+---------------------
 i (Index | Collect Unique Application Values) (non-vectorising)
 Keywords: index, at, item-at, nth-item, collect-unique
 - a: lst, b: num -> a[b]
