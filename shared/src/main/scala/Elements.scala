@@ -444,6 +444,25 @@ object Elements:
         ListHelpers.filter(ListHelpers.makeIterable(a, Some(true)), b)
     }
 
+    val flatten = addDirect(
+      "f",
+      "Flatten",
+      List("flatten", "flat"),
+      Some(1),
+      "a: lst -> Flattened a"
+    ) { ctx ?=>
+      def flatten(xs: VList): VList =
+        VList.from(
+          xs.map({
+            case l: VList => flatten(l)
+            case x        => VList(x)
+          }).flatten
+        )
+
+      val a = ctx.pop()
+      ctx.push(flatten(ListHelpers.makeIterable(a)))
+    }
+
     val getContextVariableM = addNilad(
       "m",
       "Get Context Variable M",
