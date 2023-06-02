@@ -546,7 +546,7 @@ object Elements:
       "a: lst, b: num -> a[b]",
       "a: lst, b: lst -> a[_] for _ in b",
       "a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value.",
-      "a: str, b: str -> enclose b in a (b[0:len(b)//2] + a + b[len(b)//2:])"
+      "a: str, b: str -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])"
     ) {
       case (a: VList, b: VList) => a.index(b)
       case (a: String, b: VList) =>
@@ -564,8 +564,8 @@ object Elements:
       case (a, b: VFun) => MiscHelpers.collectUnique(b, a)
       case (a: VFun, b) => MiscHelpers.collectUnique(a, b)
       case (a: String, b: String) =>
-        val temp = b.length / 2
-        b.slice(0, temp) + a + b.slice(temp, b.length)
+        val temp = a.length / 2
+        a.slice(0, temp) + b + b.slice(temp, a.length)
     }
 
     val interleave: Dyad = addElem(
