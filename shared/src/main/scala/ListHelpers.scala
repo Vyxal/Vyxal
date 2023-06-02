@@ -42,10 +42,10 @@ object ListHelpers:
 
   def flatten(xs: VList): VList =
     VList.from(
-      xs.map({
+      xs.flatMap {
         case l: VList => flatten(l)
-        case x        => VList(x)
-      }).flatten
+        case x        => Seq(x)
+      }
     )
 
   /** A wrapper call to the generator method in interpreter */
