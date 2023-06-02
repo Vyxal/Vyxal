@@ -221,6 +221,12 @@ Keywords: wrap-repeat
 - a: num, b: any -> b repeated a times, wrapped in a list
 - a: lst|str, b: lst[num] -> a[_] repeated b[_] times, wrapped in a list
 ---------------------
+Z (Zip) (non-vectorising)
+Keywords: zip, zip-map
+- a: lst, b: lst -> zip a and b
+- a: lst, b: fun -> [[x, b(x)] for x in a]
+- a: fun, b: lst -> [[a(x), x] for x in b]
+---------------------
 _ (Pop and Discard) (non-vectorising)
 Keywords: pop, discard
 - a ->
