@@ -259,6 +259,12 @@ f (Flatten) (non-vectorising)
 Keywords: flatten, flat
 - a: lst -> Flattened a
 ---------------------
+g (Monadic Minimum | Dyadic Minimum | Generate From Function | Vectorised Minimum) (non-vectorising)
+Keywords: max, maximum, generator
+- a: lst -> Maximum of a
+- a: non-lst, b: non-lst -> Maximum of a and b
+- a: lst, b: fun -> Call b infinitely with items of a as starting values
+---------------------
 i (Index | Collect Unique Application Values) (non-vectorising)
 Keywords: index, at, item-at, nth-item, collect-unique
 - a: lst, b: num -> a[b]
