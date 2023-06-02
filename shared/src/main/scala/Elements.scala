@@ -565,7 +565,7 @@ object Elements:
       case (a: VFun, b) => MiscHelpers.collectUnique(a, b)
       case (a: String, b: String) =>
         val temp = a.length / 2
-        a.slice(0, temp) + b + b.slice(temp, a.length)
+        a.slice(0, temp) + b + a.slice(temp, a.length)
     }
 
     val interleave: Dyad = addElem(
