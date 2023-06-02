@@ -245,6 +245,16 @@ c (Contains) (non-vectorising)
 Keywords: contains, in
 - a: any, b: any -> is (b) in (a)?
 ---------------------
+d (Double) (vectorising)
+Keywords: double
+- a: num -> a * 2
+- a: str -> a + a
+---------------------
+e (Is Even / Split on Newlines) (vectorising)
+Keywords: even?, even, is-even?, split-on-newlines, newline-split, split-newlines
+- a: num -> a % 2 == 0
+- a: str -> a split on newlines
+---------------------
 i (Index | Collect Unique Application Values) (non-vectorising)
 Keywords: index, at, item-at, nth-item, collect-unique
 - a: lst, b: num -> a[b]
