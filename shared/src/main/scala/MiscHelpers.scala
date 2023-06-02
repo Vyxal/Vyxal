@@ -65,7 +65,6 @@ object MiscHelpers:
     a match
       case _: VNum   => VNum(0)
       case _: String => ""
-      case _: VFun   => VFun.fromLambda(AST.Lambda(0, List(), List()))
       case _: VList  => 0
 
   def dyadicMaximum(a: VVal, b: VVal): VVal =
