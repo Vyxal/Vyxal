@@ -491,6 +491,14 @@
   - in:
     - "hello\nworld"
     out: ["hello", "world"]
+
+"f":
+  - {in: [[[1, 2, 2], 7, [8, [9]]]], out: [1, 2, 2, 7, 8, 9]}
+  - {in: [[]], out: []}
+  - {in: [[[], [], []]], out: []}
+  - {in: [3436897], out: [3, 4, 3, 6, 8, 9, 7]}
+  - {in: ["gaming"], out: ["g", "a", "m", "i", "n", "g"]}
+  
 "Ė":
   When given a number:
     - { in: [0], out: 1 }
