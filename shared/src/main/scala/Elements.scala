@@ -614,7 +614,8 @@ object Elements:
           )
         a match
           case l: VList =>
-            if l.forall(!_.isInstanceOf[VList]) then temp.mkString
+            if l.forall(!_.isInstanceOf[VList]) && !b.isInstanceOf[VList] then
+              temp.mkString
             else temp
           case _ => temp
 
