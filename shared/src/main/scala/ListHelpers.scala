@@ -84,10 +84,7 @@ object ListHelpers:
   def generateDyadic(function: VFun, initial: VList)(using
       ctx: Context
   ): VList =
-    val firstN = initial.length match
-      case 0 => ctx.settings.defaultValue
-      case 1 => initial.head
-      case _ => initial.last
+    val firstN = if initial.isEmpty then ctx.settings.defaultValue else initial.last
 
     val firstM = initial.length match
       case 0 => ctx.settings.defaultValue
