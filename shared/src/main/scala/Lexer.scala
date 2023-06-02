@@ -94,7 +94,12 @@ object Lexer extends RegexParsers:
       // So replace the non-normal string tokens with the appropriate token type
 
       // btw thanks to @pxeger and @mousetail for the regex
-      val text = value.substring(1, value.length - 1).replaceAll("\\\\\"", "\"")
+
+      val text = value
+        .substring(1, value.length - 1)
+        .replaceAll("\\\\\"", "\"")
+        .replaceAll("\\\\n", "\n")
+        .replaceAll("\\\\t", "\t")
 
       (value.last: @unchecked) match
         case '"' => Str(text)
