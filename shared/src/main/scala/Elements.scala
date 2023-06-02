@@ -451,16 +451,8 @@ object Elements:
       Some(1),
       "a: lst -> Flattened a"
     ) { ctx ?=>
-      def flatten(xs: VList): VList =
-        VList.from(
-          xs.map({
-            case l: VList => flatten(l)
-            case x        => VList(x)
-          }).flatten
-        )
-
       val a = ctx.pop()
-      ctx.push(flatten(ListHelpers.makeIterable(a)))
+      ctx.push(ListHelpers.flatten(ListHelpers.makeIterable(a)))
     }
 
     val getContextVariableM = addNilad(
@@ -600,6 +592,24 @@ object Elements:
     ) {
       case a: VNum   => (a.underlying % 2) == VNum(0)
       case a: String => VList.from(a.split("\n").toSeq)
+    }
+
+    val joinOn: Dyad = addElem(
+      Dyad,
+      "j",
+      "Join On",
+      List("join-on", "join", "join-with", "join-by"),
+      "a: lst, b: str -> a join on b"
+    ) {
+      case (a, b: String) => ListHelpers.makeIterable(a).mkString(b)
+      case (a: VVal, b: VVal) =>
+        ListHelpers.makeIterable(a).mkString(b.toString)
+      case (a, b) =>
+        ListHelpers
+          .flatten(
+            VList.from(ListHelpers.makeIterable(a).map(VList(_, b)))
+          )
+          .init
     }
 
     val length: Monad = addElem(

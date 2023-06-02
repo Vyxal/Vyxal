@@ -40,6 +40,14 @@ object ListHelpers:
 
   end filter
 
+  def flatten(xs: VList): VList =
+    VList.from(
+      xs.map({
+        case l: VList => flatten(l)
+        case x        => VList(x)
+      }).flatten
+    )
+
   /** A wrapper call to the generator method in interpreter */
   def generate(function: VFun, initial: VList)(using ctx: Context): VList =
     val firstN = initial.length match
