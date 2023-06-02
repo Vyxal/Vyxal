@@ -226,6 +226,19 @@ object Elements:
       StringHelpers.compressDictionary(a)
     }
 
+    val contains = addElem(
+      Dyad,
+      "c",
+      "Contains",
+      List("contains", "in"),
+      "a: any, b: any -> is (b) in (a)?"
+    ) {
+      case (a: VList, b: VVal)  => a.contains(b)
+      case (a: VVal, b: VList)  => b.contains(a)
+      case (a: VList, b: VList) => a.contains(b)
+      case (a: VVal, b: VVal)   => a.toString().contains(b.toString())
+    }
+
     val cookie = addDirect(
       "🍪",
       "Cookie",

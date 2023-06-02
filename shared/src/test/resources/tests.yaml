@@ -449,6 +449,33 @@
   When given a list:
     - { in: [[2, 3]], out: [[1, 0], [1, 1]] }
 
+"c":
+  When given a list and a scalar:
+    - { in: [[1, 2, 3, 4], 4], out: 1}
+    - { in: [[1, 2, 3, 4], 5], out: 0}
+    - { in: [[], 1], out: 0}
+    - { in: [["1", "2", 3], 3], out: 1}
+    - { in: [["1", "2", 3], 2], out: 0}
+    - { in: [["1", "2", 3], "2"], out: 1}
+  When given a scalar and a list:
+    - { in: [4, [1, 2, 3, 4]], out: 1}
+    - { in: [5, [1, 2, 3, 4]], out: 0}
+    - { in: [1, []], out: 0}
+    - { in: [3, ["1", "2", 3]], out: 1}
+    - { in: [2, ["1", "2", 3]], out: 0}
+    - { in: ["2", ["1", "2", 3]], out: 1}
+  When given two scalars:
+    - { in: ["abcdef", "f"], out: 1}
+    - { in: ["abcdef", "g"], out: 0}
+    - { in: ["abcdef", "abc"], out: 1}
+    - { in: ["abcdef", "abce"], out: 0}
+    - { in: ["abcdef", ""], out: 1}
+    - { in: ["abcdef", "abcdefg"], out: 0}
+    - { in: [234923, 4], out: 1}
+    - { in: [234923, 5], out: 0}
+    - { in: [234923, 234], out: 1}
+    - { in: [234923, 2341], out: 0}
+    
 "Ė":
   When given a number:
     - { in: [0], out: 1 }
