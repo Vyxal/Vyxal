@@ -6,8 +6,6 @@ self.addEventListener('message', function (e) {
     const sendFn = x => {
         this.postMessage({ "val": x, "command": "append", "session": session })
     };
-    Vyxal.setShortDict(data.dictionary.short)
-    Vyxal.setLongDict(data.dictionary.long)
     Vyxal.execute(data.code, data.inputs, data.flags, sendFn)
     this.postMessage({ "command": "done", "session": data.session })
 })

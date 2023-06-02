@@ -15,6 +15,7 @@ type VAny = VAtom | VList
 type VIter = String | VList
 type VAtom = VVal | VFun
 type VVal = VNum | String
+type VData = VVal | VList // Everything but functions
 
 /** A function object (not a function definition)
   *

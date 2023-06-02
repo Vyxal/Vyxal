@@ -544,6 +544,20 @@ class ElementTests extends VyxalTests:
     )
   }
 
+  describe("Element Z") {
+    describe("when given a function") {
+      testMulti(
+        "#[1|2|3|4|5#]⸠5+Z" -> VList(
+          VList(1, 6),
+          VList(2, 7),
+          VList(3, 8),
+          VList(4, 9),
+          VList(5, 10)
+        )
+      )
+    }
+  }
+
   describe("Element b") {
     describe("when given a number") {
       testMulti("b")(
