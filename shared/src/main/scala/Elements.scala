@@ -514,6 +514,18 @@ object Elements:
       "a: str, b: str -> a > b"
     ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) > 0 }
 
+    val head: Monad = addElem(
+      Monad,
+      "h",
+      "Head | First Item",
+      List("head", "first", "first-item"),
+      "a: lst -> a[0]"
+    ) { case a =>
+      ListHelpers
+        .makeIterable(a)
+        .headOption
+        .getOrElse(MiscHelpers.defaultEmpty(a))
+    }
     val hexadecimal: Monad = addVect(
       Monad,
       "H",

@@ -60,6 +60,14 @@ object MiscHelpers:
         ind += 1
       return result
 
+  // Returns the default value for a given type
+  def defaultEmpty(a: VAny): VAny =
+    a match
+      case _: VNum   => VNum(0)
+      case _: String => ""
+      case _: VFun   => VFun.fromLambda(AST.Lambda(0, List(), List()))
+      case _: VList  => 0
+
   def dyadicMaximum(a: VVal, b: VVal): VVal =
     if compare(a, b) > 0 then a else b
 
