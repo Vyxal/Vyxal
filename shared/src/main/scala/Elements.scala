@@ -607,7 +607,7 @@ object Elements:
         ListHelpers.makeIterable(a).mkString(b.toString())
       case (a, b) =>
         val lst = ListHelpers.makeIterable(a)
-        VList.from(lst.head +: lst.tail.flatMap(Seq(b, _)))
+        ListHelpers.flatten(VList.from(lst.head +: lst.tail.flatMap(Seq(b, _))))
 
     }
 
