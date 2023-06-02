@@ -606,14 +606,8 @@ object Elements:
       case (a: VVal, b: VVal) =>
         ListHelpers.makeIterable(a).mkString(b.toString())
       case (a, b) =>
-        ListHelpers
-          .flatten(
-            VList.from(
-              ListHelpers.makeIterable(a).init.map(VList(_, b)) :+ VList(
-                ListHelpers.makeIterable(a).last
-              )
-            )
-          )
+        val lst = ListHelpers.makeIterable(a)
+        VList.from(lst.head +: lst.tail.flatMap(Seq(b, _)))
 
     }
 
