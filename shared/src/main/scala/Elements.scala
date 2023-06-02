@@ -284,6 +284,18 @@ object Elements:
       case (a: String, b: String) => VList(a.split(b)*)
     }
 
+    val double = addVect(
+      Dyad,
+      "d",
+      "Double",
+      List("double"),
+      "a: num -> a * 2",
+      "a: str -> a + a"
+    ) {
+      case a: VNum   => a * 2
+      case a: String => a + a
+    }
+
     val dup = addDirect(":", "Duplicate", List("dup"), None, "a -> a, a") {
       ctx ?=>
         val a = ctx.pop()

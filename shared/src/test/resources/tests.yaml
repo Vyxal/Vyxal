@@ -476,6 +476,16 @@
     - { in: [234923, 234], out: 1}
     - { in: [234923, 2341], out: 0}
 
+"d":
+  - { in: [4], out: 8}
+  - { in: [0], out: 0}
+  - { in: [-1], out: -2}
+  - { in: [1.5], out: 3}
+  - { in: ["abc"], out: "abcabc"}
+  - { in: [" "], out: "  "}
+  - { in: ["\n"], out: "\n\n"}
+  - { in: [""], out: ""}    
+  
 "Ė":
   When given a number:
     - { in: [0], out: 1 }
