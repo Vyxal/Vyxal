@@ -4,6 +4,7 @@ package vyxal.impls
 // other classes being able to access them
 
 import vyxal.*
+import vyxal.ListHelpers.makeIterable
 
 import scala.io.StdIn
 import scala.language.implicitConversions
@@ -621,6 +622,26 @@ object Elements:
     ) {
       case a: VList => a.length
       case a        => ListHelpers.makeIterable(a).length
+    }
+
+    val lengthVecorised: Monad = addElem(
+      Monad,
+      "l",
+      "Length of Each Item",
+      List(
+        "length-vectorised",
+        "length-vect",
+        "len-vect",
+        "len-vectorised",
+        "vec-len",
+        "vec-length",
+        "vlen"
+      ),
+      "a: lst -> Length of each item in a"
+    ) { case a =>
+      VList.from(
+        ListHelpers.makeIterable(a).map(ListHelpers.makeIterable(_).length)
+      )
     }
 
     val lessThan: Dyad = addVect(
