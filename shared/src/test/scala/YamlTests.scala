@@ -44,6 +44,7 @@ enum Criterion:
 class YamlTests extends AnyFunSpec:
   /** The file to load tests from */
   val TestsFile = "/tests.yaml"
+
   /** YAML tag for scalars to be parsed as VNums */
   val NumTag = CustomTag("!num")
 
@@ -138,7 +139,8 @@ class YamlTests extends AnyFunSpec:
     node match
       case Node.ScalarNode(text, tag) =>
         if tag == Tag.int || tag == Tag.float || tag == NumTag then VNum(text)
-        else if tag == Tag.str then text
+        else if tag == Tag.str then
+          text.replaceAll("\\\\n", "\n").replaceAll("\\\\t", "\t")
         else throw Error(s"Invalid Vyxal value: $text $tag")
       case Node.SequenceNode(lst, _) => VList.from(lst.map(decodeNode))
       case _ => throw Error(s"Invalid Vyxal value (cannot be map): $node")
