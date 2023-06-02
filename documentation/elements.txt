@@ -265,6 +265,10 @@ Keywords: max, maximum, generator
 - a: non-lst, b: non-lst -> Maximum of a and b
 - a: lst, b: fun -> Call b infinitely with items of a as starting values
 ---------------------
+h (Head | First Item) (non-vectorising)
+Keywords: head, first, first-item
+- a: lst -> a[0]
+---------------------
 i (Index | Collect Unique Application Values) (non-vectorising)
 Keywords: index, at, item-at, nth-item, collect-unique
 - a: lst, b: num -> a[b]
