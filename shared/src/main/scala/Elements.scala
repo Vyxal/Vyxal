@@ -602,9 +602,9 @@ object Elements:
       List("join-on", "join", "join-with", "join-by"),
       "a: lst, b: str -> a join on b"
     ) {
-      case (a, b: VVal) => ListHelpers.makeIterable(a).mkString(b.toString())
+      case (a, b: String) => ListHelpers.makeIterable(a).mkString(b)
       case (a, b) =>
-        ListHelpers
+        val temp = ListHelpers
           .flatten(
             VList.from(
               ListHelpers.makeIterable(a).init.map(VList(_, b)) :+ VList(
@@ -612,6 +612,12 @@ object Elements:
               )
             )
           )
+        a match
+          case l: VList =>
+            if l.forall(!_.isInstanceOf[VList]) then temp.mkString
+            else temp
+          case _ => temp
+
     }
 
     val length: Monad = addElem(
