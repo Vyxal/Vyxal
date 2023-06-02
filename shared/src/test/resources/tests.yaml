@@ -486,6 +486,9 @@
   - { in: ["\n"], out: "\n\n"}
   - { in: [""], out: ""}
 
+"e":
+  - {in: [[1, 2, 45, 124, 765]], out: [0, 1, 0, 1, 0]}
+  - {in: ["hello\nworld"], out: ["hello", "world"]}
 "Ė":
   When given a number:
     - { in: [0], out: 1 }

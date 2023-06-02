@@ -285,15 +285,15 @@ object Elements:
     }
 
     val double = addVect(
-      Dyad,
+      Monad,
       "d",
       "Double",
       List("double"),
       "a: num -> a * 2",
       "a: str -> a + a"
     ) {
-      case a: VNum   => a * 2
-      case a: String => a + a
+      case (a: VNum)   => a * 2
+      case (a: String) => a + a
     }
 
     val dup = addDirect(":", "Duplicate", List("dup"), None, "a -> a, a") {
@@ -536,6 +536,25 @@ object Elements:
       )
       if a.isInstanceOf[String] && b.isInstanceOf[String] then temp.mkString
       else temp
+    }
+
+    val isEven: Monad = addVect(
+      Monad,
+      "e",
+      "Is Even / Split on Newlines",
+      List(
+        "even?",
+        "even",
+        "is-even?",
+        "split-on-newlines",
+        "newline-split",
+        "split-newlines"
+      ),
+      "a: num -> a % 2 == 0",
+      "a: str -> a split on newlines"
+    ) {
+      case a: VNum   => (a.underlying % 2) == VNum(0)
+      case a: String => VList.from(a.split("\n").toSeq)
     }
 
     val length: Monad = addElem(
