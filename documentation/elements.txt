@@ -96,7 +96,7 @@ Keywords: get-input, input, stdin, readline
 - ->  -> input
 ---------------------
 A (All Truthy | All() | Is Vowel?) (non-vectorising)
-Keywords: all, is-vowel?
+Keywords: all, is-vowel?, vowel?
 - a: str -> is (a) a vowel? vectorises for strings len > 1
 - a: list -> is (a) all truthy?
 ---------------------
@@ -230,6 +230,11 @@ Keywords: zip, zip-map
 _ (Pop and Discard) (non-vectorising)
 Keywords: pop, discard
 - a ->
+---------------------
+a (Any Truthy | Any() | Is Uppercase?) (non-vectorising)
+Keywords: any, is-uppercase?, is-upper?, upper?
+- a: str -> is (a) uppercase? vectorises for strings len > 1
+- a: list -> is (a) any truthy?
 ---------------------
 b (Convert To Binary) (vectorising)
 Keywords: to-binary, dec->bin, decimal->bin
