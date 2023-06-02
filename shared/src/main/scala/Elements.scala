@@ -541,17 +541,31 @@ object Elements:
     val index: Dyad = addElem(
       Dyad,
       "i",
-      "Index | Collect Unique Application Values",
-      List("index", "at", "item-at", "nth-item", "collect-unique"),
+      "Index | Collect Unique Application Values | Enclose",
+      List("index", "at", "item-at", "nth-item", "collect-unique", "enclose"),
       "a: lst, b: num -> a[b]",
       "a: lst, b: lst -> a[_] for _ in b",
-      "a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value."
+      "a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value.",
+      "a: str, b: str -> enclose b in a (b[0:len(b)//2] + a + b[len(b)//2:])"
     ) {
-      case (a: VList, b: VList)           => a.index(b)
-      case (a: (VNum | String), b: VList) => b.index(a)
+      case (a: VList, b: VList) => a.index(b)
+      case (a: String, b: VList) =>
+        val temp = ListHelpers.makeIterable(a).index(b)
+        temp match
+          case l: VList => l.mkString
+          case _        => temp
+      case (a: VList, b: String) =>
+        val temp = ListHelpers.makeIterable(b).index(a)
+        temp match
+          case l: VList => l.mkString
+          case _        => temp
+      case (a: VNum, b) => ListHelpers.makeIterable(b).index(a)
       case (a, b: VNum) => ListHelpers.makeIterable(a).index(b)
       case (a, b: VFun) => MiscHelpers.collectUnique(b, a)
       case (a: VFun, b) => MiscHelpers.collectUnique(a, b)
+      case (a: String, b: String) =>
+        val temp = b.length / 2
+        b.slice(0, temp) + a + b.slice(temp, b.length)
     }
 
     val interleave: Dyad = addElem(
