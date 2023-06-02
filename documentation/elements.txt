@@ -276,6 +276,10 @@ Keywords: index, at, item-at, nth-item, collect-unique, enclose
 - a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value.
 - a: str, b: str -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])
 ---------------------
+j (Join On) (non-vectorising)
+Keywords: join-on, join, join-with, join-by
+- a: lst, b: str -> a join on b
+---------------------
 m (Get Context Variable M) (non-vectorising)
 Keywords: get-context-m, context-m, c-var-m, ctx-m, ctx-secondary
 - ->  -> context variable m
