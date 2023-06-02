@@ -489,7 +489,7 @@
 "e":
   - {in: [[1, 2, 45, 124, 765]], out: [0, 1, 0, 1, 0]}
   - in: 
-    - "hello\nworld"
+    - !str "hello\nworld"
     out: ["hello", "world"]
 "Ė":
   When given a number:
