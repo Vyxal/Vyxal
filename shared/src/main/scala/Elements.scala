@@ -707,6 +707,31 @@ object Elements:
       case (a: VList, b)        => VList.from(a :+ b)
     }
 
+    val minimum = addDirect(
+      "g",
+      "Monadic Minimum | Dyadic Minimum | Generate From Function | Vectorised Minimum",
+      List("max", "maximum", "generator"),
+      Some(2),
+      "a: lst -> Maximum of a",
+      "a: non-lst, b: non-lst -> Maximum of a and b",
+      "a: lst, b: fun -> Call b infinitely with items of a as starting values"
+    ) { ctx ?=>
+      val top = ctx.pop()
+      top match
+        case a: VList =>
+          ctx.push(ListHelpers.minimum(a))
+        case _ =>
+          val next = ctx.pop()
+          (top, next) match
+            case (a: VVal, b: VVal) => ctx.push(MiscHelpers.dyadicMinimum(a, b))
+            case (a: VFun, b: VList) =>
+              ctx.push(ListHelpers.generateDyadic(a, b))
+            case (a: VVal, b: VList) =>
+              ctx.push(ListHelpers.vectorisedMinimum(b, a))
+            case _ =>
+              throw new Exception("Invalid arguments for mimimum")
+    }
+
     val modulo: Dyad = addElem(
       Dyad,
       "%",

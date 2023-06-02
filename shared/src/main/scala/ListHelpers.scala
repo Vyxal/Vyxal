@@ -62,6 +62,40 @@ object ListHelpers:
     )
   end generate
 
+  /** A wrapper call to the generator method in interpreter, but forced to be
+    * dyadic
+    *
+    * @param function
+    *   The function to generate with
+    * @param initial
+    *   The initial values to generate from
+    * @param ctx
+    *   The context to use
+    * @return
+    */
+  def generateDyadic(function: VFun, initial: VList)(using
+      ctx: Context
+  ): VList =
+    val firstN = initial.length match
+      case 0 => ctx.settings.defaultValue
+      case 1 => initial.head
+      case _ => initial.last
+
+    val firstM = initial.length match
+      case 0 => ctx.settings.defaultValue
+      case 1 => initial.head
+      case _ => initial.init.last
+    VList.from(
+      initial ++: Interpreter.generator(
+        function,
+        firstN,
+        firstM,
+        2,
+        initial
+      )
+    )
+  end generateDyadic
+
   def groupConsecutive(iterable: VList): VList =
     VList.from(groupConsecutiveBy(iterable)(x => x).map(VList.from))
 
@@ -156,6 +190,13 @@ object ListHelpers:
     else
       iterable.reduce { (a, b) =>
         if MiscHelpers.compareExact(a, b) > 0 then a else b
+      }
+
+  def minimum(iterable: VList)(using ctx: Context): VAny =
+    if iterable.isEmpty then VList()
+    else
+      iterable.reduce { (a, b) =>
+        if MiscHelpers.compareExact(a, b) < 0 then a else b
       }
 
   /** Mold a list into a shape.
@@ -350,5 +391,12 @@ object ListHelpers:
       (a: @unchecked) match
         case a: VList => vectorisedMaximum(a, b)
         case a: VVal  => MiscHelpers.dyadicMaximum(a, b)
+    })
+
+  def vectorisedMinimum(iterable: VList, b: VVal): VList =
+    VList.from(iterable.map { a =>
+      (a: @unchecked) match
+        case a: VList => vectorisedMinimum(a, b)
+        case a: VVal  => MiscHelpers.dyadicMinimum(a, b)
     })
 end ListHelpers

@@ -63,6 +63,9 @@ object MiscHelpers:
   def dyadicMaximum(a: VVal, b: VVal): VVal =
     if compare(a, b) > 0 then a else b
 
+  def dyadicMinimum(a: VVal, b: VVal): VVal =
+    if compare(a, b) < 0 then a else b
+
   def eval(s: String): VAny =
     if s.matches(raw"-?($decimalRegex?ı$decimalRegex?)|-?$decimalRegex") then
       VNum(s)
