@@ -608,9 +608,8 @@ object Elements:
       case (a, b) =>
         ListHelpers
           .flatten(
-            VList.from(ListHelpers.makeIterable(a).map(VList(_, b)))
+            VList.from(ListHelpers.makeIterable(a).map(VList(_, b))).init
           )
-          .init
     }
 
     val length: Monad = addElem(
