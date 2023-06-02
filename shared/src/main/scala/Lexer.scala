@@ -223,6 +223,6 @@ object Lexer extends RegexParsers:
   def removeSugar(code: String): Option[String] =
     sugarUsed = false
     val temp = apply(code)
-    if sugarUsed then Some(temp.getOrElse(List()).mkString)
+    if sugarUsed then Some(temp.getOrElse(List()).map(_.value).mkString)
     else None
 end Lexer
