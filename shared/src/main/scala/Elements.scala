@@ -156,7 +156,7 @@ object Elements:
       Monad,
       "A",
       "All Truthy | All() | Is Vowel?",
-      List("all", "is-vowel?"),
+      List("all", "is-vowel?", "vowel?"),
       "a: str -> is (a) a vowel? vectorises for strings len > 1",
       "a: list -> is (a) all truthy?"
     ) {
@@ -164,6 +164,20 @@ object Elements:
       case a: String if a.length == 1 => StringHelpers.isVowel(a.head)
       case a: String                  => VList(a.map(StringHelpers.isVowel)*)
       case a: VList                   => a.forall(MiscHelpers.boolify)
+    }
+
+    val anyTruthy = addElem(
+      Monad,
+      "a",
+      "Any Truthy | Any() | Is Uppercase?",
+      List("any", "is-uppercase?", "is-upper?", "upper?"),
+      "a: str -> is (a) uppercase? vectorises for strings len > 1",
+      "a: list -> is (a) any truthy?"
+    ) {
+      case a: VNum => ListHelpers.makeIterable(a).exists(MiscHelpers.boolify)
+      case a: String if a.length == 1 => a.head.isUpper
+      case a: String                  => VList(a.map(c => VNum(c.isUpper))*)
+      case a: VList                   => a.exists(MiscHelpers.boolify)
     }
 
     val append = addElem(

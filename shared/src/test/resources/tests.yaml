@@ -423,6 +423,17 @@
   - { in: [[1, 2, 3], 69], out: [1, 2, 3, 69] }
   - { in: ["abc", []], out: ["a", "b", "c", []] }
 
+"a":
+  when given a list:
+    - { in: [[1, 391, "dqw4w9wgxcq", [0]]], out: 1 }
+    - { in: [[0, 69420, []]], out: 1 }
+  when given a single-character string:
+    - { in: ["a"], out: 0 }
+    - { in: ["E"], out: 1 }
+    - { in: ["y"], out: 0 }
+  when given a multi-character string:
+    - { in: ["asdEy"], out: [0, 0, 0, 1, 0] }
+
 "b":
   When given a number:
     - { in: [5], out: [1, 0, 1] }
