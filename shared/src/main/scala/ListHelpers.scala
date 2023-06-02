@@ -399,9 +399,8 @@ object ListHelpers:
     })
 
   def vectorisedMinimum(iterable: VList, b: VVal): VList =
-    VList.from(iterable.map { a =>
-      (a: @unchecked) match
-        case a: VList => vectorisedMinimum(a, b)
-        case a: VVal  => MiscHelpers.dyadicMinimum(a, b)
+    VList.from(iterable.map {
+      case a: VList => vectorisedMinimum(a, b)
+      case a => MiscHelpers.dyadicMinimum(a, b)
     })
 end ListHelpers
