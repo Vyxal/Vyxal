@@ -529,7 +529,7 @@
 "j":
   - { in: [[1, 2, 3], "penguin"], out: "1penguin2penguin3"}
   - { in: [123, "penguin"], out: "1penguin2penguin3"}
-  - { in: [[1, 2, 3], 4], out: "14243"}
+  - { in: [123, 4], out: "14243"}
   - { in: [["he", "", "o, wor", "d!"], "l"], out: "hello, world!"}
   - { in: [[], "a"], out: ""}
   - { in: [[5, 6, 7, 8], [1, 2, 3]], out: [5, 1, 2, 3, 6, 1, 2, 3, 7, 1, 2, 3, 8]}
