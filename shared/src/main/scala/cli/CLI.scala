@@ -74,7 +74,7 @@ object CLI:
           while true do
             val line = io.StdIn.readLine(">")
             if line == "" then return
-            println(Parser.parse(line))
+            println(Parser.parse(Lexer(line).getOrElse(List.empty)))
 
         config.filename.foreach { filename =>
           val source = io.Source.fromFile(filename)

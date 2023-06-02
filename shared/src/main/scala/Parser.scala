@@ -429,23 +429,22 @@ object Parser:
       case VyxalToken.StructureAllClose => true
       case _                            => false
 
-  def parse(code: String): Either[VyxalCompilationError, AST] =
-    Lexer(code).flatMap { tokens =>
-      val preprocessed = preprocess(tokens).to(Queue)
-      val parsed = parse(preprocessed, true)
-      if preprocessed.nonEmpty then
-        // Some tokens were left at the end, which should never happen
-        Left(
-          VyxalCompilationError(
-            s"Error parsing code: These tokens were not parsed ${preprocessed.toList}. Only parsed $parsed"
-          )
+  def parse(tokens: List[VyxalToken]): Either[VyxalCompilationError, AST] =
+    val preprocessed = preprocess(tokens).to(Queue)
+    val parsed = parse(preprocessed, true)
+    if preprocessed.nonEmpty then
+      // Some tokens were left at the end, which should never happen
+      Left(
+        VyxalCompilationError(
+          s"Error parsing code: These tokens were not parsed ${preprocessed.toList}. Only parsed $parsed"
         )
-      else
-        parsed match
-          case Right(ast) => Right(postprocess(ast))
-          case Left(error) =>
-            Left(VyxalCompilationError(s"Error parsing code: $error"))
-    }
+      )
+    else
+      parsed match
+        case Right(ast) => Right(postprocess(ast))
+        case Left(error) =>
+          Left(VyxalCompilationError(s"Error parsing code: $error"))
+  end parse
 
   private def preprocess(tokens: List[VyxalToken]): List[VyxalToken] =
     val doubleClose = ListBuffer[VyxalToken]()

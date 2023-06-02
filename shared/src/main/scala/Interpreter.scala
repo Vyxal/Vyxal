@@ -19,9 +19,14 @@ object Interpreter:
         LiterateLexer.processLit(code) match
           case Right(code) => code
           case Left(err) => throw new Error(s"Couldn't lex literate code: $err")
-    Parser.parse(sbcsified) match
+    val lexed = Lexer(sbcsified).getOrElse(throw new Error("Lexer failed"))
+    val sugarless = Lexer.removeSugar(sbcsified)
+    sugarless match
+      case Some(code) => ctx.globals.printFn(code)
+      case None       => ()
+
+    Parser.parse(lexed) match
       case Right(ast) =>
-        if Lexer.hasSugar(sbcsified) then ctx.globals.printFn(ast.toVyxal)
         if ctx.settings.logLevel == LogLevel.Debug then
           println(s"Executing '$code' (ast: $ast)")
 

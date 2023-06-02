@@ -220,8 +220,9 @@ object Lexer extends RegexParsers:
         case arity => throw Exception(s"Invalid modifier arity: $arity")
     else Digraph(digraph)
 
-  def hasSugar(code: String): Boolean =
+  def removeSugar(code: String): Option[String] =
     sugarUsed = false
-    apply(code)
-    sugarUsed
+    val temp = apply(code)
+    if sugarUsed then Some(temp.getOrElse(List()).mkString)
+    else None
 end Lexer

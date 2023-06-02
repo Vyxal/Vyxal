@@ -70,7 +70,9 @@ object MiscHelpers:
     else if LiterateLexer.isList(s) then
       val tempContext = Context()
       val lambdaAST =
-        Parser.parse(LiterateLexer.processLit(s).toOption.get) match
+        Parser.parse(
+          Lexer(LiterateLexer.processLit(s).toOption.get).getOrElse(List())
+        ) match
           case Right(x) => x
           case Left(_)  => throw new Exception("Failed to parse list")
       Interpreter.executeFn(
