@@ -84,7 +84,8 @@ object ListHelpers:
   def generateDyadic(function: VFun, initial: VList)(using
       ctx: Context
   ): VList =
-    val firstN = if initial.isEmpty then ctx.settings.defaultValue else initial.last
+    val firstN =
+      if initial.isEmpty then ctx.settings.defaultValue else initial.last
 
     val firstM = initial.length match
       case 0 => ctx.settings.defaultValue
@@ -396,11 +397,13 @@ object ListHelpers:
       (a: @unchecked) match
         case a: VList => vectorisedMaximum(a, b)
         case a: VVal  => MiscHelpers.dyadicMaximum(a, b)
+        case _        => ???
     })
 
   def vectorisedMinimum(iterable: VList, b: VVal): VList =
     VList.from(iterable.map {
       case a: VList => vectorisedMinimum(a, b)
-      case a => MiscHelpers.dyadicMinimum(a, b)
+      case a: VVal  => MiscHelpers.dyadicMinimum(a, b)
+      case _        => ???
     })
 end ListHelpers
