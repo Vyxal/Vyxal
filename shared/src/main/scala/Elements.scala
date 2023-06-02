@@ -608,7 +608,11 @@ object Elements:
       case (a, b) =>
         ListHelpers
           .flatten(
-            VList.from(ListHelpers.makeIterable(a).map(VList(_, b))).init
+            VList.from(
+              ListHelpers.makeIterable(a).init.map(VList(_, b)) :+ VList(
+                ListHelpers.makeIterable(a).last
+              )
+            )
           )
     }
 
