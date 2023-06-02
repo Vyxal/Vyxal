@@ -512,7 +512,7 @@
   - { in: ["abc"], out: "a"}
   - { in: [" "], out: " "}
   - { in: [""], out: ""}
-  
+
 "Ė":
   When given a number:
     - { in: [0], out: 1 }
