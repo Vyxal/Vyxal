@@ -187,7 +187,7 @@ object StringHelpers:
   end decompress
 
   def quotify(s: String): String =
-    s"\"{s}\"".replaceAll("\\", "\\\\").replaceAll("\"", "\\\"")
+    "\"{s}\"".replaceAll("\\", "\\\\").replaceAll("\"", "\\\"")
 
   /** Toggle case of each character in the string */
   def swapCase(s: String): String =
