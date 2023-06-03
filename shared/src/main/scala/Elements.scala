@@ -986,8 +986,20 @@ object Elements:
       "Replace",
       List("replace"),
       "a: str, b: str, c: str -> replace all instances of b in a with c"
-    ) { case (a: String, b: String, c: String) =>
-      a.replaceAll(b, c)
+    ) {
+      case (a: String, b: VVal, c: VVal) =>
+        a.replaceAll(b.toString(), c.toString())
+      case (a: VNum, b: VVal, c: VVal) =>
+        MiscHelpers.eval(a.toString().replaceAll(b.toString(), c.toString()))
+      case (a: VList, b: VAny, c: VAny) =>
+        VList.from(a.lst.map(x => if x == b then c else x))
+      case (a: VVal, b: VVal, c: VList) =>
+        VList.from(c.lst.map(x => if x == a then b else x))
+      case (a: VVal, b: VList, c: VVal) =>
+        VList.from(b.lst.map(x => if x == a then c else x))
+      case (a: VVal, b: VList, c: VList) =>
+        VList.from(b.lst.map(x => if x == a then c else x))
+
     }
 
     val returnStatement = addDirect(
