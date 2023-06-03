@@ -313,6 +313,10 @@ s (Split) (non-vectorising)
 Keywords: split
 - a: any, b: any -> split a by b
 ---------------------
+t (tail | Last Item) (non-vectorising)
+Keywords: tail, last, last-item
+- a: lst -> a[-1]
+---------------------
 Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
 Keywords: peek-call
 - a: fun -> Execute a without popping
