@@ -980,6 +980,16 @@ object Elements:
         MiscHelpers.reduce(a, b)
     }
 
+    val replace = addElem(
+      Triad,
+      "r",
+      "Replace",
+      List("replace"),
+      "a: str, b: str, c: str -> replace all instances of b in a with c"
+    ) { case (a: String, b: String, c: String) =>
+      a.replaceAll(b, c)
+    }
+
     val returnStatement = addDirect(
       "X",
       "Return Statement",
