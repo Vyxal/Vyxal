@@ -235,11 +235,13 @@ object ListHelpers:
   end mold
 
   def overlaps(iterable: Seq[VAny], size: Int): Seq[VList] =
-    iterable.sliding(size).toSeq.map(VList.from)
+    if size == 0 then Seq.empty
+    else iterable.sliding(size).toSeq.map(VList.from)
 
   // Just for strings
   def overlaps(iterable: String, size: Int): Seq[String] =
-    iterable.sliding(size).toSeq
+    if size == 0 then Seq.empty
+    else iterable.sliding(size).toSeq
 
   def sortBy(iterable: VList, key: VFun)(using ctx: Context): VList =
     key.originalAST match
