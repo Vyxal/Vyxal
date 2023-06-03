@@ -857,6 +857,35 @@ object Elements:
           else VList(temp*)
       }
 
+    val overlaps = addDirect(
+      "o",
+      "Overlap | Overlapping Slices",
+      List("overlap", "overlaps", "overlapping", "overlapping-slices"),
+      Some(2),
+      "a: lst, b: num -> Overlapping slices of a of length b",
+      "a: lst|str -> Overlapping slices of a of length 2"
+    ) { ctx ?=>
+      val top = ctx.pop()
+      top match
+        case a: VList =>
+          ctx.push(
+            VList.from(
+              ListHelpers.overlaps(a, 2)
+            )
+          )
+        case a: String => ctx.push(VList.from(ListHelpers.overlaps(a, 2)))
+        case _ =>
+          val next = ctx.pop()
+          (top, next) match
+            case (a: VNum, b: String) =>
+              ctx.push(VList.from(ListHelpers.overlaps(b, a.toInt)))
+            case (a: VNum, b: VList) =>
+              ctx.push(VList.from(ListHelpers.overlaps(b.lst, a.toInt)))
+            case _ =>
+              throw new Exception("Invalid arguments for overlaps")
+      end match
+    }
+
     val pair =
       addFull(Dyad, ";", "Pair", List("pair"), false, "a, b -> [a, b]") {
         VList(_, _)

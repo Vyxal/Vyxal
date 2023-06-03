@@ -234,6 +234,13 @@ object ListHelpers:
     moldHelper(content, shape, 0)
   end mold
 
+  def overlaps(iterable: Seq[VAny], size: Int): Seq[VList] =
+    iterable.sliding(size).toSeq.map(VList.from)
+
+  // Just for strings
+  def overlaps(iterable: String, size: Int): Seq[String] =
+    iterable.sliding(size).toSeq
+
   def sortBy(iterable: VList, key: VFun)(using ctx: Context): VList =
     key.originalAST match
       case Some(lam) =>
