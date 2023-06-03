@@ -309,6 +309,10 @@ r (Replace) (non-vectorising)
 Keywords: replace
 - a: str, b: str, c: str -> replace all instances of b in a with c
 ---------------------
+s (Split) (non-vectorising)
+Keywords: split
+- a: any, b: any -> split a by b
+---------------------
 Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
 Keywords: peek-call
 - a: fun -> Execute a without popping
@@ -380,7 +384,7 @@ Keywords: mul, multiply, times, str-repeat, *, ring-trans
 - a: str, b: str -> ring translate a according to b
 ---------------------
 ÷ (Divide | Split) (vectorising)
-Keywords: divide, div, split
+Keywords: divide, div, str-split
 - a: num, b: num -> a / b
 - a: str, b: str -> Split a on the regex b
 ---------------------
