@@ -922,8 +922,9 @@ object Elements:
       "a: lst, b: any -> b prepended to a"
     ) {
       case (a: String, b: (String | VNum)) => b.toString() + a
+      case (a: VNum, b: String)            => b + a.toString()
       case (a: VNum, b: VNum) => MiscHelpers.eval(b.toString() + a.toString())
-      case (a: VList, b)      => VList(b, a*)
+      case (a: VList, b)      => VList.from(b +: a)
       case (a, b)             => VList(b, a)
     }
 
