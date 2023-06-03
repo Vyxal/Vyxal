@@ -305,6 +305,10 @@ q (Quotify) (non-vectorising)
 Keywords: quotify
 - a: any -> enclose a in quotes, escape backslashes and quote marks
 ---------------------
+r (Replace) (non-vectorising)
+Keywords: replace
+- a: str, b: str, c: str -> replace all instances of b in a with c
+---------------------
 Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
 Keywords: peek-call
 - a: fun -> Execute a without popping
