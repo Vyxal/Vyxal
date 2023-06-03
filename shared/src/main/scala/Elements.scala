@@ -991,7 +991,7 @@ object Elements:
         a.replaceAll(b.toString(), c.toString())
       case (a: VNum, b: VVal, c: VVal) =>
         MiscHelpers.eval(a.toString().replaceAll(b.toString(), c.toString()))
-      case (a: VList, b: VAny, c: VAny) =>
+      case (a: VList, b, c) =>
         VList.from(a.lst.map(x => if x == b then c else x))
       case (a: VVal, b: VVal, c: VList) =>
         VList.from(c.lst.map(x => if x == a then b else x))

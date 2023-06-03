@@ -560,6 +560,18 @@
   - {in: ["abc", 123], out: "123abc"}
   - {in: [45, 34], out: 3445}
 
+"r":
+  - {in: ["abc abc", "a", "A"], out: "Abc Abc"}
+  - {in: ["abc abc", "ab", "AB"], out: "ABc ABc"}
+  - {in: ["abc abc", "abc", "ABC"], out: "ABC ABC"}
+  - {in: ["abc abc", "d", "D"], out: "abc abc"}
+  - {in: ["abc abc", "abc abc", "ABC ABC"], out: "ABC ABC ABC ABC"}
+  - {in: ["abc", "", "H"], out: "HaHbHcH"}
+  - {in: [[1, 2, 3, 4, 5], 5, 6], out: [1, 2, 3, 4, 6]}
+  - {in: [[1, 1, 1, 1, 1], 1, 2], out: [2, 2, 2, 2, 2]}
+  - {in: [[1, "1", 1, "1"], 1, 2], out: [2, "1", 2, "1"]}
+  - {in: [[1, "1", 1, "1"], "1", 2], out: [1, 2, 1, 2]}
+  - {in: [[[1, 2, 3], [1, 2, 3], [4, 5, 6]], [1, 2, 3], 5], out: [5, 5, [4, 5, 6]]}
 "Ė":
   When given a number:
     - { in: [0], out: 1 }
