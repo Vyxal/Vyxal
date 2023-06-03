@@ -1100,6 +1100,19 @@ object Elements:
         ctx.push(b, a)
     }
 
+    val tail: Monad = addElem(
+      Monad,
+      "t",
+      "tail | Last Item",
+      List("tail", "last", "last-item"),
+      "a: lst -> a[-1]"
+    ) { case a =>
+      ListHelpers
+        .makeIterable(a)
+        .lastOption
+        .getOrElse(MiscHelpers.defaultEmpty(a))
+    }
+
     val transposeSafe = addElem(
       Monad,
       "ÞT",
