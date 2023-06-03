@@ -187,7 +187,7 @@ object StringHelpers:
   end decompress
 
   def quotify(s: String): String =
-    "\"{s}\""
+    s"\"${s}\""
       .replaceAll("\\\\\\\\", "\\\\\\\\\\\\\\\\")
       .replaceAll("\"", "\\\\\"")
 
