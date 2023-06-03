@@ -187,9 +187,11 @@ object StringHelpers:
   end decompress
 
   def quotify(s: String): String =
-    s"\"${s}\""
+    val temp = s
       .replaceAll("\\\\", "\\\\\\\\")
       .replaceAll("\"", "\\\\\"")
+
+    s""""$temp""""
 
   /** Toggle case of each character in the string */
   def swapCase(s: String): String =
