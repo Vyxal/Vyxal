@@ -336,6 +336,10 @@ object ListHelpers:
     parts.toSeq
   end split
 
+  def splitNormal(iterable: VList, sep: VAny)(using ctx: Context): VList =
+    val out = split(iterable, Seq(sep))
+    VList(out.map(VList.from)*)
+
   /** Transpose a matrix.
     *
     * Hangs on infinite lists of finite lists. See [[transposeSafe]] for a

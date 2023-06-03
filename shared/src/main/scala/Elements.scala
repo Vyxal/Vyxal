@@ -277,7 +277,7 @@ object Elements:
       Dyad,
       "÷",
       "Divide | Split",
-      List("divide", "div", "split"),
+      List("divide", "div", "str-split"),
       "a: num, b: num -> a / b",
       "a: str, b: str -> Split a on the regex b"
     ) {
@@ -1051,6 +1051,19 @@ object Elements:
         ListHelpers.sortBy(ListHelpers.makeIterable(b, Some(true)), a)
       case (a, b: VFun) =>
         ListHelpers.sortBy(ListHelpers.makeIterable(a, Some(true)), b)
+    }
+
+    val split = addElem(
+      Dyad,
+      "s",
+      "Split",
+      List("split"),
+      "a: any, b: any -> split a by b"
+    ) {
+      case (a: String, b) => VList.from(a.split(b.toString()).toSeq)
+      case (a: VNum, b) =>
+        VList.from(a.toString().split(b.toString()).toSeq.map(MiscHelpers.eval))
+      case (a: VList, b) => ListHelpers.splitNormal(a, b)
     }
 
     val subtraction = addVect(
