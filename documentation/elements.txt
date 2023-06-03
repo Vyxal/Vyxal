@@ -292,6 +292,11 @@ n (Get Context Variable N) (non-vectorising)
 Keywords: get-context-n, context-n, c-var-n, ctx-n, ctx-primary
 - ->  -> context variable n
 ---------------------
+o (Overlap | Overlapping Slices) (non-vectorising)
+Keywords: overlap, overlaps, overlapping, overlapping-slices
+- a: lst, b: num -> Overlapping slices of a of length b
+- a: lst|str -> Overlapping slices of a of length 2
+---------------------
 Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
 Keywords: peek-call
 - a: fun -> Execute a without popping
