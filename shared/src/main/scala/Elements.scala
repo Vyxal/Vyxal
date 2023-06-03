@@ -938,6 +938,17 @@ object Elements:
       MiscHelpers.vyPrintln(ctx.pop())
     }
 
+    val quotify = addElem(
+      Monad,
+      "q",
+      "Quotify",
+      List("quotify"),
+      "a: any -> enclose a in quotes, escape backslashes and quote marks"
+    ) {
+      case a: String => StringHelpers.quotify(a)
+      case a         => StringHelpers.quotify(a.toString())
+    }
+
     val reduction = addElem(
       Dyad,
       "R",
