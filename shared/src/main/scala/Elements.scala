@@ -914,6 +914,18 @@ object Elements:
           )
       }
 
+    val prepend = addElem(
+      Dyad,
+      "p",
+      "Prepend",
+      List("prepend"),
+      "a: lst, b: any -> b prepended to a"
+    ) {
+      case (a: String, b: (String | VNum)) => b.toString() + a
+      case (a: VNum, b: VNum) => MiscHelpers.eval(b.toString() + a.toString())
+      case (a, b)             => VList(b, a)
+    }
+
     val print = addDirect(
       ",",
       "Print",
