@@ -297,6 +297,10 @@ Keywords: overlap, overlaps, overlapping, overlapping-slices
 - a: lst, b: num -> Overlapping slices of a of length b
 - a: lst|str -> Overlapping slices of a of length 2
 ---------------------
+p (Prepend) (non-vectorising)
+Keywords: prepend
+- a: lst, b: any -> b prepended to a
+---------------------
 Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
 Keywords: peek-call
 - a: fun -> Execute a without popping
