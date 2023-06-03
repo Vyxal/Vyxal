@@ -592,6 +592,14 @@ class ElementTests extends VyxalTests:
     )
   }
 
+  describe("Element q") {
+    testMulti("q")(
+      in("\\") -> "\"\\\\\"",
+      in("\"") -> "\"\\\"\"",
+      in("a") -> "\"a\""
+    )
+  }
+
   describe("Element Ė") {
     describe("when given a number") {
       testMulti("Ė")(
