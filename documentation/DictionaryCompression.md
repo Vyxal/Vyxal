@@ -13,4 +13,4 @@ Look in the `dict_scripts` folder for dictionary-related stuff:
   embed `resources`).
 - corpus.py - Used for providing test data when changing word list sizes.
 - caddy.py - Used for trying different word list sizes to see which sizes are optimal
-- sss_compress.py - ???
+- sss_compress.py - The original sss from jelly, extracted into a single file.
