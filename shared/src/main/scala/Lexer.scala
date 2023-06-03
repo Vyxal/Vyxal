@@ -97,9 +97,9 @@ object Lexer extends RegexParsers:
 
       val text = value
         .substring(1, value.length - 1)
-        .replaceAll("\\\\\"", "\"")
-        .replaceAll("\\\\n", "\n")
-        .replaceAll("\\\\t", "\t")
+        .replace("\\\"", "\"")
+        .replace(raw"\n", "\n")
+        .replace(raw"\t", "\t")
 
       (value.last: @unchecked) match
         case '"' => Str(text)
