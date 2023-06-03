@@ -188,7 +188,7 @@ object StringHelpers:
 
   def quotify(s: String): String =
     s"\"${s}\""
-      .replaceAll("\\\\\\\\", "\\\\\\\\\\\\\\\\")
+      .replaceAll("\\\\", "\\\\\\\\")
       .replaceAll("\"", "\\\\\"")
 
   /** Toggle case of each character in the string */
