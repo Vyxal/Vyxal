@@ -11,6 +11,6 @@ Look in the `dict_scripts` folder for dictionary-related stuff:
   so that the JVM and Native code can load the dictionaries, and it creates
   `js/src/main/scala/Dictionary.scala` for the JS code (because Scala.js doesn't
   embed `resources`).
-- corpus.py - ???
-- caddy.py - ???
+- corpus.py - Used for providing test data when changing word list sizes.
+- caddy.py - Used for trying different word list sizes to see which sizes are optimal
 - sss_compress.py - ???
