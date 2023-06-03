@@ -565,7 +565,7 @@
   - {in: ["abc abc", "ab", "AB"], out: "ABc ABc"}
   - {in: ["abc abc", "abc", "ABC"], out: "ABC ABC"}
   - {in: ["abc abc", "d", "D"], out: "abc abc"}
-  - {in: ["abc abc", "abc abc", "ABC ABC"], out: "ABC ABC ABC ABC"}
+  - {in: ["abc abc", "abc abc", "ABC ABC"], out: "ABC ABC"}
   - {in: ["abc", "", "H"], out: "HaHbHcH"}
   - {in: [[1, 2, 3, 4, 5], 5, 6], out: [1, 2, 3, 4, 6]}
   - {in: [[1, 1, 1, 1, 1], 1, 2], out: [2, 2, 2, 2, 2]}
