@@ -189,7 +189,7 @@ object StringHelpers:
   def quotify(s: String): String =
     val temp = s
       .replace("\\", raw"\\")
-      .replace("\"", raw"\\\"")
+      .replace("\"", raw"\"")
 
     s""""$temp""""
 
