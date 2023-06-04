@@ -1060,7 +1060,10 @@ object Elements:
       List("split"),
       "a: any, b: any -> split a by b"
     ) {
-      case (a: String, b) => VList.from(a.split(b.toString()).toSeq)
+      case (a: String, b) =>
+        if b.isInstanceOf[String] && b.toString.length == 0 then
+          ListHelpers.makeIterable(a)
+        else VList.from(a.split(b.toString()).toSeq)
       case (a: VNum, b) =>
         VList.from(a.toString().split(b.toString()).toSeq.map(MiscHelpers.eval))
       case (a: VList, b) => ListHelpers.splitNormal(a, b)
