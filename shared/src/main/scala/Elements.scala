@@ -1219,7 +1219,7 @@ object Elements:
       a match
         case _: VList  => VList.from(uniq.flatten)
         case _: VNum   => MiscHelpers.eval(uniq.flatten.mkString)
-        case _: String => uniq.mkString
+        case _: String => uniq.flatten.mkString
         case _ => throw RuntimeException("Uniquify: Can't uniquify functions")
 
     }
