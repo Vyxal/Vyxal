@@ -1061,7 +1061,7 @@ object Elements:
       "a: any, b: any -> split a by b"
     ) {
       case (a: String, b) =>
-        if b.isInstanceOf[String] && b.toString.length == 0 then
+        if b.isInstanceOf[String] && b.toString.isEmpty then
           ListHelpers.makeIterable(a)
         else VList.from(a.split(b.toString()).toSeq)
       case (a: VNum, b) =>
