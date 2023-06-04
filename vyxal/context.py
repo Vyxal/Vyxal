@@ -50,6 +50,7 @@ class Context:
         self.canvas = Canvas()
         self.utf8strings = False
         self.transpilation_options = TranspilationOptions()
+        self.original_args = []
 
     def copy(self, number_as_range=None, range_start=None):
         """Copy itself so a modified version can be passed elsewhere."""
@@ -76,6 +77,7 @@ class Context:
         ctx.global_array = self.global_array
         ctx.utf8strings = self.utf8strings
         ctx.transpilation_options = self.transpilation_options
+        ctx.original_args = self.original_args
 
         return ctx
 

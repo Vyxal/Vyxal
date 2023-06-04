@@ -5911,6 +5911,18 @@
     - '[12,"12"] : [1,2,"1","2"]'
     - '["12",12] : ["1","2",1,2]'
 
+- element: "Þḭ"
+  name: Non-Modular Index
+  description: Get the nth item of a list, but without modular arithmetic. Negative indices are allowed.
+  arity: 2
+  overloads:
+    lst-int: nth item of a list (errors if out of bounds)
+  vectorise: false
+# "Lyxal, why aren't there tests for Þḭ?" I hear you ask.
+# well very simply, Þḭ is just i except it errors
+# and tell me how the hell you gonna test the erroring part of Þḭ
+# in a test-suite that reports failure if there's an error. Goofy nerd
+# questioning my reasoning.
 - element: "Þ⊍"
   name: Multiset Symmetric Difference
   description: Similar to set symmetric difference, but with duplicates allowed.
@@ -6607,3 +6619,8 @@
   name: If/Else
   description: If the top of the stack is truthy, run the first element, otherwise the second.
   usage: "¨i<element><element>"
+
+- element: "¨ḭ"
+  name: Unevaluated Input
+  description: Push the next input as a string, unevaluated. Like ? but without implicit conversions
+  arity: 0

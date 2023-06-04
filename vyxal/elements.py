@@ -101,6 +101,11 @@ elements: dict[str, tuple[str, int]] = {
         "ctx.use_top_input = False; stack.append(lhs)",
         0,
     ),
+    "¨ḭ": (
+        "ctx.use_top_input = True; lhs = get_input(ctx, explicit=True, evaluated=False); "
+        "ctx.use_top_input = False; stack.append(lhs)",
+        0,
+    ),
     "B": process_element("vy_int(lhs, 2)", 1),
     "D": (
         "top = pop(stack, 1, ctx); stack.append(top);"
@@ -4435,6 +4440,23 @@ def next_prime(lhs, ctx):
         (NUMBER_TYPE): lambda: sympy.nextprime(lhs),
         (str): lambda: sympy.discriminant(make_expression(lhs)),
     }.get(ts, lambda: vectorise(next_prime, lhs, ctx=ctx))()
+
+
+@element("Þḭ", 2)
+def non_modular_index(lhs, rhs, ctx):
+    """Element Þḭ
+    Basically, `i` but it doesn't wrap around and errors instead.
+    """
+
+    haystack, position = (
+        (rhs, lhs) if vy_type(lhs, simple=True) is list else (lhs, rhs)
+    )
+    haystack = LazyList(iterable(haystack, ctx))
+
+    if haystack.has_ind(int(position)):
+        return haystack[int(position)]
+    else:
+        raise IndexError(f"Index {position} out of range for {haystack}")
 
 
 @element("⁼", 2)

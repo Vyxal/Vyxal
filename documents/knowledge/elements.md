@@ -3821,6 +3821,14 @@ Similar to set union, but with duplicates allowed.
 
 - lst a, lst b: `multiset union of a and b`
 -------------------------------
+## `` Þḭ `` (Non-Modular Index)
+
+Get the nth item of a list, but without modular arithmetic. Negative indices are allowed.
+
+### Overloads
+
+- lst a, int b: `nth item of a list (errors if out of bounds)`
+-------------------------------
 ## `` Þ⊍ `` (Multiset Symmetric Difference)
 
 Similar to set symmetric difference, but with duplicates allowed.
@@ -4316,5 +4324,10 @@ Usage:
 ```
 ¨i<element><element>
 ```
+
+-------------------------------
+## `` ¨ḭ `` (Unevaluated Input)
+
+Push the next input as a string, unevaluated. Like ? but without implicit conversions
 
 -------------------------------
