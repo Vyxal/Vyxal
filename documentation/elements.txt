@@ -317,6 +317,10 @@ t (tail | Last Item) (non-vectorising)
 Keywords: tail, last, last-item
 - a: lst -> a[-1]
 ---------------------
+u (Uniquify) (non-vectorising)
+Keywords: uniquify
+- a: lst -> a with duplicates removed
+---------------------
 Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
 Keywords: peek-call
 - a: fun -> Execute a without popping
