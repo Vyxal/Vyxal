@@ -325,6 +325,10 @@ w (Wrap Singleton) (non-vectorising)
 Keywords: wrap-singleton
 - a -> [a]
 ---------------------
+x (Recursion | Recurse) (non-vectorising)
+Keywords: recurse
+-  -> call the current function recursively
+---------------------
 Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
 Keywords: peek-call
 - a: fun -> Execute a without popping
