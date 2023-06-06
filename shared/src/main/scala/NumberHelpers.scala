@@ -151,12 +151,13 @@ object NumberHelpers:
       if base.toBigInt == 1 then VList(List.fill(current.toInt.abs)(sign)*)
       else
         val digits = ListBuffer[VNum]()
-        while current > 0 do
-          var digit = current % base.toBigInt
-          current = current / base.toBigInt
-          if digit < 0 then
+        while current != 0 do
+          var digit = VNum(current) % base
+          current =
+            (VNum(current) / VNum(base.toBigInt)).real.toRational.floor.toBigInt
+          if digit.toBigInt < 0 then
             current += 1
-            digit -= base.toBigInt
+            digit -= base
           digits.prepend(digit * sign)
         VList(digits.toList*)
 
