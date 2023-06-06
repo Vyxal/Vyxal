@@ -1274,7 +1274,7 @@ object Elements:
       "w",
       "Wrap Singleton",
       List("wrap-singleton"),
-      "a -> [a]" 
+      "a -> [a]"
     ){
       case a => VList(a)
     }
