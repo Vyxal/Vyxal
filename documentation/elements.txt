@@ -123,8 +123,8 @@ F (Filter by Function | From Base) (non-vectorising)
 Keywords: filter, keep-by, from-base, 10->b
 - a: fun, b: lst -> Filter b by truthy results of a
 - a: lst, b: fun -> Filter a by truthy results of b
-- a: num, b: num -> a in base b - list of digits
-- a: num, b: str|lst -> a in base with alphabet b
+- a: num, b: num -> a from base b to base 10
+- a: num, b: str|lst -> a from base with alphabet b to base 10
 ---------------------
 G (Monadic Maximum | Dyadic Maximum | Generate From Function | Vectorised Maximum) (non-vectorising)
 Keywords: max, maximum, generator
@@ -313,7 +313,7 @@ s (Split) (non-vectorising)
 Keywords: split
 - a: any, b: any -> split a by b
 ---------------------
-t (tail | Last Item) (non-vectorising)
+t (Tail | Last Item) (non-vectorising)
 Keywords: tail, last, last-item
 - a: lst -> a[-1]
 ---------------------
@@ -328,6 +328,11 @@ Keywords: wrap-singleton
 x (Recursion | Recurse) (non-vectorising)
 Keywords: recurse
 -  -> call the current function recursively
+---------------------
+y (To Base) (non-vectorising)
+Keywords: to-base
+- a: num, b: num -> a in base b
+- a: num, b: str|lst -> a in base with alphabet b
 ---------------------
 Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
 Keywords: peek-call
