@@ -321,6 +321,10 @@ u (Uniquify) (non-vectorising)
 Keywords: uniquify
 - a: lst -> a with duplicates removed
 ---------------------
+w (Wrap Singleton) (non-vectorising)
+Keywords: wrap-singleton
+- a -> [a]
+---------------------
 Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
 Keywords: peek-call
 - a: fun -> Execute a without popping
