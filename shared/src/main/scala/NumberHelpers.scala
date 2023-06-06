@@ -128,6 +128,10 @@ object NumberHelpers:
   def toBaseAlphabet(value: VNum, alphabet: VIter)(using
       ctx: Context
   ): VAny =
+    alphabet match
+      case a: String => if a.isEmpty() then return 0
+      case l: VList  => if l.isEmpty then return 0
+
     val indexes = toBaseDigits(value, alphabet.iterLength)
     val alphalist = alphabet match
       case a: String => VList.from(a.toString.toList.map(_.toString))
@@ -137,6 +141,7 @@ object NumberHelpers:
     alphabet match
       case a: String => temp.mkString("")
       case l: VList  => VList.from(temp)
+  end toBaseAlphabet
 
   def toBaseDigits(value: VNum, base: VNum): VList =
     if value == VNum(0) then VList(List(VNum(0))*)
