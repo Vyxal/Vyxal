@@ -273,6 +273,7 @@ i (Index | Collect Unique Application Values | Enclose) (non-vectorising)
 Keywords: index, at, item-at, nth-item, collect-unique, enclose
 - a: lst, b: num -> a[b]
 - a: lst, b: lst -> a[_] for _ in b
+- a: str, b: lst -> ''.join(a[i] for i in b)
 - a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value.
 - a: str, b: str -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])
 ---------------------
