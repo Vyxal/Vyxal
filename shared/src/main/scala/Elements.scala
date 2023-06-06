@@ -443,7 +443,7 @@ object Elements:
         ListHelpers.filter(ListHelpers.makeIterable(b, Some(true)), a)
       case (a, b: VFun) =>
         ListHelpers.filter(ListHelpers.makeIterable(a, Some(true)), b)
-      case (a: VNum, b) =>
+      case (a: VVal, b) =>
         NumberHelpers.fromBase(a, b)
       case (a: VList, b) =>
         a.vmap(NumberHelpers.fromBase(_, b))
