@@ -600,6 +600,11 @@ class ElementTests extends VyxalTests:
     )
   }
 
+  describe("Element x") {
+    testCode("5 λ0=[1|1-x×}}Ė", 120)
+    testCode("0 λ0=[1|1-x×}}Ė", 1)
+  }
+
   describe("Element Ė") {
     describe("when given a number") {
       testMulti("Ė")(
