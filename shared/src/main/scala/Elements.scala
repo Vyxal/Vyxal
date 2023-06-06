@@ -443,8 +443,12 @@ object Elements:
         ListHelpers.filter(ListHelpers.makeIterable(b, Some(true)), a)
       case (a, b: VFun) =>
         ListHelpers.filter(ListHelpers.makeIterable(a, Some(true)), b)
-      case (a: VVal, b) =>
+      case (a: VNum, b) =>
         NumberHelpers.fromBase(a, b)
+      case (a: String, b: VNum) =>
+        // Requires special casing
+        val alphabet = "0123456789abcdefghijklmnopqrstuvwxyz".take(b.toInt)
+        NumberHelpers.fromBase(a, alphabet)
       case (a: VList, b) =>
         a.vmap(NumberHelpers.fromBase(_, b))
     }
