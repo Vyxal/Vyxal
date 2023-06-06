@@ -1271,12 +1271,13 @@ object Elements:
     }
 
     val wrapSingleton = addElem(
+      Monad,
       "w",
       "Wrap Singleton",
       List("wrap-singleton"),
       "a -> [a]"
-    ){
-      case a => VList(a)
+    ) { case a =>
+      VList(a)
     }
 
     val zeroSliceUntil = addElem(
