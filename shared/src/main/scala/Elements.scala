@@ -449,10 +449,8 @@ object Elements:
         // Requires special casing
         val alphabet = "0123456789abcdefghijklmnopqrstuvwxyz".take(b.toInt)
         NumberHelpers.fromBase(a, alphabet)
-      case (a: String, b: String) =>
+      case (a, b) =>
         NumberHelpers.fromBase(a, b)
-      case (a: VList, b) =>
-        a.vmap(NumberHelpers.fromBase(_, b))
     }
 
     val flatten = addElem(
