@@ -949,6 +949,20 @@ object Elements:
       case a         => StringHelpers.quotify(a.toString())
     }
 
+    val recurse = addDirect(
+      "x",
+      "Recursion | Recurse",
+      List("recurse"),
+      None,
+      " -> call the current function recursively"
+    ) { ctx ?=>
+      ctx.getRecentFunction() match
+        case Some(f) =>
+          ctx.push(Interpreter.executeFn(f))
+        case None =>
+          throw new Exception("No function to recurse")
+    }
+
     val reduction = addElem(
       Dyad,
       "R",

@@ -38,7 +38,7 @@ class Context private (
     val globals: Globals = Globals(),
     val testMode: Boolean = false,
     val useStack: Boolean = false,
-    val callStack: mut.Stack[VFun] = mut.Stack(),
+    private val callStack: mut.Stack[VFun] = mut.Stack(),
 ):
   def settings: Settings =
     if testMode then Settings(endPrintMode = EndPrintMode.None)
@@ -183,6 +183,16 @@ class Context private (
     parent match
       case Some(p) => p.getTopCxt()
       case None    => this
+
+  def addFunctionToStack(func: VFun): Unit =
+    getTopCxt().callStack.push(func)
+
+  def removeFunctionFromStack(): Unit =
+    getTopCxt().callStack.pop()
+
+  def getRecentFunction(): Option[VFun] =
+    if getTopCxt().callStack.isEmpty then None
+    else Some(getTopCxt().callStack.top)
 end Context
 
 object Context:
