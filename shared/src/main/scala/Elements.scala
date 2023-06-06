@@ -1314,6 +1314,19 @@ object Elements:
       VList(a)
     }
 
+    val zeroRange = addVect(
+      Monad,
+      "z",
+      "Zero Range | Is Lowercase",
+      List("zero-range", "zero->n", "is-lowercase?", "lowercase?", "lower?"),
+      "a: num -> [0, 1, ..., a]",
+      "a: str -> is a lowercase?"
+    ) {
+      case a: VNum => NumberHelpers.range(0, a)
+      case a: String =>
+        if a.length == 1 then a.forall(_.isLower)
+        else VList.from(a.map(x => VNum(x.isLower)))
+    }
     val zeroSliceUntil = addElem(
       Dyad,
       "Θ",
