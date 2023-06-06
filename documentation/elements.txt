@@ -334,6 +334,11 @@ Keywords: to-base
 - a: num, b: num -> a in base b
 - a: num, b: str|lst -> a in base with alphabet b
 ---------------------
+z (Zero Range | Is Lowercase) (vectorising)
+Keywords: zero-range, zero->n, is-lowercase?, lowercase?, lower?
+- a: num -> [0, 1, ..., a]
+- a: str -> is a lowercase?
+---------------------
 Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
 Keywords: peek-call
 - a: fun -> Execute a without popping
