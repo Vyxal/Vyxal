@@ -436,13 +436,17 @@ object Elements:
       List("filter", "keep-by", "from-base", "10->b"),
       "a: fun, b: lst -> Filter b by truthy results of a",
       "a: lst, b: fun -> Filter a by truthy results of b",
-      "a: num, b: num -> a in base b - list of digits",
-      "a: num, b: str|lst -> a in base with alphabet b",
+      "a: num, b: num -> a from base b to base 10",
+      "a: num, b: str|lst -> a from base with alphabet b to base 10",
     ) {
       case (a: VFun, b) =>
         ListHelpers.filter(ListHelpers.makeIterable(b, Some(true)), a)
       case (a, b: VFun) =>
         ListHelpers.filter(ListHelpers.makeIterable(a, Some(true)), b)
+      case (a: VNum, b) =>
+        NumberHelpers.fromBase(a, b)
+      case (a: VList, b) =>
+        a.vmap(NumberHelpers.fromBase(_, b))
     }
 
     val flatten = addElem(
@@ -1120,7 +1124,7 @@ object Elements:
     val tail: Monad = addElem(
       Monad,
       "t",
-      "tail | Last Item",
+      "Tail | Last Item",
       List("tail", "last", "last-item"),
       "a: lst -> a[-1]"
     ) { case a =>
@@ -1128,6 +1132,18 @@ object Elements:
         .makeIterable(a)
         .lastOption
         .getOrElse(MiscHelpers.defaultEmpty(a))
+    }
+
+    val toBase = addElem(
+      Dyad,
+      "y",
+      "To Base",
+      List("to-base"),
+      "a: num, b: num -> a in base b",
+      "a: num, b: str|lst -> a in base with alphabet b"
+    ) {
+      case (a: VNum, b)  => NumberHelpers.toBase(a, b)
+      case (a: VList, b) => a.vmap(NumberHelpers.toBase(_, b))
     }
 
     val transposeSafe = addElem(
