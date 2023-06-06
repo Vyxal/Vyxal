@@ -147,7 +147,8 @@ object NumberHelpers:
     if value == VNum(0) then VList(List(VNum(0))*)
     else if base.toBigInt == -1 then
       VList.from(
-        (1 until value.toInt.abs * 2 - (if value.toBigInt > 0 then 0 else 1))
+        (1 until (value.toInt.abs + 1) * 2 - (if value.toBigInt > 0 then 0
+                                              else 1))
           .map(_ % 2)
       )
     else
