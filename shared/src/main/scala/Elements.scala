@@ -1148,7 +1148,7 @@ object Elements:
       "a: num, b: num -> a in base b",
       "a: num, b: str|lst -> a in base with alphabet b"
     ) {
-      case (a: VNum, b)  => NumberHelpers.toBase(a, b)
+      case (a: VVal, b)  => NumberHelpers.toBase(a, b)
       case (a: VList, b) => a.vmap(NumberHelpers.toBase(_, b))
     }
 
