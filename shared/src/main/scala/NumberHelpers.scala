@@ -117,15 +117,17 @@ object NumberHelpers:
       case (a: VNum, b: VNum) =>
         if b.toBigInt == 0 then 0
         else toBaseDigits(a, b)
-      case (n: VNum, _)  => toBaseAlphabet(n, ListHelpers.makeIterable(b))
-      case (a: VList, _) => VList(a.map(toBase(_, b))*)
+      case (n: VNum, b: VIter) => toBaseAlphabet(n, b)
+      case (a: VList, _)       => VList(a.map(toBase(_, b))*)
       case _ =>
         throw new Exception(
           s"toBase only works on numbers and lists, was given $a and $b instead"
         )
 
   /** Returns value in base len(alphabet) using base 10 [bijective base] */
-  def toBaseAlphabet(value: VNum, alphabet: VIter)(using ctx: Context): VAny =
+  def toBaseAlphabet(value: VNum, alphabet: VIter)(using
+      ctx: Context
+  ): VAny =
     val indexes = toBaseDigits(value, alphabet.iterLength)
     val alphalist = alphabet match
       case a: String => VList.from(a.toString.toList.map(_.toString))
@@ -134,7 +136,7 @@ object NumberHelpers:
     val temp = indexes.map(alphalist.index(_).toString())
     alphabet match
       case a: String => temp.mkString("")
-      case l: VList  => l
+      case l: VList  => VList.from(temp)
 
   def toBaseDigits(value: VNum, base: VNum): VList =
     if value == VNum(0) then VList(List(VNum(0))*)
