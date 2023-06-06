@@ -37,7 +37,8 @@ class Context private (
     private val parent: Option[Context] = None,
     val globals: Globals = Globals(),
     val testMode: Boolean = false,
-    val useStack: Boolean = false
+    val useStack: Boolean = false,
+    val callStack: mut.Stack[VFun] = mut.Stack(),
 ):
   def settings: Settings =
     if testMode then Settings(endPrintMode = EndPrintMode.None)
