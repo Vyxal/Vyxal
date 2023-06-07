@@ -334,6 +334,8 @@ y (To Base) (non-vectorising)
 Keywords: to-base
 - a: num, b: num -> a in base b
 - a: num, b: str|lst -> a in base with alphabet b
+- a: lst, b: num -> each x in a in base b
+- a: lst, b: str|lst -> each x in a in base with alphabet b
 ---------------------
 z (Zero Range | Is Lowercase) (vectorising)
 Keywords: zero-range, zero->n, is-lowercase?, lowercase?, lower?
