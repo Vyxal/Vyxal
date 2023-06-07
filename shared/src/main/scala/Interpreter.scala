@@ -255,7 +255,7 @@ object Interpreter:
       vars: mut.Map[String, VAny] = mut.Map(),
   )(using ctx: Context): VAny =
     val VFun(impl, arity, params, origCtx, origAST) = fn
-    ctx.addFunctionToStack(fn)
+    ctx.globals.callStack.push(fn)
     val useStack = arity == -1
     val inputs =
       if args != null && params.isEmpty then args
@@ -322,7 +322,7 @@ object Interpreter:
       )
     try fn.impl()(using fnCtx)
     catch case _: ReturnFromFunctionException => ()
-    ctx.removeFunctionFromStack()
+    ctx.globals.callStack.pop()
     fnCtx.peek
   end executeFn
 end Interpreter

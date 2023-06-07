@@ -1,5 +1,6 @@
 package vyxal
 
+import scala.collection.mutable as mut
 import scala.io.StdIn
 
 import VNum.given
@@ -16,9 +17,11 @@ import VNum.given
 case class Globals(
     inputs: Inputs = Inputs(),
     settings: Settings = Settings(),
-    printFn: String => Unit = print
+    printFn: String => Unit = print,
+    callStack: mut.Stack[VFun] = mut.Stack()
 ):
   var register: VAny = settings.defaultValue
+end Globals
 
 /** Stores the inputs for some Context. Inputs can be overridden (see
   * [[Inputs#overrideInputs]]).

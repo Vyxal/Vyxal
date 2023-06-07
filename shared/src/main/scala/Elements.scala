@@ -965,11 +965,9 @@ object Elements:
       None,
       " -> call the current function recursively"
     ) { ctx ?=>
-      ctx.getRecentFunction() match
-        case Some(f) =>
-          ctx.push(Interpreter.executeFn(f))
-        case None =>
-          throw new Exception("No function to recurse")
+      if ctx.globals.callStack.isEmpty then
+        throw new RecursionError("No function to recurse")
+      else ctx.push(Interpreter.executeFn(ctx.globals.callStack.top))
     }
 
     val reduction = addElem(
