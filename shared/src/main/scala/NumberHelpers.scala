@@ -147,7 +147,11 @@ object NumberHelpers:
     if value == VNum(0) then VList(List(VNum(0))*)
     else if base.toBigInt == -1 then
       VList.from(
-        Seq.fill(value.toInt.abs)(Seq(1, 0)).flatten.map(VNum(_))
+        Seq
+          .fill(value.toInt.abs)(Seq(1, 0))
+          .flatten
+          .map(VNum(_))
+          .dropRight(if value > 0 then 1 else 0)
       )
     else
       val sign = if value.toBigInt < 0 && base.toBigInt > 0 then -1 else 1

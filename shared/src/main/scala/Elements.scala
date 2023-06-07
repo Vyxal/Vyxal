@@ -1305,15 +1305,14 @@ object Elements:
       ctx.wrap
     }
 
-    val wrapSingleton = addElem(
+    val wrapSingleton = addFull(
       Monad,
       "w",
       "Wrap Singleton",
       List("wrap-singleton"),
+      false,
       "a -> [a]"
-    ) { case a =>
-      VList(a)
-    }
+    ) { a => VList(a) }
 
     val zeroRange = addVect(
       Monad,
