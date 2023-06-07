@@ -30,7 +30,6 @@ trait VyxalModule extends ScalaModule with ScalafmtModule with ScalafixModule {
     "-unchecked", // Enable additional warnings where generated code depends on assumptions.
     // Above options from https://tpolecat.github.io/2017/04/25/scalac-flags.html
     "-language:implicitConversions",
-    "-language:adhocExtensions",
     // "-explain",
     "-print-lines"
   )

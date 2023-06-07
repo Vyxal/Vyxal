@@ -2,10 +2,12 @@ package vyxal
 
 import scala.language.implicitConversions
 
+import scala.math.Ordered
+
 import spire.implicits.partialOrderOps // For <, >, etc.
 import spire.math.{Complex, Real}
 
-class VNum private (val underlying: Complex[Real]):
+class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   def real = underlying.real
   def imag = underlying.imag
 
@@ -31,6 +33,9 @@ class VNum private (val underlying: Complex[Real]):
     this - spire.math.floor(q.real) * rhs
 
   def vabs: VNum = underlying.abs
+
+  override def compare(that: VNum): Int =
+    this.underlying.real.compare(that.underlying.real)
 
   override def toString =
     if this.imag == 0 then this.real.getString(Real.digits)
