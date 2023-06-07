@@ -31,4 +31,4 @@ class ReturnFromFunctionException
     extends RuntimeException("Tried to return outside of a function context")
 
 class RecursionError(val message: String)
-    extends RuntimeException(s"RecursionError: $message")
+    extends RuntimeException(message)
