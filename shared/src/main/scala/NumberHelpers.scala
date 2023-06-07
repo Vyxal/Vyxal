@@ -129,7 +129,7 @@ object NumberHelpers:
       ctx: Context
   ): VAny =
     alphabet match
-      case a: String => if a.isEmpty() then return 0
+      case a: String => if a.isEmpty then return 0
       case l: VList  => if l.isEmpty then return 0
 
     val indexes = toBaseDigits(value, alphabet.iterLength)
