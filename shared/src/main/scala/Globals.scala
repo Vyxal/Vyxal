@@ -21,7 +21,6 @@ case class Globals(
     callStack: mut.Stack[VFun] = mut.Stack()
 ):
   var register: VAny = settings.defaultValue
-end Globals
 
 /** Stores the inputs for some Context. Inputs can be overridden (see
   * [[Inputs#overrideInputs]]).

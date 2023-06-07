@@ -149,8 +149,6 @@ object LiterateLexer:
                 case _ =>
                   ret ++= postProcess(lambdaArgs.toList)
             else ret ++= postProcess(lambdaArgs.toList)
-
-            end if
           else ret += token
         case _ => ret += token
       end match

@@ -153,7 +153,6 @@ object VList extends SpecificIterableFactory[VAny, VList]:
             VList.fill(maxSize)(x)
         }
     VList.zipMulti(lists*)(f)
-  end zipValues
 
   /** This lets us pattern match on `VList`s, silly as the implementation may
     * be.

@@ -234,7 +234,6 @@ object Interpreter:
       arity,
       next +: previous
     )
-  end generator
 
   /** Execute a function and return what was on the top of the stack, if there
     * was anything

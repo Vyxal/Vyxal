@@ -61,7 +61,6 @@ class Context private (
         else settings.defaultValue
     if settings.logLevel == LogLevel.Debug then println(s"Popped $elem")
     elem
-  end pop
 
   /** Pop n elements and wrap in a list. The top of the stack will be at the
     * start of the list.

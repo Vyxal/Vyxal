@@ -67,7 +67,6 @@ object Elements:
       )
 
       impl
-    end addFull
 
     /** Define an unvectorised element that doesn't necessarily work on all
       * inputs
@@ -95,7 +94,6 @@ object Elements:
         helper.toDirectFn(full)
       )
       full
-    end addElem
 
     /** If using this method, make sure to use `case` to define the function,
       * since it needs a `PartialFunction`. If it is possible to define it using
@@ -119,7 +117,6 @@ object Elements:
         helper.toDirectFn(vectorised)
       )
       vectorised
-    end addVect
 
     /** Add an element that works directly on the entire stack */
     def addDirect(
@@ -139,7 +136,6 @@ object Elements:
         () => impl
       )
       () => impl
-    end addDirect
 
     addFull(
       Dyad,

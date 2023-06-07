@@ -96,7 +96,6 @@ object VFun:
   def fromElement(elem: Element)(using origCtx: Context): VFun =
     val Element(symbol, name, _, arity, _, _, impl) = elem
     VFun(impl, arity.getOrElse(1), List.empty, origCtx)
-end VFun
 
 extension (self: VAny)
   def ===(that: VAny): Boolean =

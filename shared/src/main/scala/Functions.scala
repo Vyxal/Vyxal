@@ -61,7 +61,6 @@ object Monad extends ImplHelpers[PartialMonad, Monad](1):
     }
 
     res
-end Monad
 
 object Dyad extends ImplHelpers[PartialDyad, Dyad](2):
   override def toDirectFn(impl: Dyad): DirectFn =

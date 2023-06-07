@@ -121,7 +121,6 @@ object ListHelpers:
     }
     if current.nonEmpty then out += current.toSeq
     out.toSeq
-  end groupConsecutiveBy
 
   def interleave(left: VList, right: VList)(using ctx: Context): VList =
     val out = ArrayBuffer.empty[VAny]
@@ -334,7 +333,6 @@ object ListHelpers:
     parts += list.slice(lastInd, list.length)
 
     parts.toSeq
-  end split
 
   def splitNormal(iterable: VList, sep: VAny)(using ctx: Context): VList =
     val out = split(iterable, Seq(sep))

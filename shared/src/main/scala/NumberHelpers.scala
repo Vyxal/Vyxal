@@ -159,14 +159,15 @@ object NumberHelpers:
           .dropRight(if value > 0 then 1 else 0)
       else if base == 1 then Seq.fill(value.toInt.abs)(value.signum)
       else
-        List.unfold(value) { current =>
-          Option.when(current != Real(0)) {
-            var digit = current.tmod(base)
-            if digit < 0 then
-              digit += base.abs
-            (digit, (current - digit) / base)
+        List
+          .unfold(value) { current =>
+            Option.when(current != Real(0)) {
+              var digit = current.tmod(base)
+              if digit < 0 then digit += base.abs
+              (digit, (current - digit) / base)
+            }
           }
-        }.reverse
+          .reverse
       end if
     end compToBase
     val real = compToBase(value.real, base.real)
