@@ -1143,9 +1143,11 @@ object Elements:
       "To Base",
       List("to-base"),
       "a: num, b: num -> a in base b",
-      "a: num, b: str|lst -> a in base with alphabet b"
+      "a: num, b: str|lst -> a in base with alphabet b",
+      "a: lst, b: num -> each x in a in base b",
+      "a: lst, b: str|lst -> each x in a in base with alphabet b"
     ) {
-      case (a: VVal, b)  => NumberHelpers.toBase(a, b)
+      case (a: VNum, b)  => NumberHelpers.toBase(a, b)
       case (a: VList, b) => a.vmap(NumberHelpers.toBase(_, b))
     }
 
