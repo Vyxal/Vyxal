@@ -123,9 +123,9 @@ object StringHelpers:
   /** Get the string representation of a value (opposite of eval) */
   def repr(v: VAny): String =
     v match
-      case n: VNum => n.toString
+      case n: VNum   => n.toString
       case s: String => quotify(s)
-      case l: VList => l.map(repr).mkString("#[", ",", "#]")
+      case l: VList  => l.map(repr).mkString("#[", ",", "#]")
       case f: VFun =>
         throw IllegalArgumentException(s"Cannot get repr for function: $f")
 
