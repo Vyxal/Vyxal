@@ -113,6 +113,5 @@ object VNum:
   given Conversion[BigDecimal, VNum] = n => complex(n, 0)
   given Conversion[Real, VNum] = n => complex(n, 0)
   given Conversion[Complex[Real], VNum] = new VNum(_)
-  given Conversion[Boolean, VNum] =
-    b => if b then 1 else 0 // scalafix:ok DisableSyntax.BooleanToVNum
+  given Conversion[Boolean, VNum] = b => if b then 1 else 0
 end VNum
