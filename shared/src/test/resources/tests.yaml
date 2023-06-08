@@ -616,8 +616,16 @@
   - {in: [0, []], out: 0}
   - {in: [0, ["a"]], out: ["a"]}
   - {in: [3, -2], out: [1, 1, 1]}
-  - {in: [3, -1], out: [1, 0, 1, 0, 1]}
-  - {in: [-3, -1], out: [1, 0, 1, 0, 1, 0]}
+  - in:
+      - !num 3ı-3
+      - -1
+    out: # todo(user): make a less verbose way to write this
+      - !num 1ı0
+      - !num 0ı1
+      - !num 1ı0
+      - !num 0ı1
+      - !num 1ı0
+      - !num 0ı1
 
 "z":
   - {in: [4], out: [0, 1, 2, 3, 4]}
