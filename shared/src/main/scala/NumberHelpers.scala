@@ -152,7 +152,8 @@ object NumberHelpers:
       val value = valueComp.floor
       val base = baseComp.floor
       if value == Real(0) then List(0)
-      else if base == Real(-1) then
+      else if base == Real(-1)
+      then // special cased otherwise it would loop forever
         Seq
           .fill(value.toInt.abs)(Seq[Real](1, 0))
           .flatten
