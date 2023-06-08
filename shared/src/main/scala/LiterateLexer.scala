@@ -258,7 +258,8 @@ object LiterateLexer:
       raw"(${decimalRegex}i$decimalRegex?)|(i$decimalRegex)|$decimalRegex|(i( |$$))".r ^^ {
         value =>
           val temp = value.replace("i", "ı").replace("_", "")
-          val parts = temp.split("ı").toSeq
+          val parts =
+            if !temp.endsWith("ı") then temp.split("ı").toSeq else Seq(temp, "")
           Number(
             parts
               .map(x => if x.startsWith("-") then x.tail + "_" else x)
