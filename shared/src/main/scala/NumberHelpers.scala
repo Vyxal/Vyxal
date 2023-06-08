@@ -99,12 +99,17 @@ object NumberHelpers:
     if ctx.globals.literate then temp = temp.replace("ı", "i")
     else
       val parts =
-        temp
-          .split("ı")
-          .toSeq
-          .map(x => if x.startsWith("-") then x.tail + "_" else x)
-      temp = parts.mkString("ı")
+        if !temp.endsWith("ı") then
+          temp
+            .split("ı")
+            .toSeq
+        else Seq(temp, "")
+
+      temp = parts
+        .map(x => if x.startsWith("-") then x.tail + "_" else x)
+        .mkString("ı")
     temp
+  end numToString
 
   def range(a: VNum, b: VNum): VList =
     val start = a.toInt
