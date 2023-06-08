@@ -208,4 +208,12 @@ object StringHelpers:
     words.map { word =>
       s"${word.head.toUpper}${word.tail.toLowerCase}"
     }.mkString
+
+  def vyToString(item: VAny)(using ctx: Context): String =
+    item match
+      case n: VNum   => NumberHelpers.numToString(n)
+      case s: String => s
+      case l: VList  => l.map(vyToString).mkString("[", "|", "]")
+      case f: VFun =>
+        throw IllegalArgumentException(s"Cannot get string for function: $f")
 end StringHelpers
