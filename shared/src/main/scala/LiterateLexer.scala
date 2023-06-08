@@ -259,7 +259,8 @@ object LiterateLexer:
         value =>
           val temp = value.replace("i", "ı").replace("_", "")
           val parts =
-            if !temp.endsWith("ı") then temp.split("ı").toSeq else Seq(temp, "")
+            if !temp.endsWith("ı") then temp.split("ı").toSeq
+            else temp.init.split("ı").toSeq :+ ""
           Number(
             parts
               .map(x => if x.startsWith("-") then x.tail + "_" else x)
