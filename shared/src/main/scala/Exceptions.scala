@@ -13,8 +13,7 @@ class QuitException extends RuntimeException("Program quit")
 class ContinueLoopException
     extends RuntimeException("Tried to continue outside of a loop context")
 
-/** Exception to signal that a loop should break. Should never be unhandled.
-  */
+/** Exception to signal that a loop should break. Should never be unhandled. */
 class BreakLoopException
     extends RuntimeException("Tried to break outside of a loop context")
 
