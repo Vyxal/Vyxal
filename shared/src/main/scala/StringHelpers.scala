@@ -215,5 +215,6 @@ object StringHelpers:
       case s: String => s
       case l: VList  => l.map(vyToString).mkString("[", "|", "]")
       case f: VFun =>
-        throw IllegalArgumentException(s"Cannot get string for function: $f")
+        val temp = Interpreter.executeFn(f)
+        vyToString(temp)
 end StringHelpers
