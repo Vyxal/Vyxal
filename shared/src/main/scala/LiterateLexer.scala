@@ -253,9 +253,9 @@ object LiterateLexer:
     override val whiteSpace: Regex = "[ \t\r\f]+".r
 
     private def decimalRegex =
-      raw"((0|-?[1-9][0-9_]*)?\.[0-9]*|0|-?[1-9][0-9_]*)"
+      raw"(-?((0|[1-9][0-9_]*)?\.[0-9]*|0|[1-9][0-9_]*))"
     def number: Parser[LiterateToken] =
-      raw"(${decimalRegex}i$decimalRegex?)|(i$decimalRegex)|$decimalRegex|(i( |$$))".r ^^ {
+      raw"(${decimalRegex}i(-?|$decimalRegex?))|(i$decimalRegex)|$decimalRegex|(i( |$$))".r ^^ {
         value =>
           val temp = value.replace("i", "ı").replace("_", "")
           val parts =
