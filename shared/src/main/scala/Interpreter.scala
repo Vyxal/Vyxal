@@ -13,6 +13,7 @@ object Interpreter:
   def execute(code: String, literate: Boolean = false)(using
       ctx: Context
   ): Unit =
+    ctx.globals.literate = literate
     val sbcsified =
       if !literate then code
       else

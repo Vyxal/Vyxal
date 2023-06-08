@@ -65,7 +65,7 @@ object VNum:
 
   /** Parse a number from a string in the given base */
   def apply(s: String, radix: Int): VNum =
-    s.replaceAll("[^-0-9a-zA-Z.ı]", "") match
+    s.replaceAll("[^-0-9a-zA-Z.ı_]", "") match
       case s"${real}ı$imag" =>
         complex(
           parseDecimal(real, radix, 0),
@@ -78,8 +78,11 @@ object VNum:
     *   What to return if `component` is empty (not including minus sign)
     */
   private def parseDecimal(component: String, radix: Int, default: Int): Real =
-    val neg = component.startsWith("-")
-    val comp = if neg then component.substring(1) else component
+    val neg = component.startsWith("-") || component.endsWith("_")
+    val comp =
+      if component.startsWith("-") then component.substring(1)
+      else if component.endsWith("_") then component.dropRight(1)
+      else component
     val sepInd = comp.indexOf('.')
     if comp.isEmpty then if neg then -default else default
     else if sepInd == -1 then

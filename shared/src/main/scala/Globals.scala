@@ -18,9 +18,10 @@ case class Globals(
     inputs: Inputs = Inputs(),
     settings: Settings = Settings(),
     printFn: String => Unit = print,
-    callStack: mut.Stack[VFun] = mut.Stack()
+    callStack: mut.Stack[VFun] = mut.Stack(),
 ):
   var register: VAny = settings.defaultValue
+  var literate: Boolean = false
 
 /** Stores the inputs for some Context. Inputs can be overridden (see
   * [[Inputs#overrideInputs]]).
