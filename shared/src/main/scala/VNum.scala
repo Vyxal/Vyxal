@@ -81,7 +81,7 @@ object VNum:
     val neg = component.startsWith("-") || component.endsWith("_")
     val comp =
       if component.startsWith("-") then component.substring(1)
-      else if component.endsWith("_") then component.dropRight(1)
+      else if component.endsWith("_") then component.init
       else component
     val sepInd = comp.indexOf('.')
     if comp.isEmpty then if neg then -default else default
