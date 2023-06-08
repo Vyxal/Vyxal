@@ -189,8 +189,9 @@ object MiscHelpers:
 
   def vyPrint(x: VAny)(using ctx: Context): Unit =
     x match
-      case n: VNum => ctx.globals.printFn(NumberHelpers.numToString(n))
-      case _       => ctx.globals.printFn(x.toString)
+      case n: VNum  => ctx.globals.printFn(NumberHelpers.numToString(n))
+      case l: VList => ctx.globals.printFn(l.toStringWithContext())
+      case _        => ctx.globals.printFn(x.toString)
 
   def vyPrintln(x: VAny)(using Context): Unit =
     vyPrint(x)

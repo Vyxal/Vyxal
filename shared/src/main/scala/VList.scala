@@ -100,6 +100,14 @@ class VList private (val lst: Seq[VAny])
   override def toString(): String =
     lst.map(_.toString).mkString("[ ", " | ", " ]")
 
+  def toStringWithContext()(using ctx: Context): String =
+    lst
+      .map(_ match
+        case n: VNum => NumberHelpers.numToString(n)
+        case x       => x.toString()
+      )
+      .mkString("[ ", " | ", " ]")
+
   override protected def fromSpecific(coll: IterableOnce[VAny]): VList =
     VList.fromSpecific(coll)
 
