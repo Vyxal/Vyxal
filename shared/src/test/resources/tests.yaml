@@ -618,7 +618,7 @@
   - {in: [3, -2], out: [1, 1, 1]}
   - in:
       - !num 3ı-3
-      - -1
+      - !num -1ı-1
     out: # todo(user): make a less verbose way to write this
       - !num 0ı1
       - !num 1ı0
