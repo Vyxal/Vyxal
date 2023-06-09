@@ -620,12 +620,12 @@
       - !num 3ı-3
       - -1
     out: # todo(user): make a less verbose way to write this
-      - !num 1ı0
       - !num 0ı1
       - !num 1ı0
       - !num 0ı1
       - !num 1ı0
       - !num 0ı1
+      - !num 1ı0
 
 "z":
   - {in: [4], out: [0, 1, 2, 3, 4]}
