@@ -165,8 +165,7 @@ object NumberHelpers:
     def compToBase(valueComp: Real, baseComp: Real): Seq[Real] =
       val value = valueComp.floor
       val base = baseComp.floor
-      if value == Real(0) then List(0)
-      else if base == Real(0) then List(value)
+      if value == Real(0) || base == Real(0) then List(0)
       else if base == Real(-1)
       then // special cased otherwise it would loop forever
         Seq
