@@ -132,9 +132,7 @@ object NumberHelpers:
 
   def toBase(a: VAny, b: VAny)(using ctx: Context): VAny =
     (a, b) match
-      case (a: VNum, b: VNum) =>
-        if b == VNum(0) then 0
-        else toBaseDigits(a, b)
+      case (a: VNum, b: VNum) => toBaseDigits(a, b)
       case (n: VNum, b: VIter) => toBaseAlphabet(n, b)
       case (a: VList, _)       => VList(a.map(toBase(_, b))*)
       case _ =>
@@ -161,40 +159,14 @@ object NumberHelpers:
       case l: VList  => VList.from(temp)
 
   def toBaseDigits(value: VNum, base: VNum): VList =
-    if base == VNum(-1) then
-      // Special case for both real and complex without splitting
-      // into components
-
-      val (real, imag) = (value.real, value.imag)
-      val realDigits =
-        Seq
-          .fill(real.toInt.abs)(if real > 0 then Seq(0, 1) else Seq(1, 0))
-      val imagDigits =
-        Seq
-          .fill(imag.toInt.abs)(if imag > 0 then Seq(0, 1) else Seq(1, 0))
-      val realPadded =
-        (if realDigits.size < imagDigits.size then
-           Seq.fill(imagDigits.size - realDigits.size)(Seq(0, 0)) ++ realDigits
-         else realDigits).flatten
-      val imagPadded =
-        (if imagDigits.size < realDigits.size then
-           Seq.fill(realDigits.size - imagDigits.size)(Seq(0, 0)) ++ imagDigits
-         else imagDigits).flatten
-
-      val digits =
-        realPadded
-          .zip(imagPadded)
-          .map((r, i) => VNum.complex(Real(r), Real(i)))
-
-      return VList.from(if digits.head == VNum(0) then digits.tail else digits)
-
-    end if
-
+    // Preserve Jelly's behavior with base 0
+    if base == VNum(0) then return VList(value)
     /** Helper to get digits for single component of a VNum */
     def compToBase(valueComp: Real, baseComp: Real): Seq[Real] =
       val value = valueComp.floor
       val base = baseComp.floor
-      if value == Real(0) || base == Real(0) then List(0)
+      if value == Real(0) then List(0)
+      else if base == Real(0) then List()
       else if base == Real(1) then Seq.fill(value.toInt.abs)(value.signum)
       else if base == Real(-1) then
         Seq
@@ -205,9 +177,10 @@ object NumberHelpers:
         List
           .unfold(value) { current =>
             Option.when(current != Real(0)) {
-              var digit = current.tmod(base)
-              if digit < 0 then digit += base.abs
-              (digit, (current - digit) / base)
+              val rem = current.tmod(base)
+              val digit = if rem < 0 then rem + base.abs else rem
+              val quot = (current - digit) / base
+              (digit, quot)
             }
           }
           .reverse
