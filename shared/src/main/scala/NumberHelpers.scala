@@ -132,7 +132,7 @@ object NumberHelpers:
 
   def toBase(a: VAny, b: VAny)(using ctx: Context): VAny =
     (a, b) match
-      case (a: VNum, b: VNum) => toBaseDigits(a, b)
+      case (a: VNum, b: VNum)  => toBaseDigits(a, b)
       case (n: VNum, b: VIter) => toBaseAlphabet(n, b)
       case (a: VList, _)       => VList(a.map(toBase(_, b))*)
       case _ =>
@@ -161,6 +161,7 @@ object NumberHelpers:
   def toBaseDigits(value: VNum, base: VNum): VList =
     // Preserve Jelly's behavior with base 0
     if base == VNum(0) then return VList(value)
+
     /** Helper to get digits for single component of a VNum */
     def compToBase(valueComp: Real, baseComp: Real): Seq[Real] =
       val value = valueComp.floor
