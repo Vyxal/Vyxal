@@ -196,6 +196,11 @@ object NumberHelpers:
       val base = baseComp.floor
       if value == Real(0) || base == Real(0) then List(0)
       else if base == 1 then Seq.fill(value.toInt.abs)(value.signum)
+      else if base == -1 then
+        Seq
+          .fill(value.toInt.abs)(Seq[Real](1, 0))
+          .flatten
+          .dropRight(if value > 0 then 1 else 0)
       else
         List
           .unfold(value) { current =>
@@ -206,6 +211,8 @@ object NumberHelpers:
             }
           }
           .reverse
+      end if
+    end compToBase
     val real = compToBase(value.real, base.real)
     val imag = compToBase(value.imag, base.imag)
     val realPadded =
