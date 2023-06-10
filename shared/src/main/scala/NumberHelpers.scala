@@ -195,8 +195,8 @@ object NumberHelpers:
       val value = valueComp.floor
       val base = baseComp.floor
       if value == Real(0) || base == Real(0) then List(0)
-      else if base == 1 then Seq.fill(value.toInt.abs)(value.signum)
-      else if base == -1 then
+      else if base == Real(1) then Seq.fill(value.toInt.abs)(value.signum)
+      else if base == Real(-1) then
         Seq
           .fill(value.toInt.abs)(Seq[Real](1, 0))
           .flatten
