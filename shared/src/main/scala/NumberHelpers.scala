@@ -161,17 +161,40 @@ object NumberHelpers:
       case l: VList  => VList.from(temp)
 
   def toBaseDigits(value: VNum, base: VNum): VList =
+    if base == VNum(-1) then
+      // Special case for both real and complex without splitting
+      // into components
+
+      val (real, imag) = (value.real, value.imag)
+      val realDigits =
+        Seq
+          .fill(real.toInt.abs)(if real > 0 then Seq(0, 1) else Seq(1, 0))
+      val imagDigits =
+        Seq
+          .fill(imag.toInt.abs)(if imag > 0 then Seq(0, 1) else Seq(1, 0))
+      val realPadded =
+        (if realDigits.size < imagDigits.size then
+           Seq.fill(imagDigits.size - realDigits.size)(Seq(0, 0)) ++ realDigits
+         else realDigits).flatten
+      val imagPadded =
+        (if imagDigits.size < realDigits.size then
+           Seq.fill(realDigits.size - imagDigits.size)(Seq(0, 0)) ++ imagDigits
+         else imagDigits).flatten
+
+      val digits =
+        realPadded
+          .zip(imagPadded)
+          .map((r, i) => VNum.complex(Real(r), Real(i)))
+
+      return VList.from(if digits.head == VNum(0) then digits.tail else digits)
+
+    end if
+
     /** Helper to get digits for single component of a VNum */
     def compToBase(valueComp: Real, baseComp: Real): Seq[Real] =
       val value = valueComp.floor
       val base = baseComp.floor
       if value == Real(0) || base == Real(0) then List(0)
-      else if base == Real(-1)
-      then // special cased otherwise it would loop forever
-        Seq
-          .fill(value.toInt.abs)(Seq[Real](1, 0))
-          .flatten
-          .dropRight(if value > 0 then 1 else 0)
       else if base == 1 then Seq.fill(value.toInt.abs)(value.signum)
       else
         List
@@ -183,8 +206,6 @@ object NumberHelpers:
             }
           }
           .reverse
-      end if
-    end compToBase
     val real = compToBase(value.real, base.real)
     val imag = compToBase(value.imag, base.imag)
     val realPadded =
