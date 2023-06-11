@@ -1,6 +1,5 @@
-package vyxal.cli
+package vyxal
 
-import vyxal.*
 import vyxal.impls.{Element, Elements}
 
 import java.io.File
@@ -38,7 +37,13 @@ object CLI:
       runLiterateLexer: Boolean = false,
   )
 
-  def run(args: Array[String]): Unit =
+  /**
+    * Run the CLI
+    *
+    * @param args Command-line arguments
+    * @param repl Function to start the REPL if requested
+    */
+  def run(args: Array[String], repl: Boolean => Context ?=> Unit): Unit =
     OParser.parse(parser, args, CLIConfig()) match
       case Some(config) =>
         val inputList = config.inputs.reverse.map(Parser.parseInput)
@@ -94,7 +99,7 @@ object CLI:
         config.code.foreach { code => runCode(code, config.runLiterate) }
 
         if config.filename.nonEmpty || config.code.nonEmpty then return
-        else Repl.startRepl(config.runLiterate)
+        else repl(config.runLiterate)
       case None => ???
     end match
   end run

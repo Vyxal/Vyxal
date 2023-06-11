@@ -1,11 +1,9 @@
-package vyxal.cli
-
-import vyxal.{Context, Interpreter}
+package vyxal
 
 import scala.io.StdIn
 
-object Repl:
-  def startRepl(literate: Boolean)(using ctx: Context): Unit =
+object NativeRepl:
+  def startRepl(literate: Boolean)(using Context): Unit =
     while true do
       print("> ")
 
