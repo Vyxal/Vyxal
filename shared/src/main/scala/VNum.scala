@@ -7,23 +7,23 @@ import spire.implicits.partialOrderOps // For <, >, etc.
 import spire.math.{Complex, Real}
 
 class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
-  def real = underlying.real
-  def imag = underlying.imag
+  def real: Real = underlying.real
+  def imag: Real = underlying.imag
 
-  def toInt = underlying.toInt
-  def toLong = underlying.toLong
-  def toBigInt = underlying.real.toRational.toBigInt
+  def toInt: Int = underlying.toInt
+  def toLong: Long = underlying.toLong
+  def toBigInt: BigInt = underlying.real.toRational.toBigInt
 
   /** Round the real and imaginary parts */
-  def toIntegral = underlying.round
+  def toIntegral: VNum = underlying.round
 
-  def floor = underlying.floor
+  def floor: VNum = underlying.floor
 
   def unary_- : VNum = -underlying
   def +(rhs: VNum): VNum = underlying + rhs.underlying
   def -(rhs: VNum): VNum = underlying - rhs.underlying
-  def *(rhs: VNum): VNum = underlying * rhs.underlying
-  def /(rhs: VNum): VNum = underlying / rhs.underlying
+  def *(rhs: VNum): VNum = VNum.complex(real * rhs.real, imag * rhs.imag)
+  def /(rhs: VNum): VNum = VNum.complex(real / rhs.real, imag / rhs.imag)
   def **(rhs: VNum): VNum = underlying ** rhs.underlying
 
   def %(rhs: VNum): VNum =

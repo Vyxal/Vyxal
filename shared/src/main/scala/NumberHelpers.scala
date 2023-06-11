@@ -36,7 +36,7 @@ object NumberHelpers:
 
   /** Returns digits in base 10 using arbitrary base `base` */
   def fromBaseDigits(digits: VList, base: VAny)(using ctx: Context): VAny =
-    digits.foldLeft(VNum(0): VAny) { (ret, digit) =>
+    digits.foldLeft(0: VAny) { (ret, digit) =>
       MiscHelpers.add(MiscHelpers.multiply(base, ret), digit)
     }
 
@@ -159,15 +159,12 @@ object NumberHelpers:
       case l: VList  => VList.from(temp)
 
   def toBaseDigits(value: VNum, base: VNum): VList =
-    // Preserve Jelly's behavior with base 0
-    if base == VNum(0) then return VList(value)
-
     /** Helper to get digits for single component of a VNum */
     def compToBase(valueComp: Real, baseComp: Real): Seq[Real] =
       val value = valueComp.floor
       val base = baseComp.floor
       if value == Real(0) then List(0)
-      else if base == Real(0) then List()
+      else if base == Real(0) then List(value)
       else if base == Real(1) then Seq.fill(value.toInt.abs)(value.signum)
       else if base == Real(-1) then
         Seq
