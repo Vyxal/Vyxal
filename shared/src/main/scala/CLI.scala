@@ -37,11 +37,12 @@ object CLI:
       runLiterateLexer: Boolean = false,
   )
 
-  /**
-    * Run the CLI
+  /** Run the CLI
     *
-    * @param args Command-line arguments
-    * @param repl Function to start the REPL if requested
+    * @param args
+    *   Command-line arguments
+    * @param repl
+    *   Function to start the REPL if requested
     */
   def run(args: Array[String], repl: Boolean => Context ?=> Unit): Unit =
     OParser.parse(parser, args, CLIConfig()) match

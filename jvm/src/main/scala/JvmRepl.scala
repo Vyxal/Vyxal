@@ -1,9 +1,9 @@
 package vyxal
 
+import org.jline.reader.EndOfFileException
 import org.jline.reader.LineReaderBuilder
 import org.jline.reader.UserInterruptException
 import org.jline.terminal.TerminalBuilder
-import org.jline.reader.EndOfFileException
 
 object JvmRepl:
   def startRepl(literate: Boolean)(using Context): Unit =
@@ -24,7 +24,7 @@ object JvmRepl:
       catch
         case _: UserInterruptException =>
           println(
-            s"Use Ctrl+D (on Unix) and Ctrl+Z followed by Enter (on Windows) to exit"
+            "Use Ctrl+D (on Unix) and Ctrl+Z followed by Enter (on Windows) to exit"
           )
         case _: EndOfFileException =>
           return
