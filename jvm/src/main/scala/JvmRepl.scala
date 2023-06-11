@@ -1,11 +1,12 @@
 package vyxal
 
+import java.util.logging.Level
+import java.util.logging.Logger
+
 import org.jline.reader.EndOfFileException
 import org.jline.reader.LineReaderBuilder
 import org.jline.reader.UserInterruptException
 import org.jline.terminal.TerminalBuilder
-import java.util.logging.Logger
-import java.util.logging.Level
 
 object JvmRepl:
   def startRepl(literate: Boolean)(using Context): Unit =
