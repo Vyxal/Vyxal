@@ -52,8 +52,8 @@ trait VyxalModule extends ScalaModule with ScalafmtModule with ScalafixModule {
     def scalaVersion = VyxalModule.this.scalaVersion()
 
     def ivyDeps = Agg(
-      ivy"org.scalatest::scalatest:3.2.15",
-      ivy"org.virtuslab::scala-yaml:0.0.7"
+      ivy"org.scalatest::scalatest::3.2.15",
+      ivy"org.virtuslab::scala-yaml::0.0.7"
     )
 
     // Task to only show output from failed tests
@@ -77,11 +77,13 @@ trait VyxalModule extends ScalaModule with ScalafmtModule with ScalafixModule {
 object jvm extends VyxalModule {
   def platform = "jvm"
 
-  object test extends VyxalTestModule {
-    def ivyDeps = T {
-      super.ivyDeps() ++ Seq(ivy"org.yaml:snakeyaml::1.33")
-    }
+  def ivyDeps = T {
+    super.ivyDeps() ++ Seq(
+      ivy"org.jline:jline::3.22.0"
+    )
   }
+
+  object test extends VyxalTestModule
 }
 
 /** Shared and JS-specific code */

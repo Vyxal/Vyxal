@@ -72,6 +72,9 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     assembly / assemblyJarName := s"vyxal-$vyxalVersion.jar",
     // Necessary for tests to be able to access src/main/resources
     Test / fork := true,
+    libraryDependencies ++= Seq(
+      "org.jline" % "jline" % "3.22.0"
+    )
   )
   .jsSettings(
     // JS-specific settings
