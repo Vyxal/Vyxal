@@ -93,19 +93,17 @@ object NumberHelpers:
       current /= b
     result
 
+  /** A version of VNum.toString that differentiates between literate and sbcs
+    * mode
+    */
   def numToString(a: VNum)(using ctx: Context): String =
-    // A version of VNum.toString that differentiates between literate and sbcs mode
-    var temp = a.toString()
-    if ctx.globals.literate then temp = temp.replace("ı", "i")
+    if ctx.globals.literate then a.toString.replace("ı", "i")
     else
-      val parts =
-        if !temp.endsWith("ı") then temp.split("ı").toSeq
-        else temp.init.split("ı").toSeq :+ ""
-
-      temp = parts
+      a.toString
+        .split("ı")
+        .toSeq
         .map(x => if x.startsWith("-") then x.tail + "_" else x)
         .mkString("ı")
-    temp
 
   def range(a: VNum, b: VNum): VList =
     val start = a.toInt

@@ -214,7 +214,5 @@ object StringHelpers:
       case n: VNum   => NumberHelpers.numToString(n)
       case s: String => s
       case l: VList  => l.map(vyToString).mkString("[", "|", "]")
-      case f: VFun =>
-        val temp = Interpreter.executeFn(f)
-        vyToString(temp)
+      case f: VFun => vyToString(Interpreter.executeFn(f))
 end StringHelpers
