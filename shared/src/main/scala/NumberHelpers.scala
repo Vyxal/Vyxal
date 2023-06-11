@@ -106,11 +106,11 @@ object NumberHelpers:
         .mkString("ı")
 
   def range(a: VNum, b: VNum): VList =
-    val start = a.toInt
-    val end = b.toInt
+    val start = a.toBigInt
+    val end = b.toBigInt
     val step = if start < end then 1 else -1
 
-    VList((start to end by step).map(VNum(_))*)
+    VList.from((start to end by step).map(VNum(_)))
 
   def toBinary(a: VAny)(using Context): VAny =
     a match
