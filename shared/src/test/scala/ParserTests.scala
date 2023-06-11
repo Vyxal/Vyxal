@@ -3,18 +3,20 @@ package vyxal
 import org.scalatest.funsuite.AnyFunSuite
 import AST.*
 
+def parse(code: String) = Parser.parse(Lexer(code).getOrElse(List()))
+
 class ParserTests extends AnyFunSuite:
   test("Can the parser parse an empty string?") {
-    assert(Parser.parse("") === Right(AST.makeSingle()))
+    assert(parse("") === Right(AST.makeSingle()))
   }
 
   test("Does the parser recognise numbers?") {
-    assert(Parser.parse("123") === Right(Number(123)))
+    assert(parse("123") === Right(Number(123)))
   }
 
   test("Does the parser recognise strings?") {
     assert(
-      Parser.parse(""" "Hello, world!" """) === Right(
+      parse(""" "Hello, world!" """) === Right(
         Str("Hello, world!")
       )
     )
@@ -22,13 +24,13 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser recognise basic expressions?") {
     assert(
-      Parser.parse("1 1 +") === Right(
+      parse("1 1 +") === Right(
         Group(List(Number(1), Number(1), Command("+")), None)
       )
     )
 
     assert(
-      Parser.parse("1 1 + 2 *") === Right(
+      parse("1 1 + 2 *") === Right(
         Group(
           List(
             Group(List(Number(1), Number(1), Command("+")), Some(0)),
@@ -44,7 +46,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser recognise lists?") {
     assert(
-      Parser.parse(""" ⟨"foo" | 1 2 | 3 #] """) === Right(
+      parse(""" ⟨"foo" | 1 2 | 3 #] """) === Right(
         Lst(
           List(
             Str("foo"),
@@ -58,7 +60,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser recognise multiple literals?") {
     assert(
-      Parser.parse("""123 "Hello" 24 #[ | 1 2 | 3 ⟩""") === Right(
+      parse("""123 "Hello" 24 #[ | 1 2 | 3 ⟩""") === Right(
         AST.makeSingle(
           Number(123),
           Str("Hello"),
@@ -77,7 +79,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser understand nested structures?") {
     assert(
-      Parser.parse("1 { 2 | { {3 | 4} | } } 6") ===
+      parse("1 { 2 | { {3 | 4} | } } 6") ===
         Right(
           AST.makeSingle(
             Number(6),
@@ -101,7 +103,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser understand basic structures?") {
     assert(
-      Parser.parse("""[1 1 +|"nice" """) === Right(
+      parse("""[1 1 +|"nice" """) === Right(
         Ternary(
           Group(List(Number(1), Number(1), Command("+")), Some(0)),
           Some(Str("nice"))
@@ -110,7 +112,7 @@ class ParserTests extends AnyFunSuite:
     )
 
     assert(
-      Parser.parse("1 10R(i|n2*,") === Right(
+      parse("1 10R(i|n2*,") === Right(
         Group(
           List(
             Group(List(Number(1), Number(10), Command("R")), Some(0)),
@@ -133,13 +135,13 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser recognise single-character strings in structures?") {
     assert(
-      Parser.parse("('|") === Right(For(None, Str("|")))
+      parse("('|") === Right(For(None, Str("|")))
     )
   }
 
   test("Does the parser recognise two-character strings in structures?") {
     assert(
-      Parser.parse("(bᶴ|c") === Right(
+      parse("(bᶴ|c") === Right(
         For(None, Group(List(Command("b"), Str("|c")), None))
       )
     )
@@ -147,7 +149,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser understand close all structures (']')?") {
     assert(
-      Parser.parse("1 { 2 | { {3 | 4} | ] 6") ===
+      parse("1 { 2 | { {3 | 4} | ] 6") ===
         Right(
           AST.makeSingle(
             Number(6),
@@ -171,7 +173,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser auto-close lists in structures?") {
     assert(
-      Parser.parse("(2 #[} +") === Right(
+      parse("(2 #[} +") === Right(
         Group(
           List(
             For(None, Group(List(Number(2), Lst(List())), None)),
@@ -187,7 +189,7 @@ class ParserTests extends AnyFunSuite:
     "Is the parser capable of parsing (something that looks like) FizzBuzz?"
   ) {
     assert(
-      Parser.parse("""100 ƛ35O+"FizzBuzz"O++O""") ===
+      parse("""100 ƛ35O+"FizzBuzz"O++O""") ===
         Right(
           Group(
             List(
@@ -237,7 +239,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser handle basic modifiers?") {
     assert(
-      Parser.parse("v+ +") === Right(
+      parse("v+ +") === Right(
         Group(
           List(
             Group(
@@ -252,7 +254,7 @@ class ParserTests extends AnyFunSuite:
     )
 
     assert(
-      Parser.parse("1 /+ 2") === Right(
+      parse("1 /+ 2") === Right(
         Group(
           List(
             Number(2),
@@ -270,19 +272,19 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser identify for loop branches correctly?") {
     assert(
-      Parser.parse("(hello|++}") ===
+      parse("(hello|++}") ===
         Right(For(Some("hello"), Group(List(Command("+"), Command("+")), None)))
     )
 
     assert(
-      Parser.parse("([1|2}}") ===
+      parse("([1|2}}") ===
         Right(For(None, Ternary(Number(1), Some(Number(2)))))
     )
   }
 
   test("Does the parser handle nested modifiers?") {
     assert(
-      Parser.parse("#[#[1|2|3#]|#[4|5|6#]#] v/+") === Right(
+      parse("#[#[1|2|3#]|#[4|5|6#]#] v/+") === Right(
         Group(
           List(
             Lst(
@@ -313,7 +315,7 @@ class ParserTests extends AnyFunSuite:
       )
     )
     assert(
-      Parser.parse("ϩϩ*O+OO") === Right(
+      parse("ϩϩ*O+OO") === Right(
         Group(
           List(
             Lambda(
@@ -344,7 +346,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser recognise lambda to newline?") {
     assert(
-      Parser.parse("1 + 2 * ᵜ #[1|2|3#] M") === Right(
+      parse("1 + 2 * ᵜ #[1|2|3#] M") === Right(
         Group(
           List(
             Lambda(
@@ -370,7 +372,7 @@ class ParserTests extends AnyFunSuite:
       )
     )
     assert(
-      Parser.parse("1 + 2 * ᵜ") === Right(
+      parse("1 + 2 * ᵜ") === Right(
         Lambda(
           1,
           List(),
@@ -387,7 +389,7 @@ class ParserTests extends AnyFunSuite:
       )
     )
     assert(
-      Parser.parse("#[1|2|3#]\n1 + 2 * ᵜ M") === Right(
+      parse("#[1|2|3#]\n1 + 2 * ᵜ M") === Right(
         Group(
           List(
             Lst(List(Number(1), Number(2), Number(3))),

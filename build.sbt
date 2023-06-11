@@ -32,7 +32,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       // For command line parsing
       "com.github.scopt" %%% "scopt" % "4.1.0",
       // For reading tests.yaml
-      "io.circe" %%% "circe-yaml" % "0.14.2" % Test,
+      "org.virtuslab" %%% "scala-yaml" % "0.0.7" % Test,
       // Used by ScalaTest
       "org.scalactic" %%% "scalactic" % "3.2.15",
       "org.scalatest" %%% "scalatest" % "3.2.15" % Test
@@ -45,7 +45,6 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "-unchecked", // Enable additional warnings where generated code depends on assumptions.
       // Above options from https://tpolecat.github.io/2017/04/25/scalac-flags.html
       "-language:implicitConversions",
-      "-language:adhocExtensions",
       // "-explain",
       "-print-lines"
     ),
@@ -63,7 +62,8 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     ),
     // From https://www.scalatest.org/user_guide/using_the_runner
     // Suppress output from successful tests
-    Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-oNCXELOPQRMF")
+    Test / testOptions += Tests
+      .Argument(TestFrameworks.ScalaTest, "-oNCXEOPQRM")
   )
   .jvmSettings(
     // JVM-specific settings
@@ -80,7 +80,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     ),
     // Where the compiled JS is output
     Compile / fastOptJS / artifactPath := baseDirectory.value.getParentFile / "pages" / "vyxal.js",
-    Compile / fullOptJS / artifactPath := baseDirectory.value.getParentFile / "pages" / "vyxal.js"
+    Compile / fullOptJS / artifactPath := baseDirectory.value.getParentFile / "pages" / "vyxal.js",
   )
   .nativeSettings(
     // Scala Native-specific settings

@@ -241,17 +241,23 @@ If you want to check if a task exists, you can do that too, e.g.
   - `test`: Run all tests.
   - `testOnly`: Run specific tests.
   - `testQuiet`: Only defined for Mill (currently). Runs tests and suppresses output from passed/ignored tests.
-- `scalafix` - Run Scalafix to lint/refactor your code
-  - If you don't want Scalafix modifying your code, run `scalafix --check` so it'll
-    just give you errors and you can fix them manually
-  - You can use specific rule names, e.g. `scalafix RemoveUnused` to only run the
-    `RemoveUnused` rule
-- `scalafmt` - Run Scalafmt to format all your code
-  - Use `scalafmtOnly <filepath>` to only format a particular file. The file path
-    is relative to your current project's root, so if you're in the `vyxalJVM`
-    project, it'll be relative to the `jvm/` folder, and if you're in `vyxalJS`,
-    it'll be relative to `js/`.
-    - e.g. `scalafmtOnly ../shared/src/main/scala/Interpreter.scala`
+- Run Scalafix to lint/refactor your code
+  - `scalafix` if you're using sbt
+    - If you don't want Scalafix modifying your code, run `scalafix --check` so it'll
+      just give you errors and you can fix them manually
+    - You can use specific rule names, e.g. `scalafix RemoveUnused` to only run the
+      `RemoveUnused` rule
+  - `fix` if you're using Mill
+    - If you don't want Scalafix modifying your code, use `--check` (e.g. `jvm.fix --check`)
+- Automatically formatting files with Scalafmt:
+  - `scalafmt` if you're using sbt
+    - Use `scalafmtOnly <filepath>` to only format a particular file. The file path
+      is relative to your current project's root, so if you're in the `vyxalJVM`
+      project, it'll be relative to the `jvm/` folder, and if you're in `vyxalJS`,
+      it'll be relative to `js/`.
+      - e.g. `scalafmtOnly ../shared/src/main/scala/Interpreter.scala`
+    - `reformat` if you're using Mill
+      - `checkFormat` to only check if everything is formatted.
 - `fastOptJS` - Quickly build and link the JS code, not too many optimizations.
   Use this one for development.
   - Use `fullOptJS` to build and link the JS code with optimizations. This will
@@ -268,7 +274,7 @@ If you want to check if a task exists, you can do that too, e.g.
 ## Scalafmt
 
 Scalafmt is a formatter for Scala. The configuration for it is in
-[.scalafmt.conf](./.scalafmt.conf). Docs on configuration are
+[.scalafmt.conf](/.scalafmt.conf). Docs on configuration are
 [here](https://scalameta.org/scalafmt/docs/configuration.html). `.scalafmt.conf`
 won't have to be touched much.
 

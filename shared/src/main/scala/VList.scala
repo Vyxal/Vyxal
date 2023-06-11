@@ -153,7 +153,6 @@ object VList extends SpecificIterableFactory[VAny, VList]:
             VList.fill(maxSize)(x)
         }
     VList.zipMulti(lists*)(f)
-  end zipValues
 
   /** This lets us pattern match on `VList`s, silly as the implementation may
     * be.
@@ -170,4 +169,6 @@ object VList extends SpecificIterableFactory[VAny, VList]:
   override def fromSpecific(it: IterableOnce[VAny]): VList = new VList(
     it.iterator.toSeq
   )
+
+  def seqToVList(seq: Seq[Seq[VAny]]): VList = new VList(seq.map(VList.from(_)))
 end VList

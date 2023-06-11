@@ -16,7 +16,7 @@ object StringHelpers:
       case a: VList => VList(a.map(chrord)*)
 
   // https://codegolf.stackexchange.com/a/151721/78850
-  def compressDictionary(s: String)(using ctx: Context): String =
+  def compressDictionary(s: String): String =
     val endLength = 2 + Dictionary.longDictionary.map(_.length).max
 
     val shortInds = Dictionary.shortDictionary.zipWithIndex.toMap
@@ -44,7 +44,7 @@ object StringHelpers:
       val toggleCase = !dict.contains(subW)
       // If the word isn't in the dictionary, see if its lowercase/uppercase version is
       val ww =
-        if toggleCase then swapcase(subW.head.toString) + subW.substring(1)
+        if toggleCase then swapCase(subW.head.toString) + subW.substring(1)
         else subW
 
       if !dict.contains(ww) then return None
@@ -120,6 +120,15 @@ object StringHelpers:
     val wrapped = (i + s.length) % s.length
     s.substring(0, wrapped) + s.substring(wrapped + 1)
 
+  /** Get the string representation of a value (opposite of eval) */
+  def repr(v: VAny): String =
+    v match
+      case n: VNum   => n.toString
+      case s: String => quotify(s)
+      case l: VList  => l.map(repr).mkString("#[", ",", "#]")
+      case f: VFun =>
+        throw IllegalArgumentException(s"Cannot get repr for function: $f")
+
   /** Ring translates a given string according to the provided mapping \- that
     * is, map matching elements to the subsequent element in the translation
     * ring. The ring wraps around.
@@ -132,7 +141,7 @@ object StringHelpers:
     }.mkString
 
   // https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L1055
-  def decompress(compressed: String)(using ctx: Context): String =
+  def decompress(compressed: String): String =
     val decompressed = StringBuilder()
     val comp = compressed
       .replace('•', '"')
@@ -167,7 +176,7 @@ object StringHelpers:
         val index = integer % words.length
         integer = integer / words.length
         var word = words(index.toInt)
-        if flagSwap then word = swapcase(word.head.toString) + word.substring(1)
+        if flagSwap then word = swapCase(word.head.toString) + word.substring(1)
         if flagSpace then word = " " + word
         decompressed.append(word)
       end if
@@ -176,10 +185,34 @@ object StringHelpers:
     decompressed.mkString.replace("¦", "\n")
   end decompress
 
-  def swapcase(s: String): String =
+  def quotify(s: String): String =
+    val temp = s
+      .replace("\\", raw"\\")
+      .replace("\"", raw"\"")
+
+    s""""$temp""""
+
+  /** Toggle case of each character in the string */
+  def swapCase(s: String): String =
     s.map { c =>
       if c.isUpper then c.toLower
       else if c.isLower then c.toUpper
       else c
     }.mkString
+
+  /** Split on "words" (sequences of letters) and capitalize each word. */
+  def titlecase(s: String): String =
+    val splitOnWords =
+      ListHelpers.groupConsecutiveBy(s.toSeq)(_.isLetter)
+    val words = splitOnWords.map(_.mkString)
+    words.map { word =>
+      s"${word.head.toUpper}${word.tail.toLowerCase}"
+    }.mkString
+
+  def vyToString(item: VAny)(using ctx: Context): String =
+    item match
+      case n: VNum   => NumberHelpers.numToString(n)
+      case s: String => s
+      case l: VList  => l.map(vyToString).mkString("[", "|", "]")
+      case f: VFun   => vyToString(Interpreter.executeFn(f))
 end StringHelpers

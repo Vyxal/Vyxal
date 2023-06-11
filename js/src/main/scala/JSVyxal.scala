@@ -11,11 +11,6 @@ import scala.scalajs.js.JSConverters.*
 object JSVyxal:
 
   @JSExport
-  var shortDict: Seq[String] = Seq()
-  @JSExport
-  var longDict: Seq[String] = Seq()
-
-  @JSExport
   def execute(
       code: String,
       inputs: String,
@@ -23,14 +18,12 @@ object JSVyxal:
       printFunc: js.Function1[String, Unit]
   ): Unit =
     // todo take functions to print to custom stdout and stderr
-    val settings = Settings(online = true).withFlags(flags)
+    val settings = Settings(online = true).withFlags(flags.toList)
     val globals = Globals(
       settings = settings,
       printFn = printFunc,
       inputs = Inputs(inputs.split("\n").map(Parser.parseInput).toSeq),
     )
-
-    Dictionary.manualInitialise(shortDict, longDict)
 
     val ctx = Context(
       inputs = inputs.split("\n").map(Parser.parseInput).toIndexedSeq,
@@ -40,22 +33,16 @@ object JSVyxal:
   end execute
 
   @JSExport
-  def compress(text: String): String =
-    if !Dictionary.initialised then
-      Dictionary.manualInitialise(shortDict, longDict)
-    given Context = Context()
-    StringHelpers.compressDictionary(text)
+  def compress(text: String): String = StringHelpers.compressDictionary(text)
 
   @JSExport
   def decompress(compressed: String): String =
-    if !Dictionary.initialised then
-      Dictionary.manualInitialise(shortDict, longDict)
-    given Context = Context()
     StringHelpers.decompress(compressed)
 
   /** Bridge to turn literate code into SBCS */
   @JSExport
-  def getSBCSified(code: String): String = LiterateLexer.litLex(code)
+  def getSBCSified(code: String): String =
+    LiterateLexer.processLit(code).getOrElse(code)
 
   @JSExport
   def getCodepage(): String = vyxal.CODEPAGE
@@ -91,13 +78,5 @@ object JSVyxal:
         "keywords" -> info.keywords.toJSArray,
       )
     }.toJSArray
-
-  @JSExport
-  def setShortDict(dict: js.Array[String]): Unit =
-    shortDict = dict.toSeq
-
-  @JSExport
-  def setLongDict(dict: js.Array[String]): Unit =
-    longDict = dict.toSeq
 
 end JSVyxal

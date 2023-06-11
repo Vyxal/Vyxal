@@ -1,10 +1,10 @@
-name: Generate element docs
+name: Generate element and trigraph docs
 
 on:
   push:
 
 jobs:
-  gen-element-docs:
+  gen-docs:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,13 +14,15 @@ jobs:
       with:
         java-version: '17'
         distribution: 'adopt'
-    - name: Create elements.txt
+    - name: Build jar
+      run: sbt vyxalJVM/assembly
+    - name: Update elements.txt and trigraphs.txt
       run: |
-        sbt vyxalJVM/assembly
         java -jar jvm/target/scala-*/vyxal-*.jar --docs > documentation/elements.txt
+        java -jar jvm/target/scala-*/vyxal-*.jar --sugar > documentation/trigraphs.txt
     - name: Stage changes
       run: git add .
     - name: Commit and push
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: "Refresh element documentation from recent commit"
+        commit_message: "Refresh element and/or trigraph docs from recent commit"

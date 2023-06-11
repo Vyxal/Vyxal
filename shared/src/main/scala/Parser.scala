@@ -114,7 +114,6 @@ object Parser:
                 if name.nonEmpty then names += ((name, depth))
                 name = ""
               case _ => name += top
-          end while
           if depth != -1 then names += ((name, depth))
           asts.push(AST.UnpackVar(names.toList))
 
@@ -241,7 +240,6 @@ object Parser:
             then
               // Don't forget empty branches at the end
               branches += AST.makeSingle()
-    end while
 
     if branches.isEmpty && !canBeEmpty then branches += AST.makeSingle()
 
@@ -429,23 +427,21 @@ object Parser:
       case VyxalToken.StructureAllClose => true
       case _                            => false
 
-  def parse(code: String): Either[VyxalCompilationError, AST] =
-    Lexer(code).flatMap { tokens =>
-      val preprocessed = preprocess(tokens).to(Queue)
-      val parsed = parse(preprocessed, true)
-      if preprocessed.nonEmpty then
-        // Some tokens were left at the end, which should never happen
-        Left(
-          VyxalCompilationError(
-            s"Error parsing code: These tokens were not parsed ${preprocessed.toList}. Only parsed $parsed"
-          )
+  def parse(tokens: List[VyxalToken]): Either[VyxalCompilationError, AST] =
+    val preprocessed = preprocess(tokens).to(Queue)
+    val parsed = parse(preprocessed, true)
+    if preprocessed.nonEmpty then
+      // Some tokens were left at the end, which should never happen
+      Left(
+        VyxalCompilationError(
+          s"Error parsing code: These tokens were not parsed ${preprocessed.toList}. Only parsed $parsed"
         )
-      else
-        parsed match
-          case Right(ast) => Right(postprocess(ast))
-          case Left(error) =>
-            Left(VyxalCompilationError(s"Error parsing code: $error"))
-    }
+      )
+    else
+      parsed match
+        case Right(ast) => Right(postprocess(ast))
+        case Left(error) =>
+          Left(VyxalCompilationError(s"Error parsing code: $error"))
 
   private def preprocess(tokens: List[VyxalToken]): List[VyxalToken] =
     val doubleClose = ListBuffer[VyxalToken]()
@@ -473,7 +469,6 @@ object Parser:
             contents.++=(top.value)
           processed += VyxalToken.UnpackVar(contents.toString())
         case _ => processed += temp
-    end while
     processed.toList
   end preprocess
 

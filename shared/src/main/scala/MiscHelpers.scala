@@ -60,8 +60,19 @@ object MiscHelpers:
         ind += 1
       return result
 
+  // Returns the default value for a given type
+  def defaultEmpty(a: VAny): VAny =
+    a match
+      case _: VNum   => VNum(0)
+      case _: String => ""
+      case _: VList  => 0
+      case _         => throw new Exception(s"Cannot get default value for $a")
+
   def dyadicMaximum(a: VVal, b: VVal): VVal =
     if compare(a, b) > 0 then a else b
+
+  def dyadicMinimum(a: VVal, b: VVal): VVal =
+    if compare(a, b) < 0 then a else b
 
   def eval(s: String): VAny =
     if s.matches(raw"-?($decimalRegex?ı$decimalRegex?)|-?$decimalRegex") then
@@ -69,9 +80,12 @@ object MiscHelpers:
     else if s.matches(raw"""("(?:[^"\\]|\\.)*["])""") then s.substring(1).init
     else if LiterateLexer.isList(s) then
       val tempContext = Context()
-      val lambdaAST = Parser.parse(LiterateLexer.litLex(s)) match
-        case Right(x) => x
-        case Left(_)  => throw new Exception("Failed to parse list")
+      val lambdaAST =
+        Parser.parse(
+          Lexer(LiterateLexer.processLit(s).toOption.get).getOrElse(List())
+        ) match
+          case Right(x) => x
+          case Left(_)  => throw new Exception("Failed to parse list")
       Interpreter.executeFn(
         VFun.fromLambda(AST.Lambda(0, List(), List(lambdaAST)))(using
           tempContext
@@ -117,7 +131,7 @@ object MiscHelpers:
     var previous = operating(1)
 
     while remaining.length + operating.length != 1 do
-      val result = byFun.execute(previous, current, operating)
+      val result = byFun.execute(previous, current, args = operating.reverse)
       previous = remaining.headOption.getOrElse(result)
       current = result
       operating = result +: remaining.take(byFun.arity - 1)
@@ -174,7 +188,7 @@ object MiscHelpers:
   end unpackHelper
 
   def vyPrint(x: VAny)(using ctx: Context): Unit =
-    ctx.globals.printFn(x.toString)
+    ctx.globals.printFn(StringHelpers.vyToString(x))
 
   def vyPrintln(x: VAny)(using Context): Unit =
     vyPrint(x)

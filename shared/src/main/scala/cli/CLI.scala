@@ -35,6 +35,7 @@ object CLI:
       runLexer: Boolean = false,
       runParser: Boolean = false,
       settings: Settings = Settings(),
+      runLiterateLexer: Boolean = false,
   )
 
   def run(args: Array[String]): Unit =
@@ -55,7 +56,7 @@ object CLI:
           return
 
         if config.printSugar then
-          printSugar()
+          for (key, value) <- SugarMap.trigraphs do println(s"$key -> $value")
           return
 
         if config.litInfoFor.nonEmpty then
@@ -70,11 +71,17 @@ object CLI:
             if line == "" then return
             println(Lexer(line))
 
+        if config.runLiterateLexer then
+          while true do
+            val line = io.StdIn.readLine(">")
+            if line == "" then return
+            println(LiterateLexer(line))
+
         if config.runParser then
           while true do
             val line = io.StdIn.readLine(">")
             if line == "" then return
-            println(Parser.parse(line))
+            println(Parser.parse(Lexer(line).getOrElse(List.empty)))
 
         config.filename.foreach { filename =>
           val source = io.Source.fromFile(filename)
@@ -99,9 +106,6 @@ object CLI:
         println(s"Error: ${e.getMessage()}")
         e.printStackTrace()
 
-  private def printSugar(): Unit =
-    val sugar = SugarMap.internalMap
-    sugar.foreach((key, value) => println(s"$key -> $value"))
   private def printDocs(): Unit =
     Elements.elements.values.toSeq
       .sortBy { elem =>
@@ -185,6 +189,10 @@ object CLI:
       opt[Unit]('L', "lexer")
         .action((_, cfg) => cfg.copy(runLexer = true))
         .text("Run the lexer on input")
+        .optional(),
+      opt[Unit]('`', "literatelexer")
+        .action((_, cfg) => cfg.copy(runLiterateLexer = true))
+        .text("Run the literate lexer on input")
         .optional(),
       opt[Unit]('P', "parser")
         .action((_, cfg) => cfg.copy(runParser = true))

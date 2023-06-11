@@ -1,28 +1,32 @@
 package vyxal
 
 import scala.language.implicitConversions
+import scala.math.Ordered
 
 import spire.implicits.partialOrderOps // For <, >, etc.
 import spire.math.{Complex, Real}
 
-class VNum private (val underlying: Complex[Real]):
-  def real = underlying.real
-  def imag = underlying.imag
+class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
+  def real: Real = underlying.real
+  def imag: Real = underlying.imag
 
-  def toInt = underlying.toInt
-  def toLong = underlying.toLong
-  def toBigInt = underlying.real.toRational.toBigInt
+  def toInt: Int = underlying.toInt
+  def toLong: Long = underlying.toLong
+  def toBigInt: BigInt = underlying.real.toRational.toBigInt
 
   /** Round the real and imaginary parts */
-  def toIntegral = underlying.round
+  def toIntegral: VNum = underlying.round
 
-  def floor = underlying.floor
+  def floor: VNum = underlying.floor
 
   def unary_- : VNum = -underlying
   def +(rhs: VNum): VNum = underlying + rhs.underlying
   def -(rhs: VNum): VNum = underlying - rhs.underlying
-  def *(rhs: VNum): VNum = underlying * rhs.underlying
-  def /(rhs: VNum): VNum = underlying / rhs.underlying
+  def *(rhs: VNum): VNum = VNum.complex(real * rhs.real, imag * rhs.imag)
+  def /(rhs: VNum): VNum = VNum.complex(
+    if rhs.real === 0 then 0 else real / rhs.real,
+    if rhs.imag === 0 then 0 else imag / rhs.imag
+  )
   def **(rhs: VNum): VNum = underlying ** rhs.underlying
 
   def %(rhs: VNum): VNum =
@@ -31,6 +35,9 @@ class VNum private (val underlying: Complex[Real]):
     this - spire.math.floor(q.real) * rhs
 
   def vabs: VNum = underlying.abs
+
+  override def compare(that: VNum): Int =
+    this.underlying.real.compare(that.underlying.real)
 
   override def toString =
     if this.imag == 0 then this.real.getString(Real.digits)
@@ -61,7 +68,7 @@ object VNum:
 
   /** Parse a number from a string in the given base */
   def apply(s: String, radix: Int): VNum =
-    s.replaceAll("[^-0-9a-zA-Z.ı]", "") match
+    s.replaceAll("[^-0-9a-zA-Z.ı_]", "") match
       case s"${real}ı$imag" =>
         complex(
           parseDecimal(real, radix, 0),
@@ -74,8 +81,11 @@ object VNum:
     *   What to return if `component` is empty (not including minus sign)
     */
   private def parseDecimal(component: String, radix: Int, default: Int): Real =
-    val neg = component.startsWith("-")
-    val comp = if neg then component.substring(1) else component
+    val neg = component.startsWith("-") || component.endsWith("_")
+    val comp =
+      if component.startsWith("-") then component.substring(1)
+      else if component.endsWith("_") then component.init
+      else component
     val sepInd = comp.indexOf('.')
     if comp.isEmpty then if neg then -default else default
     else if sepInd == -1 then
@@ -113,6 +123,5 @@ object VNum:
   given Conversion[BigDecimal, VNum] = n => complex(n, 0)
   given Conversion[Real, VNum] = n => complex(n, 0)
   given Conversion[Complex[Real], VNum] = new VNum(_)
-  given Conversion[Boolean, VNum] =
-    b => if b then 1 else 0 // scalafix:ok DisableSyntax.BooleanToVNum
+  given Conversion[Boolean, VNum] = b => if b then 1 else 0
 end VNum

@@ -15,9 +15,17 @@ Keywords: fact, factorial, to-upper, upper, uppercase, !
 Keywords: compress-dict, dict-comp, compress
 - a: str -> compress a using the dictionary
 ---------------------
+#X (Loop Break) (non-vectorising)
+Keywords: break
+-  -> break out of the current loop
+---------------------
 #v (Vectorise (Element Form) [Internal Use]) (non-vectorising)
 Keywords: 
 - *a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead
+---------------------
+#x (Loop Continue) (non-vectorising)
+Keywords: continue
+-  -> continue the current loop
 ---------------------
 $ (Swap) (non-vectorising)
 Keywords: swap
@@ -88,7 +96,7 @@ Keywords: get-input, input, stdin, readline
 - ->  -> input
 ---------------------
 A (All Truthy | All() | Is Vowel?) (non-vectorising)
-Keywords: all, is-vowel?
+Keywords: all, is-vowel?, vowel?
 - a: str -> is (a) a vowel? vectorises for strings len > 1
 - a: list -> is (a) all truthy?
 ---------------------
@@ -115,8 +123,8 @@ F (Filter by Function | From Base) (non-vectorising)
 Keywords: filter, keep-by, from-base, 10->b
 - a: fun, b: lst -> Filter b by truthy results of a
 - a: lst, b: fun -> Filter a by truthy results of b
-- a: num, b: num -> a in base b - list of digits
-- a: num, b: str|lst -> a in base with alphabet b
+- a: num, b: num -> a from base b to base 10
+- a: num, b: str|lst -> a from base with alphabet b to base 10
 ---------------------
 G (Monadic Maximum | Dyadic Maximum | Generate From Function | Vectorised Maximum) (non-vectorising)
 Keywords: max, maximum, generator
@@ -156,7 +164,7 @@ Keywords: map, mold, multiplicity, times-divide
 N (Negation | Swap Case | First Non-Negative Integer Where Predicate is True) (vectorising)
 Keywords: neg, negate, swap-case, caseswap, first-non-negative, first-nonneg, first>-1
 - a: num -> -a
-- a: str -> a.swapcase()
+- a: str -> a.swapCase()
 - a: fun -> first non-negative integer where predicate a is true
 ---------------------
 O (Ord/Chr) (non-vectorising)
@@ -189,24 +197,93 @@ Keywords: triple, alphabet?, alphabetical?, contains-only-alphabet?, contains-on
 - a: str -> does a contain only alphabet characters?
 - a: any -> transpose a
 ---------------------
+U (Uninterleave) (non-vectorising)
+Keywords: uninterleave
+- a: any -> uninterleave a
+---------------------
+V (Vectorised Reverse / Complement / Title Case) (non-vectorising)
+Keywords: vectorised-reverse, vec-reverse, complement, titlecase, title-case
+- a: lst -> each element of a reversed
+- a: num -> 1 - a
+- a: str -> a converted to title case
+---------------------
 W (Wrap) (non-vectorising)
 Keywords: wrap
 - a, b, c, ..., -> [a, b, c, ...]
 ---------------------
+X (Return Statement) (non-vectorising)
+Keywords: return, ret
+- a -> return a
+---------------------
+Y (List Repeat) (non-vectorising)
+Keywords: wrap-repeat
+- a: any, b: num -> a repeated b times, wrapped in a list
+- a: num, b: any -> b repeated a times, wrapped in a list
+- a: lst|str, b: lst[num] -> a[_] repeated b[_] times, wrapped in a list
+---------------------
+Z (Zip) (non-vectorising)
+Keywords: zip, zip-map
+- a: lst, b: lst -> zip a and b
+- a: lst, b: fun -> [[x, b(x)] for x in a]
+- a: fun, b: lst -> [[a(x), x] for x in b]
+---------------------
 _ (Pop and Discard) (non-vectorising)
 Keywords: pop, discard
 - a ->
+---------------------
+a (Any Truthy | Any() | Is Uppercase?) (non-vectorising)
+Keywords: any, is-uppercase?, is-upper?, upper?
+- a: str -> is (a) uppercase? vectorises for strings len > 1
+- a: list -> is (a) any truthy?
 ---------------------
 b (Convert To Binary) (vectorising)
 Keywords: to-binary, dec->bin, decimal->bin
 - a: num -> convert a to binary
 - a: str -> bin(ord(x) for x in a)
 ---------------------
-i (Index | Collect Unique Application Values) (non-vectorising)
-Keywords: index, at, item-at, nth-item, collect-unique
+c (Contains) (non-vectorising)
+Keywords: contains, in
+- a: any, b: any -> is (b) in (a)?
+---------------------
+d (Double) (vectorising)
+Keywords: double
+- a: num -> a * 2
+- a: str -> a + a
+---------------------
+e (Is Even / Split on Newlines) (vectorising)
+Keywords: even?, even, is-even?, split-on-newlines, newline-split, split-newlines
+- a: num -> a % 2 == 0
+- a: str -> a split on newlines
+---------------------
+f (Flatten) (non-vectorising)
+Keywords: flatten, flat
+- a: lst -> Flattened a
+---------------------
+g (Monadic Minimum | Dyadic Minimum | Generate From Function | Vectorised Minimum) (non-vectorising)
+Keywords: max, maximum, generator
+- a: lst -> Maximum of a
+- a: non-lst, b: non-lst -> Maximum of a and b
+- a: lst, b: fun -> Call b infinitely with items of a as starting values
+---------------------
+h (Head | First Item) (non-vectorising)
+Keywords: head, first, first-item
+- a: lst -> a[0]
+---------------------
+i (Index | Collect Unique Application Values | Enclose) (non-vectorising)
+Keywords: index, at, item-at, nth-item, collect-unique, enclose
 - a: lst, b: num -> a[b]
 - a: lst, b: lst -> a[_] for _ in b
+- a: str, b: lst -> ''.join(a[i] for i in b)
 - a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value.
+- a: str, b: str -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])
+---------------------
+j (Join On) (non-vectorising)
+Keywords: join-on, join, join-with, join-by
+- a: lst, b: str -> a join on b
+---------------------
+l (Length of Each Item) (non-vectorising)
+Keywords: length-vectorised, length-vect, len-vect, len-vectorised, vec-len, vec-length, vlen
+- a: lst -> Length of each item in a
 ---------------------
 m (Get Context Variable M) (non-vectorising)
 Keywords: get-context-m, context-m, c-var-m, ctx-m, ctx-secondary
@@ -215,6 +292,55 @@ Keywords: get-context-m, context-m, c-var-m, ctx-m, ctx-secondary
 n (Get Context Variable N) (non-vectorising)
 Keywords: get-context-n, context-n, c-var-n, ctx-n, ctx-primary
 - ->  -> context variable n
+---------------------
+o (Overlap | Overlapping Slices) (non-vectorising)
+Keywords: overlap, overlaps, overlapping, overlapping-slices
+- a: lst, b: num -> Overlapping slices of a of length b
+- a: lst|str -> Overlapping slices of a of length 2
+---------------------
+p (Prepend) (non-vectorising)
+Keywords: prepend
+- a: lst, b: any -> b prepended to a
+---------------------
+q (Quotify) (non-vectorising)
+Keywords: quotify
+- a: any -> enclose a in quotes, escape backslashes and quote marks
+---------------------
+r (Replace) (non-vectorising)
+Keywords: replace
+- a: str, b: str, c: str -> replace all instances of b in a with c
+---------------------
+s (Split) (non-vectorising)
+Keywords: split
+- a: any, b: any -> split a by b
+---------------------
+t (Tail | Last Item) (non-vectorising)
+Keywords: tail, last, last-item
+- a: lst -> a[-1]
+---------------------
+u (Uniquify) (non-vectorising)
+Keywords: uniquify
+- a: lst -> a with duplicates removed
+---------------------
+w (Wrap Singleton) (non-vectorising)
+Keywords: wrap-singleton
+- a -> [a]
+---------------------
+x (Recursion | Recurse) (non-vectorising)
+Keywords: recurse
+-  -> call the current function recursively
+---------------------
+y (To Base) (non-vectorising)
+Keywords: to-base
+- a: num, b: num -> a in base b
+- a: num, b: str|lst -> a in base with alphabet b
+- a: lst, b: num -> each x in a in base b
+- a: lst, b: str|lst -> each x in a in base with alphabet b
+---------------------
+z (Zero Range | Is Lowercase) (vectorising)
+Keywords: zero-range, zero->n, is-lowercase?, lowercase?, lower?
+- a: num -> [0, 1, ..., a]
+- a: str -> is a lowercase?
 ---------------------
 Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
 Keywords: peek-call
@@ -287,7 +413,7 @@ Keywords: mul, multiply, times, str-repeat, *, ring-trans
 - a: str, b: str -> ring translate a according to b
 ---------------------
 ÷ (Divide | Split) (vectorising)
-Keywords: divide, div, split
+Keywords: divide, div, str-split
 - a: num, b: num -> a / b
 - a: str, b: str -> Split a on the regex b
 ---------------------
@@ -300,6 +426,12 @@ Description: Turn the next four elements (whether that be a structure/modifier/e
 Keywords: **-
 Description: Turn the next two elements (whether that be a structure/modifier/element) into a lambda
 ϩfg: Push the equivalent of λfg} to the stack
+---------------------
+ᵃ
+Keywords: apply-to-neighbours
+Description: To each overlapping pair, reduce it by an element
+Apply a dyadic link or a monadic chain for all pairs of neighboring elements.
+ᵃf: equivalent to 2ov/f
 ---------------------
 v
 Keywords: vectorise-, vec-, v-

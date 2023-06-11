@@ -40,6 +40,14 @@ object ListHelpers:
 
   end filter
 
+  def flatten(xs: VList): VList =
+    VList.from(
+      xs.flatMap {
+        case l: VList => flatten(l)
+        case x        => Seq(x)
+      }
+    )
+
   /** A wrapper call to the generator method in interpreter */
   def generate(function: VFun, initial: VList)(using ctx: Context): VList =
     val firstN = initial.length match
@@ -61,6 +69,58 @@ object ListHelpers:
       )
     )
   end generate
+
+  /** A wrapper call to the generator method in interpreter, but forced to be
+    * dyadic
+    *
+    * @param function
+    *   The function to generate with
+    * @param initial
+    *   The initial values to generate from
+    * @param ctx
+    *   The context to use
+    * @return
+    */
+  def generateDyadic(function: VFun, initial: VList)(using
+      ctx: Context
+  ): VList =
+    val firstN =
+      if initial.isEmpty then ctx.settings.defaultValue else initial.last
+
+    val firstM = initial.length match
+      case 0 => ctx.settings.defaultValue
+      case 1 => initial.head
+      case _ => initial.init.last
+    VList.from(
+      initial ++: Interpreter.generator(
+        function,
+        firstN,
+        firstM,
+        2,
+        initial
+      )
+    )
+  end generateDyadic
+
+  def groupConsecutive(iterable: VList): VList =
+    VList.from(groupConsecutiveBy(iterable)(x => x).map(VList.from))
+
+  def groupConsecutiveBy[T](
+      iterable: Seq[T],
+  )(function: T => Any): Seq[Seq[T]] =
+    val out = ArrayBuffer.empty[Seq[T]]
+    var current = ArrayBuffer.empty[T]
+    var last: Option[Any] = None
+    iterable.foreach { item =>
+      val key = function(item)
+      if last.isEmpty || last.get == key then current += item
+      else
+        out += current.toSeq
+        current = ArrayBuffer(item)
+      last = Some(key)
+    }
+    if current.nonEmpty then out += current.toSeq
+    out.toSeq
 
   def interleave(left: VList, right: VList)(using ctx: Context): VList =
     val out = ArrayBuffer.empty[VAny]
@@ -137,6 +197,13 @@ object ListHelpers:
         if MiscHelpers.compareExact(a, b) > 0 then a else b
       }
 
+  def minimum(iterable: VList)(using ctx: Context): VAny =
+    if iterable.isEmpty then VList()
+    else
+      iterable.reduce { (a, b) =>
+        if MiscHelpers.compareExact(a, b) < 0 then a else b
+      }
+
   /** Mold a list into a shape.
     * @param content
     *   The list to mold.
@@ -165,6 +232,15 @@ object ListHelpers:
     end moldHelper
     moldHelper(content, shape, 0)
   end mold
+
+  def overlaps(iterable: Seq[VAny], size: Int): Seq[VList] =
+    if size == 0 then Seq.empty
+    else iterable.sliding(size).toSeq.map(VList.from)
+
+  // Just for strings
+  def overlaps(iterable: String, size: Int): Seq[String] =
+    if size == 0 then Seq.empty
+    else iterable.sliding(size).toSeq
 
   def sortBy(iterable: VList, key: VFun)(using ctx: Context): VList =
     key.originalAST match
@@ -219,6 +295,20 @@ object ListHelpers:
   def prefixes(iterable: VList): Seq[VList] =
     iterable.inits.toSeq.reverse.tail
 
+  /** Reverse a VAny - if it's a list, reverse the list, if it's a string,
+    * reverse the string, if it's a number, reverse the number. Different to the
+    * VList.reverse method because this preserves the type of the input.
+    * @param iterable
+    * @return
+    *   The reversed iterable
+    */
+  def reverse(iterable: VAny): VAny =
+    iterable match
+      case list: VList => VList(list.reverse*)
+      case str: String => str.reverse
+      case num: VNum   => VNum(num.toString.reverse)
+      case _           => iterable
+
   /** Split a list on a sublist
     *
     * @param sep
@@ -243,7 +333,10 @@ object ListHelpers:
     parts += list.slice(lastInd, list.length)
 
     parts.toSeq
-  end split
+
+  def splitNormal(iterable: VList, sep: VAny)(using ctx: Context): VList =
+    val out = split(iterable, Seq(sep))
+    VList(out.map(VList.from)*)
 
   /** Transpose a matrix.
     *
@@ -315,5 +408,13 @@ object ListHelpers:
       (a: @unchecked) match
         case a: VList => vectorisedMaximum(a, b)
         case a: VVal  => MiscHelpers.dyadicMaximum(a, b)
+        case _        => ???
+    })
+
+  def vectorisedMinimum(iterable: VList, b: VVal): VList =
+    VList.from(iterable.map {
+      case a: VList => vectorisedMinimum(a, b)
+      case a: VVal  => MiscHelpers.dyadicMinimum(a, b)
+      case _        => ???
     })
 end ListHelpers

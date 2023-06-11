@@ -78,10 +78,11 @@ object Lexer extends RegexParsers:
 
   /** Whether the code lexed so far has sugar trigraphs */
   private var sugarUsed = false
-  def decimalRegex = raw"((0|[1-9][0-9_]*)?\.[0-9]*|0|[1-9][0-9_]*)"
+
+  def decimalRegex = raw"(((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)_?)"
   def number: Parser[VyxalToken] =
-    raw"($decimalRegex?ı$decimalRegex?)|$decimalRegex".r ^^ { value =>
-      Number(value.replace("_", ""))
+    raw"($decimalRegex?ı($decimalRegex|_)?)|$decimalRegex".r ^^ { value =>
+      Number(value)
     }
 
   def string: Parser[VyxalToken] = raw"""("(?:[^"„”“\\]|\\.)*["„”“])""".r ^^ {
@@ -94,7 +95,12 @@ object Lexer extends RegexParsers:
       // So replace the non-normal string tokens with the appropriate token type
 
       // btw thanks to @pxeger and @mousetail for the regex
-      val text = value.substring(1, value.length - 1).replaceAll("\\\\\"", "\"")
+
+      val text = value
+        .substring(1, value.length - 1)
+        .replace("\\\"", "\"")
+        .replace(raw"\n", "\n")
+        .replace(raw"\t", "\t")
 
       (value.last: @unchecked) match
         case '"' => Str(text)
@@ -136,7 +142,7 @@ object Lexer extends RegexParsers:
       else if value.charAt(1) == ':' then SyntaxTrigraph(value)
       else
         sugarUsed = true
-        val temp = SugarMap(value)
+        val temp = SugarMap.trigraphs.getOrElse(value, value)
         apply(temp) match
           case Left(value)  => Command(temp)
           case Right(value) => value(0)
@@ -220,8 +226,9 @@ object Lexer extends RegexParsers:
         case arity => throw Exception(s"Invalid modifier arity: $arity")
     else Digraph(digraph)
 
-  def hasSugar(code: String): Boolean =
-    sugarUsed = false
-    apply(code)
-    sugarUsed
+  def removeSugar(code: String): Option[String] =
+    this.sugarUsed = false
+    val lexed = apply(code).toOption
+    if sugarUsed then lexed.map(_.map(_.value).mkString)
+    else None
 end Lexer

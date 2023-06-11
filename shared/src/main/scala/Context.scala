@@ -7,7 +7,8 @@ import scala.io.StdIn
 /** @constructor
   *   Make a Context object for the current scope
   * @param stack
-  *   The stack on which all operations happen
+  *   The stack on which all operations happen. The top of the stack is stored
+  *   at the end so that popping is faster.
   * @param _ctxVarPrimary
   *   Context variable N. It's an Option because this scope might not have its
   *   own context variable(s). See [[this.ctxVarPrimary]] for more information.
@@ -36,7 +37,7 @@ class Context private (
     private val parent: Option[Context] = None,
     val globals: Globals = Globals(),
     val testMode: Boolean = false,
-    val useStack: Boolean = false
+    val useStack: Boolean = false,
 ):
   def settings: Settings =
     if testMode then Settings(endPrintMode = EndPrintMode.None)
@@ -60,12 +61,13 @@ class Context private (
         else settings.defaultValue
     if settings.logLevel == LogLevel.Debug then println(s"Popped $elem")
     elem
-  end pop
 
-  /** Pop n elements and wrap in a list */
+  /** Pop n elements and wrap in a list. The top of the stack will be at the
+    * start of the list.
+    */
   def pop(n: Int): Seq[VAny] =
     if useStack then return getTopCxt().pop(n)
-    Seq.fill(n)(this.pop()).reverse
+    Seq.fill(n)(this.pop())
 
   /** Get the top element on the stack without popping */
   def peek: VAny =
@@ -74,12 +76,14 @@ class Context private (
     else if inputs.nonEmpty then inputs.peek
     else settings.defaultValue
 
-  /** Get the top n elements on the stack without popping */
+  /** Get the top n elements on the stack without popping. The top of the stack
+    * will be at the start of the list.
+    */
   def peek(n: Int): List[VAny] =
     if useStack then getTopCxt().peek(n)
     else if n <= stack.length then
-      stack.slice(stack.length - n, stack.length).toList
-    else inputs.peek(n - stack.length) ::: stack.toList
+      stack.slice(stack.length - n, stack.length).toList.reverse
+    else stack.toList.reverse ::: inputs.peek(n - stack.length)
 
   /** Push items onto the stack. The first argument will be pushed first. */
   def push(items: VAny*): Unit =

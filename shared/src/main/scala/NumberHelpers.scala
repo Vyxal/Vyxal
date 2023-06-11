@@ -7,6 +7,10 @@ import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.math
 
+import spire.implicits.truncatedDivisionOps // So we can use fmod below
+import spire.math.Real
+import spire.syntax.isReal.partialOrderOps // So we can compare Reals to stuff
+
 object NumberHelpers:
 
   def factors(a: VNum): VList =
@@ -32,7 +36,7 @@ object NumberHelpers:
 
   /** Returns digits in base 10 using arbitrary base `base` */
   def fromBaseDigits(digits: VList, base: VAny)(using ctx: Context): VAny =
-    digits.foldLeft(VNum(0): VAny) { (ret, digit) =>
+    digits.foldLeft(0: VAny) { (ret, digit) =>
       MiscHelpers.add(MiscHelpers.multiply(base, ret), digit)
     }
 
@@ -89,12 +93,24 @@ object NumberHelpers:
       current /= b
     result
 
+  /** A version of VNum.toString that differentiates between literate and sbcs
+    * mode
+    */
+  def numToString(a: VNum)(using ctx: Context): String =
+    if ctx.globals.literate then a.toString.replace("ı", "i")
+    else
+      a.toString
+        .split("ı")
+        .toSeq
+        .map(x => if x.startsWith("-") then x.tail + "_" else x)
+        .mkString("ı")
+
   def range(a: VNum, b: VNum): VList =
-    val start = a.toInt
-    val end = b.toInt
+    val start = a.toBigInt
+    val end = b.toBigInt
     val step = if start < end then 1 else -1
 
-    VList((start to end by step).map(VNum(_))*)
+    VList.from((start to end by step).map(VNum(_)))
 
   def toBinary(a: VAny)(using Context): VAny =
     a match
@@ -114,18 +130,22 @@ object NumberHelpers:
 
   def toBase(a: VAny, b: VAny)(using ctx: Context): VAny =
     (a, b) match
-      case (a: VNum, b: VNum) =>
-        if b.toBigInt == 0 then 0
-        else toBaseDigits(a, b)
-      case (n: VNum, _)  => toBaseAlphabet(n, ListHelpers.makeIterable(b))
-      case (a: VList, _) => VList(a.map(toBase(_, b))*)
+      case (a: VNum, b: VNum)  => toBaseDigits(a, b)
+      case (n: VNum, b: VIter) => toBaseAlphabet(n, b)
+      case (a: VList, _)       => VList(a.map(toBase(_, b))*)
       case _ =>
         throw new Exception(
           s"toBase only works on numbers and lists, was given $a and $b instead"
         )
 
   /** Returns value in base len(alphabet) using base 10 [bijective base] */
-  def toBaseAlphabet(value: VNum, alphabet: VIter)(using ctx: Context): VAny =
+  def toBaseAlphabet(value: VNum, alphabet: VIter)(using
+      ctx: Context
+  ): VAny =
+    alphabet match
+      case a: String => if a.isEmpty then return 0
+      case l: VList  => if l.isEmpty then return 0
+
     val indexes = toBaseDigits(value, alphabet.iterLength)
     val alphalist = alphabet match
       case a: String => VList.from(a.toString.toList.map(_.toString))
@@ -134,29 +154,46 @@ object NumberHelpers:
     val temp = indexes.map(alphalist.index(_).toString())
     alphabet match
       case a: String => temp.mkString("")
-      case l: VList  => l
+      case l: VList  => VList.from(temp)
 
   def toBaseDigits(value: VNum, base: VNum): VList =
-    if value == VNum(0) then VList(List(VNum(0))*)
-    else if base.toBigInt == -1 then
-      VList.from(
-        (1 until value.toInt.abs * 2 - (if value.toBigInt > 0 then 0 else 1))
-          .map(_ % 2)
-      )
-    else
-      val sign = if value.toBigInt < 0 && base.toBigInt > 0 then -1 else 1
-      var current = sign * value.toBigInt
-      if base.toBigInt == 1 then VList(List.fill(current.toInt.abs)(sign)*)
+    /** Helper to get digits for single component of a VNum */
+    def compToBase(valueComp: Real, baseComp: Real): Seq[Real] =
+      val value = valueComp.floor
+      val base = baseComp.floor
+      if value == Real(0) then List(0)
+      else if base == Real(0) then List(value)
+      else if base == Real(1) then Seq.fill(value.toInt.abs)(value.signum)
+      else if base == Real(-1) then
+        Seq
+          .fill(value.toInt.abs)(Seq[Real](1, 0))
+          .flatten
+          .dropRight(if value > 0 then 1 else 0)
       else
-        val digits = ListBuffer[VNum]()
-        while current > 0 do
-          var digit = current % base.toBigInt
-          current = current / base.toBigInt
-          if digit < 0 then
-            current += 1
-            digit -= base.toBigInt
-          digits.prepend(digit * sign)
-        VList(digits.toList*)
+        List
+          .unfold(value) { current =>
+            Option.when(current != Real(0)) {
+              val rem = current.tmod(base)
+              val digit = if rem < 0 then rem + base.abs else rem
+              val quot = (current - digit) / base
+              (digit, quot)
+            }
+          }
+          .reverse
+      end if
+    end compToBase
+    val real = compToBase(value.real, base.real)
+    val imag = compToBase(value.imag, base.imag)
+    val realPadded =
+      if real.size < imag.size then
+        Seq.fill(imag.size - real.size)(Real(0)) ++ real
+      else real
+    val imagPadded =
+      if imag.size < real.size then
+        Seq.fill(real.size - imag.size)(Real(0)) ++ imag
+      else imag
+    VList.from(realPadded.lazyZip(imagPadded).map(VNum.complex))
+  end toBaseDigits
 
   def toInt(value: VAny, radix: Int)(using ctx: Context): VAny =
     value match

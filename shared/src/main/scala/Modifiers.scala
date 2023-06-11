@@ -29,6 +29,18 @@ object Modifiers:
       case _: AST.Lambda => ast
       case _             => AST.Lambda(arity, List(), List(ast))
   val modifiers: Map[String, Modifier] = Map(
+    "ᵃ" -> Modifier(
+      "Apply to Neighbours",
+      """|To each overlapping pair, reduce it by an element
+       |Apply a dyadic link or a monadic chain for all pairs of neighboring elements.
+       |ᵃf: equivalent to 2ov/f""".stripMargin,
+      List("apply-to-neighbours"),
+      1
+    ) { case List(ast) =>
+      val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
+      // obviously incorrect right now,but it's a start
+      AST.makeSingle(lambdaAst, AST.Command("2ov/"))
+    },
     "v" -> Modifier(
       "Vectorise",
       """|Vectorises

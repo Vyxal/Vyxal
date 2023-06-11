@@ -1,5 +1,6 @@
 package vyxal
 
+import scala.collection.mutable as mut
 import scala.io.StdIn
 
 import VNum.given
@@ -16,11 +17,14 @@ import VNum.given
 case class Globals(
     inputs: Inputs = Inputs(),
     settings: Settings = Settings(),
-    printFn: String => Unit = print
+    printFn: String => Unit = print,
+    callStack: mut.Stack[VFun] = mut.Stack(),
 ):
   var register: VAny = settings.defaultValue
+  var literate: Boolean = false
 
-/** Stores the inputs for some Context. Inputs can be overridden.
+/** Stores the inputs for some Context. Inputs can be overridden (see
+  * [[Inputs#overrideInputs]]).
   *
   * Implemented as a circular buffer to wrap around.
   */
@@ -41,12 +45,20 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
     ind = (ind + 1) % currInputs.size
     res
 
-  /** Temporarily replace inputs with the given `Seq` */
+  /** Temporarily replace inputs with the given `Seq`
+    *
+    * @see
+    *   [[reset]]
+    */
   def overrideInputs(newInputs: Seq[VAny]): Unit =
     currInputs = newInputs.toArray
     ind = 0
 
-  /** Use the original inputs again */
+  /** Use the original inputs again
+    *
+    * @see
+    *   [[overrideInputs]]
+    */
   def reset(): Unit =
     currInputs = origArr
     ind = 0
@@ -59,23 +71,20 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
     */
   def peek(n: Int): List[VAny] =
     // The number of elems that can be gotten without wrapping
-    val numNonWrapping = n.max(currInputs.length - ind)
-    val nonWrapping = currInputs.slice(ind, ind + numNonWrapping + 1).toList
+    val numNonWrapping = n.min(currInputs.length - ind)
+    val nonWrapping = currInputs.slice(ind, ind + numNonWrapping).toList
 
-    val res =
-      if n <= numNonWrapping then nonWrapping
-      else
-        // The number of times the entire inputs array has to be repeated
-        val numRepeats = (n - numNonWrapping) / currInputs.size
-        val repeats = List.fill(numRepeats)(currInputs.toList)
+    if n == numNonWrapping then nonWrapping
+    else
+      // The number of times the entire inputs array has to be repeated
+      val numRepeats = (n - numNonWrapping) / currInputs.size
+      val repeats = List.fill(numRepeats)(currInputs.toList)
 
-        // The number of extra elems needed at the end of wrapping
-        val numEnd = n - numNonWrapping - numRepeats * currInputs.size
-        val end = currInputs.take(numEnd).toList
+      // The number of extra elems needed at the end of wrapping
+      val numEnd = n - numNonWrapping - numRepeats * currInputs.size
+      val end = currInputs.take(numEnd).toList
 
-        nonWrapping ::: repeats.flatten ::: end
-
-    res.reverse
+      nonWrapping ::: repeats.flatten ::: end
   end peek
 
   override def toString() = origArr.mkString("Inputs(", ", ", ")")

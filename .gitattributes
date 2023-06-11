@@ -1,5 +1,5 @@
 documentation/elements.txt linguist-generated=true
-pages/dictionary.js linguist-generated=true
+js/src/main/scala/Dictionary.scala linguist-generated=true
 static/parsed_yaml.js linguist-generated=true
 tests/test_elements.py linguist-generated=true
 mill linguist-generated=true

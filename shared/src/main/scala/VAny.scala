@@ -15,6 +15,7 @@ type VAny = VAtom | VList
 type VIter = String | VList
 type VAtom = VVal | VFun
 type VVal = VNum | String
+type VData = VVal | VList // Everything but functions
 
 /** A function object (not a function definition)
   *
@@ -95,7 +96,6 @@ object VFun:
   def fromElement(elem: Element)(using origCtx: Context): VFun =
     val Element(symbol, name, _, arity, _, _, impl) = elem
     VFun(impl, arity.getOrElse(1), List.empty, origCtx)
-end VFun
 
 extension (self: VAny)
   def ===(that: VAny): Boolean =

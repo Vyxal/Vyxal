@@ -13,22 +13,12 @@ object FuncHelpers:
         case 2 =>
           val b, a = ctx.pop()
           ListHelpers.makeIterable(a).vmap { a =>
-            Interpreter.executeFn(fn, args = List(a, b))
+            Interpreter.executeFn(fn, args = List(b, a))
           }
-        case 3 =>
-          val c, b, a = ctx.pop()
-          VList.zipValues(a, b, c) { args =>
+        case n =>
+          VList.zipValues(ctx.pop(n)*) { args =>
             Interpreter.executeFn(fn, args = args)
           }
-        case 4 =>
-          val d, c, b, a = ctx.pop()
-          VList.zipValues(a, b, c, d) { args =>
-            Interpreter.executeFn(fn, args = args)
-          }
-        case _ =>
-          throw UnsupportedOperationException(
-            s"Vectorising functions of arity ${fn.arity} not possible"
-          )
 
     ctx.push(res)
   end vectorise
