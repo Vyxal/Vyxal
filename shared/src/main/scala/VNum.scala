@@ -23,7 +23,10 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   def +(rhs: VNum): VNum = underlying + rhs.underlying
   def -(rhs: VNum): VNum = underlying - rhs.underlying
   def *(rhs: VNum): VNum = VNum.complex(real * rhs.real, imag * rhs.imag)
-  def /(rhs: VNum): VNum = VNum.complex(real / rhs.real, imag / rhs.imag)
+  def /(rhs: VNum): VNum = VNum.complex(
+    if rhs.real === 0 then 0 else real / rhs.real,
+    if rhs.imag === 0 then 0 else imag / rhs.imag
+  )
   def **(rhs: VNum): VNum = underlying ** rhs.underlying
 
   def %(rhs: VNum): VNum =
