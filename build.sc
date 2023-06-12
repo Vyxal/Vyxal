@@ -1,5 +1,5 @@
 import mill._
-import mill.define.Target
+import mill.api.Result
 import mill.scalajslib._
 import mill.scalajslib.api._
 import mill.scalalib._
@@ -43,7 +43,10 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
     build.millSourcePath / "shared" / "src" / "main" / "resources"
   )
 
-  trait VyxalTestModule extends JavaModuleTests with TestModule.ScalaTest with ScalafmtModule {
+  trait VyxalTestModule
+      extends JavaModuleTests
+      with TestModule.ScalaTest
+      with ScalafmtModule {
     override def defaultCommandName() = "test"
 
     def ivyDeps = Agg(
@@ -82,10 +85,10 @@ object jvm extends VyxalModule {
   }
 
   override def assembly = T {
-    val res = super.assembly()
+    val jar = super.assembly()
     // Rename jar to vyxal-<version>.jar and move into root folder
-    os.move(res.path, build.millSourcePath / s"vyxal-$vyxalVersion.jar")
-    res
+    os.move(jar.path, build.millSourcePath / s"vyxal-$vyxalVersion.jar")
+    jar
   }
 
   object test extends ScalaTests with VyxalTestModule
