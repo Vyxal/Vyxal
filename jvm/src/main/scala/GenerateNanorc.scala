@@ -22,6 +22,6 @@ private[vyxal] object GenerateNanorc {
   val vyxalLitNanorc = "vyxal-lit.nanorc"
 
   def generate(): Unit = {
-    
+
   }
 }
