@@ -13,15 +13,16 @@ import org.jline.terminal.TerminalBuilder
 object JvmRepl:
   def startRepl(literate: Boolean)(using Context): Unit =
     // Enable debug logging
-    Logger.getLogger("org.jline").setLevel(Level.FINE)
+    Logger.getLogger("org.jline").setLevel(Level.FINER)
 
     AnsiConsole.systemInstall()
 
-    System.setProperty("org.jline.terminal.jansi", "true")
+    System.setProperty(TerminalBuilder.PROP_JANSI, "true")
 
-    println(System.getProperty("org.jline.terminal.jansi"))
-    println(System.getProperty("org.jline.terminal.exec"))
-    println(System.getProperty("out"))
+    println(System.getProperty(TerminalBuilder.PROP_JANSI))
+    println(System.getProperty(TerminalBuilder.PROP_OUTPUT))
+    println(System.getProperty(TerminalBuilder.PROP_OUTPUT_OUT))
+    println(System.getProperty("org.jline.terminal.providers"))
 
     val terminal = TerminalBuilder
       .builder()
@@ -30,8 +31,9 @@ object JvmRepl:
       .jna(true)
       .jansi(true)
       .exec(true)
+      .dumb(false)
       .size(Size())
-      // .streams(System.in, System.out)
+      .streams(System.in, System.out)
       .build()
     val lineReader = LineReaderBuilder
       .builder()
