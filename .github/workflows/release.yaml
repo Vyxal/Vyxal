@@ -34,7 +34,9 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
       - name: Build executable
-        run: sbt vyxalNative/nativeLink
+        run: |
+          chmod +x mill
+          SCALANATIVE_MODE=release-full SCALANATIVE_LTO=full ./mill native.nativeLink
       - uses: olegtarasov/get-tag@v2.1.2
         id: tagName
       - name: Name executable (Linux/MacOS)
@@ -69,7 +71,7 @@ jobs:
       - name: Make artifacts folder
         run: |
           mkdir artifacts
-          mv jvm/target/scala-*/vyxal-*.jar artifacts/
+          mv vyxal-*.jar artifacts/
 
       - uses: actions/download-artifact@v3
         with:

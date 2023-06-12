@@ -11,13 +11,15 @@ import mill.scalanativelib.api._
 trait VyxalModule extends ScalaModule with ScalafmtModule {
   def platform: String
 
-  def scalaVersion = "3.2.2"
+  def scalaVersion = "3.3.0"
+
+  def vyxalVersion = "3.0.0"
 
   def ivyDeps = Agg(
-    ivy"org.typelevel::spire::0.18.0",
-    ivy"org.scala-lang.modules::scala-parser-combinators::2.2.0",
-    ivy"com.github.scopt::scopt::4.1.0",
-    ivy"org.scalactic::scalactic::3.2.15"
+    ivy"org.typelevel::spire:0.18.0",
+    ivy"org.scala-lang.modules::scala-parser-combinators:2.2.0",
+    ivy"com.github.scopt::scopt:4.1.0",
+    ivy"org.scalactic::scalactic:3.2.16"
   )
 
   def scalacOptions = Seq(
@@ -43,11 +45,13 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
   )
 
   trait VyxalTestModule extends TestModule.ScalaTest with ScalafmtModule {
+    override def testFramework: T[String] = "org.scalatest.tools.Framework"
+
     override def defaultCommandName() = "test"
 
     def ivyDeps = Agg(
-      ivy"org.scalatest::scalatest::3.2.15",
-      ivy"org.virtuslab::scala-yaml::0.0.7"
+      ivy"org.scalatest::scalatest:3.2.16",
+      ivy"org.virtuslab::scala-yaml:0.0.7"
     )
 
     // Task to only show output from failed tests
@@ -74,10 +78,17 @@ object jvm extends VyxalModule {
   def ivyDeps = T {
     super.ivyDeps() ++ Seq(
       // For the REPL
-      ivy"org.jline:jline::3.23.0",
-      ivy"org.jline:jline-terminal-jansi::3.23.0",
-      ivy"org.fusesource.jansi:jansi::2.4.0"
+      ivy"org.jline:jline:3.23.0",
+      ivy"org.jline:jline-terminal-jansi:3.23.0",
+      ivy"org.fusesource.jansi:jansi:2.4.0"
     )
+  }
+
+  override def assembly = T {
+    val res = super.assembly()
+    // Rename jar to vyxal-<version>.jar and move into root folder
+    os.move(res.path, build.millSourcePath / s"vyxal-$vyxalVersion.jar")
+    res
   }
 
   object test extends VyxalTestModule with ScalaTests
@@ -113,16 +124,13 @@ object js extends ScalaJSModule with VyxalModule {
 /** Shared and native-specific code */
 object native extends ScalaNativeModule with VyxalModule {
   def platform = "native"
-  def scalaNativeVersion = "0.4.9"
+  def scalaNativeVersion = "0.4.14"
 
   def ivyDeps = T {
-    super.ivyDeps() ++ Seq(ivy"com.github.scopt::scopt::4.1.0")
+    super.ivyDeps() ++ Seq(ivy"com.github.scopt::scopt:4.1.0")
   }
 
   def nativeEmbedResources = true
-
-  def releaseMode = ReleaseMode.ReleaseFast
-  def nativeLTO = LTO.Thin
 
   object test extends VyxalTestModule with ScalaNativeTests
 }

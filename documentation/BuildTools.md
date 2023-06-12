@@ -241,14 +241,11 @@ If you want to check if a task exists, you can do that too, e.g.
   - `test`: Run all tests.
   - `testOnly`: Run specific tests.
   - `testQuiet`: Only defined for Mill (currently). Runs tests and suppresses output from passed/ignored tests.
-- Run Scalafix to lint/refactor your code
-  - `scalafix` if you're using sbt
-    - If you don't want Scalafix modifying your code, run `scalafix --check` so it'll
-      just give you errors and you can fix them manually
-    - You can use specific rule names, e.g. `scalafix RemoveUnused` to only run the
-      `RemoveUnused` rule
-  - `fix` if you're using Mill
-    - If you don't want Scalafix modifying your code, use `--check` (e.g. `jvm.fix --check`)
+- Run `scalafix` to lint/refactor your code (only with sbt)
+  - If you don't want Scalafix modifying your code, run `scalafix --check` so it'll
+    just give you errors and you can fix them manually
+  - You can use specific rule names, e.g. `scalafix RemoveUnused` to only run the
+    `RemoveUnused` rule
 - Automatically formatting files with Scalafmt:
   - `scalafmt` if you're using sbt
     - Use `scalafmtOnly <filepath>` to only format a particular file. The file path
