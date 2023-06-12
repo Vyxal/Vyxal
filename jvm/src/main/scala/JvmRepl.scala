@@ -31,9 +31,12 @@ object JvmRepl:
       .build()
 
     val highlighter = SyntaxHighlighter.build(
-      getClass().getClassLoader().getResource(
-        if literate then "vyxal-lit.nanorc" else "vyxal.nanorc"
-      ).toString
+      getClass()
+        .getClassLoader()
+        .getResource(
+          if literate then "vyxal-lit.nanorc" else "vyxal.nanorc"
+        )
+        .toString
     )
 
     val lineReader = LineReaderBuilder

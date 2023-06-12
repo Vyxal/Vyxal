@@ -1,6 +1,6 @@
 package vyxal
 
-private[vyxal] object GenerateNanorc {
+private[vyxal] object GenerateNanorc:
 
   val commonHeader = raw"""|syntax "Vyxal" "\.(vy)$"
     |comment "##"
@@ -21,7 +21,5 @@ private[vyxal] object GenerateNanorc {
   val vyxalNanorc = "vyxal.nanorc"
   val vyxalLitNanorc = "vyxal-lit.nanorc"
 
-  def generate(): Unit = {
-
-  }
-}
+  def generate(): Unit = {}
+end GenerateNanorc
