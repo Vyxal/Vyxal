@@ -73,7 +73,9 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     // Necessary for tests to be able to access src/main/resources
     Test / fork := true,
     libraryDependencies ++= Seq(
-      "org.jline" % "jline" % "3.22.0"
+      "org.jline" % "jline" % "3.23.0",
+      "org.jline" % "jline-terminal-jansi" % "3.23.0",
+      "org.fusesource.jansi" % "jansi" % "2.4.0"
     )
   )
   .jsSettings(

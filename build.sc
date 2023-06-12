@@ -79,7 +79,10 @@ object jvm extends VyxalModule {
 
   def ivyDeps = T {
     super.ivyDeps() ++ Seq(
-      ivy"org.jline:jline::3.22.0"
+      // For the REPL
+      ivy"org.jline:jline::3.23.0",
+      ivy"org.jline:jline-terminal-jansi::3.23.0",
+      ivy"org.fusesource.jansi:jansi::2.4.0"
     )
   }
 
