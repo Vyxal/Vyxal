@@ -4,11 +4,15 @@ import java.util.logging.Level
 import java.util.logging.Logger
 
 import org.fusesource.jansi.AnsiConsole
+import org.jline.builtins.SyntaxHighlighter
+import org.jline.reader.impl.DefaultHighlighter
 import org.jline.reader.EndOfFileException
+import org.jline.reader.LineReader
 import org.jline.reader.LineReaderBuilder
 import org.jline.reader.UserInterruptException
 import org.jline.terminal.Size
 import org.jline.terminal.TerminalBuilder
+import org.jline.utils.AttributedString
 
 object JvmRepl:
   def startRepl(literate: Boolean)(using ctx: Context): Unit =
@@ -25,9 +29,22 @@ object JvmRepl:
       .system(true)
       .streams(System.in, System.out)
       .build()
+
+    val highlighter = SyntaxHighlighter.build(
+      getClass().getClassLoader().getResource(
+        if literate then "vyxal-lit.nanorc" else "vyxal.nanorc"
+      ).toString
+    )
+
     val lineReader = LineReaderBuilder
       .builder()
       .terminal(terminal)
+      .highlighter(
+        new DefaultHighlighter:
+
+          override def highlight(reader: LineReader, buffer: String) =
+            highlighter.highlight(buffer)
+      )
       .build()
 
     while true do
