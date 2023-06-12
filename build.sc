@@ -16,10 +16,9 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
   def vyxalVersion = "3.0.0"
 
   def ivyDeps = Agg(
-    ivy"org.typelevel::spire:0.18.0",
-    ivy"org.scala-lang.modules::scala-parser-combinators:2.2.0",
-    ivy"com.github.scopt::scopt:4.1.0",
-    ivy"org.scalactic::scalactic:3.2.16"
+    ivy"org.typelevel::spire::0.18.0",
+    ivy"org.scala-lang.modules::scala-parser-combinators::2.2.0",
+    ivy"com.github.scopt::scopt::4.1.0"
   )
 
   def scalacOptions = Seq(
@@ -45,13 +44,12 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
   )
 
   trait VyxalTestModule extends TestModule.ScalaTest with ScalafmtModule {
-    override def testFramework: T[String] = "org.scalatest.tools.Framework"
-
     override def defaultCommandName() = "test"
 
     def ivyDeps = Agg(
-      ivy"org.scalatest::scalatest:3.2.16",
-      ivy"org.virtuslab::scala-yaml:0.0.7"
+      ivy"org.scalatest::scalatest::3.2.16",
+      ivy"org.scala-sbt:test-interface::1.0",
+      ivy"org.virtuslab::scala-yaml::0.0.7"
     )
 
     // Task to only show output from failed tests
@@ -60,11 +58,11 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
       T.command { testOnly(newArgs :+ "-oNCXEOPQRM": _*)() }
     }
 
-    def sources = T.sources(
+    override def sources = T.sources(
       build.millSourcePath / platform / "src" / "test" / "scala",
       build.millSourcePath / "shared" / "src" / "test" / "scala"
     )
-    def resources = T.sources(
+    override def resources = T.sources(
       build.millSourcePath / platform / "src" / "test" / "resources",
       build.millSourcePath / "shared" / "src" / "test" / "resources"
     )

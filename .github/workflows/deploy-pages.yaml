@@ -42,12 +42,8 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
-      - name: Scala to JS and build docs
-        run: sbt fullOptJS vyxalJVM/doc
-
-      - name: Move docs to pages/
-        run: |
-          mv docs/ pages/docs/
+      - name: Scala to JS
+        run: ./mill fullOptJS
 
       - name: Upload built HTML
         uses: actions/upload-pages-artifact@v1

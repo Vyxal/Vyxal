@@ -33,8 +33,6 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "com.github.scopt" %%% "scopt" % "4.1.0",
       // For reading tests.yaml
       "org.virtuslab" %%% "scala-yaml" % "0.0.7" % Test,
-      // Used by ScalaTest
-      "org.scalactic" %%% "scalactic" % "3.2.15",
       "org.scalatest" %%% "scalatest" % "3.2.15" % Test
     ),
     scalacOptions ++= Seq(
@@ -47,18 +45,6 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "-language:implicitConversions",
       // "-explain",
       "-print-lines"
-    ),
-    // Configure Scaladoc
-    Compile / doc / target := file("docs"),
-    Compile / doc / scalacOptions ++= Seq(
-      "-project-version",
-      vyxalVersion,
-      "-groups", // Group similar functions
-      "-Ygenerate-inkuire", // Allow type-based searches
-      "-external-mappings:.*vyxal.*::scaladoc3::https://vyxal.github.io/Vyxal/docs/",
-      "-external-mappings:.*scala.util.parsing.*::scaladoc3::https://scala-lang.org/api/2.12.8/scala-parser-combinators/",
-      "-external-mappings:.*scala(?!.util.parsing).*::scaladoc3::https://scala-lang.org/api/3.x/",
-      "-external-mappings:.*java.*::javadoc::https://docs.oracle.com/javase/8/docs/api/"
     ),
     // From https://www.scalatest.org/user_guide/using_the_runner
     // Suppress output from successful tests

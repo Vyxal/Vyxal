@@ -24,10 +24,7 @@ object JvmRepl:
     val terminal = TerminalBuilder
       .builder()
       .name("vyxal")
-      .system(true)
-      .jna(true)
       .jansi(true)
-      .exec(true)
       .dumb(false)
       .size(Size())
       .streams(System.in, System.out)
