@@ -11,22 +11,18 @@ import org.jline.terminal.Size
 import org.jline.terminal.TerminalBuilder
 
 object JvmRepl:
-  def startRepl(literate: Boolean)(using Context): Unit =
+  def startRepl(literate: Boolean)(using ctx: Context): Unit =
     // Enable debug logging
-    Logger.getLogger("org.jline").setLevel(Level.FINER)
+    if ctx.settings.logLevel == LogLevel.Debug then
+      Logger.getLogger("org.jline").setLevel(Level.FINER)
 
-    // AnsiConsole.systemInstall()
-
-    println(System.getProperty(TerminalBuilder.PROP_OUTPUT))
-    println(System.getProperty(TerminalBuilder.PROP_OUTPUT_OUT))
-    println(System.getProperty("org.jline.terminal.providers"))
+    AnsiConsole.systemInstall()
 
     val terminal = TerminalBuilder
       .builder()
       .name("vyxal")
       .jansi(true)
-      .dumb(false)
-      .size(Size())
+      .system(true)
       .streams(System.in, System.out)
       .build()
     val lineReader = LineReaderBuilder
@@ -41,7 +37,7 @@ object JvmRepl:
       catch
         case _: UserInterruptException =>
           println(
-            "Use Ctrl+D (on Unix) and Ctrl+Z followed by Enter (on Windows) to exit"
+            "Use Ctrl+D (on Unix) or Ctrl+Z followed by Enter (on Windows) to exit"
           )
         case _: EndOfFileException =>
           return
