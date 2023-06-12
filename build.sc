@@ -1,5 +1,3 @@
-import $ivy.`com.goyeau::mill-scalafix::0.2.9`
-import com.goyeau.mill.scalafix.ScalafixModule
 import mill._
 import mill.define.Target
 import mill.scalajslib._
@@ -10,7 +8,7 @@ import mill.scalanativelib._
 import mill.scalanativelib.api._
 
 /** Shared settings for all modules */
-trait VyxalModule extends ScalaModule with ScalafmtModule with ScalafixModule {
+trait VyxalModule extends ScalaModule with ScalafmtModule {
   def platform: String
 
   def scalaVersion = "3.2.2"
@@ -44,12 +42,8 @@ trait VyxalModule extends ScalaModule with ScalafmtModule with ScalafixModule {
     build.millSourcePath / "shared" / "src" / "main" / "resources"
   )
 
-  trait VyxalTestModule
-      extends Tests
-      with TestModule.ScalaTest
-      with ScalafmtModule
-      with ScalafixModule {
-    def scalaVersion = VyxalModule.this.scalaVersion()
+  trait VyxalTestModule extends TestModule.ScalaTest with ScalafmtModule {
+    override def defaultCommandName() = "test"
 
     def ivyDeps = Agg(
       ivy"org.scalatest::scalatest::3.2.15",
@@ -86,7 +80,7 @@ object jvm extends VyxalModule {
     )
   }
 
-  object test extends VyxalTestModule
+  object test extends VyxalTestModule with ScalaTests
 }
 
 /** Shared and JS-specific code */
@@ -98,6 +92,7 @@ object js extends ScalaJSModule with VyxalModule {
   override def fastLinkJS = T {
     val pagesDir = build.millSourcePath / "pages"
     val res = super.fastLinkJS()
+    // Copy to pages/vyxal.js
     os.copy(res.dest.path / "main.js", pagesDir / "vyxal.js")
     os.copy(res.dest.path / "main.js.map", pagesDir / "vyxal.js.map")
     res
@@ -106,21 +101,13 @@ object js extends ScalaJSModule with VyxalModule {
   override def fullLinkJS = T {
     val pagesDir = build.millSourcePath / "pages"
     val res = super.fastLinkJS()
+    // Copy to pages/vyxal.js
     os.copy(res.dest.path / "main.js", pagesDir / "vyxal.js")
     os.copy(res.dest.path / "main.js.map", pagesDir / "vyxal.js.map")
     res
   }
 
-  // Works in Mill 0.11 but not 0.10
-  // todo when the third-party Scalafix plugin supports Mill 0.11,
-  // use this again instead of the janky fastLinkJS/fullLinkJS overrides above
-  // override def scalaJSOutputPatterns = T {
-  //   OutputPatterns.fromJSFile("pages/vyxal.js")
-  // }
-
-  object test extends VyxalTestModule with ScalaJSModule {
-    def scalaJSVersion = "1.13.0"
-  }
+  object test extends VyxalTestModule with ScalaJSTests
 }
 
 /** Shared and native-specific code */
@@ -137,7 +124,5 @@ object native extends ScalaNativeModule with VyxalModule {
   def releaseMode = ReleaseMode.ReleaseFast
   def nativeLTO = LTO.Thin
 
-  object test extends VyxalTestModule with ScalaNativeModule {
-    def scalaNativeVersion = native.this.scalaNativeVersion
-  }
+  object test extends VyxalTestModule with ScalaNativeTests
 }

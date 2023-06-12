@@ -15,11 +15,8 @@ object JvmRepl:
     // Enable debug logging
     Logger.getLogger("org.jline").setLevel(Level.FINER)
 
-    AnsiConsole.systemInstall()
+    // AnsiConsole.systemInstall()
 
-    System.setProperty(TerminalBuilder.PROP_JANSI, "true")
-
-    println(System.getProperty(TerminalBuilder.PROP_JANSI))
     println(System.getProperty(TerminalBuilder.PROP_OUTPUT))
     println(System.getProperty(TerminalBuilder.PROP_OUTPUT_OUT))
     println(System.getProperty("org.jline.terminal.providers"))
@@ -27,7 +24,7 @@ object JvmRepl:
     val terminal = TerminalBuilder
       .builder()
       .name("vyxal")
-      .system(true)
+      .system(false)
       .jna(true)
       .jansi(true)
       .exec(true)
