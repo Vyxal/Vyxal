@@ -43,12 +43,11 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
     build.millSourcePath / "shared" / "src" / "main" / "resources"
   )
 
-  trait VyxalTestModule extends TestModule.ScalaTest with ScalafmtModule {
+  trait VyxalTestModule extends JavaModuleTests with TestModule.ScalaTest with ScalafmtModule {
     override def defaultCommandName() = "test"
 
     def ivyDeps = Agg(
       ivy"org.scalatest::scalatest::3.2.16",
-      ivy"org.scala-sbt:test-interface::1.0",
       ivy"org.virtuslab::scala-yaml::0.0.7"
     )
 
@@ -89,7 +88,7 @@ object jvm extends VyxalModule {
     res
   }
 
-  object test extends VyxalTestModule with ScalaTests
+  object test extends ScalaTests with VyxalTestModule
 }
 
 /** Shared and JS-specific code */
@@ -116,7 +115,7 @@ object js extends ScalaJSModule with VyxalModule {
     res
   }
 
-  object test extends VyxalTestModule with ScalaJSTests
+  object test extends ScalaJSTests with VyxalTestModule
 }
 
 /** Shared and native-specific code */
@@ -130,5 +129,5 @@ object native extends ScalaNativeModule with VyxalModule {
 
   def nativeEmbedResources = true
 
-  object test extends VyxalTestModule with ScalaNativeTests
+  object test extends ScalaNativeTests with VyxalTestModule
 }
