@@ -34,7 +34,8 @@ object JvmRepl:
       getClass()
         .getClassLoader()
         .getResource(
-          if literate then "vyxal-lit.nanorc" else "vyxal.nanorc"
+          if literate then GenerateNanorc.LitNanorc
+          else GenerateNanorc.SBCSNanorc
         )
         .toString
     )

@@ -2,18 +2,18 @@ package vyxal
 
 import vyxal.impls.Elements
 
+import scala.annotation.static
 import scala.util.matching.Regex
 
 /** To generate nanorc files for syntax highlighting in JLine. See build.sc */
-class GenerateNanorc:
+private object GenerateNanorc:
   /** The name of the nanorc file for Vyxal in SBCS mode */
   val SBCSNanorc = "vyxal.nanorc"
 
   /** The name of the nanorc file for Vyxal in literate mode */
   val LitNanorc = "vyxal-lit.nanorc"
 
-  /** NOTE: Make sure to escape each $ with another $
-    */
+  /** NOTE: Make sure to escape each $ with another $ */
   val commonHeader = raw"""|syntax "Vyxal" "\.(vy)$$"
     |comment "##"
 
@@ -34,7 +34,9 @@ class GenerateNanorc:
     |color red "${Elements.elements.keys.map(Regex.quote).mkString("|")}"
     |
     |## Modifiers
-    |color brightred "${Modifiers.modifiers.keys.map(Regex.quote).mkString("|")}"
+    |color brightred "${Modifiers.modifiers.keys
+                            .map(Regex.quote)
+                            .mkString("|")}"
     |""".stripMargin
 
   val commonFooter = """|

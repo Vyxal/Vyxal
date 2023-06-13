@@ -15,8 +15,6 @@ object CLI:
     *   Code to run (optional)
     * @param inputs
     *   Inputs to program (optional)
-    * @param printDocs
-    *   Whether to print descriptions of all the elements
     * @param litInfoFor
     *   Element to print literate mode keywords for (optional)
     * @param settings
@@ -26,8 +24,6 @@ object CLI:
       filename: Option[String] = None,
       code: Option[String] = None,
       inputs: List[String] = List.empty,
-      printDocs: Boolean = false,
-      printSugar: Boolean = false,
       litInfoFor: Option[String] = None,
       printHelp: Boolean = false,
       runLiterate: Boolean = false,
@@ -55,14 +51,6 @@ object CLI:
 
         if config.printHelp then
           println(OParser.usage(parser))
-          return
-
-        if config.printDocs then
-          printDocs()
-          return
-
-        if config.printSugar then
-          for (key, value) <- SugarMap.trigraphs do println(s"$key -> $value")
           return
 
         if config.litInfoFor.nonEmpty then
@@ -112,43 +100,6 @@ object CLI:
         println(s"Error: ${e.getMessage()}")
         e.printStackTrace()
 
-  private def printDocs(): Unit =
-    Elements.elements.values.toSeq
-      .sortBy { elem =>
-        // Have to use tuple in case of digraphs
-        (
-          vyxal.CODEPAGE.indexOf(elem.symbol.charAt(0)),
-          vyxal.CODEPAGE.indexOf(elem.symbol.substring(1))
-        )
-      }
-      .foreach {
-        case Element(
-              symbol,
-              name,
-              keywords,
-              arity,
-              vectorises,
-              overloads,
-              impl
-            ) =>
-          print(
-            s"$symbol ($name) (${if vectorises then "" else "non-"}vectorising)\n"
-          )
-          println(s"Keywords:${keywords.mkString(" ", ", ", "")}")
-          overloads.foreach { overload =>
-            println(s"- $overload")
-          }
-          println("---------------------")
-      }
-
-    Modifiers.modifiers.foreach { case (name, info) =>
-      print(s"$name\n")
-      println(s"Keywords:${info.keywords.mkString(" ", ", ", "")}")
-      println(s"Description: ${info.description}")
-      println("---------------------")
-    }
-  end printDocs
-
   private val builder = OParser.builder[CLIConfig]
 
   private val parser =
@@ -176,17 +127,9 @@ object CLI:
         .action((code, cfg) => cfg.copy(code = Some(code)))
         .text("Code to execute directly")
         .optional(),
-      opt[Unit]('d', "docs")
-        .action((_, cfg) => cfg.copy(printDocs = true))
-        .text("Print documentation for elements and exit")
-        .optional(),
       opt[String]('D', "docsLiterate")
         .action((symbol, cfg) => cfg.copy(litInfoFor = Some(symbol)))
         .text("Print literate mode mappings and exit")
-        .optional(),
-      opt[Unit]('#', "sugar")
-        .action((_, cfg) => cfg.copy(printSugar = true))
-        .text("Print sugar mappings and exit")
         .optional(),
       opt[Unit]('l', "literate")
         .action((_, cfg) => cfg.copy(runLiterate = true))

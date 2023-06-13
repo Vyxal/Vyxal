@@ -17,9 +17,7 @@ jobs:
     - name: Build jar
       run: sbt vyxalJVM/assembly
     - name: Update elements.txt and trigraphs.txt
-      run: |
-        java -jar jvm/target/scala-*/vyxal-*.jar --docs > documentation/elements.txt
-        java -jar jvm/target/scala-*/vyxal-*.jar --sugar > documentation/trigraphs.txt
+      run: ./mill jvm.docs
     - name: Update nanorc files for JLine
       run: ./mill jvm.nanorc
     - name: Stage changes

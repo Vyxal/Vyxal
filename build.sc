@@ -87,24 +87,35 @@ object jvm extends VyxalModule {
   }
 
   override def assembly = T {
-    // Rename jar to vyxal-<version>.jar and move into root folder
+    // Make sure to generate nanorcs first
     jvm.nanorc()
+    // Rename jar to vyxal-<version>.jar
     val out = T.dest / s"vyxal-$vyxalVersion.jar"
     os.move(super.assembly().path, out)
     PathRef(out)
   }
 
+  /** Run a method on a singleton object */
   def runMethod[T](
       classpath: Seq[PathRef],
-      className: String,
+      objectName: String,
       methodName: String
   ): T = {
     val urls = classpath.map(_.path.toIO.toURI.toURL).toArray
     val cl = new URLClassLoader(urls, getClass.getClassLoader)
-    val clazz = Class.forName(className, false, cl)
+    val clazz = Class.forName(objectName + "$", false, cl)
     val method = clazz.getMethod(methodName)
-    val instance = clazz.getDeclaredConstructor().newInstance()
-    method.invoke(instance).asInstanceOf[T]
+    val singleton = clazz.getField("MODULE$").get(null)
+    method.invoke(singleton).asInstanceOf[T]
+  }
+
+  def docs = T.sources {
+    val (elements, trigraphs) = runMethod[(String, String)](jvm.runClasspath(), "vyxal.GenerateDocs", "generate")
+    val elementsFile = build.millSourcePath / "documentation" / "elements.txt"
+    val trigraphsFile = build.millSourcePath / "documentation" / "trigraphs.txt"
+    os.write.over(elementsFile, elements)
+    os.write.over(trigraphsFile, trigraphs)
+    Seq(PathRef(elementsFile), PathRef(trigraphsFile))
   }
 
   /** Generate nanorc files for JLine highlighting */
