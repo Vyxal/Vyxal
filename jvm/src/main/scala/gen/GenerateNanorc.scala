@@ -14,7 +14,8 @@ private[vyxal] object GenerateNanorc:
   /** The name of the nanorc file for Vyxal in literate mode */
   val LitNanorc = "vyxal-lit.nanorc"
 
-  val codepage = vyxal.CODEPAGE.filter(_ != '\n').map(c => Regex.quote(c.toString)).mkString
+  val codepage =
+    vyxal.CODEPAGE.filter(_ != '\n').map(c => Regex.quote(c.toString)).mkString
 
   /** NOTE: Make sure to escape each $ with another $ */
   val commonHeader = raw"""|syntax "Vyxal" "\.(vy)$$"

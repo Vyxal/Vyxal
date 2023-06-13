@@ -55,7 +55,9 @@ object JvmRepl:
 
     if literate then
       lineReaderBuilder.completer(
-        new StringsCompleter(Elements.elements.values.flatMap(_.keywords).toArray: _*)
+        new StringsCompleter(
+          Elements.elements.values.flatMap(_.keywords).toArray*
+        )
       )
 
     val lineReader = lineReaderBuilder.build()
