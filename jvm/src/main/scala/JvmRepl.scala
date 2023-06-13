@@ -1,12 +1,14 @@
 package vyxal
 
 import vyxal.gen.GenerateNanorc
+import vyxal.impls.Elements
 
 import java.util.logging.Level
 import java.util.logging.Logger
 
 import org.fusesource.jansi.AnsiConsole
 import org.jline.builtins.SyntaxHighlighter
+import org.jline.reader.impl.completer.StringsCompleter
 import org.jline.reader.impl.DefaultHighlighter
 import org.jline.reader.EndOfFileException
 import org.jline.reader.LineReader
@@ -28,6 +30,7 @@ object JvmRepl:
       .builder()
       .name("vyxal")
       .jansi(true)
+      .system(true)
       .streams(System.in, System.out)
       .build()
 
@@ -41,7 +44,7 @@ object JvmRepl:
         .toString
     )
 
-    val lineReader = LineReaderBuilder
+    val lineReaderBuilder = LineReaderBuilder
       .builder()
       .terminal(terminal)
       .highlighter(
@@ -49,7 +52,13 @@ object JvmRepl:
           override def highlight(reader: LineReader, buffer: String) =
             highlighter.highlight(buffer)
       )
-      .build()
+
+    if literate then
+      lineReaderBuilder.completer(
+        new StringsCompleter(Elements.elements.values.flatMap(_.keywords).toArray: _*)
+      )
+
+    val lineReader = lineReaderBuilder.build()
 
     while true do
       try

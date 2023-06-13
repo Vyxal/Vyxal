@@ -14,6 +14,8 @@ private[vyxal] object GenerateNanorc:
   /** The name of the nanorc file for Vyxal in literate mode */
   val LitNanorc = "vyxal-lit.nanorc"
 
+  val codepage = vyxal.CODEPAGE.filter(_ != '\n').map(c => Regex.quote(c.toString)).mkString
+
   /** NOTE: Make sure to escape each $ with another $ */
   val commonHeader = raw"""|syntax "Vyxal" "\.(vy)$$"
     |comment "##"
@@ -22,20 +24,20 @@ private[vyxal] object GenerateNanorc:
     |color white "^.+$$"
     |
     |## Structures and lists
-    |color magenta "${Lexer.structureOpenRegex}"
-    |color magenta "[})\]]"
-    |color magenta "\|"
-    |color magenta "(#\[)|⟨"
-    |color magenta "(#\])|⟩"
+    |color yellow "${Lexer.structureOpenRegex}"
+    |color yellow "[})\]]"
+    |color yellow "\|"
+    |color yellow "(#\[)|⟨"
+    |color yellow "(#\])|⟩"
     |
     |## Numbers
     |color cyan "\<((${Lexer.decimalRegex}?ı(${Lexer.decimalRegex}|_)?)|${Lexer.decimalRegex})\>"
     |
-    |## Elements
-    |color red "${Elements.elements.keys.map(Regex.quote).mkString("|")}"
+    |## Invalid characters
+    |color yellow,red "[^$codepage]*"
     |
     |## Modifiers
-    |color brightred "${Modifiers.modifiers.keys
+    |color brightmagenta "${Modifiers.modifiers.keys
                             .map(Regex.quote)
                             .mkString("|")}"
     |""".stripMargin
@@ -58,7 +60,7 @@ private[vyxal] object GenerateNanorc:
     |color cyan "\<((${litDecimalRegex}i($litDecimalRegex)?)|(i$litDecimalRegex)|$litDecimalRegex|(i\b))\>"
     |
     |## Elements (literate)
-    |color red "\<(${elementKeywords.map(Regex.quote).mkString("|")})\>"
+    |color magenta "\<(${elementKeywords.map(Regex.quote).mkString("|")})\>"
     |""".stripMargin
 
   /** Generates nanorc files for both SBCS and literate modes, returning a

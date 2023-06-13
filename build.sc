@@ -109,6 +109,7 @@ object jvm extends VyxalModule {
     method.invoke(singleton).asInstanceOf[T]
   }
 
+  /** Generate elements.txt and trigraphs.txt */
   def docs = T.sources {
     val (elements, trigraphs) = runMethod[(String, String)](
       jvm.runClasspath(),

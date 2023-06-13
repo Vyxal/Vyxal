@@ -5,20 +5,20 @@ comment "##"
 color white "^.+$"
 
 ## Structures and lists
-color magenta "[\[\(\{λƛΩ₳µḌṆ]|#@|#\{"
-color magenta "[})\]]"
-color magenta "\|"
-color magenta "(#\[)|⟨"
-color magenta "(#\])|⟩"
+color yellow "[\[\(\{λƛΩ₳µḌṆ]|#@|#\{"
+color yellow "[})\]]"
+color yellow "\|"
+color yellow "(#\[)|⟨"
+color yellow "(#\])|⟩"
 
 ## Numbers
 color cyan "\<(((((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)_?)?ı((((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)_?)|_)?)|(((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)_?))\>"
 
-## Elements
-color red "\Qg\E|\Q₉\E|\Qu\E|\Q₃\E|\Q-\E|\Q&\E|\Q₇\E|\Q₄\E|\QY\E|\Qa\E|\QM\E|\Q₆\E|\Qr\E|\Qw\E|\QE\E|\Q:\E|\QA\E|\Q*\E|\Qx\E|\QP\E|\QU\E|\Q×\E|\QÞT\E|\QS\E|\QΘ\E|\Q=\E|\Q₀\E|\Q÷\E|\Qf\E|\Qo\E|\Qp\E|\Qs\E|\Q<\E|\Q₅\E|\Q?\E|\Qc\E|\Q;\E|\Q$\E|\QK\E|\Q₁\E|\Q>\E|\QV\E|\Qz\E|\Qt\E|\Qi\E|\Qn\E|\Qe\E|\QZ\E|\Qj\E|\Qb\E|\QD\E|\QḂ\E|\Qh\E|\QT\E|\QH\E|\QJ\E|\QX\E|\Q#v\E|\Q🍪\E|\QW\E|\Qṡ\E|\QQ\E|\QC\E|\Q#x\E|\Qq\E|\Qඞ\E|\QO\E|\Q₂\E|\Q%\E|\QG\E|\Q#X\E|\QR\E|\Q,\E|\QB\E|\Qm\E|\QL\E|\Q+\E|\Q#C\E|\Q_\E|\Q!\E|\Qd\E|\Ql\E|\Q₈\E|\QF\E|\QI\E|\Qy\E|\QĖ\E|\QN\E"
+## Invalid characters
+color yellow,red "[^\Qᵃ\E\Qᵇ\E\Qᶜ\E\Qᵈ\E\Qᵉ\E\Qᶠ\E\Qᶢ\E\Qᴴ\E\Qᶤ\E\Qᶨ\E\Qᵏ\E\Qᶪ\E\Qᵐ\E\Qⁿ\E\Qᵒ\E\Qᵖ\E\Qᴿ\E\Qᶳ\E\Qᵗ\E\Qᵘ\E\Qᵛ\E\Qᵂ\E\Qᵡ\E\Qᵞ\E\Qᶻ\E\Qᶴ\E\Q⸠\E\Qϩ\E\Qэ\E\QЧ\E\Qᵜ\E\Q \E\Q!\E\Q"\E\Q#\E\Q$\E\Q%\E\Q&\E\Q'\E\Q(\E\Q)\E\Q*\E\Q+\E\Q,\E\Q-\E\Q.\E\Q/\E\Q0\E\Q1\E\Q2\E\Q3\E\Q4\E\Q5\E\Q6\E\Q7\E\Q8\E\Q9\E\Q:\E\Q;\E\Q<\E\Q=\E\Q>\E\Q?\E\Q@\E\QA\E\QB\E\QC\E\QD\E\QE\E\QF\E\QG\E\QH\E\QI\E\QJ\E\QK\E\QL\E\QM\E\QN\E\QO\E\QP\E\QQ\E\QR\E\QS\E\QT\E\QU\E\QV\E\QW\E\QX\E\QY\E\QZ\E\Q[\E\Q\\E\Q]\E\Q^\E\Q_\E\Q`\E\Qa\E\Qb\E\Qc\E\Qd\E\Qe\E\Qf\E\Qg\E\Qh\E\Qi\E\Qj\E\Qk\E\Ql\E\Qm\E\Qn\E\Qo\E\Qp\E\Qq\E\Qr\E\Qs\E\Qt\E\Qu\E\Qv\E\Qw\E\Qx\E\Qy\E\Qz\E\Q{\E\Q|\E\Q}\E\Q~\E\Q¦\E\QȦ\E\QḂ\E\QĊ\E\QḊ\E\QĖ\E\QḞ\E\QĠ\E\QḢ\E\Qİ\E\QĿ\E\QṀ\E\QṄ\E\QȮ\E\QṖ\E\QṘ\E\QṠ\E\QṪ\E\QẆ\E\QẊ\E\Qι\E\Qκ\E\Qȧ\E\Qḃ\E\Qċ\E\Qḋ\E\Qė\E\Qḟ\E\Qġ\E\Qḣ\E\Qŀ\E\Qṁ\E\Qṅ\E\Qȯ\E\Qṗ\E\Qṙ\E\Qṡ\E\Qṫ\E\Qẋ\E\Qƒ\E\QΘ\E\QΦ\E\Q§\E\QẠ\E\QḄ\E\QḌ\E\QḤ\E\QỊ\E\QḶ\E\QṂ\E\QṆ\E\QỌ\E\QṚ\E\QṢ\E\QṬ\E\Q…\E\Q≤\E\Q≥\E\Q≠\E\Q₌\E\Q⁺\E\Q⁻\E\Q⁾\E\Q√\E\Q∑\E\Q«\E\Q»\E\Q⌐\E\Q∴\E\Q∵\E\Q⊻\E\Q₀\E\Q₁\E\Q₂\E\Q₃\E\Q₄\E\Q₅\E\Q₆\E\Q₇\E\Q₈\E\Q₉\E\Qλ\E\Qƛ\E\QΩ\E\Q₳\E\Qµ\E\Q∆\E\Qø\E\QÞ\E\Q½\E\Qʀ\E\Qɾ\E\Q¯\E\Q×\E\Q÷\E\Q£\E\Q¥\E\Q←\E\Q↑\E\Q→\E\Q↓\E\Q±\E\Q¤\E\Q†\E\QΠ\E\Q¬\E\Q∧\E\Q∨\E\Q⁰\E\Q¹\E\Q²\E\Q³\E\QƓ\E\Qɠ\E\Q∥\E\Q∦\E\Qı\E\Q„\E\Q”\E\Qð\E\Q€\E\Q“\E\Q¶\E\Qᶿ\E\Qᶲ\E\Q•\E\Q≈\E\Q¿\E\Qꜝ\E]*"
 
 ## Modifiers
-color brightred "\Qэ\E|\Qϩ\E|\Qᵃ\E|\QЧ\E|\Qv\E|\Q⸠\E|\Q/\E"
+color brightmagenta "\Qэ\E|\Qϩ\E|\Qᵃ\E|\QЧ\E|\Qv\E|\Q⸠\E|\Q/\E"
 
 ## Variables
 color yellow "#[$=!>]\w*"
