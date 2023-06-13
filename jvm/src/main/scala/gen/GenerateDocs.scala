@@ -49,7 +49,9 @@ private object GenerateDocs:
   end elements
 
   def trigraphs(): String =
-    SugarMap.trigraphs.map { case (key, value) =>
-      s"$key -> $value"
-    }.mkString("", "\n", "\n")
+    SugarMap.trigraphs
+      .map { case (key, value) =>
+        s"$key -> $value"
+      }
+      .mkString("", "\n", "\n")
 end GenerateDocs
