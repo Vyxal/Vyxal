@@ -69,7 +69,7 @@ jobs:
       - name: Make artifacts folder
         run: |
           mkdir artifacts
-          mv vyxal-*.jar artifacts/
+          mv out/jvm/assembly.dest/vyxal-*.jar artifacts/
 
       - uses: actions/download-artifact@v3
         with:

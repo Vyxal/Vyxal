@@ -1,8 +1,8 @@
 package vyxal
 
-private[vyxal] object GenerateNanorc:
+class GenerateNanorc:
 
-  val commonHeader = raw"""|syntax "Vyxal" "\.(vy)$"
+  val commonHeader = """|syntax "Vyxal" "\.(vy)$"
     |comment "##"
 
     |## Default
@@ -15,11 +15,11 @@ private[vyxal] object GenerateNanorc:
     |color green "L?\"[^"„”“\\]*[\"„”“]"
     |
     |## Comments
-    |color blue "^\s*##.*$"
+    |color blue "\s*##.*$"
     |""".stripMargin
 
   val vyxalNanorc = "vyxal.nanorc"
   val vyxalLitNanorc = "vyxal-lit.nanorc"
 
-  def generate(): Unit = {}
+  def generate(): String = commonHeader
 end GenerateNanorc

@@ -8,17 +8,7 @@ color white "^.+$"
 color yellow "\<(((((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)_?)?ı((((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)_?)|_)?)|(((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)_?))\>"
 
 ## Strings
-color green "L?\"(\\"|[^"])*\""
-color brightyellow "L?'(\'|[^'])*'"
-color brightcyan "L?`(\`|[^`])*`"
-color brightwhite,blue start="\$\{" end="\}"
-
-## Trailing spaces
-color ,green "[[:space:]]+$"
-
-## Escapes
-color red "\\[0-7][0-7]?[0-7]?|\\x[0-9a-fA-F]+|\\[bfnrt'"\?\\]"
+color green "L?\"[^"„”“\\]*[\"„”“]"
 
 ## Comments
-color brightblue start="^\s*/\*" end="\*/"
-color brightblue "^\s*//.*$"
+color blue "\s*##.*$"
