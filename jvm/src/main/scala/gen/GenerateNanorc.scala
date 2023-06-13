@@ -1,12 +1,13 @@
-package vyxal
+package vyxal.gen
 
+import vyxal.{Lexer, Modifiers}
 import vyxal.impls.Elements
 
 import scala.annotation.static
 import scala.util.matching.Regex
 
 /** To generate nanorc files for syntax highlighting in JLine. See build.sc */
-private object GenerateNanorc:
+private[vyxal] object GenerateNanorc:
   /** The name of the nanorc file for Vyxal in SBCS mode */
   val SBCSNanorc = "vyxal.nanorc"
 

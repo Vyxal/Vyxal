@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.gen.GenerateNanorc
+
 import java.util.logging.Level
 import java.util.logging.Logger
 
@@ -26,7 +28,6 @@ object JvmRepl:
       .builder()
       .name("vyxal")
       .jansi(true)
-      .system(true)
       .streams(System.in, System.out)
       .build()
 
@@ -45,7 +46,6 @@ object JvmRepl:
       .terminal(terminal)
       .highlighter(
         new DefaultHighlighter:
-
           override def highlight(reader: LineReader, buffer: String) =
             highlighter.highlight(buffer)
       )
