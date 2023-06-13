@@ -5,7 +5,7 @@ import vyxal.impls.{Element, Elements}
 
 /** For generating elements.txt and trigraphs.txt. See build.sc */
 private object GenerateDocs:
-  def docs(): (String, String) = (elements(), trigraphs())
+  def generate(): (String, String) = (elements(), trigraphs())
 
   def elements(): String =
     val sb = StringBuilder()
