@@ -1,25 +1,68 @@
 package vyxal
 
-class GenerateNanorc:
+import vyxal.impls.Elements
 
-  val commonHeader = """|syntax "Vyxal" "\.(vy)$"
+import scala.util.matching.Regex
+
+/** To generate nanorc files for syntax highlighting in JLine. See build.sc */
+class GenerateNanorc:
+  /** The name of the nanorc file for Vyxal in SBCS mode */
+  val SBCSNanorc = "vyxal.nanorc"
+
+  /** The name of the nanorc file for Vyxal in literate mode */
+  val LitNanorc = "vyxal-lit.nanorc"
+
+  /** NOTE: Make sure to escape each $ with another $
+    */
+  val commonHeader = raw"""|syntax "Vyxal" "\.(vy)$$"
     |comment "##"
 
     |## Default
-    |color white "^.+$"
-
+    |color white "^.+$$"
+    |
+    |## Structures and lists
+    |color magenta "${Lexer.structureOpenRegex}"
+    |color magenta "[})\]]"
+    |color magenta "\|"
+    |color magenta "(#\[)|⟨"
+    |color magenta "(#\])|⟩"
+    |
     |## Numbers
-    |color yellow "\<(((((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)_?)?ı((((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)_?)|_)?)|(((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)_?))\>"
+    |color cyan "\<((${Lexer.decimalRegex}?ı(${Lexer.decimalRegex}|_)?)|${Lexer.decimalRegex})\>"
     |
-    |## Strings
-    |color green "L?\"[^"„”“\\]*[\"„”“]"
+    |## Elements
+    |color red "${Elements.elements.keys.map(Regex.quote).mkString("|")}"
     |
-    |## Comments
-    |color blue "\s*##.*$"
+    |## Modifiers
+    |color brightred "${Modifiers.modifiers.keys.map(Regex.quote).mkString("|")}"
     |""".stripMargin
 
-  val vyxalNanorc = "vyxal.nanorc"
-  val vyxalLitNanorc = "vyxal-lit.nanorc"
+  val commonFooter = """|
+    |## Variables
+    |color yellow "#[$=!>]\w*"
+    |
+    |## Strings
+    |color green "L?\"[^"„”“\\]*([\"„”“]|$)"
+    |
+    |## Comments
+    |color blue "\s*##.*$$"
+    |""".stripMargin
 
-  def generate(): String = commonHeader
+  val litDecimalRegex = raw"(-?((0|[1-9][0-9_]*)?\.[0-9]*|0|[1-9][0-9_]*))"
+  val elementKeywords = Elements.elements.values.flatMap(_.keywords)
+  val litSpecific = raw"""|
+    |## Numbers (literate)
+    |color cyan "\<((${litDecimalRegex}i($litDecimalRegex)?)|(i$litDecimalRegex)|$litDecimalRegex|(i\b))\>"
+    |
+    |## Elements (literate)
+    |color red "\<(${elementKeywords.map(Regex.quote).mkString("|")})\>"
+    |""".stripMargin
+
+  /** Generates nanorc files for both SBCS and literate modes, returning a
+    * mapping from each file's name to its contents
+    */
+  def generate(): Map[String, String] =
+    val sbcs = commonHeader + commonFooter
+    val lit = commonHeader + litSpecific + commonFooter
+    Map(SBCSNanorc -> sbcs, LitNanorc -> lit)
 end GenerateNanorc

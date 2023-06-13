@@ -4,11 +4,27 @@ comment "##"
 ## Default
 color white "^.+$"
 
+## Structures and lists
+color magenta "[\[\(\{λƛΩ₳µḌṆ]|#@|#\{"
+color magenta "[})\]]"
+color magenta "\|"
+color magenta "(#\[)|⟨"
+color magenta "(#\])|⟩"
+
 ## Numbers
 color yellow "\<(((((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)_?)?ı((((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)_?)|_)?)|(((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)_?))\>"
 
+## Elements
+color red "\Qg\E|\Q₉\E|\Qu\E|\Q₃\E|\Q-\E|\Q&\E|\Q₇\E|\Q₄\E|\QY\E|\Qa\E|\QM\E|\Q₆\E|\Qr\E|\Qw\E|\QE\E|\Q:\E|\QA\E|\Q*\E|\Qx\E|\QP\E|\QU\E|\Q×\E|\QÞT\E|\QS\E|\QΘ\E|\Q=\E|\Q₀\E|\Q÷\E|\Qf\E|\Qo\E|\Qp\E|\Qs\E|\Q<\E|\Q₅\E|\Q?\E|\Qc\E|\Q;\E|\Q$\E|\QK\E|\Q₁\E|\Q>\E|\QV\E|\Qz\E|\Qt\E|\Qi\E|\Qn\E|\Qe\E|\QZ\E|\Qj\E|\Qb\E|\QD\E|\QḂ\E|\Qh\E|\QT\E|\QH\E|\QJ\E|\QX\E|\Q#v\E|\Q🍪\E|\QW\E|\Qṡ\E|\QQ\E|\QC\E|\Q#x\E|\Qq\E|\Qඞ\E|\QO\E|\Q₂\E|\Q%\E|\QG\E|\Q#X\E|\QR\E|\Q,\E|\QB\E|\Qm\E|\QL\E|\Q+\E|\Q#C\E|\Q_\E|\Q!\E|\Qd\E|\Ql\E|\Q₈\E|\QF\E|\QI\E|\Qy\E|\QĖ\E|\QN\E"
+
+## Modifiers
+color brightred "\Qэ\E|\Qϩ\E|\Qᵃ\E|\QЧ\E|\Qv\E|\Q⸠\E|\Q/\E"
+
+## Variables
+color cyan "#[$=!>]\w*"
+
 ## Strings
-color green "L?\"[^"„”“\\]*[\"„”“]"
+color green "L?\"[^"„”“\\]*([\"„”“]|$)"
 
 ## Comments
-color blue "\s*##.*$"
+color blue "\s*##.*$$"

@@ -1,3 +1,5 @@
+import java.net.{JarURLConnection, URL, URLClassLoader}
+
 import mill._
 import mill.api.Result
 import mill.scalajslib._
@@ -6,7 +8,6 @@ import mill.scalalib._
 import mill.scalalib.scalafmt.ScalafmtModule
 import mill.scalanativelib._
 import mill.scalanativelib.api._
-import java.net.{JarURLConnection, URL, URLClassLoader}
 
 /** Shared settings for all modules */
 trait VyxalModule extends ScalaModule with ScalafmtModule {
@@ -87,9 +88,35 @@ object jvm extends VyxalModule {
 
   override def assembly = T {
     // Rename jar to vyxal-<version>.jar and move into root folder
+    jvm.nanorc()
     val out = T.dest / s"vyxal-$vyxalVersion.jar"
     os.move(super.assembly().path, out)
     PathRef(out)
+  }
+
+  def runMethod[T](
+      classpath: Seq[PathRef],
+      className: String,
+      methodName: String
+  ): T = {
+    val urls = classpath.map(_.path.toIO.toURI.toURL).toArray
+    val cl = new URLClassLoader(urls, getClass.getClassLoader)
+    val clazz = Class.forName(className, false, cl)
+    val method = clazz.getMethod(methodName)
+    val instance = clazz.getDeclaredConstructor().newInstance()
+    method.invoke(instance).asInstanceOf[T]
+  }
+
+  /** Generate nanorc files for JLine highlighting */
+  def nanorc = T.sources {
+    val nanorcs: Map[String, String] =
+      runMethod(jvm.runClasspath(), "vyxal.GenerateNanorc", "generate")
+    nanorcs.map { case (fileName, contents) =>
+      val file =
+        build.millSourcePath / "jvm" / "src" / "main" / "resources" / fileName
+      os.write.over(file, contents)
+      PathRef(file)
+    }.toSeq
   }
 
   object test extends ScalaTests with VyxalTestModule
@@ -134,25 +161,4 @@ object native extends ScalaNativeModule with VyxalModule {
   def nativeEmbedResources = true
 
   object test extends ScalaNativeTests with VyxalTestModule
-}
-
-/** Module for generating stuff (like vyxal.nanorc) */
-object gen extends ScalaModule {
-  def scalaVersion = jvm.scalaVersion()
-
-  def moduleDeps = Seq(jvm)
-
-  def runMethod[T](jar: PathRef, className: String, methodName: String): T = {
-    val jarUrl = new URL(s"jar:${jar.path.toIO.toURI.toURL}!/")
-    val cl = new URLClassLoader(Array(jarUrl), getClass.getClassLoader)
-    val clazz = Class.forName(className, false, cl)
-    val method = clazz.getMethod(methodName)
-    val instance = clazz.getDeclaredConstructor().newInstance()
-    method.invoke(instance).asInstanceOf[T]
-  }
-
-  def nanorc = T {
-    val nanorc: String = runMethod(jvm.assembly(), "vyxal.GenerateNanorc", "generate")
-    os.write.over(build.millSourcePath / "jvm" / "src" / "main" / "resources" / "vyxal.nanorc", nanorc)
-  }
 }

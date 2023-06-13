@@ -20,6 +20,8 @@ jobs:
       run: |
         java -jar jvm/target/scala-*/vyxal-*.jar --docs > documentation/elements.txt
         java -jar jvm/target/scala-*/vyxal-*.jar --sugar > documentation/trigraphs.txt
+    - name: Update nanorc files for JLine
+      run: ./mill jvm.nanorc
     - name: Stage changes
       run: git add .
     - name: Commit and push
