@@ -110,7 +110,11 @@ object jvm extends VyxalModule {
   }
 
   def docs = T.sources {
-    val (elements, trigraphs) = runMethod[(String, String)](jvm.runClasspath(), "vyxal.GenerateDocs", "generate")
+    val (elements, trigraphs) = runMethod[(String, String)](
+      jvm.runClasspath(),
+      "vyxal.gen.GenerateDocs",
+      "generate"
+    )
     val elementsFile = build.millSourcePath / "documentation" / "elements.txt"
     val trigraphsFile = build.millSourcePath / "documentation" / "trigraphs.txt"
     os.write.over(elementsFile, elements)
@@ -121,7 +125,7 @@ object jvm extends VyxalModule {
   /** Generate nanorc files for JLine highlighting */
   def nanorc = T.sources {
     val nanorcs: Map[String, String] =
-      runMethod(jvm.runClasspath(), "vyxal.GenerateNanorc", "generate")
+      runMethod(jvm.runClasspath(), "vyxal.gen.GenerateNanorc", "generate")
     nanorcs.map { case (fileName, contents) =>
       val file =
         build.millSourcePath / "jvm" / "src" / "main" / "resources" / fileName
