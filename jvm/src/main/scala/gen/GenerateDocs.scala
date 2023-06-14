@@ -33,18 +33,18 @@ private object GenerateDocs:
           if SugarMap.trigraphs.contains(symbol) then
             sb ++= s"Trigraph: ${SugarMap.trigraphs(symbol)}\n"
 
-          sb ++= s"Keywords:${keywords.mkString(" ", ", ", "")}"
+          sb ++= s"Keywords:${keywords.mkString(" ", ", ", "")}\n"
           overloads.foreach { overload =>
-            sb ++= s"- $overload"
+            sb ++= s"- $overload\n"
           }
-          sb ++= "---------------------"
+          sb ++= "---------------------\n"
       }
 
     Modifiers.modifiers.foreach { case (name, info) =>
       sb ++= s"$name\n"
-      sb ++= s"Keywords:${info.keywords.mkString(" ", ", ", "")}"
-      sb ++= s"Description: ${info.description}"
-      sb ++= "---------------------"
+      sb ++= s"Keywords:${info.keywords.mkString(" ", ", ", "")}\n"
+      sb ++= s"Description: ${info.description}\n"
+      sb ++= "---------------------\n"
     }
 
     sb += '\n'
