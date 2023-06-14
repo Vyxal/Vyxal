@@ -43,7 +43,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Scala to JS
-        run: ./mill fullOptJS
+        run: ./mill js.fullLinkJS
 
       - name: Upload built HTML
         uses: actions/upload-pages-artifact@v1

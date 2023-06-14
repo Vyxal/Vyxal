@@ -18,8 +18,8 @@ import org.jline.terminal.Size
 import org.jline.terminal.TerminalBuilder
 import org.jline.utils.AttributedString
 
-object JvmRepl:
-  def startRepl(literate: Boolean)(using ctx: Context): Unit =
+object JvmRepl extends Repl:
+  override def startRepl()(using ctx: Context): Unit =
     // Enable debug logging
     if ctx.settings.logLevel == LogLevel.Debug then
       Logger.getLogger("org.jline").setLevel(Level.FINER)
@@ -38,7 +38,7 @@ object JvmRepl:
       getClass()
         .getClassLoader()
         .getResource(
-          if literate then GenerateNanorc.LitNanorc
+          if ctx.settings.literate then GenerateNanorc.LitNanorc
           else GenerateNanorc.SBCSNanorc
         )
         .toString
@@ -53,7 +53,7 @@ object JvmRepl:
             highlighter.highlight(buffer)
       )
 
-    if literate then
+    if ctx.settings.literate then
       lineReaderBuilder.completer(
         new StringsCompleter(
           Elements.elements.values.flatMap(_.keywords).toArray*
@@ -65,7 +65,7 @@ object JvmRepl:
     while true do
       try
         val code = lineReader.readLine("> ")
-        Interpreter.execute(code, literate)
+        Interpreter.execute(code)
       catch
         case _: UserInterruptException =>
           println(

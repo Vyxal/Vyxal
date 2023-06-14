@@ -53,6 +53,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
 
     def ivyDeps = Agg(
       ivy"org.scalatest::scalatest::3.2.16",
+      ivy"org.scala-sbt:test-interface:1.0",
       ivy"org.virtuslab::scala-yaml::0.0.7"
     )
 
@@ -148,8 +149,8 @@ object js extends ScalaJSModule with VyxalModule {
     val pagesDir = build.millSourcePath / "pages"
     val res = super.fastLinkJS()
     // Copy to pages/vyxal.js
-    os.copy(res.dest.path / "main.js", pagesDir / "vyxal.js")
-    os.copy(res.dest.path / "main.js.map", pagesDir / "vyxal.js.map")
+    os.copy.over(res.dest.path / "main.js", pagesDir / "vyxal.js")
+    os.copy.over(res.dest.path / "main.js.map", pagesDir / "vyxal.js.map")
     res
   }
 
@@ -157,8 +158,8 @@ object js extends ScalaJSModule with VyxalModule {
     val pagesDir = build.millSourcePath / "pages"
     val res = super.fastLinkJS()
     // Copy to pages/vyxal.js
-    os.copy(res.dest.path / "main.js", pagesDir / "vyxal.js")
-    os.copy(res.dest.path / "main.js.map", pagesDir / "vyxal.js.map")
+    os.copy.over(res.dest.path / "main.js", pagesDir / "vyxal.js")
+    os.copy.over(res.dest.path / "main.js.map", pagesDir / "vyxal.js.map")
     res
   }
 
@@ -174,7 +175,9 @@ object native extends ScalaNativeModule with VyxalModule {
     super.ivyDeps() ++ Seq(ivy"com.github.scopt::scopt:4.1.0")
   }
 
-  def nativeEmbedResources = true
+  override def nativeEmbedResources = true
 
-  object test extends ScalaNativeTests with VyxalTestModule
+  object test extends ScalaNativeTests with VyxalTestModule {
+    override def nativeEmbedResources = true
+  }
 }

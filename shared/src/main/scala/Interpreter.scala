@@ -10,12 +10,9 @@ import scala.collection.mutable as mut
 import VNum.given
 
 object Interpreter:
-  def execute(code: String, literate: Boolean = false)(using
-      ctx: Context
-  ): Unit =
-    ctx.globals.literate = literate
+  def execute(code: String)(using ctx: Context): Unit =
     val sbcsified =
-      if !literate then code
+      if !ctx.settings.literate then code
       else
         LiterateLexer.processLit(code) match
           case Right(code) => code

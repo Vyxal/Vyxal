@@ -2,10 +2,10 @@ package vyxal
 
 import scala.io.StdIn
 
-object NativeRepl:
-  def startRepl(literate: Boolean)(using Context): Unit =
+object NativeRepl extends Repl:
+  override def startRepl()(using Context): Unit =
     while true do
       print("> ")
 
       val code = StdIn.readLine()
-      Interpreter.execute(code, literate)
+      Interpreter.execute(code)

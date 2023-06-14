@@ -17,6 +17,11 @@ object StringHelpers:
 
   // https://codegolf.stackexchange.com/a/151721/78850
   def compressDictionary(s: String): String =
+    if Dictionary.shortDictionary == null then
+      throw IllegalStateException("Short dictionary is null")
+    if Dictionary.longDictionary == null then
+      throw IllegalStateException("Long dictionary is null")
+
     val endLength = 2 + Dictionary.longDictionary.map(_.length).max
 
     val shortInds = Dictionary.shortDictionary.zipWithIndex.toMap

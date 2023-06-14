@@ -130,7 +130,8 @@ case class Settings(
     rangeOffset: VNum = 0,
     numToRange: Boolean = false,
     logLevel: LogLevel = LogLevel.Normal,
-    online: Boolean = false
+    online: Boolean = false,
+    literate: Boolean = false,
 ):
 
   /** Add a flag to these settings
@@ -146,8 +147,7 @@ case class Settings(
     case 'M' => this.copy(rangeStart = 0)
     case 'm' => this.copy(rangeOffset = -1)
     case 'Ṁ' => this.copy(rangeStart = 0, rangeOffset = -1)
-    case 'l' => this
-    // todo implement the others
+    case 'l' => this.copy(literate = true)
     case _ => throw IllegalArgumentException(s"$flag is an invalid flag")
 
   /** Helper to update these settings with multiple flags

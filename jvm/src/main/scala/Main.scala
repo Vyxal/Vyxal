@@ -1,5 +1,4 @@
 package vyxal
 
 object Main:
-  def main(args: Array[String]): Unit =
-    CLI.run(args, JvmRepl.startRepl)
+  def main(args: Array[String]): Unit = CLI.run(args, JvmRepl)

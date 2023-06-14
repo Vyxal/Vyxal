@@ -6,6 +6,9 @@ import java.io.File
 
 import scopt.OParser
 
+trait Repl:
+  def startRepl()(using Context): Unit
+
 object CLI:
   /** Configuration for the command line argument parser
     *
@@ -26,7 +29,6 @@ object CLI:
       inputs: List[String] = List.empty,
       litInfoFor: Option[String] = None,
       printHelp: Boolean = false,
-      runLiterate: Boolean = false,
       runLexer: Boolean = false,
       runParser: Boolean = false,
       settings: Settings = Settings(),
@@ -40,7 +42,7 @@ object CLI:
     * @param repl
     *   Function to start the REPL if requested
     */
-  def run(args: Array[String], repl: Boolean => Context ?=> Unit): Unit =
+  def run(args: Array[String], repl: Repl): Unit =
     OParser.parse(parser, args, CLIConfig()) match
       case Some(config) =>
         val inputList = config.inputs.reverse.map(Parser.parseInput)
@@ -80,21 +82,21 @@ object CLI:
         config.filename.foreach { filename =>
           val source = io.Source.fromFile(filename)
           try
-            runCode(source.mkString, config.runLiterate)
+            runCode(source.mkString)
           finally
             source.close()
         }
 
-        config.code.foreach { code => runCode(code, config.runLiterate) }
+        config.code.foreach { code => runCode(code) }
 
         if config.filename.nonEmpty || config.code.nonEmpty then return
-        else repl(config.runLiterate)
+        else repl.startRepl()
       case None => ???
     end match
   end run
 
-  private def runCode(code: String, literate: Boolean)(using Context): Unit =
-    try Interpreter.execute(code, literate)
+  private def runCode(code: String)(using Context): Unit =
+    try Interpreter.execute(code)
     catch
       case e: Error =>
         println(s"Error: ${e.getMessage()}")
@@ -105,6 +107,7 @@ object CLI:
   private val parser =
     import builder.*
 
+    /** Helper to for adding flags that go into Settings */
     def flag(short: Char, name: String, text: String) =
       opt[Unit](short, name)
         .action((_, cfg) => cfg.copy(settings = cfg.settings.withFlag(short)))
@@ -127,23 +130,19 @@ object CLI:
         .action((code, cfg) => cfg.copy(code = Some(code)))
         .text("Code to execute directly")
         .optional(),
-      opt[String]('D', "docsLiterate")
+      opt[String]('D', "docs-literate") // todo(lyxal): Duplicate flag
         .action((symbol, cfg) => cfg.copy(litInfoFor = Some(symbol)))
         .text("Print literate mode mappings and exit")
         .optional(),
-      opt[Unit]('l', "literate")
-        .action((_, cfg) => cfg.copy(runLiterate = true))
-        .text("Enable literate mode")
-        .optional(),
-      opt[Unit]('L', "lexer")
+      opt[Unit]('L', "lexer") // todo(lyxal): Duplicate flag
         .action((_, cfg) => cfg.copy(runLexer = true))
         .text("Run the lexer on input")
         .optional(),
-      opt[Unit]('`', "literatelexer")
+      opt[Unit]('`', "literate-lexer")
         .action((_, cfg) => cfg.copy(runLiterateLexer = true))
         .text("Run the literate lexer on input")
         .optional(),
-      opt[Unit]('P', "parser")
+      opt[Unit]('P', "parser") // todo(lyxal): Duplicate flag
         .action((_, cfg) => cfg.copy(runParser = true))
         .text("Run the parser on input")
         .optional(),
@@ -157,6 +156,11 @@ object CLI:
         'j',
         "print-join-newlines",
         "Print top of stack joined by newlines on end of execution"
+      ),
+      flag(
+        'l',
+        "literate",
+        "Enable literate mode"
       ),
       flag(
         'L',

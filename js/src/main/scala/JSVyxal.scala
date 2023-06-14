@@ -29,7 +29,7 @@ object JSVyxal:
       inputs = inputs.split("\n").map(Parser.parseInput).toIndexedSeq,
       globals = globals
     )
-    Interpreter.execute(code, literate = flags.contains("l"))(using ctx)
+    Interpreter.execute(code)(using ctx)
   end execute
 
   @JSExport

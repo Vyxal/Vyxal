@@ -97,7 +97,7 @@ object NumberHelpers:
     * mode
     */
   def numToString(a: VNum)(using ctx: Context): String =
-    if ctx.globals.literate then a.toString.replace("ı", "i")
+    if ctx.settings.literate then a.toString.replace("ı", "i")
     else
       a.toString
         .split("ı")
