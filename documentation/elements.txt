@@ -343,61 +343,75 @@ Keywords: zero-range, zero->n, is-lowercase?, lowercase?, lower?
 - a: str -> is a lowercase?
 ---------------------
 Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
+Trigraph: #.B
 Keywords: peek-call
 - a: fun -> Execute a without popping
 ---------------------
 Ė (Execute lambda | Evaluate as Vyxal | Power with base 10) (non-vectorising)
+Trigraph: #.E
 Keywords: execute-lambda, evaluate-as-vyxal, power-base-10, call, @
 - a: fun -> Execute a
 - a: str -> Evaluate a as Vyxal
 - a: num -> 10 ** n
 ---------------------
 ṡ (Sort by Function Object | Reshape (APL Style)) (non-vectorising)
+Trigraph: #.s
 Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun
 - a: fun, b: any -> sort iterable b by function a
 - a: any, b: fun -> sort iterable a by function b
 ---------------------
 Θ (Zero Slice Until) (non-vectorising)
+Trigraph: #.`
 Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first
 - a: lst, b: num -> [a[0], a[1], ..., a[b-1]]
 ---------------------
 ₀ (Ten) (non-vectorising)
+Trigraph: #,0
 Keywords: ten
 - -> 10
 ---------------------
 ₁ (Sixteen) (non-vectorising)
+Trigraph: #,1
 Keywords: sixteen
 - -> 16
 ---------------------
 ₂ (Twenty-six) (non-vectorising)
+Trigraph: #,2
 Keywords: twenty-six
 - -> 26
 ---------------------
 ₃ (Thirty-two) (non-vectorising)
+Trigraph: #,3
 Keywords: thirty-two
 - -> 32
 ---------------------
 ₄ (Sixty-four) (non-vectorising)
+Trigraph: #,4
 Keywords: sixty-four
 - -> 64
 ---------------------
 ₅ (One hundred) (non-vectorising)
+Trigraph: #,5
 Keywords: one-hundred
 - -> 100
 ---------------------
 ₆ (One hundred twenty-eight) (non-vectorising)
+Trigraph: #,6
 Keywords: one-hundred-twenty-eight
 - -> 128
 ---------------------
 ₇ (Two hundred fifty-six) (non-vectorising)
+Trigraph: #,7
 Keywords: two-hundred-fifty-six
 - -> 256
 ---------------------
 ₈ (Alphabet) (non-vectorising)
+Trigraph: #,8
 Keywords: alphabet, a-z
 - -> "abcdefghijklmnopqrstuvwxyz"
 ---------------------
 ₉ (Empty array) (non-vectorising)
+Trigraph: #,9
 Keywords: empty-list, nil-list, new-list
 - -> []
 ---------------------
@@ -406,6 +420,7 @@ Keywords: transpose-safe
 - a: any -> transpose a
 ---------------------
 × (Multiplication) (vectorising)
+Trigraph: #.*
 Keywords: mul, multiply, times, str-repeat, *, ring-trans
 - a: num, b: num -> a * b
 - a: num, b: str -> b repeated a times
@@ -413,6 +428,7 @@ Keywords: mul, multiply, times, str-repeat, *, ring-trans
 - a: str, b: str -> ring translate a according to b
 ---------------------
 ÷ (Divide | Split) (vectorising)
+Trigraph: #./
 Keywords: divide, div, str-split
 - a: num, b: num -> a / b
 - a: str, b: str -> Split a on the regex b
@@ -453,3 +469,4 @@ Keywords: foldl-, reduce-, /-, fold-, reduceby-
 Description: Reduce a list by an element
 /f: reduce by element f
 ---------------------
+
