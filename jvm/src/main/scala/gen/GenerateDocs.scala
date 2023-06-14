@@ -30,8 +30,9 @@ private object GenerateDocs:
           sb ++=
             s"$symbol ($name) (${if vectorises then "" else "non-"}vectorising)\n"
 
-          if SugarMap.invertedTrigraphs.contains(symbol) then
-            sb ++= s"Trigraph: ${SugarMap.invertedTrigraphs(symbol)}\n"
+          SugarMap.trigraphs
+            .collect { case (tri, s) if s == symbol => tri }
+            .foreach { tri => sb ++= s"Trigraph: $tri\n" }
 
           sb ++= s"Keywords:${keywords.mkString(" ", ", ", "")}\n"
           overloads.foreach { overload =>
@@ -47,7 +48,6 @@ private object GenerateDocs:
       sb ++= "---------------------\n"
     }
 
-    sb += '\n'
     sb.toString
   end elements
 
