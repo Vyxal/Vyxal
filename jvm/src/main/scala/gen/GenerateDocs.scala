@@ -30,6 +30,9 @@ private object GenerateDocs:
           sb ++=
             s"$symbol ($name) (${if vectorises then "" else "non-"}vectorising)\n"
 
+          if SugarMap.trigraphs.contains(symbol) then
+            sb ++= s"Trigraph: ${SugarMap.trigraphs(symbol)}\n"
+
           sb ++= s"Keywords:${keywords.mkString(" ", ", ", "")}"
           overloads.foreach { overload =>
             sb ++= s"- $overload"
