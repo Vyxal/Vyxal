@@ -20,6 +20,10 @@ object SugarMap:
       )
   )
 
+  val invertedTrigraphs: Map[String, String] = Map.from(
+    trigraphs.map(_.swap)
+  )
+
   private def makeTrigraphs(prefix: String, ascii: String, unicode: String) =
     assert(ascii.length == unicode.length)
     ascii.lazyZip(unicode).map { (a, u) => s"$prefix$a" -> u.toString }
