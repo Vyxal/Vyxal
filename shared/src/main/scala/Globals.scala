@@ -148,7 +148,7 @@ case class Settings(
     case 'm' => this.copy(rangeOffset = -1)
     case 'Ṁ' => this.copy(rangeStart = 0, rangeOffset = -1)
     case 'l' => this.copy(literate = true)
-    case _ => throw IllegalArgumentException(s"$flag is an invalid flag")
+    case _   => throw IllegalArgumentException(s"$flag is an invalid flag")
 
   /** Helper to update these settings with multiple flags
     *
