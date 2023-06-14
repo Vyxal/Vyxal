@@ -1,104 +1,456 @@
 🍪 (Cookie) (non-vectorising)
-Keywords: cookie- cookie.---------------------ඞ (ඞ) (non-vectorising)
-Keywords: sus- ඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞ---------------------! (Factorial | To Uppercase) (vectorising)
-Keywords: fact, factorial, to-upper, upper, uppercase, !- a: num -> a!- a: str -> a.toUpperCase()---------------------#C (Compress String Using Dictionary) (non-vectorising)
-Keywords: compress-dict, dict-comp, compress- a: str -> compress a using the dictionary---------------------#X (Loop Break) (non-vectorising)
-Keywords: break-  -> break out of the current loop---------------------#v (Vectorise (Element Form) [Internal Use]) (non-vectorising)
-Keywords: - *a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead---------------------#x (Loop Continue) (non-vectorising)
-Keywords: continue-  -> continue the current loop---------------------$ (Swap) (non-vectorising)
-Keywords: swap- a, b -> b, a---------------------% (Modulo | String Formatting) (non-vectorising)
-Keywords: mod, modulo, str-format, format, %, strfmt- a: num, b: num -> a % b- a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)---------------------& (Append) (non-vectorising)
-Keywords: append- a: any, b: any -> list(a) ++ [b]---------------------* (Exponentation | Remove Nth Letter | Trim) (vectorising)
-Keywords: exp, **, pow, exponent, remove-letter, str-trim- a: num, b: num -> a ^ b- a: str, b: num -> a with the bth letter removed- a: num, b: str -> b with the ath letter removed- a: str, b: str -> trim b from both sides of a---------------------+ (Addition) (vectorising)
-Keywords: add, +, plus- a: num, b: num -> a + b- a: num, b: str -> a + b- a: str, b: num -> a + b- a: str, b: str -> a + b---------------------, (Print) (non-vectorising)
-Keywords: print, puts, out, println- a -> printed to stdout---------------------- (Subtraction) (vectorising)
-Keywords: sub, subtract, minus, str-remove, remove, str-remove-all, remove-all, -- a: num, b: num -> a - b- a: str, b: num -> a + b '-'s (or '-'s + a if b < 0)- a: num, b: str -> a '-'s + b (or b + '-'s if a < 0)- a: str, b: str -> a with b removed---------------------: (Duplicate) (non-vectorising)
-Keywords: dup- a -> a, a---------------------; (Pair) (non-vectorising)
-Keywords: pair- a, b -> [a, b]---------------------< (Less Than) (vectorising)
-Keywords: lt, less, less-than, <, less?, smaller?- a: num, b: num -> a < b- a: str, b: num -> a < str(b)- a: num, b: str -> str(a) < b- a: str, b: str -> a < b---------------------= (Equals) (vectorising)
-Keywords: eq, ==, equal, same?, equals?, equal?- a: any, b: any -> a == b---------------------> (Greater Than) (vectorising)
-Keywords: gt, greater, greater-than, >, greater?, bigger?- a: num, b: num -> a > b- a: str, b: num -> a > str(b)- a: num, b: str -> str(a) > b- a: str, b: str -> a > b---------------------? (Get Input) (non-vectorising)
-Keywords: get-input, input, stdin, readline- ->  -> input---------------------A (All Truthy | All() | Is Vowel?) (non-vectorising)
-Keywords: all, is-vowel?, vowel?- a: str -> is (a) a vowel? vectorises for strings len > 1- a: list -> is (a) all truthy?---------------------B (Convert From Binary) (non-vectorising)
-Keywords: from-binary, bin->dec, bin->decimal- a: num -> str(a) from binary- a: str -> int(a, 2)- a: lst -> int(a, 2), using list of digits---------------------C (Count) (non-vectorising)
-Keywords: count- a: any, b: any -> count(b in a)---------------------D (Triplicate) (non-vectorising)
-Keywords: trip- a -> [a, a, a]---------------------E (2 Power | Evaluate) (vectorising)
-Keywords: two^, two**, eval- a: num -> 2^a- a: str -> evaluate (not execute) a---------------------F (Filter by Function | From Base) (non-vectorising)
-Keywords: filter, keep-by, from-base, 10->b- a: fun, b: lst -> Filter b by truthy results of a- a: lst, b: fun -> Filter a by truthy results of b- a: num, b: num -> a from base b to base 10- a: num, b: str|lst -> a from base with alphabet b to base 10---------------------G (Monadic Maximum | Dyadic Maximum | Generate From Function | Vectorised Maximum) (non-vectorising)
-Keywords: max, maximum, generator- a: lst -> Maximum of a- a: non-lst, b: non-lst -> Maximum of a and b- a: lst, b: fun -> Call b infinitely with items of a as starting values---------------------H (Hexadecimal | To Hexadecimal) (vectorising)
-Keywords: hex, hexadecimal, to-hex, to-hexadecimal- a: num -> a in hexadecimal- a: str -> a as a hexadecimal number to base 10---------------------I (Interleave) (non-vectorising)
-Keywords: interleave- a: lst, b: lst -> Interleave a and b---------------------J (Merge) (non-vectorising)
-Keywords: merge- a: lst, b: lst -> Merge a and b---------------------K (Factors | Is Numeric?) (vectorising)
-Keywords: factors, divisors, is-numeric, is-num, is-number, is-num?, is-number?- a: num -> Factors of a- a: str -> Is a numeric?---------------------L (Length | Length of List) (non-vectorising)
-Keywords: length, len, length-of, len-of, size- a: any -> Length of a---------------------M (Map Function | Mold Lists | Multiplicity) (non-vectorising)
-Keywords: map, mold, multiplicity, times-divide- a: any, b: fun -> a.map(b)- a: fun, b: any -> b.map(a)- a: lst, b: lst -> a molded to the shape of b- a: num, b: num -> how many times b divides a---------------------N (Negation | Swap Case | First Non-Negative Integer Where Predicate is True) (vectorising)
-Keywords: neg, negate, swap-case, caseswap, first-non-negative, first-nonneg, first>-1- a: num -> -a- a: str -> a.swapCase()- a: fun -> first non-negative integer where predicate a is true---------------------O (Ord/Chr) (non-vectorising)
-Keywords: ord, chr- a: str -> ord(a)- a: num -> chr(a)---------------------P (Prefixes) (non-vectorising)
-Keywords: prefixes- a: lst -> Prefixes of a---------------------Q (Exit | Quit) (non-vectorising)
-Keywords: exit, quit- a -> Stop program execution---------------------R (Reduce by Function Object | Dyadic Range | Regex Match) (non-vectorising)
-Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has-regex-match?, fold- a: fun, b: any -> reduce iterable b by function a- a: any, b: fun -> reduce iterable a by function b- a: num, b: num -> the range [a, b)- a: str, b: num|str -> does regex pattern b match haystack a?---------------------S (Sort ascending) (non-vectorising)
-Keywords: sort, sortasc, sort-asc- a: any -> convert to list and sort ascending---------------------T (Triple | Contains Only Alphabet | Transpose) (non-vectorising)
-Keywords: triple, alphabet?, alphabetical?, contains-only-alphabet?, contains-only-alphabetical?, transpose, flip, reverse-axes, flip-axes, permute-axes- a: num -> 3 * a- a: str -> does a contain only alphabet characters?- a: any -> transpose a---------------------U (Uninterleave) (non-vectorising)
-Keywords: uninterleave- a: any -> uninterleave a---------------------V (Vectorised Reverse / Complement / Title Case) (non-vectorising)
-Keywords: vectorised-reverse, vec-reverse, complement, titlecase, title-case- a: lst -> each element of a reversed- a: num -> 1 - a- a: str -> a converted to title case---------------------W (Wrap) (non-vectorising)
-Keywords: wrap- a, b, c, ..., -> [a, b, c, ...]---------------------X (Return Statement) (non-vectorising)
-Keywords: return, ret- a -> return a---------------------Y (List Repeat) (non-vectorising)
-Keywords: wrap-repeat- a: any, b: num -> a repeated b times, wrapped in a list- a: num, b: any -> b repeated a times, wrapped in a list- a: lst|str, b: lst[num] -> a[_] repeated b[_] times, wrapped in a list---------------------Z (Zip) (non-vectorising)
-Keywords: zip, zip-map- a: lst, b: lst -> zip a and b- a: lst, b: fun -> [[x, b(x)] for x in a]- a: fun, b: lst -> [[a(x), x] for x in b]---------------------_ (Pop and Discard) (non-vectorising)
-Keywords: pop, discard- a ->---------------------a (Any Truthy | Any() | Is Uppercase?) (non-vectorising)
-Keywords: any, is-uppercase?, is-upper?, upper?- a: str -> is (a) uppercase? vectorises for strings len > 1- a: list -> is (a) any truthy?---------------------b (Convert To Binary) (vectorising)
-Keywords: to-binary, dec->bin, decimal->bin- a: num -> convert a to binary- a: str -> bin(ord(x) for x in a)---------------------c (Contains) (non-vectorising)
-Keywords: contains, in- a: any, b: any -> is (b) in (a)?---------------------d (Double) (vectorising)
-Keywords: double- a: num -> a * 2- a: str -> a + a---------------------e (Is Even / Split on Newlines) (vectorising)
-Keywords: even?, even, is-even?, split-on-newlines, newline-split, split-newlines- a: num -> a % 2 == 0- a: str -> a split on newlines---------------------f (Flatten) (non-vectorising)
-Keywords: flatten, flat- a: lst -> Flattened a---------------------g (Monadic Minimum | Dyadic Minimum | Generate From Function | Vectorised Minimum) (non-vectorising)
-Keywords: max, maximum, generator- a: lst -> Maximum of a- a: non-lst, b: non-lst -> Maximum of a and b- a: lst, b: fun -> Call b infinitely with items of a as starting values---------------------h (Head | First Item) (non-vectorising)
-Keywords: head, first, first-item- a: lst -> a[0]---------------------i (Index | Collect Unique Application Values | Enclose) (non-vectorising)
-Keywords: index, at, item-at, nth-item, collect-unique, enclose- a: lst, b: num -> a[b]- a: lst, b: lst -> a[_] for _ in b- a: str, b: lst -> ''.join(a[i] for i in b)- a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value.- a: str, b: str -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])---------------------j (Join On) (non-vectorising)
-Keywords: join-on, join, join-with, join-by- a: lst, b: str -> a join on b---------------------l (Length of Each Item) (non-vectorising)
-Keywords: length-vectorised, length-vect, len-vect, len-vectorised, vec-len, vec-length, vlen- a: lst -> Length of each item in a---------------------m (Get Context Variable M) (non-vectorising)
-Keywords: get-context-m, context-m, c-var-m, ctx-m, ctx-secondary- ->  -> context variable m---------------------n (Get Context Variable N) (non-vectorising)
-Keywords: get-context-n, context-n, c-var-n, ctx-n, ctx-primary- ->  -> context variable n---------------------o (Overlap | Overlapping Slices) (non-vectorising)
-Keywords: overlap, overlaps, overlapping, overlapping-slices- a: lst, b: num -> Overlapping slices of a of length b- a: lst|str -> Overlapping slices of a of length 2---------------------p (Prepend) (non-vectorising)
-Keywords: prepend- a: lst, b: any -> b prepended to a---------------------q (Quotify) (non-vectorising)
-Keywords: quotify- a: any -> enclose a in quotes, escape backslashes and quote marks---------------------r (Replace) (non-vectorising)
-Keywords: replace- a: str, b: str, c: str -> replace all instances of b in a with c---------------------s (Split) (non-vectorising)
-Keywords: split- a: any, b: any -> split a by b---------------------t (Tail | Last Item) (non-vectorising)
-Keywords: tail, last, last-item- a: lst -> a[-1]---------------------u (Uniquify) (non-vectorising)
-Keywords: uniquify- a: lst -> a with duplicates removed---------------------w (Wrap Singleton) (non-vectorising)
-Keywords: wrap-singleton- a -> [a]---------------------x (Recursion | Recurse) (non-vectorising)
-Keywords: recurse-  -> call the current function recursively---------------------y (To Base) (non-vectorising)
-Keywords: to-base- a: num, b: num -> a in base b- a: num, b: str|lst -> a in base with alphabet b- a: lst, b: num -> each x in a in base b- a: lst, b: str|lst -> each x in a in base with alphabet b---------------------z (Zero Range | Is Lowercase) (vectorising)
-Keywords: zero-range, zero->n, is-lowercase?, lowercase?, lower?- a: num -> [0, 1, ..., a]- a: str -> is a lowercase?---------------------Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
-Keywords: peek-call- a: fun -> Execute a without popping---------------------Ė (Execute lambda | Evaluate as Vyxal | Power with base 10) (non-vectorising)
-Keywords: execute-lambda, evaluate-as-vyxal, power-base-10, call, @- a: fun -> Execute a- a: str -> Evaluate a as Vyxal- a: num -> 10 ** n---------------------ṡ (Sort by Function Object | Reshape (APL Style)) (non-vectorising)
-Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun- a: fun, b: any -> sort iterable b by function a- a: any, b: fun -> sort iterable a by function b---------------------Θ (Zero Slice Until) (non-vectorising)
-Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first- a: lst, b: num -> [a[0], a[1], ..., a[b-1]]---------------------₀ (Ten) (non-vectorising)
-Keywords: ten- -> 10---------------------₁ (Sixteen) (non-vectorising)
-Keywords: sixteen- -> 16---------------------₂ (Twenty-six) (non-vectorising)
-Keywords: twenty-six- -> 26---------------------₃ (Thirty-two) (non-vectorising)
-Keywords: thirty-two- -> 32---------------------₄ (Sixty-four) (non-vectorising)
-Keywords: sixty-four- -> 64---------------------₅ (One hundred) (non-vectorising)
-Keywords: one-hundred- -> 100---------------------₆ (One hundred twenty-eight) (non-vectorising)
-Keywords: one-hundred-twenty-eight- -> 128---------------------₇ (Two hundred fifty-six) (non-vectorising)
-Keywords: two-hundred-fifty-six- -> 256---------------------₈ (Alphabet) (non-vectorising)
-Keywords: alphabet, a-z- -> "abcdefghijklmnopqrstuvwxyz"---------------------₉ (Empty array) (non-vectorising)
-Keywords: empty-list, nil-list, new-list- -> []---------------------ÞT (Transpose Safe) (non-vectorising)
-Keywords: transpose-safe- a: any -> transpose a---------------------× (Multiplication) (vectorising)
-Keywords: mul, multiply, times, str-repeat, *, ring-trans- a: num, b: num -> a * b- a: num, b: str -> b repeated a times- a: str, b: num -> a repeated b times- a: str, b: str -> ring translate a according to b---------------------÷ (Divide | Split) (vectorising)
-Keywords: divide, div, str-split- a: num, b: num -> a / b- a: str, b: str -> Split a on the regex b---------------------Ч
-Keywords: ****-Description: Turn the next four elements (whether that be a structure/modifier/element) into a lambda
-Чfghi: Push the equivalent of λfghi} to the stack---------------------ϩ
-Keywords: **-Description: Turn the next two elements (whether that be a structure/modifier/element) into a lambda
-ϩfg: Push the equivalent of λfg} to the stack---------------------ᵃ
-Keywords: apply-to-neighboursDescription: To each overlapping pair, reduce it by an element
+Keywords: cookie
+- cookie.
+---------------------
+ඞ (ඞ) (non-vectorising)
+Keywords: sus
+- ඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞ
+---------------------
+! (Factorial | To Uppercase) (vectorising)
+Keywords: fact, factorial, to-upper, upper, uppercase, !
+- a: num -> a!
+- a: str -> a.toUpperCase()
+---------------------
+#C (Compress String Using Dictionary) (non-vectorising)
+Keywords: compress-dict, dict-comp, compress
+- a: str -> compress a using the dictionary
+---------------------
+#X (Loop Break) (non-vectorising)
+Keywords: break
+-  -> break out of the current loop
+---------------------
+#v (Vectorise (Element Form) [Internal Use]) (non-vectorising)
+Keywords: 
+- *a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead
+---------------------
+#x (Loop Continue) (non-vectorising)
+Keywords: continue
+-  -> continue the current loop
+---------------------
+$ (Swap) (non-vectorising)
+Keywords: swap
+- a, b -> b, a
+---------------------
+% (Modulo | String Formatting) (non-vectorising)
+Keywords: mod, modulo, str-format, format, %, strfmt
+- a: num, b: num -> a % b
+- a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)
+---------------------
+& (Append) (non-vectorising)
+Keywords: append
+- a: any, b: any -> list(a) ++ [b]
+---------------------
+* (Exponentation | Remove Nth Letter | Trim) (vectorising)
+Keywords: exp, **, pow, exponent, remove-letter, str-trim
+- a: num, b: num -> a ^ b
+- a: str, b: num -> a with the bth letter removed
+- a: num, b: str -> b with the ath letter removed
+- a: str, b: str -> trim b from both sides of a
+---------------------
++ (Addition) (vectorising)
+Keywords: add, +, plus
+- a: num, b: num -> a + b
+- a: num, b: str -> a + b
+- a: str, b: num -> a + b
+- a: str, b: str -> a + b
+---------------------
+, (Print) (non-vectorising)
+Keywords: print, puts, out, println
+- a -> printed to stdout
+---------------------
+- (Subtraction) (vectorising)
+Keywords: sub, subtract, minus, str-remove, remove, str-remove-all, remove-all, -
+- a: num, b: num -> a - b
+- a: str, b: num -> a + b '-'s (or '-'s + a if b < 0)
+- a: num, b: str -> a '-'s + b (or b + '-'s if a < 0)
+- a: str, b: str -> a with b removed
+---------------------
+: (Duplicate) (non-vectorising)
+Keywords: dup
+- a -> a, a
+---------------------
+; (Pair) (non-vectorising)
+Keywords: pair
+- a, b -> [a, b]
+---------------------
+< (Less Than) (vectorising)
+Keywords: lt, less, less-than, <, less?, smaller?
+- a: num, b: num -> a < b
+- a: str, b: num -> a < str(b)
+- a: num, b: str -> str(a) < b
+- a: str, b: str -> a < b
+---------------------
+= (Equals) (vectorising)
+Keywords: eq, ==, equal, same?, equals?, equal?
+- a: any, b: any -> a == b
+---------------------
+> (Greater Than) (vectorising)
+Keywords: gt, greater, greater-than, >, greater?, bigger?
+- a: num, b: num -> a > b
+- a: str, b: num -> a > str(b)
+- a: num, b: str -> str(a) > b
+- a: str, b: str -> a > b
+---------------------
+? (Get Input) (non-vectorising)
+Keywords: get-input, input, stdin, readline
+- ->  -> input
+---------------------
+A (All Truthy | All() | Is Vowel?) (non-vectorising)
+Keywords: all, is-vowel?, vowel?
+- a: str -> is (a) a vowel? vectorises for strings len > 1
+- a: list -> is (a) all truthy?
+---------------------
+B (Convert From Binary) (non-vectorising)
+Keywords: from-binary, bin->dec, bin->decimal
+- a: num -> str(a) from binary
+- a: str -> int(a, 2)
+- a: lst -> int(a, 2), using list of digits
+---------------------
+C (Count) (non-vectorising)
+Keywords: count
+- a: any, b: any -> count(b in a)
+---------------------
+D (Triplicate) (non-vectorising)
+Keywords: trip
+- a -> [a, a, a]
+---------------------
+E (2 Power | Evaluate) (vectorising)
+Keywords: two^, two**, eval
+- a: num -> 2^a
+- a: str -> evaluate (not execute) a
+---------------------
+F (Filter by Function | From Base) (non-vectorising)
+Keywords: filter, keep-by, from-base, 10->b
+- a: fun, b: lst -> Filter b by truthy results of a
+- a: lst, b: fun -> Filter a by truthy results of b
+- a: num, b: num -> a from base b to base 10
+- a: num, b: str|lst -> a from base with alphabet b to base 10
+---------------------
+G (Monadic Maximum | Dyadic Maximum | Generate From Function | Vectorised Maximum) (non-vectorising)
+Keywords: max, maximum, generator
+- a: lst -> Maximum of a
+- a: non-lst, b: non-lst -> Maximum of a and b
+- a: lst, b: fun -> Call b infinitely with items of a as starting values
+---------------------
+H (Hexadecimal | To Hexadecimal) (vectorising)
+Keywords: hex, hexadecimal, to-hex, to-hexadecimal
+- a: num -> a in hexadecimal
+- a: str -> a as a hexadecimal number to base 10
+---------------------
+I (Interleave) (non-vectorising)
+Keywords: interleave
+- a: lst, b: lst -> Interleave a and b
+---------------------
+J (Merge) (non-vectorising)
+Keywords: merge
+- a: lst, b: lst -> Merge a and b
+---------------------
+K (Factors | Is Numeric?) (vectorising)
+Keywords: factors, divisors, is-numeric, is-num, is-number, is-num?, is-number?
+- a: num -> Factors of a
+- a: str -> Is a numeric?
+---------------------
+L (Length | Length of List) (non-vectorising)
+Keywords: length, len, length-of, len-of, size
+- a: any -> Length of a
+---------------------
+M (Map Function | Mold Lists | Multiplicity) (non-vectorising)
+Keywords: map, mold, multiplicity, times-divide
+- a: any, b: fun -> a.map(b)
+- a: fun, b: any -> b.map(a)
+- a: lst, b: lst -> a molded to the shape of b
+- a: num, b: num -> how many times b divides a
+---------------------
+N (Negation | Swap Case | First Non-Negative Integer Where Predicate is True) (vectorising)
+Keywords: neg, negate, swap-case, caseswap, first-non-negative, first-nonneg, first>-1
+- a: num -> -a
+- a: str -> a.swapCase()
+- a: fun -> first non-negative integer where predicate a is true
+---------------------
+O (Ord/Chr) (non-vectorising)
+Keywords: ord, chr
+- a: str -> ord(a)
+- a: num -> chr(a)
+---------------------
+P (Prefixes) (non-vectorising)
+Keywords: prefixes
+- a: lst -> Prefixes of a
+---------------------
+Q (Exit | Quit) (non-vectorising)
+Keywords: exit, quit
+- a -> Stop program execution
+---------------------
+R (Reduce by Function Object | Dyadic Range | Regex Match) (non-vectorising)
+Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has-regex-match?, fold
+- a: fun, b: any -> reduce iterable b by function a
+- a: any, b: fun -> reduce iterable a by function b
+- a: num, b: num -> the range [a, b)
+- a: str, b: num|str -> does regex pattern b match haystack a?
+---------------------
+S (Sort ascending) (non-vectorising)
+Keywords: sort, sortasc, sort-asc
+- a: any -> convert to list and sort ascending
+---------------------
+T (Triple | Contains Only Alphabet | Transpose) (non-vectorising)
+Keywords: triple, alphabet?, alphabetical?, contains-only-alphabet?, contains-only-alphabetical?, transpose, flip, reverse-axes, flip-axes, permute-axes
+- a: num -> 3 * a
+- a: str -> does a contain only alphabet characters?
+- a: any -> transpose a
+---------------------
+U (Uninterleave) (non-vectorising)
+Keywords: uninterleave
+- a: any -> uninterleave a
+---------------------
+V (Vectorised Reverse / Complement / Title Case) (non-vectorising)
+Keywords: vectorised-reverse, vec-reverse, complement, titlecase, title-case
+- a: lst -> each element of a reversed
+- a: num -> 1 - a
+- a: str -> a converted to title case
+---------------------
+W (Wrap) (non-vectorising)
+Keywords: wrap
+- a, b, c, ..., -> [a, b, c, ...]
+---------------------
+X (Return Statement) (non-vectorising)
+Keywords: return, ret
+- a -> return a
+---------------------
+Y (List Repeat) (non-vectorising)
+Keywords: wrap-repeat
+- a: any, b: num -> a repeated b times, wrapped in a list
+- a: num, b: any -> b repeated a times, wrapped in a list
+- a: lst|str, b: lst[num] -> a[_] repeated b[_] times, wrapped in a list
+---------------------
+Z (Zip) (non-vectorising)
+Keywords: zip, zip-map
+- a: lst, b: lst -> zip a and b
+- a: lst, b: fun -> [[x, b(x)] for x in a]
+- a: fun, b: lst -> [[a(x), x] for x in b]
+---------------------
+_ (Pop and Discard) (non-vectorising)
+Keywords: pop, discard
+- a ->
+---------------------
+a (Any Truthy | Any() | Is Uppercase?) (non-vectorising)
+Keywords: any, is-uppercase?, is-upper?, upper?
+- a: str -> is (a) uppercase? vectorises for strings len > 1
+- a: list -> is (a) any truthy?
+---------------------
+b (Convert To Binary) (vectorising)
+Keywords: to-binary, dec->bin, decimal->bin
+- a: num -> convert a to binary
+- a: str -> bin(ord(x) for x in a)
+---------------------
+c (Contains) (non-vectorising)
+Keywords: contains, in
+- a: any, b: any -> is (b) in (a)?
+---------------------
+d (Double) (vectorising)
+Keywords: double
+- a: num -> a * 2
+- a: str -> a + a
+---------------------
+e (Is Even / Split on Newlines) (vectorising)
+Keywords: even?, even, is-even?, split-on-newlines, newline-split, split-newlines
+- a: num -> a % 2 == 0
+- a: str -> a split on newlines
+---------------------
+f (Flatten) (non-vectorising)
+Keywords: flatten, flat
+- a: lst -> Flattened a
+---------------------
+g (Monadic Minimum | Dyadic Minimum | Generate From Function | Vectorised Minimum) (non-vectorising)
+Keywords: max, maximum, generator
+- a: lst -> Maximum of a
+- a: non-lst, b: non-lst -> Maximum of a and b
+- a: lst, b: fun -> Call b infinitely with items of a as starting values
+---------------------
+h (Head | First Item) (non-vectorising)
+Keywords: head, first, first-item
+- a: lst -> a[0]
+---------------------
+i (Index | Collect Unique Application Values | Enclose) (non-vectorising)
+Keywords: index, at, item-at, nth-item, collect-unique, enclose
+- a: lst, b: num -> a[b]
+- a: lst, b: lst -> a[_] for _ in b
+- a: str, b: lst -> ''.join(a[i] for i in b)
+- a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value.
+- a: str, b: str -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])
+---------------------
+j (Join On) (non-vectorising)
+Keywords: join-on, join, join-with, join-by
+- a: lst, b: str -> a join on b
+---------------------
+l (Length of Each Item) (non-vectorising)
+Keywords: length-vectorised, length-vect, len-vect, len-vectorised, vec-len, vec-length, vlen
+- a: lst -> Length of each item in a
+---------------------
+m (Get Context Variable M) (non-vectorising)
+Keywords: get-context-m, context-m, c-var-m, ctx-m, ctx-secondary
+- ->  -> context variable m
+---------------------
+n (Get Context Variable N) (non-vectorising)
+Keywords: get-context-n, context-n, c-var-n, ctx-n, ctx-primary
+- ->  -> context variable n
+---------------------
+o (Overlap | Overlapping Slices) (non-vectorising)
+Keywords: overlap, overlaps, overlapping, overlapping-slices
+- a: lst, b: num -> Overlapping slices of a of length b
+- a: lst|str -> Overlapping slices of a of length 2
+---------------------
+p (Prepend) (non-vectorising)
+Keywords: prepend
+- a: lst, b: any -> b prepended to a
+---------------------
+q (Quotify) (non-vectorising)
+Keywords: quotify
+- a: any -> enclose a in quotes, escape backslashes and quote marks
+---------------------
+r (Replace) (non-vectorising)
+Keywords: replace
+- a: str, b: str, c: str -> replace all instances of b in a with c
+---------------------
+s (Split) (non-vectorising)
+Keywords: split
+- a: any, b: any -> split a by b
+---------------------
+t (Tail | Last Item) (non-vectorising)
+Keywords: tail, last, last-item
+- a: lst -> a[-1]
+---------------------
+u (Uniquify) (non-vectorising)
+Keywords: uniquify
+- a: lst -> a with duplicates removed
+---------------------
+w (Wrap Singleton) (non-vectorising)
+Keywords: wrap-singleton
+- a -> [a]
+---------------------
+x (Recursion | Recurse) (non-vectorising)
+Keywords: recurse
+-  -> call the current function recursively
+---------------------
+y (To Base) (non-vectorising)
+Keywords: to-base
+- a: num, b: num -> a in base b
+- a: num, b: str|lst -> a in base with alphabet b
+- a: lst, b: num -> each x in a in base b
+- a: lst, b: str|lst -> each x in a in base with alphabet b
+---------------------
+z (Zero Range | Is Lowercase) (vectorising)
+Keywords: zero-range, zero->n, is-lowercase?, lowercase?, lower?
+- a: num -> [0, 1, ..., a]
+- a: str -> is a lowercase?
+---------------------
+Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
+Keywords: peek-call
+- a: fun -> Execute a without popping
+---------------------
+Ė (Execute lambda | Evaluate as Vyxal | Power with base 10) (non-vectorising)
+Keywords: execute-lambda, evaluate-as-vyxal, power-base-10, call, @
+- a: fun -> Execute a
+- a: str -> Evaluate a as Vyxal
+- a: num -> 10 ** n
+---------------------
+ṡ (Sort by Function Object | Reshape (APL Style)) (non-vectorising)
+Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun
+- a: fun, b: any -> sort iterable b by function a
+- a: any, b: fun -> sort iterable a by function b
+---------------------
+Θ (Zero Slice Until) (non-vectorising)
+Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first
+- a: lst, b: num -> [a[0], a[1], ..., a[b-1]]
+---------------------
+₀ (Ten) (non-vectorising)
+Keywords: ten
+- -> 10
+---------------------
+₁ (Sixteen) (non-vectorising)
+Keywords: sixteen
+- -> 16
+---------------------
+₂ (Twenty-six) (non-vectorising)
+Keywords: twenty-six
+- -> 26
+---------------------
+₃ (Thirty-two) (non-vectorising)
+Keywords: thirty-two
+- -> 32
+---------------------
+₄ (Sixty-four) (non-vectorising)
+Keywords: sixty-four
+- -> 64
+---------------------
+₅ (One hundred) (non-vectorising)
+Keywords: one-hundred
+- -> 100
+---------------------
+₆ (One hundred twenty-eight) (non-vectorising)
+Keywords: one-hundred-twenty-eight
+- -> 128
+---------------------
+₇ (Two hundred fifty-six) (non-vectorising)
+Keywords: two-hundred-fifty-six
+- -> 256
+---------------------
+₈ (Alphabet) (non-vectorising)
+Keywords: alphabet, a-z
+- -> "abcdefghijklmnopqrstuvwxyz"
+---------------------
+₉ (Empty array) (non-vectorising)
+Keywords: empty-list, nil-list, new-list
+- -> []
+---------------------
+ÞT (Transpose Safe) (non-vectorising)
+Keywords: transpose-safe
+- a: any -> transpose a
+---------------------
+× (Multiplication) (vectorising)
+Keywords: mul, multiply, times, str-repeat, *, ring-trans
+- a: num, b: num -> a * b
+- a: num, b: str -> b repeated a times
+- a: str, b: num -> a repeated b times
+- a: str, b: str -> ring translate a according to b
+---------------------
+÷ (Divide | Split) (vectorising)
+Keywords: divide, div, str-split
+- a: num, b: num -> a / b
+- a: str, b: str -> Split a on the regex b
+---------------------
+Ч
+Keywords: ****-
+Description: Turn the next four elements (whether that be a structure/modifier/element) into a lambda
+Чfghi: Push the equivalent of λfghi} to the stack
+---------------------
+ϩ
+Keywords: **-
+Description: Turn the next two elements (whether that be a structure/modifier/element) into a lambda
+ϩfg: Push the equivalent of λfg} to the stack
+---------------------
+ᵃ
+Keywords: apply-to-neighbours
+Description: To each overlapping pair, reduce it by an element
 Apply a dyadic link or a monadic chain for all pairs of neighboring elements.
-ᵃf: equivalent to 2ov/f---------------------v
-Keywords: vectorise-, vec-, v-Description: Vectorises
-vf: f but vectorised---------------------⸠
-Keywords: *-Description: Turn the next element (whether that be a structure/modifier/element) into a lambda
-⸠f: Push the equivalent of λf} to the stack---------------------э
-Keywords: ***-Description: Turn the next three elements (whether that be a structure/modifier/element) into a lambda
-эfgh: Push the equivalent of λfgh} to the stack---------------------/
-Keywords: foldl-, reduce-, /-, fold-, reduceby-Description: Reduce a list by an element
-/f: reduce by element f---------------------
+ᵃf: equivalent to 2ov/f
+---------------------
+v
+Keywords: vectorise-, vec-, v-
+Description: Vectorises
+vf: f but vectorised
+---------------------
+⸠
+Keywords: *-
+Description: Turn the next element (whether that be a structure/modifier/element) into a lambda
+⸠f: Push the equivalent of λf} to the stack
+---------------------
+э
+Keywords: ***-
+Description: Turn the next three elements (whether that be a structure/modifier/element) into a lambda
+эfgh: Push the equivalent of λfgh} to the stack
+---------------------
+/
+Keywords: foldl-, reduce-, /-, fold-, reduceby-
+Description: Reduce a list by an element
+/f: reduce by element f
+---------------------
+
