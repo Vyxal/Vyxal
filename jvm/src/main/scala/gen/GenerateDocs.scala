@@ -30,7 +30,7 @@ private object GenerateDocs:
           sb ++=
             s"$symbol ($name) (${if vectorises then "" else "non-"}vectorising)\n"
 
-          if SugarMap.trigraphs.contains(symbol) then
+          if SugarMap.trigraphs.values.toSeq.contains(symbol) then
             sb ++= s"Trigraph: ${SugarMap.trigraphs(symbol)}\n"
 
           sb ++= s"Keywords:${keywords.mkString(" ", ", ", "")}\n"
