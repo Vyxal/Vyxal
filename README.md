@@ -43,6 +43,20 @@ If you're using Poetry:
 poetry run vyxal <file> <flags (single string of flags)> <input(s)>
 ```
 
+To run from a file inside a Python script:
+
+```
+import vyxal.main
+vyxal.main.execute_vyxal("file", "flags (single string of flags)", ["inputs"])
+```
+
+or to run code inside a Python script:
+
+```
+import vyxal.main
+vyxal.main.execute_vyxal("code", "e", ["inputs"])
+```
+
 To run tests, install pytest and simply run `pytest tests`.
 
 ## Why Vyxal?
