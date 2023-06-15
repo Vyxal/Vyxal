@@ -19,6 +19,7 @@ import org.jline.terminal.TerminalBuilder
 import org.jline.utils.AttributedString
 
 object JvmRepl extends Repl:
+
   override def startRepl()(using ctx: Context): Unit =
     // Enable debug logging
     if ctx.settings.logLevel == LogLevel.Debug then
@@ -26,13 +27,25 @@ object JvmRepl extends Repl:
 
     AnsiConsole.systemInstall()
 
-    val terminal = TerminalBuilder
-      .builder()
-      .name("vyxal")
-      .jansi(true)
-      .system(true)
-      .streams(System.in, System.out)
-      .build()
+    // TODO: Probably refactor method chaining if it can be any order
+    val terminal =
+      if ctx.globals.useFancyRepl then
+        TerminalBuilder
+          .builder()
+          .name("vyxal")
+          .jansi(true)
+          .system(true)
+          .streams(System.in, System.out)
+          .build()
+      else
+        TerminalBuilder
+          .builder()
+          .name("vyxal")
+          .jansi(true)
+          .system(false)
+          .dumb(true)
+          .streams(System.in, System.out)
+          .build()
 
     val highlighter = SyntaxHighlighter.build(
       getClass()

@@ -33,6 +33,8 @@ object CLI:
       runParser: Boolean = false,
       settings: Settings = Settings(),
       runLiterateLexer: Boolean = false,
+      runFancyRepl: Boolean = false,
+      runFancyReplInternal: Boolean = false,
   )
 
   /** Run the CLI
@@ -90,7 +92,15 @@ object CLI:
         config.code.foreach { code => runCode(code) }
 
         if config.filename.nonEmpty || config.code.nonEmpty then return
-        else repl.startRepl()
+        else
+          if config.runFancyReplInternal && !(sys.env.getOrElse(
+              "REPL",
+              ""
+            ) != "false")
+          then ctx.globals.useFancyRepl = true
+          else if config.runFancyRepl then ctx.globals.useFancyRepl = true
+          else ctx.globals.useFancyRepl = false
+          repl.startRepl()
       case None => ???
     end match
   end run
@@ -145,6 +155,14 @@ object CLI:
       opt[Unit]('P', "parser") // todo(lyxal): Duplicate flag
         .action((_, cfg) => cfg.copy(runParser = true))
         .text("Run the parser on input")
+        .optional(),
+      opt[Unit]('.', "fancy-repl")
+        .action((_, cfg) => cfg.copy(runFancyRepl = true))
+        .text("Run the fancy REPL")
+        .optional(),
+      opt[Unit]('=', "fancy-repl-internal")
+        .action((_, cfg) => cfg.copy(runFancyReplInternal = true))
+        .text("Run the fancy REPL (DON'T USE THIS - INTERNAL ONLY)")
         .optional(),
       arg[String]("<input>...")
         .unbounded()

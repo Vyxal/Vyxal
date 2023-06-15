@@ -22,6 +22,7 @@ case class Globals(
 ):
   var register: VAny = settings.defaultValue
   var literate: Boolean = false
+  var useFancyRepl: Boolean = true
 
 /** Stores the inputs for some Context. Inputs can be overridden (see
   * [[Inputs#overrideInputs]]).
