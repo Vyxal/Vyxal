@@ -34,7 +34,6 @@ object CLI:
       settings: Settings = Settings(),
       runLiterateLexer: Boolean = false,
       runFancyRepl: Boolean = false,
-      runFancyReplInternal: Boolean = false,
   )
 
   /** Run the CLI
@@ -93,13 +92,10 @@ object CLI:
 
         if config.filename.nonEmpty || config.code.nonEmpty then return
         else
-          if config.runFancyReplInternal && !(sys.env.getOrElse(
-              "REPL",
-              ""
-            ) != "false")
-          then ctx.globals.useFancyRepl = true
-          else if config.runFancyRepl then ctx.globals.useFancyRepl = true
-          else ctx.globals.useFancyRepl = false
+          ctx.globals.useFancyRepl = true
+          if sys.env.getOrElse("REPL", "") == "false" then
+            ctx.globals.useFancyRepl = false
+          if config.runFancyRepl then ctx.globals.useFancyRepl = true
           repl.startRepl()
       case None => ???
     end match
@@ -159,10 +155,6 @@ object CLI:
       opt[Unit]('.', "fancy-repl")
         .action((_, cfg) => cfg.copy(runFancyRepl = true))
         .text("Run the fancy REPL")
-        .optional(),
-      opt[Unit]('=', "fancy-repl-internal")
-        .action((_, cfg) => cfg.copy(runFancyReplInternal = true))
-        .text("Run the fancy REPL (DON'T USE THIS - INTERNAL ONLY)")
         .optional(),
       arg[String]("<input>...")
         .unbounded()

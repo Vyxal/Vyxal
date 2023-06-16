@@ -21,7 +21,7 @@ case class Globals(
     callStack: mut.Stack[VFun] = mut.Stack(),
 ):
   var register: VAny = settings.defaultValue
-  var literate: Boolean = false
+  val literate: Boolean = false
   var useFancyRepl: Boolean = true
 
 /** Stores the inputs for some Context. Inputs can be overridden (see

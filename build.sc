@@ -87,8 +87,6 @@ object jvm extends VyxalModule {
     )
   }
 
-  def forkArgs: T[Seq[String]] = Seq("--fancy-repl-internal")
-
   def forkEnv: T[Map[String, String]] = Map("REPL" -> "false")
 
   override def assembly = T {

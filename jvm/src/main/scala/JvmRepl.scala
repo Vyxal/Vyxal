@@ -28,24 +28,16 @@ object JvmRepl extends Repl:
     AnsiConsole.systemInstall()
 
     // TODO: Probably refactor method chaining if it can be any order
-    val terminal =
-      if ctx.globals.useFancyRepl then
-        TerminalBuilder
-          .builder()
-          .name("vyxal")
-          .jansi(true)
-          .system(true)
-          .streams(System.in, System.out)
-          .build()
-      else
-        TerminalBuilder
-          .builder()
-          .name("vyxal")
-          .jansi(true)
-          .system(false)
-          .dumb(true)
-          .streams(System.in, System.out)
-          .build()
+    val terminalBuilder =
+      TerminalBuilder
+        .builder()
+        .name("Vyxal")
+        .jansi(true)
+        .streams(System.in, System.out)
+
+    if ctx.globals.useFancyRepl then terminalBuilder.system(true)
+    else terminalBuilder.dumb(true)
+    val terminal = terminalBuilder.build()
 
     val highlighter = SyntaxHighlighter.build(
       getClass()
