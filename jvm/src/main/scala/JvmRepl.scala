@@ -36,7 +36,7 @@ object JvmRepl extends Repl:
         .streams(System.in, System.out)
 
     if ctx.globals.useFancyRepl then terminalBuilder.system(true)
-    else terminalBuilder.dumb(true)
+    else terminalBuilder.system(false).dumb(true)
     val terminal = terminalBuilder.build()
 
     val highlighter = SyntaxHighlighter.build(
