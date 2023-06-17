@@ -17,27 +17,32 @@ import org.jline.reader.UserInterruptException
 import org.jline.terminal.Size
 import org.jline.terminal.TerminalBuilder
 import org.jline.utils.AttributedString
+import scala.io.StdIn
 
 object JvmRepl extends Repl:
 
   override def startRepl()(using ctx: Context): Unit =
+    if ctx.globals.useFancyRepl then fancyRepl()
+    else plainRepl()
+
+  private def plainRepl()(using ctx: Context): Unit =
+    while true do
+      val code = StdIn.readLine("> ")
+      Interpreter.execute(code)
+
+  private def fancyRepl()(using ctx: Context): Unit =
     // Enable debug logging
     if ctx.settings.logLevel == LogLevel.Debug then
       Logger.getLogger("org.jline").setLevel(Level.FINER)
 
     AnsiConsole.systemInstall()
-
-    // TODO: Probably refactor method chaining if it can be any order
-    val terminalBuilder =
-      TerminalBuilder
-        .builder()
-        .name("Vyxal")
-        .jansi(true)
-        .streams(System.in, System.out)
-
-    if ctx.globals.useFancyRepl then terminalBuilder.system(true)
-    else terminalBuilder.system(false).dumb(true)
-    val terminal = terminalBuilder.build()
+ 
+    val terminal = TerminalBuilder
+      .builder()
+      .name("Vyxal")
+      .jansi(true)
+      .system(true)
+      .build()
 
     val highlighter = SyntaxHighlighter.build(
       getClass()
@@ -78,5 +83,5 @@ object JvmRepl extends Repl:
           )
         case _: EndOfFileException =>
           return
-  end startRepl
+  end fancyRepl
 end JvmRepl
