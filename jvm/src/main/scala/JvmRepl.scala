@@ -36,7 +36,7 @@ object JvmRepl extends Repl:
       Logger.getLogger("org.jline").setLevel(Level.FINER)
 
     AnsiConsole.systemInstall()
- 
+
     val terminal = TerminalBuilder
       .builder()
       .name("Vyxal")
