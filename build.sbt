@@ -64,6 +64,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "org.fusesource.jansi" % "jansi" % "2.4.0"
     ),
     Compile / run / fork := true,
+    Compile / run / connectInput := true,
     Compile / run / envVars := Map("REPL" -> "false"),
   )
   .jsSettings(
