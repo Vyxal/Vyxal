@@ -65,6 +65,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     ),
     Compile / run / fork := true,
     Compile / run / connectInput := true,
+    Compile / run / outputStrategy := Some(StdoutOutput),
     Compile / run / envVars := Map("REPL" -> "false"),
   )
   .jsSettings(
