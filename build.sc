@@ -52,7 +52,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule with ScalafixModule {
     def scalaVersion = VyxalModule.this.scalaVersion()
 
     def ivyDeps = Agg(
-      ivy"org.scalatest::scalatest:3.2.15",
+      ivy"org.scalatest::scalatest:3.2.16",
       ivy"org.virtuslab::scala-yaml:0.0.7"
     )
 
