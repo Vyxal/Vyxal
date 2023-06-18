@@ -46,11 +46,10 @@ object CLI:
   def run(args: Array[String], repl: Repl): Unit =
     for logLevel <- sys.env.get("VYXAL_LOG_LEVEL") do
       scribe.Level.get(logLevel) match
-        case None => println(s"No such logging level: $logLevel")
+        case None        => println(s"No such logging level: $logLevel")
         case Some(level) =>
           // Change the logging level
-          scribe.Logger
-            .root
+          scribe.Logger.root
             .clearHandlers()
             .clearModifiers()
             .withHandler(minimumLevel = Some(level))
