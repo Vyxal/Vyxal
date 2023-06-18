@@ -13,7 +13,7 @@ import mill.scalanativelib.api._
 trait VyxalModule extends ScalaModule with ScalafmtModule with ScalafixModule {
   def platform: String
 
-  def scalaVersion = "3.2.2"
+  def scalaVersion = "3.3.0"
 
   def ivyDeps = Agg(
     ivy"org.typelevel::spire::0.18.0",
