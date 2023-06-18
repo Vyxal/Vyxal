@@ -150,21 +150,21 @@ object CLI:
         .action((code, cfg) => cfg.copy(code = Some(code)))
         .text("Code to execute directly")
         .optional(),
-      opt[String]('D', "docs-literate") // todo(lyxal): Duplicate flag
+      opt[String]("docs-literate")
         .action((symbol, cfg) => cfg.copy(litInfoFor = Some(symbol)))
         .text("Print literate mode mappings and exit")
         .optional(),
-      opt[Unit]('L', "lexer") // todo(lyxal): Duplicate flag
+      opt[Unit]("lexer")
         .action((_, cfg) => cfg.copy(runLexer = true))
-        .text("Run the lexer on input")
+        .text("Run the lexer on input. For internal use.")
         .optional(),
       opt[Unit]('`', "literate-lexer")
         .action((_, cfg) => cfg.copy(runLiterateLexer = true))
-        .text("Run the literate lexer on input")
+        .text("Run the literate lexer on input. For internal use.")
         .optional(),
-      opt[Unit]('P', "parser") // todo(lyxal): Duplicate flag
+      opt[Unit]("parser")
         .action((_, cfg) => cfg.copy(runParser = true))
-        .text("Run the parser on input")
+        .text("Run the parser on input. For internal use.")
         .optional(),
       opt[Unit]('.', "fancy-repl")
         .action((_, cfg) => cfg.copy(runFancyRepl = true))
@@ -212,8 +212,6 @@ object CLI:
         "Equivalent to having both m and M flags"
       ),
       flag('v', "vyxal-enc", "Use Vyxal encoding for input file"),
-      // todo output ASTs instead?
-      flag('c', "output-compiled", "Output compiled code (for debugging)"),
       flag(
         'a',
         "newline-sep-as-list",
