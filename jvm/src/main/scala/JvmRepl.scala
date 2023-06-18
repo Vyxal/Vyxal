@@ -4,6 +4,7 @@ import vyxal.gen.GenerateNanorc
 import vyxal.impls.Elements
 
 import java.util.logging.Level
+import java.util.logging.Logger
 import scala.io.StdIn
 
 import org.fusesource.jansi.AnsiConsole
@@ -17,7 +18,6 @@ import org.jline.reader.UserInterruptException
 import org.jline.terminal.Size
 import org.jline.terminal.TerminalBuilder
 import org.jline.utils.AttributedString
-import java.util.logging.Logger
 
 object JvmRepl extends Repl:
 
