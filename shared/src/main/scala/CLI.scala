@@ -7,7 +7,11 @@ import java.io.File
 import scopt.OParser
 
 trait Repl:
-  def startRepl()(using Context): Unit
+  /** @param fancy
+    *   Whether the REPL is allowed to have colors, history, and other fancy
+    *   stuff
+    */
+  def startRepl(fancy: Boolean)(using Context): Unit
 
 object CLI:
   /** Configuration for the command line argument parser
@@ -104,11 +108,9 @@ object CLI:
 
         if config.filename.nonEmpty || config.code.nonEmpty then return
         else
-          ctx.globals.useFancyRepl = true
-          if sys.env.getOrElse("REPL", "") == "false" then
-            ctx.globals.useFancyRepl = false
-          if config.runFancyRepl then ctx.globals.useFancyRepl = true
-          repl.startRepl()
+          repl.startRepl(
+            config.runFancyRepl || sys.env.getOrElse("REPL", "") != "false"
+          )
       case None => ???
     end match
   end run

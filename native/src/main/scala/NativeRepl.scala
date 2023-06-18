@@ -3,7 +3,7 @@ package vyxal
 import scala.io.StdIn
 
 object NativeRepl extends Repl:
-  override def startRepl()(using Context): Unit =
+  override def startRepl(fancy: Boolean)(using Context): Unit =
     while true do
       print("> ")
 

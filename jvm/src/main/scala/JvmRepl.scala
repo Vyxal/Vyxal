@@ -20,12 +20,11 @@ import org.jline.utils.AttributedString
 
 object JvmRepl extends Repl:
 
-  override def startRepl()(using ctx: Context): Unit =
-    if ctx.globals.useFancyRepl then fancyRepl()
-    else plainRepl()
+  override def startRepl(fancy: Boolean)(using ctx: Context): Unit =
+    if fancy then fancyRepl() else plainRepl()
 
   private def plainRepl()(using ctx: Context): Unit =
-    scribe.info("Starting plain repl...")
+    println("Starting plain repl...")
     while true do
       val code = StdIn.readLine("> ")
       Interpreter.execute(code)
