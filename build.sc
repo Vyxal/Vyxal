@@ -1,4 +1,4 @@
-import $ivy.`com.goyeau::mill-scalafix::0.2.9`
+import $ivy.`com.goyeau::mill-scalafix::0.2.11`
 import com.goyeau.mill.scalafix.ScalafixModule
 import mill._
 import mill.define.Target
