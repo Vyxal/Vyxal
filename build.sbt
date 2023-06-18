@@ -76,7 +76,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .jsSettings(
     // JS-specific settings
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "2.4.0"
+      "org.scala-js" %%% "scalajs-dom" % "2.6.0"
     ),
     // Where the compiled JS is output
     Compile / fastOptJS / artifactPath := baseDirectory.value.getParentFile / "pages" / "vyxal.js",
