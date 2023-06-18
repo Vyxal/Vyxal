@@ -1,11 +1,12 @@
 package vyxal
 
+import scala.compiletime.codeOf
+import scala.quoted.*
+
 import org.scalatest.compatible.Assertion
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.Checkpoints.Checkpoint
 import org.scalatest.Succeeded
-import scala.compiletime.codeOf
-import scala.quoted.*
 
 trait VyxalTests extends AnyFunSpec:
 
