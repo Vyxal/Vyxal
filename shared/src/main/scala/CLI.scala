@@ -44,12 +44,25 @@ object CLI:
     *   Function to start the REPL if requested
     */
   def run(args: Array[String], repl: Repl): Unit =
+    for logLevel <- sys.env.get("VYXAL_LOG_LEVEL") do
+      scribe.Level.get(logLevel) match
+        case None => println(s"No such logging level: $logLevel")
+        case Some(level) =>
+          // Change the logging level
+          scribe.Logger
+            .root
+            .clearHandlers()
+            .clearModifiers()
+            .withHandler(minimumLevel = Some(level))
+            .replace()
+
     OParser.parse(parser, args, CLIConfig()) match
       case Some(config) =>
         val inputList = config.inputs.reverse.map(Parser.parseInput)
         given ctx: Context = Context(
           inputs = inputList,
           ctxArgs = Some(inputList),
+          globals = Globals(settings = config.settings)
         )
 
         if config.printHelp then

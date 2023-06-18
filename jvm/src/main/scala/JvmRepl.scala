@@ -4,7 +4,6 @@ import vyxal.gen.GenerateNanorc
 import vyxal.impls.Elements
 
 import java.util.logging.Level
-import java.util.logging.Logger
 import scala.io.StdIn
 
 import org.fusesource.jansi.AnsiConsole
@@ -26,14 +25,15 @@ object JvmRepl extends Repl:
     else plainRepl()
 
   private def plainRepl()(using ctx: Context): Unit =
+    scribe.info("Starting plain repl...")
     while true do
       val code = StdIn.readLine("> ")
       Interpreter.execute(code)
 
   private def fancyRepl()(using ctx: Context): Unit =
     // Enable debug logging
-    if ctx.settings.logLevel == LogLevel.Debug then
-      Logger.getLogger("org.jline").setLevel(Level.FINER)
+    if scribe.includes(scribe.Level.Debug) then
+      java.util.logging.Logger.getLogger("org.jline").setLevel(Level.FINER)
 
     AnsiConsole.systemInstall()
 

@@ -71,6 +71,8 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
     * necessary)
     */
   def peek(n: Int): List[VAny] =
+    if currInputs.isEmpty then return Nil
+
     // The number of elems that can be gotten without wrapping
     val numNonWrapping = n.min(currInputs.length - ind)
     val nonWrapping = currInputs.slice(ind, ind + numNonWrapping).toList
@@ -107,10 +109,6 @@ enum EndPrintMode:
   /** Don't print anything - disable implicit output */
   case None
 
-// todo use a proper logging library instead
-enum LogLevel:
-  case Debug, Normal
-
 /** Settings set by flags
   *
   * @param presetStack
@@ -130,7 +128,6 @@ case class Settings(
     rangeStart: VNum = 1,
     rangeOffset: VNum = 0,
     numToRange: Boolean = false,
-    logLevel: LogLevel = LogLevel.Normal,
     online: Boolean = false,
     literate: Boolean = false,
 ):

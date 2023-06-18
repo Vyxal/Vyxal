@@ -31,6 +31,8 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "org.scala-lang.modules" %%% "scala-parser-combinators" % "2.2.0",
       // For command line parsing
       "com.github.scopt" %%% "scopt" % "4.1.0",
+      // For logging
+      "com.outr" %%% "scribe" % "3.11.5",
       // For reading tests.yaml
       "org.virtuslab" %%% "scala-yaml" % "0.0.7" % Test,
       "org.scalatest" %%% "scalatest" % "3.2.15" % Test
@@ -66,7 +68,10 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     Compile / run / fork := true,
     Compile / run / connectInput := true,
     Compile / run / outputStrategy := Some(StdoutOutput),
-    Compile / run / envVars := Map("REPL" -> "false"),
+    Compile / run / envVars := Map(
+      "REPL" -> "false",
+      "VYXAL_LOG_LEVEL" -> "Debug"
+    ),
   )
   .jsSettings(
     // JS-specific settings

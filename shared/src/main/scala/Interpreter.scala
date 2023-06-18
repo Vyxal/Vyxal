@@ -25,14 +25,12 @@ object Interpreter:
 
     Parser.parse(lexed) match
       case Right(ast) =>
-        if ctx.settings.logLevel == LogLevel.Debug then
-          println(s"Executing '$code' (ast: $ast)")
+        scribe.trace(s"Executing '$code' (ast: $ast)")
 
         try execute(ast)
         catch
           case _: QuitException =>
-            if ctx.settings.logLevel == LogLevel.Debug then
-              println("Program quit using Q")
+            scribe.debug("Program quit using Q")
 
         // todo implicit output according to settings
         if !ctx.isStackEmpty && ctx.settings.endPrintMode == EndPrintMode.Default
@@ -43,8 +41,7 @@ object Interpreter:
   end execute
 
   def execute(ast: AST)(using ctx: Context): Unit =
-    if ctx.settings.logLevel == LogLevel.Debug then
-      println(s"Executing AST $ast, stack = ${ctx.peek(5)}")
+    scribe.trace(s"Executing AST $ast, stack = ${ctx.peek(5)}")
     ast match
       case AST.Number(value) => ctx.push(value)
       case AST.Str(value)    => ctx.push(value)
@@ -207,8 +204,7 @@ object Interpreter:
         else ctx.push(args(index))
       case _ => throw NotImplementedError(s"$ast not implemented")
     end match
-    if ctx.settings.logLevel == LogLevel.Debug then
-      println(s"res was ${ctx.peek}")
+    scribe.trace(s"res was ${ctx.peek}")
   end execute
 
   def generator(
