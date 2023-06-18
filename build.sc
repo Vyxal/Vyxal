@@ -79,7 +79,7 @@ object jvm extends VyxalModule {
 
   object test extends VyxalTestModule {
     def ivyDeps = T {
-      super.ivyDeps() ++ Seq(ivy"org.yaml:snakeyaml::1.33")
+      super.ivyDeps() ++ Seq(ivy"org.yaml:snakeyaml::2.0")
     }
   }
 }
