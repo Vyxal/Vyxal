@@ -17,6 +17,7 @@ import org.jline.reader.UserInterruptException
 import org.jline.terminal.Size
 import org.jline.terminal.TerminalBuilder
 import org.jline.utils.AttributedString
+import java.util.logging.Logger
 
 object JvmRepl extends Repl:
 
@@ -32,7 +33,9 @@ object JvmRepl extends Repl:
   private def fancyRepl()(using ctx: Context): Unit =
     // Enable debug logging
     if scribe.includes(scribe.Level.Debug) then
-      java.util.logging.Logger.getLogger("org.jline").setLevel(Level.FINER)
+      Logger.getLogger("org.jline").setLevel(Level.FINE)
+    else if scribe.includes(scribe.Level.Warn) then
+      Logger.getLogger("org.jline").setLevel(Level.WARNING)
 
     AnsiConsole.systemInstall()
 
