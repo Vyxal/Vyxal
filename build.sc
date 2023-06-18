@@ -19,7 +19,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule with ScalafixModule {
     ivy"org.typelevel::spire::0.18.0",
     ivy"org.scala-lang.modules::scala-parser-combinators::2.2.0",
     ivy"com.github.scopt::scopt::4.1.0",
-    ivy"org.scalactic::scalactic::3.2.15"
+    ivy"org.scalactic::scalactic::3.2.16"
   )
 
   def scalacOptions = Seq(
