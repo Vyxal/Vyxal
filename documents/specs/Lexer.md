@@ -19,7 +19,7 @@ determination later on.
 `TokenType.LITERAL` should be used for tokens that represent a fixed literal
 value, including numbers, strings, etc. Note that digraphs do NOT belong here.
 The token's value should be a string that will evaluate to the value being
-returned. For example, `123` should return `"123"` and <code>`hello`</code>
+returned. For example, `123` should return `"123"` and <code>\`hello\`</code>
 should return `"'hello'"`.
 
 ### Compressed Strings and Numbers
