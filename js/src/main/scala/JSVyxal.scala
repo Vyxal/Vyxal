@@ -18,7 +18,7 @@ object JSVyxal:
       printFunc: js.Function1[String, Unit]
   ): Unit =
     // todo take functions to print to custom stdout and stderr
-    val settings = Settings(online = true, literate = flags.contains("l"))
+    val settings = Settings(online = true)
       .withFlags(flags.toList)
     val globals = Globals(
       settings = settings,
