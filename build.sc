@@ -1,4 +1,4 @@
-import $ivy.`com.goyeau::mill-scalafix::0.2.9`
+import $ivy.`com.goyeau::mill-scalafix::0.2.11`
 import com.goyeau.mill.scalafix.ScalafixModule
 import mill._
 import mill.define.Target
@@ -13,13 +13,13 @@ import mill.scalanativelib.api._
 trait VyxalModule extends ScalaModule with ScalafmtModule with ScalafixModule {
   def platform: String
 
-  def scalaVersion = "3.2.2"
+  def scalaVersion = "3.3.0"
 
   def ivyDeps = Agg(
     ivy"org.typelevel::spire::0.18.0",
-    ivy"org.scala-lang.modules::scala-parser-combinators::2.2.0",
+    ivy"org.scala-lang.modules::scala-parser-combinators::2.3.0",
     ivy"com.github.scopt::scopt::4.1.0",
-    ivy"org.scalactic::scalactic::3.2.15"
+    ivy"org.scalactic::scalactic::3.2.16"
   )
 
   def scalacOptions = Seq(
@@ -52,7 +52,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule with ScalafixModule {
     def scalaVersion = VyxalModule.this.scalaVersion()
 
     def ivyDeps = Agg(
-      ivy"org.scalatest::scalatest:3.2.15",
+      ivy"org.scalatest::scalatest:3.2.16",
       ivy"org.virtuslab::scala-yaml:0.0.7"
     )
 
@@ -79,7 +79,7 @@ object jvm extends VyxalModule {
 
   object test extends VyxalTestModule {
     def ivyDeps = T {
-      super.ivyDeps() ++ Seq(ivy"org.yaml:snakeyaml::1.33")
+      super.ivyDeps() ++ Seq(ivy"org.yaml:snakeyaml::2.0")
     }
   }
 }

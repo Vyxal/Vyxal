@@ -30,7 +30,6 @@ object JSVyxal:
       globals = globals
     )
     Interpreter.execute(code, literate = flags.contains("l"))(using ctx)
-  end execute
 
   @JSExport
   def compress(text: String): String = StringHelpers.compressDictionary(text)
