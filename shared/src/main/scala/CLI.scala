@@ -142,11 +142,11 @@ object CLI:
         .action((_, cfg) => cfg.copy(printHelp = true))
         .text("Print this help message and exit")
         .optional(),
-      opt[String]('f', "file")
+      opt[String]("file")
         .action((file, cfg) => cfg.copy(filename = Some(file)))
         .text("The file to read the program from")
         .optional(),
-      opt[String]('c', "code")
+      opt[String]("code")
         .action((code, cfg) => cfg.copy(code = Some(code)))
         .text("Code to execute directly")
         .optional(),
@@ -158,7 +158,7 @@ object CLI:
         .action((_, cfg) => cfg.copy(runLexer = true))
         .text("Run the lexer on input. For internal use.")
         .optional(),
-      opt[Unit]('`', "literate-lexer")
+      opt[Unit]("literate-lexer")
         .action((_, cfg) => cfg.copy(runLiterateLexer = true))
         .text("Run the literate lexer on input. For internal use.")
         .optional(),
@@ -166,7 +166,7 @@ object CLI:
         .action((_, cfg) => cfg.copy(runParser = true))
         .text("Run the parser on input. For internal use.")
         .optional(),
-      opt[Unit]('.', "fancy-repl")
+      opt[Unit]("fancy-repl")
         .action((_, cfg) => cfg.copy(runFancyRepl = true))
         .text("Run the fancy REPL")
         .optional(),
