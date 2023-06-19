@@ -147,7 +147,7 @@ object jvm extends VyxalModule {
   }
 
   object test extends ScalaTests with VyxalTestModule
-}
+}}
 
 /** Shared and JS-specific code */
 object js extends ScalaJSModule with VyxalModule {
