@@ -29,8 +29,7 @@ object JSVyxal:
       inputs = inputs.split("\n").map(Parser.parseInput).toIndexedSeq,
       globals = globals
     )
-    Interpreter.execute(code)(using ctx)
-  end execute
+    Interpreter.execute(code, literate = flags.contains("l"))(using ctx)
 
   @JSExport
   def compress(text: String): String = StringHelpers.compressDictionary(text)

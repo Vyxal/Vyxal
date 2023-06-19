@@ -10,4 +10,3 @@ object Dictionary:
       .fromInputStream(getClass.getResourceAsStream(path))
       .getLines()
       .toSeq
-end Dictionary

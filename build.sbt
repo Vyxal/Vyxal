@@ -28,14 +28,16 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     libraryDependencies ++= Seq(
       // For number stuff
       "org.typelevel" %%% "spire" % "0.18.0",
-      "org.scala-lang.modules" %%% "scala-parser-combinators" % "2.2.0",
+      "org.scala-lang.modules" %%% "scala-parser-combinators" % "2.3.0",
       // For command line parsing
       "com.github.scopt" %%% "scopt" % "4.1.0",
       // For logging
       "com.outr" %%% "scribe" % "3.11.5",
       // For reading tests.yaml
       "org.virtuslab" %%% "scala-yaml" % "0.0.7" % Test,
-      "org.scalatest" %%% "scalatest" % "3.2.15" % Test
+      // Used by ScalaTest
+      "org.scalactic" %%% "scalactic" % "3.2.16",
+      "org.scalatest" %%% "scalatest" % "3.2.16" % Test
     ),
     scalacOptions ++= Seq(
       "-deprecation", // Emit warning and location for usages of deprecated APIs.
@@ -76,7 +78,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .jsSettings(
     // JS-specific settings
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "2.4.0"
+      "org.scala-js" %%% "scalajs-dom" % "2.6.0"
     ),
     // Where the compiled JS is output
     Compile / fastOptJS / artifactPath := baseDirectory.value.getParentFile / "pages" / "vyxal.js",
