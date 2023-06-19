@@ -19,7 +19,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
 
   def ivyDeps = Agg(
     ivy"org.typelevel::spire::0.18.0",
-    ivy"org.scala-lang.modules::scala-parser-combinators::2.2.0",
+    ivy"org.scala-lang.modules::scala-parser-combinators::2.3.0",
     ivy"com.github.scopt::scopt::4.1.0",
     ivy"com.outr::scribe::3.11.5"
   )
