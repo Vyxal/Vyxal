@@ -18,7 +18,8 @@ object JSVyxal:
       printFunc: js.Function1[String, Unit]
   ): Unit =
     // todo take functions to print to custom stdout and stderr
-    val settings = Settings(online = true).withFlags(flags.toList)
+    val settings = Settings(online = true, literate = flags.contains("l"))
+      .withFlags(flags.toList)
     val globals = Globals(
       settings = settings,
       printFn = printFunc,
@@ -29,7 +30,7 @@ object JSVyxal:
       inputs = inputs.split("\n").map(Parser.parseInput).toIndexedSeq,
       globals = globals
     )
-    Interpreter.execute(code, literate = flags.contains("l"))(using ctx)
+    Interpreter.execute(code)(using ctx)
 
   @JSExport
   def compress(text: String): String = StringHelpers.compressDictionary(text)
