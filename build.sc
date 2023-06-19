@@ -1,7 +1,5 @@
 import java.net.{JarURLConnection, URL, URLClassLoader}
 
-import $ivy.`com.goyeau::mill-scalafix::0.2.11`
-import com.goyeau.mill.scalafix.ScalafixModule
 import mill._
 import mill.api.Result
 import mill.scalajslib._
@@ -21,10 +19,9 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
 
   def ivyDeps = Agg(
     ivy"org.typelevel::spire::0.18.0",
-    ivy"org.scala-lang.modules::scala-parser-combinators::2.3.0",
+    ivy"org.scala-lang.modules::scala-parser-combinators::2.2.0",
     ivy"com.github.scopt::scopt::4.1.0",
     ivy"com.outr::scribe::3.11.5"
-    ivy"org.scalactic::scalactic::3.2.16"
   )
 
   def scalacOptions = Seq(
@@ -91,7 +88,8 @@ object jvm extends VyxalModule {
     )
   }
 
-  def forkEnv: T[Map[String, String]] = Map("REPL" -> "false", "VYXAL_LOG_LEVEL" -> "Debug")
+  def forkEnv: T[Map[String, String]] =
+    Map("REPL" -> "false", "VYXAL_LOG_LEVEL" -> "Debug")
 
   override def assembly = T {
     // Make sure to generate nanorcs first
@@ -114,10 +112,6 @@ object jvm extends VyxalModule {
     val method = clazz.getMethod(methodName)
     val singleton = clazz.getField("MODULE$").get(null)
     method.invoke(singleton).asInstanceOf[T]
-  object test extends VyxalTestModule {
-    def ivyDeps = T {
-      super.ivyDeps() ++ Seq(ivy"org.yaml:snakeyaml::2.0")
-    }
   }
 
   /** Generate elements.txt and trigraphs.txt */
@@ -147,7 +141,7 @@ object jvm extends VyxalModule {
   }
 
   object test extends ScalaTests with VyxalTestModule
-}}
+}
 
 /** Shared and JS-specific code */
 object js extends ScalaJSModule with VyxalModule {
