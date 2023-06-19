@@ -14,6 +14,7 @@ import sys
 import types
 import urllib.request
 import json
+from bs4 import BeautifulSoup as bs
 from datetime import datetime
 from typing import Callable, Union
 
@@ -443,6 +444,7 @@ else:
     "k□": process_element("[[0,1],[1,0],[0,-1],[-1,0]]", 0),
     "kṘ": process_element('"IVXLCDM"', 0),
     "k•": process_element('["qwertyuiop","asdfghjkl","zxcvbnm"]', 0),
+    "¨P": process_element('in = pop(stack, 2, ctx) ; stack.append(eval(f"bs({in[1]},\"html.parser\").{in[0]}"))', 2),
 }
 
 
