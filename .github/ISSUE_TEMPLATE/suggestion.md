@@ -13,3 +13,5 @@ A short explanation of the feature.
 **Details**
 
 Go into more details on the feature (how you want it to be implemented, why it should be implemented, etc.).
+
+_Make sure to include the appropriate version label in your issue_
