@@ -444,10 +444,6 @@ else:
     "k□": process_element("[[0,1],[1,0],[0,-1],[-1,0]]", 0),
     "kṘ": process_element('"IVXLCDM"', 0),
     "k•": process_element('["qwertyuiop","asdfghjkl","zxcvbnm"]', 0),
-    "¨P": process_element(
-        'in = pop(stack, 2, ctx) ; stack.append(str(eval(f"bs({in[1]},"html.parser").{in[0]}")))',
-        2,
-    ),
 }
 
 
@@ -465,7 +461,26 @@ def element(symbol: str, arity: int):
 
     return decorator
 
-
+@element("¨P",2)
+def parse_html(lhs, rhs, ctx):
+    soup = bs(lhs)
+    for parsequery in rhs.split('.'):
+        try:
+            listt = [elem.find_all(parsequery) for elem in listt]
+        except:
+            listt = list(soup.find_all(parsequery))
+    def flattenlist(x):
+        currentl = list(x)
+        while any(isinstance(y, collection.abc.Iterable) for y in currentl):
+            templ = []
+            for item in currentl:
+                if isinstance(item, collection.abc.Iterable):
+                    templ.extend(list(item))
+                else:
+                    templ.append(item)
+            currentl = templ
+        return currentl
+    return flattenlist(listt)
 @element("ε", 2)
 def absolute_difference(lhs, rhs, ctx):
     """Element ε
