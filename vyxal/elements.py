@@ -461,26 +461,7 @@ def element(symbol: str, arity: int):
 
     return decorator
 
-@element("¨P",2)
-def parse_html(lhs, rhs, ctx):
-    soup = bs(lhs)
-    for parsequery in rhs.split('.'):
-        try:
-            listt = [elem.find_all(parsequery) for elem in listt]
-        except:
-            listt = list(soup.find_all(parsequery))
-    def flattenlist(x):
-        currentl = list(x)
-        while any(isinstance(y, collection.abc.Iterable) for y in currentl):
-            templ = []
-            for item in currentl:
-                if isinstance(item, collection.abc.Iterable):
-                    templ.extend(list(item))
-                else:
-                    templ.append(item)
-            currentl = templ
-        return currentl
-    return flattenlist(listt)
+
 @element("ε", 2)
 def absolute_difference(lhs, rhs, ctx):
     """Element ε
@@ -4990,6 +4971,30 @@ def parse_direction_arrow_to_vector(lhs, ctx):
         }.get(lhs, [sympy.nsimplify(0), sympy.nsimplify(0)])
     else:
         return vectorise(parse_direction_arrow_to_vector, list(lhs), ctx=ctx)()
+
+
+@element("¨P", 2)
+def parse_html(lhs, rhs, ctx):
+    soup = bs(lhs)
+    for parsequery in rhs.split("."):
+        try:
+            listt = [elem.find_all(parsequery) for elem in listt]
+        except:
+            listt = list(soup.find_all(parsequery))
+
+    def flattenlist(x):
+        currentl = list(x)
+        while any(isinstance(y, collection.abc.Iterable) for y in currentl):
+            templ = []
+            for item in currentl:
+                if isinstance(item, collection.abc.Iterable):
+                    templ.extend(list(item))
+                else:
+                    templ.append(item)
+            currentl = templ
+        return currentl
+
+    return flattenlist(listt)
 
 
 @element("Ṗ", 1)
