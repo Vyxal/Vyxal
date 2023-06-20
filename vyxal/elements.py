@@ -445,7 +445,7 @@ else:
     "kṘ": process_element('"IVXLCDM"', 0),
     "k•": process_element('["qwertyuiop","asdfghjkl","zxcvbnm"]', 0),
     "¨P": process_element(
-        'in = pop(stack, 2, ctx) ; stack.append(eval(f"bs({in[1]},"html.parser").{in[0]}"))',
+        'in = pop(stack, 2, ctx) ; stack.append(str(eval(f"bs({in[1]},"html.parser").{in[0]}")))',
         2,
     ),
 }
