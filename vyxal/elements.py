@@ -4973,28 +4973,32 @@ def parse_direction_arrow_to_vector(lhs, ctx):
         return vectorise(parse_direction_arrow_to_vector, list(lhs), ctx=ctx)()
 
 
-@element("¨P", 2)
-def parse_html(lhs, rhs, ctx):
-    soup = bs(lhs)
-    for parsequery in rhs.split("."):
-        try:
-            listt = [elem.find_all(parsequery) for elem in listt]
-        except:
-            listt = list(soup.find_all(parsequery))
+@element("¨P", 1)
+def parse_html(lhs, ctx):
+    soup = bs(lhs, "html.parser")
 
-    def flattenlist(x):
-        currentl = list(x)
-        while any(isinstance(y, collection.abc.Iterable) for y in currentl):
-            templ = []
-            for item in currentl:
-                if isinstance(item, collection.abc.Iterable):
-                    templ.extend(list(item))
-                else:
-                    templ.append(item)
-            currentl = templ
-        return currentl
+    def traverse(soup):
+        if soup.name is not None:
+            if soup.name == "[document]":
+                return [
+                    traverse(child)
+                    for child in soup.children
+                    if child.name is not None
+                ]
+            return [
+                soup.name,
+                soup.text,
+                [
+                    traverse(child)
+                    for child in soup.children
+                    if child.name is not None
+                ],
+            ]
+        else:
+            return []
 
-    return flattenlist(listt)
+    parsed = traverse(soup)
+    return parsed
 
 
 @element("Ṗ", 1)
