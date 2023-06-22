@@ -149,6 +149,18 @@ object Elements:
       "a: str, b: str -> a + b"
     )(MiscHelpers.add)
 
+    val absoluteValue = addVect(
+      Monad,
+      "Ȧ",
+      "Absolute Value | Keep Alphabet Characters",
+      List("abs", "absolute-value", "keep-alphabet"),
+      "a: num -> |a|",
+      "a: str -> keep alphabet characters of a"
+    ) {
+      case a: VNum   => a.vabs
+      case a: String => a.filter(_.isLetter)
+    }
+
     val allTruthy = addElem(
       Monad,
       "A",

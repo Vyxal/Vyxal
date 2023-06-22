@@ -646,6 +646,14 @@
   - {in: ["H"], out: 0}
   - {in: ["hello world"], out: [1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1]}
 
+"Ȧ":
+  - {in: [-234], out: 234}
+  - {in: [0], out: 0}
+  - {in: [234], out: 234}
+  - {in: ["Hello, World!"], out: "HelloWorld"}
+  - {in: ["!!!!!"], out: ""}
+  - {in: [" "], out: ""}
+
 "Ė":
   When given a number:
     - { in: [0], out: 1 }
