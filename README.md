@@ -14,3 +14,10 @@ Directory Guide (for people who aren't the best at mentally parsing nested folde
 - `jvm/src/main/scala` is where the entry file for the command line and all the
    JVM-specific stuff is. It's the `__main__.py` of the project in a sort of a way.
 - `js` is where all the JS-specific stuff is.
+
+
+Version 3.0.0-beta.3 release targets:
+
+- JLine PR merged (merge conflicts can be handled if needed)
+- Elements up to `ẋ` implemented
+- Some more modifiers implemented
