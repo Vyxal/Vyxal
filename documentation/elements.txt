@@ -343,6 +343,7 @@ Keywords: zero-range, zero->n, is-lowercase?, lowercase?, lower?
 - a: str -> is a lowercase?
 ---------------------
 ¦ (Pipe) (non-vectorising)
+Trigraph: #.;
 Keywords: pipe
 - -> |
 ---------------------
