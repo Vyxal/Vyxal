@@ -19,5 +19,6 @@ Directory Guide (for people who aren't the best at mentally parsing nested folde
 Version 3.0.0-beta.3 release targets:
 
 - JLine PR merged (merge conflicts can be handled if needed)
-- Elements up to `ẋ` implemented
+- Elements up to ẋ implemented
 - Some more modifiers implemented
+- 2 byte number compression implemented (#887)
