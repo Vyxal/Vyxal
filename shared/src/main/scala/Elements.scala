@@ -1362,6 +1362,9 @@ object Elements:
     }
 
     // Constants
+    addNilad("¦", "Pipe", List("pipe"), "|") { "|" }
+    addNilad("ð", "Space", List("space"), " ") { " " }
+    addNilad("¶", "Newline", List("newline"), "\n") { "\n" }
     addNilad("₀", "Ten", List("ten"), "10") { 10 }
     addNilad("₁", "Sixteen", List("sixteen"), "16") { 26 }
     addNilad("₂", "Twenty-six", List("twenty-six"), "26") { 26 }
