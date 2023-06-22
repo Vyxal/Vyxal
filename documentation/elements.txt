@@ -342,6 +342,10 @@ Keywords: zero-range, zero->n, is-lowercase?, lowercase?, lower?
 - a: num -> [0, 1, ..., a]
 - a: str -> is a lowercase?
 ---------------------
+¦ (Pipe) (non-vectorising)
+Keywords: pipe
+- -> |
+---------------------
 Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
 Trigraph: #.B
 Keywords: peek-call
@@ -432,6 +436,18 @@ Trigraph: #./
 Keywords: divide, div, str-split
 - a: num, b: num -> a / b
 - a: str, b: str -> Split a on the regex b
+---------------------
+ð (Space) (non-vectorising)
+Trigraph: #.b
+Keywords: space
+- ->  
+---------------------
+¶ (Newline) (non-vectorising)
+Trigraph: #,
+
+Keywords: newline
+- -> 
+
 ---------------------
 Ч
 Keywords: ****-
