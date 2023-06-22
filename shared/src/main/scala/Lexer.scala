@@ -121,6 +121,17 @@ object Lexer extends RegexParsers:
     Str(value.substring(1))
   }
 
+  def twoCharNumber: Parser[VyxalToken] = "~..".r ^^ { value =>
+    Number(
+      value
+        .substring(1)
+        .zipWithIndex
+        .map((c, ind) => math.pow(CODEPAGE.length, ind) * CODEPAGE.indexOf(c))
+        .sum
+        .toString
+    )
+  }
+
   val structureOpenRegex = """[\[\(\{λƛΩ₳µḌṆ]|#@|#\{"""
   def structureOpen: Parser[VyxalToken] = structureOpenRegex.r ^^ { value =>
     StructureOpen(StructureType.values.find(_.open == value).get)
@@ -201,7 +212,7 @@ object Lexer extends RegexParsers:
   def tokens: Parser[List[VyxalToken]] = phrase(
     rep(
       comment | multigraph | branch | contextIndex | number | string | augVariable | getVariable | setVariable
-        | setConstant | twoCharString | singleCharString
+        | setConstant | twoCharNumber | twoCharString | singleCharString
         | monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
         | specialModifier | structureOpen | structureClose | structureAllClose
         | listOpen | listClose | newlines | command

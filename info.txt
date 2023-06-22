@@ -1,5 +1,5 @@
-ᵃ = Reduce each overlap of size 2 by an element
-ᵇ = number of truthy items by element
+ᵃ = Reduce each overlap of size 2 by an element / number of truthy items by element
+ᵇ = Apply element without popping
 ᶜ = reduce columns
 ᵈ = remove duplicates by element
 ᵉ = invariant / Equal under element
@@ -124,7 +124,7 @@ z = [0, n] / is lowercase?
 { = open while loop
 | = structure thing
 } = close structure
-~ = Apply element without popping
+~ = 2 byte compressed number
 ¦ = "|"
 Ȧ = Absolute value / keep only alphabet characters
 Ḃ = Return a Boolean array with 1s at the indices in a list.
