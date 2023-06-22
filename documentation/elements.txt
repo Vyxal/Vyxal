@@ -346,6 +346,12 @@ Keywords: zero-range, zero->n, is-lowercase?, lowercase?, lower?
 Keywords: pipe
 - -> |
 ---------------------
+Ȧ (Absolute Value | Keep Alphabet Characters) (vectorising)
+Trigraph: #.A
+Keywords: abs, absolute-value, keep-alphabet
+- a: num -> |a|
+- a: str -> keep alphabet characters of a
+---------------------
 Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping) (non-vectorising)
 Trigraph: #.B
 Keywords: peek-call
