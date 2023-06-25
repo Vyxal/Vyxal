@@ -31,10 +31,10 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "org.scala-lang.modules" %%% "scala-parser-combinators" % "2.3.0",
       // For command line parsing
       "com.github.scopt" %%% "scopt" % "4.1.0",
+      // For logging
+      "com.outr" %%% "scribe" % "3.11.5",
       // For reading tests.yaml
       "org.virtuslab" %%% "scala-yaml" % "0.0.7" % Test,
-      // Used by ScalaTest
-      "org.scalactic" %%% "scalactic" % "3.2.16",
       "org.scalatest" %%% "scalatest" % "3.2.16" % Test
     ),
     scalacOptions ++= Seq(
@@ -48,18 +48,6 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       // "-explain",
       "-print-lines"
     ),
-    // Configure Scaladoc
-    Compile / doc / target := file("docs"),
-    Compile / doc / scalacOptions ++= Seq(
-      "-project-version",
-      vyxalVersion,
-      "-groups", // Group similar functions
-      "-Ygenerate-inkuire", // Allow type-based searches
-      "-external-mappings:.*vyxal.*::scaladoc3::https://vyxal.github.io/Vyxal/docs/",
-      "-external-mappings:.*scala.util.parsing.*::scaladoc3::https://scala-lang.org/api/2.12.8/scala-parser-combinators/",
-      "-external-mappings:.*scala(?!.util.parsing).*::scaladoc3::https://scala-lang.org/api/3.x/",
-      "-external-mappings:.*java.*::javadoc::https://docs.oracle.com/javase/8/docs/api/"
-    ),
     // From https://www.scalatest.org/user_guide/using_the_runner
     // Suppress output from successful tests
     Test / testOptions += Tests
@@ -72,6 +60,18 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     assembly / assemblyJarName := s"vyxal-$vyxalVersion.jar",
     // Necessary for tests to be able to access src/main/resources
     Test / fork := true,
+    libraryDependencies ++= Seq(
+      "org.jline" % "jline" % "3.23.0",
+      "org.jline" % "jline-terminal-jansi" % "3.23.0",
+      "org.fusesource.jansi" % "jansi" % "2.4.0"
+    ),
+    Compile / run / fork := true,
+    Compile / run / connectInput := true,
+    Compile / run / outputStrategy := Some(StdoutOutput),
+    Compile / run / envVars := Map(
+      "REPL" -> "false",
+      "VYXAL_LOG_LEVEL" -> "Debug"
+    ),
   )
   .jsSettings(
     // JS-specific settings

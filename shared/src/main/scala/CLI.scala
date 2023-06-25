@@ -1,11 +1,17 @@
-package vyxal.cli
+package vyxal
 
-import vyxal.*
 import vyxal.impls.{Element, Elements}
 
 import java.io.File
 
 import scopt.OParser
+
+trait Repl:
+  /** @param fancy
+    *   Whether the REPL is allowed to have colors, history, and other fancy
+    *   stuff
+    */
+  def startRepl(fancy: Boolean)(using Context): Unit
 
 object CLI:
   /** Configuration for the command line argument parser
@@ -16,8 +22,6 @@ object CLI:
     *   Code to run (optional)
     * @param inputs
     *   Inputs to program (optional)
-    * @param printDocs
-    *   Whether to print descriptions of all the elements
     * @param litInfoFor
     *   Element to print literate mode keywords for (optional)
     * @param settings
@@ -27,36 +31,45 @@ object CLI:
       filename: Option[String] = None,
       code: Option[String] = None,
       inputs: List[String] = List.empty,
-      printDocs: Boolean = false,
-      printSugar: Boolean = false,
       litInfoFor: Option[String] = None,
       printHelp: Boolean = false,
-      runLiterate: Boolean = false,
       runLexer: Boolean = false,
       runParser: Boolean = false,
       settings: Settings = Settings(),
       runLiterateLexer: Boolean = false,
+      runFancyRepl: Boolean = false,
   )
 
-  def run(args: Array[String]): Unit =
+  /** Run the CLI
+    *
+    * @param args
+    *   Command-line arguments
+    * @param repl
+    *   Function to start the REPL if requested
+    */
+  def run(args: Array[String], repl: Repl): Unit =
+    for logLevel <- sys.env.get("VYXAL_LOG_LEVEL") do
+      scribe.Level.get(logLevel) match
+        case None        => println(s"No such logging level: $logLevel")
+        case Some(level) =>
+          // Change the logging level
+          scribe.Logger.root
+            .clearHandlers()
+            .clearModifiers()
+            .withHandler(minimumLevel = Some(level))
+            .replace()
+
     OParser.parse(parser, args, CLIConfig()) match
       case Some(config) =>
         val inputList = config.inputs.reverse.map(Parser.parseInput)
         given ctx: Context = Context(
           inputs = inputList,
           ctxArgs = Some(inputList),
+          globals = Globals(settings = config.settings)
         )
 
         if config.printHelp then
           println(OParser.usage(parser))
-          return
-
-        if config.printDocs then
-          printDocs()
-          return
-
-        if config.printSugar then
-          for (key, value) <- SugarMap.trigraphs do println(s"$key -> $value")
           return
 
         if config.litInfoFor.nonEmpty then
@@ -86,68 +99,35 @@ object CLI:
         config.filename.foreach { filename =>
           val source = io.Source.fromFile(filename)
           try
-            runCode(source.mkString, config.runLiterate)
+            runCode(source.mkString)
           finally
             source.close()
         }
 
-        config.code.foreach { code => runCode(code, config.runLiterate) }
+        config.code.foreach { code => runCode(code) }
 
         if config.filename.nonEmpty || config.code.nonEmpty then return
-        else Repl.startRepl(config.runLiterate)
+        else
+          repl.startRepl(
+            config.runFancyRepl || sys.env.getOrElse("REPL", "") != "false"
+          )
       case None => ???
     end match
   end run
 
-  private def runCode(code: String, literate: Boolean)(using Context): Unit =
-    try Interpreter.execute(code, literate)
+  private def runCode(code: String)(using Context): Unit =
+    try Interpreter.execute(code)
     catch
       case e: Error =>
         println(s"Error: ${e.getMessage()}")
         e.printStackTrace()
-
-  private def printDocs(): Unit =
-    Elements.elements.values.toSeq
-      .sortBy { elem =>
-        // Have to use tuple in case of digraphs
-        (
-          vyxal.CODEPAGE.indexOf(elem.symbol.charAt(0)),
-          vyxal.CODEPAGE.indexOf(elem.symbol.substring(1))
-        )
-      }
-      .foreach {
-        case Element(
-              symbol,
-              name,
-              keywords,
-              arity,
-              vectorises,
-              overloads,
-              impl
-            ) =>
-          print(
-            s"$symbol ($name) (${if vectorises then "" else "non-"}vectorising)\n"
-          )
-          println(s"Keywords:${keywords.mkString(" ", ", ", "")}")
-          overloads.foreach { overload =>
-            println(s"- $overload")
-          }
-          println("---------------------")
-      }
-
-    Modifiers.modifiers.foreach { case (name, info) =>
-      print(s"$name\n")
-      println(s"Keywords:${info.keywords.mkString(" ", ", ", "")}")
-      println(s"Description: ${info.description}")
-      println("---------------------")
-    }
-  end printDocs
 
   private val builder = OParser.builder[CLIConfig]
 
   private val parser =
     import builder.*
 
+    /** Helper to for adding flags that go into Settings */
     def flag(short: Char, name: String, text: String) =
       opt[Unit](short, name)
         .action((_, cfg) => cfg.copy(settings = cfg.settings.withFlag(short)))
@@ -162,41 +142,33 @@ object CLI:
         .action((_, cfg) => cfg.copy(printHelp = true))
         .text("Print this help message and exit")
         .optional(),
-      opt[String]('f', "file")
+      opt[String]("file")
         .action((file, cfg) => cfg.copy(filename = Some(file)))
         .text("The file to read the program from")
         .optional(),
-      opt[String]('c', "code")
+      opt[String]("code")
         .action((code, cfg) => cfg.copy(code = Some(code)))
         .text("Code to execute directly")
         .optional(),
-      opt[Unit]('d', "docs")
-        .action((_, cfg) => cfg.copy(printDocs = true))
-        .text("Print documentation for elements and exit")
-        .optional(),
-      opt[String]('D', "docsLiterate")
+      opt[String]("docs-literate")
         .action((symbol, cfg) => cfg.copy(litInfoFor = Some(symbol)))
         .text("Print literate mode mappings and exit")
         .optional(),
-      opt[Unit]('#', "sugar")
-        .action((_, cfg) => cfg.copy(printSugar = true))
-        .text("Print sugar mappings and exit")
-        .optional(),
-      opt[Unit]('l', "literate")
-        .action((_, cfg) => cfg.copy(runLiterate = true))
-        .text("Enable literate mode")
-        .optional(),
-      opt[Unit]('L', "lexer")
+      opt[Unit]("lexer")
         .action((_, cfg) => cfg.copy(runLexer = true))
-        .text("Run the lexer on input")
+        .text("Run the lexer on input. For internal use.")
         .optional(),
-      opt[Unit]('`', "literatelexer")
+      opt[Unit]("literate-lexer")
         .action((_, cfg) => cfg.copy(runLiterateLexer = true))
-        .text("Run the literate lexer on input")
+        .text("Run the literate lexer on input. For internal use.")
         .optional(),
-      opt[Unit]('P', "parser")
+      opt[Unit]("parser")
         .action((_, cfg) => cfg.copy(runParser = true))
-        .text("Run the parser on input")
+        .text("Run the parser on input. For internal use.")
+        .optional(),
+      opt[Unit]("fancy-repl")
+        .action((_, cfg) => cfg.copy(runFancyRepl = true))
+        .text("Run the fancy REPL")
         .optional(),
       arg[String]("<input>...")
         .unbounded()
@@ -208,6 +180,11 @@ object CLI:
         'j',
         "print-join-newlines",
         "Print top of stack joined by newlines on end of execution"
+      ),
+      flag(
+        'l',
+        "literate",
+        "Enable literate mode"
       ),
       flag(
         'L',
@@ -235,8 +212,6 @@ object CLI:
         "Equivalent to having both m and M flags"
       ),
       flag('v', "vyxal-enc", "Use Vyxal encoding for input file"),
-      // todo output ASTs instead?
-      flag('c', "output-compiled", "Output compiled code (for debugging)"),
       flag(
         'a',
         "newline-sep-as-list",

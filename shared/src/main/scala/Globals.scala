@@ -21,7 +21,6 @@ case class Globals(
     callStack: mut.Stack[VFun] = mut.Stack(),
 ):
   var register: VAny = settings.defaultValue
-  var literate: Boolean = false
 
 /** Stores the inputs for some Context. Inputs can be overridden (see
   * [[Inputs#overrideInputs]]).
@@ -70,6 +69,8 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
     * necessary)
     */
   def peek(n: Int): List[VAny] =
+    if currInputs.isEmpty then return Nil
+
     // The number of elems that can be gotten without wrapping
     val numNonWrapping = n.min(currInputs.length - ind)
     val nonWrapping = currInputs.slice(ind, ind + numNonWrapping).toList
@@ -106,10 +107,6 @@ enum EndPrintMode:
   /** Don't print anything - disable implicit output */
   case None
 
-// todo use a proper logging library instead
-enum LogLevel:
-  case Debug, Normal
-
 /** Settings set by flags
   *
   * @param presetStack
@@ -129,8 +126,8 @@ case class Settings(
     rangeStart: VNum = 1,
     rangeOffset: VNum = 0,
     numToRange: Boolean = false,
-    logLevel: LogLevel = LogLevel.Normal,
-    online: Boolean = false
+    online: Boolean = false,
+    literate: Boolean = false,
 ):
 
   /** Add a flag to these settings
@@ -146,9 +143,8 @@ case class Settings(
     case 'M' => this.copy(rangeStart = 0)
     case 'm' => this.copy(rangeOffset = -1)
     case 'Ṁ' => this.copy(rangeStart = 0, rangeOffset = -1)
-    case 'l' => this
-    // todo implement the others
-    case _ => throw IllegalArgumentException(s"$flag is an invalid flag")
+    case 'l' => this.copy(literate = true)
+    case _   => throw IllegalArgumentException(s"$flag is an invalid flag")
 
   /** Helper to update these settings with multiple flags
     *

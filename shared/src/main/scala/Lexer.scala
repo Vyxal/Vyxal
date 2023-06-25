@@ -121,9 +121,9 @@ object Lexer extends RegexParsers:
     Str(value.substring(1))
   }
 
-  def structureOpen: Parser[VyxalToken] = """[\[\(\{λƛΩ₳µḌṆ]|#@|#\{""".r ^^ {
-    value =>
-      StructureOpen(StructureType.values.find(_.open == value).get)
+  val structureOpenRegex = """[\[\(\{λƛΩ₳µḌṆ]|#@|#\{"""
+  def structureOpen: Parser[VyxalToken] = structureOpenRegex.r ^^ { value =>
+    StructureOpen(StructureType.values.find(_.open == value).get)
   }
 
   def structureClose: Parser[VyxalToken] = """[\}\)]""".r ^^ { value =>

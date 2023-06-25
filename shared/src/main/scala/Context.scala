@@ -59,7 +59,7 @@ class Context private (
           else StdIn.readLine()
         if temp.nonEmpty then Parser.parseInput(temp)
         else settings.defaultValue
-    if settings.logLevel == LogLevel.Debug then println(s"Popped $elem")
+    scribe.trace(s"Popped $elem")
     elem
 
   /** Pop n elements and wrap in a list. The top of the stack will be at the
