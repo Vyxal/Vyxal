@@ -6,6 +6,7 @@ import vyxal.impls.Elements
 import java.util.logging.Level
 import java.util.logging.Logger
 import scala.io.StdIn
+import scala.jdk.CollectionConverters.*
 
 import org.fusesource.jansi.AnsiConsole
 import org.jline.builtins.SyntaxHighlighter
@@ -18,6 +19,8 @@ import org.jline.reader.UserInterruptException
 import org.jline.terminal.Size
 import org.jline.terminal.TerminalBuilder
 import org.jline.utils.AttributedString
+import org.jline.widget.AutosuggestionWidgets
+import org.jline.widget.TailTipWidgets
 
 object JvmRepl extends Repl:
 
@@ -74,15 +77,15 @@ object JvmRepl extends Repl:
 
     val lineReader = lineReaderBuilder.build()
 
+    new AutosuggestionWidgets(lineReader).enable()
+
     while true do
       try
         val code = lineReader.readLine("> ")
         Interpreter.execute(code)
       catch
         case _: UserInterruptException =>
-          println(
-            "Use Ctrl+D (on Unix) or Ctrl+Z followed by Enter (on Windows) to exit"
-          )
+          return
         case _: EndOfFileException =>
           return
   end fancyRepl

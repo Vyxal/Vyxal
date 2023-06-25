@@ -35,8 +35,6 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "com.outr" %%% "scribe" % "3.11.5",
       // For reading tests.yaml
       "org.virtuslab" %%% "scala-yaml" % "0.0.7" % Test,
-      // Used by ScalaTest
-      "org.scalactic" %%% "scalactic" % "3.2.16",
       "org.scalatest" %%% "scalatest" % "3.2.16" % Test
     ),
     scalacOptions ++= Seq(

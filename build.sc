@@ -1,4 +1,4 @@
-import java.net.{JarURLConnection, URL, URLClassLoader}
+import java.net.{URL, URLClassLoader}
 
 import mill._
 import mill.api.Result
