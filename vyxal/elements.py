@@ -7257,7 +7257,10 @@ def vy_print(lhs, end="\n", ctx=None):
     else:
         if is_sympy(lhs):
             if ctx.print_decimals and not lhs.is_Integer:
-                lhs = str(float(lhs))
+                if isinstance(lhs, complex):  # Complex numbers can't be converted to float,
+                    lhs = str(complex)        # so we have to handle them separately
+                else:
+                    lhs = str(float(lhs))
             else:
                 # Determine if the number is a imaginary sympy literal
                 if not lhs.is_real:
