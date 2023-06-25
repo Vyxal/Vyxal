@@ -7257,8 +7257,10 @@ def vy_print(lhs, end="\n", ctx=None):
     else:
         if is_sympy(lhs):
             if ctx.print_decimals and not lhs.is_Integer:
-                if isinstance(lhs, complex):  # Complex numbers can't be converted to float,
-                    lhs = str(complex)        # so we have to handle them separately
+                if isinstance(
+                    lhs, complex
+                ):  # Complex numbers can't be converted to float,
+                    lhs = str(complex)  # so we have to handle them separately
                 else:
                     lhs = str(float(lhs))
             else:
