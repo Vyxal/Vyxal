@@ -387,7 +387,8 @@ object Elements:
           else
             val indices = ListHelpers.makeIterable(a).map {
               case x: VNum => x.toInt
-              case x => throw new IllegalArgumentException(s"$x is not a number")
+              case x =>
+                throw new IllegalArgumentException(s"$x is not a number")
             }
             ctx.push(
               VList(
