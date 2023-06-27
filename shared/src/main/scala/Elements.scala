@@ -225,25 +225,6 @@ object Elements:
         )
     }
 
-    val booleanMask = addElem(
-      Monad,
-      "Ḃ",
-      "Boolean Mask | 0-Pad to Length 8 | Equals 1?",
-      List("boolean-mask", "bool-mask", "pad-to-8", "strict-boolify"),
-      "a: lst -> Return a boolean array with 1s at the indices in a list.",
-      "a: str -> Pad with 0s to nearest positive multiple of 8",
-      "a: num -> Is a == 1?"
-    ) {
-      case a: VNum   => a == VNum(1)
-      case a: String => a.padTo((a.length + 7) / 8 * 8, '0')
-      case a: VList =>
-        val indices = ListHelpers.makeIterable(a).map {
-          case x: VNum => x.toInt
-          case x => throw new IllegalArgumentException(s"$x is not a number")
-        }
-        VList((0 until indices.max + 1).map(x => VNum(indices.contains(x)))*)
-    }
-
     val compressDictionary = addElem(
       Monad,
       "#C",
@@ -379,10 +360,20 @@ object Elements:
 
     val execNotPop = addDirect(
       "Ḃ",
-      "Execute lambda without popping | Evaluate as Vyxal without popping",
-      List("peek-call"),
+      "Execute lambda without popping | Evaluate as Vyxal without popping | Boolean Mask | Is 1?",
+      List(
+        "peek-call",
+        "exec-peek",
+        "boolean-mask",
+        "bool-mask",
+        "strict-boolify",
+        "is-1?"
+      ),
       Some(1),
-      "a: fun -> Execute a without popping"
+      "a: fun -> Execute a without popping",
+      "a: str -> Evaluate a as Vyxal without popping",
+      "a: lst -> Return a boolean array with 1s at the indices in a list.",
+      "a: num -> Is a == 1?"
     ) { ctx ?=>
       (ctx.pop(): @unchecked) match
         case fn: VFun =>
@@ -390,6 +381,17 @@ object Elements:
           if fn.arity == -1 then
             ctx.pop() // Handle the extra value pushed by lambdas that operate on the stack
         case code: String => Interpreter.execute(code)
+        case a: VNum      => ctx.push(a == VNum(1))
+        case a: VList =>
+          val indices = ListHelpers.makeIterable(a).map {
+            case x: VNum => x.toInt
+            case x => throw new IllegalArgumentException(s"$x is not a number")
+          }
+          ctx.push(
+            VList(
+              (0 until indices.max + 1).map(x => VNum(indices.contains(x)))*
+            )
+          )
     }
 
     val exponentation = addVect(
