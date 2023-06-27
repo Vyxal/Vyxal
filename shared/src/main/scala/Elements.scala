@@ -383,15 +383,17 @@ object Elements:
         case code: String => Interpreter.execute(code)
         case a: VNum      => ctx.push(a == VNum(1))
         case a: VList =>
-          val indices = ListHelpers.makeIterable(a).map {
-            case x: VNum => x.toInt
-            case x => throw new IllegalArgumentException(s"$x is not a number")
-          }
-          ctx.push(
-            VList(
-              (0 until indices.max + 1).map(x => VNum(indices.contains(x)))*
+          if a.isEmpty then ctx.push(VList())
+          else
+            val indices = ListHelpers.makeIterable(a).map {
+              case x: VNum => x.toInt
+              case x => throw new IllegalArgumentException(s"$x is not a number")
+            }
+            ctx.push(
+              VList(
+                (0 until indices.max + 1).map(x => VNum(indices.contains(x)))*
+              )
             )
-          )
     }
 
     val exponentation = addVect(
