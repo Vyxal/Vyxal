@@ -225,6 +225,25 @@ object Elements:
         )
     }
 
+    val booleanMask = addElem(
+      Monad,
+      "Ḃ",
+      "Boolean Mask | 0-Pad to Length 8 | Equals 1?",
+      List("boolean-mask", "bool-mask", "pad-to-8", "strict-boolify"),
+      "a: lst -> Return a boolean array with 1s at the indices in a list.",
+      "a: str -> Pad with 0s to nearest positive multiple of 8",
+      "a: num -> Is a == 1?"
+    ) {
+      case a: VNum   => a == VNum(1)
+      case a: String => a.padTo((a.length + 7) / 8 * 8, '0')
+      case a: VList =>
+        val indices = ListHelpers.makeIterable(a).map {
+          case x: VNum => x.toInt
+          case x => throw new IllegalArgumentException(s"$x is not a number")
+        }
+        VList((0 until indices.max + 1).map(x => VNum(indices.contains(x)))*)
+    }
+
     val compressDictionary = addElem(
       Monad,
       "#C",
