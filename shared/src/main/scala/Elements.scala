@@ -507,7 +507,7 @@ object Elements:
       else if ctx.settings.online then ctx.settings.defaultValue
       else
         val temp = StdIn.readLine()
-        if temp.nonEmpty then Parser.parseInput(temp)
+        if temp.nonEmpty then MiscHelpers.eval(temp)
         else ctx.settings.defaultValue
     }
 
