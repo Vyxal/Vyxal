@@ -1,8 +1,4 @@
-# Vyxal
-
-<!-- secret hidden comment from a bot test-->
-
-![Vyxal Logo](./documents/logo/vylogo.png)
+![Vyxal Logo](./documents/logo/banner.png)
 
 ![Test status](https://github.com/Vyxal/Vyxal/actions/workflows/run-tests.yaml/badge.svg)
 ![Pypi Monthly Downloads](https://img.shields.io/pypi/dm/vyxal)
