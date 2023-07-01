@@ -444,7 +444,7 @@ else:
     "k□": process_element("[[0,1],[1,0],[0,-1],[-1,0]]", 0),
     "kṘ": process_element('"IVXLCDM"', 0),
     "k•": process_element('["qwertyuiop","asdfghjkl","zxcvbnm"]', 0),
-    "¨w": ("time.sleep(pop(stack, 1, ctx))", 1),
+    "¨w": ("time.sleep((_:=pop(stack, 1, ctx)) if type(_)==type(1) else 0)", 1),
 }
 
 
