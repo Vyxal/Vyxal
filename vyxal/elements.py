@@ -444,7 +444,10 @@ else:
     "k□": process_element("[[0,1],[1,0],[0,-1],[-1,0]]", 0),
     "kṘ": process_element('"IVXLCDM"', 0),
     "k•": process_element('["qwertyuiop","asdfghjkl","zxcvbnm"]', 0),
-    "¨w": ("lhs = pop(stack, 1, ctx); isinstance(lhs, (int, float)) and time.sleep(lhs)", 1),
+    "¨w": (
+        "lhs = pop(stack, 1, ctx); isinstance(lhs, (int, float)) and time.sleep(lhs)",
+        1,
+    ),
 }
 
 
