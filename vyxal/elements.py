@@ -11,6 +11,7 @@ import random
 import re
 import string
 import sys
+import time
 import types
 import urllib.request
 import json
@@ -443,6 +444,10 @@ else:
     "k□": process_element("[[0,1],[1,0],[0,-1],[-1,0]]", 0),
     "kṘ": process_element('"IVXLCDM"', 0),
     "k•": process_element('["qwertyuiop","asdfghjkl","zxcvbnm"]', 0),
+    "¨w": (
+        "lhs = pop(stack, 1, ctx); isinstance(lhs, NUMBER_TYPE) and time.sleep(lhs)",
+        1,
+    ),
 }
 
 
