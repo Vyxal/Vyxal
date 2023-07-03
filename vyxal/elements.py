@@ -445,7 +445,7 @@ else:
     "kṘ": process_element('"IVXLCDM"', 0),
     "k•": process_element('["qwertyuiop","asdfghjkl","zxcvbnm"]', 0),
     "¨w": (
-        "lhs = pop(stack, 1, ctx); isinstance(lhs, NUMBER_TYPE) and time.sleep(lhs)",
+        "lhs = pop(stack, 1, ctx); isinstance(lhs, int) and time.sleep(lhs)",
         1,
     ),
 }
