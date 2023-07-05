@@ -281,6 +281,22 @@ object Elements:
         StringHelpers.countString(a.toString, b.toString)
     }
 
+    val cycle = addElem(
+      Monad,
+      "Ċ",
+      "Cycle | Is Positive?",
+      List("cycle", "is-positive?", "positive?", ">0?"),
+      "a: lst -> a ++ a ++ a ++ ...",
+      "a: num -> a > 0"
+    ) {
+      case a: VList =>
+        if a.isEmpty then VList()
+        else
+          lazy val temp: LazyList[VAny] = LazyList.from(a) #::: temp
+          VList.from(temp)
+      case a: VNum => a > 0
+    }
+
     val divide = addVect(
       Dyad,
       "÷",
