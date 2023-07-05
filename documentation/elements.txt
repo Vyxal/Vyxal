@@ -361,6 +361,12 @@ Keywords: peek-call, exec-peek, boolean-mask, bool-mask, strict-boolify, is-1?
 - a: lst -> Return a boolean array with 1s at the indices in a list.
 - a: num -> Is a == 1?
 ---------------------
+Ċ (Cycle | Is Positive?) (non-vectorising)
+Trigraph: #.C
+Keywords: cycle, is-positive?, positive?, >0?
+- a: lst -> a ++ a ++ a ++ ...
+- a: num -> a > 0
+---------------------
 Ė (Execute lambda | Evaluate as Vyxal | Power with base 10) (non-vectorising)
 Trigraph: #.E
 Keywords: execute-lambda, evaluate-as-vyxal, power-base-10, call, @
