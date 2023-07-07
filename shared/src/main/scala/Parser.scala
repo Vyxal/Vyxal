@@ -1,5 +1,7 @@
 package vyxal
 
+import scala.language.strictEquality
+
 import vyxal.impls.Elements
 
 import scala.collection.mutable
@@ -60,7 +62,7 @@ object Parser:
           ) match
             case Right(ast) => asts.push(ast)
             case l          => return l
-          if topLevel && program.nonEmpty && program.front == TokenType.StructureAllClose
+          if topLevel && program.nonEmpty && program.front.tokenType == TokenType.StructureAllClose
           then program.dequeue()
         /*
          * List are just structures with two different opening and closing
@@ -142,7 +144,7 @@ object Parser:
                   s"Modifier $name not defined for $modifierArgs"
                 )
               )
-        case AST.SpecialModifier(name) =>
+        case AST.SpecialModifier(name, _) =>
           (name: @unchecked) match
             case "ᵜ" =>
               val lambdaAsts = ListBuffer[AST]()
@@ -156,7 +158,7 @@ object Parser:
                 )
               )
             case "ᵗ" => ??? // TODO: Implement tie
-        case AST.AuxAugmentVar(name) =>
+        case AST.AuxAugmentVar(name, _) =>
           if asts.isEmpty then
             return Left(
               VyxalCompilationError("Missing element for augmented assign")
@@ -240,20 +242,24 @@ object Parser:
         case Left(err) => return Left(err)
         case Right(ast) =>
           branches += ast
-          if program.nonEmpty && program.front == TokenType.Branch then
+          if program.nonEmpty && program.front.tokenType == TokenType.Branch
+          then
             // Get rid of the `|` token to move on to the next branch
             program.dequeue()
             if program.isEmpty ||
-              (isCloser(program.front) && program.front != TokenType.Branch)
+              (isCloser(
+                program.front
+              ) && program.front.tokenType != TokenType.Branch)
             then
               // Don't forget empty branches at the end
               branches += AST.makeSingle()
+    end while
 
     if branches.isEmpty && !canBeEmpty then branches += AST.makeSingle()
 
     if program.nonEmpty
       && isEnd(program.front.tokenType)
-      && program.front != TokenType.StructureAllClose
+      && program.front.tokenType != TokenType.StructureAllClose
     then
       // Get rid of the structure/list closer
       program.dequeue()
@@ -368,7 +374,7 @@ object Parser:
               case List(_)          => None
 
             val arity = rel match
-              case AST.Group(elems, _) =>
+              case AST.Group(elems, _, _) =>
                 if elems.last.isInstanceOf[AST.Number] then
                   rel = AST.Group(elems.init, None)
                   elems.last.asInstanceOf[AST.Number].value.toInt
@@ -490,7 +496,7 @@ object Parser:
 
   private def postprocess(asts: AST): AST =
     val temp = asts match
-      case AST.Group(elems, _) =>
+      case AST.Group(elems, _, _) =>
         val nilads = elems.reverse.takeWhile(isNilad).reverse
         val rest = elems.dropRight(nilads.length)
         AST.Group(nilads ++ rest, None)
@@ -499,7 +505,7 @@ object Parser:
 
   private def isNilad(ast: AST) =
     ast match
-      case AST.GetVar(_) => false // you might want a variable at the end
+      case AST.GetVar(_, _) => false // you might want a variable at the end
       // after doing stuff like augmented assignment
       case _ => ast.arity == Some(0)
 
@@ -509,9 +515,9 @@ object Parser:
         parse(tokens.to(Queue), true) match
           case Right(ast) =>
             ast match
-              case AST.Number(n) => Some[VAny](n)
-              case AST.Str(s)    => Some(s)
-              case AST.Lst(l) =>
+              case AST.Number(n, _) => Some[VAny](n)
+              case AST.Str(s, _)    => Some(s)
+              case AST.Lst(l, _) =>
                 Some(VList(l.map(e => parseInput(e.toString))*))
               case _ => None
           case Left(_) => None

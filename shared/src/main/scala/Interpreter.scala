@@ -42,30 +42,30 @@ object Interpreter:
   def execute(ast: AST)(using ctx: Context): Unit =
     scribe.trace(s"Executing AST $ast, stack = ${ctx.peek(5)}")
     ast match
-      case AST.Number(value) => ctx.push(value)
-      case AST.Str(value)    => ctx.push(value)
-      case AST.DictionaryString(value) =>
+      case AST.Number(value, _) => ctx.push(value)
+      case AST.Str(value, _)    => ctx.push(value)
+      case AST.DictionaryString(value, _) =>
         ctx.push(StringHelpers.decompress(value))
-      case AST.Lst(elems) =>
+      case AST.Lst(elems, _) =>
         val list = collection.mutable.ListBuffer.empty[VAny]
         for elem <- elems do
           given elemCtx: Context = ctx.makeChild()
           execute(elem)
           list += ctx.pop()
         ctx.push(VList(list.toList*))
-      case AST.Command(cmd) =>
+      case AST.Command(cmd, _) =>
         Elements.elements.get(cmd) match
           case Some(elem) => elem.impl()
           case None       => throw RuntimeException(s"No such command: '$cmd'")
-      case AST.Group(elems, _) =>
+      case AST.Group(elems, _, _) =>
         elems.foreach(Interpreter.execute(_))
-      case AST.CompositeNilad(elems) =>
+      case AST.CompositeNilad(elems, _) =>
         elems.foreach(Interpreter.execute(_))
-      case AST.Ternary(thenBody, elseBody) =>
+      case AST.Ternary(thenBody, elseBody, _) =>
         if MiscHelpers.boolify(ctx.pop()) then execute(thenBody)
         else if elseBody.nonEmpty then execute(elseBody.get)
 
-      case AST.IfStatement(conds, bodies, elseBody) =>
+      case AST.IfStatement(conds, bodies, elseBody, _) =>
         var conditions = conds
         var branches = bodies
         var truthy = false
@@ -77,7 +77,7 @@ object Interpreter:
             conditions = conditions.tail
             branches = branches.tail
         if !truthy && elseBody.nonEmpty then execute(elseBody.get)
-      case AST.While(None, body) =>
+      case AST.While(None, body, _) =>
         try
           val loopCtx = ctx.makeChild()
           loopCtx.ctxVarPrimary = true
@@ -89,7 +89,7 @@ object Interpreter:
                 loopCtx.ctxVarSecondary.asInstanceOf[VNum] + 1
             catch case _: ContinueLoopException => ()
         catch case _: BreakLoopException => return
-      case AST.While(Some(cond), body) =>
+      case AST.While(Some(cond), body, _) =>
         try
           execute(cond)
           given loopCtx: Context = ctx.makeChild()
@@ -106,7 +106,7 @@ object Interpreter:
 
         catch case _: BreakLoopException => return
 
-      case AST.For(None, body) =>
+      case AST.For(None, body, _) =>
         val iterable =
           ListHelpers.makeIterable(ctx.pop(), Some(true))(using ctx)
         var index = 0
@@ -121,7 +121,7 @@ object Interpreter:
             catch case _: ContinueLoopException => ()
         catch case _: BreakLoopException => return
 
-      case AST.For(Some(name), body) =>
+      case AST.For(Some(name), body, _) =>
         val iterable =
           ListHelpers.makeIterable(ctx.pop(), Some(true))(using ctx)
         var index = 0
@@ -137,20 +137,20 @@ object Interpreter:
             catch case _: ContinueLoopException => ()
         catch case _: BreakLoopException => return
 
-      case lam: AST.Lambda       => ctx.push(VFun.fromLambda(lam))
-      case AST.FnDef(name, lam)  => ctx.setVar(name, VFun.fromLambda(lam))
-      case AST.GetVar(name)      => ctx.push(ctx.getVar(name))
-      case AST.SetVar(name)      => ctx.setVar(name, ctx.pop())
-      case AST.SetConstant(name) => ctx.setConst(name, ctx.pop())
-      case AST.AugmentVar(name, op) =>
+      case lam: AST.Lambda          => ctx.push(VFun.fromLambda(lam))
+      case AST.FnDef(name, lam, _)  => ctx.setVar(name, VFun.fromLambda(lam))
+      case AST.GetVar(name, _)      => ctx.push(ctx.getVar(name))
+      case AST.SetVar(name, _)      => ctx.setVar(name, ctx.pop())
+      case AST.SetConstant(name, _) => ctx.setConst(name, ctx.pop())
+      case AST.AugmentVar(name, op, _) =>
         ctx.push(ctx.getVar(name))
         op match
           case lam: AST.Lambda => ctx.push(executeFn(VFun.fromLambda(lam)))
           case _               => execute(op)
         ctx.setVar(name, ctx.pop())
-      case AST.UnpackVar(names) =>
+      case AST.UnpackVar(names, _) =>
         MiscHelpers.unpack(names)
-      case AST.DecisionStructure(predicate, container) =>
+      case AST.DecisionStructure(predicate, container, _) =>
         val iterable = container match
           case Some(ast) =>
             executeFn(VFun.fromLambda(AST.Lambda(0, List.empty, List(ast))))
@@ -165,7 +165,7 @@ object Interpreter:
             .nonEmpty
         then ctx.push(VNum(1))
         else ctx.push(VNum(0))
-      case AST.GeneratorStructure(relation, initial, arity) =>
+      case AST.GeneratorStructure(relation, initial, arity, _) =>
         val initVals = initial match
           case Some(ast) =>
             executeFn(VFun.fromLambda(AST.Lambda(0, List.empty, List(ast))))
@@ -196,7 +196,7 @@ object Interpreter:
           )
 
         ctx.push(VList.from(list ++: temp))
-      case AST.ContextIndex(index) =>
+      case AST.ContextIndex(index, _) =>
         val args = ctx.ctxArgs.getOrElse(Seq.empty).reverse
         if index == -1 then ctx.push(VList.from(args.reverse))
         else if args.length < index then ctx.push(ctx.settings.defaultValue)

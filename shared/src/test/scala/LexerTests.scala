@@ -1,7 +1,8 @@
 package vyxal
 
+import vyxal.TokenType.*
+
 import org.scalatest.exceptions.TestFailedException
-import Token.*
 
 class LexerTests extends VyxalTests:
   def testLex(input: String, expected: List[Token]) =
@@ -81,7 +82,7 @@ class LexerTests extends VyxalTests:
           Number("1"),
           Command("+"),
           Comment("##Hello, Vyxal!"),
-          Newline,
+          Token(Newline, "\n", Range.fake),
           Number("1"),
           Command("+")
         )
@@ -130,7 +131,7 @@ class LexerTests extends VyxalTests:
         "5 #.[5+",
         List(
           Number("5"),
-          StructureOpen(StructureType.LambdaMap),
+          StructureOpen(StructureType.LambdaMap.open),
           Number("5"),
           Command("+"),
         )

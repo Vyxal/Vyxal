@@ -1,5 +1,7 @@
 package vyxal
 
+import scala.language.strictEquality
+
 import vyxal.impls.Elements
 
 import java.util.regex.Pattern
@@ -13,11 +15,26 @@ import TokenType.*
 case class VyxalCompilationError(msg: String)
 
 case class Token(tokenType: TokenType, value: String, range: Range)
+    derives CanEqual
 
 /** The range of a token or AST in the source code */
 case class Range(startRow: Int, startCol: Int, endRow: Int, endCol: Int)
+    derives CanEqual:
+  /** Override the default equals method so Range.fake compares equal to
+    * everything.
+    */
+  override def equals(x: Any): Boolean = x match
+    case other: Range =>
+      (this `eq` Range.fake) ||
+      (other `eq` Range.fake) ||
+      (other.startRow == startRow && other.startCol == startCol && other.endRow == endRow && other.endCol == endCol)
+    case _ => false
 
-enum TokenType:
+object Range:
+  /** A dummy Range (mainly for generated/desugared code) */
+  val fake = Range(-1, -1, -1, -1)
+
+enum TokenType derives CanEqual:
   case Number
   case Str
   case StructureOpen
@@ -47,9 +64,14 @@ enum TokenType:
   case Branch
   case Newline
   case Sugared
+
+  /** This is only a temporary bandaid while we go from the old VyxalToken to
+    * the new Token(TokenType, text, range) format
+    */
+  def apply(text: String): Token = Token(this, text, Range.fake)
 end TokenType
 
-enum StructureType(val open: String):
+enum StructureType(val open: String) derives CanEqual:
   case Ternary extends StructureType("[")
   case While extends StructureType("{")
   case For extends StructureType("(")
