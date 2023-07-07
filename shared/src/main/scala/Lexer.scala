@@ -5,45 +5,49 @@ import vyxal.impls.Elements
 import java.util.regex.Pattern
 import scala.util.matching.Regex
 import scala.util.parsing.combinator.*
+import scala.util.parsing.input.Position
+import scala.util.parsing.input.Positional
 
-import VyxalToken.*
+import TokenType.*
 
 case class VyxalCompilationError(msg: String)
 
-// todo maybe make a separate TokenType enum and make VyxalToken a simple case class
+case class Token(tokenType: TokenType, value: String, range: Range)
 
-enum VyxalToken(val value: String):
-  case Number(override val value: String) extends VyxalToken(value)
-  case Str(override val value: String) extends VyxalToken(value)
-  case StructureOpen(structureType: StructureType)
-      extends VyxalToken(structureType.open)
-  case StructureClose(override val value: String) extends VyxalToken(value)
-  case StructureAllClose extends VyxalToken("]")
-  case ListOpen extends VyxalToken("#[")
-  case ListClose extends VyxalToken("#]")
-  case Command(override val value: String) extends VyxalToken(value)
-  case Digraph(override val value: String) extends VyxalToken(value)
-  case SugarTrigraph(override val value: String) extends VyxalToken(value)
-  case SyntaxTrigraph(override val value: String) extends VyxalToken(value)
-  case MonadicModifier(override val value: String) extends VyxalToken(value)
-  case DyadicModifier(override val value: String) extends VyxalToken(value)
-  case TriadicModifier(override val value: String) extends VyxalToken(value)
-  case TetradicModifier(override val value: String) extends VyxalToken(value)
-  case SpecialModifier(override val value: String) extends VyxalToken(value)
-  case CompressedString(override val value: String) extends VyxalToken(value)
-  case CompressedNumber(override val value: String) extends VyxalToken(value)
-  case DictionaryString(override val value: String) extends VyxalToken(value)
-  case ContextIndex(override val value: String) extends VyxalToken(value)
-  case Comment(override val value: String) extends VyxalToken(value)
-  case GetVar(override val value: String) extends VyxalToken(value)
-  case SetVar(override val value: String) extends VyxalToken(value)
-  case Constant(override val value: String) extends VyxalToken(value)
-  case AugmentVar(override val value: String) extends VyxalToken(value)
-  case UnpackVar(override val value: String) extends VyxalToken(value)
-  case Branch extends VyxalToken("|")
-  case Newline extends VyxalToken("\n")
-  case Sugared extends VyxalToken("")
-end VyxalToken
+/** The range of a token or AST in the source code */
+case class Range(startRow: Int, startCol: Int, endRow: Int, endCol: Int)
+
+enum TokenType:
+  case Number
+  case Str
+  case StructureOpen
+  case StructureClose
+  case StructureAllClose
+  case ListOpen
+  case ListClose
+  case Command
+  case Digraph
+  case SugarTrigraph
+  case SyntaxTrigraph
+  case MonadicModifier
+  case DyadicModifier
+  case TriadicModifier
+  case TetradicModifier
+  case SpecialModifier
+  case CompressedString
+  case CompressedNumber
+  case DictionaryString
+  case ContextIndex
+  case Comment
+  case GetVar
+  case SetVar
+  case Constant
+  case AugmentVar
+  case UnpackVar
+  case Branch
+  case Newline
+  case Sugared
+end TokenType
 
 enum StructureType(val open: String):
   case Ternary extends StructureType("[")
@@ -80,13 +84,11 @@ object Lexer extends RegexParsers:
   private var sugarUsed = false
 
   def decimalRegex = raw"(((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)_?)"
-  def number: Parser[VyxalToken] =
-    raw"($decimalRegex?ı($decimalRegex|_)?)|$decimalRegex".r ^^ { value =>
-      Number(value)
-    }
+  def number: Parser[Token] =
+    parseToken(Number, raw"($decimalRegex?ı($decimalRegex|_)?)|$decimalRegex".r)
 
-  def string: Parser[VyxalToken] = raw"""("(?:[^"„”“\\]|\\.)*["„”“])""".r ^^ {
-    value =>
+  def string: Parser[Token] =
+    withPos(raw"""("(?:[^"„”“\\]|\\.)*["„”“])""".r) ^^ { case (value, range) =>
       // If the last character of each token is ", then it's a normal string
       // If the last character of each token is „, then it's a compressed string
       // If the last character of each token is ”, then it's a dictionary string
@@ -102,114 +104,117 @@ object Lexer extends RegexParsers:
         .replace(raw"\n", "\n")
         .replace(raw"\t", "\t")
 
-      (value.last: @unchecked) match
-        case '"' => Str(text)
-        case '„' => CompressedString(text)
-        case '”' => DictionaryString(text)
-        case '“' => CompressedNumber(text)
+      val tokenType = (value.last: @unchecked) match
+        case '"' => Str
+        case '„' => CompressedString
+        case '”' => DictionaryString
+        case '“' => CompressedNumber
+
+      Token(tokenType, text, range)
+    }
+
+  def contextIndex: Parser[Token] = withPos("""\d*¤""".r) ^^ {
+    case (value, range) =>
+      Token(ContextIndex, value.substring(0, value.length - 1).trim, range)
   }
 
-  def contextIndex: Parser[VyxalToken] = """\d*¤""".r ^^ { value =>
-    ContextIndex(value.substring(0, value.length - 1).trim)
+  def singleCharString: Parser[Token] = withPos("""'.""".r) ^^ {
+    case (value, range) =>
+      Token(Str, value.substring(1), range)
   }
 
-  def singleCharString: Parser[VyxalToken] = """'.""".r ^^ { value =>
-    Str(value.substring(1))
+  def twoCharString: Parser[Token] = withPos("""ᶴ..""".r) ^^ {
+    case (value, range) =>
+      Token(Str, value.substring(1), range)
   }
 
-  def twoCharString: Parser[VyxalToken] = """ᶴ..""".r ^^ { value =>
-    Str(value.substring(1))
-  }
-
-  def twoCharNumber: Parser[VyxalToken] = "~..".r ^^ { value =>
-    Number(
-      value
-        .substring(1)
-        .zipWithIndex
-        .map((c, ind) => math.pow(CODEPAGE.length, ind) * CODEPAGE.indexOf(c))
-        .sum
-        .toString
-    )
+  def twoCharNumber: Parser[Token] = withPos("~..".r) ^^ {
+    case (value, range) =>
+      Token(
+        Number,
+        value
+          .substring(1)
+          .zipWithIndex
+          .map((c, ind) => math.pow(CODEPAGE.length, ind) * CODEPAGE.indexOf(c))
+          .sum
+          .toString,
+        range
+      )
   }
 
   val structureOpenRegex = """[\[\(\{λƛΩ₳µḌṆ]|#@|#\{"""
-  def structureOpen: Parser[VyxalToken] = structureOpenRegex.r ^^ { value =>
-    StructureOpen(StructureType.values.find(_.open == value).get)
-  }
+  def structureOpen: Parser[Token] =
+    parseToken(StructureOpen, structureOpenRegex.r)
 
-  def structureClose: Parser[VyxalToken] = """[\}\)]""".r ^^ { value =>
-    StructureClose(value)
-  }
+  def structureClose: Parser[Token] = parseToken(StructureClose, """[\}\)]""".r)
 
-  def structureAllClose: Parser[VyxalToken] = """\]""".r ^^^ StructureAllClose
+  def structureAllClose: Parser[Token] =
+    parseToken(StructureAllClose, """\]""".r)
 
-  def listOpen: Parser[VyxalToken] = """(#\[)|⟨""".r ^^^ ListOpen
+  def listOpen: Parser[Token] = parseToken(ListOpen, """(#\[)|⟨""".r)
 
-  def listClose: Parser[VyxalToken] = """(#\])|⟩""".r ^^^ ListClose
+  def listClose: Parser[Token] = parseToken(ListClose, """(#\])|⟩""".r)
 
-  def multigraph: Parser[VyxalToken] =
-    "([∆øÞk].)|(#:\\[)|(#(([:.,^].)|([^\\[\\]$!=#>@{])))".r ^^ { value =>
-      if value.length == 2 then processDigraph(value)
-      else if value.charAt(1) == ':' then SyntaxTrigraph(value)
-      else
-        sugarUsed = true
-        val temp = SugarMap.trigraphs.getOrElse(value, value)
-        apply(temp) match
-          case Left(value)  => Command(temp)
-          case Right(value) => value(0)
+  def multigraph: Parser[Token] =
+    withPos("([∆øÞk].)|(#:\\[)|(#(([:.,^].)|([^\\[\\]$!=#>@{])))".r) ^^ {
+      case (value, range) =>
+        if value.length == 2 then processDigraph(value, range)
+        else if value.charAt(1) == ':' then Token(SyntaxTrigraph, value, range)
+        else
+          sugarUsed = true
+          val temp = SugarMap.trigraphs.getOrElse(value, value)
+          apply(temp) match
+            case Left(value)  => Token(Command, temp, range)
+            case Right(value) => value(0)
     }
 
   private val commandRegex = CODEPAGE
     .replaceAll(raw"[|\[\](){}]", "")
     .replace("^", "\\^")
-  def command: Parser[VyxalToken] = s"[$commandRegex🍪ඞ]".r ^^ { value =>
-    Command(value)
+  def command: Parser[Token] = parseToken(Command, s"[$commandRegex🍪ඞ]".r)
+
+  def getVariable: Parser[Token] = withPos("""(\#\$)[0-9A-Za-z_]*""".r) ^^ {
+    case (value, range) =>
+      Token(GetVar, value.substring(2), range)
   }
 
-  def getVariable: Parser[VyxalToken] = """(\#\$)[0-9A-Za-z_]*""".r ^^ {
-    value =>
-      GetVar(value.substring(2))
+  def setVariable: Parser[Token] = withPos("""(\#\=)[0-9A-Za-z_]*""".r) ^^ {
+    case (value, range) =>
+      Token(SetVar, value.substring(2), range)
   }
 
-  def setVariable: Parser[VyxalToken] = """(\#\=)[0-9A-Za-z_]*""".r ^^ {
-    value =>
-      SetVar(value.substring(2))
+  def setConstant: Parser[Token] = withPos("""(\#\!)[0-9A-Za-z_]*""".r) ^^ {
+    case (value, range) =>
+      Token(Constant, value.substring(2), range)
   }
 
-  def setConstant: Parser[VyxalToken] = """(\#\!)[0-9A-Za-z_]*""".r ^^ {
-    value =>
-      Constant(value.substring(2))
+  def augVariable: Parser[Token] = withPos("""(\#\>)[0-9A-Za-z_]*""".r) ^^ {
+    case (value, range) =>
+      Token(AugmentVar, value.substring(2, value.length), range)
   }
 
-  def augVariable: Parser[VyxalToken] = """(\#\>)[0-9A-Za-z_]*""".r ^^ {
-    value =>
-      AugmentVar(value.substring(2, value.length))
-  }
+  def monadicModifier: Parser[Token] =
+    parseToken(MonadicModifier, s"""[$MONADIC_MODIFIERS]""".r)
 
-  def monadicModifier: Parser[VyxalToken] =
-    s"""[$MONADIC_MODIFIERS]""".r ^^ { value => MonadicModifier(value) }
+  def dyadicModifier: Parser[Token] =
+    parseToken(DyadicModifier, s"""[$DYADIC_MODIFIERS]""".r)
 
-  def dyadicModifier: Parser[VyxalToken] =
-    s"""[$DYADIC_MODIFIERS]""".r ^^ { value => DyadicModifier(value) }
+  def triadicModifier: Parser[Token] =
+    parseToken(TriadicModifier, s"""[$TRIADIC_MODIFIERS]""".r)
 
-  def triadicModifier: Parser[VyxalToken] =
-    s"""[$TRIADIC_MODIFIERS]""".r ^^ { value => TriadicModifier(value) }
+  def tetradicModifier: Parser[Token] =
+    parseToken(TetradicModifier, s"""[$TETRADIC_MODIFIERS]""".r)
 
-  def tetradicModifier: Parser[VyxalToken] =
-    s"""[$TETRADIC_MODIFIERS]""".r ^^ { value => TetradicModifier(value) }
+  def specialModifier: Parser[Token] =
+    parseToken(SpecialModifier, s"""[$SPECIAL_MODIFIERS]""".r)
 
-  def specialModifier: Parser[VyxalToken] =
-    s"""[$SPECIAL_MODIFIERS]""".r ^^ { value => SpecialModifier(value) }
+  def comment: Parser[Token] = parseToken(Comment, """##[^\n]*""".r)
 
-  def comment: Parser[VyxalToken] = """##[^\n]*""".r ^^ { value =>
-    Comment(value)
-  }
+  def branch = parseToken(Branch, raw"\|".r)
 
-  def branch = "|" ^^^ Branch
+  def newlines = parseToken(Newline, "\n".r)
 
-  def newlines = "\n" ^^^ Newline
-
-  def tokens: Parser[List[VyxalToken]] = phrase(
+  def tokens: Parser[List[Token]] = phrase(
     rep(
       comment | multigraph | branch | contextIndex | number | string | augVariable | getVariable | setVariable
         | setConstant | twoCharNumber | twoCharString | singleCharString
@@ -219,23 +224,42 @@ object Lexer extends RegexParsers:
     )
   )
 
-  def apply(code: String): Either[VyxalCompilationError, List[VyxalToken]] =
+  private def withPos(parser: Parser[String]): Parser[(String, Range)] =
+    class WithPos(val text: String) extends Positional
+    positioned(parser.map(WithPos(_))).map { res =>
+      val startRow = res.pos.line
+      val startCol = res.pos.column
+      val endRow = startRow + res.text.count(_ == '\n')
+      val endCol =
+        if startRow != endRow then
+          res.text.length - res.text.lastIndexOf('\n') - 1
+        else startCol
+      (res.text, Range(startRow, startCol, endRow, endCol))
+    }
+
+  private def parseToken(tokenType: TokenType, regex: Regex): Parser[Token] =
+    withPos(regex) ^^ { case (value, range) =>
+      Token(tokenType, value, range)
+    }
+
+  def apply(code: String): Either[VyxalCompilationError, List[Token]] =
     (parse(tokens, code): @unchecked) match
       case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
       case Success(result, next) => Right(result)
 
-  def processDigraph(digraph: String): VyxalToken =
-    if Elements.elements.contains(digraph) then Command(digraph)
+  def processDigraph(digraph: String, range: Range): Token =
+    if Elements.elements.contains(digraph) then Token(Command, digraph, range)
     else if Modifiers.modifiers.contains(digraph) then
       val modifier = Modifiers.modifiers(digraph)
-      modifier.arity match
-        case 1     => MonadicModifier(digraph)
-        case 2     => DyadicModifier(digraph)
-        case 3     => TriadicModifier(digraph)
-        case 4     => TetradicModifier(digraph)
-        case -1    => SpecialModifier(digraph)
+      val tokenType = modifier.arity match
+        case 1     => MonadicModifier
+        case 2     => DyadicModifier
+        case 3     => TriadicModifier
+        case 4     => TetradicModifier
+        case -1    => SpecialModifier
         case arity => throw Exception(s"Invalid modifier arity: $arity")
-    else Digraph(digraph)
+      Token(tokenType, digraph, range)
+    else Token(Digraph, digraph, range)
 
   def removeSugar(code: String): Option[String] =
     this.sugarUsed = false

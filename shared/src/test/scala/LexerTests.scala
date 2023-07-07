@@ -1,10 +1,10 @@
 package vyxal
 
 import org.scalatest.exceptions.TestFailedException
-import VyxalToken.*
+import Token.*
 
 class LexerTests extends VyxalTests:
-  def testLex(input: String, expected: List[VyxalToken]) =
+  def testLex(input: String, expected: List[Token]) =
     Lexer(input) match
       case Left(err)  => fail(s"Lexing failed due to $err")
       case Right(res) => assertResult(expected)(res)

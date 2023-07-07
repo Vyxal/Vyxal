@@ -32,7 +32,7 @@ object Parser:
     *   remove any `StructureAllClose`s left behind by `parseStructure`
     */
   private def parse(
-      program: Queue[VyxalToken],
+      program: Queue[Token],
       topLevel: Boolean = false
   ): ParserRet[AST] =
     val asts = Stack[AST]()
@@ -43,26 +43,31 @@ object Parser:
     // Begin the first sweep of parsing
 
     while program.nonEmpty && !isCloser(program.front) do
-      (program.dequeue(): @unchecked) match
+      val token = program.dequeue()
+      val value = token.value
+      (token.tokenType: @unchecked) match
         // Numbers, strings and newlines are trivial, and are simply evaluated
-        case VyxalToken.Number(value) =>
+        case TokenType.Number =>
           asts.push(AST.Number(VNum(value)))
-        case VyxalToken.Str(value) => asts.push(AST.Str(value))
-        case VyxalToken.DictionaryString(value) =>
+        case TokenType.Str => asts.push(AST.Str(value))
+        case TokenType.DictionaryString =>
           asts.push(AST.DictionaryString(value))
-        case VyxalToken.Newline => asts.push(AST.Newline)
-        case VyxalToken.StructureOpen(open) =>
-          parseStructure(open, program) match
+        case TokenType.Newline => asts.push(AST.Newline)
+        case TokenType.StructureOpen =>
+          parseStructure(
+            StructureType.values.find(_.open == value).get,
+            program
+          ) match
             case Right(ast) => asts.push(ast)
             case l          => return l
-          if topLevel && program.nonEmpty && program.front == VyxalToken.StructureAllClose
+          if topLevel && program.nonEmpty && program.front == TokenType.StructureAllClose
           then program.dequeue()
         /*
          * List are just structures with two different opening and closing
          * token possibilities, so handle them the same way.
          */
-        case VyxalToken.ListOpen =>
-          parseBranches(program, true)(_ == VyxalToken.ListClose) match
+        case TokenType.ListOpen =>
+          parseBranches(program, true)(_ == TokenType.ListClose) match
             case Right(elements) => asts.push(AST.Lst(elements))
             case Left(err)       => return Left(err)
 
@@ -73,28 +78,28 @@ object Parser:
          * top stack elements are needed to make the command equivalent to a
          * nilad. For arities -1 and 0, the command doesn't need to be grouped.
          */
-        case VyxalToken.Command(name) =>
-          parseCommand(name, asts, program) match
+        case TokenType.Command =>
+          parseCommand(value, asts, program) match
             case Right(ast) => asts.push(ast)
             case l          => return l
         // At this stage, modifiers aren't explicitly handled, so just push a
         // temporary AST to comply with the type of the AST stack
-        case VyxalToken.MonadicModifier(v) => asts.push(AST.JunkModifier(v, 1))
-        case VyxalToken.DyadicModifier(v)  => asts.push(AST.JunkModifier(v, 2))
-        case VyxalToken.TriadicModifier(v) => asts.push(AST.JunkModifier(v, 3))
-        case VyxalToken.TetradicModifier(v) =>
-          asts.push(AST.JunkModifier(v, 4))
-        case VyxalToken.SpecialModifier(v) => asts.push(AST.SpecialModifier(v))
-        case VyxalToken.Comment(_)         => None
-        case VyxalToken.ContextIndex(value) =>
+        case TokenType.MonadicModifier => asts.push(AST.JunkModifier(value, 1))
+        case TokenType.DyadicModifier  => asts.push(AST.JunkModifier(value, 2))
+        case TokenType.TriadicModifier => asts.push(AST.JunkModifier(value, 3))
+        case TokenType.TetradicModifier =>
+          asts.push(AST.JunkModifier(value, 4))
+        case TokenType.SpecialModifier => asts.push(AST.SpecialModifier(value))
+        case TokenType.Comment         => None
+        case TokenType.ContextIndex =>
           asts.push(
             AST.ContextIndex(if value.nonEmpty then value.toInt else -1)
           )
-        case VyxalToken.GetVar(v)         => asts.push(AST.GetVar(v))
-        case VyxalToken.SetVar(v)         => asts.push(AST.SetVar(v))
-        case VyxalToken.Constant(v)       => asts.push(AST.SetConstant(v))
-        case VyxalToken.AugmentVar(value) => asts.push(AST.AuxAugmentVar(value))
-        case VyxalToken.UnpackVar(value) =>
+        case TokenType.GetVar     => asts.push(AST.GetVar(value))
+        case TokenType.SetVar     => asts.push(AST.SetVar(value))
+        case TokenType.Constant   => asts.push(AST.SetConstant(value))
+        case TokenType.AugmentVar => asts.push(AST.AuxAugmentVar(value))
+        case TokenType.UnpackVar =>
           val names = ListBuffer[(String, Int)]()
           var name = ""
           var depth = 0
@@ -116,6 +121,7 @@ object Parser:
               case _ => name += top
           if depth != -1 then names += ((name, depth))
           asts.push(AST.UnpackVar(names.toList))
+      end match
 
     end while
 
@@ -185,7 +191,7 @@ object Parser:
   def parseCommand(
       name: String,
       asts: Stack[AST],
-      program: Queue[VyxalToken]
+      program: Queue[Token]
   ): ParserRet[AST] =
     Elements.elements.get(name) match
       case None =>
@@ -219,24 +225,26 @@ object Parser:
     * @return
     *   The parsed branches
     */
-  def parseBranches(program: Queue[VyxalToken], canBeEmpty: Boolean)(
-      isEnd: VyxalToken => Boolean
+  def parseBranches(program: Queue[Token], canBeEmpty: Boolean)(
+      isEnd: TokenType => Boolean
   ): ParserRet[List[AST]] =
     if program.isEmpty then Right((List(AST.makeSingle()), None))
     val branches = ListBuffer.empty[AST]
 
     while program.nonEmpty
-      && (!isCloser(program.front) || program.front == VyxalToken.Branch)
+      && (!isCloser(
+        program.front
+      ) || program.front.tokenType == TokenType.Branch)
     do
       parse(program) match
         case Left(err) => return Left(err)
         case Right(ast) =>
           branches += ast
-          if program.nonEmpty && program.front == VyxalToken.Branch then
+          if program.nonEmpty && program.front == TokenType.Branch then
             // Get rid of the `|` token to move on to the next branch
             program.dequeue()
             if program.isEmpty ||
-              (isCloser(program.front) && program.front != VyxalToken.Branch)
+              (isCloser(program.front) && program.front != TokenType.Branch)
             then
               // Don't forget empty branches at the end
               branches += AST.makeSingle()
@@ -244,8 +252,8 @@ object Parser:
     if branches.isEmpty && !canBeEmpty then branches += AST.makeSingle()
 
     if program.nonEmpty
-      && isEnd(program.front)
-      && program.front != VyxalToken.StructureAllClose
+      && isEnd(program.front.tokenType)
+      && program.front != TokenType.StructureAllClose
     then
       // Get rid of the structure/list closer
       program.dequeue()
@@ -273,11 +281,11 @@ object Parser:
     */
   private def parseStructure(
       structureType: StructureType,
-      program: Queue[VyxalToken]
+      program: Queue[Token]
   ): ParserRet[AST] =
     parseBranches(program, false) {
-      case VyxalToken.StructureAllClose | VyxalToken.StructureClose(_) => true
-      case _                                                           => false
+      case TokenType.StructureAllClose | TokenType.StructureClose => true
+      case _                                                      => false
     }.flatMap { branches =>
       // Now, we can create the appropriate AST for the structure
       structureType match
@@ -419,15 +427,15 @@ object Parser:
   end parseParameters
 
   /** Whether this token is a branch or a structure/list closer */
-  def isCloser(token: VyxalToken): Boolean =
-    token match
-      case VyxalToken.Branch            => true
-      case VyxalToken.ListClose         => true
-      case VyxalToken.StructureClose(_) => true
-      case VyxalToken.StructureAllClose => true
-      case _                            => false
+  def isCloser(token: Token): Boolean =
+    token.tokenType match
+      case TokenType.Branch            => true
+      case TokenType.ListClose         => true
+      case TokenType.StructureClose    => true
+      case TokenType.StructureAllClose => true
+      case _                           => false
 
-  def parse(tokens: List[VyxalToken]): Either[VyxalCompilationError, AST] =
+  def parse(tokens: List[Token]): Either[VyxalCompilationError, AST] =
     val preprocessed = preprocess(tokens).to(Queue)
     val parsed = parse(preprocessed, true)
     if preprocessed.nonEmpty then
@@ -443,32 +451,40 @@ object Parser:
         case Left(error) =>
           Left(VyxalCompilationError(s"Error parsing code: $error"))
 
-  private def preprocess(tokens: List[VyxalToken]): List[VyxalToken] =
-    val doubleClose = ListBuffer[VyxalToken]()
+  private def preprocess(tokens: List[Token]): List[Token] =
+    val doubleClose = ListBuffer[Token]()
     tokens.foreach {
-      case VyxalToken.StructureClose(")") =>
-        doubleClose += VyxalToken.StructureClose("}")
-        doubleClose += VyxalToken.StructureClose("}")
+      case Token(TokenType.StructureClose, ")", range) =>
+        doubleClose += Token(TokenType.StructureClose, "}", range)
+        doubleClose += Token(TokenType.StructureClose, "}", range)
       case x => doubleClose += x
     }
     val lineup = Queue(doubleClose.toList*)
-    val processed = ListBuffer[VyxalToken]()
+    val processed = ListBuffer[Token]()
 
     while lineup.nonEmpty do
       val temp = lineup.dequeue()
-      (temp: @unchecked) match
-        case VyxalToken.SyntaxTrigraph("#:[") =>
+      temp match
+        case Token(TokenType.SyntaxTrigraph, "#:[", _) =>
           val contents = mutable.StringBuilder()
           var depth = 1
           while depth != 0 do
             val top = lineup.dequeue()
-            (top: @unchecked) match
-              case VyxalToken.StructureOpen(StructureType.Ternary) => depth += 1
-              case VyxalToken.StructureAllClose                    => depth -= 1
-              case _                                               =>
+            top match
+              case Token(TokenType.StructureOpen, open, _)
+                  if open == StructureType.Ternary.open =>
+                depth += 1
+              case Token(TokenType.StructureAllClose, _, _) => depth -= 1
+              case _                                        =>
             contents.++=(top.value)
-          processed += VyxalToken.UnpackVar(contents.toString())
+          processed += Token(
+            TokenType.UnpackVar,
+            contents.toString(),
+            temp.range
+          )
         case _ => processed += temp
+      end match
+    end while
     processed.toList
   end preprocess
 

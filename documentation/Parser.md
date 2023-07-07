@@ -15,13 +15,13 @@ Each of the stages transforms its input into a format that is helpful for the ne
 
 The first stage of the pipeline is token preprocessing. This stage substitutes some tokens for others, so that the next stage can fully focus on token grouping, rather than handling annoying quirks. The tokens that are changed are:
 
-- `VyxalToken.StructureClose(")")` -> 2 x `VyxalToken.StructureClose("}")`
+- `Token.StructureClose(")")` -> 2 x `Token.StructureClose("}")`
 
 This is done using a temporary storage `ListBuffer` and a for loop to iterate over the unprocessed tokens. If a token is `)`, two `}`s are added, otherwise the normal token is added to the list.
 
-- `VyxalToken.SyntaxTrigraph("#:[") {a bunch of tokens and branches} VyxalToken.StructureAllClose` -> `VyxalToken.UnpackVar("...")` (where the `...` is the entire string correlating to the unpack statement)
+- `Token.SyntaxTrigraph("#:[") {a bunch of tokens and branches} Token.StructureAllClose` -> `Token.UnpackVar("...")` (where the `...` is the entire string correlating to the unpack statement)
 
-This is done by turning the program into a queue (a FIFO data structure) and then dequeuing tokens. When a `#:[` is reached, a depth counter is kept and token values are added to a string builder under that depth is 0. `[`s increase the depth, `]`s decrease the depth. Once the depth reaches 0, a `VyxalToken.UnpackVar()` token is added to a list of preprocessed tokens. Other tokens are also added to the list as-is. This list is what is returned and used in the next phase.
+This is done by turning the program into a queue (a FIFO data structure) and then dequeuing tokens. When a `#:[` is reached, a depth counter is kept and token values are added to a string builder under that depth is 0. `[`s increase the depth, `]`s decrease the depth. Once the depth reaches 0, a `Token.UnpackVar()` token is added to a list of preprocessed tokens. Other tokens are also added to the list as-is. This list is what is returned and used in the next phase.
 
 
 ## Token Parsing
@@ -34,7 +34,7 @@ There are two "sweeps" of parsing: the mapping sweep and the modifying sweep.
 
 In this sweep, each token is considered in turn, and depending on the token type, a simple corresponding AST is added to the processed list, or control flow moves to a specialised function. After a mapping is made, the AST is pushed to a `Stack` of ASTs. The table below indicates how tokens are mapped.
 
-| Token Type (`VyxalToken.`)    	| Simple AST?                          	| Called Function             	|
+| Token Type (`Token.`)    	| Simple AST?                          	| Called Function             	|
 |-------------------------------	|--------------------------------------	|-----------------------------	|
 | `Number(value)`               	| ✅ (`AST.Number`)                     	| ❌                           	|
 | `Str(Value)`                  	| ✅ (`AST.Str`)                        	| ❌                           	|
@@ -65,7 +65,7 @@ That last point handles the fact that Augmented Assignment is basically a postfi
 
 This section of the parser documentation will detail the functions found in the `Called Function` column in the table from the mapping sweep section.
 
-#### `VyxalToken.UnpackVar` handling
+#### `Token.UnpackVar` handling
 
 This token isn't handled in an external function, but is handled directly by the match case. Like the token preprocessing stage, it uses a take-from-program-queue-until-depth-is-(-1) approach to extracting all the variable names.
 
@@ -82,7 +82,7 @@ A list of `(String, Int)` tuples (also caled a depth map) is used for this proce
 The signature of `parseBranches` is:
 
 ```scala
-parseBranches(program: Queue[VyxalToken], canBeEmpty: Boolean)(isEnd: VyxalToken => Boolean): ParserRet[List[AST]]
+parseBranches(program: Queue[Token], canBeEmpty: Boolean)(isEnd: Token => Boolean): ParserRet[List[AST]]
 ```
 
 The reason it's got such a complicated signature is because it's supposed to work for both structures and lists.
@@ -90,7 +90,7 @@ The reason it's got such a complicated signature is because it's supposed to wor
 When parsing structures, `canBeEmpty` is `false` so that you have at least one empty branch even if the structure has nothing in it.
 When parsing lists, `canBeEmpty` is `true` because we want to be able to make empty lists.
 
-Once `parseBranches` parses the branches of the structure/list (separated by `VyxalToken.Branch` tokens), it'll return a list of those branches.
+Once `parseBranches` parses the branches of the structure/list (separated by `Token.Branch` tokens), it'll return a list of those branches.
 Note that the return type is `ParserRet[List[AST]]`, not `List[AST]`. `ParserRet` is a type alias, so the return type is really
 `Either[VyxalCompilationError, List[AST]]`. This is because a compilation error could happen at any point, requiring us to return a
 `Left` containing a `VyxalCompilationError` rather than a `Right` containing a `List[AST]`.
@@ -100,7 +100,7 @@ Note that the return type is `ParserRet[List[AST]]`, not `List[AST]`. `ParserRet
 The signature of `parseStructure` is:
 
 ```scala
-parseStructure(structureType: StructureType, program: Queue[VyxalToken]): ParserRet[AST]
+parseStructure(structureType: StructureType, program: Queue[Token]): ParserRet[AST]
 ```
 
 Meaning it takes the structure character being parsed and the remaining program queue. It takes tokens until a matching `}` is found at a matching level. That is, there won't be an unbalanced number of structure openers and structure closes.
@@ -121,7 +121,7 @@ Note that structures such as variable unpacking are handled elsewhere due to the
 The signature for `parseIdentifier` is:
 
 ```scala
-parseIdentifier(program: Queue[VyxalToken]): Option[String]
+parseIdentifier(program: Queue[Token]): Option[String]
 ```
 
 This function collects tokens until a branch or end of structure is found. It then only keeps tokens with a value that is alphanumeric. It then concatenates the token values into a single string and returns it. This function is for getting the variable names of for-loops.
@@ -130,10 +130,10 @@ This function collects tokens until a branch or end of structure is found. It th
 
 These tokens are considered to be structure closing tokens by the function:
 
-- `VyxalToken.ListClose`
-- `VyxalToken.StructureClose`
-- `VyxalToken.StructureAllClose`
-`VyxalToken.Branch`es are also considered closing tokens, but aren't strictly closing tokens as such.
+- `Token.ListClose`
+- `Token.StructureClose`
+- `Token.StructureAllClose`
+`Token.Branch`es are also considered closing tokens, but aren't strictly closing tokens as such.
 
 All other tokens are not considered closing tokens.
 
@@ -144,7 +144,7 @@ All other tokens are not considered closing tokens.
 #### Some types
 
 - `AST` - An Abstract Syntax Tree. This is what we ultimately want to get from the parser! Defined in [AST.scala](/shared/src/main/scala/AST.scala).
-- `VyxalToken` - Represents a token, which the lexer returns a list of. These tokens are completely unrelated to the actual structure of the program. Take a look at [Lexer.md](Lexer.md) for that.
+- `Token` - Represents a token, which the lexer returns a list of. These tokens are completely unrelated to the actual structure of the program. Take a look at [Lexer.md](Lexer.md) for that.
 - `ParserRet[T]` - A type alias for `Either[VyxalCompilationError, T]`. Even though Vyxal is a golflang, there is a limit to how much abuse it
   will tolerate, and compilation errors are possible. Because of this, the main `parse` method, as well as `parseStructure` and the like, return `ParserRet`s
   instead of directly returning `AST`s or `List[AST]`s or whatever. An [`Either`](https://dotty.epfl.ch/api/scala/util/Either.html) is a type used to

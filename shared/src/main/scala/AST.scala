@@ -2,6 +2,7 @@ package vyxal
 
 import vyxal.impls.Elements
 
+// todo record the position of the AST (and maybe whether it has a breakpoint)
 enum AST(val arity: Option[Int]):
   case Number(value: VNum) extends AST(Some(0))
   case Str(value: String) extends AST(Some(0))
