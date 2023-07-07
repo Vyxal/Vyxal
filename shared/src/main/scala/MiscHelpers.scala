@@ -74,23 +74,17 @@ object MiscHelpers:
   def dyadicMinimum(a: VVal, b: VVal): VVal =
     if compare(a, b) < 0 then a else b
 
-  def eval(s: String): VAny =
+  def eval(s: String)(using ctx: Context): VAny =
     if s.matches(raw"-?($decimalRegex?ı$decimalRegex?)|-?$decimalRegex") then
       VNum(s)
     else if s.matches(raw"""("(?:[^"\\]|\\.)*["])""") then s.substring(1).init
     else if LiterateLexer.isList(s) then
-      val tempContext = Context()
-      val lambdaAST =
-        Parser.parse(
-          Lexer(LiterateLexer.processLit(s).toOption.get).getOrElse(List())
-        ) match
-          case Right(x) => x
-          case Left(_)  => throw new Exception("Failed to parse list")
-      Interpreter.executeFn(
-        VFun.fromLambda(AST.Lambda(0, List(), List(lambdaAST)))(using
-          tempContext
-        )
-      )(using tempContext)
+      LitLexer(s) match
+        case Right(tokens) =>
+          val tempContext = Context(globals = Globals(settings = ctx.settings))
+          Interpreter.execute(LitLexer.sbcsify(tokens))(using tempContext)
+          tempContext.peek
+        case Left(err) => throw RuntimeException(s"Couldn't parse list: $err")
     else s
 
   def firstNonNegative(f: VFun)(using ctx: Context): Int =

@@ -57,7 +57,7 @@ class Context private (
         val temp =
           if settings.online then settings.defaultValue.toString()
           else StdIn.readLine()
-        if temp.nonEmpty then MiscHelpers.eval(temp)
+        if temp.nonEmpty then MiscHelpers.eval(temp)(using this)
         else settings.defaultValue
     scribe.trace(s"Popped $elem")
     elem
@@ -240,13 +240,13 @@ object Context:
       stack,
       ctxVarPrimary.orElse(currCtx._ctxVarPrimary),
       Some(ctxVarSecondary),
-      Some(ctxArgs),
-      vars,
-      Inputs(inputs),
-      Some(origCtx),
-      currCtx.globals,
-      currCtx.testMode,
-      useStack
+      ctxArgs = Some(ctxArgs),
+      vars = vars,
+      inputs = Inputs(inputs),
+      parent = Some(origCtx),
+      globals = currCtx.globals,
+      testMode = currCtx.testMode,
+      useStack = useStack
     )
   end makeFnCtx
 

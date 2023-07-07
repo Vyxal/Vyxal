@@ -11,10 +11,9 @@ import scala.util.parsing.combinator.*
 import LiterateToken.*
 
 enum LiterateToken:
-  // Object instead of String like the normal lexer because it's way easier
   case Word(value: String)
+  /** This is for strings that are already in SBCS form */
   case AlreadyCode(value: String)
-  // This is for strings that are already in SBCS form
   case Number(value: String)
   case Variable(value: String)
   case Newline(value: String)

@@ -461,7 +461,7 @@ object Elements:
       "a: str -> Is a numeric?"
     ) {
       case a: VNum   => NumberHelpers.factors(a)
-      case a: String => VNum(a.matches(Lexer.decimalRegex))
+      case a: String => VNum(Lexer.decimalRegex.matches(a))
     }
 
     val factorial = addVect(

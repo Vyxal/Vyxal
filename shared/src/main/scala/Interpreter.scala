@@ -11,21 +11,18 @@ import VNum.given
 
 object Interpreter:
   def execute(code: String)(using ctx: Context): Unit =
-    val sbcsified =
-      if !ctx.settings.literate then code
-      else
-        LiterateLexer.processLit(code) match
-          case Right(code) => code
-          case Left(err) => throw new Error(s"Couldn't lex literate code: $err")
-    val lexed = Lexer(sbcsified).getOrElse(throw new Error("Lexer failed"))
-    val sugarless = Lexer.removeSugar(sbcsified)
+    val lexRes = if ctx.settings.literate then LitLexer(code) else Lexer(code)
+    val tokens = lexRes.getOrElse(throw new Error("Lexer failed"))
+    val sugarless = Lexer.removeSugar(
+      if ctx.settings.literate then LitLexer.sbcsify(tokens) else code
+    )
     sugarless match
-      case Some(code) => ctx.globals.printFn(code)
+      case Some(code) => scribe.debug(s"Sugarless: $code")
       case None       => ()
 
-    Parser.parse(lexed) match
+    Parser.parse(tokens) match
       case Right(ast) =>
-        scribe.trace(s"Executing '$code' (ast: $ast)")
+        scribe.debug(s"Executing '$code' (ast: $ast)")
 
         try execute(ast)
         catch

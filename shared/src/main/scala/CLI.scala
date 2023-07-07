@@ -88,7 +88,7 @@ object CLI:
           while true do
             val line = io.StdIn.readLine(">")
             if line == "" then return
-            println(LiterateLexer(line))
+            println(LitLexer(line))
 
         if config.runParser then
           while true do
