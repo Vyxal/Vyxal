@@ -1,6 +1,7 @@
 package vyxal
 
 import scala.language.implicitConversions
+
 import scala.math.Ordered
 
 import spire.implicits.partialOrderOps // For <, >, etc.

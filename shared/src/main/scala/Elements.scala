@@ -3,11 +3,12 @@ package vyxal.impls
 // it's in a different package so that ElementTests can access the impls without
 // other classes being able to access them
 
+import scala.language.implicitConversions
+
 import vyxal.*
 import vyxal.ListHelpers.makeIterable
 
 import scala.io.StdIn
-import scala.language.implicitConversions
 
 import spire.algebra.*
 import VNum.given
