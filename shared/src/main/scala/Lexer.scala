@@ -15,12 +15,11 @@ import scala.util.parsing.input.Positional
 case class VyxalCompilationError(msg: String)
 
 case class Token(tokenType: TokenType, value: String, range: Range)
-    derives CanEqual {
-  override def equals(obj: Any): Boolean = obj match {
-    case other: Token => (other `eq` this) || (other.tokenType == this.tokenType && other.value == this.value)
+    derives CanEqual:
+  override def equals(obj: Any): Boolean = obj match
+    case other: Token =>
+      (other `eq` this) || (other.tokenType == this.tokenType && other.value == this.value)
     case _ => false
-  }
-}
 
 /** The range of a token or AST in the source code */
 case class Range(startRow: Int, startCol: Int, endRow: Int, endCol: Int)

@@ -148,9 +148,13 @@ object LitLexer:
       Token(StructureOpen, StructureType.Lambda.open, range)
     }
 
-    def litListOpen: Parser[Token] = withRange("[") ^^ { case (_, range) => Token(ListOpen, "#[", range) }
+    def litListOpen: Parser[Token] = withRange("[") ^^ { case (_, range) =>
+      Token(ListOpen, "#[", range)
+    }
 
-    def litListClose: Parser[Token] = withRange("]") ^^ { case (_, range) => Token(ListClose, "#]", range) }
+    def litListClose: Parser[Token] = withRange("]") ^^ { case (_, range) =>
+      Token(ListClose, "#]", range)
+    }
 
     def normalGroup: Parser[List[Token]] = "(" ~> tokens <~ ")"
 
@@ -211,7 +215,9 @@ object LitLexer:
     // TODO figure out what this is for
     // def tilde: Parser[Token] = "~" ^^^ AlreadyCode("!")
 
-    def litBranch: Parser[Token] = withRange("[:,]".r) ^^ { case (_, range) => Token(Branch, "|", range) }
+    def litBranch: Parser[Token] = withRange("[:,]".r) ^^ { case (_, range) =>
+      Token(Branch, "|", range)
+    }
 
     def rawCode: Parser[List[Token]] = withStartPos("#([^#]|#[^}])*#}".r) ^^ {
       case (value, row, col) =>
@@ -234,9 +240,10 @@ object LitLexer:
 
     override def tokens: Parser[List[Token]] =
       rep(
-        (lambdaOpen | word | litListOpen | litListClose | litBranch | litGetVariable | litSetVariable | litAugVariable | unpackVar).map(
-          List(_)
-        ) | normalGroup | rawCode |
+        (lambdaOpen | word | litListOpen | litListClose | litBranch | litGetVariable | litSetVariable | litAugVariable | unpackVar)
+          .map(
+            List(_)
+          ) | normalGroup | rawCode |
           super.token.map(List(_))
       ).map(_.flatten)
 

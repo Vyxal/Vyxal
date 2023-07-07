@@ -12,6 +12,7 @@ import LiterateToken.*
 
 enum LiterateToken:
   case Word(value: String)
+
   /** This is for strings that are already in SBCS form */
   case AlreadyCode(value: String)
   case Number(value: String)
