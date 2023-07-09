@@ -69,6 +69,7 @@ enum TokenType derives CanEqual:
   case Branch
   case Newline
   case Param
+  case UnpackClose
 
   /** Helper to help go from the old VyxalToken to the new Token(TokenType,
     * text, range) format

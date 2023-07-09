@@ -97,10 +97,13 @@ object LitLexer:
       case Branch => "|"
       case StructureClose => "}"
       case StructureAllClose => "]"
+      case ListOpen => "#["
+      case ListClose => "#]"
       case SyntaxTrigraph if value == ":=[" => "#:["
       case Command if !Elements.elements.contains(value) =>
         Elements.symbolFor(value).get
       case _ => value
+  end sbcsifySingle
 
   /** Convert literate mode code into SBCS mode code */
   def sbcsify(tokens: List[Token]): String =
@@ -267,7 +270,10 @@ object LitLexer:
 
     def unpackVar: Parser[List[Token]] =
       withRange(":=") ~ list ^^ { case (_, unpackRange) ~ listTokens =>
-        Token(SyntaxTrigraph, "#:[", unpackRange) :: listTokens.tail
+        (Token(SyntaxTrigraph, "#:[", unpackRange) :: listTokens.slice(
+          1,
+          listTokens.size - 1
+        )) :+ Token(UnpackClose, "]", listTokens.last.range)
       }
 
     def list: Parser[List[Token]] =
