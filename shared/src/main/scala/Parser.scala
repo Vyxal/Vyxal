@@ -47,13 +47,14 @@ object Parser:
     while program.nonEmpty && !isCloser(program.front) do
       val token = program.dequeue()
       val value = token.value
+      val range = token.range
       (token.tokenType: @unchecked) match
         // Numbers, strings and newlines are trivial, and are simply evaluated
         case TokenType.Number =>
-          asts.push(AST.Number(VNum(value)))
-        case TokenType.Str => asts.push(AST.Str(value))
+          asts.push(AST.Number(VNum(value), range))
+        case TokenType.Str => asts.push(AST.Str(value, range))
         case TokenType.DictionaryString =>
-          asts.push(AST.DictionaryString(value))
+          asts.push(AST.DictionaryString(value, range))
         case TokenType.Newline => asts.push(AST.Newline)
         case TokenType.StructureOpen =>
           parseStructure(
@@ -81,7 +82,7 @@ object Parser:
          * nilad. For arities -1 and 0, the command doesn't need to be grouped.
          */
         case TokenType.Command =>
-          parseCommand(value, asts, program) match
+          parseCommand(token, asts, program) match
             case Right(ast) => asts.push(ast)
             case l => return l
         // At this stage, modifiers aren't explicitly handled, so just push a
@@ -97,10 +98,10 @@ object Parser:
           asts.push(
             AST.ContextIndex(if value.nonEmpty then value.toInt else -1)
           )
-        case TokenType.GetVar => asts.push(AST.GetVar(value))
-        case TokenType.SetVar => asts.push(AST.SetVar(value))
-        case TokenType.Constant => asts.push(AST.SetConstant(value))
-        case TokenType.AugmentVar => asts.push(AST.AuxAugmentVar(value))
+        case TokenType.GetVar => asts.push(AST.GetVar(value, range))
+        case TokenType.SetVar => asts.push(AST.SetVar(value, range))
+        case TokenType.Constant => asts.push(AST.SetConstant(value, range))
+        case TokenType.AugmentVar => asts.push(AST.AuxAugmentVar(value, range))
         case TokenType.UnpackVar =>
           val names = ListBuffer[(String, Int)]()
           var name = ""
@@ -191,19 +192,20 @@ object Parser:
     *   The command's name
     */
   def parseCommand(
-      name: String,
+      cmdTok: Token,
       asts: Stack[AST],
-      program: Queue[Token]
+      program: Queue[Token],
   ): ParserRet[AST] =
     val cmd =
-      if !Elements.elements.contains(name) then Elements.symbolFor(name).get
-      else name
+      if !Elements.elements.contains(cmdTok.value) then
+        Elements.symbolFor(cmdTok.value).get
+      else cmdTok.value
     Elements.elements.get(cmd) match
       case None =>
         Right(AST.Command(cmd))
       // Left(VyxalCompilationError(s"No such element: $name"))
       case Some(element) =>
-        if asts.isEmpty then Right(AST.Command(cmd))
+        if asts.isEmpty then Right(AST.Command(cmd, cmdTok.range))
         else
           val arity = element.arity.getOrElse(0)
           val nilads = ListBuffer[AST]()
@@ -211,10 +213,10 @@ object Parser:
           while asts.nonEmpty && nilads.size < arity
             && (asts.top.arity.fold(false)(_ == 0))
           do nilads += asts.pop()
-          if nilads.isEmpty then return Right(AST.Command(cmd))
+          if nilads.isEmpty then return Right(AST.Command(cmd, cmdTok.range))
           Right(
             AST.Group(
-              (AST.Command(cmd) :: nilads.toList).reverse,
+              (AST.Command(cmd, cmdTok.range) :: nilads.toList).reverse,
               Some(arity - nilads.size)
             )
           )
@@ -515,7 +517,7 @@ object Parser:
     ast match
       case AST.GetVar(_, _) => false // you might want a variable at the end
       // after doing stuff like augmented assignment
-      case _ => ast.arity == Some(0)
+      case _ => ast.arity.contains(0)
 
   def parseInput(input: String): VAny =
     Lexer(input).toOption
