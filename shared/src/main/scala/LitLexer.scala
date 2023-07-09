@@ -274,10 +274,9 @@ object LitLexer:
       parseToken(ListOpen, "[") ~! rep(
         not(raw"[|,\]]".r) ~> singleToken ~
           (branch | litBranch).?
-      ) ~ parseToken(ListClose, "]") ^^ {
-        case startTok ~ elems ~ endTok =>
-          val middle = elems.flatMap { case elem ~ branch => elem ++ branch }
-          (startTok +: middle) :+ endTok
+      ) ~ parseToken(ListClose, "]") ^^ { case startTok ~ elems ~ endTok =>
+        val middle = elems.flatMap { case elem ~ branch => elem ++ branch }
+        (startTok +: middle) :+ endTok
       }
 
     // TODO figure out what this is for
