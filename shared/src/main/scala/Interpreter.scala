@@ -10,7 +10,8 @@ import VNum.given
 
 object Interpreter:
   def execute(code: String)(using ctx: Context): Unit =
-    val lexRes = if ctx.settings.literate then LiterateLexer(code) else Lexer(code)
+    val lexRes =
+      if ctx.settings.literate then LiterateLexer(code) else Lexer(code)
     val tokens = lexRes match
       case Right(tokens) => tokens
       case Left(err) => throw Error(s"Lexing failed: $err")
