@@ -44,6 +44,7 @@ enum TokenType derives CanEqual:
   case Str
   case StructureOpen
   case StructureClose
+  case StructureDoubleClose
   case StructureAllClose
   case ListOpen
   case ListClose
@@ -67,6 +68,7 @@ enum TokenType derives CanEqual:
   case UnpackVar
   case Branch
   case Newline
+  case Param
 
   /** Helper to help go from the old VyxalToken to the new Token(TokenType,
     * text, range) format
@@ -196,7 +198,9 @@ class Lexer extends RegexParsers:
   def structureOpen: Parser[Token] =
     parseToken(StructureOpen, Lexer.structureOpenRegex.r)
 
-  def structureClose: Parser[Token] = parseToken(StructureClose, """[})]""".r)
+  def structureSingleClose: Parser[Token] = parseToken(StructureClose, "}")
+
+  def structureDoubleClose: Parser[Token] = parseToken(StructureDoubleClose, ")")
 
   def structureAllClose: Parser[Token] =
     parseToken(StructureAllClose, "]")
@@ -279,13 +283,15 @@ class Lexer extends RegexParsers:
   def newlines: Parser[Token] = parseToken(Newline, "\n")
 
   def token: Parser[Token] =
-    comment | sugarTrigraph | syntaxTrigraph | digraph | branch | contextIndex | number | string | augVariable | getVariable | setVariable
+    comment | sugarTrigraph | syntaxTrigraph | digraph | branch | contextIndex
+      | number | string | augVariable | getVariable | setVariable
       | setConstant | twoCharNumber | twoCharString | singleCharString
       | monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
-      | specialModifier | structureOpen | structureClose | structureAllClose
+      | specialModifier | structureOpen | structureSingleClose | structureAllClose
       | listOpen | listClose | newlines | command
 
-  def tokens: Parser[List[Token]] = rep(token)
+  // structureDoubleClose (")") has to be here to avoid interfering with `normalGroup` in literate lexer
+  def tokens: Parser[List[Token]] = rep(token | structureDoubleClose)
 
   protected def withStartPos[T](parser: Parser[T]): Parser[(T, Int, Int)] =
     class WithPos(val value: T) extends Positional

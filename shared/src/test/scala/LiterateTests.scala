@@ -1,10 +1,15 @@
 package vyxal
 
+import org.scalatest.compatible.Assertion
 import org.scalatest.funspec.AnyFunSpec
 
 class LiterateTests extends VyxalTests:
-  def testLiterate(input: String, expected: String) =
-    assertResult(expected)(LitLexer(input).map(LitLexer.sbcsify).toOption.get)
+  def testLiterate(input: String, expected: String): Assertion =
+    val literate = LitLexer(input) match
+      case Right(res) => res
+      case Left(err) => throw RuntimeException(err.toString)
+    val sbcsified = LitLexer.sbcsify(literate)
+    assertResult(expected, literate.map(tok => s"${tok.tokenType}(${tok.value})"))(sbcsified)
 
   describe("Literals") {
     it("should leave numbers as-is") {

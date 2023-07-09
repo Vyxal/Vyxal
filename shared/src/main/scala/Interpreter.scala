@@ -12,7 +12,10 @@ import VNum.given
 object Interpreter:
   def execute(code: String)(using ctx: Context): Unit =
     val lexRes = if ctx.settings.literate then LitLexer(code) else Lexer(code)
-    val tokens = lexRes.getOrElse(throw new Error("Lexer failed"))
+    val tokens = lexRes match
+      case Right(tokens) => tokens
+      case Left(err) => throw Error(s"Lexing failed: $err")
+    scribe.debug(s"Lexed tokens: $tokens")
     val sugarless = Lexer.removeSugar(
       if ctx.settings.literate then LitLexer.sbcsify(tokens) else code
     )

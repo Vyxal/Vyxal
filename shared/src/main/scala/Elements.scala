@@ -26,6 +26,10 @@ case class Element(
 
 object Elements:
   val elements: Map[String, Element] = Impls.elements.toMap
+  
+  /** Find the symbol for a keyword in literate mode, if it exists */
+  def symbolFor(keyword: String): Option[String] =
+    Elements.elements.values.find(_.keywords.contains(keyword)).map(_.symbol)
 
   private[impls] object Impls:
     val elements = collection.mutable.Map.empty[String, Element]
@@ -556,7 +560,7 @@ object Elements:
       Dyad,
       ">",
       "Greater Than",
-      List("gt", "greater", "greater-than", ">", "greater?", "bigger?"),
+      List("gt", "greater", "greater-than", "greater?", "bigger?"),
       "a: num, b: num -> a > b",
       "a: str, b: num -> a > str(b)",
       "a: num, b: str -> str(a) > b",
@@ -1151,7 +1155,6 @@ object Elements:
         "remove",
         "str-remove-all",
         "remove-all",
-        "-"
       ),
       "a: num, b: num -> a - b",
       "a: str, b: num -> a + b '-'s (or '-'s + a if b < 0)",
