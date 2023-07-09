@@ -78,7 +78,7 @@ object MiscHelpers:
     if s.matches(raw"-?($decimalRegex?ı$decimalRegex?)|-?$decimalRegex") then
       VNum(s)
     else if s.matches(raw"""("(?:[^"\\]|\\.)*["])""") then s.substring(1).init
-    else if LiterateLexer.isList(s) then
+    else if LitLexer.isList(s) then
       LitLexer(s) match
         case Right(tokens) =>
           val tempContext = Context(globals = Globals(settings = ctx.settings))

@@ -39,15 +39,15 @@ object Range:
   /** A dummy Range (mainly for generated/desugared code) */
   val fake: Range = Range(-1, -1, -1, -1)
 
-enum TokenType derives CanEqual:
+enum TokenType(val canonicalSBCS: Option[String] = None) derives CanEqual:
   case Number
   case Str
   case StructureOpen
-  case StructureClose
-  case StructureDoubleClose
-  case StructureAllClose
-  case ListOpen
-  case ListClose
+  case StructureClose extends TokenType(Some("}"))
+  case StructureDoubleClose extends TokenType(Some(")"))
+  case StructureAllClose extends TokenType(Some("]"))
+  case ListOpen extends TokenType(Some("#["))
+  case ListClose extends TokenType(Some("#]"))
   case Command
   case Digraph
   case SyntaxTrigraph
@@ -66,10 +66,10 @@ enum TokenType derives CanEqual:
   case Constant
   case AugmentVar
   case UnpackVar
-  case Branch
-  case Newline
+  case Branch extends TokenType(Some("|"))
+  case Newline extends TokenType(Some("\n"))
   case Param
-  case UnpackClose
+  case UnpackClose extends TokenType(Some("]"))
 
   /** Helper to help go from the old VyxalToken to the new Token(TokenType,
     * text, range) format
@@ -94,6 +94,15 @@ enum StructureType(val open: String) derives CanEqual:
   case DecisionStructure extends StructureType("Ḍ")
   case GeneratorStructure extends StructureType("Ṇ")
 
+object StructureType:
+  val lambdaStructures: List[StructureType] = List(
+    StructureType.Lambda,
+    StructureType.LambdaMap,
+    StructureType.LambdaFilter,
+    StructureType.LambdaReduce,
+    StructureType.LambdaSort
+  )
+
 val CODEPAGE = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨ\nᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ⸠ϩэЧᵜ !"
   + "\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFG"
   + "HIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmn"
@@ -113,15 +122,16 @@ object Lexer:
   val structureOpenRegex: String = """[\[\(\{λƛΩ₳µḌṆ]|#@|#\{"""
 
   def apply(code: String): Either[VyxalCompilationError, List[Token]] =
-    new Lexer().lex(code)
+    SBCSLexer.lex(code)
 
   def removeSugar(code: String): Option[String] =
-    val lexer = new Lexer()
-    lexer.lex(code) match
+    SBCSLexer.lex(code) match
       case Right(result) =>
-        if lexer.sugarUsed then Some(result.map(_.value).mkString)
+        if SBCSLexer.sugarUsed then Some(result.map(_.value).mkString)
         else None
       case _ => None
+
+object SBCSLexer extends Lexer
 
 class Lexer extends RegexParsers:
   import vyxal.Lexer.decimalRegex
@@ -130,7 +140,7 @@ class Lexer extends RegexParsers:
   override val whiteSpace: Regex = "[ \t\r\f]+".r
 
   /** Whether the code lexed so far has sugar trigraphs */
-  private var sugarUsed = false
+  var sugarUsed = false
 
   def lex(code: String): Either[VyxalCompilationError, List[Token]] =
     (parseAll(tokens, code): @unchecked) match

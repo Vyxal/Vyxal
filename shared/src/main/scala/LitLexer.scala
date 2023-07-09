@@ -43,8 +43,19 @@ object LitLexer:
   )
 
   private val lambdaOpeners = Map(
+    "{" -> StructureType.Lambda,
     "lambda" -> StructureType.Lambda,
     "lam" -> StructureType.Lambda,
+    "map-lambda" -> StructureType.LambdaMap,
+    "map-lam" -> StructureType.LambdaMap,
+    "filter-lambda" -> StructureType.LambdaFilter,
+    "filter-lam" -> StructureType.LambdaFilter,
+    "sort-lambda" -> StructureType.LambdaSort,
+    "sort-lam" -> StructureType.LambdaSort,
+    "reduce-lambda" -> StructureType.LambdaReduce,
+    "reduce-lam" -> StructureType.LambdaReduce,
+    "fold-lambda" -> StructureType.LambdaReduce,
+    "fold-lam" -> StructureType.LambdaReduce
   )
 
   /** Keywords for opening structures. Has to be a separate map because while
@@ -67,17 +78,22 @@ object LitLexer:
     "relation" -> StructureType.GeneratorStructure,
     "generate-from" -> StructureType.GeneratorStructure,
     "generate" -> StructureType.GeneratorStructure,
-    "map-lambda" -> StructureType.LambdaMap,
-    "map-lam" -> StructureType.LambdaMap,
-    "filter-lambda" -> StructureType.LambdaFilter,
-    "filter-lam" -> StructureType.LambdaFilter,
-    "sort-lambda" -> StructureType.LambdaSort,
-    "sort-lam" -> StructureType.LambdaSort,
-    "reduce-lambda" -> StructureType.LambdaReduce,
-    "reduce-lam" -> StructureType.LambdaReduce,
-    "fold-lambda" -> StructureType.LambdaReduce,
-    "fold-lam" -> StructureType.LambdaReduce
   )
+
+  lazy val literateModeMappings: Map[String, String] =
+    Elements.elements.values.view.flatMap { elem =>
+      elem.keywords.map(_ -> elem.symbol)
+    }.toMap ++ Modifiers.modifiers.view.flatMap { (symbol, mod) =>
+      mod.keywords.map(_ -> symbol)
+    }.toMap ++ keywords.map { (kw, typ) =>
+      kw -> typ.canonicalSBCS.get
+    }.toMap ++ endKeywords
+      .map(_ -> TokenType.StructureClose.canonicalSBCS.get)
+      .toMap ++ branchKeywords
+      .map(_ -> TokenType.Branch.canonicalSBCS.get)
+      .toMap ++ (lambdaOpeners ++ structOpeners).map { (kw, typ) =>
+      kw -> typ.open
+    }
 
   /** Tokenize a piece of code in literate mode */
   def apply(code: String): Either[VyxalCompilationError, List[Token]] =
@@ -85,6 +101,9 @@ object LitLexer:
     (parseAll(tokens, code): @unchecked) match
       case NoSuccess(msg, _) => Left(VyxalCompilationError(msg))
       case Success(result, _) => Right(result)
+
+  def isList(code: String): Boolean =
+    LiterateParsers.parseAll(LiterateParsers.list, code).successful
 
   private def sbcsifySingle(token: Token): String =
     val Token(tokenType, value, _) = token
@@ -94,16 +113,10 @@ object LitLexer:
       case AugmentVar => s"#>$value"
       case Constant => s"#!$value"
       case Str => s""""$value""""
-      case Branch => "|"
-      case StructureClose => "}"
-      case StructureAllClose => "]"
-      case ListOpen => "#["
-      case ListClose => "#]"
       case SyntaxTrigraph if value == ":=[" => "#:["
       case Command if !Elements.elements.contains(value) =>
         Elements.symbolFor(value).get
-      case _ => value
-  end sbcsifySingle
+      case _ => tokenType.canonicalSBCS.getOrElse(value)
 
   /** Convert literate mode code into SBCS mode code */
   def sbcsify(tokens: List[Token]): String =
@@ -165,14 +178,14 @@ object LitLexer:
       }
 
     def lambdaBlock: Parser[List[Token]] =
-      withRange(
-        ("{": Parser[String]) | StructureType.Lambda.open |
-          lambdaOpeners.keys.map(opener => opener: Parser[String]).reduce(_ | _)
+      keywordsParser(
+        StructureType.lambdaStructures.map(_.open) ++ lambdaOpeners.keys
       )
-      // Keep going until the branch indicating params end, but don't stop at ","
-        ~! (rep(not((branch | litBranch).filter(_.value != ",")) ~> singleToken)
-          .map(_.flatten)
-          ~ (branch | litBranch)).?
+        ~! ( // Keep going until the branch indicating params end, but don't stop at ","
+          rep(not((branch | litBranch).filter(_.value != ",")) ~> singleToken)
+            .map(_.flatten)
+            ~ (branch | litBranch)
+        ).?
         ~ rep(
           not(
             litStructClose | structureSingleClose | structureDoubleClose | structureAllClose
@@ -180,9 +193,14 @@ object LitLexer:
         ).map(_.flatten)
         ~ (litStructClose | structureSingleClose | structureDoubleClose | not(
           not(structureAllClose)
-        )).? ^^ { case (_, openRange) ~ possibleParams ~ body ~ endTok =>
-          val opener =
-            Token(StructureOpen, StructureType.Lambda.open, openRange)
+        )).? ^^ { case (opener, openRange) ~ possibleParams ~ body ~ endTok =>
+          val openerTok =
+            Token(
+              StructureOpen,
+              // If it's a keyword, map it to SBCS
+              lambdaOpeners.get(opener).map(_.open).getOrElse(opener),
+              openRange
+            )
           val possParams = possibleParams match
             case Some(params ~ branch) =>
               // Branches get turned into `|` when sbcsifying. To preserve commas, turn them into Commands instead
@@ -195,13 +213,14 @@ object LitLexer:
               )
               paramsWithCommas :+ branch
             case None => Nil
-          val withoutEnd = opener :: (possParams ::: body)
+          val withoutEnd = openerTok :: (possParams ::: body)
           endTok match
             case Some(tok: Token) => withoutEnd :+ tok
             case _ =>
               // This means there was a StructureAllClose or we hit EOF
               withoutEnd
         }
+    end lambdaBlock
 
     def litListOpen: Parser[Token] = withRange("[") ^^ { case (_, range) =>
       Token(ListOpen, "#[", range)

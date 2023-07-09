@@ -74,7 +74,7 @@ object CLI:
 
         if config.litInfoFor.nonEmpty then
           val keywords =
-            LiterateLexer.literateModeMappings.get(config.litInfoFor.get)
+            LitLexer.literateModeMappings(config.litInfoFor.get)
           println(keywords.mkString(", "))
           return
 
