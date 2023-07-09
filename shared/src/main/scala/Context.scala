@@ -180,7 +180,7 @@ class Context private (
   def getTopCxt(): Context =
     parent match
       case Some(p) => p.getTopCxt()
-      case None    => this
+      case None => this
 end Context
 
 object Context:

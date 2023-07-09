@@ -21,7 +21,7 @@ object Interpreter:
     )
     sugarless match
       case Some(code) => scribe.debug(s"Sugarless: $code")
-      case None       => ()
+      case None => ()
 
     Parser.parse(tokens) match
       case Right(ast) =>
@@ -43,7 +43,7 @@ object Interpreter:
     scribe.trace(s"Executing AST $ast, stack = ${ctx.peek(5)}")
     ast match
       case AST.Number(value, _) => ctx.push(value)
-      case AST.Str(value, _)    => ctx.push(value)
+      case AST.Str(value, _) => ctx.push(value)
       case AST.DictionaryString(value, _) =>
         ctx.push(StringHelpers.decompress(value))
       case AST.Lst(elems, _) =>
@@ -56,7 +56,7 @@ object Interpreter:
       case AST.Command(cmd, _) =>
         Elements.elements.get(cmd) match
           case Some(elem) => elem.impl()
-          case None       => throw RuntimeException(s"No such command: '$cmd'")
+          case None => throw RuntimeException(s"No such command: '$cmd'")
       case AST.Group(elems, _, _) =>
         elems.foreach(Interpreter.execute(_))
       case AST.CompositeNilad(elems, _) =>
@@ -137,16 +137,16 @@ object Interpreter:
             catch case _: ContinueLoopException => ()
         catch case _: BreakLoopException => return
 
-      case lam: AST.Lambda          => ctx.push(VFun.fromLambda(lam))
-      case AST.FnDef(name, lam, _)  => ctx.setVar(name, VFun.fromLambda(lam))
-      case AST.GetVar(name, _)      => ctx.push(ctx.getVar(name))
-      case AST.SetVar(name, _)      => ctx.setVar(name, ctx.pop())
+      case lam: AST.Lambda => ctx.push(VFun.fromLambda(lam))
+      case AST.FnDef(name, lam, _) => ctx.setVar(name, VFun.fromLambda(lam))
+      case AST.GetVar(name, _) => ctx.push(ctx.getVar(name))
+      case AST.SetVar(name, _) => ctx.setVar(name, ctx.pop())
       case AST.SetConstant(name, _) => ctx.setConst(name, ctx.pop())
       case AST.AugmentVar(name, op, _) =>
         ctx.push(ctx.getVar(name))
         op match
           case lam: AST.Lambda => ctx.push(executeFn(VFun.fromLambda(lam)))
-          case _               => execute(op)
+          case _ => execute(op)
         ctx.setVar(name, ctx.pop())
       case AST.UnpackVar(names, _) =>
         MiscHelpers.unpack(names)

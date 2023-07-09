@@ -62,9 +62,9 @@ class VList private (val lst: Seq[VAny])
 
   def index(ind: VAny)(using ctx: Context): VAny =
     ind match
-      case ind: VNum   => this.indexBig(ind.real.toBigInt)
+      case ind: VNum => this.indexBig(ind.real.toBigInt)
       case inds: VList => inds.vmap(this.index)
-      case _           => throw new Exception("Index must be a number")
+      case _ => throw new Exception("Index must be a number")
 
   private def indexBig(ind: BigInt): VAny =
     if ind <= Int.MaxValue && ind >= Int.MinValue then return apply(ind.toInt)
@@ -117,7 +117,7 @@ object VList extends SpecificIterableFactory[VAny, VList]:
   def from(it: Seq[VAny]): VList =
     it match
       case temp: VList => temp
-      case _           => new VList(it)
+      case _ => new VList(it)
 
   /** Zip multiple VLists together with a function.
     *
@@ -147,7 +147,7 @@ object VList extends SpecificIterableFactory[VAny, VList]:
         val maxSize = filteredLists.view.map(_.size).max
         values.map {
           case l: VList => l
-          case x        =>
+          case x =>
             // If one of the other elements is a list but this isn't, repeat
             // this one to be as long as that list
             VList.fill(maxSize)(x)

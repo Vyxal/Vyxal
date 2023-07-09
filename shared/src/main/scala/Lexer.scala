@@ -133,7 +133,7 @@ class Lexer extends RegexParsers:
 
   def lex(code: String): Either[VyxalCompilationError, List[Token]] =
     (parseAll(tokens, code): @unchecked) match
-      case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
+      case NoSuccess(msg, next) => Left(VyxalCompilationError(msg))
       case Success(result, next) => Right(result)
 
   def number: Parser[Token] =
@@ -200,7 +200,8 @@ class Lexer extends RegexParsers:
 
   def structureSingleClose: Parser[Token] = parseToken(StructureClose, "}")
 
-  def structureDoubleClose: Parser[Token] = parseToken(StructureDoubleClose, ")")
+  def structureDoubleClose: Parser[Token] =
+    parseToken(StructureDoubleClose, ")")
 
   def structureAllClose: Parser[Token] =
     parseToken(StructureAllClose, "]")
@@ -215,11 +216,11 @@ class Lexer extends RegexParsers:
       else if Modifiers.modifiers.contains(digraph) then
         val modifier = Modifiers.modifiers(digraph)
         val tokenType = modifier.arity match
-          case 1     => MonadicModifier
-          case 2     => DyadicModifier
-          case 3     => TriadicModifier
-          case 4     => TetradicModifier
-          case -1    => SpecialModifier
+          case 1 => MonadicModifier
+          case 2 => DyadicModifier
+          case 3 => TriadicModifier
+          case 4 => TetradicModifier
+          case -1 => SpecialModifier
           case arity => throw Exception(s"Invalid modifier arity: $arity")
         Token(tokenType, digraph, range)
       else Token(Digraph, digraph, range)

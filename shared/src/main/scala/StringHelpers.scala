@@ -12,7 +12,7 @@ object StringHelpers:
       case a: String =>
         if a.length == 1 then a.codePointAt(0)
         else VList(a.map(_.toInt: VNum)*)
-      case a: VNum  => a.toInt.toChar.toString
+      case a: VNum => a.toInt.toChar.toString
       case a: VList => VList(a.map(chrord)*)
 
   // https://codegolf.stackexchange.com/a/151721/78850
@@ -123,9 +123,9 @@ object StringHelpers:
   /** Get the string representation of a value (opposite of eval) */
   def repr(v: VAny): String =
     v match
-      case n: VNum   => n.toString
+      case n: VNum => n.toString
       case s: String => quotify(s)
-      case l: VList  => l.map(repr).mkString("#[", ",", "#]")
+      case l: VList => l.map(repr).mkString("#[", ",", "#]")
       case f: VFun =>
         throw IllegalArgumentException(s"Cannot get repr for function: $f")
 
@@ -211,8 +211,8 @@ object StringHelpers:
 
   def vyToString(item: VAny)(using ctx: Context): String =
     item match
-      case n: VNum   => NumberHelpers.numToString(n)
+      case n: VNum => NumberHelpers.numToString(n)
       case s: String => s
-      case l: VList  => l.map(vyToString).mkString("[", "|", "]")
-      case f: VFun   => vyToString(Interpreter.executeFn(f))
+      case l: VList => l.map(vyToString).mkString("[", "|", "]")
+      case f: VFun => vyToString(Interpreter.executeFn(f))
 end StringHelpers

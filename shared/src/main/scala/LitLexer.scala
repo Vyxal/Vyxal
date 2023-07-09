@@ -98,7 +98,8 @@ object LitLexer:
       case StructureClose => "}"
       case StructureAllClose => "]"
       case SyntaxTrigraph if value == ":=[" => "#:["
-      case Command if !Elements.elements.contains(value) => Elements.symbolFor(value).get
+      case Command if !Elements.elements.contains(value) =>
+        Elements.symbolFor(value).get
       case _ => value
 
   /** Convert literate mode code into SBCS mode code */
@@ -185,7 +186,8 @@ object LitLexer:
               val paramsWithCommas = params.map(tok =>
                 if tok.tokenType == Branch && tok.value == "," then
                   Token(Command, ",", tok.range)
-                else if tok.tokenType == Command then tok.copy(tokenType = Param)
+                else if tok.tokenType == Command then
+                  tok.copy(tokenType = Param)
                 else tok
               )
               paramsWithCommas :+ branch

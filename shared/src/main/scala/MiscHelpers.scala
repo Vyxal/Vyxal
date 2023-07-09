@@ -11,17 +11,17 @@ import spire.algebra.*
 
 object MiscHelpers:
   val add = Dyad.vectorise("add")(forkify {
-    case (a: VNum, b: VNum)     => a + b
-    case (a: String, b: VNum)   => s"$a$b"
-    case (a: VNum, b: String)   => s"$a$b"
+    case (a: VNum, b: VNum) => a + b
+    case (a: String, b: VNum) => s"$a$b"
+    case (a: VNum, b: String) => s"$a$b"
     case (a: String, b: String) => s"$a$b"
   })
 
   def boolify(x: VAny) = x match
-    case n: VNum   => n != VNum(0)
+    case n: VNum => n != VNum(0)
     case s: String => s.nonEmpty
-    case f: VFun   => true
-    case l: VList  => l.nonEmpty
+    case f: VFun => true
+    case l: VList => l.nonEmpty
 
   def collectUnique(function: VFun, initial: VAny)(using ctx: Context): VList =
     val seen = collection.mutable.Set.empty[VAny]
@@ -35,9 +35,9 @@ object MiscHelpers:
     VList.from(result.toList)
 
   def compare(a: VVal, b: VVal): Int = (a, b) match
-    case (a: VNum, b: VNum)     => a.real.compare(b.real)
-    case (a: String, b: VNum)   => a.compareTo(b.toString)
-    case (a: VNum, b: String)   => a.toString.compareTo(b)
+    case (a: VNum, b: VNum) => a.real.compare(b.real)
+    case (a: String, b: VNum) => a.compareTo(b.toString)
+    case (a: VNum, b: String) => a.toString.compareTo(b)
     case (a: String, b: String) => a.compareTo(b)
 
   def compareExact(
@@ -45,7 +45,7 @@ object MiscHelpers:
       b: VAny
   )(using ctx: Context): Int = (a, b) match
     case (a: VVal, b: VVal) => compare(a, b)
-    case (a, b)             =>
+    case (a, b) =>
       // Lexographically compare the two values after converting both to iterable
       val aIter = ListHelpers.makeIterable(a)
       val bIter = ListHelpers.makeIterable(b)
@@ -63,10 +63,10 @@ object MiscHelpers:
   // Returns the default value for a given type
   def defaultEmpty(a: VAny): VAny =
     a match
-      case _: VNum   => VNum(0)
+      case _: VNum => VNum(0)
       case _: String => ""
-      case _: VList  => 0
-      case _         => throw new Exception(s"Cannot get default value for $a")
+      case _: VList => 0
+      case _ => throw new Exception(s"Cannot get default value for $a")
 
   def dyadicMaximum(a: VVal, b: VVal): VVal =
     if compare(a, b) > 0 then a else b
@@ -97,11 +97,11 @@ object MiscHelpers:
     ???
 
   val multiply = Dyad.vectorise("multiply") {
-    case (a: VNum, b: VNum)     => a * b
-    case (a: String, b: VNum)   => a * b.toInt
-    case (a: VNum, b: String)   => b * a.toInt
+    case (a: VNum, b: VNum) => a * b
+    case (a: String, b: VNum) => a * b.toInt
+    case (a: VNum, b: String) => b * a.toInt
     case (a: String, b: String) => StringHelpers.ringTranslate(a, b)
-    case (a: VFun, b: VNum)     => a.withArity(b.toInt)
+    case (a: VFun, b: VNum) => a.withArity(b.toInt)
   }
 
   def reduce(iter: VAny, by: VFun, init: Option[VAny] = None)(using
@@ -115,7 +115,7 @@ object MiscHelpers:
     // Take the first byFun.arity items as the initial set to operate on
     var operating = init match
       case Some(elem) => elem +: remaining.take(byFun.arity - 1)
-      case None       => remaining.take(byFun.arity)
+      case None => remaining.take(byFun.arity)
     remaining = remaining.drop(operating.length)
 
     if operating.isEmpty then return 0
