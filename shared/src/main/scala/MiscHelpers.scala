@@ -78,11 +78,11 @@ object MiscHelpers:
     if s.matches(raw"-?($decimalRegex?ı$decimalRegex?)|-?$decimalRegex") then
       VNum(s)
     else if s.matches(raw"""("(?:[^"\\]|\\.)*["])""") then s.substring(1).init
-    else if LitLexer.isList(s) then
-      LitLexer(s) match
+    else if LiterateLexer.isList(s) then
+      LiterateLexer(s) match
         case Right(tokens) =>
           val tempContext = Context(globals = Globals(settings = ctx.settings))
-          Interpreter.execute(LitLexer.sbcsify(tokens))(using tempContext)
+          Interpreter.execute(LiterateLexer.sbcsify(tokens))(using tempContext)
           tempContext.peek
         case Left(err) => throw RuntimeException(s"Couldn't parse list: $err")
     else s

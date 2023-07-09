@@ -11,7 +11,8 @@ import scala.collection.mutable.{ListBuffer, Queue}
 import scala.util.matching.Regex
 import scala.util.parsing.combinator.*
 
-object LitLexer:
+/** Lexer for literate mode. Use [[LiterateLexer.apply]] */
+object LiterateLexer:
   private val endKeywords = List(
     "endfor",
     "end-for",
@@ -343,4 +344,4 @@ object LitLexer:
     override def tokens: Parser[List[Token]] = rep(singleToken).map(_.flatten)
 
   end LiterateParsers
-end LitLexer
+end LiterateLexer

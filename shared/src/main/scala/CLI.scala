@@ -74,7 +74,7 @@ object CLI:
 
         if config.litInfoFor.nonEmpty then
           val keywords =
-            LitLexer.literateModeMappings(config.litInfoFor.get)
+            LiterateLexer.literateModeMappings(config.litInfoFor.get)
           println(keywords.mkString(", "))
           return
 
@@ -88,7 +88,7 @@ object CLI:
           while true do
             val line = io.StdIn.readLine(">")
             if line == "" then return
-            println(LitLexer(line))
+            println(LiterateLexer(line))
 
         if config.runParser then
           while true do

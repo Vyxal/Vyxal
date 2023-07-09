@@ -5,10 +5,10 @@ import org.scalatest.funspec.AnyFunSpec
 
 class LiterateTests extends VyxalTests:
   def testLiterate(input: String, expected: String): Assertion =
-    val literate = LitLexer(input) match
+    val literate = LiterateLexer(input) match
       case Right(res) => res
       case Left(err) => throw RuntimeException(err.toString)
-    val sbcsified = LitLexer.sbcsify(literate)
+    val sbcsified = LiterateLexer.sbcsify(literate)
     assertResult(expected, literate.map(tok => s"${tok.tokenType}(${tok.value})"))(sbcsified)
 
   describe("Literals") {
