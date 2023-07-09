@@ -472,7 +472,7 @@ object Elements:
       Monad,
       "!",
       "Factorial | To Uppercase",
-      List("fact", "factorial", "to-upper", "upper", "uppercase", "!"),
+      List("fact", "factorial", "to-upper", "upper", "uppercase"),
       "a: num -> a!",
       "a: str -> a.toUpperCase()"
     ) {

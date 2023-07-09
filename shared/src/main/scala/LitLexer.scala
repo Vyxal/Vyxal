@@ -98,7 +98,8 @@ object LitLexer:
       case StructureClose => "}"
       case StructureAllClose => "]"
       case SyntaxTrigraph if value == ":=[" => "#:["
-      case Command if !Elements.elements.contains(value) => Elements.symbolFor(value).get
+      case Command if !Elements.elements.contains(value) =>
+        Elements.symbolFor(value).get
       case _ => value
 
   /** Convert literate mode code into SBCS mode code */
@@ -185,7 +186,8 @@ object LitLexer:
               val paramsWithCommas = params.map(tok =>
                 if tok.tokenType == Branch && tok.value == "," then
                   Token(Command, ",", tok.range)
-                else if tok.tokenType == Command then tok.copy(tokenType = Param)
+                else if tok.tokenType == Command then
+                  tok.copy(tokenType = Param)
                 else tok
               )
               paramsWithCommas :+ branch
@@ -263,8 +265,20 @@ object LitLexer:
         Token(AugmentVar, value.substring(2), range)
       }
 
-    def unpackVar: Parser[Token] =
-      parseToken(SyntaxTrigraph, ":=[")
+    def unpackVar: Parser[List[Token]] =
+      withRange(":=") ~ list ^^ { case (_, unpackRange) ~ listTokens =>
+        Token(SyntaxTrigraph, "#:[", unpackRange) :: listTokens.tail
+      }
+
+    def list: Parser[List[Token]] =
+      parseToken(ListOpen, "[") ~! rep(
+        not(raw"[|,\]]".r) ~> singleToken ~
+          (branch | litBranch).?
+      ) ~ parseToken(ListClose, "]") ^^ {
+        case startTok ~ elems ~ endTok =>
+          val middle = elems.flatMap { case elem ~ branch => elem ++ branch }
+          (startTok +: middle) :+ endTok
+      }
 
     // TODO figure out what this is for
     // def tilde: Parser[Token] = "~" ^^^ AlreadyCode("!")
@@ -297,8 +311,7 @@ object LitLexer:
     }
 
     def singleToken: Parser[List[Token]] =
-      lambdaBlock | (litListOpen | litListClose
-        | unpackVar | litGetVariable | litSetVariable | litSetConstant | litAugVariable
+      lambdaBlock | list | unpackVar | (litGetVariable | litSetVariable | litSetConstant | litAugVariable
         | elementKeyword | modifierKeyword | structOpener | otherKeyword | litBranch | litStructClose)
         .map(List(_))
         | ws | normalGroup | rawCode | super.token.map(List(_))
