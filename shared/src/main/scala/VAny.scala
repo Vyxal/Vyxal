@@ -100,12 +100,12 @@ object VFun:
 extension (self: VAny)
   def ===(that: VAny): Boolean =
     (self, that) match
-      case (a: VVal, b: VVal)   => MiscHelpers.compare(a, b) == 0
+      case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) == 0
       case (a: VList, b: VList) => a == b
-      case _                    => false
+      case _ => false
 
 extension (iterable: VIter)
   def iterLength: VNum =
     iterable match
       case s: String => s.length
-      case l: VList  => l.size
+      case l: VList => l.size

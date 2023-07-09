@@ -39,8 +39,8 @@ private[vyxal] object GenerateNanorc:
     |
     |## Modifiers
     |color brightmagenta "${Modifiers.modifiers.keys
-                            .map(Regex.quote)
-                            .mkString("|")}"
+      .map(Regex.quote)
+      .mkString("|")}"
     |""".stripMargin
 
   val commonFooter = """|

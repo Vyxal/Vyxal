@@ -94,7 +94,7 @@ object LiterateLexer:
   def apply(code: String): Either[VyxalCompilationError, List[LiterateToken]] =
     import LiterateParsers.*
     (parse(tokens, code): @unchecked) match
-      case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
+      case NoSuccess(msg, next) => Left(VyxalCompilationError(msg))
       case Success(result, next) => Right(postProcess(result))
 
   private def postProcess(tokenList: List[LiterateToken]): List[LiterateToken] =
@@ -159,16 +159,16 @@ object LiterateLexer:
 
   private def stringify(token: LiterateToken): String =
     token match
-      case Word(value)        => value
+      case Word(value) => value
       case AlreadyCode(value) => value
-      case LitComment(value)  => value
-      case Number(value)      => value
-      case Variable(value)    => value
-      case Group(value)       => value.map(stringify).mkString("(", " ", ")")
+      case LitComment(value) => value
+      case Number(value) => value
+      case Variable(value) => value
+      case Group(value) => value.map(stringify).mkString("(", " ", ")")
       case LambdaBlock(value) => value.map(stringify).mkString("λ", " ", "}")
-      case ListToken(value)   => value.map(stringify).mkString("[", "|", "]")
-      case Newline(value)     => value
-      case Other(value)       => value
+      case ListToken(value) => value.map(stringify).mkString("[", "|", "]")
+      case Newline(value) => value
+      case Other(value) => value
 
   /** Translate literate mode code into normal SBCS-using code */
   def processLit(code: String): Either[VyxalCompilationError, String] =
@@ -211,7 +211,7 @@ object LiterateLexer:
               else out.append(value)
             case _ => out.append(value)
         case AlreadyCode(value) => out.append(value)
-        case Newline(value)     => out.append(value)
+        case Newline(value) => out.append(value)
         case Group(value) =>
           out.append(value.map(sbcsifySingle).mkString)
         case LitComment(value) =>
@@ -229,13 +229,13 @@ object LiterateLexer:
 
   private def sbcsifySingle(token: LiterateToken): String =
     token match
-      case Word(value)        => literateModeMappings.getOrElse(value, value)
+      case Word(value) => literateModeMappings.getOrElse(value, value)
       case AlreadyCode(value) => value
-      case Variable(value)    => value
-      case Number(value)      => value
-      case Group(value)       => value.map(sbcsifySingle).mkString
-      case Newline(_)         => ""
-      case LitComment(value)  => ""
+      case Variable(value) => value
+      case Number(value) => value
+      case Group(value) => value.map(sbcsifySingle).mkString
+      case Newline(_) => ""
+      case LitComment(value) => ""
       case LambdaBlock(value) => value.map(sbcsifySingle).mkString("λ", "", "}")
       case ListToken(value) =>
         value.map(sbcsifySingle).mkString("#[", "|", "#]")
@@ -244,7 +244,7 @@ object LiterateLexer:
   def isList(code: String): Boolean =
     apply(code).getOrElse(Nil).exists {
       case ListToken(_) => true
-      case _            => false
+      case _ => false
     }
 
   private object LiterateParsers extends RegexParsers:

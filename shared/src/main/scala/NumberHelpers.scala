@@ -23,8 +23,8 @@ object NumberHelpers:
 
   def fromBase(a: VAny, b: VAny)(using ctx: Context): VAny =
     (a, b) match
-      case (a: VNum, b: VNum)     => toInt(a.toString(), b.toInt)
-      case (n: VNum, _)           => fromBase(b, a)
+      case (a: VNum, b: VNum) => toInt(a.toString(), b.toInt)
+      case (n: VNum, _) => fromBase(b, a)
       case (a: String, b: String) => fromBaseAlphabet(a, b)
       case _ => fromBaseDigits(ListHelpers.makeIterable(a), b)
 
@@ -42,10 +42,10 @@ object NumberHelpers:
 
   def fromBinary(a: VAny)(using ctx: Context): VAny =
     a match
-      case n: VNum   => fromBinary(n.toString())
-      case l: VList  => toInt(l, 2)
+      case n: VNum => fromBinary(n.toString())
+      case l: VList => toInt(l, 2)
       case s: String => toInt(s, 2)
-      case _         => throw new Exception("Cannot convert to binary")
+      case _ => throw new Exception("Cannot convert to binary")
 
   def gamma(a: VNum): VNum =
     val colist = List(
@@ -130,9 +130,9 @@ object NumberHelpers:
 
   def toBase(a: VAny, b: VAny)(using ctx: Context): VAny =
     (a, b) match
-      case (a: VNum, b: VNum)  => toBaseDigits(a, b)
+      case (a: VNum, b: VNum) => toBaseDigits(a, b)
       case (n: VNum, b: VIter) => toBaseAlphabet(n, b)
-      case (a: VList, _)       => VList(a.map(toBase(_, b))*)
+      case (a: VList, _) => VList(a.map(toBase(_, b))*)
       case _ =>
         throw new Exception(
           s"toBase only works on numbers and lists, was given $a and $b instead"
@@ -144,17 +144,17 @@ object NumberHelpers:
   ): VAny =
     alphabet match
       case a: String => if a.isEmpty then return 0
-      case l: VList  => if l.isEmpty then return 0
+      case l: VList => if l.isEmpty then return 0
 
     val indexes = toBaseDigits(value, alphabet.iterLength)
     val alphalist = alphabet match
       case a: String => VList.from(a.toString.toList.map(_.toString))
-      case l: VList  => l
+      case l: VList => l
 
     val temp = indexes.map(alphalist.index(_).toString())
     alphabet match
       case a: String => temp.mkString("")
-      case l: VList  => VList.from(temp)
+      case l: VList => VList.from(temp)
 
   def toBaseDigits(value: VNum, base: VNum): VList =
     /** Helper to get digits for single component of a VNum */
@@ -213,5 +213,5 @@ object NumberHelpers:
           exponent += 1
         res
       case s: String => VNum(s, radix).toIntegral
-      case _         => throw new Exception("Cannot convert to int")
+      case _ => throw new Exception("Cannot convert to int")
 end NumberHelpers

@@ -22,7 +22,7 @@ $name -> get
 f:>name -> name f= top of stack
 :=[x|y|z] -> x, y, z = top of stack
 # ... #} -> raw sbcs
-lambda !stack | ... } -> lambda that operates on the stack
+lambda ~ | ... } -> lambda that operates on the stack
 `number` -> index n of context parameters
 ```
 

@@ -44,7 +44,7 @@ object ListHelpers:
     VList.from(
       xs.flatMap {
         case l: VList => flatten(l)
-        case x        => Seq(x)
+        case x => Seq(x)
       }
     )
 
@@ -151,7 +151,7 @@ object ListHelpers:
     value match
       case list: VList => list
       case str: String => VList(str.map(_.toString)*)
-      case fn: VFun    => VList(fn)
+      case fn: VFun => VList(fn)
       case num: VNum =>
         if overrideRangify.getOrElse(ctx.settings.rangify) then
           val start = ctx.settings.rangeStart
@@ -169,7 +169,7 @@ object ListHelpers:
         val branches = lam.body
         val params = f.originalAST match
           case Some(lam) => lam.params
-          case None      => List.empty
+          case None => List.empty
         VList.from(to.zipWithIndex.map { (item, index) =>
           val sharedVars = mut.Map.empty[String, VAny]
           branches.foldLeft(item) { (out, branch) =>
@@ -224,7 +224,7 @@ object ListHelpers:
             output += moldHelper(mutContent, item, index)
             output.last match
               case list: VList => index += list.length - 1
-              case _           => index += 1
+              case _ => index += 1
           case item => output += mutContent(index)
         index += 1
 
@@ -306,8 +306,8 @@ object ListHelpers:
     iterable match
       case list: VList => VList(list.reverse*)
       case str: String => str.reverse
-      case num: VNum   => VNum(num.toString.reverse)
-      case _           => iterable
+      case num: VNum => VNum(num.toString.reverse)
+      case _ => iterable
 
   /** Split a list on a sublist
     *
@@ -407,14 +407,14 @@ object ListHelpers:
     VList.from(iterable.map { a =>
       (a: @unchecked) match
         case a: VList => vectorisedMaximum(a, b)
-        case a: VVal  => MiscHelpers.dyadicMaximum(a, b)
-        case _        => ???
+        case a: VVal => MiscHelpers.dyadicMaximum(a, b)
+        case _ => ???
     })
 
   def vectorisedMinimum(iterable: VList, b: VVal): VList =
     VList.from(iterable.map {
       case a: VList => vectorisedMinimum(a, b)
-      case a: VVal  => MiscHelpers.dyadicMinimum(a, b)
-      case _        => ???
+      case a: VVal => MiscHelpers.dyadicMinimum(a, b)
+      case _ => ???
     })
 end ListHelpers

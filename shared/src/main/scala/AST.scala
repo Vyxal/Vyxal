@@ -105,16 +105,16 @@ enum AST(val arity: Option[Int]) derives CanEqual:
 
   /** Generate the Vyxal code this AST represents */
   def toVyxal: String = this match
-    case Number(n, _)       => n.toString
-    case Str(value, _)      => s"\"$value\""
-    case Lst(elems, _)      => elems.map(_.toVyxal).mkString("#[", "|", "#]")
-    case Command(value, _)  => value
+    case Number(n, _) => n.toString
+    case Str(value, _) => s"\"$value\""
+    case Lst(elems, _) => elems.map(_.toVyxal).mkString("#[", "|", "#]")
+    case Command(value, _) => value
     case Group(elems, _, _) =>
       // replace instances of Number, Number with Number, Space, Number
       elems
         .groupBy {
           case Number(_, _) => true
-          case _            => false
+          case _ => false
         }
         .map { (k, v) =>
           if k then v.map(_.toVyxal).mkString(" ")
@@ -123,10 +123,10 @@ enum AST(val arity: Option[Int]) derives CanEqual:
         .mkString
     // case SpecialModifier(modi, value) => s"$modi"
     // ^ Might not need this because it'll be converted into different ASTs
-    case CompositeNilad(elems, _)       => elems.map(_.toVyxal).mkString
-    case CompressedString(value, _)     => s"\"$value“"
-    case CompressedNumber(value, _)     => s"\"$value„"
-    case DictionaryString(value, _)     => s"\"$value”"
+    case CompositeNilad(elems, _) => elems.map(_.toVyxal).mkString
+    case CompressedString(value, _) => s"\"$value“"
+    case CompressedNumber(value, _) => s"\"$value„"
+    case DictionaryString(value, _) => s"\"$value”"
     case Ternary(thenBody, elseBody, _) => s"[$thenBody|$elseBody}"
     case For(loopVar, body, _) => s"(${loopVar.getOrElse("")}|${body.toVyxal}"
     case While(cond, body, _) =>
@@ -134,9 +134,9 @@ enum AST(val arity: Option[Int]) derives CanEqual:
     case Lambda(arity, params, body, _) =>
       body.map(_.toVyxal).mkString("λ", "|", "}")
     case FnDef(name, lam, _) => ???
-    case GetVar(name, _)     => s"#<$name"
-    case SetVar(name, _)     => s"#>$name"
-    case ast                 => ast.toString
+    case GetVar(name, _) => s"#<$name"
+    case SetVar(name, _) => s"#>$name"
+    case ast => ast.toString
 end AST
 
 object AST:

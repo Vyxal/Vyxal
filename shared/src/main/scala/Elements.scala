@@ -26,7 +26,7 @@ case class Element(
 
 object Elements:
   val elements: Map[String, Element] = Impls.elements.toMap
-  
+
   /** Find the symbol for a keyword in literate mode, if it exists */
   def symbolFor(keyword: String): Option[String] =
     Elements.elements.values.find(_.keywords.contains(keyword)).map(_.symbol)
@@ -162,7 +162,7 @@ object Elements:
       "a: num -> |a|",
       "a: str -> keep alphabet characters of a"
     ) {
-      case a: VNum   => a.vabs
+      case a: VNum => a.vabs
       case a: String => a.filter(_.isLetter)
     }
 
@@ -176,8 +176,8 @@ object Elements:
     ) {
       case a: VNum => ListHelpers.makeIterable(a).forall(MiscHelpers.boolify)
       case a: String if a.length == 1 => StringHelpers.isVowel(a.head)
-      case a: String                  => VList(a.map(StringHelpers.isVowel)*)
-      case a: VList                   => a.forall(MiscHelpers.boolify)
+      case a: String => VList(a.map(StringHelpers.isVowel)*)
+      case a: VList => a.forall(MiscHelpers.boolify)
     }
 
     val anyTruthy = addElem(
@@ -190,8 +190,8 @@ object Elements:
     ) {
       case a: VNum => ListHelpers.makeIterable(a).exists(MiscHelpers.boolify)
       case a: String if a.length == 1 => a.head.isUpper
-      case a: String                  => VList(a.map(c => VNum(c.isUpper))*)
-      case a: VList                   => a.exists(MiscHelpers.boolify)
+      case a: String => VList(a.map(c => VNum(c.isUpper))*)
+      case a: VList => a.exists(MiscHelpers.boolify)
     }
 
     val append = addElem(
@@ -247,10 +247,10 @@ object Elements:
       List("contains", "in"),
       "a: any, b: any -> is (b) in (a)?"
     ) {
-      case (a: VList, b: VVal)  => a.contains(b)
-      case (a: VVal, b: VList)  => b.contains(a)
+      case (a: VList, b: VVal) => a.contains(b)
+      case (a: VVal, b: VList) => b.contains(a)
       case (a: VList, b: VList) => a.contains(b)
-      case (a: VVal, b: VVal)   => a.toString().contains(b.toString())
+      case (a: VVal, b: VVal) => a.toString().contains(b.toString())
     }
 
     val cookie = addDirect(
@@ -310,7 +310,7 @@ object Elements:
       "a: num, b: num -> a / b",
       "a: str, b: str -> Split a on the regex b"
     ) {
-      case (a: VNum, b: VNum)     => a / b
+      case (a: VNum, b: VNum) => a / b
       case (a: String, b: String) => VList(a.split(b)*)
     }
 
@@ -322,7 +322,7 @@ object Elements:
       "a: num -> a * 2",
       "a: str -> a + a"
     ) {
-      case (a: VNum)   => a * 2
+      case (a: VNum) => a * 2
       case (a: String) => a + a
     }
 
@@ -340,9 +340,9 @@ object Elements:
       List("eq", "==", "equal", "same?", "equals?", "equal?"),
       "a: any, b: any -> a == b"
     ) {
-      case (a: VNum, b: VNum)     => a == b
-      case (a: VNum, b: String)   => a.toString == b
-      case (a: String, b: VNum)   => a == b.toString
+      case (a: VNum, b: VNum) => a == b
+      case (a: VNum, b: String) => a.toString == b
+      case (a: String, b: VNum) => a == b.toString
       case (a: String, b: String) => a == b
     }
 
@@ -371,7 +371,7 @@ object Elements:
         case code: String =>
           Interpreter.execute(code)
           ctx.pop()
-        case n: VNum     => 10 ** n
+        case n: VNum => 10 ** n
         case list: VList => list.vmap(execHelper)
         case fn: VFun =>
           ctx.push(Interpreter.executeFn(fn))
@@ -402,7 +402,7 @@ object Elements:
           if fn.arity == -1 then
             ctx.pop() // Handle the extra value pushed by lambdas that operate on the stack
         case code: String => Interpreter.execute(code)
-        case a: VNum      => ctx.push(a == VNum(1))
+        case a: VNum => ctx.push(a == VNum(1))
         case a: VList =>
           if a.isEmpty then ctx.push(VList())
           else
@@ -428,7 +428,7 @@ object Elements:
       "a: num, b: str -> b with the ath letter removed",
       "a: str, b: str -> trim b from both sides of a"
     ) {
-      case (a: VNum, b: VNum)   => a ** b
+      case (a: VNum, b: VNum) => a ** b
       case (a: String, b: VNum) => StringHelpers.remove(a, b.toInt)
       case (a: VNum, b: String) => StringHelpers.remove(b, a.toInt)
       case (a: String, b: String) =>
@@ -464,7 +464,7 @@ object Elements:
       "a: num -> Factors of a",
       "a: str -> Is a numeric?"
     ) {
-      case a: VNum   => NumberHelpers.factors(a)
+      case a: VNum => NumberHelpers.factors(a)
       case a: String => VNum(Lexer.decimalRegex.matches(a))
     }
 
@@ -587,7 +587,7 @@ object Elements:
       "a: num -> a in hexadecimal",
       "a: str -> a as a hexadecimal number to base 10"
     ) {
-      case a: VNum   => NumberHelpers.toBaseAlphabet(a, "0123456789ABCDEF")
+      case a: VNum => NumberHelpers.toBaseAlphabet(a, "0123456789ABCDEF")
       case a: String => NumberHelpers.fromBaseAlphabet(a, "0123456789ABCDEF")
     }
 
@@ -607,12 +607,12 @@ object Elements:
         val temp = ListHelpers.makeIterable(a).index(b)
         temp match
           case l: VList => l.mkString
-          case _        => temp
+          case _ => temp
       case (a: VList, b: String) =>
         val temp = ListHelpers.makeIterable(b).index(a)
         temp match
           case l: VList => l.mkString
-          case _        => temp
+          case _ => temp
       case (a, b: VFun) => MiscHelpers.collectUnique(b, a)
       case (a: VFun, b) => MiscHelpers.collectUnique(a, b)
       case (a: VNum, b) => ListHelpers.makeIterable(b).index(a)
@@ -652,7 +652,7 @@ object Elements:
       "a: num -> a % 2 == 0",
       "a: str -> a split on newlines"
     ) {
-      case a: VNum   => (a.underlying % 2) == VNum(0)
+      case a: VNum => (a.underlying % 2) == VNum(0)
       case a: String => VList.from(a.split("\n").toSeq)
     }
 
@@ -680,7 +680,7 @@ object Elements:
       "a: any -> Length of a"
     ) {
       case a: VList => a.length
-      case a        => ListHelpers.makeIterable(a).length
+      case a => ListHelpers.makeIterable(a).length
     }
 
     val lengthVecorised: Monad = addElem(
@@ -729,7 +729,7 @@ object Elements:
         val temp = b
           .map {
             case n: VNum => n.toInt
-            case x       =>
+            case x =>
               // todo(lyxal): Are we sure we don't want to convert to VNum or
               //              something instead of erroring?
               throw new IllegalArgumentException(
@@ -777,7 +777,7 @@ object Elements:
       "a: num, b: num -> how many times b divides a"
     ) {
       case (a: VList, b: VList) => ListHelpers.mold(a, b)
-      case (a: VNum, b: VNum)   => NumberHelpers.multiplicity(a, b)
+      case (a: VNum, b: VNum) => NumberHelpers.multiplicity(a, b)
       case (a, b: VFun) =>
         ListHelpers.map(b, ListHelpers.makeIterable(a, Some(true)))
       case (a: VFun, b) =>
@@ -816,11 +816,11 @@ object Elements:
       List("merge"),
       "a: lst, b: lst -> Merge a and b",
     ) {
-      case (a: VNum, b: VNum)   => MiscHelpers.eval(a.toString + b.toString)
-      case (a: VVal, b: VVal)   => MiscHelpers.add(a, b)
+      case (a: VNum, b: VNum) => MiscHelpers.eval(a.toString + b.toString)
+      case (a: VVal, b: VVal) => MiscHelpers.add(a, b)
       case (a: VList, b: VList) => VList.from(a ++ b)
-      case (a, b: VList)        => VList.from(a +: b)
-      case (a: VList, b)        => VList.from(a :+ b)
+      case (a, b: VList) => VList.from(a +: b)
+      case (a: VList, b) => VList.from(a :+ b)
     }
 
     val minimum = addDirect(
@@ -857,14 +857,14 @@ object Elements:
       "a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)"
     ) {
       case (_: VNum, VNum(0, _)) => 0
-      case (a: VNum, b: VNum)    => a % b
-      case (a: VList, b: VNum)   => a.vmap(Impls.modulo(_, b))
-      case (a: VNum, b: VList)   => b.vmap(Impls.modulo(a, _))
-      case (a: VList, b: VList)  => a.zipWith(b)(Impls.modulo)
+      case (a: VNum, b: VNum) => a % b
+      case (a: VList, b: VNum) => a.vmap(Impls.modulo(_, b))
+      case (a: VNum, b: VList) => b.vmap(Impls.modulo(a, _))
+      case (a: VList, b: VList) => a.zipWith(b)(Impls.modulo)
       case (a: String, b: VList) => StringHelpers.formatString(a, b*)
       case (a: VList, b: String) => StringHelpers.formatString(b, a*)
-      case (a: String, b)        => StringHelpers.formatString(a, b)
-      case (a, b: String)        => StringHelpers.formatString(b, a)
+      case (a: String, b) => StringHelpers.formatString(a, b)
+      case (a, b: String) => StringHelpers.formatString(b, a)
     }
 
     val multiply = addFull(
@@ -896,9 +896,9 @@ object Elements:
       "a: str -> a.swapCase()",
       "a: fun -> first non-negative integer where predicate a is true"
     ) {
-      case a: VNum   => -a
+      case a: VNum => -a
       case a: String => a.map(c => if c.isUpper then c.toLower else c.toUpper)
-      case a: VFun   => MiscHelpers.firstNonNegative(a)
+      case a: VFun => MiscHelpers.firstNonNegative(a)
     }
 
     val ordChr =
@@ -910,7 +910,7 @@ object Elements:
         "a: str -> ord(a)",
         "a: num -> chr(a)"
       ) {
-        case a: VNum   => StringHelpers.chrord(a)
+        case a: VNum => StringHelpers.chrord(a)
         case a: String => StringHelpers.chrord(a)
         case a: VList =>
           val temp = a.map(StringHelpers.chrord)
@@ -984,10 +984,10 @@ object Elements:
       "a: lst, b: any -> b prepended to a"
     ) {
       case (a: String, b: (String | VNum)) => b.toString() + a
-      case (a: VNum, b: String)            => b + a.toString()
+      case (a: VNum, b: String) => b + a.toString()
       case (a: VNum, b: VNum) => MiscHelpers.eval(b.toString() + a.toString())
-      case (a: VList, b)      => VList.from(b +: a)
-      case (a, b)             => VList(b, a)
+      case (a: VList, b) => VList.from(b +: a)
+      case (a, b) => VList(b, a)
     }
 
     val print = addDirect(
@@ -1008,7 +1008,7 @@ object Elements:
       "a: any -> enclose a in quotes, escape backslashes and quote marks"
     ) {
       case a: String => StringHelpers.quotify(a)
-      case a         => StringHelpers.quotify(a.toString())
+      case a => StringHelpers.quotify(a.toString())
     }
 
     val recurse = addDirect(
@@ -1046,8 +1046,8 @@ object Elements:
       case (a: VNum, b: VNum) =>
         NumberHelpers.range(a, b).dropRight(1)
       case (a: String, b: String) => b.r.findFirstIn(a).isDefined
-      case (a: String, b: VNum)   => (b.toString).r.findFirstIn(a).isDefined
-      case (a: VNum, b: String)   => b.r.findFirstIn(a.toString).isDefined
+      case (a: String, b: VNum) => (b.toString).r.findFirstIn(a).isDefined
+      case (a: VNum, b: String) => b.r.findFirstIn(a.toString).isDefined
       case (a: VFun, b) =>
         MiscHelpers.reduce(b, a)
       case (a, b: VFun) =>
@@ -1199,7 +1199,7 @@ object Elements:
       "a: lst, b: num -> each x in a in base b",
       "a: lst, b: str|lst -> each x in a in base with alphabet b"
     ) {
-      case (a: VNum, b)  => NumberHelpers.toBase(a, b)
+      case (a: VNum, b) => NumberHelpers.toBase(a, b)
       case (a: VList, b) => a.vmap(NumberHelpers.toBase(_, b))
     }
 
@@ -1235,9 +1235,9 @@ object Elements:
       "a: str -> does a contain only alphabet characters?",
       "a: any -> transpose a"
     ) {
-      case a: VNum   => a * 3
+      case a: VNum => a * 3
       case a: String => a.forall(_.isLetter)
-      case a: VList  => ListHelpers.transpose(a)
+      case a: VList => ListHelpers.transpose(a)
     }
 
     val triplicate =
@@ -1255,7 +1255,7 @@ object Elements:
       "a: num -> 2^a",
       "a: str -> evaluate (not execute) a"
     ) {
-      case a: VNum   => exponentation(VNum(2), a)
+      case a: VNum => exponentation(VNum(2), a)
       case a: String => MiscHelpers.eval(a)
     }
 
@@ -1304,8 +1304,8 @@ object Elements:
             )
       }
       a match
-        case _: VList  => VList.from(uniq.flatten)
-        case _: VNum   => MiscHelpers.eval(uniq.flatten.mkString)
+        case _: VList => VList.from(uniq.flatten)
+        case _: VNum => MiscHelpers.eval(uniq.flatten.mkString)
         case _: String => uniq.flatten.mkString
         case _ => throw RuntimeException("Uniquify: Can't uniquify functions")
 
@@ -1342,8 +1342,8 @@ object Elements:
       "a: num -> 1 - a",
       "a: str -> a converted to title case"
     ) {
-      case a: VList  => VList.from(a.map(ListHelpers.reverse))
-      case a: VNum   => 1 - a
+      case a: VList => VList.from(a.map(ListHelpers.reverse))
+      case a: VNum => 1 - a
       case a: String => StringHelpers.titlecase(a)
     }
 

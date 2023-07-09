@@ -171,7 +171,7 @@ object Tetrad extends ImplHelpers[PartialTetrad, Tetrad](4):
       case (a, b: VList, c, d) => b.vmap(res(a, _, c, d))
       case (a, b, c: VList, d) => c.vmap(res(a, b, _, d))
       case (a, b, c, d: VList) => d.vmap(res(a, b, c, _))
-      case (a, b, c, d)        => f(a, b, c, d)
+      case (a, b, c, d) => f(a, b, c, d)
     }
 
     res
