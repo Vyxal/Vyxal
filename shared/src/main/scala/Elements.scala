@@ -26,7 +26,7 @@ case class Element(
 
 object Elements:
   val elements: Map[String, Element] = Impls.elements.toMap
-  
+
   /** Find the symbol for a keyword in literate mode, if it exists */
   def symbolFor(keyword: String): Option[String] =
     Elements.elements.values.find(_.keywords.contains(keyword)).map(_.symbol)
