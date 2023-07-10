@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.impls.*
+import vyxal.lexer.Lexer
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
@@ -42,10 +43,10 @@ object JSVyxal:
   /** Bridge to turn literate code into SBCS */
   @JSExport
   def getSBCSified(code: String): String =
-    LiterateLexer(code).map(LiterateLexer.sbcsify).getOrElse(code)
+    Lexer.lexLiterate(code).map(Lexer.sbcsify).getOrElse(code)
 
   @JSExport
-  def getCodepage(): String = vyxal.CODEPAGE
+  def getCodepage(): String = Lexer.Codepage
 
   @JSExport
   def getElements() =
