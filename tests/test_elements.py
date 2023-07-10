@@ -14455,7 +14455,7 @@ def test_Groupconsecutive():
 
 
     stack = [vyxalify(item) for item in ["Hello, World!"]]
-    expected = vyxalify([["H"], ["e"], ["l", "l"], ["o"], [","], [" "], ["W"], ["o"], ["r"], ["l"], ["d"], ["!"]])
+    expected = vyxalify(["H", "e", "ll", "o", ",", " ", "W", "o", "r", "l", "d", "!"])
     ctx = Context()
 
     ctx.stacks.append(stack)
