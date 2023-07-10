@@ -3491,7 +3491,12 @@ def join(lhs, rhs, ctx):
     (any, any) -> a.join(b)
     """
 
-    lhs, rhs = (rhs, lhs) if vy_type(rhs, simple=True) is list else (lhs, rhs)
+    lhs, rhs = (
+        (rhs, lhs)
+        if vy_type(rhs, simple=True) is list
+        and vy_type(lhs, simple=True) is not list
+        else (lhs, rhs)
+    )
 
     if (vy_type(lhs) is not LazyList or not lhs.infinite) and (
         vy_type(lhs, simple=True) is not list
