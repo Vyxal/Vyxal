@@ -3,6 +3,7 @@ package vyxal.lexer
 import scala.language.strictEquality
 
 import vyxal.impls.Elements
+import vyxal.Context
 
 import java.util.regex.Pattern
 import scala.collection.mutable.{ListBuffer, Queue}
@@ -100,34 +101,46 @@ object StructureType:
     StructureType.LambdaSort
   )
 
-val CODEPAGE = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨ\nᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ⸠ϩэЧᵜ !"
-  + "\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFG"
-  + "HIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmn"
-  + "opqrstuvwxyz{|}~¦ȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊικȧḃċ"
-  + "ḋėḟġḣŀṁṅȯṗṙṡṫẋƒΘΦ§ẠḄḌḤỊḶṂṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«»"
-  + "⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λƛΩ₳µ∆øÞ½ʀɾ¯×÷£¥←↑→↓±¤†Π¬∧∨⁰"
-  + "¹²³Ɠɠ∥∦ı„”ð€“¶ᶿᶲ•≈¿ꜝ"
-
-val MONADIC_MODIFIERS = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻ¿⸠/\\~v@`ꜝ"
-val DYADIC_MODIFIERS = "ϩ∥∦"
-val TRIADIC_MODIFIERS = "э"
-val TETRADIC_MODIFIERS = "Ч"
-val SPECIAL_MODIFIERS = "ᵗᵜ"
-
-trait Lexer:
-  def tokens: P[List[Token]]
+private[lexer] trait Lexer:
+  def tokens[$: P]: P[Seq[Token]]
 
   final def lex(code: String): Either[VyxalCompilationError, List[Token]] =
-    parseAll(code) match
+    parse(code, this.tokens) match
       case Parsed.Success(_, _) => ???
       case _ => Left(VyxalCompilationError(???))
 
 object Lexer:
-  val decimalRegex: Regex = raw"(((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)_?)".r
   val structureOpenRegex: String = """[\[\(\{λƛΩ₳µḌṆ]|#@|#\{"""
 
-  def apply(code: String): Either[VyxalCompilationError, List[Token]] =
+  val Codepage = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨ\nᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ⸠ϩэЧᵜ !"
+    + "\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFG"
+    + "HIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmn"
+    + "opqrstuvwxyz{|}~¦ȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊικȧḃċ"
+    + "ḋėḟġḣŀṁṅȯṗṙṡṫẋƒΘΦ§ẠḄḌḤỊḶṂṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«»"
+    + "⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λƛΩ₳µ∆øÞ½ʀɾ¯×÷£¥←↑→↓±¤†Π¬∧∨⁰"
+    + "¹²³Ɠɠ∥∦ı„”ð€“¶ᶿᶲ•≈¿ꜝ"
+
+  val UnicodeCommands = "🍪ඞ"
+
+  val MonadicModifiers = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻ¿⸠/\\~v@`ꜝ"
+  val DyadicModifiers = "ϩ∥∦"
+  val TriadicModifiers = "э"
+  val TetradicModifiers = "Ч"
+  val SpecialModifiers = "ᵗᵜ"
+
+  def apply(code: String)(using
+      ctx: Context
+  ): Either[VyxalCompilationError, List[Token]] =
+    if ctx.settings.literate then lexLiterate(code) else lexSBCS(code)
+
+  def lexSBCS(code: String): Either[VyxalCompilationError, List[Token]] =
     SBCSLexer.lex(code)
+
+  def lexLiterate(code: String): Either[VyxalCompilationError, List[Token]] =
+    LiterateLexer.lex(code)
+
+  def isList(code: String): Boolean =
+    parse(code, LiterateLexer.list(_)).isSuccess
 
   def removeSugar(code: String): Option[String] =
     SBCSLexer.lex(code) match
@@ -135,3 +148,4 @@ object Lexer:
         if SBCSLexer.sugarUsed then Some(result.map(_.value).mkString)
         else None
       case _ => None
+end Lexer
