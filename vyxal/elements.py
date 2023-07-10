@@ -2655,6 +2655,9 @@ def group_consecutive(lhs, ctx):
 
     res = list(gen())
 
+    if typ is str:
+        return list(map("".join, res))
+
     return res
 
 
