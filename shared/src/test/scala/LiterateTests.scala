@@ -1,5 +1,7 @@
 package vyxal
 
+import scala.language.strictEquality
+
 import org.scalatest.compatible.Assertion
 import org.scalatest.funspec.AnyFunSpec
 
@@ -9,7 +11,10 @@ class LiterateTests extends VyxalTests:
       case Right(res) => res
       case Left(err) => throw RuntimeException(err.toString)
     val sbcsified = LiterateLexer.sbcsify(literate)
-    assertResult(expected, literate.map(tok => s"${tok.tokenType}(${tok.value})"))(sbcsified)
+    assertResult(
+      expected,
+      literate.map(tok => s"${tok.tokenType}(${tok.value})")
+    )(sbcsified)
 
   describe("Literals") {
     it("should leave numbers as-is") {

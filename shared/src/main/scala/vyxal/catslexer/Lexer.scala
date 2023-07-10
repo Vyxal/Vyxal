@@ -3,11 +3,12 @@ package vyxal.catslexer
 import scala.language.strictEquality
 
 import vyxal.impls.Elements
-import vyxal.*
 
 import java.util.regex.Pattern
 import scala.collection.mutable.{ListBuffer, Queue}
 import scala.util.matching.Regex
+
+case class VyxalCompilationError(msg: String)
 
 case class Token(tokenType: TokenType, value: String, range: Range)
     derives CanEqual:
@@ -17,8 +18,7 @@ case class Token(tokenType: TokenType, value: String, range: Range)
     case _ => false
 
 /** The range of a token or AST in the source code */
-case class Range(startRow: Int, startCol: Int, endRow: Int, endCol: Int)
-    derives CanEqual:
+case class Range(startOffset: Int, endOffset: Int) derives CanEqual:
   /** Override the default equals method so Range.fake compares equal to
     * everything.
     */
@@ -27,12 +27,12 @@ case class Range(startRow: Int, startCol: Int, endRow: Int, endCol: Int)
       (other `eq` this) ||
       (this `eq` Range.fake) ||
       (other `eq` Range.fake) ||
-      (other.startRow == startRow && other.startCol == startCol && other.endRow == endRow && other.endCol == endCol)
+      (other.startOffset == this.startOffset && other.endOffset == this.endOffset)
     case _ => false
 
 object Range:
   /** A dummy Range (mainly for generated/desugared code) */
-  val fake: Range = Range(-1, -1, -1, -1)
+  val fake: Range = Range(-1, -1)
 
 enum TokenType(val canonicalSBCS: Option[String] = None) derives CanEqual:
   case Number

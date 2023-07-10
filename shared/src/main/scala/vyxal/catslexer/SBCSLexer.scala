@@ -1,7 +1,7 @@
 package vyxal.catslexer
 
-// Import everything but Token
-import vyxal.{Token as _, *}
+import scala.language.strictEquality
+
 import vyxal.catslexer.TokenType.*
 import vyxal.impls.Elements
 
@@ -163,7 +163,7 @@ private[catslexer] object SBCSLexer:
 
   def branch: P[Token] = parseToken(Branch, "|")
 
-  def newlines: P[Token] = parseToken(Newline, "\n")
+  val newlines: P[Token] = parseToken(Newline, lf | crlf)
 
   def token: P[Token] =
     comment | sugarTrigraph | syntaxTrigraph | digraph | branch | contextIndex
@@ -176,23 +176,16 @@ private[catslexer] object SBCSLexer:
   // structureDoubleClose (")") has to be here to avoid interfering with `normalGroup` in literate lexer
   def tokens: P[List[Token]] = rep(token | structureDoubleClose)
 
-  def withStartPos[T](parser: P[T]): P[(T, Int, Int)] =
-    class WithPos(val value: T) extends Positional
-    positioned(parser.map(WithPos(_))).map { res =>
-      (res.value, res.pos.line, res.pos.column)
-    }
+  def withInd[T](parser: P[T]): P[(Int, T)] = (P.index.with1 ~ parser)
 
-  def withRange(parser: P[String]): P[(String, Range)] =
-    withStartPos(parser).map { (value, startRow, startCol) =>
-      val endRow = startRow + value.count(_ == '\n')
-      val endCol =
-        if startRow != endRow then value.length - value.lastIndexOf('\n') - 1
-        else startCol
-      (value, Range(startRow, startCol, endRow, endCol))
+  def withRange[T](parser: P[T]): P[(T, Range)] =
+    (P.index.with1 ~ parser ~ P.index).map {
+      case startOffset -> value -> endOffset =>
+        (value, Range(startOffset, endOffset))
     }
 
   def parseToken(tokenType: TokenType, tokenParser: P[String]): P[Token] =
-    withRange(tokenParser) ^^ { case (value, range) =>
+    withRange(tokenParser).map { (value, range) =>
       Token(tokenType, value, range)
     }
 end SBCSLexer
