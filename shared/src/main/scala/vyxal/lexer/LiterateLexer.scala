@@ -4,6 +4,7 @@ import scala.language.strictEquality
 
 import vyxal.impls.Elements
 import vyxal.lexer.Common.{parseToken, withInd, withRange}
+import vyxal.lexer.Common.given // For custom whitespace
 import vyxal.lexer.TokenType.*
 import vyxal.Modifiers
 
@@ -12,7 +13,6 @@ import scala.collection.mutable.{ListBuffer, Queue}
 import scala.util.matching.Regex
 
 import fastparse.*
-import fastparse.NoWhitespace.*
 
 /** Lexer for literate mode. Use [[LiterateLexer.apply]] */
 private[lexer] object LiterateLexer:
@@ -142,25 +142,23 @@ private[lexer] object LiterateLexer:
   def wordChar[$: P]: P[String] = P(CharIn("a-z\\-?").!)
 
   def litDecimal[$: P]: P[String] =
-    ("-".? ~
-      (Common.int ~ ("." ~ Common.digits).?
-        | "." ~ Common.digits)).!
-  def number[$: P]: P[Token] =
-    withRange(
-      ((litDecimal ~ ("i" ~ litDecimal).?) | "i" ~ (litDecimal | !wordChar)).!
-    ).map { case (value, range) =>
-      val temp = value.replace("i", "ı").replace("_", "")
-      val parts =
-        if !temp.endsWith("ı") then temp.split("ı").toSeq
-        else temp.init.split("ı").toSeq :+ ""
-      Token(
-        Number,
-        parts
-          .map(x => if x.startsWith("-") then x.substring(1) + "_" else x)
-          .mkString("ı"),
-        range
-      )
-    }
+    ("-".? ~ (Common.int ~ ("." ~ Common.digits).? | "." ~ Common.digits)).!
+  def litNumber[$: P]: P[Token] =
+    Common
+      .number(litDecimal, ("i" ~ !wordChar).!)
+      .map { case Token(_, value, range) =>
+        val temp = value.replace("i", "ı").replace("_", "")
+        val parts =
+          if !temp.endsWith("ı") then temp.split("ı").toSeq
+          else temp.init.split("ı").toSeq :+ ""
+        Token(
+          Number,
+          parts
+            .map(x => if x.startsWith("-") then x.substring(1) + "_" else x)
+            .mkString("ı"),
+          range
+        )
+      }
 
   def contextIndex[$: P]: P[Token] =
     parseToken(ContextIndex, "`" ~ Common.digits ~ "~")
@@ -180,8 +178,8 @@ private[lexer] object LiterateLexer:
             litStructClose | structureSingleClose | structureDoubleClose | structureAllClose
           ) ~ singleToken
         ).rep.map(_.flatten)
-        ~ (litStructClose | structureSingleClose | structureDoubleClose | not(
-          not(structureAllClose)
+        ~ (litStructClose | structureSingleClose | structureDoubleClose | &(
+          structureAllClose
         )).?
     ).map { case (opener, openRange) ~ possibleParams ~ body ~ endTok =>
       val openerTok =
@@ -312,10 +310,10 @@ private[lexer] object LiterateLexer:
       lambdaBlock | list | unpackVar | (litGetVariable | litSetVariable | litSetConstant | litAugVariable
         | elementKeyword | modifierKeyword | structOpener | otherKeyword | litBranch | litStructClose)
         .map(List(_))
-        | ignored | normalGroup | rawCode | SBCSLexer.token.map(List(_))
+        | normalGroup | rawCode | SBCSLexer.token.map(List(_))
     )
 
   def tokens[$: P]: P[List[Token]] =
-    P(singleToken.rep(sep = ignored)).map(_.flatten)
+    P(singleToken.rep).map(_.flatten)
 
 end LiterateLexer

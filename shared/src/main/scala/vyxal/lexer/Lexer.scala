@@ -9,7 +9,6 @@ import scala.collection.mutable.{ListBuffer, Queue}
 import scala.util.matching.Regex
 
 import fastparse.*
-import fastparse.NoWhitespace.*
 
 case class VyxalCompilationError(msg: String)
 
