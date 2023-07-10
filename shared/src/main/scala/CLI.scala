@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.impls.{Element, Elements}
+import vyxal.lexer.Lexer
 
 import java.io.File
 
@@ -74,7 +75,7 @@ object CLI:
 
         if config.litInfoFor.nonEmpty then
           val keywords =
-            LiterateLexer.literateModeMappings(config.litInfoFor.get)
+            Lexer.literateModeMappings(config.litInfoFor.get)
           println(keywords.mkString(", "))
           return
 
@@ -88,7 +89,7 @@ object CLI:
           while true do
             val line = io.StdIn.readLine(">")
             if line == "" then return
-            println(LiterateLexer(line))
+            println(Lexer.lexLiterate(line))
 
         if config.runParser then
           while true do

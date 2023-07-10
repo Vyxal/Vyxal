@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.impls.Elements
+import vyxal.lexer.Lexer
 import vyxal.MiscHelpers.{vyPrint, vyPrintln}
 
 import scala.collection.mutable.ListBuffer
@@ -10,14 +11,13 @@ import VNum.given
 
 object Interpreter:
   def execute(code: String)(using ctx: Context): Unit =
-    val lexRes =
-      if ctx.settings.literate then LiterateLexer(code) else Lexer(code)
+    val lexRes = Lexer(code)
     val tokens = lexRes match
       case Right(tokens) => tokens
       case Left(err) => throw Error(s"Lexing failed: $err")
     scribe.debug(s"Lexed tokens: $tokens")
     val sugarless = Lexer.removeSugar(
-      if ctx.settings.literate then LiterateLexer.sbcsify(tokens) else code
+      if ctx.settings.literate then Lexer.sbcsify(tokens) else code
     )
     sugarless match
       case Some(code) => scribe.debug(s"Sugarless: $code")

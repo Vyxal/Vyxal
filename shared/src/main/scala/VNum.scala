@@ -3,6 +3,7 @@ package vyxal
 import scala.language.implicitConversions
 
 import scala.math.Ordered
+import scala.util.matching.Regex
 
 import spire.implicits.partialOrderOps // For <, >, etc.
 import spire.math.{Complex, Real}
@@ -58,6 +59,14 @@ object VNum:
   private val MaxRadix = 36
 
   private val Epsilon = Real(10) ** -9
+
+  private val DecimalRegexStr =
+    raw"(((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)_?)"
+
+  val DecimalRegex: Regex = DecimalRegexStr.r
+
+  val NumRegex: Regex =
+    raw"-?($DecimalRegexStr?ı$DecimalRegexStr?)|-?$DecimalRegexStr".r
 
   /** To force an implicit conversion */
   def apply[T](n: T)(using Conversion[T, VNum]): VNum = n

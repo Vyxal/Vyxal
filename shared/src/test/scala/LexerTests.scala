@@ -2,13 +2,14 @@ package vyxal
 
 import scala.language.strictEquality
 
-import vyxal.TokenType.*
+import vyxal.lexer.{Lexer, Range, StructureType, Token}
+import vyxal.lexer.TokenType.*
 
 import org.scalatest.exceptions.TestFailedException
 
 class LexerTests extends VyxalTests:
   def testLex(input: String, expected: List[Token]) =
-    Lexer(input) match
+    Lexer.lexSBCS(input) match
       case Left(err) => fail(s"Lexing failed due to $err")
       case Right(res) => assertResult(expected)(res)
 

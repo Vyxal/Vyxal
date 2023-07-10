@@ -99,44 +99,6 @@ private[lexer] object LiterateLexer extends Lexer:
       kw -> typ.open
     }
 
-  def sbcsifySingle(token: Token): String =
-    val Token(tokenType, value, _) = token
-    tokenType match
-      case GetVar => "#$" + value
-      case SetVar => s"#=$value"
-      case AugmentVar => s"#>$value"
-      case Constant => s"#!$value"
-      case Str => s""""$value""""
-      case SyntaxTrigraph if value == ":=[" => "#:["
-      case Command if !Elements.elements.contains(value) =>
-        Elements.symbolFor(value).get
-      case _ => tokenType.canonicalSBCS.getOrElse(value)
-
-  /** Convert literate mode code into SBCS mode code */
-  def sbcsify(tokens: List[Token]): String =
-    val out = StringBuilder()
-
-    for i <- tokens.indices do
-      val token @ Token(tokenType, value, _) = tokens(i)
-      val sbcs = sbcsifySingle(token)
-      out.append(sbcs)
-
-      if i < tokens.length - 1 then
-        val next = tokens(i + 1)
-        tokenType match
-          case Number =>
-            if value != "0" && next.tokenType == Number
-              && next.value != "." && !value.endsWith(".")
-            then out.append(" ")
-          case GetVar | SetVar | AugmentVar | Constant =>
-            if "[a-zA-Z0-9_]+".r.matches(sbcsifySingle(next)) then
-              out.append(" ")
-          case _ =>
-    end for
-
-    out.toString
-  end sbcsify
-
   def wordChar[$: P]: P[String] = P(CharIn("a-z\\-?").!)
 
   def litDecimal[$: P]: P[String] =

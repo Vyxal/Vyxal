@@ -2,6 +2,7 @@ package vyxal.gen
 
 import vyxal.{Modifiers, SugarMap}
 import vyxal.impls.{Element, Elements}
+import vyxal.lexer.Lexer
 
 /** For generating elements.txt and trigraphs.txt. See build.sc */
 private object GenerateDocs:
@@ -13,8 +14,8 @@ private object GenerateDocs:
       .sortBy { elem =>
         // Have to use tuple in case of digraphs
         (
-          vyxal.CODEPAGE.indexOf(elem.symbol.charAt(0)),
-          vyxal.CODEPAGE.indexOf(elem.symbol.substring(1))
+          Lexer.Codepage.indexOf(elem.symbol.charAt(0)),
+          Lexer.Codepage.indexOf(elem.symbol.substring(1))
         )
       }
       .foreach {

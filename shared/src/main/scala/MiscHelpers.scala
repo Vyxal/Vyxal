@@ -1,7 +1,7 @@
 package vyxal
 
+import vyxal.lexer.Lexer
 import vyxal.Interpreter.executeFn
-import vyxal.Lexer.decimalRegex
 import vyxal.VNum.given
 
 import scala.collection.mutable.ListBuffer
@@ -75,14 +75,13 @@ object MiscHelpers:
     if compare(a, b) < 0 then a else b
 
   def eval(s: String)(using ctx: Context): VAny =
-    if s.matches(raw"-?($decimalRegex?ı$decimalRegex?)|-?$decimalRegex") then
-      VNum(s)
+    if VNum.NumRegex.matches(s) then VNum(s)
     else if s.matches(raw"""("(?:[^"\\]|\\.)*["])""") then s.substring(1).init
-    else if LiterateLexer.isList(s) then
-      LiterateLexer(s) match
+    else if Lexer.isList(s) then
+      Lexer.lexLiterate(s) match
         case Right(tokens) =>
           val tempContext = Context(globals = Globals(settings = ctx.settings))
-          Interpreter.execute(LiterateLexer.sbcsify(tokens))(using tempContext)
+          Interpreter.execute(Lexer.sbcsify(tokens))(using tempContext)
           tempContext.peek
         case Left(err) => throw RuntimeException(s"Couldn't parse list: $err")
     else s

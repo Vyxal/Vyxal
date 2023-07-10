@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.lexer.Lexer
+
 import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
 
@@ -72,7 +74,7 @@ object StringHelpers:
       while z1 != 0 do
         val c = (z1 - 1) % 252
         z1 = (z1 - 1) / 252
-        compressed.append(CODEPAGE(c.toInt))
+        compressed.append(Lexer.Codepage(c.toInt))
       compressed.toString
         .replace('"', '•')
         .replace('„', '≈')
@@ -150,7 +152,7 @@ object StringHelpers:
       .replace('ꜝ', '“')
       .reverse
     var integer =
-      comp.map(CODEPAGE.indexOf(_) + 1).foldLeft(BigInt(0))(_ * 252 + _)
+      comp.map(Lexer.Codepage.indexOf(_) + 1).foldLeft(BigInt(0))(_ * 252 + _)
 
     while integer > 0 do
       val mode = integer % 3
@@ -159,7 +161,7 @@ object StringHelpers:
       if mode == 0 then
         val code = integer % 96
         integer = integer / 96
-        decompressed.append(CODEPAGE(code.toInt + 32))
+        decompressed.append(Lexer.Codepage(code.toInt + 32))
       else
         var flagSwap = false
         var flagSpace = !decompressed.isEmpty

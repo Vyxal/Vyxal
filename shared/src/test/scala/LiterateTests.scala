@@ -2,15 +2,17 @@ package vyxal
 
 import scala.language.strictEquality
 
+import vyxal.lexer.Lexer
+
 import org.scalatest.compatible.Assertion
 import org.scalatest.funspec.AnyFunSpec
 
 class LiterateTests extends VyxalTests:
   def testLiterate(input: String, expected: String): Assertion =
-    val literate = LiterateLexer(input) match
+    val literate = Lexer.lexLiterate(input) match
       case Right(res) => res
       case Left(err) => throw RuntimeException(err.toString)
-    val sbcsified = LiterateLexer.sbcsify(literate)
+    val sbcsified = Lexer.sbcsify(literate)
     assertResult(
       expected,
       literate.map(tok => s"${tok.tokenType}(${tok.value})")

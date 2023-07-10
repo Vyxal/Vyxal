@@ -1,9 +1,11 @@
 package vyxal
 
-import org.scalatest.funsuite.AnyFunSuite
-import AST.*
+import vyxal.lexer.Lexer
+import vyxal.AST.*
 
-def parse(code: String) = Parser.parse(Lexer(code).getOrElse(List()))
+import org.scalatest.funsuite.AnyFunSuite
+
+def parse(code: String) = Parser.parse(Lexer.lexSBCS(code).getOrElse(List()))
 
 class ParserTests extends AnyFunSuite:
   test("Can the parser parse an empty string?") {

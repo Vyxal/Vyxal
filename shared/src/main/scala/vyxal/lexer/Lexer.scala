@@ -3,6 +3,7 @@ package vyxal.lexer
 import scala.language.strictEquality
 
 import vyxal.impls.Elements
+import vyxal.lexer.TokenType.*
 import vyxal.Context
 
 import java.util.regex.Pattern
@@ -106,8 +107,13 @@ private[lexer] trait Lexer:
 
   final def lex(code: String): Either[VyxalCompilationError, List[Token]] =
     parse(code, this.tokens) match
-      case Parsed.Success(_, _) => ???
-      case _ => Left(VyxalCompilationError(???))
+      case Parsed.Success(res, _) => Right(res.toList)
+      case f @ Parsed.Failure(label, index, extra) =>
+        Left(
+          VyxalCompilationError(
+            s"Lexing failed: ${f.msg}"
+          )
+        )
 
 object Lexer:
   val structureOpenRegex: String = """[\[\(\{λƛΩ₳µḌṆ]|#@|#\{"""
@@ -127,6 +133,9 @@ object Lexer:
   val TriadicModifiers = "э"
   val TetradicModifiers = "Ч"
   val SpecialModifiers = "ᵗᵜ"
+
+  def literateModeMappings: Map[String, String] =
+    LiterateLexer.literateModeMappings
 
   def apply(code: String)(using
       ctx: Context
@@ -148,4 +157,42 @@ object Lexer:
         if SBCSLexer.sugarUsed then Some(result.map(_.value).mkString)
         else None
       case _ => None
+
+  private def sbcsifySingle(token: Token): String =
+    val Token(tokenType, value, _) = token
+    tokenType match
+      case GetVar => "#$" + value
+      case SetVar => s"#=$value"
+      case AugmentVar => s"#>$value"
+      case Constant => s"#!$value"
+      case Str => s""""$value""""
+      case SyntaxTrigraph if value == ":=[" => "#:["
+      case Command if !Elements.elements.contains(value) =>
+        Elements.symbolFor(value).get
+      case _ => tokenType.canonicalSBCS.getOrElse(value)
+
+  /** Convert literate mode code into SBCS mode code */
+  def sbcsify(tokens: List[Token]): String =
+    val out = StringBuilder()
+
+    for i <- tokens.indices do
+      val token @ Token(tokenType, value, _) = tokens(i)
+      val sbcs = sbcsifySingle(token)
+      out.append(sbcs)
+
+      if i < tokens.length - 1 then
+        val next = tokens(i + 1)
+        tokenType match
+          case Number =>
+            if value != "0" && next.tokenType == Number
+              && next.value != "." && !value.endsWith(".")
+            then out.append(" ")
+          case GetVar | SetVar | AugmentVar | Constant =>
+            if "[a-zA-Z0-9_]+".r.matches(sbcsifySingle(next)) then
+              out.append(" ")
+          case _ =>
+    end for
+
+    out.toString
+  end sbcsify
 end Lexer

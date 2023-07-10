@@ -1,7 +1,8 @@
 package vyxal.gen
 
-import vyxal.{Lexer, Modifiers}
+import vyxal.{Modifiers, VNum}
 import vyxal.impls.Elements
+import vyxal.lexer.Lexer
 
 import scala.annotation.static
 import scala.util.matching.Regex
@@ -15,7 +16,7 @@ private[vyxal] object GenerateNanorc:
   val LitNanorc = "vyxal-lit.nanorc"
 
   val codepage =
-    vyxal.CODEPAGE.filter(_ != '\n').map(c => Regex.quote(c.toString)).mkString
+    Lexer.Codepage.filter(_ != '\n').map(c => Regex.quote(c.toString)).mkString
 
   /** NOTE: Make sure to escape each $ with another $ */
   val commonHeader = raw"""|syntax "Vyxal" "\.(vy)$$"
@@ -25,14 +26,14 @@ private[vyxal] object GenerateNanorc:
     |color white "^.+$$"
     |
     |## Structures and lists
-    |color yellow "${Lexer.structureOpenRegex}"
+    |color yellow "" # TODO
     |color yellow "[})\]]"
     |color yellow "\|"
     |color yellow "(#\[)|⟨"
     |color yellow "(#\])|⟩"
     |
     |## Numbers
-    |color cyan "\<((${Lexer.decimalRegex}?ı(${Lexer.decimalRegex}|_)?)|${Lexer.decimalRegex})\>"
+    |color cyan "\<((${VNum.DecimalRegex}?ı(${VNum.DecimalRegex}|_)?)|${VNum.DecimalRegex})\>"
     |
     |## Invalid characters
     |color yellow,red "[^$codepage]*"

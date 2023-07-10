@@ -3,6 +3,13 @@ package vyxal
 import scala.language.strictEquality
 
 import vyxal.impls.Elements
+import vyxal.lexer.{
+  Lexer,
+  StructureType,
+  Token,
+  TokenType,
+  VyxalCompilationError
+}
 
 import scala.collection.mutable
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
@@ -520,7 +527,9 @@ object Parser:
       case _ => ast.arity.contains(0)
 
   def parseInput(input: String): VAny =
-    Lexer(input).toOption
+    Lexer
+      .lexSBCS(input)
+      .toOption
       .flatMap { tokens =>
         parse(tokens.to(Queue), true) match
           case Right(ast) =>
