@@ -1463,10 +1463,16 @@ def combinations_with_replacement(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, ts[1]): lambda: vyxalify(
-            itertools.product(iterable(rhs, ctx), repeat=lhs)
+            map(
+                lambda x: "".join(x) if isinstance(rhs, str) else x,
+                itertools.product(iterable(rhs, ctx), repeat=lhs),
+            )
         ),
         (ts[0], NUMBER_TYPE): lambda: vyxalify(
-            itertools.product(iterable(lhs, ctx), repeat=rhs)
+            map(
+                lambda x: "".join(x) if isinstance(lhs, str) else x,
+                itertools.product(iterable(lhs, ctx), repeat=rhs),
+            )
         ),
         (types.FunctionType, ts[1]): lambda: fixed_point(lhs, rhs, ctx=ctx),
         (ts[0], types.FunctionType): lambda: fixed_point(rhs, lhs, ctx=ctx),
