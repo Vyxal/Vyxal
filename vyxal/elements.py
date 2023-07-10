@@ -1463,10 +1463,16 @@ def combinations_with_replacement(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, ts[1]): lambda: vyxalify(
-            itertools.product(iterable(rhs, ctx), repeat=lhs)
+            map(
+                lambda x: "".join(x) if isinstance(rhs, str) else x,
+                itertools.product(iterable(rhs, ctx), repeat=lhs),
+            )
         ),
         (ts[0], NUMBER_TYPE): lambda: vyxalify(
-            itertools.product(iterable(lhs, ctx), repeat=rhs)
+            map(
+                lambda x: "".join(x) if isinstance(lhs, str) else x,
+                itertools.product(iterable(lhs, ctx), repeat=rhs),
+            )
         ),
         (types.FunctionType, ts[1]): lambda: fixed_point(lhs, rhs, ctx=ctx),
         (ts[0], types.FunctionType): lambda: fixed_point(rhs, lhs, ctx=ctx),
@@ -2649,6 +2655,9 @@ def group_consecutive(lhs, ctx):
 
     res = list(gen())
 
+    if typ is str:
+        return list(map("".join, res))
+
     return res
 
 
@@ -3490,6 +3499,14 @@ def join(lhs, rhs, ctx):
     """Element j
     (any, any) -> a.join(b)
     """
+
+    lhs, rhs = (
+        (rhs, lhs)
+        if vy_type(rhs, simple=True) is list
+        and vy_type(lhs, simple=True) is not list
+        else (lhs, rhs)
+    )
+
     if (vy_type(lhs) is not LazyList or not lhs.infinite) and (
         vy_type(lhs, simple=True) is not list
         or vy_type(rhs) is str
