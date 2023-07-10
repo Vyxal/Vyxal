@@ -5,7 +5,7 @@ comment "##"
 color white "^.+$"
 
 ## Structures and lists
-color yellow "[\[\(\{λƛΩ₳µḌṆ]|#@|#\{"
+color yellow "" # TODO
 color yellow "[})\]]"
 color yellow "\|"
 color yellow "(#\[)|⟨"
