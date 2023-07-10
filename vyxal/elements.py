@@ -3496,6 +3496,14 @@ def join(lhs, rhs, ctx):
     """Element j
     (any, any) -> a.join(b)
     """
+
+    lhs, rhs = (
+        (rhs, lhs)
+        if vy_type(rhs, simple=True) is list
+        and vy_type(lhs, simple=True) is not list
+        else (lhs, rhs)
+    )
+
     if (vy_type(lhs) is not LazyList or not lhs.infinite) and (
         vy_type(lhs, simple=True) is not list
         or vy_type(rhs) is str
