@@ -1,22 +1,21 @@
-package vyxal.catslexer
+package vyxal.lexer
 
 import scala.language.strictEquality
 
-import vyxal.catslexer.SBCSLexer.{parseToken, withInd, withRange}
-import vyxal.catslexer.TokenType.*
 import vyxal.impls.Elements
+import vyxal.lexer.Common.{parseToken, withInd, withRange}
+import vyxal.lexer.TokenType.*
 import vyxal.Modifiers
 
 import scala.collection.mutable
 import scala.collection.mutable.{ListBuffer, Queue}
 import scala.util.matching.Regex
 
-import cats.parse.{Parser as P, Parser0}
-import cats.parse.Numbers
-import cats.parse.Rfc5234.{crlf, lf, wsp}
+import fastparse.*
+import fastparse.NoWhitespace.*
 
 /** Lexer for literate mode. Use [[LiterateLexer.apply]] */
-private[catslexer] object LiterateLexer:
+private[lexer] object LiterateLexer:
   private val endKeywords = List(
     "endfor",
     "end-for",
@@ -100,13 +99,9 @@ private[catslexer] object LiterateLexer:
       kw -> typ.open
     }
 
-  /** Tokenize a piece of code in literate mode */
-  def lex(code: String): Either[VyxalCompilationError, List[Token]] =
-    tokens.parseAll(code).left.map(err => VyxalCompilationError(err.toString()))
-
   def isList(code: String): Boolean = list.parseAll(code).isRight
 
-  private def sbcsifySingle(token: Token): String =
+  def sbcsifySingle(token: Token): String =
     val Token(tokenType, value, _) = token
     tokenType match
       case GetVar => "#$" + value
@@ -144,25 +139,16 @@ private[catslexer] object LiterateLexer:
     out.toString
   end sbcsify
 
-  val eol: P[Unit] = lf | crlf
-  val ignored: P[List[Token]] =
-    (wsp | (P.string("##") ~ P.anyChar.repUntil0(eol))).as(Nil)
+  def wordChar[$: P]: P[String] = P(CharIn("a-z\\-?").!)
 
-  val wordChar: P[Char] =
-    P.charWhere(c => ('a' <= c && c <= 'z') || c == '-' || c == '?')
-
-  private val litDecimalRegex =
-    raw"-?((0|[1-9][0-9_]*)?\.[0-9]*|0|[1-9][0-9_]*)"
-
-  val litDecimal: P[String] =
-    (P.char('-').?.with1
-      *> (Numbers.nonNegativeIntString ~ (P.char('.') ~ Numbers.digits).?
-        | P.char('.') ~ Numbers.digits0)).string
-  val number: P[Token] =
+  def litDecimal[$: P]: P[String] =
+    ("-".? ~
+      (Common.int ~ ("." ~ Common.digits).?
+        | "." ~ Common.digits)).!
+  def number[$: P]: P[Token] =
     withRange(
-      ((litDecimal ~ (P.char('i') ~ litDecimal).?)
-        | P.char('i') ~ (litDecimal | P.not(wordChar))).string
-    ) map { case (value, range) =>
+      ((litDecimal ~ ("i" ~ litDecimal).?) | "i" ~ (litDecimal | !wordChar)).!
+    ).map { case (value, range) =>
       val temp = value.replace("i", "ı").replace("_", "")
       val parts =
         if !temp.endsWith("ı") then temp.split("ı").toSeq
@@ -176,78 +162,72 @@ private[catslexer] object LiterateLexer:
       )
     }
 
-  val string: P[Token] =
-    parseToken(
-      Str,
-      P.char('"') *> (P.char('\\') ~ P.anyChar | P.anyChar)
-        .repUntil0(P.char('"'))
-        .string
-    )
+  def contextIndex[$: P]: P[Token] =
+    parseToken(ContextIndex, "`" ~ Common.digits ~ "~")
 
-  val contextIndex: P[Token] =
-    parseToken(ContextIndex, P.char('`') *> Numbers.digits <* P.char('`'))
-
-  def lambdaBlock: P[List[Token]] =
-    keywordsParser(
-      StructureType.lambdaStructures.map(_.open) ++ lambdaOpeners.keys
-    )
-      ~ ( // Keep going until the branch indicating params end, but don't stop at ","
-        (P.not((branch | litBranch).filter(_.value != ",")) *> singleToken).rep
-          .map(_.flatten)
-          ~ (branch | litBranch)
-      ).?
-      ~ rep(
-        not(
-          litStructClose | structureSingleClose | structureDoubleClose | structureAllClose
-        ) *> singleToken
-      ).map(_.flatten)
-      ~ (litStructClose | structureSingleClose | structureDoubleClose | not(
-        not(structureAllClose)
-      )).? ^^ { case (opener, openRange) ~ possibleParams ~ body ~ endTok =>
-        val openerTok =
-          Token(
-            StructureOpen,
-            // If it's a keyword, map it to SBCS
-            lambdaOpeners.get(opener).map(_.open).getOrElse(opener),
-            openRange
+  def lambdaBlock[$: P]: P[List[Token]] =
+    P(
+      StringIn(
+        StructureType.lambdaStructures.map(_.open) ++ lambdaOpeners.keys*
+      )
+        ~ ( // Keep going until the branch indicating params end, but don't stop at ","
+          (!((branch | litBranch).filter(_.value != ",")) ~ singleToken).rep
+            .map(_.flatten)
+            ~ (branch | litBranch)
+        ).?
+        ~ (
+          !(
+            litStructClose | structureSingleClose | structureDoubleClose | structureAllClose
+          ) ~ singleToken
+        ).rep.map(_.flatten)
+        ~ (litStructClose | structureSingleClose | structureDoubleClose | not(
+          not(structureAllClose)
+        )).?
+    ).map { case (opener, openRange) ~ possibleParams ~ body ~ endTok =>
+      val openerTok =
+        Token(
+          StructureOpen,
+          // If it's a keyword, map it to SBCS
+          lambdaOpeners.get(opener).map(_.open).getOrElse(opener),
+          openRange
+        )
+      val possParams = possibleParams match
+        case Some(params ~ branch) =>
+          // Branches get turned into `|` when sbcsifying. To preserve commas, turn them into Commands instead
+          val paramsWithCommas = params.map(tok =>
+            if tok.tokenType == Branch && tok.value == "," then
+              Token(Command, ",", tok.range)
+            else if tok.tokenType == Command then tok.copy(tokenType = Param)
+            else tok
           )
-        val possParams = possibleParams match
-          case Some(params ~ branch) =>
-            // Branches get turned into `|` when sbcsifying. To preserve commas, turn them into Commands instead
-            val paramsWithCommas = params.map(tok =>
-              if tok.tokenType == Branch && tok.value == "," then
-                Token(Command, ",", tok.range)
-              else if tok.tokenType == Command then tok.copy(tokenType = Param)
-              else tok
-            )
-            paramsWithCommas :+ branch
-          case None => Nil
-        val withoutEnd = openerTok :: (possParams ::: body)
-        endTok match
-          case Some(tok: Token) => withoutEnd :+ tok
-          case _ =>
-            // This means there was a StructureAllClose or we hit EOF
-            withoutEnd
-      }
+          paramsWithCommas :+ branch
+        case None => Nil
+      val withoutEnd = openerTok :: (possParams ::: body)
+      endTok match
+        case Some(tok: Token) => withoutEnd :+ tok
+        case _ =>
+          // This means there was a StructureAllClose or we hit EOF
+          withoutEnd
+    }
   end lambdaBlock
 
-  def litListOpen: P[Token] = withRange("[") ^^ { case (_, range) =>
+  def litListOpen[$: P]: P[Token] = withRange("[").map { case (_, range) =>
     Token(ListOpen, "#[", range)
   }
 
-  def litListClose: P[Token] = withRange("]") ^^ { case (_, range) =>
+  def litListClose[$: P]: P[Token] = withRange("]").map { case (_, range) =>
     Token(ListClose, "#]", range)
   }
 
-  def normalGroup: P[List[Token]] = "(" *> tokens <* ")"
+  def normalGroup[$: P]: P[List[Token]] = "(" ~ tokens ~ ")"
 
-  val elementKeyword: P[Token] =
-    P.stringIn(Elements.elements.values.flatMap(_.keywords)) ^^ {
+  def elementKeyword[$: P]: P[Token] =
+    StringIn(Elements.elements.values.flatMap(_.keywords)).map {
       case (word, range) => Token(Command, word, range)
     }
 
-  val modifierKeyword: P[Token] =
-    P.stringIn(Modifiers.modifiers.values.flatMap(_.keywords)) ^^ {
+  def modifierKeyword[$: P]: P[Token] =
+    StringIn(Modifiers.modifiers.values.flatMap(_.keywords)).map {
       case (keyword, range) =>
         val mod =
           Modifiers.modifiers.values.find(_.keywords.contains(keyword)).get
@@ -260,55 +240,55 @@ private[catslexer] object LiterateLexer:
         Token(tokenType, keyword, range)
     }
 
-  val structOpener: P[Token] =
-    P.stringIn(structOpeners.keys) ^^ { case (word, range) =>
+  def structOpener[$: P]: P[Token] =
+    StringIn(structOpeners.keys).map { case (word, range) =>
       val sbcs = structOpeners(word).open
       Token(StructureOpen, sbcs, range)
     }
 
-  val otherKeyword: P[Token] =
-    P.stringIn(keywords.keys) ^^ { case (word, range) =>
+  def otherKeyword[$: P]: P[Token] =
+    StringIn(keywords.keys).map { case (word, range) =>
       Token(keywords(word), word, range)
     }
 
-  val varName: P[String] =
-    (alpha | P.char('_')) ~ (alpha | digit | P.char('_')).rep
+  def varName[$: P]: P[String] =
+    (CharIn("A-Za-z_") ~ CharsWhileIn("0-9A-Za-z_")).!
 
-  val litGetVariable: P[Token] =
-    parseToken(GetVar, P.char('$') *> varName.?.string)
+  def litGetVariable[$: P]: P[Token] =
+    parseToken(GetVar, "$" ~/ varName.?.!)
 
-  val litSetVariable: P[Token] =
-    parseToken(SetVar, P.string(":=") *> varName.?.string)
+  def litSetVariable[$: P]: P[Token] =
+    parseToken(SetVar, ":=" ~ varName.?.!)
 
-  val litSetConstant: P[Token] =
-    parseToken(SetConstant, P.string(":=") *> varName.?.string)
+  def litSetConstant[$: P]: P[Token] =
+    parseToken(SetConstant, ":!=" ~/ varName.?.!)
 
-  val litAugVariable: P[Token] =
-    parseToken(AugmentVar, P.string(":=") *> varName.?.string)
+  def litAugVariable[$: P]: P[Token] =
+    parseToken(AugmentVar, (":>") ~/ varName.?.!)
 
-  def unpackVar: P[List[Token]] =
-    withRange(":=") ~ list ^^ { case (_, unpackRange) ~ listTokens =>
+  def unpackVar[$: P]: P[List[Token]] =
+    withRange(":=") ~ list.map { case (_, unpackRange) ~ listTokens =>
       (Token(SyntaxTrigraph, "#:[", unpackRange) :: listTokens.slice(
         1,
         listTokens.size - 1
       )) :+ Token(UnpackClose, "]", listTokens.last.range)
     }
 
-  def list: P[List[Token]] =
+  def list[$: P]: P[List[Token]] =
     parseToken(ListOpen, "[") ~! rep(
-      not(raw"[|,\]]".r) *> singleToken ~
+      not(raw"[|,\]]".r) ~ singleToken ~
         (branch | litBranch).?
-    ) ~ parseToken(ListClose, "]") ^^ { case startTok ~ elems ~ endTok =>
+    ) ~ parseToken(ListClose, "]").map { case startTok ~ elems ~ endTok =>
       val middle = elems.flatMap { case elem ~ branch => elem ++ branch }
       (startTok +: middle) :+ endTok
     }
 
-  val litBranch: P[Token] = parseToken(Branch, P.stringIn(branchKeywords))
+  def litBranch[$: P]: P[Token] = parseToken(Branch, P.stringIn(branchKeywords))
 
-  val litStructClose: P[Token] =
+  def litStructClose[$: P]: P[Token] =
     parseToken(StructureClose, P.stringIn(branchKeywords))
 
-  def rawCode: P[List[Token]] = withInd("#([^#]|#[^}])*#}".r) ^^ {
+  def rawCode[$: P]: P[List[Token]] = withInd("#([^#]|#[^}])*#}".r).map {
     case (value, row, col) =>
       super
         .parseAll(super.tokens, value.substring(1, value.length - 2))
@@ -327,12 +307,15 @@ private[catslexer] object LiterateLexer:
         .get
   }
 
-  val singleToken: P[List[Token]] =
-    lambdaBlock | list | unpackVar | (litGetVariable | litSetVariable | litSetConstant | litAugVariable
-      | elementKeyword | modifierKeyword | structOpener | otherKeyword | litBranch | litStructClose)
-      .map(List(_))
-      | ignored | normalGroup | rawCode | SBCSLexer.token.map(List(_))
+  def singleToken[$: P]: P[List[Token]] =
+    P(
+      lambdaBlock | list | unpackVar | (litGetVariable | litSetVariable | litSetConstant | litAugVariable
+        | elementKeyword | modifierKeyword | structOpener | otherKeyword | litBranch | litStructClose)
+        .map(List(_))
+        | ignored | normalGroup | rawCode | SBCSLexer.token.map(List(_))
+    )
 
-  val tokens: Parser0[List[Token]] = singleToken.rep0.map(_.flatten)
+  def tokens[$: P]: P[List[Token]] =
+    P(singleToken.rep(sep = ignored)).map(_.flatten)
 
 end LiterateLexer

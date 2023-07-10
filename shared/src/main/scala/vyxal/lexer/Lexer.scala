@@ -1,4 +1,4 @@
-package vyxal.catslexer
+package vyxal.lexer
 
 import scala.language.strictEquality
 
@@ -7,6 +7,9 @@ import vyxal.impls.Elements
 import java.util.regex.Pattern
 import scala.collection.mutable.{ListBuffer, Queue}
 import scala.util.matching.Regex
+
+import fastparse.*
+import fastparse.NoWhitespace.*
 
 case class VyxalCompilationError(msg: String)
 
@@ -111,6 +114,14 @@ val DYADIC_MODIFIERS = "ϩ∥∦"
 val TRIADIC_MODIFIERS = "э"
 val TETRADIC_MODIFIERS = "Ч"
 val SPECIAL_MODIFIERS = "ᵗᵜ"
+
+trait Lexer:
+  def tokens: P[List[Token]]
+
+  final def lex(code: String): Either[VyxalCompilationError, List[Token]] =
+    parseAll(code) match
+      case Parsed.Success(_, _) => ???
+      case _ => Left(VyxalCompilationError(???))
 
 object Lexer:
   val decimalRegex: Regex = raw"(((0|[1-9][0-9]*)?\.[0-9]*|0|[1-9][0-9]*)_?)".r

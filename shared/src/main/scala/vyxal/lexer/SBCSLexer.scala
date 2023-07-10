@@ -1,55 +1,21 @@
-package vyxal.catslexer
+package vyxal.lexer
 
 import scala.language.strictEquality
 
-import vyxal.catslexer.TokenType.*
 import vyxal.impls.Elements
+import vyxal.lexer.TokenType.*
 
 import scala.util.matching.Regex
 
-import cats.parse.Parser as P
-import cats.parse.Rfc5234.{digit, wsp}
+import fastparse.*
+import fastparse.NoWhitespace.*
 
-private[catslexer] object SBCSLexer:
-  import vyxal.Lexer.decimalRegex
-
-  override val whiteSpace: Regex = "[ \t\r\f]+".r
-
+private[lexer] object SBCSLexer:
   /** Whether the code lexed so far has sugar trigraphs */
   var sugarUsed = false
 
-  def lex(code: String): Either[VyxalCompilationError, List[Token]] =
-    tokens.parseAll(code).left.map(err => VyxalCompilationError(err.toString()))
-
   def number: P[Token] =
     parseToken(Number, raw"($decimalRegex?ı($decimalRegex|_)?)|$decimalRegex".r)
-
-  def string: P[Token] =
-    withRange(raw"""("(?:[^"„”“\\]|\\.)*["„”“])""".r) ^^ {
-      case (value, range) =>
-        // If the last character of each token is ", then it's a normal string
-        // If the last character of each token is „, then it's a compressed string
-        // If the last character of each token is ”, then it's a dictionary string
-        // If the last character of each token is “, then it's a compressed number
-
-        // So replace the non-normal string tokens with the appropriate token type
-
-        // btw thanks to @pxeger and @mousetail for the regex
-
-        val text = value
-          .substring(1, value.length - 1)
-          .replace("\\\"", "\"")
-          .replace(raw"\n", "\n")
-          .replace(raw"\t", "\t")
-
-        val tokenType = (value.last: @unchecked) match
-          case '"' => Str
-          case '„' => CompressedString
-          case '”' => DictionaryString
-          case '“' => CompressedNumber
-
-        Token(tokenType, text, range)
-    }
 
   def contextIndex: P[Token] = withRange("""\d*¤""".r) ^^ {
     case (value, range) =>
@@ -176,16 +142,4 @@ private[catslexer] object SBCSLexer:
   // structureDoubleClose (")") has to be here to avoid interfering with `normalGroup` in literate lexer
   def tokens: P[List[Token]] = rep(token | structureDoubleClose)
 
-  def withInd[T](parser: P[T]): P[(Int, T)] = (P.index.with1 ~ parser)
-
-  def withRange[T](parser: P[T]): P[(T, Range)] =
-    (P.index.with1 ~ parser ~ P.index).map {
-      case startOffset -> value -> endOffset =>
-        (value, Range(startOffset, endOffset))
-    }
-
-  def parseToken(tokenType: TokenType, tokenParser: P[String]): P[Token] =
-    withRange(tokenParser).map { (value, range) =>
-      Token(tokenType, value, range)
-    }
 end SBCSLexer

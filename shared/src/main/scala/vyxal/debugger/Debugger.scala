@@ -1,4 +1,4 @@
-package vyxal.catslexer.debugger
+package vyxal.lexer.debugger
 
 import vyxal.*
 
