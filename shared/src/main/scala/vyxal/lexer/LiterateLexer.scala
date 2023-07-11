@@ -182,13 +182,10 @@ private[lexer] object LiterateLexer extends Lexer:
     }
   end lambdaBlock
 
-  def litListOpen[$: P]: P[Token] = withRange("[").map { case (_, range) =>
-    Token(ListOpen, "#[", range)
-  }
-
-  def litListClose[$: P]: P[Token] = withRange("]").map { case (_, range) =>
-    Token(ListClose, "#]", range)
-  }
+  def litString[$: P]: P[Token] =
+    P(withRange("\"" ~~ ("\\" ~~ AnyChar | !"\"" ~ AnyChar).repX.! ~~ "\""))
+      .opaque("<string>")
+      .map { case (value, range) => Token(Str, value, range) }
 
   def normalGroup[$: P]: P[List[Token]] = "(" ~ tokens ~ ")"
 
@@ -297,7 +294,7 @@ private[lexer] object LiterateLexer extends Lexer:
       lambdaBlock | list | unpackVar
         | (contextIndex | litGetVariable | litSetVariable | litSetConstant | litAugVariable
           | elementKeyword | modifierKeyword | structOpener | otherKeyword
-          | litBranch | litStructClose | litNumber)
+          | litBranch | litStructClose | litNumber | litString)
           .map(Seq(_))
         | normalGroup | rawCode | SBCSLexer.token.map(Seq(_))
     )

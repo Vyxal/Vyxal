@@ -171,7 +171,9 @@ object Lexer:
       case Str => s""""$value""""
       case SyntaxTrigraph if value == ":=[" => "#:["
       case Command if !Elements.elements.contains(value) =>
-        Elements.symbolFor(value).get
+        Elements
+          .symbolFor(value)
+          .getOrElse(throw IllegalArgumentException(s"No such element: $value"))
       case Comment => ""
       case _ => tokenType.canonicalSBCS.getOrElse(value)
 
