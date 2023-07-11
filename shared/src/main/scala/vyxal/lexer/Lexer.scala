@@ -116,9 +116,10 @@ private[lexer] trait Lexer:
             )
           )
       case f @ Parsed.Failure(label, index, extra) =>
+        val trace = f.trace()
         Left(
           VyxalCompilationError(
-            s"Lexing failed: ${f.msg}"
+            s"Lexing failed: ${trace.longMsg}"
           )
         )
 end Lexer

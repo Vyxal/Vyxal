@@ -17,11 +17,11 @@ private[lexer] object SBCSLexer extends Lexer:
   var sugarUsed = false
 
   def string[$: P]: P[Token] =
-    withRange(
-      "\"" ~/ ("\\" ~/ AnyChar | !CharIn("\"„”“") ~ AnyChar).rep.! ~ CharIn(
+    P(withRange(
+      "\"" ~~/ (("\\" ~~/ AnyChar) | (!CharIn("\"„”“") ~~ AnyChar)).repX.! ~~ CharIn(
         "\"„”“"
       ).!
-    )
+    ))
       .map { case ((value, last), range) =>
         // If the last character of each token is ", then it's a normal string
         // If the last character of each token is „, then it's a compressed string
@@ -47,13 +47,13 @@ private[lexer] object SBCSLexer extends Lexer:
       }
 
   def singleCharString[$: P]: P[Token] =
-    parseToken(Str, P("'" ~ AnyChar.!))
+    parseToken(Str, P("'" ~~ AnyChar.!))
 
   def twoCharString[$: P]: P[Token] =
-    parseToken(Str, P("ᶴ" ~/ (AnyChar ~ AnyChar).!))
+    parseToken(Str, P("ᶴ" ~~/ (AnyChar ~~ AnyChar).!))
 
   def twoCharNumber[$: P]: P[Token] =
-    withRange(P("~" ~/ (AnyChar ~ AnyChar).!)).map { case (value, range) =>
+    withRange(P("~" ~~/ (AnyChar ~~ AnyChar).!)).map { case (value, range) =>
       Token(
         Number,
         value.zipWithIndex
@@ -82,7 +82,7 @@ private[lexer] object SBCSLexer extends Lexer:
 
   def digraph[$: P]: P[Token] = P(
     withRange(
-      (CharIn("∆øÞk") ~ AnyChar).! | ("#" ~ !CharIn("[]$!=#>@{") ~ AnyChar).!
+      (CharIn("∆øÞk") ~~ AnyChar).! | ("#" ~~ !CharIn("[]$!=#>@{") ~~ AnyChar).!
     )
   ).map { case (digraph, range) =>
     if Elements.elements.contains(digraph) then Token(Command, digraph, range)
@@ -100,10 +100,10 @@ private[lexer] object SBCSLexer extends Lexer:
   }
 
   def syntaxTrigraph[$: P]: P[Token] =
-    parseToken(SyntaxTrigraph, ("#:" ~ AnyChar).!)
+    parseToken(SyntaxTrigraph, ("#:" ~~ AnyChar).!)
 
   def sugarTrigraph[$: P]: P[Token] =
-    withRange(("#" ~ CharIn(".,^") ~ AnyChar).!).map { case (value, range) =>
+    withRange(("#" ~~ CharIn(".,^") ~~ AnyChar).!).map { case (value, range) =>
       this.sugarUsed = true
       SugarMap.trigraphs
         .get(value)
@@ -111,53 +111,54 @@ private[lexer] object SBCSLexer extends Lexer:
         .getOrElse(Token(Command, value, range))
     }
 
-  /** Match any one of the characters in a given string */
-  def charsFromString[$: P](str: String): P[String] =
-    P(str.toSeq.map(_.toString.!).reduce(_ | _))
+  private val allCommands =
+    Lexer.Codepage.replaceAll(raw"[|\[\](){}\s]", "") + Lexer.UnicodeCommands
 
-  def command[$: P]: P[Token] = parseToken(
-    Command,
-    charsFromString(
-      Lexer.Codepage.replaceAll(raw"[|\[\](){}]", "") + Lexer.UnicodeCommands
-    )
-  )
+  def command[$: P]: P[Token] =
+    parseToken(Command, allCommands.toSeq.map(_.toString.!).reduce(_ | _))
 
   def monadicModifier[$: P]: P[Token] =
-    parseToken(MonadicModifier, charsFromString(Lexer.MonadicModifiers))
+    parseToken(
+      MonadicModifier,
+      CharIn("ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻ¿⸠/\\\\~v@`ꜝ").!
+    )
 
   def dyadicModifier[$: P]: P[Token] =
-    parseToken(DyadicModifier, charsFromString(Lexer.DyadicModifiers))
+    parseToken(DyadicModifier, CharIn("ϩ∥∦").!)
 
   def triadicModifier[$: P]: P[Token] =
-    parseToken(TriadicModifier, charsFromString(Lexer.TriadicModifiers))
+    parseToken(TriadicModifier, CharIn("э").!)
 
   def tetradicModifier[$: P]: P[Token] =
-    parseToken(TetradicModifier, charsFromString(Lexer.TetradicModifiers))
+    parseToken(TetradicModifier, CharIn("Ч").!)
 
   def specialModifier[$: P]: P[Token] =
-    parseToken(SpecialModifier, charsFromString(Lexer.SpecialModifiers))
+    parseToken(SpecialModifier, CharIn("ᵗᵜ").!)
 
   def branch[$: P]: P[Token] = parseToken(Branch, "|".!)
 
   def sbcsDecimal[$: P]: P[String] =
-    P(((Common.int ~ ("." ~ Common.digits).? | "." ~ Common.digits) ~ "_".?).!)
+    P(
+      ((Common.int ~~ ("." ~~ Common.digits).? | "." ~~ Common.digits) ~~ "_".?).!
+    )
   def sbcsNumber[$: P]: P[Token] =
     parseToken(
       Number,
-      ((sbcsDecimal ~ ("ı".! ~ (sbcsDecimal | "_".!).?).?) | "ı".! ~ (sbcsDecimal ~ "_".!).?).!
+      ((sbcsDecimal ~~ ("ı".! ~~ (sbcsDecimal | "_".!).?).?) | "ı".! ~~ (sbcsDecimal ~ "_".!).?).!
     ).opaque("<number (SBCS)>")
 
   def contextIndex[$: P]: P[Token] =
     parseToken(ContextIndex, Common.digits ~ "¤")
 
-  def getVariable[$: P]: P[Token] = parseToken(GetVar, "#$" ~/ Common.varName)
+  def getVariable[$: P]: P[Token] = parseToken(GetVar, "#$" ~~/ Common.varName)
 
-  def setVariable[$: P]: P[Token] = parseToken(SetVar, "#=" ~/ Common.varName)
+  def setVariable[$: P]: P[Token] = parseToken(SetVar, "#=" ~~/ Common.varName)
 
-  def setConstant[$: P]: P[Token] = parseToken(Constant, "#!" ~/ Common.varName)
+  def setConstant[$: P]: P[Token] =
+    parseToken(Constant, "#!" ~~/ Common.varName)
 
   def augVariable[$: P]: P[Token] =
-    parseToken(AugmentVar, "#>" ~/ Common.varName)
+    parseToken(AugmentVar, "#>" ~~/ Common.varName)
 
   def newlines[$: P]: P[Token] = parseToken(Newline, Common.eol.!)
 
@@ -166,13 +167,13 @@ private[lexer] object SBCSLexer extends Lexer:
       sugarTrigraph | syntaxTrigraph | digraph | branch | contextIndex
         | sbcsNumber | string | augVariable | getVariable | setVariable
         | setConstant | twoCharNumber | twoCharString | singleCharString
-        | monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
-        | specialModifier | structureOpen | structureSingleClose | structureAllClose
-        | listOpen | listClose | newlines | command
+        | /*monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
+        | specialModifier | */ structureOpen | structureSingleClose | structureAllClose
+        | listOpen | listClose | newlines/* | command */
     )
 
   // structureDoubleClose (")") has to be here to avoid interfering with `normalGroup` in literate lexer
   override def parseAll[$: P]: P[Seq[Token]] =
-    P((token | structureDoubleClose).rep)
+    P((token | structureDoubleClose).rep ~ End)
 
 end SBCSLexer
