@@ -17,11 +17,15 @@ private[lexer] object SBCSLexer extends Lexer:
   var sugarUsed = false
 
   def string[$: P]: P[Token] =
-    P(withRange(
-      "\"" ~~/ (("\\" ~~/ AnyChar) | (!CharIn("\"„”“") ~~ AnyChar)).repX.! ~~ CharIn(
-        "\"„”“"
-      ).!
-    ))
+    P(
+      withRange(
+        "\"" ~~/ (("\\" ~~/ AnyChar) | (!CharIn(
+          "\"„”“"
+        ) ~~ AnyChar)).repX.! ~~ CharIn(
+          "\"„”“"
+        ).!
+      )
+    )
       .map { case ((value, last), range) =>
         // If the last character of each token is ", then it's a normal string
         // If the last character of each token is „, then it's a compressed string
@@ -169,7 +173,7 @@ private[lexer] object SBCSLexer extends Lexer:
         | setConstant | twoCharNumber | twoCharString | singleCharString
         | /*monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
         | specialModifier | */ structureOpen | structureSingleClose | structureAllClose
-        | listOpen | listClose | newlines/* | command */
+        | listOpen | listClose | newlines /* | command */
     )
 
   // structureDoubleClose (")") has to be here to avoid interfering with `normalGroup` in literate lexer
