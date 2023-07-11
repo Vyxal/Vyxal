@@ -47,7 +47,6 @@ private[lexer] object LiterateLexer extends Lexer:
   )
 
   private val lambdaOpeners = Map(
-    "{" -> StructureType.Lambda,
     "lambda" -> StructureType.Lambda,
     "lam" -> StructureType.Lambda,
     "map-lambda" -> StructureType.LambdaMap,
@@ -99,14 +98,22 @@ private[lexer] object LiterateLexer extends Lexer:
       kw -> typ.open
     }
 
-  def wordChar[$: P]: P[String] = P(CharIn("a-z\\-?").!)
+  def wordChar[$: P]: P[String] = P(CharIn("a-z\\-?!").!)
 
+  def word[$: P]: P[String] = P((CharIn("a-z") ~~ wordChar.repX).!)
+
+  def litInt[$: P]: P[String] = P(
+    ("0" | (CharIn("1-9") ~~ CharsWhileIn("_0-9", 0))).!
+  )
+  def litDigits[$: P]: P[String] = P(CharsWhileIn("_0-9", 0).!)
   def litDecimal[$: P]: P[String] =
-    ("-".? ~ (Common.int ~ ("." ~ Common.digits).? | "." ~ Common.digits)).!
+    ("-".? ~~ (litInt ~~ ("." ~~ litDigits).? | "." ~~ litDigits)).!
   def litNumber[$: P]: P[Token] =
     parseToken(
       Number,
-      ((litDecimal ~ ("i" ~ litDecimal.?).?) | "i" ~ (litDecimal | !wordChar)).!
+      ((litDecimal ~~ ("ı" ~~ litDecimal.? | "i" ~~ (litDecimal | !wordChar)).?)
+        | "i" ~~ (litDecimal | !wordChar)
+        | "ı" ~~ litDecimal.?).!
     ).opaque("<number (literate)>")
       .map { case Token(_, value, range) =>
         val temp = value.replace("i", "ı").replace("_", "")
@@ -124,16 +131,19 @@ private[lexer] object LiterateLexer extends Lexer:
   end litNumber
 
   def contextIndex[$: P]: P[Token] =
-    parseToken(ContextIndex, "`" ~ Common.digits ~ "~")
+    parseToken(ContextIndex, "`" ~~ CharsWhileIn("0-9", 0).! ~~ "`")
 
+  val lambdaOpenerSet = lambdaOpeners.keys.toSet
   def lambdaBlock[$: P]: P[Seq[Token]] =
     P(
-      keywordsParser(
-        "<lambda opener>",
-        StructureType.lambdaStructures.map(_.open) ++ lambdaOpeners.keys
-      )
+      withRange("{".! | Common.lambdaOpen | word.filter(lambdaOpenerSet).!)
         ~/ ( // Keep going until the branch indicating params end, but don't stop at ","
-          (!litBranch.filter(_.value != ",") ~ singleToken).rep.map(_.flatten)
+          singleToken
+            .filter(toks =>
+              toks.size != 1 || toks.head.tokenType != Branch || toks.head.value == ","
+            )
+            .rep
+            .map(_.flatten)
             ~ litBranch
         ).?
         ~ (
@@ -148,7 +158,8 @@ private[lexer] object LiterateLexer extends Lexer:
         Token(
           StructureOpen,
           // If it's a keyword, map it to SBCS
-          lambdaOpeners.get(opener).map(_.open).getOrElse(opener),
+          if opener == "{" then StructureType.Lambda.open
+          else lambdaOpeners.get(opener).map(_.open).getOrElse(opener),
           openRange
         )
       val possParams = possibleParams match
@@ -185,7 +196,8 @@ private[lexer] object LiterateLexer extends Lexer:
       name: String,
       keywords: Iterable[String]
   ): P[(String, Range)] =
-    withRange(keywords.toSeq.map(_.!).reduce(_ | _)).opaque(name)
+    val isKeyword = keywords.toSet
+    withRange(word.filter(isKeyword)).opaque(name)
 
   def elementKeyword[$: P]: P[Token] =
     keywordsParser(
@@ -283,9 +295,9 @@ private[lexer] object LiterateLexer extends Lexer:
   def singleToken[$: P]: P[Seq[Token]] =
     P(
       lambdaBlock | list | unpackVar
-        | (litGetVariable | litSetVariable | litSetConstant | litAugVariable
+        | (contextIndex | litGetVariable | litSetVariable | litSetConstant | litAugVariable
           | elementKeyword | modifierKeyword | structOpener | otherKeyword
-          | litBranch | litStructClose)
+          | litBranch | litStructClose | litNumber)
           .map(Seq(_))
         | normalGroup | rawCode | SBCSLexer.token.map(Seq(_))
     )

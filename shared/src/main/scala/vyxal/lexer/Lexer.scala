@@ -137,12 +137,6 @@ object Lexer:
 
   val UnicodeCommands = "🍪ඞ"
 
-  val MonadicModifiers = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻ¿⸠/\\~v@`ꜝ"
-  val DyadicModifiers = "ϩ∥∦"
-  val TriadicModifiers = "э"
-  val TetradicModifiers = "Ч"
-  val SpecialModifiers = "ᵗᵜ"
-
   def literateModeMappings: Map[String, String] =
     LiterateLexer.literateModeMappings
 
@@ -178,6 +172,7 @@ object Lexer:
       case SyntaxTrigraph if value == ":=[" => "#:["
       case Command if !Elements.elements.contains(value) =>
         Elements.symbolFor(value).get
+      case Comment => ""
       case _ => tokenType.canonicalSBCS.getOrElse(value)
 
   /** Convert literate mode code into SBCS mode code */

@@ -73,7 +73,7 @@ class LexerTests extends VyxalTests:
           Number("1"),
           Number("1"),
           Command("+"),
-          Comment("##Hello, Vyxal!")
+          Comment("Hello, Vyxal!")
         )
       )
     }
@@ -84,7 +84,7 @@ class LexerTests extends VyxalTests:
           Number("1"),
           Number("1"),
           Command("+"),
-          Comment("##Hello, Vyxal!"),
+          Comment("Hello, Vyxal!"),
           Token(Newline, "\n", Range.fake),
           Number("1"),
           Command("+")

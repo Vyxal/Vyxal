@@ -71,7 +71,11 @@ private[lexer] object SBCSLexer extends Lexer:
     }
 
   def structureOpen[$: P]: P[Token] =
-    parseToken(StructureOpen, StructureType.values.map(_.open.!).reduce(_ | _))
+    parseToken(
+      StructureOpen,
+      StringIn("[", "{", "(", "#{", "Ḍ", "Ṇ").! | Common.lambdaOpen
+    ) // StructureType.values.map(_.open.!).reduce(_ | _))
+    // todo figure out why the commented version doesn't work
 
   def structureSingleClose[$: P]: P[Token] = parseToken(StructureClose, "}".!)
 
@@ -119,7 +123,7 @@ private[lexer] object SBCSLexer extends Lexer:
     Lexer.Codepage.replaceAll(raw"[|\[\](){}\s]", "") + Lexer.UnicodeCommands
 
   def command[$: P]: P[Token] =
-    parseToken(Command, allCommands.toSeq.map(_.toString.!).reduce(_ | _))
+    parseToken(Command, CharPred(c => Lexer.Codepage.contains(c)).!)
 
   def monadicModifier[$: P]: P[Token] =
     parseToken(
@@ -143,7 +147,7 @@ private[lexer] object SBCSLexer extends Lexer:
 
   def sbcsDecimal[$: P]: P[String] =
     P(
-      ((Common.int ~~ ("." ~~ Common.digits).? | "." ~~ Common.digits) ~~ "_".?).!
+      (((Common.int ~~/ ("." ~~ Common.digits.?).?) | ("." ~~/ Common.digits.?)) ~~ "_".?).!
     )
   def sbcsNumber[$: P]: P[Token] =
     parseToken(
@@ -166,14 +170,17 @@ private[lexer] object SBCSLexer extends Lexer:
 
   def newlines[$: P]: P[Token] = parseToken(Newline, Common.eol.!)
 
+  def comment[$: P]: P[Token] =
+    parseToken(Comment, "##" ~~/ CharsWhile(c => c != '\n' && c != '\r').!)
+
   def token[$: P]: P[Token] =
     P(
-      sugarTrigraph | syntaxTrigraph | digraph | branch | contextIndex
+      comment | sugarTrigraph | syntaxTrigraph | digraph | branch | contextIndex
         | sbcsNumber | string | augVariable | getVariable | setVariable
         | setConstant | twoCharNumber | twoCharString | singleCharString
-        | /*monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
-        | specialModifier | */ structureOpen | structureSingleClose | structureAllClose
-        | listOpen | listClose | newlines /* | command */
+        | monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
+        | specialModifier | structureOpen | structureSingleClose | structureAllClose
+        | listOpen | listClose | newlines | command
     )
 
   // structureDoubleClose (")") has to be here to avoid interfering with `normalGroup` in literate lexer

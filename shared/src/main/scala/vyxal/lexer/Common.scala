@@ -12,13 +12,15 @@ object Common:
       (CharsWhileIn(" \t", 0)) // | ("##" ~~ (!eol ~~ AnyChar).repX)).repX
 
   def int[$: P]: P[String] = P(
-    ("0" | (CharIn("1-9") ~~ digits)).!
+    ("0" | (CharIn("1-9") ~~ CharsWhileIn("0-9", 0))).!
   )
 
   def digits[$: P]: P[String] = P(CharsWhileIn("0-9").!)
 
   def varName[$: P]: P[String] =
     (CharIn("A-Za-z_") ~~ CharsWhileIn("0-9A-Za-z_", 0)).?.!
+
+  def lambdaOpen[$: P]: P[String] = P(StringIn("λ", "ƛ", "Ω", "₳", "µ").!)
 
   def withInd[T, $: P](parser: => P[T]): P[(Int, T)] =
     P(Index ~ parser)
