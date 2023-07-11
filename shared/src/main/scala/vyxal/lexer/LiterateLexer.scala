@@ -3,7 +3,7 @@ package vyxal.lexer
 import scala.language.strictEquality
 
 import vyxal.impls.Elements
-import vyxal.lexer.Common.{parseToken, withInd, withRange}
+import vyxal.lexer.Common.{parseToken, withRange}
 import vyxal.lexer.Common.given // For custom whitespace
 import vyxal.lexer.TokenType.*
 import vyxal.Modifiers
@@ -176,11 +176,12 @@ private[lexer] object LiterateLexer extends Lexer:
   def litString[$: P]: P[Token] =
     parseToken(Str, "\"" ~~ ("\\" ~~ AnyChar | !"\"" ~ AnyChar).repX.! ~~ "\"")
 
-  def normalGroup[$: P]: P[List[Token]] = "(" ~~/ tokens ~ ")"
+  def normalGroup[$: P]: P[List[Token]] = P("(" ~~/ tokens ~ ")")
 
   def keywordsParser[$: P](
       keywords: Iterable[String]
   ): P[String] =
+    // TODO(user): Make this not use filter
     val isKeyword = keywords.toSet
     word.filter(isKeyword)
 
@@ -272,7 +273,7 @@ private[lexer] object LiterateLexer extends Lexer:
       .opaque("<end keyword>")
 
   def rawCode[$: P]: P[Seq[Token]] =
-    P("#" ~ withInd((!"#}" ~ AnyChar).rep.!) ~ "#}").map {
+    P("#" ~ Index ~ ((!"#}" ~ AnyChar).rep.!) ~ "#}").map {
       case (offset, value) =>
         SBCSLexer.lex(value) match
           case Right(tokens) =>

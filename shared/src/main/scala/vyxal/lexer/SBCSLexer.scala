@@ -4,7 +4,7 @@ import scala.language.strictEquality
 
 import vyxal.{Modifiers, SugarMap}
 import vyxal.impls.Elements
-import vyxal.lexer.Common.{parseToken, withInd, withRange}
+import vyxal.lexer.Common.{parseToken, withRange}
 import vyxal.lexer.Common.given // For custom whitespace
 import vyxal.lexer.TokenType.*
 
@@ -75,7 +75,7 @@ private[lexer] object SBCSLexer extends Lexer:
       StructureOpen,
       StringIn("[", "{", "(", "#{", "Ḍ", "Ṇ").! | Common.lambdaOpen
     ) // StructureType.values.map(_.open.!).reduce(_ | _))
-    // todo figure out why the commented version doesn't work
+    // TODO(user): figure out why the commented version doesn't work
 
   def structureSingleClose[$: P]: P[Token] = parseToken(StructureClose, "}".!)
 
@@ -120,10 +120,11 @@ private[lexer] object SBCSLexer extends Lexer:
     }
 
   private val allCommands =
-    Lexer.Codepage.replaceAll(raw"[|\[\](){}\s]", "") + Lexer.UnicodeCommands
+    (Lexer.Codepage.replaceAll(raw"[|\[\](){}\s]", "")
+      + Lexer.UnicodeCommands).toSet
 
   def command[$: P]: P[Token] =
-    parseToken(Command, CharPred(c => Lexer.Codepage.contains(c)).!)
+    parseToken(Command, CharPred(allCommands).!)
 
   def monadicModifier[$: P]: P[Token] =
     parseToken(
