@@ -104,8 +104,10 @@ private[lexer] object LiterateLexer extends Lexer:
   def litDecimal[$: P]: P[String] =
     ("-".? ~ (Common.int ~ ("." ~ Common.digits).? | "." ~ Common.digits)).!
   def litNumber[$: P]: P[Token] =
-    Common
-      .number(litDecimal, ("i" ~ !wordChar).!)
+    parseToken(
+      Number,
+      ((litDecimal ~ ("i" ~ litDecimal.?).?) | "i" ~ (litDecimal | !wordChar)).!
+    ).opaque("<number (literate)>")
       .map { case Token(_, value, range) =>
         val temp = value.replace("i", "ı").replace("_", "")
         val parts =
@@ -119,6 +121,7 @@ private[lexer] object LiterateLexer extends Lexer:
           range
         )
       }
+  end litNumber
 
   def contextIndex[$: P]: P[Token] =
     parseToken(ContextIndex, "`" ~ Common.digits ~ "~")
@@ -289,4 +292,6 @@ private[lexer] object LiterateLexer extends Lexer:
 
   def tokens[$: P]: P[List[Token]] =
     P(singleToken.rep).map(_.flatten.toList)
+
+  override def parseAll[$: P]: P[List[Token]] = P(tokens ~ End)
 end LiterateLexer

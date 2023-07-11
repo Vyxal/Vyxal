@@ -17,14 +17,6 @@ object Common:
 
   def digits[$: P]: P[String] = P(CharIn("0-9").rep.!)
 
-  def number[$: P](
-      decimal: => P[String],
-      complexSep: => P[String]
-  ): P[Token] =
-    withRange(
-      ((decimal ~ (complexSep ~ decimal).?) | complexSep ~ decimal).!
-    ).map { case (value, range) => Token(Number, value, range) }
-
   def varName[$: P]: P[String] =
     (CharIn("A-Za-z_") ~ CharsWhileIn("0-9A-Za-z_")).!
 

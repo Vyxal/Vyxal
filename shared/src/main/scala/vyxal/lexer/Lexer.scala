@@ -103,17 +103,25 @@ object StructureType:
   )
 
 private[lexer] trait Lexer:
-  def tokens[$: P]: P[Seq[Token]]
+  def parseAll[$: P]: P[Seq[Token]]
 
   final def lex(code: String): Either[VyxalCompilationError, List[Token]] =
-    parse(code, this.tokens) match
-      case Parsed.Success(res, _) => Right(res.toList)
+    parse(code, this.parseAll) match
+      case Parsed.Success(res, ind) =>
+        if ind == code.length then Right(res.toList)
+        else
+          Left(
+            VyxalCompilationError(
+              s"Parsed $res but did not consume '${code.substring(ind)}'"
+            )
+          )
       case f @ Parsed.Failure(label, index, extra) =>
         Left(
           VyxalCompilationError(
             s"Lexing failed: ${f.msg}"
           )
         )
+end Lexer
 
 object Lexer:
   val structureOpenRegex: String = """[\[\(\{λƛΩ₳µḌṆ]|#@|#\{"""

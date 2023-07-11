@@ -142,7 +142,10 @@ private[lexer] object SBCSLexer extends Lexer:
   def sbcsDecimal[$: P]: P[String] =
     P(((Common.int ~ ("." ~ Common.digits).? | "." ~ Common.digits) ~ "_".?).!)
   def sbcsNumber[$: P]: P[Token] =
-    Common.number(sbcsDecimal, P("ı".!))
+    parseToken(
+      Number,
+      ((sbcsDecimal ~ ("ı".! ~ (sbcsDecimal | "_".!).?).?) | "ı".! ~ (sbcsDecimal ~ "_".!).?).!
+    ).opaque("<number (SBCS)>")
 
   def contextIndex[$: P]: P[Token] =
     parseToken(ContextIndex, Common.digits ~ "¤")
@@ -169,6 +172,7 @@ private[lexer] object SBCSLexer extends Lexer:
     )
 
   // structureDoubleClose (")") has to be here to avoid interfering with `normalGroup` in literate lexer
-  def tokens[$: P]: P[Seq[Token]] = P((token | structureDoubleClose).rep)
+  override def parseAll[$: P]: P[Seq[Token]] =
+    P((token | structureDoubleClose).rep)
 
 end SBCSLexer
