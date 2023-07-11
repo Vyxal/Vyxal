@@ -27,8 +27,6 @@ private[lexer] object LiterateLexer extends Lexer:
   )
 
   private val branchKeywords = List(
-    ":",
-    ",",
     "else",
     "elif",
     "else-if",
@@ -255,18 +253,27 @@ private[lexer] object LiterateLexer extends Lexer:
   def list[$: P]: P[Seq[Token]] =
     P(
       parseToken(ListOpen, "[".!)
-        ~/ (!CharIn("|,]") ~ singleToken ~ litBranch.?).rep
+        ~~/ (litBranch |
+          !"]" ~ singleToken ~ litBranch.?).rep
+        // NoCut(singleToken).filter(toks =>
+        // toks.size != 1 || toks.head.tokenType != ListClose
+        // ) ~ litBranch.?).rep
         ~ parseToken(ListClose, "]".!)
     ).map { case (startTok, elems, endTok) =>
-      val middle = elems.flatMap { case (elem, branch) => elem ++ branch }
+      val middle = elems.flatMap {
+        case branch: Token => List(branch)
+        case (elem, branch) => elem ++ branch
+      }
       (startTok +: middle) :+ endTok
     }
 
   def litBranch[$: P]: P[Token] =
     P(
       SBCSLexer.branch
-        | parseToken(Branch, branchKeywords.map(_.!).reduce(_ | _))
-          .opaque("<branch keyword>")
+        | parseToken(Branch, CharIn(":,").!)
+        | keywordsParser("<branch keyword>", branchKeywords).map {
+          case (value, range) => Token(Branch, value, range)
+        }
     )
 
   def litStructClose[$: P]: P[Token] =
