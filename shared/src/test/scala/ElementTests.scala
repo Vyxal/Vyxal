@@ -606,14 +606,18 @@ class ElementTests extends VyxalTests:
   }
 
   describe("Element Ċ") {
-    testCode("#[1|2|3] Ċ 10 Θ", VList(1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
+    it("should work on lists") {
+      testCode("#[1|2|3#] Ċ 10 Θ", VList(1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
+    }
   }
 
   describe("Element Ḋ") {
-    testCode(
-      "#[1|2|3|4|5|6|7|8|9|10|1|4|5|1|3|6|4#] λ5%; Ḋ",
-      VList(1, 2, 3, 4, 5)
-    )
+    it("simple test") {
+      testCode(
+        "#[1|2|3|4|5|6|7|8|9|10|1|4|5|1|3|6|4#] λ5%} Ḋ",
+        VList(1, 2, 3, 4, 5)
+      )
+    }
   }
 
   describe("Element Ė") {

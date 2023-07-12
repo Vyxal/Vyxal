@@ -103,6 +103,10 @@ object Elements:
     /** Define an element that doesn't necessarily work on all inputs. It may
       * vectorise on some inputs but not others.
       *
+      * Note that this helper assumes you've already done the work of
+      * vectorising the element, i.e., unlike [[addVect]], vectorisation will
+      * not be done for you.
+      *
       * If using this method, make sure to use `case` to define the function,
       * since it needs a `PartialFunction`. If it is possible to define it using
       * a normal function literal or it covers every single case, then try
@@ -342,7 +346,7 @@ object Elements:
     }
 
     val divides =
-      addPartialVect( // not addVect because of the function, list overload
+      addElem(
         Dyad,
         "Ḋ",
         "Divides? | Append Spaces | Remove Duplicates by Function",

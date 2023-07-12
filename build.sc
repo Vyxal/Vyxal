@@ -62,7 +62,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
     // Task to only show output from failed tests
     def testQuiet(args: String*) = {
       val newArgs = if (args.contains("--")) args else args :+ "--"
-      T.command { testOnly(newArgs :+ "-oNCXEOPQRM": _*)() }
+      T.command { testOnly(newArgs :+ "-oNCXEORM": _*)() }
     }
 
     override def sources = T.sources(
@@ -147,7 +147,7 @@ object jvm extends VyxalModule {
 /** Shared and JS-specific code */
 object js extends ScalaJSModule with VyxalModule {
   def platform = "js"
-  def scalaJSVersion = "1.13.0"
+  def scalaJSVersion = "1.13.2"
   def moduleKind = T { ModuleKind.NoModule }
 
   override def fastLinkJS = T {

@@ -33,8 +33,6 @@ sealed abstract class ImplHelpers[P, F](val arity: Int):
     */
   def fill(symbol: String, impl: P): F
 
-  // TODO reduce duplication between these vectorisation functions and the ones in FuncHelpers.scala
-
   /** Vectorise a function. There's no need to call [[fill]] first */
   def vectorise(symbol: String)(impl: P): F =
     vectoriseNoFill(fill(symbol, impl))

@@ -7,14 +7,12 @@ import VNum.given
 
 object ListHelpers:
 
-  def dedupBy(iterable: VList, predicate: VFun)(using ctx: Context): VList =
-    val seen =
-      mut.ListBuffer
-        .empty[VAny] // you would think I'd be able to use a set here, but no
-    // I have to use a list buffer because sets don't work with VAny apparently.
+  /** Remove items that are duplicates after transforming by `fn` */
+  def dedupBy(iterable: VList, fn: VFun)(using ctx: Context): VList =
+    // Can't use a Set here because equal VNums don't hash to the same value
+    val seen = mut.ArrayBuffer.empty[VAny]
     iterable.filter { item =>
-      val res = predicate.execute(item, 0, List(item))
-
+      val res = fn.execute(item, 0, List(item))
       if seen.contains(res) then false
       else
         seen += res
@@ -46,11 +44,11 @@ object ListHelpers:
           keep
         }
 
-        VList(filtered.map(_._1)*)
+        VList.from(filtered.map(_._1))
       case None =>
-        VList(iterable.zipWithIndex.map { (item, index) =>
+        VList.from(iterable.zipWithIndex.map { (item, index) =>
           predicate.execute(item, index, List(item))
-        }*)
+        })
 
   end filter
 

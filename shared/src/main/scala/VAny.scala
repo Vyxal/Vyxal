@@ -10,12 +10,13 @@ import spire.algebra.*
 import spire.implicits.*
 import spire.math.{Complex, Real}
 
-// todo check if these names or this whole way of structuring need to be changed
 type VAny = VAtom | VList
 type VIter = String | VList
 type VAtom = VVal | VFun
 type VVal = VNum | String
-type VData = VVal | VList // Everything but functions
+
+/** Everything but functions */
+type VData = VVal | VList
 
 /** A function object (not a function definition)
   *
