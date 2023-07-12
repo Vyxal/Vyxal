@@ -605,6 +605,10 @@ class ElementTests extends VyxalTests:
     testCode("0 λ0=[1|1-x×}}Ė", 1)
   }
 
+  describe("Element Ċ") {
+    testCode("#[1|2|3] Ċ 10 Θ", VList(1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
+  }
+
   describe("Element Ė") {
     describe("when given a number") {
       testMulti("Ė")(
