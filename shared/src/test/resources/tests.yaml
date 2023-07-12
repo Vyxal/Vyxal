@@ -663,6 +663,15 @@
   - {in: [0], out: 0}
   - {in: [1], out: 1}
 
+"Ḋ":
+  - {in: [12, 6], out: 1}
+  - {in: [5, 7], out: 0}
+  - {in: [0, 0], out: 1}
+  - {in: [0, 1], out: 0}
+  - {in: ["Vyxal", 5], out: "Vyxal     "}
+  - {in: ["Vyxal", 0], out: "Vyxal"}
+  - {in: [5, "Vyxal"], out: "Vyxal     "}
+
 "Ė":
   When given a number:
     - { in: [0], out: 1 }
