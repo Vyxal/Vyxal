@@ -7,6 +7,20 @@ import VNum.given
 
 object ListHelpers:
 
+  def dedupBy(iterable: VList, predicate: VFun)(using ctx: Context): VList =
+    val seen =
+      mut.ListBuffer
+        .empty[VAny] // you would think I'd be able to use a set here, but no
+    // I have to use a list buffer because sets don't work with VAny apparently.
+    iterable.filter { item =>
+      val res = predicate.execute(item, 0, List(item))
+
+      if seen.contains(res) then false
+      else
+        seen += res
+        true
+    }
+
   def filter(iterable: VList, predicate: VFun)(using ctx: Context): VList =
     predicate.originalAST match
       case Some(lam) =>

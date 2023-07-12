@@ -314,6 +314,23 @@ object Elements:
       case (a: String, b: String) => VList(a.split(b)*)
     }
 
+    val divides = addElem( // not addVect because of the function, list overload
+      Dyad,
+      "Ḋ",
+      "Divides? | Append Spaces | Remove Duplicates by Function",
+      List("divides?", "+-spaces", "dedup-by"),
+      "a: num, b: num -> a % b == 0",
+      "a: str, b: num -> a + ' ' * b",
+      "a: num, b: str -> b + ' ' * a",
+      "a: lst, b: fun -> Remove duplicates from a by applying b to each element"
+    ) {
+      case (a: VNum, b: VNum) => (a % b) == VNum(0)
+      case (a: String, b: VNum) => a + MiscHelpers.multiply(" ", b)
+      case (a: VNum, b: String) => b + MiscHelpers.multiply(" ", a)
+      case (a: VList, b: VFun) => ListHelpers.dedupBy(a, b)
+      case (a: VFun, b: VList) => ListHelpers.dedupBy(b, a)
+    }
+
     val double = addVect(
       Monad,
       "d",
