@@ -100,6 +100,33 @@ object Elements:
       )
       full
 
+    /** Define an element that doesn't necessarily work on all inputs. It may
+      * vectorise on some inputs but not others.
+      *
+      * If using this method, make sure to use `case` to define the function,
+      * since it needs a `PartialFunction`. If it is possible to define it using
+      * a normal function literal or it covers every single case, then try
+      * [[addFull]] instead.
+      */
+    def addPartialVect[P, F](
+        helper: ImplHelpers[P, F],
+        symbol: String,
+        name: String,
+        keywords: Seq[String],
+        overloads: String*
+    )(impl: P): F =
+      val full = helper.fill(symbol, impl)
+      elements += symbol -> Element(
+        symbol,
+        name,
+        keywords,
+        Some(helper.arity),
+        true,
+        overloads,
+        helper.toDirectFn(full)
+      )
+      full
+
     /** If using this method, make sure to use `case` to define the function,
       * since it needs a `PartialFunction`. If it is possible to define it using
       * a normal function literal, then try [[addFull]] instead.
@@ -314,22 +341,23 @@ object Elements:
       case (a: String, b: String) => VList(a.split(b)*)
     }
 
-    val divides = addElem( // not addVect because of the function, list overload
-      Dyad,
-      "Ḋ",
-      "Divides? | Append Spaces | Remove Duplicates by Function",
-      List("divides?", "+-spaces", "dedup-by"),
-      "a: num, b: num -> a % b == 0",
-      "a: str, b: num -> a + ' ' * b",
-      "a: num, b: str -> b + ' ' * a",
-      "a: lst, b: fun -> Remove duplicates from a by applying b to each element"
-    ) {
-      case (a: VNum, b: VNum) => (a % b) == VNum(0)
-      case (a: String, b: VNum) => a + MiscHelpers.multiply(" ", b)
-      case (a: VNum, b: String) => b + MiscHelpers.multiply(" ", a)
-      case (a: VList, b: VFun) => ListHelpers.dedupBy(a, b)
-      case (a: VFun, b: VList) => ListHelpers.dedupBy(b, a)
-    }
+    val divides =
+      addPartialVect( // not addVect because of the function, list overload
+        Dyad,
+        "Ḋ",
+        "Divides? | Append Spaces | Remove Duplicates by Function",
+        List("divides?", "+-spaces", "dedup-by"),
+        "a: num, b: num -> a % b == 0",
+        "a: str, b: num -> a + ' ' * b",
+        "a: num, b: str -> b + ' ' * a",
+        "a: lst, b: fun -> Remove duplicates from a by applying b to each element"
+      ) {
+        case (a: VNum, b: VNum) => (a % b) == VNum(0)
+        case (a: String, b: VNum) => a + MiscHelpers.multiply(" ", b)
+        case (a: VNum, b: String) => b + MiscHelpers.multiply(" ", a)
+        case (a: VList, b: VFun) => ListHelpers.dedupBy(a, b)
+        case (a: VFun, b: VList) => ListHelpers.dedupBy(b, a)
+      }
 
     val double = addVect(
       Monad,
