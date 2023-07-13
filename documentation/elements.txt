@@ -367,7 +367,7 @@ Keywords: cycle, is-positive?, positive?, >0?
 - a: lst -> a ++ a ++ a ++ ...
 - a: num -> a > 0
 ---------------------
-Ḋ (Divides? | Append Spaces | Remove Duplicates by Function) (vectorising)
+Ḋ (Divides? | Append Spaces | Remove Duplicates by Function) (non-vectorising)
 Trigraph: #.D
 Keywords: divides?, +-spaces, dedup-by
 - a: num, b: num -> a % b == 0
