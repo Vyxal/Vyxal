@@ -10,14 +10,14 @@ import mill.scalanativelib._
 import mill.scalanativelib.api._
 
 /** Shared settings for all modules */
-trait VyxalModule extends ScalaModule with ScalafmtModule {
-  def platform: String
-
-  def scalaVersion = "3.3.0"
+abstract class VyxalModule(platform: String)
+    extends ScalaModule
+    with ScalafmtModule {
+  override def scalaVersion = "3.3.0"
 
   def vyxalVersion = "3.0.0"
 
-  def ivyDeps = Agg(
+  override def ivyDeps = Agg(
     ivy"org.typelevel::spire::0.18.0",
     ivy"org.scala-lang.modules::scala-parser-combinators::2.3.0",
     ivy"com.lihaoyi::fastparse::3.0.1",
@@ -25,7 +25,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
     ivy"com.outr::scribe::3.11.7"
   )
 
-  def scalacOptions = Seq(
+  override def scalacOptions = Seq(
     "-deprecation", // Emit warning and location for usages of deprecated APIs.
     "-encoding",
     "utf-8", // Specify character encoding used by source files.
@@ -38,11 +38,11 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
   )
 
   // Combine shared sources and platform-specific sources
-  def sources = T.sources(
+  override def sources = T.sources(
     build.millSourcePath / platform / "src",
     build.millSourcePath / "shared" / "src"
   )
-  def resources = T.sources(
+  override def resources = T.sources(
     build.millSourcePath / platform / "resources",
     build.millSourcePath / "shared" / "resources"
   )
@@ -53,7 +53,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
       with ScalafmtModule {
     override def defaultCommandName() = "test"
 
-    def ivyDeps = Agg(
+    override def ivyDeps = Agg(
       ivy"org.scalatest::scalatest::3.2.16",
       ivy"org.scala-sbt:test-interface:1.0",
       ivy"org.virtuslab::scala-yaml::0.0.7"
@@ -77,9 +77,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
 }
 
 /** Shared and JVM-specific code */
-object jvm extends VyxalModule {
-  def platform = "jvm"
-
+object jvm extends VyxalModule("jvm") {
   def ivyDeps = T {
     super.ivyDeps() ++ Seq(
       // For the REPL
@@ -145,8 +143,7 @@ object jvm extends VyxalModule {
 }
 
 /** Shared and JS-specific code */
-object js extends ScalaJSModule with VyxalModule {
-  def platform = "js"
+object js extends VyxalModule("js") with ScalaJSModule {
   def scalaJSVersion = "1.13.2"
   def moduleKind = T { ModuleKind.NoModule }
 
@@ -172,8 +169,7 @@ object js extends ScalaJSModule with VyxalModule {
 }
 
 /** Shared and native-specific code */
-object native extends ScalaNativeModule with VyxalModule {
-  def platform = "native"
+object native extends VyxalModule("native") with ScalaNativeModule {
   def scalaNativeVersion = "0.4.14"
 
   def ivyDeps = T {
