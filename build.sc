@@ -39,12 +39,12 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
 
   // Combine shared sources and platform-specific sources
   def sources = T.sources(
-    build.millSourcePath / platform / "src" / "main" / "scala",
-    build.millSourcePath / "shared" / "src" / "main" / "scala"
+    build.millSourcePath / platform / "src",
+    build.millSourcePath / "shared" / "src"
   )
   def resources = T.sources(
-    build.millSourcePath / platform / "src" / "main" / "resources",
-    build.millSourcePath / "shared" / "src" / "main" / "resources"
+    build.millSourcePath / platform / "resources",
+    build.millSourcePath / "shared" / "resources"
   )
 
   trait VyxalTestModule
@@ -66,12 +66,12 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
     }
 
     override def sources = T.sources(
-      build.millSourcePath / platform / "src" / "test" / "scala",
-      build.millSourcePath / "shared" / "src" / "test" / "scala"
+      build.millSourcePath / platform / "test" / "src",
+      build.millSourcePath / "shared" / "test" / "src"
     )
     override def resources = T.sources(
-      build.millSourcePath / platform / "src" / "test" / "resources",
-      build.millSourcePath / "shared" / "src" / "test" / "resources"
+      build.millSourcePath / platform / "test" / "resources",
+      build.millSourcePath / "shared" / "test" / "resources"
     )
   }
 }

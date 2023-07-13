@@ -9,6 +9,7 @@ ThisBuild / scalaVersion := "3.3.0"
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 import org.scalajs.linker.interface.OutputPatterns
+import sbtcrossproject.{CrossType, Platform}
 
 lazy val root: Project = project
   .in(file("."))
@@ -18,13 +19,64 @@ lazy val root: Project = project
     publishLocal := {}
   )
 
+/** Custom folder structure */
+// TODO (user): Figure out why this can't be a singleton object
+val CustomCrossType = new sbtcrossproject.CrossType {
+  def projectDir(crossBase: File, projectType: String): File =
+    crossBase / projectType
+
+  def projectDir(crossBase: File, platform: Platform): File =
+    crossBase / platform.identifier
+
+  def moduleDirFor(moduleBase: File, conf: String): Option[File] =
+    if (conf == "main") Some(moduleBase)
+    else if (conf == "test") Some(moduleBase / "test")
+    else None
+
+  def sharedSrcDir(projectBase: File, conf: String): Option[File] =
+    moduleDirFor(projectBase.getParentFile / "shared", conf).map(_ / "src")
+
+  override def partiallySharedSrcDir(
+      projectBase: File,
+      platforms: Seq[Platform],
+      conf: String
+  ): Option[File] = {
+    val dir = platforms.map(_.identifier).mkString("-")
+    moduleDirFor(projectBase.getParentFile / dir, conf).map(_ / "src")
+  }
+
+  override def sharedResourcesDir(
+      projectBase: File,
+      conf: String
+  ): Option[File] =
+    moduleDirFor(projectBase.getParentFile / "shared", conf)
+      .map(_ / "resources")
+
+  override def partiallySharedResourcesDir(
+      projectBase: File,
+      platforms: Seq[Platform],
+      conf: String
+  ): Option[File] = {
+    val dir = platforms.map(_.identifier).mkString("-")
+    moduleDirFor(projectBase.getParentFile / dir, conf).map(_ / "resources")
+  }
+}
+
 lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
+  .crossType(CustomCrossType)
   .in(file("."))
   .settings(
     // Shared settings
     name := "vyxal",
     version := vyxalVersion,
     semanticdbEnabled := true,
+    // The custom CrossType above only changes where the compiler looks for
+    // shared/partially shared code. This is required for changing the location
+    // of platform-specific code.
+    Compile / scalaSource := baseDirectory.value / "src",
+    Compile / resourceDirectory := baseDirectory.value / "resources",
+    Test / scalaSource := baseDirectory.value / "test" / "src",
+    Test / resourceDirectory := baseDirectory.value / "test" / "resources",
     libraryDependencies ++= Seq(
       // For number stuff
       "org.typelevel" %%% "spire" % "0.18.0",
