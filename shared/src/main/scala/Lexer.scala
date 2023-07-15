@@ -107,7 +107,7 @@ object Lexer extends RegexParsers:
         case '„' => CompressedString(text)
         case '”' => DictionaryString(text)
         case '“' => CompressedNumber(text)
-        case _   => Str(text) // No closing quote
+        case l   => Str(text + l) // No closing quote
     }
 
   def contextIndex: Parser[VyxalToken] = """\d*¤""".r ^^ { value =>
