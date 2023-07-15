@@ -70,6 +70,7 @@ FLAG_STRING = """ALL flags should be used as is (no '-' prefix)
     b    Make the interpreter timeout after 15 seconds (online interpreter only)
     B    Make the interpreter timeout after 30 seconds (online interpreter only)
     T    Make the interpreter timeout after 60 seconds (online interpreter only)
+    ⋎    Print the current Vyxal version (offline interpreter only)
 """
 
 
@@ -87,6 +88,17 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     # Handle input handling flags
     if "h" in flags:  # Help flag
         vy_print(FLAG_STRING, ctx=ctx)
+        sys.exit(0)
+
+    if "⋎" in flags:
+        try:
+            import tomllib as toml
+
+            with open("pyproject.toml", "rb") as f:
+                version = toml.load(f)["tool"]["poetry"]["version"]
+            print(version)
+        except ModuleNotFoundError:
+            print("Use python 3.11+ to get the version")
         sys.exit(0)
 
     if "A" in flags:
