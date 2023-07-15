@@ -47,4 +47,4 @@ for char in string.printable:
 codepage_number_compress = codepage.replace("»", "")
 codepage_string_compress = codepage.replace("«", "")
 
-base_27_alphabet = " abcdefghijklmnopqrstuvwxyz"
+base_27_alphabet = " etaoinshrdlcumwfgypbvkjxqz"
