@@ -85,7 +85,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       // For command line parsing
       "com.github.scopt" %%% "scopt" % "4.1.0",
       // For logging
-      "com.outr" %%% "scribe" % "3.11.7",
+      "com.outr" %%% "scribe" % "3.11.8",
       // For reading tests.yaml
       "org.virtuslab" %%% "scala-yaml" % "0.0.7" % Test,
       "org.scalatest" %%% "scalatest" % "3.2.16" % Test

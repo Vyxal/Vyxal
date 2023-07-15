@@ -49,7 +49,6 @@ class LexerTests extends VyxalTests:
           List(Digraph("k\""), MonadicModifier("v"), Command("y"))
         )
       }
-
     }
 
     it("should differentiate between strings and dictionary strings?") {
@@ -60,8 +59,11 @@ class LexerTests extends VyxalTests:
           """ "Hello, Vyxal!” """,
           List(DictionaryString("Hello, Vyxal!"))
         )
-
       }
+    }
+
+    it("should auto-close strings") {
+      testLex(""" "Unclosed""", List(Str("Unclosed")))
     }
   }
 

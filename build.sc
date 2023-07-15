@@ -22,7 +22,7 @@ abstract class VyxalModule(platform: String)
     ivy"org.scala-lang.modules::scala-parser-combinators::2.3.0",
     ivy"com.lihaoyi::fastparse::3.0.1",
     ivy"com.github.scopt::scopt::4.1.0",
-    ivy"com.outr::scribe::3.11.7"
+    ivy"com.outr::scribe::3.11.8"
   )
 
   override def scalacOptions = Seq(
