@@ -85,7 +85,7 @@ object Lexer extends RegexParsers:
       Number(value)
     }
 
-  def string: Parser[VyxalToken] = raw"""("(?:[^"„”“\\]|\\.)*(["„”“]|$))""".r ^^ {
+  def string: Parser[VyxalToken] = raw"""("(?:[^"„”“\\]|\\.)*(["„”“]|$$))""".r ^^ {
     value =>
       // If the last character of each token is ", then it's a normal string
       // If the last character of each token is „, then it's a compressed string
