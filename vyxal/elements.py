@@ -15,6 +15,7 @@ import time
 import types
 import urllib.request
 import json
+from bs4 import BeautifulSoup as bs
 from datetime import datetime
 from typing import Callable, Union
 
@@ -4992,6 +4993,34 @@ def parse_direction_arrow_to_vector(lhs, ctx):
         }.get(lhs, [sympy.nsimplify(0), sympy.nsimplify(0)])
     else:
         return vectorise(parse_direction_arrow_to_vector, list(lhs), ctx=ctx)()
+
+
+@element("¨P", 1)
+def parse_html(lhs, ctx):
+    soup = bs(lhs, "html.parser")
+
+    def traverse(soup):
+        if soup.name is not None:
+            if soup.name == "[document]":
+                return [
+                    traverse(child)
+                    for child in soup.children
+                    if child.name is not None
+                ]
+            return [
+                soup.name,
+                soup.text,
+                [
+                    traverse(child)
+                    for child in soup.children
+                    if child.name is not None
+                ],
+            ]
+        else:
+            return []
+
+    parsed = traverse(soup)
+    return parsed
 
 
 @element("Ṗ", 1)
