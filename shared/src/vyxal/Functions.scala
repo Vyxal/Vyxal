@@ -1,10 +1,15 @@
 package vyxal
 
+type GenericMonad[T] = VAny => Context ?=> T
+type GenericDyad[T] = (VAny, VAny) => Context ?=> T
+type GenericTriad[T] = (VAny, VAny, VAny) => Context ?=> T
+type GenericTetrad[T] = (VAny, VAny, VAny, VAny) => Context ?=> T
+
 //These represent normal Scala functions, not functions operating on the stack
-type Monad = VAny => Context ?=> VAny
-type Dyad = (VAny, VAny) => Context ?=> VAny
-type Triad = (VAny, VAny, VAny) => Context ?=> VAny
-type Tetrad = (VAny, VAny, VAny, VAny) => Context ?=> VAny
+type Monad = GenericMonad[VAny]
+type Dyad = GenericDyad[VAny]
+type Triad = GenericTriad[VAny]
+type Tetrad = GenericTetrad[VAny]
 
 /** Like a [[Monad]], but doesn't accept all inputs */
 type PartialMonad = Context ?=> PartialFunction[VAny, VAny]
@@ -20,31 +25,34 @@ type DirectFn = () => Context ?=> Unit
   *   The partial version of the function this helper group takes (`Context \=>
   *   PartialFunction[(VAny, ...), VAny]`)
   * @tparam F
-  *   The full version of the function (`(VAny, ...) => Context => VAny`)
+  *   A type constructor of the form (`[T] =>> (VAny, ...) => Context => T`)
   */
-sealed abstract class ImplHelpers[P, F](val arity: Int):
+sealed abstract class ImplHelpers[P, F[_]](val arity: Int):
+  /** The full version of the function (`(VAny, ...) => Context => VAny`) */
+  type Full = F[VAny]
+
   /** Turn a completed implementation into a [[DirectFn]] */
-  def toDirectFn(impl: F): DirectFn
+  def toDirectFn(impl: Full): DirectFn
 
   /** Turn a partial implementation into a complete one
     *
     * The returned function throws an [[vyxal.UnimplementedOverloadException]]
     * when passed an argument for which it's not defined
     */
-  def fill(symbol: String, impl: P): F
+  def fill(symbol: String, impl: P): Full
 
   /** Vectorise a function. There's no need to call [[fill]] first */
-  def vectorise(symbol: String)(impl: P): F =
+  def vectorise(symbol: String)(impl: P): Full =
     vectoriseNoFill(fill(symbol, impl))
 
   /** For subclasses to implement. Vectorise an implementation that's already
     * been passed to [[fill]] and isn't a `PartialFunction` but doesn't actually
     * work on lists.
     */
-  protected def vectoriseNoFill(impl: F): F
+  protected def vectoriseNoFill(impl: Full): Full
 end ImplHelpers
 
-object Monad extends ImplHelpers[PartialMonad, Monad](1):
+object Monad extends ImplHelpers[PartialMonad, GenericMonad](1):
   override def toDirectFn(impl: Monad) =
     () => ctx ?=> ctx.push(impl(ctx.pop()))
 
@@ -60,7 +68,7 @@ object Monad extends ImplHelpers[PartialMonad, Monad](1):
 
     res
 
-object Dyad extends ImplHelpers[PartialDyad, Dyad](2):
+object Dyad extends ImplHelpers[PartialDyad, GenericDyad](2):
   override def toDirectFn(impl: Dyad): DirectFn =
     () =>
       ctx ?=>
@@ -83,7 +91,7 @@ object Dyad extends ImplHelpers[PartialDyad, Dyad](2):
     res
 end Dyad
 
-object Triad extends ImplHelpers[PartialTriad, Triad](3):
+object Triad extends ImplHelpers[PartialTriad, GenericTriad](3):
   override def toDirectFn(impl: Triad): DirectFn =
     () =>
       ctx ?=>
@@ -118,7 +126,7 @@ object Triad extends ImplHelpers[PartialTriad, Triad](3):
   end vectoriseNoFill
 end Triad
 
-object Tetrad extends ImplHelpers[PartialTetrad, Tetrad](4):
+object Tetrad extends ImplHelpers[PartialTetrad, GenericTetrad](4):
   override def toDirectFn(impl: Tetrad): DirectFn =
     () =>
       ctx ?=>

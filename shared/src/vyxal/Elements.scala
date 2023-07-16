@@ -7,11 +7,11 @@ import scala.language.implicitConversions
 
 import vyxal.*
 import vyxal.ListHelpers.makeIterable
+import vyxal.VNum.given
 
 import scala.io.StdIn
 
 import spire.algebra.*
-import VNum.given
 
 /** Implementations for elements */
 case class Element(
@@ -53,14 +53,14 @@ object Elements:
     /** Add a monad that handles all `VAny`s (it doesn't take a
       * `PartialFunction`, hence "Full")
       */
-    def addFull[F](
+    def addFull[F[_]](
         helper: ImplHelpers[?, F],
         symbol: String,
         name: String,
         keywords: Seq[String],
         vectorises: Boolean,
         overloads: String*
-    )(impl: F): F =
+    )(impl: F[VAny]): F[VAny] =
       elements += symbol -> Element(
         symbol,
         name,
@@ -81,13 +81,13 @@ object Elements:
       * a normal function literal or it covers every single case, then try
       * [[addFull]] instead.
       */
-    def addElem[P, F](
+    def addElem[P, F[_]](
         helper: ImplHelpers[P, F],
         symbol: String,
         name: String,
         keywords: Seq[String],
         overloads: String*
-    )(impl: P): F =
+    )(impl: P): F[VAny] =
       val full = helper.fill(symbol, impl)
       elements += symbol -> Element(
         symbol,
@@ -112,13 +112,13 @@ object Elements:
       * a normal function literal or it covers every single case, then try
       * [[addFull]] instead.
       */
-    def addPartialVect[P, F](
+    def addPartialVect[P, F[_]](
         helper: ImplHelpers[P, F],
         symbol: String,
         name: String,
         keywords: Seq[String],
         overloads: String*
-    )(impl: P): F =
+    )(impl: P): F[VAny] =
       val full = helper.fill(symbol, impl)
       elements += symbol -> Element(
         symbol,
@@ -135,13 +135,13 @@ object Elements:
       * since it needs a `PartialFunction`. If it is possible to define it using
       * a normal function literal, then try [[addFull]] instead.
       */
-    def addVect[P, F](
+    def addVect[P, F[_]](
         helper: ImplHelpers[P, F],
         symbol: String,
         name: String,
         keywords: Seq[String],
         overloads: String*
-    )(impl: P): F =
+    )(impl: P): F[VAny] =
       val vectorised = helper.vectorise(symbol)(impl)
       elements += symbol -> Element(
         symbol,
@@ -497,7 +497,7 @@ object Elements:
       "a ->"
     ) { ctx ?=> ctx.pop() }
 
-    val factors: Monad = addVect(
+    val factors = addVect(
       Monad,
       "K",
       "Factors | Is Numeric?",
@@ -616,7 +616,7 @@ object Elements:
       "a: str, b: str -> a > b"
     ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) > 0 }
 
-    val head: Monad = addElem(
+    val head = addElem(
       Monad,
       "h",
       "Head | First Item",
@@ -628,7 +628,7 @@ object Elements:
         .headOption
         .getOrElse(MiscHelpers.defaultEmpty(a))
     }
-    val hexadecimal: Monad = addVect(
+    val hexadecimal = addVect(
       Monad,
       "H",
       "Hexadecimal | To Hexadecimal",
@@ -686,7 +686,7 @@ object Elements:
       else temp
     }
 
-    val isEven: Monad = addVect(
+    val isEven = addVect(
       Monad,
       "e",
       "Is Even / Split on Newlines",
@@ -721,7 +721,7 @@ object Elements:
 
     }
 
-    val length: Monad = addElem(
+    val length = addElem(
       Monad,
       "L",
       "Length | Length of List",
@@ -732,7 +732,7 @@ object Elements:
       case a => ListHelpers.makeIterable(a).length
     }
 
-    val lengthVecorised: Monad = addElem(
+    val lengthVectorised = addElem(
       Monad,
       "l",
       "Length of Each Item",
@@ -1135,7 +1135,7 @@ object Elements:
       throw new ReturnFromFunctionException
     }
 
-    val sort: Monad = addFull(
+    val sort = addFull(
       Monad,
       "S",
       "Sort ascending",
@@ -1225,7 +1225,7 @@ object Elements:
         ctx.push(b, a)
     }
 
-    val tail: Monad = addElem(
+    val tail = addElem(
       Monad,
       "t",
       "Tail | Last Item",
@@ -1264,7 +1264,7 @@ object Elements:
       case a => ListHelpers.transposeSafe(ListHelpers.makeIterable(a))
     }
 
-    val triple: Monad = addElem(
+    val triple = addElem(
       Monad,
       "T",
       "Triple | Contains Only Alphabet | Transpose",

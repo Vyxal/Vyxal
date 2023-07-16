@@ -1,10 +1,18 @@
-package vyxal.lexer.debugger
+package vyxal.debugger
 
-import vyxal.*
+import vyxal.{AST, Context}
 
 import scala.collection.mutable.ArrayBuffer
 
 case class StackFrame(ctx: Context, tree: AST)
+
+/** The result of stepping into an element */
+enum StepRes:
+  /** Call a function, and then run `next` to finish executing this element */
+  case FnCall(fn: AST.FnDef, next: () => StepRes)
+
+  /** The element finished executing in a single step */
+  case Done
 
 class Debugger(code: AST)(using rootCtx: Context):
   private val stackframes: ArrayBuffer[StackFrame] = ArrayBuffer(
