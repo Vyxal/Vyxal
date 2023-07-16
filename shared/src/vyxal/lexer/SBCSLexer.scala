@@ -19,11 +19,9 @@ private[lexer] object SBCSLexer extends Lexer:
   def string[$: P]: P[Token] =
     P(
       withRange(
-        "\"" ~~/ (("\\" ~~/ AnyChar) | (!CharIn(
-          "\"„”“"
-        ) ~~ AnyChar)).repX.! ~~ CharIn(
-          "\"„”“"
-        ).!
+        "\""
+          ~~/ (("\\" ~~/ AnyChar) | (!CharIn("\"„”“") ~~ AnyChar)).repX.!
+          ~~ (CharIn("\"„”“").! | End)
       )
     )
       .map { case ((value, last), range) =>
@@ -41,13 +39,16 @@ private[lexer] object SBCSLexer extends Lexer:
           .replace(raw"\n", "\n")
           .replace(raw"\t", "\t")
 
-        val tokenType = (last.charAt(0): @unchecked) match
-          case '"' => Str
-          case '„' => CompressedString
-          case '”' => DictionaryString
-          case '“' => CompressedNumber
+        last match
+          case quote: String =>
+            val tokenType = quote match
+              case "\"" => Str
+              case "„" => CompressedString
+              case "”" => DictionaryString
+              case "“" => CompressedNumber
 
-        Token(tokenType, text, range)
+            Token(tokenType, text, range)
+          case _ => Token(Str, text, range)
       }
 
   def singleCharString[$: P]: P[Token] =
