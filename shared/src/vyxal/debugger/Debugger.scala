@@ -1,9 +1,11 @@
 package vyxal.debugger
 
-import vyxal.{AST, Context}
+import vyxal.{AST, Context, MiscHelpers}
 import vyxal.impls.Elements
 
 import scala.collection.mutable.ArrayBuffer
+
+import StepRes.*
 
 case class StackFrame(ctx: Context, tree: AST)
 
@@ -11,6 +13,7 @@ case class StackFrame(ctx: Context, tree: AST)
 enum StepRes:
   /** Call a function, and then run `next` to finish executing this element */
   case FnCall(fn: AST.FnDef, next: () => StepRes)
+  case Structure(body: Iterable[AST], next: () => StepRes)
 
   /** The element finished executing in a single step */
   case Done
@@ -20,7 +23,8 @@ class Debugger(code: AST)(using rootCtx: Context):
     StackFrame(rootCtx, code)
   )
 
-  private var currSteps: Iterator[AST] = ???
+  /** A queue with the current steps to execute */
+  private val currSteps = ArrayBuffer.empty[AST]
 
   /** The current context */
   private def ctx: Context = stackframes.last.ctx
@@ -28,8 +32,8 @@ class Debugger(code: AST)(using rootCtx: Context):
   def addBreakpoint(row: Int, col: Int): Unit = ???
 
   def stepInto(): Unit =
-    if currSteps.hasNext then
-      val curr = currSteps.next
+    if currSteps.nonEmpty then
+      val curr = currSteps.remove(0)
 
   def stepOver(): Unit = ???
 
@@ -41,10 +45,20 @@ class Debugger(code: AST)(using rootCtx: Context):
     ast match
       case AST.Number(value, _) =>
         ctx.push(value)
-        StepRes.Done
+        Done
       case AST.Str(value, _) =>
         ctx.push(value)
-        StepRes.Done
+        Done
+      case AST.Lst(elems, _) =>
+        elems match
+          case first :: rest =>
+            Structure(
+              List(first),
+              rest.foldRight { () => Done } { (elem, nextRes) => () =>
+                Structure(List(elem), nextRes)
+              }
+            )
+          case _ => Structure(Nil, () => Done)
       case AST.Command(symbol, _) =>
         DebugImpls.impls.get(symbol) match
           case Some(impl) => impl()(using ctx)
@@ -52,7 +66,14 @@ class Debugger(code: AST)(using rootCtx: Context):
             Elements.elements.get(symbol) match
               case Some(element) =>
                 element.impl()(using ctx)
-                StepRes.Done
+                Done
               case None => throw RuntimeException(s"No such element: $symbol")
+      case AST.While(Some(cond), body, _) =>
+        // todo this might not work with breaks and stuff
+        def runWhile(): StepRes =
+          if MiscHelpers.boolify(ctx.pop()) then
+            Structure(List(body, cond), () => runWhile())
+          else Done
+        Structure(List(cond), () => runWhile())
       case _ => ???
 end Debugger
