@@ -11,15 +11,17 @@ case class StackFrame(ctx: Context, tree: AST)
 
 /** The result of stepping into an element */
 enum StepRes:
-  /** Call a function, and then run `next` to finish executing this element */
-  case FnCall(fn: AST.FnDef, next: () => StepRes)
-  case Structure(body: Iterable[AST], next: () => StepRes)
+  /** Call a function */
+  case FnCall(fn: VFun)
+
+  /** Execute `first`, then `second` */
+  case Then(first: StepRes, second: StepRes)
 
   /** The element finished executing in a single step */
   case Done
 
 class Debugger(code: AST)(using rootCtx: Context):
-  private val stackframes: ArrayBuffer[StackFrame] = ArrayBuffer(
+  private val stackFrames: ArrayBuffer[StackFrame] = ArrayBuffer(
     StackFrame(rootCtx, code)
   )
 
@@ -27,7 +29,7 @@ class Debugger(code: AST)(using rootCtx: Context):
   private val currSteps = ArrayBuffer.empty[AST]
 
   /** The current context */
-  private def ctx: Context = stackframes.last.ctx
+  private def ctx: Context = stackFrames.last.ctx
 
   def addBreakpoint(row: Int, col: Int): Unit = ???
 
@@ -60,20 +62,23 @@ class Debugger(code: AST)(using rootCtx: Context):
             )
           case _ => Structure(Nil, () => Done)
       case AST.Command(symbol, _) =>
-        DebugImpls.impls.get(symbol) match
-          case Some(impl) => impl()(using ctx)
-          case None =>
-            Elements.elements.get(symbol) match
-              case Some(element) =>
-                element.impl()(using ctx)
-                Done
-              case None => throw RuntimeException(s"No such element: $symbol")
-      case AST.While(Some(cond), body, _) =>
-        // todo this might not work with breaks and stuff
-        def runWhile(): StepRes =
-          if MiscHelpers.boolify(ctx.pop()) then
-            Structure(List(body, cond), () => runWhile())
-          else Done
-        Structure(List(cond), () => runWhile())
+        // todo put the string "E" into a constant somewhere
+        if symbol == "E" && ctx.peek.isInstanceOf[VFun] then
+          FnCall(ctx.peek.asInstanceOf[VFun])
+        else
+          DebugImpls.impls.get(symbol) match
+            case Some(impl) => impl()(using ctx)
+            case None =>
+              Elements.elements.get(symbol) match
+                case Some(element) =>
+                  element.impl()(using ctx)
+                  Done
+                case None => throw RuntimeException(s"No such element: $symbol")
+      case (_: AST.While) | (_: AST.For) =>
+        val loopCtx = ctx.makeChild()
+        loopCtx.ctxVarPrimary = true
+        loopCtx.ctxVarSecondary = ctx.settings.rangeStart
+        stackFrames += StackFrame(loopCtx, ast)
+        Done
       case _ => ???
 end Debugger
