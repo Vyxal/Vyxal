@@ -169,16 +169,16 @@ object js extends VyxalModule("js") with ScalaJSModule {
 }
 
 /** Shared and native-specific code */
-object native extends VyxalModule("native") with ScalaNativeModule {
-  def scalaNativeVersion = "0.4.14"
+// object native extends VyxalModule("native") with ScalaNativeModule {
+//   def scalaNativeVersion = "0.4.14"
 
-  def ivyDeps = T {
-    super.ivyDeps() ++ Seq(ivy"com.github.scopt::scopt:4.1.0")
-  }
+//   def ivyDeps = T {
+//     super.ivyDeps() ++ Seq(ivy"com.github.scopt::scopt:4.1.0")
+//   }
 
-  override def nativeEmbedResources = true
+//   override def nativeEmbedResources = true
 
-  object test extends ScalaNativeTests with VyxalTestModule {
-    override def nativeEmbedResources = true
-  }
-}
+//   object test extends ScalaNativeTests with VyxalTestModule {
+//     override def nativeEmbedResources = true
+//   }
+// }
