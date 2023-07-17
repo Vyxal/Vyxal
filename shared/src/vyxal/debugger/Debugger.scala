@@ -1,6 +1,6 @@
 package vyxal.debugger
 
-import vyxal.{AST, Context, MiscHelpers}
+import vyxal.*
 import vyxal.impls.Elements
 
 import scala.collection.mutable.ArrayBuffer
@@ -51,16 +51,16 @@ class Debugger(code: AST)(using rootCtx: Context):
       case AST.Str(value, _) =>
         ctx.push(value)
         Done
-      case AST.Lst(elems, _) =>
-        elems match
-          case first :: rest =>
-            Structure(
-              List(first),
-              rest.foldRight { () => Done } { (elem, nextRes) => () =>
-                Structure(List(elem), nextRes)
-              }
-            )
-          case _ => Structure(Nil, () => Done)
+      case AST.Lst(elems, _) => ???
+//        elems match
+//          case first :: rest =>
+//            Structure(
+//              List(first),
+//              rest.foldRight { () => Done } { (elem, nextRes) => () =>
+//                Structure(List(elem), nextRes)
+//              }
+//            )
+//          case _ => Structure(Nil, () => Done)
       case AST.Command(symbol, _) =>
         // todo put the string "E" into a constant somewhere
         if symbol == "E" && ctx.peek.isInstanceOf[VFun] then

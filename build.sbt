@@ -13,7 +13,7 @@ import sbtcrossproject.{CrossType, Platform}
 
 lazy val root: Project = project
   .in(file("."))
-  .aggregate(vyxal.js, vyxal.jvm, vyxal.native)
+  .aggregate(vyxal.js, vyxal.jvm/*, vyxal.native*/)
   .settings(
     publish := {},
     publishLocal := {}
@@ -62,7 +62,7 @@ val CustomCrossType = new sbtcrossproject.CrossType {
   }
 }
 
-lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
+lazy val vyxal = crossProject(JSPlatform, JVMPlatform/*, NativePlatform*/)
   .crossType(CustomCrossType)
   .in(file("."))
   .settings(
@@ -135,9 +135,9 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     Compile / fastOptJS / artifactPath := baseDirectory.value.getParentFile / "pages" / "vyxal.js",
     Compile / fullOptJS / artifactPath := baseDirectory.value.getParentFile / "pages" / "vyxal.js",
   )
-  .nativeSettings(
-    // Scala Native-specific settings
-    nativeConfig ~= {
-      _.withEmbedResources(true)
-    },
-  )
+//  .nativeSettings(
+//    // Scala Native-specific settings
+//    nativeConfig ~= {
+//      _.withEmbedResources(true)
+//    },
+//  )
