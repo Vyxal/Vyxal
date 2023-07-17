@@ -91,14 +91,9 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         sys.exit(0)
 
     if "⋎" in flags:
-        try:
-            import tomllib as toml
+        import importlib.metadata
 
-            with open("pyproject.toml", "rb") as f:
-                version = toml.load(f)["tool"]["poetry"]["version"]
-            print(version)
-        except ModuleNotFoundError:
-            print("Use python 3.11+ to get the version")
+        print(importlib.metadata.version("vyxal"))
         sys.exit(0)
 
     if "A" in flags:
