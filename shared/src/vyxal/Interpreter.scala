@@ -58,9 +58,9 @@ object Interpreter:
           case Some(elem) => elem.impl()
           case None => throw RuntimeException(s"No such command: '$cmd'")
       case AST.Group(elems, _, _) =>
-        elems.foreach(Interpreter.execute(_))
+        elems.foreach(Interpreter.execute)
       case AST.CompositeNilad(elems, _) =>
-        elems.foreach(Interpreter.execute(_))
+        elems.foreach(Interpreter.execute)
       case AST.Ternary(thenBody, elseBody, _) =>
         if MiscHelpers.boolify(ctx.pop()) then execute(thenBody)
         else if elseBody.nonEmpty then execute(elseBody.get)
@@ -106,7 +106,7 @@ object Interpreter:
 
         catch case _: BreakLoopException => return
 
-      case AST.For(None, body, _) =>
+      case AST.For(name, body, _) =>
         val iterable =
           ListHelpers.makeIterable(ctx.pop(), Some(true))(using ctx)
         var index = 0
@@ -114,22 +114,7 @@ object Interpreter:
         try
           for elem <- iterable do
             try
-              loopCtx.ctxVarPrimary = elem
-              loopCtx.ctxVarSecondary = index
-              index += 1
-              execute(body)(using loopCtx)
-            catch case _: ContinueLoopException => ()
-        catch case _: BreakLoopException => return
-
-      case AST.For(Some(name), body, _) =>
-        val iterable =
-          ListHelpers.makeIterable(ctx.pop(), Some(true))(using ctx)
-        var index = 0
-        given loopCtx: Context = ctx.makeChild()
-        try
-          for elem <- iterable do
-            try
-              loopCtx.setVar(name, elem)
+              name.foreach(loopCtx.setVar(_, elem))
               loopCtx.ctxVarPrimary = elem
               loopCtx.ctxVarSecondary = index
               index += 1

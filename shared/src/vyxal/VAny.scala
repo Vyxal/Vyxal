@@ -5,10 +5,11 @@ import vyxal.Interpreter.executeFn
 
 import scala.collection.mutable as mut
 import scala.reflect.TypeTest
-
 import spire.algebra.*
 import spire.implicits.*
 import spire.math.{Complex, Real}
+
+import scala.annotation.targetName
 
 type VAny = VAtom | VList
 type VIter = String | VList
@@ -80,7 +81,7 @@ case class VFun(
   end executeResult
 
   def apply(args: VAny*)(using ctx: Context): VAny =
-    Interpreter.executeFn(this)
+    Interpreter.executeFn(this, args = args)
 end VFun
 
 object VFun:
@@ -95,10 +96,10 @@ object VFun:
     )
 
   def fromElement(elem: Element)(using origCtx: Context): VFun =
-    val Element(symbol, name, _, arity, _, _, impl) = elem
-    VFun(impl, arity.getOrElse(1), List.empty, origCtx)
+    VFun(elem.impl, elem.arity.getOrElse(1), List.empty, origCtx)
 
 extension (self: VAny)
+  @targetName("vEquals")
   def ===(that: VAny): Boolean =
     (self, that) match
       case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) == 0

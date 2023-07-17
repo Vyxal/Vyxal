@@ -3,24 +3,34 @@ package vyxal.debugger
 import vyxal.*
 import vyxal.impls.Elements
 
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 
 import StepRes.*
-
-case class StackFrame(ctx: Context, tree: AST)
 
 /** The result of stepping into an element */
 enum StepRes:
   /** Call a function */
   case FnCall(fn: VFun)
 
+  /** Process `orig`, then run `fn` right after (in the same step) */
+  case Then(orig: StepRes, fn: () => Unit)
+
   /** Execute `first`, then `second` */
-  case Then(first: StepRes, second: StepRes)
+  case FlatMap(first: StepRes, second: () => StepRes)
 
   /** The element finished executing in a single step */
   case Done
 
+  case Exec(ast: AST)
+
+  def map(fn: => Unit): StepRes = Then(this, () => fn)
+
+  def flatMap(next: => StepRes): StepRes = FlatMap(this, () => next)
+end StepRes
+
 class Debugger(code: AST)(using rootCtx: Context):
+  case class StackFrame(ctx: Context, tree: AST)
+
   private val stackFrames: ArrayBuffer[StackFrame] = ArrayBuffer(
     StackFrame(rootCtx, code)
   )
@@ -52,15 +62,16 @@ class Debugger(code: AST)(using rootCtx: Context):
         ctx.push(value)
         Done
       case AST.Lst(elems, _) => ???
+//        val list = ListBuffer.empty[VAny]
+//        elems.map { elem =>
+//          Exec(elem).map { list.append(ctx.pop()) }
+//        }
 //        elems match
 //          case first :: rest =>
-//            Structure(
-//              List(first),
-//              rest.foldRight { () => Done } { (elem, nextRes) => () =>
-//                Structure(List(elem), nextRes)
-//              }
-//            )
-//          case _ => Structure(Nil, () => Done)
+//            rest.foldLeft(Exec(first)) { (res, elem) =>
+//              res.flatMap(() => Exec(elem))
+//            }
+//          case _ => ???
       case AST.Command(symbol, _) =>
         // todo put the string "E" into a constant somewhere
         if symbol == "E" && ctx.peek.isInstanceOf[VFun] then
@@ -74,7 +85,7 @@ class Debugger(code: AST)(using rootCtx: Context):
                   element.impl()(using ctx)
                   Done
                 case None => throw RuntimeException(s"No such element: $symbol")
-      case (_: AST.While) | (_: AST.For) =>
+      case _: AST.While | _: AST.For =>
         val loopCtx = ctx.makeChild()
         loopCtx.ctxVarPrimary = true
         loopCtx.ctxVarSecondary = ctx.settings.rangeStart
