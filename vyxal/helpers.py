@@ -1538,5 +1538,6 @@ def from_base_list(target: list, base: list) -> int:
     """Takes a list and converts it from an arbitrary list base to a number in base 10."""
     base_number = len(base)
     raw_target = [base.index(_) for _ in target]
-    return sum(map(lambda x: x * base_number ** raw_target[::-1].index(x), raw_target))
-
+    return sum(
+        map(lambda x: x * base_number ** raw_target[::-1].index(x), raw_target)
+    )
