@@ -7698,6 +7698,20 @@ def zfiller(lhs, rhs, ctx):
         (str, str): lambda: lhs.zfill(len(rhs)),
     }.get(ts, lambda: vectorise(zfiller, lhs, rhs, ctx=ctx))()
 
+@element("¨\"", 2)
+def parse_by_list(lhs, rhs, ctx):
+    """Element ¨"
+    (str, list) -> parse a into a list with only the strings in b
+    """
+    temp = []
+    parse = lhs
+    while parse:
+        for x in rhs:
+            if (result := re.match(x, parse)):
+                temp.append(result.group(0))
+                parse = parse[result.span()[1]:]
+    
+    return temp
 
 modifiers: dict[str, str] = {
     "&": (
