@@ -2436,6 +2436,8 @@ def from_base(lhs, rhs, ctx):
                 lhs, (string.digits + string.ascii_lowercase)[:rhs], ctx
             )
         return from_base_digits(iterable(lhs, ctx=ctx), rhs)
+    elif ts == (list, list):
+        return from_base_list(lhs, rhs)
     else:
         raise ValueError("from_base: invalid types")
 
