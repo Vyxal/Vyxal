@@ -2438,6 +2438,8 @@ def from_base(lhs, rhs, ctx):
         return from_base_digits(iterable(lhs, ctx=ctx), rhs)
     elif ts == (list, list):
         return from_base_list(lhs, rhs)
+    elif ts == (str, list):
+        return from_base_list(parse_by_list(lhs, rhs), rhs)
     else:
         raise ValueError("from_base: invalid types")
 
@@ -7706,7 +7708,7 @@ def parse_by_list(lhs, rhs, ctx):
     temp = []
     parse = lhs
     while parse:
-        for x in rhs:
+        for x in sorted(rhs, key=len, reverse=True):
             if (result := re.match(x, parse)):
                 temp.append(result.group(0))
                 parse = parse[result.span()[1]:]
