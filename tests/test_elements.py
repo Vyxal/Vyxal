@@ -38347,8 +38347,8 @@ def test_WrapLastnItems():
 
 def test_ParseIntoList():
 
-    stack = [vyxalify(item) for item in ["abcaabac",["a","bc","ac","b"]]]
-    expected = vyxalify(["a","bc","a","a","b","ac"])
+    stack = [vyxalify(item) for item in ["abcaabac",["a","bc","c","b"]]]
+    expected = vyxalify(["a","bc","a","a","b","a","c"])
     ctx = Context()
 
     ctx.stacks.append(stack)
