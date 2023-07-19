@@ -1537,7 +1537,7 @@ def wrapify(
 def from_base_list(target: list, base: list) -> int:
     """Takes a list and converts it from an arbitrary list base to a number in base 10."""
     base_number = len(base)
-    raw_target = [base.index(_) for _ in target]
+    raw_target = [base.index(_) for _ in target][::-1]
     for x in range(len(raw_target)):
         raw_target[x] = (raw_target[x], x)
     return sum(x[0] * base_number ** x[1] for x in raw_target)
