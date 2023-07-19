@@ -1606,6 +1606,8 @@
   overloads:
     any-num: a to base 10 from number base b, treating list items / string items as digits
     str-str: a to base 10 from custom string base b, replacing values in a with their index in b and converting to base 10
+    lst-lst: a to base 10 from custom list base b, replacing values in a with their index in b and converting to base 10
+    str-lst: a to base 10 from custom list base b, parsing a into a list only containing the items in b, then replacing values in a with their index in b and converting to base 10
   vectorise: false
   tests:
     - "[43,5] : 23"
@@ -1615,6 +1617,8 @@
     - '["1b2",12] : 278'
     - '["banana","nab"] : 577'
     - "[[15,23,9],31] : 15137"
+    - '[[1,"a","a","c",2],[2,"a","c",1]] : 856'
+    - '["1aac2",["2","a","c","1"]] : 856'
 
 - element: "τ"
   name: From Base Ten / To Custom Base
@@ -6626,3 +6630,10 @@
   name: Unevaluated Input
   description: Push the next input as a string, unevaluated. Like ? but without implicit conversions
   arity: 0
+
+- element: "¨""
+  name: Parse Into List
+  description: Splits a into a list using only the strings in b, with longest strings in b being scanned first.
+  arity: 2
+  tests:
+    - '["abcaabac",["a","bc","ac","b"]] : ["a","bc","a","a","b","ac"]'
