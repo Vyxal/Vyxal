@@ -6636,4 +6636,4 @@
   description: Splits a into a list using only the strings in b, with longest strings in b being scanned first.
   arity: 2
   tests:
-    - '["abcaabac",["a","bc","ac","b"]] : ["a","bc","a","a","b","ac"]'
+    - '["abcaabac",["a","bc","c","b"]] : ["a","bc","a","a","b","a","c"]'
