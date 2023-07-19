@@ -4977,6 +4977,7 @@ def parse_by_list(lhs, rhs, ctx):
             if result := re.match(x, parse):
                 temp.append(result.group(0))
                 parse = parse[result.span()[1] :]
+                break
 
     return temp
 
