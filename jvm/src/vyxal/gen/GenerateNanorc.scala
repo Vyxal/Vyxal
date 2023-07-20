@@ -4,7 +4,6 @@ import vyxal.{Modifiers, VNum}
 import vyxal.impls.Elements
 import vyxal.lexer.Lexer
 
-import scala.annotation.static
 import scala.util.matching.Regex
 
 /** To generate nanorc files for syntax highlighting in JLine. See build.sc */

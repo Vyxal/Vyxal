@@ -5,11 +5,9 @@ import vyxal.Interpreter.executeFn
 
 import scala.annotation.targetName
 import scala.collection.mutable as mut
-import scala.reflect.TypeTest
 
 import spire.algebra.*
 import spire.implicits.*
-import spire.math.{Complex, Real}
 
 type VAny = VAtom | VList
 type VIter = String | VList

@@ -2,11 +2,9 @@ package vyxal
 
 import vyxal.VNum.given
 
+import scala.collection.immutable.SeqOps
+import scala.collection.mutable
 import scala.collection.SpecificIterableFactory
-
-import collection.immutable.SeqOps
-import collection.mutable
-import spire.algebra.*
 
 /** A Vyxal list. It simply wraps around another list and could represent a
   * completely evaluated list, a finite lazy list that is in the process of

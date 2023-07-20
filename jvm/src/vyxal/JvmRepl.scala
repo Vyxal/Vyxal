@@ -16,11 +16,8 @@ import org.jline.reader.EndOfFileException
 import org.jline.reader.LineReader
 import org.jline.reader.LineReaderBuilder
 import org.jline.reader.UserInterruptException
-import org.jline.terminal.Size
 import org.jline.terminal.TerminalBuilder
-import org.jline.utils.AttributedString
 import org.jline.widget.AutosuggestionWidgets
-import org.jline.widget.TailTipWidgets
 
 object JvmRepl extends Repl:
 

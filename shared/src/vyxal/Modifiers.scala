@@ -1,6 +1,5 @@
 package vyxal
 
-import vyxal.impls.Elements
 
 /** @param name
   *   The modifier's name

@@ -1,7 +1,6 @@
 package vyxal
 
 import vyxal.*
-import vyxal.impls.Elements
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer

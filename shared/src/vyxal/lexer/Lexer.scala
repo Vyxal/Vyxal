@@ -6,10 +6,6 @@ import vyxal.impls.Elements
 import vyxal.lexer.TokenType.*
 import vyxal.Context
 
-import java.util.regex.Pattern
-import scala.collection.mutable.{ListBuffer, Queue}
-import scala.util.matching.Regex
-
 import fastparse.*
 
 case class VyxalCompilationError(msg: String)

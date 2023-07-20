@@ -1,9 +1,8 @@
 package vyxal
 
 import scala.collection.mutable as mut
-import scala.io.StdIn
 
-import VNum.given
+import vyxal.VNum.given
 
 /** Stuff that's shared across all contexts
   *

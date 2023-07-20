@@ -35,6 +35,9 @@ class Debugger(code: AST)(using rootCtx: Context):
     StackFrame(rootCtx, code)
   )
 
+  /** The current stack frame */
+  private def frame: StackFrame = stackFrames.last
+
   /** A queue with the current steps to execute */
   private val currSteps = ArrayBuffer.empty[AST]
 
@@ -85,11 +88,11 @@ class Debugger(code: AST)(using rootCtx: Context):
                   element.impl()(using ctx)
                   Done
                 case None => throw RuntimeException(s"No such element: $symbol")
+      case AST.IfStatement(conds, bodies, elseBody, range) => ???
       case _: AST.While | _: AST.For =>
         val loopCtx = ctx.makeChild()
         loopCtx.ctxVarPrimary = true
         loopCtx.ctxVarSecondary = ctx.settings.rangeStart
         stackFrames += StackFrame(loopCtx, ast)
         Done
-      case _ => ???
 end Debugger

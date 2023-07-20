@@ -1,8 +1,7 @@
 package vyxal
 
-import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.tagobjects.Slow
-import spire.math.{Complex, Real}
+import spire.math.Real
 
 class InterpreterTests extends VyxalTests:
   describe("Literals") {
@@ -377,7 +376,6 @@ class InterpreterTests extends VyxalTests:
   describe("String compression") {
     describe("Dictionary compression") {
       it("should handle Hello World") {
-        given Context = Context()
         val compressed = StringHelpers.compressDictionary("Hello World")
         assertResult("Hello World")(
           StringHelpers.decompress(
@@ -386,7 +384,6 @@ class InterpreterTests extends VyxalTests:
         )
       }
       it("should handle a really long string", Slow) {
-        given Context = Context()
         val temp =
           "We're no strangers to love. You know the rules and so do I. A full commitment's what I'm thinking of. You wouldn't get this from any other guy."
         val compressed = StringHelpers.compressDictionary(temp)

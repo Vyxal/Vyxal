@@ -100,7 +100,7 @@ object Parser:
         case TokenType.TetradicModifier =>
           asts.push(AST.JunkModifier(value, 4))
         case TokenType.SpecialModifier => asts.push(AST.SpecialModifier(value))
-        case TokenType.Comment => None
+        case TokenType.Comment => ()
         case TokenType.ContextIndex =>
           asts.push(
             AST.ContextIndex(if value.nonEmpty then value.toInt else -1)
@@ -139,7 +139,7 @@ object Parser:
     while asts.nonEmpty do
       val topAst = asts.pop()
       topAst match
-        case AST.Newline => None
+        case AST.Newline => ()
         case AST.JunkModifier(name, arity) =>
           if arity > 0 then
             val modifier = Modifiers.modifiers(name)
@@ -244,7 +244,7 @@ object Parser:
   def parseBranches(program: Queue[Token], canBeEmpty: Boolean)(
       isEnd: TokenType => Boolean
   ): ParserRet[List[AST]] =
-    if program.isEmpty then Right((List(AST.makeSingle()), None))
+    if program.isEmpty then return Right(List(AST.makeSingle()))
     val branches = ListBuffer.empty[AST]
 
     while program.nonEmpty

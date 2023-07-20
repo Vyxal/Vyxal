@@ -1,6 +1,5 @@
 package vyxal
 
-import scala.collection.mutable.Stack
 import scala.collection.mutable as mut
 import scala.io.StdIn
 
@@ -72,7 +71,7 @@ class Context private (
   /** Get the top element on the stack without popping */
   def peek: VAny =
     if useStack then getTopCxt().peek
-    if stack.nonEmpty then stack.last
+    else if stack.nonEmpty then stack.last
     else if inputs.nonEmpty then inputs.peek
     else settings.defaultValue
 
@@ -197,18 +196,6 @@ object Context:
       testMode = testMode,
       ctxArgs = ctxArgs
     )
-
-  /** Find a parent that has a variable with the given name */
-  @annotation.tailrec
-  private def findParentWithVar(
-      ctx: Context,
-      varName: String
-  ): Option[Context] =
-    ctx.parent match
-      case Some(parent) =>
-        if parent.vars.contains(varName) then Some(parent)
-        else findParentWithVar(parent, varName)
-      case None => None
 
   /** Make a new Context for a function that was defined inside `origCtx` but is
     * now executing inside `currCtx`

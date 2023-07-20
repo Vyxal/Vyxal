@@ -2,12 +2,12 @@ package vyxal
 
 import vyxal.impls.Elements
 import vyxal.lexer.Lexer
-import vyxal.MiscHelpers.{vyPrint, vyPrintln}
+import vyxal.MiscHelpers.vyPrintln
 
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
 
-import VNum.given
+import vyxal.VNum.given
 
 object Interpreter:
   def execute(code: String)(using ctx: Context): Unit =

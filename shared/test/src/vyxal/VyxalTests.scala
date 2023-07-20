@@ -6,7 +6,6 @@ import scala.quoted.*
 import org.scalatest.compatible.Assertion
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.Checkpoints.Checkpoint
-import org.scalatest.Succeeded
 
 trait VyxalTests extends AnyFunSpec:
 

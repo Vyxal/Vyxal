@@ -1,6 +1,5 @@
 package vyxal
 
-import java.io.InputStreamReader
 import scala.collection.mutable
 import scala.io.Source
 

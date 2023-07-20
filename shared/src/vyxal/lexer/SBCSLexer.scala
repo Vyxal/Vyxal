@@ -8,8 +8,6 @@ import vyxal.lexer.Common.{parseToken, withRange}
 import vyxal.lexer.Common.given // For custom whitespace
 import vyxal.lexer.TokenType.*
 
-import scala.util.matching.Regex
-
 import fastparse.*
 
 private[lexer] object SBCSLexer extends Lexer:

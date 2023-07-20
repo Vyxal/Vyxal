@@ -124,7 +124,7 @@ object VNum:
   def unapply(n: VNum): (Real, Real) = n.underlying.asTuple
 
   /** Implicit conversion to a VNum. Note that this needs to be imported first,
-    * using `import VNum.given`
+    * using `import vyxal.VNum.given`
     */
   given Conversion[Int, VNum] = n => complex(n, 0)
   given Conversion[Double, VNum] = n => complex(n, 0)

@@ -1,9 +1,6 @@
 package vyxal
 
-import vyxal.impls.{Element, Elements}
 import vyxal.lexer.Lexer
-
-import java.io.File
 
 import scopt.OParser
 

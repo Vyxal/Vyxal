@@ -32,6 +32,8 @@ abstract class VyxalModule(platform: String)
     "-feature", // Emit warning and location for usages of features that should be imported explicitly.
     "-unchecked", // Enable additional warnings where generated code depends on assumptions.
     // Above options from https://tpolecat.github.io/2017/04/25/scalac-flags.html
+    "-Wunused:all", // Warn about unused values and stuff
+    "-Wvalue-discard", // Warn about expressions whose values aren't used
     "-language:implicitConversions",
     // "-explain",
     "-print-lines"
@@ -132,8 +134,7 @@ object jvm extends VyxalModule("jvm") {
     val nanorcs: Map[String, String] =
       runMethod(jvm.runClasspath(), "vyxal.gen.GenerateNanorc", "generate")
     nanorcs.map { case (fileName, contents) =>
-      val file =
-        build.millSourcePath / "jvm" / "src" / "main" / "resources" / fileName
+      val file = build.millSourcePath / "jvm" / "resources" / fileName
       os.write.over(file, contents)
       PathRef(file)
     }.toSeq

@@ -5,8 +5,6 @@ import scala.language.strictEquality
 import vyxal.lexer.{Lexer, Range, StructureType, Token}
 import vyxal.lexer.TokenType.*
 
-import org.scalatest.exceptions.TestFailedException
-
 class LexerTests extends VyxalTests:
   def testLex(input: String, expected: List[Token]) =
     Lexer.lexSBCS(input) match

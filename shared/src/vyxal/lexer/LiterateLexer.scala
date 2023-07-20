@@ -8,10 +8,6 @@ import vyxal.lexer.Common.given // For custom whitespace
 import vyxal.lexer.TokenType.*
 import vyxal.Modifiers
 
-import scala.collection.mutable
-import scala.collection.mutable.{ListBuffer, Queue}
-import scala.util.matching.Regex
-
 import fastparse.*
 
 /** Lexer for literate mode */

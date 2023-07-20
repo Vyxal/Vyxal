@@ -7,8 +7,6 @@ import vyxal.VNum.given
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Stack
 
-import spire.algebra.*
-
 object MiscHelpers:
   val add = Dyad.vectorise("add")(forkify {
     case (a: VNum, b: VNum) => a + b
@@ -169,6 +167,7 @@ object MiscHelpers:
     (nameShape: @unchecked) match
       case n: String =>
         ctx.setVar(n, value)
+        // todo (lyxal): What is this VList for? It's not returned anywhere
         VList(n, value)
       case l: VList =>
         value match

@@ -413,7 +413,7 @@ object Elements:
       List("exit", "quit"),
       None,
       "a -> Stop program execution"
-    ) { ctx ?=> throw new QuitException }
+    ) { throw new QuitException }
 
     def execHelper(value: VAny)(using ctx: Context): VAny =
       value match
@@ -801,9 +801,7 @@ object Elements:
       List("break"),
       Some(0),
       " -> break out of the current loop"
-    ) { ctx ?=>
-      throw new BreakLoopException
-    }
+    ) { throw new BreakLoopException }
 
     val loopContinue = addDirect(
       "#x",
@@ -811,9 +809,7 @@ object Elements:
       List("continue"),
       Some(0),
       " -> continue the current loop"
-    ) { ctx ?=>
-      throw new ContinueLoopException
-    }
+    ) { throw new ContinueLoopException }
 
     val mapElement: Dyad = addElem(
       Dyad,
@@ -1131,9 +1127,7 @@ object Elements:
       List("return", "ret"),
       None,
       "a -> return a"
-    ) { ctx ?=>
-      throw new ReturnFromFunctionException
-    }
+    ) { throw new ReturnFromFunctionException }
 
     val sort = addFull(
       Monad,
