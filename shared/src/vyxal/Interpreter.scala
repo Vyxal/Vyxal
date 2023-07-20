@@ -3,11 +3,10 @@ package vyxal
 import vyxal.impls.Elements
 import vyxal.lexer.Lexer
 import vyxal.MiscHelpers.vyPrintln
+import vyxal.VNum.given
 
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
-
-import vyxal.VNum.given
 
 object Interpreter:
   def execute(code: String)(using ctx: Context): Unit =

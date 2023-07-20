@@ -1,9 +1,9 @@
 package vyxal
 
-import scala.collection.mutable as mut
+import vyxal.VNum.given
 
 import scala.collection.mutable.ArrayBuffer
-import vyxal.VNum.given
+import scala.collection.mutable as mut
 
 object ListHelpers:
 
