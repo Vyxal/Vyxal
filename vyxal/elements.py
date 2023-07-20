@@ -2425,7 +2425,7 @@ def from_base(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs, simple=True)
     if (ts[0] == NUMBER_TYPE and ts[1] != NUMBER_TYPE) or (
-        ts[1] == list and ts[0] != list
+        ts[1] == list and ts[0] not in (list, str)
     ):
         return from_base(rhs, lhs, ctx)
     if ts == (str, str):
@@ -2438,6 +2438,8 @@ def from_base(lhs, rhs, ctx):
         return from_base_digits(iterable(lhs, ctx=ctx), rhs)
     elif ts == (list, list):
         return from_base_list(lhs, rhs)
+    elif ts == (str, list):
+        return from_base_list(parse_by_list(lhs, rhs, ctx), rhs)
     else:
         raise ValueError("from_base: invalid types")
 
@@ -4961,6 +4963,23 @@ def parity(lhs, ctx):
         (NUMBER_TYPE): lambda: lhs % 2,
         (str): lambda: halve(lhs, ctx)[-1],
     }.get(ts, lambda: vectorise(parity, lhs, ctx=ctx))()
+
+
+@element('¨"', 2)
+def parse_by_list(lhs, rhs, ctx):
+    """Element ¨"
+    (str, list) -> parse a into a list with only the strings in b
+    """
+    temp = []
+    parse = lhs
+    while parse:
+        for x in sorted(rhs, key=len, reverse=True):
+            if result := re.match(x, parse):
+                temp.append(result.group(0))
+                parse = parse[result.span()[1] :]
+                break
+
+    return temp
 
 
 @element("¨□", 1)
