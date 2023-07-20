@@ -1,11 +1,9 @@
 package vyxal.debugger
 
 import vyxal.*
-import vyxal.impls.Elements
+import vyxal.debugger.StepRes.*
 
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
-
-import StepRes.*
 
 /** The result of stepping into an element */
 enum StepRes:

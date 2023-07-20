@@ -1,11 +1,7 @@
-package vyxal.impls
-// todo figure out a better solution than putting this in a different package
-// it's in a different package so that ElementTests can access the impls without
-// other classes being able to access them
+package vyxal
 
 import scala.language.implicitConversions
 
-import vyxal.*
 import vyxal.ListHelpers.makeIterable
 import vyxal.VNum.given
 
@@ -31,7 +27,7 @@ object Elements:
   def symbolFor(keyword: String): Option[String] =
     Elements.elements.values.find(_.keywords.contains(keyword)).map(_.symbol)
 
-  private[impls] object Impls:
+  private object Impls:
     val elements = collection.mutable.Map.empty[String, Element]
 
     def addNilad(
@@ -415,7 +411,7 @@ object Elements:
       "a -> Stop program execution"
     ) { throw new QuitException }
 
-    def execHelper(value: VAny)(using ctx: Context): VAny =
+    private def execHelper(value: VAny)(using ctx: Context): VAny =
       value match
         case code: String =>
           Interpreter.execute(code)
@@ -423,10 +419,10 @@ object Elements:
         case n: VNum => 10 ** n
         case list: VList => list.vmap(execHelper)
         case fn: VFun =>
-          ctx.push(Interpreter.executeFn(fn))
+          val res = Interpreter.executeFn(fn)
           if fn.arity == -1 then
             ctx.pop() // Handle the extra value pushed by lambdas that operate on the stack
-          ctx.pop()
+          res
 
     val execNotPop = addDirect(
       "Ḃ",
@@ -445,7 +441,7 @@ object Elements:
       "a: lst -> Return a boolean array with 1s at the indices in a list.",
       "a: num -> Is a == 1?"
     ) { ctx ?=>
-      (ctx.pop(): @unchecked) match
+      ctx.pop() match
         case fn: VFun =>
           ctx.push(Interpreter.executeFn(fn, popArgs = false))
           if fn.arity == -1 then

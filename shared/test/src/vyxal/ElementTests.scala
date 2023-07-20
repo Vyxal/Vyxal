@@ -1,9 +1,6 @@
-package vyxal.impls
-
-import vyxal.*
+package vyxal
 
 import org.scalatest.funspec.AnyFunSpec
-import Elements.Impls
 
 /** Tests for specific elements */
 class ElementTests extends VyxalTests:
@@ -78,8 +75,9 @@ class ElementTests extends VyxalTests:
         )
         ctx.push(3, f, g)
         Interpreter.execute(AST.Command("+"))
-        Impls.exec()
-        assertResult(VNum(1))(ctx.pop())
+        ctx.pop() match
+          case fork: VFun => assertResult(VNum(1))(Interpreter.executeFn(fork))
+          case res => fail(s"Expected a function, got $res")
       }
     }
   }
@@ -639,7 +637,7 @@ class ElementTests extends VyxalTests:
         // Doesn't use the test helpers because of context handling
         given ctx: Context = Context(inputs = List(3, 4), testMode = true)
         ctx.push("+")
-        Impls.exec()
+        Interpreter.execute("Ė")
         assertResult(7: VNum)(ctx.peek)
       }
     }

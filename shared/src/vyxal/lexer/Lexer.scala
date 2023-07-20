@@ -2,9 +2,9 @@ package vyxal.lexer
 
 import scala.language.strictEquality
 
-import vyxal.impls.Elements
 import vyxal.lexer.TokenType.*
 import vyxal.Context
+import vyxal.Elements
 
 import fastparse.*
 

@@ -1,6 +1,5 @@
 package vyxal
 
-import vyxal.impls.Elements
 import vyxal.lexer.Lexer
 import vyxal.MiscHelpers.vyPrintln
 import vyxal.VNum.given

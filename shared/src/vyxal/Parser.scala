@@ -2,7 +2,6 @@ package vyxal
 
 import scala.language.strictEquality
 
-import vyxal.impls.Elements
 import vyxal.lexer.{
   Lexer,
   StructureType,

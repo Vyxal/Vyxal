@@ -1,6 +1,5 @@
 package vyxal
 
-import vyxal.impls.Element
 import vyxal.Interpreter.executeFn
 
 import scala.annotation.targetName

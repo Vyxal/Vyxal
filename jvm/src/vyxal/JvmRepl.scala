@@ -1,7 +1,6 @@
 package vyxal
 
 import vyxal.gen.GenerateNanorc
-import vyxal.impls.Elements
 
 import java.util.logging.Level
 import java.util.logging.Logger

@@ -1,6 +1,5 @@
 package vyxal
 
-import vyxal.impls.*
 import vyxal.lexer.Lexer
 
 import scala.scalajs.js

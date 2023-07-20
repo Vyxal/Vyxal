@@ -2,8 +2,7 @@ package vyxal.lexer
 
 import scala.language.strictEquality
 
-import vyxal.{Modifiers, SugarMap}
-import vyxal.impls.Elements
+import vyxal.{Elements, Modifiers, SugarMap}
 import vyxal.lexer.Common.{parseToken, withRange}
 import vyxal.lexer.Common.given // For custom whitespace
 import vyxal.lexer.TokenType.*

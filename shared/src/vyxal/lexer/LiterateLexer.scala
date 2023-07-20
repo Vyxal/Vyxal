@@ -2,10 +2,10 @@ package vyxal.lexer
 
 import scala.language.strictEquality
 
-import vyxal.impls.Elements
 import vyxal.lexer.Common.{parseToken, withRange}
 import vyxal.lexer.Common.given // For custom whitespace
 import vyxal.lexer.TokenType.*
+import vyxal.Elements
 import vyxal.Modifiers
 
 import fastparse.*
