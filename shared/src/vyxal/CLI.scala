@@ -138,7 +138,7 @@ object CLI:
     // todo come up with better names for the flags
     OParser.sequence(
       programName("vyxal"),
-      head("vyxal", "3.1.1"),
+      head("vyxal", "3.0.0-beta.3(indev)"),
       opt[Unit]('h', "help")
         .action((_, cfg) => cfg.copy(printHelp = true))
         .text("Print this help message and exit")
