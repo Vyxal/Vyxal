@@ -2439,7 +2439,7 @@ def from_base(lhs, rhs, ctx):
     elif ts == (list, list):
         return from_base_list(lhs, rhs)
     elif ts == (str, list):
-        return from_base_list(parse_by_list(lhs, rhs), rhs)
+        return from_base_list(parse_by_list(lhs, rhs, ctx), rhs)
     else:
         raise ValueError("from_base: invalid types")
 
