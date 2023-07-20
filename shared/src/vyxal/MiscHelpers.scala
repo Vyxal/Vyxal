@@ -167,15 +167,12 @@ object MiscHelpers:
     (nameShape: @unchecked) match
       case n: String =>
         ctx.setVar(n, value)
-        // todo (lyxal): What is this VList for? It's not returned anywhere
-        VList(n, value)
       case l: VList =>
         value match
           case v: VList =>
             // make sure v is the same length as l by repeating items
-            val v2 = ListBuffer[VAny]()
-            for i <- 0 until l.length do v2 += v(i % v.length)
-            l.zip(v2).map(x => unpackHelper(x(0), x(1))).toList
+            val v2 = l.indices.map(i => v(i % v.length))
+            l.lazyZip(v2).foreach { (a, b) => unpackHelper(a, b) }
           case _ => unpackHelper(l, VList(value))
   end unpackHelper
 
