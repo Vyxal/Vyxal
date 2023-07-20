@@ -23,7 +23,18 @@ object Interpreter:
       case Some(code) => scribe.debug(s"Sugarless: $code")
       case None => ()
 
-    Parser.parse(tokens) match
+    val parsed = Parser.parse(tokens)
+
+    if ctx.globals.debug then
+      val dbg =
+        debugger.Debugger(parsed match
+          case Right(ast) => ast
+          case Left(err) => throw Error(s"Parsing failed: $err")
+        )(using ctx)
+      println("Actually, there's no calling the debugger yet")
+      return
+
+    parsed match
       case Right(ast) =>
         scribe.debug(s"Executing '$code' (ast: $ast)")
 

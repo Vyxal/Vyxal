@@ -39,6 +39,7 @@ object CLI:
       settings: Settings = Settings(),
       runLiterateLexer: Boolean = false,
       runFancyRepl: Boolean = false,
+      debug: Boolean = false
   )
 
   /** Run the CLI
@@ -69,6 +70,7 @@ object CLI:
           globals = Globals(settings = config.settings)
         )
 
+        if config.debug then ctx.globals.debug = true
         if config.printHelp then
           println(OParser.usage(parser))
           return
@@ -150,6 +152,10 @@ object CLI:
       opt[String]("code")
         .action((code, cfg) => cfg.copy(code = Some(code)))
         .text("Code to execute directly")
+        .optional(),
+      opt[String]("debug")
+        .action((_, cfg) => cfg.copy(debug = true))
+        .text("Run the debugger")
         .optional(),
       opt[String]("docs-literate")
         .action((symbol, cfg) => cfg.copy(litInfoFor = Some(symbol)))
