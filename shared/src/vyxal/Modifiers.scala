@@ -1,6 +1,5 @@
 package vyxal
 
-
 /** @param name
   *   The modifier's name
   * @param description
