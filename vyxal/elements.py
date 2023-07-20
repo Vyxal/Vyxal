@@ -2425,7 +2425,7 @@ def from_base(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs, simple=True)
     if (ts[0] == NUMBER_TYPE and ts[1] != NUMBER_TYPE) or (
-        ts[1] == list and ts[0] != list
+        ts[1] == list and ts[0] not in (list, str)
     ):
         return from_base(rhs, lhs, ctx)
     if ts == (str, str):
