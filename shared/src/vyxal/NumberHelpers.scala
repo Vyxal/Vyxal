@@ -2,14 +2,14 @@ package vyxal
 
 import vyxal.*
 
+import scala.annotation.tailrec // So we can compare Reals to stuff
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.math
+
 import spire.implicits.truncatedDivisionOps
 import spire.math.Real
 import spire.syntax.isReal.partialOrderOps
-
-import scala.annotation.tailrec // So we can compare Reals to stuff
 
 object NumberHelpers:
 

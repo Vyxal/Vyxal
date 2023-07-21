@@ -65,7 +65,8 @@ class Debugger(code: AST)(using rootCtx: Context):
       case AST.DictionaryString(value, _) =>
         ctx.push(StringHelpers.decompress(value))
         Done
-      case AST.Lst(elems, _) => ???
+      case AST.Lst(elems, _) =>
+        ???
         val list = ListBuffer.empty[VAny]
         val code = new Iterator[AST]:
           private val elemIter = elems.iterator
@@ -129,7 +130,8 @@ class Debugger(code: AST)(using rootCtx: Context):
           case Some(cond) =>
             def whileIter(): Iterator[AST] =
               Iterator.single(cond) ++ lazyIterator(
-                if MiscHelpers.boolify(loopCtx.pop()) then Iterator.single(body) ++ whileIter()
+                if MiscHelpers.boolify(loopCtx.pop()) then
+                  Iterator.single(body) ++ whileIter()
                 else Iterator.empty
               )
             whileIter()
