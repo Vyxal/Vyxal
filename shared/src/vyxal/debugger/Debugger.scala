@@ -7,23 +7,32 @@ import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 
 /** The result of stepping into an element */
 enum StepRes:
+  /** The element finished executing in a single step */
+  case Done
+
   /** Call a function */
   case FnCall(fn: VFun)
+
+  case For(loop: AST.For)
+  case While(loop: AST.While)
+  case If(ifStmt: AST.IfStatement)
+  case List(elems: Iterable[AST])
 
   /** Process `orig`, then run `fn` right after (in the same step) */
   case Then(orig: StepRes, fn: () => Unit)
 
   /** Execute `first`, then `second` */
-  case FlatMap(first: StepRes, second: () => StepRes)
+  case Chain(first: StepRes, second: StepRes)
 
-  /** The element finished executing in a single step */
-  case Done
+  /** Lazily get the next step to execute */
+  case Lazy(get: () => StepRes)
 
+  /** Execute an AST */
   case Exec(ast: AST)
 
   def map(fn: => Unit): StepRes = Then(this, () => fn)
 
-  def flatMap(next: => StepRes): StepRes = FlatMap(this, () => next)
+  def flatMap(next: () => StepRes): StepRes = Chain(this, Lazy(next))
 end StepRes
 
 class Debugger(code: AST)(using rootCtx: Context):
@@ -33,12 +42,16 @@ class Debugger(code: AST)(using rootCtx: Context):
     * @param ast
     *   The AST for the structure that caused the new stack frame
     * @param code
-    *   The ASTs to be executed inside the structure
+    *   The ASTs to be executed inside the structure. Note that this isn't
+    *   simply an iterator over the body of the structure. For example, for an
+    *   if statement, this would first provide the AST for the condition, then,
+    *   depending on the top of the stack, choose whether to provide the AST for
+    *   the truthy or falsy branch.
     */
-  case class StackFrame(ctx: Context, ast: AST, code: Iterator[AST])
+  case class StackFrame(ctx: Context, ast: AST, step: StepRes)
 
   private val stackFrames: ArrayBuffer[StackFrame] = ArrayBuffer(
-    StackFrame(rootCtx, code, astIterator(code))
+    StackFrame(rootCtx, code, Exec(code))
   )
 
   /** The current stack frame */
@@ -50,7 +63,7 @@ class Debugger(code: AST)(using rootCtx: Context):
   def addBreakpoint(row: Int, col: Int): Unit = ???
 
   def stepInto(): Unit =
-    if frame.code.hasNext then singleStep(frame.code.next())
+    if frame.step != StepRes.Done then nextStep(frame.step)
 
   def stepOver(): Unit = ???
 
@@ -58,25 +71,33 @@ class Debugger(code: AST)(using rootCtx: Context):
 
   def continue(): Unit = ???
 
-  private def singleStep(ast: AST): Unit =
+  private def nextStep(step: StepRes): StepRes =
+    step match
+      case Done => Done
+      case Exec(ast) => stepIntoAST(ast)
+      case Then(orig, fn) =>
+        if orig == StepRes.Done then
+          fn()
+          Done
+        else Then(nextStep(orig), fn)
+      case Lazy(get) => nextStep(get())
+      case Chain(first, second) =>
+        if first == StepRes.Done then second
+        else Chain(nextStep(first), second)
+      case _ => ???
+
+  private def stepIntoAST(ast: AST): StepRes =
     ast match
       case AST.Number(value, _) =>
         ctx.push(value)
+        Done
       case AST.Str(value, _) =>
         ctx.push(value)
+        Done
       case AST.DictionaryString(value, _) =>
         ctx.push(StringHelpers.decompress(value))
-      case AST.Lst(elems, _) =>
-        val list = ListBuffer.empty[VAny]
-        val code = new Iterator[AST]:
-          private val elemIter = elems.iterator
-          private var runFirst = false
-          override def hasNext: Boolean = elemIter.hasNext
-          override def next(): AST =
-            if this.runFirst then list += ctx.pop()
-            else this.runFirst = true
-            elemIter.next()
-        stackFrames += StackFrame(ctx, ast, code)
+        Done
+      case AST.Lst(elems, _) => StepRes.List(elems)
       case AST.Command(symbol, _) =>
         // todo put the string "E" into a constant somewhere
         if symbol == "E" && ctx.peek.isInstanceOf[VFun] then
@@ -85,19 +106,8 @@ class Debugger(code: AST)(using rootCtx: Context):
             case None =>
               // No need to step in if the function wasn't user-defined
               ctx.push(Interpreter.executeFn(fn))
-            case Some(origAST) =>
-              val fnCtx = Context.makeFnCtx(
-                fn.ctx,
-                ctx,
-                ctxVarPrimary = None,
-                ctxVarSecondary = ???,
-                ctxArgs = ???,
-                vars = ???,
-                inputs = ???,
-                useStack = ???
-              )
-              stackFrames += StackFrame(fnCtx, origAST, origAST.body.iterator)
-          end match
+              Done
+            case Some(origAST) => FnCall(fn)
         else
           DebugImpls.impls.get(symbol) match
             case Some(impl) => impl()(using ctx)
@@ -105,48 +115,16 @@ class Debugger(code: AST)(using rootCtx: Context):
               Elements.elements.get(symbol) match
                 case Some(element) =>
                   element.impl()(using ctx)
+                  Done
                 case None => throw RuntimeException(s"No such element: $symbol")
-      case AST.IfStatement(conds, bodies, elseBody, _) =>
-        val code = conds.lazyZip(bodies).foldRight(elseBody.iterator) {
-          case ((cond, body), elseIt) =>
-            astIterator(cond) ++ lazyIterator(
-              if MiscHelpers.boolify(ctx.pop()) then astIterator(body)
-              else elseIt
-            )
-        }
-        stackFrames += StackFrame(ctx, ast, code)
-      case AST.While(cond, body, _) =>
-        val loopCtx = ctx.makeChild()
-        loopCtx.ctxVarPrimary = true
-        loopCtx.ctxVarSecondary = ctx.settings.rangeStart
-        val code = cond match
-          case None =>
-            // Infinite loop
-            Iterator.continually(astIterator(body)).flatten
-          case Some(cond) =>
-            def whileIter(): Iterator[AST] =
-              astIterator(cond) ++ lazyIterator(
-                if MiscHelpers.boolify(loopCtx.pop()) then
-                  astIterator(body) ++ whileIter()
-                else Iterator.empty
-              )
-            whileIter()
-        stackFrames += StackFrame(loopCtx, ast, code)
-      case AST.For(loopVar, body, _) =>
-        ???
-
-  /** Iterate over all ASTs inside the given ASTs. This really only exists
-    * because of [[AST.Group]]
-    */
-  private def astIterator(ast: AST): Iterator[AST] =
-    ast match
-      case AST.Group(asts, _, _) => asts.flatMap(astIterator).iterator
-      case _ => Iterator.single(ast)
-
-  /** Lazily delegate an iterator */
-  private def lazyIterator(iter: => Iterator[AST]): Iterator[AST] =
-    new Iterator[AST]:
-      private lazy val it = iter
-      override def hasNext: Boolean = it.hasNext
-      override def next(): AST = it.next()
+      case ifStmt: AST.IfStatement => StepRes.If(ifStmt)
+      case loop: AST.While => StepRes.While(loop)
+      case loop: AST.For => StepRes.For(loop)
+      case AST.Group(elems, _, _) =>
+        elems match
+          case first :: rest =>
+            elems.foldLeft(stepIntoAST(first)) { (acc, next) =>
+              Chain(acc, Exec(next))
+            }
+          case Nil => Done
 end Debugger
