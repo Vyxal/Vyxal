@@ -119,7 +119,7 @@ object CLI:
     try Interpreter.execute(code)
     catch
       case e: Error =>
-        println(s"Error: ${e.getMessage()}")
+        println(s"Error: ${e.getMessage}")
         e.printStackTrace()
 
   private val builder = OParser.builder[CLIConfig]

@@ -24,11 +24,10 @@ object Interpreter:
     val parsed = Parser.parse(tokens)
 
     if ctx.globals.debug then
-      val dbg =
-        debugger.Debugger(parsed match
-          case Right(ast) => ast
-          case Left(err) => throw Error(s"Parsing failed: $err")
-        )(using ctx)
+      val ast = parsed match
+        case Right(ast) => ast
+        case Left(err) => throw Error(s"Parsing failed: $err")
+      val dbg = debugger.Debugger(ast)(using ctx)
       println("Actually, there's no calling the debugger yet")
       return
 
@@ -58,10 +57,9 @@ object Interpreter:
       case AST.Lst(elems, _) =>
         val list = collection.mutable.ListBuffer.empty[VAny]
         for elem <- elems do
-          given elemCtx: Context = ctx.makeChild()
-          execute(elem)
+          execute(elem)(using ctx.makeChild())
           list += ctx.pop()
-        ctx.push(VList(list.toList*))
+        ctx.push(VList.from(list.toList))
       case AST.Command(cmd, _) =>
         Elements.elements.get(cmd) match
           case Some(elem) => elem.impl()
@@ -193,7 +191,7 @@ object Interpreter:
       case AST.ContextIndex(index, _) =>
         val args = ctx.ctxArgs.getOrElse(Seq.empty).reverse
         if index == -1 then ctx.push(VList.from(args.reverse))
-        else if args.length < index then ctx.push(ctx.settings.defaultValue)
+        else if args.sizeIs < index then ctx.push(ctx.settings.defaultValue)
         else ctx.push(args(index))
       case _ => throw NotImplementedError(s"$ast not implemented")
     end match
@@ -240,7 +238,7 @@ object Interpreter:
       overrideCtxArgs: Seq[VAny] = Seq.empty,
       vars: mut.Map[String, VAny] = mut.Map(),
   )(using ctx: Context): VAny =
-    val VFun(impl, arity, params, origCtx, origAST) = fn
+    val VFun(_, arity, params, origCtx, _) = fn
     ctx.globals.callStack.push(fn)
     val useStack = arity == -1
     val inputs =

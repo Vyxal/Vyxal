@@ -10,8 +10,6 @@ import scala.collection.mutable as mut
   *   The original/global inputs to the program
   * @param settings
   *   Settings set through flags
-  * @param register
-  *   Value of the register
   */
 case class Globals(
     inputs: Inputs = Inputs(),
@@ -28,7 +26,7 @@ case class Globals(
   * Implemented as a circular buffer to wrap around.
   */
 class Inputs(origInputs: Seq[VAny] = Seq.empty):
-  private var origArr = origInputs.toArray.reverse
+  private val origArr = origInputs.toArray.reverse
 
   /** Uses an array for constant access, not for mutating items */
   private var currInputs = origArr
@@ -41,7 +39,7 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
   /** Make sure to call [[this.nonEmpty]] first */
   def next(): VAny =
     val res = currInputs(ind)
-    ind = (ind + 1) % currInputs.size
+    ind = (ind + 1) % currInputs.length
     res
 
   /** Temporarily replace inputs with the given `Seq`
@@ -78,17 +76,17 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
     if n == numNonWrapping then nonWrapping
     else
       // The number of times the entire inputs array has to be repeated
-      val numRepeats = (n - numNonWrapping) / currInputs.size
+      val numRepeats = (n - numNonWrapping) / currInputs.length
       val repeats = List.fill(numRepeats)(currInputs.toList)
 
       // The number of extra elems needed at the end of wrapping
-      val numEnd = n - numNonWrapping - numRepeats * currInputs.size
+      val numEnd = n - numNonWrapping - numRepeats * currInputs.length
       val end = currInputs.take(numEnd).toList
 
       nonWrapping ::: repeats.flatten ::: end
   end peek
 
-  override def toString() = origArr.mkString("Inputs(", ", ", ")")
+  override def toString = origArr.mkString("Inputs(", ", ", ")")
 end Inputs
 
 /** What kind of implicit output is wanted at the end */
@@ -115,8 +113,6 @@ enum EndPrintMode:
   *   How to print implicit output at the end
   * @param defaultValue
   *   Value to give when empty stack is popped
-  * @param printFn
-  *   Function used to output (necessary for online interpreter)
   */
 case class Settings(
     presetStack: Boolean = false,

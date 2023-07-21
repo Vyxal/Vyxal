@@ -229,7 +229,7 @@ private[lexer] object LiterateLexer extends Lexer:
     parseToken(Constant, ":!=" ~/ Common.varName.?.!)
 
   def litAugVariable[$: P]: P[Token] =
-    parseToken(AugmentVar, (":>") ~/ Common.varName.?.!)
+    parseToken(AugmentVar, ":>" ~/ Common.varName.?.!)
 
   def unpackVar[$: P]: P[Seq[Token]] =
     P(withRange(":=") ~ list).map { case (_, unpackRange, listTokens) =>
@@ -269,7 +269,7 @@ private[lexer] object LiterateLexer extends Lexer:
       .opaque("<end keyword>")
 
   def rawCode[$: P]: P[Seq[Token]] =
-    P("#" ~ Index ~ ((!"#}" ~ AnyChar).rep.!) ~ "#}").map {
+    P("#" ~ Index ~ (!"#}" ~ AnyChar).rep.! ~ "#}").map {
       case (offset, value) =>
         SBCSLexer.lex(value) match
           case Right(tokens) =>

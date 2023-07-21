@@ -194,8 +194,8 @@ object Parser:
     *
     * ASTs will pop off the stack while: the top arity is 0 and the maximum
     * number of nilads is not reached.
-    * @param cmd
-    *   The command's name
+    * @param cmdTok
+    *   The token from which the command is to be parsed
     */
   def parseCommand(
       cmdTok: Token,
@@ -216,8 +216,8 @@ object Parser:
           val arity = element.arity.getOrElse(0)
           val nilads = ListBuffer[AST]()
 
-          while asts.nonEmpty && nilads.size < arity
-            && (asts.top.arity.fold(false)(_ == 0))
+          while asts.nonEmpty && nilads.sizeIs < arity
+            && asts.top.arity.fold(false)(_ == 0)
           do nilads += asts.pop()
           if nilads.isEmpty then return Right(AST.Command(cmd, cmdTok.range))
           Right(
@@ -318,7 +318,7 @@ object Parser:
             case _ =>
               Left(VyxalCompilationError("Invalid if statement"))
         case StructureType.IfStatement =>
-          if branches.size < 2 then
+          if branches.sizeIs < 2 then
             Left(VyxalCompilationError("Invalid if statement"))
           else
             val odd = branches.size % 2 == 1
@@ -380,30 +380,31 @@ object Parser:
             case _ =>
               Left(VyxalCompilationError("Invalid decision structure"))
         case StructureType.GeneratorStructure =>
-          if branches.size > 2 then
+          if branches.sizeIs > 2 then
             Left(VyxalCompilationError("Invalid generator structure"))
           else
             var rel = branches.head
-            var vals = (branches: @unchecked) match
+            val vals = (branches: @unchecked) match
               case List(_, initial) => Some(initial)
               case List(_) => None
 
             val arity = rel match
               case AST.Group(elems, _, _) =>
-                if elems.last.isInstanceOf[AST.Number] then
-                  rel = AST.Group(elems.init, None)
-                  elems.last.asInstanceOf[AST.Number].value.toInt
-                else
-                  var stackItems = 0
-                  var popped = 0
-                  for elem <- elems do
-                    val elemArity = elem.arity.getOrElse(0)
-                    if elemArity < stackItems then
-                      stackItems -= elemArity + 1 // assume everything only returns one value
-                    else
-                      popped += elemArity - stackItems
-                      stackItems = 1
-                  popped
+                elems.last match
+                  case number: AST.Number =>
+                    rel = AST.Group(elems.init, None)
+                    number.value.toInt
+                  case _ =>
+                    var stackItems = 0
+                    var popped = 0
+                    for elem <- elems do
+                      val elemArity = elem.arity.getOrElse(0)
+                      if elemArity < stackItems then
+                        stackItems -= elemArity + 1 // assume everything only returns one value
+                      else
+                        popped += elemArity - stackItems
+                        stackItems = 1
+                    popped
               case _ => rel.arity.getOrElse(2)
 
             Right(

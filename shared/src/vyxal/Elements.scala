@@ -277,7 +277,7 @@ object Elements:
       case (a: VList, b: VVal) => a.contains(b)
       case (a: VVal, b: VList) => b.contains(a)
       case (a: VList, b: VList) => a.contains(b)
-      case (a: VVal, b: VVal) => a.toString().contains(b.toString())
+      case (a: VVal, b: VVal) => a.toString.contains(b.toString)
     }
 
     val cookie = addDirect(
@@ -367,8 +367,8 @@ object Elements:
       "a: num -> a * 2",
       "a: str -> a + a"
     ) {
-      case (a: VNum) => a * 2
-      case (a: String) => a + a
+      case a: VNum => a * 2
+      case a: String => a + a
     }
 
     val dup = addDirect(":", "Duplicate", List("dup"), None, "a -> a, a") {
@@ -551,15 +551,14 @@ object Elements:
         NumberHelpers.fromBase(a, b)
     }
 
-    val flatten = addElem(
+    val flatten = addFull(
       Monad,
       "f",
       "Flatten",
       List("flatten", "flat"),
+      false,
       "a: lst -> Flattened a"
-    ) { case a =>
-      ListHelpers.flatten(ListHelpers.makeIterable(a))
-    }
+    ) { a => ListHelpers.flatten(ListHelpers.makeIterable(a)) }
 
     val getContextVariableM = addNilad(
       "m",
@@ -612,13 +611,14 @@ object Elements:
       "a: str, b: str -> a > b"
     ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) > 0 }
 
-    val head = addElem(
+    val head = addFull(
       Monad,
       "h",
       "Head | First Item",
       List("head", "first", "first-item"),
+      false,
       "a: lst -> a[0]"
-    ) { case a =>
+    ) { a =>
       ListHelpers
         .makeIterable(a)
         .headOption
@@ -710,7 +710,7 @@ object Elements:
     ) {
       case (a: VList, b: String) => a.mkString(b)
       case (a: VVal, b: VVal) =>
-        ListHelpers.makeIterable(a).mkString(b.toString())
+        ListHelpers.makeIterable(a).mkString(b.toString)
       case (a, b) =>
         val lst = ListHelpers.makeIterable(a)
         ListHelpers.flatten(VList.from(lst.head +: lst.tail.flatMap(Seq(b, _))))
@@ -728,7 +728,7 @@ object Elements:
       case a => ListHelpers.makeIterable(a).length
     }
 
-    val lengthVectorised = addElem(
+    val lengthVectorised = addFull(
       Monad,
       "l",
       "Length of Each Item",
@@ -741,8 +741,9 @@ object Elements:
         "vec-length",
         "vlen"
       ),
+      false,
       "a: lst -> Length of each item in a"
-    ) { case a =>
+    ) { a =>
       VList.from(
         ListHelpers.makeIterable(a).map(ListHelpers.makeIterable(_).length)
       )
@@ -1024,9 +1025,9 @@ object Elements:
       List("prepend"),
       "a: lst, b: any -> b prepended to a"
     ) {
-      case (a: String, b: (String | VNum)) => b.toString() + a
-      case (a: VNum, b: String) => b + a.toString()
-      case (a: VNum, b: VNum) => MiscHelpers.eval(b.toString() + a.toString())
+      case (a: String, b: (String | VNum)) => b.toString + a
+      case (a: VNum, b: String) => b + a.toString
+      case (a: VNum, b: VNum) => MiscHelpers.eval(b.toString + a.toString)
       case (a: VList, b) => VList.from(b +: a)
       case (a, b) => VList(b, a)
     }
@@ -1049,7 +1050,7 @@ object Elements:
       "a: any -> enclose a in quotes, escape backslashes and quote marks"
     ) {
       case a: String => StringHelpers.quotify(a)
-      case a => StringHelpers.quotify(a.toString())
+      case a => StringHelpers.quotify(a.toString)
     }
 
     val recurse = addDirect(
@@ -1087,7 +1088,7 @@ object Elements:
       case (a: VNum, b: VNum) =>
         NumberHelpers.range(a, b).dropRight(1)
       case (a: String, b: String) => b.r.findFirstIn(a).isDefined
-      case (a: String, b: VNum) => (b.toString).r.findFirstIn(a).isDefined
+      case (a: String, b: VNum) => b.toString.r.findFirstIn(a).isDefined
       case (a: VNum, b: String) => b.r.findFirstIn(a.toString).isDefined
       case (a: VFun, b) =>
         MiscHelpers.reduce(b, a)
@@ -1103,9 +1104,9 @@ object Elements:
       "a: str, b: str, c: str -> replace all instances of b in a with c"
     ) {
       case (a: String, b: VVal, c: VVal) =>
-        a.replace(b.toString(), c.toString())
+        a.replace(b.toString, c.toString)
       case (a: VNum, b: VVal, c: VVal) =>
-        MiscHelpers.eval(a.toString().replace(b.toString(), c.toString()))
+        MiscHelpers.eval(a.toString().replace(b.toString, c.toString))
       case (a: VList, b, c) =>
         VList.from(a.lst.map(x => if x == b then c else x))
       case (a: VVal, b: VVal, c: VList) =>
@@ -1215,13 +1216,14 @@ object Elements:
         ctx.push(b, a)
     }
 
-    val tail = addElem(
+    val tail = addFull(
       Monad,
       "t",
       "Tail | Last Item",
       List("tail", "last", "last-item"),
+      false,
       "a: lst -> a[-1]"
-    ) { case a =>
+    ) { a =>
       ListHelpers
         .makeIterable(a)
         .lastOption
@@ -1323,13 +1325,14 @@ object Elements:
       ctx.push(pushEven, pushOdd)
     }
 
-    val uniquify = addElem(
+    val uniquify = addFull(
       Monad,
       "u",
       "Uniquify",
       List("uniquify"),
+      false,
       "a: lst -> a with duplicates removed"
-    ) { case a =>
+    ) { a =>
       val iter = ListHelpers.makeIterable(a)
       val uniq: LazyList[Option[VAny]] = LazyList.unfold(Seq[VAny]() -> 0) {
         state =>
@@ -1392,9 +1395,7 @@ object Elements:
       List("wrap"),
       None,
       "a, b, c, ..., -> [a, b, c, ...]"
-    ) { ctx ?=>
-      ctx.wrap
-    }
+    ) { ctx ?=> ctx.wrap() }
 
     val wrapSingleton = addFull(
       Monad,

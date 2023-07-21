@@ -22,8 +22,8 @@ type DirectFn = () => Context ?=> Unit
 
 /** Meta-helper for creating the helpers to add element implementations
   * @tparam P
-  *   The partial version of the function this helper group takes (`Context \=>
-  *   PartialFunction[(VAny, ...), VAny]`)
+  *   The partial version of the function this helper group takes
+  *   (`Context => PartialFunction[(VAny, ...), VAny]`)
   * @tparam F
   *   A type constructor of the form (`[T] =>> (VAny, ...) => Context => T`)
   */

@@ -258,7 +258,7 @@ object ListHelpers:
     key.originalAST match
       case Some(lam) =>
         val branches = lam.body
-        if branches.length < 2 then
+        if branches.sizeIs < 2 then
           return VList(
             iterable.zipWithIndex
               .sorted { (a, b) =>

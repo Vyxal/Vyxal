@@ -17,7 +17,7 @@ case class Token(tokenType: TokenType, value: String, range: Range)
       (other `eq` this) || (other.tokenType == this.tokenType && other.value == this.value)
     case _ => false
 
-  override def toString(): String = s"$tokenType(\"$value\")"
+  override def toString: String = s"$tokenType(\"$value\")"
 
 /** The range of a token or AST in the source code */
 case class Range(startOffset: Int, endOffset: Int) derives CanEqual:

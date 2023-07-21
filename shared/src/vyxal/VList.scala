@@ -128,7 +128,7 @@ object VList extends SpecificIterableFactory[VAny, VList]:
   ): VList =
     val maxSize = lists.view.map(_.size).max
     val padded = lists.map { list =>
-      if list.size == maxSize then list
+      if list.sizeIs == maxSize then list
       else list ++ Seq.fill(maxSize - list.size)(null)
     }
     new VList(padded.transpose.map { lst => f(lst.filter(_ != null)) })
@@ -168,5 +168,5 @@ object VList extends SpecificIterableFactory[VAny, VList]:
     it.iterator.toSeq
   )
 
-  def seqToVList(seq: Seq[Seq[VAny]]): VList = new VList(seq.map(VList.from(_)))
+  def seqToVList(seq: Seq[Seq[VAny]]): VList = new VList(seq.map(VList.from))
 end VList

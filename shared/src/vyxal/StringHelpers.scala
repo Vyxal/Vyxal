@@ -36,7 +36,7 @@ object StringHelpers:
         subW = w.substring(1)
         ts = !ts
       if subW.isEmpty then return None
-      val useShort = subW.size < 6
+      val useShort = subW.length < 6
       val dict =
         if useShort then shortInds
         else longInds
@@ -83,7 +83,7 @@ object StringHelpers:
     for i <- (s.length - 1) to 0 by -1 do
       dp(i) = character(dp(i + 1), s(i))
       for j <- 1 to Math.min(endLength, s.length - i) do
-        dictionary(dp(i + j), s.substring(i, i + j), i != 0).map { temp =>
+        dictionary(dp(i + j), s.substring(i, i + j), i != 0).foreach { temp =>
           if temp < dp(i) then dp(i) = temp
         }
 
@@ -161,7 +161,7 @@ object StringHelpers:
         decompressed.append(Lexer.Codepage(code.toInt + 32))
       else
         var flagSwap = false
-        var flagSpace = !decompressed.isEmpty
+        var flagSpace = decompressed.nonEmpty
         if mode == 2 then
           val flag = integer % 3
           integer = integer / 3

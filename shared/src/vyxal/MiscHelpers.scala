@@ -56,7 +56,7 @@ object MiscHelpers:
       while ind < aIter.length && result != 0 do
         result = compareExact(aIter(ind), bIter(ind))
         ind += 1
-      return result
+      result
 
   // Returns the default value for a given type
   def defaultEmpty(a: VAny): VAny =
@@ -116,7 +116,7 @@ object MiscHelpers:
     remaining = remaining.drop(operating.length)
 
     if operating.isEmpty then return 0
-    if operating.length == 1 then return operating.head
+    if operating.sizeIs == 1 then return operating.head
 
     var current = operating(0)
     var previous = operating(1)

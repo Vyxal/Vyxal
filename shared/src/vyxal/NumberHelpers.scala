@@ -5,10 +5,11 @@ import vyxal.*
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.math
-
-import spire.implicits.truncatedDivisionOps // So we can use fmod below
+import spire.implicits.truncatedDivisionOps
 import spire.math.Real
-import spire.syntax.isReal.partialOrderOps // So we can compare Reals to stuff
+import spire.syntax.isReal.partialOrderOps
+
+import scala.annotation.tailrec // So we can compare Reals to stuff
 
 object NumberHelpers:
 
@@ -20,6 +21,7 @@ object NumberHelpers:
         .map(_ * a.toBigInt.signum)
     )
 
+  @tailrec
   def fromBase(a: VAny, b: VAny)(using ctx: Context): VAny =
     (a, b) match
       case (a: VNum, b: VNum) => toInt(a.toString(), b.toInt)
@@ -30,7 +32,7 @@ object NumberHelpers:
   /** Returns value in base 10 using base len(alphabet) [bijective base] */
   def fromBaseAlphabet(value: String, alphabet: String): VAny =
     value.foldLeft(VNum(0)) { (ret, digit) =>
-      alphabet.size * ret + alphabet.indexOf(digit): VNum
+      alphabet.length * ret + alphabet.indexOf(digit): VNum
     }
 
   /** Returns digits in base 10 using arbitrary base `base` */
@@ -39,6 +41,7 @@ object NumberHelpers:
       MiscHelpers.add(MiscHelpers.multiply(base, ret), digit)
     }
 
+  @tailrec
   def fromBinary(a: VAny)(using ctx: Context): VAny =
     a match
       case n: VNum => fromBinary(n.toString())
@@ -120,7 +123,7 @@ object NumberHelpers:
         else temp
       case s: String =>
         // get binary representation of each character
-        var result = ListBuffer.empty[VAny]
+        val result = ListBuffer.empty[VAny]
         for c <- s do
           val binary = c.toInt.toBinaryString
           result += VList(binary.map(_.asDigit).map(VNum(_)).toList*)
@@ -147,7 +150,7 @@ object NumberHelpers:
 
     val indexes = toBaseDigits(value, alphabet.iterLength)
     val alphalist = alphabet match
-      case a: String => VList.from(a.toString.toList.map(_.toString))
+      case a: String => VList.from(a.toList.map(_.toString))
       case l: VList => l
 
     val temp = indexes.map(alphalist.index(_).toString())

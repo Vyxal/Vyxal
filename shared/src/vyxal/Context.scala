@@ -54,7 +54,7 @@ class Context private (
       else if inputs.nonEmpty then inputs.next()
       else
         val temp =
-          if settings.online then settings.defaultValue.toString()
+          if settings.online then settings.defaultValue.toString
           else StdIn.readLine()
         if temp.nonEmpty then MiscHelpers.eval(temp)(using this)
         else settings.defaultValue
@@ -91,8 +91,8 @@ class Context private (
 
   def length: Int = stack.length
 
-  def wrap: Unit =
-    if useStack then getTopCxt().wrap
+  def wrap(): Unit =
+    if useStack then getTopCxt().wrap()
     else
       val temp = stack.toList
       stack.clear()
@@ -116,7 +116,7 @@ class Context private (
   /** Setter for context variable N so that outsiders don't have to deal with it
     * being an Option
     */
-  def ctxVarPrimary_=(newCtx: VAny) =
+  def ctxVarPrimary_=(newCtx: VAny): Unit =
     _ctxVarPrimary = Some(newCtx)
 
   /** Get the context variable M for this scope if it exists. If it doesn't, get
@@ -133,7 +133,7 @@ class Context private (
   /** Setter for context variable M so that outsiders don't have to deal with it
     * being an Option
     */
-  def ctxVarSecondary_=(newCtx: VAny) =
+  def ctxVarSecondary_=(newCtx: VAny): Unit =
     _ctxVarSecondary = Some(newCtx)
 
   /** Get a variable by the given name. If it doesn't exist in the current
@@ -142,23 +142,23 @@ class Context private (
     */
   def getVar(name: String): VAny =
     vars
-      .get("!" + name)
+      .get(s"!$name")
       .orElse(vars.get(name))
-      .orElse(parent.map(_.getVar("!" + name)))
+      .orElse(parent.map(_.getVar(s"!$name")))
       .orElse(parent.map(_.getVar(name)))
       .getOrElse(settings.defaultValue)
 
   /** Set a variable to a given value. */
   def setVar(name: String, value: VAny): Unit =
-    if vars.contains("!" + name) then
+    if vars.contains(s"!$name") then
       throw new Exception(s"Variable $name is constant")
     else vars(name) = value
 
   /** Set a constant variable to a given value */
   def setConst(name: String, value: VAny): Unit =
-    if vars.contains("!" + name) then
+    if vars.contains(s"!$name") then
       throw new Exception(s"Variable $name already exists")
-    else vars("!" + name) = value
+    else vars(s"!$name") = value
 
   /** Get all variables in this Context (parent variables not included) */
   def allVars: Map[String, VAny] = vars.toMap
@@ -218,7 +218,7 @@ object Context:
       vars: mut.Map[String, VAny],
       inputs: Seq[VAny],
       useStack: Boolean
-  ) =
+  ): Context =
     val stack =
       if useStack then currCtx.stack else mut.ArrayBuffer.from(inputs)
     vars ++= origCtx.vars

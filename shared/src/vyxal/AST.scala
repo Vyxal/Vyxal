@@ -131,7 +131,7 @@ enum AST(val arity: Option[Int]) derives CanEqual:
     case For(loopVar, body, _) => s"(${loopVar.getOrElse("")}|${body.toVyxal}"
     case While(cond, body, _) =>
       s"{${cond.fold("")(_.toVyxal)}|${body.toVyxal}}"
-    case Lambda(arity, params, body, _) =>
+    case Lambda(_, params, body, _) =>
       body.map(_.toVyxal).mkString("λ", "|", "}")
     case FnDef(name, lam, _) => ???
     case GetVar(name, _) => s"#<$name"
