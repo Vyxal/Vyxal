@@ -107,7 +107,7 @@ object CLI:
                 case Some(code) => code
                 case None =>
                   throw new RuntimeException(
-                    s"Either file name or code must be given to debug"
+                    "Either file name or code must be given to debug"
                   )
           DebugRepl.start(code)
         else
