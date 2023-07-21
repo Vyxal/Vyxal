@@ -1,5 +1,6 @@
 package vyxal
 
+import vyxal.debugger.DebugRepl
 import vyxal.lexer.Lexer
 
 import scopt.OParser
@@ -67,7 +68,6 @@ object CLI:
           globals = Globals(settings = config.settings)
         )
 
-        if config.debug then ctx.globals.debug = true
         if config.printHelp then
           println(OParser.usage(parser))
           return
@@ -96,21 +96,33 @@ object CLI:
             if line == "" then return
             println(Parser.parse(Lexer(line).getOrElse(List.empty)))
 
-        config.filename.foreach { filename =>
-          val source = io.Source.fromFile(filename)
-          try
-            runCode(source.mkString)
-          finally
-            source.close()
-        }
-
-        config.code.foreach { code => runCode(code) }
-
-        if config.filename.nonEmpty || config.code.nonEmpty then return
+        if config.debug then
+          val code = config.filename match
+            case Some(file) =>
+              val source = io.Source.fromFile(file)
+              try source.mkString
+              finally source.close()
+            case None =>
+              config.code match
+                case Some(code) => code
+                case None =>
+                  throw new RuntimeException(
+                    s"Either file name or code must be given to debug"
+                  )
+          DebugRepl.start(code)
         else
-          repl.startRepl(
-            config.runFancyRepl || sys.env.getOrElse("REPL", "") != "false"
-          )
+          config.filename.foreach { filename =>
+            val source = io.Source.fromFile(filename)
+            try runCode(source.mkString)
+            finally source.close()
+          }
+
+          config.code.foreach { code => runCode(code) }
+
+          if config.filename.isEmpty && config.code.isEmpty then
+            repl.startRepl(
+              config.runFancyRepl || sys.env.getOrElse("REPL", "") != "false"
+            )
       case None => ???
     end match
   end run
@@ -138,6 +150,9 @@ object CLI:
     OParser.sequence(
       programName("vyxal"),
       head("vyxal", "3.0.0-beta.3(indev)"),
+      cmd("debug")
+        .action((_, cfg) => cfg.copy(debug = true))
+        .text("Run the debugger"),
       opt[Unit]('h', "help")
         .action((_, cfg) => cfg.copy(printHelp = true))
         .text("Print this help message and exit")
@@ -149,10 +164,6 @@ object CLI:
       opt[String]("code")
         .action((code, cfg) => cfg.copy(code = Some(code)))
         .text("Code to execute directly")
-        .optional(),
-      opt[String]("debug")
-        .action((_, cfg) => cfg.copy(debug = true))
-        .text("Run the debugger")
         .optional(),
       opt[String]("docs-literate")
         .action((symbol, cfg) => cfg.copy(litInfoFor = Some(symbol)))
