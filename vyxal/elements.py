@@ -18,6 +18,7 @@ import json
 from bs4 import BeautifulSoup as bs
 from datetime import datetime
 from typing import Callable, Union
+from hashlib import sha256
 
 import num2words
 import numpy
@@ -449,6 +450,7 @@ else:
         "lhs = pop(stack, 1, ctx); vy_type(lhs) == NUMBER_TYPE and time.sleep(lhs)",
         1,
     ),
+    "ø%": process_element("sha256(lhs.encode()).hexdigest()", 1),
 }
 
 
