@@ -5858,6 +5858,7 @@ def separate_runl_encode(lhs, ctx: Context):
     ctx.stacks[-1].append(items)
     return lengths
 
+
 @element("ø%", 1)
 def sha256_hash(lhs, ctx):
     """Element ø%
