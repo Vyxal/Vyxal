@@ -16,7 +16,7 @@ enum StepRes:
   case For(loop: AST.For)
   case While(loop: AST.While)
   case If(ifStmt: AST.IfStatement)
-  case List(elems: Iterable[AST])
+  case Lst(elems: Iterable[AST])
 
   /** Process `orig`, then run `fn` right after (in the same step) */
   case Then(orig: StepRes, fn: () => Unit)
@@ -48,10 +48,16 @@ class Debugger(code: AST)(using rootCtx: Context):
     *   depending on the top of the stack, choose whether to provide the AST for
     *   the truthy or falsy branch.
     */
-  case class StackFrame(ctx: Context, ast: AST, step: StepRes)
+  case class StackFrame(
+      name: Option[String],
+      ctx: Context,
+      ast: AST,
+      step: StepRes,
+      var code: Iterator[AST]
+  )
 
   private val stackFrames: ArrayBuffer[StackFrame] = ArrayBuffer(
-    StackFrame(rootCtx, code, Exec(code))
+    StackFrame(Some("<root>"), rootCtx, code, Exec(code), Iterator.single(code))
   )
 
   /** The current stack frame */
@@ -59,6 +65,10 @@ class Debugger(code: AST)(using rootCtx: Context):
 
   /** The current context */
   private def ctx: Context = stackFrames.last.ctx
+
+  def getStackFrames: List[(String, Context)] = stackFrames.toList
+    .filter(_.name.nonEmpty)
+    .map(frame => (frame.name.get, frame.ctx))
 
   def addBreakpoint(row: Int, col: Int): Unit = ???
 
@@ -97,7 +107,7 @@ class Debugger(code: AST)(using rootCtx: Context):
       case AST.DictionaryString(value, _) =>
         ctx.push(StringHelpers.decompress(value))
         Done
-      case AST.Lst(elems, _) => StepRes.List(elems)
+      case AST.Lst(elems, _) => StepRes.Lst(elems)
       case AST.Command(symbol, _) =>
         // todo put the string "E" into a constant somewhere
         if symbol == "E" && ctx.peek.isInstanceOf[VFun] then
