@@ -6637,3 +6637,10 @@
   arity: 2
   tests:
     - '["abcaabac",["a","bc","c","b"]] : ["a","bc","a","a","b","a","c"]'
+
+- element: "ø%"
+  name: SHA256 Hash
+  description: Hash a string using the SHA256 hash algorithm.
+  arity: 1
+  tests:
+    - '["cookie"] : "d7e83e28a04b537e64424546b14caf9b67bad2f28dabce68116e0d372319fa00"'

@@ -407,6 +407,11 @@ var codepage_descriptions =
       "description": "Get the modular exponentiation a**b mod c",
       "overloads": "any, any, any -> pow(a, b, c)",
       "token": "\u2206%"
+    },
+    {
+      "name": "SHA256 Hash",
+      "description": "Hash a string using the SHA256 hash algorithm.",
+      "token": "\u00f8%"
     }
   ],
   "38": [
