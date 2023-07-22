@@ -5862,7 +5862,7 @@ def separate_runl_encode(lhs, ctx: Context):
 @element("ø%", 1)
 def sha256_hash(lhs, ctx):
     """Element ø%
-    ...
+    (any) -> hash a using SHA256
     """
     return sha256(str(lhs).encode()).hexdigest()
 
