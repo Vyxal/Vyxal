@@ -450,7 +450,6 @@ else:
         "lhs = pop(stack, 1, ctx); vy_type(lhs) == NUMBER_TYPE and time.sleep(lhs)",
         1,
     ),
-    "ø%": process_element("sha256(lhs.encode()).hexdigest()", 1),
 }
 
 
@@ -5858,6 +5857,13 @@ def separate_runl_encode(lhs, ctx: Context):
     items, lengths = transpose(enc)
     ctx.stacks[-1].append(items)
     return lengths
+
+@element("ø%", 1)
+def sha256_hash(lhs, ctx):
+    """Element ø%
+    ...
+    """
+    return sha256(str(lhs).encode()).hexdigest()
 
 
 @element("Þg", 1)
