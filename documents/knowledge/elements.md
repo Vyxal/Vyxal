@@ -4338,3 +4338,8 @@ Push the next input as a string, unevaluated. Like ? but without implicit conver
 Splits a into a list using only the strings in b, with longest strings in b being scanned first.
 
 -------------------------------
+## `` ø% `` (SHA256 Hash)
+
+Hash a string using the SHA256 hash algorithm.
+
+-------------------------------
