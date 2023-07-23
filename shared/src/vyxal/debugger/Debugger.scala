@@ -39,38 +39,63 @@ enum StepRes:
   * @param next
   *   Return the next step if there is one and None if we're done
   * @param stackFrame
-  *   A new stack frame for this step, if applicable
+  *   If this step requires creating a new stack frame, this will be a Some
+  *   containing a function that takes a context and makes a new context to use
+  *   for the new stack frame, as well as a name for the new stack frame.
   */
 case class Step(
     currAST: AST,
     next: () => Context ?=> Option[Step],
-    stackFrame: Option[StackFrame] = None
+    stackFrame: Option[(String, Context => Context)] = None
 ):
+
+  /** Modify this step to run an extra bit of code after it's done */
+  def thenDo(fn: Context ?=> Unit): Step =
+    this.copy(next =
+      () =>
+        ctx ?=>
+          this.next() match
+            case Some(nextStep) => Some(nextStep.thenDo(fn))
+            case None =>
+              fn(using ctx)
+              None
+    )
 
   /** Make a new Step that executes this step, then the given one */
   def chain(chained: Step): Step =
-    Step(
-      this.currAST,
-      () => ctx ?=> Some(this.next().fold(chained)(_.chain(chained))),
-      this.stackFrame
+    this.copy(
+      next = () => ctx ?=> Some(this.next().fold(chained)(_.chain(chained))),
     )
 
   // TODO(ysthakur): This is some ugly code. You should be ashamed of yourself.
   def chainLazy(chained: Context ?=> Option[Step]): Step =
-    Step(
-      this.currAST,
+    this.copy(next =
       () =>
         ctx ?=>
           this
             .next()
             .fold(chained)(nextStep => Some(nextStep.chainLazy(chained))),
-      this.stackFrame
     )
 end Step
 
 object Step:
   def fnCall(fn: VFun): Step =
-    Step(fn.originalAST.get, ???, ???)
+    Step(
+      fn.originalAST.get,
+      () =>
+        ctx ?=>
+          val body = fn.originalAST.get.body
+          Option.when(body.nonEmpty)(
+            fn.originalAST.get.body.map(stepsForAST).reduce(_.chain(_))
+          )
+      ,
+      Some(
+        (
+          fn.name.getOrElse("<function>"),
+          ctx => Context.makeFnCtx(fn.ctx, ctx, ???, ???, ???, ???, ???, ???)
+        )
+      )
+    )
 
   def whileStep(loop: AST.While): Step =
     Step(
@@ -113,7 +138,20 @@ object Step:
             }
     )
 
-  def listStep(lst: AST.Lst): Step = ???
+  def listStep(lst: AST.Lst): Step =
+    val list = ListBuffer.empty[VAny]
+    Step(
+      lst,
+      () =>
+        ctx ?=>
+          Some(
+            lst.elems
+              .map(elem =>
+                stepsForAST(elem).thenDo(ctx ?=> list.addOne(ctx.pop()))
+              )
+              .reduce(_.chain(_))
+          )
+    )
 
   def cmdStep(cmd: AST.Command): Step =
     Step(
