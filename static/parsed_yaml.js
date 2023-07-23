@@ -368,6 +368,11 @@ var codepage_descriptions =
       "description": "Place the top two items into a single list",
       "overloads": "any, any -> [a, b]",
       "token": "\""
+    },
+    {
+      "name": "Parse Into List",
+      "description": "Splits a into a list using only the strings in b, with longest strings in b being scanned first.",
+      "token": "\u00a8\""
     }
   ],
   "35": [
@@ -402,6 +407,11 @@ var codepage_descriptions =
       "description": "Get the modular exponentiation a**b mod c",
       "overloads": "any, any, any -> pow(a, b, c)",
       "token": "\u2206%"
+    },
+    {
+      "name": "SHA256 Hash",
+      "description": "Hash a string using the SHA256 hash algorithm.",
+      "token": "\u00f8%"
     }
   ],
   "38": [
@@ -2102,7 +2112,7 @@ var codepage_descriptions =
     {
       "name": "To Base Ten / From Custom Base",
       "description": "Convert a number from a custom base to base 10",
-      "overloads": "any, num -> a to base 10 from number base b, treating list items / string items as digits\nstr, str -> a to base 10 from custom string base b, replacing values in a with their index in b and converting to base 10",
+      "overloads": "any, num -> a to base 10 from number base b, treating list items / string items as digits\nstr, str -> a to base 10 from custom string base b, replacing values in a with their index in b and converting to base 10\nlst, lst -> a to base 10 from custom list base b, replacing values in a with their index in b and converting to base 10\nstr, lst -> a to base 10 from custom list base b, parsing a into a list only containing the items in b, then replacing values in a with their index in b and converting to base 10",
       "token": "\u03b2"
     },
     {

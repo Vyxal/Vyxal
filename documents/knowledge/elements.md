@@ -1105,6 +1105,8 @@ Convert a number from a custom base to base 10
 
 - any a, num b: `a to base 10 from number base b, treating list items / string items as digits`
 - str a, str b: `a to base 10 from custom string base b, replacing values in a with their index in b and converting to base 10`
+- lst a, lst b: `a to base 10 from custom list base b, replacing values in a with their index in b and converting to base 10`
+- str a, lst b: `a to base 10 from custom list base b, parsing a into a list only containing the items in b, then replacing values in a with their index in b and converting to base 10`
 -------------------------------
 ## `` τ `` (From Base Ten / To Custom Base)
 
@@ -4329,5 +4331,15 @@ Usage:
 ## `` ¨ḭ `` (Unevaluated Input)
 
 Push the next input as a string, unevaluated. Like ? but without implicit conversions
+
+-------------------------------
+## `` ¨" `` (Parse Into List)
+
+Splits a into a list using only the strings in b, with longest strings in b being scanned first.
+
+-------------------------------
+## `` ø% `` (SHA256 Hash)
+
+Hash a string using the SHA256 hash algorithm.
 
 -------------------------------

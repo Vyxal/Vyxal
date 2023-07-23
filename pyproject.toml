@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vyxal"
-version = "2.21.5"
+version = "2.21.6"
 description = "A golfing language that has aspects of traditional programming languages."
 authors = []
 license = "MIT"
@@ -12,7 +12,7 @@ homepage = "https://vyxal.pythonanywhere.com/"
 vyxal = "vyxal.main:cli"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.9 <3.11"
 sympy = "^1.9"
 num2words = "^0.5.10"
 numpy = "^1.24.1"

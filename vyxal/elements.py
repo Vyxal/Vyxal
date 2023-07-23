@@ -18,6 +18,7 @@ import json
 from bs4 import BeautifulSoup as bs
 from datetime import datetime
 from typing import Callable, Union
+from hashlib import sha256
 
 import num2words
 import numpy
@@ -2425,7 +2426,7 @@ def from_base(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs, simple=True)
     if (ts[0] == NUMBER_TYPE and ts[1] != NUMBER_TYPE) or (
-        ts[1] == list and ts[0] != list
+        ts[1] == list and ts[0] not in (list, str)
     ):
         return from_base(rhs, lhs, ctx)
     if ts == (str, str):
@@ -2436,6 +2437,10 @@ def from_base(lhs, rhs, ctx):
                 lhs, (string.digits + string.ascii_lowercase)[:rhs], ctx
             )
         return from_base_digits(iterable(lhs, ctx=ctx), rhs)
+    elif ts == (list, list):
+        return from_base_list(lhs, rhs)
+    elif ts == (str, list):
+        return from_base_list(parse_by_list(lhs, rhs, ctx), rhs)
     else:
         raise ValueError("from_base: invalid types")
 
@@ -4961,6 +4966,23 @@ def parity(lhs, ctx):
     }.get(ts, lambda: vectorise(parity, lhs, ctx=ctx))()
 
 
+@element('¨"', 2)
+def parse_by_list(lhs, rhs, ctx):
+    """Element ¨"
+    (str, list) -> parse a into a list with only the strings in b
+    """
+    temp = []
+    parse = lhs
+    while parse:
+        for x in sorted(rhs, key=len, reverse=True):
+            if result := re.match(x, parse):
+                temp.append(result.group(0))
+                parse = parse[result.span()[1] :]
+                break
+
+    return temp
+
+
 @element("¨□", 1)
 def parse_direction_arrow_to_integer(lhs, ctx):
     """Element ¨□
@@ -5835,6 +5857,14 @@ def separate_runl_encode(lhs, ctx: Context):
     items, lengths = transpose(enc)
     ctx.stacks[-1].append(items)
     return lengths
+
+
+@element("ø%", 1)
+def sha256_hash(lhs, ctx):
+    """Element ø%
+    (any) -> hash a value using SHA256 (after converting to string)
+    """
+    return sha256(str(lhs).encode()).hexdigest()
 
 
 @element("Þg", 1)
