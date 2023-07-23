@@ -32,7 +32,8 @@ case class VFun(
     arity: Int,
     params: List[String | Int],
     var ctx: Context,
-    originalAST: Option[AST.Lambda] = None
+    originalAST: Option[AST.Lambda] = None,
+    name: Option[String] = None
 ):
 
   /** Make a copy of this function with a different arity. */

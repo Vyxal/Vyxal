@@ -238,7 +238,7 @@ object Interpreter:
       overrideCtxArgs: Seq[VAny] = Seq.empty,
       vars: mut.Map[String, VAny] = mut.Map(),
   )(using ctx: Context): VAny =
-    val VFun(_, arity, params, origCtx, _) = fn
+    val VFun(_, arity, params, origCtx, _, _) = fn
     ctx.globals.callStack.push(fn)
     val useStack = arity == -1
     val inputs =
