@@ -28,27 +28,29 @@ enum StepRes:
   case Next
 
   /** Execute this new step before continuing with the structure/element */
-  case NewStep(step: Step)
+  case NewStep(step: StepSeq)
 
 // TODO this makes at least one new Step object for every command and structure
 //   in the program, as well as closures. The chain method can't be cheap either.
 //   Figure out if it's too inefficient or if it'll work.
 
-/** @param currAST
-  *   The AST we're currently executing
-  * @param next
-  *   Return the next step if there is one and None if we're done
-  * @param stackFrame
-  *   If this step requires creating a new stack frame, this will be a Some
-  *   containing a function that takes a context and makes a new context to use
-  *   for the new stack frame, as well as a name for the new stack frame.
-  */
-case class Step(
-    currAST: AST,
-    next: () => Context ?=> Option[Step],
-    stackFrame: Option[(String, Context => Context)] = None
-):
+sealed trait Step:
+  /** Modify this step to run an extra bit of code after it's done */
+  def thenDo(fn: Context ?=> Unit): Step
 
+  def next: () => Context ?=> Option[Step]
+
+  def chainLazy(chained: Context ?=> Option[Step]): Step
+
+  /** Make a new Step that executes this step, then the given one */
+  def chain(chained: Step): Step
+
+/** Holds a step to aid with the "step over" command */
+case class Block(
+    ast: AST,
+    step: StepSeq,
+    next: () => Context ?=> Option[Step] = () => ctx ?=> None
+) extends Step:
   /** Modify this step to run an extra bit of code after it's done */
   def thenDo(fn: Context ?=> Unit): Step =
     this.copy(next =
@@ -61,14 +63,64 @@ case class Step(
               None
     )
 
-  /** Make a new Step that executes this step, then the given one */
-  def chain(chained: Step): Step =
+  def chain(second: Step): Block =
+    /** Turn the next step into a block */
+    val block = second match
+      case step: StepSeq => Block(step.ast, step)
+      case block => block
+    this.copy(next =
+      () => ctx ?=> Some(this.next().fold(block: Step)(_.chain(second)))
+    )
+
+  def chainLazy(second: Context ?=> Option[Step]): Block =
+    /** Turn the next step into a block */
+    this.copy(next =
+      () =>
+        ctx ?=>
+          this
+            .next()
+            .fold(second.map:
+              case step: StepSeq => Block(step.ast, step)
+              case block => block
+            )(next => Some(next.chainLazy(second)))
+    )
+end Block
+
+/** A sequence of steps that requires stepping into
+  * @param ast
+  *   The AST we're currently executing
+  * @param next
+  *   Return the next step if there is one and None if we're done
+  * @param stackFrame
+  *   If this step requires creating a new stack frame, this will be a Some
+  *   containing a function that takes a context and makes a new context to use
+  *   for the new stack frame, as well as a name for the new stack frame.
+  */
+case class StepSeq(
+    ast: AST,
+    next: () => Context ?=> Option[Step],
+    stackFrame: Option[(String, Context => Context)] = None
+) extends Step:
+
+  /** Modify this step to run an extra bit of code after it's done */
+  def thenDo(fn: Context ?=> Unit): StepSeq =
+    this.copy(next =
+      () =>
+        ctx ?=>
+          this.next() match
+            case Some(nextStep) => Some(nextStep.thenDo(fn))
+            case None =>
+              fn(using ctx)
+              None
+    )
+
+  def chain(chained: Step): StepSeq =
     this.copy(
       next = () => ctx ?=> Some(this.next().fold(chained)(_.chain(chained))),
     )
 
   // TODO(ysthakur): This is some ugly code. You should be ashamed of yourself.
-  def chainLazy(chained: Context ?=> Option[Step]): Step =
+  def chainLazy(chained: Context ?=> Option[Step]): StepSeq =
     this.copy(next =
       () =>
         ctx ?=>
@@ -76,17 +128,17 @@ case class Step(
             .next()
             .fold(chained)(nextStep => Some(nextStep.chainLazy(chained))),
     )
-end Step
+end StepSeq
 
 object Step:
-  def fnCall(fn: VFun): Step =
-    Step(
+  private def fnCall(fn: VFun): StepSeq =
+    StepSeq(
       fn.originalAST.get,
       () =>
         ctx ?=>
           val body = fn.originalAST.get.body
           Option.when(body.nonEmpty)(
-            fn.originalAST.get.body.map(stepsForAST).reduce(_.chain(_))
+            fn.originalAST.get.body.map(blockForAST).reduce(_.chain(_))
           )
       ,
       Some(
@@ -97,8 +149,10 @@ object Step:
       )
     )
 
-  def whileStep(loop: AST.While): Step =
-    Step(
+  private def whileStep(loop: AST.While): StepSeq =
+    val bodySteps = stepsForAST(loop.body)
+    val condSteps = loop.cond.map(stepsForAST)
+    StepSeq(
       loop,
       () =>
         ctx ?=>
@@ -107,54 +161,79 @@ object Step:
           loopCtx.ctxVarPrimary = ctx.peek
           loopCtx.ctxVarSecondary = ctx.settings.rangeStart
 
-          val bodyStep = stepsForAST(loop.body)
-          loop.cond match
-            case Some(cond) =>
-              val condStep = stepsForAST(cond)
-              ???
+          condSteps match
+            case Some(condSteps) =>
+              // While loop with condition
+              lazy val bodyBlock: Block =
+                Block(loop.body, bodySteps, () => ctx ?=> Some(condBlock))
+              lazy val condBlock: Block =
+                Block(
+                  loop.cond.get,
+                  condSteps,
+                  () =>
+                    ctx ?=>
+                      if MiscHelpers.boolify(ctx.pop()) then Some(bodyBlock)
+                      else None
+                )
+              Some(condBlock)
             case None =>
-              // Infinite loop
-              lazy val res: Step = bodyStep.chainLazy { Some(res) }
-              Some(res)
+              // Infinite loop, no condition
+              lazy val loopBlock: Block =
+                Block(loop.body, bodySteps, () => ctx ?=> Some(loopBlock))
+              Some(loopBlock)
+          end match
     )
+  end whileStep
 
-  def forStep(loop: AST.For): Step =
+  private def forStep(loop: AST.For): StepSeq =
     ???
 
-  def ifStep(ifStmt: AST.IfStatement): Step =
-    Step(
+  private def ifStep(ifStmt: AST.IfStatement): StepSeq =
+    StepSeq(
       ifStmt,
       () =>
         ctx ?=>
           ifStmt.conds
             .zip(ifStmt.bodies)
-            .foldRight(ifStmt.elseBody.map(stepsForAST)) {
+            .foldRight(ifStmt.elseBody.map(blockForAST)) {
               case ((cond, thenBody), elseBody) =>
-                Some(stepsForAST(cond).chainLazy { ctx ?=>
-                  if MiscHelpers.boolify(ctx.pop()) then
-                    Some(stepsForAST(thenBody))
-                  else elseBody
-                })
+                val condSteps = stepsForAST(cond)
+                val thenSteps = stepsForAST(thenBody)
+                Some(
+                  Block(
+                    cond,
+                    condSteps,
+                    () =>
+                      ctx ?=>
+                        if MiscHelpers.boolify(ctx.pop()) then
+                          Some(blockForAST(thenBody))
+                        else elseBody
+                  )
+                )
             }
     )
 
-  def listStep(lst: AST.Lst): Step =
+  private def listStep(lst: AST.Lst): StepSeq =
     val list = ListBuffer.empty[VAny]
-    Step(
+    StepSeq(
       lst,
       () =>
         ctx ?=>
-          Some(
-            lst.elems
-              .map(elem =>
-                stepsForAST(elem).thenDo(ctx ?=> list.addOne(ctx.pop()))
+          lst.elems
+            .foldRight(None: Option[Block]) { (elem, acc) =>
+              Some(
+                Block(
+                  elem,
+                  stepsForAST(elem).thenDo(ctx ?=> list.addOne(ctx.pop())),
+                  () => ctx ?=> acc
+                )
               )
-              .reduce(_.chain(_))
-          )
+            }
     )
+  end listStep
 
-  def cmdStep(cmd: AST.Command): Step =
-    Step(
+  private def cmdStep(cmd: AST.Command): StepSeq =
+    StepSeq(
       cmd,
       () =>
         ctx ?=>
@@ -171,8 +250,8 @@ object Step:
     )
 
   /** Helper to concisely make steps that run a non-Vyxal thing */
-  def exec(ast: AST)(fn: Context ?=> Unit): Step =
-    Step(
+  private def exec(ast: AST)(fn: Context ?=> Unit): StepSeq =
+    StepSeq(
       ast,
       () =>
         ctx ?=>
@@ -180,7 +259,7 @@ object Step:
           None
     )
 
-  def stepsForAST(ast: AST): Step =
+  private def stepsForAST(ast: AST): StepSeq =
     ast match
       case AST.Number(value, _) =>
         exec(ast) { ctx ?=> ctx.push(value) }
@@ -192,12 +271,15 @@ object Step:
         // TODO(ysthakur): handle empty groups?
         elems.map(stepsForAST).reduce(_.chain(_))
       case _ => ???
+
+  def blockForAST(ast: AST): Block =
+    Block(ast, stepsForAST(ast))
 end Step
 
 class Debugger(code: AST)(using rootCtx: Context):
 
   private val stackFrames: ArrayBuffer[StackFrame] = ArrayBuffer(
-    StackFrame(Some("<root>"), rootCtx, code, Step.stepsForAST(code))
+    StackFrame(Some("<root>"), rootCtx, code, Step.blockForAST(code))
   )
 
   /** The current stack frame */

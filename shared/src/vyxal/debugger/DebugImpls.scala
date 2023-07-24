@@ -4,7 +4,7 @@ import vyxal.Context
 import vyxal.VNum.given
 
 object DebugImpls:
-  type DebugImpl = () => Context ?=> Option[Step]
+  type DebugImpl = () => Context ?=> Option[StepSeq]
 
   val impls: Map[String, DebugImpl] = ActualImpls.impls.toMap
 
