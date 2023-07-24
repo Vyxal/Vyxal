@@ -26,20 +26,9 @@ class StackFrame(
     private[debugger] var step: Step
 )
 
-enum StepRes:
-  /** We're completely done executing this structure/element */
-  case Done
-
-  /** Move to the next part of this structure/element */
-  case Next
-
-  /** Execute this new step before continuing with the structure/element */
-  case NewStep(step: StepSeq)
-
 // TODO this makes at least one new Step object for every command and structure
 //   in the program, as well as closures.
 //   Figure out if it's too inefficient or if it'll work.
-
 sealed trait Step:
   /** Modify this step to run an extra bit of code after it's done */
   def thenDo(fn: Context ?=> Unit): Step
