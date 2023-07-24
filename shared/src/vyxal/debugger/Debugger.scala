@@ -290,8 +290,7 @@ class Debugger(code: AST)(using rootCtx: Context):
       println(s"Top of stack is ${frame.ctx.peek}")
       println("Frames:")
       println(stackFrames.reverse.mkString("\n"))
-    else
-      println("Debugger finished")
+    else println("Debugger finished")
 
   // @tailrec // Commenting for debugging purposes
   private def popFrame(): Unit =
