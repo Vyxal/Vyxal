@@ -31,7 +31,7 @@ enum StepRes:
   case NewStep(step: StepSeq)
 
 // TODO this makes at least one new Step object for every command and structure
-//   in the program, as well as closures. The chain method can't be cheap either.
+//   in the program, as well as closures.
 //   Figure out if it's too inefficient or if it'll work.
 
 sealed trait Step:
@@ -40,15 +40,10 @@ sealed trait Step:
 
   def next: () => Context ?=> Option[Step]
 
-  def chainLazy(chained: Context ?=> Option[Step]): Step
-
-  /** Make a new Step that executes this step, then the given one */
-  def chain(chained: Step): Step
-
 /** Holds a step to aid with the "step over" command */
 case class Block(
     ast: AST,
-    step: StepSeq,
+    step: Step,
     next: () => Context ?=> Option[Step] = () => ctx ?=> None
 ) extends Step:
   /** Modify this step to run an extra bit of code after it's done */
@@ -62,29 +57,6 @@ case class Block(
               fn(using ctx)
               None
     )
-
-  def chain(second: Step): Block =
-    /** Turn the next step into a block */
-    val block = second match
-      case step: StepSeq => Block(step.ast, step)
-      case block => block
-    this.copy(next =
-      () => ctx ?=> Some(this.next().fold(block: Step)(_.chain(second)))
-    )
-
-  def chainLazy(second: Context ?=> Option[Step]): Block =
-    /** Turn the next step into a block */
-    this.copy(next =
-      () =>
-        ctx ?=>
-          this
-            .next()
-            .fold(second.map:
-              case step: StepSeq => Block(step.ast, step)
-              case block => block
-            )(next => Some(next.chainLazy(second)))
-    )
-end Block
 
 /** A sequence of steps that requires stepping into
   * @param ast
@@ -114,33 +86,16 @@ case class StepSeq(
               None
     )
 
-  def chain(chained: Step): StepSeq =
-    this.copy(
-      next = () => ctx ?=> Some(this.next().fold(chained)(_.chain(chained))),
-    )
-
-  // TODO(ysthakur): This is some ugly code. You should be ashamed of yourself.
-  def chainLazy(chained: Context ?=> Option[Step]): StepSeq =
-    this.copy(next =
-      () =>
-        ctx ?=>
-          this
-            .next()
-            .fold(chained)(nextStep => Some(nextStep.chainLazy(chained))),
-    )
-end StepSeq
-
 object Step:
   private def fnCall(fn: VFun): StepSeq =
     StepSeq(
       fn.originalAST.get,
       () =>
         ctx ?=>
-          val body = fn.originalAST.get.body
-          Option.when(body.nonEmpty)(
-            fn.originalAST.get.body.map(blockForAST).reduce(_.chain(_))
-          )
-      ,
+          fn.originalAST.get.body.foldRight(None: Option[Step]) {
+            (bodyPart, acc) =>
+              Some(Block(bodyPart, stepsForAST(bodyPart), () => ctx ?=> acc))
+          },
       Some(
         (
           fn.name.getOrElse("<function>"),
@@ -259,7 +214,7 @@ object Step:
           None
     )
 
-  private def stepsForAST(ast: AST): StepSeq =
+  private def stepsForAST(ast: AST): Step =
     ast match
       case AST.Number(value, _) =>
         exec(ast) { ctx ?=> ctx.push(value) }
@@ -268,8 +223,18 @@ object Step:
       case loop: AST.While => whileStep(loop)
       case ifStmt: AST.IfStatement => ifStep(ifStmt)
       case AST.Group(elems, _, _) =>
-        // TODO(ysthakur): handle empty groups?
-        elems.map(stepsForAST).reduce(_.chain(_))
+        elems
+          .foldRight(None: Option[Step]) { (elem, acc) =>
+            Some(
+              Block(
+                elem,
+                stepsForAST(elem),
+                () => ctx ?=> acc
+              )
+            )
+          }
+          // For empty groups
+          .getOrElse(StepSeq(ast, () => ctx ?=> None))
       case _ => ???
 
   def blockForAST(ast: AST): Block =
