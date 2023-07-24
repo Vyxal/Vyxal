@@ -7,22 +7,26 @@ import scopt.OParser
 
 object DebugRepl:
   def start(code: String)(using Context): Unit =
+    scribe.trace("Starting debugger REPL")
     val ast = Lexer(code).flatMap(Parser.parse) match
       case Right(ast) => ast
       case Left(err) => throw new RuntimeException(err.msg)
     val debugger = Debugger(ast)
+    debugger.printState()
     while true do
       val line = io.StdIn.readLine("(debug)> ")
       if line.nonEmpty then
         OParser.parse(parser, line.split(" "), Config()) match
           case Some(config) =>
             config.cmd match
-              case null => throw new Error("No command given to debugger")
-              case Cmd.StepInto => debugger.stepInto()
+              case null => println("No command given to debugger")
+              case Cmd.StepInto =>
+                debugger.stepInto()
+                debugger.printState()
               case Cmd.StepOver => debugger.stepOver()
               case Cmd.StepOut => debugger.stepOut()
               case Cmd.Exit => return
-          case None => throw new Error("Could not parse command")
+          case None => println("Could not parse command")
   end start
 
   private val builder = OParser.builder[Config]

@@ -19,12 +19,13 @@ import scala.collection.mutable.{ArrayBuffer, ListBuffer}
   *   The next step to be executed
   */
 class StackFrame(
-    val name: Option[String],
+    val name: String,
     val ctx: Context,
     val ast: AST,
     val origBlock: Block,
     private[debugger] var step: Step
-)
+):
+  override def toString = s"Frame $name for $ast (top: ${ctx.peek})"
 
 // TODO this makes at least one new Step object for every command and structure
 //   in the program, as well as closures.
@@ -34,6 +35,8 @@ sealed trait Step:
   def thenDo(fn: Context ?=> Unit): Step
 
   def next: () => Context ?=> Option[Step]
+
+  def currAST: AST
 
 /** Holds a step to aid with the "step over" command
   *
@@ -60,6 +63,8 @@ case class Block(
               None
     )
 
+  override def currAST = step.currAST
+
 /** A sequence of steps that requires stepping into
   * @param ast
   *   The AST we're currently executing
@@ -70,6 +75,8 @@ case class StepSeq(
     ast: AST,
     next: () => Context ?=> Option[Step]
 ) extends Step:
+
+  override def currAST = ast
 
   /** Modify this step to run an extra bit of code after it's done */
   def thenDo(fn: Context ?=> Unit): StepSeq =
@@ -149,16 +156,14 @@ object Step:
             .zip(ifStmt.bodies)
             .foldRight(ifStmt.elseBody.map(blockForAST)) {
               case ((cond, thenBody), elseBody) =>
-                val condSteps = stepsForAST(cond)
-                val thenSteps = stepsForAST(thenBody)
+                val thenBlock = blockForAST(thenBody)
                 Some(
                   Block(
                     cond,
-                    condSteps,
+                    stepsForAST(cond),
                     () =>
                       ctx ?=>
-                        if MiscHelpers.boolify(ctx.pop()) then
-                          Some(blockForAST(thenBody))
+                        if MiscHelpers.boolify(ctx.pop()) then Some(thenBlock)
                         else elseBody
                   )
                 )
@@ -219,6 +224,7 @@ object Step:
       case loop: AST.For => forStep(loop)
       case loop: AST.While => whileStep(loop)
       case ifStmt: AST.IfStatement => ifStep(ifStmt)
+      case cmd: AST.Command => cmdStep(cmd)
       case AST.Group(elems, _, _) =>
         elems
           .foldRight(None: Option[Step]) { (elem, acc) =>
@@ -242,21 +248,15 @@ class Debugger(code: AST)(using rootCtx: Context):
 
   private val stackFrames: ArrayBuffer[StackFrame] =
     val block = Step.blockForAST(code)
-    ArrayBuffer(StackFrame(Some("<root>"), rootCtx, code, block, block.step))
+    ArrayBuffer(StackFrame("<root>", rootCtx, code, block, block.step))
 
   /** The current stack frame */
   private def frame: StackFrame = stackFrames.last
 
-  /** The current context */
-  private def ctx: Context = stackFrames.last.ctx
-
-  def getStackFrames: List[(String, Context)] = stackFrames.toList
-    .filter(_.name.nonEmpty)
-    .map(frame => (frame.name.get, frame.ctx))
-
   def addBreakpoint(row: Int, col: Int): Unit = ???
 
   def stepInto(): Unit =
+    scribe.trace(s"Stepping in, frame: $frame")
     frame.step match
       case Block(ast, step, nextBlock, _) =>
         step.next() match
@@ -273,19 +273,34 @@ class Debugger(code: AST)(using rootCtx: Context):
           case None => popFrame()
   end stepInto
 
-  def stepOver(): Unit = ???
+  def stepOver(): Unit =
+    scribe.trace(s"Stepping over, frame: $frame")
+    ???
 
-  def stepOut(): Unit = ???
+  def stepOut(): Unit =
+    scribe.trace(s"Stepping out, frame: $frame")
+    ???
 
   def continue(): Unit =
     while stackFrames.nonEmpty do stepInto()
 
-  @tailrec
+  def printState(): Unit =
+    if stackFrames.nonEmpty then
+      println(s"Next to execute: ${frame.step.currAST}")
+      println(s"Top of stack is ${frame.ctx.peek}")
+      println("Frames:")
+      println(stackFrames.reverse.mkString("\n"))
+    else
+      println("Debugger finished")
+
+  // @tailrec // Commenting for debugging purposes
   private def popFrame(): Unit =
+    scribe.trace(s"stackFrames = ${stackFrames.toSeq}")
     val lastFrame = stackFrames.remove(stackFrames.size - 1)
     lastFrame.origBlock.next()(using lastFrame.ctx) match
       case Some(nextStep) => frame.step = nextStep
-      case None => popFrame()
+      case None =>
+        if stackFrames.nonEmpty then popFrame()
 
   private def makeNewStackFrameIfNecessary(step: Step): Unit =
     step match
@@ -293,7 +308,7 @@ class Debugger(code: AST)(using rootCtx: Context):
         stackFrame match
           case Some((name, makeCtx)) =>
             stackFrames += StackFrame(
-              Some(name),
+              name,
               makeCtx(frame.ctx),
               ast,
               block,
