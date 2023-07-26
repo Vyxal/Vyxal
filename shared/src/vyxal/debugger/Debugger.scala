@@ -153,8 +153,27 @@ object Step:
         ctx ?=>
           given loopCtx: Context = ctx.makeChild()
           val loopIterable = ListHelpers.makeIterable(ctx.pop())
-          ???
+          ctx.ctxVarSecondary = -1
+          lazy val loopBlock: Block = Block(
+            loop.body,
+            loopBody,
+            () =>
+              ctx ?=>
+                ctx.ctxVarSecondary =
+                  (ctx.ctxVarSecondary.asInstanceOf[VNum]) + 1
+                if ctx.ctxVarSecondary
+                    .asInstanceOf[VNum]
+                    .toBigInt >= loopIterable.length
+                then None
+                else
+                  ctx.ctxVarPrimary = loopIterable(
+                    ctx.ctxVarSecondary.asInstanceOf[VNum].toInt
+                  )
+                  Some(loopBlock)
+          )
+          Some(loopBlock)
     )
+  end forStep
 
   private def ifStep(ifStmt: AST.IfStatement): StepSeq =
     StepSeq(
