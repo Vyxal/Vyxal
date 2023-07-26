@@ -145,7 +145,16 @@ object Step:
   end whileStep
 
   private def forStep(loop: AST.For): StepSeq =
-    ???
+    val loopVariable = loop.loopVar.getOrElse("")
+    val loopBody = stepsForAST(loop.body)
+    StepSeq(
+      loop,
+      () =>
+        ctx ?=>
+          val loopIterable = ListHelpers.makeIterable(ctx.pop())
+          given loopCtx: Context = ctx.makeChild()
+          ???
+    )
 
   private def ifStep(ifStmt: AST.IfStatement): StepSeq =
     StepSeq(
