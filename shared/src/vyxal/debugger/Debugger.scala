@@ -151,8 +151,8 @@ object Step:
       loop,
       () =>
         ctx ?=>
-          val loopIterable = ListHelpers.makeIterable(ctx.pop())
           given loopCtx: Context = ctx.makeChild()
+          val loopIterable = ListHelpers.makeIterable(ctx.pop())
           ???
     )
 
