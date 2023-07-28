@@ -13,99 +13,51 @@ import scala.collection.mutable.{ArrayBuffer, ListBuffer}
   *   frame's context.
   * @param ast
   *   The AST for the structure that caused the new stack frame
-  * @param origBlock
-  *   The block for which the stack frame was made
-  * @param step
-  *   The next step to be executed
   */
 class StackFrame(
     val name: String,
     val ctx: Context,
     val ast: AST,
-    val origBlock: Block,
-    private[debugger] var step: Step
 ):
+  private[debugger] val stepStack = mutable.Stack.empty[Step]
+
   override def toString = s"Frame $name for $ast (top: ${ctx.peek})"
 
-// TODO this makes at least one new Step object for every command and structure
-//   in the program, as well as closures.
-//   Figure out if it's too inefficient or if it'll work.
+type NextStep = () => Context ?=> Option[Step]
+
 sealed trait Step:
-  /** Modify this step to run an extra bit of code after it's done */
-  def thenDo(fn: Context ?=> Unit): Step
+  def ast: AST
 
-  def next: () => Context ?=> Option[Step]
+  def next: NextStep
 
-  def currAST: AST
-
-/** Holds a step to aid with the "step over" command
-  *
-  * @param stackFrame
-  *   If this step requires creating a new stack frame, this will be a Some
-  *   containing a function that takes a context and makes a new context to use
-  *   for the new stack frame, as well as a name for the new stack frame.
-  */
-case class Block(
+case class NewStackFrame(
     ast: AST,
-    step: Step,
-    next: () => Context ?=> Option[Step] = () => ctx ?=> None,
-    stackFrame: Option[(String, Context => Context)] = None
-) extends Step:
-  /** Modify this step to run an extra bit of code after it's done */
-  def thenDo(fn: Context ?=> Unit): Step =
-    this.copy(next =
-      () =>
-        ctx ?=>
-          this.next() match
-            case Some(nextStep) => Some(nextStep.thenDo(fn))
-            case None =>
-              fn(using ctx)
-              None
-    )
+    frameName: String,
+    newCtx: Context => Context,
+    next: NextStep
+) extends Step
 
-  override def currAST = step.currAST
+case class EndStackFrame(next: NextStep) extends Step
 
-/** A sequence of steps that requires stepping into
-  * @param ast
-  *   The AST we're currently executing
-  * @param next
-  *   Return the next step if there is one and None if we're done
-  */
-case class StepSeq(
-    ast: AST,
-    next: () => Context ?=> Option[Step]
-) extends Step:
+case class NewBlock(ast: AST, next: NextStep) extends Step
 
-  override def currAST = ast
+case class EndBlock(ast: AST, next: NextStep) extends Step
 
-  /** Modify this step to run an extra bit of code after it's done */
-  def thenDo(fn: Context ?=> Unit): StepSeq =
-    this.copy(next =
-      () =>
-        ctx ?=>
-          this.next() match
-            case Some(nextStep) => Some(nextStep.thenDo(fn))
-            case None =>
-              fn(using ctx)
-              None
-    )
+case class Exec(ast: AST, exec: () => Context ?=> Unit, next: NextStep)
+    extends Step
 
 object Step:
   private def fnCall(fn: VFun): Block =
-    Block(
+    NewStackFrame(
       fn.originalAST.get,
+      fn.name.getOrElse("<function>"),
+      ctx => Context.makeFnCtx(fn.ctx, ctx, ???, ???, ???, ???, ???, ???),
       fn.originalAST.get.body
         .foldRight(None: Option[Step]) { (bodyPart, acc) =>
           Some(Block(bodyPart, stepsForAST(bodyPart), () => ctx ?=> acc))
         }
         .getOrElse(StepSeq(fn.originalAST.get, () => ctx ?=> None)),
       () => ctx ?=> None,
-      Some(
-        (
-          fn.name.getOrElse("<function>"),
-          ctx => Context.makeFnCtx(fn.ctx, ctx, ???, ???, ???, ???, ???, ???)
-        )
-      )
     )
 
   private def whileStep(loop: AST.While): StepSeq =
@@ -218,7 +170,7 @@ object Step:
   end listStep
 
   private def cmdStep(cmd: AST.Command): StepSeq =
-    StepSeq(
+    Exec(
       cmd,
       () =>
         ctx ?=>
@@ -234,42 +186,17 @@ object Step:
                   throw new RuntimeException(s"No such element: $symbol")
     )
 
-  /** Helper to concisely make steps that run a non-Vyxal thing */
-  private def exec(ast: AST)(fn: Context ?=> Unit): StepSeq =
-    StepSeq(
-      ast,
-      () =>
-        ctx ?=>
-          fn(using ctx)
-          None
-    )
-
-  private def stepsForAST(ast: AST): Step =
+  def stepsForAST(ast: AST): Iterator[Step] =
     ast match
       case AST.Number(value, _) =>
-        exec(ast) { ctx ?=> ctx.push(value) }
+        Exec(ast, () => ctx ?=> ctx.push(value))
       case lst: AST.Lst => listStep(lst)
       case loop: AST.For => forStep(loop)
       case loop: AST.While => whileStep(loop)
       case ifStmt: AST.IfStatement => ifStep(ifStmt)
       case cmd: AST.Command => cmdStep(cmd)
-      case AST.Group(elems, _, _) =>
-        elems
-          .foldRight(None: Option[Step]) { (elem, acc) =>
-            Some(
-              Block(
-                elem,
-                stepsForAST(elem),
-                () => ctx ?=> acc
-              )
-            )
-          }
-          // For empty groups
-          .getOrElse(StepSeq(ast, () => ctx ?=> None))
+      case AST.Group(elems, _, _) => elems.map(stepsForAST).reduce(_ ++ _)
       case _ => ???
-
-  def blockForAST(ast: AST): Block =
-    Block(ast, stepsForAST(ast))
 end Step
 
 class Debugger(code: AST)(using rootCtx: Context):
@@ -281,33 +208,37 @@ class Debugger(code: AST)(using rootCtx: Context):
   /** The current stack frame */
   private def frame: StackFrame = stackFrames.last
 
+  private val steps: Iterator[Step] = ???
+
   def addBreakpoint(row: Int, col: Int): Unit = ???
 
   def stepInto(): Unit =
     scribe.trace(s"Stepping in, frame: $frame")
-    frame.step match
-      case Block(ast, step, nextBlock, _) =>
-        step.next() match
-          case Some(nextStep) =>
-            makeNewStackFrameIfNecessary(nextStep)
-          case None =>
-            nextBlock() match
-              case Some(block) => frame.step = block
-              case None => popFrame()
-      case StepSeq(ast, next) =>
-        next() match
-          case Some(nextStep) =>
-            makeNewStackFrameIfNecessary(nextStep)
-          case None => popFrame()
-  end stepInto
+    if steps.hasNext then
+      steps.next() match
+        case NewStackFrame(ast, frameName, newCtx) =>
+          stackFrames += StackFrame(frameName, newCtx(frame.ctx), ast)
+        case EndStackFrame(ast) =>
+          stackFrames.remove(stackFrames.size - 1)
+        case block @ NewBlock(ast) =>
+          frame.stepStack += block
+        case EndBlock(ast) =>
+          frame.stepStack.remove(stackFrames.size - 1)
+        case Exec(ast, exec) =>
+          exec()(using frame.ctx)
 
   def stepOver(): Unit =
     scribe.trace(s"Stepping over, frame: $frame")
-    ???
+    val startFrames = stackFrames.size
+    val startSteps = frame.stepStack.size
+    if steps.hasNext then stepInto()
+    while steps.hasNext && stackFrames.size >= startFrames && frame.stepStack.size > startSteps
+    do stepInto()
 
   def stepOut(): Unit =
     scribe.trace(s"Stepping out, frame: $frame")
-    ???
+    val startFrames = stackFrames.size
+    while steps.hasNext && stackFrames.size >= startFrames do stepInto()
 
   def continue(): Unit =
     while stackFrames.nonEmpty do stepInto()
@@ -320,28 +251,16 @@ class Debugger(code: AST)(using rootCtx: Context):
       println(stackFrames.reverse.mkString("\n"))
     else println("Debugger finished")
 
-  // @tailrec // Commenting for debugging purposes
-  private def popFrame(): Unit =
-    scribe.trace(s"stackFrames = ${stackFrames.toSeq}")
-    val lastFrame = stackFrames.remove(stackFrames.size - 1)
-    lastFrame.origBlock.next()(using lastFrame.ctx) match
-      case Some(nextStep) => frame.step = nextStep
-      case None =>
-        if stackFrames.nonEmpty then popFrame()
-
   private def makeNewStackFrameIfNecessary(step: Step): Unit =
     step match
-      case block @ Block(ast, firstStep, next, stackFrame) =>
-        stackFrame match
-          case Some((name, makeCtx)) =>
-            stackFrames += StackFrame(
-              name,
-              makeCtx(frame.ctx),
-              ast,
-              block,
-              firstStep
-            )
-          case None => frame.step = block
-      case stepSeq =>
-        frame.step = stepSeq
+      case newFrame @ NewStackFrame(ast, frameName, newCtx, inner, next) =>
+        stackFrames += StackFrame(
+          frameName,
+          newCtx(frame.ctx),
+          ast,
+          newFrame,
+          inner
+        )
+      case _ =>
+        frame.step = step
 end Debugger
