@@ -15,17 +15,15 @@ object DebugRepl:
     debugger.printState()
     while true do
       val line = io.StdIn.readLine("(debug)> ")
-      if line.nonEmpty then
+      if line.nonEmpty && !debugger.finished then
         OParser.parse(parser, line.split(" "), Config()) match
           case Some(config) =>
             config.cmd match
-              case null => println("No command given to debugger")
-              case Cmd.StepInto =>
-                debugger.stepInto()
-                debugger.printState()
+              case Cmd.StepInto => debugger.stepInto()
               case Cmd.StepOver => debugger.stepOver()
               case Cmd.StepOut => debugger.stepOut()
               case Cmd.Exit => return
+            debugger.printState()
           case None => println("Could not parse command")
   end start
 
