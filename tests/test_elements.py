@@ -16740,7 +16740,7 @@ def test_Deltas():
 
 
     stack = [vyxalify(item) for item in ["abaabb"]]
-    expected = vyxalify(["b","a","","b",""])
+    expected = vyxalify([1,-1,0,1,0])
     ctx = Context()
 
     ctx.stacks.append(stack)
