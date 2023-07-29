@@ -1804,7 +1804,7 @@ def deltas(lhs, ctx):
     """
 
     if isinstance(lhs, str):  # No point in getting the deltas of a string,
-        lhs = chr_ord(lhs)  # so we get the charcodes instead.
+        lhs = chr_ord(lhs, ctx=ctx)  # so we get the charcodes instead.
         if isinstance(
             lhs, int
         ):  # (Special case) string was only one character long:
