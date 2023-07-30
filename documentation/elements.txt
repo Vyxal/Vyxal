@@ -382,6 +382,12 @@ Keywords: execute-lambda, evaluate-as-vyxal, power-base-10, call, @
 - a: str -> Evaluate a as Vyxal
 - a: num -> 10 ** n
 ---------------------
+Ḟ (Find) (non-vectorising)
+Trigraph: #.F
+Keywords: find
+- a: any, b: any -> a.indexOf(b) (-1 if not found)
+- a: any, b: fun -> truthy indices of mapping b over a
+---------------------
 ṡ (Sort by Function Object | Reshape (APL Style)) (non-vectorising)
 Trigraph: #.s
 Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun
