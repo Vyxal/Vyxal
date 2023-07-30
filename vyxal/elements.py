@@ -1802,6 +1802,14 @@ def deltas(lhs, ctx):
     """Element ¯
     (any) -> deltas of a
     """
+
+    if isinstance(lhs, str):  # No point in getting the deltas of a string,
+        lhs = chr_ord(lhs, ctx=ctx)  # so we get the charcodes instead.
+        if isinstance(
+            lhs, int
+        ):  # (Special case) string was only one character long:
+            return []  #   No point in deltas here, we just need an empty list
+
     lhs = iterable(lhs, ctx=ctx)
 
     @lazylist_from(lhs)
