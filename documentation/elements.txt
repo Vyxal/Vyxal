@@ -259,11 +259,11 @@ f (Flatten) (non-vectorising)
 Keywords: flatten, flat
 - a: lst -> Flattened a
 ---------------------
-g (Monadic Minimum | Dyadic Minimum | Generate From Function | Vectorised Minimum) (non-vectorising)
-Keywords: max, maximum, generator
+g (Monadic Minimum | Dyadic Minimum | Generate From Function (Dyadic) | Vectorised Minimum) (non-vectorising)
+Keywords: min, minimum, generator-dyadic
 - a: lst -> Maximum of a
 - a: non-lst, b: non-lst -> Maximum of a and b
-- a: lst, b: fun -> Call b infinitely with items of a as starting values
+- a: lst, b: fun -> Call b infinitely with items of a as starting values (dyadic)
 ---------------------
 h (Head | First Item) (non-vectorising)
 Keywords: head, first, first-item
@@ -402,7 +402,7 @@ Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun
 ---------------------
 Θ (Zero Slice Until) (non-vectorising)
 Trigraph: #.`
-Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first
+Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first-n
 - a: lst, b: num -> [a[0], a[1], ..., a[b-1]]
 ---------------------
 ₀ (Ten) (non-vectorising)
