@@ -2,7 +2,7 @@ package vyxal
 
 import scala.language.strictEquality
 
-import vyxal.lexer.Range
+import vyxal.parsing.Range
 
 // todo maybe record whether each AST has a breakpoint
 enum AST(val arity: Option[Int]) derives CanEqual:

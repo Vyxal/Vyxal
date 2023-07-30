@@ -1,7 +1,7 @@
 package vyxal.debugger
 
 import vyxal.{Context, Parser}
-import vyxal.lexer.Lexer
+import vyxal.parsing.Lexer
 
 import scopt.OParser
 

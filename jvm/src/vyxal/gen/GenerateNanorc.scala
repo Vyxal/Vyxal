@@ -1,7 +1,7 @@
 package vyxal.gen
 
 import vyxal.{Elements, Modifiers, VNum}
-import vyxal.lexer.Lexer
+import vyxal.parsing.Lexer
 
 import scala.util.matching.Regex
 

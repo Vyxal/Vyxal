@@ -1,6 +1,6 @@
 package vyxal
 
-import vyxal.lexer.Lexer
+import vyxal.parsing.Lexer
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}

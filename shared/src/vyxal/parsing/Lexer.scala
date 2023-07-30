@@ -1,8 +1,8 @@
-package vyxal.lexer
+package vyxal.parsing
 
 import scala.language.strictEquality
 
-import vyxal.lexer.TokenType.*
+import vyxal.parsing.TokenType.*
 import vyxal.Context
 import vyxal.Elements
 
@@ -100,7 +100,7 @@ object StructureType:
     StructureType.LambdaSort
   )
 
-private[lexer] trait Lexer:
+private[parsing] trait Lexer:
   def parseAll[$: P]: P[Seq[Token]]
 
   final def lex(code: String): Either[VyxalCompilationError, List[Token]] =

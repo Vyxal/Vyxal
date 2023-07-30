@@ -1,10 +1,10 @@
-package vyxal.lexer
+package vyxal.parsing
 
-import vyxal.lexer.TokenType.*
+import vyxal.parsing.TokenType.*
 
 import fastparse.*
 
-object Common:
+private[parsing] object Common:
   def eol[$: P]: P[Unit] = P("\n" | "\r\n" | "\r")
 
   given Whitespace with

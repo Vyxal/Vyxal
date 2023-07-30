@@ -1,7 +1,7 @@
 package vyxal.gen
 
 import vyxal.{Element, Elements, Modifiers, SugarMap}
-import vyxal.lexer.Lexer
+import vyxal.parsing.Lexer
 
 /** For generating elements.txt and trigraphs.txt. See build.sc */
 private object GenerateDocs:

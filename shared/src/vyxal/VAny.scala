@@ -5,7 +5,6 @@ import vyxal.Interpreter.executeFn
 import scala.annotation.targetName
 import scala.collection.mutable as mut
 
-import spire.algebra.*
 import spire.implicits.*
 
 type VAny = VAtom | VList

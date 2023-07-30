@@ -2,8 +2,8 @@ package vyxal
 
 import scala.language.strictEquality
 
-import vyxal.lexer.{Lexer, Range, StructureType, Token}
-import vyxal.lexer.TokenType.*
+import vyxal.parsing.{Lexer, Range, StructureType, Token}
+import vyxal.parsing.TokenType.*
 
 class LexerTests extends VyxalTests:
   def testLex(input: String, expected: List[Token]) =

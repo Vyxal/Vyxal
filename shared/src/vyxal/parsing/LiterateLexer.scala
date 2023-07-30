@@ -1,17 +1,17 @@
-package vyxal.lexer
+package vyxal.parsing
 
 import scala.language.strictEquality
 
-import vyxal.lexer.Common.{parseToken, withRange}
-import vyxal.lexer.Common.given // For custom whitespace
-import vyxal.lexer.TokenType.*
+import vyxal.parsing.Common.{parseToken, withRange}
+import vyxal.parsing.Common.given // For custom whitespace
+import vyxal.parsing.TokenType.*
 import vyxal.Elements
 import vyxal.Modifiers
 
 import fastparse.*
 
 /** Lexer for literate mode */
-private[lexer] object LiterateLexer extends Lexer:
+private[parsing] object LiterateLexer extends Lexer:
   private val endKeywords = List(
     "endfor",
     "end-for",

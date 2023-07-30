@@ -1,15 +1,15 @@
-package vyxal.lexer
+package vyxal.parsing
 
 import scala.language.strictEquality
 
 import vyxal.{Elements, Modifiers, SugarMap}
-import vyxal.lexer.Common.{parseToken, withRange}
-import vyxal.lexer.Common.given // For custom whitespace
-import vyxal.lexer.TokenType.*
+import vyxal.parsing.Common.{parseToken, withRange}
+import vyxal.parsing.Common.given // For custom whitespace
+import vyxal.parsing.TokenType.*
 
 import fastparse.*
 
-private[lexer] object SBCSLexer extends Lexer:
+private[parsing] object SBCSLexer extends Lexer:
   /** Whether the code lexed so far has sugar trigraphs */
   var sugarUsed = false
 

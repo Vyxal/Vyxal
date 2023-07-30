@@ -2,7 +2,7 @@ package vyxal
 
 import scala.language.strictEquality
 
-import vyxal.lexer.Lexer
+import vyxal.parsing.Lexer
 
 import org.scalatest.compatible.Assertion
 import org.scalatest.funspec.AnyFunSpec
