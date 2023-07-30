@@ -93,6 +93,18 @@ object MiscHelpers:
       i += 1
     ???
 
+  val modulo: Dyad = Dyad.fill("modulo") {
+    case (_: VNum, VNum(0, _)) => 0
+    case (a: VNum, b: VNum) => a % b
+    case (a: VList, b: VNum) => a.vmap(MiscHelpers.modulo(_, b))
+    case (a: VNum, b: VList) => b.vmap(MiscHelpers.modulo(a, _))
+    case (a: VList, b: VList) => a.zipWith(b)(MiscHelpers.modulo)
+    case (a: String, b: VList) => StringHelpers.formatString(a, b*)
+    case (a: VList, b: String) => StringHelpers.formatString(b, a*)
+    case (a: String, b) => StringHelpers.formatString(a, b)
+    case (a, b: String) => StringHelpers.formatString(b, a)
+  }
+
   val multiply = Dyad.vectorise("multiply") {
     case (a: VNum, b: VNum) => a * b
     case (a: String, b: VNum) => a * b.toInt

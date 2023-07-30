@@ -39,11 +39,11 @@ sealed abstract class ImplHelpers[P, F[_]](val arity: Int):
     * The returned function throws an [[vyxal.UnimplementedOverloadException]]
     * when passed an argument for which it's not defined
     */
-  def fill(symbol: String, impl: P): Full
+  def fill(symbol: String)(impl: P): Full
 
   /** Vectorise a function. There's no need to call [[fill]] first */
   def vectorise(symbol: String)(impl: P): Full =
-    vectoriseNoFill(fill(symbol, impl))
+    this.vectoriseNoFill(this.fill(symbol)(impl))
 
   /** For subclasses to implement. Vectorise an implementation that's already
     * been passed to [[fill]] and isn't a `PartialFunction` but doesn't actually
@@ -56,7 +56,7 @@ object Monad extends ImplHelpers[PartialMonad, GenericMonad](1):
   override def toDirectFn(impl: Monad) =
     () => ctx ?=> ctx.push(impl(ctx.pop()))
 
-  override def fill(name: String, fn: PartialMonad) = arg =>
+  override def fill(name: String)(fn: PartialMonad) = arg =>
     if fn.isDefinedAt(arg) then fn(arg)
     else throw UnimplementedOverloadException(name, Seq(arg))
 
@@ -75,7 +75,7 @@ object Dyad extends ImplHelpers[PartialDyad, GenericDyad](2):
         val arg2, arg1 = ctx.pop()
         ctx.push(impl(arg1, arg2))
 
-  override def fill(name: String, fn: PartialDyad): Dyad = (a, b) =>
+  override def fill(name: String)(fn: PartialDyad): Dyad = (a, b) =>
     val args = (a, b)
     if fn.isDefinedAt(args) then fn(args)
     else throw UnimplementedOverloadException(name, args.toList)
@@ -98,7 +98,7 @@ object Triad extends ImplHelpers[PartialTriad, GenericTriad](3):
         val arg3, arg2, arg1 = ctx.pop()
         ctx.push(impl(arg1, arg2, arg3))
 
-  override def fill(name: String, fn: PartialTriad): Triad = (a, b, c) =>
+  override def fill(name: String)(fn: PartialTriad): Triad = (a, b, c) =>
     val args = (a, b, c)
     if fn.isDefinedAt(args) then fn(args)
     else throw UnimplementedOverloadException(name, args.toList)
@@ -133,7 +133,7 @@ object Tetrad extends ImplHelpers[PartialTetrad, GenericTetrad](4):
         val arg4, arg3, arg2, arg1 = ctx.pop()
         ctx.push(impl(arg1, arg2, arg3, arg4))
 
-  override def fill(name: String, fn: PartialTetrad): Tetrad = (a, b, c, d) =>
+  override def fill(name: String)(fn: PartialTetrad): Tetrad = (a, b, c, d) =>
     val args = (a, b, c, d)
     if fn.isDefinedAt(args) then fn(args)
     else throw UnimplementedOverloadException(name, args.toList)

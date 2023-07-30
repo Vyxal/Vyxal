@@ -19,154 +19,11 @@ case class Element(
 )
 
 object Elements:
-  val elements: Map[String, Element] = Impls.elements.toMap
-
   /** Find the symbol for a keyword in literate mode, if it exists */
   def symbolFor(keyword: String): Option[String] =
     Elements.elements.values.find(_.keywords.contains(keyword)).map(_.symbol)
 
-  private object Impls:
-    val elements = collection.mutable.Map.empty[String, Element]
-
-    def addNilad(
-        symbol: String,
-        name: String,
-        keywords: Seq[String],
-        desc: String
-    )(impl: Context ?=> VAny): Unit =
-      elements += symbol -> Element(
-        symbol,
-        name,
-        keywords,
-        Some(0),
-        false,
-        List(s"-> $desc"),
-        () => ctx ?=> ctx.push(impl(using ctx))
-      )
-
-    /** Add a monad that handles all `VAny`s (it doesn't take a
-      * `PartialFunction`, hence "Full")
-      */
-    def addFull[F[_]](
-        helper: ImplHelpers[?, F],
-        symbol: String,
-        name: String,
-        keywords: Seq[String],
-        vectorises: Boolean,
-        overloads: String*
-    )(impl: F[VAny]): F[VAny] =
-      elements += symbol -> Element(
-        symbol,
-        name,
-        keywords,
-        Some(helper.arity),
-        vectorises,
-        overloads,
-        helper.toDirectFn(impl)
-      )
-
-      impl
-
-    /** Define an unvectorised element that doesn't necessarily work on all
-      * inputs
-      *
-      * If using this method, make sure to use `case` to define the function,
-      * since it needs a `PartialFunction`. If it is possible to define it using
-      * a normal function literal or it covers every single case, then try
-      * [[addFull]] instead.
-      */
-    def addElem[P, F[_]](
-        helper: ImplHelpers[P, F],
-        symbol: String,
-        name: String,
-        keywords: Seq[String],
-        overloads: String*
-    )(impl: P): F[VAny] =
-      val full = helper.fill(symbol, impl)
-      elements += symbol -> Element(
-        symbol,
-        name,
-        keywords,
-        Some(helper.arity),
-        false,
-        overloads,
-        helper.toDirectFn(full)
-      )
-      full
-
-    /** Define an element that doesn't necessarily work on all inputs. It may
-      * vectorise on some inputs but not others.
-      *
-      * Note that this helper assumes you've already done the work of
-      * vectorising the element, i.e., unlike [[addVect]], vectorisation will
-      * not be done for you.
-      *
-      * If using this method, make sure to use `case` to define the function,
-      * since it needs a `PartialFunction`. If it is possible to define it using
-      * a normal function literal or it covers every single case, then try
-      * [[addFull]] instead.
-      */
-    def addPartialVect[P, F[_]](
-        helper: ImplHelpers[P, F],
-        symbol: String,
-        name: String,
-        keywords: Seq[String],
-        overloads: String*
-    )(impl: P): F[VAny] =
-      val full = helper.fill(symbol, impl)
-      elements += symbol -> Element(
-        symbol,
-        name,
-        keywords,
-        Some(helper.arity),
-        true,
-        overloads,
-        helper.toDirectFn(full)
-      )
-      full
-
-    /** If using this method, make sure to use `case` to define the function,
-      * since it needs a `PartialFunction`. If it is possible to define it using
-      * a normal function literal, then try [[addFull]] instead.
-      */
-    def addVect[P, F[_]](
-        helper: ImplHelpers[P, F],
-        symbol: String,
-        name: String,
-        keywords: Seq[String],
-        overloads: String*
-    )(impl: P): F[VAny] =
-      val vectorised = helper.vectorise(symbol)(impl)
-      elements += symbol -> Element(
-        symbol,
-        name,
-        keywords,
-        Some(helper.arity),
-        true,
-        overloads,
-        helper.toDirectFn(vectorised)
-      )
-      vectorised
-
-    /** Add an element that works directly on the entire stack */
-    def addDirect(
-        symbol: String,
-        name: String,
-        keywords: Seq[String],
-        arity: Option[Int],
-        overloads: String*
-    )(impl: Context ?=> Unit): () => Context ?=> Unit =
-      elements += symbol -> Element(
-        symbol,
-        name,
-        keywords,
-        arity,
-        false,
-        overloads,
-        () => impl
-      )
-      () => impl
-
+  val elements: Map[String, Element] = Map(
     addFull(
       Dyad,
       "+",
@@ -177,9 +34,8 @@ object Elements:
       "a: num, b: str -> a + b",
       "a: str, b: num -> a + b",
       "a: str, b: str -> a + b"
-    )(MiscHelpers.add)
-
-    val absoluteValue = addVect(
+    )(MiscHelpers.add),
+    addVect(
       Monad,
       "Ȧ",
       "Absolute Value | Keep Alphabet Characters",
@@ -189,9 +45,8 @@ object Elements:
     ) {
       case a: VNum => a.vabs
       case a: String => a.filter(_.isLetter)
-    }
-
-    val allTruthy = addElem(
+    },
+    addElem(
       Monad,
       "A",
       "All Truthy | All() | Is Vowel?",
@@ -203,9 +58,8 @@ object Elements:
       case a: String if a.length == 1 => StringHelpers.isVowel(a.head)
       case a: String => VList(a.map(StringHelpers.isVowel)*)
       case a: VList => a.forall(MiscHelpers.boolify)
-    }
-
-    val anyTruthy = addElem(
+    },
+    addElem(
       Monad,
       "a",
       "Any Truthy | Any() | Is Uppercase?",
@@ -217,9 +71,8 @@ object Elements:
       case a: String if a.length == 1 => a.head.isUpper
       case a: String => VList(a.map(c => VNum(c.isUpper))*)
       case a: VList => a.exists(MiscHelpers.boolify)
-    }
-
-    val append = addElem(
+    },
+    addElem(
       Dyad,
       "&",
       "Append",
@@ -227,8 +80,7 @@ object Elements:
       "a: any, b: any -> list(a) ++ [b]"
     ) { case (a, b) =>
       VList.from(ListHelpers.makeIterable(a) :+ b)
-    }
-
+    },
     addFull(
       Monad,
       "B",
@@ -238,9 +90,8 @@ object Elements:
       "a: num -> str(a) from binary",
       "a: str -> int(a, 2)",
       "a: lst -> int(a, 2), using list of digits"
-    )(NumberHelpers.fromBinary)
-
-    val toBinary = addVect(
+    )(NumberHelpers.fromBinary),
+    addVect(
       Monad,
       "b",
       "Convert To Binary",
@@ -253,9 +104,8 @@ object Elements:
         VList(
           a.map(x => NumberHelpers.toBinary(StringHelpers.chrord(x.toString)))*
         )
-    }
-
-    val compressDictionary = addElem(
+    },
+    addElem(
       Monad,
       "#C",
       "Compress String Using Dictionary",
@@ -263,9 +113,8 @@ object Elements:
       "a: str -> compress a using the dictionary"
     ) { case a: String =>
       StringHelpers.compressDictionary(a)
-    }
-
-    val contains = addElem(
+    },
+    addElem(
       Dyad,
       "c",
       "Contains",
@@ -276,9 +125,8 @@ object Elements:
       case (a: VVal, b: VList) => b.contains(a)
       case (a: VList, b: VList) => a.contains(b)
       case (a: VVal, b: VVal) => a.toString.contains(b.toString)
-    }
-
-    val cookie = addDirect(
+    },
+    addDirect(
       "🍪",
       "Cookie",
       List("cookie"),
@@ -286,9 +134,8 @@ object Elements:
       "cookie."
     ) { ctx ?=>
       while true do MiscHelpers.vyPrintln("cookie")
-    }
-
-    val sus = addDirect(
+    },
+    addDirect(
       "ඞ",
       "ඞ",
       List("sus"),
@@ -296,9 +143,8 @@ object Elements:
       "ඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞ"
     ) { ctx ?=>
       MiscHelpers.vyPrintln("sus")
-    }
-
-    val count = addElem(
+    },
+    addElem(
       Dyad,
       "C",
       "Count",
@@ -309,9 +155,8 @@ object Elements:
       case (a, b: VList) => b.count(_ === a)
       case (a, b) =>
         StringHelpers.countString(a.toString, b.toString)
-    }
-
-    val cycle = addElem(
+    },
+    addElem(
       Monad,
       "Ċ",
       "Cycle | Is Positive?",
@@ -325,9 +170,8 @@ object Elements:
           lazy val temp: LazyList[VAny] = LazyList.from(a) #::: temp
           VList.from(temp)
       case a: VNum => a > 0
-    }
-
-    val divide = addVect(
+    },
+    addVect(
       Dyad,
       "÷",
       "Divide | Split",
@@ -337,27 +181,24 @@ object Elements:
     ) {
       case (a: VNum, b: VNum) => a / b
       case (a: String, b: String) => VList(a.split(b)*)
-    }
-
-    val divides =
-      addElem(
-        Dyad,
-        "Ḋ",
-        "Divides? | Append Spaces | Remove Duplicates by Function",
-        List("divides?", "+-spaces", "dedup-by"),
-        "a: num, b: num -> a % b == 0",
-        "a: str, b: num -> a + ' ' * b",
-        "a: num, b: str -> b + ' ' * a",
-        "a: lst, b: fun -> Remove duplicates from a by applying b to each element"
-      ) {
-        case (a: VNum, b: VNum) => (a % b) == VNum(0)
-        case (a: String, b: VNum) => a + MiscHelpers.multiply(" ", b)
-        case (a: VNum, b: String) => b + MiscHelpers.multiply(" ", a)
-        case (a: VList, b: VFun) => ListHelpers.dedupBy(a, b)
-        case (a: VFun, b: VList) => ListHelpers.dedupBy(b, a)
-      }
-
-    val double = addVect(
+    },
+    addElem(
+      Dyad,
+      "Ḋ",
+      "Divides? | Append Spaces | Remove Duplicates by Function",
+      List("divides?", "+-spaces", "dedup-by"),
+      "a: num, b: num -> a % b == 0",
+      "a: str, b: num -> a + ' ' * b",
+      "a: num, b: str -> b + ' ' * a",
+      "a: lst, b: fun -> Remove duplicates from a by applying b to each element"
+    ) {
+      case (a: VNum, b: VNum) => (a % b) == VNum(0)
+      case (a: String, b: VNum) => a + MiscHelpers.multiply(" ", b)
+      case (a: VNum, b: String) => b + MiscHelpers.multiply(" ", a)
+      case (a: VList, b: VFun) => ListHelpers.dedupBy(a, b)
+      case (a: VFun, b: VList) => ListHelpers.dedupBy(b, a)
+    },
+    addVect(
       Monad,
       "d",
       "Double",
@@ -367,16 +208,15 @@ object Elements:
     ) {
       case a: VNum => a * 2
       case a: String => a + a
-    }
-
-    val dup = addDirect(":", "Duplicate", List("dup"), None, "a -> a, a") {
-      ctx ?=>
-        val a = ctx.pop()
-        ctx.push(a, a)
+    },
+    addDirect(":", "Duplicate", List("dup"), None, "a -> a, a") { ctx ?=>
+      val a = ctx.pop()
+      ctx.push(a, a)
     }
 
     // todo extract to helper in MiscHelpers?
-    val equals = addVect(
+    ,
+    addVect(
       Dyad,
       "=",
       "Equals",
@@ -387,42 +227,32 @@ object Elements:
       case (a: VNum, b: String) => a.toString == b
       case (a: String, b: VNum) => a == b.toString
       case (a: String, b: String) => a == b
-    }
-
-    val exec = addDirect(
+    },
+    addDirect(
       "Ė",
       "Execute lambda | Evaluate as Vyxal | Power with base 10",
-      List("execute-lambda", "evaluate-as-vyxal", "power-base-10", "call", "@"),
+      List(
+        "execute-lambda",
+        "evaluate-as-vyxal",
+        "power-base-10",
+        "call",
+        "@"
+      ),
       Some(1),
       "a: fun -> Execute a",
       "a: str -> Evaluate a as Vyxal",
       "a: num -> 10 ** n"
     ) { ctx ?=>
       ctx.push(execHelper(ctx.pop()))
-    }
-
-    val exitProgram = addDirect(
+    },
+    addDirect(
       "Q",
       "Exit | Quit",
       List("exit", "quit"),
       None,
       "a -> Stop program execution"
-    ) { throw new QuitException }
-
-    private def execHelper(value: VAny)(using ctx: Context): VAny =
-      value match
-        case code: String =>
-          Interpreter.execute(code)
-          ctx.pop()
-        case n: VNum => 10 ** n
-        case list: VList => list.vmap(execHelper)
-        case fn: VFun =>
-          val res = Interpreter.executeFn(fn)
-          if fn.arity == -1 then
-            ctx.pop() // Handle the extra value pushed by lambdas that operate on the stack
-          res
-
-    val execNotPop = addDirect(
+    ) { throw new QuitException },
+    addDirect(
       "Ḃ",
       "Execute lambda without popping | Evaluate as Vyxal without popping | Boolean Mask | Is 1?",
       List(
@@ -459,9 +289,8 @@ object Elements:
                 (0 until indices.max + 1).map(x => VNum(indices.contains(x)))*
               )
             )
-    }
-
-    val exponentation = addVect(
+    },
+    addVect(
       Dyad,
       "*",
       "Exponentation | Remove Nth Letter | Trim",
@@ -481,17 +310,15 @@ object Elements:
           while res.startsWith(b) do res = res.drop(b.length)
           while res.endsWith(b) do res = res.dropRight(b.length)
           res
-    }
-
-    val discard = addDirect(
+    },
+    addDirect(
       "_",
       "Pop and Discard",
       List("pop", "discard"),
       None,
       "a ->"
-    ) { ctx ?=> ctx.pop() }
-
-    val factors = addVect(
+    ) { ctx ?=> ctx.pop() },
+    addVect(
       Monad,
       "K",
       "Factors | Is Numeric?",
@@ -509,9 +336,8 @@ object Elements:
     ) {
       case a: VNum => NumberHelpers.factors(a)
       case a: String => VNum(VNum.DecimalRegex.matches(a))
-    }
-
-    val factorial = addVect(
+    },
+    addVect(
       Monad,
       "!",
       "Factorial | To Uppercase",
@@ -523,9 +349,8 @@ object Elements:
         if r.isWhole then spire.math.fact(spire.math.abs(a.toLong))
         else NumberHelpers.gamma(spire.math.abs(a.underlying.real) + 1)
       case a: String => a.toUpperCase()
-    }
-
-    val filterElement: Dyad = addElem(
+    },
+    addElem(
       Dyad,
       "F",
       "Filter by Function | From Base",
@@ -547,9 +372,8 @@ object Elements:
         NumberHelpers.fromBase(a, alphabet)
       case (a, b) =>
         NumberHelpers.fromBase(a, b)
-    }
-
-    val find = addFull(
+    },
+    addFull(
       Dyad,
       "Ḟ",
       "Find",
@@ -563,18 +387,16 @@ object Elements:
           case (elem, ind) if MiscHelpers.boolify(b(elem)) => VNum(ind)
         })
       case (a, b) => ListHelpers.makeIterable(a).indexOf(b)
-    }
-
-    val flatten = addFull(
+    },
+    addFull(
       Monad,
       "f",
       "Flatten",
       List("flatten", "flat"),
       false,
       "a: lst -> Flattened a"
-    ) { a => ListHelpers.flatten(ListHelpers.makeIterable(a)) }
-
-    val getContextVariableM = addNilad(
+    ) { a => ListHelpers.flatten(ListHelpers.makeIterable(a)) },
+    addNilad(
       "m",
       "Get Context Variable M",
       List(
@@ -585,9 +407,8 @@ object Elements:
         "ctx-secondary"
       ),
       " -> context variable m"
-    ) { ctx ?=> ctx.ctxVarSecondary }
-
-    val getContextVariableN = addNilad(
+    ) { ctx ?=> ctx.ctxVarSecondary },
+    addNilad(
       "n",
       "Get Context Variable N",
       List(
@@ -598,9 +419,8 @@ object Elements:
         "ctx-primary"
       ),
       " -> context variable n"
-    ) { ctx ?=> ctx.ctxVarPrimary }
-
-    val getInput = addNilad(
+    ) { ctx ?=> ctx.ctxVarPrimary },
+    addNilad(
       "?",
       "Get Input",
       List("get-input", "input", "stdin", "readline"),
@@ -612,9 +432,8 @@ object Elements:
         val temp = StdIn.readLine()
         if temp.nonEmpty then MiscHelpers.eval(temp)
         else ctx.settings.defaultValue
-    }
-
-    val greaterThan = addVect(
+    },
+    addVect(
       Dyad,
       ">",
       "Greater Than",
@@ -623,9 +442,8 @@ object Elements:
       "a: str, b: num -> a > str(b)",
       "a: num, b: str -> str(a) > b",
       "a: str, b: str -> a > b"
-    ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) > 0 }
-
-    val groupBy = addElem(
+    ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) > 0 },
+    addElem(
       Dyad,
       "Ġ",
       "Group by Function Result",
@@ -635,9 +453,8 @@ object Elements:
     ) {
       case (a, b: VFun) => ListHelpers.groupBy(ListHelpers.makeIterable(a), b)
       case (a: VFun, b) => ListHelpers.groupBy(ListHelpers.makeIterable(b), a)
-    }
-
-    val head = addFull(
+    },
+    addFull(
       Monad,
       "h",
       "Head | First Item",
@@ -649,9 +466,8 @@ object Elements:
         .makeIterable(a)
         .headOption
         .getOrElse(MiscHelpers.defaultEmpty(a))
-    }
-
-    val headRemove = addFull(
+    },
+    addFull(
       Monad,
       "Ḣ",
       "Head Remove | Behead",
@@ -665,9 +481,8 @@ object Elements:
       case a =>
         val lst = ListHelpers.makeIterable(a)
         if lst.nonEmpty then lst.tail else lst
-    }
-
-    val hexadecimal = addVect(
+    },
+    addVect(
       Monad,
       "H",
       "Hexadecimal | To Hexadecimal",
@@ -677,9 +492,8 @@ object Elements:
     ) {
       case a: VNum => NumberHelpers.toBaseAlphabet(a, "0123456789ABCDEF")
       case a: String => NumberHelpers.fromBaseAlphabet(a, "0123456789ABCDEF")
-    }
-
-    val index: Dyad = addElem(
+    },
+    addElem(
       Dyad,
       "i",
       "Index | Collect Unique Application Values | Enclose",
@@ -708,9 +522,8 @@ object Elements:
       case (a: String, b: String) =>
         val temp = a.length / 2
         a.slice(0, temp) + b + a.slice(temp, a.length)
-    }
-
-    val interleave: Dyad = addElem(
+    },
+    addElem(
       Dyad,
       "I",
       "Interleave",
@@ -723,9 +536,8 @@ object Elements:
       )
       if a.isInstanceOf[String] && b.isInstanceOf[String] then temp.mkString
       else temp
-    }
-
-    val isEven = addVect(
+    },
+    addVect(
       Monad,
       "e",
       "Is Even / Split on Newlines",
@@ -742,9 +554,8 @@ object Elements:
     ) {
       case a: VNum => (a.underlying % 2) == VNum(0)
       case a: String => VList.from(a.split("\n").toSeq)
-    }
-
-    val joinOn: Dyad = addElem(
+    },
+    addElem(
       Dyad,
       "j",
       "Join On",
@@ -756,11 +567,12 @@ object Elements:
         ListHelpers.makeIterable(a).mkString(b.toString)
       case (a, b) =>
         val lst = ListHelpers.makeIterable(a)
-        ListHelpers.flatten(VList.from(lst.head +: lst.tail.flatMap(Seq(b, _))))
+        ListHelpers.flatten(
+          VList.from(lst.head +: lst.tail.flatMap(Seq(b, _)))
+        )
 
-    }
-
-    val length = addElem(
+    },
+    addElem(
       Monad,
       "L",
       "Length | Length of List",
@@ -769,9 +581,8 @@ object Elements:
     ) {
       case a: VList => a.length
       case a => ListHelpers.makeIterable(a).length
-    }
-
-    val lengthVectorised = addFull(
+    },
+    addFull(
       Monad,
       "l",
       "Length of Each Item",
@@ -790,9 +601,8 @@ object Elements:
       VList.from(
         ListHelpers.makeIterable(a).map(ListHelpers.makeIterable(_).length)
       )
-    }
-
-    val lessThan: Dyad = addVect(
+    },
+    addVect(
       Dyad,
       "<",
       "Less Than",
@@ -801,9 +611,8 @@ object Elements:
       "a: str, b: num -> a < str(b)",
       "a: num, b: str -> str(a) < b",
       "a: str, b: str -> a < b"
-    ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) < 0 }
-
-    val listRepeat: Dyad = addElem(
+    ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) < 0 },
+    addElem(
       Dyad,
       "Y",
       "List Repeat",
@@ -833,25 +642,22 @@ object Elements:
         throw new IllegalArgumentException(
           "Can't repeat an item a non-integer number of times"
         )
-    }
-
-    val loopBreak = addDirect(
+    },
+    addDirect(
       "#X",
       "Loop Break",
       List("break"),
       Some(0),
       " -> break out of the current loop"
-    ) { throw new BreakLoopException }
-
-    val loopContinue = addDirect(
+    ) { throw new BreakLoopException },
+    addDirect(
       "#x",
       "Loop Continue",
       List("continue"),
       Some(0),
       " -> continue the current loop"
-    ) { throw new ContinueLoopException }
-
-    val mapElement: Dyad = addElem(
+    ) { throw new ContinueLoopException },
+    addElem(
       Dyad,
       "M",
       "Map Function | Mold Lists | Multiplicity",
@@ -867,9 +673,8 @@ object Elements:
         ListHelpers.map(b, ListHelpers.makeIterable(a, Some(true)))
       case (a: VFun, b) =>
         ListHelpers.map(a, ListHelpers.makeIterable(b, Some(true)))
-    }
-
-    val maximum = addDirect(
+    },
+    addDirect(
       "G",
       "Monadic Maximum | Dyadic Maximum | Generate From Function | Vectorised Maximum",
       List("max", "maximum", "generator"),
@@ -885,16 +690,16 @@ object Elements:
         case _ =>
           val next = ctx.pop()
           (top, next) match
-            case (a: VVal, b: VVal) => ctx.push(MiscHelpers.dyadicMaximum(a, b))
+            case (a: VVal, b: VVal) =>
+              ctx.push(MiscHelpers.dyadicMaximum(a, b))
             case (a: VFun, b: VList) =>
               ctx.push(ListHelpers.generate(a, b))
             case (a: VVal, b: VList) =>
               ctx.push(ListHelpers.vectorisedMaximum(b, a))
             case _ =>
               throw new Exception("Invalid arguments for maximum")
-    }
-
-    val merge: Dyad = addElem(
+    },
+    addElem(
       Dyad,
       "J",
       "Merge",
@@ -906,9 +711,8 @@ object Elements:
       case (a: VList, b: VList) => VList.from(a ++ b)
       case (a, b: VList) => VList.from(a +: b)
       case (a: VList, b) => VList.from(a :+ b)
-    }
-
-    val minimum = addDirect(
+    },
+    addDirect(
       "g",
       "Monadic Minimum | Dyadic Minimum | Generate From Function (Dyadic) | Vectorised Minimum",
       List("min", "minimum", "generator-dyadic"),
@@ -924,35 +728,25 @@ object Elements:
         case _ =>
           val next = ctx.pop()
           (top, next) match
-            case (a: VVal, b: VVal) => ctx.push(MiscHelpers.dyadicMinimum(a, b))
+            case (a: VVal, b: VVal) =>
+              ctx.push(MiscHelpers.dyadicMinimum(a, b))
             case (a: VFun, b: VList) =>
               ctx.push(ListHelpers.generateDyadic(a, b))
             case (a: VVal, b: VList) =>
               ctx.push(ListHelpers.vectorisedMinimum(b, a))
             case _ =>
               throw new Exception("Invalid arguments for mimimum")
-    }
-
-    val modulo: Dyad = addElem(
+    },
+    addFull(
       Dyad,
       "%",
       "Modulo | String Formatting",
       List("mod", "modulo", "str-format", "format", "%", "strfmt"),
+      false,
       "a: num, b: num -> a % b",
       "a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)"
-    ) {
-      case (_: VNum, VNum(0, _)) => 0
-      case (a: VNum, b: VNum) => a % b
-      case (a: VList, b: VNum) => a.vmap(Impls.modulo(_, b))
-      case (a: VNum, b: VList) => b.vmap(Impls.modulo(a, _))
-      case (a: VList, b: VList) => a.zipWith(b)(Impls.modulo)
-      case (a: String, b: VList) => StringHelpers.formatString(a, b*)
-      case (a: VList, b: String) => StringHelpers.formatString(b, a*)
-      case (a: String, b) => StringHelpers.formatString(a, b)
-      case (a, b: String) => StringHelpers.formatString(b, a)
-    }
-
-    val multiply = addFull(
+    )(MiscHelpers.modulo),
+    addFull(
       Dyad,
       "×",
       "Multiplication",
@@ -962,9 +756,8 @@ object Elements:
       "a: num, b: str -> b repeated a times",
       "a: str, b: num -> a repeated b times",
       "a: str, b: str -> ring translate a according to b"
-    )(MiscHelpers.multiply)
-
-    val negate = addVect(
+    )(MiscHelpers.multiply),
+    addVect(
       Monad,
       "N",
       "Negation | Swap Case | First Non-Negative Integer Where Predicate is True",
@@ -984,27 +777,24 @@ object Elements:
       case a: VNum => -a
       case a: String => a.map(c => if c.isUpper then c.toLower else c.toUpper)
       case a: VFun => MiscHelpers.firstNonNegative(a)
-    }
-
-    val ordChr =
-      addElem(
-        Monad,
-        "O",
-        "Ord/Chr",
-        List("ord", "chr"),
-        "a: str -> ord(a)",
-        "a: num -> chr(a)"
-      ) {
-        case a: VNum => StringHelpers.chrord(a)
-        case a: String => StringHelpers.chrord(a)
-        case a: VList =>
-          val temp = a.map(StringHelpers.chrord)
-          if temp.forall(_.isInstanceOf[String])
-          then temp.mkString
-          else VList(temp*)
-      }
-
-    val overlaps = addDirect(
+    },
+    addElem(
+      Monad,
+      "O",
+      "Ord/Chr",
+      List("ord", "chr"),
+      "a: str -> ord(a)",
+      "a: num -> chr(a)"
+    ) {
+      case a: VNum => StringHelpers.chrord(a)
+      case a: String => StringHelpers.chrord(a)
+      case a: VList =>
+        val temp = a.map(StringHelpers.chrord)
+        if temp.forall(_.isInstanceOf[String])
+        then temp.mkString
+        else VList(temp*)
+    },
+    addDirect(
       "o",
       "Overlap | Overlapping Slices",
       List("overlap", "overlaps", "overlapping", "overlapping-slices"),
@@ -1031,37 +821,32 @@ object Elements:
             case _ =>
               throw new Exception("Invalid arguments for overlaps")
       end match
-    }
-
-    val pair =
-      addFull(Dyad, ";", "Pair", List("pair"), false, "a, b -> [a, b]") {
-        VList(_, _)
-      }
-
-    val prefixes =
-      addElem(
-        Monad,
-        "P",
-        "Prefixes",
-        List("prefixes"),
-        "a: lst -> Prefixes of a"
-      ) {
-        case a: VList => VList.from(ListHelpers.prefixes(a))
-        case a: String =>
-          VList.from(
-            ListHelpers
-              .prefixes(ListHelpers.makeIterable(a))
-              .map(_.mkString)
-          )
-        case a: VNum =>
-          VList.from(
-            ListHelpers
-              .prefixes(ListHelpers.makeIterable(a.vabs))
-              .map(n => MiscHelpers.eval(n.mkString))
-          )
-      }
-
-    val prepend = addElem(
+    },
+    addFull(Dyad, ";", "Pair", List("pair"), false, "a, b -> [a, b]") {
+      VList(_, _)
+    },
+    addElem(
+      Monad,
+      "P",
+      "Prefixes",
+      List("prefixes"),
+      "a: lst -> Prefixes of a"
+    ) {
+      case a: VList => VList.from(ListHelpers.prefixes(a))
+      case a: String =>
+        VList.from(
+          ListHelpers
+            .prefixes(ListHelpers.makeIterable(a))
+            .map(_.mkString)
+        )
+      case a: VNum =>
+        VList.from(
+          ListHelpers
+            .prefixes(ListHelpers.makeIterable(a.vabs))
+            .map(n => MiscHelpers.eval(n.mkString))
+        )
+    },
+    addElem(
       Dyad,
       "p",
       "Prepend",
@@ -1073,9 +858,8 @@ object Elements:
       case (a: VNum, b: VNum) => MiscHelpers.eval(b.toString + a.toString)
       case (a: VList, b) => VList.from(b +: a)
       case (a, b) => VList(b, a)
-    }
-
-    val print = addDirect(
+    },
+    addDirect(
       ",",
       "Print",
       List("print", "puts", "out", "println"),
@@ -1083,9 +867,8 @@ object Elements:
       "a -> printed to stdout"
     ) { ctx ?=>
       MiscHelpers.vyPrintln(ctx.pop())
-    }
-
-    val quotify = addElem(
+    },
+    addElem(
       Monad,
       "q",
       "Quotify",
@@ -1094,9 +877,8 @@ object Elements:
     ) {
       case a: String => StringHelpers.quotify(a)
       case a => StringHelpers.quotify(a.toString)
-    }
-
-    val recurse = addDirect(
+    },
+    addDirect(
       "x",
       "Recursion | Recurse",
       List("recurse"),
@@ -1106,9 +888,8 @@ object Elements:
       if ctx.globals.callStack.isEmpty then
         throw new RecursionError("No function to recurse")
       else ctx.push(Interpreter.executeFn(ctx.globals.callStack.top))
-    }
-
-    val reduction = addElem(
+    },
+    addElem(
       Dyad,
       "R",
       "Reduce by Function Object | Dyadic Range | Regex Match",
@@ -1137,9 +918,8 @@ object Elements:
         MiscHelpers.reduce(b, a)
       case (a, b: VFun) =>
         MiscHelpers.reduce(a, b)
-    }
-
-    val replace = addElem(
+    },
+    addElem(
       Triad,
       "r",
       "Replace",
@@ -1159,17 +939,15 @@ object Elements:
       case (a: VVal, b: VList, c: VList) =>
         VList.from(b.lst.map(x => if x == a then c else x))
 
-    }
-
-    val returnStatement = addDirect(
+    },
+    addDirect(
       "X",
       "Return Statement",
       List("return", "ret"),
       None,
       "a -> return a"
-    ) { throw new ReturnFromFunctionException }
-
-    val sort = addFull(
+    ) { throw new ReturnFromFunctionException },
+    addFull(
       Monad,
       "S",
       "Sort ascending",
@@ -1187,9 +965,8 @@ object Elements:
         VList.from(
           ListHelpers.makeIterable(a).sorted(MiscHelpers.compareExact(_, _))
         )
-    }
-
-    val sortByFunction: Dyad = addElem(
+    },
+    addElem(
       Dyad,
       "ṡ",
       "Sort by Function Object | Reshape (APL Style)",
@@ -1208,9 +985,8 @@ object Elements:
         ListHelpers.sortBy(ListHelpers.makeIterable(b, Some(true)), a)
       case (a, b: VFun) =>
         ListHelpers.sortBy(ListHelpers.makeIterable(a, Some(true)), b)
-    }
-
-    val split = addElem(
+    },
+    addElem(
       Dyad,
       "s",
       "Split",
@@ -1222,11 +998,12 @@ object Elements:
           ListHelpers.makeIterable(a)
         else VList.from(a.split(b.toString()).toSeq)
       case (a: VNum, b) =>
-        VList.from(a.toString().split(b.toString()).toSeq.map(MiscHelpers.eval))
+        VList.from(
+          a.toString().split(b.toString()).toSeq.map(MiscHelpers.eval)
+        )
       case (a: VList, b) => ListHelpers.splitNormal(a, b)
-    }
-
-    val subtraction = addVect(
+    },
+    addVect(
       Dyad,
       "-",
       "Subtraction",
@@ -1251,15 +1028,12 @@ object Elements:
         if a.toInt > 0 then "-" * a.toInt + b else b + "-" * a.toInt.abs
       case (a: String, b: String) =>
         a.replace(b, "")
-    }
-
-    val swap = addDirect("$", "Swap", List("swap"), None, "a, b -> b, a") {
-      ctx ?=>
-        val b, a = ctx.pop()
-        ctx.push(b, a)
-    }
-
-    val tail = addFull(
+    },
+    addDirect("$", "Swap", List("swap"), None, "a, b -> b, a") { ctx ?=>
+      val b, a = ctx.pop()
+      ctx.push(b, a)
+    },
+    addFull(
       Monad,
       "t",
       "Tail | Last Item",
@@ -1271,9 +1045,8 @@ object Elements:
         .makeIterable(a)
         .lastOption
         .getOrElse(MiscHelpers.defaultEmpty(a))
-    }
-
-    val toBase = addElem(
+    },
+    addElem(
       Dyad,
       "y",
       "To Base",
@@ -1285,9 +1058,8 @@ object Elements:
     ) {
       case (a: VNum, b) => NumberHelpers.toBase(a, b)
       case (a: VList, b) => a.vmap(NumberHelpers.toBase(_, b))
-    }
-
-    val transposeSafe = addElem(
+    },
+    addElem(
       Monad,
       "ÞT",
       "Transpose Safe",
@@ -1297,9 +1069,8 @@ object Elements:
       case a: VFun =>
         throw RuntimeException(s"Can't transpose (ÞT) function: $a")
       case a => ListHelpers.transposeSafe(ListHelpers.makeIterable(a))
-    }
-
-    val triple = addElem(
+    },
+    addElem(
       Monad,
       "T",
       "Triple | Contains Only Alphabet | Transpose",
@@ -1322,16 +1093,12 @@ object Elements:
       case a: VNum => a * 3
       case a: String => a.forall(_.isLetter)
       case a: VList => ListHelpers.transpose(a)
-    }
-
-    val triplicate =
-      addDirect("D", "Triplicate", List("trip"), None, "a -> [a, a, a]") {
-        ctx ?=>
-          val a = ctx.pop()
-          ctx.push(a, a, a)
-      }
-
-    val twoPower = addVect(
+    },
+    addDirect("D", "Triplicate", List("trip"), None, "a -> [a, a, a]") { ctx ?=>
+      val a = ctx.pop()
+      ctx.push(a, a, a)
+    },
+    addVect(
       Monad,
       "E",
       "2 Power | Evaluate",
@@ -1339,11 +1106,10 @@ object Elements:
       "a: num -> 2^a",
       "a: str -> evaluate (not execute) a"
     ) {
-      case a: VNum => exponentation(VNum(2), a)
+      case a: VNum => VNum(2) ** a
       case a: String => MiscHelpers.eval(a)
-    }
-
-    val uninterleave = addDirect(
+    },
+    addDirect(
       "U",
       "Uninterleave",
       List("uninterleave"),
@@ -1366,9 +1132,8 @@ object Elements:
           throw RuntimeException("Uninterleave: Can't uninterleave functions")
 
       ctx.push(pushEven, pushOdd)
-    }
-
-    val uniquify = addFull(
+    },
+    addFull(
       Monad,
       "u",
       "Uniquify",
@@ -1377,8 +1142,8 @@ object Elements:
       "a: lst -> a with duplicates removed"
     ) { a =>
       val iter = ListHelpers.makeIterable(a)
-      val uniq: LazyList[Option[VAny]] = LazyList.unfold(Seq[VAny]() -> 0) {
-        state =>
+      val uniq: LazyList[Option[VAny]] =
+        LazyList.unfold(Seq[VAny]() -> 0) { state =>
           if !iter.hasIndex(state._2) then None
           else if state._1.contains(iter.index(state._2)) then
             Some(None, state._1 -> (state._2 + 1))
@@ -1387,16 +1152,15 @@ object Elements:
               Some(iter.index(state._2)),
               (state._1 :+ iter.index(state._2)) -> (state._2 + 1)
             )
-      }
+        }
       a match
         case _: VList => VList.from(uniq.flatten)
         case _: VNum => MiscHelpers.eval(uniq.flatten.mkString)
         case _: String => uniq.flatten.mkString
         case _ => throw RuntimeException("Uniquify: Can't uniquify functions")
 
-    }
-
-    val vectoriseAsElement = addDirect(
+    },
+    addDirect(
       "#v",
       "Vectorise (Element Form) [Internal Use]",
       List(),
@@ -1410,9 +1174,8 @@ object Elements:
           throw IllegalArgumentException(
             "Vectorise: First argument should be a function"
           )
-    }
-
-    val vectorisedReverse = addElem(
+    },
+    addElem(
       Monad,
       "V",
       "Vectorised Reverse / Complement / Title Case",
@@ -1430,26 +1193,23 @@ object Elements:
       case a: VList => VList.from(a.map(ListHelpers.reverse))
       case a: VNum => 1 - a
       case a: String => StringHelpers.titlecase(a)
-    }
-
-    val wrap = addDirect(
+    },
+    addDirect(
       "W",
       "Wrap",
       List("wrap"),
       None,
       "a, b, c, ..., -> [a, b, c, ...]"
-    ) { ctx ?=> ctx.wrap() }
-
-    val wrapSingleton = addFull(
+    ) { ctx ?=> ctx.wrap() },
+    addFull(
       Monad,
       "w",
       "Wrap Singleton",
       List("wrap-singleton"),
       false,
       "a -> [a]"
-    ) { a => VList(a) }
-
-    val zeroRange = addVect(
+    ) { a => VList(a) },
+    addVect(
       Monad,
       "z",
       "Zero Range | Is Lowercase",
@@ -1461,8 +1221,8 @@ object Elements:
       case a: String =>
         if a.length == 1 then a.forall(_.isLower)
         else VList.from(a.map(x => VNum(x.isLower)))
-    }
-    val zeroSliceUntil = addElem(
+    },
+    addElem(
       Dyad,
       "Θ",
       "Zero Slice Until",
@@ -1479,9 +1239,8 @@ object Elements:
       "a: lst, b: num -> [a[0], a[1], ..., a[b-1]]"
     ) { case (a, b: VNum) =>
       ListHelpers.makeIterable(a, Some(true)).take(b.toInt)
-    }
-
-    val zip = addElem(
+    },
+    addElem(
       Dyad,
       "Z",
       "Zip",
@@ -1501,27 +1260,28 @@ object Elements:
     }
 
     // Constants
-    addNilad("¦", "Pipe", List("pipe"), "|") { "|" }
-    addNilad("ð", "Space", List("space"), " ") { " " }
-    addNilad("¶", "Newline", List("newline"), "\n") { "\n" }
-    addNilad("₀", "Ten", List("ten"), "10") { 10 }
-    addNilad("₁", "Sixteen", List("sixteen"), "16") { 26 }
-    addNilad("₂", "Twenty-six", List("twenty-six"), "26") { 26 }
-    addNilad("₃", "Thirty-two", List("thirty-two"), "32") { 32 }
-    addNilad("₄", "Sixty-four", List("sixty-four"), "64") { 64 }
-    addNilad("₅", "One hundred", List("one-hundred"), "100") { 100 }
+    ,
+    addNilad("¦", "Pipe", List("pipe"), "|") { "|" },
+    addNilad("ð", "Space", List("space"), " ") { " " },
+    addNilad("¶", "Newline", List("newline"), "\n") { "\n" },
+    addNilad("₀", "Ten", List("ten"), "10") { 10 },
+    addNilad("₁", "Sixteen", List("sixteen"), "16") { 26 },
+    addNilad("₂", "Twenty-six", List("twenty-six"), "26") { 26 },
+    addNilad("₃", "Thirty-two", List("thirty-two"), "32") { 32 },
+    addNilad("₄", "Sixty-four", List("sixty-four"), "64") { 64 },
+    addNilad("₅", "One hundred", List("one-hundred"), "100") { 100 },
     addNilad(
       "₆",
       "One hundred twenty-eight",
       List("one-hundred-twenty-eight"),
       "128"
-    ) { 128 }
+    ) { 128 },
     addNilad(
       "₇",
       "Two hundred fifty-six",
       List("two-hundred-fifty-six"),
       "256"
-    ) { 256 }
+    ) { 256 },
     addNilad(
       "₈",
       "Alphabet",
@@ -1529,12 +1289,154 @@ object Elements:
       "\"abcdefghijklmnopqrstuvwxyz\""
     ) {
       "abcdefghijklmnopqrstuvwxyz"
-    }
+    },
     addNilad(
       "₉",
       "Empty array",
       List("empty-list", "nil-list", "new-list"),
       "[]"
     ) { VList.empty }
-  end Impls
+  )
+
+  private def execHelper(value: VAny)(using ctx: Context): VAny =
+    value match
+      case code: String =>
+        Interpreter.execute(code)
+        ctx.pop()
+      case n: VNum => 10 ** n
+      case list: VList => list.vmap(execHelper)
+      case fn: VFun =>
+        val res = Interpreter.executeFn(fn)
+        if fn.arity == -1 then
+          ctx.pop() // Handle the extra value pushed by lambdas that operate on the stack
+        res
+
+  private def addNilad(
+      symbol: String,
+      name: String,
+      keywords: Seq[String],
+      desc: String
+  )(impl: Context ?=> VAny): (String, Element) =
+    symbol -> Element(
+      symbol,
+      name,
+      keywords,
+      Some(0),
+      false,
+      List(s"-> $desc"),
+      () => ctx ?=> ctx.push(impl(using ctx))
+    )
+
+  /** Add a monad that handles all `VAny`s (it doesn't take a `PartialFunction`,
+    * hence "Full")
+    */
+  private def addFull[F[_]](
+      helper: ImplHelpers[?, F],
+      symbol: String,
+      name: String,
+      keywords: Seq[String],
+      vectorises: Boolean,
+      overloads: String*
+  )(impl: F[VAny]): (String, Element) =
+    symbol -> Element(
+      symbol,
+      name,
+      keywords,
+      Some(helper.arity),
+      vectorises,
+      overloads,
+      helper.toDirectFn(impl)
+    )
+
+  /** Define an unvectorised element that doesn't necessarily work on all inputs
+    *
+    * If using this method, make sure to use `case` to define the function,
+    * since it needs a `PartialFunction`. If it is possible to define it using a
+    * normal function literal or it covers every single case, then try
+    * [[addFull]] instead.
+    */
+  private def addElem[P, F[_]](
+      helper: ImplHelpers[P, F],
+      symbol: String,
+      name: String,
+      keywords: Seq[String],
+      overloads: String*
+  )(impl: P): (String, Element) =
+    symbol -> Element(
+      symbol,
+      name,
+      keywords,
+      Some(helper.arity),
+      false,
+      overloads,
+      helper.toDirectFn(helper.fill(symbol)(impl))
+    )
+
+  /** Define an element that doesn't necessarily work on all inputs. It may
+    * vectorise on some inputs but not others.
+    *
+    * Note that this helper assumes you've already done the work of vectorising
+    * the element, i.e., unlike [[addVect]], vectorisation will not be done for
+    * you.
+    *
+    * If using this method, make sure to use `case` to define the function,
+    * since it needs a `PartialFunction`. If it is possible to define it using a
+    * normal function literal or it covers every single case, then try
+    * [[addFull]] instead.
+    */
+  private def addPartialVect[P, F[_]](
+      helper: ImplHelpers[P, F],
+      symbol: String,
+      name: String,
+      keywords: Seq[String],
+      overloads: String*
+  )(impl: P): (String, Element) =
+    symbol -> Element(
+      symbol,
+      name,
+      keywords,
+      Some(helper.arity),
+      true,
+      overloads,
+      helper.toDirectFn(helper.fill(symbol)(impl))
+    )
+
+  /** If using this method, make sure to use `case` to define the function,
+    * since it needs a `PartialFunction`. If it is possible to define it using a
+    * normal function literal, then try [[addFull]] instead.
+    */
+  private def addVect[P, F[_]](
+      helper: ImplHelpers[P, F],
+      symbol: String,
+      name: String,
+      keywords: Seq[String],
+      overloads: String*
+  )(impl: P): (String, Element) =
+    symbol -> Element(
+      symbol,
+      name,
+      keywords,
+      Some(helper.arity),
+      true,
+      overloads,
+      helper.toDirectFn(helper.vectorise(symbol)(impl))
+    )
+
+  /** Add an element that works directly on the entire stack */
+  private def addDirect(
+      symbol: String,
+      name: String,
+      keywords: Seq[String],
+      arity: Option[Int],
+      overloads: String*
+  )(impl: Context ?=> Unit): (String, Element) =
+    symbol -> Element(
+      symbol,
+      name,
+      keywords,
+      arity,
+      false,
+      overloads,
+      () => impl
+    )
 end Elements
