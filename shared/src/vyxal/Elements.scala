@@ -650,6 +650,23 @@ object Elements:
         .headOption
         .getOrElse(MiscHelpers.defaultEmpty(a))
     }
+
+    val headRemove = addFull(
+      Monad,
+      "Ḣ",
+      "Head Remove | Behead",
+      List("head-remove", "behead"),
+      false,
+      "a: str -> a[1:]",
+      "a: any -> toList(a)[1:]"
+    ) {
+      case s: String =>
+        if s.nonEmpty then s.substring(1) else ""
+      case a =>
+        val lst = ListHelpers.makeIterable(a)
+        if lst.nonEmpty then lst.tail else lst
+    }
+
     val hexadecimal = addVect(
       Monad,
       "H",

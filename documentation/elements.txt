@@ -394,6 +394,12 @@ Keywords: group-by
 - a: any, b: fun -> group a by the results of b
 - a: fun, b: any -> group b by the results of a
 ---------------------
+Ḣ (Head Remove | Behead) (non-vectorising)
+Trigraph: #.H
+Keywords: head-remove, behead
+- a: str -> a[1:]
+- a: any -> toList(a)[1:]
+---------------------
 ṡ (Sort by Function Object | Reshape (APL Style)) (non-vectorising)
 Trigraph: #.s
 Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun
