@@ -7,8 +7,6 @@ import vyxal.VNum.given
 
 import scala.io.StdIn
 
-import spire.algebra.*
-
 /** Implementations for elements */
 case class Element(
     symbol: String,
@@ -626,6 +624,18 @@ object Elements:
       "a: num, b: str -> str(a) > b",
       "a: str, b: str -> a > b"
     ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) > 0 }
+
+    val groupBy = addElem(
+      Dyad,
+      "Ġ",
+      "Group by Function Result",
+      List("group-by"),
+      "a: any, b: fun -> group a by the results of b",
+      "a: fun, b: any -> group b by the results of a"
+    ) {
+      case (a, b: VFun) => ListHelpers.groupBy(ListHelpers.makeIterable(a), b)
+      case (a: VFun, b) => ListHelpers.groupBy(ListHelpers.makeIterable(b), a)
+    }
 
     val head = addFull(
       Monad,

@@ -114,12 +114,39 @@ object ListHelpers:
     )
   end generateDyadic
 
+  /** Group elements according to the result of some function
+    * @return
+    *   A VList where each element is again a VList containing a group of
+    *   elements that all had the same result when `fn` was applied to them
+    */
+  def groupBy(iterable: VList, fn: VFun)(using Context): VList =
+    // TODO Make this work on lazylists? Doable but extremely hard
+    val nonNumGroups = mut.Map.empty[VAny, ArrayBuffer[VAny]]
+    // VNums can't be used as HashMap keys so we need a separate list for them
+    val numGroups = ArrayBuffer.empty[(VAny, ArrayBuffer[VAny])]
+    for elem <- iterable do
+      fn(elem) match
+        case n: VNum =>
+          numGroups.find((key, _) => key == n) match
+            case Some((_, group)) => group += elem
+            case _ => numGroups += ((n, ArrayBuffer(elem)))
+        case res =>
+          if nonNumGroups.contains(res) then nonNumGroups(res) += elem
+          else nonNumGroups(res) = ArrayBuffer(elem)
+    VList.from(
+      (nonNumGroups.view ++ numGroups.view)
+        .map((_, group) => VList.from(group.toSeq))
+        .toSeq
+    )
+  end groupBy
+
   def groupConsecutive(iterable: VList): VList =
     VList.from(groupConsecutiveBy(iterable)(x => x).map(VList.from))
 
   def groupConsecutiveBy[T](
       iterable: Seq[T],
   )(function: T => Any): Seq[Seq[T]] =
+    // TODO make this work on lazylists?
     val out = ArrayBuffer.empty[Seq[T]]
     var current = ArrayBuffer.empty[T]
     var last: Option[Any] = None

@@ -98,10 +98,11 @@ class YamlTests extends AnyFunSpec:
                             lst.slice(lst.length - suffix.length, lst.length)
                           )
                         case Criterion.Contains(elems, false) =>
-                          val notFound = elems.filter(lst.contains)
-                          fail(
-                            s"$lst does not contain ${notFound.mkString(",")}"
-                          )
+                          val notFound = elems.filterNot(lst.contains)
+                          if notFound.nonEmpty then
+                            fail(
+                              s"$lst does not contain ${notFound.mkString(",")}"
+                            )
                         case Criterion.Contains(elems, true) =>
                           ???
                     case _ => fail(s"$output is not a list")
