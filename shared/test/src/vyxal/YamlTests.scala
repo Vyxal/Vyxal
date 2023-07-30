@@ -47,6 +47,9 @@ class YamlTests extends AnyFunSpec:
   /** YAML tag for scalars to be parsed as VNums */
   val NumTag = CustomTag("!num")
 
+  /** YAML tag for scalars that are to be evaluated as Vyxal values */
+  val VAnyTag = CustomTag("!vany")
+
   for (element, testGroup) <- loadTests() do
     describe(s"Element $element") {
       execTests(element, testGroup)
@@ -70,7 +73,9 @@ class YamlTests extends AnyFunSpec:
             given ctx: Context = Context(
               testMode = true,
               inputs = inputs,
-              globals = Globals(settings = Settings().withFlags(flags))
+              globals = Globals(settings =
+                Settings(endPrintMode = EndPrintMode.None).withFlags(flags)
+              )
             )
             Interpreter.execute(code)
             val output = ctx.peek
@@ -119,7 +124,7 @@ class YamlTests extends AnyFunSpec:
 
     yaml.as[Map[String, TestGroup]] match
       case Right(elemInfos) => elemInfos
-      case Left(e)          => throw Error(s"Parsing tests.yaml failed: $e")
+      case Left(e) => throw Error(s"Parsing tests.yaml failed: $e")
 
   /** Assume a Node is a scalar, and get its text */
   private def scalarText(node: Node): String =
@@ -138,6 +143,12 @@ class YamlTests extends AnyFunSpec:
     node match
       case Node.ScalarNode(text, tag) =>
         if tag == Tag.int || tag == Tag.float || tag == NumTag then VNum(text)
+        else if tag == VAnyTag then
+          given ctx: Context = Context(globals =
+            Globals(settings = Settings(endPrintMode = EndPrintMode.None))
+          )
+          Interpreter.execute(text)
+          ctx.pop()
         else if tag == Tag.str then
           text.replaceAll("\\\\n", "\n").replaceAll("\\\\t", "\t")
         else throw Error(s"Invalid Vyxal value: $text $tag")

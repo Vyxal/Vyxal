@@ -551,6 +551,22 @@ object Elements:
         NumberHelpers.fromBase(a, b)
     }
 
+    val find = addFull(
+      Dyad,
+      "Ḟ",
+      "Find",
+      List("find"),
+      false,
+      "a: any, b: any -> a.indexOf(b) (-1 if not found)",
+      "a: any, b: fun -> truthy indices of mapping b over a"
+    ) {
+      case (a, b: VFun) =>
+        VList.from(ListHelpers.makeIterable(a).zipWithIndex.collect {
+          case (elem, ind) if MiscHelpers.boolify(b(elem)) => VNum(ind)
+        })
+      case (a, b) => ListHelpers.makeIterable(a).indexOf(b)
+    }
+
     val flatten = addFull(
       Monad,
       "f",

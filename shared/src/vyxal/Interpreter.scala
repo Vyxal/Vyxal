@@ -23,14 +23,6 @@ object Interpreter:
 
     val parsed = Parser.parse(tokens)
 
-    if ctx.globals.debug then
-      val ast = parsed match
-        case Right(ast) => ast
-        case Left(err) => throw Error(s"Parsing failed: $err")
-      val dbg = debugger.Debugger(ast)(using ctx)
-      println("Actually, there's no calling the debugger yet")
-      return
-
     parsed match
       case Right(ast) =>
         scribe.debug(s"Executing '$code' (ast: $ast)")
@@ -195,7 +187,7 @@ object Interpreter:
         else ctx.push(args(index))
       case _ => throw NotImplementedError(s"$ast not implemented")
     end match
-    scribe.trace(s"res was ${ctx.peek}")
+    scribe.trace(s"Top of stack: ${ctx.peek}")
   end execute
 
   def generator(
@@ -306,7 +298,10 @@ object Interpreter:
       )
     try fn.impl()(using fnCtx)
     catch case _: ReturnFromFunctionException => ()
+
     ctx.globals.callStack.pop()
-    fnCtx.peek
+    val res = fnCtx.peek
+    scribe.trace(s"Result of executing function: $res")
+    res
   end executeFn
 end Interpreter

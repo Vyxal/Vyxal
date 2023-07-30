@@ -685,3 +685,14 @@
     - { in: [1], out: 10 }
     - { in: [2], out: 100 }
     - { in: [-3], out: 0.001 }
+
+"Ḟ":
+  when used as indexOf:
+    - { in: [["1"], 1], out: -1 }
+    - { in: [[1, 2, 3, 2], 2], out: 1 }
+    - { in: [["32", 2, "3"], "3"], out: 2 }
+  when given a function:
+    - in:
+        - [1, 0, 2, 3, 6]
+        - !vany "λe}" # Find even numbers
+      out: [1, 2, 4]
