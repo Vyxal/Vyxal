@@ -893,12 +893,12 @@ object Elements:
 
     val minimum = addDirect(
       "g",
-      "Monadic Minimum | Dyadic Minimum | Generate From Function | Vectorised Minimum",
-      List("max", "maximum", "generator"),
+      "Monadic Minimum | Dyadic Minimum | Generate From Function (Dyadic) | Vectorised Minimum",
+      List("min", "minimum", "generator-dyadic"),
       Some(2),
       "a: lst -> Maximum of a",
       "a: non-lst, b: non-lst -> Maximum of a and b",
-      "a: lst, b: fun -> Call b infinitely with items of a as starting values"
+      "a: lst, b: fun -> Call b infinitely with items of a as starting values (dyadic)"
     ) { ctx ?=>
       val top = ctx.pop()
       top match
@@ -1457,7 +1457,7 @@ object Elements:
         "slice-to",
         "lst-truncate",
         "first-n-items",
-        "first"
+        "first-n"
       ),
       "a: lst, b: num -> [a[0], a[1], ..., a[b-1]]"
     ) { case (a, b: VNum) =>
