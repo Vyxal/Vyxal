@@ -3,7 +3,7 @@
 ## Explicit Input
 
 Explicit input happens when you use the `?` element, which takes the next input from the provided input source. The input source is one of either `argv` or
-`STDIN` - if `argv` isn't present, `STDIN` is used. And if `STDIN` isn't present, all input is `0`.
+`STDIN` - if `argv` isn't present, the next line of `STDIN` is used. And if `STDIN` isn't present, all input is `0`.
 
 When `End of Input` (`EOI`) is reached, the input "wraps around" back to the first input, as if the list of inputs is circular/infinitely repeated. For `STDIN`, this
 means that an empty input is given.
@@ -29,6 +29,30 @@ and
 are both equivalent, assuming that the stack is empty.
 
 Note that whatever is on the stack is popped before the implicit input is taken. Also, taking implicit input cycles the input just as explicit input would.
+
+## Input Evaluation
+
+The evaluation chain for input is as follows:
+
+```
+number
+explicit string
+list
+function
+implicit string
+```
+
+A number is either a) any valid vyxal numeric literal (e.g. `23423`, `454.23`, `.` and `6°2`), b) a fraction or c) a simple python numeric literal (e.g. `-1324.234`).
+
+An explicit string is a line of input explicitly wrapped in quotes, e.g. `"Hello, World!"`. Note that this is not the same as an implicit string, which is the result of all other input types failing.
+
+A list is one of three things:
+
+- A python list of only numbers, strings and other lists
+- A python tuple of only numbers, strings and other lists
+- Any valid vyxal list
+
+A function is a string starting with `λ`.
 
 ## But how is this implemented internally?
 
