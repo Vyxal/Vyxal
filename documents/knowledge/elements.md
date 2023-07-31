@@ -483,7 +483,7 @@ Basic comparison - greater than
 -------------------------------
 ## `` ? `` (Input)
 
-Get the next input from the input source
+Get and evaluate the next input (readline) from the input source.
 
 -------------------------------
 ## `` @ `` (Vectorised Length)

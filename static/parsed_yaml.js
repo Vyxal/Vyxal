@@ -723,7 +723,7 @@ var codepage_descriptions =
   "63": [
     {
       "name": "Input",
-      "description": "Get the next input from the input source",
+      "description": "Get and evaluate the next input (readline) from the input source.",
       "token": "?"
     },
     {
