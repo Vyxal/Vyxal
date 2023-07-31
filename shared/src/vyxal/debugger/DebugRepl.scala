@@ -25,6 +25,10 @@ object DebugRepl:
               case Cmd.Exit => return
             debugger.printState()
           case None => println("Could not parse command")
+      else if !debugger.finished then
+        debugger.stepInto()
+        debugger.printState()
+
   end start
 
   private val builder = OParser.builder[Config]

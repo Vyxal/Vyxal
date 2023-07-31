@@ -4,6 +4,8 @@ import scala.language.strictEquality
 
 import vyxal.parsing.Range
 
+import scala.collection.mutable.ListBuffer
+
 // todo maybe record whether each AST has a breakpoint
 enum AST(val arity: Option[Int]) derives CanEqual:
   case Number(value: VNum, override val range: Range = Range.fake)
@@ -110,17 +112,20 @@ enum AST(val arity: Option[Int]) derives CanEqual:
     case Lst(elems, _) => elems.map(_.toVyxal).mkString("#[", "|", "#]")
     case Command(value, _) => value
     case Group(elems, _, _) =>
-      // replace instances of Number, Number with Number, Space, Number
-      elems
-        .groupBy {
-          case Number(_, _) => true
-          case _ => false
-        }
-        .map { (k, v) =>
-          if k then v.map(_.toVyxal).mkString(" ")
-          else v.map(_.toVyxal).mkString
-        }
-        .mkString
+      val asts = elems.toBuffer
+      val newElems = ListBuffer[AST]()
+
+      while asts.nonEmpty do
+        val numbers = asts.takeWhile(_.isInstanceOf[Number])
+        if numbers.nonEmpty then
+          newElems += Command(numbers.map(_.toVyxal).mkString(" "))
+          asts.remove(0, numbers.length)
+        else
+          newElems += asts.head
+          asts.remove(0)
+
+      newElems.map(_.toVyxal).mkString
+
     // case SpecialModifier(modi, value) => s"$modi"
     // ^ Might not need this because it'll be converted into different ASTs
     case CompositeNilad(elems, _) => elems.map(_.toVyxal).mkString

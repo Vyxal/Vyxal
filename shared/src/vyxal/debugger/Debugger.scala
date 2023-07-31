@@ -276,9 +276,9 @@ class Debugger(code: AST)(using rootCtx: Context):
   def printState(): Unit =
     this.currStep match
       case Some(step) =>
-        println(s"Next to execute: ${step.ast}")
+        println(s"Next to execute: ${step.ast.toVyxal} <${step.ast.range}>")
         println(s"Top of stack is ${frame.ctx.peek}")
-        println("Frames:")
-        println(stackFrames.reverse.mkString("\n"))
+      // println("Frames:")
+      // println(stackFrames.reverse.mkString("\n"))
       case _ => println("Debugger finished")
 end Debugger
