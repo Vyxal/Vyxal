@@ -659,7 +659,7 @@
 - element: "?"
   name: Input
   arity: 0
-  description: Get the next input from the input source
+  description: Get and evaluate the next input (readline) from the input source.
   vectorise: false
 
 - element: "@"
