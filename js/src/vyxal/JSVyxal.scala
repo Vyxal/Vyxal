@@ -9,10 +9,6 @@ import scala.scalajs.js.JSConverters.*
 /** A bridge between the interpreter and JS */
 @JSExportTopLevel("Vyxal")
 object JSVyxal:
-
-  // DO NOT DELETE! It triggers the loading of the dictionaries
-  Dictionary
-
   @JSExport
   def execute(
       code: String,
@@ -34,6 +30,14 @@ object JSVyxal:
       globals = globals
     )
     Interpreter.execute(code)(using ctx)
+
+  @JSExport
+  def setShortDict(dict: String): Unit =
+    Dictionary._shortDictionary = dict.split("\n").toSeq
+
+  @JSExport
+  def setLongDict(dict: String): Unit =
+    Dictionary._longDictionary = dict.split("\n").toSeq
 
   @JSExport
   def compress(text: String): String = StringHelpers.compressDictionary(text)

@@ -1,6 +1,7 @@
 documentation/elements.txt linguist-generated=true
 documentation/trigraphs.txt linguist-generated=true
-js/src/main/scala/Dictionary.scala linguist-generated=true
+**/ShortDictionary.txt linguist-generated=true
+**/LongDictionary.txt linguist-generated=true
 jvm/src/main/resources/*.nanorc linguist-generated=true
 static/parsed_yaml.js linguist-generated=true
 tests/test_elements.py linguist-generated=true
