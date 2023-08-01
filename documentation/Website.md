@@ -9,4 +9,5 @@ but here it is again:
 If you want to test the website, one way is to open up `pages/index.html` directly
 in your browser. However, local requests will be blocked, so you can't use
 dictionary (de)compression. As a workaround to this, you can run a local server.
-One way to do this is by running `python3 -m http.server --directory pages`.
+One way to do this is with the [`local_server.py`](/local_server.py) script located
+in the root folder. You can also run `python3 -m http.server --directory pages` directly.
