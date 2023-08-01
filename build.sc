@@ -10,12 +10,12 @@ import mill.scalanativelib._
 import mill.scalanativelib.api._
 
 /** Shared settings for all modules */
-abstract class VyxalModule(platform: String)
-    extends ScalaModule
-    with ScalafmtModule {
+trait VyxalModule extends ScalaModule with ScalafmtModule {
   override def scalaVersion = "3.3.0"
 
   def vyxalVersion = "3.0.0"
+
+  def platform: String
 
   override def ivyDeps = Agg(
     ivy"org.typelevel::spire::0.18.0",
@@ -79,7 +79,9 @@ abstract class VyxalModule(platform: String)
 }
 
 /** Shared and JVM-specific code */
-object jvm extends VyxalModule("jvm") {
+object jvm extends VyxalModule {
+  val platform = "jvm"
+
   def ivyDeps = T {
     super.ivyDeps() ++ Seq(
       // For the REPL
@@ -144,7 +146,9 @@ object jvm extends VyxalModule("jvm") {
 }
 
 /** Shared and JS-specific code */
-object js extends VyxalModule("js") with ScalaJSModule {
+object js extends VyxalModule with ScalaJSModule {
+  val platform = "js"
+
   def scalaJSVersion = "1.13.2"
   def moduleKind = T { ModuleKind.NoModule }
 
@@ -183,7 +187,9 @@ object js extends VyxalModule("js") with ScalaJSModule {
 }
 
 /** Shared and native-specific code */
-object native extends VyxalModule("native") with ScalaNativeModule {
+object native extends VyxalModule with ScalaNativeModule {
+  val platform = "native"
+
   def scalaNativeVersion = "0.4.14"
 
   def ivyDeps = T {

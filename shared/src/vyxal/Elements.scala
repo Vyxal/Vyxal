@@ -5,6 +5,7 @@ import scala.language.implicitConversions
 import vyxal.ListHelpers.makeIterable
 import vyxal.VNum.given
 
+import scala.collection.mutable.ListBuffer
 import scala.io.StdIn
 
 /** Implementations for elements */
@@ -522,6 +523,31 @@ object Elements:
       case (a: String, b: String) =>
         val temp = a.length / 2
         a.slice(0, temp) + b + a.slice(temp, a.length)
+    },
+    addElem(
+      Dyad,
+      "İ",
+      "Index into Multiple | Collect While Unique | Complex Number",
+      List("index-into-multiple", "collect-while-unique", "complex"),
+      "a: num, b: num -> a.real + b.real * i",
+      "a: any, b: lst -> `[a[item] for item in b]`",
+      "a: any, b: fun -> Apply b on a and collect unique values (until fixpoint). Does not include the initial value."
+    ) {
+      case (a: VNum, b: VNum) => VNum.complex(a.real, b.real)
+      case (a, inds: VList) =>
+        val lst = ListHelpers.makeIterable(a)
+        inds.vmap(lst.index(_))
+      case (init, fn: VFun) =>
+        val prevVals = ListBuffer.empty[VAny]
+        VList.from(
+          LazyList.unfold(init) { prev =>
+            val newVal = fn(prev)
+            if prevVals.contains(newVal) then None
+            else
+              prevVals += newVal
+              Some((newVal, newVal))
+          }
+        )
     },
     addElem(
       Dyad,
