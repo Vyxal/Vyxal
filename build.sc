@@ -169,6 +169,9 @@ object js extends VyxalModule("js") with ScalaJSModule {
     val pagesDir = build.millSourcePath / "pages"
     os.copy.over(jsPath / "main.js", pagesDir / "vyxal.js")
     os.copy.over(jsPath / "main.js.map", pagesDir / "vyxal.js.map")
+    val resources = build.millSourcePath / "shared" / "resources"
+    os.copy.over(resources / "ShortDictionary.txt", pagesDir)
+    os.copy.over(resources / "LongDictionary.txt", pagesDir)
   }
 
   object test extends ScalaJSTests with VyxalTestModule
