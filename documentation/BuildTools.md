@@ -232,6 +232,10 @@ You can use `resolve` to find available tasks inside a module, e.g.
 If you want to check if a task exists, you can do that too, e.g.
 `./mill resolve jvm.doesthisexist` will give an error, while `./mill resolve jvm.assembly` won't.
 
+If you want Mill to watch files and automatically recompile/rerun tasks, use the
+`-w` option (e.g. `mill -w js.fastLinkJS` to keep building the JS every time you
+make any changes).
+
 ### List of tasks
 
 - `compile`: Compile your code to see if there's any errors or warnings

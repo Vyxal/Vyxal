@@ -152,26 +152,31 @@ object js extends VyxalModule("js") with ScalaJSModule {
     super.ivyDeps() ++ Seq(ivy"org.scala-js::scalajs-dom::2.6.0")
   }
 
+  def pagesDir = build.millSourcePath / "pages"
+
   override def fastLinkJS = T {
     val res = super.fastLinkJS()
-    copyToPages(res.dest.path)
+    os.copy.over(res.dest.path / "main.js", pagesDir / "vyxal.js")
+    os.copy.over(res.dest.path / "main.js.map", pagesDir / "vyxal.js.map")
+    copyDicts()
     res
   }
 
   override def fullLinkJS = T {
     val res = super.fastLinkJS()
-    copyToPages(res.dest.path)
+    os.copy.over(res.dest.path / "main.js", pagesDir / "vyxal.js")
+    os.copy.over(res.dest.path / "main.js.map", pagesDir / "vyxal.js.map")
+    copyDicts()
     res
   }
 
-  // Copy compiled output to pages/vyxal.js
-  private def copyToPages(jsPath: os.Path) = T.task {
-    val pagesDir = build.millSourcePath / "pages"
-    os.copy.over(jsPath / "main.js", pagesDir / "vyxal.js")
-    os.copy.over(jsPath / "main.js.map", pagesDir / "vyxal.js.map")
+  def copyDicts = T.sources {
     val resources = build.millSourcePath / "shared" / "resources"
-    os.copy.over(resources / "ShortDictionary.txt", pagesDir)
-    os.copy.over(resources / "LongDictionary.txt", pagesDir)
+    val short = "ShortDictionary.txt"
+    val long = "LongDictionary.txt"
+    os.copy.over(resources / short, pagesDir / short)
+    os.copy.over(resources / long, pagesDir / long)
+    Seq(PathRef(pagesDir / short), PathRef(pagesDir / long))
   }
 
   object test extends ScalaJSTests with VyxalTestModule

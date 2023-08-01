@@ -8,8 +8,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
   * See documentation/DictionaryCompression.md for how they're generated.
   */
 object Dictionary:
-  private var shortFetched = FetchedDict("ShortDictionary.txt")
-  private var longFetched = FetchedDict("LongDictionary.txt")
+  private var shortFetched = FetchedDict("/ShortDictionary.txt")
+  private var longFetched = FetchedDict("/LongDictionary.txt")
 
   def shortDictionary: Seq[String] = shortFetched.lines
   def longDictionary: Seq[String] = longFetched.lines
@@ -18,18 +18,18 @@ object Dictionary:
   private class FetchedDict(path: String):
     private var _lines: Seq[String] = null
 
-    println(s"Fetching $path")
+    dom.console.debug(s"Fetching $path")
     for
       response <- dom.fetch(path).toFuture
       text <- response.text().toFuture
     do
       this._lines = text.split("\n").toSeq
-      println(s"Fetched dictionary from $path")
+      dom.console.debug(s"Fetched dictionary from $path")
 
     def lines: Seq[String] =
       // TODO find a way to await the response
       if _lines == null then
         throw new IllegalStateException("Dictionaries were not fetched")
-      lines
+      this._lines
   end FetchedDict
 end Dictionary
