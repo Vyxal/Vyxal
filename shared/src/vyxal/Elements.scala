@@ -550,6 +550,17 @@ object Elements:
         )
     },
     addElem(
+      Monad,
+      "Ṫ",
+      "Init",
+      List("init", "remove-last"),
+      "a: lst -> a[:-1]",
+      "a: str -> a[:-1]",
+    ) {
+      case lst: VList => if lst.nonEmpty then VList.from(lst.init) else lst
+      case s: String => if s.nonEmpty then s.substring(0, s.length - 1) else s
+    },
+    addElem(
       Dyad,
       "I",
       "Interleave",
