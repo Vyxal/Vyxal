@@ -134,7 +134,7 @@ def tokenise(
                 tokens.append(
                     Token(
                         TokenType.NUMBER,
-                        contextual_token_value.replace("_", ""),
+                        contextual_token_value,
                     )
                 )
         elif head == "‛":

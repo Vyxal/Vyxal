@@ -174,6 +174,12 @@ def transpile_token(
             "0.5" if part == "." else part for part in token.value.split("°")
         ]
 
+        parts = [
+            "-" + part[:-1] if part.endswith("_") else part for part in parts
+        ]
+
+        print(parts)
+
         parts = "+".join(parts)
         if parts[0] == "+":
             parts = (parts or "1") + "* I"
