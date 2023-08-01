@@ -10,6 +10,9 @@ import scala.scalajs.js.JSConverters.*
 @JSExportTopLevel("Vyxal")
 object JSVyxal:
 
+  // DO NOT DELETE! It triggers the loading of the dictionaries
+  Dictionary
+
   @JSExport
   def execute(
       code: String,

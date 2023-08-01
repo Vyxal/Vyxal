@@ -148,22 +148,27 @@ object js extends VyxalModule("js") with ScalaJSModule {
   def scalaJSVersion = "1.13.2"
   def moduleKind = T { ModuleKind.NoModule }
 
+  def ivyDeps = T {
+    super.ivyDeps() ++ Seq(ivy"org.scala-js::scalajs-dom::2.6.0")
+  }
+
   override def fastLinkJS = T {
-    val pagesDir = build.millSourcePath / "pages"
     val res = super.fastLinkJS()
-    // Copy to pages/vyxal.js
-    os.copy.over(res.dest.path / "main.js", pagesDir / "vyxal.js")
-    os.copy.over(res.dest.path / "main.js.map", pagesDir / "vyxal.js.map")
+    copyToPages(res.dest.path)
     res
   }
 
   override def fullLinkJS = T {
-    val pagesDir = build.millSourcePath / "pages"
     val res = super.fastLinkJS()
-    // Copy to pages/vyxal.js
-    os.copy.over(res.dest.path / "main.js", pagesDir / "vyxal.js")
-    os.copy.over(res.dest.path / "main.js.map", pagesDir / "vyxal.js.map")
+    copyToPages(res.dest.path)
     res
+  }
+
+  // Copy compiled output to pages/vyxal.js
+  private def copyToPages(jsPath: os.Path) = T.task {
+    val pagesDir = build.millSourcePath / "pages"
+    os.copy.over(jsPath / "main.js", pagesDir / "vyxal.js")
+    os.copy.over(jsPath / "main.js.map", pagesDir / "vyxal.js.map")
   }
 
   object test extends ScalaJSTests with VyxalTestModule
@@ -177,7 +182,7 @@ object native extends VyxalModule("native") with ScalaNativeModule {
     super.ivyDeps() ++ Seq(ivy"com.github.scopt::scopt:4.1.0")
   }
 
-   override def nativeEmbedResources = true
+  override def nativeEmbedResources = true
 
   object test extends ScalaNativeTests with VyxalTestModule {
     override def nativeEmbedResources = true
