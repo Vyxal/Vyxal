@@ -509,6 +509,23 @@ object Elements:
           ctx.push(s.drop(1))
         case arg => throw UnimplementedOverloadException("ḣ", List(arg))
     },
+    addDirect(
+      "ṫ",
+      "Last Extract",
+      List("last-extract", "split-at-last"),
+      Some(1),
+      "a: lst|str -> Push a[-1], then a[:-1] onto the stack",
+    ) { ctx ?=>
+      ctx.pop() match
+        case lst: VList =>
+          ctx.push(lst.lastOption.getOrElse(ctx.settings.defaultValue))
+          ctx.push(lst.dropRight(1))
+        case s: String =>
+          if s.isEmpty then ctx.push("")
+          else ctx.push(s.last.toString)
+          ctx.push(s.dropRight(1))
+        case arg => throw UnimplementedOverloadException("ḣ", List(arg))
+    },
     addElem(
       Dyad,
       "i",
