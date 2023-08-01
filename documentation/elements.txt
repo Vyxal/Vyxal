@@ -400,6 +400,13 @@ Keywords: head-remove, behead
 - a: str -> a[1:]
 - a: any -> toList(a)[1:]
 ---------------------
+İ (Index into Multiple | Collect While Unique | Complex Number) (non-vectorising)
+Trigraph: #.I
+Keywords: index-into-multiple, collect-while-unique, complex
+- a: num, b: num -> a.real + b.real * i
+- a: any, b: lst -> `[a[item] for item in b]`
+- a: any, b: fun -> Apply b on a and collect unique values (until fixpoint). Does not include the initial value.
+---------------------
 ṡ (Sort by Function Object | Reshape (APL Style)) (non-vectorising)
 Trigraph: #.s
 Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun
