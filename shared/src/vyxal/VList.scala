@@ -58,6 +58,12 @@ class VList private (val lst: Seq[VAny])
       try lst(ind)
       catch case _: IndexOutOfBoundsException => lst(ind % lst.length)
 
+  /** Override to specify return type as VList */
+  override def drop(n: Int): VList = VList.from(lst.drop(n))
+
+  /** Override to specify return type as VList */
+  override def dropRight(n: Int): VList = VList.from(lst.dropRight(n))
+
   def index(ind: VAny)(using ctx: Context): VAny =
     ind match
       case ind: VNum => this.indexBig(ind.real.toBigInt)

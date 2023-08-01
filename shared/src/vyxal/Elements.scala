@@ -479,9 +479,7 @@ object Elements:
     ) {
       case s: String =>
         if s.nonEmpty then s.substring(1) else ""
-      case a =>
-        val lst = ListHelpers.makeIterable(a)
-        if lst.nonEmpty then lst.tail else lst
+      case a => ListHelpers.makeIterable(a).drop(1)
     },
     addVect(
       Monad,
@@ -493,6 +491,23 @@ object Elements:
     ) {
       case a: VNum => NumberHelpers.toBaseAlphabet(a, "0123456789ABCDEF")
       case a: String => NumberHelpers.fromBaseAlphabet(a, "0123456789ABCDEF")
+    },
+    addDirect(
+      "ḣ",
+      "Head Extract",
+      List("head-extract", "split-at-head"),
+      Some(1),
+      "a: lst|str -> Push a[0], then a[1:] onto the stack",
+    ) { ctx ?=>
+      ctx.pop() match
+        case lst: VList =>
+          ctx.push(lst.headOption.getOrElse(ctx.settings.defaultValue))
+          ctx.push(lst.drop(1))
+        case s: String =>
+          if s.isEmpty then ctx.push("")
+          else ctx.push(s.charAt(0).toString)
+          ctx.push(s.drop(1))
+        case arg => throw UnimplementedOverloadException("ḣ", List(arg))
     },
     addElem(
       Dyad,
@@ -557,7 +572,7 @@ object Elements:
       "a: lst -> a[:-1]",
       "a: str -> a[:-1]",
     ) {
-      case lst: VList => if lst.nonEmpty then VList.from(lst.init) else lst
+      case lst: VList => VList.from(lst.dropRight(1))
       case s: String => if s.nonEmpty then s.substring(0, s.length - 1) else s
     },
     addElem(
