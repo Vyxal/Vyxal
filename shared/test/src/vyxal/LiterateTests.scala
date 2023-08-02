@@ -64,6 +64,10 @@ class LiterateTests extends VyxalTests:
       testLiterate("lambda lambda add -> $add end end", "λλadd|#$add}}")
       testLiterate("lambda add lambda add ->", "λ+λadd|")
     }
+
+    it("shouldn't mistake nested structures's branches as params") {
+      testLiterate("{ even? ? 1 : 2 end }", "λe[1|2}}")
+    }
   }
 
   describe("Lists") {
