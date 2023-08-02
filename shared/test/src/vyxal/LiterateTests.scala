@@ -119,6 +119,13 @@ class LiterateTests extends VyxalTests:
     }
   }
 
+  describe("Ternaries") {
+    it("should transpile them correctly") {
+      testLiterate("1 ? 2 : 3 end", "1[2|3}")
+      testLiterate("1 ?-> 2 : 3 end", "1[2|3}")
+    }
+  }
+
   describe("Misc") {
     it("should not treat words with i as complex") {
       testLiterate("is-vowel?", "A")

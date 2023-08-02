@@ -209,7 +209,7 @@ private[parsing] object LiterateLexer extends Lexer:
       }
 
   def structOpener[$: P]: P[Token] =
-    withRange("?")
+    withRange("?->" | "?")
       .opaque("<ternary (?)>")
       .map { case (_, range) =>
         Token(StructureOpen, StructureType.Ternary.open, range)
