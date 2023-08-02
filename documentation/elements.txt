@@ -407,6 +407,14 @@ Keywords: index-into-multiple, collect-while-unique, complex
 - a: any, b: lst -> `[a[item] for item in b]`
 - a: any, b: fun -> Apply b on a and collect unique values (until fixpoint). Does not include the initial value.
 ---------------------
+Ŀ (Logarithm | Scan Fixpoint | Same Length? | Length Equals?) (vectorising)
+Trigraph: #.L
+Keywords: log, logarithm, scan-fixpoint, scan-fix, same-length?, same-length, length-equals?, length-equals, len-eq?
+- a: num, b: num -> log_b(a)
+- a: fun, b: any -> apply until a previous value is repeated, collecting intermediate results
+- a: str, b: str -> a same length as b
+- a: str, b: num -> len(a) == b
+---------------------
 Ṫ (Init) (non-vectorising)
 Trigraph: #.T
 Keywords: init, remove-last
