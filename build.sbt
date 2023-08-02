@@ -99,7 +99,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       "-unchecked", // Enable additional warnings where generated code depends on assumptions.
       // Above options from https://tpolecat.github.io/2017/04/25/scalac-flags.html
       "-Wunused:all", // Warn about unused values and stuff
-      "-Wvalue-discard", // Warn about expressions whose values aren't used
+      // "-Wvalue-discard", // Warn about expressions whose values aren't used
       "-language:implicitConversions",
       // "-explain",
       "-print-lines"
