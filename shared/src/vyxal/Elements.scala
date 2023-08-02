@@ -5,7 +5,7 @@ import scala.language.implicitConversions
 import vyxal.ListHelpers.makeIterable
 import vyxal.VNum.given
 
-import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
 
 /** Implementations for elements */
@@ -578,7 +578,7 @@ object Elements:
         val lst = ListHelpers.makeIterable(a)
         inds.vmap(lst.index(_))
       case (init, fn: VFun) =>
-        val prevVals = ListBuffer.empty[VAny]
+        val prevVals = ArrayBuffer.empty[VAny]
         VList.from(
           LazyList.unfold(init) { prev =>
             val newVal = fn(prev)
@@ -745,11 +745,14 @@ object Elements:
       case (a: String, b: String) => a.length == b.length
       case (a: VNum, b: String) => b.length == a.toInt
       case (a: VVal, b: VFun) =>
+        val prevVals = ArrayBuffer.empty[VAny]
         VList.from(
-          LazyList.unfold(a.asInstanceOf[VAny] -> Seq[VAny]()) { state =>
-            val next = b(state._1)
-            if state._2.contains(next) then None
-            else Some(next -> (next -> (state._2 :+ next)))
+          LazyList.unfold(a: VAny) { prevVal =>
+            val next = b(prevVal)
+            if prevVals.contains(next) then None
+            else
+              prevVals += next
+              Some(next -> next)
           }
         )
 
