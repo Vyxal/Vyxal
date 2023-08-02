@@ -501,12 +501,16 @@ object Elements:
     ) { ctx ?=>
       ctx.pop() match
         case lst: VList =>
-          ctx.push(lst.headOption.getOrElse(ctx.settings.defaultValue))
-          ctx.push(lst.drop(1))
+          ctx.push(
+            lst.headOption.getOrElse(ctx.settings.defaultValue),
+            lst.drop(1)
+          )
         case s: String =>
-          if s.isEmpty then ctx.push("")
-          else ctx.push(s.charAt(0).toString)
-          ctx.push(s.drop(1))
+          ctx.push(
+            if s.isEmpty then ""
+            else s.charAt(0).toString,
+            s.drop(1)
+          )
         case arg => throw UnimplementedOverloadException("ḣ", List(arg))
     },
     addDirect(
@@ -518,12 +522,16 @@ object Elements:
     ) { ctx ?=>
       ctx.pop() match
         case lst: VList =>
-          ctx.push(lst.lastOption.getOrElse(ctx.settings.defaultValue))
-          ctx.push(lst.dropRight(1))
+          ctx.push(
+            lst.lastOption.getOrElse(ctx.settings.defaultValue),
+            lst.dropRight(1)
+          )
         case s: String =>
-          if s.isEmpty then ctx.push("")
-          else ctx.push(s.last.toString)
-          ctx.push(s.dropRight(1))
+          ctx.push(
+            if s.isEmpty then ""
+            else s.last.toString,
+            s.dropRight(1)
+          )
         case arg => throw UnimplementedOverloadException("ḣ", List(arg))
     },
     addElem(
