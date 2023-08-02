@@ -407,11 +407,27 @@ Keywords: index-into-multiple, collect-while-unique, complex
 - a: any, b: lst -> `[a[item] for item in b]`
 - a: any, b: fun -> Apply b on a and collect unique values (until fixpoint). Does not include the initial value.
 ---------------------
+Ṫ (Init) (non-vectorising)
+Trigraph: #.T
+Keywords: init, remove-last
+- a: lst -> a[:-1]
+- a: str -> a[:-1]
+---------------------
+ḣ (Head Extract) (non-vectorising)
+Trigraph: #.h
+Keywords: head-extract, split-at-head
+- a: lst|str -> Push a[0], then a[1:] onto the stack
+---------------------
 ṡ (Sort by Function Object | Reshape (APL Style)) (non-vectorising)
 Trigraph: #.s
 Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun
 - a: fun, b: any -> sort iterable b by function a
 - a: any, b: fun -> sort iterable a by function b
+---------------------
+ṫ (Last Extract) (non-vectorising)
+Trigraph: #.t
+Keywords: last-extract, split-at-last
+- a: lst|str -> Push a[-1], then a[:-1] onto the stack
 ---------------------
 Θ (Zero Slice Until) (non-vectorising)
 Trigraph: #.`
@@ -508,16 +524,21 @@ Keywords: **-
 Description: Turn the next two elements (whether that be a structure/modifier/element) into a lambda
 ϩfg: Push the equivalent of λfg} to the stack
 ---------------------
+ᵈ
+Keywords: *2-
+Description: Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda
+ᵈf: Push the equivalent of λ2|f} to the stack
+---------------------
+ᵍ
+Keywords: ****2-
+Description: Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
+ᵍfghi: Push the equivalent of λ2|fghi} to the stack
+---------------------
 ᵃ
 Keywords: apply-to-neighbours
 Description: To each overlapping pair, reduce it by an element
 Apply a dyadic link or a monadic chain for all pairs of neighboring elements.
 ᵃf: equivalent to 2ov/f
----------------------
-v
-Keywords: vectorise-, vec-, v-
-Description: Vectorises
-vf: f but vectorised
 ---------------------
 ⸠
 Keywords: *-
@@ -528,6 +549,21 @@ Description: Turn the next element (whether that be a structure/modifier/element
 Keywords: ***-
 Description: Turn the next three elements (whether that be a structure/modifier/element) into a lambda
 эfgh: Push the equivalent of λfgh} to the stack
+---------------------
+ᵉ
+Keywords: **2-
+Description: Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda
+ᵉfg: Push the equivalent of λ2|fg} to the stack
+---------------------
+v
+Keywords: vectorise-, vec-, v-
+Description: Vectorises
+vf: f but vectorised
+---------------------
+ᶠ
+Keywords: ***2-
+Description: Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda
+ᶠfgh: Push the equivalent of λ2|fgh} to the stack
 ---------------------
 /
 Keywords: foldl-, reduce-, /-, fold-, reduceby-
