@@ -128,9 +128,8 @@ private[parsing] object LiterateLexer extends Lexer:
     parseToken(ContextIndex, "`" ~~ CharsWhileIn("0-9", 0).! ~~ "`")
 
   def isLambdaParam(word: String): Boolean =
-    println(s"Checking $word")
     !structOpeners.contains(word) && !lambdaOpenerSet.contains(word)
-    && !branchKeywords.contains(word) && !endKeywords.contains(word)
+      && !branchKeywords.contains(word) && !endKeywords.contains(word)
 
   val lambdaOpenerSet = lambdaOpeners.keys.toSet
   def lambdaBlock[$: P]: P[Seq[Token]] =

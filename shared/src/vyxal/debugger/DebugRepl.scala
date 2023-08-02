@@ -13,9 +13,9 @@ object DebugRepl:
       case Left(err) => throw new RuntimeException(err.msg)
     val debugger = Debugger(ast)
     debugger.printState()
-    while true do
+    while !debugger.finished do
       val line = io.StdIn.readLine("(debug)> ")
-      if line.nonEmpty && !debugger.finished then
+      if line.nonEmpty then
         OParser.parse(parser, line.split(" "), Config()) match
           case Some(config) =>
             config.cmd match
@@ -25,7 +25,7 @@ object DebugRepl:
               case Cmd.Exit => return
             debugger.printState()
           case None => println("Could not parse command")
-      else if !debugger.finished then
+      else
         debugger.stepInto()
         debugger.printState()
 

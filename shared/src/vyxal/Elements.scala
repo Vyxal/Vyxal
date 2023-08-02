@@ -1444,14 +1444,14 @@ object Elements:
   /** Add a monad that handles all `VAny`s (it doesn't take a `PartialFunction`,
     * hence "Full")
     */
-  private def addFull[F[_]](
+  private def addFull[F](
       helper: ImplHelpers[?, F],
       symbol: String,
       name: String,
       keywords: Seq[String],
       vectorises: Boolean,
       overloads: String*
-  )(impl: F[VAny]): (String, Element) =
+  )(impl: F): (String, Element) =
     symbol -> Element(
       symbol,
       name,
@@ -1469,7 +1469,7 @@ object Elements:
     * normal function literal or it covers every single case, then try
     * [[addFull]] instead.
     */
-  private def addElem[P, F[_]](
+  private def addElem[P, F](
       helper: ImplHelpers[P, F],
       symbol: String,
       name: String,
@@ -1498,7 +1498,7 @@ object Elements:
     * normal function literal or it covers every single case, then try
     * [[addFull]] instead.
     */
-  private def addPartialVect[P, F[_]](
+  private def addPartialVect[P, F](
       helper: ImplHelpers[P, F],
       symbol: String,
       name: String,
@@ -1519,7 +1519,7 @@ object Elements:
     * since it needs a `PartialFunction`. If it is possible to define it using a
     * normal function literal, then try [[addFull]] instead.
     */
-  private def addVect[P, F[_]](
+  private def addVect[P, F](
       helper: ImplHelpers[P, F],
       symbol: String,
       name: String,
