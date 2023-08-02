@@ -8,7 +8,7 @@ Look in the `dict_scripts` folder for dictionary-related stuff:
 - sort_script.py - Make sure to run this every time `words.txt` gets updated.
   It's for separating the words into a short and a long dictionary.
   It creates `ShortDictionary.txt` and `LongDictionary.txt` in both `pages` and
-  `shared/src/main/resources`. The JVM and Native code can load the dictionaries
+  `shared/resources`. The JVM and Native code can load the dictionaries
   from the resources folder. The JS code can fetch the dictionaries from
   `vyxal.github.io/vyxal/<Short|Long>Dictionary.txt` (because Scala.js doesn't
   embed `resources`).

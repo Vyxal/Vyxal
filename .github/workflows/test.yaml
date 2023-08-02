@@ -5,6 +5,9 @@ on:
     paths-ignore:
       - "documentation/**"
       - "pages/**"
+      - ".gitattributes"
+      - "**/*.md"
+      - "**/*.txt"
 
 jobs:
   jvm:

@@ -23,7 +23,6 @@ This is done using a temporary storage `ListBuffer` and a for loop to iterate ov
 
 This is done by turning the program into a queue (a FIFO data structure) and then dequeuing tokens. When a `#:[` is reached, a depth counter is kept and token values are added to a string builder under that depth is 0. `[`s increase the depth, `]`s decrease the depth. Once the depth reaches 0, a `Token.UnpackVar()` token is added to a list of preprocessed tokens. Other tokens are also added to the list as-is. This list is what is returned and used in the next phase.
 
-
 ## Token Parsing
 
 For the main token parsing stage, the list of tokens that have been preprocessed are once again turned into a queue, and a list to store all the processed ASTs is created. A queue is used because the naive for-loop approach has troubles parsing unknown-length structures (which can be fixed with continue statements, but by then you've got a glorified while loop that needs way too many additional variables.)
@@ -34,20 +33,20 @@ There are two "sweeps" of parsing: the mapping sweep and the modifying sweep.
 
 In this sweep, each token is considered in turn, and depending on the token type, a simple corresponding AST is added to the processed list, or control flow moves to a specialised function. After a mapping is made, the AST is pushed to a `Stack` of ASTs. The table below indicates how tokens are mapped.
 
-| Token Type (`Token.`)    	| Simple AST?                          	| Called Function             	|
-|-------------------------------	|--------------------------------------	|-----------------------------	|
-| `Number(value)`               	| ✅ (`AST.Number`)                     	| ❌                           	|
-| `Str(Value)`                  	| ✅ (`AST.Str`)                        	| ❌                           	|
-| `Newline`                     	| ✅ (`AST.Newline`)                    	| ❌                           	|
-| `StructureOpen(value)`        	| ❌                                    	| `parseStructure`            	|
-| `ListOpen`                    	| ❌                                    	| `parseBranches`             	|
-| `Command(value)`              	| ❌                                    	| `parseCommand`              	|
-| any kind of `Modifier(value)` 	| ✅ (`AST.JunkModifier(value, arity)`) 	| ❌                           	|
-| `SpecialModifier(value)`      	| ✅ (`AST.SpecialModifier`)            	| ❌                           	|
-| `GetVar(value)`               	| ✅ (`AST.GetVar`)                     	| ❌                           	|
-| `SetVar(value)`               	| ✅ (`AST.SetVar`)                     	| ❌                           	|
-| `AugmentVar(value)`           	| 🟨 (`AST.AuxAugmentVar`)              	| Handled later in the parser 	|
-| `UnpackVar(value)`            	| ❌                                    	| Explained in depth further down    	|
+| Token Type (`Token.`)     | Simple AST?                           | Called Function              |
+|------------------------------- |-------------------------------------- |----------------------------- |
+| `Number(value)`                | ✅ (`AST.Number`)                      | ❌                            |
+| `Str(Value)`                   | ✅ (`AST.Str`)                         | ❌                            |
+| `Newline`                      | ✅ (`AST.Newline`)                     | ❌                            |
+| `StructureOpen(value)`         | ❌                                     | `parseStructure`             |
+| `ListOpen`                     | ❌                                     | `parseBranches`              |
+| `Command(value)`               | ❌                                     | `parseCommand`               |
+| any kind of `Modifier(value)`  | ✅ (`AST.JunkModifier(value, arity)`)  | ❌                            |
+| `SpecialModifier(value)`       | ✅ (`AST.SpecialModifier`)             | ❌                            |
+| `GetVar(value)`                | ✅ (`AST.GetVar`)                      | ❌                            |
+| `SetVar(value)`                | ✅ (`AST.SetVar`)                      | ❌                            |
+| `AugmentVar(value)`            | 🟨 (`AST.AuxAugmentVar`)               | Handled later in the parser  |
+| `UnpackVar(value)`             | ❌                                     | Explained in depth further down     |
 
 ### The Modifying Sweep
 
@@ -107,12 +106,12 @@ Meaning it takes the structure character being parsed and the remaining program 
 
 Once token collection has finished,  there is a list of lists of ASTs/Lists of AST. These are the branches of the structure, and are handled according to the structure type:
 
-| Structure Type 	| Branches                                    	|
-|----------------	|---------------------------------------------	|
-| If Statement   	| Truthy Branch (default), Falsey Branch      	|
-| While Loop     	| Condition, Loop Body (default)              	|
-| For Loop       	| Iterator Variable Name, Loop Body (default) 	|
-| Lambda         	| Parameters, Lambda Body (default)           	|
+| Structure Type  | Branches                                     |
+|---------------- |--------------------------------------------- |
+| If Statement    | Truthy Branch (default), Falsey Branch       |
+| While Loop      | Condition, Loop Body (default)               |
+| For Loop        | Iterator Variable Name, Loop Body (default)  |
+| Lambda          | Parameters, Lambda Body (default)            |
 
 Note that structures such as variable unpacking are handled elsewhere due to their unusual structure.
 
@@ -137,13 +136,11 @@ These tokens are considered to be structure closing tokens by the function:
 
 All other tokens are not considered closing tokens.
 
-
-
 ---
 
 #### Some types
 
-- `AST` - An Abstract Syntax Tree. This is what we ultimately want to get from the parser! Defined in [AST.scala](/shared/src/main/scala/AST.scala).
+- `AST` - An Abstract Syntax Tree. This is what we ultimately want to get from the parser! Defined in [AST.scala](/shared/src/AST.scala).
 - `Token` - Represents a token, which the lexer returns a list of. These tokens are completely unrelated to the actual structure of the program. Take a look at [Lexer.md](Lexer.md) for that.
 - `ParserRet[T]` - A type alias for `Either[VyxalCompilationError, T]`. Even though Vyxal is a golflang, there is a limit to how much abuse it
   will tolerate, and compilation errors are possible. Because of this, the main `parse` method, as well as `parseStructure` and the like, return `ParserRet`s
@@ -155,4 +152,5 @@ All other tokens are not considered closing tokens.
   necessarily convert to a `List` later, `ArrayBuffer` works too.
 
 ## Token Post-Processing
+
 The post-processing phase of the parser simply moves all trailing nilads in a program to the front of the program to avoid redundancies.

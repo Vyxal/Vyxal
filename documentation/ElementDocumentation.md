@@ -1,7 +1,7 @@
 # Element documentation
 
 This doc will go over implementing elements. The elements are all
-implemented in [Elements.scala](/shared/src/main/scala/Elements.scala).
+implemented in [Elements.scala](/shared/src/Elements.scala).
 
 When implementing elements, it's important that they are documented with
 all their overloads and test cases; doing so means that test case
@@ -218,7 +218,7 @@ you can use to get an `Element` from its symbol. An `Element` object contains al
 information about an element, like the symbol, its name, its arity, some docs-related stuff,
 and, most importantly, the implementation of that `Element`, represented by a `DirectFn`.
 
-A `DirectFn` (in [Functions.scala](/shared/src/main/scala/Functions.scala)) is just a type
+A `DirectFn` (in [Functions.scala](/shared/src/Functions.scala)) is just a type
 alias for `() => Context ?=> Unit`. That funny `?=>` thing means that the `Context` parameter
 is implicit. Basically, a method like this would fit `DirectFn`:
 

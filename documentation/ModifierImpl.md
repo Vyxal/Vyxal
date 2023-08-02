@@ -1,7 +1,7 @@
 # Modifier Implementation
 
 This doc will go over implementing modifiers. All the modifiers are defined in
-[Modifiers.scala](/shared/src/main/scala/Modifiers.scala).
+[Modifiers.scala](/shared/src/Modifiers.scala).
 
 ## The Template
 

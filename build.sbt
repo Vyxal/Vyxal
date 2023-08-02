@@ -9,6 +9,7 @@ ThisBuild / scalaVersion := "3.3.0"
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
 import org.scalajs.linker.interface.OutputPatterns
+
 import sbtcrossproject.{CrossType, Platform}
 
 lazy val root: Project = project
@@ -113,7 +114,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     Compile / mainClass := Some("vyxal.Main"),
     assembly / mainClass := Some("vyxal.Main"),
     assembly / assemblyJarName := s"vyxal-$vyxalVersion.jar",
-    // Necessary for tests to be able to access src/main/resources
+    // Necessary for tests to be able to access resources folder
     Test / fork := true,
     libraryDependencies ++= Seq(
       "org.jline" % "jline" % "3.23.0",

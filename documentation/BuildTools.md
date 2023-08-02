@@ -166,9 +166,9 @@ need to go around installing stuff yourself.
 
 The Mill build has 3 modules:
 
-- `jvm` - For running Vyxal on the JVM. Includes code in `jvm/src/main/scala` and `shared/src/main/scala`.
-- `js` - For compiling Vyxal to JS. Includes code in `js/src/main/scala` and `shared/src/main/scala`
-- `native` - For compiling Vyxal to native executables. Includes code in `native/src/main/scala` and `shared/src/main/scala`
+- `jvm` - For running Vyxal on the JVM. Includes code in `jvm/src` and `shared/src`.
+- `js` - For compiling Vyxal to JS. Includes code in `js/src` and `shared/src`
+- `native` - For compiling Vyxal to native executables. Includes code in `native/src` and `shared/src`
 
 Each of these modules has a `test` module inside it (e.g. `jvm.test` includes
 code in `jvm/src/test/scala` and `shared/src/test/scala`).
@@ -256,7 +256,7 @@ make any changes).
       is relative to your current project's root, so if you're in the `vyxalJVM`
       project, it'll be relative to the `jvm/` folder, and if you're in `vyxalJS`,
       it'll be relative to `js/`.
-      - e.g. `scalafmtOnly ../shared/src/main/scala/Interpreter.scala`
+      - e.g. `scalafmtOnly ../shared/src/Interpreter.scala`
     - `reformat` if you're using Mill
       - `checkFormat` to only check if everything is formatted.
 - `fastOptJS` - Quickly build and link the JS code, not too many optimizations.
