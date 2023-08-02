@@ -85,6 +85,13 @@ object NumberHelpers:
 
   end gamma
 
+  def log(a: VNum, b: VNum): VNum =
+    // Only works for real numbers for now
+    VNum(
+      spire.math.Real.log(a.underlying.real) / spire.math.Real.log(
+        b.underlying.real
+      )
+    )
   def multiplicity(a: VNum, b: VNum): VNum =
     if a == VNum(0) || b == VNum(0) then return VNum(0)
     if b.vabs == VNum(1) then return a.vabs

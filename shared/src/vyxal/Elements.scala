@@ -720,6 +720,40 @@ object Elements:
           "Can't repeat an item a non-integer number of times"
         )
     },
+    addVect(
+      Dyad,
+      "Ŀ",
+      "Logarithm | Scan Fixpoint | Same Length? | Length Equals?",
+      List(
+        "log",
+        "logarithm",
+        "scan-fixpoint",
+        "scan-fix",
+        "same-length?",
+        "same-length",
+        "length-equals?",
+        "length-equals",
+        "len-eq?"
+      ),
+      "a: num, b: num -> log_b(a)",
+      "a: fun, b: any -> apply until a previous value is repeated, collecting intermediate results",
+      "a: str, b: str -> a same length as b",
+      "a: str, b: num -> len(a) == b"
+    ) {
+      case (a: VNum, b: VNum) => NumberHelpers.log(a, b)
+      case (a: String, b: VNum) => a.length == b.toInt
+      case (a: String, b: String) => a.length == b.length
+      case (a: VNum, b: String) => b.length == a.toInt
+      case (a: VVal, b: VFun) =>
+        VList.from(
+          LazyList.unfold(a.asInstanceOf[VAny] -> Seq[VAny]()) { state =>
+            val next = b(state._1)
+            if state._2.contains(next) then None
+            else Some(next -> (next -> (state._2 :+ next)))
+          }
+        )
+
+    },
     addDirect(
       "#X",
       "Loop Break",
