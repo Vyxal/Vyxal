@@ -50,14 +50,23 @@ object Modifiers:
       AST.makeSingle(lambdaAst, AST.Command("#v"))
     },
     "/" -> Modifier(
-      "Foldl | Reduce By",
+      "Foldl | Reduce By | Filter by",
       """|Reduce a list by an element
          |/f: reduce by element f""".stripMargin,
       List("foldl-", "reduce-", "/-", "fold-", "reduceby-"),
       1
     ) { case List(ast) =>
-      val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
-      AST.makeSingle(lambdaAst, AST.Command("R"))
+      println(ast)
+      if ast.arity.getOrElse(-1) == 1 && (ast match
+          case f: AST.Lambda => !f.params.isEmpty
+          case _ => true
+        )
+      then
+        val lambdaAst = astToLambda(ast, 1)
+        AST.makeSingle(lambdaAst, AST.Command("F"))
+      else
+        val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
+        AST.makeSingle(lambdaAst, AST.Command("R"))
     },
     "⸠" -> Modifier(
       "Single Element Lambda",
@@ -92,6 +101,40 @@ object Modifiers:
       4
     ) { case List(ast1, ast2, ast3, ast4) =>
       astToLambda(AST.makeSingle(ast1, ast2, ast3, ast4), 1)
-    }
+    },
+    "ᵈ" -> Modifier(
+      "Dyadic Single Element Lambda",
+      """|Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda
+         |ᵈf: Push the equivalent of λ2|f} to the stack""".stripMargin,
+      List("*2-"),
+      1
+    ) { case List(ast) => AST.makeSingle(astToLambda(ast, 2)) },
+    "ᵉ" -> Modifier(
+      "Dyadic Double Element Lambda",
+      """|Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda
+         |ᵉfg: Push the equivalent of λ2|fg} to the stack""".stripMargin,
+      List("**2-"),
+      2
+    ) { case List(ast1, ast2) =>
+      AST.makeSingle(astToLambda(AST.makeSingle(ast1, ast2), 2))
+    },
+    "ᶠ" -> Modifier(
+      "Dyadic Triple Element Lambda",
+      """|Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda
+         |ᶠfgh: Push the equivalent of λ2|fgh} to the stack""".stripMargin,
+      List("***2-"),
+      3
+    ) { case List(ast1, ast2, ast3) =>
+      astToLambda(AST.makeSingle(ast1, ast2, ast3), 2)
+    },
+    "ᵍ" -> Modifier(
+      "Dyadic Quadruple Element Lambda",
+      """|Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
+         |ᵍfghi: Push the equivalent of λ2|fghi} to the stack""".stripMargin,
+      List("****2-"),
+      4
+    ) { case List(ast1, ast2, ast3, ast4) =>
+      astToLambda(AST.makeSingle(ast1, ast2, ast3, ast4), 2)
+    },
   )
 end Modifiers

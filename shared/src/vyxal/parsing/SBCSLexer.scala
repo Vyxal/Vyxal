@@ -127,17 +127,17 @@ private[parsing] object SBCSLexer extends Lexer:
   def monadicModifier[$: P]: P[Token] =
     parseToken(
       MonadicModifier,
-      CharIn("ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻ¿⸠/\\\\~v@`ꜝ").!
+      CharIn("ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻ¿⸠/\\\\~v@`ꜝ").!
     )
 
   def dyadicModifier[$: P]: P[Token] =
-    parseToken(DyadicModifier, CharIn("ϩ∥∦").!)
+    parseToken(DyadicModifier, CharIn("ϩ∥∦ᵉ").!)
 
   def triadicModifier[$: P]: P[Token] =
-    parseToken(TriadicModifier, CharIn("э").!)
+    parseToken(TriadicModifier, CharIn("эᶠ").!)
 
   def tetradicModifier[$: P]: P[Token] =
-    parseToken(TetradicModifier, CharIn("Ч").!)
+    parseToken(TetradicModifier, CharIn("Чᶢ").!)
 
   def specialModifier[$: P]: P[Token] =
     parseToken(SpecialModifier, CharIn("ᵗᵜ").!)
