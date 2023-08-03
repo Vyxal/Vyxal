@@ -724,6 +724,21 @@
         - !vany "λḢ}"
       out: [[2, 3, 4], [3, 4], [4], []]
 
+"Ŀ":
+  Numbers:
+    - {in: [8, 2], out: 3}
+    - {in: [1000, 10], out: 3}
+  Numbers and strings:
+    - {in: ["abcde", 5], out: 1}
+    - {in: ["abcde", 10], out: 0}
+  Strings:
+    - {in: ["abcde", "fghij"], out: 1}
+    - {in: ["abcde", "abcdef"], out: 0}
+
+"Ṁ":
+  Matrices:
+    - {in: [[[1,2],[3,4]],[[5,6],[7,8]]], out: [[19, 22], [43, 50]]}  
+
 "Ṫ":
   - { in: [[1, 2, 3, 4]], out: [1, 2, 3] }
   - { in: ["asdf"], out: "asd" }

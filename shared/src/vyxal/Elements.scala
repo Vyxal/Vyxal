@@ -199,6 +199,17 @@ object Elements:
       case (a: VList, b: VFun) => ListHelpers.dedupBy(a, b)
       case (a: VFun, b: VList) => ListHelpers.dedupBy(b, a)
     },
+    addElem(
+      Dyad,
+      "ḋ",
+      "Dot Product | To Bijective Base",
+      List("dot-product", "bijective-base", "dot-prod"),
+      "a: lst, b: lst -> Dot product of a and b",
+      "a: num, b: num -> Convert a to bijective base b"
+    ) {
+      case (a: VList, b: VList) => ListHelpers.dotProduct(a, b)
+      case (a: VNum, b: VNum) => NumberHelpers.toBijectiveBase(a, b)
+    },
     addVect(
       Monad,
       "d",
@@ -825,6 +836,31 @@ object Elements:
       case (a: VList, b: VList) => VList.from(a ++ b)
       case (a, b: VList) => VList.from(a +: b)
       case (a: VList, b) => VList.from(a :+ b)
+    },
+    addElem(
+      Dyad,
+      "Ṁ",
+      "Modular | Matrix Multiply | Regex Full Match?",
+      List(
+        "nth-items",
+        "modular",
+        "maxtrix-multiply",
+        "mat-multiply",
+        "mat-mul",
+        "regex-full-match?",
+        "full-match?"
+      ),
+      "a: str|lst, b: num -> return every b-th element of a. If b is zero, mirror: prepend a to its reverse.",
+      "a: num, b: str|lst -> return every a-th element of b. If a is zero, mirror: append b to its reverse.",
+      "a: lst, b: lst -> a * b (matrix multiply)",
+      "a: str, b: str -> does the entirity of a match b?"
+    ) {
+      case (a: (VList | String), b: VNum) =>
+        ListHelpers.nthItems(a, b)
+      case (a: VNum, b: (VList | String)) =>
+        ListHelpers.nthItems(b, a)
+      case (a: VList, b: VList) =>
+        ListHelpers.matrixMultiply(a, b)
     },
     addDirect(
       "g",
