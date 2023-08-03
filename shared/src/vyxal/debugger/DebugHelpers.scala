@@ -36,6 +36,7 @@ private[debugger] object DebugHelpers:
 
   inline def dbg: Debugger = summonInline[Debugger]
 
+  // TODO this doesn't map using all branches
   def debugMap(ast: AST, lst: VList, fn: VFun)(using
       Debugger,
       Context
@@ -44,7 +45,7 @@ private[debugger] object DebugHelpers:
       ast,
       StepSeq(
         lst.flatMap(elem =>
-          List(Hidden { () => ctx ?=> ctx.push(elem) }, dbg.fnCall(fn))
+          List(Step.hidden { ctx ?=> ctx.push(elem) }, dbg.fnCall(fn))
         )
       )
     )
@@ -55,9 +56,6 @@ private[debugger] object DebugHelpers:
   ): Step =
     predicate.originalAST match
       case Some(lam) =>
-        val branches = lam.body
-        ???
-      case None =>
         val filtered = ListBuffer.empty[VAny]
         val filterSteps = iterable.zipWithIndex.map { (item, index) =>
           dbg
@@ -73,6 +71,7 @@ private[debugger] object DebugHelpers:
         }
         StepSeq(
           filterSteps :+
-            Hidden { () => ctx ?=> ctx.push(VList.from(filtered.toList)) }
+            Step.hidden { ctx ?=> ctx.push(VList.from(filtered.toList)) }
         )
+      case None => Step.hidden { ListHelpers.filter(iterable, predicate) }
 end DebugHelpers

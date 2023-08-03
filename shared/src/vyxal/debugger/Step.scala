@@ -14,7 +14,7 @@ sealed trait Step:
   def flatMap(fn: VAny => Context ?=> Option[Step]): Step = this.map(fn)
 
   def foreach(fn: VAny => Context ?=> Unit): Step =
-    StepSeq(List(this, Hidden { () => ctx ?=> fn(ctx.pop()) }))
+    StepSeq(List(this, Step.hidden { ctx ?=> fn(ctx.pop()) }))
 
 /** A step corresponding to a real AST */
 sealed trait ProperStep extends Step:
@@ -56,6 +56,10 @@ object Step:
         None
   )
 
+  /** Helper so you don't have to write () => */
+  def hidden(exec: Context ?=> Unit): Step =
+    Hidden(() => exec)
+
   private def whileStep(loop: AST.While): Step =
     val inner = loop.cond match
       case Some(cond) =>
@@ -71,7 +75,7 @@ object Step:
       case None =>
         // Infinite loop, no condition
         lazy val bodyStep: Step =
-          stepsForAST(loop.body).thenDo { ctx ?=> Some(bodyStep) }
+          stepsForAST(loop.body).thenDo { Some(bodyStep) }
         bodyStep
 
     NewStackFrame(
@@ -132,12 +136,10 @@ object Step:
     val inner = lst.elems.flatMap { (elem) =>
       List(
         stepsForAST(elem),
-        Hidden { () => ctx ?=>
-          buf += ctx.pop()
-        }
+        Step.hidden { ctx ?=> buf += ctx.pop() }
       )
     }
-    val last = Hidden { () => ctx ?=> ctx.push(VList.from(buf.toList)) }
+    val last = Step.hidden { ctx ?=> ctx.push(VList.from(buf.toList)) }
     Block(lst, StepSeq(inner :+ last))
 
   private def cmdStep(cmd: AST.Command): Step =
@@ -147,7 +149,7 @@ object Step:
       case None =>
         Elements.elements.get(symbol) match
           case Some(element) =>
-            Hidden(() => ctx ?=> element.impl())
+            Step.hidden { element.impl() }
           case None =>
             throw new RuntimeException(s"No such element: $symbol")
 

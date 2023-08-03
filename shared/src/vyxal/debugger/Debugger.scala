@@ -56,7 +56,7 @@ class Debugger(code: AST)(using rootCtx: Context):
           StepSeq(fnDef.body.map(Step.stepsForAST))
         )
       case None =>
-        Hidden { () => Interpreter.executeFn(fn) }
+        Step.hidden { Interpreter.executeFn(fn) }
 
   /** Keep popping either this frame's stepStack or the stackframes until we get
     * to the next step or until the stackframes are all gone
