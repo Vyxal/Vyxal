@@ -42,7 +42,7 @@ private[debugger] object DebugHelpers:
   ): Step =
     Block(
       ast,
-      Step.seq(
+      StepSeq(
         lst.flatMap(elem =>
           List(Hidden { () => ctx ?=> ctx.push(elem) }, dbg.fnCall(fn))
         )
@@ -71,10 +71,8 @@ private[debugger] object DebugHelpers:
               if MiscHelpers.boolify(res) then filtered += res
             }
         }
-        Step
-          .seq(
-            filterSteps :+
-              Hidden { () => ctx ?=> ctx.push(VList.from(filtered.toList)) }
-          )
-          .get
+        StepSeq(
+          filterSteps :+
+            Hidden { () => ctx ?=> ctx.push(VList.from(filtered.toList)) }
+        )
 end DebugHelpers

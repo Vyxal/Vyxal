@@ -5,10 +5,8 @@ import vyxal.*
 import scala.collection.mutable.ListBuffer
 
 sealed trait Step:
-  def ast: AST
-
   def thenDo(fn: Context ?=> Option[Step]): Step =
-    StepSeq(this, List(Lazy(() => fn)))
+    StepSeq(List(this, Lazy(() => fn)))
 
   def map(fn: VAny => Context ?=> Option[Step]): Step =
     this.thenDo(ctx ?=> fn(ctx.pop()))
@@ -16,44 +14,39 @@ sealed trait Step:
   def flatMap(fn: VAny => Context ?=> Option[Step]): Step = this.map(fn)
 
   def foreach(fn: VAny => Context ?=> Unit): Step =
-    StepSeq(this, List(Hidden { () => ctx ?=> fn(ctx.pop()) }))
+    StepSeq(List(this, Hidden { () => ctx ?=> fn(ctx.pop()) }))
 
+/** A step corresponding to a real AST */
+sealed trait ProperStep extends Step:
+  def ast: AST
+
+/** A structure that requires a new context, or a function call */
 case class NewStackFrame(
     ast: AST,
     frameName: String,
     newCtx: Context => Context,
-    inner: Option[Step]
-) extends Step
+    inner: Step
+) extends ProperStep
 
-case class Block(ast: AST, inner: Option[Step]) extends Step
+/** Represents a structure that doesn't create a new frame, to allow stepping
+  * over
+  */
+case class Block(ast: AST, inner: Step) extends ProperStep
 
+/** Execute a command or push a number/string */
 case class Exec(ast: AST, exec: () => (Debugger, Context) ?=> Option[Step])
-    extends Step
+    extends ProperStep
 
 /** Run something but don't show it as an extra step */
-case class Hidden(exec: () => Context ?=> Unit) extends Step:
-  override def ast: AST = throw UnsupportedOperationException(
-    "Hey, this step is hidden, you're not supposed to be looking at its AST!"
-  )
+case class Hidden(exec: () => Context ?=> Unit) extends Step
 
-/** Execute a sequence of steps, beginning with `firstStep`
-  *
-  * `firstStep` is a separate parameter to ensure we always have at least one
-  * step
-  */
-case class StepSeq(firstStep: Step, rest: Seq[Step]) extends Step:
-  override def ast = firstStep.ast
+/** Execute a sequence of steps */
+case class StepSeq(steps: Seq[Step]) extends Step
 
-case class Lazy(get: () => Context ?=> Option[Step]) extends Step:
-  // TODO (user): Fix this somehow
-  override def ast = throw UnsupportedOperationException(
-    "Uhh whoops I haven't really bothered getting my AST yet I'll get around to it tomorrow"
-  )
+/** Lazily get the next step (used for if/while) */
+case class Lazy(get: () => Context ?=> Option[Step]) extends Step
 
 object Step:
-
-  def empty: Step = Lazy(() => None)
-
   /** A step that simply pushes a value onto the stack */
   def push(ast: AST, value: VAny): Step = Exec(
     ast,
@@ -63,10 +56,6 @@ object Step:
         None
   )
 
-  def seq(steps: Seq[Step]): Option[Step] =
-    if steps.nonEmpty then Some(StepSeq(steps.head, steps.tail))
-    else None
-
   private def whileStep(loop: AST.While): Step =
     val inner = loop.cond match
       case Some(cond) =>
@@ -74,11 +63,11 @@ object Step:
         lazy val condStep: Step =
           stepsForAST(cond).thenDo { ctx ?=>
             if MiscHelpers.boolify(ctx.pop()) then
-              Some(StepSeq(stepsForAST(loop.body), List(condStep)))
+              Some(StepSeq(List(stepsForAST(loop.body), condStep)))
             else None
           }
 
-        Block(loop, Some(condStep))
+        Block(loop, condStep)
       case None =>
         // Infinite loop, no condition
         lazy val bodyStep: Step =
@@ -95,7 +84,7 @@ object Step:
 
         loopCtx
       ,
-      Some(inner)
+      inner
     )
   end whileStep
 
@@ -121,7 +110,7 @@ object Step:
           ListHelpers.makeIterable(ctx.pop(), Some(true))(using ctx).iterator
         ctx.makeChild()
       ,
-      Some(loopBlock)
+      loopBlock
     )
   end forStep
 
@@ -136,7 +125,7 @@ object Step:
           else elseStep
         })
       }
-    Block(ifStmt, inner)
+    Block(ifStmt, inner.getOrElse(StepSeq(List.empty)))
 
   private def listStep(lst: AST.Lst): Step =
     val buf = ListBuffer.empty[VAny]
@@ -149,7 +138,7 @@ object Step:
       )
     }
     val last = Hidden { () => ctx ?=> ctx.push(VList.from(buf.toList)) }
-    Block(lst, Step.seq(inner :+ last))
+    Block(lst, StepSeq(inner :+ last))
 
   private def cmdStep(cmd: AST.Command): Step =
     val symbol = cmd.value
@@ -165,12 +154,12 @@ object Step:
   def stepsForAST(ast: AST): Step =
     ast match
       case AST.Number(value, _) => Step.push(ast, value)
+      case AST.Str(value, _) => Step.push(ast, value)
       case lst: AST.Lst => listStep(lst)
       case loop: AST.For => forStep(loop)
       case loop: AST.While => whileStep(loop)
       case ifStmt: AST.IfStatement => ifStep(ifStmt)
       case cmd: AST.Command => cmdStep(cmd)
-      case AST.Group(elems, _, _) =>
-        Block(ast, Step.seq(elems.map(stepsForAST)))
+      case AST.Group(elems, _, _) => Block(ast, StepSeq(elems.map(stepsForAST)))
       case _ => ???
 end Step

@@ -7,7 +7,6 @@ import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.math
 
-import spire.implicits.truncatedDivisionOps // So we can use fmod below
 import spire.math.Real
 import spire.syntax.isReal.partialOrderOps // So we can compare Reals to stuff
 
@@ -32,7 +31,7 @@ object NumberHelpers:
   /** Returns value in base 10 using base len(alphabet) [bijective base] */
   def fromBaseAlphabet(value: String, alphabet: String): VAny =
     value.foldLeft(VNum(0)) { (ret, digit) =>
-      alphabet.length * ret + alphabet.indexOf(digit): VNum
+      alphabet.length * ret + alphabet.indexOf(digit)
     }
 
   /** Returns digits in base 10 using arbitrary base `base` */

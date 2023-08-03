@@ -29,11 +29,9 @@ class Debugger(code: AST)(using rootCtx: Context):
   /** The current stack frame */
   private def frame: StackFrame = stackFrames.last
 
-  private var currStep: Option[Step] = Some(Step.stepsForAST(code))
+  private var currStep = removeBadSteps(Step.stepsForAST(code)).getOrElse(null)
 
-  def addBreakpoint(row: Int, col: Int): Unit = ???
-
-  def finished: Boolean = currStep.isEmpty && stackFrames.isEmpty
+  def finished: Boolean = currStep == null
 
   /** Debug a VFun
     *
@@ -55,91 +53,92 @@ class Debugger(code: AST)(using rootCtx: Context):
           fnDef,
           fn.name.getOrElse("<function>"),
           ctx => Context.makeFnCtx(fn.ctx, ctx, ???, ???, ???, ???, ???, ???),
-          Step.seq(fnDef.body.map(Step.stepsForAST))
+          StepSeq(fnDef.body.map(Step.stepsForAST))
         )
       case None =>
         Hidden { () => Interpreter.executeFn(fn) }
-
-  @tailrec
-  private def stepIntoHelper(step: Step): Option[Step] =
-    scribe.trace(s"Step: $step")
-    step match
-      case Exec(ast, exec) =>
-        exec()(using this, frame.ctx)
-      case Hidden(exec) =>
-        exec()(using frame.ctx)
-        popUntilNext()
-      case Lazy(get) =>
-        get()(using frame.ctx) match
-          case Some(step) => stepIntoHelper(step)
-          case None => None
-      case StepSeq(firstStep, rest) =>
-        rest match
-          case head :: tail =>
-            frame.stepStack += Some(StepSeq(head, tail))
-          case Nil => ()
-        stepIntoHelper(firstStep)
-      case Block(ast, inner) =>
-        frame.stepStack += None
-        inner match
-          case Some(Lazy(get)) => get()(using frame.ctx)
-          case _ => inner
-      case NewStackFrame(ast, frameName, newCtx, inner) =>
-        stackFrames.push(StackFrame(frameName, newCtx(frame.ctx), ast))
-        inner match
-          case Some(Lazy(get)) => get()(using frame.ctx)
-          case _ => inner
-    end match
-  end stepIntoHelper
 
   /** Keep popping either this frame's stepStack or the stackframes until we get
     * to the next step or until the stackframes are all gone
     */
   @tailrec
-  private def popUntilNext(): Option[Step] =
-    if stackFrames.isEmpty then None
-    else if frame.stepStack.isEmpty then
-      stackFrames.pop()
-      popUntilNext()
+  private def popUntilNext(): Option[ProperStep] =
+    if frame.stepStack.isEmpty then
+      val lastFrame = stackFrames.pop()
+      scribe.trace(s"Popped frame $lastFrame")
+      if stackFrames.isEmpty then None
+      else popUntilNext()
     else
+      scribe.trace(s"Popping step: ${frame.stepStack.top}")
       frame.stepStack.pop() match
-        case Some(Hidden(exec)) =>
-          exec()(using frame.ctx)
-          popUntilNext()
+        case Some(nextStep) => removeBadSteps(nextStep)
         case None => popUntilNext()
-        case Some(next) => Some(next)
+  end popUntilNext
+
+  /** Get rid of Lazy, Hidden, and StepSeq steps, because they aren't proper
+    * steps
+    */
+  @tailrec
+  private def removeBadSteps(step: Step): Option[ProperStep] =
+    step match
+      case Lazy(get) =>
+        get()(using frame.ctx) match
+          case Some(next) => removeBadSteps(next)
+          case None => popUntilNext()
+      case Hidden(exec) =>
+        exec()(using frame.ctx)
+        popUntilNext()
+      case StepSeq(steps) =>
+        steps match
+          case first :: rest =>
+            frame.stepStack.push(Some(StepSeq(rest)))
+            removeBadSteps(first)
+          case Nil => popUntilNext()
+      case proper: ProperStep => Some(proper)
 
   def stepInto(): Unit =
     if stackFrames.isEmpty then
-      scribe.trace("Cannot step in, debugger finished")
-    else
-      scribe.trace(s"Stepping in, frame: $frame, step: $currStep")
-      currStep match
-        case Some(step) => this.currStep = stepIntoHelper(step)
-        case None => this.currStep = popUntilNext()
+      throw new IllegalStateException("Debugger has finished, cannot step into")
+
+    scribe.trace(s"Stepping in, frame: $frame, step: $currStep")
+    val nextStep = this.currStep match
+      case Exec(ast, exec) =>
+        exec()(using this, frame.ctx)
+          .flatMap(removeBadSteps)
+          .orElse(popUntilNext())
+      case Block(ast, inner) =>
+        frame.stepStack += None
+        removeBadSteps(inner)
+      case NewStackFrame(ast, frameName, newCtx, inner) =>
+        stackFrames.push(StackFrame(frameName, newCtx(frame.ctx), ast))
+        removeBadSteps(inner)
+    nextStep match
+      case Some(nextStep) => this.currStep = nextStep
+      case None =>
+        this.currStep = null
+        scribe.trace("Debugger has finished")
+  end stepInto
 
   def stepOver(): Unit =
-    scribe.trace(s"Stepping over, frame: $frame")
-    val startFrames = stackFrames.size
-    val startStepDepth = frame.stepStack.size
-    if currStep.isDefined then stepInto()
-    while currStep.isDefined && stackFrames.size >= startFrames && frame.stepStack.size > startStepDepth
-    do stepInto()
+    if !this.finished then
+      scribe.trace(s"Stepping over, frame: $frame")
+      val startFrames = stackFrames.size
+      val startStepDepth = frame.stepStack.size
+      stepInto()
+      while !this.finished && stackFrames.size >= startFrames && frame.stepStack.size > startStepDepth
+      do stepInto()
 
   def stepOut(): Unit =
     scribe.trace(s"Stepping out, frame: $frame")
     val startFrames = stackFrames.size
-    while stackFrames.nonEmpty && stackFrames.size >= startFrames do stepInto()
+    while !this.finished && stackFrames.size >= startFrames do stepInto()
 
   def continue(): Unit =
-    while stackFrames.nonEmpty do stepInto()
+    while !this.finished do stepInto()
 
   def printState(): Unit =
-    this.currStep match
-      case Some(step) =>
-        println(s"Next to execute: ${step.ast.toVyxal} <${step.ast.range}>")
-        println(s"Top of stack is ${frame.ctx.peek}")
-      // println("Frames:")
-      // println(stackFrames.reverse.mkString("\n"))
-      case _ => println("Next: ???")
+    println(s"Next to execute: ${currStep.ast.toVyxal} <${currStep.ast.range}>")
+    println(s"Top of stack is ${frame.ctx.peek}")
+  // println("Frames:")
+  // println(stackFrames.reverse.mkString("\n"))
 end Debugger

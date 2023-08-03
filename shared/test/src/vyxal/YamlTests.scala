@@ -70,13 +70,8 @@ class YamlTests extends AnyFunSpec:
             if codeOverride.isEmpty then s"Inputs: $inputStr"
             else s"Code: `$code, inputs: $inputStr"
           it(msg) {
-            given ctx: Context = Context(
-              testMode = true,
-              inputs = inputs,
-              globals = Globals(settings =
-                Settings(endPrintMode = EndPrintMode.None).withFlags(flags)
-              )
-            )
+            given ctx: Context =
+              VyxalTests.testContext(inputs = inputs, flags = flags)
             Interpreter.execute(code)
             val output = ctx.peek
             val checkpoint = Checkpoint()

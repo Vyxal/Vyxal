@@ -56,7 +56,7 @@ object Modifiers:
       List("foldl-", "reduce-", "/-", "fold-", "reduceby-"),
       1
     ) { case List(ast) =>
-      println(ast)
+      scribe.trace(s"Modifier /, ast: $ast")
       if ast.arity.getOrElse(-1) == 1 && (ast match
           case f: AST.Lambda => !f.params.isEmpty
           case _ => true

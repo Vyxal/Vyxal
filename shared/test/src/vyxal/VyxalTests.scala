@@ -1,7 +1,7 @@
 package vyxal
 
 import scala.compiletime.codeOf
-import scala.quoted.*
+import scala.quoted.{Expr, Quotes}
 
 import org.scalatest.compatible.Assertion
 import org.scalatest.funspec.AnyFunSpec
@@ -21,7 +21,7 @@ trait VyxalTests extends AnyFunSpec:
       expected: VAny,
       inputs: Seq[VAny] = Seq.empty
   ) =
-    val ctx = Context(testMode = true, inputs = inputs)
+    val ctx = VyxalTests.testContext(inputs = inputs)
     Interpreter.execute(code)(using ctx)
     assert(!ctx.isStackEmpty)
     assertResult(expected)(ctx.peek)
@@ -32,7 +32,7 @@ trait VyxalTests extends AnyFunSpec:
       expected: VAny,
       inputs: Seq[VAny] = Seq.empty
   ) =
-    val ctx = Context(testMode = true, inputs = inputs)
+    val ctx = VyxalTests.testContext(inputs = inputs)
     Interpreter.execute(ast)(using ctx)
     assert(!ctx.isStackEmpty)
     assertResult(expected)(ctx.peek)
@@ -55,7 +55,7 @@ trait VyxalTests extends AnyFunSpec:
   def testMulti(code: String)(tests: (Seq[VAny], VAny)*) =
     for (inputs, expected) <- tests do
       it(s"${inputs.mkString("[", ",", "]")} -> $expected") {
-        given ctx: Context = Context(inputs = inputs, testMode = true)
+        given ctx: Context = VyxalTests.testContext(inputs = inputs)
         Interpreter.execute(code)
         assert(!ctx.isStackEmpty)
         assertResult(expected)(ctx.peek)
@@ -68,7 +68,7 @@ trait VyxalTests extends AnyFunSpec:
   def testMulti(tests: (String, VAny)*) =
     for (code, expected) <- tests do
       it(s"$code -> $expected") {
-        given ctx: Context = Context(testMode = true)
+        given ctx: Context = VyxalTests.testContext()
         Interpreter.execute(code)
         assert(!ctx.isStackEmpty)
         assertResult(expected)(ctx.peek)
@@ -81,7 +81,7 @@ trait VyxalTests extends AnyFunSpec:
   def testStackLike(code: String)(tests: (List[VAny], List[VAny])*) =
     for (inputs, stackEnd) <- tests do
       it(s"$inputs -> $stackEnd") {
-        given ctx: Context = Context(inputs = inputs, testMode = true)
+        given ctx: Context = VyxalTests.testContext(inputs = inputs)
         for i <- inputs do ctx.push(i)
         Interpreter.execute(code)
         assertResult(stackEnd)(ctx.pop(stackEnd.length))
@@ -115,12 +115,25 @@ trait VyxalTests extends AnyFunSpec:
 end VyxalTests
 
 object VyxalTests:
+  /** A Context with settings appropriate for tests */
+  def testContext(
+      inputs: Seq[VAny] = Seq.empty,
+      flags: List[Char] = List.empty
+  ) =
+    Context(
+      inputs = inputs,
+      testMode = true,
+      globals = Globals(settings =
+        Settings(endPrintMode = EndPrintMode.None).withFlags(flags)
+      )
+    )
+
   private inline def group(inline asserts: Unit): Unit =
     ${ VyxalTests.groupImpl('asserts) }
 
   /** Implementation for [[group]] */
   private def groupImpl(asserts: Expr[Unit])(using Quotes): Expr[Unit] =
-    import quotes.reflect.*
+    import scala.quoted.quotes.reflect.*
     asserts.asTerm match
       case Inlined(_, _, term) =>
         term match
