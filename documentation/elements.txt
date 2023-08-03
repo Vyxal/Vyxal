@@ -415,11 +415,25 @@ Keywords: log, logarithm, scan-fixpoint, scan-fix, same-length?, same-length, le
 - a: str, b: str -> a same length as b
 - a: str, b: num -> len(a) == b
 ---------------------
+Ṁ (Modular | Matrix Multiply | Regex Full Match?) (non-vectorising)
+Trigraph: #.M
+Keywords: nth-items, modular, maxtrix-multiply, mat-multiply, mat-mul, regex-full-match?, full-match?
+- a: str|lst, b: num -> return every b-th element of a. If b is zero, mirror: prepend a to its reverse.
+- a: num, b: str|lst -> return every a-th element of b. If a is zero, mirror: append b to its reverse.
+- a: lst, b: lst -> a * b (matrix multiply)
+- a: str, b: str -> does the entirity of a match b?
+---------------------
 Ṫ (Init) (non-vectorising)
 Trigraph: #.T
 Keywords: init, remove-last
 - a: lst -> a[:-1]
 - a: str -> a[:-1]
+---------------------
+ḋ (Dot Product | To Bijective Base) (non-vectorising)
+Trigraph: #.d
+Keywords: dot-product, bijective-base, dot-prod
+- a: lst, b: lst -> Dot product of a and b
+- a: num, b: num -> Convert a to bijective base b
 ---------------------
 ḣ (Head Extract) (non-vectorising)
 Trigraph: #.h

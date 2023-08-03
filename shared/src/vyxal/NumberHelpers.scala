@@ -204,6 +204,22 @@ object NumberHelpers:
     VList.from(realPadded.lazyZip(imagPadded).map(VNum.complex))
   end toBaseDigits
 
+  def toBijectiveBase(value: VNum, radix: VNum)(using ctx: Context): VList =
+    // It's okay that this doesn't work for complex numbers
+    if value == VNum(0) then return VList()
+    val base = radix.toBigInt.abs
+    if base == 0 then return VList(value)
+    else if base == 1 then return VList.fill(value.toInt.abs)(1)
+    val digits = ListBuffer.empty[VNum]
+    var current = value
+    while current != VNum(0) do
+      current -= 1
+      val digit = (current % radix) + 1
+      digits += digit
+      current /= radix
+      current = current.floor
+    VList(digits.reverse.toList*)
+
   def toInt(value: VAny, radix: Int)(using ctx: Context): VAny =
     value match
       case n: VNum =>

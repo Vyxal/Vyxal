@@ -19,6 +19,12 @@ object ListHelpers:
         true
     }
 
+  def dotProduct(left: VList, right: VList)(using ctx: Context): VAny =
+    MiscHelpers.multiply(left, right) match
+      case l: VList =>
+        l.foldLeft(ctx.settings.defaultValue)((x, y) => MiscHelpers.add(x, y))
+      case x => x
+
   def filter(iterable: VList, predicate: VFun)(using ctx: Context): VList =
     predicate.originalAST match
       case Some(lam) =>
@@ -205,6 +211,21 @@ object ListHelpers:
           )
         else VList(num.toString.map(x => VNum(x.toString))*)
 
+  def matrixMultiply(lhs: VList, rhs: VList)(using ctx: Context): VList =
+    val rhsTemp = transposeSafe(rhs)
+    VList.from(
+      lhs.map(row =>
+        VList.from(
+          rhsTemp.map(col =>
+            dotProduct(
+              ListHelpers.makeIterable(row),
+              ListHelpers.makeIterable(col)
+            )
+          )
+        )
+      )
+    )
+
   def map(f: VFun, to: VList)(using ctx: Context): VList =
     f.originalAST match
       case Some(lam) =>
@@ -274,6 +295,24 @@ object ListHelpers:
     end moldHelper
     moldHelper(content, shape, 0)
   end mold
+
+  def nthItems(iterable: VList | String, index: VNum): VAny =
+    val temp = iterable match
+      case iterable: VList => iterable
+      case iterable: String => VList(iterable.map(_.toString)*)
+
+    if index.toInt == 0 then
+      return (iterable -> (temp ++ temp.reverse)) match
+        case (iterable: VList, value: VList) => value
+        case (iterable: String, value: VList) => value.mkString
+        case (_, _) => ??? // Shouldn't happen
+    else
+      return ((iterable -> (temp.zipWithIndex
+        .filter(_._2 % index.toInt == 0)
+        .map(_._1))): @unchecked) match
+        case (iterable: VList, value: List[VAny]) => VList.from(value)
+        case (iterable: String, value: List[VAny]) => value.mkString
+  end nthItems
 
   def overlaps(iterable: Seq[VAny], size: Int): Seq[VList] =
     if size == 0 then Seq.empty
