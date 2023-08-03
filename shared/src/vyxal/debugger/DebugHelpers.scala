@@ -2,6 +2,8 @@ package vyxal.debugger
 
 import vyxal.*
 
+import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 import scala.compiletime.{summonFrom, summonInline}
 
 private[debugger] object DebugHelpers:
@@ -13,6 +15,7 @@ private[debugger] object DebugHelpers:
   extension (self: VAny)
     def map(fn: VAny => Context ?=> VAny)(using Context): VAny = fn(self)
     def flatMap(fn: VAny => Context ?=> VAny)(using Context): VAny = fn(self)
+    def foreach(fn: VAny => Context ?=> Unit)(using Context): Unit = fn(self)
 
   transparent inline def debugOrInterpret(fn: VFun)(using
       Context
@@ -33,17 +36,43 @@ private[debugger] object DebugHelpers:
 
   inline def dbg: Debugger = summonInline[Debugger]
 
-  transparent inline def debugMap(ast: AST, lst: VList, fn: VFun)(using
+  def debugMap(ast: AST, lst: VList, fn: VFun)(using
+      Debugger,
       Context
-  ): Res =
-    inline if isDebug then ListHelpers.map(fn, lst)
-    else
-      Block(
-        ast,
-        Step.seq(
-          lst.flatMap(elem =>
-            List(Hidden { () => ctx ?=> ctx.push(elem) }, dbg.fnCall(fn))
-          )
+  ): Step =
+    Block(
+      ast,
+      Step.seq(
+        lst.flatMap(elem =>
+          List(Hidden { () => ctx ?=> ctx.push(elem) }, dbg.fnCall(fn))
         )
       )
+    )
+
+  def debugFilter(iterable: VList, predicate: VFun)(using
+      dbg: Debugger,
+      ctx: Context
+  ): Step =
+    predicate.originalAST match
+      case Some(lam) =>
+        val branches = lam.body
+        ???
+      case None =>
+        val filtered = ListBuffer.empty[VAny]
+        val filterStep = iterable.zipWithIndex.map { (item, index) =>
+          dbg
+            .fnCall(
+              predicate,
+              ctxVarPrimary = item,
+              ctxVarSecondary = index,
+              args = List(item)
+            )
+            .foreach { res =>
+              if MiscHelpers.boolify(res) then filtered += res
+            }
+        }
+        StepSeq(
+          filterStep,
+          List(Hidden { () => ctx ?=> ctx.push(VList.from(filtered)) })
+        )
 end DebugHelpers

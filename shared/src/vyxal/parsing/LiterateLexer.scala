@@ -3,7 +3,7 @@ package vyxal.parsing
 import scala.language.strictEquality
 
 import vyxal.parsing.Common.{parseToken, withRange}
-import vyxal.parsing.Common.given // For custom whitespace
+// import vyxal.parsing.Common.given // For custom whitespace
 import vyxal.parsing.TokenType.*
 import vyxal.Elements
 import vyxal.Modifiers

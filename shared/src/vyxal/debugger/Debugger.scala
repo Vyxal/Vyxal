@@ -23,8 +23,6 @@ class StackFrame(
   override def toString = s"Frame $name for $ast (top: ${ctx.peek})"
 
 class Debugger(code: AST)(using rootCtx: Context):
-  private val dummyAST = AST.Newline
-
   private val stackFrames: Stack[StackFrame] =
     Stack(StackFrame("<root>", rootCtx, code))
 
@@ -45,7 +43,12 @@ class Debugger(code: AST)(using rootCtx: Context):
     * @param fn
     *   The function to be called
     */
-  def fnCall(fn: VFun): Step =
+  def fnCall(
+      fn: VFun,
+      ctxVarPrimary: VAny | Null = null,
+      ctxVarSecondary: VAny | Null = null,
+      args: Seq[VAny] | Null = null
+  ): Step =
     fn.originalAST match
       case Some(fnDef) =>
         NewStackFrame(
@@ -55,22 +58,14 @@ class Debugger(code: AST)(using rootCtx: Context):
           Step.seq(fnDef.body.map(Step.stepsForAST))
         )
       case None =>
-        // We don't have the source, so it can't be debugged
-        Exec(
-          // TODO (user): find a way around using a dummy AST
-          dummyAST,
-          () =>
-            ctx ?=>
-              Interpreter.executeFn(fn)
-              None
-        )
+        Hidden { () => Interpreter.executeFn(fn) }
 
   @tailrec
   private def stepIntoHelper(step: Step): Option[Step] =
     scribe.trace(s"Step: $step")
     step match
       case Exec(ast, exec) =>
-        exec()(using frame.ctx)
+        exec()(using this, frame.ctx)
       case Hidden(exec) =>
         exec()(using frame.ctx)
         popUntilNext()

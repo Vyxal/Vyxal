@@ -46,8 +46,11 @@ object ListHelpers:
 
         VList.from(filtered.map(_._1))
       case None =>
-        VList.from(iterable.zipWithIndex.map { (item, index) =>
-          predicate.execute(item, index, List(item))
+        VList.from(iterable.zipWithIndex.collect {
+          case (item, index)
+              if MiscHelpers
+                .boolify(predicate.execute(item, index, List(item))) =>
+            item
         })
 
   end filter

@@ -4,7 +4,7 @@ import vyxal.*
 import vyxal.VNum.given
 
 object DebugImpls:
-  type DebugImpl = () => Context ?=> Option[Step]
+  type DebugImpl = () => (Debugger, Context) ?=> Option[Step]
 
   val impls: Map[String, DebugImpl] = Map(
   )
@@ -14,10 +14,10 @@ object DebugImpls:
     */
   private def debugMonad(
       symbol: String,
-      impl: Context ?=> PartialFunction[VAny, Option[Step]]
+      impl: (Debugger, Context) ?=> PartialFunction[VAny, Option[Step]]
   ): (String, DebugImpl) =
     val processed: DebugImpl = () =>
-      ctx ?=>
+      (dbg, ctx) ?=>
         val arg = ctx.pop()
         if impl.isDefinedAt(arg) then impl(arg)
         else
@@ -27,10 +27,10 @@ object DebugImpls:
 
   private def debugDyad(
       symbol: String,
-      impl: Context ?=> PartialFunction[(VAny, VAny), Option[Step]]
+      impl: (Debugger, Context) ?=> PartialFunction[(VAny, VAny), Option[Step]]
   ): (String, DebugImpl) =
     val processed: DebugImpl = () =>
-      ctx ?=>
+      (dbg, ctx) ?=>
         val args = (ctx.pop(), ctx.pop())
         if impl.isDefinedAt(args) then impl(args)
         else
@@ -40,10 +40,13 @@ object DebugImpls:
 
   private def debugTriad(
       symbol: String,
-      impl: Context ?=> PartialFunction[(VAny, VAny, VAny), Option[Step]]
+      impl: (
+          Debugger,
+          Context
+      ) ?=> PartialFunction[(VAny, VAny, VAny), Option[Step]]
   ): (String, DebugImpl) =
     val processed: DebugImpl = () =>
-      ctx ?=>
+      (dbg, ctx) ?=>
         val args = (ctx.pop(), ctx.pop(), ctx.pop())
         if impl.isDefinedAt(args) then impl(args)
         else
@@ -53,10 +56,13 @@ object DebugImpls:
 
   private def debugTetrad(
       symbol: String,
-      impl: Context ?=> PartialFunction[(VAny, VAny, VAny, VAny), Option[Step]]
+      impl: (
+          Debugger,
+          Context
+      ) ?=> PartialFunction[(VAny, VAny, VAny, VAny), Option[Step]]
   ): (String, DebugImpl) =
     val processed: DebugImpl = () =>
-      ctx ?=>
+      (dbg, ctx) ?=>
         val args = (ctx.pop(), ctx.pop(), ctx.pop(), ctx.pop())
         if impl.isDefinedAt(args) then impl(args)
         else

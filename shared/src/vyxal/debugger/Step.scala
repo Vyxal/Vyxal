@@ -15,6 +15,9 @@ sealed trait Step:
 
   def flatMap(fn: VAny => Context ?=> Option[Step]): Step = this.map(fn)
 
+  def foreach(fn: VAny => Context ?=> Unit): Step =
+    StepSeq(this, List(Hidden { () => ctx ?=> fn(ctx.pop()) }))
+
 case class NewStackFrame(
     ast: AST,
     frameName: String,
@@ -24,7 +27,8 @@ case class NewStackFrame(
 
 case class Block(ast: AST, inner: Option[Step]) extends Step
 
-case class Exec(ast: AST, exec: () => Context ?=> Option[Step]) extends Step
+case class Exec(ast: AST, exec: () => (Debugger, Context) ?=> Option[Step])
+    extends Step
 
 /** Run something but don't show it as an extra step */
 case class Hidden(exec: () => Context ?=> Unit) extends Step:
@@ -48,13 +52,13 @@ case class Lazy(get: () => Context ?=> Option[Step]) extends Step:
 
 object Step:
 
-  def empty: Step = Lazy(() => ctx ?=> None)
+  def empty: Step = Lazy(() => None)
 
   /** A step that simply pushes a value onto the stack */
   def push(ast: AST, value: VAny): Step = Exec(
     ast,
     () =>
-      ctx ?=>
+      (_, ctx) ?=>
         ctx.push(value)
         None
   )
