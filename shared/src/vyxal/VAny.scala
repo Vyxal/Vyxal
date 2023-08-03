@@ -103,6 +103,12 @@ extension (self: VAny)
       case (a: VList, b: VList) => a == b
       case _ => false
 
+  @targetName("plus")
+  def +~(that: VAny)(using Context): VAny = MiscHelpers.add(self, that)
+
+  @targetName("times")
+  def *~(that: VAny)(using Context): VAny = MiscHelpers.multiply(self, that)
+
 extension (iterable: VIter)
   def iterLength: VNum =
     iterable match

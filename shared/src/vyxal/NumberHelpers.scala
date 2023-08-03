@@ -37,9 +37,7 @@ object NumberHelpers:
 
   /** Returns digits in base 10 using arbitrary base `base` */
   def fromBaseDigits(digits: VList, base: VAny)(using ctx: Context): VAny =
-    digits.foldLeft(0: VAny) { (ret, digit) =>
-      MiscHelpers.add(MiscHelpers.multiply(base, ret), digit)
-    }
+    digits.foldLeft(0: VAny) { (ret, digit) => base *~ ret +~ digit }
 
   @tailrec
   def fromBinary(a: VAny)(using ctx: Context): VAny =
@@ -229,12 +227,8 @@ object NumberHelpers:
         var res: VAny = VNum(0)
         var exponent = 0
         for i <- l.reverse do
-          res = MiscHelpers.add(
-            res,
-            MiscHelpers.multiply(toInt(i, 10), VNum(radix) ** VNum(exponent))(
-              using ctx
-            )
-          )
+          res = res +~
+            toInt(i, 10) *~ (VNum(radix) ** VNum(exponent))
           exponent += 1
         res
       case s: String => VNum(s, radix).toIntegral

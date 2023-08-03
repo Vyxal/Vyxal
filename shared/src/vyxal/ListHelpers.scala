@@ -20,9 +20,8 @@ object ListHelpers:
     }
 
   def dotProduct(left: VList, right: VList)(using ctx: Context): VAny =
-    MiscHelpers.multiply(left, right) match
-      case l: VList =>
-        l.foldLeft(ctx.settings.defaultValue)((x, y) => MiscHelpers.add(x, y))
+    left *~ right match
+      case l: VList => ListHelpers.sum(l)
       case x => x
 
   def filter(iterable: VList, predicate: VFun)(using ctx: Context): VList =
@@ -372,6 +371,9 @@ object ListHelpers:
         )
 
   end sortBy
+
+  def sum(lst: VList)(using ctx: Context): VAny =
+    lst.foldLeft(ctx.settings.defaultValue)(_ +~ _)
 
   def prefixes(iterable: VList): Seq[VList] =
     iterable.inits.toSeq.reverse.tail

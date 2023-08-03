@@ -59,7 +59,7 @@ private[debugger] object DebugHelpers:
         ???
       case None =>
         val filtered = ListBuffer.empty[VAny]
-        val filterStep = iterable.zipWithIndex.map { (item, index) =>
+        val filterSteps = iterable.zipWithIndex.map { (item, index) =>
           dbg
             .fnCall(
               predicate,
@@ -71,8 +71,10 @@ private[debugger] object DebugHelpers:
               if MiscHelpers.boolify(res) then filtered += res
             }
         }
-        StepSeq(
-          filterStep,
-          List(Hidden { () => ctx ?=> ctx.push(VList.from(filtered)) })
-        )
+        Step
+          .seq(
+            filterSteps :+
+              Hidden { () => ctx ?=> ctx.push(VList.from(filtered.toList)) }
+          )
+          .get
 end DebugHelpers
