@@ -299,7 +299,10 @@ object ListHelpers:
     val indInt = index.toInt
     val value =
       if indInt == 0 then temp ++ temp.reverse
-      else temp.zipWithIndex.filter(_._2 % indInt == 0).map(_._1)
+      else
+        temp.zipWithIndex.collect {
+          case (elem, ind) if ind % indInt == 0 => elem
+        }
     iterable match
       case _: VList => VList.from(value)
       case _: String => value.mkString
