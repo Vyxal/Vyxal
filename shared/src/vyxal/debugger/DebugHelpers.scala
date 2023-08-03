@@ -35,11 +35,11 @@ object DebugHelpers:
     }
 
   /** A debuggable version of [[ListHelpers.dedupBy]] */
-  def dedupBy(lst: VList, fn: VFun)(using dbg: Debugger): Step =
+  def dedupBy(lst: VList, fn: VFun): Step =
     val seen = mutable.ArrayBuffer.empty[VAny]
     StepSeq(lst.flatMap { item =>
       List(
-        dbg.fnCall(
+        Debugger.fnCall(
           fn,
           ctxVarPrimary = item,
           ctxVarSecondary = 0,
