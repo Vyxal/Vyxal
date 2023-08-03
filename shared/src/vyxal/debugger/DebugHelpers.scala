@@ -6,7 +6,7 @@ import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.compiletime.{summonFrom, summonInline}
 
-private[debugger] object DebugHelpers:
+object DebugHelpers:
   /** These helpers give a Step if meant for the debugger and a VAny when
     * interpreting normally
     */
@@ -41,15 +41,19 @@ private[debugger] object DebugHelpers:
       Debugger,
       Context
   ): Step =
-    Block(
-      ast,
-      StepSeq(
-        lst.flatMap(elem =>
-          List(Step.hidden { ctx ?=> ctx.push(elem) }, dbg.fnCall(fn))
+    fn.originalAST match
+      case Some(lam) =>
+        Block(
+          ast,
+          StepSeq(
+            lst.flatMap(elem =>
+              List(Step.hidden { ctx ?=> ctx.push(elem) }, dbg.fnCall(fn))
+            )
+          )
         )
-      )
-    )
+      case None => Step.hidden { ListHelpers.map(fn, lst) }
 
+  // TODO this doesn't filter using all branches
   def debugFilter(iterable: VList, predicate: VFun)(using
       dbg: Debugger,
       ctx: Context
