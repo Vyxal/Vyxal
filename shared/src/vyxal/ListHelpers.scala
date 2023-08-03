@@ -210,19 +210,15 @@ object ListHelpers:
           )
         else VList(num.toString.map(x => VNum(x.toString))*)
 
-  def matrixMultiply(lhs: VList, rhs: VList)(using ctx: Context): VList =
+  def matrixMultiply(lhs: VList, rhs: VList)(using Context): VList =
     val rhsTemp = transposeSafe(rhs)
     VList.from(
-      lhs.map(row =>
+      lhs.map { row =>
+        val rowIt = ListHelpers.makeIterable(row)
         VList.from(
-          rhsTemp.map(col =>
-            dotProduct(
-              ListHelpers.makeIterable(row),
-              ListHelpers.makeIterable(col)
-            )
-          )
+          rhsTemp.map(col => dotProduct(rowIt, ListHelpers.makeIterable(col)))
         )
-      )
+      }
     )
 
   def map(f: VFun, to: VList)(using ctx: Context): VList =
@@ -300,18 +296,13 @@ object ListHelpers:
       case iterable: VList => iterable
       case iterable: String => VList(iterable.map(_.toString)*)
 
-    if index.toInt == 0 then
-      return (iterable -> (temp ++ temp.reverse)) match
-        case (iterable: VList, value: VList) => value
-        case (iterable: String, value: VList) => value.mkString
-        case (_, _) => ??? // Shouldn't happen
-    else
-      return ((iterable -> (temp.zipWithIndex
-        .filter(_._2 % index.toInt == 0)
-        .map(_._1))): @unchecked) match
-        case (iterable: VList, value: List[VAny]) => VList.from(value)
-        case (iterable: String, value: List[VAny]) => value.mkString
-  end nthItems
+    val indInt = index.toInt
+    val value =
+      if indInt == 0 then temp ++ temp.reverse
+      else temp.zipWithIndex.filter(_._2 % indInt == 0).map(_._1)
+    iterable match
+      case _: VList => VList.from(value)
+      case _: String => value.mkString
 
   def overlaps(iterable: Seq[VAny], size: Int): Seq[VList] =
     if size == 0 then Seq.empty
