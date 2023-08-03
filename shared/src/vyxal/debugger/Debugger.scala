@@ -1,6 +1,7 @@
 package vyxal.debugger
 
 import vyxal.*
+import vyxal.parsing.Lexer
 
 import scala.annotation.tailrec
 import scala.collection.mutable.Stack
@@ -32,31 +33,6 @@ class Debugger(code: AST)(using rootCtx: Context):
   private var currStep = removeBadSteps(Step.stepsForAST(code)).getOrElse(null)
 
   def finished: Boolean = currStep == null
-
-  /** Debug a VFun
-    *
-    * @param callAST
-    *   The AST of the element calling the function, not the AST of the function
-    *   definition itself
-    * @param fn
-    *   The function to be called
-    */
-  def fnCall(
-      fn: VFun,
-      ctxVarPrimary: VAny | Null = null,
-      ctxVarSecondary: VAny | Null = null,
-      args: Seq[VAny] | Null = null
-  ): Step =
-    fn.originalAST match
-      case Some(fnDef) =>
-        NewStackFrame(
-          fnDef,
-          fn.name.getOrElse("<function>"),
-          ctx => Context.makeFnCtx(fn.ctx, ctx, ???, ???, ???, ???, ???, ???),
-          StepSeq(fnDef.body.map(Step.stepsForAST))
-        )
-      case None =>
-        Step.hidden { Interpreter.executeFn(fn) }
 
   /** Keep popping either this frame's stepStack or the stackframes until we get
     * to the next step or until the stackframes are all gone
@@ -141,4 +117,40 @@ class Debugger(code: AST)(using rootCtx: Context):
     println(s"Top of stack is ${frame.ctx.peek}")
   // println("Frames:")
   // println(stackFrames.reverse.mkString("\n"))
+end Debugger
+
+object Debugger:
+
+  /** Debug a VFun
+    *
+    * @param callAST
+    *   The AST of the element calling the function, not the AST of the function
+    *   definition itself
+    * @param fn
+    *   The function to be called
+    */
+  def fnCall(
+      fn: VFun,
+      ctxVarPrimary: VAny | Null = null,
+      ctxVarSecondary: VAny | Null = null,
+      args: Seq[VAny] | Null = null
+  ): Step =
+    fn.originalAST match
+      case Some(fnDef) =>
+        NewStackFrame(
+          fnDef,
+          fn.name.getOrElse("<function>"),
+          ctx => Context.makeFnCtx(fn.ctx, ctx, ???, ???, ???, ???, ???, ???),
+          StepSeq(fnDef.body.map(Step.stepsForAST))
+        )
+      case None =>
+        Step.hidden { Interpreter.executeFn(fn) }
+
+  /** Make a step to execute code */
+  def execCode(code: String)(using Context): Step =
+    val ast = Lexer(code)
+      .flatMap(Parser.parse)
+      .getOrElse(throw new Error("Could not parse code"))
+    Step.stepsForAST(ast)
+
 end Debugger
