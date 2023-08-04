@@ -67,6 +67,7 @@ enum TokenType(val canonicalSBCS: Option[String] = None) derives CanEqual:
   case Newline extends TokenType(Some("\n"))
   case Param
   case UnpackClose extends TokenType(Some("]"))
+  case GroupType
 
   /** Helper to help go from the old VyxalToken to the new Token(TokenType,
     * text, range) format

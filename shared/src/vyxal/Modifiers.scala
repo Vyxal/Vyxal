@@ -57,8 +57,9 @@ object Modifiers:
       1
     ) { case List(ast) =>
       scribe.trace(s"Modifier /, ast: $ast")
+      println("Modifier /, ast.arity: " + ast.arity)
       if ast.arity.getOrElse(-1) == 1 && (ast match
-          case f: AST.Lambda => !f.params.isEmpty
+          case f: AST.Lambda => f.params.isEmpty
           case _ => true
         )
       then

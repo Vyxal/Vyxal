@@ -77,6 +77,17 @@ private[parsing] object LiterateLexer extends Lexer:
     "generate" -> StructureType.GeneratorStructure,
   )
 
+  private val groupModifierToToken = Map(
+    "." -> ((range) => Token(MonadicModifier, "⸠", range)),
+    ":" -> ((range) => Token(DyadicModifier, "ϩ", range)),
+    ":." -> ((range) => Token(TriadicModifier, "э", range)),
+    "::" -> ((range) => Token(TetradicModifier, "Ч", range)),
+    "," -> ((range) => Token(MonadicModifier, "ᵈ", range)),
+    ";" -> ((range) => Token(DyadicModifier, "ᵉ", range)),
+    ";," -> ((range) => Token(TriadicModifier, "ᶠ", range)),
+    ";;" -> ((range) => Token(TetradicModifier, "ᵍ", range)),
+  )
+
   lazy val literateModeMappings: Map[String, String] =
     Elements.elements.values.view.flatMap { elem =>
       elem.keywords.map(_ -> elem.symbol)
@@ -175,7 +186,23 @@ private[parsing] object LiterateLexer extends Lexer:
   def litString[$: P]: P[Token] =
     parseToken(Str, "\"" ~~ ("\\" ~~ AnyChar | !"\"" ~ AnyChar).repX.! ~~ "\"")
 
-  def normalGroup[$: P]: P[List[Token]] = P("(" ~~/ tokens ~ ")")
+  def groupModifier[$: P]: P[Token] =
+    parseToken(
+      GroupType,
+      (";;" | ";," | "::" | ":." | ";" | ":" | "." | ",").!
+    )
+  def normalGroup[$: P]: P[List[Token]] =
+    val temp = P(
+      "(" ~ groupModifier.? ~~/ tokens ~ ")"
+    )
+    temp.map { case (mod, tokens) =>
+      if mod.isEmpty then tokens
+      else
+        // This is actually a next-n items as lambda group
+        val groupType = mod.get.value
+        groupModifierToToken(groupType)(mod.get.range) +: tokens
+
+    }
 
   def keywordsParser[$: P](
       keywords: Iterable[String]
