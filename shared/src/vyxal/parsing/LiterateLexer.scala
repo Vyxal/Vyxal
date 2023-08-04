@@ -226,13 +226,14 @@ private[parsing] object LiterateLexer extends Lexer:
       .map { case (keyword, range) =>
         val mod =
           Modifiers.modifiers.values.find(_.keywords.contains(keyword)).get
+        val name = Modifiers.modifiers.find(_._2._3.contains(keyword)).get._1
         val tokenType = mod.arity match
           case 1 => MonadicModifier
           case 2 => DyadicModifier
           case 3 => TriadicModifier
           case 4 => TetradicModifier
           case _ => SpecialModifier
-        Token(tokenType, keyword, range)
+        Token(tokenType, name, range)
       }
 
   def structOpener[$: P]: P[Token] =

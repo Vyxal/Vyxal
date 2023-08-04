@@ -57,7 +57,6 @@ object Modifiers:
       1
     ) { case List(ast) =>
       scribe.trace(s"Modifier /, ast: $ast")
-      println("Modifier /, ast.arity: " + ast.arity)
       if ast.arity.getOrElse(-1) == 1 && (ast match
           case f: AST.Lambda => f.params.isEmpty
           case _ => true
@@ -137,5 +136,15 @@ object Modifiers:
     ) { case List(ast1, ast2, ast3, ast4) =>
       astToLambda(AST.makeSingle(ast1, ast2, ast3, ast4), 2)
     },
+    "ᵡ" -> Modifier(
+      "Scan Fixed Point",
+      """|Scan a function until it reaches a fixed point
+         |ᵡf: scan f until a fixed point is reached / apply until a previous value is repeated, collecting intermediate results""".stripMargin,
+      List("scan-fix-"),
+      1
+    ) { case List(ast) =>
+      val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))
+      AST.makeSingle(lambdaAst, AST.Command("Ŀ"))
+    }
   )
 end Modifiers
