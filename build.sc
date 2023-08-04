@@ -22,7 +22,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
     ivy"org.scala-lang.modules::scala-parser-combinators::2.3.0",
     ivy"com.lihaoyi::fastparse::3.0.2",
     ivy"com.github.scopt::scopt::4.1.0",
-    ivy"com.outr::scribe::3.11.8"
+    ivy"com.outr::scribe::3.11.9"
   )
 
   override def scalacOptions = Seq(
