@@ -572,6 +572,11 @@ Keywords: ***-
 Description: Turn the next three elements (whether that be a structure/modifier/element) into a lambda
 эfgh: Push the equivalent of λfgh} to the stack
 ---------------------
+ᵡ
+Keywords: scan-fix-
+Description: Scan a function until it reaches a fixed point
+ᵡf: scan f until a fixed point is reached / apply until a previous value is repeated, collecting intermediate results
+---------------------
 ᵉ
 Keywords: **2-
 Description: Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda
