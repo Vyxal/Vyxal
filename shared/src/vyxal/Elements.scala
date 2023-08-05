@@ -853,7 +853,7 @@ object Elements:
       "a: str|lst, b: num -> return every b-th element of a. If b is zero, mirror: prepend a to its reverse.",
       "a: num, b: str|lst -> return every a-th element of b. If a is zero, mirror: append b to its reverse.",
       "a: lst, b: lst -> a * b (matrix multiply)",
-      "a: str, b: str -> does the entirity of a match b?"
+      "a: str, b: str -> does the entirety of a match b?"
     ) {
       case (a: (VList | String), b: VNum) =>
         ListHelpers.nthItems(a, b)
@@ -861,11 +861,7 @@ object Elements:
         ListHelpers.nthItems(b, a)
       case (a: VList, b: VList) =>
         ListHelpers.matrixMultiply(a, b)
-      case (a: String, b: String) =>
-        a.r
-          .findFirstMatchIn(b)
-          .map(x => (x.start -> x.end))
-          .contains((0 -> b.length))
+      case (a: String, b: String) => a.r.matches(b)
     },
     addDirect(
       "g",
