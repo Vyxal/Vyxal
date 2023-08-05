@@ -24,7 +24,9 @@ f:>name -> name f= top of stack
 # ... #} -> raw sbcs
 lambda ~ | ... } -> lambda that operates on the stack
 `number` -> index n of context parameters
+(. f) (: f g) (:. f g h) (:: f g h p) -> next n items as monadic lambda
+(, f) (; f g) (;, f g h) (;; f g h p) -> next n items as dyadic lambda
 ```
 
 - Lists and lambdas (`[...]` and `{...}`) must be closed
-- Groups (`(...)`) must be closed. The parenthesis are removed, so they are purely aesthetic
+- Groups (`(...)`) must be closed. The parenthesis are removed, so they are purely aesthetic (except for grouping modifiers)
