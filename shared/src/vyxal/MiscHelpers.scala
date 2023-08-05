@@ -111,6 +111,7 @@ object MiscHelpers:
     case (a: VNum, b: String) => b * a.toInt
     case (a: String, b: String) => StringHelpers.ringTranslate(a, b)
     case (a: VFun, b: VNum) => a.withArity(b.toInt)
+    case (a: VNum, b: VFun) => b.withArity(a.toInt)
   }
 
   def reduce(iter: VAny, by: VFun, init: Option[VAny] = None)(using
