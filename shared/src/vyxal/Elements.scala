@@ -861,6 +861,11 @@ object Elements:
         ListHelpers.nthItems(b, a)
       case (a: VList, b: VList) =>
         ListHelpers.matrixMultiply(a, b)
+      case (a: String, b: String) =>
+        a.r
+          .findFirstMatchIn(b)
+          .map(x => (x.start -> x.end))
+          .contains((0 -> b.length))
     },
     addDirect(
       "g",
