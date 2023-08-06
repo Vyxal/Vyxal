@@ -656,7 +656,7 @@ class ElementTests extends VyxalTests:
 
   describe("Element Ṅ") {
     testMulti(
-      "λ5-0=;Ṅ" -> 5,
+      "λ5-0=}Ṅ" -> 5,
       "λ1+} Ṅ" -> 1,
       "λ×16=}Ṅ" -> 4,
       "λ7×35=}Ṅ" -> 5
