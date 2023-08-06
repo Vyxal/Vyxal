@@ -266,6 +266,15 @@ class LazyList:
 
         return f()
 
+    def find(self, other):
+        """Index of first occurrence of `other` in this `LazyList`"""
+        pos = 0
+        for item in self:
+            if item == other:
+                return pos
+            pos += 1
+        raise -1
+
     def has_ind(self, ind: int):
         """Whether or not this list is long enough for index `ind`"""
         if ind < len(self.generated):
@@ -281,6 +290,15 @@ class LazyList:
     def has_next(self):
         """Whether or not this list has a next element"""
         return self.has_ind(len(self.generated))
+
+    def index(self, object):
+        """Index of `object` in this `LazyList`"""
+        pos = 0
+        for item in self:
+            if item == object:
+                return pos
+            pos += 1
+        raise ValueError(f"{object} is not in list")
 
     def listify(self):
         temp = self.generated[::]
