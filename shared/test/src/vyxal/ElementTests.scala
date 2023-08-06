@@ -654,6 +654,18 @@ class ElementTests extends VyxalTests:
     }
   }
 
+  describe("Element Ṅ") {
+    it(
+      "should return the first positive integer that satisfies the given function"
+    ) {
+      testMulti(
+        "λ5-0=;Ṅ" -> 5,
+        "λ1+} Ṅ" -> 1,
+        "λ×16=}Ṅ" -> 4,
+        "λ7×35=}Ṅ" -> 5
+      )
+    }
+  }
   describe("Element Ŀ") {
     it(
       "Generates a list of all numbers in the collatz conjecture minus the first number"
