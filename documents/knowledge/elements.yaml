@@ -659,7 +659,7 @@
 - element: "?"
   name: Input
   arity: 0
-  description: Get the next input from the input source
+  description: Get and evaluate the next input (readline) from the input source.
   vectorise: false
 
 - element: "@"
@@ -2586,12 +2586,12 @@
 
 - element: "⁰"
   name: Very Last Input
-  description: Push the very last input (input[::-1][0]) to the stack
+  description: Push the very last input (input[::-1][0] or input[-1]) to the stack
   arity: 0
 
 - element: "¹"
   name: Second Last Input
-  description: Push the very last input (input[::-1][1]) to the stack
+  description: Push the second last input (input[::-1][1] or input[-2]) to the stack
   arity: 0
 
 - element: "²"

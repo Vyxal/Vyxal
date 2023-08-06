@@ -723,7 +723,7 @@ var codepage_descriptions =
   "63": [
     {
       "name": "Input",
-      "description": "Get the next input from the input source",
+      "description": "Get and evaluate the next input (readline) from the input source.",
       "token": "?"
     },
     {
@@ -3147,7 +3147,7 @@ var codepage_descriptions =
   "206": [
     {
       "name": "Very Last Input",
-      "description": "Push the very last input (input[::-1][0]) to the stack",
+      "description": "Push the very last input (input[::-1][0] or input[-1]) to the stack",
       "token": "\u2070"
     },
     {
@@ -3159,7 +3159,7 @@ var codepage_descriptions =
   "207": [
     {
       "name": "Second Last Input",
-      "description": "Push the very last input (input[::-1][1]) to the stack",
+      "description": "Push the second last input (input[::-1][1] or input[-2]) to the stack",
       "token": "\u00b9"
     },
     {

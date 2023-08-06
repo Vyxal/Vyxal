@@ -825,7 +825,7 @@ window.addEventListener("DOMContentLoaded", e => {
                             }
                         }
                     } else if (flags.value.includes("=")) {
-                        res.stderr = "Bitstring: " + Vyncode.encode(program)
+                        res.stderr += "\nBitstring: " + Vyncode.encode(program)
                     }
                     output.value = res.stdout
                     extra.value = res.stderr

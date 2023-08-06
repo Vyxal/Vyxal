@@ -483,7 +483,7 @@ Basic comparison - greater than
 -------------------------------
 ## `` ? `` (Input)
 
-Get the next input from the input source
+Get and evaluate the next input (readline) from the input source.
 
 -------------------------------
 ## `` @ `` (Vectorised Length)
@@ -1704,12 +1704,12 @@ Usage:
 -------------------------------
 ## `` ⁰ `` (Very Last Input)
 
-Push the very last input (input[::-1][0]) to the stack
+Push the very last input (input[::-1][0] or input[-1]) to the stack
 
 -------------------------------
 ## `` ¹ `` (Second Last Input)
 
-Push the very last input (input[::-1][1]) to the stack
+Push the second last input (input[::-1][1] or input[-2]) to the stack
 
 -------------------------------
 ## `` ² `` (Square)
