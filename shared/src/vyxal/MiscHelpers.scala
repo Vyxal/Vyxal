@@ -85,13 +85,28 @@ object MiscHelpers:
     else s
 
   def firstNonNegative(f: VFun)(using ctx: Context): Int =
-    var i = 0
+    firstFromN(f, 0)
+
+  def firstFromN(f: VFun, n: Int)(using ctx: Context): Int =
+    var i = n
     while true do
       ctx.push(i)
       val result = executeFn(f)
       if boolify(result) then return i
       i += 1
     ???
+
+  def firstPositive(f: VFun)(using ctx: Context): Int =
+    firstFromN(f, 1)
+
+  val joinNothing: Monad = Monad.fill("joinNothing") {
+    case (a: VList) =>
+      if a.exists(_.isInstanceOf[VList]) then a.vmap(MiscHelpers.joinNothing)
+      else a.mkString
+    case (a: VNum) => NumberHelpers.partitions(a)
+    case (a: String) => ""
+    case (a: VFun) => firstPositive(a)
+  }
 
   val modulo: Dyad = Dyad.fill("modulo") {
     case (_: VNum, VNum(0, _)) => 0

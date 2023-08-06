@@ -111,6 +111,21 @@ object NumberHelpers:
         .map(x => if x.startsWith("-") then x.tail + "_" else x)
         .mkString("ı")
 
+  def partitions(a: VNum): VList =
+    // Return all ways to sum to a number
+    val result = mutable.ListBuffer.empty[VList]
+    def helper(
+        current: VList,
+        remaining: VNum,
+        last: VNum
+    ): Unit =
+      if remaining == VNum(0) then result += current
+      else
+        for i <- last.toBigInt to remaining.toBigInt do
+          helper(VList.from(current :+ VNum(i)), remaining - i, i)
+    helper(VList(), a, VNum(1))
+    VList.from(result.toList)
+
   def range(a: VNum, b: VNum): VList =
     val start = a.toBigInt
     val end = b.toBigInt

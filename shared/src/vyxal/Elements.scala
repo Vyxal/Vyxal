@@ -660,6 +660,28 @@ object Elements:
         )
 
     },
+    addFull(
+      Monad,
+      "Ṅ",
+      "Join on Nothing | Integer Partitions | First Positive Integer",
+      List(
+        "nothing-join",
+        "concat-fold",
+        "join-on-nothing",
+        "empty-join",
+        "single-string",
+        "as-single-string",
+        "integer-partitions",
+        "int-parts",
+        "int-partitions",
+        "first-positive-integer",
+        "first-n>0",
+      ),
+      false,
+      "a: lst -> a join on nothing",
+      "a: num -> Integer partitions of a (all possible ways to sum to a)",
+      "a: fun -> First positive integer ([1, 2, 3, ...]) for which a returns true"
+    ) { a => MiscHelpers.joinNothing(a) },
     addElem(
       Monad,
       "L",
