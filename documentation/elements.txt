@@ -323,7 +323,7 @@ Keywords: uniquify
 - a: lst -> a with duplicates removed
 ---------------------
 w (Wrap Singleton) (non-vectorising)
-Keywords: wrap-singleton, enclose
+Keywords: wrap-singleton, enlist
 - a -> [a]
 ---------------------
 x (Recursion | Recurse) (non-vectorising)
@@ -435,6 +435,11 @@ Trigraph: #.O
 Keywords: over
 - _ -> push a copy of the second item on the stack over the first
 - a b -> a b a
+---------------------
+Ṗ (Permutations) (non-vectorising)
+Trigraph: #.P
+Keywords: permutations, perms
+- a: lst -> Permutations of a
 ---------------------
 Ṫ (Init) (non-vectorising)
 Trigraph: #.T
