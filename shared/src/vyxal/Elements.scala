@@ -1018,12 +1018,13 @@ object Elements:
       "Permutations",
       List("permutations", "perms"),
       "a: lst -> Permutations of a"
-    ) { case a: VNum =>
-      VList.from(
-        ListHelpers
-          .permutations(ListHelpers.makeIterable(a))
-          .map(n => MiscHelpers.eval(n.mkString))
-      )
+    ) {
+      case a: VNum =>
+        VList.from(
+          ListHelpers
+            .permutations(ListHelpers.makeIterable(a))
+            .map(n => MiscHelpers.eval(n.mkString))
+        )
       case a: VList => VList.from(ListHelpers.permutations(a))
       case a: String =>
         VList.from(
