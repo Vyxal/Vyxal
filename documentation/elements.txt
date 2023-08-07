@@ -323,7 +323,7 @@ Keywords: uniquify
 - a: lst -> a with duplicates removed
 ---------------------
 w (Wrap Singleton) (non-vectorising)
-Keywords: wrap-singleton
+Keywords: wrap-singleton, enclose
 - a -> [a]
 ---------------------
 x (Recursion | Recurse) (non-vectorising)
@@ -429,6 +429,12 @@ Keywords: nothing-join, concat-fold, join-on-nothing, empty-join, single-string,
 - a: lst -> a join on nothing
 - a: num -> Integer partitions of a (all possible ways to sum to a)
 - a: fun -> First positive integer ([1, 2, 3, ...]) for which a returns true
+---------------------
+Ȯ (Over) (non-vectorising)
+Trigraph: #.O
+Keywords: over
+- _ -> push a copy of the second item on the stack over the first
+- a b -> a b a
 ---------------------
 Ṫ (Init) (non-vectorising)
 Trigraph: #.T
@@ -544,72 +550,72 @@ Keywords: newline
 
 ---------------------
 Ч
-Keywords: ****-
+Keywords: ****:
 Description: Turn the next four elements (whether that be a structure/modifier/element) into a lambda
 Чfghi: Push the equivalent of λfghi} to the stack
 Trigraph: #^4
 ---------------------
 ϩ
-Keywords: **-
+Keywords: **:
 Description: Turn the next two elements (whether that be a structure/modifier/element) into a lambda
 ϩfg: Push the equivalent of λfg} to the stack
 Trigraph: #^:
 ---------------------
 ᵈ
-Keywords: *2-
+Keywords: *2:
 Description: Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda
 ᵈf: Push the equivalent of λ2|f} to the stack
 Trigraph: #^d
 ---------------------
 ᵍ
-Keywords: ****2-
+Keywords: ****2:
 Description: Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
 ᵍfghi: Push the equivalent of λ2|fghi} to the stack
 ---------------------
 ᵃ
-Keywords: apply-to-neighbours
+Keywords: apply-to-neighbours:
 Description: To each overlapping pair, reduce it by an element
 Apply a dyadic link or a monadic chain for all pairs of neighboring elements.
 ᵃf: equivalent to 2ov/f
 Trigraph: #^a
 ---------------------
 ⸠
-Keywords: *-
+Keywords: *:
 Description: Turn the next element (whether that be a structure/modifier/element) into a lambda
 ⸠f: Push the equivalent of λf} to the stack
 Trigraph: #^.
 ---------------------
 э
-Keywords: ***-
+Keywords: ***:
 Description: Turn the next three elements (whether that be a structure/modifier/element) into a lambda
 эfgh: Push the equivalent of λfgh} to the stack
 Trigraph: #^%
 ---------------------
 ᵡ
-Keywords: scan-fix-
+Keywords: scan-fix:
 Description: Scan a function until it reaches a fixed point
 ᵡf: scan f until a fixed point is reached / apply until a previous value is repeated, collecting intermediate results
 Trigraph: #^X
 ---------------------
 ᵉ
-Keywords: **2-
+Keywords: **2:
 Description: Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda
 ᵉfg: Push the equivalent of λ2|fg} to the stack
 Trigraph: #^e
 ---------------------
 v
-Keywords: vectorise-, vec-, v-
+Keywords: vectorise:, vec:, v:
 Description: Vectorises
 vf: f but vectorised
 ---------------------
 ᶠ
-Keywords: ***2-
+Keywords: ***2:
 Description: Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda
 ᶠfgh: Push the equivalent of λ2|fgh} to the stack
 Trigraph: #^f
 ---------------------
 /
-Keywords: foldl-, reduce-, /-, fold-, reduceby-
+Keywords: foldl:, reduce:, /:, fold:, reduceby:-
 Description: Reduce a list by an element
 /f: reduce by element f
 ---------------------
