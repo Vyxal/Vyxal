@@ -968,6 +968,20 @@ object Elements:
         else VList(temp*)
     },
     addDirect(
+      "Ȯ",
+      "Over",
+      List("over"),
+      Some(0),
+      "_ -> push a copy of the second item on the stack over the first",
+      "a b -> a b a"
+    ) { ctx ?=>
+      val top = ctx.pop()
+      val next = ctx.pop()
+      ctx.push(next)
+      ctx.push(top)
+      ctx.push(next)
+    },
+    addDirect(
       "o",
       "Overlap | Overlapping Slices",
       List("overlap", "overlaps", "overlapping", "overlapping-slices"),
@@ -1378,7 +1392,7 @@ object Elements:
       Monad,
       "w",
       "Wrap Singleton",
-      List("wrap-singleton"),
+      List("wrap-singleton", "enclose"),
       false,
       "a -> [a]"
     ) { a => VList(a) },

@@ -32,7 +32,7 @@ object Modifiers:
       """|To each overlapping pair, reduce it by an element
        |Apply a dyadic link or a monadic chain for all pairs of neighboring elements.
        |ᵃf: equivalent to 2ov/f""".stripMargin,
-      List("apply-to-neighbours"),
+      List("apply-to-neighbours:"),
       1
     ) { case List(ast) =>
       val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
@@ -43,7 +43,7 @@ object Modifiers:
       "Vectorise",
       """|Vectorises
          |vf: f but vectorised""".stripMargin,
-      List("vectorise-", "vec-", "v-"),
+      List("vectorise:", "vec:", "v:"),
       1
     ) { case List(ast) =>
       val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))
@@ -53,7 +53,7 @@ object Modifiers:
       "Foldl | Reduce By | Filter by",
       """|Reduce a list by an element
          |/f: reduce by element f""".stripMargin,
-      List("foldl-", "reduce-", "/-", "fold-", "reduceby-"),
+      List("foldl:", "reduce:", "/:", "fold:", "reduceby:-"),
       1
     ) { case List(ast) =>
       scribe.trace(s"Modifier /, ast: $ast")
@@ -72,14 +72,14 @@ object Modifiers:
       "Single Element Lambda",
       """|Turn the next element (whether that be a structure/modifier/element) into a lambda
          |⸠f: Push the equivalent of λf} to the stack""".stripMargin,
-      List("*-"),
+      List("*:"),
       1
     ) { case List(ast) => AST.makeSingle(astToLambda(ast, 1)) },
     "ϩ" -> Modifier(
       "Double Element Lambda",
       """|Turn the next two elements (whether that be a structure/modifier/element) into a lambda
          |ϩfg: Push the equivalent of λfg} to the stack""".stripMargin,
-      List("**-"),
+      List("**:"),
       2
     ) { case List(ast1, ast2) =>
       AST.makeSingle(astToLambda(AST.makeSingle(ast1, ast2), 1))
@@ -88,7 +88,7 @@ object Modifiers:
       "Triple Element Lambda",
       """|Turn the next three elements (whether that be a structure/modifier/element) into a lambda
          |эfgh: Push the equivalent of λfgh} to the stack""".stripMargin,
-      List("***-"),
+      List("***:"),
       3
     ) { case List(ast1, ast2, ast3) =>
       astToLambda(AST.makeSingle(ast1, ast2, ast3), 1)
@@ -97,7 +97,7 @@ object Modifiers:
       "Quadruple Element Lambda",
       """|Turn the next four elements (whether that be a structure/modifier/element) into a lambda
          |Чfghi: Push the equivalent of λfghi} to the stack""".stripMargin,
-      List("****-"),
+      List("****:"),
       4
     ) { case List(ast1, ast2, ast3, ast4) =>
       astToLambda(AST.makeSingle(ast1, ast2, ast3, ast4), 1)
@@ -106,14 +106,14 @@ object Modifiers:
       "Dyadic Single Element Lambda",
       """|Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda
          |ᵈf: Push the equivalent of λ2|f} to the stack""".stripMargin,
-      List("*2-"),
+      List("*2:"),
       1
     ) { case List(ast) => AST.makeSingle(astToLambda(ast, 2)) },
     "ᵉ" -> Modifier(
       "Dyadic Double Element Lambda",
       """|Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda
          |ᵉfg: Push the equivalent of λ2|fg} to the stack""".stripMargin,
-      List("**2-"),
+      List("**2:"),
       2
     ) { case List(ast1, ast2) =>
       AST.makeSingle(astToLambda(AST.makeSingle(ast1, ast2), 2))
@@ -122,7 +122,7 @@ object Modifiers:
       "Dyadic Triple Element Lambda",
       """|Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda
          |ᶠfgh: Push the equivalent of λ2|fgh} to the stack""".stripMargin,
-      List("***2-"),
+      List("***2:"),
       3
     ) { case List(ast1, ast2, ast3) =>
       astToLambda(AST.makeSingle(ast1, ast2, ast3), 2)
@@ -131,7 +131,7 @@ object Modifiers:
       "Dyadic Quadruple Element Lambda",
       """|Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
          |ᵍfghi: Push the equivalent of λ2|fghi} to the stack""".stripMargin,
-      List("****2-"),
+      List("****2:"),
       4
     ) { case List(ast1, ast2, ast3, ast4) =>
       astToLambda(AST.makeSingle(ast1, ast2, ast3, ast4), 2)
@@ -140,7 +140,7 @@ object Modifiers:
       "Scan Fixed Point",
       """|Scan a function until it reaches a fixed point
          |ᵡf: scan f until a fixed point is reached / apply until a previous value is repeated, collecting intermediate results""".stripMargin,
-      List("scan-fix-"),
+      List("scan-fix:"),
       1
     ) { case List(ast) =>
       val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))

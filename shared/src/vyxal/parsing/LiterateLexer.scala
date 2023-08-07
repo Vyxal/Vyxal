@@ -104,7 +104,7 @@ private[parsing] object LiterateLexer extends Lexer:
     }
 
   def wordPiece[$: P]: P[String] = P(
-    CharsWhileIn("0-9a-zA-Z_<>\\?\\!\\*\\+=&%", 0).!
+    CharsWhileIn("0-9a-zA-Z_<>\\?\\!\\*\\+=&%:", 0).!
   )
   def word[$: P]: P[String] =
     P((CharIn("a-zA-Z_") ~~ wordPiece ~~ ("-".! ~~ wordPiece).repX ~~ "?".?).!)
