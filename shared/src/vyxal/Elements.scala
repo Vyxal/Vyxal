@@ -1019,9 +1019,18 @@ object Elements:
       List("permutations", "perms"),
       "a: lst -> Permutations of a"
     ) { case a: VNum =>
-      ListHelpers
-        .permutations(ListHelpers.makeIterable(a))
-        .map(n => MiscHelpers.eval(n.mkString))
+      VList.from(
+        ListHelpers
+          .permutations(ListHelpers.makeIterable(a))
+          .map(n => MiscHelpers.eval(n.mkString))
+      )
+      case a: VList => VList.from(ListHelpers.permutations(a))
+      case a: String =>
+        VList.from(
+          ListHelpers
+            .permutations(ListHelpers.makeIterable(a))
+            .map(_.mkString)
+        )
     },
     addElem(
       Monad,
