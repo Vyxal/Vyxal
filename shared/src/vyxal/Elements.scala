@@ -1014,6 +1014,17 @@ object Elements:
     },
     addElem(
       Monad,
+      "Ṗ",
+      "Permutations",
+      List("permutations", "perms"),
+      "a: lst -> Permutations of a"
+    ) { case a: VNum =>
+      ListHelpers
+        .permutations(ListHelpers.makeIterable(a))
+        .map(n => MiscHelpers.eval(n.mkString))
+    },
+    addElem(
+      Monad,
       "P",
       "Prefixes",
       List("prefixes"),
@@ -1392,7 +1403,7 @@ object Elements:
       Monad,
       "w",
       "Wrap Singleton",
-      List("wrap-singleton", "enclose"),
+      List("wrap-singleton", "enlist"),
       false,
       "a -> [a]"
     ) { a => VList(a) },

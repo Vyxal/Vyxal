@@ -316,6 +316,11 @@ object ListHelpers:
     if size == 0 then Seq.empty
     else iterable.sliding(size).toSeq
 
+  def permutations(iterable: VList): VList =
+    val temp = iterable.toList
+    val perms = temp.permutations
+    VList.from(perms.map(VList.from).toSeq)
+
   def sortBy(iterable: VList, key: VFun)(using ctx: Context): VList =
     key.originalAST match
       case Some(lam) =>
