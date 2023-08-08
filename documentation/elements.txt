@@ -477,6 +477,11 @@ Trigraph: #.h
 Keywords: head-extract, split-at-head
 - a: lst|str -> Push a[0], then a[1:] onto the stack
 ---------------------
+ṙ (Rotate Right) (non-vectorising)
+Trigraph: #.r
+Keywords: abc->cab, rot-right, rotate-right
+- a: any -> rotate right once
+---------------------
 ṡ (Sort by Function Object | Reshape (APL Style)) (non-vectorising)
 Trigraph: #.s
 Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun
