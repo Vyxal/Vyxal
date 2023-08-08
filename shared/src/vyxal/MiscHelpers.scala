@@ -87,6 +87,9 @@ object MiscHelpers:
   def firstNonNegative(f: VFun)(using ctx: Context): Int =
     firstFromN(f, 0)
 
+/**
+* A generalised "count up until the first positive integer is found that satisfies a function". Helpful because you might want different hardcoded offsets or even dynamic offsets.
+*/
   def firstFromN(f: VFun, n: Int)(using ctx: Context): Int =
     var i = n
     while true do
