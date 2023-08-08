@@ -1174,6 +1174,21 @@ object Elements:
           ListHelpers.makeIterable(a).sorted(MiscHelpers.compareExact(_, _))
         )
     },
+    addDirect(
+      "Ṙ",
+      "Rotate Left",
+      List("abc->bca", "rot-left", "rotate-left"),
+      Some(1),
+      "a: any -> rotate left once"
+    ) { ctx ?=>
+      val original = ctx.pop()
+      val a = ListHelpers.makeIterable(original)
+      val temp = VList.from(a.tail :+ a.head)
+      original match
+        case _: String => ctx.push(temp.mkString)
+        case _: VNum => ctx.push(VNum(temp.mkString))
+        case _ => ctx.push(temp)
+    },
     addElem(
       Dyad,
       "ṡ",
