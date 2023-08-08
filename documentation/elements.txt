@@ -441,6 +441,11 @@ Trigraph: #.P
 Keywords: permutations, perms
 - a: lst -> Permutations of a
 ---------------------
+Ṙ (Rotate Left) (non-vectorising)
+Trigraph: #.R
+Keywords: abc->bca, rot-left, rotate-left
+- a: any -> rotate left once
+---------------------
 Ṫ (Init) (non-vectorising)
 Trigraph: #.T
 Keywords: init, remove-last
