@@ -722,7 +722,7 @@ object Elements:
       ),
       "a: any -> `[0, 1, 2, ..., len(a)-1]`"
     ) { case a =>
-      range(0, ListHelpers.makeIterable(a).length)
+      range(0, ListHelpers.makeIterable(a).length - 1)
     },
     addElem(
       Monad,
@@ -733,7 +733,7 @@ object Elements:
       ),
       "a: any -> `[1, 2, 3, ..., len(a)]`"
     ) { case a =>
-      range(1, ListHelpers.makeIterable(a).length + 1)
+      range(1, ListHelpers.makeIterable(a).length)
     },
     addVect(
       Dyad,
