@@ -7,6 +7,7 @@ import os
 import sys
 import traceback
 import types
+from sympy import *
 
 import vyxal.encoding
 from vyxal.context import Context, TranspilationOptions
