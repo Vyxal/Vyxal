@@ -201,7 +201,7 @@ U (Uninterleave) (non-vectorising)
 Keywords: uninterleave
 - a: any -> uninterleave a
 ---------------------
-V (Vectorised Reverse / Complement / Title Case) (non-vectorising)
+V (Vectorised Reverse | Complement | Title Case) (non-vectorising)
 Keywords: vectorised-reverse, vec-reverse, complement, titlecase, title-case
 - a: lst -> each element of a reversed
 - a: num -> 1 - a
@@ -445,6 +445,12 @@ Keywords: permutations, perms
 Trigraph: #.R
 Keywords: abc->bca, rot-left, rotate-left
 - a: any -> rotate left once
+---------------------
+Ṡ (Vectorised Sums | Is Numeric?) (non-vectorising)
+Trigraph: #.S
+Keywords: vectorised-sums, vec-sums, is-numeric?, is-number?, is-num?
+- a: lst -> sum of each element of a
+- a: str -> is a numeric?
 ---------------------
 Ṫ (Init) (non-vectorising)
 Trigraph: #.T
