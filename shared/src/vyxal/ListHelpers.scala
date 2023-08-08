@@ -372,7 +372,7 @@ object ListHelpers:
   end sortBy
 
   def sum(lst: VList)(using ctx: Context): VAny =
-    lst.foldLeft(MiscHelpers.defaultEmpty(lst.head))(_ +~ _)
+    if lst.isEmpty then ctx.settings.defaultValue else lst.reduce(_ +~ _)
 
   def prefixes(iterable: VList): Seq[VList] =
     iterable.inits.toSeq.reverse.tail
