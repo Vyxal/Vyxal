@@ -3,6 +3,7 @@ package vyxal
 import scala.language.implicitConversions
 
 import vyxal.ListHelpers.makeIterable
+import vyxal.NumberHelpers.range
 import vyxal.VNum.given
 
 import scala.collection.mutable.ArrayBuffer
@@ -711,6 +712,17 @@ object Elements:
       VList.from(
         ListHelpers.makeIterable(a).map(ListHelpers.makeIterable(_).length)
       )
+    },
+    addElem(
+      Monad,
+      "ι",
+      "Length 0-Range",
+      List(
+        "zero->len"
+      ),
+      "a: any -> `[0, 1, 2, ..., len(a)-1]`"
+    ) { case a =>
+      range(0, ListHelpers.makeIterable(a).length)
     },
     addVect(
       Dyad,
