@@ -724,6 +724,17 @@ object Elements:
     ) { case a =>
       range(0, ListHelpers.makeIterable(a).length)
     },
+    addElem(
+      Monad,
+      "κ",
+      "Lenght 1-Range",
+      List(
+        "one->len"
+      ),
+      "a: any -> `[1, 2, 3, ..., len(a)]`"
+    ) { case a =>
+      range(1, ListHelpers.makeIterable(a).length + 1)
+    },
     addVect(
       Dyad,
       "<",
