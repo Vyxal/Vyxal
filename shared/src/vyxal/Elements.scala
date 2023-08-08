@@ -1401,7 +1401,7 @@ object Elements:
     addElem(
       Monad,
       "V",
-      "Vectorised Reverse / Complement / Title Case",
+      "Vectorised Reverse | Complement | Title Case",
       List(
         "vectorised-reverse",
         "vec-reverse",
@@ -1416,6 +1416,24 @@ object Elements:
       case a: VList => VList.from(a.map(ListHelpers.reverse))
       case a: VNum => 1 - a
       case a: String => StringHelpers.titlecase(a)
+    },
+    addElem(
+      Monad,
+      "Ṡ",
+      "Vectorised Sums | Is Numeric?",
+      List(
+        "vectorised-sums",
+        "vec-sums",
+        "is-numeric?",
+        "is-number?",
+        "is-num?"
+      ),
+      "a: lst -> sum of each element of a",
+      "a: str -> is a numeric?"
+    ) {
+      case a: VList =>
+        VList.from(a.map(x => ListHelpers.sum(ListHelpers.makeIterable(x))))
+      case a: String => VNum.NumRegex.matches(a)
     },
     addDirect(
       "W",
