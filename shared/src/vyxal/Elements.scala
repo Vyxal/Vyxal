@@ -1213,6 +1213,18 @@ object Elements:
         case _ => ctx.push(temp)
     },
     addElem(
+      Monad,
+      "ṙ",
+      "Rotate Right",
+      List("abc->cab", "rot-right", "rotate-right"),
+      "a: any -> rotate right once"
+    ) {
+      case a: String => s"${a.last}${a.dropRight(1)}"
+      case a: VNum => VNum(s"${a.toString.last}${a.toString.dropRight(1)}")
+      case a: VList => VList.from(a.lst.last +: a.lst.dropRight(1))
+
+    },
+    addElem(
       Dyad,
       "ṡ",
       "Sort by Function Object | Reshape (APL Style)",
