@@ -1463,7 +1463,7 @@ object Elements:
       "a: lst -> sum of each element of a",
       "a: str -> is a numeric?"
     ) { case a: VList =>
-      VList.from(a.map(x => ListHelpers.sum(ListHelpers.makeIterable(x))))
+      a.vmap(x => ListHelpers.sum(ListHelpers.makeIterable(x)))
     },
     addDirect(
       "W",
