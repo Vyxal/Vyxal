@@ -464,6 +464,11 @@ Keywords: wrap-length, pred-slice-0
 - a: lst, b: num -> a wrapped in chunks of length b
 - a: fun, b: num -> first b truthy integers where a is truthy
 ---------------------
+Ẋ (Cartesian Product) (non-vectorising)
+Trigraph: #.X
+Keywords: cartesian-product, cartesian, cart-prod, cart
+- a: list, b: list -> cartesian product of a and b
+---------------------
 ι (Length 0-Range) (non-vectorising)
 Keywords: zero->len
 - a: any -> `[0, 1, 2, ..., len(a)-1]`
