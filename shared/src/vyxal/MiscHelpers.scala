@@ -133,6 +133,21 @@ object MiscHelpers:
     case (a: VNum, b: VFun) => b.withArity(a.toInt)
   }
 
+  def predicateSlice(predicate: VFun, limit: VNum, startFrom: VNum)(using
+      ctx: Context
+  ): VList =
+    var i = startFrom
+    var count = VNum(0)
+    val result = List.newBuilder[VAny]
+    while count < limit do
+      ctx.push(i)
+      val res = executeFn(predicate)
+      if boolify(res) then
+        result += i
+        count += 1
+      i += 1
+    VList.from(result.result())
+
   def reduce(iter: VAny, by: VFun, init: Option[VAny] = None)(using
       ctx: Context
   ): VAny =

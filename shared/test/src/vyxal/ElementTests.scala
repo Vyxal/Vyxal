@@ -654,6 +654,14 @@ class ElementTests extends VyxalTests:
     }
   }
 
+  describe("Element Ŀ") {
+    it(
+      "Generates a list of all numbers in the collatz conjecture minus the first number"
+    ) {
+      testCode("10 λe[2÷|3×1+}} Ŀ", VList(5, 16, 8, 4, 2, 1))
+    }
+  }
+
   describe("Element Ṅ") {
     testMulti(
       "λ5-0=}Ṅ" -> 5,
@@ -662,12 +670,11 @@ class ElementTests extends VyxalTests:
       "λ7×35=}Ṅ" -> 5
     )
   }
-  describe("Element Ŀ") {
-    it(
-      "Generates a list of all numbers in the collatz conjecture minus the first number"
-    ) {
-      testCode("10 λe[2÷|3×1+}} Ŀ", VList(5, 16, 8, 4, 2, 1))
-    }
+
+  describe("Element Ẇ") {
+    testMulti(
+      "λ5%3=}5Ẇ" -> VList(3, 8, 13, 18, 23)
+    )
   }
 
 end ElementTests

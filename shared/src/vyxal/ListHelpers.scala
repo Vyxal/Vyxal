@@ -3,6 +3,7 @@ package vyxal
 import vyxal.VNum.given
 
 import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
 
 object ListHelpers:
@@ -484,6 +485,23 @@ object ListHelpers:
       VList.from(out)
     end if
   end transposeSafe
+
+  def wrapLength(iterable: VList, length: VNum): VList =
+    if length <= 0 then VList.empty
+    else
+      val temp = LazyList.unfold(iterable) { remaining =>
+        if remaining.isEmpty then None
+        else
+          val chunk = List.newBuilder[VAny]
+          var mutRemaining = remaining
+          var count = 0
+          while mutRemaining.nonEmpty && count < length do
+            chunk += mutRemaining.head
+            mutRemaining = mutRemaining.tail
+            count += 1
+          Some((VList.from(chunk.result()), mutRemaining))
+      }
+      VList.from(temp)
 
   def vectorisedMaximum(iterable: VList, b: VVal): VList =
     VList.from(iterable.map { a =>
