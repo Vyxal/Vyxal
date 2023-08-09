@@ -458,6 +458,12 @@ Keywords: init, remove-last
 - a: lst -> a[:-1]
 - a: str -> a[:-1]
 ---------------------
+Ẇ (Wrap to Length | Predicate Slice From 0) (non-vectorising)
+Trigraph: #.W
+Keywords: wrap-length, pred-slice-0
+- a: lst, b: num -> a wrapped in chunks of length b
+- a: fun, b: num -> first b truthy integers where a is truthy
+---------------------
 ι (Length 0-Range) (non-vectorising)
 Keywords: zero->len
 - a: any -> `[0, 1, 2, ..., len(a)-1]`
