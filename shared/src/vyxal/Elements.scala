@@ -84,6 +84,14 @@ object Elements:
       VList.from(ListHelpers.makeIterable(a) :+ b)
     },
     addFull(
+      Dyad,
+      "Ẋ",
+      "Cartesian Product",
+      List("cartesian-product", "cartesian", "cart-prod", "cart"),
+      false,
+      "a: list, b: list -> cartesian product of a and b"
+    )(ListHelpers.cartesianProduct),
+    addFull(
       Monad,
       "B",
       "Convert From Binary",

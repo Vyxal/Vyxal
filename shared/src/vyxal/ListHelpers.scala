@@ -8,6 +8,13 @@ import scala.collection.mutable as mut
 
 object ListHelpers:
 
+  def cartesianProduct(left: VAny, right: VAny)(using ctx: Context): VList =
+    val leftList = makeIterable(left)
+    val rightList = makeIterable(right)
+    val result = ListBuffer[VAny]()
+    for l <- leftList do for r <- rightList do result += VList.from(Seq(l, r))
+    VList.from(result.toList)
+
   /** Remove items that are duplicates after transforming by `fn` */
   def dedupBy(iterable: VList, fn: VFun)(using ctx: Context): VList =
     // Can't use a Set here because equal VNums don't hash to the same value
