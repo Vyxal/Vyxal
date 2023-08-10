@@ -12,12 +12,6 @@ object ListHelpers:
     val leftList = makeIterable(left)
     val rightList = makeIterable(right)
 
-    // diag_num: BigInt
-    // lhs_max: Option[BigInt]
-    // rhs_max: Option[BigInt]
-    // lhs_start: BigInt
-    // lhs_end: BigInt
-
     val result = LazyList.unfold(
       BigInt(0),
       Option[BigInt](null),
