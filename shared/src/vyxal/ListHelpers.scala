@@ -11,9 +11,78 @@ object ListHelpers:
   def cartesianProduct(left: VAny, right: VAny)(using ctx: Context): VList =
     val leftList = makeIterable(left)
     val rightList = makeIterable(right)
-    val result = ListBuffer[VAny]()
-    for l <- leftList do for r <- rightList do result += VList.from(Seq(l, r))
-    VList.from(result.toList)
+
+    // diag_num: BigInt
+    // lhs_max: Option[BigInt]
+    // rhs_max: Option[BigInt]
+    // lhs_start: BigInt
+    // lhs_end: BigInt
+
+    val result = LazyList.unfold(
+      BigInt(0),
+      Option[BigInt](null),
+      Option[BigInt](null),
+      BigInt(0),
+      BigInt(0)
+    )(state =>
+      var (
+        diagNum,
+        lhsMax,
+        rhsMax,
+        lhsStart,
+        lhsEnd
+      ) = state
+
+      lhsStart =
+        if rhsMax.isDefined then BigInt(0).max(diagNum - rhsMax.get)
+        else BigInt(0)
+      lhsEnd =
+        if lhsMax.isDefined then diagNum.min(lhsMax.get)
+        else diagNum
+      var break = false
+      var touched = false
+
+      val items = mut.ArrayBuffer.empty[VList]
+
+      for left <- NumberHelpers
+          .range(lhsStart, lhsEnd)
+          .map(x => x.asInstanceOf[VNum].toBigInt)
+      do
+        if !break then
+          val right = diagNum - left
+          if (rhsMax.isDefined && rhsMax.get != 0) && right > rhsMax.get
+          then None
+          else if !rightList.hasIndex(right) then
+            rhsMax = Some(right)
+            None
+          else if (lhsMax.isDefined && lhsMax.get != 0) && left > lhsMax.get
+          then
+            break = true
+            None
+          else if !leftList.hasIndex(left) then
+            lhsMax = Some(left)
+            break = true
+            None
+          else
+            touched = true
+            items += (
+              VList(leftList.index(left), rightList.index(right))
+            )
+          end if
+        else None
+      end for
+
+      if !touched then None
+      else
+        diagNum += 1
+        Some(
+          items.toSeq,
+          (diagNum, lhsMax, rhsMax, lhsStart, lhsEnd)
+        )
+    )
+
+    VList.from(result.flatten[VAny])
+  end cartesianProduct
 
   /** Remove items that are duplicates after transforming by `fn` */
   def dedupBy(iterable: VList, fn: VFun)(using ctx: Context): VList =
