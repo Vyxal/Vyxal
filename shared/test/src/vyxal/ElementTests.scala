@@ -703,8 +703,8 @@ class ElementTests extends VyxalTests:
 
   describe("Element ȧ") {
     testMulti(
-      "[1|2|3|4|5|6] λ+} ȧ" -> VList(3, 5, 7, 9, 11),
-      "[1|2|3|4|5|6] λ++} ȧ" -> VList(4, 7, 10, 13, 16)
+      "#[1|2|3|4|5|6#] λ+} ȧ" -> VList(3, 5, 7, 9, 11),
+      "#[1|2|3|4|5|6#] λ++} ȧ" -> VList(4, 7, 10, 13, 16)
     )
   }
 
