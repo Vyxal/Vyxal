@@ -128,7 +128,6 @@ object VList extends SpecificIterableFactory[VAny, VList]:
     * The parameter is a `PartialFunction` instead of a function because it's
     * going to match on a list and assume it's a specific length
     */
-  @SuppressWarnings(Array("scalafix:DisableSyntax.null"))
   def zipMulti(lists: VList*)(f: PartialFunction[Seq[VAny], VAny])(using
       ctx: Context
   ): VList =
