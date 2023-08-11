@@ -25,5 +25,5 @@ object FuncHelpers:
 
   def reduceByElement(fn: VFun)(using ctx: Context): Unit =
     val iter = ctx.pop()
-    ctx.push(MiscHelpers.reduce(iter, fn))
+    ctx.push(ListHelpers.reduce(iter, fn))
 end FuncHelpers

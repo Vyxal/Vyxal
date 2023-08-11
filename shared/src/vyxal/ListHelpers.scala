@@ -409,6 +409,36 @@ object ListHelpers:
   def prefixes(iterable: VList): Seq[VList] =
     iterable.inits.toSeq.reverse.tail
 
+  def reduce(iter: VAny, by: VFun, init: Option[VAny] = None)(using
+      ctx: Context
+  ): VAny =
+    var remaining = ListHelpers.makeIterable(iter, Some(true))(using ctx).toList
+
+    // Convert niladic + monadic functions to be dyadic for reduction purposes
+    val byFun = by.withArity(if by.arity < 2 then 2 else by.arity)
+
+    // Take the first byFun.arity items as the initial set to operate on
+    var operating = init match
+      case Some(elem) => elem +: remaining.take(byFun.arity - 1)
+      case None => remaining.take(byFun.arity)
+    remaining = remaining.drop(operating.length)
+
+    if operating.isEmpty then return 0
+    if operating.sizeIs == 1 then return operating.head
+
+    var current = operating(0)
+    var previous = operating(1)
+
+    while remaining.length + operating.length != 1 do
+      val result = byFun.execute(previous, current, args = operating.reverse)
+      previous = remaining.headOption.getOrElse(result)
+      current = result
+      operating = result +: remaining.take(byFun.arity - 1)
+      remaining = remaining.drop(byFun.arity - 1)
+
+    current
+  end reduce
+
   /** Reverse a VAny - if it's a list, reverse the list, if it's a string,
     * reverse the string, if it's a number, reverse the number. Different to the
     * VList.reverse method because this preserves the type of the input.

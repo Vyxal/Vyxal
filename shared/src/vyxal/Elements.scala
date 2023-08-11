@@ -1181,9 +1181,9 @@ object Elements:
       case (a: String, b: VNum) => b.toString.r.findFirstIn(a).isDefined
       case (a: VNum, b: String) => b.r.findFirstIn(a.toString).isDefined
       case (a: VFun, b) =>
-        MiscHelpers.reduce(b, a)
+        ListHelpers.reduce(b, a)
       case (a, b: VFun) =>
-        MiscHelpers.reduce(a, b)
+        ListHelpers.reduce(a, b)
     },
     addElem(
       Triad,

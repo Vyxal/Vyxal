@@ -148,36 +148,6 @@ object MiscHelpers:
       i += 1
     VList.from(result.result())
 
-  def reduce(iter: VAny, by: VFun, init: Option[VAny] = None)(using
-      ctx: Context
-  ): VAny =
-    var remaining = ListHelpers.makeIterable(iter, Some(true))(using ctx).toList
-
-    // Convert niladic + monadic functions to be dyadic for reduction purposes
-    val byFun = by.withArity(if by.arity < 2 then 2 else by.arity)
-
-    // Take the first byFun.arity items as the initial set to operate on
-    var operating = init match
-      case Some(elem) => elem +: remaining.take(byFun.arity - 1)
-      case None => remaining.take(byFun.arity)
-    remaining = remaining.drop(operating.length)
-
-    if operating.isEmpty then return 0
-    if operating.sizeIs == 1 then return operating.head
-
-    var current = operating(0)
-    var previous = operating(1)
-
-    while remaining.length + operating.length != 1 do
-      val result = byFun.execute(previous, current, args = operating.reverse)
-      previous = remaining.headOption.getOrElse(result)
-      current = result
-      operating = result +: remaining.take(byFun.arity - 1)
-      remaining = remaining.drop(byFun.arity - 1)
-
-    current
-  end reduce
-
   def unpack(names: List[(String, Int)])(using ctx: Context): Unit =
     // String = variable name
     // Int = depth inside ragged list
