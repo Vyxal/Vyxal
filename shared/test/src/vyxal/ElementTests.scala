@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.VyxalTests.testContext
+
 import org.scalatest.funspec.AnyFunSpec
 
 /** Tests for specific elements */
@@ -669,6 +671,28 @@ class ElementTests extends VyxalTests:
       "λ×16=}Ṅ" -> 4,
       "λ7×35=}Ṅ" -> 5
     )
+  }
+
+  describe("Element Ẋ") {
+    given Context = testContext()
+    it("should handle an infinite list and a finite list properly") {
+      assertResult(
+        VList(
+          VList(1, "A"),
+          VList(1, "B"),
+          VList(2, "A"),
+          VList(2, "B"),
+          VList(3, "A")
+        )
+      )(
+        ListHelpers
+          .cartProdMulti(
+            VList.from(LazyList.iterate(VNum(1))(_ + 1)),
+            VList("A", "B")
+          )
+          .take(5)
+      )
+    }
   }
 
   describe("Element Ẇ") {

@@ -3,7 +3,6 @@ package vyxal
 import vyxal.VNum.given
 
 import scala.collection.mutable.ArrayBuffer
-import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
 
 object ListHelpers:
@@ -77,6 +76,30 @@ object ListHelpers:
 
     VList.from(result.flatten[VAny])
   end cartesianProduct
+
+  /** Cartesian product over a list of lists */
+  def cartProdMulti(left: VList, right: VList)(using Context): VList =
+    // Based off of https://stackoverflow.com/a/20516638
+    // TODO generalize to a finite list of infinite lists
+    val lhs = makeIterable(left)
+    val rhs = makeIterable(right)
+
+    val prodIt = lhs.iterator.map(l => rhs.iterator.map(r => VList(l, r)))
+
+    val touched = mut.ListBuffer.empty[Iterator[VAny]]
+
+    def gen(): LazyList[VAny] =
+      touched.filterInPlace(_.hasNext)
+      val diag = touched.map(_.next()).to(LazyList)
+
+      if prodIt.hasNext then
+        touched += prodIt.next()
+        diag #::: gen()
+      else if touched.nonEmpty then diag #::: gen()
+      else diag
+
+    VList.from(gen())
+  end cartProdMulti
 
   /** Remove items that are duplicates after transforming by `fn` */
   def dedupBy(iterable: VList, fn: VFun)(using ctx: Context): VList =
