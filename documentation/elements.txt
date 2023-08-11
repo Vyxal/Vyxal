@@ -477,6 +477,12 @@ Keywords: zero->len
 Keywords: one->len
 - a: any -> `[1, 2, 3, ..., len(a)]`
 ---------------------
+ȧ (Absolute Difference | Apply to Neighbours) (vectorising)
+Trigraph: #.a
+Keywords: abs-diff, apply-to-neighbours
+- a: num, b: num -> |a - b|
+- a: lst, b: fun -> apply b to each pair of neighbours in a [applies to windows of length 2]
+---------------------
 ḋ (Dot Product | To Bijective Base) (non-vectorising)
 Trigraph: #.d
 Keywords: dot-product, bijective-base, dot-prod
@@ -588,6 +594,11 @@ Trigraph: #,
 Keywords: newline
 - -> 
 
+---------------------
+ᶿ (Cartesian Product Unsafe) (non-vectorising)
+Trigraph: #^`
+Keywords: cartesian-product-unsafe, cartesian-unsafe, cart-prod-unsafe, cart-unsafe
+- a: list, b: list -> cartesian product of a and b in the standard order, but without accounting for infinite lists
 ---------------------
 Ч
 Keywords: ****:
