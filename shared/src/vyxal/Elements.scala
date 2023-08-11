@@ -37,6 +37,15 @@ object Elements:
       "a: str, b: num -> a + b",
       "a: str, b: str -> a + b"
     )(MiscHelpers.add),
+    addFull(
+      Dyad,
+      "ȧ",
+      "Absolute Difference | Apply to Neighbours",
+      List("abs-diff", "apply-to-neighbours"),
+      true,
+      "a: num, b: num -> |a - b|",
+      "a: lst, b: fun -> apply b to each pair of neighbours in a [applies to windows of length 2]"
+    )(MiscHelpers.absoluteDifference),
     addVect(
       Monad,
       "Ȧ",
@@ -90,6 +99,19 @@ object Elements:
       List("cartesian-product", "cartesian", "cart-prod", "cart"),
       false,
       "a: list, b: list -> cartesian product of a and b"
+    )(ListHelpers.cartProdMulti),
+    addFull(
+      Dyad,
+      "ᶿ",
+      "Cartesian Product Unsafe",
+      List(
+        "cartesian-product-unsafe",
+        "cartesian-unsafe",
+        "cart-prod-unsafe",
+        "cart-unsafe"
+      ),
+      false,
+      "a: list, b: list -> cartesian product of a and b in the standard order, but without accounting for infinite lists"
     )(ListHelpers.cartesianProduct),
     addFull(
       Monad,

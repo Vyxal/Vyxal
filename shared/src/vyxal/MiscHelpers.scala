@@ -8,6 +8,17 @@ import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Stack
 
 object MiscHelpers:
+
+  val absoluteDifference = Dyad.vectorise("absoluteDifference") {
+    case (a: VNum, b: VNum) => (a - b).vabs
+    case (a: VList, b: VNum) => a.vmap(x => (x.asInstanceOf[VNum] - b).vabs)
+    case (a: VNum, b: VList) => b.vmap(x => (a - x.asInstanceOf[VNum]).vabs)
+    case (a: VList, b: VFun) =>
+      VList.from(ListHelpers.overlaps(a, 2).map(x => b(x*)))
+    case (a: VFun, b: VList) =>
+      VList.from(ListHelpers.overlaps(b, 2).map(x => a(x*)))
+  }
+
   val add = Dyad.vectorise("add")(forkify {
     case (a: VNum, b: VNum) => a + b
     case (a: String, b: VNum) => s"$a$b"

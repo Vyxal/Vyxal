@@ -8,77 +8,15 @@ import scala.collection.mutable as mut
 object ListHelpers:
 
   def cartesianProduct(left: VAny, right: VAny)(using ctx: Context): VList =
-    val leftList = makeIterable(left)
-    val rightList = makeIterable(right)
+    val lhs = makeIterable(left)
+    val rhs = makeIterable(right)
 
-    val result = LazyList.unfold(
-      BigInt(0),
-      Option[BigInt](null),
-      Option[BigInt](null),
-      BigInt(0),
-      BigInt(0)
-    )(state =>
-      var (
-        diagNum,
-        lhsMax,
-        rhsMax,
-        lhsStart,
-        lhsEnd
-      ) = state
-
-      lhsStart =
-        if rhsMax.isDefined then BigInt(0).max(diagNum - rhsMax.get)
-        else BigInt(0)
-      lhsEnd =
-        if lhsMax.isDefined then diagNum.min(lhsMax.get)
-        else diagNum
-      var break = false
-      var touched = false
-
-      val items = mut.ArrayBuffer.empty[VList]
-
-      for left <- NumberHelpers
-          .range(lhsStart, lhsEnd)
-          .map(x => x.asInstanceOf[VNum].toBigInt)
-      do
-        if !break then
-          val right = diagNum - left
-          if (rhsMax.isDefined && rhsMax.get != 0) && right > rhsMax.get
-          then None
-          else if !rightList.hasIndex(right) then
-            rhsMax = Some(right)
-            None
-          else if (lhsMax.isDefined && lhsMax.get != 0) && left > lhsMax.get
-          then
-            break = true
-            None
-          else if !leftList.hasIndex(left) then
-            lhsMax = Some(left)
-            break = true
-            None
-          else
-            touched = true
-            items += (
-              VList(leftList.index(left), rightList.index(right))
-            )
-          end if
-        else None
-      end for
-
-      if !touched then None
-      else
-        diagNum += 1
-        Some(
-          items.toSeq,
-          (diagNum, lhsMax, rhsMax, lhsStart, lhsEnd)
-        )
+    VList.from(
+      lhs.iterator.flatMap(l => rhs.iterator.map(r => VList(l, r))).toSeq
     )
 
-    VList.from(result.flatten[VAny])
-  end cartesianProduct
-
   /** Cartesian product over a list of lists */
-  def cartProdMulti(left: VList, right: VList)(using Context): VList =
+  def cartProdMulti(left: VAny, right: VAny)(using Context): VList =
     // Based off of https://stackoverflow.com/a/20516638
     // TODO generalize to a finite list of infinite lists
     val lhs = makeIterable(left)
