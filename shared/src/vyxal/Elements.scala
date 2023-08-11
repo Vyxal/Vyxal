@@ -1527,17 +1527,17 @@ object Elements:
       case (a: String, b: VNum) =>
         ListHelpers
           .wrapLength(ListHelpers.makeIterable(a), b)
-          .vmap(_ match
+          .vmap {
             case x: VList => x.mkString
             case x => x
-          )
+          }
       case (a: VNum, b: String) =>
         ListHelpers
           .wrapLength(ListHelpers.makeIterable(b), a)
-          .vmap(_ match
+          .vmap {
             case x: VList => x.mkString
             case x => x
-          )
+          }
       case (a: VNum, b: VList) => ListHelpers.wrapLength(b, a)
       case (a: VFun, b: VNum) => MiscHelpers.predicateSlice(a, b, 0)
       case (a: VNum, b: VFun) => MiscHelpers.predicateSlice(b, a, 0)
