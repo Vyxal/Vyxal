@@ -34,15 +34,7 @@ sealed abstract class ImplHelpers[P, F](val arity: Int):
   def fill(symbol: String)(impl: P): F
 
   /** Vectorise a function. There's no need to call [[fill]] first */
-  def vectorise(symbol: String)(impl: P): F =
-    this.vectoriseNoFill(this.fill(symbol)(impl))
-
-  /** For subclasses to implement. Vectorise an implementation that's already
-    * been passed to [[fill]] and isn't a `PartialFunction` but doesn't actually
-    * work on lists.
-    */
-  protected def vectoriseNoFill(impl: F): F
-end ImplHelpers
+  def vectorise(symbol: String)(impl: P): F
 
 object Monad extends ImplHelpers[PartialMonad, Monad](1):
   override def toDirectFn(impl: Monad) =
@@ -52,13 +44,15 @@ object Monad extends ImplHelpers[PartialMonad, Monad](1):
     if fn.isDefinedAt(arg) then fn(arg)
     else throw UnimplementedOverloadException(name, Seq(arg))
 
-  override def vectoriseNoFill(f: Monad) =
+  override def vectorise(name: String)(f: PartialMonad) =
     lazy val res: Monad = {
-      case lhs: VAtom => f(lhs)
+      case lhs if f.isDefinedAt(lhs) => f(lhs)
       case lst: VList => lst.vmap(res)
+      case lhs => throw UnimplementedOverloadException(name, List(lhs))
     }
 
     res
+end Monad
 
 object Dyad extends ImplHelpers[PartialDyad, Dyad](2):
   override def toDirectFn(impl: Dyad): DirectFn =
@@ -72,12 +66,13 @@ object Dyad extends ImplHelpers[PartialDyad, Dyad](2):
     if fn.isDefinedAt(args) then fn(args)
     else throw UnimplementedOverloadException(name, args.toList)
 
-  override def vectoriseNoFill(f: Dyad): Dyad =
+  override def vectorise(name: String)(f: PartialDyad): Dyad =
     lazy val res: Dyad = {
-      case (lhs: VAtom, rhs: VAtom) => f(lhs, rhs)
+      case args if f.isDefinedAt(args) => f(args)
       case (lhs: VAtom, rhs: VList) => rhs.vmap(res(lhs, _))
       case (lhs: VList, rhs: VAtom) => lhs.vmap(res(_, rhs))
       case (lhs: VList, rhs: VList) => lhs.zipWith(rhs)(res(_, _))
+      case args => throw UnimplementedOverloadException(name, args.toList)
     }
 
     res
@@ -95,9 +90,9 @@ object Triad extends ImplHelpers[PartialTriad, Triad](3):
     if fn.isDefinedAt(args) then fn(args)
     else throw UnimplementedOverloadException(name, args.toList)
 
-  override def vectoriseNoFill(f: Triad): Triad =
+  override def vectorise(name: String)(f: PartialTriad): Triad =
     lazy val res: Triad = {
-      case (lhs: VAtom, rhs: VAtom, third: VAtom) => f(lhs, rhs, third)
+      case args if f.isDefinedAt(args) => f(args)
       case (lhs: VAtom, rhs: VList, third: VAtom) =>
         rhs.vmap(res(lhs, _, third))
       case (lhs: VList, rhs: VAtom, third: VAtom) =>
@@ -112,10 +107,11 @@ object Triad extends ImplHelpers[PartialTriad, Triad](3):
         lhs.zipWith(third)(res(_, rhs, _))
       case (lhs: VList, rhs: VList, third: VList) =>
         VList.zipMulti(lhs, rhs, third) { case VList(l, r, t) => res(l, r, t) }
+      case args => throw UnimplementedOverloadException(name, args.toList)
     }
 
     res
-  end vectoriseNoFill
+  end vectorise
 end Triad
 
 object Tetrad extends ImplHelpers[PartialTetrad, Tetrad](4):
@@ -130,8 +126,9 @@ object Tetrad extends ImplHelpers[PartialTetrad, Tetrad](4):
     if fn.isDefinedAt(args) then fn(args)
     else throw UnimplementedOverloadException(name, args.toList)
 
-  override def vectoriseNoFill(f: Tetrad) =
+  override def vectorise(name: String)(f: PartialTetrad) =
     lazy val res: Tetrad = {
+      case args if f.isDefinedAt(args) => f(args)
       case (as: VList, bs: VList, cs: VList, ds: VList) =>
         VList.zipMulti(as, bs, cs, ds) { case VList(a, b, c, d) =>
           res(a, b, c, d)
@@ -169,11 +166,11 @@ object Tetrad extends ImplHelpers[PartialTetrad, Tetrad](4):
       case (a, b: VList, c, d) => b.vmap(res(a, _, c, d))
       case (a, b, c: VList, d) => c.vmap(res(a, b, _, d))
       case (a, b, c, d: VList) => d.vmap(res(a, b, c, _))
-      case (a, b, c, d) => f(a, b, c, d)
+      case args => throw UnimplementedOverloadException(name, args.toList)
     }
 
     res
-  end vectoriseNoFill
+  end vectorise
 end Tetrad
 
 /** Make a partial function that only works on non-functions act kinda like an

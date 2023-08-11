@@ -37,15 +37,20 @@ object Elements:
       "a: str, b: num -> a + b",
       "a: str, b: str -> a + b"
     )(MiscHelpers.add),
-    addFull(
+    addVect(
       Dyad,
       "ȧ",
       "Absolute Difference | Apply to Neighbours",
       List("abs-diff", "apply-to-neighbours"),
-      true,
       "a: num, b: num -> |a - b|",
       "a: lst, b: fun -> apply b to each pair of neighbours in a [applies to windows of length 2]"
-    )(MiscHelpers.absoluteDifference),
+    ) {
+      case (a: VNum, b: VNum) => (a - b).vabs
+      case (a: VList, b: VFun) =>
+        VList.from(ListHelpers.overlaps(a, 2).map(x => b(x*)))
+      case (a: VFun, b: VList) =>
+        VList.from(ListHelpers.overlaps(b, 2).map(x => a(x*)))
+    },
     addVect(
       Monad,
       "Ȧ",
