@@ -488,6 +488,12 @@ Keywords: bit, parity, str-last-half
 - a: num -> parity of a (a % 2)
 - a: str -> last half of a
 ---------------------
+ċ (N Choose K | Character Set Equal?) (vectorising)
+Trigraph: #.c
+Keywords: n-choose-k, ncr, nck, choose, char-set-equal?, char-set-eq?
+- a: num, b: num -> a choose b
+- a: str, b: str -> are the character sets of a and b equal?
+---------------------
 ḋ (Dot Product | To Bijective Base) (non-vectorising)
 Trigraph: #.d
 Keywords: dot-product, bijective-base, dot-prod
