@@ -1174,6 +1174,17 @@ object Elements:
       case a: String => StringHelpers.quotify(a)
       case a => StringHelpers.quotify(a.toString)
     },
+    addVect(
+      Monad,
+      "ė",
+      "Reciprocal | Remove Whitespace",
+      List("reciprocal", "recip", "remove-whitespace", "remove-space", "1/"),
+      "a: num -> 1/a",
+      "a: str -> a with all whitespace removed"
+    ) {
+      case a: VNum => 1 / a
+      case a: String => a.replaceAll("\\s", "")
+    },
     addDirect(
       "x",
       "Recursion | Recurse",
