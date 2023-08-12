@@ -15,8 +15,8 @@ object ListHelpers:
       lhs.iterator.flatMap(l => rhs.iterator.map(r => VList(l, r))).toSeq
     )
 
-  /** Cartesian product over a list of lists */
-  def cartProdMulti(left: VAny, right: VAny)(using Context): VList =
+  /** Cartesian product */
+  def cartProd(left: VAny, right: VAny)(using Context): VList =
     // Based off of https://stackoverflow.com/a/20516638
     // TODO generalize to a finite list of infinite lists
     val lhs = makeIterable(left)
@@ -37,7 +37,7 @@ object ListHelpers:
       else diag
 
     VList.from(gen())
-  end cartProdMulti
+  end cartProd
 
   /** Remove items that are duplicates after transforming by `fn` */
   def dedupBy(iterable: VList, fn: VFun)(using ctx: Context): VList =

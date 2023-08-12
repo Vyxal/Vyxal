@@ -115,7 +115,7 @@ object Elements:
       List("cartesian-product", "cartesian", "cart-prod", "cart"),
       false,
       "a: list, b: list -> cartesian product of a and b"
-    )(ListHelpers.cartProdMulti),
+    )(ListHelpers.cartProd),
     addFull(
       Dyad,
       "ᶿ",

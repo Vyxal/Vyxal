@@ -216,7 +216,12 @@ private[parsing] object LiterateLexer extends Lexer:
   def elementKeyword[$: P]: P[Token] =
     parseToken(
       Command,
-      keywordsParser(Elements.elements.values.flatMap(_.keywords))
+      keywordsParser(Elements.elements.values.flatMap(_.keywords)).map(kw =>
+        Elements.elements.values
+          .find(elem => elem.keywords.contains(kw))
+          .get
+          .symbol
+      )
     ).opaque("<element keyword>")
 
   def modifierKeyword[$: P]: P[Token] =

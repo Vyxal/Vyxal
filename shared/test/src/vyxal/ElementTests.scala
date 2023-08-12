@@ -686,7 +686,7 @@ class ElementTests extends VyxalTests:
         )
       )(
         ListHelpers
-          .cartProdMulti(
+          .cartProd(
             VList.from(LazyList.iterate(VNum(1))(_ + 1)),
             VList("A", "B")
           )
