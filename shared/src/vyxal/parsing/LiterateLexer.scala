@@ -24,6 +24,8 @@ private[parsing] object LiterateLexer extends Lexer:
   )
 
   private val branchKeywords = List(
+    ":",
+    "->",
     "else",
     "elif",
     "else-if",
@@ -103,13 +105,10 @@ private[parsing] object LiterateLexer extends Lexer:
       kw -> typ.open
     }
 
-  def wordPiece[$: P]: P[String] = P(
-    CharsWhileIn("0-9a-zA-Z_<>\\?\\!\\*\\+=&%:", 0).!
-  )
+  def wordStart[$: P]: P[String] = P(CharIn("a-zA-Z_<>?!*+\\-=&%:").!)
   def word[$: P]: P[String] =
-    P((CharIn("a-zA-Z_") ~~ wordPiece ~~ ("-".! ~~ wordPiece).repX ~~ "?".?).!)
+    P((wordStart ~~ CharsWhileIn("0-9a-zA-Z_<>?!*+\\-=&%:", 0)).!)
 
-  def wordChar[$: P]: P[String] = P(CharIn("a-zA-Z\\-?!").!)
   def litInt[$: P]: P[String] =
     P(("0" | (CharIn("1-9") ~~ CharsWhileIn("_0-9", 0))).!)
   def litDigits[$: P]: P[String] = P(CharsWhileIn("_0-9", 0).!)
@@ -118,8 +117,8 @@ private[parsing] object LiterateLexer extends Lexer:
   def litNumber[$: P]: P[Token] =
     parseToken(
       Number,
-      ((litDecimal ~~ ("ı" ~~ litDecimal.? | "i" ~~ (litDecimal | !wordChar)).?)
-        | "i" ~~ (litDecimal | !wordChar)
+      ((litDecimal ~~ ("ı" ~~ litDecimal.? | "i" ~~ (litDecimal | !wordStart)).?)
+        | "i" ~~ (litDecimal | !wordStart)
         | "ı" ~~ litDecimal.?).!
     ).opaque("<number (literate)>")
       .map { case Token(_, value, range) =>
@@ -210,6 +209,7 @@ private[parsing] object LiterateLexer extends Lexer:
       keywords: Iterable[String]
   ): P[String] =
     // TODO(user): Make this not use filter
+    // This can't be a one-liner because we want it to be strictly evaluated
     val isKeyword = keywords.toSet
     word.filter(isKeyword)
 
@@ -296,7 +296,7 @@ private[parsing] object LiterateLexer extends Lexer:
   def litBranch[$: P]: P[Token] =
     P(
       SBCSLexer.branch
-        | parseToken(Branch, StringIn(":", ",", "->").!)
+        | parseToken(Branch, ",".!)
         | parseToken(Branch, keywordsParser(branchKeywords)).opaque(
           "<branch keyword>"
         )

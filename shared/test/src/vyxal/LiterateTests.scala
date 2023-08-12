@@ -126,6 +126,12 @@ class LiterateTests extends VyxalTests:
     }
   }
 
+  describe("Existing elements") {
+    they("should be overridden by literate keywords") {
+      testLiterate("*", "×")
+    }
+  }
+
   describe("Misc") {
     it("should not treat words with i as complex") {
       testLiterate("is-vowel?", "A")
