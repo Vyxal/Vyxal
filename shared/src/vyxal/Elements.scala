@@ -97,6 +97,17 @@ object Elements:
     ) { case (a, b) =>
       VList.from(ListHelpers.makeIterable(a) :+ b)
     },
+    addVect(
+      Monad,
+      "ḃ",
+      "Bit | Parity | Last Half of String",
+      List("bit", "parity", "str-last-half"),
+      "a: num -> parity of a (a % 2)",
+      "a: str -> last half of a"
+    ) {
+      case a: VNum => a % 2
+      case a: String => a.slice(a.length / 2, a.length)
+    },
     addFull(
       Dyad,
       "Ẋ",
