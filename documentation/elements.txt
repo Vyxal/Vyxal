@@ -483,6 +483,11 @@ Keywords: abs-diff, apply-to-neighbours
 - a: num, b: num -> |a - b|
 - a: lst, b: fun -> apply b to each pair of neighbours in a [applies to windows of length 2]
 ---------------------
+ḃ (Bit | Parity | Last Half of String) (vectorising)
+Keywords: bit, parity, str-last-half
+- a: num -> parity of a (a % 2)
+- a: str -> last half of a
+---------------------
 ḋ (Dot Product | To Bijective Base) (non-vectorising)
 Trigraph: #.d
 Keywords: dot-product, bijective-base, dot-prod
