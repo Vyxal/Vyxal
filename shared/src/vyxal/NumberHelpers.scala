@@ -74,11 +74,17 @@ object NumberHelpers:
       .reduce(_ + _)
 
     val g = VNum("4.7421875")
-    val z = a - 1
-    spire.math.sqrt(2 * math.Pi) * ((z + g + 0.5) ** (z + 0.5)) * spire.math
-      .exp(
-        -(z + g + 0.5).underlying.toDouble
-      ) * A_g
+    val z = spire.math.abs(a.underlying.real) - 1
+
+    val TWO_PI = spire.math.Real.pi * 2
+    val ROOT_TWO_PI = TWO_PI ** VNum("0.5")
+
+    val Z_G_HALF = z + g + VNum("0.5")
+
+    val LHS = ROOT_TWO_PI * (Z_G_HALF ** (z + VNum("0.5")))
+    val RHS = spire.math.Real.exp(-Z_G_HALF.underlying.real) * A_g
+
+    LHS * RHS
 
   end gamma
 
@@ -98,6 +104,10 @@ object NumberHelpers:
       result += 1
       current /= b
     result
+
+  def nChooseK(a: VNum, b: VNum): VNum =
+    spire.math.fact(a.toLong) / (spire.math.fact(b.toLong) * spire.math
+      .fact((a - b).toLong))
 
   /** A version of VNum.toString that differentiates between literate and sbcs
     * mode

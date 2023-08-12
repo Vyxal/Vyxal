@@ -1000,6 +1000,25 @@ object Elements:
       "a: str, b: str -> ring translate a according to b"
     )(MiscHelpers.multiply),
     addVect(
+      Dyad,
+      "ċ",
+      "N Choose K | Character Set Equal?",
+      List(
+        "n-choose-k",
+        "ncr",
+        "nck",
+        "choose",
+        "char-set-equal?",
+        "char-set-eq?"
+      ),
+      "a: num, b: num -> a choose b",
+      "a: str, b: str -> are the character sets of a and b equal?"
+    ) {
+      case (a: VNum, b: VNum) =>
+        if a > b then NumberHelpers.nChooseK(a, b) else 0
+      case (a: String, b: String) => a.toSet == b.toSet
+    },
+    addVect(
       Monad,
       "N",
       "Negation | Swap Case | First Non-Negative Integer Where Predicate is True",

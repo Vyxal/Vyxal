@@ -811,6 +811,14 @@
   - {in: [[10, 2]], out: [0, 0]}
   - {in: [[1, 2, 3, 4, 5]], out: [1, 0, 1, 0, 1]}
   - {in: ["abcdef"], out: "def"}
+
+"ċ":
+  - {in: [5, 3], out: 10}
+  - {in: [3, 5], out: 0}
+  - {in: [[1, 2, 3, 4, 5], 3], out: [0, 0, 0, 4, 10]}
+  - {in: ["abc", "cba"], out: 1}
+  - {in: ["abbcbcbcbcabcbacbacbabcabcabcabcbacb", "abc"], out: 1}
+  - {in: ["SUSSY", "sussy"], out: 0}
 "ḣ":
   - { in: [[1, 2, 3]], stack: [[2, 3], 1] }
   - { in: ["asdf"], stack: ["sdf", "a"] }
