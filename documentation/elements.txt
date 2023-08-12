@@ -500,6 +500,12 @@ Keywords: dot-product, bijective-base, dot-prod
 - a: lst, b: lst -> Dot product of a and b
 - a: num, b: num -> Convert a to bijective base b
 ---------------------
+ė (Reciprocal | Remove Whitespace) (vectorising)
+Trigraph: #.e
+Keywords: reciprocal, recip, remove-whitespace, remove-space, 1/
+- a: num -> 1/a
+- a: str -> a with all whitespace removed
+---------------------
 ḣ (Head Extract) (non-vectorising)
 Trigraph: #.h
 Keywords: head-extract, split-at-head
