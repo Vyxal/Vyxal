@@ -1207,6 +1207,15 @@ object Elements:
         case _: String => VList.from(res.map(_.mkString))
         case _ => VList.from(res)
     },
+    addElem(
+      Monad,
+      "ṗ",
+      "List Partitions",
+      List("list-partitions"),
+      "a: lst -> partitions of a"
+    ) { case lst: VList =>
+      ListHelpers.partitions(lst)
+    },
     addDirect(
       "x",
       "Recursion | Recurse",

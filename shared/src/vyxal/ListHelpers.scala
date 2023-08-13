@@ -348,6 +348,17 @@ object ListHelpers:
     if size == 0 then Seq.empty
     else iterable.sliding(size).toSeq
 
+  /** List partitions (like set partitions, but contiguous sublists) */
+  def partitions(lst: VList): VList =
+    def helper(lst: VList): LazyList[LazyList[VList]] =
+      if lst.isEmpty then LazyList.empty
+      else
+        LazyList.from(1).takeWhile(i => lst.sizeIs > i + 1).flatMap { i =>
+          val (left, right) = lst.splitAt(i)
+          helper(right).map(left #:: _)
+        }
+    VList.from(helper(lst).map(VList.from))
+
   def permutations(iterable: VList): Seq[VList] =
     val temp = iterable.toList
     val perms = temp.permutations
