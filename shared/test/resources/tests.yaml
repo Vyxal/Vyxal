@@ -827,6 +827,10 @@
   - {in: [10, 5], out: [1, 5]}
   - {in: [120, 43], out: [2, 34]}
 
+"ė":
+  - {in: [[1, 2, 4, 5, 8, 10]], out: [1, 0.5, 0.25, 0.2, 0.125, 0.1]}
+  - {in: [["would you", "like some", "SUSSY     AMONGUS"]], out: ["wouldyou", "likesome", "SUSSYAMONGUS"]}
+  
 "ġ":
   basic functionality:
   - { in: [[1, "1", 2, 2, 2, 3]], out: [[1], ["1"], [2, 2, 2], [3]] }
