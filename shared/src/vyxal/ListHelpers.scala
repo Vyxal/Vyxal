@@ -349,15 +349,19 @@ object ListHelpers:
     else iterable.sliding(size).toSeq
 
   /** List partitions (like set partitions, but contiguous sublists) */
-  def partitions(lst: VList): VList =
-    def helper(lst: VList): LazyList[LazyList[VList]] =
-      if lst.isEmpty then LazyList.empty
-      else
-        LazyList.from(1).takeWhile(i => lst.sizeIs > i + 1).flatMap { i =>
-          val (left, right) = lst.splitAt(i)
-          helper(right).map(left #:: _)
-        }
-    VList.from(helper(lst).map(VList.from))
+  def partitions(lst: VList)(using ctx: Context): VList =
+    // Forces evaluation of the list because we need to know the length
+    val shapes = NumberHelpers
+      .partitions(lst.length)
+      .map(partition =>
+        VList.from(
+          partition
+            .asInstanceOf[VList]
+            .map(v => VList.fill(v.asInstanceOf[VNum].toInt)(1))
+        )
+      )
+
+    VList.from(shapes.map(shape => mold(lst, shape)))
 
   def permutations(iterable: VList): Seq[VList] =
     val temp = iterable.toList

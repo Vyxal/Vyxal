@@ -1211,10 +1211,10 @@ object Elements:
       Monad,
       "ṗ",
       "List Partitions",
-      List("list-partitions"),
+      List("list-partitions", "list-parts"),
       "a: lst -> partitions of a"
-    ) { case lst: VList =>
-      ListHelpers.partitions(lst)
+    ) { case a =>
+      ListHelpers.partitions(ListHelpers.makeIterable(a))
     },
     addDirect(
       "x",
