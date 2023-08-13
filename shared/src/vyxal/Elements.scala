@@ -6,7 +6,7 @@ import vyxal.ListHelpers.makeIterable
 import vyxal.NumberHelpers.range
 import vyxal.VNum.given
 
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 import scala.io.StdIn
 
 /** Implementations for elements */
@@ -1184,6 +1184,28 @@ object Elements:
     ) {
       case a: VNum => 1 / a
       case a: String => a.replaceAll("\\s", "")
+    },
+    addFull(
+      Monad,
+      "ġ",
+      "Group By Consecutive Items",
+      List("group-by-consecutive"),
+      false,
+      "a: any -> group consecutive identical items of lst(a)"
+    ) { lst =>
+      val it = ListHelpers.makeIterable(lst).iterator
+      def gen(first: VAny): LazyList[VList] =
+        val buf = ListBuffer(first)
+        while it.hasNext do
+          val next = it.next()
+          if next == first then buf.append(next)
+          else return VList.from(buf.toList) #:: gen(next)
+        LazyList(VList.from(buf.toList))
+
+      val res = if it.hasNext then gen(it.next()) else Seq.empty
+      lst match
+        case _: String => VList.from(res.map(_.mkString))
+        case _ => VList.from(res)
     },
     addDirect(
       "x",
