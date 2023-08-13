@@ -3,6 +3,7 @@ package vyxal
 import vyxal.VNum.given
 
 import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
 
 object ListHelpers:
@@ -354,14 +355,19 @@ object ListHelpers:
     val shapes = NumberHelpers
       .partitions(lst.length)
       .map(partition =>
-        VList.from(
-          partition
-            .asInstanceOf[VList]
-            .map(v => VList.fill(v.asInstanceOf[VNum].toInt)(1))
-        )
+        partition
+          .asInstanceOf[VList]
+          .map(v => VList.fill(v.asInstanceOf[VNum].toInt)(1))
       )
+      .map(partition => partition.permutations.toSeq)
+      .flatten
 
-    VList.from(shapes.map(shape => mold(lst, shape)))
+    val uniqueShapes = ListBuffer[Seq[VList]]()
+    for shape <- shapes do
+      if !uniqueShapes.exists(_.equals(shape)) then uniqueShapes += shape
+
+    VList.from(uniqueShapes.map(shape => mold(lst, VList.from(shape))).toSeq)
+  end partitions
 
   def permutations(iterable: VList): Seq[VList] =
     val temp = iterable.toList
