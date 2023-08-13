@@ -26,18 +26,35 @@ object Modifiers:
     ast match
       case _: AST.Lambda => ast
       case _ => AST.Lambda(arity, List(), List(ast))
+
+  private def isExplicitMonad(ast: AST): Boolean =
+    ast.arity.getOrElse(-1) == 1 && (ast match
+      case f: AST.Lambda => f.params.isEmpty
+      case _ => true
+    )
   val modifiers: Map[String, Modifier] = Map(
     "ᵃ" -> Modifier(
-      "Apply to Neighbours",
+      "Apply to Neighbours | Number of Truthy Elements",
       """|To each overlapping pair, reduce it by an element
-       |Apply a dyadic link or a monadic chain for all pairs of neighboring elements.
-       |ᵃf: equivalent to 2ov/f""".stripMargin,
-      List("apply-to-neighbours:"),
+       |Apply a dyadic element for all pairs of neighboring elements.
+       |Count the number of truthy elements in a list under a mondaic element
+       |ȧf<monad>: Count how many items in a list are truthy after applying f to each
+       |ᵃf<dyad>: equivalent to pushing the function, then calling ȧ""".stripMargin,
+      List("apply-to-neighbours:", "count-truthy:"),
       1
     ) { case List(ast) =>
-      val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
-      // obviously incorrect right now,but it's a start
-      AST.makeSingle(lambdaAst, AST.Command("ȧ"))
+      if isExplicitMonad(ast) then
+        val lambdaAst = astToLambda(ast, 1)
+        AST.makeSingle(
+          lambdaAst,
+          AST.Command("M"),
+          AST.Lambda(1, List(), List(AST.Command("ȯ"))),
+          AST.Command("#v"),
+          AST.Command("∑")
+        )
+      else
+        val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
+        AST.makeSingle(lambdaAst, AST.Command("ȧ"))
     },
     "v" -> Modifier(
       "Vectorise",
@@ -57,11 +74,7 @@ object Modifiers:
       1
     ) { case List(ast) =>
       scribe.trace(s"Modifier /, ast: $ast")
-      if ast.arity.getOrElse(-1) == 1 && (ast match
-          case f: AST.Lambda => f.params.isEmpty
-          case _ => true
-        )
-      then
+      if isExplicitMonad(ast) then
         val lambdaAst = astToLambda(ast, 1)
         AST.makeSingle(lambdaAst, AST.Command("F"))
       else

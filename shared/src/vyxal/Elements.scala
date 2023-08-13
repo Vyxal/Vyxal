@@ -108,6 +108,15 @@ object Elements:
       case a: VNum => a % 2
       case a: String => a.slice(a.length / 2, a.length)
     },
+    addElem(
+      Monad,
+      "ȯ",
+      "Boolify",
+      List("boolify"),
+      "a: any -> bool(a)"
+    ) { case a =>
+      MiscHelpers.boolify(a)
+    },
     addFull(
       Dyad,
       "Ẋ",
@@ -1393,6 +1402,15 @@ object Elements:
         if a.toInt > 0 then "-" * a.toInt + b else b + "-" * a.toInt.abs
       case (a: String, b: String) =>
         a.replace(b, "")
+    },
+    addElem(
+      Monad,
+      "∑",
+      "Sum",
+      List("sum", "/+", "+/"),
+      "a: lst -> sum of a"
+    ) { case a =>
+      ListHelpers.sum(ListHelpers.makeIterable(a))
     },
     addDirect("$", "Swap", List("swap"), None, "a, b -> b, a") { ctx ?=>
       val b, a = ctx.pop()
