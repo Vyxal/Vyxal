@@ -516,6 +516,11 @@ Trigraph: #.h
 Keywords: head-extract, split-at-head
 - a: lst|str -> Push a[0], then a[1:] onto the stack
 ---------------------
+ȯ (Boolify) (non-vectorising)
+Trigraph: #.o
+Keywords: boolify
+- a: any -> bool(a)
+---------------------
 ṗ (List Partitions) (non-vectorising)
 Trigraph: #.p
 Keywords: list-partitions, list-parts
@@ -541,6 +546,10 @@ Keywords: last-extract, split-at-last
 Trigraph: #.`
 Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first-n
 - a: lst, b: num -> [a[0], a[1], ..., a[b-1]]
+---------------------
+∑ (Sum) (non-vectorising)
+Keywords: sum, /+, +/
+- a: lst -> sum of a
 ---------------------
 ₀ (Ten) (non-vectorising)
 Trigraph: #,0
@@ -651,10 +660,12 @@ Description: Turn the next four elements (whether that be a structure/modifier/e
 ᵍfghi: Push the equivalent of λ2|fghi} to the stack
 ---------------------
 ᵃ
-Keywords: apply-to-neighbours:
+Keywords: apply-to-neighbours:, count-truthy:
 Description: To each overlapping pair, reduce it by an element
-Apply a dyadic link or a monadic chain for all pairs of neighboring elements.
-ᵃf: equivalent to 2ov/f
+Apply a dyadic element for all pairs of neighboring elements.
+Count the number of truthy elements in a list under a mondaic element
+ȧf<monad>: Count how many items in a list are truthy after applying f to each
+ᵃf<dyad>: equivalent to pushing the function, then calling ȧ
 Trigraph: #^a
 ---------------------
 ⸠
