@@ -518,7 +518,7 @@ Keywords: head-extract, split-at-head
 ---------------------
 ṗ (List Partitions) (non-vectorising)
 Trigraph: #.p
-Keywords: list-partitions
+Keywords: list-partitions, list-parts
 - a: lst -> partitions of a
 ---------------------
 ṙ (Rotate Right) (non-vectorising)
