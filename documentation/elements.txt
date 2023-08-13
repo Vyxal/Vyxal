@@ -516,6 +516,11 @@ Trigraph: #.h
 Keywords: head-extract, split-at-head
 - a: lst|str -> Push a[0], then a[1:] onto the stack
 ---------------------
+ṗ (List Partitions) (non-vectorising)
+Trigraph: #.p
+Keywords: list-partitions
+- a: lst -> partitions of a
+---------------------
 ṙ (Rotate Right) (non-vectorising)
 Trigraph: #.r
 Keywords: abc->cab, rot-right, rotate-right
