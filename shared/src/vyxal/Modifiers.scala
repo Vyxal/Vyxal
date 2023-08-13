@@ -37,7 +37,7 @@ object Modifiers:
     ) { case List(ast) =>
       val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
       // obviously incorrect right now,but it's a start
-      AST.makeSingle(lambdaAst, AST.Command("2ov/"))
+      AST.makeSingle(lambdaAst, AST.Command("ȧ"))
     },
     "v" -> Modifier(
       "Vectorise",
