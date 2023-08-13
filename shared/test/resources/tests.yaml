@@ -820,6 +820,13 @@
   - {in: ["abbcbcbcbcabcbacbacbabcabcabcabcbacb", "abc"], out: 1}
   - {in: ["SUSSY", "sussy"], out: 0}
 
+"ḋ":
+  - {in: [[1,2,3], [4,5,6]], out: 32}
+  - {in: [[1,2], [4,5,6]], out: 14}
+  - {in: [[1,"sussy"], [4,5,6]], out: "4sussysussysussysussysussy0"}
+  - {in: [10, 5], out: [1, 5]}
+  - {in: [120, 43], out: [2, 34]}
+
 "ġ":
   basic functionality:
   - { in: [[1, "1", 2, 2, 2, 3]], out: [[1], ["1"], [2, 2, 2], [3]] }
