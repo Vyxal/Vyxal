@@ -25,6 +25,11 @@ If you are working on Vyxal, install [Poetry](https://python-poetry.org), and th
 poetry install
 ```
 
+If you want to test the latest commit of Vyxal without using Poetry, create a virtual environment, activate it and run:
+
+```
+pip install git+https://github.com/Vyxal/Vyxal@main
+```
 ## Usage
 
 To run using the script:
