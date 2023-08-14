@@ -1383,22 +1383,28 @@ object Elements:
     addElem(
       Dyad,
       "ṡ",
-      "Sort by Function Object | Reshape (APL Style)",
+      "Sort by Function Object | Partition by Numbers",
       List(
         "sort-by",
         "sortby",
         "sort-by-fun",
         "sortbyfun",
         "sort-fun",
-        "sortfun"
+        "sortfun",
+        "partition-by"
       ),
       "a: fun, b: any -> sort iterable b by function a",
-      "a: any, b: fun -> sort iterable a by function b"
+      "a: any, b: fun -> sort iterable a by function b",
+      "a: lst, b: lst[num] -> partition a into sublists of length items in b"
     ) {
       case (a: VFun, b) =>
         ListHelpers.sortBy(ListHelpers.makeIterable(b, Some(true)), a)
       case (a, b: VFun) =>
         ListHelpers.sortBy(ListHelpers.makeIterable(a, Some(true)), b)
+      case (a: VList, b: VList) =>
+        if b.lst.forall(_.isInstanceOf[VNum]) then
+          ListHelpers.partitionBy(a, b.lst.map(_.asInstanceOf[VNum]))
+        else ???
     },
     addElem(
       Dyad,

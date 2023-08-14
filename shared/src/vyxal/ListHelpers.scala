@@ -369,6 +369,9 @@ object ListHelpers:
     VList.from(uniqueShapes.map(shape => mold(lst, VList.from(shape))).toSeq)
   end partitions
 
+  def partitionBy(lst: VList, shapes: Seq[VNum])(using ctx: Context): VList =
+    val shapeSublists = shapes.map(x => VList.fill(x.toInt)(1))
+    mold(lst, VList.from(shapeSublists))
   def permutations(iterable: VList): Seq[VList] =
     val temp = iterable.toList
     val perms = temp.permutations

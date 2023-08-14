@@ -710,7 +710,7 @@ class ElementTests extends VyxalTests:
 
   describe("Element ṅ") {
     testMulti(
-      "#[1|2|3|4|5|6#] ƛ0neṅ;" -> VList(0, 2, 0, 4, 0, 6)
+      "#[1|2|3|4|5|6#] ƛ0neṅ}" -> VList(0, 2, 0, 4, 0, 6)
     )
   }
 
