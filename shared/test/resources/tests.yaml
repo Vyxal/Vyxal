@@ -855,7 +855,7 @@
   - {in: [["Hello", "World"]], out: "Hello\nWorld"}
   - {in: ["amon"], out: "0000amon"}
   - {in: [""], out: ""}
-  - {in: ["abcdabcd"], out: ""}
+  - {in: ["abcdabcd"], out: "abcdabcd"}
 
 "ȯ":
   - {in: [[1, 2, 3]], out: 1}
