@@ -2754,6 +2754,8 @@ def head_remove(lhs, ctx):
     if vy_type(lhs, simple=True) in (list, str):
         return lhs[1:] if lhs else []
     if lhs < 2:
+        if isinstance(lhs, str):
+            return ""
         return []
 
     return iterable(lhs, range, ctx=ctx)[1:]
