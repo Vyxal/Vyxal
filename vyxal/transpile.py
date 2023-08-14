@@ -188,7 +188,7 @@ def transpile_token(
     elif token.name == TokenType.GENERAL:
         return indent_str(elements.get(token.value, ("pass\n", -1))[0], indent)
     elif token.name == TokenType.COMPRESSED_NUMBER:
-        return indent_str(f"stack.append(sympify({uncompress(token)}))", indent)
+        return indent_str(f"stack.append(sympy.S({uncompress(token)}))", indent)
     elif token.name == TokenType.COMPRESSED_STRING:
         return indent_str(f"stack.append({uncompress(token)!r})", indent)
     elif token.name == TokenType.VARIABLE_GET:
