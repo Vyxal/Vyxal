@@ -136,6 +136,17 @@ object NumberHelpers:
     helper(VList(), a, VNum(1))
     VList.from(result.toList)
 
+  def primeFactors(a: VNum): VList =
+    val result = mutable.ListBuffer.empty[VNum]
+    var current = a
+    var i = VNum(2)
+    while i <= current do
+      if current % i == VNum(0) then
+        result += i
+        current /= i
+      else i += 1
+    VList.from(result.toList)
+
   def range(a: VNum, b: VNum): VList =
     val start = a.toBigInt
     val end = b.toBigInt

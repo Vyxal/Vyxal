@@ -119,6 +119,9 @@ object StringHelpers:
     val wrapped = (i + s.length) % s.length
     s.substring(0, wrapped) + s.substring(wrapped + 1)
 
+  def removeNonAlphabet(s: String): String =
+    s.filter(_.isLetter)
+
   /** Get the string representation of a value (opposite of eval) */
   def repr(v: VAny): String =
     v match

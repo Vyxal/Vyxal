@@ -1164,6 +1164,17 @@ object Elements:
       case (a: VList, b) => VList.from(b +: a)
       case (a, b) => VList(b, a)
     },
+    addVect(
+      Monad,
+      "ḟ",
+      "Prime Factors | Remove Non-Alphabet",
+      List("prime-factors", "remove-non-alphabet"),
+      "a: num -> prime factors of a",
+      "a: str -> a with all non-alphabet characters removed"
+    ) {
+      case a: VNum => NumberHelpers.primeFactors(a)
+      case a: String => StringHelpers.removeNonAlphabet(a)
+    },
     addDirect(
       ",",
       "Print",

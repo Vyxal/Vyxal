@@ -831,6 +831,10 @@
   - {in: [[1, 2, 4, 5, 8, 10]], out: [1, 0.5, 0.25, 0.2, 0.125, 0.1]}
   - {in: [["would you", "like some", "SUSSY     AMONGUS"]], out: ["wouldyou", "likesome", "SUSSYAMONGUS"]}
 
+
+"ḟ":
+  - {in: [[3831, 4949, "Am!!ong!::u5", "", 21930]], out: [[3, 1277], [7, 7, 101], "Amongu", "", [2, 3, 5, 17, 43]]}
+
 "ġ":
   basic functionality:
   - { in: [[1, "1", 2, 2, 2, 3]], out: [[1], ["1"], [2, 2, 2], [3]] }
