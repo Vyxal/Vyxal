@@ -544,11 +544,12 @@ Trigraph: #.r
 Keywords: abc->cab, rot-right, rotate-right
 - a: any -> rotate right once
 ---------------------
-ṡ (Sort by Function Object | Reshape (APL Style)) (non-vectorising)
+ṡ (Sort by Function Object | Partition by Numbers) (non-vectorising)
 Trigraph: #.s
-Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun
+Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun, partition-by
 - a: fun, b: any -> sort iterable b by function a
 - a: any, b: fun -> sort iterable a by function b
+- a: lst, b: lst[num] -> partition a into sublists of length items in b
 ---------------------
 ṫ (Last Extract) (non-vectorising)
 Trigraph: #.t
