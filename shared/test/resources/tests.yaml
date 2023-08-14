@@ -851,6 +851,12 @@
   - { in: [[]], stack: [[], 0] }
   - { in: [""], stack: ["", ""] }
 
+"ṅ":
+  - {in: [["Hello", "World"]], out: "Hello\nWorld"}
+  - {in: ["amon"], out: "0000amon"}
+  - {in: [""], out: ""}
+  - {in: ["abcdabcd"], out: ""}
+
 "ȯ":
   - {in: [[1, 2, 3]], out: 1}
   - {in: [[]], out: 0}

@@ -699,6 +699,35 @@ object Elements:
       case a: VNum => (a.underlying % 2) == VNum(0)
       case a: String => VList.from(a.split("\n").toSeq)
     },
+    addDirect(
+      "ṅ",
+      "Join On Newlines | Pad Binary to Mod 8 | Context if 1",
+      List(
+        "join-newlines",
+        "newline-join",
+        "join-on-newlines",
+        "binary-pad-8",
+        "bin-pad-8",
+        "one?->context",
+        "one?->n"
+      ),
+      Some(1),
+      "a: lst -> a join on newlines",
+      "a: str -> a padded to a multiple of 8 with 0s",
+      "a: num -> a if a == 1 push context variable n"
+    ) { ctx ?=>
+      ctx.pop() match
+        case a: VList => ctx.push(a.mkString("\n"))
+        case a: String =>
+          val temp = a.length % 8
+          ctx.push(
+            if temp == 0 then a
+            else ("0" * (8 - temp)) + a
+          )
+        case a: VNum => if a == VNum(1) then ctx.push(ctx.ctxVarPrimary)
+        case _ => ???
+
+    },
     addElem(
       Dyad,
       "j",
