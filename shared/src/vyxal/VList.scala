@@ -88,6 +88,9 @@ class VList private (val lst: Seq[VAny])
     */
   override def length: Int = lst.length
 
+  /** Overridden to preserve laziness */
+  override def map[B](f: VAny => B): Seq[B] = lst.map(f)
+
   /** This isn't an overload of isDefinedAt because it needs to take a `BigInt`
     */
   def hasIndex(ind: BigInt): Boolean =

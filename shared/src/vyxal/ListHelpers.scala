@@ -23,22 +23,7 @@ object ListHelpers:
     val lhs = makeIterable(left)
     val rhs = makeIterable(right)
 
-    val prodIt = lhs.iterator.map(l => rhs.iterator.map(r => VList(l, r)))
-
-    val touched = mut.ListBuffer.empty[Iterator[VAny]]
-
-    def gen(): LazyList[VAny] =
-      touched.filterInPlace(_.hasNext)
-      val diag = touched.map(_.next()).to(LazyList)
-
-      if prodIt.hasNext then
-        touched += prodIt.next()
-        diag #::: gen()
-      else if touched.nonEmpty then diag #::: gen()
-      else diag
-
-    VList.from(gen())
-  end cartProd
+    mergeInfLists(lhs.map(l => rhs.map(r => VList(l, r))))
 
   /** Remove items that are duplicates after transforming by `fn` */
   def dedupBy(iterable: VList, fn: VFun)(using ctx: Context): VList =
@@ -287,6 +272,25 @@ object ListHelpers:
       iterable.reduce { (a, b) =>
         if MiscHelpers.compareExact(a, b) > 0 then a else b
       }
+
+  /** Merge a possibly infinite list of possibly infinite lists diagonally */
+  def mergeInfLists(lists: Seq[Seq[VAny]])(using Context): VList =
+    val it = lists.iterator
+
+    val touched = mut.ListBuffer.empty[Iterator[VAny]]
+
+    def gen(): LazyList[VAny] =
+      touched.filterInPlace(_.hasNext)
+      val diag = touched.map(_.next()).to(LazyList)
+
+      if it.hasNext then
+        touched += it.next().iterator
+        diag #::: gen()
+      else if touched.nonEmpty then diag #::: gen()
+      else diag
+
+    VList.from(gen())
+  end mergeInfLists
 
   def minimum(iterable: VList)(using ctx: Context): VAny =
     if iterable.isEmpty then VList()

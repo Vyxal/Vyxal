@@ -675,12 +675,31 @@ class ElementTests extends VyxalTests:
 
   describe("Element Ẋ") {
     given Context = testContext()
-    it("should handle an infinite list and a finite list properly") {
+    it("should handle two finite lists properly") {
       assertResult(
         VList(
           VList(1, "A"),
           VList(1, "B"),
           VList(2, "A"),
+          VList(2, "B"),
+          VList(3, "A"),
+          VList(3, "B")
+        )
+      )(
+        ListHelpers
+          .cartProd(
+            VList(1, 2, 3),
+            VList("A", "B")
+          )
+      )
+    }
+    it("should handle two infinite lists properly") {
+      assertResult(
+        VList(
+          VList(1, "A"),
+          VList(1, "B"),
+          VList(2, "A"),
+          VList(1, "C"),
           VList(2, "B"),
           VList(3, "A")
         )
@@ -688,9 +707,9 @@ class ElementTests extends VyxalTests:
         ListHelpers
           .cartProd(
             VList.from(LazyList.iterate(VNum(1))(_ + 1)),
-            VList("A", "B")
+            VList.from(LazyList.from('A'.toInt).map(_.toChar.toString))
           )
-          .take(5)
+          .take(6)
       )
     }
   }
