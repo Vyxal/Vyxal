@@ -21,6 +21,11 @@ object MiscHelpers:
     case f: VFun => true
     case l: VList => l.nonEmpty
 
+  def callWhile(pred: VFun, transform: VFun, value: VAny)(using Context): VAny =
+    var curr = value
+    while MiscHelpers.boolify(pred(curr)) do curr = transform(curr)
+    curr
+
   def collectUnique(function: VFun, initial: VAny)(using ctx: Context): VList =
     val seen = collection.mutable.Set.empty[VAny]
     val result = ListBuffer[VAny]()
