@@ -687,7 +687,7 @@ class ElementTests extends VyxalTests:
         )
       )(
         ListHelpers
-          .cartProd(
+          .cartesianProduct(
             VList(1, 2, 3),
             VList("A", "B")
           )
@@ -705,7 +705,7 @@ class ElementTests extends VyxalTests:
         )
       )(
         ListHelpers
-          .cartProd(
+          .cartesianProduct(
             VList.from(LazyList.iterate(VNum(1))(_ + 1)),
             VList.from(LazyList.from('A'.toInt).map(_.toChar.toString))
           )

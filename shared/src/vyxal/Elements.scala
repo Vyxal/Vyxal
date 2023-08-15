@@ -124,7 +124,7 @@ object Elements:
       List("cartesian-product", "cartesian", "cart-prod", "cart"),
       false,
       "a: list, b: list -> cartesian product of a and b"
-    )(ListHelpers.cartProd),
+    )(ListHelpers.cartesianProduct(_, _)),
     addFull(
       Dyad,
       "ᶿ",
@@ -137,7 +137,7 @@ object Elements:
       ),
       false,
       "a: list, b: list -> cartesian product of a and b in the standard order, but without accounting for infinite lists"
-    )(ListHelpers.cartesianProduct),
+    )(ListHelpers.cartesianProduct(_, _, unsafe = true)),
     addFull(
       Monad,
       "B",
@@ -1499,6 +1499,16 @@ object Elements:
         StringHelpers.transliterate(a, b, c)
       case (a: String, b: VList, c: VList) =>
         StringHelpers.transliterate(a, b, c)
+    },
+    addElem(
+      Dyad,
+      "ẋ",
+      "Cartesian Power",
+      List("cartesian-power"),
+      "a: lst, b: num -> cart_prod([a] * n)"
+    ) {
+      case (l: VList, n: VNum) => ???
+      case (n: VNum, l: VList) => ???
     },
     addElem(
       Monad,

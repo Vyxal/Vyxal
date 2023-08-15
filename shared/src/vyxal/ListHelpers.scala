@@ -8,22 +8,16 @@ import scala.collection.mutable as mut
 
 object ListHelpers:
 
-  def cartesianProduct(left: VAny, right: VAny)(using ctx: Context): VList =
-    val lhs = makeIterable(left)
-    val rhs = makeIterable(right)
-
-    VList.from(
-      lhs.iterator.flatMap(l => rhs.iterator.map(r => VList(l, r))).toSeq
-    )
-
   /** Cartesian product */
-  def cartProd(left: VAny, right: VAny)(using Context): VList =
-    // Based off of https://stackoverflow.com/a/20516638
-    // TODO generalize to a finite list of infinite lists
+  def cartesianProduct(left: VAny, right: VAny, unsafe: Boolean = false)(using
+      ctx: Context
+  ): VList =
     val lhs = makeIterable(left)
     val rhs = makeIterable(right)
 
-    VList.from(mergeInfLists(lhs.map(l => rhs.map(r => VList(l, r)))))
+    if unsafe || (lhs.knownSize != -1 && rhs.knownSize != -1) then
+      VList.from(lhs.flatMap(l => rhs.map(r => VList(l, r))))
+    else VList.from(mergeInfLists(lhs.map(l => rhs.map(r => VList(l, r)))))
 
   /** Remove items that are duplicates after transforming by `fn` */
   def dedupBy(iterable: VList, fn: VFun)(using ctx: Context): VList =
@@ -275,6 +269,7 @@ object ListHelpers:
 
   /** Merge a possibly infinite list of possibly infinite lists diagonally */
   def mergeInfLists[T](lists: Seq[Seq[T]]): LazyList[T] =
+    // Based off of https://stackoverflow.com/a/20516638
     val it = lists.iterator
 
     val touched = mut.ListBuffer.empty[Iterator[T]]
