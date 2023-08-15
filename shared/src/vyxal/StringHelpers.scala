@@ -2,6 +2,7 @@ package vyxal
 
 import vyxal.parsing.Lexer
 
+import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.StringBuilder
 
 object StringHelpers:
@@ -142,6 +143,29 @@ object StringHelpers:
       if index == -1 then c
       else mapping((index + 1) % mapping.length)
     }.mkString
+
+  def transliterate(source: String, from: VList, to: VList): String =
+    val out = StringBuilder()
+    val mappings =
+      from.map(_.toString()).zip(to.map(_.toString())).sortBy(_._1.length)
+    mappings.reverse
+
+    var temp = source
+    while temp.size > 0 do
+      val (from, to) =
+        mappings
+          .find { case (f, _) => temp.startsWith(f) }
+          .getOrElse(" " -> temp(0).toString())
+      out.append(to)
+      temp = temp.substring(from.length)
+    out.toString()
+
+  def transliterate(source: String, from: String, to: String): String =
+    transliterate(
+      source,
+      VList.from(from.toList.map(_.toString)),
+      VList.from(to.toList.map(_.toString))
+    )
 
   // https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L1055
   def decompress(compressed: String): String =
