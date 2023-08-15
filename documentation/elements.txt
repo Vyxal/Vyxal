@@ -561,6 +561,11 @@ Trigraph: #.t
 Keywords: last-extract, split-at-last
 - a: lst|str -> Push a[-1], then a[:-1] onto the stack
 ---------------------
+ẋ (Cartesian Power) (non-vectorising)
+Trigraph: #.x
+Keywords: cartesian-power
+- a: lst, b: num -> cart_prod([a] * n)
+---------------------
 Θ (Zero Slice Until) (non-vectorising)
 Trigraph: #.`
 Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first-n
