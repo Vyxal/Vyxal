@@ -8,6 +8,12 @@ import scala.collection.mutable as mut
 
 object ListHelpers:
 
+  def cartesianPower(lhs: VAny, pow: VNum)(using Context): VList =
+    if pow == VNum(0) then VList(VList())
+    else
+      val lst = ListHelpers.makeIterable(lhs)
+      cartesianProductMulti(Seq.fill(pow.toInt)(lst))
+
   /** Cartesian product */
   def cartesianProduct(left: VAny, right: VAny, unsafe: Boolean = false)(using
       ctx: Context
@@ -18,6 +24,19 @@ object ListHelpers:
     if unsafe || (lhs.knownSize != -1 && rhs.knownSize != -1) then
       VList.from(lhs.flatMap(l => rhs.map(r => VList(l, r))))
     else VList.from(mergeInfLists(lhs.map(l => rhs.map(r => VList(l, r)))))
+
+  def cartesianProductMulti(lists: Seq[VAny])(using Context): VList =
+    lists.map(ListHelpers.makeIterable(_)) match
+      case head +: tail =>
+        val first = head.map(VList(_))
+        VList.from(tail.foldLeft(first) { (acc, next) =>
+          cartesianProduct(VList.from(acc), next).map { elem =>
+            (elem: @unchecked) match
+              case VList(l, r) =>
+                VList.from(l.asInstanceOf[VList] :+ r)
+          }
+        })
+      case _ => VList.empty
 
   /** Remove items that are duplicates after transforming by `fn` */
   def dedupBy(iterable: VList, fn: VFun)(using ctx: Context): VList =

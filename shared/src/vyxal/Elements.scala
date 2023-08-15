@@ -1507,8 +1507,8 @@ object Elements:
       List("cartesian-power"),
       "a: lst, b: num -> cart_prod([a] * n)"
     ) {
-      case (l: VList, n: VNum) => ???
-      case (n: VNum, l: VList) => ???
+      case (a, n: VNum) => ListHelpers.cartesianPower(a, n)
+      case (n: VNum, a) => ListHelpers.cartesianPower(a, n)
     },
     addElem(
       Monad,
