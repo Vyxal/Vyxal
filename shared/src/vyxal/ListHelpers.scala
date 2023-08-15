@@ -355,25 +355,34 @@ object ListHelpers:
 
   /** List partitions (like set partitions, but contiguous sublists) */
   def partitions(lst: VList)(using ctx: Context): VList =
-    // Forces evaluation of the list because we need to know the length
-    val shapes = NumberHelpers
-      .partitions(lst.length)
-      .map(partition =>
-        partition
-          .asInstanceOf[VList]
-          .map(v => VList.fill(v.asInstanceOf[VNum].toInt)(1))
+    val size = lst.knownSize
+    if size == -1 then
+      // Possibly infinite
+      VList.from(
+        partitionsLazy(lst).map(part => VList.from(part.map(VList.from)))
       )
-      .map(partition => partition.permutations.toSeq)
-      .flatten
+    else
+      // Forces evaluation of the list because we need to know the length
+      val shapes = NumberHelpers
+        .partitions(size)
+        .map(partition =>
+          partition
+            .asInstanceOf[VList]
+            .map(v => VList.fill(v.asInstanceOf[VNum].toInt)(1))
+        )
+        .map(partition => partition.permutations.toSeq)
+        .flatten
 
-    val uniqueShapes = ListBuffer[Seq[VList]]()
-    for shape <- shapes do
-      if !uniqueShapes.exists(_.equals(shape)) then uniqueShapes += shape
+      val uniqueShapes = ListBuffer[Seq[VList]]()
+      for shape <- shapes do
+        if !uniqueShapes.exists(_.equals(shape)) then uniqueShapes += shape
 
-    VList.from(uniqueShapes.map(shape => mold(lst, VList.from(shape))).toSeq)
+      VList.from(uniqueShapes.map(shape => mold(lst, VList.from(shape))).toSeq)
+    end if
   end partitions
 
-  def partitionsLazy(lst: Seq[VAny]): Seq[Seq[Seq[VAny]]] =
+  /** A version of [[partitions]] that hopefully works with infinite lists */
+  private def partitionsLazy(lst: VList): Seq[Seq[Seq[VAny]]] =
     def helper(lst: Seq[VAny]): LazyList[LazyList[Seq[VAny]]] =
       if lst.isEmpty then LazyList.empty
       else

@@ -91,7 +91,12 @@ class VList private (val lst: Seq[VAny])
     */
   override def length: Int = lst.length
 
-  override def knownSize: Int = lst.knownSize
+  /** This violates the method contract, since [[List]]s actually need a
+    * traversal to get their length, but it helps us check for lazy lists
+    */
+  override def knownSize: Int = lst match
+    case _: List[?] => lst.size
+    case _ => lst.knownSize
 
   /** Overridden to preserve laziness */
   override def map[B](f: VAny => B): Seq[B] = lst.map(f)
@@ -123,6 +128,10 @@ class VList private (val lst: Seq[VAny])
 
   protected def from(it: Seq[VAny]): VList =
     VList.from(it)
+
+  override def equals(o: Any): Boolean = o match
+    case v: VList => this.lst == v.lst
+    case _ => this.lst == o
 end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:
