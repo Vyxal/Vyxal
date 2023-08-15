@@ -59,6 +59,9 @@ class VList private (val lst: Seq[VAny])
       catch case _: IndexOutOfBoundsException => lst(ind % lst.length)
 
   /** Override to specify return type as VList */
+  override def take(n: Int): VList = VList.from(lst.take(n))
+
+  /** Override to specify return type as VList */
   override def drop(n: Int): VList = VList.from(lst.drop(n))
 
   /** Override to specify return type as VList */
@@ -87,6 +90,8 @@ class VList private (val lst: Seq[VAny])
     * the list, meaning that it won't work with infinite lists.
     */
   override def length: Int = lst.length
+
+  override def knownSize: Int = lst.knownSize
 
   /** Overridden to preserve laziness */
   override def map[B](f: VAny => B): Seq[B] = lst.map(f)

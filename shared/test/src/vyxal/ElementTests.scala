@@ -3,6 +3,7 @@ package vyxal
 import vyxal.VyxalTests.testContext
 
 import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.Checkpoints.Checkpoint
 
 /** Tests for specific elements */
 class ElementTests extends VyxalTests:
@@ -731,6 +732,24 @@ class ElementTests extends VyxalTests:
     testMulti(
       "#[1|2|3|4|5|6#] ƛ0neṅ}" -> VList(0, 2, 0, 4, 0, 6)
     )
+  }
+
+  describe("Element ṗ") {
+    it("should partition infinite lists") {
+      given Context = testContext()
+      // val parts =
+      //   ListHelpers
+      //     .partitionsLazy(LazyList.iterate(VNum(1))(_ + 1))
+      // val cp = Checkpoint()
+
+      // println(parts.toList.map(_.toList))
+
+      // val head = parts(0).asInstanceOf[VList]
+      // val snd = parts(1).asInstanceOf[VList]
+      // cp { assertResult(VList(1))(head(0)) }
+
+      // cp.reportAll()
+    }
   }
 
 end ElementTests

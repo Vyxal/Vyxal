@@ -23,7 +23,7 @@ object ListHelpers:
     val lhs = makeIterable(left)
     val rhs = makeIterable(right)
 
-    mergeInfLists(lhs.map(l => rhs.map(r => VList(l, r))))
+    VList.from(mergeInfLists(lhs.map(l => rhs.map(r => VList(l, r)))))
 
   /** Remove items that are duplicates after transforming by `fn` */
   def dedupBy(iterable: VList, fn: VFun)(using ctx: Context): VList =
@@ -274,12 +274,12 @@ object ListHelpers:
       }
 
   /** Merge a possibly infinite list of possibly infinite lists diagonally */
-  def mergeInfLists(lists: Seq[Seq[VAny]])(using Context): VList =
+  def mergeInfLists[T](lists: Seq[Seq[T]]): LazyList[T] =
     val it = lists.iterator
 
-    val touched = mut.ListBuffer.empty[Iterator[VAny]]
+    val touched = mut.ListBuffer.empty[Iterator[T]]
 
-    def gen(): LazyList[VAny] =
+    def gen(): LazyList[T] =
       touched.filterInPlace(_.hasNext)
       val diag = touched.map(_.next()).to(LazyList)
 
@@ -289,7 +289,7 @@ object ListHelpers:
       else if touched.nonEmpty then diag #::: gen()
       else diag
 
-    VList.from(gen())
+    gen()
   end mergeInfLists
 
   def minimum(iterable: VList)(using ctx: Context): VAny =
@@ -373,9 +373,25 @@ object ListHelpers:
     VList.from(uniqueShapes.map(shape => mold(lst, VList.from(shape))).toSeq)
   end partitions
 
+  def partitionsLazy(lst: Seq[VAny]): Seq[Seq[Seq[VAny]]] =
+    def helper(lst: Seq[VAny]): LazyList[LazyList[Seq[VAny]]] =
+      if lst.isEmpty then LazyList.empty
+      else
+        LazyList(lst) #:: mergeInfLists(
+          LazyList
+            .from(1)
+            .takeWhile(i => lst.sizeIs > i)
+            .map { i =>
+              val (left, right) = lst.splitAt(i)
+              helper(right).map(partition => left #:: partition)
+            }
+        )
+    helper(lst)
+
   def partitionBy(lst: VList, shapes: Seq[VNum])(using ctx: Context): VList =
     val shapeSublists = shapes.map(x => VList.fill(x.toInt)(1))
     mold(lst, VList.from(shapeSublists))
+
   def permutations(iterable: VList): Seq[VList] =
     val temp = iterable.toList
     val perms = temp.permutations
