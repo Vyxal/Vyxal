@@ -1489,6 +1489,18 @@ object Elements:
       case (a: VList, b) => a.vmap(NumberHelpers.toBase(_, b))
     },
     addElem(
+      Triad,
+      "ŀ",
+      "Transliterate",
+      List("transliterate"),
+      "any a, any b, any c -> transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)"
+    ) {
+      case (a: String, b: String, c: String) =>
+        StringHelpers.transliterate(a, b, c)
+      case (a: String, b: VList, c: VList) =>
+        StringHelpers.transliterate(a, b, c)
+    },
+    addElem(
       Monad,
       "ÞT",
       "Transpose Safe",
