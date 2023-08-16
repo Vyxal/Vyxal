@@ -169,6 +169,18 @@ class InterpreterTests extends VyxalTests:
     describe("Varargs") {
       testMulti("1 2 3 3λ*|/+}Ė" -> 6, "1 2 3 2λ*|/+}Ė" -> 5)
     }
+
+    describe("Explicit arguments") {
+      they("should actually be passed to the function") {
+        given Context = VyxalTests.testContext()
+        assertResult(VNum(3))(
+          Interpreter.executeFn(
+            VFun.fromElement(Elements.elements("+")),
+            args = Seq(1, 2)
+          )
+        )
+      }
+    }
   }
 
   describe("Variables") {
