@@ -38,9 +38,7 @@ class Context private (
     val testMode: Boolean = false,
     val useStack: Boolean = false,
 ):
-  def settings: Settings =
-    if testMode then Settings(endPrintMode = EndPrintMode.None)
-    else globals.settings
+  def settings: Settings = globals.settings
 
   /** Pop the top of the stack
     *
