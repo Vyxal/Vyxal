@@ -851,6 +851,17 @@
   - { in: [[]], stack: [[], 0] }
   - { in: [""], stack: ["", ""] }
 
+"ŀ":
+  as transliterate:
+    # TODO(lyxal): better tests, I just wrote this temporarily
+    - { in: ["Hello", "eHlo", "abcd"], out: "baccd" }
+  as call while:
+    - in:
+        - 0
+        - !vany "λ5<}" # Less than 5
+        - !vany "λ1+}" # Increment
+      out: 5
+
 "ṅ":
   - {in: [["Hello", "World"]], out: "Hello\nWorld"}
   - {in: ["amon"], out: "0000amon"}

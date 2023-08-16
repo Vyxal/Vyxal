@@ -69,6 +69,15 @@ class YamlTests extends AnyFunSpec:
           val msg =
             if codeOverride.isEmpty then s"Inputs: $inputStr"
             else s"Code: `$code, inputs: $inputStr"
+
+          Elements.elements(element).arity match
+            case Some(arity) =>
+              if arity > 0 && arity != inputs.size then
+                println(
+                  s"[Element $element] Inputs (${inputs.mkString(",")}) don't match arity ($arity)"
+                )
+            case _ => ()
+
           it(msg) {
             given ctx: Context =
               VyxalTests.testContext(inputs = inputs, flags = flags)
