@@ -522,10 +522,11 @@ Trigraph: #.h
 Keywords: head-extract, split-at-head
 - a: lst|str -> Push a[0], then a[1:] onto the stack
 ---------------------
-ŀ (Transliterate) (non-vectorising)
+ŀ (Transliterate | Call While) (non-vectorising)
 Trigraph: #.l
-Keywords: transliterate
+Keywords: transliterate, call-while
 - any a, any b, any c -> transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)
+- a: fun, b: fun, c: any -> call b on c until a(c) is falsy
 ---------------------
 ṅ (Join On Newlines | Pad Binary to Mod 8 | Context if 1) (non-vectorising)
 Trigraph: #.n
