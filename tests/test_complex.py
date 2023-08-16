@@ -264,9 +264,9 @@ def test_count_n_froms():
 
 
 def test_first_ns():
-    stack = run_vyxal("∑?=)+", [9])
+    stack = run_vyxal("∑9=)+", [9])
     assert stack[-1] == 18
-    stack = run_vyxal("∑?=)/", [9])
+    stack = run_vyxal("∑9=)/", [9])
     assert stack[-1] == 9
 
 
