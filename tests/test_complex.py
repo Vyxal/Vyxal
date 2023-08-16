@@ -255,12 +255,19 @@ def test_find_first_truthy_under_function():
 def test_count_n_froms():
     stack = run_vyxal("6%4=)6 4¨Ȯ")
     assert stack[-1] == [4, 10, 16, 22, 28, 34]
-    stack = run_vyxal("6%4=)6 5¨Ȯ¨ȯ")
+    stack = run_vyxal("6%4=)6 5¨Ȯ")
     assert stack[-1] == [10, 16, 22, 28, 34, 40]
     stack = run_vyxal("6%4=)6 4¨ȯ")
     assert stack[-1] == [10, 16, 22, 28, 34, 40]
     stack = run_vyxal("6%4=)6 5¨ȯ")
     assert stack[-1] == [10, 16, 22, 28, 34, 40]
+
+
+def test_first_ns():
+    stack = run_vyxal("∑?=)+", [9])
+    assert stack[-1] == 18
+    stack = run_vyxal("∑?=)/", [9])
+    assert stack[-1] == 9
 
 
 def test_powerset_inf():
