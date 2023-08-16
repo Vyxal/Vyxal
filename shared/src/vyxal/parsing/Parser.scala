@@ -424,7 +424,7 @@ object Parser:
     var arity = 0
     val paramList = ListBuffer.empty[String | Int]
     for component <- components do
-      if arity != -1 then
+      if arity != -1 && component.nonEmpty then
         if component.forall(_.isDigit) then
           // Pop n from stack onto lambda stack
           val num = component.toInt
