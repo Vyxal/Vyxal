@@ -140,6 +140,11 @@ def concat(vec1: VyList, vec2: VyList, ctx: Context = DEFAULT_CTX) -> VyList:
         ),
     )
 
+def count_from(func: types.FunctionType, start: NUMBER_TYPE, ctx: Context) -> NUMBER_TYPE:
+    temp = start
+    while not safe_apply(func, temp, ctx=ctx):
+        temp += 1
+    return temp
 
 def deep_copy(value: Any) -> Any:
     """Because lists and lazylists use memory references. Frick them."""
