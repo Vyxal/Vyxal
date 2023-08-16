@@ -1638,6 +1638,36 @@ def cosine(lhs, ctx):
     }.get(ts, lambda: vectorise(cosine, lhs, ctx=ctx))()
 
 
+@element("O", 2)
+def count_item(lhs, rhs, ctx):
+    """Element O
+    (any, any) -> returns the number of occurances of b in a
+    (any, fun) -> all elements in a where the result of b(x) is highest
+    """
+    if vy_type(lhs) == types.FunctionType:
+        lhs, rhs = rhs, lhs
+    if vy_type(rhs) == types.FunctionType:
+        lhs = iterable(lhs, ctx=ctx)
+        if not lhs:
+            return lhs
+        m = None
+        fun_vals = []
+        for item in lhs:
+            fn_val = safe_apply(rhs, item, ctx=ctx)
+            fun_vals.append(fn_val)
+            if m is None:
+                m = fn_val
+            else:
+                m = dyadic_maximum(m, fn_val, ctx=ctx)
+
+        return LazyList(item for item in lhs if fun_vals.pop(0) == m)
+    if (primitive_type(lhs), primitive_type(rhs)) == (SCALAR_TYPE, list):
+        lhs, rhs = rhs, lhs
+    if vy_type(lhs) in (NUMBER_TYPE, str):
+        lhs, rhs = str(lhs), str(rhs)
+    return iterable(lhs, ctx=ctx).count(rhs)
+
+
 @element("¨Ȯ", 3)
 def count_n_from(lhs, rhs, other, ctx):
     """Element ¨Ȯ
@@ -1688,36 +1718,6 @@ def count_n_from_greater(lhs, rhs, other, ctx):
         temp += 1
 
     return ret
-
-
-@element("O", 2)
-def count_item(lhs, rhs, ctx):
-    """Element O
-    (any, any) -> returns the number of occurances of b in a
-    (any, fun) -> all elements in a where the result of b(x) is highest
-    """
-    if vy_type(lhs) == types.FunctionType:
-        lhs, rhs = rhs, lhs
-    if vy_type(rhs) == types.FunctionType:
-        lhs = iterable(lhs, ctx=ctx)
-        if not lhs:
-            return lhs
-        m = None
-        fun_vals = []
-        for item in lhs:
-            fn_val = safe_apply(rhs, item, ctx=ctx)
-            fun_vals.append(fn_val)
-            if m is None:
-                m = fn_val
-            else:
-                m = dyadic_maximum(m, fn_val, ctx=ctx)
-
-        return LazyList(item for item in lhs if fun_vals.pop(0) == m)
-    if (primitive_type(lhs), primitive_type(rhs)) == (SCALAR_TYPE, list):
-        lhs, rhs = rhs, lhs
-    if vy_type(lhs) in (NUMBER_TYPE, str):
-        lhs, rhs = str(lhs), str(rhs)
-    return iterable(lhs, ctx=ctx).count(rhs)
 
 
 @element("øO", 2)
