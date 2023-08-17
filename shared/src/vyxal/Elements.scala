@@ -1015,8 +1015,8 @@ object Elements:
       "Monadic Minimum | Dyadic Minimum | Generate From Function (Dyadic) | Vectorised Minimum",
       List("min", "minimum", "generator-dyadic"),
       Some(2),
-      "a: lst -> Maximum of a",
-      "a: non-lst, b: non-lst -> Maximum of a and b",
+      "a: lst -> Minimum of a",
+      "a: non-lst, b: non-lst -> Minimum of a and b",
       "a: lst, b: fun -> Call b infinitely with items of a as starting values (dyadic)"
     ) { ctx ?=>
       val top = ctx.pop()

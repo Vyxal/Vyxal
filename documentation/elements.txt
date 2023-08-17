@@ -273,8 +273,8 @@ Keywords: flatten, flat
 ---------------------
 g (Monadic Minimum | Dyadic Minimum | Generate From Function (Dyadic) | Vectorised Minimum) (non-vectorising)
 Keywords: min, minimum, generator-dyadic
-- a: lst -> Maximum of a
-- a: non-lst, b: non-lst -> Maximum of a and b
+- a: lst -> Minimum of a
+- a: non-lst, b: non-lst -> Minimum of a and b
 - a: lst, b: fun -> Call b infinitely with items of a as starting values (dyadic)
 ---------------------
 h (Head | First Item) (non-vectorising)

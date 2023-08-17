@@ -278,7 +278,6 @@ object ListHelpers:
         VList(to.zipWithIndex.map { (item, index) =>
           f.execute(item, index, List(item))
         }*)
-
   end map
 
   def maximum(iterable: VList)(using ctx: Context): VAny =
