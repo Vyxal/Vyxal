@@ -1509,9 +1509,9 @@ object Elements:
       case (p: VFun, f: VFun, v) => MiscHelpers.callWhile(p, f, v)
       case (p: VFun, v, f: VFun) => MiscHelpers.callWhile(p, f, v)
       case (v, p: VFun, f: VFun) => MiscHelpers.callWhile(p, f, v)
-      case (a: VList, b: VAny, c: VAny) =>
+      case (a: VList, b, c) =>
         ListHelpers.transliterate(a, b, c)
-      case (a: VNum, b: VAny, c: VAny) =>
+      case (a: VNum, b, c) =>
         val temp =
           ListHelpers
             .transliterate(ListHelpers.makeIterable(a.toString), b, c)
