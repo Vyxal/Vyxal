@@ -228,23 +228,23 @@ object ListHelpers:
   )(using ctx: Context): VList =
     value match
       case list: VList => list
-      case str: String => VList(str.map(_.toString)*)
+      case str: String => VList.from(str.map(_.toString))
       case fn: VFun => VList(fn)
       case num: VNum =>
         if overrideRangify.getOrElse(ctx.settings.rangify) then
           val start = ctx.settings.rangeStart
           val offset = ctx.settings.rangeOffset
-          VList(
+          VList.from(
             start.toInt
               .to(num.toInt - offset.toInt)
-              .map(VNum(_))*
+              .map(VNum(_))
           )
         else
-          VList(
-            num.toString.map(x =>
-              if "0123456789".contains(x) then VNum(x.toString)
-              else x.toString()
-            )*
+          VList.from(
+            num.toString.map { x =>
+              if x.isDigit then VNum(x - '0')
+              else x.toString
+            }
           )
 
   def matrixMultiply(lhs: VList, rhs: VList)(using Context): VList =
