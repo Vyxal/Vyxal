@@ -527,6 +527,13 @@ Keywords: transliterate, call-while
 - any a, any b, any c -> transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)
 - a: fun, b: fun, c: any -> call b on c until a(c) is falsy
 ---------------------
+ṁ (Mirror) (non-vectorising)
+Trigraph: #.m
+Keywords: mirror
+- num a: a + reversed(a) (as number)
+- str a: a + reversed(a)
+- lst a: append reversed(a) to a
+---------------------
 ṅ (Join On Newlines | Pad Binary to Mod 8 | Context if 1) (non-vectorising)
 Trigraph: #.n
 Keywords: join-newlines, newline-join, join-on-newlines, binary-pad-8, bin-pad-8, one?->context, one?->n
