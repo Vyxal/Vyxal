@@ -114,3 +114,6 @@ extension (iterable: VIter)
     iterable match
       case s: String => s.length
       case l: VList => l.size
+
+given (using Context): Ordering[VAny] with
+  override def compare(x: VAny, y: VAny): Int = MiscHelpers.compareExact(x, y)

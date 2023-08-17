@@ -2,6 +2,7 @@ package vyxal
 
 import scala.language.implicitConversions
 
+import scala.collection.immutable.NumericRange.Inclusive
 import scala.math.Ordered
 import scala.util.matching.Regex
 
@@ -43,9 +44,7 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
 
   /** Inclusive range */
   def to(end: VNum, step: VNum = 1): VList =
-    VList.from(LazyList.unfold(this.floor) { n =>
-      Option.when(n <= end)((n, n + step))
-    })
+    VList.from(Inclusive(this, end, step))
 
   override def compare(that: VNum): Int =
     this.underlying.real.compare(that.underlying.real)
@@ -143,4 +142,19 @@ object VNum:
   given Conversion[Real, VNum] = n => complex(n, 0)
   given Conversion[Complex[Real], VNum] = new VNum(_)
   given Conversion[Boolean, VNum] = b => if b then 1 else 0
+
+  given Integral[VNum] with
+    override def negate(x: VNum): VNum = -x
+    override def plus(x: VNum, y: VNum): VNum = x + y
+    override def minus(x: VNum, y: VNum): VNum = x - y
+    override def times(x: VNum, y: VNum): VNum = x * y
+    override def rem(x: VNum, y: VNum): VNum = x % y
+    override def quot(x: VNum, y: VNum): VNum = (x / y).toIntegral
+    override def compare(x: VNum, y: VNum): Int = x.compare(y)
+    override def fromInt(x: Int): VNum = x
+    override def parseString(str: String): Option[VNum] = Some(VNum(str))
+    override def toInt(x: VNum): Int = x.toInt
+    override def toLong(x: VNum): Long = x.toLong
+    override def toFloat(x: VNum): Float = x.toFloat
+    override def toDouble(x: VNum): Double = x.toDouble
 end VNum

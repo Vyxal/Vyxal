@@ -280,13 +280,6 @@ object ListHelpers:
         }*)
   end map
 
-  def maximum(iterable: VList)(using ctx: Context): VAny =
-    if iterable.isEmpty then VList()
-    else
-      iterable.reduce { (a, b) =>
-        if MiscHelpers.compareExact(a, b) > 0 then a else b
-      }
-
   /** Merge a possibly infinite list of possibly infinite lists diagonally */
   def mergeInfLists[T](lists: Seq[Seq[T]]): LazyList[T] =
     // Based off of https://stackoverflow.com/a/20516638
@@ -306,13 +299,6 @@ object ListHelpers:
 
     gen()
   end mergeInfLists
-
-  def minimum(iterable: VList)(using ctx: Context): VAny =
-    if iterable.isEmpty then VList()
-    else
-      iterable.reduce { (a, b) =>
-        if MiscHelpers.compareExact(a, b) < 0 then a else b
-      }
 
   /** Mold a list into a shape.
     * @param content
@@ -649,13 +635,12 @@ object ListHelpers:
       (a: @unchecked) match
         case a: VList => vectorisedMaximum(a, b)
         case a: VVal => MiscHelpers.dyadicMaximum(a, b)
-        case _ => ???
     })
 
   def vectorisedMinimum(iterable: VList, b: VVal): VList =
-    VList.from(iterable.map {
-      case a: VList => vectorisedMinimum(a, b)
-      case a: VVal => MiscHelpers.dyadicMinimum(a, b)
-      case _ => ???
+    VList.from(iterable.map { a =>
+      (a: @unchecked) match
+        case a: VList => vectorisedMinimum(a, b)
+        case a: VVal => MiscHelpers.dyadicMinimum(a, b)
     })
 end ListHelpers

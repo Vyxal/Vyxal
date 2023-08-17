@@ -797,15 +797,16 @@ object Elements:
         ListHelpers.makeIterable(a).map(ListHelpers.makeIterable(_).length)
       )
     },
-    addElem(
+    addFull(
       Monad,
       "ι",
       "Length 0-Range",
       List(
         "zero->len"
       ),
+      false,
       "a: any -> `[0, 1, 2, ..., len(a)-1]`"
-    ) { case a =>
+    ) { a =>
       range(0, ListHelpers.makeIterable(a).length - 1)
     },
     addElem(
@@ -939,8 +940,7 @@ object Elements:
     ) { ctx ?=>
       val top = ctx.pop()
       top match
-        case a: VList =>
-          ctx.push(ListHelpers.maximum(a))
+        case a: VList => ctx.push(a.maxOption.getOrElse(VList()))
         case _ =>
           val next = ctx.pop()
           (top, next) match
@@ -1022,7 +1022,7 @@ object Elements:
       val top = ctx.pop()
       top match
         case a: VList =>
-          ctx.push(ListHelpers.minimum(a))
+          ctx.push(a.minOption.getOrElse(VList()))
         case _ =>
           val next = ctx.pop()
           (top, next) match
