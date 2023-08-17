@@ -16,6 +16,9 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   def toLong: Long = underlying.toLong
   def toBigInt: BigInt = underlying.real.toRational.toBigInt
 
+  /** Whether the real part is small enough to be converted to an `Int` */
+  def isValidInt: Boolean = underlying.real.isValidInt
+
   /** Round the real and imaginary parts */
   def toIntegral: VNum = underlying.round
 
@@ -37,6 +40,12 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
     this - spire.math.floor(q.real) * rhs
 
   def vabs: VNum = underlying.abs
+
+  /** Inclusive range */
+  def to(end: VNum, step: VNum = 1): VList =
+    VList.from(LazyList.unfold(this.floor) { n =>
+      Option.when(n <= end)((n, n + step))
+    })
 
   override def compare(that: VNum): Int =
     this.underlying.real.compare(that.underlying.real)

@@ -147,12 +147,9 @@ object NumberHelpers:
       else i += 1
     VList.from(result.toList)
 
-  def range(a: VNum, b: VNum): VList =
-    val start = a.toBigInt
-    val end = b.toBigInt
+  def range(start: VNum, end: VNum): VList =
     val step = if start < end then 1 else -1
-
-    VList.from((start to end by step).map(VNum(_)))
+    start.to(end, step = step)
 
   def toBinary(a: VAny)(using Context): VAny =
     a match

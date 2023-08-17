@@ -234,11 +234,7 @@ object ListHelpers:
         if overrideRangify.getOrElse(ctx.settings.rangify) then
           val start = ctx.settings.rangeStart
           val offset = ctx.settings.rangeOffset
-          VList.from(
-            start.toInt
-              .to(num.toInt - offset.toInt)
-              .map(VNum(_))
-          )
+          VList.from(start.to(num - offset))
         else
           VList.from(
             num.toString.map { x =>
