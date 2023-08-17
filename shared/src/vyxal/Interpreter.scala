@@ -36,7 +36,7 @@ object Interpreter:
         if !ctx.isStackEmpty && ctx.settings.endPrintMode == EndPrintMode.Default
         then vyPrintln(ctx.peek)
       case Left(error) =>
-        throw new Error(s"Error while executing $code: $error")
+        throw Error(s"Error while executing $code: $error")
   end execute
 
   def execute(ast: AST)(using ctx: Context): Unit =

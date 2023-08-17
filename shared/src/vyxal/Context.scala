@@ -149,13 +149,13 @@ class Context private (
   /** Set a variable to a given value. */
   def setVar(name: String, value: VAny): Unit =
     if vars.contains(s"!$name") then
-      throw new Exception(s"Variable $name is constant")
+      throw Exception(s"Variable $name is constant")
     else vars(name) = value
 
   /** Set a constant variable to a given value */
   def setConst(name: String, value: VAny): Unit =
     if vars.contains(s"!$name") then
-      throw new Exception(s"Variable $name already exists")
+      throw Exception(s"Variable $name already exists")
     else vars(s"!$name") = value
 
   /** Get all variables in this Context (parent variables not included) */

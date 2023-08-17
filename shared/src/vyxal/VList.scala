@@ -132,6 +132,8 @@ class VList private (val lst: Seq[VAny])
   override def equals(o: Any): Boolean = o match
     case v: VList => this.lst == v.lst
     case _ => this.lst == o
+
+  override def hashCode(): Int = this.lst.hashCode()
 end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:

@@ -104,7 +104,7 @@ trait VyxalTests extends AnyFunSpec:
     * checked and found to pass because they're run separately using
     * [[org.scalatest.Checkpoints]]. That block would turn into roughly
     * ```scala
-    * val cp = new Checkpoint()
+    * val cp = Checkpoint()
     * cp { assert(false) }
     * cp { assertResult(VNum(1))(VNum("1")) }
     * cp { assertResult(VNum(0.5))(VNum(".")) }
@@ -154,7 +154,7 @@ object VyxalTests:
               cp { ${ expr.asExpr } }
               cp.reportAll()
             }
-      case _ => throw new IllegalArgumentException(asserts.show)
+      case _ => throw IllegalArgumentException(asserts.show)
     end match
   end groupImpl
 end VyxalTests

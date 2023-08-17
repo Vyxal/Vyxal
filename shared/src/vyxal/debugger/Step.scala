@@ -150,7 +150,7 @@ object Step:
           case Some(element) =>
             Step.hidden { element.impl() }
           case None =>
-            throw new RuntimeException(s"No such element: $symbol")
+            throw RuntimeException(s"No such element: $symbol")
 
   def stepsForAST(ast: AST): Step =
     ast match

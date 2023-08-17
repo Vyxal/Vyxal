@@ -106,7 +106,7 @@ object CLI:
               config.code match
                 case Some(code) => code
                 case None =>
-                  throw new RuntimeException(
+                  throw RuntimeException(
                     "Either file name or code must be given to debug"
                   )
           DebugRepl.start(code)

@@ -324,7 +324,7 @@ private[parsing] object LiterateLexer extends Lexer:
                 )
               )
             }
-          case Left(err) => throw new RuntimeException(err.toString)
+          case Left(err) => throw RuntimeException(err.toString)
     }
 
   def singleToken[$: P]: P[Seq[Token]] =

@@ -44,7 +44,7 @@ object NumberHelpers:
       case n: VNum => fromBinary(n.toString())
       case l: VList => toInt(l, 2)
       case s: String => toInt(s, 2)
-      case _ => throw new Exception("Cannot convert to binary")
+      case _ => throw Exception("Cannot convert to binary")
 
   def gamma(a: VNum): VNum =
     val colist = List(
@@ -165,7 +165,7 @@ object NumberHelpers:
           val binary = c.toInt.toBinaryString
           result += VList(binary.map(_.asDigit).map(VNum(_)).toList*)
         VList(result.toList*)
-      case _ => throw new Exception("Cannot convert to binary")
+      case _ => throw Exception("Cannot convert to binary")
 
   def toBase(a: VAny, b: VAny)(using ctx: Context): VAny =
     (a, b) match
@@ -173,7 +173,7 @@ object NumberHelpers:
       case (n: VNum, b: (String | VList)) => toBaseAlphabet(n, b)
       case (a: VList, _) => VList(a.map(toBase(_, b))*)
       case _ =>
-        throw new Exception(
+        throw Exception(
           s"toBase only works on numbers and lists, was given $a and $b instead"
         )
 
@@ -267,5 +267,5 @@ object NumberHelpers:
           exponent += 1
         res
       case s: String => VNum(s, radix).toIntegral
-      case _ => throw new Exception("Cannot convert to int")
+      case _ => throw Exception("Cannot convert to int")
 end NumberHelpers

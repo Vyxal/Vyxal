@@ -10,7 +10,7 @@ object DebugRepl:
     scribe.trace("Starting debugger REPL")
     val ast = Lexer(code).flatMap(Parser.parse) match
       case Right(ast) => ast
-      case Left(err) => throw new RuntimeException(err.msg)
+      case Left(err) => throw RuntimeException(err.msg)
     val debugger = Debugger(ast)
     debugger.printState()
     while !debugger.finished do

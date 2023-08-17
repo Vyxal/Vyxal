@@ -318,7 +318,7 @@ object Elements:
       List("exit", "quit"),
       None,
       "a -> Stop program execution"
-    ) { throw new QuitException },
+    ) { throw QuitException() },
     addDirect(
       "Ḃ",
       "Execute lambda without popping | Evaluate as Vyxal without popping | Boolean Mask | Is 1?",
@@ -349,7 +349,7 @@ object Elements:
             val indices = ListHelpers.makeIterable(a).map {
               case x: VNum => x.toInt
               case x =>
-                throw new IllegalArgumentException(s"$x is not a number")
+                throw IllegalArgumentException(s"$x is not a number")
             }
             ctx.push(
               VList(
@@ -847,7 +847,7 @@ object Elements:
             case x =>
               // todo(lyxal): Are we sure we don't want to convert to VNum or
               //              something instead of erroring?
-              throw new IllegalArgumentException(
+              throw IllegalArgumentException(
                 s"Can't repeat an item a non-integer number of times (found $x in $b)"
               )
           }
@@ -856,7 +856,7 @@ object Elements:
         if a.isInstanceOf[String] then temp.map(_.mkString).mkString
         else VList.from(temp)
       case _ =>
-        throw new IllegalArgumentException(
+        throw IllegalArgumentException(
           "Can't repeat an item a non-integer number of times"
         )
     },
@@ -903,14 +903,14 @@ object Elements:
       List("break"),
       Some(0),
       " -> break out of the current loop"
-    ) { throw new BreakLoopException },
+    ) { throw BreakLoopException() },
     addDirect(
       "#x",
       "Loop Continue",
       List("continue"),
       Some(0),
       " -> continue the current loop"
-    ) { throw new ContinueLoopException },
+    ) { throw ContinueLoopException() },
     addElem(
       Dyad,
       "M",
@@ -950,7 +950,7 @@ object Elements:
             case (a: VVal, b: VList) =>
               ctx.push(ListHelpers.vectorisedMaximum(b, a))
             case _ =>
-              throw new Exception("Invalid arguments for maximum")
+              throw Exception("Invalid arguments for maximum")
     },
     addElem(
       Dyad,
@@ -1032,7 +1032,7 @@ object Elements:
             case (a: VVal, b: VList) =>
               ctx.push(ListHelpers.vectorisedMinimum(b, a))
             case _ =>
-              throw new Exception("Invalid arguments for mimimum")
+              throw Exception("Invalid arguments for mimimum")
     },
     addFull(
       Dyad,
@@ -1149,7 +1149,7 @@ object Elements:
             case (a: VNum, b: VList) =>
               ctx.push(VList.from(ListHelpers.overlaps(b.lst, a.toInt)))
             case _ =>
-              throw new Exception("Invalid arguments for overlaps")
+              throw Exception("Invalid arguments for overlaps")
       end match
     },
     addFull(Dyad, ";", "Pair", List("pair"), false, "a, b -> [a, b]") {
@@ -1290,7 +1290,7 @@ object Elements:
       " -> call the current function recursively"
     ) { ctx ?=>
       if ctx.globals.callStack.isEmpty then
-        throw new RecursionError("No function to recurse")
+        throw RecursionError("No function to recurse")
       else ctx.push(Interpreter.executeFn(ctx.globals.callStack.top))
     },
     addElem(
@@ -1350,7 +1350,7 @@ object Elements:
       List("return", "ret"),
       None,
       "a -> return a"
-    ) { throw new ReturnFromFunctionException },
+    ) { throw ReturnFromFunctionException() },
     addFull(
       Monad,
       "S",

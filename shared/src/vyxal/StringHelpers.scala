@@ -26,7 +26,7 @@ object StringHelpers:
       val o =
         if c.toInt == 10 then 95
         else if ' ' <= c && c <= '~' then c.toInt - 32
-        else throw new Exception(s"Invalid character $c")
+        else throw Exception(s"Invalid character $c")
 
       3 * (96 * z + o)
 

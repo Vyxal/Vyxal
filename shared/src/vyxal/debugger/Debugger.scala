@@ -74,7 +74,7 @@ class Debugger(code: AST)(using rootCtx: Context):
 
   def stepInto(): Unit =
     if stackFrames.isEmpty then
-      throw new IllegalStateException("Debugger has finished, cannot step into")
+      throw IllegalStateException("Debugger has finished, cannot step into")
 
     scribe.trace(s"Stepping in, frame: $frame, step: $currStep")
     val nextStep = this.currStep match
@@ -150,7 +150,7 @@ object Debugger:
   def execCode(code: String)(using Context): Step =
     val ast = Lexer(code)
       .flatMap(Parser.parse)
-      .getOrElse(throw new Error("Could not parse code"))
+      .getOrElse(throw Error("Could not parse code"))
     Step.stepsForAST(ast)
 
 end Debugger

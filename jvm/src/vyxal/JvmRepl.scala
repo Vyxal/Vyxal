@@ -66,14 +66,12 @@ object JvmRepl extends Repl:
 
     if ctx.settings.literate then
       lineReaderBuilder.completer(
-        new StringsCompleter(
-          Elements.elements.values.flatMap(_.keywords).toArray*
-        )
+        StringsCompleter(Elements.elements.values.flatMap(_.keywords).toArray*)
       )
 
     val lineReader = lineReaderBuilder.build()
 
-    new AutosuggestionWidgets(lineReader).enable()
+    AutosuggestionWidgets(lineReader).enable()
 
     while true do
       try
