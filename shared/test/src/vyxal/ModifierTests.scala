@@ -37,4 +37,11 @@ class ModifierTests extends VyxalTests:
       "#[3|4|5#]ᴴd" -> VList(6, 4, 5)
     )
   }
+
+  describe("Maximum and minimum by (ᵐ and ⁿ)") {
+    testMulti(
+      "#[2|1|3#]ᵐN" -> 1,
+      "#[2|1|3#]ⁿN" -> 3,
+    )
+  }
 end ModifierTests
