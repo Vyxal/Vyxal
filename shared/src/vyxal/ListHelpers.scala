@@ -39,7 +39,7 @@ object ListHelpers:
       case _ => VList.empty
 
   /** Remove items that are duplicates after transforming by `fn` */
-  def dedupBy(iterable: VList, fn: VFun)(using ctx: Context): VList =
+  def dedupBy(iterable: VList, fn: VFun)(using Context): VList =
     // Can't use a Set here because equal VNums don't hash to the same value
     val seen = mut.ArrayBuffer.empty[VAny]
     iterable.filter { item =>
@@ -50,12 +50,12 @@ object ListHelpers:
         true
     }
 
-  def dotProduct(left: VList, right: VList)(using ctx: Context): VAny =
+  def dotProduct(left: VList, right: VList)(using Context): VAny =
     left *~ right match
       case l: VList => ListHelpers.sum(l)
       case x => x
 
-  def filter(iterable: VList, predicate: VFun)(using ctx: Context): VList =
+  def filter(iterable: VList, predicate: VFun)(using Context): VList =
     predicate.originalAST match
       case Some(lam) =>
         val branches = lam.body
@@ -200,7 +200,7 @@ object ListHelpers:
     if current.nonEmpty then out += current.toSeq
     out.toSeq
 
-  def interleave(left: VList, right: VList)(using ctx: Context): VList =
+  def interleave(left: VList, right: VList)(using Context): VList =
     val out = ArrayBuffer.empty[VAny]
     val leftIter = left.iterator
     val rightIter = right.iterator
@@ -254,7 +254,7 @@ object ListHelpers:
       }
     )
 
-  def map(f: VFun, to: VList)(using ctx: Context): VList =
+  def map(f: VFun, to: VList)(using Context): VList =
     f.originalAST match
       case Some(lam) =>
         val branches = lam.body
@@ -308,7 +308,7 @@ object ListHelpers:
     * @return
     *   VyList The content, molded into the shape.
     */
-  def mold(content: VList, shape: VList)(using ctx: Context): VList =
+  def mold(content: VList, shape: VList)(using Context): VList =
     def moldHelper(content: VList, shape: VList, ind: Int): VList =
       val output = ArrayBuffer.empty[VAny]
       val mutContent = content
@@ -355,7 +355,7 @@ object ListHelpers:
     else iterable.sliding(size).toSeq
 
   /** List partitions (like set partitions, but contiguous sublists) */
-  def partitions(lst: VList)(using ctx: Context): VList =
+  def partitions(lst: VList)(using Context): VList =
     val size = lst.knownSize
     if size == -1 then
       // Possibly infinite
@@ -398,7 +398,7 @@ object ListHelpers:
         )
     helper(lst)
 
-  def partitionBy(lst: VList, shapes: Seq[VNum])(using ctx: Context): VList =
+  def partitionBy(lst: VList, shapes: Seq[VNum])(using Context): VList =
     val shapeSublists = shapes.map(x => VList.fill(x.toInt)(1))
     mold(lst, VList.from(shapeSublists))
 
@@ -407,7 +407,7 @@ object ListHelpers:
     val perms = temp.permutations
     perms.map(VList.from).toSeq
 
-  def sortBy(iterable: VList, key: VFun)(using ctx: Context): VList =
+  def sortBy(iterable: VList, key: VFun)(using Context): VList =
     key.originalAST match
       case Some(lam) =>
         val branches = lam.body
@@ -464,9 +464,9 @@ object ListHelpers:
     iterable.inits.toSeq.reverse.tail
 
   def reduce(iter: VAny, by: VFun, init: Option[VAny] = None)(using
-      ctx: Context
+      Context
   ): VAny =
-    var remaining = ListHelpers.makeIterable(iter, Some(true))(using ctx).toList
+    var remaining = ListHelpers.makeIterable(iter, Some(true)).toList
 
     // Convert niladic + monadic functions to be dyadic for reduction purposes
     val byFun = by.withArity(if by.arity < 2 then 2 else by.arity)
@@ -532,7 +532,7 @@ object ListHelpers:
 
     parts.toSeq
 
-  def splitNormal(iterable: VList, sep: VAny)(using ctx: Context): VList =
+  def splitNormal(iterable: VList, sep: VAny)(using Context): VList =
     val out = split(iterable, Seq(sep))
     VList(out.map(VList.from)*)
 
@@ -542,11 +542,9 @@ object ListHelpers:
     val fromList = ListHelpers.makeIterable(from)
     val toList = ListHelpers.makeIterable(to)
 
-    val pairs = fromList.lst.zip(toList.lst)
+    val pairs = fromList.lazyZip(toList).toMap
 
-    val out = source.map(x => pairs.find(_._1 == x).fold(x)(_._2))
-
-    VList.from(out)
+    VList.from(source.map(x => pairs.getOrElse(x, x)))
 
   /** Transpose a matrix.
     *

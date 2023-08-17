@@ -236,7 +236,7 @@ object StringHelpers:
       s"${word.head.toUpper}${word.tail.toLowerCase}"
     }.mkString
 
-  def vyToString(item: VAny)(using ctx: Context): String =
+  def vyToString(item: VAny)(using Context): String =
     item match
       case n: VNum => NumberHelpers.numToString(n)
       case s: String => s

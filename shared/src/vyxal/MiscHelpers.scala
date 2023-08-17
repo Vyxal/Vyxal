@@ -4,6 +4,7 @@ import vyxal.parsing.Lexer
 import vyxal.Interpreter.executeFn
 import vyxal.VNum.given
 
+import scala.annotation.tailrec
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Stack
 
@@ -79,7 +80,8 @@ object MiscHelpers:
 
   def eval(s: String)(using ctx: Context): VAny =
     if VNum.NumRegex.matches(s) then VNum(s)
-    else if s.matches(raw"""("(?:[^"\\]|\\.)*["])""") then s.substring(1).init
+    else if s.matches(raw"""("(?:[^"\\]|\\.)*["])""") then
+      s.substring(1, s.length - 1)
     else if Lexer.isList(s) then
       Lexer.lexLiterate(s) match
         case Right(tokens) =>
@@ -89,24 +91,18 @@ object MiscHelpers:
         case Left(err) => throw RuntimeException(s"Couldn't parse list: $err")
     else s
 
-  def firstNonNegative(f: VFun)(using ctx: Context): Int =
-    firstFromN(f, 0)
-
   /** A generalised "count up until the first positive integer is found that
     * satisfies a function". Helpful because you might want different hardcoded
     * offsets or even dynamic offsets.
     */
+  @tailrec
   def firstFromN(f: VFun, n: Int)(using ctx: Context): Int =
-    var i = n
-    while true do
-      ctx.push(i)
-      val result = executeFn(f)
-      if boolify(result) then return i
-      i += 1
-    ???
+    if boolify(f(n)) then n
+    else firstFromN(f, n + 1)
 
-  def firstPositive(f: VFun)(using ctx: Context): Int =
-    firstFromN(f, 1)
+  def firstNonNegative(f: VFun)(using Context): Int = firstFromN(f, 0)
+
+  def firstPositive(f: VFun)(using Context): Int = firstFromN(f, 1)
 
   val joinNothing: Monad = Monad.fill("joinNothing") {
     case (a: VList) =>
@@ -153,6 +149,7 @@ object MiscHelpers:
       i += 1
     VList.from(result.result())
 
+  /** For pattern-matching. Unpacks the top of the stack into some variables */
   def unpack(names: List[(String, Int)])(using ctx: Context): Unit =
     // String = variable name
     // Int = depth inside ragged list
@@ -176,10 +173,9 @@ object MiscHelpers:
       val temp = VList(nameStack.pop().toList*)
       nameStack.top += temp
     val unpackedNames = VList(nameStack.top.toList*)
-    val shapedValues = ListHelpers.makeIterable(ctx.pop())(using ctx)
+    val shapedValues = ListHelpers.makeIterable(ctx.pop())
 
-    unpackHelper(unpackedNames, shapedValues)(using ctx)
-
+    unpackHelper(unpackedNames, shapedValues)
   end unpack
 
   def unpackHelper(
