@@ -549,6 +549,18 @@ object ListHelpers:
     val out = split(iterable, Seq(sep))
     VList(out.map(VList.from)*)
 
+  def transliterate(source: VList, from: VAny, to: VAny)(using
+      ctx: Context
+  ): VList =
+    val fromList = ListHelpers.makeIterable(from)
+    val toList = ListHelpers.makeIterable(to)
+
+    val pairs = fromList.lst.zip(toList.lst)
+
+    val out = source.map(x => pairs.find(_._1 == x).fold(x)(_._2))
+
+    VList.from(out)
+
   /** Transpose a matrix.
     *
     * Hangs on infinite lists of finite lists. See [[transposeSafe]] for a

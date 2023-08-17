@@ -853,8 +853,16 @@
 
 "ŀ":
   as transliterate:
-    # TODO(lyxal): better tests, I just wrote this temporarily
-    - { in: ["Hello", "eHlo", "abcd"], out: "baccd" }
+    - {in: [1300655506, 356, 879], out: 1800977714}
+    - {in: ["abcdefcba","abc","123"], out: "123def321"}
+    - {in: [[1,2,0], [2], [5]], out: [1,5,0]}
+    - {in: ["120", [2], "5"], out: "150"}
+    - {in: [-120, [2], [5]], out: -150}
+    - {in: [["abc","ab",["bb","cc"]]], out: "bbccc"}
+    - {in: ["abcd", ["ab", "cd"], ["cd", "ab"]], out: "cdab"}
+    - {in: [431, 1234, 4321], out: 124}
+    - {in: [-234, 1234, 4321], out: -321}
+    - {in: ["Hello", "eHlo", "abcd"], out: "baccd" }
   as call while:
     - in:
         - 0

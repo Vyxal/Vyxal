@@ -1496,13 +1496,27 @@ object Elements:
       "any a, any b, any c -> transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)",
       "a: fun, b: fun, c: any -> call b on c until a(c) is falsy"
     ) {
-      case (a: String, b: String, c: String) =>
-        StringHelpers.transliterate(a, b, c)
-      case (a: String, b: VList, c: VList) =>
-        StringHelpers.transliterate(a, b, c)
+      case (
+            a: String,
+            b: (VList | VNum | String),
+            c: (VList | VNum | String)
+          ) =>
+        StringHelpers.transliterate(
+          a,
+          ListHelpers.makeIterable(b),
+          ListHelpers.makeIterable(c)
+        )
       case (p: VFun, f: VFun, v) => MiscHelpers.callWhile(p, f, v)
       case (p: VFun, v, f: VFun) => MiscHelpers.callWhile(p, f, v)
       case (v, p: VFun, f: VFun) => MiscHelpers.callWhile(p, f, v)
+      case (a: VList, b: VAny, c: VAny) =>
+        ListHelpers.transliterate(a, b, c)
+      case (a: VNum, b: VAny, c: VAny) =>
+        val temp =
+          ListHelpers
+            .transliterate(ListHelpers.makeIterable(a.toString), b, c)
+            .mkString
+        if VNum.NumRegex.matches(temp) then VNum(temp) else temp
     },
     addElem(
       Dyad,
@@ -1652,13 +1666,12 @@ object Elements:
     addElem(
       Monad,
       "Ṡ",
-      "Vectorised Sums | Is Numeric?",
+      "Vectorised Sums",
       List(
         "vectorised-sums",
         "vec-sums",
       ),
       "a: lst -> sum of each element of a",
-      "a: str -> is a numeric?"
     ) { case a: VList =>
       a.vmap(x => ListHelpers.sum(ListHelpers.makeIterable(x)))
     },
