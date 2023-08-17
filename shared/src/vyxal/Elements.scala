@@ -1679,6 +1679,43 @@ object Elements:
           )
 
     },
+    addDirect(
+      "#|map-suffixes",
+      "[Internal Use] Map Suffixes (Element Form)",
+      List(),
+      None,
+      "*a, f -> f applied to each suffix of a. Use the modifier instead."
+    ) { ctx ?=>
+      ctx.pop() match
+        case f: VFun =>
+          val arg = ListHelpers.makeIterable(ctx.pop())
+          val suffixes = arg.indices.map(i => arg.slice(i, arg.length))
+          ctx.push(VList.from(suffixes.map(suffix => f(suffix))))
+
+        case _ =>
+          throw IllegalArgumentException(
+            "Map Suffixes: First argument should be a function"
+          )
+    },
+    addDirect(
+      "#|reduce-cols",
+      "[Internal Use] Reduce Columns (Element Form)",
+      List(),
+      None,
+      "*a, f -> each column of a reduced by f. Use the modifier instead."
+    ) { ctx ?=>
+      ctx.pop() match
+        case f: VFun =>
+          val arg = ListHelpers.makeIterable(ctx.pop())
+          val cols = ListHelpers.transpose(arg)
+          ctx.push(
+            VList.from(cols.map(col => ListHelpers.reduce(col, f, None)))
+          )
+        case _ =>
+          throw IllegalArgumentException(
+            "Reduce Columns: First argument should be a function"
+          )
+    },
     addElem(
       Monad,
       "V",

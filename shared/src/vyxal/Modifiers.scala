@@ -75,6 +75,31 @@ object Modifiers:
         val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
         AST.makeSingle(lambdaAst, AST.Command("#~"))
     },
+    "ᶜ" -> Modifier(
+      "Reduce Columns | Map Over Suffixes",
+      """|Reduce columns of a 2d list by a function
+         |Map an element over suffixes""".stripMargin,
+      List(
+        "reduce-columns:",
+        "map-over-suffixes:",
+        "fold-cols:",
+        "foldl-cols:",
+        "fold-columns-by:",
+        "reduce-columns-by:",
+        "over-suffixes:"
+      ),
+      1
+    ) { case List(ast) =>
+      if isExplicitMonad(ast) then
+        val lambdaAst = astToLambda(ast, 1)
+        AST.makeSingle(
+          lambdaAst,
+          AST.Command("#|map-suffixes"),
+        )
+      else
+        val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
+        AST.makeSingle(lambdaAst, AST.Command("#|reduce-cols"))
+    },
     "v" -> Modifier(
       "Vectorise",
       """|Vectorises
