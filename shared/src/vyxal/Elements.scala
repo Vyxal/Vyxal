@@ -1649,7 +1649,7 @@ object Elements:
     },
     addDirect(
       "#v",
-      "Vectorise (Element Form) [Internal Use]",
+      "[Internal Use] Vectorise (Element Form) ",
       List(),
       None,
       "*a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead"
@@ -1661,6 +1661,23 @@ object Elements:
           throw IllegalArgumentException(
             "Vectorise: First argument should be a function"
           )
+    },
+    addDirect(
+      "#~",
+      "[Internal Use] Apply Without Popping (Element Form)",
+      List(),
+      None,
+      "*a, f -> f applied to the stack without popping items. Use the modifier instead."
+    ) { ctx ?=>
+      ctx.pop() match
+        case f: VFun =>
+          val args = ctx.peek(f.arity)
+          ctx.push(f(args*))
+        case _ =>
+          throw IllegalArgumentException(
+            "Apply Without Popping: First argument should be a function"
+          )
+
     },
     addElem(
       Monad,

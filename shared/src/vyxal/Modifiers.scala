@@ -56,6 +56,25 @@ object Modifiers:
         val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
         AST.makeSingle(lambdaAst, AST.Command("ȧ"))
     },
+    "ᵇ" -> Modifier(
+      "Apply Without Popping | Remove Duplicates by",
+      """|Apply a 2+ arity element to the stack without popping
+       |Remove duplicates from a list by an element
+       |ᵇf<dyad|triad|tetrad>: apply f to the stack without popping
+       |ᵇf<monad>: remove duplicates from a list by applying f to each pair of elements""".stripMargin,
+      List("without-popping:", "peek:", "dedup-by:", "remove-duplicates-by:"),
+      1
+    ) { case List(ast) =>
+      if isExplicitMonad(ast) then
+        val lambdaAst = astToLambda(ast, 1)
+        AST.makeSingle(
+          lambdaAst,
+          AST.Command("Ḋ")
+        )
+      else
+        val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
+        AST.makeSingle(lambdaAst, AST.Command("#~"))
+    },
     "v" -> Modifier(
       "Vectorise",
       """|Vectorises
