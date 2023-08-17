@@ -15007,7 +15007,28 @@ def test_Transliterate():
 
 
     stack = [vyxalify(item) for item in ["abc","ab",["bb","cc"]]]
-    expected = vyxalify(["bb","cc","c"])
+    expected = vyxalify("bbccc")
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Ŀ')
+    # print('Ŀ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in ["abcd", ["ab", "cd"], ["cd", "ab"]]]
+    expected = vyxalify("cdab")
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -27730,6 +27751,29 @@ def test_NumberCompress():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
+def test_SHA256Hash():
+
+    stack = [vyxalify(item) for item in ["cookie"]]
+    expected = vyxalify("d7e83e28a04b537e64424546b14caf9b67bad2f28dabce68116e0d372319fa00")
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('ø%')
+    # print('ø%', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
 def test_Center():
 
     stack = [vyxalify(item) for item in [["ab","cdef"]]]
@@ -38355,29 +38399,6 @@ def test_ParseIntoList():
 
     code = transpile('¨"')
     # print('¨"', code)
-    exec(code)
-
-    ctx.stacks.pop()
-    actual = vyxalify(stack[-1])
-
-    print(simplify(expected), simplify(actual))
-
-    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
-    else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
-
-
-def test_SHA256Hash():
-
-    stack = [vyxalify(item) for item in ["cookie"]]
-    expected = vyxalify("d7e83e28a04b537e64424546b14caf9b67bad2f28dabce68116e0d372319fa00")
-    ctx = Context()
-
-    ctx.stacks.append(stack)
-
-    code = transpile('ø%')
-    # print('ø%', code)
     exec(code)
 
     ctx.stacks.pop()

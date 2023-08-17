@@ -513,6 +513,8 @@ def add(lhs, rhs, ctx):
     (num, str) -> str(lhs) + rhs
     (str, num) -> lhs + str(rhs)
     (str, str) -> lhs + rhs
+    (fun, num) -> First integer x greater than a where b(x) is truthy
+    (num, fun) -> First integer x greater than b where a(x) is truthy
     """
     ts = vy_type(lhs, rhs)
     return {
@@ -520,6 +522,12 @@ def add(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: str(lhs) + rhs,
         (str, NUMBER_TYPE): lambda: lhs + str(rhs),
         (str, str): lambda: lhs + rhs,
+        (types.FunctionType, NUMBER_TYPE): lambda: count_from(
+            lhs, rhs + 1, ctx=ctx
+        ),
+        (NUMBER_TYPE, types.FunctionType): lambda: count_from(
+            rhs, lhs + 1, ctx=ctx
+        ),
     }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
 
 
@@ -1660,6 +1668,58 @@ def count_item(lhs, rhs, ctx):
     return iterable(lhs, ctx=ctx).count(rhs)
 
 
+@element("¨Ȯ", 3)
+def count_n_from(lhs, rhs, other, ctx):
+    """Element ¨Ȯ
+    (fun, num, num) -> First b numbers greater than or equal to c where a(x) is truthy
+    (num, fun, num) -> First c numbers greater than or equal to a where b(x) is truthy
+    (num, num, fun) -> First b numbers greater than or equal to a where a(x) is truthy
+    """
+
+    func, count, start = (
+        (lhs, rhs, other)
+        if isinstance(lhs, types.FunctionType)
+        else (rhs, other, lhs)
+        if isinstance(rhs, types.FunctionType)
+        else (other, lhs, rhs)
+    )
+
+    ret = []
+    temp = start
+    while len(ret) < count:
+        if safe_apply(func, temp, ctx=ctx):
+            ret.append(temp)
+        temp += 1
+
+    return ret
+
+
+@element("¨ȯ", 3)
+def count_n_from_greater(lhs, rhs, other, ctx):
+    """Element ¨ȯ
+    (fun, num, num) -> First b numbers greater than c where a(x) is truthy
+    (num, fun, num) -> First c numbers greater than a where b(x) is truthy
+    (num, num, fun) -> First b numbers greater than a where a(x) is truthy
+    """
+
+    func, count, start = (
+        (lhs, rhs, other)
+        if isinstance(lhs, types.FunctionType)
+        else (rhs, other, lhs)
+        if isinstance(rhs, types.FunctionType)
+        else (other, lhs, rhs)
+    )
+
+    ret = []
+    temp = start + 1
+    while len(ret) < count:
+        if safe_apply(func, temp, ctx=ctx):
+            ret.append(temp)
+        temp += 1
+
+    return ret
+
+
 @element("øO", 2)
 def count_overlapping(lhs, rhs, ctx):
     """Element øO
@@ -1886,6 +1946,12 @@ def divide(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: chop(rhs, lhs),
         (str, NUMBER_TYPE): lambda: chop(lhs, rhs),
         (str, str): lambda: lhs.split(rhs),
+        (types.FunctionType, NUMBER_TYPE): lambda: count_from(
+            lhs, rhs, ctx=ctx
+        ),
+        (NUMBER_TYPE, types.FunctionType): lambda: count_from(
+            rhs, lhs, ctx=ctx
+        ),
     }.get(ts, lambda: vectorise(divide, lhs, rhs, ctx=ctx))()
 
 
@@ -6684,9 +6750,25 @@ def transliterate(lhs, rhs, other, ctx):
         result = collect_until_false(predicate, function, scalar)
         return safe_apply(function, result[-1], ctx=ctx)
 
-    mapping = dict(vy_zip(iterable(rhs, ctx), iterable(other, ctx), ctx=ctx))
-
     ret = []
+
+    if isinstance(lhs, str):
+        ret, temp = "", lhs
+        mapping = sorted(
+            list(vy_zip([str(_) for _ in rhs], [str(_) for _ in other], ctx)),
+            key=lambda x: len(x[0]),
+        )
+        while temp:
+            applicable = list(filter(lambda x: temp.startswith(x[0]), mapping))
+            if applicable:
+                ret += applicable[-1][1]
+                temp = temp[len(applicable[-1][0]) :]
+            else:
+                ret += temp[0]
+                temp = temp[1:]
+        return ret
+
+    mapping = dict(vy_zip(iterable(rhs, ctx), iterable(other, ctx), ctx=ctx))
 
     for item in iterable(lhs, ctx):
         for x in mapping:
@@ -6695,14 +6777,7 @@ def transliterate(lhs, rhs, other, ctx):
                 break
         else:
             ret.append(item)
-
-    if (
-        type(lhs) is str
-        and all(isinstance(x, str) for x in ret)
-        and all(len(x) == 1 for x in ret)
-    ):
-        return "".join(ret)
-    elif vy_type(lhs) == NUMBER_TYPE and all(
+    if vy_type(lhs) == NUMBER_TYPE and all(
         vy_type(x) == NUMBER_TYPE or x in ".-" for x in ret
     ):
         try:
