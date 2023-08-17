@@ -6750,9 +6750,25 @@ def transliterate(lhs, rhs, other, ctx):
         result = collect_until_false(predicate, function, scalar)
         return safe_apply(function, result[-1], ctx=ctx)
 
-    mapping = dict(vy_zip(iterable(rhs, ctx), iterable(other, ctx), ctx=ctx))
-
     ret = []
+
+    if isinstance(lhs, str):
+        ret, temp = "", lhs
+        mapping = sorted(
+            list(vy_zip([str(_) for _ in rhs], [str(_) for _ in other], ctx)),
+            key=lambda x: len(x[0]),
+        )
+        while temp:
+            applicable = list(filter(lambda x: temp.startswith(x[0]), mapping))
+            if applicable:
+                ret += applicable[-1][1]
+                temp = temp[len(applicable[-1][0]) :]
+            else:
+                ret += temp[0]
+                temp = temp[1:]
+        return ret
+
+    mapping = dict(vy_zip(iterable(rhs, ctx), iterable(other, ctx), ctx=ctx))
 
     for item in iterable(lhs, ctx):
         for x in mapping:
@@ -6761,14 +6777,7 @@ def transliterate(lhs, rhs, other, ctx):
                 break
         else:
             ret.append(item)
-
-    if (
-        type(lhs) is str
-        and all(isinstance(x, str) for x in ret)
-        and all(len(x) == 1 for x in ret)
-    ):
-        return "".join(ret)
-    elif vy_type(lhs) == NUMBER_TYPE and all(
+    if vy_type(lhs) == NUMBER_TYPE and all(
         vy_type(x) == NUMBER_TYPE or x in ".-" for x in ret
     ):
         try:
