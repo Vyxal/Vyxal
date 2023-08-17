@@ -8,7 +8,6 @@ import scala.collection.mutable as mut
 import spire.implicits.*
 
 type VAny = VAtom | VList
-type VIter = String | VList
 type VAtom = VVal | VFun
 type VVal = VNum | String
 
@@ -115,12 +114,6 @@ extension (self: VAny)
     case f: VFun => true
     case l: VList => l.nonEmpty
 end extension
-
-extension (iterable: VIter)
-  def iterLength: VNum =
-    iterable match
-      case s: String => s.length
-      case l: VList => l.size
 
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compareExact(x, y)

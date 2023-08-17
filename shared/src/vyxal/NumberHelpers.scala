@@ -170,30 +170,33 @@ object NumberHelpers:
   def toBase(a: VAny, b: VAny)(using ctx: Context): VAny =
     (a, b) match
       case (a: VNum, b: VNum) => toBaseDigits(a, b)
-      case (n: VNum, b: VIter) => toBaseAlphabet(n, b)
+      case (n: VNum, b: (String | VList)) => toBaseAlphabet(n, b)
       case (a: VList, _) => VList(a.map(toBase(_, b))*)
       case _ =>
         throw new Exception(
           s"toBase only works on numbers and lists, was given $a and $b instead"
         )
 
-  /** Returns value in base len(alphabet) using base 10 [bijective base] */
-  def toBaseAlphabet(value: VNum, alphabet: VIter)(using
-      ctx: Context
-  ): VAny =
-    alphabet match
-      case a: String => if a.isEmpty then return 0
-      case l: VList => if l.isEmpty then return 0
+  /** Returns value in base len(alphabet) using base 10 [bijective base]. If the
+    * alphabet is a string, returns a string.
+    */
+  def toBaseAlphabet(
+      value: VNum,
+      alphabet: String | VList
+  )(using Context): VAny =
+    val (isStr, length) = alphabet match
+      case a: String => (true, a.length)
+      case l: VList => (false, l.size)
 
-    val indexes = toBaseDigits(value, alphabet.iterLength)
-    val alphalist = alphabet match
-      case a: String => VList.from(a.toList.map(_.toString))
-      case l: VList => l
+    if length == 0 then return 0
 
-    val temp = indexes.map(alphalist.index(_).toString())
-    alphabet match
-      case a: String => temp.mkString("")
-      case l: VList => VList.from(temp)
+    val indexes = toBaseDigits(value, length)
+    val alphaList = ListHelpers.makeIterable(alphabet)
+
+    val temp = indexes.map(alphaList.index(_).toString())
+
+    if isStr then temp.mkString("")
+    else VList.from(temp)
 
   def toBaseDigits(value: VNum, base: VNum): VList =
     /** Helper to get digits for single component of a VNum */
