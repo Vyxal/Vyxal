@@ -239,7 +239,13 @@ object ListHelpers:
               .to(num.toInt - offset.toInt)
               .map(VNum(_))*
           )
-        else VList(num.toString.map(x => VNum(x.toString))*)
+        else
+          VList(
+            num.toString.map(x =>
+              if "0123456789".contains(x) then VNum(x.toString)
+              else x.toString()
+            )*
+          )
 
   def matrixMultiply(lhs: VList, rhs: VList)(using Context): VList =
     val rhsTemp = transposeSafe(rhs)

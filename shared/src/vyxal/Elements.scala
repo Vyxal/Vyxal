@@ -1514,7 +1514,7 @@ object Elements:
       case (a: VNum, b, c) =>
         val temp =
           ListHelpers
-            .transliterate(ListHelpers.makeIterable(a.toString), b, c)
+            .transliterate(ListHelpers.makeIterable(a), b, c)
             .mkString
         if VNum.NumRegex.matches(temp) then VNum(temp) else temp
     },
