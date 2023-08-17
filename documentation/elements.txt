@@ -710,6 +710,12 @@ Remove duplicates from a list by an element
 ᵇf<monad>: remove duplicates from a list by applying f to each pair of elements
 Trigraph: #^b
 ---------------------
+ᴴ
+Keywords: apply-to-head:
+Description: Apply element only to the head of list
+ᴴf: Apply f to the head of the top of the stack
+Trigraph: #^H
+---------------------
 ᵃ
 Keywords: apply-to-neighbours:, count-truthy:
 Description: To each overlapping pair, reduce it by an element
