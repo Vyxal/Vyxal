@@ -66,7 +66,7 @@ object Step:
         // While loop with condition
         lazy val condStep: Step =
           stepsForAST(cond).thenDo { ctx ?=>
-            if MiscHelpers.boolify(ctx.pop()) then
+            if ctx.pop().toBool then
               Some(StepSeq(List(stepsForAST(loop.body), condStep)))
             else None
           }
@@ -125,8 +125,7 @@ object Step:
       .foldRight(elseStep) { case ((cond, thenBody), elseStep) =>
         val thenBlock = stepsForAST(thenBody)
         Some(stepsForAST(cond).thenDo { ctx ?=>
-          if MiscHelpers.boolify(ctx.pop()) then Some(thenBlock)
-          else elseStep
+          if ctx.pop().toBool then Some(thenBlock) else elseStep
         })
       }
     Block(ifStmt, inner.getOrElse(StepSeq(List.empty)))

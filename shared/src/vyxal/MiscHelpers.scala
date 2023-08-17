@@ -16,15 +16,9 @@ object MiscHelpers:
     case (a: String, b: String) => s"$a$b"
   })
 
-  def boolify(x: VAny) = x match
-    case n: VNum => n != VNum(0)
-    case s: String => s.nonEmpty
-    case f: VFun => true
-    case l: VList => l.nonEmpty
-
   def callWhile(pred: VFun, transform: VFun, value: VAny)(using Context): VAny =
     var curr = value
-    while MiscHelpers.boolify(pred(curr)) do curr = transform(curr)
+    while pred(curr).toBool do curr = transform(curr)
     curr
 
   def collectUnique(function: VFun, initial: VAny)(using ctx: Context): VList =
@@ -97,7 +91,7 @@ object MiscHelpers:
     */
   @tailrec
   def firstFromN(f: VFun, n: Int)(using ctx: Context): Int =
-    if boolify(f(n)) then n
+    if f(n).toBool then n
     else firstFromN(f, n + 1)
 
   def firstNonNegative(f: VFun)(using Context): Int = firstFromN(f, 0)
@@ -143,7 +137,7 @@ object MiscHelpers:
     while count < limit do
       ctx.push(i)
       val res = executeFn(predicate)
-      if boolify(res) then
+      if res.toBool then
         result += i
         count += 1
       i += 1

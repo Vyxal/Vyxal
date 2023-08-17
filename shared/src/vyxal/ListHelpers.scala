@@ -74,7 +74,7 @@ object ListHelpers:
               args = List(item),
               vars = sharedVars
             )
-            keep = MiscHelpers.boolify(res)
+            keep = res.toBool
             branchList = branchList.tail
 
           keep
@@ -84,8 +84,7 @@ object ListHelpers:
       case None =>
         VList.from(iterable.zipWithIndex.collect {
           case (item, index)
-              if MiscHelpers
-                .boolify(predicate.execute(item, index, List(item))) =>
+              if predicate.execute(item, index, List(item)).toBool =>
             item
         })
 

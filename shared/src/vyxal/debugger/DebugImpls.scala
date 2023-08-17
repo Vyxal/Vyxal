@@ -40,7 +40,7 @@ object DebugImpls:
             )
             .map { res =>
               Some(Step.hidden {
-                if MiscHelpers.boolify(res) then buf += ind
+                if res.toBool then buf += ind
               })
             }
         }

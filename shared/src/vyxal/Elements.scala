@@ -70,10 +70,10 @@ object Elements:
       "a: str -> is (a) a vowel? vectorises for strings len > 1",
       "a: list -> is (a) all truthy?"
     ) {
-      case a: VNum => ListHelpers.makeIterable(a).forall(MiscHelpers.boolify)
+      case a: VNum => ListHelpers.makeIterable(a).forall(_.toBool)
       case a: String if a.length == 1 => StringHelpers.isVowel(a.head)
       case a: String => VList(a.map(StringHelpers.isVowel)*)
-      case a: VList => a.forall(MiscHelpers.boolify)
+      case a: VList => a.forall(_.toBool)
     },
     addElem(
       Monad,
@@ -83,10 +83,10 @@ object Elements:
       "a: str -> is (a) uppercase? vectorises for strings len > 1",
       "a: list -> is (a) any truthy?"
     ) {
-      case a: VNum => ListHelpers.makeIterable(a).exists(MiscHelpers.boolify)
+      case a: VNum => ListHelpers.makeIterable(a).exists(_.toBool)
       case a: String if a.length == 1 => a.head.isUpper
       case a: String => VList(a.map(c => VNum(c.isUpper))*)
-      case a: VList => a.exists(MiscHelpers.boolify)
+      case a: VList => a.exists(_.toBool)
     },
     addElem(
       Dyad,
@@ -108,15 +108,14 @@ object Elements:
       case a: VNum => a % 2
       case a: String => a.slice(a.length / 2, a.length)
     },
-    addElem(
+    addFull(
       Monad,
       "ȯ",
       "Boolify",
       List("boolify"),
+      false,
       "a: any -> bool(a)"
-    ) { case a =>
-      MiscHelpers.boolify(a)
-    },
+    )(_.toBool),
     addFull(
       Dyad,
       "Ẋ",
@@ -452,7 +451,7 @@ object Elements:
     ) {
       case (a, b: VFun) =>
         VList.from(ListHelpers.makeIterable(a).zipWithIndex.collect {
-          case (elem, ind) if MiscHelpers.boolify(b(elem)) => VNum(ind)
+          case (elem, ind) if b(elem).toBool => VNum(ind)
         })
       case (a, b) => ListHelpers.makeIterable(a).indexOf(b)
     },

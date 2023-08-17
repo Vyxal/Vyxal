@@ -70,7 +70,7 @@ object DebugHelpers:
               args = List(item)
             )
             .foreach { res =>
-              if MiscHelpers.boolify(res) then filtered += res
+              if res.toBool then filtered += res
             }
         }
         StepSeq(

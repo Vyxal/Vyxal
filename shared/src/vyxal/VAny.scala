@@ -109,6 +109,13 @@ extension (self: VAny)
   @targetName("times")
   def *~(that: VAny)(using Context): VAny = MiscHelpers.multiply(self, that)
 
+  def toBool = self match
+    case n: VNum => n != VNum(0)
+    case s: String => s.nonEmpty
+    case f: VFun => true
+    case l: VList => l.nonEmpty
+end extension
+
 extension (iterable: VIter)
   def iterLength: VNum =
     iterable match

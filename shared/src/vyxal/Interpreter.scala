@@ -61,7 +61,7 @@ object Interpreter:
       case AST.CompositeNilad(elems, _) =>
         elems.foreach(Interpreter.execute)
       case AST.Ternary(thenBody, elseBody, _) =>
-        if MiscHelpers.boolify(ctx.pop()) then execute(thenBody)
+        if ctx.pop().toBool then execute(thenBody)
         else if elseBody.nonEmpty then execute(elseBody.get)
 
       case AST.IfStatement(conds, bodies, elseBody, _) =>
@@ -70,7 +70,7 @@ object Interpreter:
         var truthy = false
         while !truthy && conditions.nonEmpty do
           execute(conditions.head)
-          truthy = MiscHelpers.boolify(ctx.pop())
+          truthy = ctx.pop().toBool
           if truthy then execute(branches.head)
           else
             conditions = conditions.tail
@@ -94,7 +94,7 @@ object Interpreter:
           given loopCtx: Context = ctx.makeChild()
           loopCtx.ctxVarPrimary = ctx.peek
           loopCtx.ctxVarSecondary = ctx.settings.rangeStart
-          while MiscHelpers.boolify(ctx.pop()) do
+          while ctx.pop().toBool do
             try
               execute(body)
               execute(cond)
