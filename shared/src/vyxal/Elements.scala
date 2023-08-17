@@ -967,6 +967,24 @@ object Elements:
       case (a: VList, b) => VList.from(a :+ b)
     },
     addElem(
+      Monad,
+      "ṁ",
+      "Mirror",
+      List("mirror"),
+      "num a: a + reversed(a) (as number)",
+      "str a: a + reversed(a)",
+      "lst a: append reversed(a) to a"
+    ) {
+      case a: VNum =>
+        val temp = a.toString
+        val reversed =
+          if temp.startsWith("-") then temp + temp.reverse.tail
+          else temp.reverse
+        a + VNum(reversed)
+      case a: String => a + a.reverse
+      case a: VList => VList.from(a ++ a.reverse)
+    },
+    addElem(
       Dyad,
       "Ṁ",
       "Modular | Matrix Multiply | Regex Full Match?",

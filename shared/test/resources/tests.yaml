@@ -870,6 +870,12 @@
         - !vany "λ1+}" # Increment
       out: 5
 
+
+"ṁ":
+    - { in: [123], out:  444}
+    - { in: ["hi"], out: "hiih"}
+    - { in: [[1,2,3]], out: [1,2,3,3,2,1]}
+
 "ṅ":
   - {in: [["Hello", "World"]], out: "Hello\nWorld"}
   - {in: ["amon"], out: "0000amon"}
