@@ -185,6 +185,7 @@ object Interpreter:
         if index == -1 then ctx.push(VList.from(args.reverse))
         else if args.sizeIs < index then ctx.push(ctx.settings.defaultValue)
         else ctx.push(args(index))
+      case AST.Generated(exec, _) => exec()
       case _ => throw NotImplementedError(s"$ast not implemented")
     end match
     scribe.trace(s"Top of stack: ${ctx.peek}")

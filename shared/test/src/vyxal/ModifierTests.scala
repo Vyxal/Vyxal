@@ -31,4 +31,10 @@ class ModifierTests extends VyxalTests:
       "#[1|2|3#] Ч2×++× M" -> VList(4, 16, 36)
     )
   }
+
+  describe("Modifier ᴴ") {
+    testMulti(
+      "#[3|4|5#]ᴴd" -> VList(6, 4, 5)
+    )
+  }
 end ModifierTests

@@ -193,6 +193,37 @@ object Modifiers:
     ) { case List(ast1, ast2, ast3, ast4) =>
       astToLambda(AST.makeSingle(ast1, ast2, ast3, ast4), 2)
     },
+    "ᴴ" -> Modifier(
+      "Apply To Head",
+      """|Apply element only to the head of list
+         |ᴴf: Apply f to the head of the top of the stack""".stripMargin,
+      List("apply-to-head:"),
+      1
+    ) { case List(ast) =>
+      // TODO this only works if f takes pops exactly one value and pushes
+      //   exactly one value. Is that a problem?
+      AST.makeSingle(
+        AST.Generated(
+          () =>
+            ctx ?=>
+              val top = ListHelpers.makeIterable(ctx.peek)
+              ctx.push(top.tail)
+              ctx.push(top.head)
+          ,
+          arity = Some(1)
+        ),
+        ast,
+        AST.Generated(
+          () =>
+            ctx ?=>
+              val head = ctx.pop()
+              val tail = ctx.pop().asInstanceOf[VList]
+              ctx.push(VList.from(head +: tail))
+          ,
+          arity = Some(1)
+        )
+      )
+    },
     "ᵡ" -> Modifier(
       "Scan Fixed Point",
       """|Scan a function until it reaches a fixed point
