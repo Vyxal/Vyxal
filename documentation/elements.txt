@@ -19,13 +19,17 @@ Keywords: compress-dict, dict-comp, compress
 Keywords: break
 -  -> break out of the current loop
 ---------------------
-#v (Vectorise (Element Form) [Internal Use]) (non-vectorising)
+#v ([Internal Use] Vectorise (Element Form) ) (non-vectorising)
 Keywords: 
 - *a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead
 ---------------------
 #x (Loop Continue) (non-vectorising)
 Keywords: continue
 -  -> continue the current loop
+---------------------
+#~ ([Internal Use] Apply Without Popping (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to the stack without popping items. Use the modifier instead.
 ---------------------
 $ (Swap) (non-vectorising)
 Keywords: swap
@@ -689,6 +693,14 @@ Trigraph: #^d
 Keywords: ****2:
 Description: Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
 ᵍfghi: Push the equivalent of λ2|fghi} to the stack
+---------------------
+ᵇ
+Keywords: without-popping:, peek:, dedup-by:, remove-duplicates-by:
+Description: Apply a 2+ arity element to the stack without popping
+Remove duplicates from a list by an element
+ᵇf<dyad|triad|tetrad>: apply f to the stack without popping
+ᵇf<monad>: remove duplicates from a list by applying f to each pair of elements
+Trigraph: #^b
 ---------------------
 ᵃ
 Keywords: apply-to-neighbours:, count-truthy:
