@@ -11,6 +11,14 @@ Keywords: fact, factorial, to-upper, upper, uppercase
 - a: num -> a!
 - a: str -> a.toUpperCase()
 ---------------------
+#|map-suffixes ([Internal Use] Map Suffixes (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to each suffix of a. Use the modifier instead.
+---------------------
+#|reduce-cols ([Internal Use] Reduce Columns (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> each column of a reduced by f. Use the modifier instead.
+---------------------
 #C (Compress String Using Dictionary) (non-vectorising)
 Keywords: compress-dict, dict-comp, compress
 - a: str -> compress a using the dictionary
@@ -716,6 +724,12 @@ Keywords: *:
 Description: Turn the next element (whether that be a structure/modifier/element) into a lambda
 ⸠f: Push the equivalent of λf} to the stack
 Trigraph: #^.
+---------------------
+ᶜ
+Keywords: reduce-columns:, map-over-suffixes:, fold-cols:, foldl-cols:, fold-columns-by:, reduce-columns-by:, over-suffixes:
+Description: Reduce columns of a 2d list by a function
+Map an element over suffixes
+Trigraph: #^c
 ---------------------
 э
 Keywords: ***:
