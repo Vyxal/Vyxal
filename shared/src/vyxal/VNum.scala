@@ -2,6 +2,7 @@ package vyxal
 
 import scala.language.implicitConversions
 
+import scala.annotation.targetName
 import scala.collection.immutable.NumericRange.Inclusive
 import scala.math.Ordered
 import scala.util.matching.Regex
@@ -25,16 +26,23 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
 
   def floor: VNum = underlying.floor
 
+  @targetName("neg")
   def unary_- : VNum = -underlying
+  @targetName("plus")
   def +(rhs: VNum): VNum = underlying + rhs.underlying
+  @targetName("minus")
   def -(rhs: VNum): VNum = underlying - rhs.underlying
+  @targetName("times")
   def *(rhs: VNum): VNum = VNum.complex(real * rhs.real, imag * rhs.imag)
+  @targetName("divide")
   def /(rhs: VNum): VNum = VNum.complex(
     if rhs.real === 0 then 0 else real / rhs.real,
     if rhs.imag === 0 then 0 else imag / rhs.imag
   )
+  @targetName("pow")
   def **(rhs: VNum): VNum = underlying ** rhs.underlying
 
+  @targetName("rem")
   def %(rhs: VNum): VNum =
     // implement floating point floored modulus
     val q = this / rhs

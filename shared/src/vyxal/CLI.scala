@@ -81,19 +81,19 @@ object CLI:
         if config.runLexer then
           while true do
             val line = io.StdIn.readLine(">")
-            if line == "" then return
+            if line.isEmpty then return
             println(Lexer(line))
 
         if config.runLiterateLexer then
           while true do
             val line = io.StdIn.readLine(">")
-            if line == "" then return
+            if line.isEmpty then return
             println(Lexer.lexLiterate(line))
 
         if config.runParser then
           while true do
             val line = io.StdIn.readLine(">")
-            if line == "" then return
+            if line.isEmpty then return
             println(Parser.parse(Lexer(line).getOrElse(List.empty)))
 
         if config.debug then

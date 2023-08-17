@@ -242,7 +242,7 @@ object NumberHelpers:
     if value == VNum(0) then return VList()
     val base = radix.toBigInt.abs
     if base == 0 then return VList(value)
-    else if base == 1 then return VList.fill(value.toInt.abs)(1)
+    if base == 1 then return VList.fill(value.toInt.abs)(1)
     val digits = ListBuffer.empty[VNum]
     var current = value
     while current != VNum(0) do

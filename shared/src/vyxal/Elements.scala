@@ -663,8 +663,8 @@ object Elements:
       "a: lst -> a[:-1]",
       "a: str -> a[:-1]",
     ) {
-      case lst: VList => VList.from(lst.dropRight(1))
-      case s: String => if s.nonEmpty then s.substring(0, s.length - 1) else s
+      case lst: VList => lst.dropRight(1)
+      case s: String => s.dropRight(1)
     },
     addElem(
       Dyad,
