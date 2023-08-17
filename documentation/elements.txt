@@ -446,11 +446,10 @@ Trigraph: #.R
 Keywords: abc->bca, rot-left, rotate-left
 - a: any -> rotate left once
 ---------------------
-Ṡ (Vectorised Sums | Is Numeric?) (non-vectorising)
+Ṡ (Vectorised Sums) (non-vectorising)
 Trigraph: #.S
 Keywords: vectorised-sums, vec-sums
 - a: lst -> sum of each element of a
-- a: str -> is a numeric?
 ---------------------
 Ṫ (Init) (non-vectorising)
 Trigraph: #.T
