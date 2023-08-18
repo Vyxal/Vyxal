@@ -7,12 +7,8 @@ import scala.collection.mutable as mut
 
 import spire.implicits.*
 
-type VAny = VAtom | VList
-type VAtom = VVal | VFun
+type VAny = VVal | VFun | VList
 type VVal = VNum | String
-
-/** Everything but functions */
-type VData = VVal | VList
 
 /** A function object (not a function definition)
   *
@@ -96,10 +92,16 @@ object VFun:
 
 extension (self: VAny)
   @targetName("vEquals")
-  def ===(that: VAny): Boolean =
+  def ===(that: VAny)(using Context): Boolean =
     (self, that) match
-      case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) == 0
       case (a: VList, b: VList) => a == b
+      case (_: VFun, _) =>
+        scribe.warn(s"Tried comparing function $self to $that")
+        false
+      case (_, _: VFun) =>
+        scribe.warn(s"Tried comparing $self to function $that")
+        false
+      case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) == 0
       case _ => false
 
   @targetName("plus")
@@ -116,4 +118,4 @@ extension (self: VAny)
 end extension
 
 given (using Context): Ordering[VAny] with
-  override def compare(x: VAny, y: VAny): Int = MiscHelpers.compareExact(x, y)
+  override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)

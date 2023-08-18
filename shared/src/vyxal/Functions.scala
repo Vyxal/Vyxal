@@ -69,9 +69,9 @@ object Dyad extends ImplHelpers[PartialDyad, Dyad](2):
   override def vectorise(name: String)(f: PartialDyad): Dyad =
     lazy val res: Dyad = {
       case args if f.isDefinedAt(args) => f(args)
-      case (lhs: VAtom, rhs: VList) => rhs.vmap(res(lhs, _))
-      case (lhs: VList, rhs: VAtom) => lhs.vmap(res(_, rhs))
       case (lhs: VList, rhs: VList) => lhs.zipWith(rhs)(res(_, _))
+      case (lhs, rhs: VList) => rhs.vmap(res(lhs, _))
+      case (lhs: VList, rhs) => lhs.vmap(res(_, rhs))
       case args => throw UnimplementedOverloadException(name, args.toList)
     }
 
@@ -93,20 +93,20 @@ object Triad extends ImplHelpers[PartialTriad, Triad](3):
   override def vectorise(name: String)(f: PartialTriad): Triad =
     lazy val res: Triad = {
       case args if f.isDefinedAt(args) => f(args)
-      case (lhs: VAtom, rhs: VList, third: VAtom) =>
-        rhs.vmap(res(lhs, _, third))
-      case (lhs: VList, rhs: VAtom, third: VAtom) =>
-        lhs.vmap(res(_, rhs, third))
-      case (lhs: VList, rhs: VList, third: VAtom) =>
-        lhs.zipWith(rhs)(res(_, _, third))
-      case (lhs: VAtom, rhs: VAtom, third: VList) =>
-        third.vmap(res(lhs, rhs, _))
-      case (lhs: VAtom, rhs: VList, third: VList) =>
-        rhs.zipWith(third)(res(lhs, _, _))
-      case (lhs: VList, rhs: VAtom, third: VList) =>
-        lhs.zipWith(third)(res(_, rhs, _))
       case (lhs: VList, rhs: VList, third: VList) =>
         VList.zipMulti(lhs, rhs, third) { case VList(l, r, t) => res(l, r, t) }
+      case (lhs, rhs: VList, third: VList) =>
+        rhs.zipWith(third)(res(lhs, _, _))
+      case (lhs: VList, rhs, third: VList) =>
+        lhs.zipWith(third)(res(_, rhs, _))
+      case (lhs: VList, rhs: VList, third) =>
+        lhs.zipWith(rhs)(res(_, _, third))
+      case (lhs, rhs: VList, third) =>
+        rhs.vmap(res(lhs, _, third))
+      case (lhs: VList, rhs, third) =>
+        lhs.vmap(res(_, rhs, third))
+      case (lhs, rhs, third: VList) =>
+        third.vmap(res(lhs, rhs, _))
       case args => throw UnimplementedOverloadException(name, args.toList)
     }
 

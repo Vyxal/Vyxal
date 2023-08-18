@@ -160,6 +160,10 @@ Keywords: interleave
 J (Merge) (non-vectorising)
 Keywords: merge
 - a: lst, b: lst -> Merge a and b
+- a: any, b: lst -> Prepend a to b
+- a: lst, b: any -> Append b to a
+- a: num, b: num -> num(str(a) + str(b))
+- a: any, b: any -> str(a) + str(b)
 ---------------------
 K (Factors | Is Numeric?) (vectorising)
 Keywords: factors, divisors, is-numeric, is-num, is-number, is-num?, is-number?
@@ -259,7 +263,8 @@ Keywords: to-binary, dec->bin, decimal->bin
 ---------------------
 c (Contains) (non-vectorising)
 Keywords: contains, in
-- a: any, b: any -> is (b) in (a)?
+- a: any, b: lst -> is element a in list b?
+- a: any, b: any -> is str(b) in str(a)?
 ---------------------
 d (Double) (vectorising)
 Keywords: double
@@ -295,7 +300,8 @@ Keywords: index, at, item-at, nth-item, collect-unique, enclose
 ---------------------
 j (Join On) (non-vectorising)
 Keywords: join-on, join, join-with, join-by
-- a: lst, b: str -> a join on b
+- a: lst, b: str|num -> a join on b
+- a: lst, b: lst -> Intersperse elements of b within a
 ---------------------
 l (Length of Each Item) (non-vectorising)
 Keywords: length-vectorised, length-vect, len-vect, len-vectorised, vec-len, vec-length, vlen
