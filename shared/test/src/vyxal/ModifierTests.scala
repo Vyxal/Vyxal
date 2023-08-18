@@ -44,4 +44,36 @@ class ModifierTests extends VyxalTests:
       "#[2|1|3#]ⁿN" -> 3,
     )
   }
+
+  describe("Modifier ᵒ") {
+    given ctx: Context = VyxalTests.testContext()
+
+    it("should work on finite lists") {
+      ctx.push(VList(1, 2, 3))
+      ctx.push(VList(4, 5))
+      Interpreter.execute("ᵒ;")
+      val top = ctx.pop()
+      assertResult(
+        VList(
+          VList(VList(1, 4), VList(1, 5)),
+          VList(VList(2, 4), VList(2, 5)),
+          VList(VList(3, 4), VList(3, 5)),
+        )
+      )(top)
+    }
+
+    it("should work on infinite lists") {
+      ctx.push(VList.from(LazyList.iterate(VNum(2))(_ * 2)))
+      ctx.push(VList.from(LazyList.iterate(VNum(1))(_ + 3)))
+      Interpreter.execute("ᵒ-")
+      val top = ctx.pop()
+      assertResult(
+        VList(
+          VList(1, -2, -5),
+          VList(3, 0, -3),
+          VList(7, 4, 1)
+        )
+      )(top.asInstanceOf[VList].take(3).map(_.asInstanceOf[VList].take(3)))
+    }
+  }
 end ModifierTests

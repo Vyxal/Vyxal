@@ -341,10 +341,37 @@ object Modifiers:
         arity = Some(1)
       )
     },
+    "ᵒ" -> Modifier(
+      "Outer Product | Table",
+      """|Outer product
+         |ᵒf: Pop two lists, then make a matrix from them by applying f to each pair of elements""".stripMargin,
+      List("outer-product", "table"),
+      1
+    ) { case List(ast) =>
+      // TODO this only works if f takes pops exactly two values and pushes
+      //   exactly one value. Is that a problem?
+      AST.Generated(
+        () =>
+          ctx ?=>
+            val rhs = ListHelpers.makeIterable(ctx.pop())
+            val lhs = ListHelpers.makeIterable(ctx.pop())
+            val matrix = VList.from(lhs.map { l =>
+              VList.from(rhs.map { r =>
+                ctx.push(l)
+                ctx.push(r)
+                Interpreter.execute(ast)
+                ctx.pop()
+              })
+            })
+            ctx.push(matrix)
+        ,
+        arity = Some(2)
+      )
+    },
     "ᵖ" -> Modifier(
       "Map Over Prefixes",
       """|Map an element over the prefixes of a list
-       |ᵖf: Map f over prefixes""".stripMargin,
+         |ᵖf: Map f over prefixes""".stripMargin,
       List("map-over-prefixes:", "over-prefixes:"),
       1
     ) { case List(ast) =>
