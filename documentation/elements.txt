@@ -505,9 +505,9 @@ Keywords: n-choose-k, ncr, nck, choose, char-set-equal?, char-set-eq?
 - a: num, b: num -> a choose b
 - a: str, b: str -> are the character sets of a and b equal?
 ---------------------
-ḋ (Dot Product | To Bijective Base) (non-vectorising)
+ḋ (Dot Product | To Bijective Base | First Index Where Predicate Truthy) (non-vectorising)
 Trigraph: #.d
-Keywords: dot-product, bijective-base, dot-prod
+Keywords: dot-product, bijective-base, dot-prod, first-index-where
 - a: lst, b: lst -> Dot product of a and b
 - a: num, b: num -> Convert a to bijective base b
 ---------------------
@@ -696,6 +696,12 @@ Keywords: *2:
 Description: Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda
 ᵈf: Push the equivalent of λ2|f} to the stack
 Trigraph: #^d
+---------------------
+ᶤ
+Keywords: first-index-where:, first-index-of:
+Description: Find the first index where an element is truthy
+ᶤf: find the first index where f is truthy
+Trigraph: #^i
 ---------------------
 ᵍ
 Keywords: ****2:
