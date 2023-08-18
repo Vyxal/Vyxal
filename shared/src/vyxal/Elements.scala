@@ -1708,6 +1708,24 @@ object Elements:
           )
     },
     addDirect(
+      "#|map-prefixes",
+      "[Internal Use] Map Prefixes (Element Form)",
+      List(),
+      None,
+      "*a, f -> f applied to each prefix of a. Use the modifier instead."
+    ) { ctx ?=>
+      ctx.pop() match
+        case f: VFun =>
+          val arg = ListHelpers.makeIterable(ctx.pop())
+          val prefixes = arg.indices.map(i => arg.slice(0, i + 1))
+          ctx.push(VList.from(prefixes.map(prefix => f(prefix))))
+
+        case _ =>
+          throw IllegalArgumentException(
+            "Map Prefixes: First argument should be a function"
+          )
+    },
+    addDirect(
       "#|reduce-cols",
       "[Internal Use] Reduce Columns (Element Form)",
       List(),

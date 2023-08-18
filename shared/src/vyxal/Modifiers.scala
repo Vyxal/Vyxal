@@ -341,6 +341,18 @@ object Modifiers:
         arity = Some(1)
       )
     },
+    "ᵖ" -> Modifier(
+      "Map Over Prefixes",
+      """|Map an element over the prefixes of a list
+       |ᵖf: Map f over prefixes""".stripMargin,
+      List("map-over-prefixes:", "over-prefixes:"),
+      1
+    ) { case List(ast) =>
+      AST.makeSingle(
+        astToLambda(ast, ast.arity.getOrElse(1)),
+        AST.Command("#|map-prefixes")
+      )
+    },
     "ᵡ" -> Modifier(
       "Scan Fixed Point",
       """|Scan a function until it reaches a fixed point
