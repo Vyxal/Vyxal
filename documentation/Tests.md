@@ -37,7 +37,7 @@ all the arguments that you use with `testOnly` (e.g. `jvm.test.testQuiet "*YamlT
 
 ## Writing Tests
 
-Simple tests go in [tests.yaml](/shared/src/test/resources/tests.yaml). Below is
+Simple tests go in [tests.yaml](/shared/test/resources/tests.yaml). Below is
 a description of how they look.
 
 ```yaml
