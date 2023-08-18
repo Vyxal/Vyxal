@@ -1,5 +1,7 @@
 package vyxal
 
+import scala.collection.mutable.ListBuffer
+
 /** @param name
   *   The modifier's name
   * @param description
@@ -244,6 +246,55 @@ object Modifiers:
       AST.makeSingle(
         astToLambda(ast, ast.arity.getOrElse(1)),
         AST.Command("İ")
+      )
+    },
+    "ᵏ" -> Modifier(
+      "Key",
+      """|Map an element over the groups formed by identical items.
+      |ᵏf: Map f over the groups formed by identical items""".stripMargin,
+      List("key:"),
+      1
+    ) { case List(ast) =>
+      AST.makeSingle(
+        AST.Generated(
+          () =>
+            ctx ?=>
+              val lst = ListHelpers.makeIterable(ctx.pop())
+              val bins = ListBuffer[(VAny, ListBuffer[VAny])]()
+              lst.foreach { elem =>
+                val (key, bin) = bins.find(_._1 == elem).getOrElse {
+                  val bin = ListBuffer[VAny]()
+                  bins += ((elem, bin))
+                  (elem, bin)
+                }
+                bin += elem
+              }
+              ctx.push(
+                VList.from(
+                  bins.map { case (key, bin) =>
+                    given elemCtx: Context = ctx.makeChild()
+                    elemCtx.push(VList.from(bin.toSeq))
+                    Interpreter.execute(ast)(using elemCtx)
+                    elemCtx.pop()
+                  }.toSeq
+                )
+              )
+          ,
+          arity = Some(1)
+        )
+      )
+    },
+    "ᶪ" -> Modifier(
+      "Loop While Unique",
+      """|Loop While Unique - similar to ᶨ, but doesn't collect
+         |ᶪf: Loop while unique""".stripMargin,
+      List("loop-while-unique:"),
+      1
+    ) { case List(ast) =>
+      AST.makeSingle(
+        astToLambda(ast, ast.arity.getOrElse(1)),
+        AST.Command("İ"),
+        AST.Command("t")
       )
     },
     "ᵐ" -> Modifier(
