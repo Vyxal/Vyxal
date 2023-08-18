@@ -465,6 +465,8 @@
     num-str: str(a) + b
     str-num: a + str(b)
     str-str: a + b
+    num-fun: First integer x greater than a where b(x) is truthy
+    fun-num: First integer x greater than b where a(x) is truthy
   vectorise: true
   tests:
     - "[1, 1] : 2"
@@ -518,6 +520,8 @@
     num-str: b split into a pieces
     str-num: a split into b pieces
     str-str: a.split(b)
+    fun-num: First integer x greater than b where a(x) is falsy
+    num-fun: First integer x greater than a where b(x) is falsy
   vectorise: true
   tests:
     - "[4,2] : 2"
@@ -2403,7 +2407,8 @@
     - "[[1,2,0], [2], [5]] : [1,5,0]"
     - '["120", [2], "5"] : "150"'
     - "[-120, [2], [5]] : [-150]"
-    - '["abc","ab",["bb","cc"]] : ["bb","cc","c"]'
+    - '["abc","ab",["bb","cc"]] : "bbccc"'
+    - '["abcd", ["ab", "cd"], ["cd", "ab"]] : "cdab"'
     - "[431, 1234, 4321] : 124"
     - "[-234, 1234, 4321] : -321"
 
@@ -4838,6 +4843,13 @@
     - '[234] : "»⇧»"'
     - '[27914632409837421] : "»fðǐ4''∞Ẏ»"'
 
+- element: "ø%"
+  name: SHA256 Hash
+  description: Hash a string using the SHA256 hash algorithm.
+  arity: 1
+  tests:
+    - '["cookie"] : "d7e83e28a04b537e64424546b14caf9b67bad2f28dabce68116e0d372319fa00"'
+
 - element: "øĊ"
   name: Center
   description: Center a list of strings
@@ -6638,9 +6650,20 @@
   tests:
     - '["abcaabac",["a","bc","c","b"]] : ["a","bc","a","a","b","a","c"]'
 
-- element: "ø%"
-  name: SHA256 Hash
-  description: Hash a string using the SHA256 hash algorithm.
-  arity: 1
-  tests:
-    - '["cookie"] : "d7e83e28a04b537e64424546b14caf9b67bad2f28dabce68116e0d372319fa00"'
+- element: "¨Ȯ"
+  name: First x Integers Greater Than or Equal to y
+  description: Push the first x integers greater than or equal to y where z(_) is truthy
+  overloads:
+    fun-num-num: Push the first b integers that are greater than or equal to c where a(_) is truthy
+    num-fun-num: Push the first c integers that are greater than or equal to a where b(_) is truthy
+    num-num-fun: Push the first b integers that are greater than or equal to a where c(_) is truthy
+  arity: 3
+
+- element: "¨ȯ"
+  name: First x Integers Greater Than y
+  description: Push the first x integers greater than y where z(_) is truthy
+  overloads:
+    fun-num-num: Push the first b integers that are greater than c where a(_) is truthy
+    num-fun-num: Push the first c integers that are greater than a where b(_) is truthy
+    num-num-fun: Push the first b integers that are greater than a where c(_) is truthy
+  arity: 3

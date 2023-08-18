@@ -345,6 +345,8 @@ Adds the top two items on the stack
 - num a, str b: `str(a) + b`
 - str a, num b: `a + str(b)`
 - str a, str b: `a + b`
+- num a, fun b: `First integer x greater than a where b(x) is truthy`
+- fun a, num b: `First integer x greater than b where a(x) is truthy`
 -------------------------------
 ## `` , `` (Print)
 
@@ -380,6 +382,8 @@ Divide two numbers or split strings
 - num a, str b: `b split into a pieces`
 - str a, num b: `a split into b pieces`
 - str a, str b: `a.split(b)`
+- fun a, num b: `First integer x greater than b where a(x) is falsy`
+- num a, fun b: `First integer x greater than a where b(x) is falsy`
 -------------------------------
 ## `` 0 `` (Literal digit 0)
 
@@ -3143,6 +3147,11 @@ Compress a positive integer in base 255
 
 - num a: `base_255_number_compress(a)`
 -------------------------------
+## `` ø% `` (SHA256 Hash)
+
+Hash a string using the SHA256 hash algorithm.
+
+-------------------------------
 ## `` øĊ `` (Center)
 
 Center a list of strings
@@ -4338,8 +4347,23 @@ Push the next input as a string, unevaluated. Like ? but without implicit conver
 Splits a into a list using only the strings in b, with longest strings in b being scanned first.
 
 -------------------------------
-## `` ø% `` (SHA256 Hash)
+## `` ¨Ȯ `` (First x Integers Greater Than or Equal to y)
 
-Hash a string using the SHA256 hash algorithm.
+Push the first x integers greater than or equal to y where z(_) is truthy
 
+### Overloads
+
+- fun a, num b, num c: `Push the first b integers that are greater than or equal to c where a(_) is truthy`
+- num a, fun b, num c: `Push the first c integers that are greater than or equal to a where b(_) is truthy`
+- num a, num b, fun c: `Push the first b integers that are greater than or equal to a where c(_) is truthy`
+-------------------------------
+## `` ¨ȯ `` (First x Integers Greater Than y)
+
+Push the first x integers greater than y where z(_) is truthy
+
+### Overloads
+
+- fun a, num b, num c: `Push the first b integers that are greater than c where a(_) is truthy`
+- num a, fun b, num c: `Push the first c integers that are greater than a where b(_) is truthy`
+- num a, num b, fun c: `Push the first b integers that are greater than a where c(_) is truthy`
 -------------------------------

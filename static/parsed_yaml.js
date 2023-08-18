@@ -473,7 +473,7 @@ var codepage_descriptions =
     {
       "name": "Addition",
       "description": "Adds the top two items on the stack",
-      "overloads": "num, num -> a + b\nnum, str -> str(a) + b\nstr, num -> a + str(b)\nstr, str -> a + b",
+      "overloads": "num, num -> a + b\nnum, str -> str(a) + b\nstr, num -> a + str(b)\nstr, str -> a + b\nnum, fun -> First integer x greater than a where b(x) is truthy\nfun, num -> First integer x greater than b where a(x) is truthy",
       "token": "+"
     },
     {
@@ -526,7 +526,7 @@ var codepage_descriptions =
     {
       "name": "Divide / Split",
       "description": "Divide two numbers or split strings",
-      "overloads": "num, num -> a / b\nnum, str -> b split into a pieces\nstr, num -> a split into b pieces\nstr, str -> a.split(b)",
+      "overloads": "num, num -> a / b\nnum, str -> b split into a pieces\nstr, num -> a split into b pieces\nstr, str -> a.split(b)\nfun, num -> First integer x greater than b where a(x) is falsy\nnum, fun -> First integer x greater than a where b(x) is falsy",
       "token": "/"
     },
     {
@@ -2370,6 +2370,12 @@ var codepage_descriptions =
       "description": "Get the hyperbolic cosine of a number in radians",
       "overloads": "num -> cosh(a)",
       "token": "\u2206\u022f"
+    },
+    {
+      "name": "First x Integers Greater Than y",
+      "description": "Push the first x integers greater than y where z(_) is truthy",
+      "overloads": "fun, num, num -> Push the first b integers that are greater than c where a(_) is truthy\nnum, fun, num -> Push the first c integers that are greater than a where b(_) is truthy\nnum, num, fun -> Push the first b integers that are greater than a where c(_) is truthy",
+      "token": "\u00a8\u022f"
     }
   ],
   "153": [
@@ -2980,6 +2986,12 @@ var codepage_descriptions =
       "description": "Returns true if the item is sorted in either descending or ascending order.",
       "overloads": "lst -> is a sorted in increasing or decreasing order?",
       "token": "\u00de\u022e"
+    },
+    {
+      "name": "First x Integers Greater Than or Equal to y",
+      "description": "Push the first x integers greater than or equal to y where z(_) is truthy",
+      "overloads": "fun, num, num -> Push the first b integers that are greater than or equal to c where a(_) is truthy\nnum, fun, num -> Push the first c integers that are greater than or equal to a where b(_) is truthy\nnum, num, fun -> Push the first b integers that are greater than or equal to a where c(_) is truthy",
+      "token": "\u00a8\u022e"
     }
   ],
   "196": [
