@@ -756,7 +756,7 @@ object Elements:
     addFull(
       Monad,
       "Ṅ",
-      "Join on Nothing | Integer Partitions | First Positive Integer",
+      "Join on Nothing | First Positive Integer",
       List(
         "nothing-join",
         "concat-fold",
@@ -764,15 +764,11 @@ object Elements:
         "empty-join",
         "single-string",
         "as-single-string",
-        "integer-partitions",
-        "int-parts",
-        "int-partitions",
         "first-positive-integer",
         "first-n>0",
       ),
       false,
       "a: lst -> a join on nothing",
-      "a: num -> Integer partitions of a (all possible ways to sum to a)",
       "a: fun -> First positive integer ([1, 2, 3, ...]) for which a returns true"
     ) { a => MiscHelpers.joinNothing(a) },
     addElem(
@@ -1289,11 +1285,19 @@ object Elements:
     addElem(
       Monad,
       "ṗ",
-      "List Partitions",
-      List("list-partitions", "list-parts"),
-      "a: lst -> partitions of a"
-    ) { case a =>
-      ListHelpers.partitions(ListHelpers.makeIterable(a))
+      "List Partitions | Integer Partitions",
+      List(
+        "list-partitions",
+        "list-parts",
+        "integer-partitions",
+        "int-partitions",
+        "int-parts",
+      ),
+      "a: lst -> List partitions of a",
+      "a: num -> Integer partitions of a (all possible ways to sum to a)"
+    ) {
+      case a: VList => ListHelpers.partitions(a)
+      case n: VNum => NumberHelpers.partitions(n)
     },
     addDirect(
       "x",

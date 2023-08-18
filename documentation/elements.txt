@@ -445,11 +445,10 @@ Keywords: nth-items, modular, maxtrix-multiply, mat-multiply, mat-mul, regex-ful
 - a: lst, b: lst -> a * b (matrix multiply)
 - a: str, b: str -> does the entirety of a match b?
 ---------------------
-Ṅ (Join on Nothing | Integer Partitions | First Positive Integer) (non-vectorising)
+Ṅ (Join on Nothing | First Positive Integer) (non-vectorising)
 Trigraph: #.N
-Keywords: nothing-join, concat-fold, join-on-nothing, empty-join, single-string, as-single-string, integer-partitions, int-parts, int-partitions, first-positive-integer, first-n>0
+Keywords: nothing-join, concat-fold, join-on-nothing, empty-join, single-string, as-single-string, first-positive-integer, first-n>0
 - a: lst -> a join on nothing
-- a: num -> Integer partitions of a (all possible ways to sum to a)
 - a: fun -> First positive integer ([1, 2, 3, ...]) for which a returns true
 ---------------------
 Ȯ (Over) (non-vectorising)
@@ -568,10 +567,11 @@ Trigraph: #.o
 Keywords: boolify
 - a: any -> bool(a)
 ---------------------
-ṗ (List Partitions) (non-vectorising)
+ṗ (List Partitions | Integer Partitions) (non-vectorising)
 Trigraph: #.p
-Keywords: list-partitions, list-parts
-- a: lst -> partitions of a
+Keywords: list-partitions, list-parts, integer-partitions, int-partitions, int-parts
+- a: lst -> List partitions of a
+- a: num -> Integer partitions of a (all possible ways to sum to a)
 ---------------------
 ṙ (Rotate Right) (non-vectorising)
 Trigraph: #.r
