@@ -100,6 +100,16 @@ object Modifiers:
         val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
         AST.makeSingle(lambdaAst, AST.Command("#|reduce-cols"))
     },
+    "ᶤ" -> Modifier(
+      "First Index Where",
+      """|Find the first index where an element is truthy
+         |ᶤf: find the first index where f is truthy""".stripMargin,
+      List("first-index-where:", "first-index-of:"),
+      1
+    ) { case List(ast) =>
+      val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))
+      AST.makeSingle(lambdaAst, AST.Command("ḋ"))
+    },
     "v" -> Modifier(
       "Vectorise",
       """|Vectorises

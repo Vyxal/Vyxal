@@ -257,13 +257,24 @@ object Elements:
     addElem(
       Dyad,
       "ḋ",
-      "Dot Product | To Bijective Base",
-      List("dot-product", "bijective-base", "dot-prod"),
+      "Dot Product | To Bijective Base | First Index Where Predicate Truthy",
+      List("dot-product", "bijective-base", "dot-prod", "first-index-where"),
       "a: lst, b: lst -> Dot product of a and b",
       "a: num, b: num -> Convert a to bijective base b"
     ) {
       case (a: VList, b: VList) => ListHelpers.dotProduct(a, b)
       case (a: VNum, b: VNum) => NumberHelpers.toBijectiveBase(a, b)
+      case (a, b: VFun) =>
+        // Any other day of the week I'd have used a filter or a functional
+        // programming thing, but because JVM can't do indices bigger than
+        // the int limit and you might plausibly want to hypothetically
+        // use this on a list with more than 2^31 elements, I'm using a
+        // while loop instead.
+        var pos = VNum(0)
+        val list = ListHelpers.makeIterable(a)
+        while list.hasIndex(pos.toBigInt) && b(list.index(pos)) == VNum(0) do
+          pos += 1
+        if list.hasIndex(pos.toBigInt) then pos else VNum(-1)
     },
     addVect(
       Monad,
