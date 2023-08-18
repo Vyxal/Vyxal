@@ -812,6 +812,12 @@ Description: Turn the next three elements (whether that be a structure/modifier/
 ᶠfgh: Push the equivalent of λ2|fgh} to the stack
 Trigraph: #^f
 ---------------------
+ᵒ
+Keywords: outer-product, table
+Description: Outer product
+ᵒf: Pop two lists, then make a matrix from them by applying f to each pair of elements
+Trigraph: #^o
+---------------------
 /
 Keywords: foldl:, reduce:, /:, fold:, reduceby:-
 Description: Reduce a list by an element
