@@ -32,17 +32,14 @@ object MiscHelpers:
         executeFn(function, ctxVarPrimary = current, args = Seq(current))
     VList.from(result.toList)
 
-  def compare(a: VVal, b: VVal): Int = (a, b) match
+  def compare(
+      a: VAny,
+      b: VAny
+  )(using ctx: Context): Int = (a, b) match
     case (a: VNum, b: VNum) => a.real.compare(b.real)
     case (a: String, b: VNum) => a.compareTo(b.toString)
     case (a: VNum, b: String) => a.toString.compareTo(b)
     case (a: String, b: String) => a.compareTo(b)
-
-  def compareExact(
-      a: VAny,
-      b: VAny
-  )(using ctx: Context): Int = (a, b) match
-    case (a: VVal, b: VVal) => compare(a, b)
     case (a, b) =>
       // Lexographically compare the two values after converting both to iterable
       val aIter = ListHelpers.makeIterable(a)
@@ -54,7 +51,7 @@ object MiscHelpers:
       var ind = 0
       var result = -1
       while ind < aIter.length && result != 0 do
-        result = compareExact(aIter(ind), bIter(ind))
+        result = compare(aIter(ind), bIter(ind))
         ind += 1
       result
 
@@ -66,11 +63,11 @@ object MiscHelpers:
       case _: VList => 0
       case _ => throw Exception(s"Cannot get default value for $a")
 
-  def dyadicMaximum(a: VVal, b: VVal): VVal =
-    if compare(a, b) > 0 then a else b
+  def dyadicMaximum(a: VAny, b: VAny)(using Context): VAny =
+    if a > b then a else b
 
-  def dyadicMinimum(a: VVal, b: VVal): VVal =
-    if compare(a, b) < 0 then a else b
+  def dyadicMinimum(a: VAny, b: VAny)(using Context): VAny =
+    if a < b then a else b
 
   def eval(s: String)(using ctx: Context): VAny =
     if VNum.NumRegex.matches(s) then VNum(s)

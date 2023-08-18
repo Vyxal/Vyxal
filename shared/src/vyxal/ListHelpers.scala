@@ -90,7 +90,7 @@ object ListHelpers:
 
   end filter
 
-  def flatten(xs: VList): VList =
+  def flatten(xs: Seq[VAny]): VList =
     VList.from(
       xs.flatMap {
         case l: VList => flatten(l)
@@ -211,6 +211,15 @@ object ListHelpers:
     out ++= rightIter
 
     VList(out.toSeq*)
+
+  /** Join a list on a string/number, or intersperse a list within `lst` */
+  def join(lst: VList, sep: VAny)(using Context): VAny =
+    sep match
+      case s: String => lst.mkString(s)
+      case sep: (VNum | VList) =>
+        val l = ListHelpers.makeIterable(sep)
+        ListHelpers.flatten(lst.map(Seq(_)).reduce(_ ++ l ++ _))
+      case _: VFun => ??? // todo reduce?
 
   /** Make an iterable from a value
     *
@@ -414,7 +423,7 @@ object ListHelpers:
           return VList(
             iterable.zipWithIndex
               .sorted { (a, b) =>
-                MiscHelpers.compareExact(
+                MiscHelpers.compare(
                   key.executeResult(a(0), a(1), List(a(0))),
                   key.executeResult(b(0), b(1), List(b(0)))
                 )
@@ -436,7 +445,7 @@ object ListHelpers:
               .find(_ != _)
               // If they compare equal with all branches, a < b is false
               .fold(false) { case (aRes, bRes) =>
-                MiscHelpers.compareExact(aRes, bRes) < 0
+                MiscHelpers.compare(aRes, bRes) < 0
               }
           }
           .map(_._1)
@@ -446,7 +455,7 @@ object ListHelpers:
         VList(
           iterable.zipWithIndex
             .sorted { (a, b) =>
-              MiscHelpers.compareExact(
+              MiscHelpers.compare(
                 key.executeResult(a(0), a(1), List(a(0))),
                 key.executeResult(b(0), b(1), List(b(0)))
               )
@@ -627,14 +636,14 @@ object ListHelpers:
       }
       VList.from(temp)
 
-  def vectorisedMaximum(iterable: VList, b: VVal): VList =
+  def vectorisedMaximum(iterable: VList, b: VVal)(using Context): VList =
     VList.from(iterable.map { a =>
       (a: @unchecked) match
         case a: VList => vectorisedMaximum(a, b)
         case a: VVal => MiscHelpers.dyadicMaximum(a, b)
     })
 
-  def vectorisedMinimum(iterable: VList, b: VVal): VList =
+  def vectorisedMinimum(iterable: VList, b: VVal)(using Context): VList =
     VList.from(iterable.map { a =>
       (a: @unchecked) match
         case a: VList => vectorisedMinimum(a, b)
