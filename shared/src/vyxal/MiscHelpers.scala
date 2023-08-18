@@ -99,7 +99,7 @@ object MiscHelpers:
     case (a: VList) =>
       if a.exists(_.isInstanceOf[VList]) then a.vmap(MiscHelpers.joinNothing)
       else a.mkString
-    case (a: VNum) => NumberHelpers.partitions(a)
+    case (a: VNum) => a.toString
     case (a: String) => ""
     case (a: VFun) => firstPositive(a)
   }
