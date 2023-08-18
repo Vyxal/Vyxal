@@ -11,6 +11,10 @@ Keywords: fact, factorial, to-upper, upper, uppercase
 - a: num -> a!
 - a: str -> a.toUpperCase()
 ---------------------
+#|map-prefixes ([Internal Use] Map Prefixes (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to each prefix of a. Use the modifier instead.
+---------------------
 #|map-suffixes ([Internal Use] Map Suffixes (Element Form)) (non-vectorising)
 Keywords: 
 - *a, f -> f applied to each suffix of a. Use the modifier instead.
@@ -685,12 +689,6 @@ Description: Turn the next four elements (whether that be a structure/modifier/e
 Чfghi: Push the equivalent of λfghi} to the stack
 Trigraph: #^4
 ---------------------
-ϩ
-Keywords: **:
-Description: Turn the next two elements (whether that be a structure/modifier/element) into a lambda
-ϩfg: Push the equivalent of λfg} to the stack
-Trigraph: #^:
----------------------
 ᵈ
 Keywords: *2:
 Description: Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda
@@ -702,11 +700,6 @@ Keywords: first-index-where:, first-index-of:
 Description: Find the first index where an element is truthy
 ᶤf: find the first index where f is truthy
 Trigraph: #^i
----------------------
-ᵍ
-Keywords: ****2:
-Description: Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
-ᵍfghi: Push the equivalent of λ2|fghi} to the stack
 ---------------------
 ⁿ
 Keywords: min-by, minimum-by
@@ -737,6 +730,12 @@ Count the number of truthy elements in a list under a mondaic element
 ᵃf<dyad>: equivalent to pushing the function, then calling ȧ
 Trigraph: #^a
 ---------------------
+ᶪ
+Keywords: loop-while-unique:
+Description: Loop While Unique - similar to ᶨ, but doesn't collect
+ᶪf: Loop while unique
+Trigraph: #^l
+---------------------
 ᵐ
 Keywords: max-by, maximum-by
 Description: Maximum By Element
@@ -761,11 +760,40 @@ Description: Turn the next three elements (whether that be a structure/modifier/
 эfgh: Push the equivalent of λfgh} to the stack
 Trigraph: #^%
 ---------------------
+ᵖ
+Keywords: map-over-prefixes:, over-prefixes:
+Description: Map an element over the prefixes of a list
+ᵖf: Map f over prefixes
+Trigraph: #^p
+---------------------
 ᵡ
 Keywords: scan-fix:
 Description: Scan a function until it reaches a fixed point
 ᵡf: scan f until a fixed point is reached / apply until a previous value is repeated, collecting intermediate results
 Trigraph: #^X
+---------------------
+ϩ
+Keywords: **:
+Description: Turn the next two elements (whether that be a structure/modifier/element) into a lambda
+ϩfg: Push the equivalent of λfg} to the stack
+Trigraph: #^:
+---------------------
+ᶨ
+Keywords: collect-while-unique:
+Description: Loop and Collect While Unique
+ᶨf: Loop and collect while unique
+Trigraph: #^j
+---------------------
+ᵏ
+Keywords: key:
+Description: Map an element over the groups formed by identical items.
+ᵏf: Map f over the groups formed by identical items
+Trigraph: #^k
+---------------------
+ᵍ
+Keywords: ****2:
+Description: Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
+ᵍfghi: Push the equivalent of λ2|fghi} to the stack
 ---------------------
 ᵉ
 Keywords: **2:
