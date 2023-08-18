@@ -234,6 +234,18 @@ object Modifiers:
         )
       )
     },
+    "ᶨ" -> Modifier(
+      "Loop and Collect While Unique",
+      """|Loop and Collect While Unique
+         |ᶨf: Loop and collect while unique""".stripMargin,
+      List("collect-while-unique:"),
+      1
+    ) { case List(ast) =>
+      AST.makeSingle(
+        astToLambda(ast, ast.arity.getOrElse(1)),
+        AST.Command("İ")
+      )
+    },
     "ᵐ" -> Modifier(
       "Maximum By",
       """|Maximum By Element
