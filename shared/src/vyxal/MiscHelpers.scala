@@ -99,6 +99,8 @@ object MiscHelpers:
   def firstPositive(f: VFun)(using Context): Int = firstFromN(f, 1)
 
   val joinNothing: Monad = Monad.fill("joinNothing") {
+    // ALTERNATIVE (No vectorisation):
+    // case (a: VList) => a.mkString
     case (a: VList) =>
       if a.forall(_.isInstanceOf[VList]) then a.vmap(MiscHelpers.joinNothing)
       else a.mkString
