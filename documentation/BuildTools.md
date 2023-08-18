@@ -166,9 +166,9 @@ need to go around installing stuff yourself.
 
 The Mill build has 3 modules:
 
-- `jvm` - For running Vyxal on the JVM. Includes code in `jvm/src/main/scala` and `shared/src/main/scala`.
-- `js` - For compiling Vyxal to JS. Includes code in `js/src/main/scala` and `shared/src/main/scala`
-- `native` - For compiling Vyxal to native executables. Includes code in `native/src/main/scala` and `shared/src/main/scala`
+- `jvm` - For running Vyxal on the JVM. Includes code in `jvm/src` and `shared/src`.
+- `js` - For compiling Vyxal to JS. Includes code in `js/src` and `shared/src`
+- `native` - For compiling Vyxal to native executables. Includes code in `native/src` and `shared/src`
 
 Each of these modules has a `test` module inside it (e.g. `jvm.test` includes
 code in `jvm/src/test/scala` and `shared/src/test/scala`).
@@ -232,6 +232,10 @@ You can use `resolve` to find available tasks inside a module, e.g.
 If you want to check if a task exists, you can do that too, e.g.
 `./mill resolve jvm.doesthisexist` will give an error, while `./mill resolve jvm.assembly` won't.
 
+If you want Mill to watch files and automatically recompile/rerun tasks, use the
+`-w` option (e.g. `mill -w js.fastLinkJS` to keep building the JS every time you
+make any changes).
+
 ### List of tasks
 
 - `compile`: Compile your code to see if there's any errors or warnings
@@ -252,7 +256,7 @@ If you want to check if a task exists, you can do that too, e.g.
       is relative to your current project's root, so if you're in the `vyxalJVM`
       project, it'll be relative to the `jvm/` folder, and if you're in `vyxalJS`,
       it'll be relative to `js/`.
-      - e.g. `scalafmtOnly ../shared/src/main/scala/Interpreter.scala`
+      - e.g. `scalafmtOnly ../shared/src/Interpreter.scala`
     - `reformat` if you're using Mill
       - `checkFormat` to only check if everything is formatted.
 - `fastOptJS` - Quickly build and link the JS code, not too many optimizations.

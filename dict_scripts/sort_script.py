@@ -48,41 +48,20 @@ def gen(shortlen, longlen):
     # turn off while testing
 
     root = os.path.dirname(curr_dir)
-    resources = os.path.join(root, "shared", "src", "main", "resources")
+    resources = os.path.join(root, "shared", "resources")
+    pages = os.path.join(root, "pages")
 
     short_str = "\n".join(short)
     long_str = "\n".join(long)
 
-    with open(
-        os.path.join(resources, "ShortDictionary.txt"), "w", encoding="utf-8"
-    ) as out:
-        out.write(short_str + "\n")
+    def write_dict(dict_str, path):
+        with open(path, "w", encoding="utf-8") as out:
+            out.write(dict_str + "\n")
 
-    with open(
-        os.path.join(resources, "LongDictionary.txt"), "w", encoding="utf-8"
-    ) as out:
-        out.write(long_str + "\n")
-
-    with open(
-        os.path.join(root, "js", "src", "main", "scala", "Dictionary.scala"),
-        "w",
-        encoding="utf-8",
-    ) as out:
-        # Scala has a maximum string literal length (because of Java)
-        out.write(
-            f"""
-            // This is a generated file. DO NOT EDIT!
-            // See dict_scripts/{os.path.basename(__file__)}
-            package vyxal
-            object Dictionary{{
-                val shortDictionary=split({chop(short_str)})
-                val longDictionary=split({chop(long_str)})
-                def split(s: String): Seq[String] = {{
-                    s.split("\\n").toSeq
-                }}
-            }}
-"""
-        )
+    write_dict(short_str, os.path.join(resources, "ShortDictionary.txt"))
+    write_dict(short_str, os.path.join(pages, "ShortDictionary.txt"))
+    write_dict(long_str, os.path.join(resources, "LongDictionary.txt"))
+    write_dict(long_str, os.path.join(pages, "LongDictionary.txt"))
 
     return {"short": short, "long": long}
 

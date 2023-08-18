@@ -5,6 +5,9 @@ on:
     paths-ignore:
       - "documentation/**"
       - "pages/**"
+      - ".gitattributes"
+      - "**/*.md"
+      - "**/*.txt"
 
 jobs:
   jvm:
@@ -17,6 +20,7 @@ jobs:
         with:
           java-version: "17"
           distribution: "adopt"
+      - uses: coursier/cache-action@v6
       - name: Test
         run: sbt vyxalJVM/test
 
@@ -30,6 +34,7 @@ jobs:
         with:
           java-version: "17"
           distribution: "adopt"
+      - uses: coursier/cache-action@v6
       - name: Test
         run: sbt vyxalNative/test
 
@@ -43,5 +48,6 @@ jobs:
         with:
           java-version: "17"
           distribution: "adopt"
+      - uses: coursier/cache-action@v6
       - name: Compile
         run: sbt vyxalJS/compile

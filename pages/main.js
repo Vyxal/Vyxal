@@ -537,6 +537,26 @@ const other_aliases = {
 
 var selectedBox = 'code' //whether 'header', 'code', or 'footer' are selected
 
+let shortDict = null;
+let longDict = null;
+
+fetch("/ShortDictionary.txt")
+    .then(response => response.text())
+    .then(dict => {
+        console.log("Fetched short dictionary");
+        shortDict = dict;
+        Vyxal.setShortDict(dict);
+    })
+    .catch(reason => console.error(reason))
+fetch("/LongDictionary.txt")
+    .then(response => response.text())
+    .then(dict => {
+        console.log("Fetched long dictionary");
+        longDict = dict;
+        Vyxal.setLongDict(dict);
+    })
+    .catch(reason => console.error(reason))
+
 
 function resizeCodeBox(id) {
     // Resize the code box with the given id
@@ -729,6 +749,7 @@ window.addEventListener("DOMContentLoaded", e => {
         if (e_code.doc.getValue() == 'lyxal') {
             location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
         }
+
         let runButton = $('run_button');
         worker = new Worker('./worker.js');
         worker.onmessage = function (e) {
@@ -753,7 +774,9 @@ window.addEventListener("DOMContentLoaded", e => {
                 (e_footer.doc.getValue() ? '\n' + e_footer.doc.getValue() : ''),
             "inputs": $('inputs').value,
             "flags": $('flag').value,
-            "session": sessioncode
+            "session": sessioncode,
+            "shortDict": shortDict,
+            "longDict": longDict
         })
 
         setTimeout(() => {

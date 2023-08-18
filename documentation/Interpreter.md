@@ -1,6 +1,6 @@
 # The Interpreter
 
-*This file is to accompany [Interpreter.scala](/shared/src/main/scala/Interpreter.scala). For a general overview of how the whole interpretation process works, visit [INSERT MD FILE HERE](link).*
+*This file is to accompany [Interpreter.scala](/shared/src/Interpreter.scala). For a general overview of how the whole interpretation process works, visit [INSERT MD FILE HERE](link).*
 
 The interpreter file is the main brains of the whole Vyxal project - it's where the pipeline flows to after reading all neccesary inputs (like program files) and where vyxal programs are lexed and parsed. It also handles execution of Vyxal programs, via the `execute` function. There are two overloads of the execute function:
 
@@ -27,7 +27,7 @@ After parsing, the result is an `AST.Group`, which is an AST object that contain
 | `AST.Number`         | Value simply pushed to stack | ❌ |
 | `AST.Str`            | Value simply pushed to stack | ❌ |
 | `AST.Lst`            | Each AST group in the list's items are evaluated. The list of results are pushed to the stack. | ❌ |
-| `AST.Command`        | The element name is indexed into the element dictionary (in [`Elements`](/shared/src/main/scala/Elements.scala)) | ❌ |
+| `AST.Command`        | The element name is indexed into the element dictionary (in [`Elements`](/shared/src/Elements.scala)) | ❌ |
 | `AST.Group`          | Each AST in the group is executed individually | ❌ |
 | `AST.CompositeNilad` | Same as `AST.Group`. This AST type is for arity grouping purposes. | ❌ |
 | `AST.If`             | Pop the top of the stack, truthy: execute truthy branch, else: execute falsey branch if present | ❌ |
@@ -107,7 +107,7 @@ The `Context` class is used for keeping track of everything in the current
 execution context/scope. Every scope (while loops, for loops, functions) gets
 its own child context holding the stack, variables, inputs, and a few other
 things for that scope. The `Context` class also has a `globals` field. All the
-`Context`s have the same [`Globals`](/shared/src/main/scala/Globals.scala) object
+`Context`s have the same [`Globals`](/shared/src/Globals.scala) object
 in their `globals` field, and it holds the settings (set using flags), the
 global inputs (passed in the "Inputs" field of the online interpreter), and the
 register.
@@ -129,7 +129,7 @@ Vyxal has 4 basic types:
 - Functions
 - Lists (which are heterogeneous and may contain any of these 4)
 
-Internally, the [`VAny`](/shared/src/main/scala/VAny.scala) type is
+Internally, the [`VAny`](/shared/src/VAny.scala) type is
 used. It's a [union type], defined as `String | VNum | VFun | VList`.
 
 ### `String`
@@ -179,7 +179,7 @@ functin was defined in.
   themselves). In addition to this, it has access to variables to the outer
   context (the `parent` context).
 
-### Multiple parameter lists?!
+### Multiple parameter lists?
 
 Scala lets you define a method with multiple parameter lists so that you can do
 [currying](https://en.wikipedia.org/wiki/Currying) more easily. These two
@@ -199,6 +199,6 @@ Both can be called using `foo(a)(b)` (or `foo(a)`, to get a value of type
 ---
 
 [implicit docs]: https://docs.scala-lang.org/scala3/book/ca-given-using-clauses.html
-[Context]: /shared/src/main/scala/Context.scala
+[Context]: /shared/src/Context.scala
 [ElementDocumentation.md]: ./ElementDocumentation.md
 [union type]: https://docs.scala-lang.org/scala3/book/types-union.html

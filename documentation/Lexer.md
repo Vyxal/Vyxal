@@ -28,4 +28,4 @@ The Vyxal lexer takes programs as a big string of code and uses a library called
 | Newline                 	| `\n` (literal newline)                        	| literal newline                                                                               	| Included for parsing structures and modifiers that rely upon newlines                                                                                                                                                                                                                                                                                            	|
 
 
-After lexing has matched as many patterns as possible, either a list of `VyxalToken`s will be returned, or a `VyxalCompilationError` will be returned.
+After lexing has matched as many patterns as possible, either a list of `Token`s will be returned, or a `VyxalCompilationError` will be returned.
