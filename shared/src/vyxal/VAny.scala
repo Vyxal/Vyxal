@@ -7,8 +7,7 @@ import scala.collection.mutable as mut
 
 import spire.implicits.*
 
-type VAny = VAtom | VList
-type VAtom = VVal | VFun
+type VAny = VVal | VFun | VList
 type VVal = VNum | String
 
 /** A function object (not a function definition)
