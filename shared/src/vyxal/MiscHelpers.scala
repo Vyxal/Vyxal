@@ -100,7 +100,7 @@ object MiscHelpers:
 
   val joinNothing: Monad = Monad.fill("joinNothing") {
     case (a: VList) =>
-      if a.exists(_.isInstanceOf[VList]) then a.vmap(MiscHelpers.joinNothing)
+      if a.forall(_.isInstanceOf[VList]) then a.vmap(MiscHelpers.joinNothing)
       else a.mkString
     case (a: VNum) => NumberHelpers.partitions(a)
     case (a: String) => ""
