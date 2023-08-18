@@ -98,8 +98,14 @@ extension (self: VAny)
   @targetName("vEquals")
   def ===(that: VAny)(using Context): Boolean =
     (self, that) match
-      case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) == 0
       case (a: VList, b: VList) => a == b
+      case (_: VFun, _) =>
+        scribe.warn(s"Tried comparing function $self to $that")
+        false
+      case (_, _: VFun) =>
+        scribe.warn(s"Tried comparing $self to function $that")
+        false
+      case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) == 0
       case _ => false
 
   @targetName("plus")
