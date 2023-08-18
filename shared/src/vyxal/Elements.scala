@@ -9,7 +9,6 @@ import vyxal.VNum.given
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 import scala.io.StdIn
 
-/** Implementations for elements */
 case class Element(
     symbol: String,
     name: String,
@@ -20,6 +19,7 @@ case class Element(
     impl: DirectFn
 )
 
+/** Implementations for all the elements */
 object Elements:
   /** Find the symbol for a keyword in literate mode, if it exists */
   def symbolFor(keyword: String): Option[String] =
@@ -175,12 +175,12 @@ object Elements:
       "c",
       "Contains",
       List("contains", "in"),
-      "a: any, b: any -> is (b) in (a)?"
+      "a: any, b: lst -> is element a in list b?",
+      "a: any, b: any -> is str(b) in str(a)?"
     ) {
-      case (a: VList, b: VVal) => a.contains(b)
-      case (a: VVal, b: VList) => b.contains(a)
-      case (a: VList, b: VList) => a.contains(b)
-      case (a: VVal, b: VVal) => a.toString.contains(b.toString)
+      case (a: VList, b) => a.contains(b)
+      case (a, b: VList) => b.contains(a)
+      case (a, b) => a.toString.contains(b.toString)
     },
     addDirect(
       "🍪",
@@ -520,7 +520,7 @@ object Elements:
       "a: str, b: num -> a > str(b)",
       "a: num, b: str -> str(a) > b",
       "a: str, b: str -> a > b"
-    ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) > 0 },
+    ) { case (a: VVal, b: VVal) => a > b },
     addElem(
       Dyad,
       "Ġ",
@@ -743,17 +743,15 @@ object Elements:
       "j",
       "Join On",
       List("join-on", "join", "join-with", "join-by"),
-      "a: lst, b: str -> a join on b"
+      "a: lst, b: str|num -> a join on b",
+      "a: lst, b: lst -> Intersperse elements of b within a"
     ) {
-      case (a: VList, b: String) => a.mkString(b)
-      case (a: VVal, b: VVal) =>
-        ListHelpers.makeIterable(a).mkString(b.toString)
+      case (a: VList, b) => ListHelpers.join(a, b)
+      case (a, b: VList) => ListHelpers.join(b, a)
       case (a, b) =>
-        val lst = ListHelpers.makeIterable(a)
-        ListHelpers.flatten(
-          VList.from(lst.head +: lst.tail.flatMap(Seq(b, _)))
-        )
-
+        ListHelpers.join(ListHelpers.makeIterable(a), b) match
+          case l: VList => l.mkString
+          case res => res
     },
     addFull(
       Monad,
@@ -839,7 +837,7 @@ object Elements:
       "a: str, b: num -> a < str(b)",
       "a: num, b: str -> str(a) < b",
       "a: str, b: str -> a < b"
-    ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) < 0 },
+    ) { case (a: VVal, b: VVal) => a < b },
     addElem(
       Dyad,
       "Y",
@@ -954,12 +952,12 @@ object Elements:
         case _ =>
           val next = ctx.pop()
           (top, next) match
-            case (a: VVal, b: VVal) =>
-              ctx.push(MiscHelpers.dyadicMaximum(a, b))
             case (a: VFun, b: VList) =>
               ctx.push(ListHelpers.generate(a, b))
             case (a: VVal, b: VList) =>
               ctx.push(ListHelpers.vectorisedMaximum(b, a))
+            case (a: VVal, b: VVal) =>
+              ctx.push(MiscHelpers.dyadicMaximum(a, b))
             case _ =>
               throw Exception("Invalid arguments for maximum")
     },
@@ -969,12 +967,16 @@ object Elements:
       "Merge",
       List("merge"),
       "a: lst, b: lst -> Merge a and b",
+      "a: any, b: lst -> Prepend a to b",
+      "a: lst, b: any -> Append b to a",
+      "a: num, b: num -> num(str(a) + str(b))",
+      "a: any, b: any -> str(a) + str(b)"
     ) {
-      case (a: VNum, b: VNum) => MiscHelpers.eval(a.toString + b.toString)
-      case (a: VVal, b: VVal) => a +~ b
       case (a: VList, b: VList) => VList.from(a ++ b)
       case (a, b: VList) => VList.from(a +: b)
       case (a: VList, b) => VList.from(a :+ b)
+      case (a: VNum, b: VNum) => MiscHelpers.eval(a.toString + b.toString)
+      case (a, b) => a.toString + b.toString
     },
     addElem(
       Monad,
@@ -1036,12 +1038,12 @@ object Elements:
         case _ =>
           val next = ctx.pop()
           (top, next) match
-            case (a: VVal, b: VVal) =>
-              ctx.push(MiscHelpers.dyadicMinimum(a, b))
             case (a: VFun, b: VList) =>
               ctx.push(ListHelpers.generateDyadic(a, b))
             case (a: VVal, b: VList) =>
               ctx.push(ListHelpers.vectorisedMinimum(b, a))
+            case (a: VVal, b: VVal) =>
+              ctx.push(MiscHelpers.dyadicMinimum(a, b))
             case _ =>
               throw Exception("Invalid arguments for mimimum")
     },
@@ -1341,19 +1343,18 @@ object Elements:
       List("replace"),
       "a: str, b: str, c: str -> replace all instances of b in a with c"
     ) {
+      case (a: VList, b, c) =>
+        VList.from(a.lst.map(x => if x == b then c else x))
+      case (a, b: VList, c: VList) =>
+        VList.from(b.lst.map(x => if x == a then c else x))
+      case (a, b, c: VList) =>
+        VList.from(c.lst.map(x => if x == a then b else x))
+      case (a, b: VList, c) =>
+        VList.from(b.lst.map(x => if x == a then c else x))
       case (a: String, b: VVal, c: VVal) =>
         a.replace(b.toString, c.toString)
       case (a: VNum, b: VVal, c: VVal) =>
         MiscHelpers.eval(a.toString().replace(b.toString, c.toString))
-      case (a: VList, b, c) =>
-        VList.from(a.lst.map(x => if x == b then c else x))
-      case (a: VVal, b: VVal, c: VList) =>
-        VList.from(c.lst.map(x => if x == a then b else x))
-      case (a: VVal, b: VList, c: VVal) =>
-        VList.from(b.lst.map(x => if x == a then c else x))
-      case (a: VVal, b: VList, c: VList) =>
-        VList.from(b.lst.map(x => if x == a then c else x))
-
     },
     addDirect(
       "X",
@@ -1378,7 +1379,7 @@ object Elements:
       case s: String => s.sorted
       case a =>
         VList.from(
-          ListHelpers.makeIterable(a).sorted(MiscHelpers.compareExact(_, _))
+          ListHelpers.makeIterable(a).sorted(MiscHelpers.compare(_, _))
         )
     },
     addDirect(

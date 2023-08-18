@@ -96,7 +96,7 @@ object VFun:
 
 extension (self: VAny)
   @targetName("vEquals")
-  def ===(that: VAny): Boolean =
+  def ===(that: VAny)(using Context): Boolean =
     (self, that) match
       case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) == 0
       case (a: VList, b: VList) => a == b
@@ -116,4 +116,4 @@ extension (self: VAny)
 end extension
 
 given (using Context): Ordering[VAny] with
-  override def compare(x: VAny, y: VAny): Int = MiscHelpers.compareExact(x, y)
+  override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
