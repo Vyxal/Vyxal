@@ -11,9 +11,6 @@ type VAny = VAtom | VList
 type VAtom = VVal | VFun
 type VVal = VNum | String
 
-/** Everything but functions */
-type VData = VVal | VList
-
 /** A function object (not a function definition)
   *
   * @param impl

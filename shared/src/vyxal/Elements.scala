@@ -1858,14 +1858,15 @@ object Elements:
       "a: lst, b: fun -> [[x, b(x)] for x in a]",
       "a: fun, b: lst -> [[a(x), x] for x in b]",
     ) {
-      case (a: VData, b: VData) =>
-        ListHelpers.makeIterable(a).zip(ListHelpers.makeIterable(b))
-      case (a: VData, b: VFun) =>
+      case (a: VFun, b: VFun) => ??? // todo(lyxal) overload for two functions
+      case (a, b: VFun) =>
         val iter = ListHelpers.makeIterable(a)
         VList.from(iter.zip(ListHelpers.map(b, iter)))
-      case (a: VFun, b: VData) =>
+      case (a: VFun, b) =>
         val iter = ListHelpers.makeIterable(b)
         VList.from(ListHelpers.map(a, iter).zip(iter))
+      case (a, b) =>
+        ListHelpers.makeIterable(a).zip(ListHelpers.makeIterable(b))
     }
 
     // Constants
