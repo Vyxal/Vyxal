@@ -147,7 +147,7 @@ object NumberHelpers:
       else i += 1
     VList.from(result.toList)
 
-  def primeFactorsUniquified(a: VNum): VList =
+  def primeFactorsUniquified(a: VNum)(using ctx: Context): VList =
     ListHelpers.uniquify(NumberHelpers.primeFactors(a))
 
   def range(start: VNum, end: VNum): VList =
