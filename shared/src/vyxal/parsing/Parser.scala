@@ -130,6 +130,8 @@ object Parser:
               case _ => name += top
           if depth != -1 then names += ((name, depth))
           asts.push(AST.UnpackVar(names.toList))
+        case TokenType.Param =>
+          asts.push(AST.Parameter(value))
       end match
 
     end while

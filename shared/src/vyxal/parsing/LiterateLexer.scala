@@ -35,7 +35,8 @@ private[parsing] object LiterateLexer extends Lexer:
     "then",
     "in",
     "using",
-    "no?"
+    "no?",
+    "=>"
   )
 
   /** Map keywords to their token types */
