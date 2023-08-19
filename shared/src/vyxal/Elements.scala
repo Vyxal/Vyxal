@@ -62,6 +62,17 @@ object Elements:
       case a: VNum => a.vabs
       case a: String => a.filter(_.isLetter)
     },
+    addVect(
+      Monad,
+      "Ạ",
+      "Unique Prime Factors | Case Of",
+      List("unique-prime-factors", "case-of"),
+      "a: num -> unique prime factors of a",
+      "a: str -> case of each character of a (uppercase = 1, lowercase = 0)"
+    ) {
+      case a: VNum => NumberHelpers.primeFactorsUniquified(a)
+      case a: String => StringHelpers.caseof(a)
+    },
     addElem(
       Monad,
       "A",

@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.*
+
 import vyxal.parsing.Lexer
 
 import scala.collection.mutable.ListBuffer
@@ -21,6 +23,16 @@ object StringHelpers:
 
     val shortInds = Dictionary.shortDictionary.zipWithIndex.toMap
     val longInds = Dictionary.longDictionary.zipWithIndex.toMap
+
+    def caseof(s: String): VList =
+      VList.from(
+        for c <- s
+        yield
+          if c.toString.matches("[A-Z]") then 1    // Uppercase
+          else
+            if c.toString.matches("[a-z]") then 0  // Lowercase
+            else -1                                // Non-alphabet
+      )
 
     def character(z: BigInt, c: Char) =
       val o =
