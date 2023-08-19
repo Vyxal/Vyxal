@@ -243,7 +243,7 @@ object StringHelpers:
       case l: VList => l.map(vyToString).mkString("[", "|", "]")
       case f: VFun => vyToString(Interpreter.executeFn(f))
 
-  def caseof(s: String): VList =
+  def caseof(s: String)(using ctx: Context): VList =
       VList.from(
         ListHelpers.makeIterable(s).map(c =>
           if c.toString.matches("[A-Z]") then VNum(1)    // Uppercase
