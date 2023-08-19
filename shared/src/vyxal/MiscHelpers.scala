@@ -99,7 +99,7 @@ object MiscHelpers:
     // ALTERNATIVE (No vectorisation):
     // case (a: VList) => a.mkString
     case (a: VList) =>
-      if a.forall(_.isInstanceOf[VList]) then a.vmap(MiscHelpers.joinNothing)
+      if a.exists(_.isInstanceOf[VList]) then a.vmap(MiscHelpers.joinNothing)
       else a.mkString
     case (a: VNum) => a.toString
     case (a: String) => StringHelpers.isAlphaNumeric(a)
