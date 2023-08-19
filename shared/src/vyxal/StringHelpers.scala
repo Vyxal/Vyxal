@@ -245,7 +245,7 @@ object StringHelpers:
 
   def caseof(s: String): VList =
       VList.from(
-        s.split().map(c =>
+        ListHelpers.makeIterable(s).map(c =>
           if c.toString.matches("[A-Z]") then VNum(1)    // Uppercase
           else
             if c.toString.matches("[a-z]") then VNum(0) // Lowercase
