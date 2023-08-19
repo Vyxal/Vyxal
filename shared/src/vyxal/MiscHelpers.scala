@@ -95,6 +95,9 @@ object MiscHelpers:
 
   def firstPositive(f: VFun)(using Context): Int = firstFromN(f, 1)
 
+  def isalphanumeric(s: String): Int =
+    if s.matches("^[0-9A-Za-z]*$") then 1 else 0
+
   val joinNothing: Monad = Monad.fill("joinNothing") {
     // ALTERNATIVE (No vectorisation):
     // case (a: VList) => a.mkString
@@ -102,7 +105,7 @@ object MiscHelpers:
       if a.forall(_.isInstanceOf[VList]) then a.vmap(MiscHelpers.joinNothing)
       else a.mkString
     case (a: VNum) => a.toString
-    case (a: String) => ""
+    case (a: String) => MiscHelpers.isalphanumeric(a)
     case (a: VFun) => firstPositive(a)
   }
 
