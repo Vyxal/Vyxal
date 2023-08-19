@@ -1655,21 +1655,10 @@ object Elements:
       "a: lst -> a with duplicates removed"
     ) { a =>
       val iter = ListHelpers.makeIterable(a)
-      val uniq: LazyList[Option[VAny]] =
-        LazyList.unfold(Seq[VAny]() -> 0) { state =>
-          if !iter.hasIndex(state._2) then None
-          else if state._1.contains(iter.index(state._2)) then
-            Some(None, state._1 -> (state._2 + 1))
-          else
-            Some(
-              Some(iter.index(state._2)),
-              (state._1 :+ iter.index(state._2)) -> (state._2 + 1)
-            )
-        }
       a match
-        case _: VList => VList.from(uniq.flatten)
-        case _: VNum => MiscHelpers.eval(uniq.flatten.mkString)
-        case _: String => uniq.flatten.mkString
+        case _: VList => iter.distinct
+        case _: VNum => MiscHelpers.eval(iter.distinct.flatten.mkString)
+        case _: String => iter.distinct.flatten.mkString
         case _ => throw RuntimeException("Uniquify: Can't uniquify functions")
 
     },
