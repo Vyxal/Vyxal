@@ -114,7 +114,7 @@ object StringHelpers:
   end formatString
 
   def isAlphaNumeric(s: String): Int =
-    if s.matches("^[0-9A-Za-z]*$") then 1 else 0
+    s.matches("^[0-9A-Za-z]*$")
 
   def isVowel(c: Char): VNum = "aeiouAEIOU".contains(c)
 
