@@ -650,7 +650,7 @@ object ListHelpers:
         case a: VVal => MiscHelpers.dyadicMinimum(a, b)
     })
 
-  def uniquify(it: VList): VList =
+  def uniquify(iter: VList): VList =
       val uniq: LazyList[Option[VAny]] =
         LazyList.unfold(Seq[VAny]() -> 0) { state =>
           if !iter.hasIndex(state._2) then None
