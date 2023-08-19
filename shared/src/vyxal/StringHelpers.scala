@@ -252,5 +252,5 @@ object StringHelpers:
             else -1                                // Non-alphabet
         )
       )
-  
+
 end StringHelpers
