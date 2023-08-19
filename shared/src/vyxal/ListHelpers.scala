@@ -663,6 +663,6 @@ object ListHelpers:
             )
         }
 
-       VList.from(uniq.flatten)
+      VList.from(uniq.flatten)
 
 end ListHelpers
