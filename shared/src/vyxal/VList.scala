@@ -134,6 +134,21 @@ class VList private (val lst: Seq[VAny])
     case _ => this.lst == o
 
   override def hashCode(): Int = this.lst.hashCode()
+
+  def distinct(using Context): VList =
+    val uniq: LazyList[Option[VAny]] =
+      LazyList.unfold(Seq[VAny]() -> 0) { state =>
+        if !this.hasIndex(state._2) then None
+        else if state._1.contains(this.index(state._2)) then
+          Some(None, state._1 -> (state._2 + 1))
+        else
+          Some(
+            Some(this.index(state._2)),
+            (state._1 :+ this.index(state._2)) -> (state._2 + 1)
+          )
+      }
+
+    VList.from(uniq.flatten)
 end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:
@@ -194,18 +209,3 @@ object VList extends SpecificIterableFactory[VAny, VList]:
 
   def seqToVList(seq: Seq[Seq[VAny]]): VList = new VList(seq.map(VList.from))
 end VList
-
-  override def distinct(using Context): VList =
-    val uniq: LazyList[Option[VAny]] =
-      LazyList.unfold(Seq[VAny]() -> 0) { state =>
-        if !this.hasIndex(state._2) then None
-        else if state._1.contains(this.index(state._2)) then
-          Some(None, state._1 -> (state._2 + 1))
-        else
-          Some(
-            Some(this.index(state._2)),
-            (state._1 :+ this.index(state._2)) -> (state._2 + 1)
-          )
-      }
-
-    VList.from(uniq.flatten)
