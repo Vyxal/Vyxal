@@ -113,7 +113,7 @@ object StringHelpers:
     sb.toString
   end formatString
 
-  def isAlphaNumeric(s: String): Int =
+  def isAlphaNumeric(s: String): Boolean =
     s.matches("^[0-9A-Za-z]*$")
 
   def isVowel(c: Char): VNum = "aeiouAEIOU".contains(c)
