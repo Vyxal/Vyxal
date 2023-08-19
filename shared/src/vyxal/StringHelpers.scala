@@ -245,11 +245,11 @@ object StringHelpers:
 
   def caseof(s: String): VList =
       VList.from(
-        s.map(
-          if _.toString.matches("[A-Z]") then 1    // Uppercase
+        s.split().map(c =>
+          if c.toString.matches("[A-Z]") then VNum(1)    // Uppercase
           else
-            if _.toString.matches("[a-z]") then 0  // Lowercase
-            else -1                                // Non-alphabet
+            if c.toString.matches("[a-z]") then VNum(0) // Lowercase
+            else VNum(-1)                               // Non-alphabet
         )
       )
 
