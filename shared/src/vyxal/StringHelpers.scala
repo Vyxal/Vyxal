@@ -1,7 +1,5 @@
 package vyxal
 
-import vyxal.*
-
 import vyxal.parsing.Lexer
 
 import scala.collection.mutable.ListBuffer
@@ -26,12 +24,12 @@ object StringHelpers:
 
     def caseof(s: String): VList =
       VList.from(
-        for c <- s
-        yield
-          if c.toString.matches("[A-Z]") then 1    // Uppercase
+        s.map(
+          if _.toString.matches("[A-Z]") then 1    // Uppercase
           else
-            if c.toString.matches("[a-z]") then 0  // Lowercase
+            if _.toString.matches("[a-z]") then 0  // Lowercase
             else -1                                // Non-alphabet
+        )
       )
 
     def character(z: BigInt, c: Char) =
