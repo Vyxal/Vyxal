@@ -650,8 +650,9 @@ object ListHelpers:
         case a: VVal => MiscHelpers.dyadicMinimum(a, b)
     })
 
-  /** Keeping this here just in case I mess up, but I'm going to
-   * overload a copy of this function to VList.distinct */
+  /** Keeping this here just in case I mess up, but I'm going to overload a copy
+    * of this function to VList.distinct
+    */
   def uniquify(iter: VList)(using ctx: Context): VList =
     val uniq: LazyList[Option[VAny]] =
       LazyList.unfold(Seq[VAny]() -> 0) { state =>
