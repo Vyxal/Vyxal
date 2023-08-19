@@ -22,16 +22,6 @@ object StringHelpers:
     val shortInds = Dictionary.shortDictionary.zipWithIndex.toMap
     val longInds = Dictionary.longDictionary.zipWithIndex.toMap
 
-    def caseof(s: String): VList =
-      VList.from(
-        s.map(
-          if _.toString.matches("[A-Z]") then 1    // Uppercase
-          else
-            if _.toString.matches("[a-z]") then 0  // Lowercase
-            else -1                                // Non-alphabet
-        )
-      )
-
     def character(z: BigInt, c: Char) =
       val o =
         if c.toInt == 10 then 95
@@ -252,4 +242,15 @@ object StringHelpers:
       case s: String => s
       case l: VList => l.map(vyToString).mkString("[", "|", "]")
       case f: VFun => vyToString(Interpreter.executeFn(f))
+
+  def caseof(s: String): VList =
+      VList.from(
+        s.map(
+          if _.toString.matches("[A-Z]") then 1    // Uppercase
+          else
+            if _.toString.matches("[a-z]") then 0  // Lowercase
+            else -1                                // Non-alphabet
+        )
+      )
+  
 end StringHelpers
