@@ -244,13 +244,14 @@ object StringHelpers:
       case f: VFun => vyToString(Interpreter.executeFn(f))
 
   def caseof(s: String)(using ctx: Context): VList =
-      VList.from(
-        ListHelpers.makeIterable(s).map(c =>
-          if c.toString.matches("[A-Z]") then VNum(1)    // Uppercase
-          else
-            if c.toString.matches("[a-z]") then VNum(0) // Lowercase
-            else VNum(-1)                               // Non-alphabet
+    VList.from(
+      ListHelpers
+        .makeIterable(s)
+        .map(c =>
+          if c.toString.matches("[A-Z]") then VNum(1) // Uppercase
+          else if c.toString.matches("[a-z]") then VNum(0) // Lowercase
+          else VNum(-1) // Non-alphabet
         )
-      )
+    )
 
 end StringHelpers
