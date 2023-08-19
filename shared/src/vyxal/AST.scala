@@ -109,6 +109,8 @@ enum AST(val arity: Option[Int]) derives CanEqual:
   /** Junk modifier AST that is removed during parsing after first pass */
   case JunkModifier(name: String, modArity: Int) extends AST(Some(modArity))
 
+  case Parameter(name: String) extends AST(None)
+
   def range: Range = Range.fake
 
   /** Generate the Vyxal code this AST represents */
@@ -147,6 +149,7 @@ enum AST(val arity: Option[Int]) derives CanEqual:
     case FnDef(name, lam, _) => ???
     case GetVar(name, _) => s"#<$name"
     case SetVar(name, _) => s"#>$name"
+    case Parameter(name) => s"$name,"
     case ast => ast.toString
 end AST
 
