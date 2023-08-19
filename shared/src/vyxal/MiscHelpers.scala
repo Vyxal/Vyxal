@@ -102,7 +102,7 @@ object MiscHelpers:
       if a.forall(_.isInstanceOf[VList]) then a.vmap(MiscHelpers.joinNothing)
       else a.mkString
     case (a: VNum) => a.toString
-    case (a: String) => StringHelpers.isalphanumeric(a)
+    case (a: String) => StringHelpers.isAlphaNumeric(a)
     case (a: VFun) => firstPositive(a)
   }
 
