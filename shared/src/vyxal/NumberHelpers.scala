@@ -260,18 +260,13 @@ object NumberHelpers:
       "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     MiscHelpers.joinNothing(
       VList.from(
-        lst.map { i =>
-          if i < 62 then digits(i.toInt).toString()
-          else
-            Lexer
-              .Codepage(
-                (i.toInt - 62) % 256
-              )
-              .toString() // Feel free to change this line
+        lst.map { d =>
+          val i = (d % 256).toInt
+          if i < 62 then digits(i).toString
+          else Lexer.Codepage(i - 62).toString
         }
       )
     )
-  end toBaseString
 
   def toInt(value: VAny, radix: Int)(using ctx: Context): VAny =
     value match
