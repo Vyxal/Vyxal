@@ -258,7 +258,7 @@ object NumberHelpers:
     val digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     MiscHelpers.joinNothing(lst.map(
       i =>
-        if i < 36 then digits(i)
+        if i < 36 then digits(i.toInt)
         else Lexer.Codepage((i - 36) % 256) // Feel free to change this line
     ))
 
