@@ -135,7 +135,9 @@ class VList private (val lst: Seq[VAny])
 
   override def hashCode(): Int = this.lst.hashCode()
 
-  /** The default implementation of distinct doesn't work with VNums, so we must override it */
+  /** The default implementation of distinct doesn't work with VNums, so we must
+    * override it
+    */
   override def distinct: VList =
     val seen = mutable.ArrayBuffer.empty[VAny]
     VList.from(this.lst.filter { elem =>
