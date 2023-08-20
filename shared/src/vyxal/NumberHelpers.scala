@@ -261,11 +261,11 @@ object NumberHelpers:
     MiscHelpers.joinNothing(
       VList.from(
         lst.map(i =>
-          if i < 36 then digits(i.asInstanceOf[VNum].toInt).toString()
+          if i < 62 then digits(i.asInstanceOf[VNum].toInt).toString()
           else
             Lexer
               .Codepage(
-                (i.asInstanceOf[VNum].toInt - 36) % 256
+                (i.asInstanceOf[VNum].toInt - 62) % 256
               )
               .toString() // Feel free to change this line
         )
