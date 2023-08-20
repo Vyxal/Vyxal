@@ -1,8 +1,8 @@
 This is the official version 3 branch.
 
 The readme will be updated when it's time to write a proper readme.
-See the [documentation](./documentation/README.md) folder for info on how the
-interpreter works, Vyxal elements, and other stuff.
+See the [documentation](/documentation/README.md) folder for info on how to use
+Vyxal.
 
 If you want to contribute, check out [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 Any contribution, no matter how small, is welcome.
