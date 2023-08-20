@@ -1657,7 +1657,7 @@ object Elements:
       val iter = ListHelpers.makeIterable(a)
       a match
         case lst: VList => lst.distinct
-        case n: VNum => NumberHelpers.primeFactors(n).distinct
+        case n: VNum => MiscHelpers.eval(ListHelpers.makeIterable(n).distinct)
         case s: String => s.distinct.mkString
         case _ => throw RuntimeException("Uniquify: Can't uniquify functions")
 
