@@ -256,14 +256,13 @@ object NumberHelpers:
 
   def toBaseString(value: VNum, base: VNum)(using Context): VAny =
     val lst = NumberHelpers.toBaseDigits(value, base)
-    val digits =
-      "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    val temp = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    val codepage =
+      temp + Lexer.Codepage.filterNot(temp.contains(_))
     MiscHelpers.joinNothing(
       VList.from(
         lst.map { d =>
-          val i = (d % 256).toInt
-          if i < 62 then digits(i).toString
-          else Lexer.Codepage(i - 62).toString
+          codepage((d % 256).toInt).toString
         }
       )
     )
