@@ -254,21 +254,24 @@ object NumberHelpers:
       current = current.floor
     VList(digits.reverse.toList*)
 
-  def toBaseString(value: VNum, base: VNum)(using Context): String =
+  def toBaseString(value: VNum, base: VNum)(using Context): VAny =
     val lst = NumberHelpers.toBijectiveBase(value, base)
     val digits =
       "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     MiscHelpers.joinNothing(
       VList.from(
         lst.map(i =>
-          if i < 36 then digits(i.asInstanceOf[VNum].toInt)
+          if i < 36 then digits(i.asInstanceOf[VNum].toInt).toString()
           else
-            Lexer.Codepage(
-              (i.asInstanceOf[VNum].toInt - 36) % 256
-            ) // Feel free to change this line
+            parsing.Lexer
+              .Codepage(
+                (i.asInstanceOf[VNum].toInt - 36) % 256
+              )
+              .toString() // Feel free to change this line
         )
       )
     )
+  end toBaseString
 
   def toInt(value: VAny, radix: Int)(using ctx: Context): VAny =
     value match
