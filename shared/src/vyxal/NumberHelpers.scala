@@ -253,7 +253,7 @@ object NumberHelpers:
       current = current.floor
     VList(digits.reverse.toList*)
 
-  def toBaseString(value: VNum, base: VNum): String =
+  def toBaseString(value: VNum, base: VNum)(using Context): String =
     val lst = NumberHelpers.toBijectiveBase(value, base)
     val digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     MiscHelpers.joinNothing(lst.map(
