@@ -600,6 +600,14 @@ Trigraph: #.`
 Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first-n
 - a: lst, b: num -> [a[0], a[1], ..., a[b-1]]
 ---------------------
+Ḅ (Character Multiply | Surround | To Base String) (vectorising)
+Trigraph: #,B
+Keywords: character-multiply, surround, to-base-string
+- a: num, b: num -> convert a to base b as a string
+- a: num, b: str -> character multiply b by a
+- a: str, b: num -> character multiply a by b
+- a: str, b: str -> surround b by a
+---------------------
 ∑ (Sum) (non-vectorising)
 Keywords: sum, /+, +/
 - a: lst -> sum of a
