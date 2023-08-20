@@ -244,8 +244,6 @@ object StringHelpers:
       case f: VFun => vyToString(Interpreter.executeFn(f))
 
   def characterMultiply(n: VNum, s: String)(using Context): VAny =
-    MiscHelpers.joinNothing(
-      VList.from(s.map(_.toString * n.toInt))
-    )
+      VList.from(s.map(_.toString * n.toInt)).mkstring
 
 end StringHelpers
