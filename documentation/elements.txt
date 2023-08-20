@@ -342,7 +342,7 @@ Keywords: tail, last, last-item
 ---------------------
 u (Uniquify) (non-vectorising)
 Keywords: uniquify
-- a: lst -> a with duplicates removed
+- a: lst|str|num -> a with duplicates removed
 ---------------------
 w (Wrap Singleton) (non-vectorising)
 Keywords: wrap-singleton, enlist
