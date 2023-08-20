@@ -1654,7 +1654,8 @@ object Elements:
       "a: lst|str|num -> a with duplicates removed"
     ) {
       case lst: VList => lst.distinct
-      case n: VNum => MiscHelpers.eval(ListHelpers.makeIterable(n).distinct.mkString)
+      case n: VNum =>
+        MiscHelpers.eval(ListHelpers.makeIterable(n).distinct.mkString)
       case s: String => s.distinct.mkString
     },
     addDirect(
