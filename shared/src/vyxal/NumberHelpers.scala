@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.*
+import vyxal.parsing.Lexer
 
 import scala.annotation.tailrec
 import scala.collection.mutable
