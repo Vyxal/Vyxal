@@ -255,7 +255,7 @@ object NumberHelpers:
     VList(digits.reverse.toList*)
 
   def toBaseString(value: VNum, base: VNum)(using Context): VAny =
-    val lst = NumberHelpers.toBijectiveBase(value, base)
+    val lst = NumberHelpers.toBaseDigits(value, base)
     val digits =
       "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     MiscHelpers.joinNothing(
