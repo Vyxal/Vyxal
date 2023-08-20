@@ -600,6 +600,11 @@ Trigraph: #.`
 Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first-n
 - a: lst, b: num -> [a[0], a[1], ..., a[b-1]]
 ---------------------
+Ạ (Unique Prime Factors | Case Of) (vectorising)
+Keywords: unique-prime-factors, case-of
+- a: num -> unique prime factors of a
+- a: str -> case of each character of a (uppercase = 1, lowercase = 0)
+---------------------
 ∑ (Sum) (non-vectorising)
 Keywords: sum, /+, +/
 - a: lst -> sum of a
