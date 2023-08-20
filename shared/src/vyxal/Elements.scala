@@ -767,7 +767,7 @@ object Elements:
     addFull(
       Monad,
       "Ṅ",
-      "Join on Nothing | First Positive Integer",
+      "Join on Nothing | First Positive Integer | Is Alphanumeric",
       List(
         "nothing-join",
         "concat-fold",
@@ -777,9 +777,13 @@ object Elements:
         "as-single-string",
         "first-positive-integer",
         "first-n>0",
+        "is-alphanumeric",
+        "is-alphanum",
+        "is-alnum"
       ),
       false,
       "a: lst -> a join on nothing",
+      "a: str -> is a alphanumeric?",
       "a: fun -> First positive integer ([1, 2, 3, ...]) for which a returns true"
     ) { a => MiscHelpers.joinNothing(a) },
     addElem(

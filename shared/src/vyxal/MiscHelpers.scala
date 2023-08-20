@@ -96,12 +96,14 @@ object MiscHelpers:
   def firstPositive(f: VFun)(using Context): Int = firstFromN(f, 1)
 
   val joinNothing: Monad = Monad.fill("joinNothing") {
-    case (a: VList) =>
+    // ALTERNATIVE (No vectorisation):
+    // case a: VList => a.mkString
+    case a: VList =>
       if a.exists(_.isInstanceOf[VList]) then a.vmap(MiscHelpers.joinNothing)
       else a.mkString
-    case (a: VNum) => a.toString
-    case (a: String) => ""
-    case (a: VFun) => firstPositive(a)
+    case n: VNum => n.toString
+    case s: String => StringHelpers.isAlphaNumeric(s)
+    case f: VFun => firstPositive(f)
   }
 
   val modulo: Dyad = Dyad.fill("modulo") {

@@ -342,7 +342,7 @@ Keywords: tail, last, last-item
 ---------------------
 u (Uniquify) (non-vectorising)
 Keywords: uniquify
-- a: lst -> a with duplicates removed
+- a: lst|str|num -> a with duplicates removed
 ---------------------
 w (Wrap Singleton) (non-vectorising)
 Keywords: wrap-singleton, enlist
@@ -445,10 +445,11 @@ Keywords: nth-items, modular, maxtrix-multiply, mat-multiply, mat-mul, regex-ful
 - a: lst, b: lst -> a * b (matrix multiply)
 - a: str, b: str -> does the entirety of a match b?
 ---------------------
-Ṅ (Join on Nothing | First Positive Integer) (non-vectorising)
+Ṅ (Join on Nothing | First Positive Integer | Is Alphanumeric) (non-vectorising)
 Trigraph: #.N
-Keywords: nothing-join, concat-fold, join-on-nothing, empty-join, single-string, as-single-string, first-positive-integer, first-n>0
+Keywords: nothing-join, concat-fold, join-on-nothing, empty-join, single-string, as-single-string, first-positive-integer, first-n>0, is-alphanumeric, is-alphanum, is-alnum
 - a: lst -> a join on nothing
+- a: str -> is a alphanumeric?
 - a: fun -> First positive integer ([1, 2, 3, ...]) for which a returns true
 ---------------------
 Ȯ (Over) (non-vectorising)
