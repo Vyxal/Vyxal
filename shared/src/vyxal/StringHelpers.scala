@@ -245,7 +245,7 @@ object StringHelpers:
 
   def characterMultiply(n: VNum, s: String)(using Context): VAny =
     MiscHelpers.joinNothing(
-      VList.from(ListHelpers.makeIterable(s).map(_.toString * n.toInt))
+      VList.from(s.map(_.toString * n.toInt))
     )
 
 end StringHelpers
