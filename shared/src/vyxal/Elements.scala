@@ -62,6 +62,17 @@ object Elements:
       case a: VNum => a.vabs
       case a: String => a.filter(_.isLetter)
     },
+    addVect(
+      Monad,
+      "Ạ",
+      "Unique Prime Factors | Case Of",
+      List("unique-prime-factors", "case-of"),
+      "a: num -> unique prime factors of a",
+      "a: str -> case of each character of a (uppercase = 1, lowercase = 0)"
+    ) {
+      case a: VNum => NumberHelpers.primeFactors(a).distinct
+      case a: String => StringHelpers.caseof(a)
+    },
     addElem(
       Monad,
       "A",
@@ -771,7 +782,7 @@ object Elements:
     addFull(
       Monad,
       "Ṅ",
-      "Join on Nothing | First Positive Integer",
+      "Join on Nothing | First Positive Integer | Is Alphanumeric",
       List(
         "nothing-join",
         "concat-fold",
@@ -781,9 +792,13 @@ object Elements:
         "as-single-string",
         "first-positive-integer",
         "first-n>0",
+        "is-alphanumeric",
+        "is-alphanum",
+        "is-alnum"
       ),
       false,
       "a: lst -> a join on nothing",
+      "a: str -> is a alphanumeric?",
       "a: fun -> First positive integer ([1, 2, 3, ...]) for which a returns true"
     ) { a => MiscHelpers.joinNothing(a) },
     addElem(
@@ -1650,32 +1665,17 @@ object Elements:
 
       ctx.push(pushEven, pushOdd)
     },
-    addFull(
+    addElem(
       Monad,
       "u",
       "Uniquify",
       List("uniquify"),
-      false,
-      "a: lst -> a with duplicates removed"
-    ) { a =>
-      val iter = ListHelpers.makeIterable(a)
-      val uniq: LazyList[Option[VAny]] =
-        LazyList.unfold(Seq[VAny]() -> 0) { state =>
-          if !iter.hasIndex(state._2) then None
-          else if state._1.contains(iter.index(state._2)) then
-            Some(None, state._1 -> (state._2 + 1))
-          else
-            Some(
-              Some(iter.index(state._2)),
-              (state._1 :+ iter.index(state._2)) -> (state._2 + 1)
-            )
-        }
-      a match
-        case _: VList => VList.from(uniq.flatten)
-        case _: VNum => MiscHelpers.eval(uniq.flatten.mkString)
-        case _: String => uniq.flatten.mkString
-        case _ => throw RuntimeException("Uniquify: Can't uniquify functions")
-
+      "a: lst|str|num -> a with duplicates removed"
+    ) {
+      case lst: VList => lst.distinct
+      case n: VNum =>
+        MiscHelpers.eval(ListHelpers.makeIterable(n).distinct.mkString)
+      case s: String => s.distinct.mkString
     },
     addDirect(
       "#v",

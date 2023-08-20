@@ -113,6 +113,9 @@ object StringHelpers:
     sb.toString
   end formatString
 
+  def isAlphaNumeric(s: String): Boolean =
+    s.matches("^[0-9A-Za-z]*$")
+
   def isVowel(c: Char): VNum = "aeiouAEIOU".contains(c)
 
   /** Remove the character at the given index */
@@ -245,5 +248,14 @@ object StringHelpers:
 
   def characterMultiply(n: VNum, s: String)(using Context): VAny =
     s.map(_.toString * n.toInt).mkString
+
+  def caseof(s: String)(using Context): VList =
+    VList.from(
+      s.map(c =>
+        if c.isUpper then VNum(1) // Uppercase
+        else if c.isLower then VNum(0) // Lowercase
+        else VNum(-1) // Non-alphabet
+      )
+    )
 
 end StringHelpers
