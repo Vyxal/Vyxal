@@ -259,13 +259,7 @@ object NumberHelpers:
     val temp = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     val codepage =
       temp + Lexer.Codepage.filterNot(temp.contains(_))
-    MiscHelpers.joinNothing(
-      VList.from(
-        lst.map { d =>
-          codepage((d % 256).toInt).toString
-        }
-      )
-    )
+    lst.map(d => codepage((d % 256).toInt)).mkString
 
   def toInt(value: VAny, radix: Int)(using ctx: Context): VAny =
     value match
