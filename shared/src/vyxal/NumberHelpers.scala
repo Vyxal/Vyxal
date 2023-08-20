@@ -170,7 +170,7 @@ object NumberHelpers:
 
   def toBase(a: VAny, b: VAny)(using ctx: Context): VAny =
     (a, b) match
-      case (a: VNum, b: VNum) => toBaseDigits(a, b)
+      case (a: VNum, b: VNum) => VList.from(toBaseDigits(a, b))
       case (n: VNum, b: (String | VList)) => toBaseAlphabet(n, b)
       case (a: VList, _) => VList(a.map(toBase(_, b))*)
       case _ =>
@@ -199,7 +199,7 @@ object NumberHelpers:
     if isStr then temp.mkString("")
     else VList.from(temp)
 
-  def toBaseDigits(value: VNum, base: VNum): VList =
+  def toBaseDigits(value: VNum, base: VNum): Seq[VNum] =
     /** Helper to get digits for single component of a VNum */
     def compToBase(valueComp: Real, baseComp: Real): Seq[Real] =
       val value = valueComp.floor
@@ -235,7 +235,7 @@ object NumberHelpers:
       if imag.size < real.size then
         Seq.fill(real.size - imag.size)(Real(0)) ++ imag
       else imag
-    VList.from(realPadded.lazyZip(imagPadded).map(VNum.complex))
+    realPadded.lazyZip(imagPadded).map(VNum.complex)
   end toBaseDigits
 
   def toBijectiveBase(value: VNum, radix: VNum)(using ctx: Context): VList =
@@ -260,15 +260,15 @@ object NumberHelpers:
       "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     MiscHelpers.joinNothing(
       VList.from(
-        lst.map(i =>
-          if i < 62 then digits(i.asInstanceOf[VNum].toInt).toString()
+        lst.map { i =>
+          if i < 62 then digits(i.toInt).toString()
           else
             Lexer
               .Codepage(
-                (i.asInstanceOf[VNum].toInt - 62) % 256
+                (i.toInt - 62) % 256
               )
               .toString() // Feel free to change this line
-        )
+        }
       )
     )
   end toBaseString

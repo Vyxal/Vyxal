@@ -2,7 +2,6 @@ package vyxal
 
 import vyxal.parsing.Lexer
 
-import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.StringBuilder
 
 object StringHelpers:
