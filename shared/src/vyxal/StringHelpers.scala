@@ -243,7 +243,9 @@ object StringHelpers:
       case l: VList => l.map(vyToString).mkString("[", "|", "]")
       case f: VFun => vyToString(Interpreter.executeFn(f))
 
-  def characterMultiply(n: VNum, s: String)(using Context): String =
-    MiscHelpers.joinNothing(ListHelpers.makeIterable(s).map(_.toString * n.toInt))
+  def characterMultiply(n: VNum, s: String)(using Context): VAny =
+    MiscHelpers.joinNothing(
+      VList.from(ListHelpers.makeIterable(s).map(_.toString * n.toInt))
+    )
 
 end StringHelpers
