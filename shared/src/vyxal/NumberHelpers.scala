@@ -263,7 +263,7 @@ object NumberHelpers:
         lst.map(i =>
           if i < 36 then digits(i.asInstanceOf[VNum].toInt).toString()
           else
-            parsing.Lexer
+            Lexer
               .Codepage(
                 (i.asInstanceOf[VNum].toInt - 36) % 256
               )
