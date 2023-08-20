@@ -244,12 +244,3 @@ function, but the compiler isn't going to know that.
 
 But since we're using `() => Context ?=> Unit`, we would have to use `f(x())`
 for the compiler to think we want to evaluate `x`. This avoids the problem above.
-
-## `Impls`
-
-All the element implementations live inside `Impls`, which is a private singleton object inside `Elements`.
-Why not put all the element implementations inside `Elements` directly? Because we want them to all be
-inaccessible from the outside, so you want all of them to be private. If each and every element
-implementation needed to be marked `private`, at some point, someone would inevitably forget to mark one
-element private. It wouldn't be a big deal but it'd be kinda irksome. It's easier to mark `Impls` as private,
-put the element implementations inside that, and leave them without accessibility modifiers.
