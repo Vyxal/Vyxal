@@ -1654,7 +1654,6 @@ object Elements:
       false,
       "a: lst -> a with duplicates removed"
     ) { a =>
-      val iter = ListHelpers.makeIterable(a)
       a match
         case lst: VList => lst.distinct
         case n: VNum =>
