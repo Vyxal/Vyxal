@@ -1653,7 +1653,7 @@ object Elements:
       List("uniquify"),
       false,
       "a: lst -> a with duplicates removed"
-    ) {a =>
+    ) { a =>
       a match
         case lst: VList => lst.distinct
         case n: VNum =>
