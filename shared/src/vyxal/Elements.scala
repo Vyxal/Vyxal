@@ -1653,7 +1653,8 @@ object Elements:
       List("uniquify"),
       false,
       "a: lst -> a with duplicates removed"
-    ) {a => match a
+    ) {a =>
+      a match
         case lst: VList => lst.distinct
         case n: VNum =>
           MiscHelpers.eval(ListHelpers.makeIterable(n).distinct.mkString)
