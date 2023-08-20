@@ -260,7 +260,7 @@ object NumberHelpers:
     MiscHelpers.joinNothing(lst.map(
       i =>
         if i < 36 then digits(i.asInstanceOf[VNum].toInt)
-        else Lexer.Codepage((i - 36) % 256) // Feel free to change this line
+        else Lexer.Codepage((i.asInstanceOf[VNum].toInt - 36) % 256) // Feel free to change this line
     ))
 
   def toInt(value: VAny, radix: Int)(using ctx: Context): VAny =
