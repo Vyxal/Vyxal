@@ -2,7 +2,6 @@ package vyxal
 
 import vyxal.parsing.Lexer
 
-import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.StringBuilder
 
 object StringHelpers:
@@ -246,7 +245,10 @@ object StringHelpers:
       case l: VList => l.map(vyToString).mkString("[", "|", "]")
       case f: VFun => vyToString(Interpreter.executeFn(f))
 
-  def caseof(s: String)(using ctx: Context): VList =
+  def characterMultiply(n: VNum, s: String)(using Context): VAny =
+    s.map(_.toString * n.toInt).mkString
+
+  def caseof(s: String)(using Context): VList =
     VList.from(
       s.map(c =>
         if c.isUpper then VNum(1) // Uppercase

@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.*
+import vyxal.parsing.Lexer
 
 import scala.annotation.tailrec
 import scala.collection.mutable
@@ -169,7 +170,7 @@ object NumberHelpers:
 
   def toBase(a: VAny, b: VAny)(using ctx: Context): VAny =
     (a, b) match
-      case (a: VNum, b: VNum) => toBaseDigits(a, b)
+      case (a: VNum, b: VNum) => VList.from(toBaseDigits(a, b))
       case (n: VNum, b: (String | VList)) => toBaseAlphabet(n, b)
       case (a: VList, _) => VList(a.map(toBase(_, b))*)
       case _ =>
@@ -198,7 +199,7 @@ object NumberHelpers:
     if isStr then temp.mkString("")
     else VList.from(temp)
 
-  def toBaseDigits(value: VNum, base: VNum): VList =
+  def toBaseDigits(value: VNum, base: VNum): Seq[VNum] =
     /** Helper to get digits for single component of a VNum */
     def compToBase(valueComp: Real, baseComp: Real): Seq[Real] =
       val value = valueComp.floor
@@ -234,7 +235,7 @@ object NumberHelpers:
       if imag.size < real.size then
         Seq.fill(real.size - imag.size)(Real(0)) ++ imag
       else imag
-    VList.from(realPadded.lazyZip(imagPadded).map(VNum.complex))
+    realPadded.lazyZip(imagPadded).map(VNum.complex)
   end toBaseDigits
 
   def toBijectiveBase(value: VNum, radix: VNum)(using ctx: Context): VList =
@@ -252,6 +253,13 @@ object NumberHelpers:
       current /= radix
       current = current.floor
     VList(digits.reverse.toList*)
+
+  def toBaseString(value: VNum, base: VNum)(using Context): VAny =
+    val lst = NumberHelpers.toBaseDigits(value, base)
+    val temp = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    val codepage =
+      temp + Lexer.Codepage.filterNot(temp.contains(_))
+    lst.map(d => codepage((d % 256).toInt)).mkString
 
   def toInt(value: VAny, radix: Int)(using ctx: Context): VAny =
     value match

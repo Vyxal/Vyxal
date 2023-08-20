@@ -211,6 +211,21 @@ object Elements:
     ) {
       MiscHelpers.vyPrintln("sus")
     },
+    addVect(
+      Dyad,
+      "Ḅ",
+      "Character Multiply | Surround | To Base String",
+      List("character-multiply", "surround", "to-base-string"),
+      "a: num, b: num -> convert a to base b as a string",
+      "a: num, b: str -> character multiply b by a",
+      "a: str, b: num -> character multiply a by b",
+      "a: str, b: str -> surround b by a"
+    ) {
+      case (a: VNum, b: VNum) => NumberHelpers.toBaseString(a, b)
+      case (a: VNum, b: String) => StringHelpers.characterMultiply(a, b)
+      case (a: String, b: VNum) => StringHelpers.characterMultiply(b, a)
+      case (a: String, b: String) => b + a + b
+    },
     addElem(
       Dyad,
       "C",
