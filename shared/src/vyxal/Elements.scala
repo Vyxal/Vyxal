@@ -70,7 +70,7 @@ object Elements:
       "a: num -> unique prime factors of a",
       "a: str -> case of each character of a (uppercase = 1, lowercase = 0)"
     ) {
-      case a: VNum => NumberHelpers.PrimeFactors(a).distinct
+      case a: VNum => NumberHelpers.primeFactors(a).distinct
       case a: String => StringHelpers.caseof(a)
     },
     addElem(
