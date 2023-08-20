@@ -2,12 +2,15 @@ name: Test
 
 on:
   push:
-    paths-ignore:
-      - "documentation/**"
-      - "pages/**"
-      - ".gitattributes"
-      - "**/*.md"
-      - "**/*.txt"
+    paths:
+      - "./**/*"
+      - "!documentation/**"
+      - "documentation/elements.txt"
+      - "documentation/trigraphs.txt"
+      - "!contributing/**"
+      - "!pages/**"
+      - "!.gitattributes"
+      - "!**/*.md"
 
 jobs:
   jvm:

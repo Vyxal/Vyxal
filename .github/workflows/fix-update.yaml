@@ -4,6 +4,7 @@ on:
   push:
     paths-ignore:
       - "documentation/**"
+      - "contributing/**"
       - "pages/**"
 
 jobs:
