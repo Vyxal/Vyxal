@@ -135,20 +135,15 @@ class VList private (val lst: Seq[VAny])
 
   override def hashCode(): Int = this.lst.hashCode()
 
-  def distinct(using Context): VList =
-    val uniq: LazyList[Option[VAny]] =
-      LazyList.unfold(Seq[VAny]() -> 0) { state =>
-        if !this.hasIndex(state._2) then None
-        else if state._1.contains(this.index(state._2)) then
-          Some(None, state._1 -> (state._2 + 1))
-        else
-          Some(
-            Some(this.index(state._2)),
-            (state._1 :+ this.index(state._2)) -> (state._2 + 1)
-          )
-      }
-
-    VList.from(uniq.flatten)
+  /** The default implementation of distinct doesn't work with VNums, so we must override it */
+  override def distinct: VList =
+    val seen = mutable.ArrayBuffer.empty[VAny]
+    VList.from(this.lst.filter { elem =>
+      if seen.contains(elem) then false
+      else
+        seen += elem
+        true
+    })
 end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:
