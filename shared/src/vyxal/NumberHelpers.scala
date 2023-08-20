@@ -256,12 +256,19 @@ object NumberHelpers:
 
   def toBaseString(value: VNum, base: VNum)(using Context): String =
     val lst = NumberHelpers.toBijectiveBase(value, base)
-    val digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-    MiscHelpers.joinNothing(lst.map(
-      i =>
-        if i < 36 then digits(i.asInstanceOf[VNum].toInt)
-        else Lexer.Codepage((i.asInstanceOf[VNum].toInt - 36) % 256) // Feel free to change this line
-    ))
+    val digits =
+      "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    MiscHelpers.joinNothing(
+      VList.from(
+        lst.map(i =>
+          if i < 36 then digits(i.asInstanceOf[VNum].toInt)
+          else
+            Lexer.Codepage(
+              (i.asInstanceOf[VNum].toInt - 36) % 256
+            ) // Feel free to change this line
+        )
+      )
+    )
 
   def toInt(value: VAny, radix: Int)(using ctx: Context): VAny =
     value match
