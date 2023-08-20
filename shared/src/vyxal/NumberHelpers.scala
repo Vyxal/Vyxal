@@ -256,11 +256,11 @@ object NumberHelpers:
   def toBaseString(value: VNum, base: VNum): String =
     val lst = NumberHelpers.toBijectiveBase(value, base)
     val digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-    lst.map(
+    MiscHelpers.joinNothing(lst.map(
       i =>
         if i < 36 then digits(i)
         else Lexer.Codepage((i - 36) % 256) // Feel free to change this line
-    )
+    ))
 
   def toInt(value: VAny, radix: Int)(using ctx: Context): VAny =
     value match
