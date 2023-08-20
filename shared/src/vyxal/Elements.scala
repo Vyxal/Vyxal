@@ -1653,13 +1653,12 @@ object Elements:
       List("uniquify"),
       false,
       "a: lst -> a with duplicates removed"
-    ) { a =>
-      a match
+    ) { a match
         case lst: VList => lst.distinct
         case n: VNum =>
           MiscHelpers.eval(ListHelpers.makeIterable(n).distinct.mkString)
         case s: String => s.distinct.mkString
-        case _ => throw RuntimeException("Uniquify: Can't uniquify functions")
+        // case _ => throw RuntimeException("Uniquify: Can't uniquify functions")
 
     },
     addDirect(
