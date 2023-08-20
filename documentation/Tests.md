@@ -76,5 +76,5 @@ a description of how they look.
   - { in: [], out: [] } # This line isn't allowed here
 ```
 
-More complex tests go in [ElementTests.scala](/shared/src/test/scala/ElementTests.scala).
+More complex tests go in [ElementTests.scala](/shared/test/src/vyxal/ElementTests.scala).
 TODO describe how they work.

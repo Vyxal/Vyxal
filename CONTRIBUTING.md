@@ -42,15 +42,21 @@ Directory Guide (for people who aren't the best at mentally parsing nested folde
     - `Elements` contains the definitions of the elements
     - `VAny` contains the definitions of the types of Vyxal's runtime values (numbers, strings, functions, lists)
   - `shared/test/src` is where the test files are
-- `jvm/src/` is where the entry file for the command line and all the
-   JVM-specific stuff is. `jvm/src/vyxal/Main.scala` is the `__main__.py` of the
-   project in a sort of a way.
+- `jvm/` is where all the JVM-specific stuff is. `jvm/src/vyxal/Main.scala` is
+  the entry file for the command line--the `__main__.py` of the project in a
+  sort of a way.
 - `js` is where all the JS-specific stuff is.
 - `native` is where all the Native-specific stuff is.
 
 Now that you're done setting up, take a look at the README in the
 [`documentation`](/documentation/) folder to get more information about how
 the interpreter works so you can add to it.
+
+## Testing
+
+You'll want to add tests if you're adding a new element (to ensure it works) or
+fixing a bug (so the bug doesn't pop up again). For more information on how to
+write and run tests, take a look at [`Tests.md`](/documentation/Tests.md).
 
 ## Running the website locally
 
@@ -72,7 +78,7 @@ since local requests will be blocked. There are a few ways to run the server:
 
 - If you have Node.js installed:
   1. `npm install http-server`
-  2. Make sure you're inside the project folder (`cd Vyxal`)
+  2. Make sure you're inside the Vyxal project folder (`cd Vyxal`)
   3. `http-server`
 - If you have Python installed:
   - `python3 -m http.server --directory pages`
@@ -80,4 +86,14 @@ since local requests will be blocked. There are a few ways to run the server:
     [`local_server.py`](/local_server.py) script in the root of this project:
     `python local_server.py`
 
-And that's it - head over to 127.0.0.1:8080/ (or whatever url it gives you) and test away.
+And that's it - head over to 127.0.0.1:8080 (or whatever url it gives you) and test away.
+
+## Running the JVM REPL
+
+If you want to test out the fancy JLine REPL that only the JVM has, you can run:
+
+- `mill -i jvm.runLocal` (if using Mill). The `-i` stands for interactive mode,
+  and the `runLocal` must be used instead of `run` so that it doesn't start a
+  new process.
+- `vyxalJVM/run` (if using sbt). Note that using `sbt --client vyxalJVM/run`
+  will mean only the basic REPL will run, not the fancy REPL.
