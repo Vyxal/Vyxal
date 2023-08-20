@@ -134,6 +134,18 @@ class VList private (val lst: Seq[VAny])
     case _ => this.lst == o
 
   override def hashCode(): Int = this.lst.hashCode()
+
+  /** The default implementation of distinct doesn't work with VNums, so we must
+    * override it
+    */
+  override def distinct: VList =
+    val seen = mutable.ArrayBuffer.empty[VAny]
+    VList.from(this.lst.filter { elem =>
+      if seen.contains(elem) then false
+      else
+        seen += elem
+        true
+    })
 end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:

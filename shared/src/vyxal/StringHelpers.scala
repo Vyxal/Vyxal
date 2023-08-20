@@ -245,4 +245,14 @@ object StringHelpers:
       case s: String => s
       case l: VList => l.map(vyToString).mkString("[", "|", "]")
       case f: VFun => vyToString(Interpreter.executeFn(f))
+
+  def caseof(s: String)(using ctx: Context): VList =
+    VList.from(
+      s.map(c =>
+        if c.isUpper then VNum(1) // Uppercase
+        else if c.isLower then VNum(0) // Lowercase
+        else VNum(-1) // Non-alphabet
+      )
+    )
+
 end StringHelpers
