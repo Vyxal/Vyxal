@@ -147,9 +147,6 @@ object NumberHelpers:
       else i += 1
     VList.from(result.toList)
 
-  def uniquePrimeFactors(a: VNum)(using Context): VList =
-    NumberHelpers.primeFactors(a).distinct
-
   def range(start: VNum, end: VNum): VList =
     val step = if start < end then 1 else -1
     start.to(end, step = step)
