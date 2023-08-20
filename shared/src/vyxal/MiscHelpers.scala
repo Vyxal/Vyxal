@@ -97,13 +97,13 @@ object MiscHelpers:
 
   val joinNothing: Monad = Monad.fill("joinNothing") {
     // ALTERNATIVE (No vectorisation):
-    // case (a: VList) => a.mkString
-    case (a: VList) =>
+    // case a: VList => a.mkString
+    case a: VList =>
       if a.exists(_.isInstanceOf[VList]) then a.vmap(MiscHelpers.joinNothing)
       else a.mkString
-    case (a: VNum) => a.toString
-    case (a: String) => StringHelpers.isAlphaNumeric(a)
-    case (a: VFun) => firstPositive(a)
+    case n: VNum => n.toString
+    case s: String => StringHelpers.isAlphaNumeric(s)
+    case f: VFun => firstPositive(f)
   }
 
   val modulo: Dyad = Dyad.fill("modulo") {
