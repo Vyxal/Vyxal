@@ -1646,21 +1646,16 @@ object Elements:
 
       ctx.push(pushEven, pushOdd)
     },
-    addFull(
+    addElem(
       Monad,
       "u",
       "Uniquify",
       List("uniquify"),
-      false,
-      "a: lst -> a with duplicates removed"
-    ) { a =>
-      a match
-        case lst: VList => lst.distinct
-        case n: VNum =>
-          MiscHelpers.eval(ListHelpers.makeIterable(n).distinct.mkString)
-        case s: String => s.distinct.mkString
-        // case _ => throw RuntimeException("Uniquify: Can't uniquify functions")
-
+      "a: lst|str|num -> a with duplicates removed"
+    ) {
+      case lst: VList => lst.distinct
+      case n: VNum => MiscHelpers.eval(ListHelpers.makeIterable(n).distinct.mkString)
+      case s: String => s.distinct.mkString
     },
     addDirect(
       "#v",
