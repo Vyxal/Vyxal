@@ -4,6 +4,9 @@ This file is for documenting how to use the two build tools the project supports
 as well as the tasks we've defined for them. You can use either the [sbt](https://www.scala-sbt.org/)
 build tool or the [Mill](https://com-lihaoyi.github.io/mill/mill/Intro_to_Mill.html) build tool.
 
+It looks like a long document, but don't worry, you don't actually need to read
+most of it. If you're viewing this from GitHub, look at the table of contents.
+
 ## Should I use sbt or Mill?
 
 If you already know what you want, skip ahead to [sbt](#sbt) or [Mill](#mill).<br>
