@@ -651,6 +651,6 @@ object ListHelpers:
     })
 
   def gradeUp(iterable: VList)(using Context): VList =
-    VList.from(iterable.zipWithIndex.sortBy(_(0)).map(_(1)))
+    VList.from(iterable.zipWithIndex.sortBy(_._1).map(_._2))
 
 end ListHelpers
