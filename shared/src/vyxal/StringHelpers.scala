@@ -259,7 +259,7 @@ object StringHelpers:
 
   def sentenceCase(s: String): String =
     var b = true
-    var lst = List("")
+    val res = StringBuilder()
     for c <- s do
       lst =
         lst :+ (if b then c.toString.toUpperCase else c.toString.toLowerCase)
