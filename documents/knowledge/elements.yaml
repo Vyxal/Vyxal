@@ -2705,13 +2705,15 @@
 
 - element: "↳"
   name: Right Bit Shift
-  description: Right-bitshift a value / right-justify a string
+  description: Right-bitshift a value / right-justify a string / apply a on b until the result stops changing (not including the initial value)
   arity: 2
   overloads:
     num-num: a << b
     num-str: a.rjust(b)
     str-num: b.rjust(a)
     str-str: a.rjust(len(b)-len(a))
+    fun-any: Apply a on b until the result does not change, yielding intermediate values. Does not the initial value.
+    any-fun: Apply b on a until the result does not change, yielding intermediate values. Does not the initial value.
   vectorise: true
   tests:
     - "[4,1] : 2"
@@ -2720,13 +2722,15 @@
 
 - element: "↲"
   name: Left Bit Shift
-  description: Left-bitshift a value / left-justify a string
+  description: Left-bitshift a value / left-justify a string / Collect while unique with initial value
   arity: 2
   overloads:
     num-num: a >> b
     num-str: a.ljust(b)
     str-num: b.ljust(a)
     str-str: a.ljust(len(b)-len(a))
+    any-fun: Collect values while values are unique (including the initial value)
+    fun-any: Collect values while values are unique (including the initial value)
   vectorise: true
   tests:
     - "[4,1] : 8"

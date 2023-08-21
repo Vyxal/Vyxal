@@ -3309,8 +3309,8 @@ var codepage_descriptions =
   "217": [
     {
       "name": "Right Bit Shift",
-      "description": "Right-bitshift a value / right-justify a string",
-      "overloads": "num, num -> a << b\nnum, str -> a.rjust(b)\nstr, num -> b.rjust(a)\nstr, str -> a.rjust(len(b)-len(a))",
+      "description": "Right-bitshift a value / right-justify a string / apply a on b until the result stops changing (not including the initial value)",
+      "overloads": "num, num -> a << b\nnum, str -> a.rjust(b)\nstr, num -> b.rjust(a)\nstr, str -> a.rjust(len(b)-len(a))\nfun, any -> Apply a on b until the result does not change, yielding intermediate values. Does not the initial value.\nany, fun -> Apply b on a until the result does not change, yielding intermediate values. Does not the initial value.",
       "token": "\u21b3"
     },
     {
@@ -3328,8 +3328,8 @@ var codepage_descriptions =
   "218": [
     {
       "name": "Left Bit Shift",
-      "description": "Left-bitshift a value / left-justify a string",
-      "overloads": "num, num -> a >> b\nnum, str -> a.ljust(b)\nstr, num -> b.ljust(a)\nstr, str -> a.ljust(len(b)-len(a))",
+      "description": "Left-bitshift a value / left-justify a string / Collect while unique with initial value",
+      "overloads": "num, num -> a >> b\nnum, str -> a.ljust(b)\nstr, num -> b.ljust(a)\nstr, str -> a.ljust(len(b)-len(a))\nany, fun -> Collect values while values are unique (including the initial value)\nfun, any -> Collect values while values are unique (including the initial value)",
       "token": "\u21b2"
     },
     {
