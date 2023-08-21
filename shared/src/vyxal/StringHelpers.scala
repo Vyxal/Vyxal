@@ -257,4 +257,17 @@ object StringHelpers:
       )
     )
 
+  def sentenceCase(s: String): String =
+    var b = true
+    var lst = List("")
+    for (c <- s)
+      lst = lst :+ (if b then c.toString.toUpperCase else c.toString.toLowerCase)
+      if "?!.".contains(c) then
+        b = true
+      else
+        if c != ' ' then
+          b = false
+    lst.mkString
+
+
 end StringHelpers
