@@ -261,7 +261,7 @@ object StringHelpers:
     var b = true
     val res = StringBuilder()
     for c <- s do
-      res += if b then c.toUpper else c.toLower
+      res += (if b then c.toUpper else c.toLower)
       if "?!.".contains(c) then b = true
       else if c != ' ' then b = false
     res.toString
