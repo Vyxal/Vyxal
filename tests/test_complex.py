@@ -785,11 +785,12 @@ def test_collectors():
     stack = run_vyxal("yJ)İ", inputs=[[1, 2]])
     assert stack[-1] == []
 
-    stack = run_vyxal("½⌊)↔", input=[9])
+    stack = run_vyxal("½⌊)↔", inputs=[9])
     assert stack[-1] == [9, 4, 2, 1, 0]
 
-    stack = run_vyxal("½⌊)↳", input=[9])
+    stack = run_vyxal("½⌊)↳", inputs=[9])
     assert stack[-1] == [4, 2, 1, 0]
+
 
 def test_string_interop():
     stack = run_vyxal("1 2 `hello Π world Π`")
