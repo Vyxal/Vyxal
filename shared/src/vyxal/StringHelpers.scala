@@ -259,12 +259,12 @@ object StringHelpers:
 
   def sentenceCase(s: String): String =
     var b = true
-    val res = StringBuilder()
+    var res = List("")
     for c <- s do
-      lst =
-        lst :+ (if b then c.toString.toUpperCase else c.toString.toLowerCase)
+      res =
+        res :+ (if b then c.toString.toUpperCase else c.toString.toLowerCase)
       if "?!.".contains(c) then b = true
       else if c != ' ' then b = false
-    lst.mkString
+    res.mkString
 
 end StringHelpers
