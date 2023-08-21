@@ -1787,7 +1787,7 @@ All inputs wrapped in a list
 -------------------------------
 ## `` ↳ `` (Right Bit Shift)
 
-Right-bitshift a value / right-justify a string
+Right-bitshift a value / right-justify a string / apply a on b until the result stops changing (not including the initial value)
 
 ### Overloads
 
@@ -1795,10 +1795,12 @@ Right-bitshift a value / right-justify a string
 - num a, str b: `a.rjust(b)`
 - str a, num b: `b.rjust(a)`
 - str a, str b: `a.rjust(len(b)-len(a))`
+- fun a, any b: `Apply a on b until the result does not change, yielding intermediate values. Does not the initial value.`
+- any a, fun b: `Apply b on a until the result does not change, yielding intermediate values. Does not the initial value.`
 -------------------------------
 ## `` ↲ `` (Left Bit Shift)
 
-Left-bitshift a value / left-justify a string
+Left-bitshift a value / left-justify a string / Collect while unique with initial value
 
 ### Overloads
 
@@ -1806,6 +1808,8 @@ Left-bitshift a value / left-justify a string
 - num a, str b: `a.ljust(b)`
 - str a, num b: `b.ljust(a)`
 - str a, str b: `a.ljust(len(b)-len(a))`
+- any a, fun b: `Collect values while values are unique (including the initial value)`
+- fun a, any b: `Collect values while values are unique (including the initial value)`
 -------------------------------
 ## `` ⋏ `` (Bitwise And)
 
