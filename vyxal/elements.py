@@ -3648,6 +3648,23 @@ def left_bit_shift(lhs, rhs, ctx):
     (str, num) -> b.ljust(a)
     (str, str) -> a.ljust(len(b)-len(a))
     """
+
+    @lazylist
+    def gen():
+        iterable, function = (
+            (lhs, rhs) if isinstance(rhs, types.FunctionType) else (rhs, lhs)
+        )
+        seen = [deep_copy(lhs)]
+        curr = deep_copy(lhs)
+        yield curr
+
+        while True:
+            curr = deep_copy(safe_apply(function, curr, ctx=ctx))
+            if curr in seen:
+                break
+            seen.append(curr)
+            yield curr
+
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) << int(rhs)
@@ -3660,6 +3677,7 @@ def left_bit_shift(lhs, rhs, ctx):
         if rhs > 0
         else lhs.rjust(int(rhs), " "),
         (str, str): lambda: lhs.ljust(len(rhs)),
+        (ts[0], types.FunctionType): lambda: gen(),
     }.get(ts, lambda: vectorise(left_bit_shift, lhs, rhs, ctx=ctx))()
 
 
@@ -5680,6 +5698,7 @@ def right_bit_shift(lhs, rhs, ctx):
     (num, str) -> b.rjust(a, " ")
     (str, str) -> a.rjust(len(b)-len(a), " ")
     """
+
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) >> int(rhs)
@@ -5692,6 +5711,8 @@ def right_bit_shift(lhs, rhs, ctx):
         if lhs > 0
         else rhs.ljust(int(lhs), " "),
         (str, str): lambda: lhs.rjust(len(rhs), " "),
+        (ts[0], types.FunctionType): lambda: fixed_point(rhs, lhs, ctx=ctx)[1:],
+        (types.FunctionType, ts[1]): lambda: fixed_point(lhs, rhs, ctx=ctx)[1:],
     }.get(ts, lambda: vectorise(right_bit_shift, lhs, rhs, ctx=ctx))()
 
 
