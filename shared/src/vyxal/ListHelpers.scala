@@ -650,7 +650,7 @@ object ListHelpers:
         case a: VVal => MiscHelpers.dyadicMinimum(a, b)
     })
 
-  def gradeUp(iterable: VList): VList =
+  def gradeUp(iterable: VList)(using Context): VList =
     VList.from(iterable.zipWithIndex.sortBy(_(0)).map(_(1)))
 
 end ListHelpers
