@@ -614,6 +614,13 @@ Keywords: character-multiply, surround, to-base-string
 - a: str, b: num -> character multiply a by b
 - a: str, b: str -> surround b by a
 ---------------------
+Ḍ (Round | Sentence Case | Grade Up) (non-vectorising)
+Trigraph: #,D
+Keywords: round, sentence-case, grade-up
+- a: num -> round a
+- a: str -> sentence case
+- a: lst -> grade up
+---------------------
 ∑ (Sum) (non-vectorising)
 Keywords: sum, /+, +/
 - a: lst -> sum of a
