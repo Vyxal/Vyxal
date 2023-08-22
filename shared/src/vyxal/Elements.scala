@@ -62,17 +62,6 @@ object Elements:
       case a: VNum => a.vabs
       case a: String => a.filter(_.isLetter)
     },
-    addVect(
-      Monad,
-      "Ạ",
-      "Unique Prime Factors | Case Of",
-      List("unique-prime-factors", "case-of"),
-      "a: num -> unique prime factors of a",
-      "a: str -> case of each character of a (uppercase = 1, lowercase = 0)"
-    ) {
-      case a: VNum => NumberHelpers.primeFactors(a).distinct
-      case a: String => StringHelpers.caseof(a)
-    },
     addElem(
       Monad,
       "A",
@@ -210,21 +199,6 @@ object Elements:
       "ඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞ"
     ) {
       MiscHelpers.vyPrintln("sus")
-    },
-    addVect(
-      Dyad,
-      "Ḅ",
-      "Character Multiply | Surround | To Base String",
-      List("character-multiply", "surround", "to-base-string"),
-      "a: num, b: num -> convert a to base b as a string",
-      "a: num, b: str -> character multiply b by a",
-      "a: str, b: num -> character multiply a by b",
-      "a: str, b: str -> surround b by a"
-    ) {
-      case (a: VNum, b: VNum) => NumberHelpers.toBaseString(a, b)
-      case (a: VNum, b: String) => StringHelpers.characterMultiply(a, b)
-      case (a: String, b: VNum) => StringHelpers.characterMultiply(b, a)
-      case (a: String, b: String) => b + a + b
     },
     addElem(
       Dyad,
@@ -536,6 +510,15 @@ object Elements:
         val temp = StdIn.readLine()
         if temp.nonEmpty then MiscHelpers.eval(temp)
         else ctx.settings.defaultValue
+    },
+    addElem(
+      Monad,
+      "↑",
+      "Grade Up",
+      List("grade-up"),
+      "a: any -> indices that will sort a"
+    ) { a =>
+      ListHelpers.gradeUp(a)
     },
     addVect(
       Dyad,
@@ -879,9 +862,12 @@ object Elements:
         val temp = b
           .map {
             case n: VNum => n.toInt
-            case x =>
+            case l: (String | VList) => ListHelpers.makeIterable(l).length
+            case x => // (decidedly not a number, but a function)
               // todo(lyxal): Are we sure we don't want to convert to VNum or
               //              something instead of erroring?
+              // @user: how you gonna convert something that isn't a VNum to
+              // a VNum? You goofy. ~ lyxal
               throw IllegalArgumentException(
                 s"Can't repeat an item a non-integer number of times (found $x in $b)"
               )
@@ -1592,6 +1578,21 @@ object Elements:
       case (n: VNum, a) => ListHelpers.cartesianPower(a, n)
     },
     addElem(
+      Dyad,
+      "⁾",
+      "Surround | Character Multiply",
+      List("surround", "character-multiply"),
+      "a: num, b: str -> each character in b repeated a times",
+      "a: any, b: any -> a prepended and appended to b"
+    ) {
+      case (a: VList, b) => VList.from((b +: a) :+ b)
+      case (a: String, b: String) => b + a + b
+      case (a, b: VList) => VList.from((a +: b) :+ a)
+      case (a: VNum, b: String) => StringHelpers.characterMultiply(a, b)
+      case (a: String, b: VNum) => StringHelpers.characterMultiply(b, a)
+      case (a: VNum, b: VNum) => ??? // Doesn't say anything in info.txt
+    },
+    addElem(
       Monad,
       "ÞT",
       "Transpose Safe",
@@ -1664,6 +1665,17 @@ object Elements:
           throw RuntimeException("Uninterleave: Can't uninterleave functions")
 
       ctx.push(pushEven, pushOdd)
+    },
+    addVect(
+      Monad,
+      "Ḅ",
+      "Unique Prime Factors | Case Of",
+      List("unique-prime-factors", "case-of"),
+      "a: num -> unique prime factors of a",
+      "a: str -> case of each character of a (uppercase = 1, lowercase = 0)"
+    ) {
+      case a: VNum => NumberHelpers.primeFactors(a).distinct
+      case a: String => StringHelpers.caseof(a)
     },
     addElem(
       Monad,

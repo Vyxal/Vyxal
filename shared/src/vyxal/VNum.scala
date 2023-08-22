@@ -15,6 +15,7 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   def imag: Real = underlying.imag
 
   def toInt: Int = underlying.toInt
+  def toDouble: Double = underlying.real.toDouble
   def toLong: Long = underlying.toLong
   def toBigInt: BigInt = underlying.real.toRational.toBigInt
 

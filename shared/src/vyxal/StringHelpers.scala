@@ -257,4 +257,13 @@ object StringHelpers:
       )
     )
 
+  def sentenceCase(str: String): String =
+    var capitalise = true
+    val res = StringBuilder()
+    for c <- str do
+      res += (if capitalise then c.toUpper else c.toLower)
+      if "?!.".contains(c) then capitalise = true
+      else if c != ' ' then capitalise = false
+    res.toString
+
 end StringHelpers
