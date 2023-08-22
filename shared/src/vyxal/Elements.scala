@@ -1632,7 +1632,7 @@ object Elements:
     },
     addElem(
       Monad,
-      "Ḍ",
+      "Ḥ",
       "Round | Sentence Case | Grade Up",
       List(
         "round",
