@@ -3,7 +3,7 @@ name: Test
 on:
   push:
     paths:
-      - "./**/*"
+      - "*"
       - "!documentation/**"
       - "documentation/elements.txt"
       - "documentation/trigraphs.txt"
