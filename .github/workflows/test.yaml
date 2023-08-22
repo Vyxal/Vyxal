@@ -1,16 +1,6 @@
 name: Test
 
-on:
-  push:
-    paths:
-      - "*"
-      - "!documentation/**"
-      - "documentation/elements.txt"
-      - "documentation/trigraphs.txt"
-      - "!contributing/**"
-      - "!pages/**"
-      - "!.gitattributes"
-      - "!**/*.md"
+on: [push] 
 
 jobs:
   jvm:
