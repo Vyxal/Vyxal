@@ -601,25 +601,11 @@ Trigraph: #.`
 Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first-n
 - a: lst, b: num -> [a[0], a[1], ..., a[b-1]]
 ---------------------
-Ạ (Unique Prime Factors | Case Of) (vectorising)
-Keywords: unique-prime-factors, case-of
-- a: num -> unique prime factors of a
-- a: str -> case of each character of a (uppercase = 1, lowercase = 0)
----------------------
-Ḅ (Character Multiply | Surround | To Base String) (vectorising)
-Trigraph: #,B
-Keywords: character-multiply, surround, to-base-string
-- a: num, b: num -> convert a to base b as a string
-- a: num, b: str -> character multiply b by a
-- a: str, b: num -> character multiply a by b
-- a: str, b: str -> surround b by a
----------------------
-Ḥ (Round | Sentence Case | Grade Up) (non-vectorising)
-Trigraph: #,H
-Keywords: round, sentence-case, grade-up
-- a: num -> round a
-- a: str -> sentence case
-- a: lst -> grade up
+⁾ (Surround | Character Multiply) (non-vectorising)
+Trigraph: #^)
+Keywords: surround, character-multiply
+- a: num, b: str -> each character in b repeated a times
+- a: any, b: any -> a prepended and appended to b
 ---------------------
 ∑ (Sum) (non-vectorising)
 Keywords: sum, /+, +/
@@ -692,6 +678,10 @@ Trigraph: #./
 Keywords: divide, div, str-split
 - a: num, b: num -> a / b
 - a: str, b: str -> Split a on the regex b
+---------------------
+↑ (Grade Up) (non-vectorising)
+Keywords: grade-up
+- a: any -> indices that will sort a
 ---------------------
 ð (Space) (non-vectorising)
 Trigraph: #.b
