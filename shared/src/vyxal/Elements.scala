@@ -1382,8 +1382,8 @@ object Elements:
       "Reverse",
       List("reverse"),
       "a: any -> reverse a"
-    ) {
-      a => ListHelpers.reverse(a)
+    ) { a =>
+      ListHelpers.reverse(a)
     },
     addDirect(
       "X",
