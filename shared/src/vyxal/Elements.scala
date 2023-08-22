@@ -1376,6 +1376,16 @@ object Elements:
       case (a: VNum, b: VVal, c: VVal) =>
         MiscHelpers.eval(a.toString().replace(b.toString, c.toString))
     },
+    addElem (
+      Monad,
+      "Ṛ",
+      "Reverse",
+      List ("reverse"),
+      "a: any -> reverse a (push a[::-1])"
+    ) {
+      case (a: (VList | String) ) => a.reverse
+      case (a: VNum) => a.toString.reverse.asInstanceOf[VNum]
+    },
     addDirect(
       "X",
       "Return Statement",
