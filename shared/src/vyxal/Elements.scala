@@ -1663,6 +1663,17 @@ object Elements:
 
       ctx.push(pushEven, pushOdd)
     },
+    addVect(
+      Monad,
+      "Ḅ",
+      "Unique Prime Factors | Case Of",
+      List("unique-prime-factors", "case-of"),
+      "a: num -> unique prime factors of a",
+      "a: str -> case of each character of a (uppercase = 1, lowercase = 0)"
+    ) {
+      case a: VNum => NumberHelpers.primeFactors(a).distinct
+      case a: String => StringHelpers.caseof(a)
+    },
     addElem(
       Monad,
       "u",
