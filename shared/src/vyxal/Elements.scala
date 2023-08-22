@@ -1,6 +1,7 @@
 package vyxal
 
 import scala.language.implicitConversions
+
 import vyxal.ListHelpers.makeIterable
 import vyxal.NumberHelpers.{numToString, range}
 import vyxal.VNum.given
@@ -516,8 +517,8 @@ object Elements:
       "Grade Up",
       List("grade-up"),
       "a: any -> indices that will sort a"
-    ) {
-      a => ListHelpers.gradeUp(a)
+    ) { a =>
+      ListHelpers.gradeUp(a)
     },
     addVect(
       Dyad,
