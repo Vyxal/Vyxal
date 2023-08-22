@@ -1582,9 +1582,9 @@ object Elements:
       "a: num, b: str -> each character in b repeated a times",
       "a: any, b: any -> a prepended and appended to b"
     ) {
-      case (a: VList, b) => (b +: a) :+ b
+      case (a: VList, b) => VList.from((b +: a) :+ b)
       case (a: String, b: String) => b + a + b
-      case (a, b: VList) => (a +: b) :+ a
+      case (a, b: VList) => VList.from((a +: b) :+ a)
       case (a: VNum, b: String) => StringHelpers.characterMultiply(a, b)
       case (a: String, b: VNum) => StringHelpers.characterMultiply(b, a)
       case (a: VNum, b: VNum) => ??? // Doesn't say anything in info.txt
