@@ -862,9 +862,12 @@ object Elements:
         val temp = b
           .map {
             case n: VNum => n.toInt
-            case x =>
+            case x => // (decidedly not a number, but a string or a list or a function)
               // todo(lyxal): Are we sure we don't want to convert to VNum or
               //              something instead of erroring?
+
+              // @user: how you gonna convert something that isn't a VNum to
+              // a VNum? You goofy. ~ lyxal
               throw IllegalArgumentException(
                 s"Can't repeat an item a non-integer number of times (found $x in $b)"
               )
