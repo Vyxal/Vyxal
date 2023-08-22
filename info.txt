@@ -170,7 +170,7 @@ z = [0, n] / is lowercase?
 Φ = a[1:b]
 § = print without newline
 Ạ = a[b] = c
-Ḅ =
+Ḅ = unique prime factors
 Ḍ = Decision problem structure
 Ẹ = partition at truthy indices
 Ḥ = a[1:], a[0]
