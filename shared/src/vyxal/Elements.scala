@@ -1587,7 +1587,7 @@ object Elements:
       case (a: Any, b: VList) => VList.from((a :: b) :+ a)
       case (a: VNum, b: String) => StringHelpers.characterMultiply(a, b)
       case (a: String, b: VNum) => StringHelpers.characterMultiply(b, a)
-      case (a: VNum, b: VNum) => 0 // Doesn't say anything in info.txt
+      case (a: VNum, b: VNum) => ??? // Doesn't say anything in info.txt
     },
     addElem(
       Monad,
