@@ -257,13 +257,13 @@ object StringHelpers:
       )
     )
 
-  def sentenceCase(s: String): String =
-    var b = true
+  def sentenceCase(str: String): String =
+    var capitalise = true
     val res = StringBuilder()
-    for c <- s do
-      res += (if b then c.toUpper else c.toLower)
-      if "?!.".contains(c) then b = true
-      else if c != ' ' then b = false
+    for c <- str do
+      res += (if capitalise then c.toUpper else c.toLower)
+      if "?!.".contains(c) then capitalise = true
+      else if c != ' ' then capitalise = false
     res.toString
 
 end StringHelpers

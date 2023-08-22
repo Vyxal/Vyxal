@@ -1643,7 +1643,7 @@ object Elements:
       "a: str -> sentence case",
       "a: lst -> grade up"
     ) {
-      case a: VNum => a.toIntegral
+      case a: VNum => a.toIntegral.asInstanceOf[VNum]
       case a: String => StringHelpers.sentenceCase(a)
       case a: VList => ListHelpers.gradeUp(a)
     },
