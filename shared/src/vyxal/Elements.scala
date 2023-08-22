@@ -862,7 +862,8 @@ object Elements:
         val temp = b
           .map {
             case n: VNum => n.toInt
-            case l: (String | VList) => l.length
+            case l: String => l.size
+            case l: VList => l.length
             case x => // (decidedly not a number, but a function)
               // todo(lyxal): Are we sure we don't want to convert to VNum or
               //              something instead of erroring?
