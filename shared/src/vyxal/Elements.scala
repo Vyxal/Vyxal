@@ -3,7 +3,7 @@ package vyxal
 import scala.language.implicitConversions
 
 import vyxal.ListHelpers.makeIterable
-import vyxal.NumberHelpers.{numToString, range}
+import vyxal.NumberHelpers.range
 import vyxal.VNum.given
 
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
@@ -1584,7 +1584,7 @@ object Elements:
     ) {
       case (a: VList, b) => (b +: a) :+ b
       case (a: String, b: String) => b + a + b
-      case (a: Any, b: VList) => VList.from((a :: b) :+ a)
+      case (a, b: VList) => (a +: b) :+ a
       case (a: VNum, b: String) => StringHelpers.characterMultiply(a, b)
       case (a: String, b: VNum) => StringHelpers.characterMultiply(b, a)
       case (a: VNum, b: VNum) => ??? // Doesn't say anything in info.txt

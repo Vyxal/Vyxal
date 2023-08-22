@@ -22,8 +22,6 @@ class VList private (val lst: Seq[VAny])
   def vmap(f: VAny => Context ?=> VAny)(using Context): VList =
     new VList(lst.map(f(_)))
 
-  // def ::(element: VAny): VList = VList.from(List(element) ++ lst)
-
   /** Zip two VLists together with a function. If one is longer than the other,
     * keep the longer one's elements as-is.
     */
