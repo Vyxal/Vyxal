@@ -170,6 +170,7 @@ z = [0, n] / is lowercase?
 Φ = a[1:b]
 § = print without newline
 Ạ = a[b] = c
+Ḅ = 
 Ḍ = Decision problem structure
 Ẹ = partition at truthy indices
 Ḥ = a[1:], a[0]
@@ -230,6 +231,7 @@ z = [0, n] / is lowercase?
 ± = sign of
 ¤ = context args
 † = Shortcut for ĠvL (group consecutive, vectorised lengths)
+Π = product
 ¬ = not
 ∧ = logical and
 ∨ = logical or
