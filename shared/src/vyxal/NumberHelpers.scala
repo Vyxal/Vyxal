@@ -280,18 +280,18 @@ object NumberHelpers:
   def divides(a: VAny, b: VAny)(using Context): VAny =
     (a, b) match
       case (a: VNum, b: VNum) =>
-        (a.asInstanceOf[VNum] % b.asInstanceOf[VNum]) == VNum(0)
+        (a % b) == VNum(0)
       case (a: String, b: VNum) =>
-        a.toString + MiscHelpers.multiply(" ", b.asInstanceOf[VNum])
+        a.toString + MiscHelpers.multiply(" ", b)
       case (a: VNum, b: String) =>
-        b.toString + MiscHelpers.multiply(" ", a.asInstanceOf[VNum])
+        b.toString + MiscHelpers.multiply(" ", a)
       case (a: VList, b: VFun) =>
-        ListHelpers.dedupBy(ListHelpers.makeIterable(a), b.asInstanceOf[VFun])
+        ListHelpers.dedupBy(a, b)
       case (a: VFun, b: VList) =>
-        ListHelpers.dedupBy(ListHelpers.makeIterable(b), a.asInstanceOf[VFun])
+        ListHelpers.dedupBy(b, a)
       case (a: VList, b) =>
-        VList.from(ListHelpers.makeIterable(a).map(divides(_, b)))
+        a.vmap(divides(_, b))
       case (a, b: VList) =>
-        VList.from(ListHelpers.makeIterable(b).map(divides(a, _)))
+        b.vmap(divides(a, _))
 
 end NumberHelpers
