@@ -658,7 +658,8 @@ object ListHelpers:
     val a: List[VAny] = List(makeIterable(lst)*)
     val b: List[VAny] = List(makeIterable(part)*)
     for (i, j) <- a.zip(b) do
-      res(res.length - 1) = VList.from(res(res.length - 1) :+ i.asInstanceOf[VAny])
+      res(res.length - 1) =
+        VList.from(res(res.length - 1) :+ i.asInstanceOf[VAny])
       if j.asInstanceOf[VAny].toBool then res = res :+ VList()
     VList.from(res.toList)
 
