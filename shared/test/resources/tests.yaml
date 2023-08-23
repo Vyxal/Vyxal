@@ -949,7 +949,7 @@
 "Ḥ":
   - {in: ["Thonnu"], stack: ["T", "honnu"]}
   - {in: [[1, 2, 3, 4]], stack: [1, [2, 3, 4]]}
-  - {in: [], stack: [0, []]}
+  - {in: [[]], stack: [0, []]}
 
 "Ṛ":
   - {in: ["Thonnu"], out: "unnohT"}

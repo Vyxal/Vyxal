@@ -609,8 +609,6 @@ object Elements:
             lst.headOption.getOrElse(ctx.settings.defaultValue)
           )
         case s: String =>
-          println(s"AMONG US AMONG US s EQUALS " + s)
-          println(s"ANYTHING ANYTHING! s.isEMpty " + s.isEmpty())
           ctx.push(
             s.drop(1),
             if s.isEmpty then ""
