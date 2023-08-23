@@ -2078,8 +2078,8 @@ object Elements:
       () => ctx ?=> ctx.push(impl(using ctx))
     )
 
-  /** Add an element that handles all `VAny`s (it doesn't take a `PartialFunction`,
-    * hence "Full")
+  /** Add an element that handles all `VAny`s (it doesn't take a
+    * `PartialFunction`, hence "Full")
     */
   private def addFull[F](
       helper: ImplHelpers[?, F],
