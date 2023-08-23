@@ -1376,6 +1376,7 @@ object Elements:
       case (a: VNum, b: VVal, c: VVal) =>
         MiscHelpers.eval(a.toString().replace(b.toString, c.toString))
     },
+<<<<<<< HEAD
     addElem (
       Monad,
       "Ṛ",
@@ -1385,6 +1386,16 @@ object Elements:
     ) {
       case (a: (VList | String) ) => a.reverse
       case (a: VNum) => a.toString.reverse.asInstanceOf[VNum]
+=======
+    addElem(
+      Monad,
+      "Ṛ",
+      "Reverse",
+      List("reverse"),
+      "a: any -> reverse a"
+    ) { a =>
+      ListHelpers.reverse(a)
+>>>>>>> 32b864ee7292a3c85cc657678905364e3d4f6543
     },
     addDirect(
       "X",
