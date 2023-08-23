@@ -1,6 +1,7 @@
 package vyxal.debugger
 
 import vyxal.*
+import vyxal.parsing.Range
 
 import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.matchers.should.Matchers
@@ -49,9 +50,9 @@ class DebuggerTests extends AnyFeatureSpec with GivenWhenThen with Matchers:
   }
 
   Feature("Breakpoints") {
-    Scenario("Adding/removing breakpoints") {
-      given ctx: Context = VyxalTests.testContext()
+    given ctx: Context = VyxalTests.testContext()
 
+    Scenario("Adding/removing breakpoints") {
       val dbg = Debugger(AST.Str("foo"))
 
       val baz3 = Breakpoint(3, Some("baz"))
@@ -81,6 +82,50 @@ class DebuggerTests extends AnyFeatureSpec with GivenWhenThen with Matchers:
 
       Then("all breakpoints with that label should be removed")
       assert(dbg.getBreakpoints().isEmpty)
+    }
+
+    Scenario("Continuing to and from a breakpoint") {
+      val dbg =
+        Debugger(
+          AST.makeSingle(
+            AST.Str("foo", Range(0, 3)),
+            AST.Number(5, Range(3, 4)),
+            AST.Command("+", Range(4, 5))
+          )
+        )
+      dbg.addBreakpoint(Breakpoint(3))
+
+      When("it's continued")
+      dbg.continue()
+
+      Then("it should hit the first breakpoint")
+      assertResult(Range(3, 4))(dbg.currAST.range)
+
+      When("it's continued again")
+      dbg.continue()
+
+      Then("it should finish")
+      assert(dbg.finished)
+      assertResult("foo5")(ctx.pop())
+    }
+
+    Scenario("Resuming") {
+      val dbg =
+        Debugger(
+          AST.makeSingle(
+            AST.Str("foo", Range(0, 3)),
+            AST.Number(5, Range(3, 4)),
+            AST.Command("+", Range(4, 5))
+          )
+        )
+      dbg.addBreakpoint(Breakpoint(3))
+
+      When("it's resumed")
+      dbg.resume()
+
+      Then("it should finish")
+      assert(dbg.finished)
+      assertResult("foo5")(ctx.pop())
     }
   }
 end DebuggerTests
