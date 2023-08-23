@@ -238,7 +238,7 @@ object Elements:
       case (a: VNum, b: VNum) => a / b
       case (a: String, b: String) => VList(a.split(b)*)
     },
-    addElem(
+    addFull(
       Dyad,
       "Ḋ",
       "Divides? | Append Spaces | Remove Duplicates by Function",
@@ -1332,7 +1332,7 @@ object Elements:
       case a: VList => ListHelpers.partitions(a)
       case n: VNum => NumberHelpers.partitions(n)
     },
-    addElem(
+    addFull(
       Dyad,
       "ƒ",
       "Partition After Truthy Indices",

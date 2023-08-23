@@ -654,7 +654,7 @@ object ListHelpers:
     VList.from(makeIterable(iterable).zipWithIndex.sortBy(_._1).map(_._2))
 
   def partitionAfterTruthyIndices(lst: VAny, part: VAny)(using Context): VList =
-    var res = ArrayBuffer(VList())
+    val res = ArrayBuffer(VList())
     for (i, j) <- makeIterable(lst).zip(makeIterable(part)) do
       res(res.length - 1) =
         VList.from(res(res.length - 1) :+ i.asInstanceOf[VAny])
