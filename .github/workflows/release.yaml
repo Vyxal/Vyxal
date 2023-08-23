@@ -46,12 +46,11 @@ jobs:
       - name: Name executable (Linux/MacOS)
         if: matrix.os != 'windows-latest'
         run: |
-          mv native/target/scala-*/vyxal-out ${{ matrix.exe-name }}-${{ steps.tagName.outputs.tag }}
+          mv out/native/nativeLink.dest/out ${{ matrix.exe-name }}-${{ steps.tagName.outputs.tag }}
       - name: Name executable (Windows)
         if: matrix.os == 'windows-latest'
         run: |
-          $out_dir=Get-ChildItem native/target/scala-*
-          mv $out_dir/vyxal-out.exe ${{ matrix.exe-name }}-${{ steps.tagName.outputs.tag }}.exe
+          mv out/native/nativeLink.dest/out ${{ matrix.exe-name }}-${{ steps.tagName.outputs.tag }}.exe
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
