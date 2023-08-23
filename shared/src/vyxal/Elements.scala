@@ -238,21 +238,18 @@ object Elements:
       case (a: VNum, b: VNum) => a / b
       case (a: String, b: String) => VList(a.split(b)*)
     },
-    addElem(
+    addFull(
       Dyad,
       "Ḋ",
       "Divides? | Append Spaces | Remove Duplicates by Function",
       List("divides?", "+-spaces", "dedup-by"),
+      false,
       "a: num, b: num -> a % b == 0",
       "a: str, b: num -> a + ' ' * b",
       "a: num, b: str -> b + ' ' * a",
       "a: lst, b: fun -> Remove duplicates from a by applying b to each element"
-    ) {
-      case (a: VNum, b: VNum) => (a % b) == VNum(0)
-      case (a: String, b: VNum) => a + MiscHelpers.multiply(" ", b)
-      case (a: VNum, b: String) => b + MiscHelpers.multiply(" ", a)
-      case (a: VList, b: VFun) => ListHelpers.dedupBy(a, b)
-      case (a: VFun, b: VList) => ListHelpers.dedupBy(b, a)
+    ) { (a, b) =>
+      NumberHelpers.divides(a, b)
     },
     addElem(
       Dyad,
@@ -600,6 +597,27 @@ object Elements:
         case arg => throw UnimplementedOverloadException("ḣ", List(arg))
     },
     addDirect(
+      "Ḥ",
+      "Head Extract",
+      List("head-extract-swap", "split-at-head-swap"),
+      Some(1),
+      "a: lst|str -> Push a[1:], then a[0] onto the stack",
+    ) { ctx ?=>
+      ctx.pop() match
+        case lst: VList =>
+          ctx.push(
+            lst.drop(1),
+            lst.headOption.getOrElse(ctx.settings.defaultValue)
+          )
+        case s: String =>
+          ctx.push(
+            s.drop(1),
+            if s.isEmpty then ""
+            else s.charAt(0).toString
+          )
+        case arg => throw UnimplementedOverloadException("Ḥ", List(arg))
+    },
+    addDirect(
       "ṫ",
       "Last Extract",
       List("last-extract", "split-at-last"),
@@ -618,7 +636,7 @@ object Elements:
             else s.last.toString,
             s.dropRight(1)
           )
-        case arg => throw UnimplementedOverloadException("ḣ", List(arg))
+        case arg => throw UnimplementedOverloadException("ṫ", List(arg))
     },
     addElem(
       Dyad,
@@ -1315,6 +1333,18 @@ object Elements:
       case a: VList => ListHelpers.partitions(a)
       case n: VNum => NumberHelpers.partitions(n)
     },
+    addFull(
+      Dyad,
+      "ƒ",
+      "Partition After Truthy Indices",
+      List(
+        "partition-after-truthy"
+      ),
+      false,
+      "a: lst, b: lst -> partition a after truthy indices in b"
+    ) { case (a, b) =>
+      ListHelpers.partitionAfterTruthyIndices(a, b)
+    },
     addDirect(
       "x",
       "Recursion | Recurse",
@@ -1901,12 +1931,12 @@ object Elements:
       case (a: VFun, b: VFun) => ??? // todo(lyxal) overload for two functions
       case (a, b: VFun) =>
         val iter = ListHelpers.makeIterable(a)
-        VList.from(iter.zip(ListHelpers.map(b, iter)))
+        VList.from(iter.vzip(ListHelpers.map(b, iter)))
       case (a: VFun, b) =>
         val iter = ListHelpers.makeIterable(b)
-        VList.from(ListHelpers.map(a, iter).zip(iter))
+        VList.from(ListHelpers.map(a, iter).vzip(iter))
       case (a, b) =>
-        ListHelpers.makeIterable(a).zip(ListHelpers.makeIterable(b))
+        ListHelpers.makeIterable(a).vzip(ListHelpers.makeIterable(b))
     }
 
     // Constants

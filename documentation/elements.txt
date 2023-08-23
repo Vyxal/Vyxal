@@ -596,6 +596,10 @@ Trigraph: #.x
 Keywords: cartesian-power
 - a: lst, b: num -> cart_prod([a] * n)
 ---------------------
+ƒ (Partition After Truthy Indices) (non-vectorising)
+Keywords: partition-after-truthy
+- a: lst, b: lst -> partition a after truthy indices in b
+---------------------
 Θ (Zero Slice Until) (non-vectorising)
 Trigraph: #.`
 Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first-n
@@ -606,6 +610,11 @@ Trigraph: #,B
 Keywords: unique-prime-factors, case-of
 - a: num -> unique prime factors of a
 - a: str -> case of each character of a (uppercase = 1, lowercase = 0)
+---------------------
+Ḥ (Head Extract) (non-vectorising)
+Trigraph: #,H
+Keywords: head-extract-swap, split-at-head-swap
+- a: lst|str -> Push a[1:], then a[0] onto the stack
 ---------------------
 Ṛ (Reverse) (non-vectorising)
 Trigraph: #,R
