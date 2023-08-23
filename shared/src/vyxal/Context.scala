@@ -54,6 +54,7 @@ class Context private (
         val temp =
           if settings.online then settings.defaultValue.toString
           else StdIn.readLine()
+        println("TEMPORARY CLOWN AROUJND TOWN " + temp)
         if temp.nonEmpty then MiscHelpers.eval(temp)(using this)
         else settings.defaultValue
     scribe.trace(s"Popped $elem")
