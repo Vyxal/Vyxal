@@ -1337,10 +1337,10 @@ object Elements:
       Dyad,
       "ƒ",
       "Partition After Truthy Indices",
-      false,
       List(
         "partition-after-truthy"
       ),
+      false,
       "a: lst, b: lst -> partition a after truthy indices in b"
     ) { case (a, b) =>
       ListHelpers.partitionAfterTruthyIndices(a, b)
