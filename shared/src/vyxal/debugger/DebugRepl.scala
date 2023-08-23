@@ -28,6 +28,9 @@ object DebugRepl:
               case Cmd.StepOut =>
                 dbg.stepOut()
                 printState(dbg)
+              case Cmd.Continue =>
+                dbg.continue()
+                printState(dbg)
               case Cmd.Frames =>
                 for frame <- dbg.stackFrames do
                   println(s"<${frame.name}> ${frame.ast}")
@@ -66,6 +69,9 @@ object DebugRepl:
       cmd("step-out")
         .action((_, cfg) => cfg.copy(cmd = Cmd.StepOut))
         .text("Step out"),
+      cmd("continue")
+        .action((_, cfg) => cfg.copy(cmd = Cmd.Continue))
+        .text("Continue execution to end of program, ignoring breakpoints"),
       cmd("frames")
         .action((_, cfg) => cfg.copy(cmd = Cmd.Frames))
         .text("Show all the frames"),
@@ -95,6 +101,7 @@ object DebugRepl:
     case StepInto
     case StepOver
     case StepOut
+    case Continue
     case Frames
     case Eval(code: String)
     case Stack(n: Int)
