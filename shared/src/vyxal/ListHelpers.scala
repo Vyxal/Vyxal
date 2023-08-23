@@ -656,8 +656,7 @@ object ListHelpers:
   def partitionAfterTruthyIndices(lst: VAny, part: VAny)(using Context): VList =
     val res = ListBuffer(VList())
     for (i, j) <- makeIterable(lst).zip(makeIterable(part)) do
-      res(res.length - 1) =
-        VList.from(res(res.length - 1) :+ i)
+      res(res.length - 1) = VList.from(res(res.length - 1) :+ i)
       if j.toBool then res += VList()
     VList.from(res.toList)
 
