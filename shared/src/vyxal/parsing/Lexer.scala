@@ -21,6 +21,9 @@ case class Token(tokenType: TokenType, value: String, range: Range)
 
 /** The range of a token or AST in the source code */
 case class Range(startOffset: Int, endOffset: Int) derives CanEqual:
+  def includes(offset: Int): Boolean =
+    startOffset <= offset && offset < endOffset
+
   /** Override the default equals method so Range.fake compares equal to
     * everything.
     */
