@@ -1323,8 +1323,8 @@ object Elements:
         "partition-after-truthy"
       ),
       "a: lst, b: lst -> partition a after truthy indices in b"
-    ) {
-      case (a, b) => ListHelpers.partitionAfterTruthyIndices(a, b)
+    ) { case (a, b) =>
+      ListHelpers.partitionAfterTruthyIndices(a, b)
     },
     addDirect(
       "x",
