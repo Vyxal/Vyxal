@@ -658,7 +658,7 @@ object ListHelpers:
     for (i, j) <- makeIterable(lst).zip(makeIterable(part)) do
       res(res.length - 1) =
         VList.from(res(res.length - 1) :+ i.asInstanceOf[VAny])
-      if j.asInstanceOf[VAny].toBool then res = res :+ VList()
+      if j.asInstanceOf[VAny].toBool then res += VList()
     VList.from(res.toList)
 
 end ListHelpers
