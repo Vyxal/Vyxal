@@ -607,6 +607,11 @@ Keywords: unique-prime-factors, case-of
 - a: num -> unique prime factors of a
 - a: str -> case of each character of a (uppercase = 1, lowercase = 0)
 ---------------------
+Ṛ (Reverse) (non-vectorising)
+Trigraph: #,R
+Keywords: reverse
+- a: any -> reverse a
+---------------------
 ⁾ (Surround | Character Multiply) (non-vectorising)
 Trigraph: #^)
 Keywords: surround, character-multiply
