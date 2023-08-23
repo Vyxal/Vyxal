@@ -1315,6 +1315,17 @@ object Elements:
       case a: VList => ListHelpers.partitions(a)
       case n: VNum => NumberHelpers.partitions(n)
     },
+    addElem(
+      Dyad,
+      "Ẹ",
+      "Partition After Truthy Indices",
+      List(
+        "partition-after-truthy"
+      ),
+      "a: lst, b: lst -> partition a after truthy indices in b"
+    ) {
+      case (a, b) => ListHelpers.partitionAfterTruthyIndices(a, b)
+    },
     addDirect(
       "x",
       "Recursion | Recurse",
