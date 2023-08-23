@@ -276,4 +276,15 @@ object NumberHelpers:
         res
       case s: String => VNum(s, radix).toIntegral
       case _ => throw Exception("Cannot convert to int")
+
+  def divides(a: VAny, b: VAny)(using Context): VAny =
+    (a, b) match
+      case (a: VNum, b: VNum) => (a.asInstanceOf[VNum] % b.asInstanceOf[VNum]) == VNum(0)
+      case (a: String, b: VNum) => a.toString + MiscHelpers.multiply(" ", b.asInstanceOf[VNum])
+      case (a: VNum, b: String) => b.toString + MiscHelpers.multiply(" ", a.asInstanceOf[VNum])
+      case (a: VList, b: VFun) => ListHelpers.dedupBy(ListHelpers.makeIterable(a), b.asInstanceOf[VFun])
+      case (a: VFun, b: VList) => ListHelpers.dedupBy(ListHelpers.makeIterable(b), a.asInstanceOf[VFun])
+      case (a: VList, b: VAny) => VList.from(ListHelpers.makeIterable(a).map(divides(_, b)))
+      case (a: VAny, b: VList) => VList.from(ListHelpers.makeIterable(b).map(divides(a, _)))
+
 end NumberHelpers
