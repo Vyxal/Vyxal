@@ -243,7 +243,7 @@ object Elements:
       "Ḋ",
       "Divides? | Append Spaces | Remove Duplicates by Function",
       List("divides?", "+-spaces", "dedup-by"),
-      true,
+      false,
       "a: num, b: num -> a % b == 0",
       "a: str, b: num -> a + ' ' * b",
       "a: num, b: str -> b + ' ' * a",
