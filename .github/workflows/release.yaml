@@ -22,13 +22,16 @@ jobs:
         include:
           - os: ubuntu-latest
             exe-name: vyxal-linux
+            lto: thin
           - os: macos-latest
             exe-name: vyxal-macos
+            lto: full # Thin doesn't work on Apple silicon yet
           - os: windows-latest
             exe-name: vyxal-windows
+            lto: thin
     env:
       SCALANATIVE_MODE: release-full
-      SCALANATIVE_LTO: thin
+      SCALANATIVE_LTO: ${{ matrix.lto }}
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -43,12 +46,11 @@ jobs:
       - name: Name executable (Linux/MacOS)
         if: matrix.os != 'windows-latest'
         run: |
-          mv native/target/scala-*/vyxal-out ${{ matrix.exe-name }}-${{ steps.tagName.outputs.tag }}
+          mv out/native/nativeLink.dest/out ${{ matrix.exe-name }}-${{ steps.tagName.outputs.tag }}
       - name: Name executable (Windows)
         if: matrix.os == 'windows-latest'
         run: |
-          $out_dir=Get-ChildItem native/target/scala-*
-          mv $out_dir/vyxal-out.exe ${{ matrix.exe-name }}-${{ steps.tagName.outputs.tag }}.exe
+          mv out/native/nativeLink.dest/out ${{ matrix.exe-name }}-${{ steps.tagName.outputs.tag }}.exe
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
