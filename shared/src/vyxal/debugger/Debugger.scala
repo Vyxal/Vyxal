@@ -24,13 +24,25 @@ class StackFrame(
   override def toString = s"Frame $name for $ast (top: ${ctx.peek})"
 
 class Debugger(code: AST)(using rootCtx: Context):
-  private val stackFrames: Stack[StackFrame] =
+  /** Separate private variable from [[stackFrames]] to keep outsiders from
+    * mutating it
+    */
+  private val frames: Stack[StackFrame] =
     Stack(StackFrame("<root>", rootCtx, code))
 
   /** The current stack frame */
-  private def frame: StackFrame = stackFrames.last
+  private def frame: StackFrame = frames.last
 
   private var currStep = removeBadSteps(Step.stepsForAST(code)).getOrElse(null)
+
+  /** Separate private variable to keep outsiders from reassigning */
+  private var currCtx = frame.ctx
+
+  def ctx: Context = currCtx
+
+  def currAST = currStep.ast
+
+  def stackFrames: Iterable[StackFrame] = this.frames
 
   def finished: Boolean = currStep == null
 
@@ -40,9 +52,10 @@ class Debugger(code: AST)(using rootCtx: Context):
   @tailrec
   private def popUntilNext(): Option[ProperStep] =
     if frame.stepStack.isEmpty then
-      val lastFrame = stackFrames.pop()
+      val lastFrame = frames.pop()
       scribe.trace(s"Popped frame $lastFrame")
-      if stackFrames.isEmpty then None
+      this.currCtx = lastFrame.ctx
+      if frames.isEmpty then None
       else popUntilNext()
     else
       scribe.trace(s"Popping step: ${frame.stepStack.top}")
@@ -73,7 +86,7 @@ class Debugger(code: AST)(using rootCtx: Context):
       case proper: ProperStep => Some(proper)
 
   def stepInto(): Unit =
-    if stackFrames.isEmpty then
+    if frames.isEmpty then
       throw IllegalStateException("Debugger has finished, cannot step into")
 
     scribe.trace(s"Stepping in, frame: $frame, step: $currStep")
@@ -86,10 +99,12 @@ class Debugger(code: AST)(using rootCtx: Context):
         frame.stepStack += None
         removeBadSteps(inner)
       case NewStackFrame(ast, frameName, newCtx, inner) =>
-        stackFrames.push(StackFrame(frameName, newCtx(frame.ctx), ast))
+        frames.push(StackFrame(frameName, newCtx(frame.ctx), ast))
         removeBadSteps(inner)
     nextStep match
-      case Some(nextStep) => this.currStep = nextStep
+      case Some(nextStep) =>
+        this.currStep = nextStep
+        this.currCtx = frame.ctx
       case None =>
         this.currStep = null
         scribe.trace("Debugger has finished")
@@ -98,25 +113,23 @@ class Debugger(code: AST)(using rootCtx: Context):
   def stepOver(): Unit =
     if !this.finished then
       scribe.trace(s"Stepping over, frame: $frame")
-      val startFrames = stackFrames.size
+      val startFrames = frames.size
       val startStepDepth = frame.stepStack.size
       stepInto()
-      while !this.finished && stackFrames.size >= startFrames && frame.stepStack.size > startStepDepth
+      while !this.finished && frames.size >= startFrames && frame.stepStack.size > startStepDepth
       do stepInto()
 
   def stepOut(): Unit =
     scribe.trace(s"Stepping out, frame: $frame")
-    val startFrames = stackFrames.size
-    while !this.finished && stackFrames.size >= startFrames do stepInto()
+    val startFrames = frames.size
+    while !this.finished && frames.size >= startFrames do stepInto()
 
   def continue(): Unit =
     while !this.finished do stepInto()
 
-  def printState(): Unit =
-    println(s"Next to execute: ${currStep.ast.toVyxal} <${currStep.ast.range}>")
-    println(s"Top of stack is ${frame.ctx.peek}")
-  // println("Frames:")
-  // println(stackFrames.reverse.mkString("\n"))
+  /** Evaluate some code in the current frame's context */
+  def eval(code: String): Unit =
+    Interpreter.execute(code)(using frame.ctx)
 end Debugger
 
 object Debugger:
