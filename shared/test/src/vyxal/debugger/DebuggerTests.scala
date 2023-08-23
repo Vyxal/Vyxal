@@ -47,4 +47,40 @@ class DebuggerTests extends AnyFeatureSpec with GivenWhenThen with Matchers:
       assert(dbg.finished)
     }
   }
+
+  Feature("Breakpoints") {
+    Scenario("Adding/removing breakpoints") {
+      given ctx: Context = VyxalTests.testContext()
+
+      val dbg = Debugger(AST.Str("foo"))
+
+      val baz3 = Breakpoint(3, Some("baz"))
+      val baz4 = Breakpoint(4, Some("baz"))
+
+      val breakpoints = Set(
+        Breakpoint(2, Some("foo")),
+        Breakpoint(2, Some("bar")),
+        baz3,
+        baz4
+      )
+
+      When("addBreakpoint is called")
+      breakpoints.foreach(dbg.addBreakpoint)
+
+      Then("the breakpoints should actually be added")
+      assertResult(breakpoints)(dbg.getBreakpoints())
+
+      When("a breakpoint is removed by offset")
+      dbg.removeBreakpoint(2)
+
+      Then("all breakpoints at that offset should be removed")
+      assertResult(Set(baz3, baz4))(dbg.getBreakpoints())
+
+      When("a breakpoint is removed by label")
+      dbg.removeBreakpoint("baz")
+
+      Then("all breakpoints with that label should be removed")
+      assert(dbg.getBreakpoints().isEmpty)
+    }
+  }
 end DebuggerTests

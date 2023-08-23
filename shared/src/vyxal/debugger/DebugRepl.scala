@@ -35,13 +35,13 @@ object DebugRepl:
                 dbg.resume()
                 printState(dbg)
               case Cmd.AddBreakpoint(offset, label) =>
-                dbg.addBreakpoint(Breakpoint(offset, label)())
+                dbg.addBreakpoint(Breakpoint(offset, label))
               case Cmd.RemoveBreakpointByOffset(offset) =>
                 dbg.removeBreakpoint(offset)
               case Cmd.RemoveBreakpointByLabel(label) =>
                 dbg.removeBreakpoint(label)
               case Cmd.ListBreakpoints =>
-                println(dbg.getBreakpoints.mkString("\n"))
+                println(dbg.getBreakpoints().mkString("\n"))
               case Cmd.Frames =>
                 for frame <- dbg.stackFrames do
                   println(s"<${frame.name}> ${frame.ast}")

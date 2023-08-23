@@ -28,7 +28,9 @@ class StackFrame(
   *   The offset at which the breakpoint is set. In a praclang, this would be a
   *   line number instead
   */
-case class Breakpoint(offset: Int, label: Option[String] = None)(
+class Breakpoint(
+    val offset: Int,
+    val label: Option[String] = None,
     val matches: AST => Boolean = _ => true
 )
 
@@ -66,7 +68,7 @@ class Debugger(code: AST)(using rootCtx: Context):
   def removeBreakpoint(label: String): Unit =
     breakpoints.filterInPlace(_.label != Some(label))
 
-  def getBreakpoints: Iterable[Breakpoint] = breakpoints.toSet
+  def getBreakpoints(): Set[Breakpoint] = breakpoints.toSet
 
   /** Keep popping either this frame's stepStack or the stackframes until we get
     * to the next step or until the stackframes are all gone
