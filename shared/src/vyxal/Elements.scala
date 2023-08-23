@@ -600,6 +600,27 @@ object Elements:
         case arg => throw UnimplementedOverloadException("ḣ", List(arg))
     },
     addDirect(
+      "Ḥ",
+      "Head Extract",
+      List("head-extract-swap", "split-at-head-swap"),
+      Some(1),
+      "a: lst|str -> Push a[1:], then a[0] onto the stack",
+    ) { ctx ?=>
+      ctx.pop() match
+        case lst: VList =>
+          ctx.push(
+            lst.drop(1),
+            lst.headOption.getOrElse(ctx.settings.defaultValue)
+          )
+        case s: String =>
+          ctx.push(
+            s.drop(1),
+            if s.isEmpty then ""
+            else s.charAt(0).toString
+          )
+        case arg => throw UnimplementedOverloadException("ḣ", List(arg))
+    },
+    addDirect(
       "ṫ",
       "Last Extract",
       List("last-extract", "split-at-last"),
@@ -1912,12 +1933,12 @@ object Elements:
       case (a: VFun, b: VFun) => ??? // todo(lyxal) overload for two functions
       case (a, b: VFun) =>
         val iter = ListHelpers.makeIterable(a)
-        VList.from(iter.zip(ListHelpers.map(b, iter)))
+        VList.from(iter.vzip(ListHelpers.map(b, iter)))
       case (a: VFun, b) =>
         val iter = ListHelpers.makeIterable(b)
-        VList.from(ListHelpers.map(a, iter).zip(iter))
+        VList.from(ListHelpers.map(a, iter).vzip(iter))
       case (a, b) =>
-        ListHelpers.makeIterable(a).zip(ListHelpers.makeIterable(b))
+        ListHelpers.makeIterable(a).vzip(ListHelpers.makeIterable(b))
     }
 
     // Constants

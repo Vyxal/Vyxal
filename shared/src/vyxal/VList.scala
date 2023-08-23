@@ -38,7 +38,7 @@ class VList private (val lst: Seq[VAny])
     * other, keep the longer one's elements as-is.
     */
 
-  def zip(other: VList)(using ctx: Context): VList =
+  def vzip(other: VList)(using ctx: Context): VList =
     val temp = lst
       .zipAll(
         other.lst,
