@@ -1338,7 +1338,7 @@ object Elements:
     },
     addElem(
       Dyad,
-      "Ẹ",
+      "ƒ",
       "Partition After Truthy Indices",
       List(
         "partition-after-truthy"

@@ -165,14 +165,13 @@ z = [0, n] / is lowercase?
 ṡ = chunk by list of numbers / sort list by function
 ṫ = a[:-1], a[-1]
 ẋ = cartesian power /
-ƒ = flatten by depth
+ƒ = partition at truthy indices
 Θ = a[0:b]
 Φ = a[1:b]
 § = print without newline
 Ạ = a[b] = c
 Ḅ = unique prime factors
 Ḍ = Decision problem structure
-Ẹ = partition at truthy indices
 Ḥ = a[1:], a[0]
 Ị = insert b at index c into a
 Ḷ = sort by lengths
