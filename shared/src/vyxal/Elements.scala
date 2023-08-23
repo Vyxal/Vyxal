@@ -609,12 +609,13 @@ object Elements:
             lst.headOption.getOrElse(ctx.settings.defaultValue)
           )
         case s: String =>
+          println(s"AMONG US AMONG US s EQUALS " + s)
           ctx.push(
             s.drop(1),
             if s.isEmpty then ""
             else s.charAt(0).toString
           )
-        case arg => throw UnimplementedOverloadException("ḣ", List(arg))
+        case arg => throw UnimplementedOverloadException("Ḥ", List(arg))
     },
     addDirect(
       "ṫ",
@@ -635,7 +636,7 @@ object Elements:
             else s.last.toString,
             s.dropRight(1)
           )
-        case arg => throw UnimplementedOverloadException("ḣ", List(arg))
+        case arg => throw UnimplementedOverloadException("ṫ", List(arg))
     },
     addElem(
       Dyad,
