@@ -653,4 +653,11 @@ object ListHelpers:
   def gradeUp(iterable: VAny)(using Context): VList =
     VList.from(makeIterable(iterable).zipWithIndex.sortBy(_._1).map(_._2))
 
+  def partitionAfterTruthyIndices(lst: VAny, part: VAny)(using Context): VList =
+    var res = ArrayBuffer(VList())
+    for (i, j) <- makeIterable(lst).zip(makeIterable(part)) do
+      res(res.length - 1) = VList.from(res(res.length - 1) :+ i.asInstanceOf[VAny])
+      if j.asInstanceOf[VAny].toBool then res = res :+ VList()
+    VList.from(res.toList)
+
 end ListHelpers
