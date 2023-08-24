@@ -13,8 +13,7 @@ private[vyxal] object GenerateNanorc:
   /** The name of the nanorc file for Vyxal in literate mode */
   val LitNanorc = "vyxal-lit.nanorc"
 
-  val codepage = Lexer
-    .Codepage
+  val codepage = Lexer.Codepage
     .filter(_ != '\n')
     .map(c => Regex.quote(c.toString))
     .mkString

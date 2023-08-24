@@ -56,8 +56,7 @@ object DebugHelpers:
     predicate.originalAST match
       case Some(lam) =>
         val filtered = ListBuffer.empty[VAny]
-        val filterSteps = iterable
-          .zipWithIndex
+        val filterSteps = iterable.zipWithIndex
           .map { (item, index) =>
             Debugger
               .fnCall(
@@ -68,9 +67,12 @@ object DebugHelpers:
               )
               .foreach { res => if res.toBool then filtered += res }
           }
-        StepSeq(filterSteps :+ Step.hidden { ctx ?=>
-          ctx.push(VList.from(filtered.toList))
-        })
+        StepSeq(
+          filterSteps :+
+            Step.hidden { ctx ?=>
+              ctx.push(VList.from(filtered.toList))
+            }
+        )
       case None => Step.hidden { ListHelpers.filter(iterable, predicate) }
 
   // TODO this doesn't map using all branches
@@ -78,9 +80,11 @@ object DebugHelpers:
     fn.originalAST match
       case Some(lam) => Block(
           ast,
-          StepSeq(lst.flatMap(elem =>
-            List(Step.hidden { ctx ?=> ctx.push(elem) }, Debugger.fnCall(fn))
-          )),
+          StepSeq(
+            lst.flatMap(elem =>
+              List(Step.hidden { ctx ?=> ctx.push(elem) }, Debugger.fnCall(fn))
+            )
+          ),
         )
       case None => Step.hidden { ListHelpers.map(fn, lst) }
 

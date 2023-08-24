@@ -119,21 +119,20 @@ object Step:
 
   private def ifStep(ifStmt: AST.IfStatement): Step =
     val elseStep = ifStmt.elseBody.map(stepsForAST)
-    val inner = ifStmt
-      .conds
+    val inner = ifStmt.conds
       .zip(ifStmt.bodies)
-      .foldRight(elseStep) { case ((cond, thenBody), elseStep) =>
-        val thenBlock = stepsForAST(thenBody)
-        Some(stepsForAST(cond).thenDo { ctx ?=>
-          if ctx.pop().toBool then Some(thenBlock) else elseStep
-        })
+      .foldRight(elseStep) {
+        case ((cond, thenBody), elseStep) =>
+          val thenBlock = stepsForAST(thenBody)
+          Some(stepsForAST(cond).thenDo { ctx ?=>
+            if ctx.pop().toBool then Some(thenBlock) else elseStep
+          })
       }
     Block(ifStmt, inner.getOrElse(StepSeq(List.empty)))
 
   private def listStep(lst: AST.Lst): Step =
     val buf = ListBuffer.empty[VAny]
-    val inner = lst
-      .elems
+    val inner = lst.elems
       .flatMap { (elem) =>
         List(stepsForAST(elem), Step.hidden { ctx ?=> buf += ctx.pop() })
       }

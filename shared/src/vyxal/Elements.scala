@@ -346,9 +346,11 @@ object Elements:
                 case x: VNum => x.toInt
                 case x => throw IllegalArgumentException(s"$x is not a number")
               }
-            ctx.push(VList(
-              (0 until indices.max + 1).map(x => VNum(indices.contains(x)))*
-            ))
+            ctx.push(
+              VList(
+                (0 until indices.max + 1).map(x => VNum(indices.contains(x)))*
+              )
+            )
     },
     addPart(
       Dyad,
@@ -671,11 +673,12 @@ object Elements:
       List("interleave"),
       false,
       "a: lst, b: lst -> Interleave a and b",
-    ) { case (a, b) =>
-      val temp = ListHelpers
-        .interleave(ListHelpers.makeIterable(a), ListHelpers.makeIterable(b))
-      if a.isInstanceOf[String] && b.isInstanceOf[String] then temp.mkString
-      else temp
+    ) {
+      case (a, b) =>
+        val temp = ListHelpers
+          .interleave(ListHelpers.makeIterable(a), ListHelpers.makeIterable(b))
+        if a.isInstanceOf[String] && b.isInstanceOf[String] then temp.mkString
+        else temp
     },
     addPart(
       Monad,
@@ -1782,8 +1785,8 @@ object Elements:
       List("vectorised-sums", "vec-sums"),
       false,
       "a: lst -> sum of each element of a",
-    ) { case a: VList =>
-      a.vmap(x => ListHelpers.sum(ListHelpers.makeIterable(x)))
+    ) {
+      case a: VList => a.vmap(x => ListHelpers.sum(ListHelpers.makeIterable(x)))
     },
     addDirect(
       "W",
@@ -1856,8 +1859,8 @@ object Elements:
       ),
       false,
       "a: lst, b: num -> [a[0], a[1], ..., a[b-1]]",
-    ) { case (a, b: VNum) =>
-      ListHelpers.makeIterable(a, Some(true)).take(b.toInt)
+    ) {
+      case (a, b: VNum) => ListHelpers.makeIterable(a, Some(true)).take(b.toInt)
     },
     addPart(
       Dyad,
@@ -1936,15 +1939,16 @@ object Elements:
       keywords: Seq[String],
       desc: String,
   )(impl: Context ?=> VAny): (String, Element) =
-    symbol -> Element(
-      symbol,
-      name,
-      keywords,
-      Some(0),
-      false,
-      List(s"-> $desc"),
-      () => ctx ?=> ctx.push(impl(using ctx)),
-    )
+    symbol ->
+      Element(
+        symbol,
+        name,
+        keywords,
+        Some(0),
+        false,
+        List(s"-> $desc"),
+        () => ctx ?=> ctx.push(impl(using ctx)),
+      )
 
   /** Add an element that handles all `VAny`s (it doesn't take a
     * `PartialFunction`, hence "Full")
@@ -1957,15 +1961,16 @@ object Elements:
       vectorises: Boolean,
       overloads: String*
   )(impl: F): (String, Element) =
-    symbol -> Element(
-      symbol,
-      name,
-      keywords,
-      Some(helper.arity),
-      vectorises,
-      overloads,
-      helper.toDirectFn(impl),
-    )
+    symbol ->
+      Element(
+        symbol,
+        name,
+        keywords,
+        Some(helper.arity),
+        vectorises,
+        overloads,
+        helper.toDirectFn(impl),
+      )
 
   /** Define an element that doesn't necessarily work on all inputs
     *
@@ -1982,18 +1987,19 @@ object Elements:
       vectorises: Boolean,
       overloads: String*
   )(impl: P): (String, Element) =
-    symbol -> Element(
-      symbol,
-      name,
-      keywords,
-      Some(helper.arity),
-      vectorises,
-      overloads,
-      helper.toDirectFn(
-        if vectorises then helper.vectorise(symbol)(impl)
-        else helper.fill(symbol)(impl)
-      ),
-    )
+    symbol ->
+      Element(
+        symbol,
+        name,
+        keywords,
+        Some(helper.arity),
+        vectorises,
+        overloads,
+        helper.toDirectFn(
+          if vectorises then helper.vectorise(symbol)(impl)
+          else helper.fill(symbol)(impl)
+        ),
+      )
 
   /** Define an element that doesn't necessarily work on all inputs. It may
     * vectorise on some inputs but not others.
@@ -2014,15 +2020,16 @@ object Elements:
       keywords: Seq[String],
       overloads: String*
   )(impl: P): (String, Element) =
-    symbol -> Element(
-      symbol,
-      name,
-      keywords,
-      Some(helper.arity),
-      true,
-      overloads,
-      helper.toDirectFn(helper.fill(symbol)(impl)),
-    )
+    symbol ->
+      Element(
+        symbol,
+        name,
+        keywords,
+        Some(helper.arity),
+        true,
+        overloads,
+        helper.toDirectFn(helper.fill(symbol)(impl)),
+      )
 
   /** Add an element that works directly on the entire stack */
   private def addDirect(

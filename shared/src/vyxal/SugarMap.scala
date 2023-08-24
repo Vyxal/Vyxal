@@ -5,7 +5,8 @@ object SugarMap:
   val trigraphs: Map[String, String] = Map.from(
     makeTrigraphs("#.", "abcdefghlmnoprstx", "ȧḃċḋėḟġḣŀṁṅȯṗṙṡṫẋ") ++
       makeTrigraphs("#.", "ABCDEFGHILMNOPRSTWX", "ȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊ") ++
-      makeTrigraphs("#,", "BDHILMNORST", "ḄḌḤỊḶṂṆỌṚṢṬ") ++ makeTrigraphs(
+      makeTrigraphs("#,", "BDHILMNORST", "ḄḌḤỊḶṂṆỌṚṢṬ") ++
+      makeTrigraphs(
         "#^",
         "abcdefgHijklmnopRstuvWXyz+-)!01234_`|<^>;=$(\"'~.:%^",
         "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ⁺⁻⁾ꜝ⁰¹²³Ч¯ᶿᶲ←↑→↓£¥€“”≈⸠ϩэᵜ",

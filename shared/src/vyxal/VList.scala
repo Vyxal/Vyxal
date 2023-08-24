@@ -15,7 +15,8 @@ import scala.collection.SpecificIterableFactory
   *   The wrapped list actually holdings this VList's elements.
   */
 class VList private (val lst: Seq[VAny])
-    extends Seq[VAny], SeqOps[VAny, Seq, VList]:
+    extends Seq[VAny],
+      SeqOps[VAny, Seq, VList]:
 
   /** Map the list using a Vyxal function */
   def vmap(f: VAny => Context ?=> VAny)(using Context): VList =
@@ -136,8 +137,7 @@ class VList private (val lst: Seq[VAny])
   override def distinct: VList =
     val seen = mutable.ArrayBuffer.empty[VAny]
     VList.from(
-      this
-        .lst
+      this.lst
         .filter { elem =>
           if seen.contains(elem) then false
           else
@@ -195,8 +195,7 @@ object VList extends SpecificIterableFactory[VAny, VList]:
   override def empty: VList = new VList(Seq.empty)
 
   override def newBuilder: mutable.Builder[VAny, VList] =
-    mutable
-      .ArrayBuffer
+    mutable.ArrayBuffer
       .newBuilder[VAny]
       .mapResult(elems => new VList(elems.toSeq))
 

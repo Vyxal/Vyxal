@@ -67,8 +67,8 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   override def equals(obj: Any) =
     obj match
       case n: VNum => (underlying `eq` n.underlying) ||
-        ((this.real - n.real).abs < VNum.Epsilon && (this.imag - n.imag)
-          .abs < VNum.Epsilon)
+        ((this.real - n.real).abs < VNum.Epsilon &&
+          (this.imag - n.imag).abs < VNum.Epsilon)
       case _ => false
 end VNum
 

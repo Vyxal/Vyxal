@@ -9,10 +9,7 @@ private object GenerateDocs:
 
   def elements(): String =
     val sb = StringBuilder()
-    Elements
-      .elements
-      .values
-      .toSeq
+    Elements.elements.values.toSeq
       .sortBy { elem =>
         // Have to use tuple in case of digraphs
         (
@@ -33,8 +30,7 @@ private object GenerateDocs:
           sb ++=
             s"$symbol ($name) (${if vectorises then "" else "non-"}vectorising)\n"
 
-          SugarMap
-            .trigraphs
+          SugarMap.trigraphs
             .collect { case (tri, s) if s == symbol => tri }
             .foreach { tri => sb ++= s"Trigraph: $tri\n" }
 
@@ -43,25 +39,23 @@ private object GenerateDocs:
           sb ++= "---------------------\n"
       }
 
-    Modifiers
-      .modifiers
-      .foreach { case (name, info) =>
-        sb ++= s"$name\n"
-        sb ++= s"Keywords:${info.keywords.mkString(" ", ", ", "")}\n"
-        sb ++= s"Description: ${info.description}\n"
-        SugarMap
-          .trigraphs
-          .collect { case (tri, s) if s == name => tri }
-          .foreach { tri => sb ++= s"Trigraph: $tri\n" }
-        sb ++= "---------------------\n"
+    Modifiers.modifiers
+      .foreach {
+        case (name, info) =>
+          sb ++= s"$name\n"
+          sb ++= s"Keywords:${info.keywords.mkString(" ", ", ", "")}\n"
+          sb ++= s"Description: ${info.description}\n"
+          SugarMap.trigraphs
+            .collect { case (tri, s) if s == name => tri }
+            .foreach { tri => sb ++= s"Trigraph: $tri\n" }
+          sb ++= "---------------------\n"
       }
 
     sb.toString
   end elements
 
   def trigraphs(): String =
-    SugarMap
-      .trigraphs
+    SugarMap.trigraphs
       .map { case (key, value) => s"$key -> $value" }
       .mkString("", "\n", "\n")
 end GenerateDocs

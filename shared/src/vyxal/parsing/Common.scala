@@ -21,8 +21,9 @@ private[parsing] object Common:
   def lambdaOpen[$: P]: P[String] = P(StringIn("λ", "ƛ", "Ω", "₳", "µ").!)
 
   def withRange[T, $: P](parser: => P[T]): P[(T, Range)] =
-    P(Index ~ parser ~ Index).map { case (startOffset, value, endOffset) =>
-      (value, Range(startOffset, endOffset))
+    P(Index ~ parser ~ Index).map {
+      case (startOffset, value, endOffset) =>
+        (value, Range(startOffset, endOffset))
     }
 
   def parseToken[$: P](

@@ -15,8 +15,7 @@ object NumberHelpers:
 
   def factors(a: VNum): VList =
     VList.from(
-      VNum(1)
-        .toBigInt
+      VNum(1).toBigInt
         .to(a.toBigInt.abs)
         .filter(a % _ == VNum(0))
         .map(_ * a.toBigInt.signum)
@@ -72,8 +71,7 @@ object NumberHelpers:
       ) // from http://www.mrob.com/pub/ries/lanczos-gamma.html
 
     val A_g = VNum("0.99999999999999709182") +
-      coefficents
-        .zipWithIndex
+      coefficents.zipWithIndex
         .map((c, i) => c / ((a - 1) + (i + 1)))
         .reduce(_ + _)
 

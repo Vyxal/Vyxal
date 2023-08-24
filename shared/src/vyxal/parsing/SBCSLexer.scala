@@ -14,34 +14,38 @@ private[parsing] object SBCSLexer extends Lexer:
   var sugarUsed = false
 
   def string[$: P]: P[Token] =
-    P(withRange(
-      "\"" ~~/ (("\\" ~~/ AnyChar) | (!CharIn("\"„”“") ~~ AnyChar)).repX.! ~~
-        (CharIn("\"„”“").! | End)
-    )).map { case ((value, last), range) =>
-      // If the last character of each token is ", then it's a normal string
-      // If the last character of each token is „, then it's a compressed string
-      // If the last character of each token is ”, then it's a dictionary string
-      // If the last character of each token is “, then it's a compressed number
+    P(
+      withRange(
+        "\"" ~~/
+          (("\\" ~~/ AnyChar) | (!CharIn("\"„”“") ~~ AnyChar)).repX.! ~~
+          (CharIn("\"„”“").! | End)
+      )
+    ).map {
+      case ((value, last), range) =>
+        // If the last character of each token is ", then it's a normal string
+        // If the last character of each token is „, then it's a compressed string
+        // If the last character of each token is ”, then it's a dictionary string
+        // If the last character of each token is “, then it's a compressed number
 
-      // So replace the non-normal string tokens with the appropriate token type
+        // So replace the non-normal string tokens with the appropriate token type
 
-      // btw thanks to @pxeger and @mousetail for the regex
+        // btw thanks to @pxeger and @mousetail for the regex
 
-      val text = value
-        .replace("\\\"", "\"")
-        .replace(raw"\n", "\n")
-        .replace(raw"\t", "\t")
+        val text = value
+          .replace("\\\"", "\"")
+          .replace(raw"\n", "\n")
+          .replace(raw"\t", "\t")
 
-      last match
-        case quote: String =>
-          val tokenType = quote match
-            case "\"" => Str
-            case "„" => CompressedString
-            case "”" => DictionaryString
-            case "“" => CompressedNumber
+        last match
+          case quote: String =>
+            val tokenType = quote match
+              case "\"" => Str
+              case "„" => CompressedString
+              case "”" => DictionaryString
+              case "“" => CompressedNumber
 
-          Token(tokenType, text, range)
-        case _ => Token(Str, text, range)
+            Token(tokenType, text, range)
+          case _ => Token(Str, text, range)
     }
 
   def singleCharString[$: P]: P[Token] = parseToken(Str, P("'" ~~ AnyChar.!))
@@ -50,18 +54,17 @@ private[parsing] object SBCSLexer extends Lexer:
     parseToken(Str, P("ᶴ" ~~/ (AnyChar ~~ AnyChar).!))
 
   def twoCharNumber[$: P]: P[Token] =
-    withRange(P("~" ~~/ (AnyChar ~~ AnyChar).!)).map { case (value, range) =>
-      Token(
-        Number,
-        value
-          .zipWithIndex
-          .map((c, ind) =>
-            math.pow(Lexer.Codepage.length, ind) * Lexer.Codepage.indexOf(c)
-          )
-          .sum
-          .toString,
-        range,
-      )
+    withRange(P("~" ~~/ (AnyChar ~~ AnyChar).!)).map {
+      case (value, range) => Token(
+          Number,
+          value.zipWithIndex
+            .map((c, ind) =>
+              math.pow(Lexer.Codepage.length, ind) * Lexer.Codepage.indexOf(c)
+            )
+            .sum
+            .toString,
+          range,
+        )
     }
 
   def structureOpen[$: P]: P[Token] =
@@ -83,39 +86,44 @@ private[parsing] object SBCSLexer extends Lexer:
   def listClose[$: P]: P[Token] = parseToken(ListClose, StringIn("#]", "⟩").!)
 
   def digraph[$: P]: P[Token] =
-    P(withRange(
-      (CharIn("∆øÞk") ~~ AnyChar).! | ("#" ~~ !CharIn("[]$!=#>@{") ~~ AnyChar).!
-    )).map { case (digraph, range) =>
-      if Elements.elements.contains(digraph) then Token(Command, digraph, range)
-      else if Modifiers.modifiers.contains(digraph) then
-        val modifier = Modifiers.modifiers(digraph)
-        val tokenType = modifier.arity match
-          case 1 => MonadicModifier
-          case 2 => DyadicModifier
-          case 3 => TriadicModifier
-          case 4 => TetradicModifier
-          case -1 => SpecialModifier
-          case arity => throw Exception(s"Invalid modifier arity: $arity")
-        Token(tokenType, digraph, range)
-      else Token(Digraph, digraph, range)
+    P(
+      withRange(
+        (CharIn("∆øÞk") ~~ AnyChar).! |
+          ("#" ~~ !CharIn("[]$!=#>@{") ~~ AnyChar).!
+      )
+    ).map {
+      case (digraph, range) =>
+        if Elements.elements.contains(digraph) then
+          Token(Command, digraph, range)
+        else if Modifiers.modifiers.contains(digraph) then
+          val modifier = Modifiers.modifiers(digraph)
+          val tokenType = modifier.arity match
+            case 1 => MonadicModifier
+            case 2 => DyadicModifier
+            case 3 => TriadicModifier
+            case 4 => TetradicModifier
+            case -1 => SpecialModifier
+            case arity => throw Exception(s"Invalid modifier arity: $arity")
+          Token(tokenType, digraph, range)
+        else Token(Digraph, digraph, range)
     }
 
   def syntaxTrigraph[$: P]: P[Token] =
     parseToken(SyntaxTrigraph, ("#:" ~~ AnyChar).!)
 
   def sugarTrigraph[$: P]: P[Token] =
-    withRange(("#" ~~ CharIn(".,^") ~~ AnyChar).!).map { case (value, range) =>
-      this.sugarUsed = true
-      SugarMap
-        .trigraphs
-        .get(value)
-        .flatMap(char => this.lex(char).toOption.map(_.head))
-        .getOrElse(Token(Command, value, range))
+    withRange(("#" ~~ CharIn(".,^") ~~ AnyChar).!).map {
+      case (value, range) =>
+        this.sugarUsed = true
+        SugarMap.trigraphs
+          .get(value)
+          .flatMap(char => this.lex(char).toOption.map(_.head))
+          .getOrElse(Token(Command, value, range))
     }
 
   private val allCommands =
-    (Lexer.Codepage.replaceAll(raw"[|\[\](){}\s]", "") + Lexer.UnicodeCommands)
-      .toSet
+    (Lexer.Codepage.replaceAll(raw"[|\[\](){}\s]", "") +
+      Lexer.UnicodeCommands).toSet
 
   def command[$: P]: P[Token] = parseToken(Command, CharPred(allCommands).!)
 
@@ -145,7 +153,8 @@ private[parsing] object SBCSLexer extends Lexer:
     parseToken(
       Number,
       ((sbcsDecimal ~~ ("ı".! ~~ (sbcsDecimal | "_".!).?).?) |
-        "ı".! ~~ (sbcsDecimal ~ "_".!).?).!,
+        "ı".! ~~
+        (sbcsDecimal ~ "_".!).?).!,
     ).opaque("<number (SBCS)>")
 
   def contextIndex[$: P]: P[Token] =

@@ -142,19 +142,23 @@ object Parser:
             if modifier.from.isDefinedAt(modifierArgs) then
               finalAsts.push(modifier.from(modifierArgs))
             else
-              return Left(VyxalCompilationError(
-                s"Modifier $name not defined for $modifierArgs"
-              ))
+              return Left(
+                VyxalCompilationError(
+                  s"Modifier $name not defined for $modifierArgs"
+                )
+              )
         case AST.SpecialModifier(name, _) => (name: @unchecked) match
             case "ᵜ" =>
               val lambdaAsts = ListBuffer[AST]()
               while asts.nonEmpty && asts.top != AST.Newline do
                 lambdaAsts += asts.pop()
-              finalAsts.push(AST.Lambda(
-                1,
-                List(),
-                List(AST.makeSingle(lambdaAsts.toList.reverse*)),
-              ))
+              finalAsts.push(
+                AST.Lambda(
+                  1,
+                  List(),
+                  List(AST.makeSingle(lambdaAsts.toList.reverse*)),
+                )
+              )
             case "ᵗ" => ??? // TODO: Implement tie
         case AST.AuxAugmentVar(name, _) =>
           if asts.isEmpty then
@@ -210,10 +214,12 @@ object Parser:
             asts.top.arity.fold(false)(_ == 0)
           do nilads += asts.pop()
           if nilads.isEmpty then return Right(AST.Command(cmd, cmdTok.range))
-          Right(AST.Group(
-            (AST.Command(cmd, cmdTok.range) :: nilads.toList).reverse,
-            Some(arity - nilads.size),
-          ))
+          Right(
+            AST.Group(
+              (AST.Command(cmd, cmdTok.range) :: nilads.toList).reverse,
+              Some(arity - nilads.size),
+            )
+          )
     end match
   end parseCommand
 
@@ -286,8 +292,8 @@ object Parser:
       program: Queue[Token],
   ): ParserRet[AST] =
     parseBranches(program, false) {
-      case TokenType.StructureAllClose | TokenType.StructureClose | TokenType
-            .StructureDoubleClose => true
+      case TokenType.StructureAllClose | TokenType.StructureClose |
+          TokenType.StructureDoubleClose => true
       case _ => false
     }.flatMap { branches =>
       // Now, we can create the appropriate AST for the structure
@@ -305,11 +311,13 @@ object Parser:
             val grouped =
               if odd then branches.init.grouped(2).toList
               else branches.grouped(2).toList
-            Right(AST.IfStatement(
-              grouped.map(_(0)),
-              grouped.map(_(1)),
-              Option.when(odd)(branches.last),
-            ))
+            Right(
+              AST.IfStatement(
+                grouped.map(_(0)),
+                grouped.map(_(1)),
+                Option.when(odd)(branches.last),
+              )
+            )
         case StructureType.While => branches match
             case List(cond, body) => Right(AST.While(Some(cond), body))
             case List(body) => Right(AST.While(None, body))
@@ -430,9 +438,11 @@ object Parser:
     val parsed = parse(preprocessed, true)
     if preprocessed.nonEmpty then
       // Some tokens were left at the end, which should never happen
-      Left(VyxalCompilationError(
-        s"Error parsing code: These tokens were not parsed ${preprocessed.toList}. Only parsed $parsed"
-      ))
+      Left(
+        VyxalCompilationError(
+          s"Error parsing code: These tokens were not parsed ${preprocessed.toList}. Only parsed $parsed"
+        )
+      )
     else
       parsed match
         case Right(ast) => Right(postprocess(ast))

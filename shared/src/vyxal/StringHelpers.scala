@@ -67,8 +67,7 @@ object StringHelpers:
         val c = (z1 - 1) % 252
         z1 = (z1 - 1) / 252
         compressed.append(Lexer.Codepage(c.toInt))
-      compressed
-        .toString
+      compressed.toString
         .replace('"', '•')
         .replace('„', '≈')
         .replace('”', '¿')
@@ -134,12 +133,10 @@ object StringHelpers:
     * ring. The ring wraps around.
     */
   def ringTranslate(source: String, mapping: String): String =
-    source
-      .map { c =>
-        val index = mapping.indexOf(c)
-        if index == -1 then c else mapping((index + 1) % mapping.length)
-      }
-      .mkString
+    source.map { c =>
+      val index = mapping.indexOf(c)
+      if index == -1 then c else mapping((index + 1) % mapping.length)
+    }.mkString
 
   def transliterate(source: String, from: VList, to: VList): String =
     val out = StringBuilder()
@@ -220,17 +217,16 @@ object StringHelpers:
   /** Toggle case of each character in the string */
   def swapCase(s: String): String =
     s.map { c =>
-        if c.isUpper then c.toLower else if c.isLower then c.toUpper else c
-      }
-      .mkString
+      if c.isUpper then c.toLower else if c.isLower then c.toUpper else c
+    }.mkString
 
   /** Split on "words" (sequences of letters) and capitalize each word. */
   def titlecase(s: String): String =
     val splitOnWords = ListHelpers.groupConsecutiveBy(s.toSeq)(_.isLetter)
     val words = splitOnWords.map(_.mkString)
-    words
-      .map { word => s"${word.head.toUpper}${word.tail.toLowerCase}" }
-      .mkString
+    words.map { word =>
+      s"${word.head.toUpper}${word.tail.toLowerCase}"
+    }.mkString
 
   def vyToString(item: VAny)(using Context): String =
     item match
@@ -243,11 +239,13 @@ object StringHelpers:
     s.map(_.toString * n.toInt).mkString
 
   def caseof(s: String)(using Context): VList =
-    VList.from(s.map(c =>
-      if c.isUpper then VNum(1) // Uppercase
-      else if c.isLower then VNum(0) // Lowercase
-      else VNum(-1) // Non-alphabet
-    ))
+    VList.from(
+      s.map(c =>
+        if c.isUpper then VNum(1) // Uppercase
+        else if c.isLower then VNum(0) // Lowercase
+        else VNum(-1) // Non-alphabet
+      )
+    )
 
   def sentenceCase(str: String): String =
     var capitalise = true

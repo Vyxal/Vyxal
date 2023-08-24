@@ -28,9 +28,10 @@ object Interpreter:
         scribe.debug(s"Executing '$code' (ast: $ast)")
 
         try execute(ast)
-        catch case _: QuitException => scribe.debug("Program quit using Q")
+        catch
+          case _: QuitException => scribe.debug("Program quit using Q")
 
-        // todo implicit output according to settings
+          // todo implicit output according to settings
         if !ctx.isStackEmpty &&
           ctx.settings.endPrintMode == EndPrintMode.Default
         then vyPrintln(ctx.peek)
@@ -79,9 +80,8 @@ object Interpreter:
           while true do
             try
               execute(body)(using loopCtx)
-              loopCtx
-                .ctxVarSecondary = loopCtx.ctxVarSecondary.asInstanceOf[VNum] +
-                1
+              loopCtx.ctxVarSecondary =
+                loopCtx.ctxVarSecondary.asInstanceOf[VNum] + 1
             catch case _: ContinueLoopException => ()
         catch case _: BreakLoopException => return
       case AST.While(Some(cond), body, _) =>
@@ -95,9 +95,8 @@ object Interpreter:
               execute(body)
               execute(cond)
               loopCtx.ctxVarPrimary = ctx.peek
-              loopCtx
-                .ctxVarSecondary = loopCtx.ctxVarSecondary.asInstanceOf[VNum] +
-                1
+              loopCtx.ctxVarSecondary =
+                loopCtx.ctxVarSecondary.asInstanceOf[VNum] + 1
             catch case _: ContinueLoopException => ()
 
         catch case _: BreakLoopException => return

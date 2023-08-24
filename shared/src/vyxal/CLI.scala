@@ -53,9 +53,7 @@ object CLI:
         case None => println(s"No such logging level: $logLevel")
         case Some(level) =>
           // Change the logging level
-          scribe
-            .Logger
-            .root
+          scribe.Logger.root
             .clearHandlers()
             .clearModifiers()
             .withHandler(minimumLevel = Some(level))
@@ -111,8 +109,7 @@ object CLI:
                   )
           DebugRepl.start(code)
         else
-          config
-            .filename
+          config.filename
             .foreach { filename =>
               val source = io.Source.fromFile(filename)
               try runCode(source.mkString)

@@ -58,8 +58,7 @@ object ListHelpers:
     predicate.originalAST match
       case Some(lam) =>
         val branches = lam.body
-        val filtered = iterable
-          .zipWithIndex
+        val filtered = iterable.zipWithIndex
           .filter { (item, index) =>
             var keep = true
             var branchList = branches
@@ -83,8 +82,7 @@ object ListHelpers:
 
         VList.from(filtered.map(_._1))
       case None => VList.from(
-          iterable
-            .zipWithIndex
+          iterable.zipWithIndex
             .collect {
               case (item, index)
                   if predicate.execute(item, index, List(item)).toBool => item
@@ -229,8 +227,7 @@ object ListHelpers:
           VList.from(start.to(num - offset))
         else
           VList.from(
-            num
-              .toString
+            num.toString
               .map { x => if x.isDigit then VNum(x - '0') else x.toString }
           )
 
@@ -330,8 +327,7 @@ object ListHelpers:
     val value =
       if indInt == 0 then temp ++ temp.reverse
       else
-        temp
-          .zipWithIndex
+        temp.zipWithIndex
           .collect { case (elem, ind) if ind % indInt == 0 => elem }
     iterable match
       case _: VList => VList.from(value)
@@ -377,15 +373,16 @@ object ListHelpers:
     def helper(lst: Seq[VAny]): LazyList[LazyList[Seq[VAny]]] =
       if lst.isEmpty then LazyList.empty
       else
-        LazyList(lst) #:: mergeInfLists(
-          LazyList
-            .from(1)
-            .takeWhile(i => lst.sizeIs > i)
-            .map { i =>
-              val (left, right) = lst.splitAt(i)
-              helper(right).map(partition => left #:: partition)
-            }
-        )
+        LazyList(lst) #::
+          mergeInfLists(
+            LazyList
+              .from(1)
+              .takeWhile(i => lst.sizeIs > i)
+              .map { i =>
+                val (left, right) = lst.splitAt(i)
+                helper(right).map(partition => left #:: partition)
+              }
+          )
     helper(lst)
 
   def partitionBy(lst: VList, shapes: Seq[VNum])(using Context): VList =
@@ -403,8 +400,7 @@ object ListHelpers:
         val branches = lam.body
         if branches.sizeIs < 2 then
           return VList(
-            iterable
-              .zipWithIndex
+            iterable.zipWithIndex
               .sorted { (a, b) =>
                 MiscHelpers.compare(
                   key.executeResult(a(0), a(1), List(a(0))),
@@ -414,11 +410,9 @@ object ListHelpers:
               .map(_._1)*
           )
 
-        val out = iterable
-          .zipWithIndex
+        val out = iterable.zipWithIndex
           .sortWith { (a, b) =>
-            branches
-              .view
+            branches.view
               .map { branch =>
                 val f = VFun.fromLambda(AST.Lambda(1, List.empty, List(branch)))
                 (
@@ -428,16 +422,15 @@ object ListHelpers:
               }
               .find(_ != _)
               // If they compare equal with all branches, a < b is false
-              .fold(false) { case (aRes, bRes) =>
-                MiscHelpers.compare(aRes, bRes) < 0
+              .fold(false) {
+                case (aRes, bRes) => MiscHelpers.compare(aRes, bRes) < 0
               }
           }
           .map(_._1)
 
         VList(out*)
       case None => VList(
-          iterable
-            .zipWithIndex
+          iterable.zipWithIndex
             .sorted { (a, b) =>
               MiscHelpers.compare(
                 key.executeResult(a(0), a(1), List(a(0))),

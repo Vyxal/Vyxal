@@ -27,7 +27,8 @@ case class Range(startOffset: Int, endOffset: Int) derives CanEqual:
     */
   override def equals(obj: Any): Boolean =
     obj match
-      case other: Range => (other `eq` this) || (this `eq` Range.fake) ||
+      case other: Range => (other `eq` this) ||
+        (this `eq` Range.fake) ||
         (other `eq` Range.fake) ||
         (other.startOffset == this.startOffset &&
           other.endOffset == this.endOffset)
@@ -110,12 +111,15 @@ private[parsing] trait Lexer:
       case Parsed.Success(res, ind) =>
         if ind == code.length then Right(res.toList)
         else
-          Left(VyxalCompilationError(
-            s"Parsed $res but did not consume '${code.substring(ind)}'"
-          ))
+          Left(
+            VyxalCompilationError(
+              s"Parsed $res but did not consume '${code.substring(ind)}'"
+            )
+          )
       case f @ Parsed.Failure(label, index, extra) =>
         val trace = f.trace()
         Left(VyxalCompilationError(s"Lexing failed: ${trace.longMsg}"))
+end Lexer
 
 object Lexer:
   val structureOpenRegex: String = """[\[\(\{λƛΩ₳µḌṆ]|#@|#\{"""

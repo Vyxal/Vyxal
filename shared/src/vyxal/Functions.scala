@@ -126,8 +126,8 @@ object Tetrad extends ImplHelpers[PartialTetrad, Tetrad](4):
     lazy val res: Tetrad = {
       case args if f.isDefinedAt(args) => f(args)
       case (as: VList, bs: VList, cs: VList, ds: VList) => VList
-          .zipMulti(as, bs, cs, ds) { case VList(a, b, c, d) =>
-            res(a, b, c, d)
+          .zipMulti(as, bs, cs, ds) {
+            case VList(a, b, c, d) => res(a, b, c, d)
           }
       case (a, bs: VList, cs: VList, ds: VList) => VList
           .zipMulti(bs, cs, ds) { case VList(b, c, d) => res(a, b, c, d) }
