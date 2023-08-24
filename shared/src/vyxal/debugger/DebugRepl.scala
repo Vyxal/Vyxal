@@ -48,7 +48,7 @@ object DebugRepl:
         .text("Step out"),
       cmd("exit")
         .action((_, cfg) => cfg.copy(cmd = Cmd.Exit))
-        .text("Exit debugger")
+        .text("Exit debugger"),
     )
   end parser
 

@@ -38,12 +38,8 @@ object JvmRepl extends Repl:
 
     AnsiConsole.systemInstall()
 
-    val terminal = TerminalBuilder
-      .builder()
-      .name("Vyxal")
-      .jansi(true)
-      .system(true)
-      .build()
+    val terminal =
+      TerminalBuilder.builder().name("Vyxal").jansi(true).system(true).build()
 
     val highlighter = SyntaxHighlighter.build(
       getClass()
@@ -66,7 +62,9 @@ object JvmRepl extends Repl:
 
     if ctx.settings.literate then
       lineReaderBuilder.completer(
-        StringsCompleter(Elements.elements.values.flatMap(_.keywords).toArray*)
+        StringsCompleter(
+          Elements.elements.values.flatMap(_.keywords).toArray*
+        )
       )
 
     val lineReader = lineReaderBuilder.build()
@@ -78,9 +76,7 @@ object JvmRepl extends Repl:
         val code = lineReader.readLine("> ")
         Interpreter.execute(code)
       catch
-        case _: UserInterruptException =>
-          return
-        case _: EndOfFileException =>
-          return
+        case _: UserInterruptException => return
+        case _: EndOfFileException => return
   end fancyRepl
 end JvmRepl

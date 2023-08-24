@@ -25,7 +25,7 @@ case class NewStackFrame(
     ast: AST,
     frameName: String,
     newCtx: Context => Context,
-    inner: Step
+    inner: Step,
 ) extends ProperStep
 
 /** Represents a structure that doesn't create a new frame, to allow stepping
@@ -48,28 +48,27 @@ case class Lazy(get: () => Context ?=> Option[Step]) extends Step
 
 object Step:
   /** A step that simply pushes a value onto the stack */
-  def push(ast: AST, value: VAny): Step = Exec(
-    ast,
-    () =>
-      (_, ctx) ?=>
-        ctx.push(value)
-        None
-  )
+  def push(ast: AST, value: VAny): Step =
+    Exec(
+      ast,
+      () =>
+        (_, ctx) ?=>
+          ctx.push(value)
+          None,
+    )
 
   /** Helper so you don't have to write () => */
-  def hidden(exec: Context ?=> Unit): Step =
-    Hidden(() => exec)
+  def hidden(exec: Context ?=> Unit): Step = Hidden(() => exec)
 
   private def whileStep(loop: AST.While): Step =
     val inner = loop.cond match
       case Some(cond) =>
         // While loop with condition
-        lazy val condStep: Step =
-          stepsForAST(cond).thenDo { ctx ?=>
-            if ctx.pop().toBool then
-              Some(StepSeq(List(stepsForAST(loop.body), condStep)))
-            else None
-          }
+        lazy val condStep: Step = stepsForAST(cond).thenDo { ctx ?=>
+          if ctx.pop().toBool then
+            Some(StepSeq(List(stepsForAST(loop.body), condStep)))
+          else None
+        }
 
         Block(loop, condStep)
       case None =>
@@ -88,7 +87,7 @@ object Step:
 
         loopCtx
       ,
-      inner
+      inner,
     )
   end whileStep
 
@@ -114,29 +113,25 @@ object Step:
           ListHelpers.makeIterable(ctx.pop(), Some(true))(using ctx).iterator
         ctx.makeChild()
       ,
-      loopBlock
+      loopBlock,
     )
   end forStep
 
   private def ifStep(ifStmt: AST.IfStatement): Step =
     val elseStep = ifStmt.elseBody.map(stepsForAST)
-    val inner = ifStmt.conds
-      .zip(ifStmt.bodies)
-      .foldRight(elseStep) { case ((cond, thenBody), elseStep) =>
+    val inner = ifStmt.conds.zip(ifStmt.bodies).foldRight(elseStep) {
+      case ((cond, thenBody), elseStep) =>
         val thenBlock = stepsForAST(thenBody)
         Some(stepsForAST(cond).thenDo { ctx ?=>
           if ctx.pop().toBool then Some(thenBlock) else elseStep
         })
-      }
+    }
     Block(ifStmt, inner.getOrElse(StepSeq(List.empty)))
 
   private def listStep(lst: AST.Lst): Step =
     val buf = ListBuffer.empty[VAny]
     val inner = lst.elems.flatMap { (elem) =>
-      List(
-        stepsForAST(elem),
-        Step.hidden { ctx ?=> buf += ctx.pop() }
-      )
+      List(stepsForAST(elem), Step.hidden { ctx ?=> buf += ctx.pop() })
     }
     val last = Step.hidden { ctx ?=> ctx.push(VList.from(buf.toList)) }
     Block(lst, StepSeq(inner :+ last))
@@ -145,12 +140,9 @@ object Step:
     val symbol = cmd.value
     DebugImpls.impls.get(symbol) match
       case Some(debugImpl) => Exec(cmd, debugImpl)
-      case None =>
-        Elements.elements.get(symbol) match
-          case Some(element) =>
-            Step.hidden { element.impl() }
-          case None =>
-            throw RuntimeException(s"No such element: $symbol")
+      case None => Elements.elements.get(symbol) match
+          case Some(element) => Step.hidden { element.impl() }
+          case None => throw RuntimeException(s"No such element: $symbol")
 
   def stepsForAST(ast: AST): Step =
     ast match

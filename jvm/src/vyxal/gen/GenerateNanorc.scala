@@ -37,9 +37,7 @@ private[vyxal] object GenerateNanorc:
     |color yellow,red "[^$codepage]*"
     |
     |## Modifiers
-    |color brightmagenta "${Modifiers.modifiers.keys
-      .map(Regex.quote)
-      .mkString("|")}"
+    |color brightmagenta "${Modifiers.modifiers.keys.map(Regex.quote).mkString("|")}"
     |""".stripMargin
 
   val commonFooter = """|

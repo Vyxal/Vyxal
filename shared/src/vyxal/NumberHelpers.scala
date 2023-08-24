@@ -62,7 +62,7 @@ object NumberHelpers:
       "-0.00016431810653676389022",
       "0.000084418223983852743293",
       "-0.000026190838401581408670",
-      "0.0000036899182659531622704"
+      "0.0000036899182659531622704",
     )
 
     val coefficents =
@@ -70,9 +70,10 @@ object NumberHelpers:
         VNum(g)
       ) // from http://www.mrob.com/pub/ries/lanczos-gamma.html
 
-    val A_g = VNum("0.99999999999999709182") + coefficents.zipWithIndex
-      .map((c, i) => c / ((a - 1) + (i + 1)))
-      .reduce(_ + _)
+    val A_g = VNum("0.99999999999999709182") +
+      coefficents.zipWithIndex
+        .map((c, i) => c / ((a - 1) + (i + 1)))
+        .reduce(_ + _)
 
     val g = VNum("4.7421875")
     val z = spire.math.abs(a.underlying.real) - 1
@@ -92,9 +93,8 @@ object NumberHelpers:
   def log(a: VNum, b: VNum): VNum =
     // Only works for real numbers for now
     VNum(
-      spire.math.Real.log(a.underlying.real) / spire.math.Real.log(
-        b.underlying.real
-      )
+      spire.math.Real.log(a.underlying.real) /
+        spire.math.Real.log(b.underlying.real)
     )
   def multiplicity(a: VNum, b: VNum): VNum =
     if a == VNum(0) || b == VNum(0) then return VNum(0)
@@ -107,8 +107,8 @@ object NumberHelpers:
     result
 
   def nChooseK(a: VNum, b: VNum): VNum =
-    spire.math.fact(a.toLong) / (spire.math.fact(b.toLong) * spire.math
-      .fact((a - b).toLong))
+    spire.math.fact(a.toLong) /
+      (spire.math.fact(b.toLong) * spire.math.fact((a - b).toLong))
 
   /** A version of VNum.toString that differentiates between literate and sbcs
     * mode
@@ -125,11 +125,7 @@ object NumberHelpers:
   def partitions(a: VNum): VList =
     // Return all ways to sum to a number
     val result = mutable.ListBuffer.empty[VList]
-    def helper(
-        current: VList,
-        remaining: VNum,
-        last: VNum
-    ): Unit =
+    def helper(current: VList, remaining: VNum, last: VNum): Unit =
       if remaining == VNum(0) then result += current
       else
         for i <- last.toBigInt to remaining.toBigInt do
@@ -157,8 +153,7 @@ object NumberHelpers:
       case n: VNum =>
         val binary = n.toInt.abs.toBinaryString
         val temp = VList(binary.map(_.asDigit: VNum)*)
-        if n.toInt < 0 then temp.vmap(v => -v.asInstanceOf[VNum])
-        else temp
+        if n.toInt < 0 then temp.vmap(v => -v.asInstanceOf[VNum]) else temp
       case s: String =>
         // get binary representation of each character
         val result = ListBuffer.empty[VAny]
@@ -173,18 +168,16 @@ object NumberHelpers:
       case (a: VNum, b: VNum) => VList.from(toBaseDigits(a, b))
       case (n: VNum, b: (String | VList)) => toBaseAlphabet(n, b)
       case (a: VList, _) => VList(a.map(toBase(_, b))*)
-      case _ =>
-        throw Exception(
+      case _ => throw Exception(
           s"toBase only works on numbers and lists, was given $a and $b instead"
         )
 
   /** Returns value in base len(alphabet) using base 10 [bijective base]. If the
     * alphabet is a string, returns a string.
     */
-  def toBaseAlphabet(
-      value: VNum,
-      alphabet: String | VList
-  )(using Context): VAny =
+  def toBaseAlphabet(value: VNum, alphabet: String | VList)(using
+      Context
+  ): VAny =
     val (isStr, length) = alphabet match
       case a: String => (true, a.length)
       case l: VList => (false, l.size)
@@ -196,8 +189,7 @@ object NumberHelpers:
 
     val temp = indexes.map(alphaList.index(_).toString())
 
-    if isStr then temp.mkString("")
-    else VList.from(temp)
+    if isStr then temp.mkString("") else VList.from(temp)
 
   def toBaseDigits(value: VNum, base: VNum): Seq[VNum] =
     /** Helper to get digits for single component of a VNum */
@@ -257,8 +249,7 @@ object NumberHelpers:
   def toBaseString(value: VNum, base: VNum)(using Context): VAny =
     val lst = NumberHelpers.toBaseDigits(value, base)
     val temp = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-    val codepage =
-      temp + Lexer.Codepage.filterNot(temp.contains(_))
+    val codepage = temp + Lexer.Codepage.filterNot(temp.contains(_))
     lst.map(d => codepage((d % 256).toInt)).mkString
 
   def toInt(value: VAny, radix: Int)(using ctx: Context): VAny =
@@ -270,8 +261,7 @@ object NumberHelpers:
         var res: VAny = VNum(0)
         var exponent = 0
         for i <- l.reverse do
-          res = res +~
-            toInt(i, 10) *~ (VNum(radix) ** VNum(exponent))
+          res = res +~ toInt(i, 10) *~ (VNum(radix) ** VNum(exponent))
           exponent += 1
         res
       case s: String => VNum(s, radix).toIntegral
@@ -279,19 +269,12 @@ object NumberHelpers:
 
   def divides(a: VAny, b: VAny)(using Context): VAny =
     (a, b) match
-      case (a: VNum, b: VNum) =>
-        (a % b) == VNum(0)
-      case (a: String, b: VNum) =>
-        a.toString + MiscHelpers.multiply(" ", b)
-      case (a: VNum, b: String) =>
-        b.toString + MiscHelpers.multiply(" ", a)
-      case (a: VList, b: VFun) =>
-        ListHelpers.dedupBy(a, b)
-      case (a: VFun, b: VList) =>
-        ListHelpers.dedupBy(b, a)
-      case (a: VList, b) =>
-        a.vmap(divides(_, b))
-      case (a, b: VList) =>
-        b.vmap(divides(a, _))
+      case (a: VNum, b: VNum) => (a % b) == VNum(0)
+      case (a: String, b: VNum) => a.toString + MiscHelpers.multiply(" ", b)
+      case (a: VNum, b: String) => b.toString + MiscHelpers.multiply(" ", a)
+      case (a: VList, b: VFun) => ListHelpers.dedupBy(a, b)
+      case (a: VFun, b: VList) => ListHelpers.dedupBy(b, a)
+      case (a: VList, b) => a.vmap(divides(_, b))
+      case (a, b: VList) => b.vmap(divides(a, _))
 
 end NumberHelpers

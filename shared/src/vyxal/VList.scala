@@ -25,9 +25,9 @@ class VList private (val lst: Seq[VAny])
   /** Zip two VLists together with a function. If one is longer than the other,
     * keep the longer one's elements as-is.
     */
-  def zipWith(other: VList)(f: (VAny, VAny) => Context ?=> VAny)(using
-      ctx: Context
-  ): VList =
+  def zipWith(
+      other: VList
+  )(f: (VAny, VAny) => Context ?=> VAny)(using ctx: Context): VList =
     new VList(
       lst
         .zipAll(other.lst, ctx.settings.defaultValue, ctx.settings.defaultValue)
@@ -40,11 +40,7 @@ class VList private (val lst: Seq[VAny])
 
   def vzip(other: VList)(using ctx: Context): VList =
     val temp = lst
-      .zipAll(
-        other.lst,
-        ctx.settings.defaultValue,
-        ctx.settings.defaultValue
-      )
+      .zipAll(other.lst, ctx.settings.defaultValue, ctx.settings.defaultValue)
       .map(VList(_, _))
     VList(temp*)
 
@@ -94,9 +90,10 @@ class VList private (val lst: Seq[VAny])
   /** This violates the method contract, since [[List]]s actually need a
     * traversal to get their length, but it helps us check for lazy lists
     */
-  override def knownSize: Int = lst match
-    case _: List[?] => lst.size
-    case _ => lst.knownSize
+  override def knownSize: Int =
+    lst match
+      case _: List[?] => lst.size
+      case _ => lst.knownSize
 
   /** Overridden to preserve laziness */
   override def map[B](f: VAny => B): Seq[B] = lst.map(f)
@@ -121,17 +118,16 @@ class VList private (val lst: Seq[VAny])
     VList.fromSpecific(coll)
 
   override protected def newSpecificBuilder
-      : collection.mutable.Builder[VAny, VList] =
-    VList.newBuilder
+      : collection.mutable.Builder[VAny, VList] = VList.newBuilder
 
   override def empty: VList = VList.empty
 
-  protected def from(it: Seq[VAny]): VList =
-    VList.from(it)
+  protected def from(it: Seq[VAny]): VList = VList.from(it)
 
-  override def equals(o: Any): Boolean = o match
-    case v: VList => this.lst == v.lst
-    case _ => this.lst == o
+  override def equals(o: Any): Boolean =
+    o match
+      case v: VList => this.lst == v.lst
+      case _ => this.lst == o
 
   override def hashCode(): Int = this.lst.hashCode()
 
@@ -200,9 +196,8 @@ object VList extends SpecificIterableFactory[VAny, VList]:
       .newBuilder[VAny]
       .mapResult(elems => new VList(elems.toSeq))
 
-  override def fromSpecific(it: IterableOnce[VAny]): VList = new VList(
-    it.iterator.toSeq
-  )
+  override def fromSpecific(it: IterableOnce[VAny]): VList =
+    new VList(it.iterator.toSeq)
 
   def seqToVList(seq: Seq[Seq[VAny]]): VList = new VList(seq.map(VList.from))
 end VList

@@ -29,14 +29,13 @@ object Interpreter:
 
         try execute(ast)
         catch
-          case _: QuitException =>
-            scribe.debug("Program quit using Q")
+          case _: QuitException => scribe.debug("Program quit using Q")
 
-        // todo implicit output according to settings
-        if !ctx.isStackEmpty && ctx.settings.endPrintMode == EndPrintMode.Default
+          // todo implicit output according to settings
+        if !ctx.isStackEmpty &&
+          ctx.settings.endPrintMode == EndPrintMode.Default
         then vyPrintln(ctx.peek)
-      case Left(error) =>
-        throw Error(s"Error while executing $code: $error")
+      case Left(error) => throw Error(s"Error while executing $code: $error")
   end execute
 
   def execute(ast: AST)(using ctx: Context): Unit =
@@ -52,14 +51,11 @@ object Interpreter:
           execute(elem)(using ctx.makeChild())
           list += ctx.pop()
         ctx.push(VList.from(list.toList))
-      case AST.Command(cmd, _) =>
-        Elements.elements.get(cmd) match
+      case AST.Command(cmd, _) => Elements.elements.get(cmd) match
           case Some(elem) => elem.impl()
           case None => throw RuntimeException(s"No such command: '$cmd'")
-      case AST.Group(elems, _, _) =>
-        elems.foreach(Interpreter.execute)
-      case AST.CompositeNilad(elems, _) =>
-        elems.foreach(Interpreter.execute)
+      case AST.Group(elems, _, _) => elems.foreach(Interpreter.execute)
+      case AST.CompositeNilad(elems, _) => elems.foreach(Interpreter.execute)
       case AST.Ternary(thenBody, elseBody, _) =>
         if ctx.pop().toBool then execute(thenBody)
         else if elseBody.nonEmpty then execute(elseBody.get)
@@ -132,8 +128,7 @@ object Interpreter:
           case lam: AST.Lambda => ctx.push(executeFn(VFun.fromLambda(lam)))
           case _ => execute(op)
         ctx.setVar(name, ctx.pop())
-      case AST.UnpackVar(names, _) =>
-        MiscHelpers.unpack(names)
+      case AST.UnpackVar(names, _) => MiscHelpers.unpack(names)
       case AST.DecisionStructure(predicate, container, _) =>
         val iterable = container match
           case Some(ast) =>
@@ -144,7 +139,7 @@ object Interpreter:
         if ListHelpers
             .filter(
               list,
-              VFun.fromLambda(AST.Lambda(1, List.empty, List(predicate)))
+              VFun.fromLambda(AST.Lambda(1, List.empty, List(predicate))),
             )
             .nonEmpty
         then ctx.push(VNum(1))
@@ -153,8 +148,7 @@ object Interpreter:
         val initVals = initial match
           case Some(ast) =>
             executeFn(VFun.fromLambda(AST.Lambda(0, List.empty, List(ast))))
-          case None =>
-            ctx.pop()
+          case None => ctx.pop()
 
         val list = ListHelpers.makeIterable(initVals)
         val relationFn =
@@ -170,14 +164,7 @@ object Interpreter:
           case 1 => list.head
           case _ => list.init.last
 
-        val temp =
-          generator(
-            relationFn,
-            firstN,
-            firstM,
-            arity,
-            list,
-          )
+        val temp = generator(relationFn, firstN, firstM, arity, list)
 
         ctx.push(VList.from(list ++: temp))
       case AST.ContextIndex(index, _) =>
@@ -196,7 +183,7 @@ object Interpreter:
       ctxVarPrimary: VAny,
       ctxVarSecondary: VAny,
       arity: Int,
-      previous: Seq[VAny] = Seq.empty
+      previous: Seq[VAny] = Seq.empty,
   )(using ctx: Context): LazyList[VAny] =
     val next = executeFn(
       relation,
@@ -205,13 +192,7 @@ object Interpreter:
       args = previous.take(arity),
       overrideCtxArgs = ctxVarPrimary +: ctxVarSecondary +: previous,
     )
-    next #:: generator(
-      relation,
-      next,
-      ctxVarPrimary,
-      arity,
-      next +: previous
-    )
+    next #:: generator(relation, next, ctxVarPrimary, arity, next +: previous)
 
   /** Execute a function and return what was on the top of the stack, if there
     * was anything
@@ -243,8 +224,9 @@ object Interpreter:
         val origLength = ctx.length
         def popFunction(n: Int): Seq[VAny] =
           if args != null && args.nonEmpty then
-            val res =
-              (argIndex until argIndex + n).map(ind => args(ind % args.length))
+            val res = (argIndex until argIndex + n).map(ind =>
+              args(ind % args.length)
+            )
             argIndex += n
             res
           else ctx.pop(n)
@@ -294,7 +276,7 @@ object Interpreter:
         if overrideCtxArgs.isEmpty then inputs else overrideCtxArgs,
         vars,
         inputs.reverse,
-        useStack
+        useStack,
       )
     try fn.impl()(using fnCtx)
     catch case _: ReturnFromFunctionException => ()

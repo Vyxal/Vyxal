@@ -9,8 +9,7 @@ object StringHelpers:
   def chrord(c: VAny): VAny =
     (c: @unchecked) match
       case a: String =>
-        if a.length == 1 then a.codePointAt(0)
-        else VList(a.map(_.toInt: VNum)*)
+        if a.length == 1 then a.codePointAt(0) else VList(a.map(_.toInt: VNum)*)
       case a: VNum => a.toInt.toChar.toString
       case a: VList => VList(a.map(chrord)*)
 
@@ -37,9 +36,7 @@ object StringHelpers:
         ts = !ts
       if subW.isEmpty then return None
       val useShort = subW.length < 6
-      val dict =
-        if useShort then shortInds
-        else longInds
+      val dict = if useShort then shortInds else longInds
       val toggleCase = !dict.contains(subW)
       // If the word isn't in the dictionary, see if its lowercase/uppercase version is
       val ww =
@@ -48,9 +45,7 @@ object StringHelpers:
 
       if !dict.contains(ww) then return None
 
-      val j =
-        if ts then if toggleCase then 2 else 1
-        else 0
+      val j = if ts then if toggleCase then 2 else 1 else 0
       val i = dict.getOrElse(ww, 0)
 
       var z1 = dict.keys.size * z + i
@@ -112,8 +107,7 @@ object StringHelpers:
     sb.toString
   end formatString
 
-  def isAlphaNumeric(s: String): Boolean =
-    s.matches("^[0-9A-Za-z]*$")
+  def isAlphaNumeric(s: String): Boolean = s.matches("^[0-9A-Za-z]*$")
 
   def isVowel(c: Char): VNum = "aeiouAEIOU".contains(c)
 
@@ -122,8 +116,7 @@ object StringHelpers:
     val wrapped = (i + s.length) % s.length
     s.substring(0, wrapped) + s.substring(wrapped + 1)
 
-  def removeNonAlphabet(s: String): String =
-    s.filter(_.isLetter)
+  def removeNonAlphabet(s: String): String = s.filter(_.isLetter)
 
   /** Get the string representation of a value (opposite of eval) */
   def repr(v: VAny): String =
@@ -142,8 +135,7 @@ object StringHelpers:
   def ringTranslate(source: String, mapping: String): String =
     source.map { c =>
       val index = mapping.indexOf(c)
-      if index == -1 then c
-      else mapping((index + 1) % mapping.length)
+      if index == -1 then c else mapping((index + 1) % mapping.length)
     }.mkString
 
   def transliterate(source: String, from: VList, to: VList): String =
@@ -154,10 +146,9 @@ object StringHelpers:
 
     var temp = source
     while temp.size > 0 do
-      val (from, to) =
-        mappings
-          .find { case (f, _) => temp.startsWith(f) }
-          .getOrElse(" " -> temp(0).toString())
+      val (from, to) = mappings
+        .find { case (f, _) => temp.startsWith(f) }
+        .getOrElse(" " -> temp(0).toString())
       out.append(to)
       temp = temp.substring(from.length)
     out.toString()
@@ -166,7 +157,7 @@ object StringHelpers:
     transliterate(
       source,
       VList.from(from.toList.map(_.toString)),
-      VList.from(to.toList.map(_.toString))
+      VList.from(to.toList.map(_.toString)),
     )
 
   // https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L1055
@@ -215,24 +206,19 @@ object StringHelpers:
   end decompress
 
   def quotify(s: String): String =
-    val temp = s
-      .replace("\\", raw"\\")
-      .replace("\"", "\\\"")
+    val temp = s.replace("\\", raw"\\").replace("\"", "\\\"")
 
     s""""$temp""""
 
   /** Toggle case of each character in the string */
   def swapCase(s: String): String =
     s.map { c =>
-      if c.isUpper then c.toLower
-      else if c.isLower then c.toUpper
-      else c
+      if c.isUpper then c.toLower else if c.isLower then c.toUpper else c
     }.mkString
 
   /** Split on "words" (sequences of letters) and capitalize each word. */
   def titlecase(s: String): String =
-    val splitOnWords =
-      ListHelpers.groupConsecutiveBy(s.toSeq)(_.isLetter)
+    val splitOnWords = ListHelpers.groupConsecutiveBy(s.toSeq)(_.isLetter)
     val words = splitOnWords.map(_.mkString)
     words.map { word =>
       s"${word.head.toUpper}${word.tail.toLowerCase}"
