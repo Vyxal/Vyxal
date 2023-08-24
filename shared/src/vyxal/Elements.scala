@@ -119,10 +119,9 @@ object Elements:
       List("bit-length", "matrix-inverse"),
       true,
       "a: num -> bit length of a",
-      "a: lst[lst] -> matrix inverse of a"
+      "a: lst[lst] -> matrix inverse of a",
     ) {
-      case n: VNum =>
-        VNum(NumberHelpers.toBinary(n).size)
+      case n: VNum => VNum(NumberHelpers.toBinary(n).size)
       case l: VList if l.forall(_.isInstanceOf[VList]) =>
         ListHelpers.matrixInverse(l).getOrElse {
           scribe.warn(s"Could not invert matrix $l")
@@ -135,7 +134,7 @@ object Elements:
       "Boolify",
       List("boolify"),
       false,
-      "a: any -> bool(a)"
+      "a: any -> bool(a)",
     )(_.toBool),
     addFull(
       Dyad,

@@ -56,8 +56,7 @@ object ListHelpers:
     else
       val restRows = mat.tail
       mat.head.zipWithIndex.map { (elem, c) =>
-        val minor =
-          restRows.map(row => row.take(c) ++ row.drop(c + 1))
+        val minor = restRows.map(row => row.take(c) ++ row.drop(c + 1))
         val sign = if c % 2 == 0 then 1 else -1
         sign * elem * determinant(minor)
       }.sum
