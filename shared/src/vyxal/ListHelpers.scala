@@ -49,6 +49,18 @@ object ListHelpers:
         true
     }
 
+  /** Matrix determinant */
+  def determinant(mat: Seq[Seq[VNum]]): VNum =
+    if mat.isEmpty then 0
+    else if mat.size == 1 then mat.head.head
+    else
+      val restRows = mat.tail
+      mat.head.zipWithIndex.map { (elem, c) =>
+        val minor = restRows.map(row => row.take(c) ++ row.drop(c + 1))
+        val sign = if c % 2 == 0 then 1 else -1
+        sign * elem * determinant(minor)
+      }.sum
+
   def dotProduct(left: VList, right: VList)(using Context): VAny =
     left *~ right match
       case l: VList => ListHelpers.sum(l)
@@ -200,6 +212,21 @@ object ListHelpers:
         ListHelpers.flatten(lst.map(Seq(_)).reduce(_ ++ l ++ _))
       case _: VFun => ??? // todo reduce?
 
+  def matrixInverse(lst: VList)(using Context): Option[VList] =
+    validateMatrix(lst).flatMap { mat =>
+      val det = determinant(mat)
+      if det === 0 then None
+      else
+        val size = mat.size
+        Some(VList.from((0 until size).map { c =>
+          VList.from((0 until size).map { r =>
+            val minor = matrixMinor(mat, r, c)
+            val sign = if (r + c) % 2 == 0 then 1 else -1
+            sign * determinant(minor) / det
+          })
+        }))
+    }
+
   /** Make an iterable from a value
     *
     * @param value
@@ -225,6 +252,9 @@ object ListHelpers:
           VList.from(num.toString.map { x =>
             if x.isDigit then VNum(x - '0') else x.toString
           })
+
+  def matrixMinor(mat: Seq[Seq[VNum]], r: Int, c: Int): Seq[Seq[VNum]] =
+    (mat.take(r) ++ mat.drop(r + 1)).map(row => row.take(c) ++ row.drop(c + 1))
 
   def matrixMultiply(lhs: VList, rhs: VList)(using Context): VList =
     val rhsTemp = transposeSafe(rhs)
@@ -526,7 +556,7 @@ object ListHelpers:
     * version that handles those. Based on
     * [[https://github.com/Adriandmen/05AB1E/blob/master/lib/commands/matrix_commands.ex 05AB1E's implementation]].
     */
-  def transpose(iterable: VList, filler: Option[VAny] = None)(using
+  def transpose(iterable: Seq[VAny], filler: Option[VAny] = None)(using
       ctx: Context
   ): VList =
     val matrix = iterable.map(makeIterable(_))
@@ -580,6 +610,17 @@ object ListHelpers:
       VList.from(out)
     end if
   end transposeSafe
+
+  /** Ensure that a VList is a matrix */
+  def validateMatrix(lst: VList)(using
+      Context
+  ): Option[Seq[Seq[VNum]]] =
+    val rows = lst.map(ListHelpers.makeIterable(_))
+    val numRows = rows.size
+    // TODO(user): refactor to not use is/asInstanceOf?
+    if rows.exists(_.size != numRows) then None
+    else if rows.exists(_.exists(!_.isInstanceOf[VNum])) then None
+    else Some(rows.asInstanceOf[Seq[Seq[VNum]]])
 
   def wrapLength(iterable: VList, length: VNum): VList =
     if length <= 0 then VList.empty

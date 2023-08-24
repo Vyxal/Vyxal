@@ -956,6 +956,18 @@
   - {in: [["Thunno 2", "Vyxal", "05AB1E", "Jelly"]], out: ["Vyxal", "Jelly", "05AB1E", "Thunno 2"]}
   - {in: [[1, 2, 3, 4]], out: [1, 2, 3, 4]}
 
+"Ṃ":
+  Bit length:
+    - {in: [7], out: 3}
+    - {in: [123], out: 7}
+    - {in: [2147483647], out: 31}
+    - {in: [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]], out: [1, 1, 2, 2, 3, 3, 3, 3, 4, 4]}
+  Matrix inverse:
+    - in: [[[1, 2, -1], [2, 1, 2], [-1, 2, 1]]]
+      out: [[0.1875, 0.25, -0.3125], [0.25, 0, 0.25], [-0.3125, 0.25, 0.1875]]
+    - in: [[[5, 0], [3, 0]]] # Determinant is 0, so return same matrix back
+      out: [[5, 0], [3, 0]]
+
 "Ṛ":
   - {in: ["Thonnu"], out: "unnohT"}
   - {in: [123], out: 321}

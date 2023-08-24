@@ -112,9 +112,30 @@ object Elements:
       case a: VNum => a % 2
       case a: String => a.slice(a.length / 2, a.length)
     },
-    addFull(Monad, "ȯ", "Boolify", List("boolify"), false, "a: any -> bool(a)")(
-      _.toBool
-    ),
+    addPart(
+      Monad,
+      "Ṃ",
+      "Bit Length | Matrix Inverse",
+      List("bit-length", "matrix-inverse"),
+      true,
+      "a: num -> bit length of a",
+      "a: lst[lst] -> matrix inverse of a",
+    ) {
+      case n: VNum => VNum(NumberHelpers.toBinary(n).size)
+      case l: VList if l.forall(_.isInstanceOf[VList]) =>
+        ListHelpers.matrixInverse(l).getOrElse {
+          scribe.warn(s"Could not invert matrix $l")
+          l
+        }
+    },
+    addFull(
+      Monad,
+      "ȯ",
+      "Boolify",
+      List("boolify"),
+      false,
+      "a: any -> bool(a)",
+    )(_.toBool),
     addFull(
       Dyad,
       "Ẋ",

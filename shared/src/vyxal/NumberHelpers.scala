@@ -148,7 +148,7 @@ object NumberHelpers:
     val step = if start < end then 1 else -1
     start.to(end, step = step)
 
-  def toBinary(a: VAny)(using Context): VAny =
+  def toBinary(a: VAny)(using Context): VList =
     a match
       case n: VNum =>
         val binary = n.toInt.abs.toBinaryString
@@ -276,5 +276,6 @@ object NumberHelpers:
       case (a: VFun, b: VList) => ListHelpers.dedupBy(b, a)
       case (a: VList, b) => a.vmap(divides(_, b))
       case (a, b: VList) => b.vmap(divides(a, _))
+      case _ => throw UnimplementedOverloadException("divides", List(a, b))
 
 end NumberHelpers
