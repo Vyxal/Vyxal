@@ -126,7 +126,7 @@ object Elements:
       case n: VNum =>
         VNum(NumberHelpers.toBinary(n).size)
       case l: VList if l.forall(_.isInstanceOf[VList]) =>
-          ??? // Good luck to whoever's implementing matrix inverse
+        ListHelpers.matrixInverse(l).getOrElse(l)
     },
     addFull(
       Monad,
