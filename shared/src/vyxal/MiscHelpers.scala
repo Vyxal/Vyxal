@@ -196,10 +196,12 @@ object MiscHelpers:
 
   def bitLength(x: VAny)(using Context): VAny =
     x match
-      case n: VNum => VNum(ListHelpers.makeIterable(NumberHelpers.toBinary(n)).length)
+      case n: VNum =>
+        VNum(ListHelpers.makeIterable(NumberHelpers.toBinary(n)).length)
       case s: String => ???
       case l: VList =>
-        if l.forall(_.isInstanceOf[VList]) then ???  // Good luck to whoever's implementing matrix inverse
+        if l.forall(_.isInstanceOf[VList]) then
+          ??? // Good luck to whoever's implementing matrix inverse
         else l.vmap(bitLength(_))
 
 end MiscHelpers
