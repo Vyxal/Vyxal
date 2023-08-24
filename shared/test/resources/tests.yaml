@@ -956,6 +956,11 @@
   - {in: [["Thunno 2", "Vyxal", "05AB1E", "Jelly"]], out: ["Vyxal", "Jelly", "05AB1E", "Thunno 2"]}
   - {in: [[1, 2, 3, 4]], out: [1, 2, 3, 4]}
 
+"Ṃ":
+  - {in: [7], out: 3}
+  - {in: [123], out: 7}
+  - {in: [2147483647], out: 31}
+
 "Ṛ":
   - {in: ["Thonnu"], out: "unnohT"}
   - {in: [123], out: 321}

@@ -114,6 +114,17 @@ object Elements:
       case a: VNum => a % 2
       case a: String => a.slice(a.length / 2, a.length)
     },
+    addPart(
+      Monad,
+      "Ṃ",
+      "Bit Length", // | Matrix Inverse (Not implemented yet)
+      List("bit-length", "matrix-inverse"),
+      false,
+      "a: num -> bit length of a",
+      // "a: lst[lst] -> matrix inverse of a"
+    ) { a =>
+      MiscHelpers.bitLength(a)
+    },
     addFull(
       Monad,
       "ȯ",
