@@ -15,11 +15,7 @@ import scala.collection.mutable.Stack
   * @param ast
   *   The AST for the structure that caused the new stack frame
   */
-class StackFrame(
-    val name: String,
-    val ctx: Context,
-    val ast: AST,
-):
+class StackFrame(val name: String, val ctx: Context, val ast: AST):
   private[debugger] var stepStack = Stack.empty[Option[Step]]
 
   override def toString = s"Frame $name for $ast (top: ${ctx.peek})"
@@ -94,15 +90,13 @@ class Debugger(code: AST)(using rootCtx: Context):
   @tailrec
   private def removeBadSteps(step: Step): Option[ProperStep] =
     step match
-      case Lazy(get) =>
-        get()(using frame.ctx) match
+      case Lazy(get) => get()(using frame.ctx) match
           case Some(next) => removeBadSteps(next)
           case None => popUntilNext()
       case Hidden(exec) =>
         exec()(using frame.ctx)
         popUntilNext()
-      case StepSeq(steps) =>
-        steps match
+      case StepSeq(steps) => steps match
           case first :: rest =>
             frame.stepStack.push(Some(StepSeq(rest)))
             removeBadSteps(first)
@@ -120,8 +114,7 @@ class Debugger(code: AST)(using rootCtx: Context):
 
     scribe.trace(s"Stepping in, frame: $frame, step: $currStep")
     val nextStep = this.currStep match
-      case Exec(ast, exec) =>
-        exec()(using this, frame.ctx)
+      case Exec(ast, exec) => exec()(using this, frame.ctx)
           .flatMap(removeBadSteps)
           .orElse(popUntilNext())
       case Block(ast, inner) =>
@@ -185,18 +178,16 @@ object Debugger:
       fn: VFun,
       ctxVarPrimary: VAny | Null = null,
       ctxVarSecondary: VAny | Null = null,
-      args: Seq[VAny] | Null = null
+      args: Seq[VAny] | Null = null,
   ): Step =
     fn.originalAST match
-      case Some(fnDef) =>
-        NewStackFrame(
+      case Some(fnDef) => NewStackFrame(
           fnDef,
           fn.name.getOrElse("<function>"),
           ctx => Context.makeFnCtx(fn.ctx, ctx, ???, ???, ???, ???, ???, ???),
-          StepSeq(fnDef.body.map(Step.stepsForAST))
+          StepSeq(fnDef.body.map(Step.stepsForAST)),
         )
-      case None =>
-        Step.hidden { Interpreter.executeFn(fn) }
+      case None => Step.hidden { Interpreter.executeFn(fn) }
 
   /** Make a step to execute code */
   def execCode(code: String)(using Context): Step =

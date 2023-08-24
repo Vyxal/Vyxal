@@ -36,10 +36,11 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   @targetName("times")
   def *(rhs: VNum): VNum = VNum.complex(real * rhs.real, imag * rhs.imag)
   @targetName("divide")
-  def /(rhs: VNum): VNum = VNum.complex(
-    if rhs.real === 0 then 0 else real / rhs.real,
-    if rhs.imag === 0 then 0 else imag / rhs.imag
-  )
+  def /(rhs: VNum): VNum =
+    VNum.complex(
+      if rhs.real === 0 then 0 else real / rhs.real,
+      if rhs.imag === 0 then 0 else imag / rhs.imag,
+    )
   @targetName("pow")
   def **(rhs: VNum): VNum = underlying ** rhs.underlying
 
@@ -63,11 +64,12 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
     else
       s"${this.real.getString(Real.digits)}ı${this.imag.getString(Real.digits)}"
 
-  override def equals(obj: Any) = obj match
-    case n: VNum =>
-      (underlying `eq` n.underlying) ||
-      ((this.real - n.real).abs < VNum.Epsilon && (this.imag - n.imag).abs < VNum.Epsilon)
-    case _ => false
+  override def equals(obj: Any) =
+    obj match
+      case n: VNum => (underlying `eq` n.underlying) ||
+        ((this.real - n.real).abs < VNum.Epsilon &&
+          (this.imag - n.imag).abs < VNum.Epsilon)
+      case _ => false
 end VNum
 
 /** Be sure to import `VNum.given` to be able to match on VNums and stuff */
@@ -96,10 +98,9 @@ object VNum:
   /** Parse a number from a string in the given base */
   def apply(s: String, radix: Int): VNum =
     s.replaceAll("[^-0-9a-zA-Z.ı_]", "") match
-      case s"${real}ı$imag" =>
-        complex(
+      case s"${real}ı$imag" => complex(
           parseDecimal(real, radix, 0),
-          if imag.isEmpty then 1 else parseDecimal(imag, radix, 1)
+          if imag.isEmpty then 1 else parseDecimal(imag, radix, 1),
         )
       case n => complex(parseDecimal(n, radix, 0), 0)
 

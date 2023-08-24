@@ -131,16 +131,17 @@ case class Settings(
     * @return
     *   An updated `Settings` object
     */
-  def withFlag(flag: Char): Settings = flag match
-    case 'H' => this.copy(presetStack = true)
-    case 'j' => this.copy(endPrintMode = EndPrintMode.JoinNewlines)
-    case 'L' => this.copy(endPrintMode = EndPrintMode.JoinNewlinesVert)
-    case 's' => this.copy(endPrintMode = EndPrintMode.Sum)
-    case 'M' => this.copy(rangeStart = 0)
-    case 'm' => this.copy(rangeOffset = -1)
-    case 'Ṁ' => this.copy(rangeStart = 0, rangeOffset = -1)
-    case 'l' => this.copy(literate = true)
-    case _ => throw IllegalArgumentException(s"$flag is an invalid flag")
+  def withFlag(flag: Char): Settings =
+    flag match
+      case 'H' => this.copy(presetStack = true)
+      case 'j' => this.copy(endPrintMode = EndPrintMode.JoinNewlines)
+      case 'L' => this.copy(endPrintMode = EndPrintMode.JoinNewlinesVert)
+      case 's' => this.copy(endPrintMode = EndPrintMode.Sum)
+      case 'M' => this.copy(rangeStart = 0)
+      case 'm' => this.copy(rangeOffset = -1)
+      case 'Ṁ' => this.copy(rangeStart = 0, rangeOffset = -1)
+      case 'l' => this.copy(literate = true)
+      case _ => throw IllegalArgumentException(s"$flag is an invalid flag")
 
   /** Helper to update these settings with multiple flags
     *
