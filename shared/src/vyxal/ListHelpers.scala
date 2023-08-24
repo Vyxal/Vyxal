@@ -660,4 +660,9 @@ object ListHelpers:
       if j.toBool then res += VList()
     VList.from(res.toList)
 
+  def sortByLength(lst: VAny)(using ctx: Context): VList =
+    VList.from(
+      makeIterable(lst).sortBy((a: VAny) => ListHelpers.makeIterable(a).length)
+    )
+
 end ListHelpers

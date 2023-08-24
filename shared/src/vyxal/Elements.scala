@@ -862,6 +862,24 @@ object Elements:
         ListHelpers.makeIterable(a).map(ListHelpers.makeIterable(_).length)
       )
     },
+    addPart(
+      Monad,
+      "Ḷ",
+      "Sort by Length",
+      List(
+        "sort-by-length",
+        "sort-by-len",
+        "order-by-length",
+        "order-by-len",
+        "length-sort",
+        "len-sort"
+      ),
+      false,
+      "a: lst -> sort a by length"
+    ) {
+      case a: VFun => ??? // Not implemented
+      case a => ListHelpers.sortByLength(a)
+    },
     addFull(
       Monad,
       "ι",
