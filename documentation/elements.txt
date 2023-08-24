@@ -616,6 +616,11 @@ Trigraph: #,H
 Keywords: head-extract-swap, split-at-head-swap
 - a: lst|str -> Push a[1:], then a[0] onto the stack
 ---------------------
+Ḷ (Sort by Length) (non-vectorising)
+Trigraph: #,L
+Keywords: sort-by-length, sort-by-len, order-by-length, order-by-len, length-sort, len-sort
+- a: lst -> sort a by length
+---------------------
 Ṛ (Reverse) (non-vectorising)
 Trigraph: #,R
 Keywords: reverse
