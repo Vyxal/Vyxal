@@ -27,7 +27,7 @@ class StackFrame(val name: String, val ctx: Context, val ast: AST):
 class Breakpoint(
     val offset: Int,
     val label: Option[String] = None,
-    val matches: AST => Boolean = _ => true
+    val matches: AST => Boolean = _ => true,
 )
 
 class Debugger(code: AST)(using rootCtx: Context):
@@ -55,8 +55,7 @@ class Debugger(code: AST)(using rootCtx: Context):
 
   def finished: Boolean = currStep == null
 
-  def addBreakpoint(breakpoint: Breakpoint): Unit =
-    breakpoints += breakpoint
+  def addBreakpoint(breakpoint: Breakpoint): Unit = breakpoints += breakpoint
 
   def removeBreakpoint(offset: Int): Unit =
     breakpoints.filterInPlace(_.offset != offset)
@@ -138,7 +137,8 @@ class Debugger(code: AST)(using rootCtx: Context):
       val startFrames = frames.size
       val startStepDepth = frame.stepStack.size
       stepInto()
-      while !this.finished && !this.atBreakpoint && frames.size >= startFrames && frame.stepStack.size > startStepDepth
+      while !this.finished && !this.atBreakpoint &&
+        frames.size >= startFrames && frame.stepStack.size > startStepDepth
       do stepInto()
 
   def stepOut(): Unit =
@@ -156,12 +156,10 @@ class Debugger(code: AST)(using rootCtx: Context):
       while !this.finished && !this.atBreakpoint do stepInto()
 
   /** Continue to the end of the program */
-  def resume(): Unit =
-    while !this.finished do stepInto()
+  def resume(): Unit = while !this.finished do stepInto()
 
   /** Evaluate some code in the current frame's context */
-  def eval(code: String): Unit =
-    Interpreter.execute(code)(using frame.ctx)
+  def eval(code: String): Unit = Interpreter.execute(code)(using frame.ctx)
 end Debugger
 
 object Debugger:

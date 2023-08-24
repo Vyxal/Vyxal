@@ -17,8 +17,7 @@ object DebugRepl:
       val line = io.StdIn.readLine("(debug)> ")
       if line.nonEmpty then
         OParser.parse(parser, line.split(" "), Config()) match
-          case Some(config) =>
-            config.cmd match
+          case Some(config) => config.cmd match
               case Cmd.StepInto =>
                 dbg.stepInto()
                 printState(dbg)
@@ -42,14 +41,12 @@ object DebugRepl:
                 dbg.removeBreakpoint(label)
               case Cmd.ListBreakpoints =>
                 println(dbg.getBreakpoints().mkString("\n"))
-              case Cmd.Frames =>
-                for frame <- dbg.stackFrames do
+              case Cmd.Frames => for frame <- dbg.stackFrames do
                   println(s"<${frame.name}> ${frame.ast}")
               case Cmd.Eval(code) =>
                 dbg.eval(code)
                 printState(dbg)
-              case Cmd.Stack(n) =>
-                println(
+              case Cmd.Stack(n) => println(
                   dbg.stackFrames.last.ctx.peek(n).mkString("[", ",", "]")
                 )
               case Cmd.Exit => return
@@ -100,7 +97,7 @@ object DebugRepl:
               cfg.copy(cmd = Cmd.AddBreakpoint(offset, Some(label)))
             )
             .optional()
-            .text("The label for the breakpoint")
+            .text("The label for the breakpoint"),
         ),
       cmd("remove")
         .text("Remove a breakpoint using either its offset or label")
