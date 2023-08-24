@@ -340,12 +340,10 @@ object Elements:
         case a: VList =>
           if a.isEmpty then ctx.push(VList())
           else
-            val indices = ListHelpers
-              .makeIterable(a)
-              .map {
-                case x: VNum => x.toInt
-                case x => throw IllegalArgumentException(s"$x is not a number")
-              }
+            val indices = ListHelpers.makeIterable(a).map {
+              case x: VNum => x.toInt
+              case x => throw IllegalArgumentException(s"$x is not a number")
+            }
             ctx.push(
               VList(
                 (0 until indices.max + 1).map(x => VNum(indices.contains(x)))*
@@ -422,10 +420,10 @@ object Elements:
       "a: num, b: num -> a from base b to base 10",
       "a: num, b: str|lst -> a from base with alphabet b to base 10",
     ) {
-      case (a: VFun, b) => ListHelpers
-          .filter(ListHelpers.makeIterable(b, Some(true)), a)
-      case (a, b: VFun) => ListHelpers
-          .filter(ListHelpers.makeIterable(a, Some(true)), b)
+      case (a: VFun, b) =>
+        ListHelpers.filter(ListHelpers.makeIterable(b, Some(true)), a)
+      case (a, b: VFun) =>
+        ListHelpers.filter(ListHelpers.makeIterable(a, Some(true)), b)
       case (a: VNum, b) => NumberHelpers.fromBase(a, b)
       case (a: String, b: VNum) =>
         // Requires special casing
@@ -442,12 +440,10 @@ object Elements:
       "a: any, b: any -> a.indexOf(b) (-1 if not found)",
       "a: any, b: fun -> truthy indices of mapping b over a",
     ) {
-      case (a, b: VFun) => VList.from(
-          ListHelpers
-            .makeIterable(a)
-            .zipWithIndex
-            .collect { case (elem, ind) if b(elem).toBool => VNum(ind) }
-        )
+      case (a, b: VFun) =>
+        VList.from(ListHelpers.makeIterable(a).zipWithIndex.collect {
+          case (elem, ind) if b(elem).toBool => VNum(ind)
+        })
       case (a, b) => ListHelpers.makeIterable(a).indexOf(b)
     },
     addFull(
@@ -563,8 +559,8 @@ object Elements:
             lst.headOption.getOrElse(ctx.settings.defaultValue),
             lst.drop(1),
           )
-        case s: String => ctx
-            .push(if s.isEmpty then "" else s.charAt(0).toString, s.drop(1))
+        case s: String =>
+          ctx.push(if s.isEmpty then "" else s.charAt(0).toString, s.drop(1))
         case arg => throw UnimplementedOverloadException("ḣ", List(arg))
     },
     addDirect(
@@ -579,8 +575,8 @@ object Elements:
             lst.drop(1),
             lst.headOption.getOrElse(ctx.settings.defaultValue),
           )
-        case s: String => ctx
-            .push(s.drop(1), if s.isEmpty then "" else s.charAt(0).toString)
+        case s: String =>
+          ctx.push(s.drop(1), if s.isEmpty then "" else s.charAt(0).toString)
         case arg => throw UnimplementedOverloadException("Ḥ", List(arg))
     },
     addDirect(
@@ -595,8 +591,8 @@ object Elements:
             lst.lastOption.getOrElse(ctx.settings.defaultValue),
             lst.dropRight(1),
           )
-        case s: String => ctx
-            .push(if s.isEmpty then "" else s.last.toString, s.dropRight(1))
+        case s: String =>
+          ctx.push(if s.isEmpty then "" else s.last.toString, s.dropRight(1))
         case arg => throw UnimplementedOverloadException("ṫ", List(arg))
     },
     addPart(
@@ -935,10 +931,10 @@ object Elements:
     ) {
       case (a: VList, b: VList) => ListHelpers.mold(a, b)
       case (a: VNum, b: VNum) => NumberHelpers.multiplicity(a, b)
-      case (a, b: VFun) => ListHelpers
-          .map(b, ListHelpers.makeIterable(a, Some(true)))
-      case (a: VFun, b) => ListHelpers
-          .map(a, ListHelpers.makeIterable(b, Some(true)))
+      case (a, b: VFun) =>
+        ListHelpers.map(b, ListHelpers.makeIterable(a, Some(true)))
+      case (a: VFun, b) =>
+        ListHelpers.map(a, ListHelpers.makeIterable(b, Some(true)))
     },
     addDirect(
       "G",
@@ -956,8 +952,8 @@ object Elements:
           val next = ctx.pop()
           (top, next) match
             case (a: VFun, b: VList) => ctx.push(ListHelpers.generate(a, b))
-            case (a: VVal, b: VList) => ctx
-                .push(ListHelpers.vectorisedMaximum(b, a))
+            case (a: VVal, b: VList) =>
+              ctx.push(ListHelpers.vectorisedMaximum(b, a))
             case (a: VVal, b: VVal) => ctx.push(MiscHelpers.dyadicMaximum(a, b))
             case _ => throw Exception("Invalid arguments for maximum")
     },
@@ -1037,10 +1033,10 @@ object Elements:
         case _ =>
           val next = ctx.pop()
           (top, next) match
-            case (a: VFun, b: VList) => ctx
-                .push(ListHelpers.generateDyadic(a, b))
-            case (a: VVal, b: VList) => ctx
-                .push(ListHelpers.vectorisedMinimum(b, a))
+            case (a: VFun, b: VList) =>
+              ctx.push(ListHelpers.generateDyadic(a, b))
+            case (a: VVal, b: VList) =>
+              ctx.push(ListHelpers.vectorisedMinimum(b, a))
             case (a: VVal, b: VVal) => ctx.push(MiscHelpers.dyadicMinimum(a, b))
             case _ => throw Exception("Invalid arguments for mimimum")
     },
@@ -1151,10 +1147,10 @@ object Elements:
         case _ =>
           val next = ctx.pop()
           (top, next) match
-            case (a: VNum, b: String) => ctx
-                .push(VList.from(ListHelpers.overlaps(b, a.toInt)))
-            case (a: VNum, b: VList) => ctx
-                .push(VList.from(ListHelpers.overlaps(b.lst, a.toInt)))
+            case (a: VNum, b: String) =>
+              ctx.push(VList.from(ListHelpers.overlaps(b, a.toInt)))
+            case (a: VNum, b: VList) =>
+              ctx.push(VList.from(ListHelpers.overlaps(b.lst, a.toInt)))
             case _ => throw Exception("Invalid arguments for overlaps")
     },
     addFull(Dyad, ";", "Pair", List("pair"), false, "a, b -> [a, b]") {
@@ -1347,17 +1343,17 @@ object Elements:
       false,
       "a: str, b: str, c: str -> replace all instances of b in a with c",
     ) {
-      case (a: VList, b, c) => VList
-          .from(a.lst.map(x => if x == b then c else x))
-      case (a, b: VList, c: VList) => VList
-          .from(b.lst.map(x => if x == a then c else x))
-      case (a, b, c: VList) => VList
-          .from(c.lst.map(x => if x == a then b else x))
-      case (a, b: VList, c) => VList
-          .from(b.lst.map(x => if x == a then c else x))
+      case (a: VList, b, c) =>
+        VList.from(a.lst.map(x => if x == b then c else x))
+      case (a, b: VList, c: VList) =>
+        VList.from(b.lst.map(x => if x == a then c else x))
+      case (a, b, c: VList) =>
+        VList.from(c.lst.map(x => if x == a then b else x))
+      case (a, b: VList, c) =>
+        VList.from(b.lst.map(x => if x == a then c else x))
       case (a: String, b: VVal, c: VVal) => a.replace(b.toString, c.toString)
-      case (a: VNum, b: VVal, c: VVal) => MiscHelpers
-          .eval(a.toString().replace(b.toString, c.toString))
+      case (a: VNum, b: VVal, c: VVal) =>
+        MiscHelpers.eval(a.toString().replace(b.toString, c.toString))
     },
     addPart(
       Monad,
@@ -1433,10 +1429,10 @@ object Elements:
       "a: any, b: fun -> sort iterable a by function b",
       "a: lst, b: lst[num] -> partition a into sublists of length items in b",
     ) {
-      case (a: VFun, b) => ListHelpers
-          .sortBy(ListHelpers.makeIterable(b, Some(true)), a)
-      case (a, b: VFun) => ListHelpers
-          .sortBy(ListHelpers.makeIterable(a, Some(true)), b)
+      case (a: VFun, b) =>
+        ListHelpers.sortBy(ListHelpers.makeIterable(b, Some(true)), a)
+      case (a, b: VFun) =>
+        ListHelpers.sortBy(ListHelpers.makeIterable(a, Some(true)), b)
       case (a: VList, b: VList) =>
         if b.lst.forall(_.isInstanceOf[VNum]) then
           ListHelpers.partitionBy(a, b.lst.map(_.asInstanceOf[VNum]))
@@ -1454,8 +1450,8 @@ object Elements:
         if b.isInstanceOf[String] && b.toString.isEmpty then
           ListHelpers.makeIterable(a)
         else VList.from(a.split(b.toString()).toSeq)
-      case (a: VNum, b) => VList
-          .from(a.toString().split(b.toString()).toSeq.map(MiscHelpers.eval))
+      case (a: VNum, b) =>
+        VList.from(a.toString().split(b.toString()).toSeq.map(MiscHelpers.eval))
       case (a: VList, b) => ListHelpers.splitNormal(a, b)
     },
     addPart(
@@ -1752,8 +1748,9 @@ object Elements:
         case f: VFun =>
           val arg = ListHelpers.makeIterable(ctx.pop())
           val cols = ListHelpers.transpose(arg)
-          ctx
-            .push(VList.from(cols.map(col => ListHelpers.reduce(col, f, None))))
+          ctx.push(
+            VList.from(cols.map(col => ListHelpers.reduce(col, f, None)))
+          )
         case _ => throw IllegalArgumentException(
             "Reduce Columns: First argument should be a function"
           )
@@ -1813,18 +1810,16 @@ object Elements:
       "a: fun, b: num -> first b truthy integers where a is truthy",
     ) {
       case (a: VList, b: VNum) => ListHelpers.wrapLength(a, b)
-      case (a: String, b: VNum) => ListHelpers
-          .wrapLength(ListHelpers.makeIterable(a), b)
-          .vmap {
-            case x: VList => x.mkString
-            case x => x
-          }
-      case (a: VNum, b: String) => ListHelpers
-          .wrapLength(ListHelpers.makeIterable(b), a)
-          .vmap {
-            case x: VList => x.mkString
-            case x => x
-          }
+      case (a: String, b: VNum) =>
+        ListHelpers.wrapLength(ListHelpers.makeIterable(a), b).vmap {
+          case x: VList => x.mkString
+          case x => x
+        }
+      case (a: VNum, b: String) =>
+        ListHelpers.wrapLength(ListHelpers.makeIterable(b), a).vmap {
+          case x: VList => x.mkString
+          case x => x
+        }
       case (a: VNum, b: VList) => ListHelpers.wrapLength(b, a)
       case (a: VFun, b: VNum) => MiscHelpers.predicateSlice(a, b, 0)
       case (a: VNum, b: VFun) => MiscHelpers.predicateSlice(b, a, 0)

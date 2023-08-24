@@ -40,8 +40,12 @@ case class VFun(
       contextVarSecondary: VAny,
       args: Seq[VAny],
   )(using ctx: Context): VAny =
-    Interpreter
-      .executeFn(this, contextVarPrimary, contextVarSecondary, args = args)
+    Interpreter.executeFn(
+      this,
+      contextVarPrimary,
+      contextVarSecondary,
+      args = args,
+    )
 
   def executeResult(
       contextVarPrimary: VAny,
@@ -50,13 +54,22 @@ case class VFun(
       overwriteCtx: Boolean = false,
       vars: mut.Map[String, VAny] = mut.Map(),
   )(using ctx: Context): VAny =
-    val res = Interpreter
-      .executeFn(this, contextVarPrimary, contextVarSecondary, args = args)
+    val res = Interpreter.executeFn(
+      this,
+      contextVarPrimary,
+      contextVarSecondary,
+      args = args,
+    )
 
     res match
-      case f: VFun => Interpreter
-          .executeFn(f, contextVarPrimary, contextVarSecondary, args = args)
+      case f: VFun => Interpreter.executeFn(
+          f,
+          contextVarPrimary,
+          contextVarSecondary,
+          args = args,
+        )
       case _ => res
+  end executeResult
 
   def apply(args: VAny*)(using ctx: Context): VAny =
     Interpreter.executeFn(this, args = args)

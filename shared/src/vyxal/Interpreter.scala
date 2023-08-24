@@ -43,8 +43,8 @@ object Interpreter:
     ast match
       case AST.Number(value, _) => ctx.push(value)
       case AST.Str(value, _) => ctx.push(value)
-      case AST.DictionaryString(value, _) => ctx
-          .push(StringHelpers.decompress(value))
+      case AST.DictionaryString(value, _) =>
+        ctx.push(StringHelpers.decompress(value))
       case AST.Lst(elems, _) =>
         val list = collection.mutable.ListBuffer.empty[VAny]
         for elem <- elems do
@@ -102,8 +102,8 @@ object Interpreter:
         catch case _: BreakLoopException => return
 
       case AST.For(name, body, _) =>
-        val iterable = ListHelpers
-          .makeIterable(ctx.pop(), Some(true))(using ctx)
+        val iterable =
+          ListHelpers.makeIterable(ctx.pop(), Some(true))(using ctx)
         var index = 0
         given loopCtx: Context = ctx.makeChild()
         try
@@ -151,8 +151,8 @@ object Interpreter:
           case None => ctx.pop()
 
         val list = ListHelpers.makeIterable(initVals)
-        val relationFn = VFun
-          .fromLambda(AST.Lambda(arity, List.empty, List(relation)))
+        val relationFn =
+          VFun.fromLambda(AST.Lambda(arity, List.empty, List(relation)))
 
         val firstN = list.length match
           case 0 => ctx.settings.defaultValue
@@ -224,8 +224,9 @@ object Interpreter:
         val origLength = ctx.length
         def popFunction(n: Int): Seq[VAny] =
           if args != null && args.nonEmpty then
-            val res = (argIndex until argIndex + n)
-              .map(ind => args(ind % args.length))
+            val res = (argIndex until argIndex + n).map(ind =>
+              args(ind % args.length)
+            )
             argIndex += n
             res
           else ctx.pop(n)

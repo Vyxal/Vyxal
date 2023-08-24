@@ -73,8 +73,8 @@ object Step:
         Block(loop, condStep)
       case None =>
         // Infinite loop, no condition
-        lazy val bodyStep: Step = stepsForAST(loop.body)
-          .thenDo { Some(bodyStep) }
+        lazy val bodyStep: Step =
+          stepsForAST(loop.body).thenDo { Some(bodyStep) }
         bodyStep
 
     NewStackFrame(
@@ -119,23 +119,20 @@ object Step:
 
   private def ifStep(ifStmt: AST.IfStatement): Step =
     val elseStep = ifStmt.elseBody.map(stepsForAST)
-    val inner = ifStmt.conds
-      .zip(ifStmt.bodies)
-      .foldRight(elseStep) {
-        case ((cond, thenBody), elseStep) =>
-          val thenBlock = stepsForAST(thenBody)
-          Some(stepsForAST(cond).thenDo { ctx ?=>
-            if ctx.pop().toBool then Some(thenBlock) else elseStep
-          })
-      }
+    val inner = ifStmt.conds.zip(ifStmt.bodies).foldRight(elseStep) {
+      case ((cond, thenBody), elseStep) =>
+        val thenBlock = stepsForAST(thenBody)
+        Some(stepsForAST(cond).thenDo { ctx ?=>
+          if ctx.pop().toBool then Some(thenBlock) else elseStep
+        })
+    }
     Block(ifStmt, inner.getOrElse(StepSeq(List.empty)))
 
   private def listStep(lst: AST.Lst): Step =
     val buf = ListBuffer.empty[VAny]
-    val inner = lst.elems
-      .flatMap { (elem) =>
-        List(stepsForAST(elem), Step.hidden { ctx ?=> buf += ctx.pop() })
-      }
+    val inner = lst.elems.flatMap { (elem) =>
+      List(stepsForAST(elem), Step.hidden { ctx ?=> buf += ctx.pop() })
+    }
     val last = Step.hidden { ctx ?=> ctx.push(VList.from(buf.toList)) }
     Block(lst, StepSeq(inner :+ last))
 

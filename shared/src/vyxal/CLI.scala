@@ -109,12 +109,11 @@ object CLI:
                   )
           DebugRepl.start(code)
         else
-          config.filename
-            .foreach { filename =>
-              val source = io.Source.fromFile(filename)
-              try runCode(source.mkString)
-              finally source.close()
-            }
+          config.filename.foreach { filename =>
+            val source = io.Source.fromFile(filename)
+            try runCode(source.mkString)
+            finally source.close()
+          }
 
           config.code.foreach { code => runCode(code) }
 

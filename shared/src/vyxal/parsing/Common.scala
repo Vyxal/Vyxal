@@ -31,6 +31,8 @@ private[parsing] object Common:
       tokenParser: => P[String],
   ): P[Token] =
     withRange(tokenParser)
-      .map { (value, range) => Token(tokenType, value, range) }
+      .map { (value, range) =>
+        Token(tokenType, value, range)
+      }
       .opaque(tokenType.toString)
 end Common

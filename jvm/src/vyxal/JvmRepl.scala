@@ -38,12 +38,8 @@ object JvmRepl extends Repl:
 
     AnsiConsole.systemInstall()
 
-    val terminal = TerminalBuilder
-      .builder()
-      .name("Vyxal")
-      .jansi(true)
-      .system(true)
-      .build()
+    val terminal =
+      TerminalBuilder.builder().name("Vyxal").jansi(true).system(true).build()
 
     val highlighter = SyntaxHighlighter.build(
       getClass()

@@ -58,36 +58,32 @@ object ListHelpers:
     predicate.originalAST match
       case Some(lam) =>
         val branches = lam.body
-        val filtered = iterable.zipWithIndex
-          .filter { (item, index) =>
-            var keep = true
-            var branchList = branches
-            val sharedVars = mut.Map.empty[String, VAny]
+        val filtered = iterable.zipWithIndex.filter { (item, index) =>
+          var keep = true
+          var branchList = branches
+          val sharedVars = mut.Map.empty[String, VAny]
 
-            while branchList.nonEmpty && keep do
-              val fun = VFun
-                .fromLambda(AST.Lambda(1, List.empty, List(branchList.head)))
-              val res = Interpreter.executeFn(
-                fun,
-                ctxVarPrimary = item,
-                ctxVarSecondary = index,
-                args = List(item),
-                vars = sharedVars,
-              )
-              keep = res.toBool
-              branchList = branchList.tail
+          while branchList.nonEmpty && keep do
+            val fun =
+              VFun.fromLambda(AST.Lambda(1, List.empty, List(branchList.head)))
+            val res = Interpreter.executeFn(
+              fun,
+              ctxVarPrimary = item,
+              ctxVarSecondary = index,
+              args = List(item),
+              vars = sharedVars,
+            )
+            keep = res.toBool
+            branchList = branchList.tail
 
-            keep
-          }
+          keep
+        }
 
         VList.from(filtered.map(_._1))
-      case None => VList.from(
-          iterable.zipWithIndex
-            .collect {
-              case (item, index)
-                  if predicate.execute(item, index, List(item)).toBool => item
-            }
-        )
+      case None => VList.from(iterable.zipWithIndex.collect {
+          case (item, index)
+              if predicate.execute(item, index, List(item)).toBool => item
+        })
 
   end filter
 
@@ -226,10 +222,9 @@ object ListHelpers:
           val offset = ctx.settings.rangeOffset
           VList.from(start.to(num - offset))
         else
-          VList.from(
-            num.toString
-              .map { x => if x.isDigit then VNum(x - '0') else x.toString }
-          )
+          VList.from(num.toString.map { x =>
+            if x.isDigit then VNum(x - '0') else x.toString
+          })
 
   def matrixMultiply(lhs: VList, rhs: VList)(using Context): VList =
     val rhsTemp = transposeSafe(rhs)
@@ -247,26 +242,22 @@ object ListHelpers:
         val params = f.originalAST match
           case Some(lam) => lam.params
           case None => List.empty
-        VList.from(
-          to.zipWithIndex
-            .map { (item, index) =>
-              val sharedVars = mut.Map.empty[String, VAny]
-              branches.foldLeft(item) { (out, branch) =>
-                Interpreter.executeFn(
-                  VFun.fromLambda(AST.Lambda(1, params, List(branch))),
-                  ctxVarPrimary = out,
-                  ctxVarSecondary = index,
-                  args = List(out),
-                  vars = sharedVars,
-                )
-              }
-            }
-        )
+        VList.from(to.zipWithIndex.map { (item, index) =>
+          val sharedVars = mut.Map.empty[String, VAny]
+          branches.foldLeft(item) { (out, branch) =>
+            Interpreter.executeFn(
+              VFun.fromLambda(AST.Lambda(1, params, List(branch))),
+              ctxVarPrimary = out,
+              ctxVarSecondary = index,
+              args = List(out),
+              vars = sharedVars,
+            )
+          }
+        })
 
-      case None => VList(
-          to.zipWithIndex
-            .map { (item, index) => f.execute(item, index, List(item)) }*
-        )
+      case None => VList(to.zipWithIndex.map { (item, index) =>
+          f.execute(item, index, List(item))
+        }*)
   end map
 
   /** Merge a possibly infinite list of possibly infinite lists diagonally */
@@ -327,8 +318,9 @@ object ListHelpers:
     val value =
       if indInt == 0 then temp ++ temp.reverse
       else
-        temp.zipWithIndex
-          .collect { case (elem, ind) if ind % indInt == 0 => elem }
+        temp.zipWithIndex.collect {
+          case (elem, ind) if ind % indInt == 0 => elem
+        }
     iterable match
       case _: VList => VList.from(value)
       case _: String => value.mkString
@@ -346,8 +338,9 @@ object ListHelpers:
     val size = lst.knownSize
     if size == -1 then
       // Possibly infinite
-      VList
-        .from(partitionsLazy(lst).map(part => VList.from(part.map(VList.from))))
+      VList.from(
+        partitionsLazy(lst).map(part => VList.from(part.map(VList.from)))
+      )
     else
       // Forces evaluation of the list because we need to know the length
       val shapes = NumberHelpers
@@ -375,13 +368,10 @@ object ListHelpers:
       else
         LazyList(lst) #::
           mergeInfLists(
-            LazyList
-              .from(1)
-              .takeWhile(i => lst.sizeIs > i)
-              .map { i =>
-                val (left, right) = lst.splitAt(i)
-                helper(right).map(partition => left #:: partition)
-              }
+            LazyList.from(1).takeWhile(i => lst.sizeIs > i).map { i =>
+              val (left, right) = lst.splitAt(i)
+              helper(right).map(partition => left #:: partition)
+            }
           )
     helper(lst)
 

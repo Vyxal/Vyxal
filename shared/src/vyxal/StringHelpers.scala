@@ -140,10 +140,8 @@ object StringHelpers:
 
   def transliterate(source: String, from: VList, to: VList): String =
     val out = StringBuilder()
-    val mappings = from
-      .map(_.toString())
-      .zip(to.map(_.toString()))
-      .sortBy(_._1.length)
+    val mappings =
+      from.map(_.toString()).zip(to.map(_.toString())).sortBy(_._1.length)
     mappings.reverse
 
     var temp = source
@@ -154,7 +152,6 @@ object StringHelpers:
       out.append(to)
       temp = temp.substring(from.length)
     out.toString()
-  end transliterate
 
   def transliterate(source: String, from: String, to: String): String =
     transliterate(
@@ -172,9 +169,8 @@ object StringHelpers:
       .replace('¿', '”')
       .replace('ꜝ', '“')
       .reverse
-    var integer = comp
-      .map(Lexer.Codepage.indexOf(_) + 1)
-      .foldLeft(BigInt(0))(_ * 252 + _)
+    var integer =
+      comp.map(Lexer.Codepage.indexOf(_) + 1).foldLeft(BigInt(0))(_ * 252 + _)
 
     while integer > 0 do
       val mode = integer % 3

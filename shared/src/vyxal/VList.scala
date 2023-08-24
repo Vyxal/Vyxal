@@ -136,15 +136,12 @@ class VList private (val lst: Seq[VAny])
     */
   override def distinct: VList =
     val seen = mutable.ArrayBuffer.empty[VAny]
-    VList.from(
-      this.lst
-        .filter { elem =>
-          if seen.contains(elem) then false
-          else
-            seen += elem
-            true
-        }
-    )
+    VList.from(this.lst.filter { elem =>
+      if seen.contains(elem) then false
+      else
+        seen += elem
+        true
+    })
 end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:

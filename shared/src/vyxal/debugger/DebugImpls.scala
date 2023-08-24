@@ -30,21 +30,18 @@ object DebugImpls:
     debugDyad("Ḟ") {
       case (a, pred: VFun) =>
         val buf = ListBuffer.empty[VAny]
-        val steps = ListHelpers
-          .makeIterable(a)
-          .zipWithIndex
-          .map {
-            case (elem, ind) => Debugger
-                .fnCall(
-                  pred,
-                  ctxVarPrimary = elem,
-                  ctxVarSecondary = ind,
-                  args = List(elem, ind),
-                )
-                .map { res =>
-                  Some(Step.hidden { if res.toBool then buf += ind })
-                }
-          }
+        val steps = ListHelpers.makeIterable(a).zipWithIndex.map {
+          case (elem, ind) => Debugger
+              .fnCall(
+                pred,
+                ctxVarPrimary = elem,
+                ctxVarSecondary = ind,
+                args = List(elem, ind),
+              )
+              .map { res =>
+                Some(Step.hidden { if res.toBool then buf += ind })
+              }
+        }
         Some(StepSeq(steps))
     },
   )

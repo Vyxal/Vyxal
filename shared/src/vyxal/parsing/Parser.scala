@@ -58,8 +58,8 @@ object Parser:
         // Numbers, strings and newlines are trivial, and are simply evaluated
         case TokenType.Number => asts.push(AST.Number(VNum(value), range))
         case TokenType.Str => asts.push(AST.Str(value, range))
-        case TokenType.DictionaryString => asts
-            .push(AST.DictionaryString(value, range))
+        case TokenType.DictionaryString =>
+          asts.push(AST.DictionaryString(value, range))
         case TokenType.Newline => asts.push(AST.Newline)
         case TokenType.StructureOpen =>
           parseStructure(
@@ -98,8 +98,9 @@ object Parser:
         case TokenType.TetradicModifier => asts.push(AST.JunkModifier(value, 4))
         case TokenType.SpecialModifier => asts.push(AST.SpecialModifier(value))
         case TokenType.Comment => ()
-        case TokenType.ContextIndex => asts
-            .push(AST.ContextIndex(if value.nonEmpty then value.toInt else -1))
+        case TokenType.ContextIndex => asts.push(
+            AST.ContextIndex(if value.nonEmpty then value.toInt else -1)
+          )
         case TokenType.GetVar => asts.push(AST.GetVar(value, range))
         case TokenType.SetVar => asts.push(AST.SetVar(value, range))
         case TokenType.Constant => asts.push(AST.SetConstant(value, range))
@@ -346,14 +347,14 @@ object Parser:
           Right(
             lambdaType match
               case StructureType.Lambda => lambda
-              case StructureType.LambdaMap => AST
-                  .makeSingle(lambda, AST.Command("M"))
-              case StructureType.LambdaFilter => AST
-                  .makeSingle(lambda, AST.Command("F"))
-              case StructureType.LambdaReduce => AST
-                  .makeSingle(lambda, AST.Command("R"))
-              case StructureType.LambdaSort => AST
-                  .makeSingle(lambda, AST.Command("ṡ"))
+              case StructureType.LambdaMap =>
+                AST.makeSingle(lambda, AST.Command("M"))
+              case StructureType.LambdaFilter =>
+                AST.makeSingle(lambda, AST.Command("F"))
+              case StructureType.LambdaReduce =>
+                AST.makeSingle(lambda, AST.Command("R"))
+              case StructureType.LambdaSort =>
+                AST.makeSingle(lambda, AST.Command("ṡ"))
           )
         case StructureType.DecisionStructure => branches match
             case List(pred, container) =>

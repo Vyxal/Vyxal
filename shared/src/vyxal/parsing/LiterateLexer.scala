@@ -117,21 +117,20 @@ private[parsing] object LiterateLexer extends Lexer:
         ("ı" ~~ litDecimal.? | "i" ~~ (litDecimal | !wordStart)).?) |
         "i" ~~
         (litDecimal | !wordStart) | "ı" ~~ litDecimal.?).!,
-    ).opaque("<number (literate)>")
-      .map {
-        case Token(_, value, range) =>
-          val temp = value.replace("i", "ı").replace("_", "")
-          val parts =
-            if !temp.endsWith("ı") then temp.split("ı").toSeq
-            else temp.init.split("ı").toSeq :+ ""
-          Token(
-            Number,
-            parts
-              .map(x => if x.startsWith("-") then x.substring(1) + "_" else x)
-              .mkString("ı"),
-            range,
-          )
-      }
+    ).opaque("<number (literate)>").map {
+      case Token(_, value, range) =>
+        val temp = value.replace("i", "ı").replace("_", "")
+        val parts =
+          if !temp.endsWith("ı") then temp.split("ı").toSeq
+          else temp.init.split("ı").toSeq :+ ""
+        Token(
+          Number,
+          parts
+            .map(x => if x.startsWith("-") then x.substring(1) + "_" else x)
+            .mkString("ı"),
+          range,
+        )
+    }
   end litNumber
 
   def contextIndex[$: P]: P[Token] =
@@ -220,9 +219,8 @@ private[parsing] object LiterateLexer extends Lexer:
       .opaque("<modifier keyword>")
       .map {
         case (keyword, range) =>
-          val mod = Modifiers.modifiers.values
-            .find(_.keywords.contains(keyword))
-            .get
+          val mod =
+            Modifiers.modifiers.values.find(_.keywords.contains(keyword)).get
           val name = Modifiers.modifiers.find(_._2._3.contains(keyword)).get._1
           val tokenType = mod.arity match
             case 1 => MonadicModifier
@@ -234,12 +232,9 @@ private[parsing] object LiterateLexer extends Lexer:
       }
 
   def structOpener[$: P]: P[Token] =
-    withRange("?->" | "?")
-      .opaque("<ternary>")
-      .map {
-        case (_, range) =>
-          Token(StructureOpen, StructureType.Ternary.open, range)
-      } |
+    withRange("?->" | "?").opaque("<ternary>").map {
+      case (_, range) => Token(StructureOpen, StructureType.Ternary.open, range)
+    } |
       withRange(keywordsParser(structOpeners.keys))
         .opaque("<struct opener>")
         .map {
@@ -249,9 +244,9 @@ private[parsing] object LiterateLexer extends Lexer:
         }
 
   def otherKeyword[$: P]: P[Token] =
-    withRange(keywordsParser(keywords.keys))
-      .opaque("<other keyword>")
-      .map { case (word, range) => Token(keywords(word), word, range) }
+    withRange(keywordsParser(keywords.keys)).opaque("<other keyword>").map {
+      case (word, range) => Token(keywords(word), word, range)
+    }
 
   def litGetVariable[$: P]: P[Token] =
     parseToken(GetVar, "$" ~/ Common.varName.?.!)

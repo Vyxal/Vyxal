@@ -39,17 +39,16 @@ private object GenerateDocs:
           sb ++= "---------------------\n"
       }
 
-    Modifiers.modifiers
-      .foreach {
-        case (name, info) =>
-          sb ++= s"$name\n"
-          sb ++= s"Keywords:${info.keywords.mkString(" ", ", ", "")}\n"
-          sb ++= s"Description: ${info.description}\n"
-          SugarMap.trigraphs
-            .collect { case (tri, s) if s == name => tri }
-            .foreach { tri => sb ++= s"Trigraph: $tri\n" }
-          sb ++= "---------------------\n"
-      }
+    Modifiers.modifiers.foreach {
+      case (name, info) =>
+        sb ++= s"$name\n"
+        sb ++= s"Keywords:${info.keywords.mkString(" ", ", ", "")}\n"
+        sb ++= s"Description: ${info.description}\n"
+        SugarMap.trigraphs
+          .collect { case (tri, s) if s == name => tri }
+          .foreach { tri => sb ++= s"Trigraph: $tri\n" }
+        sb ++= "---------------------\n"
+    }
 
     sb.toString
   end elements

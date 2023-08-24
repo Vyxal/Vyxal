@@ -56,22 +56,19 @@ object DebugHelpers:
     predicate.originalAST match
       case Some(lam) =>
         val filtered = ListBuffer.empty[VAny]
-        val filterSteps = iterable.zipWithIndex
-          .map { (item, index) =>
-            Debugger
-              .fnCall(
-                predicate,
-                ctxVarPrimary = item,
-                ctxVarSecondary = index,
-                args = List(item),
-              )
-              .foreach { res => if res.toBool then filtered += res }
-          }
+        val filterSteps = iterable.zipWithIndex.map { (item, index) =>
+          Debugger
+            .fnCall(
+              predicate,
+              ctxVarPrimary = item,
+              ctxVarSecondary = index,
+              args = List(item),
+            )
+            .foreach { res => if res.toBool then filtered += res }
+        }
         StepSeq(
           filterSteps :+
-            Step.hidden { ctx ?=>
-              ctx.push(VList.from(filtered.toList))
-            }
+            Step.hidden { ctx ?=> ctx.push(VList.from(filtered.toList)) }
         )
       case None => Step.hidden { ListHelpers.filter(iterable, predicate) }
 

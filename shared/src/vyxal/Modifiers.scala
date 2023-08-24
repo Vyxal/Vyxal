@@ -287,26 +287,20 @@ object Modifiers:
                   val lst = ListHelpers.makeIterable(ctx.pop())
                   val bins = ListBuffer[(VAny, ListBuffer[VAny])]()
                   lst.foreach { elem =>
-                    val (key, bin) = bins
-                      .find(_._1 == elem)
-                      .getOrElse {
-                        val bin = ListBuffer[VAny]()
-                        bins += ((elem, bin))
-                        (elem, bin)
-                      }
+                    val (key, bin) = bins.find(_._1 == elem).getOrElse {
+                      val bin = ListBuffer[VAny]()
+                      bins += ((elem, bin))
+                      (elem, bin)
+                    }
                     bin += elem
                   }
-                  ctx.push(
-                    VList.from(
-                      bins.map {
-                        case (key, bin) =>
-                          given elemCtx: Context = ctx.makeChild()
-                          elemCtx.push(VList.from(bin.toSeq))
-                          Interpreter.execute(ast)(using elemCtx)
-                          elemCtx.pop()
-                      }.toSeq
-                    )
-                  )
+                  ctx.push(VList.from(bins.map {
+                    case (key, bin) =>
+                      given elemCtx: Context = ctx.makeChild()
+                      elemCtx.push(VList.from(bin.toSeq))
+                      Interpreter.execute(ast)(using elemCtx)
+                      elemCtx.pop()
+                  }.toSeq))
               ,
               arity = Some(1),
             )
