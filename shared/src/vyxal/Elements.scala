@@ -117,13 +117,16 @@ object Elements:
     addPart(
       Monad,
       "Ṃ",
-      "Bit Length", // | Matrix Inverse (Not implemented yet)
+      "Bit Length | Matrix Inverse",
       List("bit-length", "matrix-inverse"),
-      false,
+      true,
       "a: num -> bit length of a",
-      // "a: lst[lst] -> matrix inverse of a"
-    ) { a =>
-      MiscHelpers.bitLength(a)
+      "a: lst[lst] -> matrix inverse of a"
+    ) {
+      case n: VNum =>
+        VNum(NumberHelpers.toBinary(n).size)
+      case l: VList if l.forall(_.isInstanceOf[VList]) =>
+          ??? // Good luck to whoever's implementing matrix inverse
     },
     addFull(
       Monad,
