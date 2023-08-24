@@ -621,10 +621,11 @@ Trigraph: #,L
 Keywords: sort-by-length, sort-by-len, order-by-length, order-by-len, length-sort, len-sort
 - a: lst -> sort a by length
 ---------------------
-Ṃ (Bit Length) (non-vectorising)
+Ṃ (Bit Length | Matrix Inverse) (vectorising)
 Trigraph: #,M
 Keywords: bit-length, matrix-inverse
 - a: num -> bit length of a
+- a: lst[lst] -> matrix inverse of a
 ---------------------
 Ṛ (Reverse) (non-vectorising)
 Trigraph: #,R
