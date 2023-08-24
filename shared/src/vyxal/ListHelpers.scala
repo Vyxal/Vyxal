@@ -56,10 +56,10 @@ object ListHelpers:
     else if mat.size == 1 then mat.head.head
     else
       val restRows = mat.tail
-      mat.head.zipWithIndex.map { (elem, index) =>
+      mat.head.zipWithIndex.map { (elem, c) =>
         val minor =
-          restRows.map(row => row.take(index) ++ row.drop(index + 1))
-        val sign = if index % 2 == 0 then 1 else -1
+          restRows.map(row => row.take(c) ++ row.drop(c + 1))
+        val sign = if c % 2 == 0 then 1 else -1
         sign * elem * determinant(minor)
       }.sum
 
@@ -240,16 +240,13 @@ object ListHelpers:
       if det === 0 then None
       else
         val size = mat.size
-        val adj =
-          (0 until size).map { c =>
-            VList.from((0 until size).map { r =>
-              val minor = matrixMinor(mat, r, c)
-              val sign = if (c + r) % 2 == 0 then 1 else -1
-              sign * determinant(minor) / det
-            })
-          }
-
-        Some(VList.from(adj))
+        Some(VList.from((0 until size).map { c =>
+          VList.from((0 until size).map { r =>
+            val minor = matrixMinor(mat, r, c)
+            val sign = if (r + c) % 2 == 0 then 1 else -1
+            sign * determinant(minor) / det
+          })
+        }))
     }
 
   /** Make an iterable from a value

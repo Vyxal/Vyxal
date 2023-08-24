@@ -126,7 +126,10 @@ object Elements:
       case n: VNum =>
         VNum(NumberHelpers.toBinary(n).size)
       case l: VList if l.forall(_.isInstanceOf[VList]) =>
-        ListHelpers.matrixInverse(l).getOrElse(l)
+        ListHelpers.matrixInverse(l).getOrElse {
+          scribe.warn(s"Could not invert matrix $l")
+          l
+        }
     },
     addFull(
       Monad,
