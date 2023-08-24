@@ -16,12 +16,12 @@ private[parsing] object SBCSLexer extends Lexer:
   def string[$: P]: P[Token] =
     P(
       withRange(
-        "\""
-          ~~/ (("\\" ~~/ AnyChar) | (!CharIn("\"„”“") ~~ AnyChar)).repX.!
-          ~~ (CharIn("\"„”“").! | End)
+        "\"" ~~/
+          (("\\" ~~/ AnyChar) | (!CharIn("\"„”“") ~~ AnyChar)).repX.! ~~
+          (CharIn("\"„”“").! | End)
       )
-    )
-      .map { case ((value, last), range) =>
+    ).map {
+      case ((value, last), range) =>
         // If the last character of each token is ", then it's a normal string
         // If the last character of each token is „, then it's a compressed string
         // If the last character of each token is ”, then it's a dictionary string
@@ -46,32 +46,31 @@ private[parsing] object SBCSLexer extends Lexer:
 
             Token(tokenType, text, range)
           case _ => Token(Str, text, range)
-      }
+    }
 
-  def singleCharString[$: P]: P[Token] =
-    parseToken(Str, P("'" ~~ AnyChar.!))
+  def singleCharString[$: P]: P[Token] = parseToken(Str, P("'" ~~ AnyChar.!))
 
   def twoCharString[$: P]: P[Token] =
     parseToken(Str, P("ᶴ" ~~/ (AnyChar ~~ AnyChar).!))
 
   def twoCharNumber[$: P]: P[Token] =
-    withRange(P("~" ~~/ (AnyChar ~~ AnyChar).!)).map { case (value, range) =>
-      Token(
-        Number,
-        value.zipWithIndex
-          .map((c, ind) =>
-            math.pow(Lexer.Codepage.length, ind) * Lexer.Codepage.indexOf(c)
-          )
-          .sum
-          .toString,
-        range
-      )
+    withRange(P("~" ~~/ (AnyChar ~~ AnyChar).!)).map {
+      case (value, range) => Token(
+          Number,
+          value.zipWithIndex
+            .map((c, ind) =>
+              math.pow(Lexer.Codepage.length, ind) * Lexer.Codepage.indexOf(c)
+            )
+            .sum
+            .toString,
+          range,
+        )
     }
 
   def structureOpen[$: P]: P[Token] =
     parseToken(
       StructureOpen,
-      StringIn("[", "{", "(", "#{", "Ḍ", "Ṇ").! | Common.lambdaOpen
+      StringIn("[", "{", "(", "#{", "Ḍ", "Ṇ").! | Common.lambdaOpen,
     ) // StructureType.values.map(_.open.!).reduce(_ | _))
     // TODO(user): figure out why the commented version doesn't work
 
@@ -86,49 +85,50 @@ private[parsing] object SBCSLexer extends Lexer:
 
   def listClose[$: P]: P[Token] = parseToken(ListClose, StringIn("#]", "⟩").!)
 
-  def digraph[$: P]: P[Token] = P(
-    withRange(
-      (CharIn("∆øÞk") ~~ AnyChar).! | ("#" ~~ !CharIn("[]$!=#>@{") ~~ AnyChar).!
-    )
-  ).map { case (digraph, range) =>
-    if Elements.elements.contains(digraph) then Token(Command, digraph, range)
-    else if Modifiers.modifiers.contains(digraph) then
-      val modifier = Modifiers.modifiers(digraph)
-      val tokenType = modifier.arity match
-        case 1 => MonadicModifier
-        case 2 => DyadicModifier
-        case 3 => TriadicModifier
-        case 4 => TetradicModifier
-        case -1 => SpecialModifier
-        case arity => throw Exception(s"Invalid modifier arity: $arity")
-      Token(tokenType, digraph, range)
-    else Token(Digraph, digraph, range)
-  }
+  def digraph[$: P]: P[Token] =
+    P(
+      withRange(
+        (CharIn("∆øÞk") ~~ AnyChar).! |
+          ("#" ~~ !CharIn("[]$!=#>@{") ~~ AnyChar).!
+      )
+    ).map {
+      case (digraph, range) =>
+        if Elements.elements.contains(digraph) then
+          Token(Command, digraph, range)
+        else if Modifiers.modifiers.contains(digraph) then
+          val modifier = Modifiers.modifiers(digraph)
+          val tokenType = modifier.arity match
+            case 1 => MonadicModifier
+            case 2 => DyadicModifier
+            case 3 => TriadicModifier
+            case 4 => TetradicModifier
+            case -1 => SpecialModifier
+            case arity => throw Exception(s"Invalid modifier arity: $arity")
+          Token(tokenType, digraph, range)
+        else Token(Digraph, digraph, range)
+    }
 
   def syntaxTrigraph[$: P]: P[Token] =
     parseToken(SyntaxTrigraph, ("#:" ~~ AnyChar).!)
 
   def sugarTrigraph[$: P]: P[Token] =
-    withRange(("#" ~~ CharIn(".,^") ~~ AnyChar).!).map { case (value, range) =>
-      this.sugarUsed = true
-      SugarMap.trigraphs
-        .get(value)
-        .flatMap(char => this.lex(char).toOption.map(_.head))
-        .getOrElse(Token(Command, value, range))
+    withRange(("#" ~~ CharIn(".,^") ~~ AnyChar).!).map {
+      case (value, range) =>
+        this.sugarUsed = true
+        SugarMap.trigraphs
+          .get(value)
+          .flatMap(char => this.lex(char).toOption.map(_.head))
+          .getOrElse(Token(Command, value, range))
     }
 
   private val allCommands =
-    (Lexer.Codepage.replaceAll(raw"[|\[\](){}\s]", "")
-      + Lexer.UnicodeCommands).toSet
+    (Lexer.Codepage.replaceAll(raw"[|\[\](){}\s]", "") +
+      Lexer.UnicodeCommands).toSet
 
-  def command[$: P]: P[Token] =
-    parseToken(Command, CharPred(allCommands).!)
+  def command[$: P]: P[Token] = parseToken(Command, CharPred(allCommands).!)
 
   def monadicModifier[$: P]: P[Token] =
-    parseToken(
-      MonadicModifier,
-      CharIn("ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻ¿⸠/\\\\~v@`ꜝ").!
-    )
+    parseToken(MonadicModifier, CharIn("ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻ¿⸠/\\\\~v@`ꜝ").!)
 
   def dyadicModifier[$: P]: P[Token] =
     parseToken(DyadicModifier, CharIn("ϩ∥∦ᵉ").!)
@@ -146,12 +146,15 @@ private[parsing] object SBCSLexer extends Lexer:
 
   def sbcsDecimal[$: P]: P[String] =
     P(
-      (((Common.int ~~/ ("." ~~ Common.digits.?).?) | ("." ~~/ Common.digits.?)) ~~ "_".?).!
+      (((Common.int ~~/ ("." ~~ Common.digits.?).?) |
+        ("." ~~/ Common.digits.?)) ~~ "_".?).!
     )
   def sbcsNumber[$: P]: P[Token] =
     parseToken(
       Number,
-      ((sbcsDecimal ~~ ("ı".! ~~ (sbcsDecimal | "_".!).?).?) | "ı".! ~~ (sbcsDecimal ~ "_".!).?).!
+      ((sbcsDecimal ~~ ("ı".! ~~ (sbcsDecimal | "_".!).?).?) |
+        "ı".! ~~
+        (sbcsDecimal ~ "_".!).?).!,
     ).opaque("<number (SBCS)>")
 
   def contextIndex[$: P]: P[Token] =
@@ -174,12 +177,13 @@ private[parsing] object SBCSLexer extends Lexer:
 
   def token[$: P]: P[Token] =
     P(
-      comment | sugarTrigraph | syntaxTrigraph | digraph | branch | contextIndex
-        | sbcsNumber | string | augVariable | getVariable | setVariable
-        | setConstant | twoCharNumber | twoCharString | singleCharString
-        | monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
-        | specialModifier | structureOpen | structureSingleClose | structureAllClose
-        | listOpen | listClose | newlines | command
+      comment | sugarTrigraph | syntaxTrigraph | digraph | branch |
+        contextIndex | sbcsNumber | string | augVariable | getVariable |
+        setVariable | setConstant | twoCharNumber | twoCharString |
+        singleCharString | monadicModifier | dyadicModifier | triadicModifier |
+        tetradicModifier | specialModifier | structureOpen |
+        structureSingleClose | structureAllClose | listOpen | listClose |
+        newlines | command
     )
 
   // structureDoubleClose (")") has to be here to avoid interfering with `normalGroup` in literate lexer

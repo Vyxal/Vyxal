@@ -27,7 +27,7 @@ case class VFun(
     params: List[String | Int],
     var ctx: Context,
     originalAST: Option[AST.Lambda] = None,
-    name: Option[String] = None
+    name: Option[String] = None,
 ):
 
   /** Make a copy of this function with a different arity. */
@@ -52,7 +52,7 @@ case class VFun(
       contextVarSecondary: VAny,
       args: Seq[VAny],
       overwriteCtx: Boolean = false,
-      vars: mut.Map[String, VAny] = mut.Map()
+      vars: mut.Map[String, VAny] = mut.Map(),
   )(using ctx: Context): VAny =
     val res = Interpreter.executeFn(
       this,
@@ -62,8 +62,7 @@ case class VFun(
     )
 
     res match
-      case f: VFun =>
-        Interpreter.executeFn(
+      case f: VFun => Interpreter.executeFn(
           f,
           contextVarPrimary,
           contextVarSecondary,
@@ -84,7 +83,7 @@ object VFun:
       arity,
       params,
       origCtx,
-      Some(lam)
+      Some(lam),
     )
 
   def fromElement(elem: Element)(using origCtx: Context): VFun =
@@ -110,11 +109,12 @@ extension (self: VAny)
   @targetName("times")
   def *~(that: VAny)(using Context): VAny = MiscHelpers.multiply(self, that)
 
-  def toBool = self match
-    case n: VNum => n != VNum(0)
-    case s: String => s.nonEmpty
-    case f: VFun => true
-    case l: VList => l.nonEmpty
+  def toBool =
+    self match
+      case n: VNum => n != VNum(0)
+      case s: String => s.nonEmpty
+      case f: VFun => true
+      case l: VList => l.nonEmpty
 end extension
 
 given (using Context): Ordering[VAny] with
