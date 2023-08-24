@@ -5,6 +5,7 @@ import os
 import secrets
 import shutil
 import sys
+import argon2
 
 from flask import Flask, render_template, request
 from flask_cors import CORS
@@ -18,7 +19,7 @@ app = Flask(__name__)
 CORS(app)
 
 FUNKY_PASSWORD_HASH = (
-    "411b514435eaffc4fc36b25b40347761af7cbf644c1e92e1fe190e6ebcf4b2d2"
+    '$argon2id$v=19$m=65536,t=3,p=4$Je8jkzzOkWYdmb5SvdXeIQ$4c0zcj70kp0BXp5q7iJkb3CG+3vK5+5XpLx1UXRQkho'
 )
 
 shutil.rmtree("sessions", ignore_errors=True)
@@ -135,8 +136,9 @@ def kill():
 
 @app.route("/update", methods=("POST",))
 def update():
+    argon_hash = argon2.PasswordHasher()
     key = request.headers.get("X-funky-password", "")
-    if compare_digest(sha256(key.encode()).hexdigest(), FUNKY_PASSWORD_HASH):
+    if compare_digest(argon_hash.hash(sha256(key.encode()).hexdigest()), FUNKY_PASSWORD_HASH):
         if os.fork() == 0:
             os.system("/home/Vyxal/mysite/funky_upgrade.sh")
             os._exit()
