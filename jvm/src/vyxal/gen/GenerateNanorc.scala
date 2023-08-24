@@ -13,8 +13,11 @@ private[vyxal] object GenerateNanorc:
   /** The name of the nanorc file for Vyxal in literate mode */
   val LitNanorc = "vyxal-lit.nanorc"
 
-  val codepage =
-    Lexer.Codepage.filter(_ != '\n').map(c => Regex.quote(c.toString)).mkString
+  val codepage = Lexer
+    .Codepage
+    .filter(_ != '\n')
+    .map(c => Regex.quote(c.toString))
+    .mkString
 
   /** NOTE: Make sure to escape each $ with another $ */
   val commonHeader = raw"""|syntax "Vyxal" "\.(vy)$$"
@@ -37,9 +40,7 @@ private[vyxal] object GenerateNanorc:
     |color yellow,red "[^$codepage]*"
     |
     |## Modifiers
-    |color brightmagenta "${Modifiers.modifiers.keys
-      .map(Regex.quote)
-      .mkString("|")}"
+    |color brightmagenta "${Modifiers.modifiers.keys.map(Regex.quote).mkString("|")}"
     |""".stripMargin
 
   val commonFooter = """|

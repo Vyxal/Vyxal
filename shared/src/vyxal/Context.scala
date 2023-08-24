@@ -84,8 +84,7 @@ class Context private (
 
   /** Push items onto the stack. The first argument will be pushed first. */
   def push(items: VAny*): Unit =
-    if useStack then getTopCxt().push(items*)
-    else stack ++= items
+    if useStack then getTopCxt().push(items*) else stack ++= items
 
   def length: Int = stack.length
 
@@ -114,8 +113,7 @@ class Context private (
   /** Setter for context variable N so that outsiders don't have to deal with it
     * being an Option
     */
-  def ctxVarPrimary_=(newCtx: VAny): Unit =
-    _ctxVarPrimary = Some(newCtx)
+  def ctxVarPrimary_=(newCtx: VAny): Unit = _ctxVarPrimary = Some(newCtx)
 
   /** Get the context variable M for this scope if it exists. If it doesn't, get
     * its parent's. If there's no parent Context, just get the default value (0)
@@ -131,8 +129,7 @@ class Context private (
   /** Setter for context variable M so that outsiders don't have to deal with it
     * being an Option
     */
-  def ctxVarSecondary_=(newCtx: VAny): Unit =
-    _ctxVarSecondary = Some(newCtx)
+  def ctxVarSecondary_=(newCtx: VAny): Unit = _ctxVarSecondary = Some(newCtx)
 
   /** Get a variable by the given name. If it doesn't exist in the current
     * context, looks in the parent context. If not found in any context, returns
@@ -162,17 +159,18 @@ class Context private (
   def allVars: Map[String, VAny] = vars.toMap
 
   /** Make a new Context for a structure inside the current structure */
-  def makeChild() = new Context(
-    stack,
-    _ctxVarPrimary,
-    _ctxVarSecondary,
-    ctxArgs,
-    vars, // Share the same variables Map with the child
-    inputs,
-    Some(this),
-    globals,
-    testMode // child shouldn't use stack just because parent does
-  )
+  def makeChild() =
+    new Context(
+      stack,
+      _ctxVarPrimary,
+      _ctxVarSecondary,
+      ctxArgs,
+      vars, // Share the same variables Map with the child
+      inputs,
+      Some(this),
+      globals,
+      testMode, // child shouldn't use stack just because parent does
+    )
 
   def getTopCxt(): Context =
     parent match
@@ -185,14 +183,14 @@ object Context:
       inputs: Seq[VAny] = Seq.empty,
       globals: Globals = Globals(),
       testMode: Boolean = false,
-      ctxArgs: Option[Seq[VAny]] = None
+      ctxArgs: Option[Seq[VAny]] = None,
   ): Context =
     new Context(
       stack = mut.ArrayBuffer(),
       inputs = Inputs(inputs),
       globals = globals,
       testMode = testMode,
-      ctxArgs = ctxArgs
+      ctxArgs = ctxArgs,
     )
 
   /** Make a new Context for a function that was defined inside `origCtx` but is
@@ -215,10 +213,9 @@ object Context:
       ctxArgs: Seq[VAny],
       vars: mut.Map[String, VAny],
       inputs: Seq[VAny],
-      useStack: Boolean
+      useStack: Boolean,
   ): Context =
-    val stack =
-      if useStack then currCtx.stack else mut.ArrayBuffer.from(inputs)
+    val stack = if useStack then currCtx.stack else mut.ArrayBuffer.from(inputs)
     vars ++= origCtx.vars
 
     new Context(
@@ -231,7 +228,7 @@ object Context:
       parent = Some(origCtx),
       globals = currCtx.globals,
       testMode = currCtx.testMode,
-      useStack = useStack
+      useStack = useStack,
     )
   end makeFnCtx
 

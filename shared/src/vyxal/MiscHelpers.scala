@@ -32,28 +32,26 @@ object MiscHelpers:
         executeFn(function, ctxVarPrimary = current, args = Seq(current))
     VList.from(result.toList)
 
-  def compare(
-      a: VAny,
-      b: VAny
-  )(using ctx: Context): Int = (a, b) match
-    case (a: VNum, b: VNum) => a.real.compare(b.real)
-    case (a: String, b: VNum) => a.compareTo(b.toString)
-    case (a: VNum, b: String) => a.toString.compareTo(b)
-    case (a: String, b: String) => a.compareTo(b)
-    case (a, b) =>
-      // Lexographically compare the two values after converting both to iterable
-      val aIter = ListHelpers.makeIterable(a)
-      val bIter = ListHelpers.makeIterable(b)
+  def compare(a: VAny, b: VAny)(using ctx: Context): Int =
+    (a, b) match
+      case (a: VNum, b: VNum) => a.real.compare(b.real)
+      case (a: String, b: VNum) => a.compareTo(b.toString)
+      case (a: VNum, b: String) => a.toString.compareTo(b)
+      case (a: String, b: String) => a.compareTo(b)
+      case (a, b) =>
+        // Lexographically compare the two values after converting both to iterable
+        val aIter = ListHelpers.makeIterable(a)
+        val bIter = ListHelpers.makeIterable(b)
 
-      if aIter.length != bIter.length then
-        return aIter.length.compare(bIter.length)
+        if aIter.length != bIter.length then
+          return aIter.length.compare(bIter.length)
 
-      var ind = 0
-      var result = -1
-      while ind < aIter.length && result != 0 do
-        result = compare(aIter(ind), bIter(ind))
-        ind += 1
-      result
+        var ind = 0
+        var result = -1
+        while ind < aIter.length && result != 0 do
+          result = compare(aIter(ind), bIter(ind))
+          ind += 1
+        result
 
   // Returns the default value for a given type
   def defaultEmpty(a: VAny): VAny =
@@ -88,8 +86,7 @@ object MiscHelpers:
     */
   @tailrec
   def firstFromN(f: VFun, n: Int)(using ctx: Context): Int =
-    if f(n).toBool then n
-    else firstFromN(f, n + 1)
+    if f(n).toBool then n else firstFromN(f, n + 1)
 
   def firstNonNegative(f: VFun)(using Context): Int = firstFromN(f, 0)
 
@@ -171,15 +168,10 @@ object MiscHelpers:
     unpackHelper(unpackedNames, shapedValues)
   end unpack
 
-  def unpackHelper(
-      nameShape: VAny,
-      value: VAny
-  )(using ctx: Context): Unit =
+  def unpackHelper(nameShape: VAny, value: VAny)(using ctx: Context): Unit =
     (nameShape: @unchecked) match
-      case n: String =>
-        ctx.setVar(n, value)
-      case l: VList =>
-        value match
+      case n: String => ctx.setVar(n, value)
+      case l: VList => value match
           case v: VList =>
             // make sure v is the same length as l by repeating items
             val v2 = l.indices.map(i => v(i % v.length))

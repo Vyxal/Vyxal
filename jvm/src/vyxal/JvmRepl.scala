@@ -65,9 +65,9 @@ object JvmRepl extends Repl:
       )
 
     if ctx.settings.literate then
-      lineReaderBuilder.completer(
-        StringsCompleter(Elements.elements.values.flatMap(_.keywords).toArray*)
-      )
+      lineReaderBuilder.completer(StringsCompleter(
+        Elements.elements.values.flatMap(_.keywords).toArray*
+      ))
 
     val lineReader = lineReaderBuilder.build()
 
@@ -78,9 +78,7 @@ object JvmRepl extends Repl:
         val code = lineReader.readLine("> ")
         Interpreter.execute(code)
       catch
-        case _: UserInterruptException =>
-          return
-        case _: EndOfFileException =>
-          return
+        case _: UserInterruptException => return
+        case _: EndOfFileException => return
   end fancyRepl
 end JvmRepl

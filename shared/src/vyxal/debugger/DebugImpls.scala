@@ -29,23 +29,21 @@ object DebugImpls:
     },
     debugDyad("Ḟ") { case (a, pred: VFun) =>
       val buf = ListBuffer.empty[VAny]
-      val steps =
-        ListHelpers.makeIterable(a).zipWithIndex.map { case (elem, ind) =>
+      val steps = ListHelpers
+        .makeIterable(a)
+        .zipWithIndex
+        .map { case (elem, ind) =>
           Debugger
             .fnCall(
               pred,
               ctxVarPrimary = elem,
               ctxVarSecondary = ind,
-              args = List(elem, ind)
+              args = List(elem, ind),
             )
-            .map { res =>
-              Some(Step.hidden {
-                if res.toBool then buf += ind
-              })
-            }
+            .map { res => Some(Step.hidden { if res.toBool then buf += ind }) }
         }
       Some(StepSeq(steps))
-    }
+    },
   )
 
   /** Fills a PartialFunction monad implementation so that if the debug impl
@@ -78,7 +76,7 @@ object DebugImpls:
   private def debugTriad(symbol: String)(
       impl: (
           Debugger,
-          Context
+          Context,
       ) ?=> PartialFunction[(VAny, VAny, VAny), Option[Step]]
   ): (String, DebugImpl) =
     val processed: DebugImpl = () =>
@@ -93,7 +91,7 @@ object DebugImpls:
   private def debugTetrad(symbol: String)(
       impl: (
           Debugger,
-          Context
+          Context,
       ) ?=> PartialFunction[(VAny, VAny, VAny, VAny), Option[Step]]
   ): (String, DebugImpl) =
     val processed: DebugImpl = () =>

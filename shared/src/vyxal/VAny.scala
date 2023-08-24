@@ -27,7 +27,7 @@ case class VFun(
     params: List[String | Int],
     var ctx: Context,
     originalAST: Option[AST.Lambda] = None,
-    name: Option[String] = None
+    name: Option[String] = None,
 ):
 
   /** Make a copy of this function with a different arity. */
@@ -40,37 +40,23 @@ case class VFun(
       contextVarSecondary: VAny,
       args: Seq[VAny],
   )(using ctx: Context): VAny =
-    Interpreter.executeFn(
-      this,
-      contextVarPrimary,
-      contextVarSecondary,
-      args = args,
-    )
+    Interpreter
+      .executeFn(this, contextVarPrimary, contextVarSecondary, args = args)
 
   def executeResult(
       contextVarPrimary: VAny,
       contextVarSecondary: VAny,
       args: Seq[VAny],
       overwriteCtx: Boolean = false,
-      vars: mut.Map[String, VAny] = mut.Map()
+      vars: mut.Map[String, VAny] = mut.Map(),
   )(using ctx: Context): VAny =
-    val res = Interpreter.executeFn(
-      this,
-      contextVarPrimary,
-      contextVarSecondary,
-      args = args,
-    )
+    val res = Interpreter
+      .executeFn(this, contextVarPrimary, contextVarSecondary, args = args)
 
     res match
-      case f: VFun =>
-        Interpreter.executeFn(
-          f,
-          contextVarPrimary,
-          contextVarSecondary,
-          args = args,
-        )
+      case f: VFun => Interpreter
+          .executeFn(f, contextVarPrimary, contextVarSecondary, args = args)
       case _ => res
-  end executeResult
 
   def apply(args: VAny*)(using ctx: Context): VAny =
     Interpreter.executeFn(this, args = args)
@@ -84,7 +70,7 @@ object VFun:
       arity,
       params,
       origCtx,
-      Some(lam)
+      Some(lam),
     )
 
   def fromElement(elem: Element)(using origCtx: Context): VFun =
@@ -110,11 +96,12 @@ extension (self: VAny)
   @targetName("times")
   def *~(that: VAny)(using Context): VAny = MiscHelpers.multiply(self, that)
 
-  def toBool = self match
-    case n: VNum => n != VNum(0)
-    case s: String => s.nonEmpty
-    case f: VFun => true
-    case l: VList => l.nonEmpty
+  def toBool =
+    self match
+      case n: VNum => n != VNum(0)
+      case s: String => s.nonEmpty
+      case f: VFun => true
+      case l: VList => l.nonEmpty
 end extension
 
 given (using Context): Ordering[VAny] with

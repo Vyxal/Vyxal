@@ -12,10 +12,11 @@ case class VyxalCompilationError(msg: String)
 
 case class Token(tokenType: TokenType, value: String, range: Range)
     derives CanEqual:
-  override def equals(obj: Any): Boolean = obj match
-    case other: Token =>
-      (other `eq` this) || (other.tokenType == this.tokenType && other.value == this.value)
-    case _ => false
+  override def equals(obj: Any): Boolean =
+    obj match
+      case other: Token => (other `eq` this) ||
+        (other.tokenType == this.tokenType && other.value == this.value)
+      case _ => false
 
   override def toString: String = s"$tokenType(\"$value\")"
 
@@ -24,13 +25,13 @@ case class Range(startOffset: Int, endOffset: Int) derives CanEqual:
   /** Override the default equals method so Range.fake compares equal to
     * everything.
     */
-  override def equals(obj: Any): Boolean = obj match
-    case other: Range =>
-      (other `eq` this) ||
-      (this `eq` Range.fake) ||
-      (other `eq` Range.fake) ||
-      (other.startOffset == this.startOffset && other.endOffset == this.endOffset)
-    case _ => false
+  override def equals(obj: Any): Boolean =
+    obj match
+      case other: Range => (other `eq` this) || (this `eq` Range.fake) ||
+        (other `eq` Range.fake) ||
+        (other.startOffset == this.startOffset &&
+          other.endOffset == this.endOffset)
+      case _ => false
 
 object Range:
   /** A dummy Range (mainly for generated/desugared code) */
@@ -98,7 +99,7 @@ object StructureType:
     StructureType.LambdaMap,
     StructureType.LambdaFilter,
     StructureType.LambdaReduce,
-    StructureType.LambdaSort
+    StructureType.LambdaSort,
   )
 
 private[parsing] trait Lexer:
@@ -109,39 +110,31 @@ private[parsing] trait Lexer:
       case Parsed.Success(res, ind) =>
         if ind == code.length then Right(res.toList)
         else
-          Left(
-            VyxalCompilationError(
-              s"Parsed $res but did not consume '${code.substring(ind)}'"
-            )
-          )
+          Left(VyxalCompilationError(
+            s"Parsed $res but did not consume '${code.substring(ind)}'"
+          ))
       case f @ Parsed.Failure(label, index, extra) =>
         val trace = f.trace()
-        Left(
-          VyxalCompilationError(
-            s"Lexing failed: ${trace.longMsg}"
-          )
-        )
-end Lexer
+        Left(VyxalCompilationError(s"Lexing failed: ${trace.longMsg}"))
 
 object Lexer:
   val structureOpenRegex: String = """[\[\(\{λƛΩ₳µḌṆ]|#@|#\{"""
 
-  val Codepage = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨ\nᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ⸠ϩэЧᵜ !"
-    + "\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFG"
-    + "HIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmn"
-    + "opqrstuvwxyz{|}~¦ȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊικȧḃċ"
-    + "ḋėḟġḣŀṁṅȯṗṙṡṫẋƒΘΦ§ẠḄḌḤỊḶṂṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«»"
-    + "⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λƛΩ₳µ∆øÞ½ʀɾ¯×÷£¥←↑→↓±¤†Π¬∧∨⁰"
-    + "¹²³Ɠɠ∥∦ı„”ð€“¶ᶿᶲ•≈¿ꜝ"
+  val Codepage = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨ\nᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ⸠ϩэЧᵜ !" +
+    "\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFG" +
+    "HIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmn" +
+    "opqrstuvwxyz{|}~¦ȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊικȧḃċ" +
+    "ḋėḟġḣŀṁṅȯṗṙṡṫẋƒΘΦ§ẠḄḌḤỊḶṂṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«»" +
+    "⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λƛΩ₳µ∆øÞ½ʀɾ¯×÷£¥←↑→↓±¤†Π¬∧∨⁰" + "¹²³Ɠɠ∥∦ı„”ð€“¶ᶿᶲ•≈¿ꜝ"
 
   val UnicodeCommands = "🍪ඞ"
 
   def literateModeMappings: Map[String, String] =
     LiterateLexer.literateModeMappings
 
-  def apply(code: String)(using
-      ctx: Context
-  ): Either[VyxalCompilationError, List[Token]] =
+  def apply(
+      code: String
+  )(using ctx: Context): Either[VyxalCompilationError, List[Token]] =
     if ctx.settings.literate then lexLiterate(code) else lexSBCS(code)
 
   def lexSBCS(code: String): Either[VyxalCompilationError, List[Token]] =
@@ -156,8 +149,7 @@ object Lexer:
   def removeSugar(code: String): Option[String] =
     SBCSLexer.lex(code) match
       case Right(result) =>
-        if SBCSLexer.sugarUsed then Some(result.map(_.value).mkString)
-        else None
+        if SBCSLexer.sugarUsed then Some(result.map(_.value).mkString) else None
       case _ => None
 
   private def sbcsifySingle(token: Token): String =
@@ -187,8 +179,8 @@ object Lexer:
         val next = tokens(i + 1)
         tokenType match
           case Number =>
-            if value != "0" && next.tokenType == Number
-              && next.value != "." && !value.endsWith(".")
+            if value != "0" && next.tokenType == Number && next.value != "." &&
+              !value.endsWith(".")
             then out.append(" ")
           case GetVar | SetVar | AugmentVar | Constant =>
             if "[a-zA-Z0-9_]+".r.matches(sbcsifySingle(next)) then

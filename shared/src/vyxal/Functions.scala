@@ -37,12 +37,12 @@ sealed abstract class ImplHelpers[P, F](val arity: Int):
   def vectorise(symbol: String)(impl: P): F
 
 object Monad extends ImplHelpers[PartialMonad, Monad](1):
-  override def toDirectFn(impl: Monad) =
-    () => ctx ?=> ctx.push(impl(ctx.pop()))
+  override def toDirectFn(impl: Monad) = () => ctx ?=> ctx.push(impl(ctx.pop()))
 
-  override def fill(name: String)(fn: PartialMonad) = arg =>
-    if fn.isDefinedAt(arg) then fn(arg)
-    else throw UnimplementedOverloadException(name, Seq(arg))
+  override def fill(name: String)(fn: PartialMonad) =
+    arg =>
+      if fn.isDefinedAt(arg) then fn(arg)
+      else throw UnimplementedOverloadException(name, Seq(arg))
 
   override def vectorise(name: String)(f: PartialMonad) =
     lazy val res: Monad = {
@@ -61,10 +61,11 @@ object Dyad extends ImplHelpers[PartialDyad, Dyad](2):
         val arg2, arg1 = ctx.pop()
         ctx.push(impl(arg1, arg2))
 
-  override def fill(name: String)(fn: PartialDyad): Dyad = (a, b) =>
-    val args = (a, b)
-    if fn.isDefinedAt(args) then fn(args)
-    else throw UnimplementedOverloadException(name, args.toList)
+  override def fill(name: String)(fn: PartialDyad): Dyad =
+    (a, b) =>
+      val args = (a, b)
+      if fn.isDefinedAt(args) then fn(args)
+      else throw UnimplementedOverloadException(name, args.toList)
 
   override def vectorise(name: String)(f: PartialDyad): Dyad =
     lazy val res: Dyad = {
@@ -85,33 +86,27 @@ object Triad extends ImplHelpers[PartialTriad, Triad](3):
         val arg3, arg2, arg1 = ctx.pop()
         ctx.push(impl(arg1, arg2, arg3))
 
-  override def fill(name: String)(fn: PartialTriad): Triad = (a, b, c) =>
-    val args = (a, b, c)
-    if fn.isDefinedAt(args) then fn(args)
-    else throw UnimplementedOverloadException(name, args.toList)
+  override def fill(name: String)(fn: PartialTriad): Triad =
+    (a, b, c) =>
+      val args = (a, b, c)
+      if fn.isDefinedAt(args) then fn(args)
+      else throw UnimplementedOverloadException(name, args.toList)
 
   override def vectorise(name: String)(f: PartialTriad): Triad =
     lazy val res: Triad = {
       case args if f.isDefinedAt(args) => f(args)
-      case (lhs: VList, rhs: VList, third: VList) =>
-        VList.zipMulti(lhs, rhs, third) { case VList(l, r, t) => res(l, r, t) }
-      case (lhs, rhs: VList, third: VList) =>
-        rhs.zipWith(third)(res(lhs, _, _))
-      case (lhs: VList, rhs, third: VList) =>
-        lhs.zipWith(third)(res(_, rhs, _))
-      case (lhs: VList, rhs: VList, third) =>
-        lhs.zipWith(rhs)(res(_, _, third))
-      case (lhs, rhs: VList, third) =>
-        rhs.vmap(res(lhs, _, third))
-      case (lhs: VList, rhs, third) =>
-        lhs.vmap(res(_, rhs, third))
-      case (lhs, rhs, third: VList) =>
-        third.vmap(res(lhs, rhs, _))
+      case (lhs: VList, rhs: VList, third: VList) => VList
+          .zipMulti(lhs, rhs, third) { case VList(l, r, t) => res(l, r, t) }
+      case (lhs, rhs: VList, third: VList) => rhs.zipWith(third)(res(lhs, _, _))
+      case (lhs: VList, rhs, third: VList) => lhs.zipWith(third)(res(_, rhs, _))
+      case (lhs: VList, rhs: VList, third) => lhs.zipWith(rhs)(res(_, _, third))
+      case (lhs, rhs: VList, third) => rhs.vmap(res(lhs, _, third))
+      case (lhs: VList, rhs, third) => lhs.vmap(res(_, rhs, third))
+      case (lhs, rhs, third: VList) => third.vmap(res(lhs, rhs, _))
       case args => throw UnimplementedOverloadException(name, args.toList)
     }
 
     res
-  end vectorise
 end Triad
 
 object Tetrad extends ImplHelpers[PartialTetrad, Tetrad](4):
@@ -121,47 +116,46 @@ object Tetrad extends ImplHelpers[PartialTetrad, Tetrad](4):
         val arg4, arg3, arg2, arg1 = ctx.pop()
         ctx.push(impl(arg1, arg2, arg3, arg4))
 
-  override def fill(name: String)(fn: PartialTetrad): Tetrad = (a, b, c, d) =>
-    val args = (a, b, c, d)
-    if fn.isDefinedAt(args) then fn(args)
-    else throw UnimplementedOverloadException(name, args.toList)
+  override def fill(name: String)(fn: PartialTetrad): Tetrad =
+    (a, b, c, d) =>
+      val args = (a, b, c, d)
+      if fn.isDefinedAt(args) then fn(args)
+      else throw UnimplementedOverloadException(name, args.toList)
 
   override def vectorise(name: String)(f: PartialTetrad) =
     lazy val res: Tetrad = {
       case args if f.isDefinedAt(args) => f(args)
-      case (as: VList, bs: VList, cs: VList, ds: VList) =>
-        VList.zipMulti(as, bs, cs, ds) { case VList(a, b, c, d) =>
-          res(a, b, c, d)
-        }
-      case (a, bs: VList, cs: VList, ds: VList) =>
-        VList.zipMulti(bs, cs, ds) { case VList(b, c, d) =>
-          res(a, b, c, d)
-        }
+      case (as: VList, bs: VList, cs: VList, ds: VList) => VList
+          .zipMulti(as, bs, cs, ds) { case VList(a, b, c, d) =>
+            res(a, b, c, d)
+          }
+      case (a, bs: VList, cs: VList, ds: VList) => VList
+          .zipMulti(bs, cs, ds) { case VList(b, c, d) => res(a, b, c, d) }
 
-      case (as: VList, b, cs: VList, ds: VList) =>
-        VList.zipMulti(as, cs, ds) { case VList(a, c, d) =>
+      case (as: VList, b, cs: VList, ds: VList) => VList
+          .zipMulti(as, cs, ds) { case VList(a, c, d) => res(a, b, c, d) }
+      case (as: VList, bs: VList, c, ds: VList) => VList
+          .zipMulti(as, bs, ds) { case VList(a, b, d) => res(a, b, c, d) }
+      case (as: VList, bs: VList, cs: VList, d) => VList
+          .zipMulti(as, bs, cs) { case VList(a, b, c) => res(a, b, c, d) }
+      case (a, b, cs: VList, ds: VList) => cs.zipWith(ds) { (c, d) =>
           res(a, b, c, d)
         }
-      case (as: VList, bs: VList, c, ds: VList) =>
-        VList.zipMulti(as, bs, ds) { case VList(a, b, d) =>
+      case (a, bs: VList, c, ds: VList) => bs.zipWith(ds) { (b, d) =>
           res(a, b, c, d)
         }
-      case (as: VList, bs: VList, cs: VList, d) =>
-        VList.zipMulti(as, bs, cs) { case VList(a, b, c) =>
+      case (a, bs: VList, cs: VList, d) => bs.zipWith(cs) { (b, c) =>
           res(a, b, c, d)
         }
-      case (a, b, cs: VList, ds: VList) =>
-        cs.zipWith(ds) { (c, d) => res(a, b, c, d) }
-      case (a, bs: VList, c, ds: VList) =>
-        bs.zipWith(ds) { (b, d) => res(a, b, c, d) }
-      case (a, bs: VList, cs: VList, d) =>
-        bs.zipWith(cs) { (b, c) => res(a, b, c, d) }
-      case (as: VList, b, c, ds: VList) =>
-        as.zipWith(ds) { (a, d) => res(a, b, c, d) }
-      case (as: VList, b, cs: VList, d) =>
-        as.zipWith(cs) { (a, c) => res(a, b, c, d) }
-      case (as: VList, bs: VList, c, d) =>
-        as.zipWith(bs) { (a, b) => res(a, b, c, d) }
+      case (as: VList, b, c, ds: VList) => as.zipWith(ds) { (a, d) =>
+          res(a, b, c, d)
+        }
+      case (as: VList, b, cs: VList, d) => as.zipWith(cs) { (a, c) =>
+          res(a, b, c, d)
+        }
+      case (as: VList, bs: VList, c, d) => as.zipWith(bs) { (a, b) =>
+          res(a, b, c, d)
+        }
       case (a: VList, b, c, d) => a.vmap(res(_, b, c, d))
       case (a, b: VList, c, d) => b.vmap(res(a, _, c, d))
       case (a, b, c: VList, d) => c.vmap(res(a, b, _, d))
@@ -187,8 +181,7 @@ end Tetrad
   */
 def forkify(impl: PartialDyad): PartialDyad = {
   case (a, b) if impl.isDefinedAt((a, b)) => impl(a, b)
-  case (f: VFun, g: VFun) =>
-    VFun(
+  case (f: VFun, g: VFun) => VFun(
       { () => ctx ?=>
         // Don't pop args so that g can reuse them
         val a = Interpreter.executeFn(f, popArgs = false)
@@ -197,10 +190,9 @@ def forkify(impl: PartialDyad): PartialDyad = {
       },
       f.arity.max(g.arity),
       List.empty,
-      summon[Context]
+      summon[Context],
     )
-  case (f: VFun, b) =>
-    VFun(
+  case (f: VFun, b) => VFun(
       { () => ctx ?=>
         // Don't pop args so that g can reuse them
         val a = Interpreter.executeFn(f, popArgs = false)
@@ -208,10 +200,9 @@ def forkify(impl: PartialDyad): PartialDyad = {
       },
       f.arity,
       List.empty,
-      summon[Context]
+      summon[Context],
     )
-  case (a, f: VFun) =>
-    VFun(
+  case (a, f: VFun) => VFun(
       { () => ctx ?=>
         // Don't pop args so that g can reuse them
         val b = Interpreter.executeFn(f, popArgs = false)
@@ -219,6 +210,6 @@ def forkify(impl: PartialDyad): PartialDyad = {
       },
       f.arity,
       List.empty,
-      summon[Context]
+      summon[Context],
     )
 }

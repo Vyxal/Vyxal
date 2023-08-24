@@ -37,7 +37,7 @@ object CLI:
       settings: Settings = Settings(),
       runLiterateLexer: Boolean = false,
       runFancyRepl: Boolean = false,
-      debug: Boolean = false
+      debug: Boolean = false,
   )
 
   /** Run the CLI
@@ -53,7 +53,9 @@ object CLI:
         case None => println(s"No such logging level: $logLevel")
         case Some(level) =>
           // Change the logging level
-          scribe.Logger.root
+          scribe
+            .Logger
+            .root
             .clearHandlers()
             .clearModifiers()
             .withHandler(minimumLevel = Some(level))
@@ -62,19 +64,19 @@ object CLI:
     OParser.parse(parser, args, CLIConfig()) match
       case Some(config) =>
         val inputList = config.inputs.reverse.map(Parser.parseInput)
-        given ctx: Context = Context(
-          inputs = inputList,
-          ctxArgs = Some(inputList),
-          globals = Globals(settings = config.settings)
-        )
+        given ctx: Context =
+          Context(
+            inputs = inputList,
+            ctxArgs = Some(inputList),
+            globals = Globals(settings = config.settings),
+          )
 
         if config.printHelp then
           println(OParser.usage(parser))
           return
 
         if config.litInfoFor.nonEmpty then
-          val keywords =
-            Lexer.literateModeMappings(config.litInfoFor.get)
+          val keywords = Lexer.literateModeMappings(config.litInfoFor.get)
           println(keywords.mkString(", "))
           return
 
@@ -102,20 +104,20 @@ object CLI:
               val source = io.Source.fromFile(file)
               try source.mkString
               finally source.close()
-            case None =>
-              config.code match
+            case None => config.code match
                 case Some(code) => code
-                case None =>
-                  throw RuntimeException(
+                case None => throw RuntimeException(
                     "Either file name or code must be given to debug"
                   )
           DebugRepl.start(code)
         else
-          config.filename.foreach { filename =>
-            val source = io.Source.fromFile(filename)
-            try runCode(source.mkString)
-            finally source.close()
-          }
+          config
+            .filename
+            .foreach { filename =>
+              val source = io.Source.fromFile(filename)
+              try runCode(source.mkString)
+              finally source.close()
+            }
 
           config.code.foreach { code => runCode(code) }
 
@@ -194,126 +196,118 @@ object CLI:
       flag(
         'j',
         "print-join-newlines",
-        "Print top of stack joined by newlines on end of execution"
+        "Print top of stack joined by newlines on end of execution",
       ),
-      flag(
-        'l',
-        "literate",
-        "Enable literate mode"
-      ),
+      flag('l', "literate", "Enable literate mode"),
       flag(
         'L',
         "print-join-newlines-vert",
-        "Print top of stack joined by newlines (Vertically) on end of execution"
+        "Print top of stack joined by newlines (Vertically) on end of execution",
       ),
       flag(
         's',
         "print-sum",
-        "Sum/concatenate top of stack on end of execution"
+        "Sum/concatenate top of stack on end of execution",
       ),
       flag(
         'M',
         "range-start-0",
-        "Make implicit range generation and while loop counter start at 0 instead of 1"
+        "Make implicit range generation and while loop counter start at 0 instead of 1",
       ),
       flag(
         'm',
         "range-end-excl",
-        "Make implicit range generation end at n-1 instead of n"
+        "Make implicit range generation end at n-1 instead of n",
       ),
-      flag(
-        'Ṁ',
-        "range-programmery",
-        "Equivalent to having both m and M flags"
-      ),
+      flag('Ṁ', "range-programmery", "Equivalent to having both m and M flags"),
       flag('v', "vyxal-enc", "Use Vyxal encoding for input file"),
       flag(
         'a',
         "newline-sep-as-list",
-        "Treat newline seperated values as a list"
+        "Treat newline seperated values as a list",
       ),
       flag(
         'd',
         "print-deep-sum",
-        "Print deep sum of top of stack on end of execution"
+        "Print deep sum of top of stack on end of execution",
       ),
       flag(
         'r',
         "reverse-ops",
-        "Makes all operations happen with reverse arguments"
+        "Makes all operations happen with reverse arguments",
       ),
       flag(
         'S',
         "print-join-spaces",
-        "Print top of stack joined by spaces on end of execution"
+        "Print top of stack joined by spaces on end of execution",
       ),
       flag(
         'C',
         "print-centre-join-newlines",
-        "Centre the output and join on newlines on end of execution"
+        "Centre the output and join on newlines on end of execution",
       ),
       flag('O', "disable-implicit-output", "Disable implicit output"),
       flag('o', "force-implicit-output", "Force implicit output"),
       flag(
         '!',
         "print-length",
-        "Print length of top of stack on end of execution"
+        "Print length of top of stack on end of execution",
       ),
       flag(
         'G',
         "print-max",
-        "Print the maximum item of the top of stack on end of execution"
+        "Print the maximum item of the top of stack on end of execution",
       ),
       flag(
         'g',
         "print-max",
-        "Print the minimum item of the top of the stack on end of execution"
+        "Print the minimum item of the top of the stack on end of execution",
       ),
       flag('W', "print-all", "Print the entire stack on end of execution"),
       flag('Ṡ', "inputs-as-strs", "Treat all inputs as strings"),
       flag(
         'R',
         "numbers-as-ranges",
-        "Treat numbers as ranges if ever used as an iterable"
+        "Treat numbers as ranges if ever used as an iterable",
       ),
       flag(
         'D',
         "no-decompress-str",
-        "Treat all strings as raw strings (don't decompress strings)"
+        "Treat all strings as raw strings (don't decompress strings)",
       ),
       flag(
         'U',
         "strings-utf8",
-        "Treat all strings as UTF-8 byte sequences (also don't decompress strings)"
+        "Treat all strings as UTF-8 byte sequences (also don't decompress strings)",
       ),
       flag('Ṫ', "print-sum-all", "Print the sum of the entire stack"),
       flag(
         'ṡ',
         "print-all-join-spaces",
-        "Print the entire stack, joined on spaces"
+        "Print the entire stack, joined on spaces",
       ),
       flag(
         'Z',
         "zip-tetrad",
-        "With four argument vectorization where all arguments are lists, use zip(zip(a, b), zip(c, d)) instead of zip(a, b, c, d)"
+        "With four argument vectorization where all arguments are lists, use zip(zip(a, b), zip(c, d)) instead of zip(a, b, c, d)",
       ),
       flag(
         'J',
         "print-all-join-newlines",
-        "Print the entire stack, separated by newlines"
+        "Print the entire stack, separated by newlines",
       ),
       flag('t', "vect-boolify", "Vectorise boolify on Lists"),
       flag(
         'P',
         "print-lists-python",
-        "Print lists as their python representation"
+        "Print lists as their python representation",
       ),
       flag('ḋ', "print-rat-decimal", "Print rationals in their decimal form"),
       flag('V', "var-single-char", "Variables are one character long"),
       flag(
         '?',
         "empty-as-0",
-        "If there is empty input, treat it as 0 instead of empty string."
+        "If there is empty input, treat it as 0 instead of empty string.",
       ),
       flag('2', "arity-2", "Make the default arity of lambdas 2"),
       flag('3', "arity-3", "Make the default arity of lambdas 3"),
@@ -321,8 +315,8 @@ object CLI:
       flag(
         '…',
         "limit-output",
-        "Limit list output to the first 100 items of that list"
-      )
+        "Limit list output to the first 100 items of that list",
+      ),
     )
   end parser
 end CLI
