@@ -1483,7 +1483,7 @@ object Elements:
       false,
       "a: lst -> sublists of a",
     ) {
-      case a => VList.from(
+      case a: (VVal | VList) => VList.from(
           ListHelpers
             .prefixes(ListHelpers.makeIterable(a))
             .flatMap(b =>
