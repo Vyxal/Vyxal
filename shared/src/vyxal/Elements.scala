@@ -1486,7 +1486,6 @@ object Elements:
       case a => VList.from(
           ListHelpers
             .prefixes(ListHelpers.makeIterable(a))
-            .toList
             .flatMap(b =>
               VList.from(ListHelpers.suffixes(ListHelpers.makeIterable(b)))
             )
