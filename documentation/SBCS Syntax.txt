@@ -42,9 +42,11 @@ variable_unpack_expr ::= variable_name | "[" variable_unpack_expr "]"
 
 context_index ::= "¤" number_part
 
+list ::= list_open [element {"|" element}] list_close
+
 element ::= elementChar | 1modChar element | 2modChar element element | 
             3modChar element element element | 4modChar element element element element |
             structure | variable_assign | variable_get | variable_aug_assign | lambda | variable_unpack |
-            context_index
+            context_index | list
 (* the special modifiers don't have actual behaviour yet *)
 (* this also does not account for arity grouping *)
