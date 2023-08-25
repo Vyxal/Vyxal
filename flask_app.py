@@ -18,7 +18,7 @@ from vyxal.main import execute_vyxal
 app = Flask(__name__)
 CORS(app)
 
-FUNKY_PASSWORD_HASH = "$argon2id$v=19$m=65536,t=3,p=4$Je8jkzzOkWYdmb5SvdXeIQ$4c0zcj70kp0BXp5q7iJkb3CG+3vK5+5XpLx1UXRQkho"
+FUNKY_PASSWORD_HASH = '$argon2id$v=19$m=65536,t=3,p=4$Y29va2llIGNvb2tpZSBjb29raWUgY29va2llIGNvb2tpZQ$Y16wKz4cM/FELE++QwkyFFsVgRs4ISo4uJxd9tlZKyg'
 
 shutil.rmtree("sessions", ignore_errors=True)
 os.system("mkdir sessions")
@@ -137,7 +137,7 @@ def update():
     argon_hash = argon2.PasswordHasher()
     key = request.headers.get("X-funky-password", "")
     if compare_digest(
-        argon_hash.hash(sha256(key.encode()).hexdigest()), FUNKY_PASSWORD_HASH
+        argon_hash.hash(sha256(key.encode()).hexdigest(), salt=b"cookie cookie cookie cookie cookie"), FUNKY_PASSWORD_HASH
     ):
         if os.fork() == 0:
             os.system("/home/Vyxal/mysite/funky_upgrade.sh")
