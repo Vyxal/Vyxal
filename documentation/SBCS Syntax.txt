@@ -40,7 +40,7 @@ variable_aug_assign ::= element "#>" variable_name
 variable_unpack ::= "#[" {variable_unpack_expr} "]"
 variable_unpack_expr ::= variable_name | "[" variable_unpack_expr "]"
 
-context_index ::= ""¤" number_part
+context_index ::= "¤" number_part
 
 element ::= elementChar | 1modChar element | 2modChar element element | 
             3modChar element element element | 4modChar element element element element |
