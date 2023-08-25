@@ -467,7 +467,8 @@ object ListHelpers:
 
   def prefixes(iterable: VList): Seq[VList] = iterable.inits.toSeq.reverse.tail
 
-  def suffixes(iterable: VList): Seq[VList] = prefixes(iterable.reverse).reverse.map(a => a.reverse)
+  def suffixes(iterable: VList): Seq[VList] =
+    prefixes(iterable.reverse).reverse.map(a => a.reverse)
 
   def reduce(iter: VAny, by: VFun, init: Option[VAny] = None)(using
       Context
@@ -672,9 +673,7 @@ object ListHelpers:
 
   def flattenOnce(lst: VList)(using Context): VList =
     val res = ListBuffer[VAny]()
-    for l <- lst do
-      for i <- makeIterable(l) do
-        res += i
+    for l <- lst do for i <- makeIterable(l) do res += i
     VList.from(res.toList)
 
 end ListHelpers
