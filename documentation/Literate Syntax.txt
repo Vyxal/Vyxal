@@ -1,0 +1,9 @@
+codepage ::= (* any character in the codepage *)
+pos_digit ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+digit ::= 0 | pos_digit
+number_part ::= 0 | pos_digit {digit}
+number_decimal ::= [number_part] "." [number_part]
+number_real ::= 0 | number_part | number_decimal
+number ::= [number_real] "i" [number_real]
+keywordChar ::= anything in `a-z`, `A-Z`, `0-9`, `-`, `?`, `!`, `*`, `+`, `=`, `&`, `%`, `>`, `<`
+keyword ::= (keywordChar - "0-9") {keywordChar}

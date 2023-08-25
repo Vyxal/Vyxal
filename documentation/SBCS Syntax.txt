@@ -30,8 +30,21 @@ structure ::= (structure_open {element} [structure_single_close]) |
               (structure_open structure_open {element} structure_double_close structure_double_close) | 
               ({structure_open} {element} structure_all_close)
 
+lambda ::= "λ" [lambda_args "|"] {element} [structure_single_close]
+lambda_args ::= "!" | {number_part | variable_name | "*"}
+
+variable_name ::= "a-Z" {"a-Z" | "0-9" | "_"}
+variable_get ::= "#$" variable_name
+variable_assign ::= "#=" variable_name
+variable_aug_assign ::= element "#>" variable_name
+variable_unpack ::= "#[" {variable_unpack_expr} "]"
+variable_unpack_expr ::= variable_name | "[" variable_unpack_expr "]"
+
+context_index ::= ""¤" number_part
+
 element ::= elementChar | 1modChar element | 2modChar element element | 
             3modChar element element element | 4modChar element element element element |
-            structure
+            structure | variable_assign | variable_get | variable_aug_assign | lambda | variable_unpack |
+            context_index
 (* the special modifiers don't have actual behaviour yet *)
 (* this also does not account for arity grouping *)
