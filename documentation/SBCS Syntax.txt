@@ -26,9 +26,9 @@ elementChar ::= (* any character corresponding to an element *)
 4modChar ::= (* any charcter corresponding to a tetradic modifier *)
 specialModChar ::= (* any charcter corresponding to a special modifier *)
 
-structure ::= (structure_open {element} [structure_single_close]) | 
-              (structure_open structure_open {element} structure_double_close structure_double_close) | 
-              ({structure_open} {element} structure_all_close)
+structure ::= (structure_open [{element} {"|" {element}}] [structure_single_close]) | 
+              (structure_open structure_open [{element} {"|" {element}}]structure_double_close structure_double_close) | 
+              ({structure_open} [{element} {"|" {element}}] structure_all_close)
 
 lambda ::= "λ" [lambda_args "|"] {element} [structure_single_close]
 lambda_args ::= "!" | {number_part | variable_name | "*"}
