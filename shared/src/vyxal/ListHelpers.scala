@@ -473,7 +473,6 @@ object ListHelpers:
             (newPrefix, newPrefix -> remaining.tail)
           }
       }
-      .toSeq
 
   def suffixes(iterable: VList): Seq[VList] =
     prefixes(iterable.reverse).reverse.map(a => a.reverse)
