@@ -1476,6 +1476,26 @@ object Elements:
       case (a: VList, b) => ListHelpers.splitNormal(a, b)
     },
     addPart(
+      Monad,
+      "Ṣ",
+      "Sublists",
+      List("sublists"),
+      false,
+      "a: lst -> sublists of a"
+    ) {
+      case a: VFun => ???
+      case a =>
+        VList.from(
+          ListHelpers.flattenOnce(
+            VList.from(
+              ListHelpers.prefixes(ListHelpers.makeIterable(a)).map(
+                b => VList.from(ListHelpers.suffixes(ListHelpers.makeIterable(b)))
+              ).toList
+            )
+          )
+        )
+    },
+    addPart(
       Dyad,
       "-",
       "Subtraction",
