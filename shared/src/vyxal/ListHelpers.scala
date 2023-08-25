@@ -671,9 +671,4 @@ object ListHelpers:
       makeIterable(lst).sortBy((a: VAny) => ListHelpers.makeIterable(a).length)
     )
 
-  def flattenOnce(lst: VList)(using Context): VList =
-    val res = ListBuffer[VAny]()
-    for l <- lst do for i <- makeIterable(l) do res += i
-    VList.from(res.toList)
-
 end ListHelpers

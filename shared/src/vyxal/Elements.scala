@@ -1483,19 +1483,14 @@ object Elements:
       false,
       "a: lst -> sublists of a",
     ) {
-      case a: VFun => ???
       case a => VList.from(
-          ListHelpers.flattenOnce(
-            VList.from(
-              ListHelpers
-                .prefixes(ListHelpers.makeIterable(a))
-                .map(b =>
-                  VList.from(ListHelpers.suffixes(ListHelpers.makeIterable(b)))
-                )
-                .toList
-            )
+        ListHelpers
+          .prefixes(ListHelpers.makeIterable(a))
+          .toList
+          .flatMap(b =>
+            VList.from(ListHelpers.suffixes(ListHelpers.makeIterable(b)))
           )
-        )
+      )
     },
     addPart(
       Dyad,
