@@ -1750,7 +1750,7 @@ object Elements:
       ctx.pop() match
         case f: VFun =>
           val arg = ListHelpers.makeIterable(ctx.pop())
-          val suffixes = arg.indices.map(i => arg.slice(i, arg.length))
+          val suffixes = ListHelpers.suffixes(arg)
           ctx.push(VList.from(suffixes.map(suffix => f(suffix))))
 
         case _ => throw IllegalArgumentException(
