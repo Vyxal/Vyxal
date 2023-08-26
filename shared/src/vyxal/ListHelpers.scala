@@ -474,10 +474,10 @@ object ListHelpers:
     }
 
   def suffixes(iterable: VList): Seq[VList] =
-    LazyList.unfold(iterable) {
-      case remaining => Option.when(remaining.nonEmpty) {
-          (remaining, remaining.tail)
-        }
+    LazyList.unfold(iterable) { remaining =>
+      Option.when(remaining.nonEmpty) {
+        (remaining, remaining.tail)
+      }
     }
 
   def reduce(iter: VAny, by: VFun, init: Option[VAny] = None)(using
