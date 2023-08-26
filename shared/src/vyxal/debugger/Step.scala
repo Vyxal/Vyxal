@@ -154,5 +154,10 @@ object Step:
       case ifStmt: AST.IfStatement => ifStep(ifStmt)
       case cmd: AST.Command => cmdStep(cmd)
       case AST.Group(elems, _, _) => Block(ast, StepSeq(elems.map(stepsForAST)))
-      case _ => ???
+      case _ => Exec(
+          ast,
+          () =>
+            Interpreter.execute(ast)
+            None,
+        )
 end Step

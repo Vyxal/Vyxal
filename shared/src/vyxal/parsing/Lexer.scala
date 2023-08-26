@@ -20,8 +20,13 @@ case class Token(tokenType: TokenType, value: String, range: Range)
 
   override def toString: String = s"$tokenType(\"$value\")"
 
-/** The range of a token or AST in the source code */
+/** The range of a token or AST in the source code. The start offset is
+  * inclusive, the end offset is exclusive.
+  */
 case class Range(startOffset: Int, endOffset: Int) derives CanEqual:
+  def includes(offset: Int): Boolean =
+    startOffset <= offset && offset < endOffset
+
   /** Override the default equals method so Range.fake compares equal to
     * everything.
     */

@@ -11,25 +11,56 @@ object DebugRepl:
     val ast = Lexer(code).flatMap(Parser.parse) match
       case Right(ast) => ast
       case Left(err) => throw RuntimeException(err.msg)
-    val debugger = Debugger(ast)
-    debugger.printState()
-    while !debugger.finished do
+    val dbg = Debugger(ast)
+    printState(dbg)
+    while !dbg.finished do
       val line = io.StdIn.readLine("(debug)> ")
       if line.nonEmpty then
         OParser.parse(parser, line.split(" "), Config()) match
-          case Some(config) =>
-            config.cmd match
-              case Cmd.StepInto => debugger.stepInto()
-              case Cmd.StepOver => debugger.stepOver()
-              case Cmd.StepOut => debugger.stepOut()
+          case Some(config) => config.cmd match
+              case Cmd.StepInto =>
+                dbg.stepInto()
+                printState(dbg)
+              case Cmd.StepOver =>
+                dbg.stepOver()
+                printState(dbg)
+              case Cmd.StepOut =>
+                dbg.stepOut()
+                printState(dbg)
+              case Cmd.Continue =>
+                dbg.continue()
+                printState(dbg)
+              case Cmd.Resume =>
+                dbg.resume()
+                printState(dbg)
+              case Cmd.AddBreakpoint(offset, label) =>
+                dbg.addBreakpoint(Breakpoint(offset, label))
+              case Cmd.RemoveBreakpointByOffset(offset) =>
+                dbg.removeBreakpoint(offset)
+              case Cmd.RemoveBreakpointByLabel(label) =>
+                dbg.removeBreakpoint(label)
+              case Cmd.ListBreakpoints =>
+                println(dbg.getBreakpoints().mkString("\n"))
+              case Cmd.Frames => for frame <- dbg.stackFrames do
+                  println(s"<${frame.name}> ${frame.ast}")
+              case Cmd.Eval(code) =>
+                dbg.eval(code)
+                printState(dbg)
+              case Cmd.Stack(n) => println(
+                  dbg.stackFrames.last.ctx.peek(n).mkString("[", ",", "]")
+                )
               case Cmd.Exit => return
-            debugger.printState()
           case None => println("Could not parse command")
       else
-        debugger.stepInto()
-        debugger.printState()
-
+        dbg.stepInto()
+        printState(dbg)
+    end while
   end start
+
+  def printState(dbg: Debugger): Unit =
+    println(s"Top of stack is ${dbg.ctx.peek}")
+    if !dbg.finished then
+      println(s"Next to execute: ${dbg.currAST.toVyxal} <${dbg.currAST.range}>")
 
   private val builder = OParser.builder[Config]
 
@@ -46,6 +77,64 @@ object DebugRepl:
       cmd("step-out")
         .action((_, cfg) => cfg.copy(cmd = Cmd.StepOut))
         .text("Step out"),
+      cmd("continue")
+        .action((_, cfg) => cfg.copy(cmd = Cmd.Continue))
+        .text("Continue to the next breakpoint"),
+      cmd("resume")
+        .action((_, cfg) => cfg.copy(cmd = Cmd.Resume))
+        .text("Resume execution to end of program, ignoring breakpoints"),
+      cmd("add")
+        .text("Add a breakpoint")
+        .children(
+          arg[Int]("<offset>")
+            .action((offset, cfg) =>
+              cfg.copy(cmd = Cmd.AddBreakpoint(offset, None))
+            )
+            .text("The offset for the breakpoint to add"),
+          arg[String]("<label>")
+            .action((label, cfg) =>
+              val Cmd.AddBreakpoint(offset, _) = cfg.cmd: @unchecked
+              cfg.copy(cmd = Cmd.AddBreakpoint(offset, Some(label)))
+            )
+            .optional()
+            .text("The label for the breakpoint"),
+        ),
+      cmd("remove")
+        .text("Remove a breakpoint using either its offset or label")
+        .children(
+          opt[Int]('o', "offset")
+            .action((offset, cfg) =>
+              cfg.copy(cmd = Cmd.RemoveBreakpointByOffset(offset))
+            )
+            .text("The offset for the breakpoint to remove")
+            .optional(),
+          opt[String]('l', "label")
+            .action((label, cfg) =>
+              cfg.copy(cmd = Cmd.RemoveBreakpointByLabel(label))
+            )
+            .text("The label for the breakpoint to remove")
+            .optional(),
+        ),
+      cmd("list")
+        .action((_, cfg) => cfg.copy(cmd = Cmd.ListBreakpoints))
+        .text("List all breakpoints"),
+      cmd("frames")
+        .action((_, cfg) => cfg.copy(cmd = Cmd.Frames))
+        .text("Show all the frames"),
+      cmd("eval")
+        .text("Evaluate some code")
+        .children(
+          arg[String]("<code>")
+            .action((code, cfg) => cfg.copy(cmd = Cmd.Eval(code)))
+            .text("Code to evaluate")
+        ),
+      cmd("stack")
+        .text("Show the top n items of the stack")
+        .children(
+          arg[Int]("<int>")
+            .action((n, cfg) => cfg.copy(cmd = Cmd.Stack(n)))
+            .text("Number of elements to show")
+        ),
       cmd("exit")
         .action((_, cfg) => cfg.copy(cmd = Cmd.Exit))
         .text("Exit debugger"),
@@ -58,5 +147,14 @@ object DebugRepl:
     case StepInto
     case StepOver
     case StepOut
+    case Continue
+    case Resume
+    case AddBreakpoint(offset: Int, label: Option[String])
+    case RemoveBreakpointByOffset(offset: Int)
+    case RemoveBreakpointByLabel(label: String)
+    case ListBreakpoints
+    case Frames
+    case Eval(code: String)
+    case Stack(n: Int)
     case Exit
 end DebugRepl
