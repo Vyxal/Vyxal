@@ -62,7 +62,7 @@ class DebuggerTests extends AnyFeatureSpec with GivenWhenThen with Matchers:
         Breakpoint(2, Some("foo")),
         Breakpoint(2, Some("bar")),
         baz3,
-        baz4
+        baz4,
       )
 
       When("addBreakpoint is called")
@@ -85,14 +85,13 @@ class DebuggerTests extends AnyFeatureSpec with GivenWhenThen with Matchers:
     }
 
     Scenario("Continuing to and from a breakpoint") {
-      val dbg =
-        Debugger(
-          AST.makeSingle(
-            AST.Str("foo", Range(0, 3)),
-            AST.Number(5, Range(3, 4)),
-            AST.Command("+", Range(4, 5))
-          )
+      val dbg = Debugger(
+        AST.makeSingle(
+          AST.Str("foo", Range(0, 3)),
+          AST.Number(5, Range(3, 4)),
+          AST.Command("+", Range(4, 5)),
         )
+      )
       dbg.addBreakpoint(Breakpoint(3))
 
       When("it's continued")
@@ -110,14 +109,13 @@ class DebuggerTests extends AnyFeatureSpec with GivenWhenThen with Matchers:
     }
 
     Scenario("Resuming") {
-      val dbg =
-        Debugger(
-          AST.makeSingle(
-            AST.Str("foo", Range(0, 3)),
-            AST.Number(5, Range(3, 4)),
-            AST.Command("+", Range(4, 5))
-          )
+      val dbg = Debugger(
+        AST.makeSingle(
+          AST.Str("foo", Range(0, 3)),
+          AST.Number(5, Range(3, 4)),
+          AST.Command("+", Range(4, 5)),
         )
+      )
       dbg.addBreakpoint(Breakpoint(3))
 
       When("it's resumed")

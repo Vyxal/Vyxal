@@ -39,12 +39,12 @@ class LexerTests extends VyxalTests:
 
         testLex(
           """ "Vyxal is what \"you\" want!" """,
-          List(Str("Vyxal is what \"you\" want!"))
+          List(Str("Vyxal is what \"you\" want!")),
         )
 
         testLex(
           """ k"vy """,
-          List(Digraph("k\""), MonadicModifier("v"), Command("y"))
+          List(Digraph("k\""), MonadicModifier("v"), Command("y")),
         )
       }
     }
@@ -55,7 +55,7 @@ class LexerTests extends VyxalTests:
 
         testLex(
           """ "Hello, Vyxal!” """,
-          List(DictionaryString("Hello, Vyxal!"))
+          List(DictionaryString("Hello, Vyxal!")),
         )
       }
     }
@@ -73,8 +73,8 @@ class LexerTests extends VyxalTests:
           Number("1"),
           Number("1"),
           Command("+"),
-          Comment("Hello, Vyxal!")
-        )
+          Comment("Hello, Vyxal!"),
+        ),
       )
     }
     it("should stop comments at the newline") {
@@ -87,8 +87,8 @@ class LexerTests extends VyxalTests:
           Comment("Hello, Vyxal!"),
           Token(Newline, "\n", Range.fake),
           Number("1"),
-          Command("+")
-        )
+          Command("+"),
+        ),
       )
     }
     it("should not treat single #s as comments") {
@@ -106,8 +106,8 @@ class LexerTests extends VyxalTests:
           Number("3"),
           Command("W"),
           Command("+"),
-          MonadicModifier("/")
-        )
+          MonadicModifier("/"),
+        ),
       )
     }
   }
@@ -123,7 +123,7 @@ class LexerTests extends VyxalTests:
     it("should recognise `#>`/augmented assignment") {
       testLex(
         "45 +#>answer",
-        List(Number("45"), Command("+"), AugmentVar("answer"))
+        List(Number("45"), Command("+"), AugmentVar("answer")),
       )
     }
   }
@@ -137,7 +137,7 @@ class LexerTests extends VyxalTests:
           StructureOpen(StructureType.LambdaMap.open),
           Number("5"),
           Command("+"),
-        )
+        ),
       )
     }
   }
