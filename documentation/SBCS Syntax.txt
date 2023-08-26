@@ -1,0 +1,52 @@
+codepage ::= (* any character in the codepage *)
+pos_digit ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+digit ::= 0 | pos_digit
+number_part ::= 0 | pos_digit {digit}
+number_decimal ::= [number_part] "." [number_part]
+number_real ::= 0 | number_part | number_decimal
+number ::= [number_real] "ı" [number_real]
+string ::= '"' {codepage} ('"' | "„" | "”" | "“")
+single_char_string ::= "'" codepage
+two_char_string ::= "ᶴ" codepage codepage
+two_char_number ::= "~" codepage codepage
+structure_open ::= "[" | "{" | "(" | "#{" | "Ḍ" | "Ṇ" | "λ" | "ƛ" | "Ω" | "₳" | "µ"
+structure_single_close ::= "}"
+structure_double_close ::= ")"
+structure_all_close ::= "]"
+list_open ::= "#[" | "⟨"
+list_close ::= "#]" | "⟩"
+digraph ::= (("∆" | "ø" | "Þ" | "k") codepage) | "#" codepage - "[]$!=#>@{"
+sugar_trigraph ::= "#" ("." | "," | "^") codepage
+syntax_trigraph ::= "#:" codepage
+
+elementChar ::= (* any character corresponding to an element *)
+1modChar ::= (* any charcter corresponding to a monadic modifier *)
+2modChar ::= (* any charcter corresponding to a dyadic modifier *)
+3modChar ::= (* any charcter corresponding to a triadic modifier *)
+4modChar ::= (* any charcter corresponding to a tetradic modifier *)
+specialModChar ::= (* any charcter corresponding to a special modifier *)
+
+structure ::= (structure_open [{element} {"|" {element}}] [structure_single_close]) | 
+              (structure_open structure_open [{element} {"|" {element}}]structure_double_close structure_double_close) | 
+              ({structure_open} [{element} {"|" {element}}] structure_all_close)
+
+lambda ::= "λ" [lambda_args "|"] {element} [structure_single_close]
+lambda_args ::= "!" | {number_part | variable_name | "*"}
+
+variable_name ::= "a-Z" {"a-Z" | "0-9" | "_"}
+variable_get ::= "#$" variable_name
+variable_assign ::= "#=" variable_name
+variable_aug_assign ::= element "#>" variable_name
+variable_unpack ::= "#[" {variable_unpack_expr} "]"
+variable_unpack_expr ::= variable_name | "[" variable_unpack_expr "]"
+
+context_index ::= "¤" number_part
+
+list ::= list_open [element {"|" element}] list_close
+
+element ::= elementChar | 1modChar element | 2modChar element element | 
+            3modChar element element element | 4modChar element element element element |
+            structure | variable_assign | variable_get | variable_aug_assign | lambda | variable_unpack |
+            context_index | list
+(* the special modifiers don't have actual behaviour yet *)
+(* this also does not account for arity grouping *)

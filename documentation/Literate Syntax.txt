@@ -1,0 +1,38 @@
+codepage ::= (* any character in the codepage *)
+branch ::= (* any keyword defined to be a branch *)
+pos_digit ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+digit ::= 0 | pos_digit
+number_part ::= 0 | pos_digit {digit}
+number_decimal ::= [number_part] "." [number_part]
+number_real ::= 0 | number_part | number_decimal
+number ::= [number_real] "i" [number_real]
+keywordChar ::= anything in `a-z`, `A-Z`, `0-9`, `-`, `?`, `!`, `*`, `+`, `=`, `&`, `%`, `>`, `<`
+keyword ::= (keywordChar - "0-9") {keywordChar}
+raw_sbcs ::= "#" {codepage} "#}"
+
+variable_name ::= "a-Z" {"a-Z" | "0-9" | "_"}
+variable_get ::= "$" variable_name
+variable_assign ::= ":=" variable_name
+variable_aug_assign ::= element ":=" variable_name
+variable_unpack ::= "#[" {variable_unpack_expr} "]"
+variable_unpack_expr ::= variable_name | "[" variable_unpack_expr "]"
+
+context_index ::= "`" number_part "`"
+
+monadic_1_group ::= "(. " element ")"
+monadic_2_group ::= "(: " element element ")"
+monadic_3_group ::= "(:. " element element element ")"
+monadic_4_group ::= "(:: " element element element element ")"
+
+dyadic_1_group ::= "(, " element ")"
+dyadic_2_group ::= "(; " element element ")"
+dyadic_3_group ::= "(;, " element element element ")"
+dyadic_4_group ::= "(;; " element element element element ")"
+
+list ::= list_open [element {"," element}] list_close
+
+lambda_args ::= "!" | {number_part | variable_name | "*"}
+
+inline_lambda ::= "{" lambda_args branch {element} "}"
+
+(* The keywords, after mapping, follow the same sbcs syntax *)

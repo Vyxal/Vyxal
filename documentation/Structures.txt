@@ -1,0 +1,66 @@
+# Ternary operator
+
+```
+[ onTrue | onFalse }
+```
+
+# For loop
+
+```
+( loop variabe name | code }
+```
+
+# While loop
+
+```
+{ condition | code }
+```
+
+# Lambda
+
+```
+λ lambda args | code }
+```
+
+# Mapping Lambda
+
+```
+ƛ code | then | then | ... }
+```
+
+# Filter Lambda
+
+```
+Ω predicate | and | and | ... }
+```
+
+# Reduce Lambda
+
+```
+₳ code }
+```
+
+# Sorting Lambda
+
+```
+µ code | then by | then by | ... }
+```
+
+# If-else
+
+```
+#{ condition | then | else}
+#{ condition | then | else-if-condition | then | else }
+```
+
+# Generator Structure
+
+```
+Ṇ generating code | inital vector }
+```
+
+# Decision Structure
+
+```
+Ḍ predicate | container }
+```

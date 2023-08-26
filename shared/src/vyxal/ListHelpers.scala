@@ -465,7 +465,21 @@ object ListHelpers:
   def sum(lst: VList)(using ctx: Context): VAny =
     if lst.isEmpty then ctx.settings.defaultValue else lst.reduce(_ +~ _)
 
-  def prefixes(iterable: VList): Seq[VList] = iterable.inits.toSeq.reverse.tail
+  def prefixes(iterable: VList): Seq[VList] =
+    val prefix = ListBuffer.empty[VAny]
+    LazyList.unfold(iterable) { remaining =>
+      Option.when(remaining.nonEmpty) {
+        prefix += remaining.head
+        (VList.from(prefix.toList), remaining.tail)
+      }
+    }
+
+  def suffixes(iterable: VList): Seq[VList] =
+    LazyList.unfold(iterable) { remaining =>
+      Option.when(remaining.nonEmpty) {
+        (remaining, remaining.tail)
+      }
+    }
 
   def reduce(iter: VAny, by: VFun, init: Option[VAny] = None)(using
       Context

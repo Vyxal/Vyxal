@@ -1477,6 +1477,22 @@ object Elements:
     },
     addPart(
       Monad,
+      "Ṣ",
+      "Sublists",
+      List("sublists"),
+      false,
+      "a: lst -> sublists of a",
+    ) {
+      case a: (VVal | VList) => VList.from(
+          ListHelpers
+            .prefixes(ListHelpers.makeIterable(a))
+            .flatMap(b =>
+              VList.from(ListHelpers.suffixes(ListHelpers.makeIterable(b)))
+            )
+        )
+    },
+    addPart(
+      Monad,
       "⁺",
       "Square | Pairs",
       List("square", "pairs"),
@@ -1758,7 +1774,7 @@ object Elements:
       ctx.pop() match
         case f: VFun =>
           val arg = ListHelpers.makeIterable(ctx.pop())
-          val suffixes = arg.indices.map(i => arg.slice(i, arg.length))
+          val suffixes = ListHelpers.suffixes(arg)
           ctx.push(VList.from(suffixes.map(suffix => f(suffix))))
 
         case _ => throw IllegalArgumentException(

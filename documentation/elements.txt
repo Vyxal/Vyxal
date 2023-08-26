@@ -632,6 +632,11 @@ Trigraph: #,R
 Keywords: reverse
 - a: any -> reverse a
 ---------------------
+Ṣ (Sublists) (non-vectorising)
+Trigraph: #,S
+Keywords: sublists
+- a: lst -> sublists of a
+---------------------
 ⁺ (Square | Pairs) (vectorising)
 Trigraph: #^+
 Keywords: square, pairs
