@@ -467,9 +467,11 @@ object ListHelpers:
 
   def prefixes(iterable: VList): Seq[VList] =
     val prefix = ListBuffer.empty[VAny]
-    iterable.map { elem =>
-      prefix += elem
-      VList.from(prefix.toList)
+    LazyList.unfold(iterable) { remaining =>
+      Option.when(remaining.nonEmpty) {
+        prefix += remaining.head
+        (VList.from(prefix.toList), remaining.tail)
+      }
     }
 
   def suffixes(iterable: VList): Seq[VList] =
