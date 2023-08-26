@@ -637,6 +637,18 @@ Trigraph: #,S
 Keywords: sublists
 - a: lst -> sublists of a
 ---------------------
+⁺ (Square | Pairs) (vectorising)
+Trigraph: #^+
+Keywords: square, pairs
+- a: num -> a ** 2
+- a: str -> a split into pairs
+---------------------
+⁻ (Cube | Threes) (vectorising)
+Trigraph: #^-
+Keywords: cube, threes
+- a: num -> a ** 3
+- a: str -> a split into chunks of length 3
+---------------------
 ⁾ (Surround | Character Multiply) (non-vectorising)
 Trigraph: #^)
 Keywords: surround, character-multiply

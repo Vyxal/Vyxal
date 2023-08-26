@@ -19,7 +19,7 @@ trait VyxalTests extends AnyFunSpec:
   def testCode(
       code: String,
       expected: VAny,
-      inputs: Seq[VAny] = Seq.empty
+      inputs: Seq[VAny] = Seq.empty,
   ) =
     val ctx = VyxalTests.testContext(inputs = inputs)
     Interpreter.execute(code)(using ctx)
@@ -30,7 +30,7 @@ trait VyxalTests extends AnyFunSpec:
   def testAST(
       ast: AST,
       expected: VAny,
-      inputs: Seq[VAny] = Seq.empty
+      inputs: Seq[VAny] = Seq.empty,
   ) =
     val ctx = VyxalTests.testContext(inputs = inputs)
     Interpreter.execute(ast)(using ctx)
@@ -118,14 +118,14 @@ object VyxalTests:
   /** A Context with settings appropriate for tests */
   def testContext(
       inputs: Seq[VAny] = Seq.empty,
-      flags: List[Char] = List.empty
+      flags: List[Char] = List.empty,
   ) =
     Context(
       inputs = inputs,
       testMode = true,
       globals = Globals(settings =
         Settings(endPrintMode = EndPrintMode.None).withFlags(flags)
-      )
+      ),
     )
 
   private inline def group(inline asserts: Unit): Unit =
@@ -135,21 +135,18 @@ object VyxalTests:
   private def groupImpl(asserts: Expr[Unit])(using Quotes): Expr[Unit] =
     import scala.quoted.quotes.reflect.*
     asserts.asTerm match
-      case Inlined(_, _, term) =>
-        term match
-          case Block(stmts, lastTerm) =>
-            '{
+      case Inlined(_, _, term) => term match
+          case Block(stmts, lastTerm) => '{
               val cp = Checkpoint()
               ${
                 Block(
                   stmts.map { stmt => '{ cp { ${ stmt.asExpr } } }.asTerm },
-                  '{ cp { ${ lastTerm.asExpr } } }.asTerm
+                  '{ cp { ${ lastTerm.asExpr } } }.asTerm,
                 ).asExpr.asInstanceOf[Expr[Unit]]
               }
               cp.reportAll()
             }
-          case expr =>
-            '{
+          case expr => '{
               val cp = Checkpoint()
               cp { ${ expr.asExpr } }
               cp.reportAll()

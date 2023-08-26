@@ -15,7 +15,7 @@ class LiterateTests extends VyxalTests:
     val sbcsified = Lexer.sbcsify(literate)
     assertResult(
       expected,
-      literate.map(tok => s"${tok.tokenType}(${tok.value})")
+      literate.map(tok => s"${tok.tokenType}(${tok.value})"),
     )(sbcsified)
 
   describe("Literals") {
@@ -40,7 +40,7 @@ class LiterateTests extends VyxalTests:
       testLiterate(""""Hello, Vyxal!"""", """"Hello, Vyxal!"""")
       testLiterate(
         raw""""Vyxal is what \"you\" want!"""",
-        raw""""Vyxal is what \"you\" want!""""
+        raw""""Vyxal is what \"you\" want!"""",
       )
     }
   }

@@ -20,8 +20,11 @@ jobs:
           java-version: "17"
           distribution: "adopt"
       - uses: coursier/cache-action@v6
-      - name: Run Scalafix and Scalafmt
-        run: sbt vyxalJVM/scalafix vyxalJVM/scalafmt
+      - name: Run Scalafix
+        run: sbt vyxalJVM/scalafix
+      - name: Run Scalafmt
+        run: |
+          ./mill mill.scalalib.scalafmt.ScalafmtModule/reformatAll __.sources
       - name: Stage changes
         run: git add .
       - name: Commit and push
