@@ -1486,10 +1486,7 @@ object Elements:
     ) {
       case a: VNum => a ** 2
       case a: String =>
-        ListHelpers.wrapLength(ListHelpers.makeIterable(a), 2).vmap {
-          case x: VList => x.mkString
-          case x => x
-        }
+        ListHelpers.wrapLength(ListHelpers.makeIterable(a), 2).vmap(_.mkString)
     },
     addPart(
       Monad,
@@ -1502,10 +1499,7 @@ object Elements:
     ) {
       case a: VNum => a ** 3
       case a: String =>
-        ListHelpers.wrapLength(ListHelpers.makeIterable(a), 3).vmap {
-          case x: VList => x.mkString
-          case x => x
-        }
+        ListHelpers.wrapLength(ListHelpers.makeIterable(a), 3).vmap(_.mkString)
     },
     addPart(
       Dyad,
