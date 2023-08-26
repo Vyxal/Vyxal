@@ -4,6 +4,7 @@ import vyxal.*
 import vyxal.parsing.Lexer
 
 import scala.annotation.tailrec
+import scala.collection.mutable
 import scala.collection.mutable.Stack
 
 /** @param name
@@ -19,16 +20,50 @@ class StackFrame(val name: String, val ctx: Context, val ast: AST):
 
   override def toString = s"Frame $name for $ast (top: ${ctx.peek})"
 
+/** @param offset
+  *   The offset at which the breakpoint is set. In a praclang, this would be a
+  *   line number instead
+  */
+class Breakpoint(
+    val offset: Int,
+    val label: Option[String] = None,
+    val matches: AST => Boolean = _ => true,
+)
+
 class Debugger(code: AST)(using rootCtx: Context):
-  private val stackFrames: Stack[StackFrame] =
+  /** Separate private variable from [[stackFrames]] to keep outsiders from
+    * mutating it
+    */
+  private val frames: Stack[StackFrame] =
     Stack(StackFrame("<root>", rootCtx, code))
 
+  private val breakpoints = mutable.Set.empty[Breakpoint]
+
   /** The current stack frame */
-  private def frame: StackFrame = stackFrames.last
+  private def frame: StackFrame = frames.last
 
   private var currStep = removeBadSteps(Step.stepsForAST(code)).getOrElse(null)
 
+  /** Separate private variable to keep outsiders from reassigning */
+  private var currCtx = frame.ctx
+
+  def ctx: Context = currCtx
+
+  def currAST = currStep.ast
+
+  def stackFrames: Iterable[StackFrame] = this.frames
+
   def finished: Boolean = currStep == null
+
+  def addBreakpoint(breakpoint: Breakpoint): Unit = breakpoints += breakpoint
+
+  def removeBreakpoint(offset: Int): Unit =
+    breakpoints.filterInPlace(_.offset != offset)
+
+  def removeBreakpoint(label: String): Unit =
+    breakpoints.filterInPlace(_.label != Some(label))
+
+  def getBreakpoints(): Set[Breakpoint] = breakpoints.toSet
 
   /** Keep popping either this frame's stepStack or the stackframes until we get
     * to the next step or until the stackframes are all gone
@@ -36,9 +71,11 @@ class Debugger(code: AST)(using rootCtx: Context):
   @tailrec
   private def popUntilNext(): Option[ProperStep] =
     if frame.stepStack.isEmpty then
-      val lastFrame = stackFrames.pop()
+      val lastFrame = frames.pop()
       scribe.trace(s"Popped frame $lastFrame")
-      if stackFrames.isEmpty then None else popUntilNext()
+      this.currCtx = lastFrame.ctx
+      if frames.isEmpty then None
+      else popUntilNext()
     else
       scribe.trace(s"Popping step: ${frame.stepStack.top}")
       frame.stepStack.pop() match
@@ -65,8 +102,13 @@ class Debugger(code: AST)(using rootCtx: Context):
           case Nil => popUntilNext()
       case proper: ProperStep => Some(proper)
 
+  private def atBreakpoint: Boolean =
+    breakpoints.exists { b =>
+      currAST.range.includes(b.offset) && b.matches(currAST)
+    }
+
   def stepInto(): Unit =
-    if stackFrames.isEmpty then
+    if frames.isEmpty then
       throw IllegalStateException("Debugger has finished, cannot step into")
 
     scribe.trace(s"Stepping in, frame: $frame, step: $currStep")
@@ -78,10 +120,12 @@ class Debugger(code: AST)(using rootCtx: Context):
         frame.stepStack += None
         removeBadSteps(inner)
       case NewStackFrame(ast, frameName, newCtx, inner) =>
-        stackFrames.push(StackFrame(frameName, newCtx(frame.ctx), ast))
+        frames.push(StackFrame(frameName, newCtx(frame.ctx), ast))
         removeBadSteps(inner)
     nextStep match
-      case Some(nextStep) => this.currStep = nextStep
+      case Some(nextStep) =>
+        this.currStep = nextStep
+        this.currCtx = frame.ctx
       case None =>
         this.currStep = null
         scribe.trace("Debugger has finished")
@@ -90,25 +134,32 @@ class Debugger(code: AST)(using rootCtx: Context):
   def stepOver(): Unit =
     if !this.finished then
       scribe.trace(s"Stepping over, frame: $frame")
-      val startFrames = stackFrames.size
+      val startFrames = frames.size
       val startStepDepth = frame.stepStack.size
       stepInto()
-      while !this.finished && stackFrames.size >= startFrames &&
-        frame.stepStack.size > startStepDepth
+      while !this.finished && !this.atBreakpoint &&
+        frames.size >= startFrames && frame.stepStack.size > startStepDepth
       do stepInto()
 
   def stepOut(): Unit =
     scribe.trace(s"Stepping out, frame: $frame")
-    val startFrames = stackFrames.size
-    while !this.finished && stackFrames.size >= startFrames do stepInto()
+    val startFrames = frames.size
+    if !this.finished then
+      stepInto()
+      while !this.finished && !this.atBreakpoint && frames.size >= startFrames
+      do stepInto()
 
-  def continue(): Unit = while !this.finished do stepInto()
+  /** Continue to the next breakpoint */
+  def continue(): Unit =
+    if !this.finished then
+      stepInto()
+      while !this.finished && !this.atBreakpoint do stepInto()
 
-  def printState(): Unit =
-    println(s"Next to execute: ${currStep.ast.toVyxal} <${currStep.ast.range}>")
-    println(s"Top of stack is ${frame.ctx.peek}")
-  // println("Frames:")
-  // println(stackFrames.reverse.mkString("\n"))
+  /** Continue to the end of the program */
+  def resume(): Unit = while !this.finished do stepInto()
+
+  /** Evaluate some code in the current frame's context */
+  def eval(code: String): Unit = Interpreter.execute(code)(using frame.ctx)
 end Debugger
 
 object Debugger:
