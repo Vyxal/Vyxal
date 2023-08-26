@@ -1484,11 +1484,11 @@ object Elements:
       "a: lst -> sublists of a",
     ) {
       case a: (VVal | VList) => VList.from(
-          ListHelpers
-            .prefixes(ListHelpers.makeIterable(a))
-            .flatMap(b =>
-              VList.from(ListHelpers.suffixes(ListHelpers.makeIterable(b)))
-            )
+          ListHelpers.mergeInfLists(
+            ListHelpers
+              .prefixes(ListHelpers.makeIterable(a))
+              .map(b => ListHelpers.suffixes(ListHelpers.makeIterable(b)))
+          )
         )
     },
     addPart(

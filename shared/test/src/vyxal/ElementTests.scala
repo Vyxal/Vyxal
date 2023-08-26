@@ -752,11 +752,11 @@ class ElementTests extends VyxalTests:
           VList(1),
           VList(1, 1, 2),
           VList(1, 2),
-          VList(2),
           VList(1, 1, 2, 3),
+          VList(2),
           VList(1, 2, 3),
+          VList(1, 1, 2, 3, 5),
           VList(2, 3),
-          VList(3),
         ),
       "#[1#]Ṇ1+}Ṣ10Θ" ->
         VList(
@@ -765,11 +765,11 @@ class ElementTests extends VyxalTests:
           VList(2),
           VList(1, 2, 3),
           VList(2, 3),
-          VList(3),
           VList(1, 2, 3, 4),
+          VList(3),
           VList(2, 3, 4),
+          VList(1, 2, 3, 4, 5),
           VList(3, 4),
-          VList(4),
         ),
     )
   }
