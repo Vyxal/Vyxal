@@ -1483,11 +1483,12 @@ object Elements:
       false,
       "a: lst -> sublists of a",
     ) {
-      case a: (VVal | VList) => ListHelpers.mergeInfLists(
+      case a: (VVal | VList) =>
+        VList.from(ListHelpers.mergeInfLists(
           ListHelpers
             .prefixes(ListHelpers.makeIterable(a))
             .map(b => ListHelpers.suffixes(ListHelpers.makeIterable(b)))
-        )
+        ))
     },
     addPart(
       Monad,
