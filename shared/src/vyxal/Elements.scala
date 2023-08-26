@@ -1482,13 +1482,14 @@ object Elements:
       List("square", "pairs"),
       true,
       "a: num -> a ** 2",
-      "a: str -> a split into pairs"
+      "a: str -> a split into pairs",
     ) {
       case a: VNum => a ** 2
-      case a: String => ListHelpers.wrapLength(ListHelpers.makeIterable(a), 2).vmap {
-        case x: VList => x.mkString
-        case x => x
-      }
+      case a: String =>
+        ListHelpers.wrapLength(ListHelpers.makeIterable(a), 2).vmap {
+          case x: VList => x.mkString
+          case x => x
+        }
     },
     addPart(
       Monad,
@@ -1497,13 +1498,14 @@ object Elements:
       List("cube", "threes"),
       true,
       "a: num -> a ** 3",
-      "a: str -> a split into chunks of length 3"
+      "a: str -> a split into chunks of length 3",
     ) {
       case a: VNum => a ** 3
-      case a: String => ListHelpers.wrapLength(ListHelpers.makeIterable(a), 3).vmap {
-        case x: VList => x.mkString
-        case x => x
-      }
+      case a: String =>
+        ListHelpers.wrapLength(ListHelpers.makeIterable(a), 3).vmap {
+          case x: VList => x.mkString
+          case x => x
+        }
     },
     addPart(
       Dyad,
