@@ -1485,8 +1485,9 @@ object Elements:
       "a: str -> a split into pairs",
     ) {
       case a: VNum => a ** 2
-      case a: String =>
-        ListHelpers.wrapLength(ListHelpers.makeIterable(a), 2).vmap(ListHelpers.makeIterable(_).mkString)
+      case a: String => ListHelpers
+          .wrapLength(ListHelpers.makeIterable(a), 2)
+          .vmap(ListHelpers.makeIterable(_).mkString)
     },
     addPart(
       Monad,
@@ -1498,8 +1499,9 @@ object Elements:
       "a: str -> a split into chunks of length 3",
     ) {
       case a: VNum => a ** 3
-      case a: String =>
-        ListHelpers.wrapLength(ListHelpers.makeIterable(a), 3).vmap(ListHelpers.makeIterable(_).mkString)
+      case a: String => ListHelpers
+          .wrapLength(ListHelpers.makeIterable(a), 3)
+          .vmap(ListHelpers.makeIterable(_).mkString)
     },
     addPart(
       Dyad,
