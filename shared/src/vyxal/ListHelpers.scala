@@ -466,11 +466,10 @@ object ListHelpers:
     if lst.isEmpty then ctx.settings.defaultValue else lst.reduce(_ +~ _)
 
   def prefixes(iterable: VList): Seq[VList] =
-    LazyList.unfold(VList() -> iterable) {
-      case (prefix, remaining) => Option.when(remaining.nonEmpty) {
-          val newPrefix = VList.from(prefix :+ remaining.head)
-          (newPrefix, newPrefix -> remaining.tail)
-        }
+    val prefix = ListBuffer.empty[VAny]
+    iterable.map { elem =>
+      prefix += elem
+      VList.from(prefix.toList)
     }
 
   def suffixes(iterable: VList): Seq[VList] =
