@@ -1476,6 +1476,30 @@ object Elements:
       case (a: VList, b) => ListHelpers.splitNormal(a, b)
     },
     addPart(
+      Monad,
+      "⁺",
+      "Square | Pairs",
+      List("square", "pairs"),
+      true,
+      "a: num -> a ** 2",
+      "a: str -> a split into pairs",
+    ) {
+      case a: VNum => a ** 2
+      case a: String => VList.from(a.grouped(2).toSeq)
+    },
+    addPart(
+      Monad,
+      "⁻",
+      "Cube | Threes",
+      List("cube", "threes"),
+      true,
+      "a: num -> a ** 3",
+      "a: str -> a split into chunks of length 3",
+    ) {
+      case a: VNum => a ** 3
+      case a: String => VList.from(a.grouped(3).toSeq)
+    },
+    addPart(
       Dyad,
       "-",
       "Subtraction",
@@ -1832,15 +1856,11 @@ object Elements:
     ) {
       case (a: VList, b: VNum) => ListHelpers.wrapLength(a, b)
       case (a: String, b: VNum) =>
-        ListHelpers.wrapLength(ListHelpers.makeIterable(a), b).vmap {
-          case x: VList => x.mkString
-          case x => x
-        }
+        if b <= 0 then VList.empty
+        else VList.from(a.grouped(b.toInt).toSeq)
       case (a: VNum, b: String) =>
-        ListHelpers.wrapLength(ListHelpers.makeIterable(b), a).vmap {
-          case x: VList => x.mkString
-          case x => x
-        }
+        if a <= 0 then VList.empty
+        else VList.from(b.grouped(a.toInt).toSeq)
       case (a: VNum, b: VList) => ListHelpers.wrapLength(b, a)
       case (a: VFun, b: VNum) => MiscHelpers.predicateSlice(a, b, 0)
       case (a: VNum, b: VFun) => MiscHelpers.predicateSlice(b, a, 0)
