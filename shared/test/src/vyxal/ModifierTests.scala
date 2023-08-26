@@ -9,13 +9,13 @@ class ModifierTests extends VyxalTests:
   describe("Modifier v") {
     testMulti(
       "#[1 10 R|1 5 R|6 8 R#] λ+} v R" -> VList(45, 10, 13),
-      "#[1 10 R|1 5 R|6 8 R#] vA" -> VList(1, 1, 1)
+      "#[1 10 R|1 5 R|6 8 R#] vA" -> VList(1, 1, 1),
     )
   }
   describe("Modifier /") {
     testMulti(
       "1 10 R /+" -> 45,
-      """#["abc"|"def"|"ghi"#] /+""" -> "abcdefghi"
+      """#["abc"|"def"|"ghi"#] /+""" -> "abcdefghi",
     )
   }
 
@@ -28,7 +28,7 @@ class ModifierTests extends VyxalTests:
       "#[1|2|3#] э×++ M" -> VList(3, 8, 15),
       "#[1|2|3#] э2×++ M" -> VList(4, 8, 12),
       "#[1|2|3#] Ч×++× M" -> VList(3, 16, 45),
-      "#[1|2|3#] Ч2×++× M" -> VList(4, 16, 36)
+      "#[1|2|3#] Ч2×++× M" -> VList(4, 16, 36),
     )
   }
 
@@ -71,7 +71,7 @@ class ModifierTests extends VyxalTests:
         VList(
           VList(1, -2, -5),
           VList(3, 0, -3),
-          VList(7, 4, 1)
+          VList(7, 4, 1),
         )
       )(top.asInstanceOf[VList].take(3).map(_.asInstanceOf[VList].take(3)))
     }

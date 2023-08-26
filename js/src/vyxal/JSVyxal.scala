@@ -14,11 +14,10 @@ object JSVyxal:
       code: String,
       inputs: String,
       flags: String,
-      printFunc: js.Function1[String, Unit]
+      printFunc: js.Function1[String, Unit],
   ): Unit =
     // todo take functions to print to custom stdout and stderr
-    val settings = Settings(online = true)
-      .withFlags(flags.toList)
+    val settings = Settings(online = true).withFlags(flags.toList)
     val globals = Globals(
       settings = settings,
       printFn = printFunc,
@@ -27,7 +26,7 @@ object JSVyxal:
 
     val ctx = Context(
       inputs = inputs.split("\n").map(Parser.parseInput).toIndexedSeq,
-      globals = globals
+      globals = globals,
     )
     Interpreter.execute(code)(using ctx)
 
@@ -64,26 +63,25 @@ object JSVyxal:
             _,
             vectorises,
             overloads,
-            _
-          ) =>
-        js.Dynamic.literal(
+            _,
+          ) => js.Dynamic.literal(
           "symbol" -> symbol,
           "name" -> name,
           "keywords" -> keywords.toJSArray,
           "vectorises" -> vectorises,
-          "overloads" -> overloads.toJSArray
+          "overloads" -> overloads.toJSArray,
         )
     }.toJSArray
 
   @JSExport
   def getModifiers() =
-    Modifiers.modifiers.map { case (symbol, info) =>
-      js.Dynamic.literal(
-        "symbol" -> symbol,
-        "name" -> info.name,
-        "description" -> info.description,
-        "keywords" -> info.keywords.toJSArray,
-      )
+    Modifiers.modifiers.map {
+      case (symbol, info) => js.Dynamic.literal(
+          "symbol" -> symbol,
+          "name" -> info.name,
+          "description" -> info.description,
+          "keywords" -> info.keywords.toJSArray,
+        )
     }.toJSArray
 
 end JSVyxal

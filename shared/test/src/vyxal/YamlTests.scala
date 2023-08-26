@@ -22,7 +22,7 @@ case class YamlTest(
     inputs: Seq[VAny],
     flags: List[Char],
     code: Option[String],
-    criterion: Seq[Criterion]
+    criterion: Seq[Criterion],
 )
 
 /** A criterion for the output of a test to meet */
@@ -71,8 +71,7 @@ class YamlTests extends AnyFunSpec:
             else s"Code: `$code, inputs: $inputStr"
 
           Elements.elements(element).arity match
-            case Some(arity) =>
-              if arity > 0 && arity != inputs.size then
+            case Some(arity) => if arity > 0 && arity != inputs.size then
                 println(
                   s"[Element $element] Inputs (${inputs.mkString(",")}) don't match arity ($arity)"
                 )
@@ -90,15 +89,12 @@ class YamlTests extends AnyFunSpec:
                 checkpoint { assertResult(expected)(output) }
               case Criterion.Stack(elems) =>
                 checkpoint { assertResult(elems)(ctx.peek(elems.length)) }
-              case crit =>
-                checkpoint {
+              case crit => checkpoint {
                   output match
-                    case lst: VList =>
-                      (crit: @unchecked) match
+                    case lst: VList => (crit: @unchecked) match
                         case Criterion.StartsWith(prefix) =>
                           assertResult(prefix)(lst.slice(0, prefix.length))
-                        case Criterion.EndsWith(suffix) =>
-                          assertResult(suffix)(
+                        case Criterion.EndsWith(suffix) => assertResult(suffix)(
                             lst.slice(lst.length - suffix.length, lst.length)
                           )
                         case Criterion.Contains(elems, false) =>
@@ -107,8 +103,7 @@ class YamlTests extends AnyFunSpec:
                             fail(
                               s"$lst does not contain ${notFound.mkString(",")}"
                             )
-                        case Criterion.Contains(elems, true) =>
-                          ???
+                        case Criterion.Contains(elems, true) => ???
                     case _ => fail(s"$output is not a list")
                 }
             }
@@ -147,9 +142,10 @@ class YamlTests extends AnyFunSpec:
       case Node.ScalarNode(text, tag) =>
         if tag == Tag.int || tag == Tag.float || tag == NumTag then VNum(text)
         else if tag == VAnyTag then
-          given ctx: Context = Context(globals =
-            Globals(settings = Settings(endPrintMode = EndPrintMode.None))
-          )
+          given ctx: Context =
+            Context(globals =
+              Globals(settings = Settings(endPrintMode = EndPrintMode.None))
+            )
           Interpreter.execute(text)
           ctx.pop()
         else if tag == Tag.str then
@@ -158,34 +154,40 @@ class YamlTests extends AnyFunSpec:
       case Node.SequenceNode(lst, _) => VList.from(lst.map(decodeNode))
       case _ => throw Error(s"Invalid Vyxal value (cannot be map): $node")
 
-  given YamlDecoder[VAny] = new YamlDecoder:
-    override def construct(node: Node)(using LoadSettings) =
-      Right(decodeNode(node))
+  given YamlDecoder[VAny] =
+    new YamlDecoder:
+      override def construct(node: Node)(using LoadSettings) =
+        Right(decodeNode(node))
 
-  given YamlDecoder[TestGroup] = new YamlDecoder:
-    override def construct(node: Node)(using LoadSettings) =
-      node match
-        case Node.SequenceNode(testInfos, _) =>
-          val tests = testInfos.map { test =>
-            val Node.SequenceNode(inputs, _) =
-              getValue(test, "in").get: @unchecked
-            val flags = getValue(test, "flags").fold(Nil)(scalarText(_).toList)
-            val code = getValue(test, "code").map(scalarText)
-            val output = getOutputCriteria(test)
-            YamlTest(inputs.map(decodeNode), flags, code, output)
-          }
-          Right(TestGroup.Tests(tests))
-        case Node.MappingNode(subgroupNodes, _) =>
-          val subgroups = subgroupNodes.map { (nameNode, groupInfo) =>
-            val Node.ScalarNode(name, _) = nameNode: @unchecked
-            name -> this
-              .construct(groupInfo)
-              .toOption
-              .getOrElse(throw Error(s"Error encountered parsing group $name"))
-          }.toMap
-          // todo return a Left if errors were found instead of throwing immediately
-          Right(TestGroup.Subgroups(subgroups))
-        case _ => throw Error(s"Test groups cannot be scalars: $node")
+  given YamlDecoder[TestGroup] =
+    new YamlDecoder:
+      override def construct(node: Node)(using LoadSettings) =
+        node match
+          case Node.SequenceNode(testInfos, _) =>
+            val tests = testInfos.map { test =>
+              val Node.SequenceNode(inputs, _) =
+                getValue(test, "in").get: @unchecked
+              val flags =
+                getValue(test, "flags").fold(Nil)(scalarText(_).toList)
+              val code = getValue(test, "code").map(scalarText)
+              val output = getOutputCriteria(test)
+              YamlTest(inputs.map(decodeNode), flags, code, output)
+            }
+            Right(TestGroup.Tests(tests))
+          case Node.MappingNode(subgroupNodes, _) =>
+            val subgroups = subgroupNodes.map { (nameNode, groupInfo) =>
+              val Node.ScalarNode(name, _) = nameNode: @unchecked
+              name ->
+                this
+                  .construct(groupInfo)
+                  .toOption
+                  .getOrElse(
+                    throw Error(s"Error encountered parsing group $name")
+                  )
+            }.toMap
+            // todo return a Left if errors were found instead of throwing immediately
+            Right(TestGroup.Subgroups(subgroups))
+          case _ => throw Error(s"Test groups cannot be scalars: $node")
 
   private def getOutputCriteria(testInfo: Node): Seq[Criterion] =
     val criteria = mutable.ArrayBuffer.empty[Criterion]
@@ -201,10 +203,11 @@ class YamlTests extends AnyFunSpec:
     for case Node
         .SequenceNode(contains, _) <- getValue(testInfo, "contains-monotonic")
     do
-      criteria += Criterion.Contains(
-        contains.map(decodeNode),
-        monotonic = true
-      )
+      criteria +=
+        Criterion.Contains(
+          contains.map(decodeNode),
+          monotonic = true,
+        )
     for case Node.SequenceNode(stack, _) <- getValue(testInfo, "stack") do
       criteria += Criterion.Stack(stack.map(decodeNode))
 
