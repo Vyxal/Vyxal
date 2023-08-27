@@ -1517,7 +1517,7 @@ object Elements:
       Monad,
       "ɾ",
       "Inclusive One Range | Uppercase",
-      List("1..n", "one->n", "one-range", "to-upper", "upper", "uppercase"),
+      List("one->n", "one-range", "to-upper", "upper", "uppercase"),
       true,
       "a: num -> [1..a]",
       "a: str -> a.upper()",
@@ -1530,7 +1530,6 @@ object Elements:
       "ʀ",
       "Exclusive Zero Range | Lowercase",
       List(
-        "0..n",
         "0->n",
         "zero-range",
         "lowered-range",
