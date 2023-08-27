@@ -1123,6 +1123,16 @@ object Elements:
     },
     addPart(
       Monad,
+      "¬",
+      "Logical Not",
+      List("non-vec-not", "non-vec-logical-not"),
+      false,
+      "a: any -> !a",
+    ) { a =>
+      VNum(!a.toBool)
+    },
+    addPart(
+      Monad,
       "O",
       "Ord/Chr",
       List("ord", "chr"),
