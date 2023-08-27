@@ -419,16 +419,14 @@ object Elements:
     addPart(
       Monad,
       "!",
-      "Factorial | To Uppercase",
-      List("fact", "factorial", "to-upper", "upper", "uppercase"),
+      "Factorial",
+      List("fact", "factorial"),
       true,
       "a: num -> a!",
-      "a: str -> a.toUpperCase()",
     ) {
       case a @ VNum(r, i) =>
         if r.isWhole then spire.math.fact(spire.math.abs(a.toLong))
         else NumberHelpers.gamma(spire.math.abs(a.underlying.real) + 1)
-      case a: String => a.toUpperCase()
     },
     addPart(
       Dyad,
@@ -1516,6 +1514,37 @@ object Elements:
       case a: String => VList.from(a.grouped(3).toSeq)
     },
     addPart(
+      Monad,
+      "ɾ",
+      "Inclusive One Range | Uppercase",
+      List("one->n", "one-range", "to-upper", "upper", "uppercase"),
+      true,
+      "a: num -> [1..a]",
+      "a: str -> a.upper()",
+    ) {
+      case a: VNum => NumberHelpers.range(1, a)
+      case a: String => a.toUpperCase
+    },
+    addPart(
+      Monad,
+      "ʀ",
+      "Exclusive Zero Range | Lowercase",
+      List(
+        "0->n",
+        "zero-range",
+        "lowered-range",
+        "to-lower",
+        "lower",
+        "lowercase",
+      ),
+      true,
+      "a: num -> [0..a)",
+      "a: str -> a.lower()",
+    ) {
+      case a: VNum => NumberHelpers.range(0, a - 1)
+      case a: String => a.toLowerCase
+    },
+    addPart(
       Dyad,
       "-",
       "Subtraction",
@@ -1884,8 +1913,14 @@ object Elements:
     addPart(
       Monad,
       "z",
-      "Zero Range | Is Lowercase",
-      List("zero-range", "zero->n", "is-lowercase?", "lowercase?", "lower?"),
+      "Inclusive zero Range | Is Lowercase",
+      List(
+        "inclusive-zero-range",
+        "zero->n",
+        "is-lowercase?",
+        "lowercase?",
+        "lower?",
+      ),
       true,
       "a: num -> [0, 1, ..., a]",
       "a: str -> is a lowercase?",
