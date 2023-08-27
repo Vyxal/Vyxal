@@ -714,13 +714,13 @@ Keywords: transpose-safe
 ---------------------
 ʀ (Exclusive Zero Range | Lowercase) (vectorising)
 Trigraph: #.~
-Keywords: 0..n, 0->n, zero-range, lowered-range, to-lower, lower, lowercase
+Keywords: 0->n, zero-range, lowered-range, to-lower, lower, lowercase
 - a: num -> [0..a)
 - a: str -> a.lower()
 ---------------------
 ɾ (Inclusive One Range | Uppercase) (vectorising)
 Trigraph: #,~
-Keywords: 1..n, one->n, one-range, to-upper, upper, uppercase
+Keywords: one->n, one-range, to-upper, upper, uppercase
 - a: num -> [1..a]
 - a: str -> a.upper()
 ---------------------
