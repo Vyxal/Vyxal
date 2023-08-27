@@ -1132,6 +1132,26 @@ object Elements:
       VNum(!a.toBool)
     },
     addPart(
+      Dyad,
+      "∧",
+      "Logical And",
+      List("and", "logical-and"),
+      true,
+      "a: any, b: any -> a && b",
+    ) { (a, b) =>
+      if a.toBool then b else a
+    },
+    addPart(
+      Dyad,
+      "∨",
+      "Logical Or",
+      List("or", "logical-or"),
+      true,
+      "a: any, b: any -> a || b",
+    ) { (a, b) =>
+      if a.toBool then a else b
+    },
+    addPart(
       Monad,
       "O",
       "Ord/Chr",
