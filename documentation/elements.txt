@@ -742,6 +742,21 @@ Keywords: divide, div, str-split
 Keywords: grade-up
 - a: any -> indices that will sort a
 ---------------------
+¬ (Logical Not) (non-vectorising)
+Trigraph: #,!
+Keywords: non-vec-not, non-vec-logical-not
+- a: any -> !a
+---------------------
+∧ (Logical And) (vectorising)
+Trigraph: #,&
+Keywords: and, logical-and
+- a: any, b: any -> a && b
+---------------------
+∨ (Logical Or) (vectorising)
+Trigraph: #,|
+Keywords: or, logical-or
+- a: any, b: any -> a || b
+---------------------
 ð (Space) (non-vectorising)
 Trigraph: #.b
 Keywords: space
