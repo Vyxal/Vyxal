@@ -176,7 +176,7 @@ object Elements:
       true,
       "a: num, b: num -> a << b",
     ) {
-      case (a: VNum, b: VNum) => a.toBigInt << b.toBigInt
+      case (a: VNum, b: VNum) => a.toBigInt << b.toInt
     },
     addPart(
       Dyad,
@@ -186,7 +186,7 @@ object Elements:
       true,
       "a: num, b: num -> a >> b",
     ) {
-      case (a: VNum, b: VNum) => a.toBigInt >> b.toBigInt
+      case (a: VNum, b: VNum) => a.toBigInt >> b.toInt
     },
     addFull(
       Monad,
