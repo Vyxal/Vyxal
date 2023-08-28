@@ -136,7 +136,7 @@ object Elements:
       true,
       "a: num -> ~a",
     ) {
-      case a: VNum => ~a.toInt
+      case a: VNum => ~a.toBigInt
     },
     addPart(
       Dyad,
@@ -146,7 +146,7 @@ object Elements:
       true,
       "a: num, b: num -> a & b",
     ) {
-      case (a: VNum, b: VNum) => a.toInt & b.toInt
+      case (a: VNum, b: VNum) => a.toBigInt & b.toBigInt
     },
     addPart(
       Dyad,
@@ -156,7 +156,7 @@ object Elements:
       true,
       "a: num, b: num -> a | b",
     ) {
-      case (a: VNum, b: VNum) => a.toInt | b.toInt
+      case (a: VNum, b: VNum) => a.toBigInt | b.toBigInt
     },
     addPart(
       Dyad,
@@ -166,7 +166,7 @@ object Elements:
       true,
       "a: num, b: num -> a ^ b",
     ) {
-      case (a: VNum, b: VNum) => a.toInt ^ b.toInt
+      case (a: VNum, b: VNum) => a.toBigInt ^ b.toBigInt
     },
     addPart(
       Dyad,
@@ -176,7 +176,7 @@ object Elements:
       true,
       "a: num, b: num -> a << b",
     ) {
-      case (a: VNum, b: VNum) => a.toInt << b.toInt
+      case (a: VNum, b: VNum) => a.toBigInt << b.toBigInt
     },
     addPart(
       Dyad,
@@ -186,7 +186,7 @@ object Elements:
       true,
       "a: num, b: num -> a >> b",
     ) {
-      case (a: VNum, b: VNum) => a.toInt >> b.toInt
+      case (a: VNum, b: VNum) => a.toBigInt >> b.toBigInt
     },
     addFull(
       Monad,
