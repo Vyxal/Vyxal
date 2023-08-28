@@ -658,6 +658,36 @@ Keywords: surround, character-multiply
 Keywords: sum, /+, +/
 - a: lst -> sum of a
 ---------------------
+« (Bitshift Left) (vectorising)
+Trigraph: #.<
+Keywords: bitwise-left-shift, left-shift
+- a: num, b: num -> a << b
+---------------------
+» (Bitshift Right) (vectorising)
+Trigraph: #.>
+Keywords: bitwise-right-shift, right-shift
+- a: num, b: num -> a >> b
+---------------------
+⌐ (Bitwise Not) (vectorising)
+Trigraph: #.!
+Keywords: bitwise-not
+- a: num -> ~a
+---------------------
+∴ (Bitwise And) (vectorising)
+Trigraph: #.:
+Keywords: bitwise-and
+- a: num, b: num -> a & b
+---------------------
+∵ (Bitwise Or) (vectorising)
+Trigraph: #,:
+Keywords: bitwise-or
+- a: num, b: num -> a | b
+---------------------
+⊻ (Bitwise Xor) (vectorising)
+Trigraph: #,v
+Keywords: bitwise-xor
+- a: num, b: num -> a ^ b
+---------------------
 ₀ (Ten) (non-vectorising)
 Trigraph: #,0
 Keywords: ten
