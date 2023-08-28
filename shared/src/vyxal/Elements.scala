@@ -128,6 +128,66 @@ object Elements:
           l
         }
     },
+    addPart(
+      Monad,
+      "⌐",
+      "Bitwise Not",
+      List("bitwise-not"),
+      true,
+      "a: num -> ~a",
+    ) {
+      case a: VNum => ~a.toInt
+    },
+    addPart(
+      Dyad,
+      "∴",
+      "Bitwise And",
+      List("bitwise-and"),
+      true,
+      "a: num, b: num -> a & b",
+    ) {
+      case (a: VNum, b: VNum) => a.toInt & b.toInt
+    },
+    addPart(
+      Dyad,
+      "∵",
+      "Bitwise Or",
+      List("bitwise-or"),
+      true,
+      "a: num, b: num -> a | b",
+    ) {
+      case (a: VNum, b: VNum) => a.toInt | b.toInt
+    },
+    addPart(
+      Dyad,
+      "⊻",
+      "Bitwise Xor",
+      List("bitwise-xor"),
+      true,
+      "a: num, b: num -> a ^ b",
+    ) {
+      case (a: VNum, b: VNum) => a.toInt ^ b.toInt
+    },
+    addPart(
+      Dyad,
+      "«",
+      "Bitshift Left",
+      List("bitwise-left-shift", "left-shift"),
+      true,
+      "a: num, b: num -> a << b",
+    ) {
+      case (a: VNum, b: VNum) => a.toInt << b.toInt
+    },
+    addPart(
+      Dyad,
+      "»",
+      "Bitshift Right",
+      List("bitwise-right-shift", "right-shift"),
+      true,
+      "a: num, b: num -> a >> b",
+    ) {
+      case (a: VNum, b: VNum) => a.toInt >> b.toInt
+    },
     addFull(
       Monad,
       "ȯ",
