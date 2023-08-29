@@ -194,6 +194,9 @@ object MiscHelpers:
       case (a: VNum, b: String) =>
         if a.toInt > 0 then "-" * a.toInt + b else b + "-" * a.toInt.abs
       case (a: String, b: String) => a.replace(b, "")
-      case (a, b) => VNum(0)
+      case (a: VList, b: (VNum | String)) => VList.from(a.map(subtract(_, b)))
+      case (a: (VNum | String), b: VList) => VList.from(b.map(subtract(a, _)))
+      case (a: VList, b: VList) => VList.from((a, b).zipped.map(subtract(_, _)))
+      case (a, b) => ???
 
 end MiscHelpers

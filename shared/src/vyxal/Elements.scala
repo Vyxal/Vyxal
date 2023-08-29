@@ -610,8 +610,10 @@ object Elements:
     ) {
       case a: VNum => a / 2
       case a: String =>
-        if a == "" then a
-        else VList.from(a.grouped((a.length / 2.0).ceil.toInt).toSeq)
+        val x = a.splitAt(
+          (a.length / 2.0).floor.toInt
+        )
+        VList(x(0), x(1))
     },
     addFull(
       Monad,
@@ -1570,10 +1572,7 @@ object Elements:
       true,
       "a: num -> sign of a",
     ) {
-      case a: VNum =>
-        if a < 0 then -1
-        else if a > 0 then 1
-        else 0
+      case a: VNum => a.signum
     },
     addPart(
       Dyad,
@@ -1726,12 +1725,8 @@ object Elements:
       "a: num, b: str -> a '-'s + b (or b + '-'s if a < 0)",
       "a: str, b: str -> a with b removed",
     ) {
-      case (a: VNum, b: VNum) => a - b
-      case (a: String, b: VNum) =>
-        if b.toInt > 0 then a + "-" * b.toInt else "-" * b.toInt.abs + a
-      case (a: VNum, b: String) =>
-        if a.toInt > 0 then "-" * a.toInt + b else b + "-" * a.toInt.abs
-      case (a: String, b: String) => a.replace(b, "")
+      case (a: (VNum | String), b: (VNum | String)) =>
+        MiscHelpers.subtract(a, b)
     },
     addPart(
       Monad,

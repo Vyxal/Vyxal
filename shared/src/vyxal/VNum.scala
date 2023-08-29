@@ -19,6 +19,11 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   def toLong: Long = underlying.toLong
   def toBigInt: BigInt = underlying.real.toRational.toBigInt
 
+  def signum: VNum =
+    if this < VNum(0) then VNum(-1)
+    else if this > VNum(0) then VNum(1)
+    else VNum(0)
+
   /** Whether the real part is small enough to be converted to an `Int` */
   def isValidInt: Boolean = underlying.real.isValidInt
 
