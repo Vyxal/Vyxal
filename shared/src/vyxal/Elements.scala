@@ -306,7 +306,7 @@ object Elements:
       "Deltas",
       List("deltas"),
       false,
-      "a: lst -> forward-differences of a"
+      "a: lst -> forward-differences of a",
     ) { a =>
       ListHelpers.deltas(ListHelpers.makeIterable(a))
     },
@@ -606,7 +606,7 @@ object Elements:
       List("halve"),
       true,
       "a: num -> a / 2",
-      "a: str -> a split into two pieces"
+      "a: str -> a split into two pieces",
     ) {
       case a: VNum => a / 2
       case a: String =>
@@ -1568,7 +1568,7 @@ object Elements:
       "Sign",
       List("sign"),
       true,
-      "a: num -> sign of a"
+      "a: num -> sign of a",
     ) {
       case a: VNum =>
         if a < 0 then -1
@@ -1644,13 +1644,13 @@ object Elements:
     ) {
       case a: VList => VList.from(ListHelpers.suffixes(a))
       case a: String => VList.from(
-        ListHelpers.suffixes(ListHelpers.makeIterable(a)).map(_.mkString)
-      )
+          ListHelpers.suffixes(ListHelpers.makeIterable(a)).map(_.mkString)
+        )
       case a: VNum => VList.from(
-        ListHelpers
-          .suffixes(ListHelpers.makeIterable(a.vabs))
-          .map(n => MiscHelpers.eval(n.mkString))
-      )
+          ListHelpers
+            .suffixes(ListHelpers.makeIterable(a.vabs))
+            .map(n => MiscHelpers.eval(n.mkString))
+        )
     },
     addPart(
       Monad,
