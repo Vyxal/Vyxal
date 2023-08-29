@@ -682,4 +682,7 @@ object ListHelpers:
       makeIterable(lst).sortBy((a: VAny) => ListHelpers.makeIterable(a).length)
     )
 
+  def deltas(lst: VList)(using Context): VList =
+    VList.from((lst.drop(1), lst).zipped.map(MiscHelpers.subtract(_, _)))
+
 end ListHelpers

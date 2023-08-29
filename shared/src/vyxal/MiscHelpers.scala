@@ -185,4 +185,18 @@ object MiscHelpers:
   def vyPrintln(x: VAny)(using Context): Unit =
     vyPrint(x)
     vyPrint("\n")
+
+  def subtract(a: VAny, b: VAny): VAny =
+    (a, b) match
+      case (a: VNum, b: VNum) => a - b
+      case (a: String, b: VNum) =>
+        if b.toInt > 0 then a + "-" * b.toInt else "-" * b.toInt.abs + a
+      case (a: VNum, b: String) =>
+        if a.toInt > 0 then "-" * a.toInt + b else b + "-" * a.toInt.abs
+      case (a: String, b: String) => a.replace(b, "")
+      case (a: VList, b: (VNum | String)) => VList.from(a.map(subtract(_, b)))
+      case (a: (VNum | String), b: VList) => VList.from(b.map(subtract(a, _)))
+      case (a: VList, b: VList) => VList.from((a, b).zipped.map(subtract(_, _)))
+      case (a, b) => ???
+
 end MiscHelpers

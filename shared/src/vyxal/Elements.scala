@@ -301,6 +301,16 @@ object Elements:
       case a: VNum => a > 0
     },
     addPart(
+      Monad,
+      "¯",
+      "Deltas",
+      List("deltas"),
+      false,
+      "a: lst -> forward-differences of a",
+    ) { a =>
+      ListHelpers.deltas(ListHelpers.makeIterable(a))
+    },
+    addPart(
       Dyad,
       "÷",
       "Divide | Split",
@@ -588,6 +598,20 @@ object Elements:
     ) {
       case (a, b: VFun) => ListHelpers.groupBy(ListHelpers.makeIterable(a), b)
       case (a: VFun, b) => ListHelpers.groupBy(ListHelpers.makeIterable(b), a)
+    },
+    addPart(
+      Monad,
+      "½",
+      "Halve",
+      List("halve"),
+      true,
+      "a: num -> a / 2",
+      "a: str -> a split into two pieces",
+    ) {
+      case a: VNum => a / 2
+      case a: String =>
+        val (fst, snd) = a.splitAt(a.length / 2)
+        VList(fst, snd)
     },
     addFull(
       Monad,
@@ -1539,6 +1563,16 @@ object Elements:
 
     },
     addPart(
+      Monad,
+      "±",
+      "Sign",
+      List("sign"),
+      true,
+      "a: num -> sign of a",
+    ) {
+      case a: VNum => a.signum
+    },
+    addPart(
       Dyad,
       "ṡ",
       "Sort by Function Object | Partition by Numbers",
@@ -1595,6 +1629,24 @@ object Elements:
               .prefixes(ListHelpers.makeIterable(a))
               .map(b => ListHelpers.suffixes(ListHelpers.makeIterable(b)))
           )
+        )
+    },
+    addPart(
+      Monad,
+      "€",
+      "Suffixes",
+      List("suffixes"),
+      false,
+      "a: lst -> Suffixes of a",
+    ) {
+      case a: VList => VList.from(ListHelpers.suffixes(a))
+      case a: String => VList.from(
+          ListHelpers.suffixes(ListHelpers.makeIterable(a)).map(_.mkString)
+        )
+      case a: VNum => VList.from(
+          ListHelpers
+            .suffixes(ListHelpers.makeIterable(a.vabs))
+            .map(n => MiscHelpers.eval(n.mkString))
         )
     },
     addPart(
@@ -1671,12 +1723,8 @@ object Elements:
       "a: num, b: str -> a '-'s + b (or b + '-'s if a < 0)",
       "a: str, b: str -> a with b removed",
     ) {
-      case (a: VNum, b: VNum) => a - b
-      case (a: String, b: VNum) =>
-        if b.toInt > 0 then a + "-" * b.toInt else "-" * b.toInt.abs + a
-      case (a: VNum, b: String) =>
-        if a.toInt > 0 then "-" * a.toInt + b else b + "-" * a.toInt.abs
-      case (a: String, b: String) => a.replace(b, "")
+      case (a: (VNum | String), b: (VNum | String)) =>
+        MiscHelpers.subtract(a, b)
     },
     addPart(
       Monad,

@@ -742,6 +742,12 @@ Keywords: empty-list, nil-list, new-list
 Keywords: transpose-safe
 - a: any -> transpose a
 ---------------------
+½ (Halve) (vectorising)
+Trigraph: #.5
+Keywords: halve
+- a: num -> a / 2
+- a: str -> a split into two pieces
+---------------------
 ʀ (Exclusive Zero Range | Lowercase) (vectorising)
 Trigraph: #.~
 Keywords: 0->n, zero-range, lowered-range, to-lower, lower, lowercase
@@ -753,6 +759,11 @@ Trigraph: #,~
 Keywords: one->n, one-range, to-upper, upper, uppercase
 - a: num -> [1..a]
 - a: str -> a.upper()
+---------------------
+¯ (Deltas) (non-vectorising)
+Trigraph: #^_
+Keywords: deltas
+- a: lst -> forward-differences of a
 ---------------------
 × (Multiplication) (vectorising)
 Trigraph: #.*
@@ -771,6 +782,11 @@ Keywords: divide, div, str-split
 ↑ (Grade Up) (non-vectorising)
 Keywords: grade-up
 - a: any -> indices that will sort a
+---------------------
+± (Sign) (vectorising)
+Trigraph: #,+
+Keywords: sign
+- a: num -> sign of a
 ---------------------
 ¬ (Logical Not) (non-vectorising)
 Trigraph: #,!
@@ -801,6 +817,11 @@ Keywords: min-no-pop
 Trigraph: #.b
 Keywords: space
 - ->  
+---------------------
+€ (Suffixes) (non-vectorising)
+Trigraph: #^(
+Keywords: suffixes
+- a: lst -> Suffixes of a
 ---------------------
 ¶ (Newline) (non-vectorising)
 Trigraph: #,
