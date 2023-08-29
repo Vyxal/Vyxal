@@ -610,10 +610,8 @@ object Elements:
     ) {
       case a: VNum => a / 2
       case a: String =>
-        val x = a.splitAt(
-          (a.length / 2.0).floor.toInt
-        )
-        VList(x(0), x(1))
+        val (fst, snd) = a.splitAt(a.length / 2)
+        VList(fst, snd)
     },
     addFull(
       Monad,
