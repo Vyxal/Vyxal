@@ -683,6 +683,6 @@ object ListHelpers:
     )
 
   def deltas(lst: VList)(using Context): VList =
-    VList.from(lst.zipWith(lst.tail).vmap(x => x(1) - x(0)))
+    VList.from((lst, lst.tail).zipped.map(_ - _))
 
 end ListHelpers
