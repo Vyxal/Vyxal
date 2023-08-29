@@ -1036,6 +1036,24 @@ object Elements:
             case (a: VVal, b: VVal) => ctx.push(MiscHelpers.dyadicMaximum(a, b))
             case _ => throw Exception("Invalid arguments for maximum")
     },
+    addDirect(
+      "Ɠ",
+      "Maximum without popping",
+      List("max-no-pop"),
+      Some(1),
+      "a: lst -> max(a) without popping a",
+    ) { ctx ?=>
+      ctx.push(ListHelpers.makeIterable(ctx.peek).maxOption.getOrElse(VList()))
+    },
+    addDirect(
+      "ɠ",
+      "Minimum without popping",
+      List("min-no-pop"),
+      Some(1),
+      "a: lst -> min(a) without popping a",
+    ) { ctx ?=>
+      ctx.push(ListHelpers.makeIterable(ctx.peek).minOption.getOrElse(VList()))
+    },
     addPart(
       Dyad,
       "J",

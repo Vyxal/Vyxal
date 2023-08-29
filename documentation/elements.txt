@@ -787,6 +787,16 @@ Trigraph: #,|
 Keywords: or, logical-or
 - a: any, b: any -> a || b
 ---------------------
+Ɠ (Maximum without popping) (non-vectorising)
+Trigraph: #.9
+Keywords: max-no-pop
+- a: lst -> max(a) without popping a
+---------------------
+ɠ (Minimum without popping) (non-vectorising)
+Trigraph: #.6
+Keywords: min-no-pop
+- a: lst -> min(a) without popping a
+---------------------
 ð (Space) (non-vectorising)
 Trigraph: #.b
 Keywords: space
