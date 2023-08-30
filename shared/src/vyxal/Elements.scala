@@ -2042,6 +2042,18 @@ object Elements:
       case a: String => StringHelpers.caseof(a)
     },
     addPart(
+      Dyad,
+      "Φ",
+      "Umm I have no clue what to call this @Lyxal @ysthakur please help",
+      List(),
+      false,
+      "a: lst, b: num -> a[1:b]",
+      "a: num, b: lst -> b[1:a]",
+    ) {
+      case (a, b: VNum) => ListHelpers.makeIterable(a).slice(1, b.toInt)
+      case (a: VNum, b) => ListHelpers.makeIterable(b).slice(1, a.toInt)
+    },
+    addPart(
       Monad,
       "u",
       "Uniquify",
