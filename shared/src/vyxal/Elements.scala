@@ -1772,7 +1772,7 @@ object Elements:
       true,
       "a: num -> sqrt(a)",
     ) {
-      case a: VNum => VNum(Math.sqrt(a.toDouble))
+      case a: VNum => VNum(a.real.sqrt)
     },
     addPart(
       Monad,
