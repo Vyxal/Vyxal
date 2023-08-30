@@ -364,10 +364,9 @@ object Modifiers:
                 val lhs = ListHelpers.makeIterable(ctx.pop())
                 val matrix = VList.from(lhs.map { l =>
                   VList.from(rhs.map { r =>
-                    ctx.push(l)
-                    ctx.push(r)
-                    Interpreter.execute(ast)
-                    ctx.pop()
+                    VFun.fromLambda(
+                      astToLambda(ast, 2).asInstanceOf[AST.Lambda]
+                    )(l, r)
                   })
                 })
                 ctx.push(matrix)
