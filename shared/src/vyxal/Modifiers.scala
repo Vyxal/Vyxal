@@ -354,10 +354,7 @@ object Modifiers:
         List("outer-product:", "table:"),
         1,
       ) {
-        case List(ast) =>
-          // TODO this only works if f takes pops exactly two values and pushes
-          //   exactly one value. Is that a problem?
-          AST.Generated(
+        case List(ast) => AST.Generated(
             () =>
               ctx ?=>
                 val rhs = ListHelpers.makeIterable(ctx.pop())
