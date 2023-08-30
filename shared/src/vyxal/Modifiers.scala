@@ -413,7 +413,7 @@ object Modifiers:
         "Sort By",
         """|Sort By Element
            |ᶳf: Sort top of stack based on results of f""".stripMargin,
-        List("sort-by"),
+        List("sort-by:"),
         1,
       ) {
         case List(ast) => AST.Generated(
