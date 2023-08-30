@@ -408,6 +408,29 @@ object Modifiers:
             AST.Command("#|map-prefixes"),
           )
       },
+    "ᶳ" ->
+      Modifier(
+        "Sort By",
+        """|Sort By Element
+           |ᶳf: Sort top of stack based on results of f""".stripMargin,
+        List("sort-by"),
+        1,
+      ) {
+        case List(ast) => AST.Generated(
+          () =>
+            ctx ?=>
+              val lst = ListHelpers.makeIterable(ctx.pop())
+              ctx.push(lst.sortBy { elem =>
+                given elemCtx: Context = ctx.makeChild()
+
+                elemCtx.push(elem)
+                Interpreter.execute(ast)(using elemCtx)
+                elemCtx.pop()
+              })
+          ,
+          arity = Some(1),
+        )
+      },
     "ᵡ" ->
       Modifier(
         "Scan Fixed Point",
