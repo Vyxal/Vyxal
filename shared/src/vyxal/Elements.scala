@@ -87,7 +87,7 @@ object Elements:
       "a: lst -> are all elements of a equal?",
     ) { a =>
       val x = ListHelpers.makeIterable(a)
-      if x.length == 0 then 1
+      if x.isEmpty then 1
       else x.forall(_ == x(0))
     },
     addPart(
