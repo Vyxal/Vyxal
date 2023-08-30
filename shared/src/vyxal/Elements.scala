@@ -750,6 +750,25 @@ object Elements:
         case arg => throw UnimplementedOverloadException("ṫ", List(arg))
     },
     addPart(
+      Monad,
+      "…",
+      "Increment Twice | Vectorised Head",
+      List("incr-twice", "vec-head"),
+      false,
+      "a: num -> a + 2",
+      "a: lst -> [x[0] for x in a]",
+    ) {
+      case a: VNum => a + 2
+      case a: VList => VList.from(
+          a.map(x =>
+            ListHelpers
+              .makeIterable(x)
+              .headOption
+              .getOrElse(MiscHelpers.defaultEmpty(x))
+          )
+        )
+    },
+    addPart(
       Dyad,
       "i",
       "Index | Collect Unique Application Values | Enclose",
