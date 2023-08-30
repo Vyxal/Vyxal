@@ -646,6 +646,12 @@ Trigraph: #,S
 Keywords: sublists
 - a: lst -> sublists of a
 ---------------------
+… (Increment Twice | Vectorised Head) (non-vectorising)
+Trigraph: #..
+Keywords: incr-twice, vec-head
+- a: num -> a + 2
+- a: lst -> [x[0] for x in a]
+---------------------
 ≤ (Less Than Or Equal To) (vectorising)
 Trigraph: #,<
 Keywords: le, less-than-or-equal-to
