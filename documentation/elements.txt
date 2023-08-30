@@ -604,6 +604,11 @@ Trigraph: #.`
 Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first-n
 - a: lst, b: num -> [a[0], a[1], ..., a[b-1]]
 ---------------------
+§ (Print without newline) (non-vectorising)
+Trigraph: #,o
+Keywords: print-no-newline
+- a -> printed to stdout without newline
+---------------------
 Ḅ (Unique Prime Factors | Case Of) (vectorising)
 Trigraph: #,B
 Keywords: unique-prime-factors, case-of
@@ -626,6 +631,11 @@ Keywords: bit-length, matrix-inverse
 - a: num -> bit length of a
 - a: lst[lst] -> matrix inverse of a
 ---------------------
+Ọ (Print without popping) (non-vectorising)
+Trigraph: #,O
+Keywords: print-no-pop
+- a -> printed to stdout without popping
+---------------------
 Ṛ (Reverse) (non-vectorising)
 Trigraph: #,R
 Keywords: reverse
@@ -635,6 +645,32 @@ Keywords: reverse
 Trigraph: #,S
 Keywords: sublists
 - a: lst -> sublists of a
+---------------------
+≤ (Less Than Or Equal To) (vectorising)
+Trigraph: #,<
+Keywords: le, less-than-or-equal-to
+- a: num, b: num -> a <= b
+- a: str, b: num -> a <= str(b)
+- a: num, b: str -> str(a) <= b
+- a: str, b: str -> a <= b
+---------------------
+≥ (Greater Than Or Equal To) (vectorising)
+Trigraph: #,>
+Keywords: ge, greater-than-or-equal-to
+- a: num, b: num -> a >= b
+- a: str, b: num -> a >= str(b)
+- a: num, b: str -> str(a) >= b
+- a: str, b: str -> a >= b
+---------------------
+≠ (Not Equal) (non-vectorising)
+Trigraph: #.=
+Keywords: not-equal
+- a: any, b: any -> a != b
+---------------------
+₌ (Exactly Equals) (non-vectorising)
+Trigraph: #,=
+Keywords: ===, exactly-equal, strictly-equal?
+- a: any, b: any -> a === b (non-vectorising)
 ---------------------
 ⁺ (Square | Pairs) (vectorising)
 Trigraph: #^+
@@ -653,6 +689,11 @@ Trigraph: #^)
 Keywords: surround, character-multiply
 - a: num, b: str -> each character in b repeated a times
 - a: any, b: any -> a prepended and appended to b
+---------------------
+√ (Square Root) (vectorising)
+Trigraph: #,*
+Keywords: sqrt, square-root
+- a: num -> sqrt(a)
 ---------------------
 ∑ (Sum) (non-vectorising)
 Keywords: sum, /+, +/
@@ -783,6 +824,11 @@ Keywords: divide, div, str-split
 Keywords: grade-up
 - a: any -> indices that will sort a
 ---------------------
+↓ (Grade Down) (non-vectorising)
+Trigraph: #^;
+Keywords: grade-down
+- a: any -> indices that will reverse-sort a
+---------------------
 ± (Sign) (vectorising)
 Trigraph: #,+
 Keywords: sign
@@ -834,6 +880,21 @@ Keywords: newline
 Trigraph: #^`
 Keywords: cartesian-product-unsafe, cartesian-unsafe, cart-prod-unsafe, cart-unsafe
 - a: list, b: list -> cartesian product of a and b in the standard order, but without accounting for infinite lists
+---------------------
+ᶲ (Stringify) (non-vectorising)
+Trigraph: #^|
+Keywords: to-string, stringify, str
+- a: any -> str(a)
+---------------------
+• (Asterisk) (non-vectorising)
+Trigraph: #,.
+Keywords: asterisk
+- -> *
+---------------------
+≈ (All Equal?) (non-vectorising)
+Trigraph: #^~
+Keywords: all-equal, all-equal?
+- a: lst -> are all elements of a equal?
 ---------------------
 Ч
 Keywords: ****:
