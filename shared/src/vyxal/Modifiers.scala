@@ -325,22 +325,12 @@ object Modifiers:
         "Maximum By",
         """|Maximum By Element
          |ᵐf: Maximum of top of stack based on results of f""".stripMargin,
-        List("max-by", "maximum-by"),
+        List("max-by:", "maximum-by:"),
         1,
       ) {
-        case List(ast) => AST.Generated(
-            () =>
-              ctx ?=>
-                val lst = ListHelpers.makeIterable(ctx.pop())
-                val max = lst.maxByOption { elem =>
-                  given elemCtx: Context = ctx.makeChild()
-                  elemCtx.push(elem)
-                  Interpreter.execute(ast)(using elemCtx)
-                  elemCtx.pop()
-                }
-                ctx.push(max.getOrElse(VList.empty))
-            ,
-            arity = Some(1),
+        case List(ast) => AST.makeSingle(
+            astToLambda(ast, ast.arity.getOrElse(1)),
+            AST.Command("#|maximum-by"),
           )
       },
     "ⁿ" ->
@@ -348,22 +338,12 @@ object Modifiers:
         "Minimum By",
         """|Minimum By Element
          |ᵐf: Minimum of top of stack based on results of f""".stripMargin,
-        List("min-by", "minimum-by"),
+        List("min-by:", "minimum-by:"),
         1,
       ) {
-        case List(ast) => AST.Generated(
-            () =>
-              ctx ?=>
-                val lst = ListHelpers.makeIterable(ctx.pop())
-                val min = lst.minByOption { elem =>
-                  given elemCtx: Context = ctx.makeChild()
-                  elemCtx.push(elem)
-                  Interpreter.execute(ast)(using elemCtx)
-                  elemCtx.pop()
-                }
-                ctx.push(min.getOrElse(VList.empty))
-            ,
-            arity = Some(1),
+        case List(ast) => AST.makeSingle(
+            astToLambda(ast, ast.arity.getOrElse(1)),
+            AST.Command("#|minimum-by"),
           )
       },
     "ᵒ" ->

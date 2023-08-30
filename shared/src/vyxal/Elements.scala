@@ -2097,6 +2097,36 @@ object Elements:
             "Reduce Columns: First argument should be a function"
           )
     },
+    addDirect(
+      "#|maximum-by",
+      "[Internal Use] Maximum By (Element Form)",
+      List(),
+      None,
+      "*a, f -> maximum of a by f. Use the modifier instead.",
+    ) { ctx ?=>
+      ctx.pop() match
+        case f: VFun =>
+          val arg = ListHelpers.makeIterable(ctx.pop())
+          ctx.push(arg.maxBy(v => f(v)))
+        case _ => throw IllegalArgumentException(
+            "Maximum By: First argument should be a function"
+          )
+    },
+      addDirect(
+      "#|minimum-by",
+      "[Internal Use] Minimum By (Element Form)",
+      List(),
+      None,
+      "*a, f -> minimum of a by f. Use the modifier instead.",
+    ) { ctx ?=>
+      ctx.pop() match
+        case f: VFun =>
+          val arg = ListHelpers.makeIterable(ctx.pop())
+          ctx.push(arg.minBy(v => f(v)))
+        case _ => throw IllegalArgumentException(
+            "Maximum By: First argument should be a function"
+          )
+    },
     addPart(
       Monad,
       "V",
