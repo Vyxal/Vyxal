@@ -140,7 +140,7 @@ private[parsing] object SBCSLexer extends Lexer:
     parseToken(TetradicModifier, CharIn("Чᶢ").!)
 
   def specialModifier[$: P]: P[Token] =
-    parseToken(SpecialModifier, CharIn("ᵜ").!)
+    parseToken(SpecialModifier, CharIn("ᵗᵜ").!)
 
   def branch[$: P]: P[Token] = parseToken(Branch, "|".!)
 
