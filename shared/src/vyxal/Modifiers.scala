@@ -351,7 +351,7 @@ object Modifiers:
         "Outer Product | Table",
         """|Outer product
          |ᵒf: Pop two lists, then make a matrix from them by applying f to each pair of elements""".stripMargin,
-        List("outer-product", "table"),
+        List("outer-product:", "table:"),
         1,
       ) {
         case List(ast) =>
