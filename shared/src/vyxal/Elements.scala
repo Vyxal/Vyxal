@@ -80,6 +80,18 @@ object Elements:
     },
     addPart(
       Monad,
+      "≈",
+      "All Equal?",
+      List("all-equal", "all-equal?"),
+      false,
+      "a: lst -> are all elements of a equal?"
+    ) { a =>
+      val x = ListHelpers.makeIterable(a)
+      if x.length == 0 then 1
+      else x.forall(_ == x(0))
+    },
+    addPart(
+      Monad,
       "a",
       "Any Truthy | Any() | Is Uppercase?",
       List("any", "is-uppercase?", "is-upper?", "upper?"),
@@ -388,6 +400,26 @@ object Elements:
       case (a: String, b: VNum) => a == b.toString
       case (a: String, b: String) => a == b
     },
+    addFull(
+      Dyad,
+      "₌",
+      "Exactly Equals",
+      List("===", "exactly-equal", "strictly-equal?"),
+      false,
+      "a: any, b: any -> a === b (non-vectorising)"
+    ) { (a, b) =>
+      a === b
+    },
+    addFull(
+      Dyad,
+      "≠",
+      "Not Equal",
+      List("not-equal"),
+      false,
+      "a: any, b: any -> a != b"
+    ) { (a, b) =>
+      a != b
+    },
     addDirect(
       "Ė",
       "Execute lambda | Evaluate as Vyxal | Power with base 10",
@@ -577,6 +609,14 @@ object Elements:
       "a: any -> indices that will sort a",
     ) { a => ListHelpers.gradeUp(a) },
     addPart(
+      Monad,
+      "↓",
+      "Grade Down",
+      List("grade-down"),
+      false,
+      "a: any -> indices that will reverse-sort a",
+    ) { a => ListHelpers.gradeDown(a) },
+    addPart(
       Dyad,
       ">",
       "Greater Than",
@@ -587,6 +627,17 @@ object Elements:
       "a: num, b: str -> str(a) > b",
       "a: str, b: str -> a > b",
     ) { case (a: VVal, b: VVal) => a > b },
+    addPart(
+      Dyad,
+      "≥",
+      "Greater Than Or Equal To",
+      List("ge", "greater-than-or-equal-to"),
+      true,
+      "a: num, b: num -> a >= b",
+      "a: str, b: num -> a >= str(b)",
+      "a: num, b: str -> str(a) >= b",
+      "a: str, b: str -> a >= b",
+    ) { case (a: VVal, b: VVal) => a >= b },
     addPart(
       Dyad,
       "Ġ",
@@ -937,6 +988,17 @@ object Elements:
       "a: num, b: str -> str(a) < b",
       "a: str, b: str -> a < b",
     ) { case (a: VVal, b: VVal) => a < b },
+    addPart(
+      Dyad,
+      "≤",
+      "Less Than Or Equal To",
+      List("le", "less-than-or-equal-to"),
+      true,
+      "a: num, b: num -> a <= b",
+      "a: str, b: num -> a <= str(b)",
+      "a: num, b: str -> str(a) <= b",
+      "a: str, b: str -> a <= b",
+    ) { case (a: VVal, b: VVal) => a <= b },
     addPart(
       Dyad,
       "Y",
@@ -1376,6 +1438,20 @@ object Elements:
       None,
       "a -> printed to stdout",
     ) { ctx ?=> MiscHelpers.vyPrintln(ctx.pop()) },
+    addDirect(
+      "§",
+      "Print without newline",
+      List("print-no-newline"),
+      None,
+      "a -> printed to stdout without newline",
+    ) { ctx ?=> MiscHelpers.vyPrint(ctx.pop()) },
+    addDirect(
+      "Ọ",
+      "Print without popping",
+      List("print-no-pop"),
+      None,
+      "a -> printed to stdout without popping",
+    ) { ctx ?=> MiscHelpers.vyPrintln(ctx.peek) },
     addPart(
       Monad,
       "q",
@@ -1651,6 +1727,16 @@ object Elements:
     },
     addPart(
       Monad,
+      "√",
+      "Square Root",
+      List("sqrt", "square-root"),
+      true,
+      "a: num -> sqrt(a)"
+    ) {
+      case a: VNum => VNum(Math.sqrt(a.toDouble))
+    },
+    addPart(
+      Monad,
       "⁺",
       "Square | Pairs",
       List("square", "pairs"),
@@ -1703,6 +1789,16 @@ object Elements:
     ) {
       case a: VNum => NumberHelpers.range(0, a - 1)
       case a: String => a.toLowerCase
+    },
+    addFull(
+      Monad,
+      "ᶲ",
+      "Stringify",
+      List("to-string", "stringify", "str"),
+      false,
+      "a: any -> str(a)"
+    ) { a =>
+      a.toString
     },
     addPart(
       Dyad,
@@ -2131,6 +2227,7 @@ object Elements:
     addNilad("¦", "Pipe", List("pipe"), "|") { "|" },
     addNilad("ð", "Space", List("space"), " ") { " " },
     addNilad("¶", "Newline", List("newline"), "\n") { "\n" },
+    addNilad("•", "Asterisk", List("asterisk"), "*") { "*" },
     addNilad("₀", "Ten", List("ten"), "10") { 10 },
     addNilad("₁", "Sixteen", List("sixteen"), "16") { 26 },
     addNilad("₂", "Twenty-six", List("twenty-six"), "26") { 26 },
