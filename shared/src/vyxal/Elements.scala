@@ -318,7 +318,7 @@ object Elements:
       "Decrement",
       List("decr", "decrement"),
       true,
-      "a: num -> a - 1"
+      "a: num -> a - 1",
     ) {
       case a: VNum => a - 1
     },
@@ -765,7 +765,7 @@ object Elements:
       "Increment",
       List("incr", "increment"),
       true,
-      "a: num -> a + 1"
+      "a: num -> a + 1",
     ) {
       case a: VNum => a + 1
     },
@@ -2151,7 +2151,7 @@ object Elements:
             "Maximum By: First argument should be a function"
           )
     },
-      addDirect(
+    addDirect(
       "#|minimum-by",
       "[Internal Use] Minimum By (Element Form)",
       List(),
