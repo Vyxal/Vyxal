@@ -314,6 +314,16 @@ object Elements:
     },
     addPart(
       Monad,
+      "ᵛ",
+      "Decrement",
+      List("decr", "decrement"),
+      true,
+      "a: num -> a - 1"
+    ) {
+      case a: VNum => a - 1
+    },
+    addPart(
+      Monad,
       "¯",
       "Deltas",
       List("deltas"),
@@ -748,6 +758,16 @@ object Elements:
         case s: String =>
           ctx.push(if s.isEmpty then "" else s.last.toString, s.dropRight(1))
         case arg => throw UnimplementedOverloadException("ṫ", List(arg))
+    },
+    addPart(
+      Monad,
+      "ꜝ",
+      "Increment",
+      List("incr", "increment"),
+      true,
+      "a: num -> a + 1"
+    ) {
+      case a: VNum => a + 1
     },
     addPart(
       Monad,
