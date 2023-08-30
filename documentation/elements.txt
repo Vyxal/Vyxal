@@ -955,6 +955,12 @@ Description: Maximum By Element
 ᵐf: Maximum of top of stack based on results of f
 Trigraph: #^m
 ---------------------
+ᶳ
+Keywords: sort-by:
+Description: Sort By Element
+ᶳf: Sort top of stack based on results of f
+Trigraph: #^s
+---------------------
 ⸠
 Keywords: *:
 Description: Turn the next element (whether that be a structure/modifier/element) into a lambda
