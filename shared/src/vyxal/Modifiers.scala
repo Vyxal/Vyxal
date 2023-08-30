@@ -416,20 +416,10 @@ object Modifiers:
         List("sort-by:"),
         1,
       ) {
-        case List(ast) => AST.Generated(
-          () =>
-            ctx ?=>
-              val lst = ListHelpers.makeIterable(ctx.pop())
-              ctx.push(lst.sortBy { elem =>
-                given elemCtx: Context = ctx.makeChild()
-
-                elemCtx.push(elem)
-                Interpreter.execute(ast)(using elemCtx)
-                elemCtx.pop()
-              })
-          ,
-          arity = Some(1),
-        )
+        case List(ast) => AST.makeSingle(
+            astToLambda(ast, ast.arity.getOrElse(1)),
+            AST.Command("ṡ"),
+          )
       },
     "ᵡ" ->
       Modifier(
