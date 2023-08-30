@@ -672,7 +672,9 @@ object ListHelpers:
 
   def gradeDown(iterable: VAny)(using Context): VList =
     VList.from(
-      makeIterable(iterable).zipWithIndex.sortBy(_._1).reverse.map(_._2)
+      makeIterable(iterable).zipWithIndex
+        .sorted(Ordering.by((a: (VAny, Int)) => a._1).reverse)
+        .map(_._2)
     )
 
   def partitionAfterTruthyIndices(lst: VAny, part: VAny)(using Context): VList =
