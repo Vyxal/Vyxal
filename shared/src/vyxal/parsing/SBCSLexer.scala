@@ -128,7 +128,7 @@ private[parsing] object SBCSLexer extends Lexer:
   def command[$: P]: P[Token] = parseToken(Command, CharPred(allCommands).!)
 
   def monadicModifier[$: P]: P[Token] =
-    parseToken(MonadicModifier, CharIn("ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵂᵡᵞᶻ¿⸠/\\\\~v@`ꜝ").!)
+    parseToken(MonadicModifier, CharIn("ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵂᵡᵞᶻ¿⸠/\\\\~v@`").!)
 
   def dyadicModifier[$: P]: P[Token] =
     parseToken(DyadicModifier, CharIn("ϩ∥∦ᵉ").!)
