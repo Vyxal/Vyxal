@@ -84,7 +84,7 @@ object Elements:
       "All Equal?",
       List("all-equal", "all-equal?"),
       false,
-      "a: lst -> are all elements of a equal?"
+      "a: lst -> are all elements of a equal?",
     ) { a =>
       val x = ListHelpers.makeIterable(a)
       if x.length == 0 then 1
@@ -406,7 +406,7 @@ object Elements:
       "Exactly Equals",
       List("===", "exactly-equal", "strictly-equal?"),
       false,
-      "a: any, b: any -> a === b (non-vectorising)"
+      "a: any, b: any -> a === b (non-vectorising)",
     ) { (a, b) =>
       a === b
     },
@@ -416,7 +416,7 @@ object Elements:
       "Not Equal",
       List("not-equal"),
       false,
-      "a: any, b: any -> a != b"
+      "a: any, b: any -> a != b",
     ) { (a, b) =>
       a != b
     },
@@ -1731,7 +1731,7 @@ object Elements:
       "Square Root",
       List("sqrt", "square-root"),
       true,
-      "a: num -> sqrt(a)"
+      "a: num -> sqrt(a)",
     ) {
       case a: VNum => VNum(Math.sqrt(a.toDouble))
     },
@@ -1796,7 +1796,7 @@ object Elements:
       "Stringify",
       List("to-string", "stringify", "str"),
       false,
-      "a: any -> str(a)"
+      "a: any -> str(a)",
     ) { a =>
       a.toString
     },

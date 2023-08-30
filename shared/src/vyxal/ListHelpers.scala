@@ -671,7 +671,9 @@ object ListHelpers:
     VList.from(makeIterable(iterable).zipWithIndex.sortBy(_._1).map(_._2))
 
   def gradeDown(iterable: VAny)(using Context): VList =
-    VList.from(makeIterable(iterable).zipWithIndex.sortBy(_._1).reverse.map(_._2))
+    VList.from(
+      makeIterable(iterable).zipWithIndex.sortBy(_._1).reverse.map(_._2)
+    )
 
   def partitionAfterTruthyIndices(lst: VAny, part: VAny)(using Context): VList =
     val res = ListBuffer(VList())
