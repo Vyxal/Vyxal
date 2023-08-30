@@ -426,7 +426,7 @@ object Elements:
       "Not Equal",
       List("not-equal"),
       false,
-      "a: any, b: any -> a != b",
+      "a: any, b: any -> a !== b (non-vectorising)",
     ) { (a, b) =>
       a != b
     },
