@@ -670,6 +670,13 @@ object ListHelpers:
   def gradeUp(iterable: VAny)(using Context): VList =
     VList.from(makeIterable(iterable).zipWithIndex.sortBy(_._1).map(_._2))
 
+  def gradeDown(iterable: VAny)(using Context): VList =
+    VList.from(
+      makeIterable(iterable).zipWithIndex
+        .sorted(Ordering.by((a: (VAny, Int)) => a._1).reverse)
+        .map(_._2)
+    )
+
   def partitionAfterTruthyIndices(lst: VAny, part: VAny)(using Context): VList =
     val res = ListBuffer(VList())
     for (i, j) <- makeIterable(lst).zip(makeIterable(part)) do

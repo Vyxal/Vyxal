@@ -80,6 +80,18 @@ object Elements:
     },
     addPart(
       Monad,
+      "≈",
+      "All Equal?",
+      List("all-equal", "all-equal?"),
+      false,
+      "a: lst -> are all elements of a equal?",
+    ) { a =>
+      val lst = ListHelpers.makeIterable(a)
+      if lst.isEmpty then 1
+      else lst.forall(_ == lst(0))
+    },
+    addPart(
+      Monad,
       "a",
       "Any Truthy | Any() | Is Uppercase?",
       List("any", "is-uppercase?", "is-upper?", "upper?"),
@@ -302,6 +314,16 @@ object Elements:
     },
     addPart(
       Monad,
+      "ᵛ",
+      "Decrement",
+      List("decr", "decrement"),
+      true,
+      "a: num -> a - 1",
+    ) {
+      case a: VNum => a - 1
+    },
+    addPart(
+      Monad,
       "¯",
       "Deltas",
       List("deltas"),
@@ -387,6 +409,26 @@ object Elements:
       case (a: VNum, b: String) => a.toString == b
       case (a: String, b: VNum) => a == b.toString
       case (a: String, b: String) => a == b
+    },
+    addFull(
+      Dyad,
+      "₌",
+      "Exactly Equals",
+      List("===", "exactly-equal", "strictly-equal?"),
+      false,
+      "a: any, b: any -> a === b (non-vectorising)",
+    ) { (a, b) =>
+      a === b
+    },
+    addFull(
+      Dyad,
+      "≠",
+      "Not Equal",
+      List("not-equal"),
+      false,
+      "a: any, b: any -> a !== b (non-vectorising)",
+    ) { (a, b) =>
+      a !== b
     },
     addDirect(
       "Ė",
@@ -577,6 +619,14 @@ object Elements:
       "a: any -> indices that will sort a",
     ) { a => ListHelpers.gradeUp(a) },
     addPart(
+      Monad,
+      "↓",
+      "Grade Down",
+      List("grade-down"),
+      false,
+      "a: any -> indices that will reverse-sort a",
+    ) { a => ListHelpers.gradeDown(a) },
+    addPart(
       Dyad,
       ">",
       "Greater Than",
@@ -587,6 +637,17 @@ object Elements:
       "a: num, b: str -> str(a) > b",
       "a: str, b: str -> a > b",
     ) { case (a: VVal, b: VVal) => a > b },
+    addPart(
+      Dyad,
+      "≥",
+      "Greater Than Or Equal To",
+      List("ge", "greater-than-or-equal-to"),
+      true,
+      "a: num, b: num -> a >= b",
+      "a: str, b: num -> a >= str(b)",
+      "a: num, b: str -> str(a) >= b",
+      "a: str, b: str -> a >= b",
+    ) { case (a: VVal, b: VVal) => a >= b },
     addPart(
       Dyad,
       "Ġ",
@@ -697,6 +758,35 @@ object Elements:
         case s: String =>
           ctx.push(if s.isEmpty then "" else s.last.toString, s.dropRight(1))
         case arg => throw UnimplementedOverloadException("ṫ", List(arg))
+    },
+    addPart(
+      Monad,
+      "ꜝ",
+      "Increment",
+      List("incr", "increment"),
+      true,
+      "a: num -> a + 1",
+    ) {
+      case a: VNum => a + 1
+    },
+    addPart(
+      Monad,
+      "…",
+      "Increment Twice | Vectorised Head",
+      List("incr-twice", "vec-head"),
+      false,
+      "a: num -> a + 2",
+      "a: lst -> [x[0] for x in a]",
+    ) {
+      case a: VNum => a + 2
+      case a: VList => VList.from(
+          a.map(x =>
+            ListHelpers
+              .makeIterable(x)
+              .headOption
+              .getOrElse(MiscHelpers.defaultEmpty(x))
+          )
+        )
     },
     addPart(
       Dyad,
@@ -937,6 +1027,17 @@ object Elements:
       "a: num, b: str -> str(a) < b",
       "a: str, b: str -> a < b",
     ) { case (a: VVal, b: VVal) => a < b },
+    addPart(
+      Dyad,
+      "≤",
+      "Less Than Or Equal To",
+      List("le", "less-than-or-equal-to"),
+      true,
+      "a: num, b: num -> a <= b",
+      "a: str, b: num -> a <= str(b)",
+      "a: num, b: str -> str(a) <= b",
+      "a: str, b: str -> a <= b",
+    ) { case (a: VVal, b: VVal) => a <= b },
     addPart(
       Dyad,
       "Y",
@@ -1376,6 +1477,20 @@ object Elements:
       None,
       "a -> printed to stdout",
     ) { ctx ?=> MiscHelpers.vyPrintln(ctx.pop()) },
+    addDirect(
+      "§",
+      "Print without newline",
+      List("print-no-newline"),
+      None,
+      "a -> printed to stdout without newline",
+    ) { ctx ?=> MiscHelpers.vyPrint(ctx.pop()) },
+    addDirect(
+      "Ọ",
+      "Print without popping",
+      List("print-no-pop"),
+      None,
+      "a -> printed to stdout without popping",
+    ) { ctx ?=> MiscHelpers.vyPrintln(ctx.peek) },
     addPart(
       Monad,
       "q",
@@ -1651,6 +1766,16 @@ object Elements:
     },
     addPart(
       Monad,
+      "√",
+      "Square Root",
+      List("sqrt", "square-root"),
+      true,
+      "a: num -> sqrt(a)",
+    ) {
+      case a: VNum => VNum.complex(a.real.sqrt, a.imag.sqrt)
+    },
+    addPart(
+      Monad,
       "⁺",
       "Square | Pairs",
       List("square", "pairs"),
@@ -1703,6 +1828,16 @@ object Elements:
     ) {
       case a: VNum => NumberHelpers.range(0, a - 1)
       case a: String => a.toLowerCase
+    },
+    addFull(
+      Monad,
+      "ᶲ",
+      "Stringify",
+      List("to-string", "stringify", "str"),
+      false,
+      "a: any -> str(a)",
+    ) { a =>
+      a.toString
     },
     addPart(
       Dyad,
@@ -1907,6 +2042,18 @@ object Elements:
       case a: String => StringHelpers.caseof(a)
     },
     addPart(
+      Dyad,
+      "Φ",
+      "Slice from 1",
+      List("1->b"),
+      false,
+      "a: lst, b: num -> a[1:b]",
+      "a: num, b: lst -> b[1:a]",
+    ) {
+      case (a, b: VNum) => ListHelpers.makeIterable(a).slice(1, b.toInt)
+      case (a: VNum, b) => ListHelpers.makeIterable(b).slice(1, a.toInt)
+    },
+    addPart(
       Monad,
       "u",
       "Uniquify",
@@ -1999,6 +2146,36 @@ object Elements:
           )
         case _ => throw IllegalArgumentException(
             "Reduce Columns: First argument should be a function"
+          )
+    },
+    addDirect(
+      "#|maximum-by",
+      "[Internal Use] Maximum By (Element Form)",
+      List(),
+      None,
+      "*a, f -> maximum of a by f. Use the modifier instead.",
+    ) { ctx ?=>
+      ctx.pop() match
+        case f: VFun =>
+          val arg = ListHelpers.makeIterable(ctx.pop())
+          ctx.push(arg.maxBy(v => f(v)))
+        case _ => throw IllegalArgumentException(
+            "Maximum By: First argument should be a function"
+          )
+    },
+    addDirect(
+      "#|minimum-by",
+      "[Internal Use] Minimum By (Element Form)",
+      List(),
+      None,
+      "*a, f -> minimum of a by f. Use the modifier instead.",
+    ) { ctx ?=>
+      ctx.pop() match
+        case f: VFun =>
+          val arg = ListHelpers.makeIterable(ctx.pop())
+          ctx.push(arg.minBy(v => f(v)))
+        case _ => throw IllegalArgumentException(
+            "Maximum By: First argument should be a function"
           )
     },
     addPart(
@@ -2131,6 +2308,7 @@ object Elements:
     addNilad("¦", "Pipe", List("pipe"), "|") { "|" },
     addNilad("ð", "Space", List("space"), " ") { " " },
     addNilad("¶", "Newline", List("newline"), "\n") { "\n" },
+    addNilad("•", "Asterisk", List("asterisk"), "*") { "*" },
     addNilad("₀", "Ten", List("ten"), "10") { 10 },
     addNilad("₁", "Sixteen", List("sixteen"), "16") { 26 },
     addNilad("₂", "Twenty-six", List("twenty-six"), "26") { 26 },

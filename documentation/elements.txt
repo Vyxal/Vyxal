@@ -6,9 +6,18 @@ Keywords: cookie
 Keywords: sus
 - ඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞ
 ---------------------
+ᵛ (Decrement) (vectorising)
+Trigraph: #^v
+Keywords: decr, decrement
+- a: num -> a - 1
+---------------------
 ! (Factorial) (vectorising)
 Keywords: fact, factorial
 - a: num -> a!
+---------------------
+#|minimum-by ([Internal Use] Minimum By (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> minimum of a by f. Use the modifier instead.
 ---------------------
 #|map-prefixes ([Internal Use] Map Prefixes (Element Form)) (non-vectorising)
 Keywords: 
@@ -21,6 +30,10 @@ Keywords:
 #|reduce-cols ([Internal Use] Reduce Columns (Element Form)) (non-vectorising)
 Keywords: 
 - *a, f -> each column of a reduced by f. Use the modifier instead.
+---------------------
+#|maximum-by ([Internal Use] Maximum By (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> maximum of a by f. Use the modifier instead.
 ---------------------
 #C (Compress String Using Dictionary) (non-vectorising)
 Keywords: compress-dict, dict-comp, compress
@@ -604,6 +617,17 @@ Trigraph: #.`
 Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first-n
 - a: lst, b: num -> [a[0], a[1], ..., a[b-1]]
 ---------------------
+Φ (Slice from 1) (non-vectorising)
+Trigraph: #.|
+Keywords: 1->b
+- a: lst, b: num -> a[1:b]
+- a: num, b: lst -> b[1:a]
+---------------------
+§ (Print without newline) (non-vectorising)
+Trigraph: #,o
+Keywords: print-no-newline
+- a -> printed to stdout without newline
+---------------------
 Ḅ (Unique Prime Factors | Case Of) (vectorising)
 Trigraph: #,B
 Keywords: unique-prime-factors, case-of
@@ -626,6 +650,11 @@ Keywords: bit-length, matrix-inverse
 - a: num -> bit length of a
 - a: lst[lst] -> matrix inverse of a
 ---------------------
+Ọ (Print without popping) (non-vectorising)
+Trigraph: #,O
+Keywords: print-no-pop
+- a -> printed to stdout without popping
+---------------------
 Ṛ (Reverse) (non-vectorising)
 Trigraph: #,R
 Keywords: reverse
@@ -635,6 +664,38 @@ Keywords: reverse
 Trigraph: #,S
 Keywords: sublists
 - a: lst -> sublists of a
+---------------------
+… (Increment Twice | Vectorised Head) (non-vectorising)
+Trigraph: #..
+Keywords: incr-twice, vec-head
+- a: num -> a + 2
+- a: lst -> [x[0] for x in a]
+---------------------
+≤ (Less Than Or Equal To) (vectorising)
+Trigraph: #,<
+Keywords: le, less-than-or-equal-to
+- a: num, b: num -> a <= b
+- a: str, b: num -> a <= str(b)
+- a: num, b: str -> str(a) <= b
+- a: str, b: str -> a <= b
+---------------------
+≥ (Greater Than Or Equal To) (vectorising)
+Trigraph: #,>
+Keywords: ge, greater-than-or-equal-to
+- a: num, b: num -> a >= b
+- a: str, b: num -> a >= str(b)
+- a: num, b: str -> str(a) >= b
+- a: str, b: str -> a >= b
+---------------------
+≠ (Not Equal) (non-vectorising)
+Trigraph: #.=
+Keywords: not-equal
+- a: any, b: any -> a !== b (non-vectorising)
+---------------------
+₌ (Exactly Equals) (non-vectorising)
+Trigraph: #,=
+Keywords: ===, exactly-equal, strictly-equal?
+- a: any, b: any -> a === b (non-vectorising)
 ---------------------
 ⁺ (Square | Pairs) (vectorising)
 Trigraph: #^+
@@ -653,6 +714,11 @@ Trigraph: #^)
 Keywords: surround, character-multiply
 - a: num, b: str -> each character in b repeated a times
 - a: any, b: any -> a prepended and appended to b
+---------------------
+√ (Square Root) (vectorising)
+Trigraph: #,*
+Keywords: sqrt, square-root
+- a: num -> sqrt(a)
 ---------------------
 ∑ (Sum) (non-vectorising)
 Keywords: sum, /+, +/
@@ -783,6 +849,11 @@ Keywords: divide, div, str-split
 Keywords: grade-up
 - a: any -> indices that will sort a
 ---------------------
+↓ (Grade Down) (non-vectorising)
+Trigraph: #^;
+Keywords: grade-down
+- a: any -> indices that will reverse-sort a
+---------------------
 ± (Sign) (vectorising)
 Trigraph: #,+
 Keywords: sign
@@ -835,6 +906,26 @@ Trigraph: #^`
 Keywords: cartesian-product-unsafe, cartesian-unsafe, cart-prod-unsafe, cart-unsafe
 - a: list, b: list -> cartesian product of a and b in the standard order, but without accounting for infinite lists
 ---------------------
+ᶲ (Stringify) (non-vectorising)
+Trigraph: #^|
+Keywords: to-string, stringify, str
+- a: any -> str(a)
+---------------------
+• (Asterisk) (non-vectorising)
+Trigraph: #,.
+Keywords: asterisk
+- -> *
+---------------------
+≈ (All Equal?) (non-vectorising)
+Trigraph: #^~
+Keywords: all-equal, all-equal?
+- a: lst -> are all elements of a equal?
+---------------------
+ꜝ (Increment) (vectorising)
+Trigraph: #^!
+Keywords: incr, increment
+- a: num -> a + 1
+---------------------
 Ч
 Keywords: ****:
 Description: Turn the next four elements (whether that be a structure/modifier/element) into a lambda
@@ -854,7 +945,7 @@ Description: Find the first index where an element is truthy
 Trigraph: #^i
 ---------------------
 ⁿ
-Keywords: min-by, minimum-by
+Keywords: min-by:, minimum-by:
 Description: Minimum By Element
 ᵐf: Minimum of top of stack based on results of f
 Trigraph: #^n
@@ -889,10 +980,16 @@ Description: Loop While Unique - similar to ᶨ, but doesn't collect
 Trigraph: #^l
 ---------------------
 ᵐ
-Keywords: max-by, maximum-by
+Keywords: max-by:, maximum-by:
 Description: Maximum By Element
 ᵐf: Maximum of top of stack based on results of f
 Trigraph: #^m
+---------------------
+ᶳ
+Keywords: sort-by:
+Description: Sort By Element
+ᶳf: Sort top of stack based on results of f
+Trigraph: #^s
 ---------------------
 ⸠
 Keywords: *:
@@ -965,7 +1062,7 @@ Description: Turn the next three elements (whether that be a structure/modifier/
 Trigraph: #^f
 ---------------------
 ᵒ
-Keywords: outer-product, table
+Keywords: outer-product:, table:
 Description: Outer product
 ᵒf: Pop two lists, then make a matrix from them by applying f to each pair of elements
 Trigraph: #^o
