@@ -617,9 +617,9 @@ Trigraph: #.`
 Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first-n
 - a: lst, b: num -> [a[0], a[1], ..., a[b-1]]
 ---------------------
-Φ (Umm I have no clue what to call this @Lyxal @ysthakur please help) (non-vectorising)
+Φ (Slice from 1) (non-vectorising)
 Trigraph: #.|
-Keywords: 
+Keywords: 1->b
 - a: lst, b: num -> a[1:b]
 - a: num, b: lst -> b[1:a]
 ---------------------
