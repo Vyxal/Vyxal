@@ -81,3 +81,21 @@ $name (literate)
 ```
 
 "that's all good and well, but that's the same capabilities of version 2, how is that a buff?"
+
+Because a) augmented variable assignment:
+
+```
+function #>name (SBCS) 
+function :> name (literate)
+```
+
+(works with any element or function, not just the regular `+=`, `-=`, `*=` etc you're probably used to seeing)
+
+And b) variable unpacking
+
+```
+#:[x|y|z] (SBCS)
+:=[x|y|z] (literate)
+```
+
+Variable unpacking can support any number of depths (e.g. `[a|b|[[[[c|d]]]|e]|f]`). Think of it like tuple unpacking in python but a little more powerful. 
