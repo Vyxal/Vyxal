@@ -76,4 +76,11 @@ class ModifierTests extends VyxalTests:
       )(top.asInstanceOf[VList].take(3).map(_.asInstanceOf[VList].take(3)))
     }
   }
+
+  describe("Modifier ᶳ") {
+    testMulti(
+      "#[2|3|1#]ᶳN" -> VList(3, 2, 1)
+    )
+  }
+
 end ModifierTests
