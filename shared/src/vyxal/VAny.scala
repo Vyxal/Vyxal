@@ -103,6 +103,9 @@ extension (self: VAny)
       case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) == 0
       case _ => false
 
+  @targetName("vNotEquals")
+  def !==(that: VAny)(using Context): Boolean = !(self === that)
+
   @targetName("plus")
   def +~(that: VAny)(using Context): VAny = MiscHelpers.add(self, that)
 

@@ -86,9 +86,9 @@ object Elements:
       false,
       "a: lst -> are all elements of a equal?",
     ) { a =>
-      val x = ListHelpers.makeIterable(a)
-      if x.isEmpty then 1
-      else x.forall(_ == x(0))
+      val lst = ListHelpers.makeIterable(a)
+      if lst.isEmpty then 1
+      else lst.forall(_ == lst(0))
     },
     addPart(
       Monad,
@@ -428,7 +428,7 @@ object Elements:
       false,
       "a: any, b: any -> a !== b (non-vectorising)",
     ) { (a, b) =>
-      a != b
+      a !== b
     },
     addDirect(
       "Ė",
@@ -2044,8 +2044,8 @@ object Elements:
     addPart(
       Dyad,
       "Φ",
-      "Umm I have no clue what to call this @Lyxal @ysthakur please help",
-      List(),
+      "Slice from 1",
+      List("1->b"),
       false,
       "a: lst, b: num -> a[1:b]",
       "a: num, b: lst -> b[1:a]",
