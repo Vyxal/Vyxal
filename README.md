@@ -99,3 +99,34 @@ And b) variable unpacking
 ```
 
 Variable unpacking can support any number of depths (e.g. `[a|b|[[[[c|d]]]|e]|f]`). Think of it like tuple unpacking in python but a little more powerful. 
+
+### Whole New Built-in Set
+
+The entire list of elements has been re-worked to remove some unnecessary overloads in version 2, and add some sorely missing elements that would make golfing a lot easier and shorter.
+
+## How do I run Vyxal 3?
+
+There's a few methods:
+
+1. Download one of the release `jar` files, and run using
+
+```
+java -jar vyxal-jar <arguments>
+```
+
+2. Download one of the executables and run as you would usually run an executable
+
+3. Head over to [the online interpreter](vyxal.github.io)
+
+4. Download the repository source and use one of the [build tool options](https://github.com/Vyxal/Vyxal/blob/version-3/contributing/BuildTools.md) to build and run.
+
+## Links
+
+- [Repository](https://github.com/Vyxal/Vyxal)
+- [Online Interpreter](http://vyxal.github.io)
+- [Tutorial](https://vyxapedia.hyper-neutrino.xyz/beginners)
+- [Main Chat Room (SE Chat)](https://chat.stackexchange.com/rooms/106764/vyxal)
+- [Vycord (Discord)](https://discord.gg/hER4Avd6fz)
+- [Elements](https://github.com/Vyxal/Vyxal/blob/main/documents/knowledge/elements.md)
+- [Vyxapedia](https://vyxapedia.hyper-neutrino.xyz/)
+
