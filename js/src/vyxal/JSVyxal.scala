@@ -32,11 +32,11 @@ object JSVyxal:
 
   @JSExport
   def setShortDict(dict: String): Unit =
-    Dictionary._shortDictionary = dict.split("\n").toSeq
+    Dictionary._shortDictionary = dict.split("\r\n").toSeq
 
   @JSExport
   def setLongDict(dict: String): Unit =
-    Dictionary._longDictionary = dict.split("\n").toSeq
+    Dictionary._longDictionary = dict.split("\r\n").toSeq
 
   @JSExport
   def compress(text: String): String = StringHelpers.compressDictionary(text)
