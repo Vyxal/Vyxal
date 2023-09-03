@@ -15,7 +15,9 @@ object Interpreter:
       case Left(err) => throw Error(s"Lexing failed: $err")
     scribe.debug(s"Lexed tokens: $tokens")
     val sugarless = Lexer.removeSugar(
-      if ctx.settings.literate then Lexer.sbcsify(tokens) else code
+      if ctx.settings.literate || (sys.env.getOrElse("literate", "") == "true")
+      then Lexer.sbcsify(tokens)
+      else code
     )
     sugarless match
       case Some(code) => scribe.debug(s"Sugarless: $code")

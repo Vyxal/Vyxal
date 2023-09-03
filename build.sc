@@ -159,6 +159,79 @@ object jvm extends VyxalModule {
   object test extends ScalaTests with VyxalTestModule
 }
 
+object jvmLiterate extends VyxalModule {
+  val platform = "jvm"
+
+  def ivyDeps =
+    T {
+      super.ivyDeps() ++
+        Seq(
+          // For the REPL
+          ivy"org.jline:jline:3.23.0",
+          ivy"org.jline:jline-terminal-jansi:3.23.0",
+          ivy"org.fusesource.jansi:jansi:2.4.0",
+        )
+    }
+
+  def forkEnv: T[Map[String, String]] =
+    Map("REPL" -> "false", "VYXAL_LOG_LEVEL" -> "Debug", "literate" -> "true")
+
+  override def assembly =
+    T {
+      // Make sure to generate nanorcs first
+      jvm.nanorc()
+      // Rename jar to vyxal-<version>.jar
+      val out = T.dest / s"vyxal-$vyxalVersion.jar"
+      os.move(super.assembly().path, out)
+      PathRef(out)
+    }
+
+  /** Run a method on a singleton object */
+  def runMethod[T](
+      classpath: Seq[PathRef],
+      objectName: String,
+      methodName: String,
+  ): T = {
+    val urls = classpath.map(_.path.toIO.toURI.toURL).toArray
+    val cl = new URLClassLoader(urls, getClass.getClassLoader)
+    val clazz = Class.forName(objectName + "$", false, cl)
+    val method = clazz.getMethod(methodName)
+    val singleton = clazz.getField("MODULE$").get(null)
+    method.invoke(singleton).asInstanceOf[T]
+  }
+
+  /** Generate elements.txt and trigraphs.txt */
+  def docs =
+    T.sources {
+      val (elements, trigraphs) = runMethod[(String, String)](
+        jvm.runClasspath(),
+        "vyxal.gen.GenerateDocs",
+        "generate",
+      )
+      val elementsFile = build.millSourcePath / "documentation" / "elements.txt"
+      val trigraphsFile = build.millSourcePath / "documentation" /
+        "trigraphs.txt"
+      os.write.over(elementsFile, elements)
+      os.write.over(trigraphsFile, trigraphs)
+      Seq(PathRef(elementsFile), PathRef(trigraphsFile))
+    }
+
+  /** Generate nanorc files for JLine highlighting */
+  def nanorc =
+    T.sources {
+      val nanorcs: Map[String, String] =
+        runMethod(jvm.runClasspath(), "vyxal.gen.GenerateNanorc", "generate")
+      nanorcs.map {
+        case (fileName, contents) =>
+          val file = build.millSourcePath / "jvm" / "resources" / fileName
+          os.write.over(file, contents)
+          PathRef(file)
+      }.toSeq
+    }
+
+  object test extends ScalaTests with VyxalTestModule
+}
+
 /** Shared and JS-specific code */
 object js extends VyxalModule with ScalaJSModule {
   val platform = "js"
