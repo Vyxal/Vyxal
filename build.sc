@@ -176,6 +176,8 @@ object jvmLiterate extends VyxalModule {
   def forkEnv: T[Map[String, String]] =
     Map("REPL" -> "false", "VYXAL_LOG_LEVEL" -> "Debug", "literate" -> "true")
 
+  def forkArgs: T[Seq[String]] = Seq("-Dliterate=true")
+
   override def assembly =
     T {
       // Make sure to generate nanorcs first

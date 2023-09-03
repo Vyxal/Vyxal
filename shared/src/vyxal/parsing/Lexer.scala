@@ -144,7 +144,7 @@ object Lexer:
   def apply(
       code: String
   )(using ctx: Context): Either[VyxalCompilationError, List[Token]] =
-    if ctx.settings.literate || (sys.env.getOrElse("literate", "") == "true")
+    if ctx.settings.literate || (sys.props.getOrElse("literate", "") == "true")
     then lexLiterate(code)
     else lexSBCS(code)
 
