@@ -61,7 +61,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
 
     override def ivyDeps =
       Agg(
-        ivy"org.scalatest::scalatest::3.2.16",
+        ivy"org.scalatest::scalatest::3.2.17",
         ivy"org.scala-sbt:test-interface:1.0",
         ivy"org.virtuslab::scala-yaml::0.0.8",
       )
