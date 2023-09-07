@@ -23,7 +23,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
       ivy"org.scala-lang.modules::scala-parser-combinators::2.3.0",
       ivy"com.lihaoyi::fastparse::3.0.2",
       ivy"com.github.scopt::scopt::4.1.0",
-      ivy"com.outr::scribe::3.11.9",
+      ivy"com.outr::scribe::3.12.2",
     )
 
   override def scalacOptions =
@@ -208,7 +208,7 @@ object js extends VyxalModule with ScalaJSModule {
 object native extends VyxalModule with ScalaNativeModule {
   val platform = "native"
 
-  def scalaNativeVersion = "0.4.14"
+  def scalaNativeVersion = "0.4.15"
 
   def ivyDeps =
     T {
