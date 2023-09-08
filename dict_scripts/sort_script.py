@@ -25,7 +25,6 @@ def chop(s):
 
 
 def gen(shortlen, longlen):
-
     curr_dir = os.path.dirname(os.path.realpath(__file__))
 
     with open(
@@ -35,9 +34,7 @@ def gen(shortlen, longlen):
     ) as f:
         lines = map(str.split, f.readlines())
         lines = [
-            x
-            for x in lines
-            if int(x[1]) > 10 and all(" " <= c <= "~" for c in x[0])
+            x for x in lines if int(x[1]) > 10 and all(" " <= c <= "~" for c in x[0])
         ]
         short = [x[0] for x in lines if len(x[0]) < 6][:shortlen]
         long = [x[0] for x in lines if len(x[0]) > 5][:longlen]
@@ -67,4 +64,4 @@ def gen(shortlen, longlen):
 
 
 if __name__ == "__main__":
-    gen(10000, 50000)
+    gen(20000, 200000)
