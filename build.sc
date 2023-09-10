@@ -174,19 +174,19 @@ object jvmLiterate extends VyxalModule {
     }
 
   def forkEnv: T[Map[String, String]] =
-    Map("REPL" -> "false", "VYXAL_LOG_LEVEL" -> "Debug", "literate" -> "true")
-
-  def forkArgs: T[Seq[String]] = Seq("-Dliterate=true")
+    Map("REPL" -> "false", "VYXAL_LOG_LEVEL" -> "Debug")
 
   override def assembly =
     T {
       // Make sure to generate nanorcs first
       jvm.nanorc()
       // Rename jar to vyxal-<version>.jar
-      val out = T.dest / s"vyxal-$vyxalVersion.jar"
+      val out = T.dest / s"vyxal-$vyxalVersion-literate.jar"
       os.move(super.assembly().path, out)
       PathRef(out)
     }
+
+  def mainClass: T[Option[String]] = Some("vyxal.MainLit")
 
   /** Run a method on a singleton object */
   def runMethod[T](

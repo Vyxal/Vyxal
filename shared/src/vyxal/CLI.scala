@@ -117,11 +117,9 @@ object CLI:
 
           config.code.foreach { code => runCode(code) }
 
-          println(sys.props.getOrElse("literate", "NOTHING"))
-
           if config.filename.isEmpty && config.code.isEmpty then
             repl.startRepl(
-              config.runFancyRepl || sys.env.getOrElse("REPL", "") != "false"
+              config.runFancyRepl
             )
       case None => ???
     end match

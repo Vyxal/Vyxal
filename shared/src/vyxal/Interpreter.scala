@@ -9,14 +9,14 @@ import scala.collection.mutable as mut
 
 object Interpreter:
   def execute(code: String)(using ctx: Context): Unit =
+    println("Literate mode = " + ctx.settings.literate)
     val lexRes = Lexer(code)
     val tokens = lexRes match
       case Right(tokens) => tokens
       case Left(err) => throw Error(s"Lexing failed: $err")
     scribe.debug(s"Lexed tokens: $tokens")
     val sugarless = Lexer.removeSugar(
-      if ctx.settings.literate ||
-        (sys.props.getOrElse("literate", "") == "true")
+      if ctx.settings.literate
       then Lexer.sbcsify(tokens)
       else code
     )
