@@ -2223,9 +2223,6 @@ object Elements:
       false,
       "a -> [a]",
     ) { a => VList(a) },
-    addDirect("#q", "Banana", List("banana"), None, "") { ctx ?=>
-      println("Banana! Num num num num num!")
-    },
     addPart(
       Dyad,
       "Ẇ",
