@@ -3034,10 +3034,6 @@ def index_indices_or_cycle(lhs, rhs, ctx):
 
         @lazylist
         def gen():
-            if deep_copy(safe_apply(rhs, lhs, ctx=ctx)) == lhs:
-                yield from ()
-                return
-
             curr = lhs
             while True:
                 curr = deep_copy(safe_apply(rhs, curr, ctx=ctx))
