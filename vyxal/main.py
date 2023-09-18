@@ -164,19 +164,10 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     ctx.original_args = inputs
 
-    if "Ṡ" in flags:  # All inputs as strings
-        inputs = list(map(str, inputs))
-        ctx.inputs_as_strings = True
-    else:
-        inputs = list(map(lambda x: vy_eval(x, ctx), inputs))
-
     if "H" in flags:  # Pre-initalise stack to 100
         stack = [100]
     else:
         stack = []
-
-    ctx.inputs[0][0] = inputs
-    ctx.stacks.append(stack)
 
     # Handle runtime flags
 
@@ -251,46 +242,77 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     ctx.stacks.append(stack)
     if "~" in flags:
-        case_regex = r"""(.+) ?(?:=>|-+>) ?(.+)"""
         if inputs[0][0] == "!":
-            case_regex = inputs[0][1:]
-            inputs = inputs[1:]
+            # Custom Test Regex
+            # types is a list of [[type], type]
+            # and represents any user defined types for the input and output
+            test_regex, types = extract(inputs[0][1:])
 
-        for inp in inputs:
-            mobj = re.match(case_regex, inp)
-            if mobj is None or len(mobj.groups()) < 2:
-                raise ValueError("Invalid test case: " + inp)
-            in_val, out_val = mobj.groups()[0], mobj.groups()[1]
-            try:
-                inps = ast.literal_eval(in_val)
-                if isinstance(inps, tuple):
-                    inps = list(inps)
+            inputs = inputs[1:]
+        else:
+            test_regex, types = r"""(.+) *(?:=>|->|:) *(.+)""", [
+                [None],
+                None,
+            ]
+
+        for test_case in inputs:
+            # Apply the regex
+            match_object = re.match(test_regex, test_case)
+            if match_object is None or len(match_object.groups()) < 2:
+                print("Invalid test case: {}".format(test_case))
+                ctx.online_output[1] += "Invalid test case: {}\n".format(
+                    test_case
+                )
+                continue
+
+            _in, _out = match_object.groups()[:-1], match_object.groups()[-1]
+            if isinstance(_in, str):
+                _in = [_in]
+            else:
+                _in = list(_in)
+            _in = [x for x in _in if x is not None]
+            for i in range(len(_in)):
+                if not types:
+                    types = [None] * len(_in)
+                    types.append(None)
+
+                if types[0][i] is not None:
+                    _in[i] = types[0][i](_in[i])
                 else:
-                    inps = [inps]
-                inps = [vyxalify(x) for x in inps]
-            except:
-                inps = [vyxalify(x) for x in in_val.split(", ")]
-            repred_inps = [repr(x) for x in inps]
-            try:
-                out_val = ast.literal_eval(out_val)
-                if isinstance(out_val, tuple):
-                    out_val = [vyxalify(x) for x in out_val]
-                else:
-                    out_val = vyxalify(out_val)
-                out_val = repr(out_val)
-            except:
-                pass
-            ctx.inputs[0][0] = inps[::]
+                    try:
+                        _in[i] = ast.literal_eval(_in[i])
+
+                    except:
+                        pass
+                # Make sure to vyxalify the input
+                if isinstance(_in[i], tuple):
+                    _in = [vyxalify(x) for x in list(_in[i])]
+                    break
+                _in[i] = vyxalify(_in[i])
+
+            if types[-1] is not None:
+                _out = types[-1](_out)
+            else:
+                try:
+                    _out = ast.literal_eval(_out)
+                except:
+                    pass
+            _out = vyxalify(_out)
+
+            print("Testing {} => {}".format(_in, _out))
+            formatted_in = [repr(i) for i in _in]
+            formatted_out = str(_out)
+
+            ctx.inputs[0][0] = _in[::]
             ctx.inputs[0][1] = 0
+
             if online_mode:
-                slice_start = len(
-                    ctx.online_output[1]
-                )  # The number of characters already printed
+                slice_start = len(ctx.online_output[1])
                 try:
                     execute_vyxal(
                         file_name,
-                        flags.replace("~", ""),
-                        "\n".join(repred_inps),
+                        flags.replace("~", "") + "P",
+                        "\n".join(formatted_in),
                         output_var,
                         online_mode,
                     )
@@ -298,11 +320,12 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                         :-1
                     ]  # That's what was printed when we called execute_vyxal
                     ctx.online_output[1] = ctx.online_output[1][:slice_start]
-                    passes = out_val == ret
-                    message = f"({inp}) ==> " + (
+                    passes = formatted_out == ret
+                    message = f"({_in} ==> {_out}) " + (
                         "PASS ✅"
                         if passes
-                        else "FAIL ❌" + f" (expected {out_val}, got {ret})"
+                        else "FAIL ❌"
+                        + f" (expected {formatted_out}, got {ret})"
                     )
                     ctx.online_output[1] += message + "\n"
                 except Exception as e:  # skipcq: PYL-W0703
@@ -316,24 +339,34 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                     execute_vyxal(
                         file_name,
                         flags.replace("~", ""),
-                        "\n".join(repred_inps),
+                        "\n".join(formatted_in),
                         output,
                         True,
                     )
-                    ret = output[1][
-                        :-1
-                    ]  # That's what was printed when we called execute_vyxal
-                    passes = out_val == ret
-                    message = f"({inp}) ==> " + (
+                    ret = repr(
+                        output[1][:-1]
+                    )  # That's what was printed when we called execute_vyxal
+                    passes = formatted_out == ret
+                    message = f"{_in} ==> " + (
                         "PASS ✅"
                         if passes
-                        else "FAIL ❌" + f" (expected {out_val}, got {ret})"
+                        else "FAIL ❌"
+                        + f" (expected {formatted_out}, got {ret})"
                     )
                     print(message)
                 except Exception as e:  # skipcq: PYL-W0703
                     print(traceback.format_exc())
                     raise
         return
+
+    if "Ṡ" in flags:  # All inputs as strings
+        inputs = list(map(str, inputs))
+        ctx.inputs_as_strings = True
+    else:
+        inputs = list(map(lambda x: vy_eval(x, ctx), inputs))
+
+    ctx.inputs[0][0] = inputs
+    ctx.stacks.append(stack)
     try:
         exec(code, locals() | globals())
     except Exception as e:  # skipcq: PYL-W0703
@@ -478,3 +511,30 @@ def cli():
         execute_vyxal(file_name, flags, inputs)
     else:
         repl()
+
+
+def extract(test_case_re: str) -> (str, list[list[type], type]):
+    """Extracts the test case regex and types from the test case regex.
+    E.g.
+
+    ! (.*), (.*) => (.*) !=> nns
+
+    would return
+
+    (.*), (.*) => (.*), [[int, int], str]
+
+    """
+    mobj = re.match(r"(.*)(?: +!=> +)(.*)", test_case_re)
+    regex, raw_types = mobj.groups()[0], mobj.groups()[1]
+    types = []
+    if raw_types:
+        for char in raw_types:
+            if char == "n" or char == "f":
+                types.append(lambda x: vy_eval(x, Context()))
+            elif char == "s":
+                types.append(str)
+            elif char == "l":
+                types.append(list)
+        types = [types[:-1], types[-1]]
+
+    return regex, types
