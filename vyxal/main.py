@@ -522,6 +522,8 @@ def extract(test_case_re: str) -> (str, list[list[type], type]):
     (.*), (.*) => (.*), [[int, int], str]
 
     """
+    if "!=>" not in test_case_re:
+        return test_case_re.strip(), []
     regex, raw_types = test_case_re.rsplit("!=>", 1)
     types = []
     if raw_types:
