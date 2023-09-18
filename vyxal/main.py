@@ -247,7 +247,6 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             # types is a list of [[type], type]
             # and represents any user defined types for the input and output
             test_regex, types = extract(inputs[0][1:])
-
             inputs = inputs[1:]
         else:
             test_regex, types = r"""(.+) *(?:=>|->|:) *(.+)""", [
@@ -273,7 +272,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             _in = [x for x in _in if x is not None]
             for i in range(len(_in)):
                 if not types:
-                    types = [None] * len(_in)
+                    types = [[None] * len(_in)]
                     types.append(None)
 
                 if types[0][i] is not None:
@@ -299,7 +298,6 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                     pass
             _out = vyxalify(_out)
 
-            print("Testing {} => {}".format(_in, _out))
             formatted_in = [repr(i) for i in _in]
             formatted_out = str(_out)
 
@@ -524,8 +522,7 @@ def extract(test_case_re: str) -> (str, list[list[type], type]):
     (.*), (.*) => (.*), [[int, int], str]
 
     """
-    mobj = re.match(r"(.*)(?: +!=> +)(.*)", test_case_re)
-    regex, raw_types = mobj.groups()[0], mobj.groups()[1]
+    regex, raw_types = test_case_re.rsplit("!=>", 1)
     types = []
     if raw_types:
         for char in raw_types:
@@ -537,4 +534,4 @@ def extract(test_case_re: str) -> (str, list[list[type], type]):
                 types.append(list)
         types = [types[:-1], types[-1]]
 
-    return regex, types
+    return regex.strip(), types
