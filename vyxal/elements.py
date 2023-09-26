@@ -450,6 +450,8 @@ else:
         "lhs = pop(stack, 1, ctx); vy_type(lhs) == NUMBER_TYPE and time.sleep(lhs)",
         1,
     ),
+    "¨x": ("continue", 0),
+    "¨X": ("vy_print(stack, ctx=ctx)", 0),
 }
 
 

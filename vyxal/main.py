@@ -163,6 +163,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             inputs = [x.replace("\r", "") for x in f.readlines()]
 
     ctx.original_args = inputs
+    ctx.entire_program = code
 
     if "H" in flags:  # Pre-initalise stack to 100
         stack = [100]
