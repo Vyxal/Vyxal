@@ -5884,7 +5884,9 @@ def round_to(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: round(lhs, rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
+            round(lhs, rhs), rational=True
+        ),
         (NUMBER_TYPE, str): lambda: -1,
         (str, NUMBER_TYPE): lambda: -1,
         (str, str): lambda: -1,
