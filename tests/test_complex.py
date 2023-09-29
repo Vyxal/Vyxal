@@ -24,6 +24,8 @@ def run_vyxal(vy_code, inputs=[], *, debug=False):
     ctx.stacks.append(stack)
 
     py_code = transpile(vy_code)
+    ctx.entire_program = vy_code
+    ctx.inputs[0][0] = stack[::]
     if debug:
         print(py_code)
     exec(py_code, locals() | globals())
