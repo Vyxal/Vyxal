@@ -1036,8 +1036,8 @@ def test_close_all_structs():
 
 
 def test_global_recurison():
-    stack = run_vyxal("D⅛[1-x]¾", inputs=[5])
-    assert stack[-1] == [5, 4, 3, 2, 1, 0]
+    stack = run_vyxal("D&+[1-x]¥", inputs=[5])
+    assert stack[-1] == 15
 
     stack = run_vyxal(":1>[:‹x*]", inputs=[5])
     assert stack[-1] == 120
