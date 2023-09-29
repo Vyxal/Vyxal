@@ -5887,9 +5887,7 @@ def round_to(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
-            str(sympy.N(lhs, int(rhs) + 1)), rational=True
-        ),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.Rational(str(lhs.round(rhs))),
         (NUMBER_TYPE, str): lambda: -1,
         (str, NUMBER_TYPE): lambda: -1,
         (str, str): lambda: -1,
@@ -7457,7 +7455,7 @@ def vy_print(lhs, end="\n", ctx=None):
                 # Determine if the number is a imaginary sympy literal
                 if not lhs.is_real:
                     if ctx.print_decimals:
-                        lhs = sympy.nsimplify(lhs)
+                        lhs = sympy.S(lhs)
                     else:
                         lhs = (
                             str(lhs.as_real_imag()[0])
@@ -7465,7 +7463,7 @@ def vy_print(lhs, end="\n", ctx=None):
                             + str(lhs.as_real_imag()[1])
                         )
                 else:
-                    lhs = sympy.nsimplify(lhs.round(20), rational=True)
+                    lhs = sympy.Rational(str(lhs.round(20)))
         if ctx.online:
             ctx.online_output[1] += vy_str(lhs, ctx=ctx) + end
         else:
@@ -7572,7 +7570,7 @@ def vy_str(lhs, ctx=None):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: str(sympy.nsimplify(lhs, rational=True)),
+        (NUMBER_TYPE): lambda: str(sympy.sympify(lhs, rational=True)),
         (str): lambda: lhs,  # wow so complex and hard to understand /s
         (types.FunctionType): lambda: vy_str(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
