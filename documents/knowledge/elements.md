@@ -975,9 +975,9 @@ a wrapped in a singleton list
 
 - any a: `[a] (wrap in singleton list)`
 -------------------------------
-## `` x `` (Recurse / Continue / Print Stack)
+## `` x `` (Recurse)
 
-Call current function (Functions/Lambdas) / Continue (For Loops) / Print the entire stack (otherwise)
+Call current function
 
 -------------------------------
 ## `` y `` (Uninterleave)
@@ -4370,4 +4370,19 @@ Push the first x integers greater than y where z(_) is truthy
 - fun a, num b, num c: `Push the first b integers that are greater than c where a(_) is truthy`
 - num a, fun b, num c: `Push the first c integers that are greater than a where b(_) is truthy`
 - num a, num b, fun c: `Push the first b integers that are greater than a where c(_) is truthy`
+-------------------------------
+## `` ¨x `` (Continue)
+
+Continue a Loop
+
+-------------------------------
+## `` ¨X `` (Print the entire stack)
+
+Print the entire stack
+
+-------------------------------
+## `` ¨¤ `` (Break)
+
+Break a Loop
+
 -------------------------------
