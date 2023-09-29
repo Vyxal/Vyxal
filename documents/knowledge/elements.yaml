@@ -1713,7 +1713,7 @@
   description: Zip with a range of the same length
   arity: 1
   overloads:
-    any: enumerate(a) (zip with 1...len(a))
+    any: enumerate(a) (zip with 0...len(a))
   vectorise: false
   tests:
     - '["abc"] : [[0,"a"],[1,"b"],[2,"c"]]'
