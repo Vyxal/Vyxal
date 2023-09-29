@@ -1035,6 +1035,14 @@ def test_close_all_structs():
     assert stack[-1] == [9]
 
 
+def test_global_recurison():
+    stack = run_vyxal("D⅛[1-x]¾", inputs=[5])
+    assert stack[-1] == [5, 4, 3, 2, 1, 0]
+
+    stack = run_vyxal(":1>[:‹x*]", inputs=[5])
+    assert stack[-1] == 120
+
+
 def test_cumulative_sum_inf():
     stack = run_vyxal("Þ∞¦")
     assert stack[-1][:10] == [1, 3, 6, 10, 15, 21, 28, 36, 45, 55]
