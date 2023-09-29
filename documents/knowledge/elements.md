@@ -702,9 +702,9 @@ Replace b with c in a / Map a function at elements of a list whose indices are i
 Stack wrapped into a list
 
 -------------------------------
-## `` X `` (Break)
+## `` X `` (Return)
 
-Return early
+Return early (like Q but actually prints a value)
 
 -------------------------------
 ## `` Y `` (Interleave)
