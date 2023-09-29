@@ -1021,7 +1021,7 @@ def test_override_inputs():
 
 
 def test_context_var_while():
-    stack = run_vyxal("`abcd`({X}n⅛)¾")
+    stack = run_vyxal("`abcd`({¨¤}n⅛)¾")
     assert stack[-1] == ["a", "b", "c", "d"]
 
 

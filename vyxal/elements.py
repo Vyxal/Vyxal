@@ -452,6 +452,7 @@ else:
     ),
     "¨x": ("continue", 0),
     "¨X": ("vy_print(stack, ctx=ctx)", 0),
+    "¨¤": ("break", 0),
 }
 
 
