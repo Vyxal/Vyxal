@@ -1278,7 +1278,7 @@ var codepage_descriptions =
   "88": [
     {
       "name": "Break",
-      "description": "Break out of the current loop or return early from a function.",
+      "description": "Return early",
       "token": "X"
     },
     {
