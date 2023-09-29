@@ -1277,8 +1277,8 @@ var codepage_descriptions =
   ],
   "88": [
     {
-      "name": "Break",
-      "description": "Return early",
+      "name": "Return",
+      "description": "Return early (like Q but actually prints a value)",
       "token": "X"
     },
     {

@@ -615,9 +615,9 @@ W (Wrap)
 - Stack wrapped into a list
 
 -------------------------------
-X (Break)
+X (Return)
 
-- Return early
+- Return early (like Q but actually prints a value)
 
 -------------------------------
 Y (Interleave)
