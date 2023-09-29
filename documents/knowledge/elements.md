@@ -1165,7 +1165,7 @@ Zip with a range of the same length
 
 ### Overloads
 
-- any a: `enumerate(a) (zip with 1...len(a))`
+- any a: `enumerate(a) (zip with 0...len(a))`
 -------------------------------
 ## `` ḟ `` (Find)
 
