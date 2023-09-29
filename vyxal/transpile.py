@@ -495,7 +495,9 @@ def transpile_structure(
                 + indent_str("return ret", indent)
             )
         else:
-            return indent_str("pass", indent)
+            return indent_str(
+                "vy_print(pop(stack, ctx, 1))", indent
+            ) + indent_str("exit()", indent)
     if isinstance(struct, vyxal.structure.RecurseStatement):
         if struct.parent_structure == vyxal.structure.FunctionDef:
             return indent_str(

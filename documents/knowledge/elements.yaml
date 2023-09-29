@@ -1025,8 +1025,8 @@
     - '["hello",1,9] : ["hello",1,9]'
 
 - element: "X"
-  name: Break
-  description: Return early
+  name: Return
+  description: Return early (like Q but actually prints a value)
   arity: NA
 
 - element: "Y"
