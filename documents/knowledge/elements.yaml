@@ -1440,8 +1440,8 @@
     - "[[1,2,3]] : [[1,2,3]]"
 
 - element: "x"
-  name: Recurse / Continue / Print Stack
-  description: Call current function (Functions/Lambdas) / Continue (For Loops) / Print the entire stack (otherwise)
+  name: Recurse
+  description: Call current function
 
 - element: "y"
   name: Uninterleave
@@ -6671,3 +6671,18 @@
     num-fun-num: Push the first c integers that are greater than a where b(_) is truthy
     num-num-fun: Push the first b integers that are greater than a where c(_) is truthy
   arity: 3
+
+- element: "¨x"
+  name: Continue
+  description: Continue a Loop
+  arity: 0
+
+- element: "¨X"
+  name: Print the entire stack
+  description: Print the entire stack
+  arity: 0
+
+- element: "¨¤"
+  name: Break
+  description: Break a Loop
+  arity: 0
