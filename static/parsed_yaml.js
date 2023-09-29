@@ -2238,7 +2238,7 @@ var codepage_descriptions =
     {
       "name": "Enumerate",
       "description": "Zip with a range of the same length",
-      "overloads": "any -> enumerate(a) (zip with 1...len(a))",
+      "overloads": "any -> enumerate(a) (zip with 0...len(a))",
       "token": "\u0117"
     },
     {
