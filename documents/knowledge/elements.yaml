@@ -1026,7 +1026,7 @@
 
 - element: "X"
   name: Break
-  description: Break out of the current loop or return early from a function.
+  description: Return early
   arity: NA
 
 - element: "Y"
