@@ -470,14 +470,18 @@ object Parser:
           while depth != 0 do
             val top = lineup.dequeue()
             top match
-              case Token(TokenType.StructureOpen, open, _)
-                  if open == StructureType.Ternary.open => depth += 1
+              case Token(TokenType.SyntaxTrigraph, "#:[", _) => depth += 1
+              case Token(TokenType.UnpackVar, _, _) => depth += 1
+              case Token(TokenType.StructureOpen, open, _) =>
+                if open == StructureType.Ternary.open then depth += 1
+              case Token(TokenType.UnpackClose, _, _) => depth -= 1
               case Token(TokenType.StructureAllClose, _, _) => depth -= 1
               case _ =>
             contents.++=(top.value)
           processed +=
             Token(TokenType.UnpackVar, contents.toString(), temp.range)
         case _ => processed += temp
+      end match
     end while
     processed.toList
   end preprocess
