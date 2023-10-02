@@ -11,7 +11,7 @@ import mill.scalanativelib.api._
 
 /** Shared settings for all modules */
 trait VyxalModule extends ScalaModule with ScalafmtModule {
-  override def scalaVersion = "3.3.1"
+  override def scalaVersion = "3.3.0"
 
   def vyxalVersion = "3.0.0"
 
