@@ -1277,9 +1277,14 @@ var codepage_descriptions =
   ],
   "88": [
     {
-      "name": "Break",
-      "description": "Break out of the current loop or return early from a function.",
+      "name": "Return",
+      "description": "Return early (like Q but actually prints a value)",
       "token": "X"
+    },
+    {
+      "name": "Print the entire stack",
+      "description": "Print the entire stack",
+      "token": "\u00a8X"
     }
   ],
   "89": [
@@ -1916,8 +1921,8 @@ var codepage_descriptions =
   ],
   "120": [
     {
-      "name": "Recurse / Continue / Print Stack",
-      "description": "Call current function (Functions/Lambdas) / Continue (For Loops) / Print the entire stack (otherwise)",
+      "name": "Recurse",
+      "description": "Call current function",
       "token": "x"
     },
     {
@@ -1925,6 +1930,11 @@ var codepage_descriptions =
       "description": "All combinations of a list / string, of all lengths, without replacement",
       "overloads": "any -> all (non-empty) combinations of a, of all lengths and all orders, without replacement",
       "token": "\u00dex"
+    },
+    {
+      "name": "Continue",
+      "description": "Continue a Loop",
+      "token": "\u00a8x"
     }
   ],
   "121": [
@@ -2080,6 +2090,11 @@ var codepage_descriptions =
       "name": "Empty String",
       "description": "The empty string",
       "token": "\u00a4"
+    },
+    {
+      "name": "Break",
+      "description": "Break a Loop",
+      "token": "\u00a8\u00a4"
     }
   ],
   "135": [

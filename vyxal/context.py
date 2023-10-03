@@ -11,6 +11,7 @@ class TranspilationOptions:
         self.dict_compress = True
         self.utf8strings = False
         self.variables_as_digraphs = False
+        self.program = []
 
 
 class Context:
@@ -51,6 +52,7 @@ class Context:
         self.utf8strings = False
         self.transpilation_options = TranspilationOptions()
         self.original_args = []
+        self.entire_program = ""
 
     def copy(self, number_as_range=None, range_start=None):
         """Copy itself so a modified version can be passed elsewhere."""
@@ -78,6 +80,8 @@ class Context:
         ctx.utf8strings = self.utf8strings
         ctx.transpilation_options = self.transpilation_options
         ctx.original_args = self.original_args
+
+        ctx.entire_program = self.entire_program
 
         return ctx
 

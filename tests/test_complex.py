@@ -24,6 +24,8 @@ def run_vyxal(vy_code, inputs=[], *, debug=False):
     ctx.stacks.append(stack)
 
     py_code = transpile(vy_code)
+    ctx.entire_program = vy_code
+    ctx.inputs[0][0] = stack[::]
     if debug:
         print(py_code)
     exec(py_code, locals() | globals())
@@ -1021,7 +1023,7 @@ def test_override_inputs():
 
 
 def test_context_var_while():
-    stack = run_vyxal("`abcd`({X}n⅛)¾")
+    stack = run_vyxal("`abcd`({¨¤}n⅛)¾")
     assert stack[-1] == ["a", "b", "c", "d"]
 
 
@@ -1033,6 +1035,14 @@ def test_close_multiple_structs():
 def test_close_all_structs():
     stack = run_vyxal("1[0[2|3(n⅛[[0(}9W")
     assert stack[-1] == [9]
+
+
+def test_global_recurison():
+    stack = run_vyxal("D&+[1-x]¥", inputs=[5])
+    assert stack[-1] == 15
+
+    stack = run_vyxal(":1>[:‹x*]", inputs=[5])
+    assert stack[-1] == 120
 
 
 def test_cumulative_sum_inf():

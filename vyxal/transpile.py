@@ -40,8 +40,6 @@ def lambda_wrap(
                 elements.get(branch[0].branches[0][0].value, ("", 1))[1],
                 branch,
             )
-        elif isinstance(branch[0], vyxal.structure.RecurseStatement):
-            return vyxal.structure.Lambda(vyxal.parse.DEFAULT_ARITY, branch)
         elif isinstance(branch[0], vyxal.structure.Lambda):
             return branch[0]
         elif isinstance(branch[0], structure.MonadicModifier):
@@ -94,10 +92,11 @@ def transpile(
     program: str,
     options: TranspilationOptions = TranspilationOptions(),
 ) -> str:
+    options.program = vyxal.parse.parse(
+        vyxal.lexer.tokenise(program, options.variables_as_digraphs)
+    )
     return transpile_ast(
-        vyxal.parse.parse(
-            vyxal.lexer.tokenise(program, options.variables_as_digraphs)
-        ),
+        options.program,
         options=options,
     )
 
@@ -496,16 +495,11 @@ def transpile_structure(
                 + indent_str("return ret", indent)
             )
         else:
-            return indent_str("pass", indent)
+            return indent_str(
+                "vy_print(pop(stack, ctx, 1))", indent
+            ) + indent_str("exit()", indent)
     if isinstance(struct, vyxal.structure.RecurseStatement):
-        if struct.parent_structure == vyxal.structure.IfStatement:
-            return indent_str("pass", indent)
-        elif struct.parent_structure in (
-            vyxal.structure.ForLoop,
-            vyxal.structure.WhileLoop,
-        ):
-            return indent_str("continue", indent)
-        elif struct.parent_structure == vyxal.structure.FunctionDef:
+        if struct.parent_structure == vyxal.structure.FunctionDef:
             return indent_str(
                 "stack.append(this(stack, this, ctx=ctx))", indent
             )
@@ -522,7 +516,7 @@ def transpile_structure(
                 indent,
             )
         else:
-            return indent_str("vy_print(stack, ctx=ctx)", indent)
+            return indent_str("vy_exec(ctx.entire_program, ctx)", indent)
 
     raise ValueError(f"Structure {struct} was not of the right kind")
 
