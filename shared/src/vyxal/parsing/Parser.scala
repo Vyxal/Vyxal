@@ -2,13 +2,7 @@ package vyxal
 
 import scala.language.strictEquality
 
-import vyxal.parsing.{
-  Lexer,
-  StructureType,
-  Token,
-  TokenType,
-  VyxalCompilationError,
-}
+import vyxal.parsing.{StructureType, Token, TokenType, VyxalCompilationError}
 
 import scala.collection.mutable
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
@@ -501,19 +495,4 @@ object Parser:
       // after doing stuff like augmented assignment
       case _ => ast.arity.contains(0)
 
-  def parseInput(input: String): VAny =
-    Lexer
-      .lexSBCS(input)
-      .toOption
-      .flatMap { tokens =>
-        parse(tokens.to(Queue), true) match
-          case Right(ast) => ast match
-              case AST.Number(n, _) => Some[VAny](n)
-              case AST.Str(s, _) => Some(s)
-              case AST.Lst(l, _) =>
-                Some(VList(l.map(e => parseInput(e.toString))*))
-              case _ => None
-          case Left(_) => None
-      }
-      .getOrElse(input)
 end Parser

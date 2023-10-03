@@ -61,7 +61,8 @@ object CLI:
 
     OParser.parse(parser, args, CLIConfig()) match
       case Some(config) =>
-        val inputList = config.inputs.reverse.map(Parser.parseInput)
+        val inputList =
+          config.inputs.reverse.map(x => MiscHelpers.eval(x)(using Context()))
         given ctx: Context =
           Context(
             inputs = inputList,
