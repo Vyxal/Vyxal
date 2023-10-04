@@ -1570,8 +1570,13 @@ object Elements:
       " -> call the current function recursively",
     ) { ctx ?=>
       if ctx.globals.callStack.isEmpty then
-        throw RecursionError("No function to recurse")
-      else ctx.push(Interpreter.executeFn(ctx.globals.callStack.top))
+        Interpreter.execute(ctx.globals.originalProgram)(using ctx)
+      else
+        ctx.push(
+          Interpreter.executeFn(ctx.globals.callStack.top)(using
+            ctx.makeChild()
+          )
+        )
     },
     addPart(
       Dyad,
@@ -2075,7 +2080,7 @@ object Elements:
     ) { ctx ?=>
       // For sake of simplicity, error if not a function
       ctx.pop() match
-        case f: VFun => FuncHelpers.vectorise(f)
+        case f: VFun => FuncHelpers.vectorise(f)(using ctx.makeChild())
         case _ => throw IllegalArgumentException(
             "Vectorise: First argument should be a function"
           )
