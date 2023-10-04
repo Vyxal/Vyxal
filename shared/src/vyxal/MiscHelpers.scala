@@ -69,7 +69,7 @@ object MiscHelpers:
 
   def eval(s: String)(using ctx: Context): VAny =
     if VNum.NumRegex.matches(s) then VNum(s)
-    else if s.matches(raw"""("(?:[^"\\]|\\.)*["])""") then
+    else if s.matches("""("(?:[^"\\]|\\.)*["])""") then
       s.substring(1, s.length - 1)
     else if Lexer.isList(s) then
       Lexer.lexLiterate(s) match

@@ -2,13 +2,7 @@ package vyxal
 
 import scala.language.strictEquality
 
-import vyxal.parsing.{
-  Lexer,
-  StructureType,
-  Token,
-  TokenType,
-  VyxalCompilationError,
-}
+import vyxal.parsing.{StructureType, Token, TokenType, VyxalCompilationError}
 
 import scala.collection.mutable
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
@@ -470,14 +464,18 @@ object Parser:
           while depth != 0 do
             val top = lineup.dequeue()
             top match
-              case Token(TokenType.StructureOpen, open, _)
-                  if open == StructureType.Ternary.open => depth += 1
+              case Token(TokenType.SyntaxTrigraph, "#:[", _) => depth += 1
+              case Token(TokenType.UnpackVar, _, _) => depth += 1
+              case Token(TokenType.StructureOpen, open, _) =>
+                if open == StructureType.Ternary.open then depth += 1
+              case Token(TokenType.UnpackClose, _, _) => depth -= 1
               case Token(TokenType.StructureAllClose, _, _) => depth -= 1
               case _ =>
             contents.++=(top.value)
           processed +=
             Token(TokenType.UnpackVar, contents.toString(), temp.range)
         case _ => processed += temp
+      end match
     end while
     processed.toList
   end preprocess
@@ -497,19 +495,4 @@ object Parser:
       // after doing stuff like augmented assignment
       case _ => ast.arity.contains(0)
 
-  def parseInput(input: String): VAny =
-    Lexer
-      .lexSBCS(input)
-      .toOption
-      .flatMap { tokens =>
-        parse(tokens.to(Queue), true) match
-          case Right(ast) => ast match
-              case AST.Number(n, _) => Some[VAny](n)
-              case AST.Str(s, _) => Some(s)
-              case AST.Lst(l, _) =>
-                Some(VList(l.map(e => parseInput(e.toString))*))
-              case _ => None
-          case Left(_) => None
-      }
-      .getOrElse(input)
 end Parser

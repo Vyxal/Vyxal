@@ -21,14 +21,20 @@ object JSVyxal:
     val globals = Globals(
       settings = settings,
       printFn = printFunc,
-      inputs = Inputs(inputs.split("\n").map(Parser.parseInput).toSeq),
+      inputs = Inputs(
+        inputs.split("\n").map(x => MiscHelpers.eval(x)(using Context())).toSeq
+      ),
     )
 
     val ctx = Context(
-      inputs = inputs.split("\n").map(Parser.parseInput).toIndexedSeq,
+      inputs = inputs
+        .split("\n")
+        .map(x => MiscHelpers.eval(x)(using Context()))
+        .toIndexedSeq,
       globals = globals,
     )
     Interpreter.execute(code)(using ctx)
+  end execute
 
   @JSExport
   def setShortDict(dict: String): Unit =

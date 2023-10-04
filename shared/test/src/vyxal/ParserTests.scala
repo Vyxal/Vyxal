@@ -433,4 +433,39 @@ class ParserTests extends AnyFunSuite:
         )
     )
   }
+  test("Does the parser correctly handle variable unpacking?") {
+    assert(
+      parse("#[1|2|3#] #:[a|b|c]") ===
+        Right(
+          Group(
+            List(
+              Lst(
+                List(
+                  Number(1),
+                  Number(2),
+                  Number(3),
+                )
+              ),
+              UnpackVar(List(("a", 0), ("b", 0), ("c", 0))),
+            ),
+            None,
+          )
+        )
+    )
+
+    assert(
+      parse("#[1|2|3#] #:[a]") ===
+        Right(
+          Group(
+            List(
+              Lst(List(Number(1), Number(2), Number(3))),
+              UnpackVar(List(("a", 0))),
+            ),
+            None,
+          )
+        )
+    )
+
+    assert(parse("#:[[[[[a]]]]]") === Right(UnpackVar(List(("a", 4)))))
+  }
 end ParserTests
