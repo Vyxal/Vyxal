@@ -653,14 +653,17 @@ function shareOptions(shareType) {
     if (flagsThatMatter) {
         flagAppendage = " `" + flagsThatMatter + "`,"
     }
-    let output = ""
-    const utfable = [...code].every(x => (codepage + ' ' + '\n').includes(x))
-    let len = 0
+    let output = "";
+    let bits = "";
+    const utfable = [...code].every(x => (codepage + ' ' + '\n').includes(x));
+    let len = 0;
     if (flags.includes("!")) {
-        len = code.length / 8
-        code = Vyncode.decode(code)
+        len = code.length / 8;
+        bits = code;
+        code = Vyncode.decode(code);
     } else if (flags.includes("=")) {
-        len = Vyncode.encode(code).length / 8
+        bits = Vyncode.encode(code);
+        len = bits.length / 8
     } else if (utfable) {
         len = code.length
     } else {
@@ -668,8 +671,17 @@ function shareOptions(shareType) {
     }
 
     let bytesLink = "";
+    let bitstringAppendage = "";
     if (flags.includes("!") || flags.includes("=")) {
         bytesLink = `${len * 8} [bits<sup>v${bitver.value}](https://github.com/Vyxal/Vyncode/blob/main/README.md)</sup>, ${len} byte${"s".repeat(len != 1)}`
+        bitstringAppendage = `
+        
+Bitstring:
+
+\`\`\`
+${bits}
+\`\`\`
+`
     } else {
         bytesLink = `${len} byte${"s".repeat(len != 1)}`
     }
@@ -685,11 +697,13 @@ function shareOptions(shareType) {
             break
         case "post-template":
             output = `# [Vyxal](https://github.com/Vyxal/Vyxal)${flagAppendage} ${bytesLink} ${utfable ? '' : ' (UTF-8)'}
+
 \`\`\`
 ${code}
 \`\`\`
 
-[Try it Online!${flags.includes("!") ? " (link is to bitstring)" : ""}](${url})`;
+[Try it Online!${flags.includes("!") ? " (link is to bitstring)" : ""}](${url})${bitstringAppendage}
+`;
             break
         case "markdown":
             output = `[Try it Online!](${url})`
