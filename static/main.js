@@ -675,7 +675,7 @@ function shareOptions(shareType) {
     if (flags.includes("!") || flags.includes("=")) {
         bytesLink = `${len * 8} [bits<sup>v${bitver.value}](https://github.com/Vyxal/Vyncode/blob/main/README.md)</sup>, ${len} byte${"s".repeat(len != 1)}`
         bitstringAppendage = `
-        
+
 Bitstring:
 
 \`\`\`
