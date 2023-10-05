@@ -163,7 +163,7 @@ object jvm extends VyxalModule {
 object js extends VyxalModule with ScalaJSModule {
   val platform = "js"
 
-  def scalaJSVersion = "1.13.2"
+  def scalaJSVersion = "1.14.0"
   def moduleKind = T { ModuleKind.NoModule }
 
   def ivyDeps =
