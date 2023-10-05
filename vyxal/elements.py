@@ -1069,6 +1069,78 @@ def assign_iterable(lhs, rhs, other, ctx):
         return gen()
 
 
+@element("ÞȦ", 3)
+def assign_iterable_multidim(lhs, rhs, other, ctx):
+    """Element ÞȦ
+    (any, lst, any) -> a but item b (0-indexed, multi-dimensional) is set to c
+    """
+
+    # A list of numbers acts as a single index
+    # A ragged list acts as a list of indices
+
+    # Iterate as far through RHS as possible until either
+    # the end is reached, or a list is found
+
+    # If a list is found, switch to vectorised assignment
+    # otherwise, start the up-assigment process
+
+    lhs = LazyList(iterable(lhs, ctx=ctx))
+    if type(rhs) is str:
+        rhs = chr_ord(rhs, ctx)
+
+    if not LazyList(rhs).has_ind(0):
+        return lhs
+
+    @lazylist_from(lhs)
+    def simplegen():
+        # Add all indices to a stack to do assignments to lhs on the
+        # way back up
+        indice_stack = [rhs[0]]
+        original = lhs
+        if not original.has_ind(rhs[0]):
+            while not original.has_ind(rhs[0]):
+                original = original + [0]
+        target = original[rhs[0]]  # Assumed pre-condition that rhs[0] is number
+        target_stack = [original, target]
+        for ind in rhs[1:]:
+            if not vy_type(ind) == NUMBER_TYPE:
+                return
+            target = LazyList(iterable(target, ctx=ctx))
+            if not target.has_ind(ind):
+                while not target.has_ind(ind):
+                    target = target + [0]
+
+            target = target[ind]
+
+            indice_stack.append(ind)
+            target_stack.append(target)
+
+        target_stack.pop()
+
+        target = other
+        while indice_stack:
+            ind = indice_stack.pop()
+
+            target = assign_iterable(target_stack.pop(), ind, target, ctx)
+        yield target
+
+    if vy_type(rhs[0]) == NUMBER_TYPE:
+        temp = simplegen()
+        if temp.has_ind(0):
+            return temp[0]
+
+    # There's a list somewhere in rhs, so it's a vectorised assignment
+    if vy_type(other, simple=True) is list:
+        pairs = vy_zip(rhs, other, ctx=ctx)
+        for pair in pairs:
+            lhs = assign_iterable_multidim(lhs, *pair, ctx)
+    else:
+        for item in rhs:
+            lhs = assign_iterable_multidim(lhs, item, other, ctx)
+
+    return lhs
+
+
 @element("øC", 1)
 def base_255_number_compress(lhs, ctx):
     """Element øC
