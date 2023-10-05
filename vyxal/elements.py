@@ -1104,28 +1104,36 @@ def assign_iterable_multidim(lhs, rhs, other, ctx):
         target_stack = [original, target]
         for ind in rhs[1:]:
             if not vy_type(ind) == NUMBER_TYPE:
+                # Found a list, so quit
                 return
             target = LazyList(iterable(target, ctx=ctx))
+            # The target needs to be padded to the current dimension
             if not target.has_ind(ind):
                 while not target.has_ind(ind):
                     target = target + [0]
 
+            # Get the item in the current dimension
             target = target[ind]
 
             indice_stack.append(ind)
             target_stack.append(target)
 
+        # Remove the last item from the stack, as it's the current value
+        # currently in lhs. This is the value that needs to be changed
         target_stack.pop()
 
         target = other
         while indice_stack:
             ind = indice_stack.pop()
-
+            # Basically, a python equivalent of how one might usually
+            # do multi-dimensional assignment in Vyxal
             target = assign_iterable(target_stack.pop(), ind, target, ctx)
         yield target
 
     if vy_type(rhs[0]) == NUMBER_TYPE:
         temp = simplegen()
+        # If the list has any items (guaranteed to be at least one if rhs is all numbers)
+        # then return the first item of the generator
         if temp.has_ind(0):
             return temp[0]
 
