@@ -163,12 +163,12 @@ object jvm extends VyxalModule {
 object js extends VyxalModule with ScalaJSModule {
   val platform = "js"
 
-  def scalaJSVersion = "1.14.0"
+  def scalaJSVersion = "1.13.2"
   def moduleKind = T { ModuleKind.NoModule }
 
   def ivyDeps =
     T {
-      super.ivyDeps() ++ Seq(ivy"org.scala-js::scalajs-dom::2.8.0")
+      super.ivyDeps() ++ Seq(ivy"org.scala-js::scalajs-dom::2.6.0")
     }
 
   def pagesDir = build.millSourcePath / "pages"
