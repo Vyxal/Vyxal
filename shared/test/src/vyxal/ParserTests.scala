@@ -320,7 +320,7 @@ class ParserTests extends AnyFunSuite:
                     List(
                       Group(
                         List(
-                          Lambda(2, List(), List(Command("+"))),
+                          Lambda(2, List(), List(Command("+")), false),
                           Command("R"),
                         ),
                         None,
