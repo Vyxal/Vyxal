@@ -423,21 +423,22 @@ class InterpreterTests extends VyxalTests:
       VList(7) -> VNum(5040),
       VList(8) -> VNum(40320),
     )
-  } describe
-    ("Global Recursion (Fibonacci)") {
+  }
 
-      testMulti("#{:0=|_0|:1=|_1|:ᵛx$2-x+")(
-        VList(0) -> VNum(0),
-        VList(1) -> VNum(1),
-        VList(2) -> VNum(1),
-        VList(3) -> VNum(2),
-        VList(4) -> VNum(3),
-        VList(5) -> VNum(5),
-        VList(6) -> VNum(8),
-        VList(7) -> VNum(13),
-        VList(8) -> VNum(21),
-      )
-    }
+  describe("Global Recursion (Fibonacci)") {
+
+    testMulti("#{:0=|_0|:1=|_1|:ᵛx$2-x+")(
+      VList(0) -> VNum(0),
+      VList(1) -> VNum(1),
+      VList(2) -> VNum(1),
+      VList(3) -> VNum(2),
+      VList(4) -> VNum(3),
+      VList(5) -> VNum(5),
+      VList(6) -> VNum(8),
+      VList(7) -> VNum(13),
+      VList(8) -> VNum(21),
+    )
+  }
 
   describe("Vectorised recursion") {
     testCode("#[#[1|2|3#]|#[4|5|6#]#]λᶲ\"[\"c[vx∑}}Ė", VNum(21), Seq())
