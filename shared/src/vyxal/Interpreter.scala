@@ -212,6 +212,7 @@ object Interpreter:
       vars: mut.Map[String, VAny] = mut.Map(),
   )(using ctx: Context): VAny =
     val VFun(_, arity, params, origCtx, lambda, _) = fn
+    var originallyFunction = false
     if !lambda.isEmpty then
       val AST.Lambda(_, _, _, originallyFunction, _) = lambda.get
       if originallyFunction then ctx.globals.callStack.push(fn)
@@ -283,7 +284,7 @@ object Interpreter:
     try fn.impl()(using fnCtx)
     catch case _: ReturnFromFunctionException => ()
 
-    if ctx.globals.callStack.nonEmpty then ctx.globals.callStack.pop()
+    if originallyFunction then ctx.globals.callStack.pop()
     val res = fnCtx.peek
     scribe.trace(s"Result of executing function: $res")
     res
