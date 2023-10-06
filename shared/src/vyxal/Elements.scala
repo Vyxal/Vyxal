@@ -2080,7 +2080,7 @@ object Elements:
     ) { ctx ?=>
       // For sake of simplicity, error if not a function
       ctx.pop() match
-        case f: VFun => FuncHelpers.vectorise(f)(using ctx.makeChild())
+        case f: VFun => FuncHelpers.vectorise(f)
         case _ => throw IllegalArgumentException(
             "Vectorise: First argument should be a function"
           )
