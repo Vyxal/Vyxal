@@ -283,7 +283,7 @@ object Interpreter:
     try fn.impl()(using fnCtx)
     catch case _: ReturnFromFunctionException => ()
 
-    ctx.globals.callStack.pop()
+    if ctx.globals.callStack.nonEmpty then ctx.globals.callStack.pop()
     val res = fnCtx.peek
     scribe.trace(s"Result of executing function: $res")
     res
