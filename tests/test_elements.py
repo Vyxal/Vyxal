@@ -37915,7 +37915,7 @@ def test_ListfromDiagonals():
 
 def test_Multi_dimensionalAssign():
 
-    stack = [vyxalify(item) for item in [[[1, 2, 3], [4, 5, 6]], [[0, 0], [1, 0], [2, 0], [0, 1], [1, 1], [2, 1]], [1, 2, 3, 4, 5, 6]]]
+    stack = [vyxalify(item) for item in [[], [[0, 0], [1, 0], [2, 0], [0, 1], [1, 1], [2, 1]], [1, 2, 3, 4, 5, 6]]]
     expected = vyxalify([[1, 4], [2, 5], [3, 6]])
     ctx = Context()
 
@@ -37936,7 +37936,7 @@ def test_Multi_dimensionalAssign():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [[[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]], [[0, 0, 0], [0, 1, 0], [0, 2, 0], [1, 0, 0], [1, 1, 0], [1, 2, 0], [0, 0, 1], [0, 1, 1], [0, 2, 1], [1, 0, 1], [1, 1, 1], [1, 2, 1]], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]]]
+    stack = [vyxalify(item) for item in [[], [[0, 0, 0], [0, 1, 0], [0, 2, 0], [1, 0, 0], [1, 1, 0], [1, 2, 0], [0, 0, 1], [0, 1, 1], [0, 2, 1], [1, 0, 1], [1, 1, 1], [1, 2, 1]], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]]]
     expected = vyxalify([[[1, 7], [2, 8], [3, 9]], [[4, 10], [5, 11], [6, 12]]])
     ctx = Context()
 
