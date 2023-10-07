@@ -3535,6 +3535,14 @@ k• (Qwerty Keyboard)
 
     lst a: List of lists from diagonals of a list
 -------------------------------
+ÞȦ (Multi-dimensional Assign)
+
+- Assign values to a multi-dimensional list using multi-dimensional indices. Basically Ȧ but for multi-dimensional lists.
+
+    lst a, lst[num] b, any c: a[b[0]][b[1]]...[b[-1]] = c
+    lst a, lst[lst|num] b, scl c: ['ÞȦ(a', 'ind', 'c) for ind in b']
+    lst a, lst[lst|num] b, lst c: ['ÞȦ(a', 'ind', 'val) for ind', 'val in zip(b', 'c)']
+-------------------------------
 ¨□ (Parse direction arrow to integer)
 
 - Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
