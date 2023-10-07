@@ -1088,21 +1088,24 @@ def assign_iterable_multidim(lhs, rhs, other, ctx):
     if type(rhs) is str:
         rhs = chr_ord(rhs, ctx)
 
-    if not LazyList(rhs).has_ind(0):
+    if vy_type(rhs, simple=True) is list and not LazyList(rhs).has_ind(0):
         return lhs
 
     @lazylist_from(lhs)
     def simplegen():
         # Add all indices to a stack to do assignments to lhs on the
         # way back up
-        indice_stack = [rhs[0]]
+        indices = [rhs] if vy_type(rhs, simple=True) is not list else rhs
+        indice_stack = [indices[0]]
         original = lhs
-        if not original.has_ind(rhs[0]):
-            while not original.has_ind(rhs[0]):
+        if not original.has_ind(indices[0]):
+            while not original.has_ind(indices[0]):
                 original = original + [0]
-        target = original[rhs[0]]  # Assumed pre-condition that rhs[0] is number
+        target = original[
+            indices[0]
+        ]  # Assumed pre-condition that rhs[0] is number
         target_stack = [original, target]
-        for ind in rhs[1:]:
+        for ind in indices[1:]:
             if not vy_type(ind) == NUMBER_TYPE:
                 # Found a list, so quit
                 return
@@ -1130,7 +1133,7 @@ def assign_iterable_multidim(lhs, rhs, other, ctx):
             target = assign_iterable(target_stack.pop(), ind, target, ctx)
         yield target
 
-    if vy_type(rhs[0]) == NUMBER_TYPE:
+    if vy_type(rhs) == NUMBER_TYPE or vy_type(rhs[0]) == NUMBER_TYPE:
         temp = simplegen()
         # If the list has any items (guaranteed to be at least one if rhs is all numbers)
         # then return the first item of the generator
