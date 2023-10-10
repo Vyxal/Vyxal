@@ -1,6 +1,5 @@
 # Security Policy
-If you've found a serious security flaw in Vyxal, **do not open a public issue**. Instead, send an
-email to @pxeger: `vyxal_security@pxeger.com`. We will discuss privately how to handle it, hopefully
+If you've found a serious security flaw in Vyxal, **do not open a public issue**. Instead, open a security advisory [here](https://github.com/Vyxal/Vyxal/security/advisories). We will discuss privately how to handle it, hopefully
 apply a fix, and you will be honoured in the **Hall of Fame**.
 
 ## Hall of Fame
