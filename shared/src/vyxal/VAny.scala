@@ -77,7 +77,7 @@ end VFun
 
 object VFun:
   def fromLambda(lam: AST.Lambda)(using origCtx: Context): VFun =
-    val AST.Lambda(arity, params, body, _) = lam
+    val AST.Lambda(arity, params, body, originallyFunction, _) = lam
     VFun(
       () => ctx ?=> body.foreach(Interpreter.execute(_)(using ctx)),
       arity,

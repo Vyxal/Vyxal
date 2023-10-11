@@ -255,7 +255,10 @@ class ParserTests extends AnyFunSuite:
           Group(
             List(
               Group(
-                List(Lambda(2, List(), List(Command("+"))), Command("#v")),
+                List(
+                  Lambda(2, List(), List(Command("+")), false),
+                  Command("#v"),
+                ),
                 None,
               ),
               Command("+"),
@@ -273,7 +276,10 @@ class ParserTests extends AnyFunSuite:
               Number(2),
               Number(1),
               Group(
-                List(Lambda(2, List(), List(Command("+"))), Command("R")),
+                List(
+                  Lambda(2, List(), List(Command("+")), false),
+                  Command("R"),
+                ),
                 None,
               ),
             ),
@@ -314,12 +320,13 @@ class ParserTests extends AnyFunSuite:
                     List(
                       Group(
                         List(
-                          Lambda(2, List(), List(Command("+"))),
+                          Lambda(2, List(), List(Command("+")), false),
                           Command("R"),
                         ),
                         None,
                       )
                     ),
+                    false,
                   ),
                   Command("#v"),
                 ),

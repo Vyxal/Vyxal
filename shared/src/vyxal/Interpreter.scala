@@ -26,7 +26,7 @@ object Interpreter:
     parsed match
       case Right(ast) =>
         scribe.debug(s"Executing '$code' (ast: $ast)")
-
+        ctx.globals.originalProgram = ast
         try execute(ast)
         catch
           case _: QuitException => scribe.debug("Program quit using Q")
@@ -211,8 +211,11 @@ object Interpreter:
       overrideCtxArgs: Seq[VAny] = Seq.empty,
       vars: mut.Map[String, VAny] = mut.Map(),
   )(using ctx: Context): VAny =
-    val VFun(_, arity, params, origCtx, _, _) = fn
-    ctx.globals.callStack.push(fn)
+    val VFun(_, arity, params, origCtx, lambda, _) = fn
+    var originallyFunction = false
+    if !lambda.isEmpty then
+      val AST.Lambda(_, _, _, originallyFunction, _) = lambda.get
+      if originallyFunction then ctx.globals.callStack.push(fn)
     val useStack = arity == -1
     val inputs =
       if args != null && params.isEmpty then args
@@ -281,7 +284,7 @@ object Interpreter:
     try fn.impl()(using fnCtx)
     catch case _: ReturnFromFunctionException => ()
 
-    ctx.globals.callStack.pop()
+    if originallyFunction then ctx.globals.callStack.pop()
     val res = fnCtx.peek
     scribe.trace(s"Result of executing function: $res")
     res

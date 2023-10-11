@@ -1570,8 +1570,13 @@ object Elements:
       " -> call the current function recursively",
     ) { ctx ?=>
       if ctx.globals.callStack.isEmpty then
-        throw RecursionError("No function to recurse")
-      else ctx.push(Interpreter.executeFn(ctx.globals.callStack.top))
+        Interpreter.execute(ctx.globals.originalProgram)(using ctx)
+      else
+        ctx.push(
+          Interpreter.executeFn(ctx.globals.callStack.top)(using
+            ctx.makeChild()
+          )
+        )
     },
     addPart(
       Dyad,

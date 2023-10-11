@@ -24,10 +24,14 @@ case class Modifier(
 
 /** Implementations of modifiers */
 object Modifiers:
-  private def astToLambda(ast: AST, arity: Int): AST =
+  private def astToLambda(
+      ast: AST,
+      arity: Int,
+      ogOverride: Boolean = false,
+  ): AST =
     ast match
       case _: AST.Lambda => ast
-      case _ => AST.Lambda(arity, List(), List(ast))
+      case _ => AST.Lambda(arity, List(), List(ast), ogOverride)
 
   private def isExplicitMonad(ast: AST): Boolean =
     ast.arity.getOrElse(-1) == 1 &&
@@ -151,7 +155,7 @@ object Modifiers:
          |⸠f: Push the equivalent of λf} to the stack""".stripMargin,
         List("*:"),
         1,
-      ) { case List(ast) => AST.makeSingle(astToLambda(ast, 1)) },
+      ) { case List(ast) => astToLambda(ast, 1, true) },
     "ϩ" ->
       Modifier(
         "Double Element Lambda",
@@ -161,7 +165,7 @@ object Modifiers:
         2,
       ) {
         case List(ast1, ast2) =>
-          AST.makeSingle(astToLambda(AST.makeSingle(ast1, ast2), 1))
+          astToLambda(AST.makeSingle(ast1, ast2), 1, true)
       },
     "э" ->
       Modifier(
@@ -172,7 +176,7 @@ object Modifiers:
         3,
       ) {
         case List(ast1, ast2, ast3) =>
-          astToLambda(AST.makeSingle(ast1, ast2, ast3), 1)
+          astToLambda(AST.makeSingle(ast1, ast2, ast3), 1, true)
       },
     "Ч" ->
       Modifier(
@@ -183,7 +187,7 @@ object Modifiers:
         4,
       ) {
         case List(ast1, ast2, ast3, ast4) =>
-          astToLambda(AST.makeSingle(ast1, ast2, ast3, ast4), 1)
+          astToLambda(AST.makeSingle(ast1, ast2, ast3, ast4), 1, true)
       },
     "ᵈ" ->
       Modifier(
@@ -192,7 +196,7 @@ object Modifiers:
          |ᵈf: Push the equivalent of λ2|f} to the stack""".stripMargin,
         List("*2:"),
         1,
-      ) { case List(ast) => AST.makeSingle(astToLambda(ast, 2)) },
+      ) { case List(ast) => astToLambda(ast, 2, true) },
     "ᵉ" ->
       Modifier(
         "Dyadic Double Element Lambda",
@@ -202,7 +206,7 @@ object Modifiers:
         2,
       ) {
         case List(ast1, ast2) =>
-          AST.makeSingle(astToLambda(AST.makeSingle(ast1, ast2), 2))
+          astToLambda(AST.makeSingle(ast1, ast2), 2, true)
       },
     "ᶠ" ->
       Modifier(
@@ -213,7 +217,7 @@ object Modifiers:
         3,
       ) {
         case List(ast1, ast2, ast3) =>
-          astToLambda(AST.makeSingle(ast1, ast2, ast3), 2)
+          astToLambda(AST.makeSingle(ast1, ast2, ast3), 2, true)
       },
     "ᵍ" ->
       Modifier(
@@ -224,7 +228,7 @@ object Modifiers:
         4,
       ) {
         case List(ast1, ast2, ast3, ast4) =>
-          astToLambda(AST.makeSingle(ast1, ast2, ast3, ast4), 2)
+          astToLambda(AST.makeSingle(ast1, ast2, ast3, ast4), 2, true)
       },
     "ᴴ" ->
       Modifier(

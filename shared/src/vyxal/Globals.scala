@@ -19,6 +19,7 @@ case class Globals(
 ):
   var register: VAny = settings.defaultValue
   var debug: Boolean = false
+  var originalProgram: AST = null
 
 /** Stores the inputs for some Context. Inputs can be overridden (see
   * [[Inputs#overrideInputs]]).

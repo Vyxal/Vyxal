@@ -59,6 +59,7 @@ enum AST(val arity: Option[Int]) derives CanEqual:
       lambdaArity: Int,
       params: List[String | Int],
       body: List[AST],
+      originallyFunction: Boolean = true,
       override val range: Range = Range.fake,
   ) extends AST(Some(lambdaArity))
 
@@ -145,7 +146,7 @@ enum AST(val arity: Option[Int]) derives CanEqual:
       case For(loopVar, body, _) => s"(${loopVar.getOrElse("")}|${body.toVyxal}"
       case While(cond, body, _) =>
         s"{${cond.fold("")(_.toVyxal)}|${body.toVyxal}}"
-      case Lambda(_, params, body, _) =>
+      case Lambda(_, params, body, originallyFunction, _) =>
         body.map(_.toVyxal).mkString("λ", "|", "}")
       case FnDef(name, lam, _) => ???
       case GetVar(name, _) => s"#<$name"
