@@ -1069,6 +1069,89 @@ def assign_iterable(lhs, rhs, other, ctx):
         return gen()
 
 
+@element("ÞȦ", 3)
+def assign_iterable_multidim(lhs, rhs, other, ctx):
+    """Element ÞȦ
+    (any, lst, any) -> a but item b (0-indexed, multi-dimensional) is set to c
+    """
+
+    # A list of numbers acts as a single index
+    # A ragged list acts as a list of indices
+
+    # Iterate as far through RHS as possible until either
+    # the end is reached, or a list is found
+
+    # If a list is found, switch to vectorised assignment
+    # otherwise, start the up-assigment process
+
+    lhs = LazyList(iterable(lhs, ctx=ctx))
+    if type(rhs) is str:
+        rhs = chr_ord(rhs, ctx)
+
+    if vy_type(rhs, simple=True) is list and not LazyList(rhs).has_ind(0):
+        return lhs
+
+    @lazylist_from(lhs)
+    def simplegen():
+        # Add all indices to a stack to do assignments to lhs on the
+        # way back up
+        indices = [rhs] if vy_type(rhs, simple=True) is not list else rhs
+        indice_stack = [indices[0]]
+        original = lhs
+        if not original.has_ind(indices[0]):
+            while not original.has_ind(indices[0]):
+                original = original + [0]
+        target = original[
+            indices[0]
+        ]  # Assumed pre-condition that rhs[0] is number
+        target_stack = [original, target]
+        for ind in indices[1:]:
+            if not vy_type(ind) == NUMBER_TYPE:
+                # Found a list, so quit
+                return
+            target = LazyList(iterable(target, ctx=ctx))
+            # The target needs to be padded to the current dimension
+            if not target.has_ind(ind):
+                while not target.has_ind(ind):
+                    target = target + [0]
+
+            # Get the item in the current dimension
+            target = target[ind]
+
+            indice_stack.append(ind)
+            target_stack.append(target)
+
+        # Remove the last item from the stack, as it's the current value
+        # currently in lhs. This is the value that needs to be changed
+        target_stack.pop()
+
+        target = other
+        while indice_stack:
+            ind = indice_stack.pop()
+            # Basically, a python equivalent of how one might usually
+            # do multi-dimensional assignment in Vyxal
+            target = assign_iterable(target_stack.pop(), ind, target, ctx)
+        yield target
+
+    if vy_type(rhs) == NUMBER_TYPE or vy_type(rhs[0]) == NUMBER_TYPE:
+        temp = simplegen()
+        # If the list has any items (guaranteed to be at least one if rhs is all numbers)
+        # then return the first item of the generator
+        if temp.has_ind(0):
+            return temp[0]
+
+    # There's a list somewhere in rhs, so it's a vectorised assignment
+    if vy_type(other, simple=True) is list:
+        pairs = vy_zip(rhs, other, ctx=ctx)
+        for pair in pairs:
+            lhs = assign_iterable_multidim(lhs, *pair, ctx)
+    else:
+        for item in rhs:
+            lhs = assign_iterable_multidim(lhs, item, other, ctx)
+
+    return lhs
+
+
 @element("øC", 1)
 def base_255_number_compress(lhs, ctx):
     """Element øC

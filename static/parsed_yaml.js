@@ -2772,6 +2772,12 @@ var codepage_descriptions =
       "description": "The equivalent of a[b] = c",
       "overloads": "any, num, any -> a but item b (0-indexed) is set to c",
       "token": "\u0226"
+    },
+    {
+      "name": "Multi-dimensional Assign",
+      "description": "Assign values to a multi-dimensional list using multi-dimensional indices. Basically \u0226 but for multi-dimensional lists.",
+      "overloads": "lst, lst[num], any -> a[b[0]][b[1]]...[b[-1]] = c\nlst, lst[lst|num], scl -> ['\u00de\u0226(a', 'ind', 'c) for ind in b']\nlst, lst[lst|num], lst -> ['\u00de\u0226(a', 'ind', 'val) for ind', 'val in zip(b', 'c)']",
+      "token": "\u00de\u0226"
     }
   ],
   "184": [
