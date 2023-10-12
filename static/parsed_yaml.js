@@ -1277,9 +1277,14 @@ var codepage_descriptions =
   ],
   "88": [
     {
-      "name": "Break",
-      "description": "Break out of the current loop or return early from a function.",
+      "name": "Return",
+      "description": "Return early (like Q but actually prints a value)",
       "token": "X"
+    },
+    {
+      "name": "Print the entire stack",
+      "description": "Print the entire stack",
+      "token": "\u00a8X"
     }
   ],
   "89": [
@@ -1916,8 +1921,8 @@ var codepage_descriptions =
   ],
   "120": [
     {
-      "name": "Recurse / Continue / Print Stack",
-      "description": "Call current function (Functions/Lambdas) / Continue (For Loops) / Print the entire stack (otherwise)",
+      "name": "Recurse",
+      "description": "Call current function",
       "token": "x"
     },
     {
@@ -1925,6 +1930,11 @@ var codepage_descriptions =
       "description": "All combinations of a list / string, of all lengths, without replacement",
       "overloads": "any -> all (non-empty) combinations of a, of all lengths and all orders, without replacement",
       "token": "\u00dex"
+    },
+    {
+      "name": "Continue",
+      "description": "Continue a Loop",
+      "token": "\u00a8x"
     }
   ],
   "121": [
@@ -2080,6 +2090,11 @@ var codepage_descriptions =
       "name": "Empty String",
       "description": "The empty string",
       "token": "\u00a4"
+    },
+    {
+      "name": "Break",
+      "description": "Break a Loop",
+      "token": "\u00a8\u00a4"
     }
   ],
   "135": [
@@ -2223,7 +2238,7 @@ var codepage_descriptions =
     {
       "name": "Enumerate",
       "description": "Zip with a range of the same length",
-      "overloads": "any -> enumerate(a) (zip with 1...len(a))",
+      "overloads": "any -> enumerate(a) (zip with 0...len(a))",
       "token": "\u0117"
     },
     {
@@ -2757,6 +2772,12 @@ var codepage_descriptions =
       "description": "The equivalent of a[b] = c",
       "overloads": "any, num, any -> a but item b (0-indexed) is set to c",
       "token": "\u0226"
+    },
+    {
+      "name": "Multi-dimensional Assign",
+      "description": "Assign values to a multi-dimensional list using multi-dimensional indices. Basically \u0226 but for multi-dimensional lists.",
+      "overloads": "lst, lst[num], any -> a[b[0]][b[1]]...[b[-1]] = c\nlst, lst[lst|num], scl -> ['\u00de\u0226(a', 'ind', 'c) for ind in b']\nlst, lst[lst|num], lst -> ['\u00de\u0226(a', 'ind', 'val) for ind', 'val in zip(b', 'c)']",
+      "token": "\u00de\u0226"
     }
   ],
   "184": [

@@ -702,9 +702,9 @@ Replace b with c in a / Map a function at elements of a list whose indices are i
 Stack wrapped into a list
 
 -------------------------------
-## `` X `` (Break)
+## `` X `` (Return)
 
-Break out of the current loop or return early from a function.
+Return early (like Q but actually prints a value)
 
 -------------------------------
 ## `` Y `` (Interleave)
@@ -975,9 +975,9 @@ a wrapped in a singleton list
 
 - any a: `[a] (wrap in singleton list)`
 -------------------------------
-## `` x `` (Recurse / Continue / Print Stack)
+## `` x `` (Recurse)
 
-Call current function (Functions/Lambdas) / Continue (For Loops) / Print the entire stack (otherwise)
+Call current function
 
 -------------------------------
 ## `` y `` (Uninterleave)
@@ -1165,7 +1165,7 @@ Zip with a range of the same length
 
 ### Overloads
 
-- any a: `enumerate(a) (zip with 1...len(a))`
+- any a: `enumerate(a) (zip with 0...len(a))`
 -------------------------------
 ## `` ḟ `` (Find)
 
@@ -4142,6 +4142,16 @@ List of lists from diagonals of a list
 
 - lst a: `List of lists from diagonals of a list`
 -------------------------------
+## `` ÞȦ `` (Multi-dimensional Assign)
+
+Assign values to a multi-dimensional list using multi-dimensional indices. Basically Ȧ but for multi-dimensional lists.
+
+### Overloads
+
+- lst a, lst[num] b, any c: `a[b[0]][b[1]]...[b[-1]] = c`
+- lst a, lst[lst|num] b, scl c: `['ÞȦ(a', 'ind', 'c) for ind in b']`
+- lst a, lst[lst|num] b, lst c: `['ÞȦ(a', 'ind', 'val) for ind', 'val in zip(b', 'c)']`
+-------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 
 Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
@@ -4370,4 +4380,19 @@ Push the first x integers greater than y where z(_) is truthy
 - fun a, num b, num c: `Push the first b integers that are greater than c where a(_) is truthy`
 - num a, fun b, num c: `Push the first c integers that are greater than a where b(_) is truthy`
 - num a, num b, fun c: `Push the first b integers that are greater than a where c(_) is truthy`
+-------------------------------
+## `` ¨x `` (Continue)
+
+Continue a Loop
+
+-------------------------------
+## `` ¨X `` (Print the entire stack)
+
+Print the entire stack
+
+-------------------------------
+## `` ¨¤ `` (Break)
+
+Break a Loop
+
 -------------------------------

@@ -173,18 +173,16 @@ def parse(
                     var_names = [
                         variable_name(branch) for branch in branches[:-1]
                     ]
-                body = parse(branches[-1], structure_cls)
+                body = parse(branches[-1], parent)
                 structures.append(structure.ForLoop(var_names, body))
             elif structure_cls == structure.WhileLoop:
                 if len(branches) == 1:
                     # If there's no condition, it's an infinite loop
                     condition = [lexer.Token(lexer.TokenType.NUMBER, "1")]
                 else:
-                    condition = parse(branches[0], structure_cls)
+                    condition = parse(branches[0], parent)
                 structures.append(
-                    structure.WhileLoop(
-                        condition, parse(branches[-1], structure_cls)
-                    )
+                    structure.WhileLoop(condition, parse(branches[-1], parent))
                 )
 
             elif structure_cls == structure.FunctionCall:
@@ -222,39 +220,43 @@ def parse(
 
             elif structure_cls == structure.LambdaMap:
                 structures.append(
-                    structure.LambdaMap(parse(branches[0], structure_cls))
+                    structure.LambdaMap(parse(branches[0], structure.Lambda))
                 )
 
             elif structure_cls == structure.LambdaMapDyadic:
                 structures.append(
-                    structure.LambdaMapDyadic(parse(branches[0], structure_cls))
+                    structure.LambdaMapDyadic(
+                        parse(branches[0], structure.Lambda)
+                    )
                 )
 
             elif structure_cls == structure.LambdaMapTriadic:
                 structures.append(
                     structure.LambdaMapTriadic(
-                        parse(branches[0], structure_cls)
+                        parse(branches[0], structure.Lambda)
                     )
                 )
 
             elif structure_cls == structure.LambdaZip:
                 structures.append(
-                    structure.LambdaZip(parse(branches[0], structure_cls))
+                    structure.LambdaZip(parse(branches[0], structure.Lambda))
                 )
 
             elif structure_cls == structure.LambdaMapEager:
                 structures.append(
-                    structure.LambdaMapEager(parse(branches[0], structure_cls))
+                    structure.LambdaMapEager(
+                        parse(branches[0], structure.Lambda)
+                    )
                 )
 
             elif structure_cls == structure.LambdaFilter:
                 structures.append(
-                    structure.LambdaFilter(parse(branches[0], structure_cls))
+                    structure.LambdaFilter(parse(branches[0], structure.Lambda))
                 )
 
             elif structure_cls == structure.LambdaSort:
                 structures.append(
-                    structure.LambdaSort(parse(branches[0], structure_cls))
+                    structure.LambdaSort(parse(branches[0], structure.Lambda))
                 )
 
             else:
