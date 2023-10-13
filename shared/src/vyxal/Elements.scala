@@ -864,8 +864,14 @@ object Elements:
       "",
     ) {
       case (a, b: VNum, c) =>
-        val iterable = ListHelpers.makeIterable(a)
-        VList.from(iterable.take(b) ++ (c +: iterable.drop(b)))
+        ListHelpers.insert(ListHelpers.makeIterable(a), b, c)
+      case (a, b: VList, c) =>
+        var temp = ListHelpers.makeIterable(a)
+        for i <- b.reverse do
+          i match
+            case index: VNum => temp = ListHelpers.insert(temp, index, c)
+            case _ => throw IllegalArgumentException(s"$i is not a number")
+        temp
     },
     addPart(
       Dyad,

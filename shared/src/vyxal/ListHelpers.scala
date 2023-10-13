@@ -190,6 +190,10 @@ object ListHelpers:
     if current.nonEmpty then out += current.toSeq
     out.toSeq
 
+  def insert(iterable: VList, index: VNum, value: VAny)(using
+      Context
+  ): VList = VList.from(iterable.take(index) ++ (value +: iterable.drop(index)))
+
   def interleave(left: VList, right: VList)(using Context): VList =
     val out = ArrayBuffer.empty[VAny]
     val leftIter = left.iterator
