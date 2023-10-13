@@ -629,6 +629,7 @@ Keywords: print-no-newline
 - a -> printed to stdout without newline
 ---------------------
 Ạ (Assign) (non-vectorising)
+Trigraph: #,A
 Keywords: assign, assign-at, assign<>, assign<x>, a<x>=, a<x>=y, a<x>?=y
 - a: lst, b: num, c: non-fun -> assign c to a at the index b / a[b] = c
 - a: lst, b: num, c: fun -> a[b] c= <stack items> (augmented assignment to list)
