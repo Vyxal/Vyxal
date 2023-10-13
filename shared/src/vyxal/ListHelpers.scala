@@ -210,7 +210,9 @@ object ListHelpers:
 
   def insert(iterable: VList, index: VNum, value: VAny)(using
       Context
-  ): VList = VList.from(iterable.take(index) ++ (value +: iterable.drop(index)))
+  ): VList =
+    val ind = if index < 0 then iterable.bigLength + index + 1 else index
+    VList.from(iterable.take(ind) ++ (value +: iterable.drop(ind)))
 
   def interleave(left: VList, right: VList)(using Context): VList =
     val out = ArrayBuffer.empty[VAny]
