@@ -126,6 +126,8 @@ object Elements:
         "a<x>?=y",
       ),
       false,
+      "a: lst, b: num, c: non-fun -> assign c to a at the index b / a[b] = c",
+      "a: lst, b: num, c: fun -> a[b] c= <stack items> (augmented assignment to list)",
       "a: lst, b: lst, c: lst -> assign c to a at the indices in b",
     ) {
       case (a, b: VNum, c: VPhysical) =>
@@ -145,7 +147,10 @@ object Elements:
             ListHelpers.makeIterable(b).zip(ListHelpers.makeIterable(c))
         do
           i match
-            case ind: VNum => temp = ListHelpers.assign(temp, ind, j)
+            case ind: VNum => j match
+                case value: VPhysical => temp = ListHelpers.assign(temp, ind, j)
+                case function: VFun =>
+                  temp = ListHelpers.augmentAssign(temp, ind, function)
             case _ => throw IllegalArgumentException("Index must be a number")
         temp
     },
