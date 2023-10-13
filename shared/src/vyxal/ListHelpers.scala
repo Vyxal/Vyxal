@@ -22,7 +22,6 @@ object ListHelpers:
       function,
       ctxVarPrimary = item,
       ctxVarSecondary = index,
-      args = List(item, index),
     )
     VList.from(iterable.take(ind) ++ (res +: iterable.drop(ind + 1)))
 
