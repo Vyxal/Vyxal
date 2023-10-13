@@ -116,12 +116,22 @@ object Elements:
       Triad,
       "Ạ",
       "Assign",
-      List("assign", "assign-at", "assign<>", "assign<x>", "a<x>=", "a<x>=y"),
+      List(
+        "assign",
+        "assign-at",
+        "assign<>",
+        "assign<x>",
+        "a<x>=",
+        "a<x>=y",
+        "a<x>?=y",
+      ),
       false,
       "a: lst, b: lst, c: lst -> assign c to a at the indices in b",
     ) {
-      case (a, b: VNum, c) =>
+      case (a, b: VNum, c: VPhysical) =>
         ListHelpers.assign(ListHelpers.makeIterable(a), b, c)
+      case (a, b: VNum, c: VFun) =>
+        ListHelpers.augmentAssign(ListHelpers.makeIterable(a), b, c)
       case (a, b: VList, c) =>
         var temp = ListHelpers.makeIterable(a)
         for i <- ListHelpers.makeIterable(b) do

@@ -12,6 +12,20 @@ object ListHelpers:
     val ind = if index < 0 then iterable.bigLength + index else index
     VList.from(iterable.take(ind) ++ (value +: iterable.drop(ind + 1)))
 
+  def augmentAssign(iterable: VList, index: VNum, function: VFun)(using
+      ctx: Context
+  ): VList =
+    val ind = if index < 0 then iterable.bigLength + index else index
+    val item = iterable.index(ind)
+    ctx.push(item)
+    val res = Interpreter.executeFn(
+      function,
+      ctxVarPrimary = item,
+      ctxVarSecondary = index,
+      args = List(item, index),
+    )
+    VList.from(iterable.take(ind) ++ (res +: iterable.drop(ind + 1)))
+
   def cartesianPower(lhs: VAny, pow: VNum)(using Context): VList =
     if pow == VNum(0) then VList(VList())
     else
