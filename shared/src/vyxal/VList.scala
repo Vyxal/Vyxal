@@ -4,6 +4,7 @@ import vyxal.VNum.given
 
 import scala.collection.immutable.SeqOps
 import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 import scala.collection.SpecificIterableFactory
 
 /** A Vyxal list. It simply wraps around another list and could represent a
@@ -57,8 +58,24 @@ class VList private (val lst: Seq[VAny])
   /** Override to specify return type as VList */
   override def take(n: Int): VList = VList.from(lst.take(n))
 
+  def take(n: VNum): VList =
+    val ret = ListBuffer[VAny]()
+    var i: VNum = 0
+    while i < n do
+      ret :+ indexBig(i.real.toBigInt)
+      i += 1
+    VList.from(ret.toList)
+
   /** Override to specify return type as VList */
   override def drop(n: Int): VList = VList.from(lst.drop(n))
+
+  def drop(n: VNum): VList =
+    var ret: Seq[VAny] = lst
+    var i: VNum = 0
+    while i < n do
+      ret = ret.tail
+      i += 1
+    VList.from(ret)
 
   /** Override to specify return type as VList */
   override def dropRight(n: Int): VList = VList.from(lst.dropRight(n))

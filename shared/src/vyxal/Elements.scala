@@ -856,6 +856,18 @@ object Elements:
       case s: String => s.dropRight(1)
     },
     addPart(
+      Triad,
+      "Ị",
+      "Insert",
+      List("insert", "insert-at"),
+      false,
+      "",
+    ) {
+      case (a, b: VNum, c) =>
+        val iterable = ListHelpers.makeIterable(a)
+        VList.from(iterable.take(b) ++ (c +: iterable.drop(b)))
+    },
+    addPart(
       Dyad,
       "I",
       "Interleave",
