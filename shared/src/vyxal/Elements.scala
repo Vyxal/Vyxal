@@ -113,6 +113,33 @@ object Elements:
       "a: any, b: any -> list(a) ++ [b]",
     ) { case (a, b) => VList.from(ListHelpers.makeIterable(a) :+ b) },
     addPart(
+      Triad,
+      "Ạ",
+      "Assign",
+      List("assign", "assign-at", "assign<>", "assign<x>", "a<x>=", "a<x>=y"),
+      false,
+      "a: lst, b: lst, c: lst -> assign c to a at the indices in b",
+    ) {
+      case (a, b: VNum, c) =>
+        ListHelpers.assign(ListHelpers.makeIterable(a), b, c)
+      case (a, b: VList, c) =>
+        var temp = ListHelpers.makeIterable(a)
+        for i <- ListHelpers.makeIterable(b) do
+          i match
+            case ind: VNum => temp = ListHelpers.assign(temp, ind, c)
+            case _ => throw IllegalArgumentException("Index must be a number")
+        temp
+      case (a, b: VList, c: VList) =>
+        var temp = ListHelpers.makeIterable(a)
+        for (i, j) <-
+            ListHelpers.makeIterable(b).zip(ListHelpers.makeIterable(c))
+        do
+          i match
+            case ind: VNum => temp = ListHelpers.assign(temp, ind, j)
+            case _ => throw IllegalArgumentException("Index must be a number")
+        temp
+    },
+    addPart(
       Monad,
       "ḃ",
       "Bit | Parity | Last Half of String",
@@ -870,6 +897,14 @@ object Elements:
         for i <- b.reverse do
           i match
             case index: VNum => temp = ListHelpers.insert(temp, index, c)
+            case _ => throw IllegalArgumentException(s"$i is not a number")
+        temp
+      case (a, b: VList, c: VList) =>
+        var temp = ListHelpers.makeIterable(a)
+        for (i, j) <- b.reverse.zip(c.reverse) do
+          (i, j) match
+            case (index: VNum, elem) =>
+              temp = ListHelpers.insert(temp, index, elem)
             case _ => throw IllegalArgumentException(s"$i is not a number")
         temp
     },

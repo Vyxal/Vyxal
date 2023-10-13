@@ -62,7 +62,7 @@ class VList private (val lst: Seq[VAny])
     val ret = ListBuffer[VAny]()
     var i: VNum = 0
     while i < n do
-      ret :+ indexBig(i.real.toBigInt)
+      ret += indexBig(i.real.toBigInt)
       i += 1
     VList.from(ret.toList)
 
@@ -103,6 +103,16 @@ class VList private (val lst: Seq[VAny])
     * the list, meaning that it won't work with infinite lists.
     */
   override def length: Int = lst.length
+
+  def bigLength: BigInt =
+    if lst.isEmpty then 0
+    else
+      var ret = BigInt(0)
+      var temp = lst
+      while temp.nonEmpty do
+        ret += 1
+        temp = temp.tail
+      ret
 
   /** This violates the method contract, since [[List]]s actually need a
     * traversal to get their length, but it helps us check for lazy lists

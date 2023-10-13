@@ -8,6 +8,10 @@ import scala.collection.mutable as mut
 
 object ListHelpers:
 
+  def assign(iterable: VList, index: VNum, value: VAny): VList =
+    val ind = if index < 0 then iterable.bigLength + index else index
+    VList.from(iterable.take(ind) ++ (value +: iterable.drop(ind + 1)))
+
   def cartesianPower(lhs: VAny, pow: VNum)(using Context): VList =
     if pow == VNum(0) then VList(VList())
     else
