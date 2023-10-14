@@ -124,6 +124,8 @@ object Elements:
         "a<x>=",
         "a<x>=y",
         "a<x>?=y",
+        "set-item",
+        "apply-at",
       ),
       false,
       "a: lst, b: num, c: non-fun -> assign c to a at the index b / a[b] = c",
