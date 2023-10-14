@@ -219,7 +219,8 @@ object ListHelpers:
   ): VList =
     val ind = if index < 0 then iterable.bigLength + index + 1 else index
     val temp =
-      if !iterable.hasIndex(ind.toBigInt - 1) then iterable.extend(ind)(VNum(0))
+      if !iterable.hasIndex(ind.toBigInt - 1) then
+        iterable.extend(ind - 1)(VNum(0))
       else iterable
     VList.from(temp.take(ind) ++ (value +: temp.drop(ind)))
 
