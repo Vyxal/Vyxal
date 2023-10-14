@@ -217,9 +217,9 @@ object ListHelpers:
   def insert(iterable: VList, index: VNum, value: VAny)(using
       Context
   ): VList =
-    val ind = if index < 0 then iterable.bigLength + index else index
+    val ind = if index < 0 then iterable.bigLength + index + 1 else index
     val temp =
-      if !iterable.hasIndex(ind.toBigInt) then iterable.extend(ind)(VNum(0))
+      if !iterable.hasIndex(ind.toBigInt - 1) then iterable.extend(ind)(VNum(0))
       else iterable
     VList.from(temp.take(ind) ++ (value +: temp.drop(ind)))
 
