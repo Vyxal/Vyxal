@@ -114,6 +114,11 @@ class VList private (val lst: Seq[VAny])
         temp = temp.tail
       ret
 
+  def extend(toSize: VNum)(elem: VAny): VList =
+    var ret = VList.from(lst)
+    while !ret.hasIndex(toSize.toBigInt) do ret = VList.from(ret.lst :+ elem)
+    ret
+
   /** This violates the method contract, since [[List]]s actually need a
     * traversal to get their length, but it helps us check for lazy lists
     */

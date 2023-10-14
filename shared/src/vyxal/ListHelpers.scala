@@ -10,12 +10,19 @@ object ListHelpers:
 
   def assign(iterable: VList, index: VNum, value: VAny): VList =
     val ind = if index < 0 then iterable.bigLength + index else index
-    VList.from(iterable.take(ind) ++ (value +: iterable.drop(ind + 1)))
+    val temp =
+      if !iterable.hasIndex(ind.toBigInt) then iterable.extend(ind)(VNum(0))
+      else iterable
+
+    VList.from(temp.take(ind) ++ (value +: temp.drop(ind + 1)))
 
   def augmentAssign(iterable: VList, index: VNum, function: VFun)(using
       ctx: Context
   ): VList =
     val ind = if index < 0 then iterable.bigLength + index else index
+    val temp =
+      if !iterable.hasIndex(ind.toBigInt) then iterable.extend(ind)(VNum(0))
+      else iterable
     val item = iterable.index(ind)
     ctx.push(item)
     val res = Interpreter.executeFn(
@@ -23,7 +30,7 @@ object ListHelpers:
       ctxVarPrimary = item,
       ctxVarSecondary = index,
     )
-    VList.from(iterable.take(ind) ++ (res +: iterable.drop(ind + 1)))
+    VList.from(temp.take(ind) ++ (res +: temp.drop(ind + 1)))
 
   def cartesianPower(lhs: VAny, pow: VNum)(using Context): VList =
     if pow == VNum(0) then VList(VList())
@@ -211,7 +218,10 @@ object ListHelpers:
       Context
   ): VList =
     val ind = if index < 0 then iterable.bigLength + index + 1 else index
-    VList.from(iterable.take(ind) ++ (value +: iterable.drop(ind)))
+    val temp =
+      if !iterable.hasIndex(ind.toBigInt) then iterable.extend(ind)(VNum(0))
+      else iterable
+    VList.from(temp.take(ind) ++ (value +: temp.drop(ind)))
 
   def interleave(left: VList, right: VList)(using Context): VList =
     val out = ArrayBuffer.empty[VAny]

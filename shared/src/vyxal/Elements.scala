@@ -131,16 +131,25 @@ object Elements:
       "a: lst, b: lst, c: lst -> assign c to a at the indices in b",
     ) {
       case (a, b: VNum, c: VPhysical) =>
-        ListHelpers.assign(ListHelpers.makeIterable(a), b, c)
+        val temp = ListHelpers.assign(ListHelpers.makeIterable(a), b, c)
+        if a.isInstanceOf[String] then temp.mkString
+        else temp
+      case (a, b: VVal, c: VNum) =>
+        val temp = ListHelpers.assign(ListHelpers.makeIterable(a), c, b)
+        if a.isInstanceOf[String] then temp.mkString
+        else temp
       case (a, b: VNum, c: VFun) =>
-        ListHelpers.augmentAssign(ListHelpers.makeIterable(a), b, c)
+        val temp = ListHelpers.augmentAssign(ListHelpers.makeIterable(a), b, c)
+        if a.isInstanceOf[String] then temp.mkString
+        else temp
       case (a, b: VList, c) =>
         var temp = ListHelpers.makeIterable(a)
         for i <- ListHelpers.makeIterable(b) do
           i match
             case ind: VNum => temp = ListHelpers.assign(temp, ind, c)
             case _ => throw IllegalArgumentException("Index must be a number")
-        temp
+        if a.isInstanceOf[String] then temp.mkString
+        else temp
       case (a, b: VList, c: VList) =>
         var temp = ListHelpers.makeIterable(a)
         for (i, j) <-
@@ -152,7 +161,8 @@ object Elements:
                 case function: VFun =>
                   temp = ListHelpers.augmentAssign(temp, ind, function)
             case _ => throw IllegalArgumentException("Index must be a number")
-        temp
+        if a.isInstanceOf[String] then temp.mkString
+        else temp
     },
     addPart(
       Monad,
