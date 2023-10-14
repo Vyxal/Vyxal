@@ -945,7 +945,7 @@
   - {in: [[], 0, 69], out: [69]}
   - {in: [[], 5, 69], out: [0, 0, 0, 0, 0, 69]}
   - {in: [[1, 2, 3, 4], -1, 69], out: [1, 2, 3, 69]}
-  - {in: ["Hello, World", 0, "Vyxal"], out: ["Vyxalello, World"]}
+  - {in: ["Hello, World", 0, "Vyxal"], out: "Vyxalello, World"}
 
 "Ḅ":
   - {in: [60], out: [2, 3, 5]}
