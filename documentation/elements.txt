@@ -701,7 +701,7 @@ Keywords: ge, greater-than-or-equal-to
 ---------------------
 ≠ (Not Equal) (non-vectorising)
 Trigraph: #.=
-Keywords: not-equal
+Keywords: not-equal, =n't
 - a: any, b: any -> a !== b (non-vectorising)
 ---------------------
 ₌ (Exactly Equals) (non-vectorising)
