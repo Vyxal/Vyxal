@@ -103,7 +103,7 @@ private[parsing] object LiterateLexer extends Lexer:
 
   def wordStart[$: P]: P[String] = P(CharIn("a-zA-Z_<>?!*+\\-=&%:").!)
   def word[$: P]: P[String] =
-    P((wordStart ~~ CharsWhileIn("0-9a-zA-Z_<>?!*+\\-=&%:", 0)).!)
+    P((wordStart ~~ CharsWhileIn("0-9a-zA-Z_<>?!*+\\-=&%:'", 0)).!)
 
   def litInt[$: P]: P[String] =
     P(("0" | (CharIn("1-9") ~~ CharsWhileIn("_0-9", 0))).!)
@@ -203,6 +203,11 @@ private[parsing] object LiterateLexer extends Lexer:
     val isKeyword = keywords.toSet
     word.filter(isKeyword)
 
+  def negatedKeywordParser[$: P](keywords: Iterable[String]): P[String] =
+    // This can't be a one-liner because we want it to be strictly evaluated
+    val isKeyword = keywords.toSet
+    word.filter(x => isKeyword(x.stripSuffix("n't")))
+
   def elementKeyword[$: P]: P[Token] =
     parseToken(
       Command,
@@ -213,6 +218,18 @@ private[parsing] object LiterateLexer extends Lexer:
           .symbol
       ),
     ).opaque("<element keyword>")
+
+  def negatedElementKeyword[$: P]: P[Token] =
+    parseToken(
+      NegatedCommand,
+      negatedKeywordParser(Elements.elements.values.flatMap(_.keywords)).map(
+        kw =>
+          Elements.elements.values
+            .find(elem => elem.keywords.contains(kw.stripSuffix("n't")))
+            .get
+            .symbol
+      ),
+    ).opaque("<negated element keyword>")
 
   def modifierKeyword[$: P]: P[Token] =
     withRange(keywordsParser(Modifiers.modifiers.values.flatMap(_.keywords)))
@@ -314,9 +331,10 @@ private[parsing] object LiterateLexer extends Lexer:
     P(
       lambdaBlock | list | unpackVar |
         (contextIndex | litGetVariable | litSetVariable | litSetConstant |
-          litAugVariable | elementKeyword | modifierKeyword | structOpener |
-          otherKeyword | litBranch | litStructClose | litNumber | litString)
-          .map(Seq(_)) | normalGroup | rawCode | SBCSLexer.token.map(Seq(_))
+          litAugVariable | elementKeyword | negatedElementKeyword |
+          modifierKeyword | structOpener | otherKeyword | litBranch |
+          litStructClose | litNumber | litString).map(Seq(_)) | normalGroup |
+        rawCode | SBCSLexer.token.map(Seq(_))
     )
 
   def tokens[$: P]: P[List[Token]] = P(singleToken.rep).map(_.flatten.toList)

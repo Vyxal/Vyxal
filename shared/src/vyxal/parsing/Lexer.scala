@@ -75,6 +75,7 @@ enum TokenType(val canonicalSBCS: Option[String] = None) derives CanEqual:
   case Param
   case UnpackClose extends TokenType(Some("]"))
   case GroupType
+  case NegatedCommand
 
   /** Helper to help go from the old VyxalToken to the new Token(TokenType,
     * text, range) format
