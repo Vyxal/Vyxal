@@ -201,19 +201,24 @@ private[parsing] object LiterateLexer extends Lexer:
     // TODO(user): Make this not use filter
     // This can't be a one-liner because we want it to be strictly evaluated
     val isKeyword = keywords.toSet
-    word.filter(isKeyword)
+    word.filter(x => isKeyword(removeDoubleNt(x)))
 
   def negatedKeywordParser[$: P](keywords: Iterable[String]): P[String] =
     // This can't be a one-liner because we want it to be strictly evaluated
     val isKeyword = keywords.toSet
-    word.filter(x => isKeyword(x.stripSuffix("n't")))
+    word.filter(x => isKeyword(removeDoubleNt(x).stripSuffix("n't")))
+
+  private def removeDoubleNt(word: String): String =
+    var temp = word
+    while temp.endsWith("n'tn't") do temp = temp.stripSuffix("n'tn't")
+    temp
 
   def elementKeyword[$: P]: P[Token] =
     parseToken(
       Command,
       keywordsParser(Elements.elements.values.flatMap(_.keywords)).map(kw =>
         Elements.elements.values
-          .find(elem => elem.keywords.contains(kw))
+          .find(elem => elem.keywords.contains(removeDoubleNt(kw)))
           .get
           .symbol
       ),
@@ -225,7 +230,9 @@ private[parsing] object LiterateLexer extends Lexer:
       negatedKeywordParser(Elements.elements.values.flatMap(_.keywords)).map(
         kw =>
           Elements.elements.values
-            .find(elem => elem.keywords.contains(kw.stripSuffix("n't")))
+            .find(elem =>
+              elem.keywords.contains(removeDoubleNt(kw).stripSuffix("n't"))
+            )
             .get
             .symbol
       ),
