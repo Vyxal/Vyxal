@@ -96,7 +96,7 @@ object jvm extends VyxalModule {
           // For the REPL
           ivy"org.jline:jline:3.23.0",
           ivy"org.jline:jline-terminal-jansi:3.23.0",
-          ivy"org.fusesource.jansi:jansi:2.4.0",
+          ivy"org.fusesource.jansi:jansi:2.4.1",
         )
     }
 
