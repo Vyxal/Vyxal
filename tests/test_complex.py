@@ -1063,6 +1063,33 @@ def test_multiple_lists_assign():
     assert stack[-1] == "lhleo"
 
 
+def test_table():
+    stack = run_vyxal("5 6 ǒ+")
+    assert stack[-1] == [
+        [2, 3, 4, 5, 6],
+        [3, 4, 5, 6, 7],
+        [4, 5, 6, 7, 8],
+        [5, 6, 7, 8, 9],
+        [6, 7, 8, 9, 10],
+        [7, 8, 9, 10, 11],
+    ]
+
+    stack = run_vyxal("⟨⟩ ⟨1|2|3⟩ ǒ+")
+    assert stack[-1] == [[], [], []]
+
+    stack = run_vyxal("⟨1|2|3⟩ ⟨⟩ ǒ+")
+    assert stack[-1] == []
+
+    stack = run_vyxal("5ɾ:ǒ*")
+    assert stack[-1] == [
+        [1, 2, 3, 4, 5],
+        [2, 4, 6, 8, 10],
+        [3, 6, 9, 12, 15],
+        [4, 8, 12, 16, 20],
+        [5, 10, 15, 20, 25],
+    ]
+
+
 def test_maximums_by():
     stack = run_vyxal("λ∆l⌊;O", inputs=[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]])
     assert stack[-1] == [8, 9, 10, 11]
