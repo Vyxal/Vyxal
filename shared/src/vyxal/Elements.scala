@@ -113,6 +113,60 @@ object Elements:
       "a: any, b: any -> list(a) ++ [b]",
     ) { case (a, b) => VList.from(ListHelpers.makeIterable(a) :+ b) },
     addPart(
+      Triad,
+      "Ạ",
+      "Assign",
+      List(
+        "assign",
+        "assign-at",
+        "assign<>",
+        "assign<x>",
+        "a<x>=",
+        "a<x>=y",
+        "a<x>?=y",
+        "set-item",
+        "apply-at",
+      ),
+      false,
+      "a: lst, b: num, c: non-fun -> assign c to a at the index b / a[b] = c",
+      "a: lst, b: num, c: fun -> a[b] c= <stack items> (augmented assignment to list)",
+      "a: lst, b: lst, c: lst -> assign c to a at the indices in b",
+    ) {
+      case (a, b: VNum, c: VPhysical) =>
+        val temp = ListHelpers.assign(ListHelpers.makeIterable(a), b, c)
+        if a.isInstanceOf[String] then temp.mkString
+        else temp
+      case (a, b: VVal, c: VNum) =>
+        val temp = ListHelpers.assign(ListHelpers.makeIterable(a), c, b)
+        if a.isInstanceOf[String] then temp.mkString
+        else temp
+      case (a, b: VNum, c: VFun) =>
+        val temp = ListHelpers.augmentAssign(ListHelpers.makeIterable(a), b, c)
+        if a.isInstanceOf[String] then temp.mkString
+        else temp
+      case (a, b: VList, c) =>
+        var temp = ListHelpers.makeIterable(a)
+        for i <- ListHelpers.makeIterable(b) do
+          i match
+            case ind: VNum => temp = ListHelpers.assign(temp, ind, c)
+            case _ => throw IllegalArgumentException("Index must be a number")
+        if a.isInstanceOf[String] then temp.mkString
+        else temp
+      case (a, b: VList, c: VList) =>
+        var temp = ListHelpers.makeIterable(a)
+        for (i, j) <-
+            ListHelpers.makeIterable(b).zip(ListHelpers.makeIterable(c))
+        do
+          i match
+            case ind: VNum => j match
+                case value: VPhysical => temp = ListHelpers.assign(temp, ind, j)
+                case function: VFun =>
+                  temp = ListHelpers.augmentAssign(temp, ind, function)
+            case _ => throw IllegalArgumentException("Index must be a number")
+        if a.isInstanceOf[String] then temp.mkString
+        else temp
+    },
+    addPart(
       Monad,
       "ḃ",
       "Bit | Parity | Last Half of String",
@@ -854,6 +908,32 @@ object Elements:
     ) {
       case lst: VList => lst.dropRight(1)
       case s: String => s.dropRight(1)
+    },
+    addPart(
+      Triad,
+      "Ị",
+      "Insert",
+      List("insert", "insert-at"),
+      false,
+      "",
+    ) {
+      case (a, b: VNum, c) =>
+        ListHelpers.insert(ListHelpers.makeIterable(a), b, c)
+      case (a, b: VList, c) =>
+        var temp = ListHelpers.makeIterable(a)
+        for i <- b.reverse do
+          i match
+            case index: VNum => temp = ListHelpers.insert(temp, index, c)
+            case _ => throw IllegalArgumentException(s"$i is not a number")
+        temp
+      case (a, b: VList, c: VList) =>
+        var temp = ListHelpers.makeIterable(a)
+        for (i, j) <- b.reverse.zip(c.reverse) do
+          (i, j) match
+            case (index: VNum, elem) =>
+              temp = ListHelpers.insert(temp, index, elem)
+            case _ => throw IllegalArgumentException(s"$i is not a number")
+        temp
     },
     addPart(
       Dyad,

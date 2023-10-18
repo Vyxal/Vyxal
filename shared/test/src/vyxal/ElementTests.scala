@@ -743,7 +743,14 @@ class ElementTests extends VyxalTests:
     )
   }
 
-  describe("Ṣ") {
+  describe("Element Ạ") {
+    testMulti(
+      "#[1|2|3|4#] 0 λ1+} Ạ" -> VList(2, 2, 3, 4),
+      "#[2|#[1|2|3|4#]|2|3|4#] 1 λṚ} Ạ" -> VList(2, VList(4, 3, 2, 1), 2, 3, 4),
+    )
+  }
+
+  describe("Element Ṣ") {
     testMulti(
       "#[1|1#]Ṇ+}Ṣ10Θ" ->
         VList(

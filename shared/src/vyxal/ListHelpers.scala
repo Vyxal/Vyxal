@@ -8,6 +8,30 @@ import scala.collection.mutable as mut
 
 object ListHelpers:
 
+  def assign(iterable: VList, index: VNum, value: VAny): VList =
+    val ind = if index < 0 then iterable.bigLength + index else index
+    val temp =
+      if !iterable.hasIndex(ind.toBigInt) then iterable.extend(ind)(VNum(0))
+      else iterable
+
+    VList.from(temp.take(ind) ++ (value +: temp.drop(ind + 1)))
+
+  def augmentAssign(iterable: VList, index: VNum, function: VFun)(using
+      ctx: Context
+  ): VList =
+    val ind = if index < 0 then iterable.bigLength + index else index
+    val temp =
+      if !iterable.hasIndex(ind.toBigInt) then iterable.extend(ind)(VNum(0))
+      else iterable
+    val item = iterable.index(ind)
+    ctx.push(item)
+    val res = Interpreter.executeFn(
+      function,
+      ctxVarPrimary = item,
+      ctxVarSecondary = index,
+    )
+    VList.from(temp.take(ind) ++ (res +: temp.drop(ind + 1)))
+
   def cartesianPower(lhs: VAny, pow: VNum)(using Context): VList =
     if pow == VNum(0) then VList(VList())
     else
@@ -189,6 +213,16 @@ object ListHelpers:
     }
     if current.nonEmpty then out += current.toSeq
     out.toSeq
+
+  def insert(iterable: VList, index: VNum, value: VAny)(using
+      Context
+  ): VList =
+    val ind = if index < 0 then iterable.bigLength + index + 1 else index
+    val temp =
+      if !iterable.hasIndex(ind.toBigInt - 1) then
+        iterable.extend(ind - 1)(VNum(0))
+      else iterable
+    VList.from(temp.take(ind) ++ (value +: temp.drop(ind)))
 
   def interleave(left: VList, right: VList)(using Context): VList =
     val out = ArrayBuffer.empty[VAny]
@@ -690,6 +724,6 @@ object ListHelpers:
     )
 
   def deltas(lst: VList)(using Context): VList =
-    VList.from((lst.drop(1), lst).zipped.map(MiscHelpers.subtract(_, _)))
+    VList.from(lst.drop(1).zip(lst).map(MiscHelpers.subtract(_, _)))
 
 end ListHelpers

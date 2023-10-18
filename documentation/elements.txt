@@ -628,6 +628,13 @@ Trigraph: #,o
 Keywords: print-no-newline
 - a -> printed to stdout without newline
 ---------------------
+Ạ (Assign) (non-vectorising)
+Trigraph: #,A
+Keywords: assign, assign-at, assign<>, assign<x>, a<x>=, a<x>=y, a<x>?=y, set-item, apply-at
+- a: lst, b: num, c: non-fun -> assign c to a at the index b / a[b] = c
+- a: lst, b: num, c: fun -> a[b] c= <stack items> (augmented assignment to list)
+- a: lst, b: lst, c: lst -> assign c to a at the indices in b
+---------------------
 Ḅ (Unique Prime Factors | Case Of) (vectorising)
 Trigraph: #,B
 Keywords: unique-prime-factors, case-of
@@ -638,6 +645,11 @@ Keywords: unique-prime-factors, case-of
 Trigraph: #,H
 Keywords: head-extract-swap, split-at-head-swap
 - a: lst|str -> Push a[1:], then a[0] onto the stack
+---------------------
+Ị (Insert) (non-vectorising)
+Trigraph: #,I
+Keywords: insert, insert-at
+- 
 ---------------------
 Ḷ (Sort by Length) (non-vectorising)
 Trigraph: #,L

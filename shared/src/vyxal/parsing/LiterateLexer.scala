@@ -26,7 +26,7 @@ private[parsing] object LiterateLexer extends Lexer:
   private val branchKeywords = List(
     ":",
     "->",
-    "else",
+    "else:",
     "elif",
     "else-if",
     "body",

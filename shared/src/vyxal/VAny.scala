@@ -9,6 +9,7 @@ import spire.implicits.*
 
 type VAny = VVal | VFun | VList
 type VVal = VNum | String
+type VPhysical = VNum | String | VList
 
 /** A function object (not a function definition)
   *
