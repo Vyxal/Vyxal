@@ -26,6 +26,7 @@ lambda ~ | ... } -> lambda that operates on the stack
 `number` -> index n of context parameters
 (. f) (: f g) (:. f g h) (:: f g h p) -> next n items as monadic lambda
 (, f) (; f g) (;, f g h) (;; f g h p) -> next n items as dyadic lambda
+<command>n't -> logically negate a command. Counts as 2 things. Can stack
 ```
 
 - Lists and lambdas (`[...]` and `{...}`) must be closed
