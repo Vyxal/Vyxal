@@ -122,7 +122,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       Seq(
         "org.jline" % "jline" % "3.23.0",
         "org.jline" % "jline-terminal-jansi" % "3.23.0",
-        "org.fusesource.jansi" % "jansi" % "2.4.0",
+        "org.fusesource.jansi" % "jansi" % "2.4.1",
       ),
     Compile / run / fork := true,
     Compile / run / connectInput := true,
