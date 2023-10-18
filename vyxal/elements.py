@@ -8004,11 +8004,11 @@ modifiers: dict[str, str] = {
         "mapped = map(lambda item, function_A=function_A, ctx=ctx: vy_reduce(function_A, item, ctx), over)\n"
         "stack.append(LazyList(mapped))\n"
     ),
-    "ǒ": ( # Cartesian product by function
+    "ǒ": (  # Cartesian product by function
         "function_A.stored_arity = 2\n"
         "lhs, rhs = pop(stack, 2, ctx)\n"
         "lhs = iterable(lhs, range, ctx=ctx)\n"
         "rhs = iterable(rhs, range, ctx=ctx)\n"
         "stack.append(table(function_A, lhs, rhs, ctx=ctx))\n"
-    )
+    ),
 }

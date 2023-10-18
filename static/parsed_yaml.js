@@ -3641,9 +3641,9 @@ var codepage_descriptions =
   ],
   "242": [
     {
-      "name": "Modulo 3",
-      "description": "Modulo 3 / Split into Length 2",
-      "overloads": "num -> a % 3\nstr -> a split into chunks of length 2",
+      "name": "Table",
+      "description": "Outer product/table by an element",
+      "usage": "\u01d2<element>",
       "token": "\u01d2"
     }
   ],
