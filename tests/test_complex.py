@@ -868,14 +868,6 @@ def test_zip_lambda():
     assert stack[-1] == [8, 10, 12]
 
 
-def test_if_modifier():
-    stack = run_vyxal("6 2 0 ¨i/-")
-    assert stack[-1] == 4
-
-    stack = run_vyxal("6 2 2 ¨i/-")
-    assert stack[-1] == 3
-
-
 def test_infinite_all_integers():
     stack = run_vyxal("Þn 20 Ẏ")
     assert stack[-1] == [
@@ -910,14 +902,6 @@ def test_dyadic_modifier_monadically():
 def test_vectorized_recursion():
     stack = run_vyxal("λ⅛-[vx];†¾", inputs=[[[1, 2], 3, [2, 3]]])
     assert stack[-1] == [[[1, 2], 3, [2, 3]], [1, 2], 1, 2, 3, [2, 3], 2, 3]
-
-
-def test_take_while():
-    stack = run_vyxal("λ2%0=;Ẏ", inputs=[[2, 4, 8, 0, 6, 3, 4, 8, 5, 7]])
-    assert stack[-1] == [2, 4, 8, 0, 6]
-
-    stack = run_vyxal("Þ∞λ7<;Ẏ")
-    assert stack[-1] == [1, 2, 3, 4, 5, 6]
 
 
 def test_multidimensional_truthy_indices_infinite():
@@ -989,6 +973,12 @@ def test_if_modifier():
 
     stack = run_vyxal("1 5 0 ¨i$_ W")
     assert stack[-1] == [1]
+
+    stack = run_vyxal("6 2 0 ¨i/-")
+    assert stack[-1] == 4
+
+    stack = run_vyxal("6 2 2 ¨i/-")
+    assert stack[-1] == 3
 
 
 def test_uniquify_by_function():
@@ -1065,7 +1055,7 @@ def test_multiple_lists_assign():
 
 def test_table():
     stack = run_vyxal("5 6 ǒ+")
-    assert stack[-1] == [
+    assert list(map(list, stack[-1])) == [
         [2, 3, 4, 5, 6],
         [3, 4, 5, 6, 7],
         [4, 5, 6, 7, 8],
@@ -1081,7 +1071,7 @@ def test_table():
     assert stack[-1] == []
 
     stack = run_vyxal("5ɾ:ǒ*")
-    assert stack[-1] == [
+    assert list(map(list, stack[-1])) == [
         [1, 2, 3, 4, 5],
         [2, 4, 6, 8, 10],
         [3, 6, 9, 12, 15],
