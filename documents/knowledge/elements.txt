@@ -1723,13 +1723,12 @@ z (Overlapping pairs)
     fun a, any b: first index in a where b(x) is truthy (shortcut for ḟh)
     otherwise: vectorise
 -------------------------------
-ǒ (Modulo 3)
+ǒ (Table)
 
-- Modulo 3 / Split into Length 2
+- Outer product/table by an element
 
-    num a: a % 3
-    str a: a split into chunks of length 2
-    otherwise: vectorise
+    ǒ<element>
+
 -------------------------------
 Ǔ (Rotate Left)
 

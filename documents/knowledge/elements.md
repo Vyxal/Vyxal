@@ -2017,14 +2017,14 @@ Order, Multiplicity, Valuation / remove till fixpoint / First truthy index under
 - str a, str b: `remove_till_fixpoint(a,b)`
 - fun a, any b: `first index in a where b(x) is truthy (shortcut for ḟh)`
 -------------------------------
-## `` ǒ `` (Modulo 3)
+## `` ǒ `` (Table)
+Outer product/table by an element
 
-Modulo 3 / Split into Length 2
+Usage:
+```
+ǒ<element>
+```
 
-### Overloads
-
-- num a: `a % 3`
-- str a: `a split into chunks of length 2`
 -------------------------------
 ## `` Ǔ `` (Rotate Left)
 
