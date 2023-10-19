@@ -4242,18 +4242,6 @@ def modulo(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(modulo, lhs, rhs, ctx=ctx))()
 
 
-@element("ǒ", 1)
-def modulo_3(lhs, ctx):
-    """Element ǒ
-    (num) -> a % 3
-    (str) -> a split into chunks of size 2
-    """
-    return {
-        (NUMBER_TYPE): lambda: lhs % 3,
-        (str): lambda: [lhs[i : i + 2] for i in range(0, len(lhs), 2)],
-    }.get(vy_type(lhs), lambda: vectorise(modulo_3, lhs, ctx=ctx))()
-
-
 @element("Þṁ", 2)
 def mold_special(lhs, rhs, ctx):
     """Element Þṁ
@@ -8015,5 +8003,12 @@ modifiers: dict[str, str] = {
         "over = overlapping_groups(lhs, 2, ctx)\n"
         "mapped = map(lambda item, function_A=function_A, ctx=ctx: vy_reduce(function_A, item, ctx), over)\n"
         "stack.append(LazyList(mapped))\n"
+    ),
+    "ǒ": (  # Cartesian product by function
+        "function_A.stored_arity = 2\n"
+        "lhs, rhs = pop(stack, 2, ctx)\n"
+        "lhs = iterable(lhs, range, ctx=ctx)\n"
+        "rhs = iterable(rhs, range, ctx=ctx)\n"
+        "stack.append(table(function_A, lhs, rhs, ctx=ctx))\n"
     ),
 }

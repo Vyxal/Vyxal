@@ -5,7 +5,7 @@
 ![Last Commit](https://img.shields.io/github/last-commit/vyxal/vyxal)
 ![Contributors](https://img.shields.io/github/contributors/vyxal/vyxal)
 
-**Vyxal** is a golfing language that takes the idea that conciseness comes at the cost of practicality and throws it out the window. That's right - where other golflangs throw you into the deep-end of keyboard mashing, Vyxal eases you into the concept of elegantly crafting built-ins into a functioning program.
+**Vyxal** is a stack and array based golfing language that takes the idea that conciseness comes at the cost of practicality and throws it out the window. That's right - where other golflangs throw you into the deep-end of keyboard mashing, Vyxal eases you into the concept of elegantly crafting built-ins into a functioning program.
 
 And yes, this design goal really _does_ warrant adding another golfing language into the already densely populated mix of golflangs. If you go and take a look at the current state of the art of golfing languages, you'll find that 99% of languages are either a) powerful and concise, but not easy to pick up or b) easy to learn, but not that useful for anything non-trivial (I say this as someone who's made and contributed to both kinds of languages). Vyxal aims to bridge the gap between simplicity and "golfability".
 

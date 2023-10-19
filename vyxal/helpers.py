@@ -1166,6 +1166,21 @@ def suffixes(lhs: VyIterable, ctx: Context) -> VyList:
     return gen()
 
 
+def table(
+    function: types.FunctionType, left: VyList, right: VyList, ctx: Context
+) -> VyList:
+    """Returns a table of the function applied to each pair of elements in left and right"""
+
+    @lazylist_from(left)
+    def gen():
+        for item in left:
+            yield vy_map(
+                lambda x: safe_apply(function, item, x, ctx=ctx), right, ctx=ctx
+            )
+
+    return gen()
+
+
 def takes_ctx(function: types.FunctionType) -> bool:
     """Whether or not a function accepts a context argument"""
     argspec = inspect.getfullargspec(function)
