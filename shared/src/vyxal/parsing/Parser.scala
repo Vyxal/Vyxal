@@ -84,6 +84,14 @@ object Parser:
         case TokenType.Command => parseCommand(token, asts, program) match
             case Right(ast) => asts.push(ast)
             case l => return l
+
+        case TokenType.NegatedCommand =>
+          parseCommand(token, asts, program) match
+            case Right(ast) =>
+              asts.push(ast)
+              asts.push(AST.Command("¬"))
+            case l => return l
+
         // At this stage, modifiers aren't explicitly handled, so just push a
         // temporary AST to comply with the type of the AST stack
         case TokenType.MonadicModifier => asts.push(AST.JunkModifier(value, 1))

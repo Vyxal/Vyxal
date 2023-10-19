@@ -478,7 +478,7 @@ object Elements:
       Dyad,
       "≠",
       "Not Equal",
-      List("not-equal"),
+      List("not-equal", "=n't"),
       false,
       "a: any, b: any -> a !== b (non-vectorising)",
     ) { (a, b) =>
