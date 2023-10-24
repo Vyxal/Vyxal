@@ -677,6 +677,11 @@ Trigraph: #,S
 Keywords: sublists
 - a: lst -> sublists of a
 ---------------------
+Ṭ (Trim) (non-vectorising)
+Trigraph: #,T
+Keywords: trim
+- a: any, b: any -> Trim all elements of b from both sides of a.
+---------------------
 … (Increment Twice | Vectorised Head) (non-vectorising)
 Trigraph: #..
 Keywords: incr-twice, vec-head
