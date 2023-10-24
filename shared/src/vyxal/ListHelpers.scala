@@ -659,6 +659,17 @@ object ListHelpers:
     end if
   end transposeSafe
 
+  def trim(iterable: VList, value: VAny): VList =
+    val temp = iterable.toList
+    val trimmed = temp.dropWhile(_ == value).reverse.dropWhile(_ == value)
+    VList.from(trimmed.reverse)
+
+  def trimList(iterable: VList, pattern: VList)(using ctx: Context): VList =
+    var temp = iterable.toList
+    while temp.startsWith(pattern) do temp = temp.drop(pattern.length)
+    while temp.endsWith(pattern) do temp = temp.dropRight(pattern.length)
+    VList.from(temp)
+
   /** Ensure that a VList is a matrix */
   def validateMatrix(lst: VList)(using
       Context

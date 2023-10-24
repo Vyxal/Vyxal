@@ -193,6 +193,12 @@ object Elements:
           scribe.warn(s"Could not invert matrix $l")
           l
         }
+      case l: VList => l.vmap(item =>
+          item match
+            case n: VNum => VNum(NumberHelpers.toBinary(n).size)
+            case _ => item
+        )
+
     },
     addPart(
       Monad,
@@ -2011,6 +2017,26 @@ object Elements:
         val temp =
           ListHelpers.transliterate(ListHelpers.makeIterable(a), b, c).mkString
         if VNum.NumRegex.matches(temp) then VNum(temp) else temp
+    },
+    addPart(
+      Dyad,
+      "Ṭ",
+      "Trim",
+      List("trim"),
+      false,
+      "a: any, b: any -> Trim all elements of b from both sides of a.",
+    ) {
+      case (a: String, b: String) => a.stripPrefix(b).stripSuffix(b)
+      case (a: String, b: VNum) =>
+        a.stripPrefix(b.toString).stripSuffix(b.toString)
+      case (a: VNum, b: String) =>
+        VNum(a.toString.stripPrefix(b).stripSuffix(b))
+      case (a: VNum, b: VNum) =>
+        VNum(a.toString.stripPrefix(b.toString).stripSuffix(b.toString))
+      case (a: VList, b: VList) => ListHelpers.trimList(a, b)
+      case (a: VList, b) => ListHelpers.trim(a, b)
+      case (a, b: VList) => ListHelpers.trim(b, a)
+      case (a, b) => ListHelpers.trim(ListHelpers.makeIterable(a), b)
     },
     addPart(
       Dyad,
