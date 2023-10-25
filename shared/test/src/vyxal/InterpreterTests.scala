@@ -453,15 +453,15 @@ class InterpreterTests extends VyxalTests:
 
   describe("Stack Rotating Chicanery") {
     testStackLike("←")(
-      List[VAny](1, 2, 3, 4) -> List[VAny](2, 3, 4, 1),
-      List[VAny](1, 2, 3, 4, 5) -> List[VAny](2, 3, 4, 5, 1),
+      List[VAny](1, 2, 3, 9) -> List[VAny](2, 3, 9, 1),
+      List[VAny](1, 2, 3, 4, 6) -> List[VAny](2, 3, 4, 6, 1),
       List[VAny](1) -> List[VAny](1),
     )
 
     testStackLike("→")(
       List[VAny](1, 2, 3, 4) -> List[VAny](4, 1, 2, 3),
       List[VAny](1, 2, 3, 4, 5) -> List[VAny](5, 1, 2, 3, 4),
-      List[VAny](1) -> List[VAny](1),
+      List[VAny](8) -> List[VAny](8),
     )
   }
 
