@@ -259,6 +259,10 @@ Keywords: zip, zip-map
 - a: lst, b: fun -> [[x, b(x)] for x in a]
 - a: fun, b: lst -> [[a(x), x] for x in b]
 ---------------------
+\ (Dump) (non-vectorising)
+Keywords: dump
+- a: any -> dump all values on the stack
+---------------------
 _ (Pop and Discard) (non-vectorising)
 Keywords: pop, discard
 - a ->
