@@ -176,6 +176,16 @@ class Context private (
     parent match
       case Some(p) => p.getTopCxt()
       case None => this
+
+  def rotateLeft: Unit =
+    if isStackEmpty then push(pop())
+    else
+      val temp = stack.remove(0)
+      stack += temp
+
+  def rotateRight: Unit =
+    val temp = pop()
+    stack.insert(0, temp)
 end Context
 
 object Context:
