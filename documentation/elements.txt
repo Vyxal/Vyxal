@@ -862,9 +862,29 @@ Keywords: divide, div, str-split
 - a: num, b: num -> a / b
 - a: str, b: str -> Split a on the regex b
 ---------------------
+£ (Set Register) (non-vectorising)
+Trigraph: #^=
+Keywords: set-register
+- a: any -> register = a
+---------------------
+¥ (Get Register) (non-vectorising)
+Trigraph: #^$
+Keywords: get-register
+-  -> push the value of the register
+---------------------
+← (Rotate Stack Left) (non-vectorising)
+Trigraph: #^<
+Keywords: rotate-stack-left
+-  -> rotate the entire stack left once
+---------------------
 ↑ (Grade Up) (non-vectorising)
 Keywords: grade-up
 - a: any -> indices that will sort a
+---------------------
+→ (Rotate Stack Right) (non-vectorising)
+Trigraph: #^>
+Keywords: rotate-stack-right
+-  -> rotate the entire stack right once
 ---------------------
 ↓ (Grade Down) (non-vectorising)
 Trigraph: #^;
