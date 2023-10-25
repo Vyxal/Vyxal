@@ -2448,6 +2448,16 @@ object Elements:
       " -> rotate the entire stack right once",
     ) { ctx ?=>
       ctx.rotateRight
+    },
+    addDirect(
+      "\\",
+      "Dump",
+      List("dump"),
+      Some(1),
+      "a: any -> dump all values on the stack",
+    ) { ctx ?=>
+      val a = ListHelpers.makeIterable(ctx.pop())
+      for v <- a do ctx.push(v)
     }
 
     // Constants

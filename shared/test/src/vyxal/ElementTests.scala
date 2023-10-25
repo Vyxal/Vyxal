@@ -780,5 +780,4 @@ class ElementTests extends VyxalTests:
         ),
     )
   }
-
 end ElementTests

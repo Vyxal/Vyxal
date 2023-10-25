@@ -444,4 +444,33 @@ class InterpreterTests extends VyxalTests:
     testCode("#[#[1|2|3#]|#[4|5|6#]#]λᶲ\"[\"c[vx∑}}Ė", VNum(21), Seq())
   }
 
+  describe("Register chicanery") {
+    testMulti(
+      "5£9::++" -> VNum(27),
+      "5£9::++¥" -> VNum(5),
+    )
+  }
+
+  describe("Stack Rotating Chicanery") {
+    testStackLike("←")(
+      List[VAny](1, 2, 3, 4) -> List[VAny](2, 3, 4, 1),
+      List[VAny](1, 2, 3, 4, 5) -> List[VAny](2, 3, 4, 5, 1),
+      List[VAny](1) -> List[VAny](1),
+    )
+
+    testStackLike("→")(
+      List[VAny](1, 2, 3, 4) -> List[VAny](4, 1, 2, 3),
+      List[VAny](1, 2, 3, 4, 5) -> List[VAny](5, 1, 2, 3, 4),
+      List[VAny](1) -> List[VAny](1),
+    )
+  }
+
+  describe("Dumping things") {
+    testStackLike("\\")(
+      List[VAny](VList(3, 4, 5)) -> List[VAny](3, 4, 5),
+      List[VAny](VList()) -> List[VAny](),
+      List[VAny](VList(1)) -> List[VAny](1),
+    )
+  }
+
 end InterpreterTests
