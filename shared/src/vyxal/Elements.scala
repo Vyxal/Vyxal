@@ -2419,8 +2419,8 @@ object Elements:
       List("set-register"),
       Some(1),
       "a: any -> register = a"
-    ){ctx ?=> 
-      ctx.globals.register = ctx.pop()  
+    ){ctx ?=>
+      ctx.globals.register = ctx.pop()
     },
     addDirect(
       "¥",
