@@ -2412,6 +2412,35 @@ object Elements:
         VList.from(ListHelpers.map(a, iter).vzip(iter))
       case (a, b) =>
         ListHelpers.makeIterable(a).vzip(ListHelpers.makeIterable(b))
+    },
+    addDirect(
+      "£",
+      "Set Register",
+      List("set-register"),
+      Some(1),
+      "a: any -> register = a"
+    ){ctx ?=> 
+      ctx.globals.register = ctx.pop()  
+    },
+    addDirect(
+      "¥",
+      "Get Register",
+      List("get-register"),
+      Some(0),
+      " -> push the value of the register"
+    ){
+      ctx ?=> ctx.push(ctx.globals.register)
+    },
+    addDirect(
+      "←",
+      "Rotate Stack Left",
+      List("rotate-stack-left"),
+      None,
+      " -> rotate the entire stack left once"
+    ){
+      ctx ?=>
+        val a = ctx.pop()
+        ctx.push(ctx.stack :+ a)
     }
 
     // Constants
