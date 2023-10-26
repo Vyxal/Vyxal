@@ -2426,7 +2426,7 @@ object Elements:
       "¥",
       "Get Register",
       List("get-register"),
-      Some(0),
+      None,
       " -> push the value of the register",
     ) { ctx ?=>
       ctx.push(ctx.globals.register)
