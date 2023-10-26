@@ -2485,6 +2485,45 @@ object Elements:
       case a: VNum => ListHelpers.product(ListHelpers.makeIterable(a))
     }
 
+    // Input reading
+    ,
+    addDirect(
+      "⁰",
+      "First Input",
+      List("first-input", "input-0"),
+      Some(0),
+      "The first input to the program",
+    ) { ctx ?=>
+      ctx.globals.inputs(0)
+    },
+    addDirect(
+      "¹",
+      "Second Input",
+      List("second-input", "input-1"),
+      Some(0),
+      "The second input to the program",
+    ) { ctx ?=>
+      ctx.globals.inputs(1)
+    },
+    addDirect(
+      "²",
+      "Third Input",
+      List("third-input", "input-2"),
+      Some(0),
+      "The third input to the program",
+    ) { ctx ?=>
+      ctx.globals.inputs(2)
+    },
+    addDirect(
+      "³",
+      "Fourth Input",
+      List("fourth-input", "input-3"),
+      Some(0),
+      "The fourth input to the program",
+    ) { ctx ?=>
+      ctx.globals.inputs(3)
+    }
+
     // Constants
     ,
     addNilad("¦", "Pipe", List("pipe"), "|") { "|" },
