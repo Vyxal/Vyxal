@@ -2416,7 +2416,7 @@ object Elements:
     addDirect(
       "£",
       "Set Register",
-      List("set-register"),
+      List("set-register", "->register", "set-reg", "->reg"),
       Some(1),
       "a: any -> register = a",
     ) { ctx ?=>
@@ -2425,7 +2425,7 @@ object Elements:
     addDirect(
       "¥",
       "Get Register",
-      List("get-register"),
+      List("get-register", "get-reg", "register", "<-register", "<-reg"),
       None,
       " -> push the value of the register",
     ) { ctx ?=>
