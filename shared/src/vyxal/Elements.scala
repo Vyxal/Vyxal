@@ -921,7 +921,9 @@ object Elements:
       "Insert",
       List("insert", "insert-at"),
       false,
-      "",
+      "a: any, b: num, c: any -> insert c at position b in a",
+      "a: any, b: lst, c: any -> insert c at positions b in a",
+      "a: any, b: lst[num], c: lst -> insert c[i] at position b[i] in a",
     ) {
       case (a, b: VNum, c) =>
         ListHelpers.insert(ListHelpers.makeIterable(a), b, c)
@@ -944,11 +946,14 @@ object Elements:
     addPart(
       Dyad,
       "I",
-      "Interleave",
-      List("interleave"),
+      "Interleave / Reject By Function",
+      List("interleave", "reject"),
       false,
       "a: lst, b: lst -> Interleave a and b",
+      "a: any, b: fun -> Reject elements of a by applying b",
     ) {
+      case (a, b: VFun) =>
+        VList.from(ListHelpers.makeIterable(a).filter(x => !b(x).toBool))
       case (a, b) =>
         val temp = ListHelpers
           .interleave(ListHelpers.makeIterable(a), ListHelpers.makeIterable(b))
@@ -2288,6 +2293,23 @@ object Elements:
         case _ => throw IllegalArgumentException(
             "Maximum By: First argument should be a function"
           )
+    },
+    addDirect(
+      "#|apply-to-register",
+      "[Internal Use] Apply to Register (Element Form)",
+      List(),
+      None,
+      "*a, f -> f applied to the register. Use the modifier instead.",
+    ) { ctx ?=>
+      ctx.pop() match
+        case f: VFun =>
+          ctx.push(ctx.globals.register)
+          ctx.push(Interpreter.executeFn(f)(using ctx.makeChild()))
+          ctx.globals.register = ctx.pop()
+        case _ => throw IllegalArgumentException(
+            "Apply to Register: First argument should be a function"
+          )
+
     },
     addPart(
       Monad,

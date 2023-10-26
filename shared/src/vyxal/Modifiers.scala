@@ -389,6 +389,21 @@ object Modifiers:
             AST.Command("#|map-prefixes"),
           )
       },
+    "ᴿ" ->
+      Modifier(
+        "Apply to Register",
+        """|Apply a function to the register. Essentially, push
+           |the reigster value to the stack, apply the function, and
+           |then pop back into the register
+           |ᴿf: Apply f to the register""".stripMargin,
+        List("apply-to-register:", "to-register:", "to-reg:"),
+        1,
+      ) {
+        case List(ast) => AST.makeSingle(
+            astToLambda(ast, ast.arity.getOrElse(1)),
+            AST.Command("#|apply-to-register"),
+          )
+      },
     "ᶳ" ->
       Modifier(
         "Sort By",
@@ -401,6 +416,21 @@ object Modifiers:
             astToLambda(ast, ast.arity.getOrElse(1)),
             AST.Command("ṡ"),
           )
+      },
+    "ᵗ" ->
+      Modifier(
+        "Reject By",
+        """|Reject by Element
+           |The inverse of monadic /. Filters where the function is falsey
+        """,
+        List("reject-by:"),
+        1,
+      ) {
+        case List(ast) => AST.makeSingle(
+            astToLambda(ast, ast.arity.getOrElse(1)),
+            AST.Command("I"),
+          )
+
       },
     "ᵡ" ->
       Modifier(
