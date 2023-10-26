@@ -900,6 +900,15 @@ Trigraph: #,+
 Keywords: sign
 - a: num -> sign of a
 ---------------------
+† (Length of Consecutive Groups) (non-vectorising)
+Trigraph: #.&
+Keywords: len-consecutive, gvl, gavel
+- a: any -> lengths of consecutive groups of a
+---------------------
+Π (Product) (non-vectorising)
+Keywords: product, prod
+- a: lst -> product of a
+---------------------
 ¬ (Logical Not) (non-vectorising)
 Trigraph: #,!
 Keywords: non-vec-not, non-vec-logical-not
