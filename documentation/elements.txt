@@ -868,12 +868,12 @@ Keywords: divide, div, str-split
 ---------------------
 £ (Set Register) (non-vectorising)
 Trigraph: #^=
-Keywords: set-register
+Keywords: set-register, ->register, set-reg, ->reg
 - a: any -> register = a
 ---------------------
 ¥ (Get Register) (non-vectorising)
 Trigraph: #^$
-Keywords: get-register
+Keywords: get-register, get-reg, register, <-register, <-reg
 -  -> push the value of the register
 ---------------------
 ← (Rotate Stack Left) (non-vectorising)
