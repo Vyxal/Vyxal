@@ -924,6 +924,26 @@ Trigraph: #,|
 Keywords: or, logical-or
 - a: any, b: any -> a || b
 ---------------------
+⁰ (First Input) (non-vectorising)
+Trigraph: #^0
+Keywords: first-input, input-0
+- The first input to the program
+---------------------
+¹ (Second Input) (non-vectorising)
+Trigraph: #^1
+Keywords: second-input, input-1
+- The second input to the program
+---------------------
+² (Third Input) (non-vectorising)
+Trigraph: #^2
+Keywords: third-input, input-2
+- The third input to the program
+---------------------
+³ (Fourth Input) (non-vectorising)
+Trigraph: #^3
+Keywords: fourth-input, input-3
+- The fourth input to the program
+---------------------
 Ɠ (Maximum without popping) (non-vectorising)
 Trigraph: #.9
 Keywords: max-no-pop
