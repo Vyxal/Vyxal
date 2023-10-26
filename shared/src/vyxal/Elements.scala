@@ -2458,6 +2458,31 @@ object Elements:
     ) { ctx ?=>
       val a = ListHelpers.makeIterable(ctx.pop())
       for v <- a do ctx.push(v)
+    },
+    addPart(
+      Monad,
+      "†",
+      "Length of Consecutive Groups",
+      List("len-consecutive", "gvl", "gavel"),
+      false,
+      "a: any -> lengths of consecutive groups of a",
+    ) {
+      case a =>
+        val iterable = ListHelpers.makeIterable(a)
+        val groups = ListHelpers.groupConsecutive(iterable)
+        VList.from(groups.map(ListHelpers.makeIterable(_).length))
+    },
+    addPart(
+      Monad,
+      "Π",
+      "Product",
+      List("product", "prod"),
+      false,
+      "a: lst -> product of a",
+    ) {
+      case a: VList => ListHelpers.product(a)
+      case a: String => ListHelpers.product(ListHelpers.makeIterable(a))
+      case a: VNum => ListHelpers.product(ListHelpers.makeIterable(a))
     }
 
     // Constants

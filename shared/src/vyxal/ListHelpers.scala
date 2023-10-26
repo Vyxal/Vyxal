@@ -448,6 +448,15 @@ object ListHelpers:
     val perms = temp.permutations
     perms.map(VList.from).toSeq
 
+  def product(iterable: VList)(using Context): VAny =
+    if iterable.forall(
+        _.isInstanceOf[VNum]
+      )
+    then iterable.fold(VNum(1))(_.asInstanceOf[VNum] * _.asInstanceOf[VNum])
+    else
+      // Cartesian product over the list
+      val temp = iterable.map(ListHelpers.makeIterable(_))
+      cartesianProductMulti(temp)
   def sortBy(iterable: VList, key: VFun)(using Context): VList =
     key.originalAST match
       case Some(lam) =>
