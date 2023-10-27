@@ -2,6 +2,7 @@ package vyxal
 
 import scala.language.implicitConversions
 
+import vyxal.debugger.Lazy
 import vyxal.ListHelpers.makeIterable
 import vyxal.NumberHelpers.range
 import vyxal.VNum.given
@@ -1376,7 +1377,7 @@ object Elements:
     addPart(
       Dyad,
       "ċ",
-      "N Choose K | Character Set Equal?",
+      "N Choose K | Character Set Equal? | Repeat Until No Change",
       List(
         "n-choose-k",
         "ncr",
@@ -1384,14 +1385,27 @@ object Elements:
         "choose",
         "char-set-equal?",
         "char-set-eq?",
+        "until-stable",
       ),
       true,
       "a: num, b: num -> a choose b",
       "a: str, b: str -> are the character sets of a and b equal?",
+      "a: fun, b: any -> run a on b until the result no longer changes returning all intermediate results",
     ) {
       case (a: VNum, b: VNum) =>
         if a > b then NumberHelpers.nChooseK(a, b) else 0
       case (a: String, b: String) => a.toSet == b.toSet
+      case (a: VFun, b) =>
+        var prev = b
+        VList.from(
+          LazyList.unfold(b) { curr =>
+            val next = a(curr)
+            if next == prev then None
+            else
+              prev = next
+              Some(next -> next)
+          }
+        )
     },
     addPart(
       Monad,
@@ -1701,10 +1715,20 @@ object Elements:
       Triad,
       "r",
       "Replace",
-      List("replace"),
+      List("replace", "zip-with"),
       false,
       "a: str, b: str, c: str -> replace all instances of b in a with c",
+      "a: fun, b: any, c: any -> reduce items in zip(b, c) by a",
     ) {
+      case (a: VFun, b, c) => MiscHelpers
+          .zipWith(ListHelpers.makeIterable(b), ListHelpers.makeIterable(c), a)
+      case (a, b: VFun, c) => MiscHelpers
+          .zipWith(ListHelpers.makeIterable(a), ListHelpers.makeIterable(c), b)
+      case (a, b, c: VFun) => MiscHelpers.zipWith(
+          ListHelpers.makeIterable(a),
+          ListHelpers.makeIterable(b),
+          c,
+        )
       case (a: VList, b, c) =>
         VList.from(a.lst.map(x => if x == b then c else x))
       case (a, b: VList, c: VList) =>
@@ -1716,6 +1740,7 @@ object Elements:
       case (a: String, b: VVal, c: VVal) => a.replace(b.toString, c.toString)
       case (a: VNum, b: VVal, c: VVal) =>
         MiscHelpers.eval(a.toString().replace(b.toString, c.toString))
+
     },
     addPart(
       Monad,
@@ -1986,7 +2011,7 @@ object Elements:
       Dyad,
       "y",
       "To Base",
-      List("to-base"),
+      List("to-base", "zip-with"),
       false,
       "a: num, b: num -> a in base b",
       "a: num, b: str|lst -> a in base with alphabet b",
@@ -2026,10 +2051,11 @@ object Elements:
     addPart(
       Dyad,
       "Ṭ",
-      "Trim",
-      List("trim"),
+      "Trim / Cumulative Reduce",
+      List("trim", "scanl", "cumulative-reduce"),
       false,
       "a: any, b: any -> Trim all elements of b from both sides of a.",
+      "a: fun, b: any -> cumulative reduce b by function a",
     ) {
       case (a: String, b: String) => a.stripPrefix(b).stripSuffix(b)
       case (a: String, b: VNum) =>
@@ -2038,6 +2064,8 @@ object Elements:
         VNum(a.toString.stripPrefix(b).stripSuffix(b))
       case (a: VNum, b: VNum) =>
         VNum(a.toString.stripPrefix(b.toString).stripSuffix(b.toString))
+      case (a: VFun, b) => MiscHelpers.scanl(ListHelpers.makeIterable(b), a)
+      case (a, b: VFun) => MiscHelpers.scanl(ListHelpers.makeIterable(a), b)
       case (a: VList, b: VList) => ListHelpers.trimList(a, b)
       case (a: VList, b) => ListHelpers.trim(a, b)
       case (a, b: VList) => ListHelpers.trim(b, a)
@@ -2310,6 +2338,84 @@ object Elements:
             "Apply to Register: First argument should be a function"
           )
 
+    },
+    addDirect(
+      "#|dip",
+      "[Internal Use] Dip (Element Form)",
+      List(),
+      None,
+      "*a, f -> f applied to a with a pushed back. Use the modifier instead.",
+    ) { ctx ?=>
+      val f = ctx.pop()
+      val top = ctx.pop()
+      f match
+        case fun: VFun =>
+          Interpreter.executeFn(fun)(using ctx.makeChild())
+          ctx.push(top)
+        case _ => throw IllegalArgumentException(
+            "Dip: First argument should be a function"
+          )
+    },
+    addDirect(
+      "#|invar",
+      "[Internal Use] Invariant (Element Form)",
+      List(),
+      None,
+      "*a, f -> Use the ᵞ modifier instead.",
+    ) { ctx ?=>
+      val f = ctx.pop()
+      val copy = ctx.peek
+      f match
+        case fun: VFun =>
+          val result = Interpreter.executeFn(fun)(using ctx.makeChild())
+          ctx.push(result === copy)
+        case _ => throw IllegalArgumentException(
+            "Invariant: First argument should be a function"
+          )
+    },
+    addDirect(
+      "#|vscan",
+      "[Internal Use] Vectorised Scan (Element Form)",
+      List(),
+      None,
+      "*a, f -> scanl each column. Use the modifier instead.",
+    ) { ctx ?=>
+      val f = ctx.pop()
+      val arg = ListHelpers
+        .makeIterable(ctx.pop())
+        .map(x => ListHelpers.makeIterable(x))
+      f match
+        case fun: VFun => ctx.push(
+            VList.from(
+              LazyList.unfold(0)(i =>
+                if !arg(0).hasIndex(i) then None
+                else
+                  val items =
+                    VList.from(arg.map(_.asInstanceOf[VList].index(i)))
+                  Some(MiscHelpers.scanl(items, fun), i + 1)
+              )
+            )
+          )
+        case _ => throw IllegalArgumentException(
+            "Vectorised Scan: First argument should be a function"
+          )
+    },
+    addDirect(
+      "#|all-neigh",
+      "[Internal Use] All Neighbours (Element Form)",
+      List(),
+      None,
+      "*a, f -> f applied to each neighbour of a. Use the modifier instead.",
+    ) { ctx ?=>
+      ctx.pop() match
+        case f: VFun =>
+          val neighbours =
+            ListHelpers.overlaps(ListHelpers.makeIterable(ctx.pop()), 2)
+          val results = neighbours.map(x => f(x*))
+          ctx.push(results.forall(_ == results(0)))
+        case _ => throw IllegalArgumentException(
+            "All Neighbours: First argument should be a function"
+          )
     },
     addPart(
       Monad,

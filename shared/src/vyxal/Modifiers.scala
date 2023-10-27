@@ -407,22 +407,26 @@ object Modifiers:
     "ᶳ" ->
       Modifier(
         "Sort By",
-        """|Sort By Element
-           |ᶳf: Sort top of stack based on results of f""".stripMargin,
-        List("sort-by:"),
+        """|Sort By Element / Scanl
+           |ᶳf: Sort top of stack based on results of f
+           |ᶳf: Cumulatively reduce a list of items""".stripMargin,
+        List("sort-by:", "scanl:"),
         1,
       ) {
-        case List(ast) => AST.makeSingle(
-            astToLambda(ast, ast.arity.getOrElse(1)),
-            AST.Command("ṡ"),
-          )
+        case List(ast) =>
+          if isExplicitMonad(ast) then
+            val lambdaAst = astToLambda(ast, 1)
+            AST.makeSingle(lambdaAst, AST.Command("ṡ"))
+          else
+            val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
+            AST.makeSingle(lambdaAst, AST.Command("Ṭ"))
       },
     "ᵗ" ->
       Modifier(
         "Reject By",
         """|Reject by Element
            |The inverse of monadic /. Filters where the function is falsey
-        """,
+           |ᵗf: Reject by f""".stripMargin,
         List("reject-by:"),
         1,
       ) {
@@ -431,6 +435,37 @@ object Modifiers:
             AST.Command("I"),
           )
 
+      },
+    "ᵘ" ->
+      Modifier(
+        "Collect Until No Change",
+        """|Run func on the prev result until the result no longer changes 
+           |returning all intermediate results
+           |ᵘf: Collect until no change""".stripMargin,
+        List("collect-until-no-change:", "until-stable:", "stablise:"),
+        1,
+      ) {
+        case List(ast) => AST.makeSingle(
+            astToLambda(ast, ast.arity.getOrElse(1)),
+            AST.Command("ċ"),
+          )
+      },
+    "ᵂ" ->
+      Modifier(
+        "Dip",
+        """|Stash the top of the stack temporarily, and then apply
+           |the function. Finally, push the stashed value
+           |ᵂf: pop M, apply f, push M""".stripMargin,
+        List("dip:"),
+        1,
+      ) {
+        // See, Vyxal can do this too!
+        // We don't need no fancy array model around here
+        // ragged lists do just fine.
+        case List(ast) => AST.makeSingle(
+            astToLambda(ast, -1),
+            AST.Command("#|dip"),
+          )
       },
     "ᵡ" ->
       Modifier(
@@ -443,6 +478,48 @@ object Modifiers:
         case List(ast) =>
           val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))
           AST.makeSingle(lambdaAst, AST.Command("Ŀ"))
+      },
+    "ᵞ" ->
+      Modifier(
+        "Invariant Under? / Vertical Scan",
+        """|Check if a function is invariant under a transformation / vertical scan
+         |ᵞf: check if top of stack is invariant under a transformation
+         |ᵞf: scanl columns by f""".stripMargin,
+        List(
+          "invariant-under:",
+          "vertical-scan:",
+          "vscan:",
+          "v-scan:",
+          "invariant?:",
+          "same?:",
+        ),
+        1,
+      ) {
+        case List(ast) =>
+          if isExplicitMonad(ast) then
+            val lambdaAst = astToLambda(ast, 1)
+            AST.makeSingle(lambdaAst, AST.Command("#|invar"))
+          else
+            val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
+            AST.makeSingle(lambdaAst, AST.Command("#|vscan"))
+      },
+    "ᶻ" ->
+      Modifier(
+        "Zip With / Neighbours All Equal?",
+        """
+      |Given a dyadic function, zip two lists and reduce each by f
+      |Given a monadic function, apply the function to all overlapping pairs of elements
+      | and then check if all results are equal""",
+        List("zip-with:", "zipwith:", "neighbours-equals:"),
+        1,
+      ) {
+        case List(ast) =>
+          if isExplicitMonad(ast) then
+            val lambdaAst = astToLambda(ast, 1)
+            AST.makeSingle(lambdaAst, AST.Command("#|all-neigh"))
+          else
+            val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
+            AST.makeSingle(lambdaAst, AST.Command("r"))
       },
   )
 end Modifiers
