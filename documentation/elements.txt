@@ -35,9 +35,25 @@ Keywords:
 Keywords: 
 - *a, f -> maximum of a by f. Use the modifier instead.
 ---------------------
+#|vscan ([Internal Use] Vectorised Scan (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> scanl each column. Use the modifier instead.
+---------------------
 #|apply-to-register ([Internal Use] Apply to Register (Element Form)) (non-vectorising)
 Keywords: 
 - *a, f -> f applied to the register. Use the modifier instead.
+---------------------
+#|dip ([Internal Use] Dip (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to a with a pushed back. Use the modifier instead.
+---------------------
+#|invar ([Internal Use] Invariant (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> Use the ᵞ modifier instead.
+---------------------
+#|all-neigh ([Internal Use] All Neighbours (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to each neighbour of a. Use the modifier instead.
 ---------------------
 #C (Compress String Using Dictionary) (non-vectorising)
 Keywords: compress-dict, dict-comp, compress
@@ -350,8 +366,9 @@ Keywords: quotify
 - a: any -> enclose a in quotes, escape backslashes and quote marks
 ---------------------
 r (Replace) (non-vectorising)
-Keywords: replace
+Keywords: replace, zip-with
 - a: str, b: str, c: str -> replace all instances of b in a with c
+- a: fun, b: any, c: any -> reduce items in zip(b, c) by a
 ---------------------
 s (Split) (non-vectorising)
 Keywords: split
@@ -374,7 +391,7 @@ Keywords: recurse
 -  -> call the current function recursively
 ---------------------
 y (To Base) (non-vectorising)
-Keywords: to-base
+Keywords: to-base, zip-with
 - a: num, b: num -> a in base b
 - a: num, b: str|lst -> a in base with alphabet b
 - a: lst, b: num -> each x in a in base b
@@ -530,11 +547,12 @@ Keywords: bit, parity, str-last-half
 - a: num -> parity of a (a % 2)
 - a: str -> last half of a
 ---------------------
-ċ (N Choose K | Character Set Equal?) (vectorising)
+ċ (N Choose K | Character Set Equal? | Repeat Until No Change) (vectorising)
 Trigraph: #.c
-Keywords: n-choose-k, ncr, nck, choose, char-set-equal?, char-set-eq?
+Keywords: n-choose-k, ncr, nck, choose, char-set-equal?, char-set-eq?, until-stable
 - a: num, b: num -> a choose b
 - a: str, b: str -> are the character sets of a and b equal?
+- a: fun, b: any -> run a on b until the result no longer changes returning all intermediate results
 ---------------------
 ḋ (Dot Product | To Bijective Base | First Index Where Predicate Truthy) (non-vectorising)
 Trigraph: #.d
@@ -688,10 +706,11 @@ Trigraph: #,S
 Keywords: sublists
 - a: lst -> sublists of a
 ---------------------
-Ṭ (Trim) (non-vectorising)
+Ṭ (Trim / Cumulative Reduce) (non-vectorising)
 Trigraph: #,T
-Keywords: trim
+Keywords: trim, scanl, cumulative-reduce
 - a: any, b: any -> Trim all elements of b from both sides of a.
+- a: fun, b: any -> cumulative reduce b by function a
 ---------------------
 … (Increment Twice | Vectorised Head) (non-vectorising)
 Trigraph: #..
@@ -1021,6 +1040,13 @@ Description: Find the first index where an element is truthy
 ᶤf: find the first index where f is truthy
 Trigraph: #^i
 ---------------------
+ᵞ
+Keywords: invariant-under:, vertical-scan:, vscan:, v-scan:, invariant?:, same?:
+Description: Check if a function is invariant under a transformation / vertical scan
+ᵞf: check if top of stack is invariant under a transformation
+ᵞf: scanl columns by f
+Trigraph: #^y
+---------------------
 ⁿ
 Keywords: min-by:, minimum-by:
 Description: Minimum By Element
@@ -1041,15 +1067,6 @@ Description: Apply element only to the head of list
 ᴴf: Apply f to the head of the top of the stack
 Trigraph: #^H
 ---------------------
-ᵃ
-Keywords: apply-to-neighbours:, count-truthy:
-Description: To each overlapping pair, reduce it by an element
-Apply a dyadic element for all pairs of neighboring elements.
-Count the number of truthy elements in a list under a mondaic element
-ȧf<monad>: Count how many items in a list are truthy after applying f to each
-ᵃf<dyad>: equivalent to pushing the function, then calling ȧ
-Trigraph: #^a
----------------------
 ᶪ
 Keywords: loop-while-unique:
 Description: Loop While Unique - similar to ᶨ, but doesn't collect
@@ -1063,10 +1080,18 @@ Description: Maximum By Element
 Trigraph: #^m
 ---------------------
 ᶳ
-Keywords: sort-by:
-Description: Sort By Element
+Keywords: sort-by:, scanl:
+Description: Sort By Element / Scanl
 ᶳf: Sort top of stack based on results of f
+ᶳf: Cumulatively reduce a list of items
 Trigraph: #^s
+---------------------
+ᵂ
+Keywords: dip:
+Description: Stash the top of the stack temporarily, and then apply
+the function. Finally, push the stashed value
+ᵂf: pop M, apply f, push M
+Trigraph: #^W
 ---------------------
 ᶜ
 Keywords: reduce-columns:, map-over-suffixes:, fold-cols:, foldl-cols:, fold-columns-by:, reduce-columns-by:, over-suffixes:
@@ -1115,6 +1140,30 @@ Keywords: ****2:
 Description: Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
 ᵍfghi: Push the equivalent of λ2|fghi} to the stack
 ---------------------
+ᵘ
+Keywords: collect-until-no-change:, until-stable:, stablise:
+Description: Run func on the prev result until the result no longer changes
+returning all intermediate results
+ᵘf: Collect until no change
+Trigraph: #^u
+---------------------
+ᵃ
+Keywords: apply-to-neighbours:, count-truthy:
+Description: To each overlapping pair, reduce it by an element
+Apply a dyadic element for all pairs of neighboring elements.
+Count the number of truthy elements in a list under a mondaic element
+ȧf<monad>: Count how many items in a list are truthy after applying f to each
+ᵃf<dyad>: equivalent to pushing the function, then calling ȧ
+Trigraph: #^a
+---------------------
+ᶻ
+Keywords: zip-with:, zipwith:, neighbours-equals:
+Description: 
+      |Given a dyadic function, zip two lists and reduce each by f
+      |Given a monadic function, apply the function to all overlapping pairs of elements
+      | and then check if all results are equal
+Trigraph: #^z
+---------------------
 ᵉ
 Keywords: **2:
 Description: Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda
@@ -1142,9 +1191,9 @@ Trigraph: #^.
 ---------------------
 ᵗ
 Keywords: reject-by:
-Description: |Reject by Element
-           |The inverse of monadic /. Filters where the function is falsey
-        
+Description: Reject by Element
+The inverse of monadic /. Filters where the function is falsey
+ᵗf: Reject by f
 Trigraph: #^t
 ---------------------
 ᶠ
