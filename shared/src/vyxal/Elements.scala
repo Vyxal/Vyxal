@@ -2011,7 +2011,7 @@ object Elements:
       Dyad,
       "y",
       "To Base",
-      List("to-base", "zip-with"),
+      List("to-base"),
       false,
       "a: num, b: num -> a in base b",
       "a: num, b: str|lst -> a in base with alphabet b",
