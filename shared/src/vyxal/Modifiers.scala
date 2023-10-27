@@ -439,7 +439,7 @@ object Modifiers:
     "ᵘ" ->
       Modifier(
         "Collect Until No Change",
-        """|Run func on the prev result until the result no longer changes 
+        """|Run func on the prev result until the result no longer changes
            |returning all intermediate results
            |ᵘf: Collect until no change""".stripMargin,
         List("collect-until-no-change:", "until-stable:", "stablise:"),
