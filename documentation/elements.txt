@@ -35,6 +35,10 @@ Keywords:
 Keywords: 
 - *a, f -> maximum of a by f. Use the modifier instead.
 ---------------------
+#|apply-to-register ([Internal Use] Apply to Register (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to the register. Use the modifier instead.
+---------------------
 #C (Compress String Using Dictionary) (non-vectorising)
 Keywords: compress-dict, dict-comp, compress
 - a: str -> compress a using the dictionary
@@ -165,9 +169,10 @@ Keywords: hex, hexadecimal, to-hex, to-hexadecimal
 - a: num -> a in hexadecimal
 - a: str -> a as a hexadecimal number to base 10
 ---------------------
-I (Interleave) (non-vectorising)
-Keywords: interleave
+I (Interleave / Reject By Function) (non-vectorising)
+Keywords: interleave, reject
 - a: lst, b: lst -> Interleave a and b
+- a: any, b: fun -> Reject elements of a by applying b
 ---------------------
 J (Merge) (non-vectorising)
 Keywords: merge
@@ -653,7 +658,9 @@ Keywords: head-extract-swap, split-at-head-swap
 Ị (Insert) (non-vectorising)
 Trigraph: #,I
 Keywords: insert, insert-at
-- 
+- a: any, b: num, c: any -> insert c at position b in a
+- a: any, b: lst, c: any -> insert c at positions b in a
+- a: any, b: lst[num], c: lst -> insert c[i] at position b[i] in a
 ---------------------
 Ḷ (Sort by Length) (non-vectorising)
 Trigraph: #,L
@@ -1061,12 +1068,6 @@ Description: Sort By Element
 ᶳf: Sort top of stack based on results of f
 Trigraph: #^s
 ---------------------
-⸠
-Keywords: *:
-Description: Turn the next element (whether that be a structure/modifier/element) into a lambda
-⸠f: Push the equivalent of λf} to the stack
-Trigraph: #^.
----------------------
 ᶜ
 Keywords: reduce-columns:, map-over-suffixes:, fold-cols:, foldl-cols:, fold-columns-by:, reduce-columns-by:, over-suffixes:
 Description: Reduce columns of a 2d list by a function
@@ -1120,10 +1121,31 @@ Description: Turn the next two elements (whether that be a structure/modifier/el
 ᵉfg: Push the equivalent of λ2|fg} to the stack
 Trigraph: #^e
 ---------------------
+ᴿ
+Keywords: apply-to-register:, to-register:, to-reg:
+Description: Apply a function to the register. Essentially, push
+the reigster value to the stack, apply the function, and
+then pop back into the register
+ᴿf: Apply f to the register
+Trigraph: #^R
+---------------------
 v
 Keywords: vectorise:, vec:, v:
 Description: Vectorises
 vf: f but vectorised
+---------------------
+⸠
+Keywords: *:
+Description: Turn the next element (whether that be a structure/modifier/element) into a lambda
+⸠f: Push the equivalent of λf} to the stack
+Trigraph: #^.
+---------------------
+ᵗ
+Keywords: reject-by:
+Description: |Reject by Element
+           |The inverse of monadic /. Filters where the function is falsey
+        
+Trigraph: #^t
 ---------------------
 ᶠ
 Keywords: ***2:
