@@ -1,1 +1,1 @@
-<!-- Make sure you add any issues this PR closes so Vyxal Bot can label it appropriately! -->
+<!-- Vyxal Bot is capable of automatically labeling PRs! Just add "Closes #xyz" or similar as normal. The bot will also label PRs based off of the head branch name (specifically branches starting with "v2-" or "v3-"). -->
