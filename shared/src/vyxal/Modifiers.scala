@@ -48,7 +48,18 @@ object Modifiers:
        |Count the number of truthy elements in a list under a mondaic element
        |ȧf<monad>: Count how many items in a list are truthy after applying f to each
        |ᵃf<dyad>: equivalent to pushing the function, then calling ȧ""".stripMargin,
-        List("apply-to-neighbours:", "count-truthy:"),
+        List(
+          "apply-to-neighbours:",
+          "count-truthy:",
+          "apply-neighbours:",
+          "apply-to-neighbors:",
+          "apply-neighbors:",
+          "2lvf:",
+          "twolif:",
+          "to-pairs:",
+          "to-overlaps:",
+          "count:",
+        ),
         1,
       ) {
         case List(ast) =>

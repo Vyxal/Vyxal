@@ -32,6 +32,20 @@ class ModifierTests extends VyxalTests:
     )
   }
 
+  describe("Modifier ᵃ (Dyadic)") {
+    testMulti(
+      "#[1|2|3|4|5#] ᵃ+" -> VList(3, 5, 7, 9),
+      "#[#] ᵃ+" -> VList(),
+    )
+  }
+
+  describe("Modifier ᵃ (Monadic)") {
+    testMulti(
+      "#[1|2|3|4|5#] ᵃe" -> VNum(2),
+      "#[#] ᵃe" -> VNum(0),
+    )
+  }
+
   describe("Modifier ᴴ") {
     testMulti(
       "#[3|4|5#]ᴴd" -> VList(6, 4, 5)
