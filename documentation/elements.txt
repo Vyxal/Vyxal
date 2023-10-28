@@ -47,6 +47,10 @@ Keywords:
 Keywords: 
 - *a, f -> f applied to the register. Use the modifier instead.
 ---------------------
+#|vec-dump ([Internal Use] Map Dump (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to each element of a, treating as a stack. Use the modifier instead.
+---------------------
 #|dip ([Internal Use] Dip (Element Form)) (non-vectorising)
 Keywords: 
 - *a, f -> f applied to a with a pushed back. Use the modifier instead.
@@ -1062,6 +1066,12 @@ Keywords: min-by:, minimum-by:
 Description: Minimum By Element
 ᵐf: Minimum of top of stack based on results of f
 Trigraph: #^n
+---------------------
+`
+Keywords: vec-dump:, map-dump:
+Description: Map a function over the top of the stack, treating each iteration
+as if it were a stack of items. Essentially, dump before mapping
+
 ---------------------
 ᵇ
 Keywords: without-popping:, peek:, dedup-by:, remove-duplicates-by:
