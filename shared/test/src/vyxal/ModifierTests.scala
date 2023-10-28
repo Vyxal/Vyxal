@@ -99,6 +99,12 @@ class ModifierTests extends VyxalTests:
     "#[1|2|3|4#] ᶨḢ" -> VList(VList(2, 3, 4), VList(3, 4), VList(4), VList())
   }
 
+  describe("Modifier ᵏ") {
+    testMulti(
+      "#[1|1|2|3|1|2|3|3|3|2|2|1#] ᵏL" -> VList(4, 4, 4)
+    )
+  }
+
   describe("Maximum and minimum by (ᵐ and ⁿ)") {
     testMulti(
       "#[2|1|3#]ᵐN" -> 1,
