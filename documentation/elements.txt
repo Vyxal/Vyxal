@@ -1061,6 +1061,12 @@ Description: Check if a function is invariant under a transformation / vertical 
 ᵞf: scanl columns by f
 Trigraph: #^y
 ---------------------
+ᵏ
+Keywords: key:
+Description: Map an element over the groups formed by identical items.
+ᵏf: Map f over the groups formed by identical items
+Trigraph: #^k
+---------------------
 ⁿ
 Keywords: min-by:, minimum-by:
 Description: Minimum By Element
@@ -1143,17 +1149,6 @@ Description: Loop and Collect While Unique
 ᶨf: Loop and collect while unique
 Trigraph: #^j
 ---------------------
-ᵏ
-Keywords: key:
-Description: Map an element over the groups formed by identical items.
-ᵏf: Map f over the groups formed by identical items
-Trigraph: #^k
----------------------
-ᵍ
-Keywords: ****2:
-Description: Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
-ᵍfghi: Push the equivalent of λ2|fghi} to the stack
----------------------
 ᵘ
 Keywords: collect-until-no-change:, until-stable:, stablise:
 Description: Run func on the prev result until the result no longer changes
@@ -1202,6 +1197,11 @@ v
 Keywords: vectorise:, vec:, v:
 Description: Vectorises
 vf: f but vectorised
+---------------------
+ᴳ
+Keywords: ****2:
+Description: Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
+ᵍfghi: Push the equivalent of λ2|fghi} to the stack
 ---------------------
 ⸠
 Keywords: *:
