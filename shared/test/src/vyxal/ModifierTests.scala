@@ -53,7 +53,7 @@ class ModifierTests extends VyxalTests:
     testMulti(
       "#[1|2|3|4|5#] ᵇe" -> VList(1, 2),
       "#[#] ᵇe" -> VList(),
-      """#["abc"|"def"|"abc"|"ifff"#] ᵇL""" -> VList("ifff"),
+      """#["abc"|"def"|"abc"|"ifff"#] ᵇL""" -> VList("abc", "ifff"),
     )
   }
 
@@ -70,7 +70,7 @@ class ModifierTests extends VyxalTests:
   describe("Modifier ᶜ (Monadic)") {
     testMulti(
       "#[1|1|1|1|1#] ᶜL" -> VList(5, 4, 3, 2, 1),
-      "#[1|2|3|4|5#] ᶜ⸠/+" -> VList(5, 9, 12, 14, 15),
+      "#[1|2|3|4|5#] ᶜ⸠/+" -> VList(15, 14, 12, 9, 5),
     )
   }
 
