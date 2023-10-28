@@ -32,7 +32,7 @@ class ModifierTests extends VyxalTests:
       "#[1|2|3#] ᵈ+ R" -> VNum(6),
       "#[1|2|3#] ᵉ+× R" -> VNum(27),
       "#[1|2|3#] ᶠ+×+ R" -> VNum(37),
-      "#[1|2|3#] ᵍ+×+× R" -> VNum(195),
+      "#[1|2|3#] ᵍ++++ R" -> VNum(195),
     )
   }
 
@@ -59,7 +59,7 @@ class ModifierTests extends VyxalTests:
 
   describe("Modifier ᵇ (Arity 2+)") {
     testStackLike("ᵇ+")(
-      List[VAny](3, 4, 5) -> List[VAny](7, 3, 4, 5),
+      List[VAny](3, 4, 5) -> List[VAny](9, 5, 4, 3),
       List[VAny](1, 1) -> List[VAny](2, 1, 1),
     )
     testStackLike("ᵇr") {
