@@ -574,5 +574,19 @@ object Modifiers:
             )
           )
       },
+    "`" ->
+      Modifier(
+        "Map as Stacks",
+        """|Map a function over the top of the stack, treating each iteration
+             |as if it were a stack of items. Essentially, dump before mapping
+             |""".stripMargin,
+        List("vec-dump:", "map-dump:"),
+        1,
+      ) {
+        case List(ast) => AST.makeSingle(
+            astToLambda(ast, ast.arity.getOrElse(1)),
+            AST.Command("#|vec-dump"),
+          )
+      },
   )
 end Modifiers

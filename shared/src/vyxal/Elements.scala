@@ -2435,6 +2435,29 @@ object Elements:
       ctx.push(firstRes, secondRes)
 
     },
+    addDirect(
+      "#|vec-dump",
+      "[Internal Use] Map Dump (Element Form)",
+      List(),
+      None,
+      "*a, f -> f applied to each element of a, treating as a stack. Use the modifier instead.",
+    ) { ctx ?=>
+      val f = ctx.pop()
+      val arg = ListHelpers.makeIterable(ctx.pop())
+      f match
+        case fun: VFun => ctx.push(
+            VList.from(
+              arg.map(x =>
+                Interpreter.executeFn(fun, args = ListHelpers.makeIterable(x))(
+                  using ctx.makeChild()
+                )
+              )
+            )
+          )
+        case _ => throw IllegalArgumentException(
+            "Map Dump: First argument should be a function"
+          )
+    },
     addPart(
       Monad,
       "V",
