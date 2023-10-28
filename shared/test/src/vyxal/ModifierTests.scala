@@ -29,6 +29,10 @@ class ModifierTests extends VyxalTests:
       "#[1|2|3#] э2×++ M" -> VList(4, 8, 12),
       "#[1|2|3#] Ч×++× M" -> VList(3, 16, 45),
       "#[1|2|3#] Ч2×++× M" -> VList(4, 16, 36),
+      "#[1|2|3#] ᵈ+ R" -> VNum(6),
+      "#[1|2|3#] ᵉ+× R" -> VNum(27),
+      "#[1|2|3#] ᶠ+×+ R" -> VNum(37),
+      "#[1|2|3#] ᵍ+×+× R" -> VNum(195),
     )
   }
 
@@ -62,6 +66,20 @@ class ModifierTests extends VyxalTests:
     testStackLike("ᵇr") {
       List[VAny]("abc", "b", "!!") -> List[VAny]("a!!c", "!!", "b", "abc")
     }
+  }
+
+  describe("Modifier ᶜ (Monadic)") {
+    testMulti(
+      "#[1|1|1|1|1#] ᶜL" -> VList(1, 2, 3, 4, 5),
+      "#[1|2|3|4|5#] ᶜ/+" -> VList(5, 9, 12, 14, 15),
+    )
+  }
+
+  describe("Modifier ᶜ (Dyadic)") {
+    testMulti(
+      "#[#[1|2|3#]|#[4|5|6#]|#[7|8|9#]#] ᶜ+" -> VList(12, 15, 18),
+      "#[#] ᶜ+" -> VList(),
+    )
   }
 
   describe("Modifier ᴴ") {
