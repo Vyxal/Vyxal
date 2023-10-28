@@ -88,6 +88,14 @@ class ModifierTests extends VyxalTests:
     )
   }
 
+  describe("Modifier ᶤ") {
+    testMulti(
+      "#[1|3|5|2] ᶤe" -> VNum(3),
+      "#[] ᶤe" -> VNum(-1),
+      "#[1|3|3|3|3] ᶤe" -> VNum(-1),
+    )
+  }
+
   describe("Maximum and minimum by (ᵐ and ⁿ)") {
     testMulti(
       "#[2|1|3#]ᵐN" -> 1,
