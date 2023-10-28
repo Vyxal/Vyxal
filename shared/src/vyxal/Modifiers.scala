@@ -521,5 +521,58 @@ object Modifiers:
             val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
             AST.makeSingle(lambdaAst, AST.Command("r"))
       },
+    "∥" ->
+      Modifier(
+        "Parallel Apply",
+        """|Parallel apply two elements to the top of the stack
+           |""".stripMargin,
+        List("parallel-apply:", "para-apply:", "paraply:", "!!:"),
+        2,
+      ) {
+        case List(ast1, ast2) => AST.makeSingle(
+            astToLambda(ast1, ast1.arity.getOrElse(-1), true),
+            astToLambda(ast2, ast2.arity.getOrElse(-1), true),
+            AST.Command("#|para-apply"),
+          )
+      },
+    "∦" ->
+      Modifier(
+        "Parallel Apply and Wrap",
+        """|Parallel apply two elements to the top of the stack
+             |and wrap the result in a list
+             |""".stripMargin,
+        List(
+          "parallel-apply-and-wrap:",
+          "para-apply-and-wrap:",
+          "<paraply>:",
+          "<!!>:",
+        ),
+        2,
+      ) {
+        case List(ast1, ast2) => AST.makeSingle(
+            astToLambda(ast1, ast1.arity.getOrElse(-1), true),
+            astToLambda(ast2, ast2.arity.getOrElse(-1), true),
+            AST.Command("#|para-apply"),
+            AST.Command(";"),
+          )
+      },
+    "¿" ->
+      Modifier(
+        "Conditional Execution",
+        """|Pop the top of the stack, and, if it's truthy,
+             |apply a function""".stripMargin,
+        List("if-top:", "if:"),
+        1,
+      ) {
+        case List(ast) => AST.makeSingle(
+            AST.Ternary(
+              AST.makeSingle(
+                astToLambda(ast, ast.arity.getOrElse(1)),
+                AST.Command("Ė"),
+              ),
+              None,
+            )
+          )
+      },
   )
 end Modifiers

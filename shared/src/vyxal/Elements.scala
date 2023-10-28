@@ -2417,6 +2417,24 @@ object Elements:
             "All Neighbours: First argument should be a function"
           )
     },
+    addDirect(
+      "#|para-apply",
+      "[Internal Use] Parallel Apply (Element Form)",
+      List(),
+      None,
+      "*a, f -> The iconic parallel apply. Use the modifier instead bingus.",
+    ) { ctx ?=>
+      val second = ctx.pop().asInstanceOf[VFun]
+      val first = ctx.pop().asInstanceOf[VFun]
+
+      val clonedCtx = ctx.copy
+
+      val firstRes = Interpreter.executeFn(first)(using clonedCtx)
+      val secondRes = Interpreter.executeFn(second)(using ctx)
+
+      ctx.push(firstRes, secondRes)
+
+    },
     addPart(
       Monad,
       "V",

@@ -186,6 +186,20 @@ class Context private (
   def rotateRight: Unit =
     val temp = pop()
     stack.insert(0, temp)
+
+  def copy: Context =
+    new Context(
+      stack.clone(),
+      _ctxVarPrimary,
+      _ctxVarSecondary,
+      ctxArgs,
+      vars.clone(),
+      inputs,
+      parent,
+      globals,
+      testMode,
+      useStack,
+    )
 end Context
 
 object Context:
