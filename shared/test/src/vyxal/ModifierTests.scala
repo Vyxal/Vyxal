@@ -51,9 +51,9 @@ class ModifierTests extends VyxalTests:
 
   describe("Modifier ᵇ (Monadic)") {
     testMulti(
-      "#[1|2|3|4|5#] ᵇe" -> VList(1, 3, 5),
+      "#[1|2|3|4|5#] ᵇe" -> VList(1, 2),
       "#[#] ᵇe" -> VList(),
-      """#["abc", "def", "abc", "ifff"] ᵇL""" -> VList("ifff"),
+      """#["abc"|"def"|"abc"|"ifff"#] ᵇL""" -> VList("ifff"),
     )
   }
 
@@ -62,7 +62,6 @@ class ModifierTests extends VyxalTests:
       List[VAny](3, 4, 5) -> List[VAny](7, 3, 4, 5),
       List[VAny](1, 1) -> List[VAny](2, 1, 1),
     )
-
     testStackLike("ᵇr") {
       List[VAny]("abc", "b", "!!") -> List[VAny]("a!!c", "!!", "b", "abc")
     }
@@ -70,8 +69,8 @@ class ModifierTests extends VyxalTests:
 
   describe("Modifier ᶜ (Monadic)") {
     testMulti(
-      "#[1|1|1|1|1#] ᶜL" -> VList(1, 2, 3, 4, 5),
-      "#[1|2|3|4|5#] ᶜ/+" -> VList(5, 9, 12, 14, 15),
+      "#[1|1|1|1|1#] ᶜL" -> VList(5, 4, 3, 2, 1),
+      "#[1|2|3|4|5#] ᶜ⸠/+" -> VList(5, 9, 12, 14, 15),
     )
   }
 
@@ -90,9 +89,9 @@ class ModifierTests extends VyxalTests:
 
   describe("Modifier ᶤ") {
     testMulti(
-      "#[1|3|5|2] ᶤe" -> VNum(3),
-      "#[] ᶤe" -> VNum(-1),
-      "#[1|3|3|3|3] ᶤe" -> VNum(-1),
+      "#[1|3|5|2#] ᶤe" -> VNum(3),
+      "#[#] ᶤe" -> VNum(-1),
+      "#[1|3|3|3|3#] ᶤe" -> VNum(-1),
     )
   }
 
