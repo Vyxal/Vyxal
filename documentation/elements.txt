@@ -1043,7 +1043,7 @@ Description: Turn the next element (whether that be a structure/modifier/element
 Trigraph: #^d
 ---------------------
 ᶤ
-Keywords: first-index-where:, first-index-of:
+Keywords: first-index-where:, first-index-of:, ind-of:, find-by:
 Description: Find the first index where an element is truthy
 ᶤf: find the first index where f is truthy
 Trigraph: #^i
@@ -1162,7 +1162,7 @@ returning all intermediate results
 Trigraph: #^u
 ---------------------
 ᵃ
-Keywords: apply-to-neighbours:, count-truthy:
+Keywords: apply-to-neighbours:, count-truthy:, apply-neighbours:, apply-to-neighbors:, apply-neighbors:, 2lvf:, twolif:, to-pairs:, to-overlaps:, count:
 Description: To each overlapping pair, reduce it by an element
 Apply a dyadic element for all pairs of neighboring elements.
 Count the number of truthy elements in a list under a mondaic element
