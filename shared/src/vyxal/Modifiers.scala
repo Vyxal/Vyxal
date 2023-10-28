@@ -218,7 +218,7 @@ object Modifiers:
         case List(ast1, ast2, ast3) =>
           astToLambda(AST.makeSingle(ast1, ast2, ast3), 2, true)
       },
-    "ᵍ" ->
+    "ᴳ" ->
       Modifier(
         "Dyadic Quadruple Element Lambda",
         """|Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda

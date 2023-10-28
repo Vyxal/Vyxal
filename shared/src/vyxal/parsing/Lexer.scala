@@ -130,7 +130,7 @@ end Lexer
 object Lexer:
   val structureOpenRegex: String = """[\[\(\{λƛΩ₳µḌṆ]|#@|#\{"""
 
-  val Codepage = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨ\nᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ⸠ϩэЧᵜ !" +
+  val Codepage = "ᵃᵇᶜᵈᵉᶠᴳᴴᶤᶨ\nᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ⸠ϩэЧᵜ !" +
     "\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFG" +
     "HIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmn" +
     "opqrstuvwxyz{|}~¦ȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊικȧḃċ" +

@@ -32,7 +32,7 @@ class ModifierTests extends VyxalTests:
       "#[1|2|3#] ᵈ+ R" -> VNum(6),
       "#[1|2|3#] ᵉ+× R" -> VNum(27),
       "#[1|2|3#] ᶠ+×+ R" -> VNum(37),
-      "#[1|2|3#] ᵍ++++ R" -> VNum(195),
+      "#[1|2|3#] ᴳ+×+× R" -> VNum(195),
     )
   }
 
