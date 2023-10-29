@@ -2683,18 +2683,28 @@ object Elements:
     ) { ctx ?=>
       ctx.globals.inputs(2)
     },
-    addDirect(
-      "³",
-      "Fourth Input",
-      List("fourth-input", "input-3"),
-      Some(0),
-      "The fourth input to the program",
-    ) { ctx ?=>
-      ctx.globals.inputs(3)
-    }
+    addPart(
+      Monad,
+      "⌈",
+      "Ceiling",
+      List("ceiling", "ceil"),
+      true,
+      "a: num -> ceil(a)",
+    ) {
+      case a: VNum => VNum(spire.math.floor(a.underlying.real))
+    },
+    addPart(
+      Monad,
+      "⌊",
+      "Floor",
+      List("floor"),
+      true,
+      "a: num -> floor(a)",
+    ) {
+      case a: VNum => VNum(spire.math.floor(a.underlying.real))
+    },
 
     // Constants
-    ,
     addNilad("¦", "Pipe", List("pipe"), "|") { "|" },
     addNilad("ð", "Space", List("space"), " ") { " " },
     addNilad("¶", "Newline", List("newline"), "\n") { "\n" },

@@ -148,10 +148,74 @@ class ModifierTests extends VyxalTests:
     }
   }
 
+  describe("Modifier ᵖ") {
+    testMulti(
+      "#[1|1|1|1|1#] ᵖL" -> VList(1, 2, 3, 4, 5),
+      "#[1|2|3|4|5#] ᵖ⸠/+" -> VList(1, 3, 6, 10, 15),
+    )
+  }
+
   describe("Modifier ᶳ") {
     testMulti(
       "#[2|3|1#]ᶳN" -> VList(3, 2, 1)
     )
+  }
+
+  describe("Modifier ᵗ") {
+    testMulti(
+      "#[1|2|3|4|5#] ᵗe" -> VList(1, 3, 5)
+    )
+  }
+
+  describe("Modifier ᵘ (Monadic)") {
+    testMulti(
+      "9ᵘϩ½⌊" -> VList(9, 4, 2, 1, 0)
+    )
+  }
+
+  describe("Modifier ᵘ (Dyadic)") {
+    testMulti(
+      "#[1|2|3|4|5#] ᵘᵉ+e" -> VNum(1),
+      "#[#] ᵘ+" -> VNum(1),
+    )
+  }
+
+  describe("Modifier ᵂ") {
+    testStackLike("ᵂ+") {
+      List[VAny](3, 4, 5) -> List[VAny](5, 7)
+      List[VAny](1, 1, 1) -> List[VAny](2, 1)
+    }
+
+    testStackLike("ᵂᵂ+") {
+      List[VAny](3, 4, 5, 6) -> List[VAny](6, 5, 7)
+    }
+  }
+
+  describe("Modifier ᵡ") {
+    testMulti(
+      "10 ᵡϩe[2÷|3×1+}" -> VList(5, 16, 8, 4, 2, 1)
+    )
+  }
+
+  describe("Modifier ᵞ (Monadic)") {
+    testMulti(
+      "\"abc\" ᵞэṚṚ" -> VNum(1),
+      "6 ᵞэṚe" -> VNum(0),
+    )
+  }
+
+  describe("Modifier ᵞ (Dyadic)") {
+    testMulti(
+      "#[#[1|2|3#]#]|#[4|5|6#]|#[7|8|9#]#]ᵞ+" ->
+        VList(VList(1, 5, 12), VList(2, 7, 15), VList(3, 9, 18))
+    )
+  }
+
+  describe("Modifier ᶻ") {
+    testMulti(
+      "#[1|2|3#] #[4|5|6#] ᶻ+" -> VList(5, 7, 9)
+    )
+
   }
 
 end ModifierTests

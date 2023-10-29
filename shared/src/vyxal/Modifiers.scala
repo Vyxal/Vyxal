@@ -449,17 +449,29 @@ object Modifiers:
       },
     "ᵘ" ->
       Modifier(
-        "Collect Until No Change",
+        "Collect Until No Change / Neighbours All Equal?",
         """|Run func on the prev result until the result no longer changes
            |returning all intermediate results
+           |Given a dyadic function, apply the function to all overlapping pairs of elements
+           |and test if all results are equal
            |ᵘf: Collect until no change""".stripMargin,
-        List("collect-until-no-change:", "until-stable:", "stablise:"),
+        List(
+          "collect-until-no-change:",
+          "until-stable:",
+          "stablise:",
+          "neighbours-equals:",
+        ),
         1,
       ) {
-        case List(ast) => AST.makeSingle(
-            astToLambda(ast, ast.arity.getOrElse(1)),
-            AST.Command("ċ"),
-          )
+        case List(ast) =>
+          if !isExplicitMonad(ast) then
+            val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
+            AST.makeSingle(lambdaAst, AST.Command("#|all-neigh"))
+          else
+            AST.makeSingle(
+              astToLambda(ast, ast.arity.getOrElse(1)),
+              AST.Command("ċ"),
+            )
       },
     "ᵂ" ->
       Modifier(
@@ -516,21 +528,16 @@ object Modifiers:
       },
     "ᶻ" ->
       Modifier(
-        "Zip With / Neighbours All Equal?",
+        "Zip With",
         """
       |Given a dyadic function, zip two lists and reduce each by f
-      |Given a monadic function, apply the function to all overlapping pairs of elements
       | and then check if all results are equal""",
-        List("zip-with:", "zipwith:", "neighbours-equals:"),
+        List("zip-with:", "zipwith:"),
         1,
       ) {
         case List(ast) =>
-          if isExplicitMonad(ast) then
-            val lambdaAst = astToLambda(ast, 1)
-            AST.makeSingle(lambdaAst, AST.Command("#|all-neigh"))
-          else
-            val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
-            AST.makeSingle(lambdaAst, AST.Command("r"))
+          val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
+          AST.makeSingle(lambdaAst, AST.Command("r"))
       },
     "∥" ->
       Modifier(
