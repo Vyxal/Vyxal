@@ -211,7 +211,7 @@ object MiscHelpers:
         else
           prev = next
           Some(next -> next)
-     } 
+     }
      VList.from(value, *res)
 
   def zipWith(left: VList, right: VList, function: VFun)(using Context): VList =
