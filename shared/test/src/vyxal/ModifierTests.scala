@@ -183,7 +183,7 @@ class ModifierTests extends VyxalTests:
   describe("Modifier ᵂ") {
     testStackLike("ᵂ+") {
       List[VAny](3, 4, 5) -> List[VAny](5, 7)
-      List[VAny](1, 1, 1) -> List[VAny](2, 1)
+      List[VAny](1, 1, 1) -> List[VAny](1, 2)
     }
 
     testStackLike("ᵂᵂ+") {
@@ -199,14 +199,14 @@ class ModifierTests extends VyxalTests:
 
   describe("Modifier ᵞ (Monadic)") {
     testMulti(
-      "\"abc\" ᵞэṚṚ" -> VNum(1),
-      "6 ᵞэṚe" -> VNum(0),
+      "\"abc\" ᵞϩṚṚ" -> VNum(1),
+      "6 ᵞϩṚe" -> VNum(0),
     )
   }
 
   describe("Modifier ᵞ (Dyadic)") {
     testMulti(
-      "#[#[1|2|3#]#]|#[4|5|6#]|#[7|8|9#]#]ᵞ+" ->
+      "#[#[1|2|3#]|#[4|5|6#]|#[7|8|9#]#] ᵞ+" ->
         VList(VList(1, 5, 12), VList(2, 7, 15), VList(3, 9, 18))
     )
   }

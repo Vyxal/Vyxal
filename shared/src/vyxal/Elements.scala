@@ -1395,17 +1395,8 @@ object Elements:
       case (a: VNum, b: VNum) =>
         if a > b then NumberHelpers.nChooseK(a, b) else 0
       case (a: String, b: String) => a.toSet == b.toSet
-      case (a: VFun, b) =>
-        var prev = b
-        VList.from(
-          LazyList.unfold(b) { curr =>
-            val next = a(curr)
-            if next == prev then None
-            else
-              prev = next
-              Some(next -> next)
-          }
-        )
+      case (a: VFun, b) => MiscHelpers.untilNoChange(a, b)
+      case (a, b: VFun) => MiscHelpers.untilNoChange(b, a)
     },
     addPart(
       Monad,
