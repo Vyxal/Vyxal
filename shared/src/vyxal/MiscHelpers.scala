@@ -206,13 +206,13 @@ object MiscHelpers:
   def untilNoChange(function: VFun, value: VAny)(using Context): VAny =
     var prev = value
     val res = LazyList.unfold(value) { curr =>
-        val next = function(curr)
-        if next == prev then None
-        else
-          prev = next
-          Some(next -> next)
-     }
-     VList.from(value #:: res)
+      val next = function(curr)
+      if next == prev then None
+      else
+        prev = next
+        Some(next -> next)
+    }
+    VList.from(value #:: res)
 
   def zipWith(left: VList, right: VList, function: VFun)(using Context): VList =
     VList.from(left.zip(right).map((a, b) => function(a, b)))
