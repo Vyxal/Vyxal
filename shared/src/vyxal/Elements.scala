@@ -2682,7 +2682,7 @@ object Elements:
       true,
       "a: num -> ceil(a)",
     ) {
-      case a: VNum => VNum(spire.math.floor(a.underlying.real))
+      case a: VNum => VNum(spire.math.ceil(a.underlying.real))
     },
     addPart(
       Monad,
