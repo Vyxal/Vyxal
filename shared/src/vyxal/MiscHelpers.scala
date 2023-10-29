@@ -213,7 +213,7 @@ object MiscHelpers:
               else
                   Some(Some(current) -> Some(next))
       }
-    )
+    
     VList.from(res.flatten)
 
   def zipWith(left: VList, right: VList, function: VFun)(using Context): VList =
