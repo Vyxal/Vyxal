@@ -211,7 +211,7 @@ object MiscHelpers:
               val next = function(current.get())
               if next == current then Some(Some(next) -> None) // include next, but stop generating after that
               else
-                  Some(Some(current) -> Some(next))
+                  Some(current -> Some(next))
       }
 
     VList.from(res.flatten)
