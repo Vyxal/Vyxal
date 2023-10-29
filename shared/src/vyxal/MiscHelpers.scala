@@ -212,7 +212,7 @@ object MiscHelpers:
           prev = next
           Some(next -> next)
      }
-     VList(value, res*)
+     VList.from(value #:: res)
 
   def zipWith(left: VList, right: VList, function: VFun)(using Context): VList =
     VList.from(left.zip(right).map((a, b) => function(a, b)))
