@@ -6,6 +6,11 @@ Keywords: cookie
 Keywords: sus
 - ඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞ
 ---------------------
+¦ (Pipe) (non-vectorising)
+Trigraph: #.;
+Keywords: pipe
+- -> |
+---------------------
 ᵛ (Decrement) (vectorising)
 Trigraph: #^v
 Keywords: decr, decrement
@@ -409,11 +414,6 @@ z (Inclusive zero Range | Is Lowercase) (vectorising)
 Keywords: inclusive-zero-range, zero->n, is-lowercase?, lowercase?, lower?
 - a: num -> [0, 1, ..., a]
 - a: str -> is a lowercase?
----------------------
-¦ (Pipe) (non-vectorising)
-Trigraph: #.;
-Keywords: pipe
-- -> |
 ---------------------
 Ȧ (Absolute Value | Keep Alphabet Characters) (vectorising)
 Trigraph: #.A
@@ -973,10 +973,13 @@ Trigraph: #^2
 Keywords: third-input, input-2
 - The third input to the program
 ---------------------
-³ (Fourth Input) (non-vectorising)
-Trigraph: #^3
-Keywords: fourth-input, input-3
-- The fourth input to the program
+⌈ (Ceiling) (vectorising)
+Keywords: ceiling, ceil
+- a: num -> ceil(a)
+---------------------
+⌊ (Floor) (vectorising)
+Keywords: floor
+- a: num -> floor(a)
 ---------------------
 Ɠ (Maximum without popping) (non-vectorising)
 Trigraph: #.9
@@ -1150,9 +1153,11 @@ Description: Loop and Collect While Unique
 Trigraph: #^j
 ---------------------
 ᵘ
-Keywords: collect-until-no-change:, until-stable:, stablise:
+Keywords: collect-until-no-change:, until-stable:, stablise:, neighbours-equals:
 Description: Run func on the prev result until the result no longer changes
 returning all intermediate results
+Given a dyadic function, apply the function to all overlapping pairs of elements
+and test if all results are equal
 ᵘf: Collect until no change
 Trigraph: #^u
 ---------------------
@@ -1166,10 +1171,9 @@ Count the number of truthy elements in a list under a mondaic element
 Trigraph: #^a
 ---------------------
 ᶻ
-Keywords: zip-with:, zipwith:, neighbours-equals:
+Keywords: zip-with:, zipwith:
 Description: 
       |Given a dyadic function, zip two lists and reduce each by f
-      |Given a monadic function, apply the function to all overlapping pairs of elements
       | and then check if all results are equal
 Trigraph: #^z
 ---------------------
