@@ -204,17 +204,15 @@ object MiscHelpers:
       case (a, b) => ???
 
   def untilNoChange(function: VFun, value: VAny)(using Context): VAny =
-    val res: LazyList[Option[VAny]] = LazyList.unfold(Some(value)) { curr =>
-        curr match
-            case Some(current) =>
-              val next = function(current)
-              if next == current then Some(Some(next) -> None) // include next, but stop generating after that
-              else
-                  Some(Some(current) -> Some(next))
-            case _ => None
-      }
-
-    VList.from(res.flatten)
+    var prev = value
+    val res = LazyList.unfold(value) { curr =>
+        val next = function(curr)
+        if next == prev then None
+        else
+          prev = next
+          Some(next -> next)
+     } 
+     VList.from(value, *res)
 
   def zipWith(left: VList, right: VList, function: VFun)(using Context): VList =
     VList.from(left.zip(right).map((a, b) => function(a, b)))
