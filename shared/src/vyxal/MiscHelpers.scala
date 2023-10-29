@@ -206,12 +206,12 @@ object MiscHelpers:
   def untilNoChange(function: VFun, value: VAny)(using Context): VAny =
     val res: LazyList[Option[VAny]] = LazyList.unfold(Some(value)) { curr =>
         curr match
-            case _: None => None
-            case current =>
-              val next = function(current.get())
+            case Some(current) =>
+              val next = function(current)
               if next == current then Some(Some(next) -> None) // include next, but stop generating after that
               else
-                  Some(current -> Some(next))
+                  Some(Some(current) -> Some(next))
+            case _ => None
       }
 
     VList.from(res.flatten)
