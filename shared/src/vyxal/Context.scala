@@ -188,8 +188,7 @@ class Context private (
       stack += stack.remove(0)
 
   def rotateRight: Unit =
-    val temp = pop()
-    stack.insert(0, temp)
+    stack.insert(0, pop())
 
   def copy: Context =
     new Context(
