@@ -548,8 +548,8 @@ object Modifiers:
         2,
       ) {
         case List(ast1, ast2) => AST.makeSingle(
-            astToLambda(ast1, ast1.arity.getOrElse(-1), true),
-            astToLambda(ast2, ast2.arity.getOrElse(-1), true),
+            astToLambda(ast1, ast1.arity.getOrElse(-1)),
+            astToLambda(ast2, ast2.arity.getOrElse(-1)),
             AST.Command("#|para-apply"),
           )
       },
@@ -568,10 +568,9 @@ object Modifiers:
         2,
       ) {
         case List(ast1, ast2) => AST.makeSingle(
-            astToLambda(ast1, ast1.arity.getOrElse(-1), true),
-            astToLambda(ast2, ast2.arity.getOrElse(-1), true),
-            AST.Command("#|para-apply"),
-            AST.Command(";"),
+            astToLambda(ast1, -1),
+            astToLambda(ast2, -1),
+            AST.Command("#|para-apply-wrap"),
           )
       },
     "¿" ->

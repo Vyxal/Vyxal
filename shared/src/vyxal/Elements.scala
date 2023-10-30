@@ -2418,12 +2418,30 @@ object Elements:
       val second = ctx.pop().asInstanceOf[VFun]
       val first = ctx.pop().asInstanceOf[VFun]
 
-      val clonedCtx = ctx.copy
+      first.ctx = ctx.copy
 
-      val firstRes = Interpreter.executeFn(first)(using clonedCtx)
+      val firstRes = Interpreter.executeFn(first)(using ctx.copy)
       val secondRes = Interpreter.executeFn(second)(using ctx)
-
+      ctx.pop()
       ctx.push(firstRes, secondRes)
+
+    },
+    addDirect(
+      "#|para-apply-wrap",
+      "[Internal Use] Parallel Apply Wrap (Element Form)",
+      List(),
+      None,
+      "*a, f -> The iconic parallel apply. Use the modifier instead bingus.",
+    ) { ctx ?=>
+      val second = ctx.pop().asInstanceOf[VFun]
+      val first = ctx.pop().asInstanceOf[VFun]
+
+      first.ctx = ctx.copy
+
+      val firstRes = Interpreter.executeFn(first)(using ctx.copy)
+      val secondRes = Interpreter.executeFn(second)(using ctx)
+      ctx.pop()
+      ctx.push(VList(firstRes, secondRes))
 
     },
     addDirect(

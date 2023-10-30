@@ -218,4 +218,22 @@ class ModifierTests extends VyxalTests:
 
   }
 
+  describe("Modifier ∥") {
+    testStackLike("∥+-")(
+      List[VAny](3, 4) -> List[VAny](-1, 7)
+    )
+
+    testStackLike("∥+d")(
+      List[VAny](3, 4) -> List[VAny](VNum(8), VNum(7), VNum(3))
+    )
+  }
+
+  describe("Modifier ∦") {
+    testMulti(
+      "3 4 ∦+-" -> VList(7, -1),
+      "3 4 ∦+d" -> VList(7, 8),
+      "1 3 4 5 ∦∦+-+" -> VList(VList(9, -1), 4),
+    )
+  }
+
 end ModifierTests
