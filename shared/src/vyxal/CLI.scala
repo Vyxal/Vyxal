@@ -135,7 +135,7 @@ object CLI:
 
   private val builder = OParser.builder[CLIConfig]
 
-  private val parser =
+  val parser =
     import builder.*
 
     /** Helper to for adding flags that go into Settings */
