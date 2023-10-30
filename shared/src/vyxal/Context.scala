@@ -185,8 +185,7 @@ class Context private (
   def rotateLeft: Unit =
     if isStackEmpty then push(pop())
     else
-      val temp = stack.remove(0)
-      stack += temp
+      stack += stack.remove(0)
 
   def rotateRight: Unit =
     val temp = pop()
