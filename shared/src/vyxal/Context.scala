@@ -184,11 +184,9 @@ class Context private (
 
   def rotateLeft: Unit =
     if isStackEmpty then push(pop())
-    else
-      stack += stack.remove(0)
+    else stack += stack.remove(0)
 
-  def rotateRight: Unit =
-    stack.insert(0, pop())
+  def rotateRight: Unit = stack.insert(0, pop())
 
   def copy: Context =
     new Context(
