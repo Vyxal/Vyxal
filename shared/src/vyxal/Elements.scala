@@ -2422,7 +2422,6 @@ object Elements:
 
       val firstRes = Interpreter.executeFn(first)(using ctx.copy)
       val secondRes = Interpreter.executeFn(second)(using ctx)
-      ctx.pop()
       ctx.push(firstRes, secondRes)
 
     },
