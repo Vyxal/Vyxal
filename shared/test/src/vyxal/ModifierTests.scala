@@ -232,7 +232,7 @@ class ModifierTests extends VyxalTests:
     testMulti(
       "3 4 ∦+-" -> VList(7, -1),
       "3 4 ∦+d" -> VList(7, 8),
-      "1 3 4 5 ∦∦+-+" -> VList(VList(9, -1), 4),
+      "1 3 4 5 ∦∦+-+" -> VList(VList(9, -1), 9),
     )
   }
 
