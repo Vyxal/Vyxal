@@ -2633,7 +2633,7 @@ object Elements:
       Some(1),
       "a: any -> dump all values on the stack",
     ) { ctx ?=>
-      ListHelpers.makeIterable(ctx.pop()).foreach(ctx.push)
+      ListHelpers.makeIterable(ctx.pop()).foreach(v => ctx.push(v))
     },
     addPart(
       Monad,
