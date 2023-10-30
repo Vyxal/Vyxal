@@ -48,6 +48,10 @@ Keywords:
 Keywords: 
 - *a, f -> scanl each column. Use the modifier instead.
 ---------------------
+#|para-apply-wrap ([Internal Use] Parallel Apply Wrap (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> The iconic parallel apply. Use the modifier instead bingus.
+---------------------
 #|apply-to-register ([Internal Use] Apply to Register (Element Form)) (non-vectorising)
 Keywords: 
 - *a, f -> f applied to the register. Use the modifier instead.
