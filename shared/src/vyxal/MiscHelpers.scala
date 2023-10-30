@@ -203,7 +203,7 @@ object MiscHelpers:
       case (a: VList, b: VList) => VList.from((a, b).zipped.map(subtract(_, _)))
       case (a, b) => ???
 
-  def untilNoChange(function: VFun, value: VAny)(using Context): VAny =
+  def untilNoChange(function: VFun, value: VAny)(using Context): VList =
     var prev = value
     val res = LazyList.unfold(value) { curr =>
       val next = function(curr)
