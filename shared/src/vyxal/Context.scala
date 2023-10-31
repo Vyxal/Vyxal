@@ -46,9 +46,7 @@ class Context private (
     * inputs, read a line of input from stdin.
     */
   def pop(): VAny =
-    if useStack then
-      val temp = parent.getOrElse(getTopCxt()).pop()
-      return temp
+    if useStack then return parent.getOrElse(getTopCxt()).pop()
     val elem =
       if stack.nonEmpty then stack.remove(stack.size - 1)
       else if inputs.nonEmpty then inputs.next()
@@ -62,7 +60,6 @@ class Context private (
         else settings.defaultValue
     scribe.trace(s"Popped $elem")
     elem
-  end pop
 
   /** Pop n elements and wrap in a list. The top of the stack will be at the
     * start of the list.
