@@ -3,7 +3,7 @@ codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨ "
 codepage += "!\"#$%&'()*+,-./01"
 codepage += "23456789:;<=>?@A"
 codepage += "BCDEFGHIJKLMNOPQ"
-codepage += "RSTUVWXYZ[\\]`^_abc"
+codepage += "RSTUVWXYZ[\\]^_`abc"
 codepage += "defghijklmnopqrs"
 codepage += "tuvwxyz{|}~↑↓∴∵›"
 codepage += "‹∷¤ð→←βτȧḃċḋėḟġḣ"
@@ -15,7 +15,7 @@ codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
 codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
 codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
 
-const OLD_PAGE = new URLSearchParams(window.location.search).get("c");
+var OLD_PAGE = new URLSearchParams(window.location.search).get("c");
 
 Vyncode.setVersion(-1)
 bitver.value = Vyncode.getVersion()
@@ -630,7 +630,7 @@ function generateURL() {
     const version = document.getElementById("bitver").value
 
     const url = [flags, header, code, footer, inputs];
-    return location.origin + "/" + (version ? "?v=" + version : "") + (OLD_PAGE == null ? "" : "&c=1") + "#" + encode(url)
+    return location.origin + "/" + (version ? "?v=" + version : "") + (OLD_PAGE == null || window.location.hash.substring(1) == "" ? "" : "&c=1") + "#" + encode(url)
 }
 
 
@@ -725,6 +725,8 @@ function decodeURL() {
 
     const flag_box = document.getElementById("flag");
     const inputs_box = document.getElementById("inputs");
+
+    OLD_PAGE = new URLSearchParams(window.location.search).get("c");
 
     const queryIsNonEmpty = code || flags || inputs || header || footer;
     const allBoxesAreEmpty = !(flag_box.value
