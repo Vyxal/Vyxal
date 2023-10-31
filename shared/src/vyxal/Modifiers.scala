@@ -526,7 +526,7 @@ object Modifiers:
         """
       |Given a dyadic function, zip two lists and reduce each by f
       | and then check if all results are equal.
-      |Given a monadic function, the inverse of monadic /. 
+      |Given a monadic function, the inverse of monadic /.
       |Filters where the function is falsey""",
         List("zip-with:", "zipwith:"),
         1,
