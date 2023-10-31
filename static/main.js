@@ -726,7 +726,11 @@ function decodeURL() {
     const flag_box = document.getElementById("flag");
     const inputs_box = document.getElementById("inputs");
 
-    OLD_PAGE = new URLSearchParams(window.location.search).get("c");
+    if (window.location.hash.substring(1) === "") {
+        OLD_PAGE = "1"
+    } else {
+        OLD_PAGE = new URLSearchParams(window.location.search).get("c");
+    }
 
     const queryIsNonEmpty = code || flags || inputs || header || footer;
     const allBoxesAreEmpty = !(flag_box.value
@@ -828,7 +832,7 @@ window.addEventListener("DOMContentLoaded", e => {
                     session: session,
                     footer: e_footer.doc.getValue(),
                     header: e_header.doc.getValue(),
-                    use_old: OLD_PAGE == null
+                    use_old: OLD_PAGE === null
                 })
             })
                 .then(res => res.json())
