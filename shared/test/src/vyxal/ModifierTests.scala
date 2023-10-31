@@ -161,12 +161,6 @@ class ModifierTests extends VyxalTests:
     )
   }
 
-  describe("Modifier ᵗ") {
-    testMulti(
-      "#[1|2|3|4|5#] ᵗe" -> VList(1, 3, 5)
-    )
-  }
-
   describe("Modifier ᵘ (Monadic)") {
     testMulti(
       "9ᵘϩ½⌊" -> VList(9, 4, 2, 1, 0)
@@ -211,7 +205,13 @@ class ModifierTests extends VyxalTests:
     )
   }
 
-  describe("Modifier ᶻ") {
+  describe("Modifier ᶻ (Monadic)") {
+    testMulti(
+      "#[1|2|3|4|5#] ᶻe" -> VList(1, 3, 5)
+    )
+  }
+
+  describe("Modifier ᶻ (Dyadic)") {
     testMulti(
       "#[1|2|3#] #[4|5|6#] ᶻ+" -> VList(5, 7, 9)
     )

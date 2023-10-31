@@ -434,18 +434,12 @@ object Modifiers:
       },
     "ᵗ" ->
       Modifier(
-        "Reject By",
-        """|Reject by Element
-           |The inverse of monadic /. Filters where the function is falsey
-           |ᵗf: Reject by f""".stripMargin,
-        List("reject-by:"),
+        "Unassigned",
+        """Unassigned""".stripMargin,
+        List(),
         1,
       ) {
-        case List(ast) => AST.makeSingle(
-            astToLambda(ast, ast.arity.getOrElse(1)),
-            AST.Command("I"),
-          )
-
+        case List(ast) => ast
       },
     "ᵘ" ->
       Modifier(
@@ -528,16 +522,24 @@ object Modifiers:
       },
     "ᶻ" ->
       Modifier(
-        "Zip With",
+        "Zip With / Reject by",
         """
       |Given a dyadic function, zip two lists and reduce each by f
-      | and then check if all results are equal""",
+      | and then check if all results are equal.
+      |Given a monadic function, the inverse of monadic /. 
+      |Filters where the function is falsey""",
         List("zip-with:", "zipwith:"),
         1,
       ) {
         case List(ast) =>
-          val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
-          AST.makeSingle(lambdaAst, AST.Command("r"))
+          if isExplicitMonad(ast) then
+            AST.makeSingle(
+              astToLambda(ast, ast.arity.getOrElse(1)),
+              AST.Command("I"),
+            )
+          else
+            val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
+            AST.makeSingle(lambdaAst, AST.Command("r"))
       },
     "∥" ->
       Modifier(
