@@ -2377,10 +2377,12 @@ object Elements:
           .map(x => ListHelpers.makeIterable(x))
       )
       f match
-        case fun: VFun => VList.from(
-            ListHelpers
-              .transposeSafe(arg)
-              .map(col => MiscHelpers.scanl(col.asInstanceOf[VList], fun))
+        case fun: VFun => ctx.push(
+            VList.from(
+              ListHelpers
+                .transposeSafe(arg)
+                .map(col => MiscHelpers.scanl(col.asInstanceOf[VList], fun))
+            )
           )
         case _ => throw IllegalArgumentException(
             "Vectorised Scan: First argument should be a function"
