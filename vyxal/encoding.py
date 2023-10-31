@@ -17,6 +17,8 @@ codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
 codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
 codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
 
+old_codepage = codepage.replace("^_`", "`^_")
+
 assert len(codepage) == 256
 
 

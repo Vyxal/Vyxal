@@ -15,6 +15,8 @@ codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
 codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
 codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
 
+const OLD_PAGE = new URLSearchParams(window.location.search).get("c");
+
 Vyncode.setVersion(-1)
 bitver.value = Vyncode.getVersion()
 
@@ -628,7 +630,7 @@ function generateURL() {
     const version = document.getElementById("bitver").value
 
     const url = [flags, header, code, footer, inputs];
-    return location.origin + "/" + (version ? "?v=" + version : "") + "#" + encode(url)
+    return location.origin + "/" + (version ? "?v=" + version : "") + (OLD_PAGE == null ? "" : "&c=1") + "#" + encode(url)
 }
 
 
@@ -823,7 +825,8 @@ window.addEventListener("DOMContentLoaded", e => {
                     flags: flags.value.replace("!", "").replace("=", ""),
                     session: session,
                     footer: e_footer.doc.getValue(),
-                    header: e_header.doc.getValue()
+                    header: e_header.doc.getValue(),
+                    use_old: OLD_PAGE == null
                 })
             })
                 .then(res => res.json())
