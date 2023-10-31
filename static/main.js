@@ -630,7 +630,7 @@ function generateURL() {
     const version = document.getElementById("bitver").value
 
     const url = [flags, header, code, footer, inputs];
-    return location.origin + "/" + (version ? "?v=" + version : "") + (OLD_PAGE == null || window.location.hash.substring(1) == "" ? "" : "&c=1") + "#" + encode(url)
+    return location.origin + "/" + (version ? "?v=" + version : "") + (OLD_PAGE == null && window.location.hash.substring(1) != "" ? "" : "&c=1") + "#" + encode(url)
 }
 
 
