@@ -27643,7 +27643,7 @@ def test_StringCompress():
 
 
     stack = [vyxalify(item) for item in ["hello world"]]
-    expected = vyxalify("«⟇%J^9vŀ«")
+    expected = vyxalify("«⟇%J_9vŀ«")
     ctx = Context()
 
     ctx.stacks.append(stack)
