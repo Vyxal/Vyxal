@@ -4828,7 +4828,7 @@
   vectorise: false
   tests:
     - '["hello"] : "«D\n=«"'
-    - '["hello world"] : "«⟇%J^9vŀ«"'
+    - '["hello world"] : "«⟇%J_9vŀ«"'
 
 - element: "øC"
   name: Number Compress
