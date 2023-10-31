@@ -2087,7 +2087,6 @@ object Elements:
       case (a, b: VList) => VList.from((a +: b) :+ a)
       case (a: VNum, b: String) => StringHelpers.characterMultiply(a, b)
       case (a: String, b: VNum) => StringHelpers.characterMultiply(b, a)
-      case (a: VNum, b: VNum) => ??? // Doesn't say anything in info.txt
     },
     addPart(
       Monad,
@@ -2372,20 +2371,16 @@ object Elements:
       "*a, f -> scanl each column. Use the modifier instead.",
     ) { ctx ?=>
       val f = ctx.pop()
-      val arg = ListHelpers
-        .makeIterable(ctx.pop())
-        .map(x => ListHelpers.makeIterable(x))
+      val arg = VList.from(
+        ListHelpers
+          .makeIterable(ctx.pop())
+          .map(x => ListHelpers.makeIterable(x))
+      )
       f match
-        case fun: VFun => ctx.push(
-            VList.from(
-              LazyList.unfold(0)(i =>
-                if !arg(0).hasIndex(i) then None
-                else
-                  val items =
-                    VList.from(arg.map(_.asInstanceOf[VList].index(i)))
-                  Some(MiscHelpers.scanl(items, fun), i + 1)
-              )
-            )
+        case fun: VFun => VList.from(
+            ListHelpers
+              .transposeSafe(arg)
+              .map(col => MiscHelpers.scanl(col.asInstanceOf[VList], fun))
           )
         case _ => throw IllegalArgumentException(
             "Vectorised Scan: First argument should be a function"
