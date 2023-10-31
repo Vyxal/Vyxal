@@ -5,7 +5,7 @@ codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨ "
 codepage += "!\"#$%&'()*+,-./01"
 codepage += "23456789:;<=>?@A"
 codepage += "BCDEFGHIJKLMNOPQ"
-codepage += "RSTUVWXYZ[\\]`^_abc"
+codepage += "RSTUVWXYZ[\\]^_`abc"
 codepage += "defghijklmnopqrs"
 codepage += "tuvwxyz{|}~↑↓∴∵›"
 codepage += "‹∷¤ð→←βτȧḃċḋėḟġḣ"
@@ -16,6 +16,8 @@ codepage += "ȮṖṘṠṪẆẊẎŻ₌₍⁰¹²∇⌈"
 codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
 codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
 codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
+
+old_codepage = codepage.replace("^_`", "`^_")
 
 assert len(codepage) == 256
 
