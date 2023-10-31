@@ -189,14 +189,12 @@ object Lexer:
         val next = tokens(i + 1)
         tokenType match
           case Number =>
-            if value != "0" && next.tokenType == Number && next.value != "." &&
-              !value.endsWith(".")
+            if value != "0" && next.tokenType == Number
             then out.append(" ")
           case GetVar | SetVar | AugmentVar | Constant =>
             if "[a-zA-Z0-9_]+".r.matches(sbcsifySingle(next)) then
               out.append(" ")
           case _ =>
-    end for
 
     out.toString
   end sbcsify
