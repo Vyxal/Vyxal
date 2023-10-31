@@ -1178,7 +1178,9 @@ Trigraph: #^a
 Keywords: zip-with:, zipwith:
 Description: 
       |Given a dyadic function, zip two lists and reduce each by f
-      | and then check if all results are equal
+      | and then check if all results are equal.
+      |Given a monadic function, the inverse of monadic /.
+      |Filters where the function is falsey
 Trigraph: #^z
 ---------------------
 ¿
@@ -1218,10 +1220,8 @@ Description: Turn the next element (whether that be a structure/modifier/element
 Trigraph: #^.
 ---------------------
 ᵗ
-Keywords: reject-by:
-Description: Reject by Element
-The inverse of monadic /. Filters where the function is falsey
-ᵗf: Reject by f
+Keywords: 
+Description: Unassigned
 Trigraph: #^t
 ---------------------
 ᶠ
