@@ -196,10 +196,7 @@ class Context private (
       ctxArgs,
       vars.clone(),
       inputs,
-      (parent match
-        case Some(p) => Some(p.copy)
-        case None => None
-      ),
+      parent.map(_.copy),
       globals,
       testMode,
       useStack,
