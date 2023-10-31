@@ -88,7 +88,7 @@ def execute_vyxal(
     ctx.online_output = output_var
     ctx.online = online_mode
 
-    print(old_codepage)
+    
     if old_codepage:
         ctx.codepage = vyxal.encoding.old_codepage
     else:
