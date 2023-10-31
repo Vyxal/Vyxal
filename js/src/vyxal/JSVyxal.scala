@@ -6,8 +6,6 @@ import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 import scala.scalajs.js.JSConverters.*
 
-import scopt.OParser
-
 /** A bridge between the interpreter and JS */
 @JSExportTopLevel("Vyxal")
 object JSVyxal:
@@ -20,7 +18,7 @@ object JSVyxal:
   ): Unit =
     // todo take functions to print to custom stdout and stderr
     if code.contains('h') then
-      printFunc(OParser.usage(CLI.parser).mkString)
+      printFunc(CLI.helpText)
       return
     val settings = Settings(online = true).withFlags(flags.toList)
     val globals = Globals(

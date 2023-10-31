@@ -126,6 +126,7 @@ object CLI:
     end match
   end run
 
+  def helpText = OParser.usage(parser)
   private def runCode(code: String)(using Context): Unit =
     try Interpreter.execute(code)
     catch
@@ -135,7 +136,7 @@ object CLI:
 
   private val builder = OParser.builder[CLIConfig]
 
-  val parser =
+  private val parser =
     import builder.*
 
     /** Helper to for adding flags that go into Settings */
