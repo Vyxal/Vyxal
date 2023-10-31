@@ -58,6 +58,7 @@ def execute():
     session = request.json["session"]
 
     use_old = request.json["use_old"]
+    print("use_old:", use_old)
 
     if session not in sessions:
         return {
