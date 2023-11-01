@@ -31,7 +31,6 @@ from vyxal.encoding import (
     codepage_number_compress,
     codepage_string_compress,
     compression,
-    codepage,
 )
 from vyxal.helpers import *
 from vyxal.LazyList import LazyList, lazylist
@@ -410,7 +409,7 @@ else:
     "kv": process_element('"aeiou"', 0),
     "kV": process_element('"AEIOU"', 0),
     "k∨": process_element('"aeiouAEIOU"', 0),
-    "k⟇": process_element("vyxal.encoding.codepage", 0),
+    "k⟇": process_element("ctx.codepage", 0),
     "k½": process_element("LazyList([1,2])", 0),
     "kḭ": process_element("2 ** 32", 0),
     "k₁": process_element("LazyList([1, 1])", 0),
@@ -1157,7 +1156,7 @@ def base_255_number_compress(lhs, ctx):
     """Element øC
     (num) -> Compress a number in base 255
     """
-    return "»" + to_base(lhs, codepage_number_compress, ctx) + "»"
+    return "»" + to_base(lhs, ctx.codepage.replace("»", ""), ctx) + "»"
 
 
 @element("øc", 1)
@@ -1169,7 +1168,7 @@ def base_255_string_compress(lhs, ctx):
         "«"
         + to_base(
             from_base(lhs, base_27_alphabet, ctx),
-            codepage_string_compress,
+            ctx.codepage.replace("«", ""),
             ctx,
         )
         + "«"
@@ -1541,8 +1540,8 @@ def codepage_digraph(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: vyxal.encoding.codepage[int(lhs)],
-        (str): lambda: vyxal.encoding.codepage.find(lhs)
+        (NUMBER_TYPE): lambda: ctx.codepage[int(lhs)],
+        (str): lambda: ctx.codepage.find(lhs)
         if len(lhs) <= 1
         else vectorise(codepage_digraph, list(lhs), ctx=ctx),
     }.get(ts, lambda: vectorise(codepage_digraph, lhs, ctx=ctx))()
@@ -4927,7 +4926,7 @@ def optimal_number_compress(lhs, ctx):
             if (name not in "E↵" or key < 100) and fun(key) == lhs:
                 return num_dict.get(key) + name
     if lhs <= 356:
-        return "⁺" + codepage[lhs - 101]
+        return "⁺" + ctx.codepage[lhs - 101]
     # Brute force functions applied to constants twice
     for fun, name in funs:
         for fun2, name2 in funs:

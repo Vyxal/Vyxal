@@ -44,7 +44,6 @@ def new_session():
 
 @app.route("/execute", methods=("POST",))
 def execute():
-    print(sessions, request.json)
     if request.json is None:
         return {
             "stdout": "",
@@ -58,7 +57,8 @@ def execute():
     footer = request.json["footer"].replace("\r", "")
     session = request.json["session"]
 
-    print(code)
+    use_old = request.json["use_old"]
+    print("use_old:", use_old)
 
     if session not in sessions:
         return {
@@ -98,7 +98,7 @@ def execute():
 
         sessions[session] = multiprocessing.Process(
             target=execute_vyxal,
-            args=(fcode, flags, input_list, ret, True),
+            args=(fcode, flags, input_list, ret, True, use_old),
         )
         sessions[session].start()
         sessions[session].join(time)

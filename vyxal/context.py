@@ -1,5 +1,6 @@
 """This is for context-related stuff."""
 
+import vyxal.encoding
 from vyxal.Canvas import Canvas
 import sympy
 
@@ -53,6 +54,7 @@ class Context:
         self.transpilation_options = TranspilationOptions()
         self.original_args = []
         self.entire_program = ""
+        self.codepage = vyxal.encoding.codepage
 
     def copy(self, number_as_range=None, range_start=None):
         """Copy itself so a modified version can be passed elsewhere."""
@@ -82,6 +84,7 @@ class Context:
         ctx.original_args = self.original_args
 
         ctx.entire_program = self.entire_program
+        ctx.codepage = self.codepage
 
         return ctx
 

@@ -75,11 +75,25 @@ FLAG_STRING = """ALL flags should be used as is (no '-' prefix)
 """
 
 
-def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
+def execute_vyxal(
+    file_name,
+    flags,
+    inputs,
+    output_var=None,
+    online_mode=False,
+    old_codepage=False,
+):
     ctx = Context()
     stack = []
     ctx.online_output = output_var
     ctx.online = online_mode
+
+    print(old_codepage)
+
+    if old_codepage:
+        ctx.codepage = vyxal.encoding.old_codepage
+    else:
+        ctx.codepage = vyxal.encoding.codepage
 
     if online_mode:
         inputs = inputs.split("\n")  # have to do this here because file writing
