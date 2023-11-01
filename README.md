@@ -53,7 +53,7 @@ relation add from [1, 1] end
 (as SBCS):
 
 ```
-Ṇ+|#[1|1#]} 
+Ṇ+|#[1|1#]}
 ```
 
 Isn't it snazzy? You can finally do well at golf without needing to smash your head on a weird looking keyboard!
