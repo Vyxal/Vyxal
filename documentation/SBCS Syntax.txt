@@ -19,12 +19,12 @@ digraph ::= (("∆" | "ø" | "Þ" | "k") codepage) | "#" codepage - "[]$!=#>@{"
 sugar_trigraph ::= "#" ("." | "," | "^") codepage
 syntax_trigraph ::= "#:" codepage
 
-elementChar ::= (* any character corresponding to an element *)
-1modChar ::= (* any charcter corresponding to a monadic modifier *)
-2modChar ::= (* any charcter corresponding to a dyadic modifier *)
-3modChar ::= (* any charcter corresponding to a triadic modifier *)
-4modChar ::= (* any charcter corresponding to a tetradic modifier *)
-specialModChar ::= (* any charcter corresponding to a special modifier *)
+elementChar ::= (* any character/symbol corresponding to an element *) | (* any niladic literal *)
+1modChar ::= (* any charcter/symbol corresponding to a monadic modifier *)
+2modChar ::= (* any charcter/symbol corresponding to a dyadic modifier *)
+3modChar ::= (* any charcter/symbol corresponding to a triadic modifier *)
+4modChar ::= (* any charcter/symbol corresponding to a tetradic modifier *)
+specialModChar ::= (* any charcter/symbol corresponding to a special modifier *)
 
 structure ::= (structure_open [{element} {"|" {element}}] [structure_single_close]) | 
               (structure_open structure_open [{element} {"|" {element}}]structure_double_close structure_double_close) | 
