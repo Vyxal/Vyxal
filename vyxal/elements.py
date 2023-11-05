@@ -262,7 +262,7 @@ else:
         + "    stack.append(rotate_left(lhs, rhs, ctx))\n"
         + "else:\n"
         + "    stack.append(rotate_left(rhs, 1, ctx))\n",
-        2,
+        1,
     ),
     "ǔ": (
         "rhs = pop(stack, 1, ctx)\n"
@@ -271,7 +271,7 @@ else:
         + "    stack.append(rotate_right(lhs, rhs, ctx))\n"
         + "else:\n"
         + "    stack.append(rotate_right(rhs, 1, ctx))\n",
-        2,
+        1,
     ),
     "¼": process_element("ctx.global_array.pop()", 0),
     "⅛": ("lhs = pop(stack,1,ctx); ctx.global_array.append(lhs)", 1),

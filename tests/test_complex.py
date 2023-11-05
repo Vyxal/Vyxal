@@ -1085,6 +1085,14 @@ def test_maximums_by():
     assert stack[-1] == [8, 9, 10, 11]
 
 
+def test_rotate_in_modifier():
+    stack = run_vyxal("⟨1|2|3⟩ ⟨4|5|6⟩ ⟨7|8|9⟩ WvǓ")
+    assert stack[-1] == [[2, 3, 1], [5, 6, 4], [8, 9, 7]]
+
+    stack = run_vyxal("⟨1|2|3⟩ ⟨4|5|6⟩ ⟨7|8|9⟩ Wvǔ")
+    assert stack[-1] == [[3, 1, 2], [6, 4, 5], [9, 7, 8]]
+
+
 def test_non_modular_index_out_of_bounds():
     try:
         stack = run_vyxal("`short` 420 Þḭ")
