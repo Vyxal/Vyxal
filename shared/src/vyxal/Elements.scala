@@ -194,11 +194,10 @@ object Elements:
           scribe.warn(s"Could not invert matrix $l")
           l
         }
-      case l: VList => l.vmap(item =>
-          item match
-            case n: VNum => VNum(NumberHelpers.toBinary(n).size)
-            case _ => item
-        )
+      case l: VList => l.vmap({
+          case n: VNum => VNum(NumberHelpers.toBinary(n).size)
+          case default => default
+        })
 
     },
     addPart(
