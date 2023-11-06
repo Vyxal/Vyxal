@@ -188,7 +188,9 @@ object MiscHelpers:
     vyPrint("\n")
 
   def scanl(iterable: VList, function: VFun)(using ctx: Context): VList =
-    VList.from(ListHelpers.prefixes(iterable).map(reduce(_, function)))
+    if iterable.isEmpty then iterable
+    else
+      iterable.tail.scanLeft(iterable.head)(function(_, _))
 
   def subtract(a: VAny, b: VAny): VAny =
     (a, b) match
