@@ -190,7 +190,7 @@ object MiscHelpers:
   def scanl(iterable: VList, function: VFun)(using ctx: Context): VList =
     if iterable.isEmpty then iterable
     else
-      iterable.tail.scanLeft(iterable.head)(function(_, _))
+      VList.from(iterable.tail.scanLeft(iterable.head)(function(_, _)))
 
   def subtract(a: VAny, b: VAny): VAny =
     (a, b) match
