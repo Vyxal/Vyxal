@@ -2,6 +2,7 @@ package vyxal
 
 import vyxal.parsing.Lexer
 import vyxal.Interpreter.executeFn
+import vyxal.ListHelpers.reduce
 import vyxal.VNum.given
 
 import scala.annotation.tailrec
@@ -186,6 +187,10 @@ object MiscHelpers:
     vyPrint(x)
     vyPrint("\n")
 
+  def scanl(iterable: VList, function: VFun)(using ctx: Context): VList =
+    if iterable.isEmpty then iterable
+    else VList.from(iterable.tail.scanLeft(iterable.head)(function(_, _)))
+
   def subtract(a: VAny, b: VAny): VAny =
     (a, b) match
       case (a: VNum, b: VNum) => a - b
@@ -198,5 +203,19 @@ object MiscHelpers:
       case (a: (VNum | String), b: VList) => VList.from(b.map(subtract(a, _)))
       case (a: VList, b: VList) => VList.from((a, b).zipped.map(subtract(_, _)))
       case (a, b) => ???
+
+  def untilNoChange(function: VFun, value: VAny)(using Context): VList =
+    var prev = value
+    val res = LazyList.unfold(value) { curr =>
+      val next = function(curr)
+      if next == prev then None
+      else
+        prev = next
+        Some(next -> next)
+    }
+    VList.from(value #:: res)
+
+  def zipWith(left: VList, right: VList, function: VFun)(using Context): VList =
+    left.zipWith(right) { (a, b) => function(a, b) }
 
 end MiscHelpers

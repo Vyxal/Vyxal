@@ -46,14 +46,16 @@ class Context private (
     * inputs, read a line of input from stdin.
     */
   def pop(): VAny =
-    if useStack then return getTopCxt().pop()
+    if useStack then return parent.getOrElse(getTopCxt()).pop()
     val elem =
       if stack.nonEmpty then stack.remove(stack.size - 1)
       else if inputs.nonEmpty then inputs.next()
       else
         val temp =
           if settings.online then settings.defaultValue.toString
-          else StdIn.readLine()
+          else
+            print("<: ")
+            StdIn.readLine()
         if temp.nonEmpty then MiscHelpers.eval(temp)(using this)
         else settings.defaultValue
     scribe.trace(s"Popped $elem")
@@ -176,6 +178,26 @@ class Context private (
     parent match
       case Some(p) => p.getTopCxt()
       case None => this
+
+  def rotateLeft: Unit =
+    if isStackEmpty then push(pop())
+    else stack += stack.remove(0)
+
+  def rotateRight: Unit = stack.insert(0, pop())
+
+  def copy: Context =
+    new Context(
+      mut.ArrayBuffer().addAll(stack),
+      _ctxVarPrimary,
+      _ctxVarSecondary,
+      ctxArgs,
+      vars.clone(),
+      inputs,
+      parent.map(_.copy),
+      globals,
+      testMode,
+      useStack,
+    )
 end Context
 
 object Context:

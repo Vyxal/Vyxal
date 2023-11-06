@@ -2,6 +2,7 @@ package vyxal
 
 import scala.language.implicitConversions
 
+import vyxal.debugger.Lazy
 import vyxal.ListHelpers.makeIterable
 import vyxal.NumberHelpers.range
 import vyxal.VNum.given
@@ -193,6 +194,11 @@ object Elements:
           scribe.warn(s"Could not invert matrix $l")
           l
         }
+      case l: VList => l.vmap {
+          case n: VNum => VNum(NumberHelpers.toBinary(n).size)
+          case default => default
+        }
+
     },
     addPart(
       Monad,
@@ -915,7 +921,9 @@ object Elements:
       "Insert",
       List("insert", "insert-at"),
       false,
-      "",
+      "a: any, b: num, c: any -> insert c at position b in a",
+      "a: any, b: lst, c: any -> insert c at positions b in a",
+      "a: any, b: lst[num], c: lst -> insert c[i] at position b[i] in a",
     ) {
       case (a, b: VNum, c) =>
         ListHelpers.insert(ListHelpers.makeIterable(a), b, c)
@@ -938,11 +946,14 @@ object Elements:
     addPart(
       Dyad,
       "I",
-      "Interleave",
-      List("interleave"),
+      "Interleave / Reject By Function",
+      List("interleave", "reject"),
       false,
       "a: lst, b: lst -> Interleave a and b",
+      "a: any, b: fun -> Reject elements of a by applying b",
     ) {
+      case (a, b: VFun) =>
+        VList.from(ListHelpers.makeIterable(a).filter(x => !b(x).toBool))
       case (a, b) =>
         val temp = ListHelpers
           .interleave(ListHelpers.makeIterable(a), ListHelpers.makeIterable(b))
@@ -1365,7 +1376,7 @@ object Elements:
     addPart(
       Dyad,
       "ċ",
-      "N Choose K | Character Set Equal?",
+      "N Choose K | Character Set Equal? | Repeat Until No Change",
       List(
         "n-choose-k",
         "ncr",
@@ -1373,14 +1384,18 @@ object Elements:
         "choose",
         "char-set-equal?",
         "char-set-eq?",
+        "until-stable",
       ),
       true,
       "a: num, b: num -> a choose b",
       "a: str, b: str -> are the character sets of a and b equal?",
+      "a: fun, b: any -> run a on b until the result no longer changes returning all intermediate results",
     ) {
       case (a: VNum, b: VNum) =>
         if a > b then NumberHelpers.nChooseK(a, b) else 0
       case (a: String, b: String) => a.toSet == b.toSet
+      case (a: VFun, b) => MiscHelpers.untilNoChange(a, b)
+      case (a, b: VFun) => MiscHelpers.untilNoChange(b, a)
     },
     addPart(
       Monad,
@@ -1690,10 +1705,20 @@ object Elements:
       Triad,
       "r",
       "Replace",
-      List("replace"),
+      List("replace", "zip-with"),
       false,
       "a: str, b: str, c: str -> replace all instances of b in a with c",
+      "a: fun, b: any, c: any -> reduce items in zip(b, c) by a",
     ) {
+      case (a: VFun, b, c) => MiscHelpers
+          .zipWith(ListHelpers.makeIterable(b), ListHelpers.makeIterable(c), a)
+      case (a, b: VFun, c) => MiscHelpers
+          .zipWith(ListHelpers.makeIterable(a), ListHelpers.makeIterable(c), b)
+      case (a, b, c: VFun) => MiscHelpers.zipWith(
+          ListHelpers.makeIterable(a),
+          ListHelpers.makeIterable(b),
+          c,
+        )
       case (a: VList, b, c) =>
         VList.from(a.lst.map(x => if x == b then c else x))
       case (a, b: VList, c: VList) =>
@@ -1705,6 +1730,7 @@ object Elements:
       case (a: String, b: VVal, c: VVal) => a.replace(b.toString, c.toString)
       case (a: VNum, b: VVal, c: VVal) =>
         MiscHelpers.eval(a.toString().replace(b.toString, c.toString))
+
     },
     addPart(
       Monad,
@@ -2014,6 +2040,29 @@ object Elements:
     },
     addPart(
       Dyad,
+      "Ṭ",
+      "Trim / Cumulative Reduce",
+      List("trim", "scanl", "cumulative-reduce"),
+      false,
+      "a: any, b: any -> Trim all elements of b from both sides of a.",
+      "a: fun, b: any -> cumulative reduce b by function a",
+    ) {
+      case (a: String, b: String) => a.stripPrefix(b).stripSuffix(b)
+      case (a: String, b: VNum) =>
+        a.stripPrefix(b.toString).stripSuffix(b.toString)
+      case (a: VNum, b: String) =>
+        VNum(a.toString.stripPrefix(b).stripSuffix(b))
+      case (a: VNum, b: VNum) =>
+        VNum(a.toString.stripPrefix(b.toString).stripSuffix(b.toString))
+      case (a: VFun, b) => MiscHelpers.scanl(ListHelpers.makeIterable(b), a)
+      case (a, b: VFun) => MiscHelpers.scanl(ListHelpers.makeIterable(a), b)
+      case (a: VList, b: VList) => ListHelpers.trimList(a, b)
+      case (a: VList, b) => ListHelpers.trim(a, b)
+      case (a, b: VList) => ListHelpers.trim(b, a)
+      case (a, b) => ListHelpers.trim(ListHelpers.makeIterable(a), b)
+    },
+    addPart(
+      Dyad,
       "ẋ",
       "Cartesian Power",
       List("cartesian-power"),
@@ -2037,7 +2086,6 @@ object Elements:
       case (a, b: VList) => VList.from((a +: b) :+ a)
       case (a: VNum, b: String) => StringHelpers.characterMultiply(a, b)
       case (a: String, b: VNum) => StringHelpers.characterMultiply(b, a)
-      case (a: VNum, b: VNum) => ??? // Doesn't say anything in info.txt
     },
     addPart(
       Monad,
@@ -2263,6 +2311,157 @@ object Elements:
             "Maximum By: First argument should be a function"
           )
     },
+    addDirect(
+      "#|apply-to-register",
+      "[Internal Use] Apply to Register (Element Form)",
+      List(),
+      None,
+      "*a, f -> f applied to the register. Use the modifier instead.",
+    ) { ctx ?=>
+      ctx.pop() match
+        case f: VFun =>
+          ctx.push(ctx.globals.register)
+          ctx.push(Interpreter.executeFn(f)(using ctx.makeChild()))
+          ctx.globals.register = ctx.pop()
+        case _ => throw IllegalArgumentException(
+            "Apply to Register: First argument should be a function"
+          )
+
+    },
+    addDirect(
+      "#|dip",
+      "[Internal Use] Dip (Element Form)",
+      List(),
+      None,
+      "*a, f -> f applied to a with a pushed back. Use the modifier instead.",
+    ) { ctx ?=>
+      val f = ctx.pop()
+      val top = ctx.pop()
+      f match
+        case fun: VFun =>
+          Interpreter.executeFn(fun)(using ctx.makeChild())
+          ctx.push(top)
+        case _ => throw IllegalArgumentException(
+            "Dip: First argument should be a function"
+          )
+    },
+    addDirect(
+      "#|invar",
+      "[Internal Use] Invariant (Element Form)",
+      List(),
+      None,
+      "*a, f -> Use the ᵞ modifier instead.",
+    ) { ctx ?=>
+      val f = ctx.pop()
+      val copy = ctx.peek
+      f match
+        case fun: VFun =>
+          val result = Interpreter.executeFn(fun)(using ctx.makeChild())
+          ctx.push(result === copy)
+        case _ => throw IllegalArgumentException(
+            "Invariant: First argument should be a function"
+          )
+    },
+    addDirect(
+      "#|vscan",
+      "[Internal Use] Vectorised Scan (Element Form)",
+      List(),
+      None,
+      "*a, f -> scanl each column. Use the modifier instead.",
+    ) { ctx ?=>
+      val f = ctx.pop()
+      val arg = VList.from(
+        ListHelpers
+          .makeIterable(ctx.pop())
+          .map(x => ListHelpers.makeIterable(x))
+      )
+      f match
+        case fun: VFun => ctx.push(
+            VList.from(
+              ListHelpers
+                .transposeSafe(arg)
+                .map(col => MiscHelpers.scanl(col.asInstanceOf[VList], fun))
+            )
+          )
+        case _ => throw IllegalArgumentException(
+            "Vectorised Scan: First argument should be a function"
+          )
+    },
+    addDirect(
+      "#|all-neigh",
+      "[Internal Use] All Neighbours (Element Form)",
+      List(),
+      None,
+      "*a, f -> f applied to each neighbour of a. Use the modifier instead.",
+    ) { ctx ?=>
+      ctx.pop() match
+        case f: VFun =>
+          val neighbours =
+            ListHelpers.overlaps(ListHelpers.makeIterable(ctx.pop()), 2)
+          val results = neighbours.map(x => f(x*))
+          ctx.push(results.forall(_ == results(0)))
+        case _ => throw IllegalArgumentException(
+            "All Neighbours: First argument should be a function"
+          )
+    },
+    addDirect(
+      "#|para-apply",
+      "[Internal Use] Parallel Apply (Element Form)",
+      List(),
+      None,
+      "*a, f -> The iconic parallel apply. Use the modifier instead bingus.",
+    ) { ctx ?=>
+      val second = ctx.pop().asInstanceOf[VFun]
+      val first = ctx.pop().asInstanceOf[VFun]
+
+      first.ctx = ctx.copy
+
+      val firstRes = Interpreter.executeFn(first)(using ctx.copy)
+      val secondRes = Interpreter.executeFn(second)(using ctx)
+      ctx.push(firstRes, secondRes)
+
+    },
+    addDirect(
+      "#|para-apply-wrap",
+      "[Internal Use] Parallel Apply Wrap (Element Form)",
+      List(),
+      None,
+      "*a, f -> The iconic parallel apply. Use the modifier instead bingus.",
+    ) { ctx ?=>
+      val second = ctx.pop().asInstanceOf[VFun]
+      val first = ctx.pop().asInstanceOf[VFun]
+
+      first.ctx = ctx.copy
+
+      val firstRes = Interpreter.executeFn(first)(using ctx.copy)
+      val secondRes = Interpreter.executeFn(second)(using ctx)
+      ctx.pop()
+      ctx.push(VList(firstRes, secondRes))
+
+    },
+    addDirect(
+      "#|vec-dump",
+      "[Internal Use] Map Dump (Element Form)",
+      List(),
+      None,
+      "*a, f -> f applied to each element of a, treating as a stack. Use the modifier instead.",
+    ) { ctx ?=>
+      val f = ctx.pop()
+      val arg = ListHelpers.makeIterable(ctx.pop())
+      f match
+        case fun: VFun => ctx.push(
+            VList.from(
+              arg.map(x =>
+                Interpreter.executeFn(fun, args = ListHelpers.makeIterable(x))(
+                  using ctx.makeChild()
+                )
+              )
+            )
+          )
+        case _ => throw IllegalArgumentException(
+            "Map Dump: First argument should be a function"
+          )
+    },
     addPart(
       Monad,
       "V",
@@ -2386,10 +2585,129 @@ object Elements:
         VList.from(ListHelpers.map(a, iter).vzip(iter))
       case (a, b) =>
         ListHelpers.makeIterable(a).vzip(ListHelpers.makeIterable(b))
+    },
+    addDirect(
+      "£",
+      "Set Register",
+      List("set-register", "->register", "set-reg", "->reg"),
+      Some(1),
+      "a: any -> register = a",
+    ) { ctx ?=>
+      ctx.globals.register = ctx.pop()
+    },
+    addDirect(
+      "¥",
+      "Get Register",
+      List("get-register", "get-reg", "register", "<-register", "<-reg"),
+      None,
+      " -> push the value of the register",
+    ) { ctx ?=>
+      ctx.push(ctx.globals.register)
+    },
+    addDirect(
+      "←",
+      "Rotate Stack Left",
+      List("rotate-stack-left"),
+      None,
+      " -> rotate the entire stack left once",
+    ) { ctx ?=>
+      ctx.rotateLeft
+    },
+    addDirect(
+      "→",
+      "Rotate Stack Right",
+      List("rotate-stack-right"),
+      None,
+      " -> rotate the entire stack right once",
+    ) { ctx ?=>
+      ctx.rotateRight
+    },
+    addDirect(
+      "\\",
+      "Dump",
+      List("dump"),
+      Some(1),
+      "a: any -> dump all values on the stack",
+    ) { ctx ?=>
+      ListHelpers.makeIterable(ctx.pop()).foreach(v => ctx.push(v))
+    },
+    addPart(
+      Monad,
+      "†",
+      "Length of Consecutive Groups",
+      List("len-consecutive", "gvl", "gavel"),
+      false,
+      "a: any -> lengths of consecutive groups of a",
+    ) {
+      case a =>
+        val iterable = ListHelpers.makeIterable(a)
+        val groups = ListHelpers.groupConsecutive(iterable)
+        VList.from(groups.map(ListHelpers.makeIterable(_).length))
+    },
+    addPart(
+      Monad,
+      "Π",
+      "Product",
+      List("product", "prod"),
+      false,
+      "a: lst -> product of a",
+    ) {
+      case a: VList => ListHelpers.product(a)
+      case a: String => ListHelpers.product(ListHelpers.makeIterable(a))
+      case a: VNum => ListHelpers.product(ListHelpers.makeIterable(a))
     }
 
-    // Constants
+    // Input reading
     ,
+    addDirect(
+      "⁰",
+      "First Input",
+      List("first-input", "input-0"),
+      Some(0),
+      "The first input to the program",
+    ) { ctx ?=>
+      ctx.globals.inputs(0)
+    },
+    addDirect(
+      "¹",
+      "Second Input",
+      List("second-input", "input-1"),
+      Some(0),
+      "The second input to the program",
+    ) { ctx ?=>
+      ctx.globals.inputs(1)
+    },
+    addDirect(
+      "²",
+      "Third Input",
+      List("third-input", "input-2"),
+      Some(0),
+      "The third input to the program",
+    ) { ctx ?=>
+      ctx.globals.inputs(2)
+    },
+    addPart(
+      Monad,
+      "⌈",
+      "Ceiling",
+      List("ceiling", "ceil"),
+      true,
+      "a: num -> ceil(a)",
+    ) {
+      case a: VNum => a.ceil
+    },
+    addPart(
+      Monad,
+      "⌊",
+      "Floor",
+      List("floor"),
+      true,
+      "a: num -> floor(a)",
+    ) {
+      case a: VNum => a.floor
+    },
+
+    // Constants
     addNilad("¦", "Pipe", List("pipe"), "|") { "|" },
     addNilad("ð", "Space", List("space"), " ") { " " },
     addNilad("¶", "Newline", List("newline"), "\n") { "\n" },

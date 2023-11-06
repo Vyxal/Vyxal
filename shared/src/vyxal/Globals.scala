@@ -87,6 +87,8 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
       nonWrapping ::: repeats.flatten ::: end
   end peek
 
+  def apply(i: Int): VAny = currInputs(i)
+
   override def toString = origArr.mkString("Inputs(", ", ", ")")
 end Inputs
 

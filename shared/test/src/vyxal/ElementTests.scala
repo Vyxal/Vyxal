@@ -781,4 +781,9 @@ class ElementTests extends VyxalTests:
     )
   }
 
+  describe("Element ċ") {
+    testMulti(
+      "9ϩ½⌊ċ" -> VList(9, 4, 2, 1, 0)
+    )
+  }
 end ElementTests

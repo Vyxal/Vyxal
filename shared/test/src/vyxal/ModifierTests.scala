@@ -29,6 +29,55 @@ class ModifierTests extends VyxalTests:
       "#[1|2|3#] э2×++ M" -> VList(4, 8, 12),
       "#[1|2|3#] Ч×++× M" -> VList(3, 16, 45),
       "#[1|2|3#] Ч2×++× M" -> VList(4, 16, 36),
+      "#[1|2|3#] ᵈ+ R" -> VNum(6),
+      "#[1|2|3#] ᵉ+× R" -> VNum(27),
+      "#[1|2|3#] ᶠ+×+ R" -> VNum(37),
+      "#[1|2|3#] ᴳ+×+× R" -> VNum(195),
+    )
+  }
+
+  describe("Modifier ᵃ (Monadic)") {
+    testMulti(
+      "#[1|2|3|4|5#] ᵃe" -> VNum(2),
+      "#[#] ᵃe" -> VNum(0),
+    )
+  }
+  describe("Modifier ᵃ (Dyadic)") {
+    testMulti(
+      "#[1|2|3|4|5#] ᵃ+" -> VList(3, 5, 7, 9),
+      "#[#] ᵃ+" -> VList(),
+    )
+  }
+
+  describe("Modifier ᵇ (Monadic)") {
+    testMulti(
+      "#[1|2|3|4|5#] ᵇe" -> VList(1, 2),
+      "#[#] ᵇe" -> VList(),
+      """#["abc"|"def"|"abc"|"ifff"#] ᵇL""" -> VList("abc", "ifff"),
+    )
+  }
+
+  describe("Modifier ᵇ (Arity 2+)") {
+    testStackLike("ᵇ+")(
+      List[VAny](3, 4, 5) -> List[VAny](9, 5, 4, 3),
+      List[VAny](1, 1) -> List[VAny](2, 1, 1),
+    )
+    testStackLike("ᵇr") {
+      List[VAny]("abc", "b", "!!") -> List[VAny]("a!!c", "!!", "b", "abc")
+    }
+  }
+
+  describe("Modifier ᶜ (Monadic)") {
+    testMulti(
+      "#[1|1|1|1|1#] ᶜL" -> VList(5, 4, 3, 2, 1),
+      "#[1|2|3|4|5#] ᶜ⸠/+" -> VList(15, 14, 12, 9, 5),
+    )
+  }
+
+  describe("Modifier ᶜ (Dyadic)") {
+    testMulti(
+      "#[#[1|2|3#]|#[4|5|6#]|#[7|8|9#]#] ᶜ+" -> VList(12, 15, 18),
+      "#[#] ᶜ+" -> VList(),
     )
   }
 
@@ -36,6 +85,28 @@ class ModifierTests extends VyxalTests:
     testMulti(
       "#[3|4|5#]ᴴd" -> VList(6, 4, 5)
     )
+  }
+
+  describe("Modifier ᶤ") {
+    testMulti(
+      "#[1|3|5|2#] ᶤe" -> VNum(3),
+      "#[#] ᶤe" -> VNum(-1),
+      "#[1|3|3|3|3#] ᶤe" -> VNum(-1),
+    )
+  }
+
+  describe("Modifier ᶨ") {
+    "#[1|2|3|4#] ᶨḢ" -> VList(VList(2, 3, 4), VList(3, 4), VList(4), VList())
+  }
+
+  describe("Modifier ᵏ") {
+    testMulti(
+      "#[1|1|2|3|1|2|3|3|3|2|2|1#] ᵏL" -> VList(4, 4, 4)
+    )
+  }
+
+  describe("Modifier ᶪ") {
+    "#[1|2|3|4#] ᶪḢ" -> VList()
   }
 
   describe("Maximum and minimum by (ᵐ and ⁿ)") {
@@ -77,9 +148,104 @@ class ModifierTests extends VyxalTests:
     }
   }
 
+  describe("Modifier ᵖ") {
+    testMulti(
+      "#[1|1|1|1|1#] ᵖL" -> VList(1, 2, 3, 4, 5),
+      "#[1|2|3|4|5#] ᵖ⸠/+" -> VList(1, 3, 6, 10, 15),
+    )
+  }
+
   describe("Modifier ᶳ") {
     testMulti(
       "#[2|3|1#]ᶳN" -> VList(3, 2, 1)
+    )
+  }
+
+  describe("Modifier ᵘ (Monadic)") {
+    testMulti(
+      "9ᵘϩ½⌊" -> VList(9, 4, 2, 1, 0)
+    )
+  }
+
+  describe("Modifier ᵘ (Dyadic)") {
+    testMulti(
+      "#[1|2|3|4|5#] ᵘᵉ+e" -> VNum(1),
+      "#[#] ᵘ+" -> VNum(1),
+    )
+  }
+
+  describe("Modifier ᵂ") {
+    testStackLike("ᵂ+") {
+      List[VAny](3, 4, 5) -> List[VAny](5, 7)
+      List[VAny](1, 1, 1) -> List[VAny](1, 2)
+    }
+
+    testStackLike("ᵂᵂ+") {
+      List[VAny](3, 4, 5, 6) -> List[VAny](6, 5, 7)
+    }
+  }
+
+  describe("Modifier ᵡ") {
+    testMulti(
+      "10 ᵡϩe[2÷|3×1+}" -> VList(5, 16, 8, 4, 2, 1)
+    )
+  }
+
+  describe("Modifier ᵞ (Monadic)") {
+    testMulti(
+      "\"abc\" ᵞϩṚṚ" -> VNum(1),
+      "6 ᵞϩṚe" -> VNum(0),
+    )
+  }
+
+  describe("Modifier ᵞ (Dyadic)") {
+    testMulti(
+      "#[#[1|2|3#]|#[4|5|6#]|#[7|8|9#]#] ᵞ+" ->
+        VList(VList(1, 5, 12), VList(2, 7, 15), VList(3, 9, 18))
+    )
+  }
+
+  describe("Modifier ᶻ (Monadic)") {
+    testMulti(
+      "#[1|2|3|4|5#] ᶻe" -> VList(1, 3, 5)
+    )
+  }
+
+  describe("Modifier ᶻ (Dyadic)") {
+    testMulti(
+      "#[1|2|3#] #[4|5|6#] ᶻ+" -> VList(5, 7, 9)
+    )
+
+  }
+
+  describe("Modifier ∥") {
+    testStackLike("∥+-")(
+      List[VAny](3, 4) -> List[VAny](-1, 7)
+    )
+
+    testStackLike("∥+d")(
+      List[VAny](3, 4) -> List[VAny](VNum(8), VNum(7), VNum(3))
+    )
+  }
+
+  describe("Modifier ∦") {
+    testMulti(
+      "3 4 ∦+-" -> VList(7, -1),
+      "3 4 ∦+d" -> VList(7, 8),
+      "1 3 4 5 ∦∦+-+" -> VList(VList(9, -1), 9),
+    )
+  }
+
+  describe("Modifier ¿") {
+    testMulti(
+      "3 4 1 ¿+" -> VNum(7),
+      "3 4 0 ¿+" -> VNum(4),
+    )
+  }
+
+  describe("Modifier `") {
+    testMulti(
+      "#[#[1|2|3#]|#[4|5|6#]#] `ϩ++" -> VList(6, 15)
     )
   }
 

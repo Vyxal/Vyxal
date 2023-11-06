@@ -448,6 +448,15 @@ object ListHelpers:
     val perms = temp.permutations
     perms.map(VList.from).toSeq
 
+  def product(iterable: VList)(using Context): VAny =
+    if iterable.forall(
+        _.isInstanceOf[VNum]
+      )
+    then iterable.fold(VNum(1))(_.asInstanceOf[VNum] * _.asInstanceOf[VNum])
+    else
+      // Cartesian product over the list
+      val temp = iterable.map(ListHelpers.makeIterable(_))
+      cartesianProductMulti(temp)
   def sortBy(iterable: VList, key: VFun)(using Context): VList =
     key.originalAST match
       case Some(lam) =>
@@ -658,6 +667,17 @@ object ListHelpers:
       VList.from(out)
     end if
   end transposeSafe
+
+  def trim(iterable: VList, value: VAny): VList =
+    val temp = iterable.toList
+    val trimmed = temp.dropWhile(_ == value).reverse.dropWhile(_ == value)
+    VList.from(trimmed.reverse)
+
+  def trimList(iterable: VList, pattern: VList)(using ctx: Context): VList =
+    var temp = iterable.toList
+    while temp.startsWith(pattern) do temp = temp.drop(pattern.length)
+    while temp.endsWith(pattern) do temp = temp.dropRight(pattern.length)
+    VList.from(temp)
 
   /** Ensure that a VList is a matrix */
   def validateMatrix(lst: VList)(using

@@ -44,11 +44,22 @@ object Modifiers:
       Modifier(
         "Apply to Neighbours | Number of Truthy Elements",
         """|To each overlapping pair, reduce it by an element
-       |Apply a dyadic element for all pairs of neighboring elements.
-       |Count the number of truthy elements in a list under a mondaic element
-       |ȧf<monad>: Count how many items in a list are truthy after applying f to each
-       |ᵃf<dyad>: equivalent to pushing the function, then calling ȧ""".stripMargin,
-        List("apply-to-neighbours:", "count-truthy:"),
+           |Apply a dyadic element for all pairs of neighboring elements.
+           |Count the number of truthy elements in a list under a mondaic element
+           |ȧf<monad>: Count how many items in a list are truthy after applying f to each
+           |ᵃf<dyad>: equivalent to pushing the function, then calling ȧ""".stripMargin,
+        List(
+          "apply-to-neighbours:",
+          "count-truthy:",
+          "apply-neighbours:",
+          "apply-to-neighbors:",
+          "apply-neighbors:",
+          "2lvf:",
+          "twolif:",
+          "to-pairs:",
+          "to-overlaps:",
+          "count:",
+        ),
         1,
       ) {
         case List(ast) =>
@@ -69,9 +80,9 @@ object Modifiers:
       Modifier(
         "Apply Without Popping | Remove Duplicates by",
         """|Apply a 2+ arity element to the stack without popping
-       |Remove duplicates from a list by an element
-       |ᵇf<dyad|triad|tetrad>: apply f to the stack without popping
-       |ᵇf<monad>: remove duplicates from a list by applying f to each pair of elements""".stripMargin,
+           |Remove duplicates from a list by an element
+           |ᵇf<dyad|triad|tetrad>: apply f to the stack without popping
+           |ᵇf<monad>: remove duplicates from a list by applying f to each pair of elements""".stripMargin,
         List("without-popping:", "peek:", "dedup-by:", "remove-duplicates-by:"),
         1,
       ) {
@@ -87,7 +98,7 @@ object Modifiers:
       Modifier(
         "Reduce Columns | Map Over Suffixes",
         """|Reduce columns of a 2d list by a function
-         |Map an element over suffixes""".stripMargin,
+           |Map an element over suffixes""".stripMargin,
         List(
           "reduce-columns:",
           "map-over-suffixes:",
@@ -107,23 +118,11 @@ object Modifiers:
             val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
             AST.makeSingle(lambdaAst, AST.Command("#|reduce-cols"))
       },
-    "ᶤ" ->
-      Modifier(
-        "First Index Where",
-        """|Find the first index where an element is truthy
-         |ᶤf: find the first index where f is truthy""".stripMargin,
-        List("first-index-where:", "first-index-of:"),
-        1,
-      ) {
-        case List(ast) =>
-          val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))
-          AST.makeSingle(lambdaAst, AST.Command("ḋ"))
-      },
     "v" ->
       Modifier(
         "Vectorise",
         """|Vectorises
-         |vf: f but vectorised""".stripMargin,
+           |vf: f but vectorised""".stripMargin,
         List("vectorise:", "vec:", "v:"),
         1,
       ) {
@@ -135,7 +134,7 @@ object Modifiers:
       Modifier(
         "Foldl | Reduce By | Filter by",
         """|Reduce a list by an element
-         |/f: reduce by element f""".stripMargin,
+           |/f: reduce by element f""".stripMargin,
         List("foldl:", "reduce:", "/:", "fold:", "reduceby:-"),
         1,
       ) {
@@ -152,7 +151,7 @@ object Modifiers:
       Modifier(
         "Single Element Lambda",
         """|Turn the next element (whether that be a structure/modifier/element) into a lambda
-         |⸠f: Push the equivalent of λf} to the stack""".stripMargin,
+           |⸠f: Push the equivalent of λf} to the stack""".stripMargin,
         List("*:"),
         1,
       ) { case List(ast) => astToLambda(ast, 1, true) },
@@ -160,7 +159,7 @@ object Modifiers:
       Modifier(
         "Double Element Lambda",
         """|Turn the next two elements (whether that be a structure/modifier/element) into a lambda
-         |ϩfg: Push the equivalent of λfg} to the stack""".stripMargin,
+           |ϩfg: Push the equivalent of λfg} to the stack""".stripMargin,
         List("**:"),
         2,
       ) {
@@ -171,7 +170,7 @@ object Modifiers:
       Modifier(
         "Triple Element Lambda",
         """|Turn the next three elements (whether that be a structure/modifier/element) into a lambda
-         |эfgh: Push the equivalent of λfgh} to the stack""".stripMargin,
+           |эfgh: Push the equivalent of λfgh} to the stack""".stripMargin,
         List("***:"),
         3,
       ) {
@@ -182,7 +181,7 @@ object Modifiers:
       Modifier(
         "Quadruple Element Lambda",
         """|Turn the next four elements (whether that be a structure/modifier/element) into a lambda
-         |Чfghi: Push the equivalent of λfghi} to the stack""".stripMargin,
+           |Чfghi: Push the equivalent of λfghi} to the stack""".stripMargin,
         List("****:"),
         4,
       ) {
@@ -193,7 +192,7 @@ object Modifiers:
       Modifier(
         "Dyadic Single Element Lambda",
         """|Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda
-         |ᵈf: Push the equivalent of λ2|f} to the stack""".stripMargin,
+           |ᵈf: Push the equivalent of λ2|f} to the stack""".stripMargin,
         List("*2:"),
         1,
       ) { case List(ast) => astToLambda(ast, 2, true) },
@@ -201,7 +200,7 @@ object Modifiers:
       Modifier(
         "Dyadic Double Element Lambda",
         """|Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda
-         |ᵉfg: Push the equivalent of λ2|fg} to the stack""".stripMargin,
+           |ᵉfg: Push the equivalent of λ2|fg} to the stack""".stripMargin,
         List("**2:"),
         2,
       ) {
@@ -212,18 +211,18 @@ object Modifiers:
       Modifier(
         "Dyadic Triple Element Lambda",
         """|Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda
-         |ᶠfgh: Push the equivalent of λ2|fgh} to the stack""".stripMargin,
+           |ᶠfgh: Push the equivalent of λ2|fgh} to the stack""".stripMargin,
         List("***2:"),
         3,
       ) {
         case List(ast1, ast2, ast3) =>
           astToLambda(AST.makeSingle(ast1, ast2, ast3), 2, true)
       },
-    "ᵍ" ->
+    "ᴳ" ->
       Modifier(
         "Dyadic Quadruple Element Lambda",
         """|Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
-         |ᵍfghi: Push the equivalent of λ2|fghi} to the stack""".stripMargin,
+           |ᵍfghi: Push the equivalent of λ2|fghi} to the stack""".stripMargin,
         List("****2:"),
         4,
       ) {
@@ -234,7 +233,7 @@ object Modifiers:
       Modifier(
         "Apply To Head",
         """|Apply element only to the head of list
-         |ᴴf: Apply f to the head of the top of the stack""".stripMargin,
+           |ᴴf: Apply f to the head of the top of the stack""".stripMargin,
         List("apply-to-head:"),
         1,
       ) {
@@ -263,11 +262,23 @@ object Modifiers:
             ),
           )
       },
+    "ᶤ" ->
+      Modifier(
+        "First Index Where",
+        """|Find the first index where an element is truthy
+           |ᶤf: find the first index where f is truthy""".stripMargin,
+        List("first-index-where:", "first-index-of:", "ind-of:", "find-by:"),
+        1,
+      ) {
+        case List(ast) =>
+          val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))
+          AST.makeSingle(lambdaAst, AST.Command("ḋ"))
+      },
     "ᶨ" ->
       Modifier(
         "Loop and Collect While Unique",
         """|Loop and Collect While Unique
-         |ᶨf: Loop and collect while unique""".stripMargin,
+           |ᶨf: Loop and collect while unique""".stripMargin,
         List("collect-while-unique:"),
         1,
       ) {
@@ -280,7 +291,7 @@ object Modifiers:
       Modifier(
         "Key",
         """|Map an element over the groups formed by identical items.
-      |ᵏf: Map f over the groups formed by identical items""".stripMargin,
+           |ᵏf: Map f over the groups formed by identical items""".stripMargin,
         List("key:"),
         1,
       ) {
@@ -314,7 +325,7 @@ object Modifiers:
       Modifier(
         "Loop While Unique",
         """|Loop While Unique - similar to ᶨ, but doesn't collect
-         |ᶪf: Loop while unique""".stripMargin,
+           |ᶪf: Loop while unique""".stripMargin,
         List("loop-while-unique:"),
         1,
       ) {
@@ -328,7 +339,7 @@ object Modifiers:
       Modifier(
         "Maximum By",
         """|Maximum By Element
-         |ᵐf: Maximum of top of stack based on results of f""".stripMargin,
+           |ᵐf: Maximum of top of stack based on results of f""".stripMargin,
         List("max-by:", "maximum-by:"),
         1,
       ) {
@@ -341,7 +352,7 @@ object Modifiers:
       Modifier(
         "Minimum By",
         """|Minimum By Element
-         |ᵐf: Minimum of top of stack based on results of f""".stripMargin,
+           |ᵐf: Minimum of top of stack based on results of f""".stripMargin,
         List("min-by:", "minimum-by:"),
         1,
       ) {
@@ -354,7 +365,7 @@ object Modifiers:
       Modifier(
         "Outer Product | Table",
         """|Outer product
-         |ᵒf: Pop two lists, then make a matrix from them by applying f to each pair of elements""".stripMargin,
+           |ᵒf: Pop two lists, then make a matrix from them by applying f to each pair of elements""".stripMargin,
         List("outer-product:", "table:"),
         1,
       ) {
@@ -380,7 +391,7 @@ object Modifiers:
       Modifier(
         "Map Over Prefixes",
         """|Map an element over the prefixes of a list
-         |ᵖf: Map f over prefixes""".stripMargin,
+           |ᵖf: Map f over prefixes""".stripMargin,
         List("map-over-prefixes:", "over-prefixes:"),
         1,
       ) {
@@ -389,30 +400,212 @@ object Modifiers:
             AST.Command("#|map-prefixes"),
           )
       },
-    "ᶳ" ->
+    "ᴿ" ->
       Modifier(
-        "Sort By",
-        """|Sort By Element
-           |ᶳf: Sort top of stack based on results of f""".stripMargin,
-        List("sort-by:"),
+        "Apply to Register",
+        """|Apply a function to the register. Essentially, push
+           |the reigster value to the stack, apply the function, and
+           |then pop back into the register
+           |ᴿf: Apply f to the register""".stripMargin,
+        List("apply-to-register:", "to-register:", "to-reg:"),
         1,
       ) {
         case List(ast) => AST.makeSingle(
             astToLambda(ast, ast.arity.getOrElse(1)),
-            AST.Command("ṡ"),
+            AST.Command("#|apply-to-register"),
+          )
+      },
+    "ᶳ" ->
+      Modifier(
+        "Sort By",
+        """|Sort By Element / Scanl
+           |ᶳf: Sort top of stack based on results of f
+           |ᶳf: Cumulatively reduce a list of items""".stripMargin,
+        List("sort-by:", "scanl:"),
+        1,
+      ) {
+        case List(ast) =>
+          if isExplicitMonad(ast) then
+            val lambdaAst = astToLambda(ast, 1)
+            AST.makeSingle(lambdaAst, AST.Command("ṡ"))
+          else
+            val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
+            AST.makeSingle(lambdaAst, AST.Command("Ṭ"))
+      },
+    "ᵗ" ->
+      Modifier(
+        "Unassigned",
+        """Unassigned""".stripMargin,
+        List(),
+        1,
+      ) {
+        case List(ast) => ast
+      },
+    "ᵘ" ->
+      Modifier(
+        "Collect Until No Change / Neighbours All Equal?",
+        """|Run func on the prev result until the result no longer changes
+           |returning all intermediate results
+           |Given a dyadic function, apply the function to all overlapping pairs of elements
+           |and test if all results are equal
+           |ᵘf: Collect until no change""".stripMargin,
+        List(
+          "collect-until-no-change:",
+          "until-stable:",
+          "stablise:",
+          "neighbours-equals:",
+        ),
+        1,
+      ) {
+        case List(ast) =>
+          if !isExplicitMonad(ast) then
+            val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
+            AST.makeSingle(lambdaAst, AST.Command("#|all-neigh"))
+          else
+            AST.makeSingle(
+              astToLambda(ast, ast.arity.getOrElse(1)),
+              AST.Command("ċ"),
+            )
+      },
+    "ᵂ" ->
+      Modifier(
+        "Dip",
+        """|Stash the top of the stack temporarily, and then apply
+           |the function. Finally, push the stashed value
+           |ᵂf: pop M, apply f, push M""".stripMargin,
+        List("dip:"),
+        1,
+      ) {
+        // See, Vyxal can do this too!
+        // We don't need no fancy array model around here
+        // ragged lists do just fine.
+        case List(ast) => AST.makeSingle(
+            astToLambda(ast, -1),
+            AST.Command("#|dip"),
           )
       },
     "ᵡ" ->
       Modifier(
         "Scan Fixed Point",
         """|Scan a function until it reaches a fixed point
-         |ᵡf: scan f until a fixed point is reached / apply until a previous value is repeated, collecting intermediate results""".stripMargin,
+           |ᵡf: scan f until a fixed point is reached / apply until a previous value is repeated, collecting intermediate results""".stripMargin,
         List("scan-fix:"),
         1,
       ) {
         case List(ast) =>
           val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))
           AST.makeSingle(lambdaAst, AST.Command("Ŀ"))
+      },
+    "ᵞ" ->
+      Modifier(
+        "Invariant Under? / Vertical Scan",
+        """|Check if a function is invariant under a transformation / vertical scan
+           |ᵞf: check if top of stack is invariant under a transformation
+           |ᵞf: scanl columns by f""".stripMargin,
+        List(
+          "invariant-under:",
+          "vertical-scan:",
+          "vscan:",
+          "v-scan:",
+          "invariant?:",
+          "same?:",
+        ),
+        1,
+      ) {
+        case List(ast) =>
+          if isExplicitMonad(ast) then
+            val lambdaAst = astToLambda(ast, 1)
+            AST.makeSingle(lambdaAst, AST.Command("#|invar"))
+          else
+            val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
+            AST.makeSingle(lambdaAst, AST.Command("#|vscan"))
+      },
+    "ᶻ" ->
+      Modifier(
+        "Zip With / Reject by",
+        """
+      |Given a dyadic function, zip two lists and reduce each by f
+      | and then check if all results are equal.
+      |Given a monadic function, the inverse of monadic /.
+      |Filters where the function is falsey""",
+        List("zip-with:", "zipwith:"),
+        1,
+      ) {
+        case List(ast) =>
+          if isExplicitMonad(ast) then
+            AST.makeSingle(
+              astToLambda(ast, ast.arity.getOrElse(1)),
+              AST.Command("I"),
+            )
+          else
+            val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
+            AST.makeSingle(lambdaAst, AST.Command("r"))
+      },
+    "∥" ->
+      Modifier(
+        "Parallel Apply",
+        """|Parallel apply two elements to the top of the stack
+           |""".stripMargin,
+        List("parallel-apply:", "para-apply:", "paraply:", "!!:"),
+        2,
+      ) {
+        case List(ast1, ast2) => AST.makeSingle(
+            astToLambda(ast1, ast1.arity.getOrElse(-1)),
+            astToLambda(ast2, ast2.arity.getOrElse(-1)),
+            AST.Command("#|para-apply"),
+          )
+      },
+    "∦" ->
+      Modifier(
+        "Parallel Apply and Wrap",
+        """|Parallel apply two elements to the top of the stack
+           |and wrap the result in a list
+           |""".stripMargin,
+        List(
+          "parallel-apply-and-wrap:",
+          "para-apply-and-wrap:",
+          "<paraply>:",
+          "<!!>:",
+        ),
+        2,
+      ) {
+        case List(ast1, ast2) => AST.makeSingle(
+            astToLambda(ast1, -1),
+            astToLambda(ast2, -1),
+            AST.Command("#|para-apply-wrap"),
+          )
+      },
+    "¿" ->
+      Modifier(
+        "Conditional Execution",
+        """|Pop the top of the stack, and, if it's truthy,
+           |apply a function""".stripMargin,
+        List("if-top:", "if:"),
+        1,
+      ) {
+        case List(ast) => AST.makeSingle(
+            AST.Ternary(
+              AST.makeSingle(
+                astToLambda(ast, ast.arity.getOrElse(1)),
+                AST.Command("Ė"),
+              ),
+              None,
+            )
+          )
+      },
+    "`" ->
+      Modifier(
+        "Map as Stacks",
+        """|Map a function over the top of the stack, treating each iteration
+           |as if it were a stack of items. Essentially, dump before mapping
+           |""".stripMargin,
+        List("vec-dump:", "map-dump:"),
+        1,
+      ) {
+        case List(ast) => AST.makeSingle(
+            astToLambda(ast, ast.arity.getOrElse(1)),
+            AST.Command("#|vec-dump"),
+          )
       },
   )
 end Modifiers

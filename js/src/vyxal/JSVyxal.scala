@@ -17,6 +17,9 @@ object JSVyxal:
       printFunc: js.Function1[String, Unit],
   ): Unit =
     // todo take functions to print to custom stdout and stderr
+    if code.contains('h') then
+      printFunc(CLI.helpText)
+      return
     val settings = Settings(online = true).withFlags(flags.toList)
     val globals = Globals(
       settings = settings,

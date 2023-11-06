@@ -29,6 +29,7 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   def toIntegral: VNum = underlying.round
 
   def floor: VNum = underlying.floor
+  def ceil: VNum = underlying.ceil
 
   @targetName("neg")
   def unary_- : VNum = -underlying
