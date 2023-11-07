@@ -5,6 +5,7 @@ import vyxal.parsing.Lexer
 import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 import scala.scalajs.js.JSConverters.*
+import scala.scalajs.linker.interface.OutputPatterns
 
 /** A bridge between the interpreter and JS */
 @JSExportTopLevel("Vyxal")

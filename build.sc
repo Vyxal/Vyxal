@@ -1,8 +1,8 @@
 import java.net.{URL, URLClassLoader}
-import org.scalajs.linker.interface.OutputPatterns
 
 import mill._
 import mill.api.Result
+import mill.scalajs.linker.interface.OutputPatterns
 import mill.scalajslib._
 import mill.scalajslib.api._
 import mill.scalalib._
