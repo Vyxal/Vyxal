@@ -1,10 +1,14 @@
+import { Vyxal } from "./vyxal.js";
+
 const $ = x => document.getElementById(x)
 
 var codepage = Vyxal.getCodepage()
 
-search = window
-glyphQuery = String.fromCharCode(0162, 105, 0143, 107)
-this.prevQuery = ""
+const search = window
+const glyphQuery = String.fromCharCode(0o162, 105, 0o143, 107)
+// this.prevQuery = ""
+
+let worker;
 
 const aliases = {
     "λ": ["la", "`l", "A\\"],
@@ -722,8 +726,19 @@ function cancelWorker(why) {
     return;
 }
 
+window.initCodeMirror = initCodeMirror
+window.decodeURL = decodeURL
+window.shareOptions = shareOptions
+window.updateCount = updateCount
+window.resizeCodeBox = resizeCodeBox
+window.Vyxal = Vyxal
+
 // set up event listeners for execution
 window.addEventListener("DOMContentLoaded", e => {
+    initCodeMirror()
+    decodeURL()
+    updateCount()
+
     const run = document.getElementById("run_button")
     const clear = document.getElementById("clear")
 
@@ -735,8 +750,8 @@ window.addEventListener("DOMContentLoaded", e => {
 
     async function do_run() {
         // generate random 32 character session string
-        sessioncode = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        timeout = 10000
+        const sessioncode = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        let timeout = 10000
         if (flags.value.includes("5")) {
             timeout = 5000;
         } else if (flags.value.includes("b")) {
@@ -751,7 +766,7 @@ window.addEventListener("DOMContentLoaded", e => {
         }
 
         let runButton = $('run_button');
-        worker = new Worker('./worker.js');
+        worker = new Worker('./worker.js', { type: "module" });
         worker.onmessage = function (e) {
             if (e.data.session != sessioncode) { return; }
             if (e.data.command == "done") { runButton.innerHTML = '<i class="fas fa-play-circle"></i>'; }
@@ -765,7 +780,6 @@ window.addEventListener("DOMContentLoaded", e => {
 
         output.value = ""
         extra.value = ""
-
 
         worker.postMessage({
             "mode": "run",
@@ -802,7 +816,6 @@ window.addEventListener("DOMContentLoaded", e => {
         glyphSearch()
         expandBoxes()
     })
-
 })
 
 document.addEventListener('keydown', (event) => {

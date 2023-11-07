@@ -1,6 +1,8 @@
-importScripts("./vyxal.js")
-
-self.addEventListener('message', function (e) {
+console.log("here")
+import { EOL } from "./os.module.js"
+console.log("here")
+//console.err("asdf")
+self.onmessage = (function (e) {
     var data = e.data;
     console.log("Worker received: " + data.mode);
     const session = data.session;
