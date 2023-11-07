@@ -1,4 +1,5 @@
 import java.net.{URL, URLClassLoader}
+import org.scalajs.linker.interface.OutputPatterns
 
 import mill._
 import mill.api.Result
