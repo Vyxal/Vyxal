@@ -1,6 +1,7 @@
 console.log("here")
-import { EOL } from "./os.module.js"
-console.log("here")
+import * as Vyxal from "./vyxal.js"
+console.log("here2")
+console.log(Object.getOwnPropertyNames(Vyxal))
 //console.err("asdf")
 self.onmessage = (function (e) {
     var data = e.data;
@@ -11,6 +12,6 @@ self.onmessage = (function (e) {
     };
     Vyxal.setShortDict(data.shortDict)
     Vyxal.setLongDict(data.longDict)
-    Vyxal.execute(data.code, data.inputs, data.flags, sendFn)
+    // Vyxal.execute(data.code, data.inputs, data.flags, sendFn)
     this.postMessage({ "command": "done", "session": data.session })
 })
