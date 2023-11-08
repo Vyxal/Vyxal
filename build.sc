@@ -207,8 +207,7 @@ object js extends VyxalModule with ScalaJSModule {
         )
       // move each file to pages directory
       generatedFiles.foreach { file =>
-        println(file)
-        os.move(file, pagesDir / file.last)
+        os.move.over(file, pagesDir / file.last)
       }
       res
     }
