@@ -749,6 +749,13 @@ window.addEventListener("DOMContentLoaded", e => {
     const filter = document.getElementById("filterBox")
 
     async function do_run() {
+        if (flags.value.includes("h")) {
+            runButton.innerHTML = '<i class="fa fa-cog fa-spin"></i>';
+            Vyxal.printHelpText(s => output.value += s);
+            expandBoxes();
+            runButton.innerHTML = '<i class="fas fa-play-circle"></i>';
+            return;
+        }
         // generate random 32 character session string
         const sessioncode = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         let timeout = 10000

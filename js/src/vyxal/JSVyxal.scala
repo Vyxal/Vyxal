@@ -20,30 +20,36 @@ object JSVyxal:
       printFunc: js.Function1[String, Unit],
   ): Unit =
     // todo take functions to print to custom stdout and stderr
-    if code.contains('h') then
-      val resultPromise: js.Promise[String] = js.dynamicImport {
-        HelpText().getHelpText
-      }
-      for result <- resultPromise.toFuture do printFunc(result)
-      return
-    val settings = Settings(online = true).withFlags(flags.toList)
-    val globals = Globals(
-      settings = settings,
-      printFn = printFunc,
-      inputs = Inputs(
-        inputs.split("\n").map(x => MiscHelpers.eval(x)(using Context())).toSeq
-      ),
-    )
+    if flags.contains('h') then return
+    else
+      val settings = Settings(online = true).withFlags(flags.toList)
+      val globals = Globals(
+        settings = settings,
+        printFn = printFunc,
+        inputs = Inputs(
+          inputs
+            .split("\n")
+            .map(x => MiscHelpers.eval(x)(using Context()))
+            .toSeq
+        ),
+      )
 
-    val ctx = Context(
-      inputs = inputs
-        .split("\n")
-        .map(x => MiscHelpers.eval(x)(using Context()))
-        .toIndexedSeq,
-      globals = globals,
-    )
-    Interpreter.execute(code)(using ctx)
+      val ctx = Context(
+        inputs = inputs
+          .split("\n")
+          .map(x => MiscHelpers.eval(x)(using Context()))
+          .toIndexedSeq,
+        globals = globals,
+      )
+      Interpreter.execute(code)(using ctx)
   end execute
+
+  @JSExport
+  def printHelpText(printFunc: js.Function1[String, Unit]): Unit =
+    val resultPromise: js.Promise[String] = js.dynamicImport {
+      HelpText().getHelpText
+    }
+    for result <- resultPromise.toFuture do printFunc(result)
 
   @JSExport
   def setShortDict(dict: String): Unit =
