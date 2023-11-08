@@ -178,6 +178,18 @@ object js extends VyxalModule with ScalaJSModule {
       val res = super.fastLinkJS()
       os.copy.over(res.dest.path / "main.js", pagesDir / "vyxal.js")
       os.copy.over(res.dest.path / "main.js.map", pagesDir / "vyxal.js.map")
+
+      val generatedFiles = os
+        .walk(res.dest.path)
+        .filter(f =>
+          (f.ext == "js" || f.ext == "map") && f.last.startsWith("internal")
+        )
+      // move each file to pages directory
+      generatedFiles.foreach { file =>
+        println(file)
+        os.move(file, pagesDir / file.last)
+      }
+
       copyDicts()
       res
     }
@@ -188,6 +200,16 @@ object js extends VyxalModule with ScalaJSModule {
       os.copy.over(res.dest.path / "main.js", pagesDir / "vyxal.js")
       os.copy.over(res.dest.path / "main.js.map", pagesDir / "vyxal.js.map")
       copyDicts()
+      val generatedFiles = os
+        .walk(res.dest.path)
+        .filter(f =>
+          (f.ext == "js" || f.ext == "map") && f.last.startsWith("internal")
+        )
+      // move each file to pages directory
+      generatedFiles.foreach { file =>
+        println(file)
+        os.move(file, pagesDir / file.last)
+      }
       res
     }
 
