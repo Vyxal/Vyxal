@@ -1,5 +1,5 @@
 console.log("here")
-import * as Vyxal from "./vyxal.js"
+import { Vyxal } from "./vyxal.js"
 console.log("here2")
 console.log(Object.getOwnPropertyNames(Vyxal))
 //console.err("asdf")
@@ -12,6 +12,6 @@ self.addEventListener('message', function (e) {
     };
     Vyxal.setShortDict(data.shortDict)
     Vyxal.setLongDict(data.longDict)
-    // Vyxal.execute(data.code, data.inputs, data.flags, sendFn)
+    Vyxal.execute(data.code, data.inputs, data.flags, sendFn)
     this.postMessage({ "command": "done", "session": data.session })
 })

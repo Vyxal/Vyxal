@@ -2,11 +2,14 @@ package vyxal
 
 import vyxal.parsing.Lexer
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 import scala.scalajs.js.JSConverters.*
 
 /** A bridge between the interpreter and JS */
+class HelpText:
+  def getHelpText: String = CLI.helpText
 @JSExportTopLevel("Vyxal")
 object JSVyxal:
   @JSExport
@@ -18,7 +21,10 @@ object JSVyxal:
   ): Unit =
     // todo take functions to print to custom stdout and stderr
     if code.contains('h') then
-      printFunc(CLI.helpText)
+      val resultPromise: js.Promise[String] = js.dynamicImport {
+        HelpText().getHelpText
+      }
+      for result <- resultPromise.toFuture do printFunc(result)
       return
     val settings = Settings(online = true).withFlags(flags.toList)
     val globals = Globals(
