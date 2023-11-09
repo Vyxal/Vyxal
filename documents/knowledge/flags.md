@@ -51,7 +51,7 @@
 
 ### `g` Print the minimum item of the top of the stack on end of execution
 
-### `O` Disable implicit output 
+### `O` Disable implicit output
 
 ### `o` Force implicit output
 
