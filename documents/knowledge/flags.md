@@ -1,6 +1,8 @@
 
 # Flags
 
+Use the `h` flag for a comprehensive list of available flags
+
 ## Input Flags
 
 |||
