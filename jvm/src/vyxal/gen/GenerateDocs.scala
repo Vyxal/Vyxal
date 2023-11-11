@@ -5,7 +5,8 @@ import vyxal.parsing.Lexer
 
 /** For generating elements.txt and trigraphs.txt. See build.sc */
 private object GenerateDocs:
-  def generate(): (String, String) = (elements(), trigraphs())
+  def generate(): (String, String, String) =
+    (elements(), trigraphs(), elementTable())
 
   def elements(): String =
     val sb = StringBuilder()
@@ -57,4 +58,32 @@ private object GenerateDocs:
     SugarMap.trigraphs
       .map { case (key, value) => s"$key -> $value" }
       .mkString("", "\n", "\n")
+
+  def elementTable(): String =
+    val header = "| Symbol | Name | Keywords | Arity | Vectorises | Overloads |"
+    val divider = "| --- | --- | --- | --- | --- | --- |"
+    val contents = StringBuilder()
+    val addRow = (elem: Element) =>
+      var overloads = elem.overloads
+      contents ++=
+        s"| `${"\\".repeat(if elem.symbol == "`" then 1 else 0) +
+            elem.symbol}` | ${elem.name} | ${elem.keywords.mkString(", ")} | ${elem.arity} | ${if elem.vectorises then "✅"
+          else "❌"} | ${overloads.head}\n"
+      overloads = overloads.tail
+      while overloads.nonEmpty do
+        contents ++= s"| | | | | | ${overloads.head}\n"
+        overloads = overloads.tail
+
+    Elements.elements.values.toSeq
+      .sortBy { elem =>
+        // Have to use tuple in case of digraphs
+        (
+          Lexer.Codepage.indexOf(elem.symbol.charAt(0)),
+          Lexer.Codepage.indexOf(elem.symbol.substring(1)),
+        )
+      }
+      .foreach(addRow)
+
+    header + "\n" + divider + "\n" + contents.toString
+  end elementTable
 end GenerateDocs
