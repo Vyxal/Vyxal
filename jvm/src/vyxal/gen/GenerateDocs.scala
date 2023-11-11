@@ -63,18 +63,22 @@ private object GenerateDocs:
     val header = "| Symbol | Name | Keywords | Arity | Vectorises | Overloads |"
     val divider = "| --- | --- | --- | --- | --- | --- |"
     val contents = StringBuilder()
+    val formatOverload = (overload: String) =>
+      val (args, description) = overload.splitAt(overload.indexOf("->"))
+      if args == "" then s"$description"
+      else s"`$args` => $description"
     val addRow = (elem: Element) =>
       if !elem.symbol.startsWith("#|") then
         var overloads = elem.overloads
         contents ++=
           s"| `${"\\".repeat(if elem.symbol == "`" then 1 else 0) +
-              elem.symbol.replace("|", "\\|")}` | ${elem.name} | ${elem.keywords
+              elem.symbol.replace("|", "\\|")}` | ${elem.name.replace("|", "/")} | ${elem.keywords
               .map("`" + _ + "`")
               .mkString(", ")} | ${elem.arity.getOrElse("NA")} | ${if elem.vectorises then "✅"
-            else "❌"} | ${overloads.head}\n"
+            else "❌"} | ${formatOverload(overloads.head)}\n"
         overloads = overloads.tail
         while overloads.nonEmpty do
-          contents ++= s"| | | | | | ${overloads.head}\n"
+          contents ++= s"| | | | | | ${formatOverload(overloads.head)}\n"
           overloads = overloads.tail
 
     Elements.elements.values.toSeq
