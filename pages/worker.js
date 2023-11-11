@@ -1,8 +1,5 @@
-console.log("here")
 import { Vyxal } from "./vyxal.js"
-console.log("here2")
-console.log(Object.getOwnPropertyNames(Vyxal))
-//console.err("asdf")
+
 self.addEventListener('message', function (e) {
     var data = e.data;
     console.log("Worker received: " + data.mode);
