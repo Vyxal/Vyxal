@@ -64,15 +64,18 @@ private object GenerateDocs:
     val divider = "| --- | --- | --- | --- | --- | --- |"
     val contents = StringBuilder()
     val addRow = (elem: Element) =>
-      var overloads = elem.overloads
-      contents ++=
-        s"| `${"\\".repeat(if elem.symbol == "`" then 1 else 0) +
-            elem.symbol}` | ${elem.name} | ${elem.keywords.mkString(", ")} | ${elem.arity} | ${if elem.vectorises then "✅"
-          else "❌"} | ${overloads.head}\n"
-      overloads = overloads.tail
-      while overloads.nonEmpty do
-        contents ++= s"| | | | | | ${overloads.head}\n"
+      if !elem.symbol.startsWith("#|") then
+        var overloads = elem.overloads
+        contents ++=
+          s"| `${"\\".repeat(if elem.symbol == "`" then 1 else 0) +
+              elem.symbol.replace("|", "\\|")}` | ${elem.name} | ${elem.keywords
+              .map("`" + _ + "`")
+              .mkString(", ")} | ${elem.arity.getOrElse("NA")} | ${if elem.vectorises then "✅"
+            else "❌"} | ${overloads.head}\n"
         overloads = overloads.tail
+        while overloads.nonEmpty do
+          contents ++= s"| | | | | | ${overloads.head}\n"
+          overloads = overloads.tail
 
     Elements.elements.values.toSeq
       .sortBy { elem =>
