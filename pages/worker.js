@@ -1,4 +1,4 @@
-importScripts("./vyxal.js")
+import { Vyxal } from "./vyxal.js"
 
 self.addEventListener('message', function (e) {
     var data = e.data;
