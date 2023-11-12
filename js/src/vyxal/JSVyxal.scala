@@ -32,10 +32,7 @@ object JSVyxal:
       settings = settings,
       printFn = printFunc,
       inputs = Inputs(
-        inputs
-          .split("\n")
-          .map(x => MiscHelpers.eval(x)(using Context()))
-          .toSeq
+        inputs.split("\n").map(x => MiscHelpers.eval(x)(using Context())).toSeq
       ),
     )
 
