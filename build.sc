@@ -176,8 +176,10 @@ object js extends VyxalModule with ScalaJSModule {
   override def fastLinkJS =
     T {
       val res = super.fastLinkJS()
-      os.copy.over(res.dest.path / "main.js", pagesDir / "vyxal.js")
-      os.copy.over(res.dest.path / "main.js.map", pagesDir / "vyxal.js.map")
+      os.copy.over(res.dest.path / "vyxal.js", pagesDir / "vyxal.js")
+      os.copy.over(res.dest.path / "vyxal.js.map", pagesDir / "vyxal.js.map")
+      os.copy.over(res.dest.path / "helpText.js", pagesDir / "helpText.js")
+      os.copy.over(res.dest.path / "helpText.js.map", pagesDir / "helpText.js.map")
 
       val generatedFiles = os
         .walk(res.dest.path)
@@ -187,7 +189,7 @@ object js extends VyxalModule with ScalaJSModule {
       // move each file to pages directory
       generatedFiles.foreach { file =>
         println(file)
-        os.move(file, pagesDir / file.last)
+        os.move.over(file, pagesDir / file.last)
       }
 
       copyDicts()
@@ -197,8 +199,10 @@ object js extends VyxalModule with ScalaJSModule {
   override def fullLinkJS =
     T {
       val res = super.fastLinkJS()
-      os.copy.over(res.dest.path / "main.js", pagesDir / "vyxal.js")
-      os.copy.over(res.dest.path / "main.js.map", pagesDir / "vyxal.js.map")
+      os.copy.over(res.dest.path / "vyxal.js", pagesDir / "vyxal.js")
+      os.copy.over(res.dest.path / "vyxal.js.map", pagesDir / "vyxal.js.map")
+      os.copy.over(res.dest.path / "helpText.js", pagesDir / "helpText.js")
+      os.copy.over(res.dest.path / "helpText.js.map", pagesDir / "helpText.js.map")
       copyDicts()
       val generatedFiles = os
         .walk(res.dest.path)

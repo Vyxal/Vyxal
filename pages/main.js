@@ -1,4 +1,5 @@
 import { Vyxal } from "./vyxal.js";
+import { HelpText } from "./helpText.js";
 
 const $ = x => document.getElementById(x)
 
@@ -749,9 +750,11 @@ window.addEventListener("DOMContentLoaded", e => {
     const filter = document.getElementById("filterBox")
 
     async function do_run() {
+        const runButton = $('run_button');
+
         if (flags.value.includes("h")) {
             runButton.innerHTML = '<i class="fa fa-cog fa-spin"></i>';
-            Vyxal.printHelpText(s => output.value += s);
+            output.value = HelpText.getHelpText();
             expandBoxes();
             runButton.innerHTML = '<i class="fas fa-play-circle"></i>';
             return;
@@ -772,7 +775,6 @@ window.addEventListener("DOMContentLoaded", e => {
             location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
         }
 
-        let runButton = $('run_button');
         worker = new Worker('./worker.js', { type: "module" });
         worker.onmessage = function (e) {
             if (e.data.session != sessioncode) { return; }

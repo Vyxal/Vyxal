@@ -7,11 +7,13 @@ import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 import scala.scalajs.js.JSConverters.*
 
 /** To avoid loading Scopt with the JSVyxal object */
-class HelpText:
-  def getHelpText: String = CLI.helpText
+@JSExportTopLevel("HelpText", moduleID = "helpText")
+object HelpText:
+  @JSExport
+  def getHelpText(): String = CLI.helpText
 
 /** A bridge between the interpreter and JS */
-@JSExportTopLevel("Vyxal")
+@JSExportTopLevel("Vyxal", moduleID = "vyxal")
 object JSVyxal:
   @JSExport
   def execute(
@@ -46,10 +48,6 @@ object JSVyxal:
     )
     Interpreter.execute(code)(using ctx)
   end execute
-
-  @JSExport
-  def printHelpText(printFunc: js.Function1[String, Unit]): Unit =
-    js.dynamicImport { HelpText().getHelpText }.`then` { text => printFunc(text) }
 
   @JSExport
   def setShortDict(dict: String): Unit =
