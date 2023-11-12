@@ -171,6 +171,9 @@ tests/test_extras.py
 temp.vy
 pages/vyxal.js
 pages/vyxal.js.map
+pages/helpText.js
+pages/helpText.js.map
+pages/internal-*
 pages/ShortDictionary.txt
 pages/LongDictionary.txt
 
