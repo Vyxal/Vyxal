@@ -31,10 +31,7 @@ object JSVyxal:
       settings = settings,
       printFn = printFunc,
       inputs = Inputs(
-        inputs
-          .split("\n")
-          .map(x => MiscHelpers.eval(x)(using Context()))
-          .toSeq
+        inputs.split("\n").map(x => MiscHelpers.eval(x)(using Context())).toSeq
       ),
     )
 
@@ -50,7 +47,9 @@ object JSVyxal:
 
   @JSExport
   def printHelpText(printFunc: js.Function1[String, Unit]): Unit =
-    js.dynamicImport { HelpText().getHelpText }.`then` { text => printFunc(text) }
+    js.dynamicImport { HelpText().getHelpText }.`then` { text =>
+      printFunc(text)
+    }
 
   @JSExport
   def setShortDict(dict: String): Unit =
