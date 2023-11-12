@@ -15,7 +15,7 @@ private object GenerateDocs:
         // Have to use tuple in case of digraphs
         (
           Lexer.Codepage.indexOf(elem.symbol.charAt(0)) +
-            (if "#∆øÞ".contains(elem.symbol.charAt(0)) then 200 else 0),
+            (if "#∆øÞ".contains(elem.symbol.charAt(0)) then 400 else 0),
           Lexer.Codepage.indexOf(elem.symbol.substring(1)),
         )
       }
@@ -81,8 +81,8 @@ private object GenerateDocs:
           s"| `${"\\".repeat(if elem.symbol == "`" then 1 else 0) +
               elem.symbol.replace("|", "\\|")}` | ${elem.name.replace("|", "/")} | ${elem.keywords
               .map("`" + _ + "`")
-              .mkString(", ")} | ${elem.arity.getOrElse("NA")} | ${if elem.vectorises then "✅"
-            else "❌"} | ${formatOverload(overloads.head)}\n"
+              .mkString(", ")} | ${elem.arity.getOrElse("NA")} | ${if elem.vectorises then ":white_check_mark:"
+            else ":x:"} | ${formatOverload(overloads.head)}\n"
         overloads = overloads.tail
         while overloads.nonEmpty do
           contents ++= s"| | | | | | ${formatOverload(overloads.head)}\n"
