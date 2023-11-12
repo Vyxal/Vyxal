@@ -2708,10 +2708,10 @@ object Elements:
     },
 
     // Constants
-    addNilad("¦", "Pipe", List("pipe"), "|") { "|" },
-    addNilad("ð", "Space", List("space"), " ") { " " },
-    addNilad("¶", "Newline", List("newline"), "\n") { "\n" },
-    addNilad("•", "Asterisk", List("asterisk"), "*") { "*" },
+    addNilad("¦", "Pipe", List("pipe"), "\"|\"") { "|" },
+    addNilad("ð", "Space", List("space"), "\" \"") { " " },
+    addNilad("¶", "Newline", List("newline"), "chr(10)") { "\n" },
+    addNilad("•", "Asterisk", List("asterisk"), "\"*\"") { "*" },
     addNilad("₀", "Ten", List("ten"), "10") { 10 },
     addNilad("₁", "Sixteen", List("sixteen"), "16") { 26 },
     addNilad("₂", "Twenty-six", List("twenty-six"), "26") { 26 },
