@@ -14,8 +14,8 @@ private object GenerateDocs:
       .sortBy { elem =>
         // Have to use tuple in case of digraphs
         (
-          if elem.symbol.charAt(0) == '#' then 257
-          else Lexer.Codepage.indexOf(elem.symbol.charAt(0)),
+          Lexer.Codepage.indexOf(elem.symbol.charAt(0)) +
+            (if "#∆øÞ".contains(elem.symbol.charAt(0)) then 200 else 0),
           Lexer.Codepage.indexOf(elem.symbol.substring(1)),
         )
       }
