@@ -9,7 +9,7 @@ Keywords: sus
 ¦ (Pipe) (non-vectorising)
 Trigraph: #.;
 Keywords: pipe
-- -> |
+- -> "|"
 ---------------------
 ᵛ (Decrement) (vectorising)
 Trigraph: #^v
@@ -998,7 +998,7 @@ Keywords: min-no-pop
 ð (Space) (non-vectorising)
 Trigraph: #.b
 Keywords: space
-- ->  
+- -> " "
 ---------------------
 € (Suffixes) (non-vectorising)
 Trigraph: #^(
@@ -1009,8 +1009,7 @@ Keywords: suffixes
 Trigraph: #,
 
 Keywords: newline
-- -> 
-
+- -> chr(10)
 ---------------------
 ᶿ (Cartesian Product Unsafe) (non-vectorising)
 Trigraph: #^`
@@ -1025,7 +1024,7 @@ Keywords: to-string, stringify, str
 • (Asterisk) (non-vectorising)
 Trigraph: #,.
 Keywords: asterisk
-- -> *
+- -> "*"
 ---------------------
 ≈ (All Equal?) (non-vectorising)
 Trigraph: #^~
