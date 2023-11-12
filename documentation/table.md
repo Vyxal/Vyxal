@@ -5,11 +5,6 @@
 | `¦` | Pipe | `pipe` | 0 | ❌ | `"\|"`
 | `ᵛ` | Decrement | `decr`, `decrement` | 1 | ✅ | `a: num` => `a - 1`
 | `!` | Factorial | `fact`, `factorial` | 1 | ✅ | `a: num` => `a!`
-| `#C` | Compress String Using Dictionary | `compress-dict`, `dict-comp`, `compress` | 1 | ❌ | `a: str` => `compress a using the dictionary`
-| `#X` | Loop Break | `break` | 0 | ❌ | `break out of the current loop`
-| `#v` | [Internal Use] Vectorise (Element Form)  |  | NA | ❌ | `*a, f` => `f vectorised over however many arguments in a. It is recommended to use the modifier instead`
-| `#x` | Loop Continue | `continue` | 0 | ❌ | `continue the current loop`
-| `#~` | [Internal Use] Apply Without Popping (Element Form) |  | NA | ❌ | `*a, f` => `f applied to the stack without popping items. Use the modifier instead.`
 | `$` | Swap | `swap` | NA | ❌ | `a, b` => `b, a`
 | `%` | Modulo / String Formatting | `mod`, `modulo`, `str-format`, `format`, `%`, `strfmt` | 2 | ❌ | `a: num, b: num` => `a % b`
 | | | | | | `a: str, b: any` => `a.format(b) (replace %s with b if scalar value or each item in b if vector)`
@@ -279,7 +274,6 @@
 | `₇` | Two hundred fifty-six | `two-hundred-fifty-six` | 0 | ❌ | `256`
 | `₈` | Alphabet | `alphabet`, `a-z` | 0 | ❌ | `"abcdefghijklmnopqrstuvwxyz"`
 | `₉` | Empty array | `empty-list`, `nil-list`, `new-list` | 0 | ❌ | `[]`
-| `ÞT` | Transpose Safe | `transpose-safe` | 1 | ❌ | `a: any` => `transpose a`
 | `½` | Halve | `halve` | 1 | ✅ | `a: num` => `a / 2`
 | | | | | | `a: str` => `a split into two pieces`
 | `ʀ` | Exclusive Zero Range / Lowercase | `0->n`, `zero-range`, `lowered-range`, `to-lower`, `lower`, `lowercase` | 1 | ✅ | `a: num` => `[0..a)`
@@ -307,6 +301,11 @@
 | `∨` | Logical Or | `or`, `logical-or` | 2 | ✅ | `a: any, b: any` => `a \|\| b`
 | `⁰` | First Input | `first-input`, `input-0` | 0 | ❌ | `The first input to the program`
 | `¹` | Second Input | `second-input`, `input-1` | 0 | ❌ | `The second input to the program`
+| `#C` | Compress String Using Dictionary | `compress-dict`, `dict-comp`, `compress` | 1 | ❌ | `a: str` => `compress a using the dictionary`
+| `#X` | Loop Break | `break` | 0 | ❌ | `break out of the current loop`
+| `#v` | [Internal Use] Vectorise (Element Form)  |  | NA | ❌ | `*a, f` => `f vectorised over however many arguments in a. It is recommended to use the modifier instead`
+| `#x` | Loop Continue | `continue` | 0 | ❌ | `continue the current loop`
+| `#~` | [Internal Use] Apply Without Popping (Element Form) |  | NA | ❌ | `*a, f` => `f applied to the stack without popping items. Use the modifier instead.`
 | `²` | Third Input | `third-input`, `input-2` | 0 | ❌ | `The third input to the program`
 | `⌈` | Ceiling | `ceiling`, `ceil` | 1 | ✅ | `a: num` => `ceil(a)`
 | `⌊` | Floor | `floor` | 1 | ✅ | `a: num` => `floor(a)`
@@ -320,3 +319,4 @@
 | `•` | Asterisk | `asterisk` | 0 | ❌ | `"*"`
 | `≈` | All Equal? | `all-equal`, `all-equal?` | 1 | ❌ | `a: lst` => `are all elements of a equal?`
 | `ꜝ` | Increment | `incr`, `increment` | 1 | ✅ | `a: num` => `a + 1`
+| `ÞT` | Transpose Safe | `transpose-safe` | 1 | ❌ | `a: any` => `transpose a`
