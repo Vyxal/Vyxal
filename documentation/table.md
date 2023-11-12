@@ -1,14 +1,14 @@
 | Symbol | Name | Keywords | Arity | Vectorises | Overloads |
 | --- | --- | --- | --- | --- | --- |
-| `🍪` | Cookie | `cookie` | NA | ❌ | cookie.
-| `ඞ` | ඞ | `sus` | NA | ❌ | ඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞඞ
-| `¦` | Pipe | `pipe` | 0 | ❌ | -> "\|"
+| `🍪` | Cookie | `cookie` | NA | ❌ | `cookie.`
+| `ඞ` | ඞ | `sus` | NA | ❌ | `ඞ`
+| `¦` | Pipe | `pipe` | 0 | ❌ | `"\|"`
 | `ᵛ` | Decrement | `decr`, `decrement` | 1 | ✅ | `a: num` => `a - 1`
 | `!` | Factorial | `fact`, `factorial` | 1 | ✅ | `a: num` => `a!`
 | `#C` | Compress String Using Dictionary | `compress-dict`, `dict-comp`, `compress` | 1 | ❌ | `a: str` => `compress a using the dictionary`
-| `#X` | Loop Break | `break` | 0 | ❌ | `` => `break out of the current loop`
+| `#X` | Loop Break | `break` | 0 | ❌ | `break out of the current loop`
 | `#v` | [Internal Use] Vectorise (Element Form)  |  | NA | ❌ | `*a, f` => `f vectorised over however many arguments in a. It is recommended to use the modifier instead`
-| `#x` | Loop Continue | `continue` | 0 | ❌ | `` => `continue the current loop`
+| `#x` | Loop Continue | `continue` | 0 | ❌ | `continue the current loop`
 | `#~` | [Internal Use] Apply Without Popping (Element Form) |  | NA | ❌ | `*a, f` => `f applied to the stack without popping items. Use the modifier instead.`
 | `$` | Swap | `swap` | NA | ❌ | `a, b` => `b, a`
 | `%` | Modulo / String Formatting | `mod`, `modulo`, `str-format`, `format`, `%`, `strfmt` | 2 | ❌ | `a: num, b: num` => `a % b`
@@ -38,7 +38,7 @@
 | | | | | | `a: str, b: num` => `a > str(b)`
 | | | | | | `a: num, b: str` => `str(a) > b`
 | | | | | | `a: str, b: str` => `a > b`
-| `?` | Get Input | `get-input`, `input`, `stdin`, `readline` | 0 | ❌ | ->  -> input
+| `?` | Get Input | `get-input`, `input`, `stdin`, `readline` | 0 | ❌ | `input`
 | `A` | All Truthy / All() / Is Vowel? | `all`, `is-vowel?`, `vowel?` | 1 | ❌ | `a: str` => `is (a) a vowel? vectorises for strings len > 1`
 | | | | | | `a: list` => `is (a) all truthy?`
 | `B` | Convert From Binary | `from-binary`, `bin->dec`, `bin->decimal` | 1 | ❌ | `a: num` => `str(a) from binary`
@@ -123,8 +123,8 @@
 | `j` | Join On | `join-on`, `join`, `join-with`, `join-by` | 2 | ❌ | `a: lst, b: str\|num` => `a join on b`
 | | | | | | `a: lst, b: lst` => `Intersperse elements of b within a`
 | `l` | Length of Each Item | `length-vectorised`, `length-vect`, `len-vect`, `len-vectorised`, `vec-len`, `vec-length`, `vlen` | 1 | ❌ | `a: lst` => `Length of each item in a`
-| `m` | Get Context Variable M | `get-context-m`, `context-m`, `c-var-m`, `ctx-m`, `ctx-secondary` | 0 | ❌ | ->  -> context variable m
-| `n` | Get Context Variable N | `get-context-n`, `context-n`, `c-var-n`, `ctx-n`, `ctx-primary` | 0 | ❌ | ->  -> context variable n
+| `m` | Get Context Variable M | `get-context-m`, `context-m`, `c-var-m`, `ctx-m`, `ctx-secondary` | 0 | ❌ | `context variable m`
+| `n` | Get Context Variable N | `get-context-n`, `context-n`, `c-var-n`, `ctx-n`, `ctx-primary` | 0 | ❌ | `context variable n`
 | `o` | Overlap / Overlapping Slices | `overlap`, `overlaps`, `overlapping`, `overlapping-slices` | 2 | ❌ | `a: lst, b: num` => `Overlapping slices of a of length b`
 | | | | | | `a: lst\|str` => `Overlapping slices of a of length 2`
 | `p` | Prepend | `prepend` | 2 | ❌ | `a: lst, b: any` => `b prepended to a`
@@ -135,7 +135,7 @@
 | `t` | Tail / Last Item | `tail`, `last`, `last-item` | 1 | ❌ | `a: lst` => `a[-1]`
 | `u` | Uniquify | `uniquify` | 1 | ❌ | `a: lst\|str\|num` => `a with duplicates removed`
 | `w` | Wrap Singleton | `wrap-singleton`, `enlist` | 1 | ❌ | `a` => `[a]`
-| `x` | Recursion / Recurse | `recurse` | NA | ❌ | `` => `call the current function recursively`
+| `x` | Recursion / Recurse | `recurse` | NA | ❌ | `call the current function recursively`
 | `y` | To Base | `to-base` | 2 | ❌ | `a: num, b: num` => `a in base b`
 | | | | | | `a: num, b: str\|lst` => `a in base with alphabet b`
 | | | | | | `a: lst, b: num` => `each x in a in base b`
@@ -206,9 +206,9 @@
 | `ḣ` | Head Extract | `head-extract`, `split-at-head` | 1 | ❌ | `a: lst\|str` => `Push a[0], then a[1:] onto the stack`
 | `ŀ` | Transliterate / Call While | `transliterate`, `call-while` | 3 | ❌ | `any a, any b, any c` => `transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)`
 | | | | | | `a: fun, b: fun, c: any` => `call b on c until a(c) is falsy`
-| `ṁ` | Mirror | `mirror` | 1 | ❌ | num a: a + reversed(a) (as number)
-| | | | | | str a: a + reversed(a)
-| | | | | | lst a: append reversed(a) to a
+| `ṁ` | Mirror | `mirror` | 1 | ❌ | `num a: a + reversed(a) (as number)`
+| | | | | | `str a: a + reversed(a)`
+| | | | | | `lst a: append reversed(a) to a`
 | `ṅ` | Join On Newlines / Pad Binary to Mod 8 / Context if 1 | `join-newlines`, `newline-join`, `join-on-newlines`, `binary-pad-8`, `bin-pad-8`, `one?->context`, `one?->n` | 1 | ❌ | `a: lst` => `a join on newlines`
 | | | | | | `a: str` => `a padded to a multiple of 8 with 0s`
 | | | | | | `a: num` => `a if a == 1 push context variable n`
@@ -269,16 +269,16 @@
 | `∴` | Bitwise And | `bitwise-and` | 2 | ✅ | `a: num, b: num` => `a & b`
 | `∵` | Bitwise Or | `bitwise-or` | 2 | ✅ | `a: num, b: num` => `a \| b`
 | `⊻` | Bitwise Xor | `bitwise-xor` | 2 | ✅ | `a: num, b: num` => `a ^ b`
-| `₀` | Ten | `ten` | 0 | ❌ | -> 10
-| `₁` | Sixteen | `sixteen` | 0 | ❌ | -> 16
-| `₂` | Twenty-six | `twenty-six` | 0 | ❌ | -> 26
-| `₃` | Thirty-two | `thirty-two` | 0 | ❌ | -> 32
-| `₄` | Sixty-four | `sixty-four` | 0 | ❌ | -> 64
-| `₅` | One hundred | `one-hundred` | 0 | ❌ | -> 100
-| `₆` | One hundred twenty-eight | `one-hundred-twenty-eight` | 0 | ❌ | -> 128
-| `₇` | Two hundred fifty-six | `two-hundred-fifty-six` | 0 | ❌ | -> 256
-| `₈` | Alphabet | `alphabet`, `a-z` | 0 | ❌ | -> "abcdefghijklmnopqrstuvwxyz"
-| `₉` | Empty array | `empty-list`, `nil-list`, `new-list` | 0 | ❌ | -> []
+| `₀` | Ten | `ten` | 0 | ❌ | `10`
+| `₁` | Sixteen | `sixteen` | 0 | ❌ | `16`
+| `₂` | Twenty-six | `twenty-six` | 0 | ❌ | `26`
+| `₃` | Thirty-two | `thirty-two` | 0 | ❌ | `32`
+| `₄` | Sixty-four | `sixty-four` | 0 | ❌ | `64`
+| `₅` | One hundred | `one-hundred` | 0 | ❌ | `100`
+| `₆` | One hundred twenty-eight | `one-hundred-twenty-eight` | 0 | ❌ | `128`
+| `₇` | Two hundred fifty-six | `two-hundred-fifty-six` | 0 | ❌ | `256`
+| `₈` | Alphabet | `alphabet`, `a-z` | 0 | ❌ | `"abcdefghijklmnopqrstuvwxyz"`
+| `₉` | Empty array | `empty-list`, `nil-list`, `new-list` | 0 | ❌ | `[]`
 | `ÞT` | Transpose Safe | `transpose-safe` | 1 | ❌ | `a: any` => `transpose a`
 | `½` | Halve | `halve` | 1 | ✅ | `a: num` => `a / 2`
 | | | | | | `a: str` => `a split into two pieces`
@@ -294,10 +294,10 @@
 | `÷` | Divide / Split | `divide`, `div`, `str-split` | 2 | ✅ | `a: num, b: num` => `a / b`
 | | | | | | `a: str, b: str` => `Split a on the regex b`
 | `£` | Set Register | `set-register`, `->register`, `set-reg`, `->reg` | 1 | ❌ | `a: any` => `register = a`
-| `¥` | Get Register | `get-register`, `get-reg`, `register`, `<-register`, `<-reg` | NA | ❌ | `` => `push the value of the register`
-| `←` | Rotate Stack Left | `rotate-stack-left` | NA | ❌ | `` => `rotate the entire stack left once`
+| `¥` | Get Register | `get-register`, `get-reg`, `register`, `<-register`, `<-reg` | NA | ❌ | `push the value of the register`
+| `←` | Rotate Stack Left | `rotate-stack-left` | NA | ❌ | `rotate the entire stack left once`
 | `↑` | Grade Up | `grade-up` | 1 | ❌ | `a: any` => `indices that will sort a`
-| `→` | Rotate Stack Right | `rotate-stack-right` | NA | ❌ | `` => `rotate the entire stack right once`
+| `→` | Rotate Stack Right | `rotate-stack-right` | NA | ❌ | `rotate the entire stack right once`
 | `↓` | Grade Down | `grade-down` | 1 | ❌ | `a: any` => `indices that will reverse-sort a`
 | `±` | Sign | `sign` | 1 | ✅ | `a: num` => `sign of a`
 | `†` | Length of Consecutive Groups | `len-consecutive`, `gvl`, `gavel` | 1 | ❌ | `a: any` => `lengths of consecutive groups of a`
@@ -305,18 +305,18 @@
 | `¬` | Logical Not | `non-vec-not`, `non-vec-logical-not` | 1 | ❌ | `a: any` => `!a`
 | `∧` | Logical And | `and`, `logical-and` | 2 | ✅ | `a: any, b: any` => `a && b`
 | `∨` | Logical Or | `or`, `logical-or` | 2 | ✅ | `a: any, b: any` => `a \|\| b`
-| `⁰` | First Input | `first-input`, `input-0` | 0 | ❌ | The first input to the program
-| `¹` | Second Input | `second-input`, `input-1` | 0 | ❌ | The second input to the program
-| `²` | Third Input | `third-input`, `input-2` | 0 | ❌ | The third input to the program
+| `⁰` | First Input | `first-input`, `input-0` | 0 | ❌ | `The first input to the program`
+| `¹` | Second Input | `second-input`, `input-1` | 0 | ❌ | `The second input to the program`
+| `²` | Third Input | `third-input`, `input-2` | 0 | ❌ | `The third input to the program`
 | `⌈` | Ceiling | `ceiling`, `ceil` | 1 | ✅ | `a: num` => `ceil(a)`
 | `⌊` | Floor | `floor` | 1 | ✅ | `a: num` => `floor(a)`
 | `Ɠ` | Maximum without popping | `max-no-pop` | 1 | ❌ | `a: lst` => `max(a) without popping a`
 | `ɠ` | Minimum without popping | `min-no-pop` | 1 | ❌ | `a: lst` => `min(a) without popping a`
-| `ð` | Space | `space` | 0 | ❌ | -> " "
+| `ð` | Space | `space` | 0 | ❌ | `" "`
 | `€` | Suffixes | `suffixes` | 1 | ❌ | `a: lst` => `Suffixes of a`
-| `¶` | Newline | `newline` | 0 | ❌ | -> chr(10)
+| `¶` | Newline | `newline` | 0 | ❌ | `chr(10)`
 | `ᶿ` | Cartesian Product Unsafe | `cartesian-product-unsafe`, `cartesian-unsafe`, `cart-prod-unsafe`, `cart-unsafe` | 2 | ❌ | `a: list, b: list` => `cartesian product of a and b in the standard order, but without accounting for infinite lists`
 | `ᶲ` | Stringify | `to-string`, `stringify`, `str` | 1 | ❌ | `a: any` => `str(a)`
-| `•` | Asterisk | `asterisk` | 0 | ❌ | -> "*"
+| `•` | Asterisk | `asterisk` | 0 | ❌ | `"*"`
 | `≈` | All Equal? | `all-equal`, `all-equal?` | 1 | ❌ | `a: lst` => `are all elements of a equal?`
 | `ꜝ` | Increment | `incr`, `increment` | 1 | ✅ | `a: num` => `a + 1`
