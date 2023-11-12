@@ -2,7 +2,6 @@ package vyxal
 
 import vyxal.parsing.Lexer
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 import scala.scalajs.js.JSConverters.*
