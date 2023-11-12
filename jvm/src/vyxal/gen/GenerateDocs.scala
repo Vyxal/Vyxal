@@ -93,7 +93,7 @@ private object GenerateDocs:
         // Have to use tuple in case of digraphs
         (
           Lexer.Codepage.indexOf(elem.symbol.charAt(0)) +
-            (if "#∆øÞ".contains(elem.symbol.charAt(0)) then 200 else 0),
+            (if "#∆øÞ".contains(elem.symbol.charAt(0)) then 400 else 0),
           Lexer.Codepage.indexOf(elem.symbol.substring(1)),
         )
       }
