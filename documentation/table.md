@@ -301,11 +301,6 @@
 | `∨` | Logical Or | `or`, `logical-or` | 2 | ✅ | `a: any, b: any` => `a \|\| b`
 | `⁰` | First Input | `first-input`, `input-0` | 0 | ❌ | `The first input to the program`
 | `¹` | Second Input | `second-input`, `input-1` | 0 | ❌ | `The second input to the program`
-| `#C` | Compress String Using Dictionary | `compress-dict`, `dict-comp`, `compress` | 1 | ❌ | `a: str` => `compress a using the dictionary`
-| `#X` | Loop Break | `break` | 0 | ❌ | `break out of the current loop`
-| `#v` | [Internal Use] Vectorise (Element Form)  |  | NA | ❌ | `*a, f` => `f vectorised over however many arguments in a. It is recommended to use the modifier instead`
-| `#x` | Loop Continue | `continue` | 0 | ❌ | `continue the current loop`
-| `#~` | [Internal Use] Apply Without Popping (Element Form) |  | NA | ❌ | `*a, f` => `f applied to the stack without popping items. Use the modifier instead.`
 | `²` | Third Input | `third-input`, `input-2` | 0 | ❌ | `The third input to the program`
 | `⌈` | Ceiling | `ceiling`, `ceil` | 1 | ✅ | `a: num` => `ceil(a)`
 | `⌊` | Floor | `floor` | 1 | ✅ | `a: num` => `floor(a)`
@@ -319,4 +314,9 @@
 | `•` | Asterisk | `asterisk` | 0 | ❌ | `"*"`
 | `≈` | All Equal? | `all-equal`, `all-equal?` | 1 | ❌ | `a: lst` => `are all elements of a equal?`
 | `ꜝ` | Increment | `incr`, `increment` | 1 | ✅ | `a: num` => `a + 1`
+| `#C` | Compress String Using Dictionary | `compress-dict`, `dict-comp`, `compress` | 1 | ❌ | `a: str` => `compress a using the dictionary`
+| `#X` | Loop Break | `break` | 0 | ❌ | `break out of the current loop`
+| `#v` | [Internal Use] Vectorise (Element Form)  |  | NA | ❌ | `*a, f` => `f vectorised over however many arguments in a. It is recommended to use the modifier instead`
+| `#x` | Loop Continue | `continue` | 0 | ❌ | `continue the current loop`
+| `#~` | [Internal Use] Apply Without Popping (Element Form) |  | NA | ❌ | `*a, f` => `f applied to the stack without popping items. Use the modifier instead.`
 | `ÞT` | Transpose Safe | `transpose-safe` | 1 | ❌ | `a: any` => `transpose a`
