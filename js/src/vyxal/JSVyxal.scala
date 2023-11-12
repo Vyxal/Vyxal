@@ -46,10 +46,7 @@ object JSVyxal:
 
   @JSExport
   def printHelpText(printFunc: js.Function1[String, Unit]): Unit =
-    val resultPromise: js.Promise[String] = js.dynamicImport {
-      HelpText().getHelpText
-    }
-    for result <- resultPromise.toFuture do printFunc(result)
+    js.dynamicImport { HelpText().getHelpText }.then { text => printFunc(text) }
 
   @JSExport
   def setShortDict(dict: String): Unit =
