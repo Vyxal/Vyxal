@@ -279,7 +279,6 @@
 | `₇` | Two hundred fifty-six | `two-hundred-fifty-six` | 0 | ❌ | `256`
 | `₈` | Alphabet | `alphabet`, `a-z` | 0 | ❌ | `"abcdefghijklmnopqrstuvwxyz"`
 | `₉` | Empty array | `empty-list`, `nil-list`, `new-list` | 0 | ❌ | `[]`
-| `ÞT` | Transpose Safe | `transpose-safe` | 1 | ❌ | `a: any` => `transpose a`
 | `½` | Halve | `halve` | 1 | ✅ | `a: num` => `a / 2`
 | | | | | | `a: str` => `a split into two pieces`
 | `ʀ` | Exclusive Zero Range / Lowercase | `0->n`, `zero-range`, `lowered-range`, `to-lower`, `lower`, `lowercase` | 1 | ✅ | `a: num` => `[0..a)`
@@ -320,3 +319,4 @@
 | `•` | Asterisk | `asterisk` | 0 | ❌ | `"*"`
 | `≈` | All Equal? | `all-equal`, `all-equal?` | 1 | ❌ | `a: lst` => `are all elements of a equal?`
 | `ꜝ` | Increment | `incr`, `increment` | 1 | ✅ | `a: num` => `a + 1`
+| `ÞT` | Transpose Safe | `transpose-safe` | 1 | ❌ | `a: any` => `transpose a`

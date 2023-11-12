@@ -20,78 +20,6 @@ Keywords: decr, decrement
 Keywords: fact, factorial
 - a: num -> a!
 ---------------------
-#|para-apply ([Internal Use] Parallel Apply (Element Form)) (non-vectorising)
-Keywords: 
-- *a, f -> The iconic parallel apply. Use the modifier instead bingus.
----------------------
-#|minimum-by ([Internal Use] Minimum By (Element Form)) (non-vectorising)
-Keywords: 
-- *a, f -> minimum of a by f. Use the modifier instead.
----------------------
-#|map-prefixes ([Internal Use] Map Prefixes (Element Form)) (non-vectorising)
-Keywords: 
-- *a, f -> f applied to each prefix of a. Use the modifier instead.
----------------------
-#|map-suffixes ([Internal Use] Map Suffixes (Element Form)) (non-vectorising)
-Keywords: 
-- *a, f -> f applied to each suffix of a. Use the modifier instead.
----------------------
-#|reduce-cols ([Internal Use] Reduce Columns (Element Form)) (non-vectorising)
-Keywords: 
-- *a, f -> each column of a reduced by f. Use the modifier instead.
----------------------
-#|maximum-by ([Internal Use] Maximum By (Element Form)) (non-vectorising)
-Keywords: 
-- *a, f -> maximum of a by f. Use the modifier instead.
----------------------
-#|vscan ([Internal Use] Vectorised Scan (Element Form)) (non-vectorising)
-Keywords: 
-- *a, f -> scanl each column. Use the modifier instead.
----------------------
-#|para-apply-wrap ([Internal Use] Parallel Apply Wrap (Element Form)) (non-vectorising)
-Keywords: 
-- *a, f -> The iconic parallel apply. Use the modifier instead bingus.
----------------------
-#|apply-to-register ([Internal Use] Apply to Register (Element Form)) (non-vectorising)
-Keywords: 
-- *a, f -> f applied to the register. Use the modifier instead.
----------------------
-#|vec-dump ([Internal Use] Map Dump (Element Form)) (non-vectorising)
-Keywords: 
-- *a, f -> f applied to each element of a, treating as a stack. Use the modifier instead.
----------------------
-#|dip ([Internal Use] Dip (Element Form)) (non-vectorising)
-Keywords: 
-- *a, f -> f applied to a with a pushed back. Use the modifier instead.
----------------------
-#|invar ([Internal Use] Invariant (Element Form)) (non-vectorising)
-Keywords: 
-- *a, f -> Use the ᵞ modifier instead.
----------------------
-#|all-neigh ([Internal Use] All Neighbours (Element Form)) (non-vectorising)
-Keywords: 
-- *a, f -> f applied to each neighbour of a. Use the modifier instead.
----------------------
-#C (Compress String Using Dictionary) (non-vectorising)
-Keywords: compress-dict, dict-comp, compress
-- a: str -> compress a using the dictionary
----------------------
-#X (Loop Break) (non-vectorising)
-Keywords: break
--  -> break out of the current loop
----------------------
-#v ([Internal Use] Vectorise (Element Form) ) (non-vectorising)
-Keywords: 
-- *a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead
----------------------
-#x (Loop Continue) (non-vectorising)
-Keywords: continue
--  -> continue the current loop
----------------------
-#~ ([Internal Use] Apply Without Popping (Element Form)) (non-vectorising)
-Keywords: 
-- *a, f -> f applied to the stack without popping items. Use the modifier instead.
----------------------
 $ (Swap) (non-vectorising)
 Keywords: swap
 - a, b -> b, a
@@ -863,10 +791,6 @@ Trigraph: #,9
 Keywords: empty-list, nil-list, new-list
 - -> []
 ---------------------
-ÞT (Transpose Safe) (non-vectorising)
-Keywords: transpose-safe
-- a: any -> transpose a
----------------------
 ½ (Halve) (vectorising)
 Trigraph: #.5
 Keywords: halve
@@ -1035,6 +959,82 @@ Keywords: all-equal, all-equal?
 Trigraph: #^!
 Keywords: incr, increment
 - a: num -> a + 1
+---------------------
+ÞT (Transpose Safe) (non-vectorising)
+Keywords: transpose-safe
+- a: any -> transpose a
+---------------------
+#|para-apply ([Internal Use] Parallel Apply (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> The iconic parallel apply. Use the modifier instead bingus.
+---------------------
+#|minimum-by ([Internal Use] Minimum By (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> minimum of a by f. Use the modifier instead.
+---------------------
+#|map-prefixes ([Internal Use] Map Prefixes (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to each prefix of a. Use the modifier instead.
+---------------------
+#|map-suffixes ([Internal Use] Map Suffixes (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to each suffix of a. Use the modifier instead.
+---------------------
+#|reduce-cols ([Internal Use] Reduce Columns (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> each column of a reduced by f. Use the modifier instead.
+---------------------
+#|maximum-by ([Internal Use] Maximum By (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> maximum of a by f. Use the modifier instead.
+---------------------
+#|vscan ([Internal Use] Vectorised Scan (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> scanl each column. Use the modifier instead.
+---------------------
+#|para-apply-wrap ([Internal Use] Parallel Apply Wrap (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> The iconic parallel apply. Use the modifier instead bingus.
+---------------------
+#|apply-to-register ([Internal Use] Apply to Register (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to the register. Use the modifier instead.
+---------------------
+#|vec-dump ([Internal Use] Map Dump (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to each element of a, treating as a stack. Use the modifier instead.
+---------------------
+#|dip ([Internal Use] Dip (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to a with a pushed back. Use the modifier instead.
+---------------------
+#|invar ([Internal Use] Invariant (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> Use the ᵞ modifier instead.
+---------------------
+#|all-neigh ([Internal Use] All Neighbours (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to each neighbour of a. Use the modifier instead.
+---------------------
+#C (Compress String Using Dictionary) (non-vectorising)
+Keywords: compress-dict, dict-comp, compress
+- a: str -> compress a using the dictionary
+---------------------
+#X (Loop Break) (non-vectorising)
+Keywords: break
+-  -> break out of the current loop
+---------------------
+#v ([Internal Use] Vectorise (Element Form) ) (non-vectorising)
+Keywords: 
+- *a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead
+---------------------
+#x (Loop Continue) (non-vectorising)
+Keywords: continue
+-  -> continue the current loop
+---------------------
+#~ ([Internal Use] Apply Without Popping (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to the stack without popping items. Use the modifier instead.
 ---------------------
 Ч
 Keywords: ****:
