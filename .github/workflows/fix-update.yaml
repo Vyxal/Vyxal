@@ -44,7 +44,7 @@ jobs:
           java-version: "17"
           distribution: "adopt"
       - uses: coursier/cache-action@v6
-      - name: Update elements.txt and trigraphs.txt
+      - name: Update all documentation files
         run: ./mill jvm.docs
       - name: Update nanorc files for JLine
         run: ./mill jvm.nanorc

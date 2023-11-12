@@ -65,8 +65,8 @@ private object GenerateDocs:
     val contents = StringBuilder()
     val formatOverload = (overload: String) =>
       val (args, description) = overload.splitAt(overload.indexOf("->"))
-      if args == "" then s"$description"
-      else s"`$args` => $description"
+      if args == "" then s"${description.replace("|", "\\|")}"
+      else s"`${args.stripTrailing()}` => ${description.replace("|", "\\|")}"
     val addRow = (elem: Element) =>
       if !elem.symbol.startsWith("#|") then
         var overloads = elem.overloads
