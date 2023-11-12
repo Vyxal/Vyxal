@@ -7,9 +7,11 @@ import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 import scala.scalajs.js.JSConverters.*
 
-/** A bridge between the interpreter and JS */
+/** To avoid loading Scopt with the JSVyxal object */
 class HelpText:
   def getHelpText: String = CLI.helpText
+
+/** A bridge between the interpreter and JS */
 @JSExportTopLevel("Vyxal")
 object JSVyxal:
   @JSExport
@@ -20,33 +22,35 @@ object JSVyxal:
       printFunc: js.Function1[String, Unit],
   ): Unit =
     // todo take functions to print to custom stdout and stderr
-    if flags.contains('h') then return
-    else
-      val settings = Settings(online = true).withFlags(flags.toList)
-      val globals = Globals(
-        settings = settings,
-        printFn = printFunc,
-        inputs = Inputs(
-          inputs
-            .split("\n")
-            .map(x => MiscHelpers.eval(x)(using Context()))
-            .toSeq
-        ),
-      )
 
-      val ctx = Context(
-        inputs = inputs
+    // The help flag should be handled in the JS
+    if flags.contains('h') then return
+
+    val settings = Settings(online = true).withFlags(flags.toList)
+    val globals = Globals(
+      settings = settings,
+      printFn = printFunc,
+      inputs = Inputs(
+        inputs
           .split("\n")
           .map(x => MiscHelpers.eval(x)(using Context()))
-          .toIndexedSeq,
-        globals = globals,
-      )
-      Interpreter.execute(code)(using ctx)
+          .toSeq
+      ),
+    )
+
+    val ctx = Context(
+      inputs = inputs
+        .split("\n")
+        .map(x => MiscHelpers.eval(x)(using Context()))
+        .toIndexedSeq,
+      globals = globals,
+    )
+    Interpreter.execute(code)(using ctx)
   end execute
 
   @JSExport
   def printHelpText(printFunc: js.Function1[String, Unit]): Unit =
-    js.dynamicImport { HelpText().getHelpText }.then { text => printFunc(text) }
+    js.dynamicImport { HelpText().getHelpText }.`then` { text => printFunc(text) }
 
   @JSExport
   def setShortDict(dict: String): Unit =
