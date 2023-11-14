@@ -26,7 +26,11 @@ stdin := n ## read the input into n
 $n $collatz call
 ```
 
-_TODO: SBCS equivalent_
+turns into:
+
+```
+?#=n⸠ᵡλ#{e|½|ꜝ}#{}#=collatz#$n#$collatzĖ
+```
 
 ```
 ## The classic fizzbuzz
@@ -37,7 +41,11 @@ _TODO: SBCS equivalent_
 } join-on-newlines
 ```
 
-_TODO: SBCS equivalent_
+turns into:
+
+```
+100Mλn#[3|5#]Ḋ"FizzBuzz"½ḋG}ṅ
+```
 
 ```
 ## How about something that generates all the fibonacci numbers?
@@ -48,9 +56,9 @@ relation add from [1, 1] end
 ## is it really that simple?!
 ```
 
-[yes!](online interpreter link)
+([yes!](online interpreter link))
 
-(as SBCS):
+turns into:
 
 ```
 Ṇ+|#[1|1#]}
