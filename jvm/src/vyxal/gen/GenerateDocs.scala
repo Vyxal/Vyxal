@@ -132,8 +132,7 @@ private object GenerateDocs:
               modi._1.replace("|", "\\|")}` | `${trigraph}` | ${modi._2.name
               .replace("|", "/")} | ${modi._2.keywords
               .map("`" + _ + "`")
-              .mkString(", ")} | ${modi._2.arity} | <pre>${modi._2.description
-              .replace("|", "")}</pre> |\n"
+              .mkString(", ")} | ${modi._2.arity} | <pre>${modi._2.description.replace("|", "").replace("\n", "<br>")}</pre> |\n"
       )
 
     val modifiers = modifierHeader + "\n" + modiDivider + "\n" +
