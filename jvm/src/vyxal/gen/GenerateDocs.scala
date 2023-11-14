@@ -75,24 +75,6 @@ private object GenerateDocs:
       if args.stripTrailing() == "" then s"`$newDesc`"
       else
         s"`${args.stripTrailing().replace("|", "\\|").replace("->", "")}` => `$newDesc`"
-    val addRow = (elem: Element) =>
-      if !elem.symbol.startsWith("#|") then
-        var trigraph = ""
-        SugarMap.trigraphs
-          .collect { case (tri, s) if s == elem.symbol => tri }
-          .foreach { tri => trigraph = tri }
-        var overloads = elem.overloads
-        contents ++=
-          s"| `${"\\".repeat(if elem.symbol == "`" then 1 else 0) +
-              elem.symbol.replace("|", "\\|")}` | ${trigraph} | ${elem.name
-              .replace("|", "/")} | ${elem.keywords.map("`" + _ + "`").mkString(", ")} | ${elem.arity
-              .getOrElse("NA")} | ${if elem.vectorises then ":white_check_mark:"
-            else ":x:"} | ${formatOverload(overloads.head)}\n"
-        overloads = overloads.tail
-        while overloads.nonEmpty do
-          contents ++= s"| | | | | | | ${formatOverload(overloads.head)}\n"
-          overloads = overloads.tail
-
     Elements.elements.values.toSeq
       .sortBy { elem =>
         // Have to use tuple in case of digraphs
@@ -102,8 +84,72 @@ private object GenerateDocs:
           Lexer.Codepage.indexOf(elem.symbol.substring(1)),
         )
       }
-      .foreach(addRow)
+      .foreach(elem =>
+        if !elem.symbol.startsWith("#|") then
+          var trigraph = ""
+          SugarMap.trigraphs
+            .collect { case (tri, s) if s == elem.symbol => tri }
+            .foreach { tri => trigraph = tri }
+          var overloads = elem.overloads
+          contents ++=
+            s"| `${"\\".repeat(if elem.symbol == "`" then 1 else 0) +
+                elem.symbol.replace("|", "\\|")}` | ${trigraph} | ${elem.name
+                .replace("|", "/")} | ${elem.keywords
+                .map("`" + _ + "`")
+                .mkString(", ")} | ${elem.arity.getOrElse("NA")} | ${if elem.vectorises then ":white_check_mark:"
+              else ":x:"} | ${formatOverload(overloads.head)}\n"
+          overloads = overloads.tail
+          while overloads.nonEmpty do
+            contents ++= s"| | | | | | | ${formatOverload(overloads.head)}\n"
+            overloads = overloads.tail
+      )
 
-    header + "\n" + divider + "\n" + contents.toString
+    val elements = header + "\n" + divider + "\n" + contents.toString
+
+    contents.setLength(0)
+
+    val modifierHeader =
+      "| Symbol | Trigraph | Name | Keywords | Arity | Description |"
+    val modiDivider = "| --- | --- | --- | --- | --- | --- |"
+
+    Modifiers.modifiers.keys
+      .zip(Modifiers.modifiers.values)
+      .toSeq
+      .sortBy((modi, _) =>
+        (
+          Lexer.Codepage.indexOf(modi.charAt(0)) +
+            (if "#∆øÞ".contains(modi.charAt(0)) then 400 else 0),
+          Lexer.Codepage.indexOf(modi.substring(1)),
+        )
+      )
+      .foreach(modi =>
+        var trigraph = ""
+        SugarMap.trigraphs
+          .collect { case (tri, s) if s == modi._1 => tri }
+          .foreach { tri => trigraph = tri }
+        contents ++=
+          s"| `${"\\".repeat(if modi._1 == "`" then 1 else 0) +
+              modi._1.replace("|", "\\|")}` | ${trigraph} | ${modi._1
+              .replace("|", "/")} | ${modi._2.keywords
+              .map("`" + _ + "`")
+              .mkString(", ")} | ${modi._2.arity} | ${modi._2.description
+              .replace("|", "\\|")} |\n"
+      )
+
+    val modifiers = modifierHeader + "\n" + modiDivider + "\n" +
+      contents.toString
+
+    s"""
+       |# Element Table
+       |
+       |## Elements
+       |
+       |$elements
+       |
+       |## Modifiers
+       |
+       |$modifiers
+       |""".stripMargin
+
   end elementTable
 end GenerateDocs
