@@ -1,6 +1,9 @@
 *.class
 *.log
 
+# Vim
+*.swp
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
@@ -168,6 +171,9 @@ tests/test_extras.py
 temp.vy
 pages/vyxal.js
 pages/vyxal.js.map
+pages/helpText.js
+pages/helpText.js.map
+pages/internal-*
 pages/ShortDictionary.txt
 pages/LongDictionary.txt
 

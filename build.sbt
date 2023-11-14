@@ -139,6 +139,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
       Seq(
         "org.scala-js" %%% "scalajs-dom" % "2.8.0"
       ),
+    scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.ESModule) },
     // Where the compiled JS is output
     Compile / fastOptJS / artifactPath :=
       baseDirectory.value.getParentFile / "pages" / "vyxal.js",

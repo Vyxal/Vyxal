@@ -6,8 +6,14 @@ import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 import scala.scalajs.js.JSConverters.*
 
+/** To avoid loading Scopt with the JSVyxal object */
+@JSExportTopLevel("HelpText", moduleID = "helpText")
+object HelpText:
+  @JSExport
+  def getHelpText(): String = CLI.helpText
+
 /** A bridge between the interpreter and JS */
-@JSExportTopLevel("Vyxal")
+@JSExportTopLevel("Vyxal", moduleID = "vyxal")
 object JSVyxal:
   @JSExport
   def execute(
@@ -17,9 +23,10 @@ object JSVyxal:
       printFunc: js.Function1[String, Unit],
   ): Unit =
     // todo take functions to print to custom stdout and stderr
-    if code.contains('h') then
-      printFunc(CLI.helpText)
-      return
+
+    // The help flag should be handled in the JS
+    if flags.contains('h') then return
+
     val settings = Settings(online = true).withFlags(flags.toList)
     val globals = Globals(
       settings = settings,

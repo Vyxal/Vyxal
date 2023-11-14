@@ -167,7 +167,7 @@ object js extends VyxalModule with ScalaJSModule {
   val platform = "js"
 
   def scalaJSVersion = "1.14.0"
-  def moduleKind = T { ModuleKind.NoModule }
+  def moduleKind = T { ModuleKind.ESModule }
 
   def ivyDeps =
     T {
@@ -179,8 +179,22 @@ object js extends VyxalModule with ScalaJSModule {
   override def fastLinkJS =
     T {
       val res = super.fastLinkJS()
-      os.copy.over(res.dest.path / "main.js", pagesDir / "vyxal.js")
-      os.copy.over(res.dest.path / "main.js.map", pagesDir / "vyxal.js.map")
+      os.copy.over(res.dest.path / "vyxal.js", pagesDir / "vyxal.js")
+      os.copy.over(res.dest.path / "vyxal.js.map", pagesDir / "vyxal.js.map")
+      os.copy.over(res.dest.path / "helpText.js", pagesDir / "helpText.js")
+      os.copy.over(res.dest.path / "helpText.js.map", pagesDir / "helpText.js.map")
+
+      val generatedFiles = os
+        .walk(res.dest.path)
+        .filter(f =>
+          (f.ext == "js" || f.ext == "map") && f.last.startsWith("internal")
+        )
+      // move each file to pages directory
+      generatedFiles.foreach { file =>
+        println(file)
+        os.move.over(file, pagesDir / file.last)
+      }
+
       copyDicts()
       res
     }
@@ -188,9 +202,20 @@ object js extends VyxalModule with ScalaJSModule {
   override def fullLinkJS =
     T {
       val res = super.fastLinkJS()
-      os.copy.over(res.dest.path / "main.js", pagesDir / "vyxal.js")
-      os.copy.over(res.dest.path / "main.js.map", pagesDir / "vyxal.js.map")
+      os.copy.over(res.dest.path / "vyxal.js", pagesDir / "vyxal.js")
+      os.copy.over(res.dest.path / "vyxal.js.map", pagesDir / "vyxal.js.map")
+      os.copy.over(res.dest.path / "helpText.js", pagesDir / "helpText.js")
+      os.copy.over(res.dest.path / "helpText.js.map", pagesDir / "helpText.js.map")
       copyDicts()
+      val generatedFiles = os
+        .walk(res.dest.path)
+        .filter(f =>
+          (f.ext == "js" || f.ext == "map") && f.last.startsWith("internal")
+        )
+      // move each file to pages directory
+      generatedFiles.foreach { file =>
+        os.move.over(file, pagesDir / file.last)
+      }
       res
     }
 

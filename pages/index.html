@@ -30,12 +30,22 @@
   <script defer src="https://unpkg.com/fuzzysort@2.0.1"></script>
   <link rel="stylesheet" href="https://vyxal.github.io/Vylight/mode-vyxal.css">
 
-  <script defer src="./vyxal.js"></script>
-  <script defer src="./main.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "os": "./os.module.js"
+      }
+    }
+  </script>
+  <script defer src="./main.js" type="module"></script>
   <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 
-<body onload="initCodeMirror(); decodeURL();  updateCount();">
+<body>
+  <script>
+    const resizeCodeBox = window.resizeCodeBox;
+    const updateCount = window.updateCount;
+  </script>
   <textarea id=dummy style="visibility: hidden;position:absolute; height: 0px; font: size 20px;"></textarea>
   <h2 style="display: inline-block;"><a href="https://github.com/Vyxal/Vyxal/tree/version-3" target="_blank">Vyxal 3</a>
   </h2>
