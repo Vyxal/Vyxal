@@ -129,11 +129,11 @@ private object GenerateDocs:
           .foreach { tri => trigraph = tri }
         contents ++=
           s"| `${"\\".repeat(if modi._1 == "`" then 1 else 0) +
-              modi._1.replace("|", "\\|")}` | ${trigraph} | ${modi._1
+              modi._1.replace("|", "\\|")}` | `${trigraph}` | ${modi._2.name
               .replace("|", "/")} | ${modi._2.keywords
               .map("`" + _ + "`")
-              .mkString(", ")} | ${modi._2.arity} | ${modi._2.description
-              .replace("|", "\\|")} |\n"
+              .mkString(", ")} | ${modi._2.arity} | ```${modi._2.description
+              .replace("|", "\\|")}``` |\n"
       )
 
     val modifiers = modifierHeader + "\n" + modiDivider + "\n" +
