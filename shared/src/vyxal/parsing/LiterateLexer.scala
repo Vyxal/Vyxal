@@ -27,6 +27,7 @@ private[parsing] object LiterateLexer extends Lexer:
     ":",
     "->",
     "else:",
+    "else",
     "elif",
     "else-if",
     "body",
