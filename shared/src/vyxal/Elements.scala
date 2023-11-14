@@ -344,6 +344,9 @@ object Elements:
       None,
       "ඞ",
     ) { MiscHelpers.vyPrintln("sus") },
+    addDirect("🌮", "Taco", List("taco"), None, "very funky") {
+      ctx ?=> ctx.push("https://codegolf.stackexchange.com/users/58375/ataco")
+    },
     addPart(
       Dyad,
       "C",
