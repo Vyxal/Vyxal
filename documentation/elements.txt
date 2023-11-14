@@ -1041,50 +1041,50 @@ Keywords: ****:
 Description: Turn the next four elements (whether that be a structure/modifier/element) into a lambda
 Чfghi: Push the equivalent of λfghi} to the stack
 Trigraph: #^4
----------------------
+----------------------
 ᵈ
 Keywords: *2:
 Description: Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda
 ᵈf: Push the equivalent of λ2|f} to the stack
 Trigraph: #^d
----------------------
+----------------------
 ᶤ
 Keywords: first-index-where:, first-index-of:, ind-of:, find-by:
 Description: Find the first index where an element is truthy
 ᶤf: find the first index where f is truthy
 Trigraph: #^i
----------------------
+----------------------
 ∦
 Keywords: parallel-apply-and-wrap:, para-apply-and-wrap:, <paraply>:, <!!>:
 Description: Parallel apply two elements to the top of the stack
 and wrap the result in a list
 
----------------------
+----------------------
 ᵞ
 Keywords: invariant-under:, vertical-scan:, vscan:, v-scan:, invariant?:, same?:
 Description: Check if a function is invariant under a transformation / vertical scan
 ᵞf: check if top of stack is invariant under a transformation
 ᵞf: scanl columns by f
 Trigraph: #^y
----------------------
+----------------------
 ᵏ
 Keywords: key:
 Description: Map an element over the groups formed by identical items.
 ᵏf: Map f over the groups formed by identical items
 Trigraph: #^k
----------------------
+----------------------
 ⁿ
 Keywords: min-by:, minimum-by:
 Description: Minimum By Element
 ᵐf: Minimum of top of stack based on results of f
 Trigraph: #^n
----------------------
+----------------------
 `
 Keywords: vec-dump:, map-dump:
 Description: Map a function over the top of the stack, treating each iteration
 as if it were a stack of items. Essentially, dump before mapping
 
----------------------
+----------------------
 ᵇ
 Keywords: without-popping:, peek:, dedup-by:, remove-duplicates-by:
 Description: Apply a 2+ arity element to the stack without popping
@@ -1092,69 +1092,69 @@ Remove duplicates from a list by an element
 ᵇf<dyad|triad|tetrad>: apply f to the stack without popping
 ᵇf<monad>: remove duplicates from a list by applying f to each pair of elements
 Trigraph: #^b
----------------------
+----------------------
 ᴴ
 Keywords: apply-to-head:
 Description: Apply element only to the head of list
 ᴴf: Apply f to the head of the top of the stack
 Trigraph: #^H
----------------------
+----------------------
 ᶪ
 Keywords: loop-while-unique:
 Description: Loop While Unique - similar to ᶨ, but doesn't collect
 ᶪf: Loop while unique
 Trigraph: #^l
----------------------
+----------------------
 ᵐ
 Keywords: max-by:, maximum-by:
 Description: Maximum By Element
 ᵐf: Maximum of top of stack based on results of f
 Trigraph: #^m
----------------------
+----------------------
 ᶳ
 Keywords: sort-by:, scanl:
 Description: Sort By Element / Scanl
 ᶳf: Sort top of stack based on results of f
 ᶳf: Cumulatively reduce a list of items
 Trigraph: #^s
----------------------
+----------------------
 ᵂ
 Keywords: dip:
 Description: Stash the top of the stack temporarily, and then apply
 the function. Finally, push the stashed value
 ᵂf: pop M, apply f, push M
 Trigraph: #^W
----------------------
+----------------------
 ᶜ
 Keywords: reduce-columns:, map-over-suffixes:, fold-cols:, foldl-cols:, fold-columns-by:, reduce-columns-by:, over-suffixes:
 Description: Reduce columns of a 2d list by a function
 Map an element over suffixes
 Trigraph: #^c
----------------------
+----------------------
 э
 Keywords: ***:
 Description: Turn the next three elements (whether that be a structure/modifier/element) into a lambda
 эfgh: Push the equivalent of λfgh} to the stack
 Trigraph: #^%
----------------------
+----------------------
 ᵖ
 Keywords: map-over-prefixes:, over-prefixes:
 Description: Map an element over the prefixes of a list
 ᵖf: Map f over prefixes
 Trigraph: #^p
----------------------
+----------------------
 ϩ
 Keywords: **:
 Description: Turn the next two elements (whether that be a structure/modifier/element) into a lambda
 ϩfg: Push the equivalent of λfg} to the stack
 Trigraph: #^:
----------------------
+----------------------
 ᶨ
 Keywords: collect-while-unique:
 Description: Loop and Collect While Unique
 ᶨf: Loop and collect while unique
 Trigraph: #^j
----------------------
+----------------------
 ᵘ
 Keywords: collect-until-no-change:, until-stable:, stablise:, neighbours-equals:
 Description: Run func on the prev result until the result no longer changes
@@ -1163,7 +1163,7 @@ Given a dyadic function, apply the function to all overlapping pairs of elements
 and test if all results are equal
 ᵘf: Collect until no change
 Trigraph: #^u
----------------------
+----------------------
 ᵃ
 Keywords: apply-to-neighbours:, count-truthy:, apply-neighbours:, apply-to-neighbors:, apply-neighbors:, 2lvf:, twolif:, to-pairs:, to-overlaps:, count:
 Description: To each overlapping pair, reduce it by an element
@@ -1172,7 +1172,7 @@ Count the number of truthy elements in a list under a mondaic element
 ȧf<monad>: Count how many items in a list are truthy after applying f to each
 ᵃf<dyad>: equivalent to pushing the function, then calling ȧ
 Trigraph: #^a
----------------------
+----------------------
 ᶻ
 Keywords: zip-with:, zipwith:
 Description: 
@@ -1181,19 +1181,19 @@ Description:
       |Given a monadic function, the inverse of monadic /.
       |Filters where the function is falsey
 Trigraph: #^z
----------------------
+----------------------
 ¿
 Keywords: if-top:, if:
 Description: Pop the top of the stack, and, if it's truthy,
 apply a function
 Trigraph: #.?
----------------------
+----------------------
 ᵉ
 Keywords: **2:
 Description: Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda
 ᵉfg: Push the equivalent of λ2|fg} to the stack
 Trigraph: #^e
----------------------
+----------------------
 ᴿ
 Keywords: apply-to-register:, to-register:, to-reg:
 Description: Apply a function to the register. Essentially, push
@@ -1201,53 +1201,53 @@ the reigster value to the stack, apply the function, and
 then pop back into the register
 ᴿf: Apply f to the register
 Trigraph: #^R
----------------------
+----------------------
 v
 Keywords: vectorise:, vec:, v:
 Description: Vectorises
 vf: f but vectorised
----------------------
+----------------------
 ᴳ
 Keywords: ****2:
 Description: Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
 ᵍfghi: Push the equivalent of λ2|fghi} to the stack
----------------------
+----------------------
 ⸠
 Keywords: *:
 Description: Turn the next element (whether that be a structure/modifier/element) into a lambda
 ⸠f: Push the equivalent of λf} to the stack
 Trigraph: #^.
----------------------
+----------------------
 ᵗ
 Keywords: 
 Description: Unassigned
 Trigraph: #^t
----------------------
+----------------------
 ᶠ
 Keywords: ***2:
 Description: Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda
 ᶠfgh: Push the equivalent of λ2|fgh} to the stack
 Trigraph: #^f
----------------------
+----------------------
 ᵒ
 Keywords: outer-product:, table:
 Description: Outer product
 ᵒf: Pop two lists, then make a matrix from them by applying f to each pair of elements
 Trigraph: #^o
----------------------
+----------------------
 /
 Keywords: foldl:, reduce:, /:, fold:, reduceby:-
 Description: Reduce a list by an element
 /f: reduce by element f
----------------------
+----------------------
 ∥
 Keywords: parallel-apply:, para-apply:, paraply:, !!:
 Description: Parallel apply two elements to the top of the stack
 
----------------------
+----------------------
 ᵡ
 Keywords: scan-fix:
 Description: Scan a function until it reaches a fixed point
 ᵡf: scan f until a fixed point is reached / apply until a previous value is repeated, collecting intermediate results
 Trigraph: #^X
----------------------
+----------------------
