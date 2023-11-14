@@ -61,7 +61,8 @@ private object GenerateDocs:
       .mkString("", "\n", "\n")
 
   def elementTable(): String =
-    val header = "| Symbol | Trigraph |  Name | Keywords | Arity | Vectorises | Overloads |"
+    val header =
+      "| Symbol | Trigraph |  Name | Keywords | Arity | Vectorises | Overloads |"
     val divider = "| --- | --- | --- | --- | --- | --- | --- |"
     val contents = StringBuilder()
     val formatOverload = (overload: String) =>
@@ -78,14 +79,14 @@ private object GenerateDocs:
       if !elem.symbol.startsWith("#|") then
         var trigraph = ""
         SugarMap.trigraphs
-            .collect { case (tri, s) if s == elem.symbol => tri }
-            .foreach { tri => trigraph = tri }
+          .collect { case (tri, s) if s == elem.symbol => tri }
+          .foreach { tri => trigraph = tri }
         var overloads = elem.overloads
         contents ++=
           s"| `${"\\".repeat(if elem.symbol == "`" then 1 else 0) +
-              elem.symbol.replace("|", "\\|")}` | ${trigraph} | ${elem.name.replace("|", "/")} | ${elem.keywords
-              .map("`" + _ + "`")
-              .mkString(", ")} | ${elem.arity.getOrElse("NA")} | ${if elem.vectorises then ":white_check_mark:"
+              elem.symbol.replace("|", "\\|")}` | ${trigraph} | ${elem.name
+              .replace("|", "/")} | ${elem.keywords.map("`" + _ + "`").mkString(", ")} | ${elem.arity
+              .getOrElse("NA")} | ${if elem.vectorises then ":white_check_mark:"
             else ":x:"} | ${formatOverload(overloads.head)}\n"
         overloads = overloads.tail
         while overloads.nonEmpty do
