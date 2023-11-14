@@ -83,7 +83,7 @@ private object GenerateDocs:
         var overloads = elem.overloads
         contents ++=
           s"| `${"\\".repeat(if elem.symbol == "`" then 1 else 0) +
-              elem.symbol.replace("|", "\\|")}` | ${tri} | ${elem.name.replace("|", "/")} | ${elem.keywords
+              elem.symbol.replace("|", "\\|")}` | ${trigraph} | ${elem.name.replace("|", "/")} | ${elem.keywords
               .map("`" + _ + "`")
               .mkString(", ")} | ${elem.arity.getOrElse("NA")} | ${if elem.vectorises then ":white_check_mark:"
             else ":x:"} | ${formatOverload(overloads.head)}\n"
