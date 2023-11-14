@@ -417,4 +417,3 @@ and wrap the result in a list
 </pre> |
  `¿` | `#.?` | Conditional Execution | `if-top:`, `if:` | 1 | <pre>Pop the top of the stack, and, if it's truthy,
 apply a function</pre> |
-
