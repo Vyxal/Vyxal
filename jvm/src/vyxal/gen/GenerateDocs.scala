@@ -78,7 +78,7 @@ private object GenerateDocs:
       if !elem.symbol.startsWith("#|") then
         var trigraph = ""
         SugarMap.trigraphs
-            .collect { case (tri, s) if s == symbol => tri }
+            .collect { case (tri, s) if s == elem.symbol => tri }
             .foreach { tri => trigraph = tri }
         var overloads = elem.overloads
         contents ++=
