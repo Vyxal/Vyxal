@@ -844,6 +844,7 @@ Keywords: rotate-stack-left
 -  -> rotate the entire stack left once
 ---------------------
 ↑ (Grade Up) (non-vectorising)
+Trigraph: #^^
 Keywords: grade-up
 - a: any -> indices that will sort a
 ---------------------

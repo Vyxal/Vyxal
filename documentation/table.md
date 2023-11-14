@@ -290,7 +290,7 @@
 | `£` | #^= | Set Register | `set-register`, `->register`, `set-reg`, `->reg` | 1 | :x: | `a: any` => `register = a`
 | `¥` | #^$ | Get Register | `get-register`, `get-reg`, `register`, `<-register`, `<-reg` | NA | :x: | `push the value of the register`
 | `←` | #^< | Rotate Stack Left | `rotate-stack-left` | NA | :x: | `rotate the entire stack left once`
-| `↑` |  | Grade Up | `grade-up` | 1 | :x: | `a: any` => `indices that will sort a`
+| `↑` | #^^ | Grade Up | `grade-up` | 1 | :x: | `a: any` => `indices that will sort a`
 | `→` | #^> | Rotate Stack Right | `rotate-stack-right` | NA | :x: | `rotate the entire stack right once`
 | `↓` | #^; | Grade Down | `grade-down` | 1 | :x: | `a: any` => `indices that will reverse-sort a`
 | `±` | #,+ | Sign | `sign` | 1 | :white_check_mark: | `a: num` => `sign of a`
