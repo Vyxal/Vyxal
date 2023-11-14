@@ -140,7 +140,7 @@ private object GenerateDocs:
       contents.toString
 
     s"""
-       |# Element Table
+       |# Information Tables
        |
        |## Elements
        |
