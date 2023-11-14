@@ -49,7 +49,7 @@ private object GenerateDocs:
         SugarMap.trigraphs
           .collect { case (tri, s) if s == name => tri }
           .foreach { tri => sb ++= s"Trigraph: $tri\n" }
-        sb ++= "---------------------\n"
+        sb ++= "----------------------\n"
     }
 
     sb.toString
