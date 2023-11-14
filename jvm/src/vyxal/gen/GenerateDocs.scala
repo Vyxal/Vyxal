@@ -38,7 +38,7 @@ private object GenerateDocs:
 
           sb ++= s"Keywords:${keywords.mkString(" ", ", ", "")}\n"
           overloads.foreach { overload => sb ++= s"- $overload\n" }
-          sb ++= "---------------------\n"
+          sb ++= "----------------------\n"
       }
 
     Modifiers.modifiers.foreach {
