@@ -2,6 +2,7 @@ package vyxal.gen
 
 import vyxal.{Element, Elements, Modifiers, SugarMap}
 import vyxal.parsing.Lexer
+import vyxal.Modifier
 
 /** For generating elements.txt and trigraphs.txt. See build.sc */
 private object GenerateDocs:
@@ -91,13 +92,17 @@ private object GenerateDocs:
             .collect { case (tri, s) if s == elem.symbol => tri }
             .foreach { tri => trigraph = tri }
           var overloads = elem.overloads
+          val name = elem.name.replace("|", "/")
+          val symbol = "\\".repeat(if elem.symbol == "`" then 1 else 0) +
+            elem.symbol.replace("|", "\\|")
+          val keywords = elem.keywords.map("`" + _ + "`").mkString(", ")
+          val vectorises =
+            if elem.vectorises then ":white_check_mark:"
+            else ":x:"
+
           contents ++=
-            s"| `${"\\".repeat(if elem.symbol == "`" then 1 else 0) +
-                elem.symbol.replace("|", "\\|")}` | ${trigraph} | ${elem.name
-                .replace("|", "/")} | ${elem.keywords
-                .map("`" + _ + "`")
-                .mkString(", ")} | ${elem.arity.getOrElse("NA")} | ${if elem.vectorises then ":white_check_mark:"
-              else ":x:"} | ${formatOverload(overloads.head)}\n"
+            s"| `$symbol` | $trigraph | $name | $keywords | ${elem.arity
+                .getOrElse("NA")} | $vectorises | ${formatOverload(overloads.head)}\n"
           overloads = overloads.tail
           while overloads.nonEmpty do
             contents ++= s"| | | | | | | ${formatOverload(overloads.head)}\n"
@@ -123,16 +128,20 @@ private object GenerateDocs:
         )
       )
       .foreach(modi =>
-        var trigraph = ""
-        SugarMap.trigraphs
-          .collect { case (tri, s) if s == modi._1 => tri }
-          .foreach { tri => trigraph = tri }
-        contents ++=
-          s"| `${"\\".repeat(if modi._1 == "`" then 1 else 0) +
-              modi._1.replace("|", "\\|")}` | `${trigraph}` | ${modi._2.name
-              .replace("|", "/")} | ${modi._2.keywords
-              .map("`" + _ + "`")
-              .mkString(", ")} | ${modi._2.arity} | <pre>${modi._2.description.replace("|", "").replace("\n", "<br>")}</pre> |\n"
+        modi match
+          case (symbol, Modifier(name, description, keywords, arity)) =>
+            var trigraph = ""
+            SugarMap.trigraphs
+              .collect { case (tri, s) if s == symbol => tri }
+              .foreach { tri => trigraph = tri }
+            val formatSymbol = "\\".repeat(if symbol == "`" then 1 else 0) +
+              symbol.replace("|", "\\|")
+            val formatKeywords = keywords.map("`" + _ + "`").mkString(", ")
+            contents ++=
+              s"| `$formatSymbol` | `$trigraph` | ${name
+                  .replace("|", "/")} | $formatKeywords | ${arity} | <pre>${description
+                  .replace("|", "")
+                  .replace("\n", "<br>")}</pre> |\n"
       )
 
     val modifiers = modifierHeader + "\n" + modiDivider + "\n" +
