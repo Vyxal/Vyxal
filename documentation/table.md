@@ -454,4 +454,3 @@
  `∆` | `#.\` | Mathematical Digraphs | Used for math-related digraphs | <pre>∆<character></pre>` |
  `ø` | `#,/` | String Digraphs | Used for string-related digraphs | <pre>ø<character></pre>` |
  `Þ` | `#.)` | List Digraphs | Used for list-related digraphs | <pre>Þ<character></pre>` |
-
