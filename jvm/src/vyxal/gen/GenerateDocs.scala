@@ -170,6 +170,11 @@ private object GenerateDocs:
             .foreach { tri => trigraph = tri }
           val formatSymbol = "\\".repeat(if symbol == "`" then 1 else 0) +
             symbol.replace("|", "\\|")
+          val formatUsage = usage
+            .replace("|", "\\|")
+            .replace("\n", "<br>")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
           contents ++=
             s"| `$formatSymbol` | $trigraph | $name | $description | <pre>$usage</pre>` |\n"
       }
