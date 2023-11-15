@@ -147,6 +147,8 @@ private object GenerateDocs:
     val modifiers = modifierHeader + "\n" + modiDivider + "\n" +
       contents.toString
 
+    contents.setLength(0)
+
     val syntaxHeader = "| Symbol | Trigraph | Name | Description | Usage |"
     val syntaxDivider = "| --- | --- | --- | --- | --- |"
 
@@ -169,7 +171,7 @@ private object GenerateDocs:
           val formatSymbol = "\\".repeat(if symbol == "`" then 1 else 0) +
             symbol.replace("|", "\\|")
           contents ++=
-            s"| `$formatSymbol` | `$trigraph` | $name | $description | <pre>$usage</pre>` |\n"
+            s"| `$formatSymbol` | $trigraph | $name | $description | <pre>$usage</pre>` |\n"
       }
 
     val syntaxInformation = syntaxHeader + "\n" + syntaxDivider + "\n" +
