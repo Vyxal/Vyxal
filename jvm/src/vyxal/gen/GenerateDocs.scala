@@ -178,7 +178,7 @@ private object GenerateDocs:
             .replace("<", "&lt;")
             .replace(">", "&gt;")
           contents ++=
-            s"| `$formatSymbol` | $trigraph | $name | $description | <pre>$formatUsage</pre>` |\n"
+            s"| `$formatSymbol` | $trigraph | $name | $description | <pre>$formatUsage</pre> |\n"
       }
 
     val syntaxInformation = syntaxHeader + "\n" + syntaxDivider + "\n" +
