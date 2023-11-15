@@ -135,8 +135,9 @@ private object GenerateDocs:
           SugarMap.trigraphs
             .collect { case (tri, s) if s == symbol => tri }
             .foreach { tri => trigraph = tri }
-          val formatSymbol = "\\".repeat(if symbol == "`" then 1 else 0) +
-            symbol.replace("|", "\\|")
+          val formatSymbol =
+            if symbol != "`" then symbol.replace("|", "\\|")
+            else "<code>`</code>"
           val formatKeywords = keywords.map("`" + _ + "`").mkString(", ")
           contents ++=
             s"| `$formatSymbol` | `$trigraph` | ${name.replace("|", "/")} | $formatKeywords | ${arity} | <pre>${description
