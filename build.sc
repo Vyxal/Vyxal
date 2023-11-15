@@ -24,6 +24,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
       ivy"com.lihaoyi::fastparse::3.0.2",
       ivy"com.github.scopt::scopt::4.1.0",
       ivy"com.outr::scribe::3.12.2",
+      ivy"org.scala-lang::toolkit:0.1.7",
     )
 
   override def scalacOptions =
@@ -135,15 +136,28 @@ object jvm extends VyxalModule {
         "vyxal.gen.GenerateDocs",
         "generate",
       )
+      val descriptions = runMethod[String](
+        jvm.runClasspath(),
+        "vyxal.gen.GenerateKeyboard",
+        "generateDescriptions",
+      )
       val elementsFile = build.millSourcePath / "documentation" / "elements.txt"
       val trigraphsFile = build.millSourcePath / "documentation" /
         "trigraphs.txt"
       val tableFile = build.millSourcePath / "documentation" / "table.md"
+      val descriptionsFile = build.millSourcePath / "pages" /
+        "descriptions.json"
       os.write.over(elementsFile, elements)
       os.write.over(trigraphsFile, trigraphs)
       os.write.over(tableFile, table)
+      os.write.over(descriptionsFile, descriptions)
 
-      Seq(PathRef(elementsFile), PathRef(trigraphsFile), PathRef(tableFile))
+      Seq(
+        PathRef(elementsFile),
+        PathRef(trigraphsFile),
+        PathRef(tableFile),
+        PathRef(descriptionsFile),
+      )
     }
 
   /** Generate nanorc files for JLine highlighting */
@@ -182,7 +196,8 @@ object js extends VyxalModule with ScalaJSModule {
       os.copy.over(res.dest.path / "vyxal.js", pagesDir / "vyxal.js")
       os.copy.over(res.dest.path / "vyxal.js.map", pagesDir / "vyxal.js.map")
       os.copy.over(res.dest.path / "helpText.js", pagesDir / "helpText.js")
-      os.copy.over(res.dest.path / "helpText.js.map", pagesDir / "helpText.js.map")
+      os.copy
+        .over(res.dest.path / "helpText.js.map", pagesDir / "helpText.js.map")
 
       val generatedFiles = os
         .walk(res.dest.path)
@@ -205,7 +220,8 @@ object js extends VyxalModule with ScalaJSModule {
       os.copy.over(res.dest.path / "vyxal.js", pagesDir / "vyxal.js")
       os.copy.over(res.dest.path / "vyxal.js.map", pagesDir / "vyxal.js.map")
       os.copy.over(res.dest.path / "helpText.js", pagesDir / "helpText.js")
-      os.copy.over(res.dest.path / "helpText.js.map", pagesDir / "helpText.js.map")
+      os.copy
+        .over(res.dest.path / "helpText.js.map", pagesDir / "helpText.js.map")
       copyDicts()
       val generatedFiles = os
         .walk(res.dest.path)
