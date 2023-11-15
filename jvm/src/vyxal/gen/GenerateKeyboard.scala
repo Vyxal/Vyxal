@@ -53,6 +53,10 @@ private object GenerateKeyboard:
       scala.collection.mutable.HashMap[Int, List[Map[String, String]]]()
     for (index, elements) <- data do finalData(index) = elements.toList
 
-    upickle.default.write(finalData.toMap)
+    val escapedCodepage =
+      Lexer.Codepage.replace("\"", "\\\"").replace("\n", "\\n")
+    val header =
+      s"var codepage = \"$escapedCodepage\";\nvar codepage_descriptions ="
+    header + upickle.default.write(finalData.toMap)
   end generateDescriptions
 end GenerateKeyboard

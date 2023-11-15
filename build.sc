@@ -145,8 +145,7 @@ object jvm extends VyxalModule {
       val trigraphsFile = build.millSourcePath / "documentation" /
         "trigraphs.txt"
       val tableFile = build.millSourcePath / "documentation" / "table.md"
-      val descriptionsFile = build.millSourcePath / "pages" /
-        "descriptions.json"
+      val descriptionsFile = build.millSourcePath / "pages" / "parsed_yaml.js"
       os.write.over(elementsFile, elements)
       os.write.over(trigraphsFile, trigraphs)
       os.write.over(tableFile, table)
