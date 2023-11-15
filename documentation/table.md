@@ -8,8 +8,8 @@
  `🌮` |  | Taco | `taco` | NA | :x: | `very funky`
  `🍪` |  | Cookie | `cookie` | NA | :x: | `cookie.`
  `ඞ` |  | ඞ | `sus` | NA | :x: | `ඞ`
- `¦` | #.; | Pipe | `pipe` | 0 | :x: | `"\|"`
- `ᵛ` | #^v | Decrement | `decr`, `decrement` | 1 | :white_check_mark: | `a: num` => `a - 1`
+ `¦` | `#.;` | Pipe | `pipe` | 0 | :x: | `"\|"`
+ `ᵛ` | `#^v` | Decrement | `decr`, `decrement` | 1 | :white_check_mark: | `a: num` => `a - 1`
  `!` |  | Factorial | `fact`, `factorial` | 1 | :white_check_mark: | `a: num` => `a!`
  `$` |  | Swap | `swap` | NA | :x: | `a, b` => `b, a`
  `%` |  | Modulo / String Formatting | `mod`, `modulo`, `str-format`, `format`, `%`, `strfmt` | 2 | :x: | `a: num, b: num` => `a % b`
@@ -143,184 +143,184 @@
  | | | | | | `a: lst, b: str\|lst` => `each x in a in base with alphabet b`
  `z` |  | Inclusive zero Range / Is Lowercase | `inclusive-zero-range`, `zero->n`, `is-lowercase?`, `lowercase?`, `lower?` | 1 | :white_check_mark: | `a: num` => `[0, 1, ..., a]`
  | | | | | | `a: str` => `is a lowercase?`
- `Ȧ` | #.A | Absolute Value / Keep Alphabet Characters | `abs`, `absolute-value`, `keep-alphabet` | 1 | :white_check_mark: | `a: num` => `\|a\|`
+ `Ȧ` | `#.A` | Absolute Value / Keep Alphabet Characters | `abs`, `absolute-value`, `keep-alphabet` | 1 | :white_check_mark: | `a: num` => `\|a\|`
  | | | | | | `a: str` => `keep alphabet characters of a`
- `Ḃ` | #.B | Execute lambda without popping / Evaluate as Vyxal without popping / Boolean Mask / Is 1? | `peek-call`, `exec-peek`, `boolean-mask`, `bool-mask`, `strict-boolify`, `is-1?` | 1 | :x: | `a: fun` => `Execute a without popping`
+ `Ḃ` | `#.B` | Execute lambda without popping / Evaluate as Vyxal without popping / Boolean Mask / Is 1? | `peek-call`, `exec-peek`, `boolean-mask`, `bool-mask`, `strict-boolify`, `is-1?` | 1 | :x: | `a: fun` => `Execute a without popping`
  | | | | | | `a: str` => `Evaluate a as Vyxal without popping`
  | | | | | | `a: lst` => `Return a boolean array with 1s at the indices in a list.`
  | | | | | | `a: num` => `Is a == 1?`
- `Ċ` | #.C | Cycle / Is Positive? | `cycle`, `is-positive?`, `positive?`, `>0?` | 1 | :x: | `a: lst` => `a ++ a ++ a ++ ...`
+ `Ċ` | `#.C` | Cycle / Is Positive? | `cycle`, `is-positive?`, `positive?`, `>0?` | 1 | :x: | `a: lst` => `a ++ a ++ a ++ ...`
  | | | | | | `a: num` => `a > 0`
- `Ḋ` | #.D | Divides? / Append Spaces / Remove Duplicates by Function | `divides?`, `+-spaces`, `dedup-by` | 2 | :x: | `a: num, b: num` => `a % b == 0`
+ `Ḋ` | `#.D` | Divides? / Append Spaces / Remove Duplicates by Function | `divides?`, `+-spaces`, `dedup-by` | 2 | :x: | `a: num, b: num` => `a % b == 0`
  | | | | | | `a: str, b: num` => `a + ' ' * b`
  | | | | | | `a: num, b: str` => `b + ' ' * a`
  | | | | | | `a: lst, b: fun` => `Remove duplicates from a by applying b to each element`
- `Ė` | #.E | Execute lambda / Evaluate as Vyxal / Power with base 10 | `execute-lambda`, `evaluate-as-vyxal`, `power-base-10`, `call`, `@` | 1 | :x: | `a: fun` => `Execute a`
+ `Ė` | `#.E` | Execute lambda / Evaluate as Vyxal / Power with base 10 | `execute-lambda`, `evaluate-as-vyxal`, `power-base-10`, `call`, `@` | 1 | :x: | `a: fun` => `Execute a`
  | | | | | | `a: str` => `Evaluate a as Vyxal`
  | | | | | | `a: num` => `10 ** n`
- `Ḟ` | #.F | Find | `find` | 2 | :x: | `a: any, b: any` => `a.indexOf(b) (-1 if not found)`
+ `Ḟ` | `#.F` | Find | `find` | 2 | :x: | `a: any, b: any` => `a.indexOf(b) (-1 if not found)`
  | | | | | | `a: any, b: fun` => `truthy indices of mapping b over a`
- `Ġ` | #.G | Group by Function Result | `group-by` | 2 | :x: | `a: any, b: fun` => `group a by the results of b`
+ `Ġ` | `#.G` | Group by Function Result | `group-by` | 2 | :x: | `a: any, b: fun` => `group a by the results of b`
  | | | | | | `a: fun, b: any` => `group b by the results of a`
- `Ḣ` | #.H | Head Remove / Behead | `head-remove`, `behead` | 1 | :x: | `a: str` => `a[1:]`
+ `Ḣ` | `#.H` | Head Remove / Behead | `head-remove`, `behead` | 1 | :x: | `a: str` => `a[1:]`
  | | | | | | `a: any` => `toList(a)[1:]`
- `İ` | #.I | Index into Multiple / Collect While Unique / Complex Number | `index-into-multiple`, `collect-while-unique`, `complex` | 2 | :x: | `a: num, b: num` => `a.real + b.real * i`
+ `İ` | `#.I` | Index into Multiple / Collect While Unique / Complex Number | `index-into-multiple`, `collect-while-unique`, `complex` | 2 | :x: | `a: num, b: num` => `a.real + b.real * i`
  | | | | | | `a: any, b: lst` => ``[a[item] for item in b]``
  | | | | | | `a: any, b: fun` => `Apply b on a and collect unique values (until fixpoint). Does not include the initial value.`
- `Ŀ` | #.L | Logarithm / Scan Fixpoint / Same Length? / Length Equals? | `log`, `logarithm`, `scan-fixpoint`, `scan-fix`, `same-length?`, `same-length`, `length-equals?`, `length-equals`, `len-eq?` | 2 | :white_check_mark: | `a: num, b: num` => `log_b(a)`
+ `Ŀ` | `#.L` | Logarithm / Scan Fixpoint / Same Length? / Length Equals? | `log`, `logarithm`, `scan-fixpoint`, `scan-fix`, `same-length?`, `same-length`, `length-equals?`, `length-equals`, `len-eq?` | 2 | :white_check_mark: | `a: num, b: num` => `log_b(a)`
  | | | | | | `a: fun, b: any` => `apply until a previous value is repeated, collecting intermediate results`
  | | | | | | `a: str, b: str` => `a same length as b`
  | | | | | | `a: str, b: num` => `len(a) == b`
- `Ṁ` | #.M | Modular / Matrix Multiply / Regex Full Match? | `nth-items`, `modular`, `maxtrix-multiply`, `mat-multiply`, `mat-mul`, `regex-full-match?`, `full-match?` | 2 | :x: | `a: str\|lst, b: num` => `return every b-th element of a. If b is zero, mirror: prepend a to its reverse.`
+ `Ṁ` | `#.M` | Modular / Matrix Multiply / Regex Full Match? | `nth-items`, `modular`, `maxtrix-multiply`, `mat-multiply`, `mat-mul`, `regex-full-match?`, `full-match?` | 2 | :x: | `a: str\|lst, b: num` => `return every b-th element of a. If b is zero, mirror: prepend a to its reverse.`
  | | | | | | `a: num, b: str\|lst` => `return every a-th element of b. If a is zero, mirror: append b to its reverse.`
  | | | | | | `a: lst, b: lst` => `a * b (matrix multiply)`
  | | | | | | `a: str, b: str` => `does the entirety of a match b?`
- `Ṅ` | #.N | Join on Nothing / First Positive Integer / Is Alphanumeric | `nothing-join`, `concat-fold`, `join-on-nothing`, `empty-join`, `single-string`, `as-single-string`, `first-positive-integer`, `first-n>0`, `is-alphanumeric`, `is-alphanum`, `is-alnum` | 1 | :x: | `a: lst` => `a join on nothing`
+ `Ṅ` | `#.N` | Join on Nothing / First Positive Integer / Is Alphanumeric | `nothing-join`, `concat-fold`, `join-on-nothing`, `empty-join`, `single-string`, `as-single-string`, `first-positive-integer`, `first-n>0`, `is-alphanumeric`, `is-alphanum`, `is-alnum` | 1 | :x: | `a: lst` => `a join on nothing`
  | | | | | | `a: str` => `is a alphanumeric?`
  | | | | | | `a: fun` => `First positive integer ([1, 2, 3, ...]) for which a returns true`
- `Ȯ` | #.O | Over | `over` | 0 | :x: | `_` => `push a copy of the second item on the stack over the first`
+ `Ȯ` | `#.O` | Over | `over` | 0 | :x: | `_` => `push a copy of the second item on the stack over the first`
  | | | | | | `a b` => `a b a`
- `Ṗ` | #.P | Permutations | `permutations`, `perms` | 1 | :x: | `a: lst` => `Permutations of a`
- `Ṙ` | #.R | Rotate Left | `abc->bca`, `rot-left`, `rotate-left` | 1 | :x: | `a: any` => `rotate left once`
- `Ṡ` | #.S | Vectorised Sums | `vectorised-sums`, `vec-sums` | 1 | :x: | `a: lst` => `sum of each element of a`
- `Ṫ` | #.T | Init | `init`, `remove-last` | 1 | :x: | `a: lst` => `a[:-1]`
+ `Ṗ` | `#.P` | Permutations | `permutations`, `perms` | 1 | :x: | `a: lst` => `Permutations of a`
+ `Ṙ` | `#.R` | Rotate Left | `abc->bca`, `rot-left`, `rotate-left` | 1 | :x: | `a: any` => `rotate left once`
+ `Ṡ` | `#.S` | Vectorised Sums | `vectorised-sums`, `vec-sums` | 1 | :x: | `a: lst` => `sum of each element of a`
+ `Ṫ` | `#.T` | Init | `init`, `remove-last` | 1 | :x: | `a: lst` => `a[:-1]`
  | | | | | | `a: str` => `a[:-1]`
- `Ẇ` | #.W | Wrap to Length / Predicate Slice From 0 | `wrap-length`, `pred-slice-0` | 2 | :x: | `a: lst, b: num` => `a wrapped in chunks of length b`
+ `Ẇ` | `#.W` | Wrap to Length / Predicate Slice From 0 | `wrap-length`, `pred-slice-0` | 2 | :x: | `a: lst, b: num` => `a wrapped in chunks of length b`
  | | | | | | `a: fun, b: num` => `first b truthy integers where a is truthy`
- `Ẋ` | #.X | Cartesian Product | `cartesian-product`, `cartesian`, `cart-prod`, `cart` | 2 | :x: | `a: list, b: list` => `cartesian product of a and b`
+ `Ẋ` | `#.X` | Cartesian Product | `cartesian-product`, `cartesian`, `cart-prod`, `cart` | 2 | :x: | `a: list, b: list` => `cartesian product of a and b`
  `ι` |  | Length 0-Range | `zero->len` | 1 | :x: | `a: any` => ``[0, 1, 2, ..., len(a)-1]``
  `κ` |  | Lenght 1-Range | `one->len` | 1 | :x: | `a: any` => ``[1, 2, 3, ..., len(a)]``
- `ȧ` | #.a | Absolute Difference / Apply to Neighbours | `abs-diff`, `apply-to-neighbours` | 2 | :white_check_mark: | `a: num, b: num` => `\|a - b\|`
+ `ȧ` | `#.a` | Absolute Difference / Apply to Neighbours | `abs-diff`, `apply-to-neighbours` | 2 | :white_check_mark: | `a: num, b: num` => `\|a - b\|`
  | | | | | | `a: lst, b: fun` => `apply b to each pair of neighbours in a [applies to windows of length 2]`
  `ḃ` |  | Bit / Parity / Last Half of String | `bit`, `parity`, `str-last-half` | 1 | :white_check_mark: | `a: num` => `parity of a (a % 2)`
  | | | | | | `a: str` => `last half of a`
- `ċ` | #.c | N Choose K / Character Set Equal? / Repeat Until No Change | `n-choose-k`, `ncr`, `nck`, `choose`, `char-set-equal?`, `char-set-eq?`, `until-stable` | 2 | :white_check_mark: | `a: num, b: num` => `a choose b`
+ `ċ` | `#.c` | N Choose K / Character Set Equal? / Repeat Until No Change | `n-choose-k`, `ncr`, `nck`, `choose`, `char-set-equal?`, `char-set-eq?`, `until-stable` | 2 | :white_check_mark: | `a: num, b: num` => `a choose b`
  | | | | | | `a: str, b: str` => `are the character sets of a and b equal?`
  | | | | | | `a: fun, b: any` => `run a on b until the result no longer changes returning all intermediate results`
- `ḋ` | #.d | Dot Product / To Bijective Base / First Index Where Predicate Truthy | `dot-product`, `bijective-base`, `dot-prod`, `first-index-where` | 2 | :x: | `a: lst, b: lst` => `Dot product of a and b`
+ `ḋ` | `#.d` | Dot Product / To Bijective Base / First Index Where Predicate Truthy | `dot-product`, `bijective-base`, `dot-prod`, `first-index-where` | 2 | :x: | `a: lst, b: lst` => `Dot product of a and b`
  | | | | | | `a: num, b: num` => `Convert a to bijective base b`
- `ė` | #.e | Reciprocal / Remove Whitespace | `reciprocal`, `recip`, `remove-whitespace`, `remove-space`, `1/` | 1 | :white_check_mark: | `a: num` => `1/a`
+ `ė` | `#.e` | Reciprocal / Remove Whitespace | `reciprocal`, `recip`, `remove-whitespace`, `remove-space`, `1/` | 1 | :white_check_mark: | `a: num` => `1/a`
  | | | | | | `a: str` => `a with all whitespace removed`
- `ḟ` | #.f | Prime Factors / Remove Non-Alphabet | `prime-factors`, `remove-non-alphabet` | 1 | :white_check_mark: | `a: num` => `prime factors of a`
+ `ḟ` | `#.f` | Prime Factors / Remove Non-Alphabet | `prime-factors`, `remove-non-alphabet` | 1 | :white_check_mark: | `a: num` => `prime factors of a`
  | | | | | | `a: str` => `a with all non-alphabet characters removed`
- `ġ` | #.g | Group By Consecutive Items | `group-by-consecutive` | 1 | :x: | `a: any` => `group consecutive identical items of lst(a)`
- `ḣ` | #.h | Head Extract | `head-extract`, `split-at-head` | 1 | :x: | `a: lst\|str` => `Push a[0], then a[1:] onto the stack`
- `ŀ` | #.l | Transliterate / Call While | `transliterate`, `call-while` | 3 | :x: | `any a, any b, any c` => `transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)`
+ `ġ` | `#.g` | Group By Consecutive Items | `group-by-consecutive` | 1 | :x: | `a: any` => `group consecutive identical items of lst(a)`
+ `ḣ` | `#.h` | Head Extract | `head-extract`, `split-at-head` | 1 | :x: | `a: lst\|str` => `Push a[0], then a[1:] onto the stack`
+ `ŀ` | `#.l` | Transliterate / Call While | `transliterate`, `call-while` | 3 | :x: | `any a, any b, any c` => `transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)`
  | | | | | | `a: fun, b: fun, c: any` => `call b on c until a(c) is falsy`
- `ṁ` | #.m | Mirror | `mirror` | 1 | :x: | `num a: a + reversed(a) (as number)`
+ `ṁ` | `#.m` | Mirror | `mirror` | 1 | :x: | `num a: a + reversed(a) (as number)`
  | | | | | | `str a: a + reversed(a)`
  | | | | | | `lst a: append reversed(a) to a`
- `ṅ` | #.n | Join On Newlines / Pad Binary to Mod 8 / Context if 1 | `join-newlines`, `newline-join`, `join-on-newlines`, `binary-pad-8`, `bin-pad-8`, `one?->context`, `one?->n` | 1 | :x: | `a: lst` => `a join on newlines`
+ `ṅ` | `#.n` | Join On Newlines / Pad Binary to Mod 8 / Context if 1 | `join-newlines`, `newline-join`, `join-on-newlines`, `binary-pad-8`, `bin-pad-8`, `one?->context`, `one?->n` | 1 | :x: | `a: lst` => `a join on newlines`
  | | | | | | `a: str` => `a padded to a multiple of 8 with 0s`
  | | | | | | `a: num` => `a if a == 1 push context variable n`
- `ȯ` | #.o | Boolify | `boolify` | 1 | :x: | `a: any` => `bool(a)`
- `ṗ` | #.p | List Partitions / Integer Partitions | `list-partitions`, `list-parts`, `integer-partitions`, `int-partitions`, `int-parts` | 1 | :x: | `a: lst` => `List partitions of a`
+ `ȯ` | `#.o` | Boolify | `boolify` | 1 | :x: | `a: any` => `bool(a)`
+ `ṗ` | `#.p` | List Partitions / Integer Partitions | `list-partitions`, `list-parts`, `integer-partitions`, `int-partitions`, `int-parts` | 1 | :x: | `a: lst` => `List partitions of a`
  | | | | | | `a: num` => `Integer partitions of a (all possible ways to sum to a)`
- `ṙ` | #.r | Rotate Right | `abc->cab`, `rot-right`, `rotate-right` | 1 | :x: | `a: any` => `rotate right once`
- `ṡ` | #.s | Sort by Function Object / Partition by Numbers | `sort-by`, `sortby`, `sort-by-fun`, `sortbyfun`, `sort-fun`, `sortfun`, `partition-by` | 2 | :x: | `a: fun, b: any` => `sort iterable b by function a`
+ `ṙ` | `#.r` | Rotate Right | `abc->cab`, `rot-right`, `rotate-right` | 1 | :x: | `a: any` => `rotate right once`
+ `ṡ` | `#.s` | Sort by Function Object / Partition by Numbers | `sort-by`, `sortby`, `sort-by-fun`, `sortbyfun`, `sort-fun`, `sortfun`, `partition-by` | 2 | :x: | `a: fun, b: any` => `sort iterable b by function a`
  | | | | | | `a: any, b: fun` => `sort iterable a by function b`
  | | | | | | `a: lst, b: lst[num]` => `partition a into sublists of length items in b`
- `ṫ` | #.t | Last Extract | `last-extract`, `split-at-last` | 1 | :x: | `a: lst\|str` => `Push a[-1], then a[:-1] onto the stack`
- `ẋ` | #.x | Cartesian Power | `cartesian-power` | 2 | :x: | `a: lst, b: num` => `cart_prod([a] * n)`
+ `ṫ` | `#.t` | Last Extract | `last-extract`, `split-at-last` | 1 | :x: | `a: lst\|str` => `Push a[-1], then a[:-1] onto the stack`
+ `ẋ` | `#.x` | Cartesian Power | `cartesian-power` | 2 | :x: | `a: lst, b: num` => `cart_prod([a] * n)`
  `ƒ` |  | Partition After Truthy Indices | `partition-after-truthy` | 2 | :x: | `a: lst, b: lst` => `partition a after truthy indices in b`
- `Θ` | #.` | Zero Slice Until | `0>b`, `zero-slice`, `zero-slice-until`, `take`, `slice-to`, `lst-truncate`, `first-n-items`, `first-n` | 2 | :x: | `a: lst, b: num` => `[a[0], a[1], ..., a[b-1]]`
- `Φ` | #.| | Slice from 1 | `1->b` | 2 | :x: | `a: lst, b: num` => `a[1:b]`
+ `Θ` | `#.`` | Zero Slice Until | `0>b`, `zero-slice`, `zero-slice-until`, `take`, `slice-to`, `lst-truncate`, `first-n-items`, `first-n` | 2 | :x: | `a: lst, b: num` => `[a[0], a[1], ..., a[b-1]]`
+ `Φ` | `#.|` | Slice from 1 | `1->b` | 2 | :x: | `a: lst, b: num` => `a[1:b]`
  | | | | | | `a: num, b: lst` => `b[1:a]`
- `§` | #,o | Print without newline | `print-no-newline` | NA | :x: | `a` => `printed to stdout without newline`
- `Ạ` | #,A | Assign | `assign`, `assign-at`, `assign<>`, `assign<x>`, `a<x>=`, `a<x>=y`, `a<x>?=y`, `set-item`, `apply-at` | 3 | :x: | `a: lst, b: num, c: non-fun` => `assign c to a at the index b / a[b] = c`
+ `§` | `#,o` | Print without newline | `print-no-newline` | NA | :x: | `a` => `printed to stdout without newline`
+ `Ạ` | `#,A` | Assign | `assign`, `assign-at`, `assign<>`, `assign<x>`, `a<x>=`, `a<x>=y`, `a<x>?=y`, `set-item`, `apply-at` | 3 | :x: | `a: lst, b: num, c: non-fun` => `assign c to a at the index b / a[b] = c`
  | | | | | | `a: lst, b: num, c: fun` => `a[b] c= <stack items> (augmented assignment to list)`
  | | | | | | `a: lst, b: lst, c: lst` => `assign c to a at the indices in b`
- `Ḅ` | #,B | Unique Prime Factors / Case Of | `unique-prime-factors`, `case-of` | 1 | :white_check_mark: | `a: num` => `unique prime factors of a`
+ `Ḅ` | `#,B` | Unique Prime Factors / Case Of | `unique-prime-factors`, `case-of` | 1 | :white_check_mark: | `a: num` => `unique prime factors of a`
  | | | | | | `a: str` => `case of each character of a (uppercase = 1, lowercase = 0)`
- `Ḥ` | #,H | Head Extract | `head-extract-swap`, `split-at-head-swap` | 1 | :x: | `a: lst\|str` => `Push a[1:], then a[0] onto the stack`
- `Ị` | #,I | Insert | `insert`, `insert-at` | 3 | :x: | `a: any, b: num, c: any` => `insert c at position b in a`
+ `Ḥ` | `#,H` | Head Extract | `head-extract-swap`, `split-at-head-swap` | 1 | :x: | `a: lst\|str` => `Push a[1:], then a[0] onto the stack`
+ `Ị` | `#,I` | Insert | `insert`, `insert-at` | 3 | :x: | `a: any, b: num, c: any` => `insert c at position b in a`
  | | | | | | `a: any, b: lst, c: any` => `insert c at positions b in a`
  | | | | | | `a: any, b: lst[num], c: lst` => `insert c[i] at position b[i] in a`
- `Ḷ` | #,L | Sort by Length | `sort-by-length`, `sort-by-len`, `order-by-length`, `order-by-len`, `length-sort`, `len-sort` | 1 | :x: | `a: lst` => `sort a by length`
- `Ṃ` | #,M | Bit Length / Matrix Inverse | `bit-length`, `matrix-inverse` | 1 | :white_check_mark: | `a: num` => `bit length of a`
+ `Ḷ` | `#,L` | Sort by Length | `sort-by-length`, `sort-by-len`, `order-by-length`, `order-by-len`, `length-sort`, `len-sort` | 1 | :x: | `a: lst` => `sort a by length`
+ `Ṃ` | `#,M` | Bit Length / Matrix Inverse | `bit-length`, `matrix-inverse` | 1 | :white_check_mark: | `a: num` => `bit length of a`
  | | | | | | `a: lst[lst]` => `matrix inverse of a`
- `Ọ` | #,O | Print without popping | `print-no-pop` | NA | :x: | `a` => `printed to stdout without popping`
- `Ṛ` | #,R | Reverse | `reverse` | 1 | :x: | `a: any` => `reverse a`
- `Ṣ` | #,S | Sublists | `sublists` | 1 | :x: | `a: lst` => `sublists of a`
- `Ṭ` | #,T | Trim / Cumulative Reduce | `trim`, `scanl`, `cumulative-reduce` | 2 | :x: | `a: any, b: any` => `Trim all elements of b from both sides of a.`
+ `Ọ` | `#,O` | Print without popping | `print-no-pop` | NA | :x: | `a` => `printed to stdout without popping`
+ `Ṛ` | `#,R` | Reverse | `reverse` | 1 | :x: | `a: any` => `reverse a`
+ `Ṣ` | `#,S` | Sublists | `sublists` | 1 | :x: | `a: lst` => `sublists of a`
+ `Ṭ` | `#,T` | Trim / Cumulative Reduce | `trim`, `scanl`, `cumulative-reduce` | 2 | :x: | `a: any, b: any` => `Trim all elements of b from both sides of a.`
  | | | | | | `a: fun, b: any` => `cumulative reduce b by function a`
- `…` | #.. | Increment Twice / Vectorised Head | `incr-twice`, `vec-head` | 1 | :x: | `a: num` => `a + 2`
+ `…` | `#..` | Increment Twice / Vectorised Head | `incr-twice`, `vec-head` | 1 | :x: | `a: num` => `a + 2`
  | | | | | | `a: lst` => `[x[0] for x in a]`
- `≤` | #,< | Less Than Or Equal To | `le`, `less-than-or-equal-to` | 2 | :white_check_mark: | `a: num, b: num` => `a <= b`
+ `≤` | `#,<` | Less Than Or Equal To | `le`, `less-than-or-equal-to` | 2 | :white_check_mark: | `a: num, b: num` => `a <= b`
  | | | | | | `a: str, b: num` => `a <= str(b)`
  | | | | | | `a: num, b: str` => `str(a) <= b`
  | | | | | | `a: str, b: str` => `a <= b`
- `≥` | #,> | Greater Than Or Equal To | `ge`, `greater-than-or-equal-to` | 2 | :white_check_mark: | `a: num, b: num` => `a >= b`
+ `≥` | `#,>` | Greater Than Or Equal To | `ge`, `greater-than-or-equal-to` | 2 | :white_check_mark: | `a: num, b: num` => `a >= b`
  | | | | | | `a: str, b: num` => `a >= str(b)`
  | | | | | | `a: num, b: str` => `str(a) >= b`
  | | | | | | `a: str, b: str` => `a >= b`
- `≠` | #.= | Not Equal | `not-equal`, `=n't` | 2 | :x: | `a: any, b: any` => `a !== b (non-vectorising)`
- `₌` | #,= | Exactly Equals | `===`, `exactly-equal`, `strictly-equal?` | 2 | :x: | `a: any, b: any` => `a === b (non-vectorising)`
- `⁺` | #^+ | Square / Pairs | `square`, `pairs` | 1 | :white_check_mark: | `a: num` => `a ** 2`
+ `≠` | `#.=` | Not Equal | `not-equal`, `=n't` | 2 | :x: | `a: any, b: any` => `a !== b (non-vectorising)`
+ `₌` | `#,=` | Exactly Equals | `===`, `exactly-equal`, `strictly-equal?` | 2 | :x: | `a: any, b: any` => `a === b (non-vectorising)`
+ `⁺` | `#^+` | Square / Pairs | `square`, `pairs` | 1 | :white_check_mark: | `a: num` => `a ** 2`
  | | | | | | `a: str` => `a split into pairs`
- `⁻` | #^- | Cube / Threes | `cube`, `threes` | 1 | :white_check_mark: | `a: num` => `a ** 3`
+ `⁻` | `#^-` | Cube / Threes | `cube`, `threes` | 1 | :white_check_mark: | `a: num` => `a ** 3`
  | | | | | | `a: str` => `a split into chunks of length 3`
- `⁾` | #^) | Surround / Character Multiply | `surround`, `character-multiply` | 2 | :x: | `a: num, b: str` => `each character in b repeated a times`
+ `⁾` | `#^)` | Surround / Character Multiply | `surround`, `character-multiply` | 2 | :x: | `a: num, b: str` => `each character in b repeated a times`
  | | | | | | `a: any, b: any` => `a prepended and appended to b`
- `√` | #,* | Square Root | `sqrt`, `square-root` | 1 | :white_check_mark: | `a: num` => `sqrt(a)`
+ `√` | `#,*` | Square Root | `sqrt`, `square-root` | 1 | :white_check_mark: | `a: num` => `sqrt(a)`
  `∑` |  | Sum | `sum`, `/+`, `+/` | 1 | :x: | `a: lst` => `sum of a`
- `«` | #.< | Bitshift Left | `bitwise-left-shift`, `left-shift` | 2 | :white_check_mark: | `a: num, b: num` => `a << b`
- `»` | #.> | Bitshift Right | `bitwise-right-shift`, `right-shift` | 2 | :white_check_mark: | `a: num, b: num` => `a >> b`
- `⌐` | #.! | Bitwise Not | `bitwise-not` | 1 | :white_check_mark: | `a: num` => `~a`
- `∴` | #.: | Bitwise And | `bitwise-and` | 2 | :white_check_mark: | `a: num, b: num` => `a & b`
- `∵` | #,: | Bitwise Or | `bitwise-or` | 2 | :white_check_mark: | `a: num, b: num` => `a \| b`
- `⊻` | #,v | Bitwise Xor | `bitwise-xor` | 2 | :white_check_mark: | `a: num, b: num` => `a ^ b`
- `₀` | #,0 | Ten | `ten` | 0 | :x: | `10`
- `₁` | #,1 | Sixteen | `sixteen` | 0 | :x: | `16`
- `₂` | #,2 | Twenty-six | `twenty-six` | 0 | :x: | `26`
- `₃` | #,3 | Thirty-two | `thirty-two` | 0 | :x: | `32`
- `₄` | #,4 | Sixty-four | `sixty-four` | 0 | :x: | `64`
- `₅` | #,5 | One hundred | `one-hundred` | 0 | :x: | `100`
- `₆` | #,6 | One hundred twenty-eight | `one-hundred-twenty-eight` | 0 | :x: | `128`
- `₇` | #,7 | Two hundred fifty-six | `two-hundred-fifty-six` | 0 | :x: | `256`
- `₈` | #,8 | Alphabet | `alphabet`, `a-z` | 0 | :x: | `"abcdefghijklmnopqrstuvwxyz"`
- `₉` | #,9 | Empty array | `empty-list`, `nil-list`, `new-list` | 0 | :x: | `[]`
- `½` | #.5 | Halve | `halve` | 1 | :white_check_mark: | `a: num` => `a / 2`
+ `«` | `#.<` | Bitshift Left | `bitwise-left-shift`, `left-shift` | 2 | :white_check_mark: | `a: num, b: num` => `a << b`
+ `»` | `#.>` | Bitshift Right | `bitwise-right-shift`, `right-shift` | 2 | :white_check_mark: | `a: num, b: num` => `a >> b`
+ `⌐` | `#.!` | Bitwise Not | `bitwise-not` | 1 | :white_check_mark: | `a: num` => `~a`
+ `∴` | `#.:` | Bitwise And | `bitwise-and` | 2 | :white_check_mark: | `a: num, b: num` => `a & b`
+ `∵` | `#,:` | Bitwise Or | `bitwise-or` | 2 | :white_check_mark: | `a: num, b: num` => `a \| b`
+ `⊻` | `#,v` | Bitwise Xor | `bitwise-xor` | 2 | :white_check_mark: | `a: num, b: num` => `a ^ b`
+ `₀` | `#,0` | Ten | `ten` | 0 | :x: | `10`
+ `₁` | `#,1` | Sixteen | `sixteen` | 0 | :x: | `16`
+ `₂` | `#,2` | Twenty-six | `twenty-six` | 0 | :x: | `26`
+ `₃` | `#,3` | Thirty-two | `thirty-two` | 0 | :x: | `32`
+ `₄` | `#,4` | Sixty-four | `sixty-four` | 0 | :x: | `64`
+ `₅` | `#,5` | One hundred | `one-hundred` | 0 | :x: | `100`
+ `₆` | `#,6` | One hundred twenty-eight | `one-hundred-twenty-eight` | 0 | :x: | `128`
+ `₇` | `#,7` | Two hundred fifty-six | `two-hundred-fifty-six` | 0 | :x: | `256`
+ `₈` | `#,8` | Alphabet | `alphabet`, `a-z` | 0 | :x: | `"abcdefghijklmnopqrstuvwxyz"`
+ `₉` | `#,9` | Empty array | `empty-list`, `nil-list`, `new-list` | 0 | :x: | `[]`
+ `½` | `#.5` | Halve | `halve` | 1 | :white_check_mark: | `a: num` => `a / 2`
  | | | | | | `a: str` => `a split into two pieces`
- `ʀ` | #.~ | Exclusive Zero Range / Lowercase | `0->n`, `zero-range`, `lowered-range`, `to-lower`, `lower`, `lowercase` | 1 | :white_check_mark: | `a: num` => `[0..a)`
+ `ʀ` | `#.~` | Exclusive Zero Range / Lowercase | `0->n`, `zero-range`, `lowered-range`, `to-lower`, `lower`, `lowercase` | 1 | :white_check_mark: | `a: num` => `[0..a)`
  | | | | | | `a: str` => `a.lower()`
- `ɾ` | #,~ | Inclusive One Range / Uppercase | `one->n`, `one-range`, `to-upper`, `upper`, `uppercase` | 1 | :white_check_mark: | `a: num` => `[1..a]`
+ `ɾ` | `#,~` | Inclusive One Range / Uppercase | `one->n`, `one-range`, `to-upper`, `upper`, `uppercase` | 1 | :white_check_mark: | `a: num` => `[1..a]`
  | | | | | | `a: str` => `a.upper()`
- `¯` | #^_ | Deltas | `deltas` | 1 | :x: | `a: lst` => `forward-differences of a`
- `×` | #.* | Multiplication | `mul`, `multiply`, `times`, `str-repeat`, `*`, `ring-trans` | 2 | :white_check_mark: | `a: num, b: num` => `a * b`
+ `¯` | `#^_` | Deltas | `deltas` | 1 | :x: | `a: lst` => `forward-differences of a`
+ `×` | `#.*` | Multiplication | `mul`, `multiply`, `times`, `str-repeat`, `*`, `ring-trans` | 2 | :white_check_mark: | `a: num, b: num` => `a * b`
  | | | | | | `a: num, b: str` => `b repeated a times`
  | | | | | | `a: str, b: num` => `a repeated b times`
  | | | | | | `a: str, b: str` => `ring translate a according to b`
- `÷` | #./ | Divide / Split | `divide`, `div`, `str-split` | 2 | :white_check_mark: | `a: num, b: num` => `a / b`
+ `÷` | `#./` | Divide / Split | `divide`, `div`, `str-split` | 2 | :white_check_mark: | `a: num, b: num` => `a / b`
  | | | | | | `a: str, b: str` => `Split a on the regex b`
- `£` | #^= | Set Register | `set-register`, `->register`, `set-reg`, `->reg` | 1 | :x: | `a: any` => `register = a`
- `¥` | #^$ | Get Register | `get-register`, `get-reg`, `register`, `<-register`, `<-reg` | NA | :x: | `push the value of the register`
- `←` | #^< | Rotate Stack Left | `rotate-stack-left` | NA | :x: | `rotate the entire stack left once`
- `↑` | #^^ | Grade Up | `grade-up` | 1 | :x: | `a: any` => `indices that will sort a`
- `→` | #^> | Rotate Stack Right | `rotate-stack-right` | NA | :x: | `rotate the entire stack right once`
- `↓` | #^; | Grade Down | `grade-down` | 1 | :x: | `a: any` => `indices that will reverse-sort a`
- `±` | #,+ | Sign | `sign` | 1 | :white_check_mark: | `a: num` => `sign of a`
- `†` | #.& | Length of Consecutive Groups | `len-consecutive`, `gvl`, `gavel` | 1 | :x: | `a: any` => `lengths of consecutive groups of a`
+ `£` | `#^=` | Set Register | `set-register`, `->register`, `set-reg`, `->reg` | 1 | :x: | `a: any` => `register = a`
+ `¥` | `#^$` | Get Register | `get-register`, `get-reg`, `register`, `<-register`, `<-reg` | NA | :x: | `push the value of the register`
+ `←` | `#^<` | Rotate Stack Left | `rotate-stack-left` | NA | :x: | `rotate the entire stack left once`
+ `↑` | `#^^` | Grade Up | `grade-up` | 1 | :x: | `a: any` => `indices that will sort a`
+ `→` | `#^>` | Rotate Stack Right | `rotate-stack-right` | NA | :x: | `rotate the entire stack right once`
+ `↓` | `#^;` | Grade Down | `grade-down` | 1 | :x: | `a: any` => `indices that will reverse-sort a`
+ `±` | `#,+` | Sign | `sign` | 1 | :white_check_mark: | `a: num` => `sign of a`
+ `†` | `#.&` | Length of Consecutive Groups | `len-consecutive`, `gvl`, `gavel` | 1 | :x: | `a: any` => `lengths of consecutive groups of a`
  `Π` |  | Product | `product`, `prod` | 1 | :x: | `a: lst` => `product of a`
- `¬` | #,! | Logical Not | `non-vec-not`, `non-vec-logical-not` | 1 | :x: | `a: any` => `!a`
- `∧` | #,& | Logical And | `and`, `logical-and` | 2 | :white_check_mark: | `a: any, b: any` => `a && b`
- `∨` | #,| | Logical Or | `or`, `logical-or` | 2 | :white_check_mark: | `a: any, b: any` => `a \|\| b`
- `⁰` | #^0 | First Input | `first-input`, `input-0` | 0 | :x: | `The first input to the program`
- `¹` | #^1 | Second Input | `second-input`, `input-1` | 0 | :x: | `The second input to the program`
- `²` | #^2 | Third Input | `third-input`, `input-2` | 0 | :x: | `The third input to the program`
+ `¬` | `#,!` | Logical Not | `non-vec-not`, `non-vec-logical-not` | 1 | :x: | `a: any` => `!a`
+ `∧` | `#,&` | Logical And | `and`, `logical-and` | 2 | :white_check_mark: | `a: any, b: any` => `a && b`
+ `∨` | `#,|` | Logical Or | `or`, `logical-or` | 2 | :white_check_mark: | `a: any, b: any` => `a \|\| b`
+ `⁰` | `#^0` | First Input | `first-input`, `input-0` | 0 | :x: | `The first input to the program`
+ `¹` | `#^1` | Second Input | `second-input`, `input-1` | 0 | :x: | `The second input to the program`
+ `²` | `#^2` | Third Input | `third-input`, `input-2` | 0 | :x: | `The third input to the program`
  `⌈` |  | Ceiling | `ceiling`, `ceil` | 1 | :white_check_mark: | `a: num` => `ceil(a)`
  `⌊` |  | Floor | `floor` | 1 | :white_check_mark: | `a: num` => `floor(a)`
- `Ɠ` | #.9 | Maximum without popping | `max-no-pop` | 1 | :x: | `a: lst` => `max(a) without popping a`
- `ɠ` | #.6 | Minimum without popping | `min-no-pop` | 1 | :x: | `a: lst` => `min(a) without popping a`
- `ð` | #.b | Space | `space` | 0 | :x: | `" "`
- `€` | #^( | Suffixes | `suffixes` | 1 | :x: | `a: lst` => `Suffixes of a`
- `¶` | #,
- Newline | `newline` | 0 | :x: | `chr(10)`
- `ᶿ` | #^` | Cartesian Product Unsafe | `cartesian-product-unsafe`, `cartesian-unsafe`, `cart-prod-unsafe`, `cart-unsafe` | 2 | :x: | `a: list, b: list` => `cartesian product of a and b in the standard order, but without accounting for infinite lists`
- `ᶲ` | #^| | Stringify | `to-string`, `stringify`, `str` | 1 | :x: | `a: any` => `str(a)`
- `•` | #,. | Asterisk | `asterisk` | 0 | :x: | `"*"`
- `≈` | #^~ | All Equal? | `all-equal`, `all-equal?` | 1 | :x: | `a: lst` => `are all elements of a equal?`
- `ꜝ` | #^! | Increment | `incr`, `increment` | 1 | :white_check_mark: | `a: num` => `a + 1`
+ `Ɠ` | `#.9` | Maximum without popping | `max-no-pop` | 1 | :x: | `a: lst` => `max(a) without popping a`
+ `ɠ` | `#.6` | Minimum without popping | `min-no-pop` | 1 | :x: | `a: lst` => `min(a) without popping a`
+ `ð` | `#.b` | Space | `space` | 0 | :x: | `" "`
+ `€` | `#^(` | Suffixes | `suffixes` | 1 | :x: | `a: lst` => `Suffixes of a`
+ `¶` | `#,
+` | Newline | `newline` | 0 | :x: | `chr(10)`
+ `ᶿ` | `#^`` | Cartesian Product Unsafe | `cartesian-product-unsafe`, `cartesian-unsafe`, `cart-prod-unsafe`, `cart-unsafe` | 2 | :x: | `a: list, b: list` => `cartesian product of a and b in the standard order, but without accounting for infinite lists`
+ `ᶲ` | `#^|` | Stringify | `to-string`, `stringify`, `str` | 1 | :x: | `a: any` => `str(a)`
+ `•` | `#,.` | Asterisk | `asterisk` | 0 | :x: | `"*"`
+ `≈` | `#^~` | All Equal? | `all-equal`, `all-equal?` | 1 | :x: | `a: lst` => `are all elements of a equal?`
+ `ꜝ` | `#^!` | Increment | `incr`, `increment` | 1 | :white_check_mark: | `a: num` => `a + 1`
  `#C` |  | Compress String Using Dictionary | `compress-dict`, `dict-comp`, `compress` | 1 | :x: | `a: str` => `compress a using the dictionary`
  `#X` |  | Loop Break | `break` | 0 | :x: | `break out of the current loop`
  `#v` |  | [Internal Use] Vectorise (Element Form)  |  | NA | :x: | `*a, f` => `f vectorised over however many arguments in a. It is recommended to use the modifier instead`
@@ -339,7 +339,7 @@
  `ᵈ` | `#^d` | Dyadic Single Element Lambda | `*2:` | 1 | <pre>Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda<br>ᵈf: Push the equivalent of λ2f} to the stack</pre> |
  `ᵉ` | `#^e` | Dyadic Double Element Lambda | `**2:` | 2 | <pre>Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda<br>ᵉfg: Push the equivalent of λ2fg} to the stack</pre> |
  `ᶠ` | `#^f` | Dyadic Triple Element Lambda | `***2:` | 3 | <pre>Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda<br>ᶠfgh: Push the equivalent of λ2fgh} to the stack</pre> |
- `ᴳ` | `` | Dyadic Quadruple Element Lambda | `****2:` | 4 | <pre>Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda<br>ᵍfghi: Push the equivalent of λ2fghi} to the stack</pre> |
+ `ᴳ` |  | Dyadic Quadruple Element Lambda | `****2:` | 4 | <pre>Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda<br>ᵍfghi: Push the equivalent of λ2fghi} to the stack</pre> |
  `ᴴ` | `#^H` | Apply To Head | `apply-to-head:` | 1 | <pre>Apply element only to the head of list<br>ᴴf: Apply f to the head of the top of the stack</pre> |
  `ᶤ` | `#^i` | First Index Where | `first-index-where:`, `first-index-of:`, `ind-of:`, `find-by:` | 1 | <pre>Find the first index where an element is truthy<br>ᶤf: find the first index where f is truthy</pre> |
  `ᶨ` | `#^j` | Loop and Collect While Unique | `collect-while-unique:` | 1 | <pre>Loop and Collect While Unique<br>ᶨf: Loop and collect while unique</pre> |
@@ -361,11 +361,11 @@
  `ϩ` | `#^:` | Double Element Lambda | `**:` | 2 | <pre>Turn the next two elements (whether that be a structure/modifier/element) into a lambda<br>ϩfg: Push the equivalent of λfg} to the stack</pre> |
  `э` | `#^%` | Triple Element Lambda | `***:` | 3 | <pre>Turn the next three elements (whether that be a structure/modifier/element) into a lambda<br>эfgh: Push the equivalent of λfgh} to the stack</pre> |
  `Ч` | `#^4` | Quadruple Element Lambda | `****:` | 4 | <pre>Turn the next four elements (whether that be a structure/modifier/element) into a lambda<br>Чfghi: Push the equivalent of λfghi} to the stack</pre> |
- `/` | `` | Foldl / Reduce By / Filter by | `foldl:`, `reduce:`, `/:`, `fold:`, `reduceby:-` | 1 | <pre>Reduce a list by an element<br>/f: reduce by element f</pre> |
- `\`` | `` | Map as Stacks | `vec-dump:`, `map-dump:` | 1 | <pre>Map a function over the top of the stack, treating each iteration<br>as if it were a stack of items. Essentially, dump before mapping<br></pre> |
- `v` | `` | Vectorise | `vectorise:`, `vec:`, `v:` | 1 | <pre>Vectorises<br>vf: f but vectorised</pre> |
- `∥` | `` | Parallel Apply | `parallel-apply:`, `para-apply:`, `paraply:`, `!!:` | 2 | <pre>Parallel apply two elements to the top of the stack<br></pre> |
- `∦` | `` | Parallel Apply and Wrap | `parallel-apply-and-wrap:`, `para-apply-and-wrap:`, `<paraply>:`, `<!!>:` | 2 | <pre>Parallel apply two elements to the top of the stack<br>and wrap the result in a list<br></pre> |
+ `/` |  | Foldl / Reduce By / Filter by | `foldl:`, `reduce:`, `/:`, `fold:`, `reduceby:-` | 1 | <pre>Reduce a list by an element<br>/f: reduce by element f</pre> |
+ `<code>`</code>` |  | Map as Stacks | `vec-dump:`, `map-dump:` | 1 | <pre>Map a function over the top of the stack, treating each iteration<br>as if it were a stack of items. Essentially, dump before mapping<br></pre> |
+ `v` |  | Vectorise | `vectorise:`, `vec:`, `v:` | 1 | <pre>Vectorises<br>vf: f but vectorised</pre> |
+ `∥` |  | Parallel Apply | `parallel-apply:`, `para-apply:`, `paraply:`, `!!:` | 2 | <pre>Parallel apply two elements to the top of the stack<br></pre> |
+ `∦` |  | Parallel Apply and Wrap | `parallel-apply-and-wrap:`, `para-apply-and-wrap:`, `<paraply>:`, `<!!>:` | 2 | <pre>Parallel apply two elements to the top of the stack<br>and wrap the result in a list<br></pre> |
  `¿` | `#.?` | Conditional Execution | `if-top:`, `if:` | 1 | <pre>Pop the top of the stack, and, if it's truthy,<br>apply a function</pre> |
 
 
@@ -373,51 +373,51 @@
 
 | Symbol | Trigraph | Name | Description | Usage |
  --- | --- | --- | --- | --- |
- `ᶴ` |  | Two Character String | Push the next two characters as a string | <pre>ᶴ&lt;character&gt;&lt;character&gt;</pre>` |
- `"` |  | Open/Close String | Open/close a string. If the string is closed, push it to the stack. Closes all string types | <pre>"string contents"</pre>` |
- `'` |  | One Character String | Push the next character as a string | <pre>'&lt;character&gt;</pre>` |
- `(` |  | For Loop | Open a for loop. For each item in the top of the stack, execute code, storing loop variable. | <pre>&lt;iterable&gt; (&lt;variable&gt;\|&lt;code&gt;}</pre>` |
- `)` |  | Close Two Structures | Match and close two open structures. | <pre>&lt;structure open&gt;&lt;structure open&gt; &lt;code&gt; ) &lt;code not in structure&gt;</pre>` |
- `.` |  | Decimal Separator | Used to separate the integer and fractional parts of a number | <pre>&lt;integer&gt;.&lt;fractional&gt;</pre>` |
- `0` |  | Numeric Literal | The number 0 | <pre>0</pre>` |
- `1` |  | Numeric Literal | The number 1 | <pre>1</pre>` |
- `2` |  | Numeric Literal | The number 2 | <pre>2</pre>` |
- `3` |  | Numeric Literal | The number 3 | <pre>3</pre>` |
- `4` |  | Numeric Literal | The number 4 | <pre>4</pre>` |
- `5` |  | Numeric Literal | The number 5 | <pre>5</pre>` |
- `6` |  | Numeric Literal | The number 6 | <pre>6</pre>` |
- `7` |  | Numeric Literal | The number 7 | <pre>7</pre>` |
- `8` |  | Numeric Literal | The number 8 | <pre>8</pre>` |
- `9` |  | Numeric Literal | The number 9 | <pre>9</pre>` |
- `[` |  | Ternary Statement | Open a ternary statement. Pop condition, if truthy, run <ontrue>, else run <onfalse> | <pre>&lt;condition&gt; [&lt;ontrue&gt;\|&lt;onfalse&gt;}</pre>` |
- `]` |  | Close All Structures | Match and close all open structures. | <pre>&lt;structure openers&gt;] &lt;code not in structure&gt;</pre>` |
- `k` |  | Constant Digraphs | Used for constant-related digraphs | <pre>k&lt;character&gt;</pre>` |
- `{` |  | While Loop | Open a while loop. While the top of the stack is truthy, execute code. | <pre>{&lt;condition&gt;\|&lt;code&gt;}</pre>` |
- `\|` |  | Structure Branch | Delimit the next section in a structure. | <pre>&lt;structure open&gt; &lt;code&gt; \| &lt;code&gt; ...</pre>` |
- `}` |  | Close A Structure | Match and close the nearest open structure. | <pre>&lt;structure open&gt; &lt;code&gt; } &lt;code not in structure&gt;</pre>` |
- `~` |  | Two Byte Number | Push the next two bytes as a number, converted from bijective base 255 using the codepage | <pre>~&lt;character&gt;&lt;character&gt;</pre>` |
- `Ḍ` | `#,D` | Open Decision Problem Structure | Open a decision problem structure. Returns whether an iterable has any items that match a predicate | <pre>Ḍ&lt;predicate&gt;\|&lt;container&gt; }</pre>` |
- `Ṇ` | `#,N` | Generator Structure | Open a generator structure. Allows for generator expressions | <pre>Ṇ&lt;code&gt;\|&lt;initial vector&gt;}</pre>` |
- `λ` | `#.{` | Open Lambda | Open a lambda. | <pre>λ&lt;parameters&gt;\|&lt;code&gt;}</pre>` |
- `ƛ` | `#.[` | Open Map Lambda | Open a lambda that automatically maps its function to the top of the stack | <pre>ƛ&lt;code&gt;}</pre>` |
- `Ω` | `#.(` | Open Filter Lambda | Open a lambda that automatically filters the top of the stack by its function | <pre>Ω&lt;code&gt;}</pre>` |
- `₳` | `#,{` | Open Reduce/Accumulate Lambda | Open a lambda that automatically reduces/accumulates the top of the stack by its function | <pre>₳&lt;code&gt;}</pre>` |
- `µ` | `#,(` | Open Sort Lambda | Open a lambda that automatically sorts the top of the stack by its function | <pre>µ&lt;code&gt;}</pre>` |
- `¤` | `#.@` | Context Paramter Index | Index into the list of context parameters. | <pre>¤&lt;number&gt;</pre>` |
- `ı` | `#.i` | Imaginary Number | Used to represent the imaginary unit | <pre>&lt;real&gt;ı&lt;imaginary&gt;</pre>` |
- `„` | `#,"` | Base-255 Compressed String | Decompress and push a string, converted from a bijective base 255 number using the codepage | <pre>„&lt;compressed string&gt;"</pre>` |
- `”` | `#^'` | Dictionary Compressed String | Decompress and push a string using SSS compression, shamelessly stolen from Jelly | <pre>”&lt;compressed string&gt;"</pre>` |
- `“` | `#^"` | Base-255 Compressed Number | Decompress and push a number, converted from a bijective base 255 number using the codepage | <pre>“&lt;compressed number&gt;"</pre>` |
- `#:[` |  | Variable Unpacking | Unpack the top of the stack into a list of variables. | <pre>#:[&lt;var&gt;\|&lt;var&gt;\|&lt;var&gt;]</pre>` |
- `#` |  | Miscellaneous Digraphs | Used for miscellaneous digraphs | <pre>#&lt;character&gt;</pre>` |
- `##` |  | Comment | Comment out the rest of the line | <pre>##&lt;comment&gt;</pre>` |
- `#$` |  | Retrieve Variable | Push the value of a variable. | <pre>#$&lt;variable&gt;</pre>` |
- `#=` |  | Assign Variable | Assign a variable to a value. | <pre>#=&lt;variable&gt;</pre>` |
- `#>` |  | Augmented Assignment | Apply a function to a variable value and store the result in the same variable. | <pre>&lt;function&gt; #&gt; &lt;variable&gt;</pre>` |
- `#[` |  | Open List | Open a list. Pushes the list to the stack when closed. | <pre>#[item\|item\|item#]</pre>` |
- `#]` |  | Close List | Close a list. Pushes the list to the stack when closed. | <pre>#[item\|item\|item#]</pre>` |
- `#{` |  | If/Elif/Else Statement | Open an if statement. Allows for if/elif/else statements | <pre>#{&lt;if condition&gt;\|&lt;code&gt;\|&lt;else if condition&gt;\|&lt;code&gt;\|&lt;else code&gt;}</pre>` |
- `∆` | `#.\` | Mathematical Digraphs | Used for math-related digraphs | <pre>∆&lt;character&gt;</pre>` |
- `ø` | `#,/` | String Digraphs | Used for string-related digraphs | <pre>ø&lt;character&gt;</pre>` |
- `Þ` | `#.)` | List Digraphs | Used for list-related digraphs | <pre>Þ&lt;character&gt;</pre>` |
+ `ᶴ` |  | Two Character String | Push the next two characters as a string | <pre>ᶴ&lt;character&gt;&lt;character&gt;</pre> |
+ `"` |  | Open/Close String | Open/close a string. If the string is closed, push it to the stack. Closes all string types | <pre>"string contents"</pre> |
+ `'` |  | One Character String | Push the next character as a string | <pre>'&lt;character&gt;</pre> |
+ `(` |  | For Loop | Open a for loop. For each item in the top of the stack, execute code, storing loop variable. | <pre>&lt;iterable&gt; (&lt;variable&gt;\|&lt;code&gt;}</pre> |
+ `)` |  | Close Two Structures | Match and close two open structures. | <pre>&lt;structure open&gt;&lt;structure open&gt; &lt;code&gt; ) &lt;code not in structure&gt;</pre> |
+ `.` |  | Decimal Separator | Used to separate the integer and fractional parts of a number | <pre>&lt;integer&gt;.&lt;fractional&gt;</pre> |
+ `0` |  | Numeric Literal | The number 0 | <pre>0</pre> |
+ `1` |  | Numeric Literal | The number 1 | <pre>1</pre> |
+ `2` |  | Numeric Literal | The number 2 | <pre>2</pre> |
+ `3` |  | Numeric Literal | The number 3 | <pre>3</pre> |
+ `4` |  | Numeric Literal | The number 4 | <pre>4</pre> |
+ `5` |  | Numeric Literal | The number 5 | <pre>5</pre> |
+ `6` |  | Numeric Literal | The number 6 | <pre>6</pre> |
+ `7` |  | Numeric Literal | The number 7 | <pre>7</pre> |
+ `8` |  | Numeric Literal | The number 8 | <pre>8</pre> |
+ `9` |  | Numeric Literal | The number 9 | <pre>9</pre> |
+ `[` |  | Ternary Statement | Open a ternary statement. Pop condition, if truthy, run <ontrue>, else run <onfalse> | <pre>&lt;condition&gt; [&lt;ontrue&gt;\|&lt;onfalse&gt;}</pre> |
+ `]` |  | Close All Structures | Match and close all open structures. | <pre>&lt;structure openers&gt;] &lt;code not in structure&gt;</pre> |
+ `k` |  | Constant Digraphs | Used for constant-related digraphs | <pre>k&lt;character&gt;</pre> |
+ `{` |  | While Loop | Open a while loop. While the top of the stack is truthy, execute code. | <pre>{&lt;condition&gt;\|&lt;code&gt;}</pre> |
+ `\|` |  | Structure Branch | Delimit the next section in a structure. | <pre>&lt;structure open&gt; &lt;code&gt; \| &lt;code&gt; ...</pre> |
+ `}` |  | Close A Structure | Match and close the nearest open structure. | <pre>&lt;structure open&gt; &lt;code&gt; } &lt;code not in structure&gt;</pre> |
+ `~` |  | Two Byte Number | Push the next two bytes as a number, converted from bijective base 255 using the codepage | <pre>~&lt;character&gt;&lt;character&gt;</pre> |
+ `Ḍ` | `#,D` | Open Decision Problem Structure | Open a decision problem structure. Returns whether an iterable has any items that match a predicate | <pre>Ḍ&lt;predicate&gt;\|&lt;container&gt; }</pre> |
+ `Ṇ` | `#,N` | Generator Structure | Open a generator structure. Allows for generator expressions | <pre>Ṇ&lt;code&gt;\|&lt;initial vector&gt;}</pre> |
+ `λ` | `#.{` | Open Lambda | Open a lambda. | <pre>λ&lt;parameters&gt;\|&lt;code&gt;}</pre> |
+ `ƛ` | `#.[` | Open Map Lambda | Open a lambda that automatically maps its function to the top of the stack | <pre>ƛ&lt;code&gt;}</pre> |
+ `Ω` | `#.(` | Open Filter Lambda | Open a lambda that automatically filters the top of the stack by its function | <pre>Ω&lt;code&gt;}</pre> |
+ `₳` | `#,{` | Open Reduce/Accumulate Lambda | Open a lambda that automatically reduces/accumulates the top of the stack by its function | <pre>₳&lt;code&gt;}</pre> |
+ `µ` | `#,(` | Open Sort Lambda | Open a lambda that automatically sorts the top of the stack by its function | <pre>µ&lt;code&gt;}</pre> |
+ `¤` | `#.@` | Context Paramter Index | Index into the list of context parameters. | <pre>¤&lt;number&gt;</pre> |
+ `ı` | `#.i` | Imaginary Number | Used to represent the imaginary unit | <pre>&lt;real&gt;ı&lt;imaginary&gt;</pre> |
+ `„` | `#,"` | Base-255 Compressed String | Decompress and push a string, converted from a bijective base 255 number using the codepage | <pre>„&lt;compressed string&gt;"</pre> |
+ `”` | `#^'` | Dictionary Compressed String | Decompress and push a string using SSS compression, shamelessly stolen from Jelly | <pre>”&lt;compressed string&gt;"</pre> |
+ `“` | `#^"` | Base-255 Compressed Number | Decompress and push a number, converted from a bijective base 255 number using the codepage | <pre>“&lt;compressed number&gt;"</pre> |
+ `#:[` |  | Variable Unpacking | Unpack the top of the stack into a list of variables. | <pre>#:[&lt;var&gt;\|&lt;var&gt;\|&lt;var&gt;]</pre> |
+ `#` |  | Miscellaneous Digraphs | Used for miscellaneous digraphs | <pre>#&lt;character&gt;</pre> |
+ `##` |  | Comment | Comment out the rest of the line | <pre>##&lt;comment&gt;</pre> |
+ `#$` |  | Retrieve Variable | Push the value of a variable. | <pre>#$&lt;variable&gt;</pre> |
+ `#=` |  | Assign Variable | Assign a variable to a value. | <pre>#=&lt;variable&gt;</pre> |
+ `#>` |  | Augmented Assignment | Apply a function to a variable value and store the result in the same variable. | <pre>&lt;function&gt; #&gt; &lt;variable&gt;</pre> |
+ `#[` |  | Open List | Open a list. Pushes the list to the stack when closed. | <pre>#[item\|item\|item#]</pre> |
+ `#]` |  | Close List | Close a list. Pushes the list to the stack when closed. | <pre>#[item\|item\|item#]</pre> |
+ `#{` |  | If/Elif/Else Statement | Open an if statement. Allows for if/elif/else statements | <pre>#{&lt;if condition&gt;\|&lt;code&gt;\|&lt;else if condition&gt;\|&lt;code&gt;\|&lt;else code&gt;}</pre> |
+ `∆` | `#.\` | Mathematical Digraphs | Used for math-related digraphs | <pre>∆&lt;character&gt;</pre> |
+ `ø` | `#,/` | String Digraphs | Used for string-related digraphs | <pre>ø&lt;character&gt;</pre> |
+ `Þ` | `#.)` | List Digraphs | Used for list-related digraphs | <pre>Þ&lt;character&gt;</pre> |
 
