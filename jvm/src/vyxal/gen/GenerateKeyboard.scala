@@ -3,6 +3,8 @@ package vyxal.gen
 import vyxal.{Element, Elements, Modifiers}
 import vyxal.parsing.Lexer
 import vyxal.Modifier
+import vyxal.Syntax
+import vyxal.SyntaxInfo
 
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.ListBuffer
@@ -44,6 +46,22 @@ private object GenerateKeyboard:
           thisElement("name") = name
           thisElement("description") = description
           thisElement("overloads") = keywords.mkString(" ")
+          thisElement("token") = symbol
+
+          if data.contains(index) then data(index) += thisElement.toMap
+          else data(index) = ListBuffer(thisElement.toMap)
+
+    for syntax <- SyntaxInfo.info do
+      val (symbol, info) = syntax
+      info match
+        case Syntax(name, description, usage) =>
+          val token = symbol
+          val index =
+            if token == " " then 32 else Lexer.Codepage.indexOf(token.last)
+          val thisElement = scala.collection.mutable.HashMap[String, String]()
+          thisElement("name") = name
+          thisElement("description") = description
+          thisElement("overloads") = usage
           thisElement("token") = symbol
 
           if data.contains(index) then data(index) += thisElement.toMap
