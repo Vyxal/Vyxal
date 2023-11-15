@@ -5,6 +5,7 @@
 
 | Symbol | Trigraph |  Name | Keywords | Arity | Vectorises | Overloads |
  --- | --- | --- | --- | --- | --- | --- |
+ `🌮` |  | Taco | `taco` | NA | :x: | `very funky`
  `🍪` |  | Cookie | `cookie` | NA | :x: | `cookie.`
  `ඞ` |  | ඞ | `sus` | NA | :x: | `ඞ`
  `¦` | #.; | Pipe | `pipe` | 0 | :x: | `"\|"`
@@ -366,3 +367,4 @@
  `∥` | `` | Parallel Apply | `parallel-apply:`, `para-apply:`, `paraply:`, `!!:` | 2 | <pre>Parallel apply two elements to the top of the stack<br></pre> |
  `∦` | `` | Parallel Apply and Wrap | `parallel-apply-and-wrap:`, `para-apply-and-wrap:`, `<paraply>:`, `<!!>:` | 2 | <pre>Parallel apply two elements to the top of the stack<br>and wrap the result in a list<br></pre> |
  `¿` | `#.?` | Conditional Execution | `if-top:`, `if:` | 1 | <pre>Pop the top of the stack, and, if it's truthy,<br>apply a function</pre> |
+
