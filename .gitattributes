@@ -1,5 +1,6 @@
 documentation/elements.txt linguist-generated=true
 documentation/trigraphs.txt linguist-generated=true
+documentation/table.md linguist-generated=true
 **/ShortDictionary.txt linguist-generated=true
 **/LongDictionary.txt linguist-generated=true
 jvm/resources/*.nanorc linguist-generated=true

@@ -26,7 +26,11 @@ stdin := n ## read the input into n
 $n $collatz call
 ```
 
-_TODO: SBCS equivalent_
+turns into:
+
+```
+?#=n⸠ᵡλ#{e|½|ꜝ}#{}#=collatz#$n#$collatzĖ
+```
 
 ```
 ## The classic fizzbuzz
@@ -37,7 +41,11 @@ _TODO: SBCS equivalent_
 } join-on-newlines
 ```
 
-_TODO: SBCS equivalent_
+turns into:
+
+```
+100Mλn#[3|5#]Ḋ"FizzBuzz"½ḋG}ṅ
+```
 
 ```
 ## How about something that generates all the fibonacci numbers?
@@ -48,9 +56,9 @@ relation add from [1, 1] end
 ## is it really that simple?!
 ```
 
-[yes!](online interpreter link)
+([yes!](online interpreter link))
 
-(as SBCS):
+turns into:
 
 ```
 Ṇ+|#[1|1#]}
@@ -64,7 +72,7 @@ Notice that `scan-fix:` in the collatz example? That's a modifier! "But version 
 
 ### Arity grouping
 
-Ever wanted to use jelly but realised it's way too hard? (who even sells hard jelly anyway? I thought the whole point was that it was soft and jiggly.) Well forget about using [Ohm](link to paragraph that makes jelly comparison], because vyxal just got its own element grouping based on arity system. Plus it's much easier to understand!
+Ever wanted to use jelly but realised it's way too hard? (who even sells hard jelly anyway? I thought the whole point was that it was soft and jiggly.) Well forget about using [Ohm](https://github.com/nickbclifford/Ohm#ohm-], because Vyxal 3 just got its own element grouping based on arity system. Plus it's much easier to understand!
 
 Say you have a nilad followed by a monad (basically a constant followed by something that takes a single thing). Usually this sequence would be treated as two elements. However, it's obvious that the monad is going to operate directly on the nilad, as it's the same as writing `monad(nilad)`. So instead of treating it as 2 things, it treats it as a single thing. This is useful for modifiers because you might have a situation where you can squeeze an extra element into what a modifier modifies where you wouldn't have been able to do so previously.
 

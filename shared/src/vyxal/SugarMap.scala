@@ -8,7 +8,7 @@ object SugarMap:
       makeTrigraphs("#,", "ABDHILMNORST", "ẠḄḌḤỊḶṂṆỌṚṢṬ") ++
       makeTrigraphs(
         "#^",
-        "abcdefgHijklmnopRstuvWXyz+-)!01234_`|<^>;=$(\"'~.:%^",
+        "abcdefgHijklmnopRstuvWXyz+-)!01234_`|<^>;=$(\"'~.:%*",
         "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ⁺⁻⁾ꜝ⁰¹²³Ч¯ᶿᶲ←↑→↓£¥€“”≈⸠ϩэᵜ",
       ) ++ makeTrigraphs("#,", "0123456789", "₀₁₂₃₄₅₆₇₈₉") ++
       makeTrigraphs("#,", "<>+=o(*:v!/{(~&|\"\n.", "≤≥±₌§∑√∵⊻¬ø₳µɾ∧∨„¶•") ++

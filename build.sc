@@ -130,7 +130,7 @@ object jvm extends VyxalModule {
   /** Generate elements.txt and trigraphs.txt */
   def docs =
     T.sources {
-      val (elements, trigraphs) = runMethod[(String, String)](
+      val (elements, trigraphs, table) = runMethod[(String, String, String)](
         jvm.runClasspath(),
         "vyxal.gen.GenerateDocs",
         "generate",
@@ -138,9 +138,12 @@ object jvm extends VyxalModule {
       val elementsFile = build.millSourcePath / "documentation" / "elements.txt"
       val trigraphsFile = build.millSourcePath / "documentation" /
         "trigraphs.txt"
+      val tableFile = build.millSourcePath / "documentation" / "table.md"
       os.write.over(elementsFile, elements)
       os.write.over(trigraphsFile, trigraphs)
-      Seq(PathRef(elementsFile), PathRef(trigraphsFile))
+      os.write.over(tableFile, table)
+
+      Seq(PathRef(elementsFile), PathRef(trigraphsFile), PathRef(tableFile))
     }
 
   /** Generate nanorc files for JLine highlighting */
