@@ -3,6 +3,8 @@ package vyxal.gen
 import vyxal.{Element, Elements, Modifiers, SugarMap}
 import vyxal.parsing.Lexer
 import vyxal.Modifier
+import vyxal.Syntax
+import vyxal.SyntaxInfo
 
 /** For generating elements.txt and trigraphs.txt. See build.sc */
 private object GenerateDocs:
@@ -145,7 +147,33 @@ private object GenerateDocs:
     val modifiers = modifierHeader + "\n" + modiDivider + "\n" +
       contents.toString
 
-    val syntaxInformation = ""
+    val syntaxHeader = "| Symbol | Trigraph | Name | Description | Usage |"
+    val syntaxDivider = "| --- | --- | --- | --- | --- |"
+
+    SyntaxInfo.info.keys
+      .zip(SyntaxInfo.info.values)
+      .toSeq
+      .sortBy((symbol, _) =>
+        (
+          Lexer.Codepage.indexOf(symbol.charAt(0)) +
+            (if "#∆øÞ".contains(symbol.charAt(0)) then 400 else 0),
+          Lexer.Codepage.indexOf(symbol.substring(1)),
+        )
+      )
+      .foreach {
+        case (symbol, Syntax(name, description, usage)) =>
+          var trigraph = ""
+          SugarMap.trigraphs
+            .collect { case (tri, s) if s == symbol => tri }
+            .foreach { tri => trigraph = tri }
+          val formatSymbol = "\\".repeat(if symbol == "`" then 1 else 0) +
+            symbol.replace("|", "\\|")
+          contents ++=
+            s"| `$formatSymbol` | `$trigraph` | $name | $description | <pre>$usage</pre>` |\n"
+      }
+
+    val syntaxInformation = syntaxHeader + "\n" + syntaxDivider + "\n" +
+      contents.toString
 
     s"""
        |# Information Tables
