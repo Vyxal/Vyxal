@@ -168,6 +168,8 @@ private object GenerateDocs:
           SugarMap.trigraphs
             .collect { case (tri, s) if s == symbol => tri }
             .foreach { tri => trigraph = tri }
+
+          if trigraph.nonEmpty then trigraph = s"`$trigraph`"
           val formatSymbol = "\\".repeat(if symbol == "`" then 1 else 0) +
             symbol.replace("|", "\\|")
           val formatUsage = usage
@@ -176,7 +178,7 @@ private object GenerateDocs:
             .replace("<", "&lt;")
             .replace(">", "&gt;")
           contents ++=
-            s"| `$formatSymbol` | $trigraph | $name | $description | <pre>$usage</pre>` |\n"
+            s"| `$formatSymbol` | $trigraph | $name | $description | <pre>$formatUsage</pre>` |\n"
       }
 
     val syntaxInformation = syntaxHeader + "\n" + syntaxDivider + "\n" +
