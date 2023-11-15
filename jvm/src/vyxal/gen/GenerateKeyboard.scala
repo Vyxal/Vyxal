@@ -14,7 +14,7 @@ private object GenerateKeyboard:
 
   def generateDescriptions(): String =
     val data: scala.collection.mutable.HashMap[Int, ListBuffer[
-      HashMap[String, String]
+      Map[String, String]
     ]] = HashMap()
     for
       (symbol, element) <- Elements.elements
@@ -24,14 +24,14 @@ private object GenerateKeyboard:
       val index =
         if token == " " then 32 else Lexer.Codepage.indexOf(token.tail)
 
-      val thisElement = scala.collection.mutable.HashMap[String, String]()
+      val thisElement = scala.collection.mutable.Map[String, String]()
       thisElement("name") = element.name
       thisElement("description") = element.keywords.mkString(" ")
       thisElement("overloads") = element.overloads.mkString("\n")
       thisElement("token") = token
 
-      if data.contains(index) then data(index) += thisElement
-      else data(index) = ListBuffer(thisElement)
+      if data.contains(index) then data(index) += thisElement.toMap
+      else data(index) = ListBuffer(thisElement.toMap)
 
     for modifier <- Modifiers.modifiers do
       val (symbol, info) = modifier
@@ -46,9 +46,13 @@ private object GenerateKeyboard:
           thisElement("overloads") = keywords.mkString(" ")
           thisElement("token") = symbol
 
-          if data.contains(index) then data(index) += thisElement
-          else data(index) = ListBuffer(thisElement)
+          if data.contains(index) then data(index) += thisElement.toMap
+          else data(index) = ListBuffer(thisElement.toMap)
 
-    upickle.default.write(data.toMap)
+    val finalData =
+      scala.collection.mutable.HashMap[Int, List[Map[String, String]]]()
+    for (index, elements) <- data do finalData(index) = elements.toList
+
+    upickle.default.write(finalData.toMap)
   end generateDescriptions
 end GenerateKeyboard
