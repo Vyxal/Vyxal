@@ -145,6 +145,8 @@ private object GenerateDocs:
     val modifiers = modifierHeader + "\n" + modiDivider + "\n" +
       contents.toString
 
+    val syntaxInformation = ""
+
     s"""
        |# Information Tables
        |
@@ -155,6 +157,10 @@ private object GenerateDocs:
        |## Modifiers
        |
        |$modifiers
+       |
+       |## Syntax Features
+       |
+       |$syntaxInformation
        |""".stripMargin
 
   end elementTable
