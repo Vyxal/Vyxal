@@ -8,7 +8,7 @@
 ᴴ = Apply element only to the head of list
 ᶤ = find the index for the first element such that function evaluates as truthy
 ᶨ = Loop an element. Repeat until the results are no longer unique. Record intermediate results.
-¶ = NOP.
+¶ = NOP
 ᵏ = Key. Map an element over the groups formed by identical items.
 ᶪ = Loop an element. Repeat until the results are no longer unique.
 ᵐ = maximum by element
