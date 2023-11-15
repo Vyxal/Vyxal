@@ -127,22 +127,20 @@ private object GenerateDocs:
           Lexer.Codepage.indexOf(modi.substring(1)),
         )
       )
-      .foreach(modi =>
-        modi match
-          case (symbol, Modifier(name, description, keywords, arity)) =>
-            var trigraph = ""
-            SugarMap.trigraphs
-              .collect { case (tri, s) if s == symbol => tri }
-              .foreach { tri => trigraph = tri }
-            val formatSymbol = "\\".repeat(if symbol == "`" then 1 else 0) +
-              symbol.replace("|", "\\|")
-            val formatKeywords = keywords.map("`" + _ + "`").mkString(", ")
-            contents ++=
-              s"| `$formatSymbol` | `$trigraph` | ${name
-                  .replace("|", "/")} | $formatKeywords | ${arity} | <pre>${description
-                  .replace("|", "")
-                  .replace("\n", "<br>")}</pre> |\n"
-      )
+      .foreach {
+        case (symbol, Modifier(name, description, keywords, arity)) =>
+          var trigraph = ""
+          SugarMap.trigraphs
+            .collect { case (tri, s) if s == symbol => tri }
+            .foreach { tri => trigraph = tri }
+          val formatSymbol = "\\".repeat(if symbol == "`" then 1 else 0) +
+            symbol.replace("|", "\\|")
+          val formatKeywords = keywords.map("`" + _ + "`").mkString(", ")
+          contents ++=
+            s"| `$formatSymbol` | `$trigraph` | ${name.replace("|", "/")} | $formatKeywords | ${arity} | <pre>${description
+                .replace("|", "")
+                .replace("\n", "<br>")}</pre> |\n"
+      }
 
     val modifiers = modifierHeader + "\n" + modiDivider + "\n" +
       contents.toString
