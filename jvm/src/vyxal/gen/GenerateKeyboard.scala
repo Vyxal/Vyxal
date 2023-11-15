@@ -18,7 +18,7 @@ private object GenerateKeyboard:
     ]] = HashMap()
     for
       (symbol, element) <- Elements.elements
-      if Lexer.Codepage.contains(symbol.last)
+      if Lexer.Codepage.contains(symbol.last) && !symbol.startsWith("#|")
     do
       val token = symbol
       val index =
@@ -33,7 +33,7 @@ private object GenerateKeyboard:
       if data.contains(index) then data(index) += thisElement.toMap
       else data(index) = ListBuffer(thisElement.toMap)
 
-    for modifier <- Modifiers.modifiers do
+    for modifier <- Modifiers.modifiers if !modifier._1.startsWith("#|") do
       val (symbol, info) = modifier
       info match
         case Modifier(name, description, keywords, _) =>
