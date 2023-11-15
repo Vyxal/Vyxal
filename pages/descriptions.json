@@ -1,1 +1,1336 @@
-{"120":[{"overloads":" -> continue the current loop","name":"Loop Continue","description":"continue","token":"#x"}],"84":[{"overloads":"a: any -> transpose a","name":"Transpose Safe","description":"transpose-safe","token":"ÞT"}],"118":[{"overloads":"*a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead","name":"[Internal Use] Vectorise (Element Form) ","description":"","token":"#v"}],"67":[{"overloads":"a: str -> compress a using the dictionary","name":"Compress String Using Dictionary","description":"compress-dict dict-comp compress","token":"#C"}],"126":[{"overloads":"*a, f -> f applied to the stack without popping items. Use the modifier instead.","name":"[Internal Use] Apply Without Popping (Element Form)","description":"","token":"#~"}],"0":[{"overloads":"a: num -> 2^a\na: str -> evaluate (not execute) a","name":"2 Power | Evaluate","description":"two^ two** eval","token":"E"},{"overloads":"a: lst -> Permutations of a","name":"Permutations","description":"permutations perms","token":"Ṗ"},{"overloads":"a: num -> a % 2 == 0\na: str -> a split on newlines","name":"Is Even / Split on Newlines","description":"even? even is-even? split-on-newlines newline-split split-newlines","token":"e"},{"overloads":"a: num -> ~a","name":"Bitwise Not","description":"bitwise-not","token":"⌐"},{"overloads":"a -> return a","name":"Return Statement","description":"return ret","token":"X"},{"overloads":"a: num -> a + 1","name":"Increment","description":"incr increment","token":"ꜝ"},{"overloads":"a: lst, b: lst -> Dot product of a and b\na: num, b: num -> Convert a to bijective base b","name":"Dot Product | To Bijective Base | First Index Where Predicate Truthy","description":"dot-product bijective-base dot-prod first-index-where","token":"ḋ"},{"overloads":"a: any, b: any -> split a by b","name":"Split","description":"split","token":"s"},{"overloads":"a: num -> a ** 3\na: str -> a split into chunks of length 3","name":"Cube | Threes","description":"cube threes","token":"⁻"},{"overloads":" -> call the current function recursively","name":"Recursion | Recurse","description":"recurse","token":"x"},{"overloads":"a: num, b: num -> a / b\na: str, b: str -> Split a on the regex b","name":"Divide | Split","description":"divide div str-split","token":"÷"},{"overloads":"-> 10","name":"Ten","description":"ten","token":"₀"},{"overloads":"a: num -> |a|\na: str -> keep alphabet characters of a","name":"Absolute Value | Keep Alphabet Characters","description":"abs absolute-value keep-alphabet","token":"Ȧ"},{"overloads":"a: lst|str -> Push a[1:], then a[0] onto the stack","name":"Head Extract","description":"head-extract-swap split-at-head-swap","token":"Ḥ"},{"overloads":"a: lst -> a join on nothing\na: str -> is a alphanumeric?\na: fun -> First positive integer ([1, 2, 3, ...]) for which a returns true","name":"Join on Nothing | First Positive Integer | Is Alphanumeric","description":"nothing-join concat-fold join-on-nothing empty-join single-string as-single-string first-positive-integer first-n>0 is-alphanumeric is-alphanum is-alnum","token":"Ṅ"},{"overloads":"The second input to the program","name":"Second Input","description":"second-input input-1","token":"¹"},{"overloads":"a: lst -> sort a by length","name":"Sort by Length","description":"sort-by-length sort-by-len order-by-length order-by-len length-sort len-sort","token":"Ḷ"},{"overloads":"a: any, b: fun -> group a by the results of b\na: fun, b: any -> group b by the results of a","name":"Group by Function Result","description":"group-by","token":"Ġ"},{"overloads":"any a, any b, any c -> transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)\na: fun, b: fun, c: any -> call b on c until a(c) is falsy","name":"Transliterate | Call While","description":"transliterate call-while","token":"ŀ"},{"overloads":"a: num, b: num -> a % b\na: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)","name":"Modulo | String Formatting","description":"mod modulo str-format format % strfmt","token":"%"},{"overloads":"a: any -> lengths of consecutive groups of a","name":"Length of Consecutive Groups","description":"len-consecutive gvl gavel","token":"†"},{"overloads":"-> 100","name":"One hundred","description":"one-hundred","token":"₅"},{"overloads":"a: num, b: num -> a ^ b\na: str, b: num -> a with the bth letter removed\na: num, b: str -> b with the ath letter removed\na: str, b: str -> trim b from both sides of a","name":"Exponentation | Remove Nth Letter | Trim","description":"exp ** pow exponent remove-letter str-trim","token":"*"},{"overloads":"a: num -> parity of a (a % 2)\na: str -> last half of a","name":"Bit | Parity | Last Half of String","description":"bit parity str-last-half","token":"ḃ"},{"overloads":"->  -> context variable n","name":"Get Context Variable N","description":"get-context-n context-n c-var-n ctx-n ctx-primary","token":"n"},{"overloads":"a: lst, b: num -> a[1:b]\na: num, b: lst -> b[1:a]","name":"Slice from 1","description":"1->b","token":"Φ"},{"overloads":"a: any -> bool(a)","name":"Boolify","description":"boolify","token":"ȯ"},{"overloads":"a: num -> [1..a]\na: str -> a.upper()","name":"Inclusive One Range | Uppercase","description":"one->n one-range to-upper upper uppercase","token":"ɾ"},{"overloads":"a: num -> prime factors of a\na: str -> a with all non-alphabet characters removed","name":"Prime Factors | Remove Non-Alphabet","description":"prime-factors remove-non-alphabet","token":"ḟ"},{"overloads":"a: num -> a / 2\na: str -> a split into two pieces","name":"Halve","description":"halve","token":"½"},{"overloads":"a: any -> group consecutive identical items of lst(a)","name":"Group By Consecutive Items","description":"group-by-consecutive","token":"ġ"},{"overloads":"a: num -> -a\na: str -> a.swapCase()\na: fun -> first non-negative integer where predicate a is true","name":"Negation | Swap Case | First Non-Negative Integer Where Predicate is True","description":"neg negate swap-case caseswap first-non-negative first-nonneg first>-1","token":"N"},{"overloads":"a: lst -> a[:-1]\na: str -> a[:-1]","name":"Init","description":"init remove-last","token":"Ṫ"},{"overloads":"a: list, b: list -> cartesian product of a and b","name":"Cartesian Product","description":"cartesian-product cartesian cart-prod cart","token":"Ẋ"},{"overloads":"a: lst, b: str|num -> a join on b\na: lst, b: lst -> Intersperse elements of b within a","name":"Join On","description":"join-on join join-with join-by","token":"j"},{"overloads":"-> 16","name":"Sixteen","description":"sixteen","token":"₁"},{"overloads":"a: num, b: num -> a in base b\na: num, b: str|lst -> a in base with alphabet b\na: lst, b: num -> each x in a in base b\na: lst, b: str|lst -> each x in a in base with alphabet b","name":"To Base","description":"to-base","token":"y"},{"overloads":"a: num -> 3 * a\na: str -> does a contain only alphabet characters?\na: any -> transpose a","name":"Triple | Contains Only Alphabet | Transpose","description":"triple alphabet? alphabetical? contains-only-alphabet? contains-only-alphabetical? transpose flip reverse-axes flip-axes permute-axes","token":"T"},{"overloads":"a: any -> indices that will reverse-sort a","name":"Grade Down","description":"grade-down","token":"↓"},{"overloads":"a: any, b: any -> a == b","name":"Equals","description":"eq == equal same? equals? equal?","token":"="},{"overloads":"a: lst -> a[-1]","name":"Tail | Last Item","description":"tail last last-item","token":"t"},{"overloads":"a: lst, b: lst -> Merge a and b\na: any, b: lst -> Prepend a to b\na: lst, b: any -> Append b to a\na: num, b: num -> num(str(a) + str(b))\na: any, b: any -> str(a) + str(b)","name":"Merge","description":"merge","token":"J"},{"overloads":"a: any, b: num, c: any -> insert c at position b in a\na: any, b: lst, c: any -> insert c at positions b in a\na: any, b: lst[num], c: lst -> insert c[i] at position b[i] in a","name":"Insert","description":"insert insert-at","token":"Ị"},{"overloads":"a: any, b: num -> a repeated b times, wrapped in a list\na: num, b: any -> b repeated a times, wrapped in a list\na: lst|str, b: lst[num] -> a[_] repeated b[_] times, wrapped in a list","name":"List Repeat","description":"wrap-repeat","token":"Y"},{"overloads":"a: lst, b: num -> [a[0], a[1], ..., a[b-1]]","name":"Zero Slice Until","description":"0>b zero-slice zero-slice-until take slice-to lst-truncate first-n-items first-n","token":"Θ"},{"overloads":"num a: a + reversed(a) (as number)\nstr a: a + reversed(a)\nlst a: append reversed(a) to a","name":"Mirror","description":"mirror","token":"ṁ"},{"overloads":"a: lst -> Flattened a","name":"Flatten","description":"flatten flat","token":"f"},{"overloads":"a: num, b: num -> a < b\na: str, b: num -> a < str(b)\na: num, b: str -> str(a) < b\na: str, b: str -> a < b","name":"Less Than","description":"lt less less-than < less? smaller?","token":"<"},{"overloads":"a: lst|str|num -> a with duplicates removed","name":"Uniquify","description":"uniquify","token":"u"},{"overloads":"a: lst, b: num -> a wrapped in chunks of length b\na: fun, b: num -> first b truthy integers where a is truthy","name":"Wrap to Length | Predicate Slice From 0","description":"wrap-length pred-slice-0","token":"Ẇ"},{"overloads":"a: any -> uninterleave a","name":"Uninterleave","description":"uninterleave","token":"U"},{"overloads":"-> []","name":"Empty array","description":"empty-list nil-list new-list","token":"₉"},{"overloads":"a: num, b: num -> a & b","name":"Bitwise And","description":"bitwise-and","token":"∴"},{"overloads":"a: any, b: any -> list(a) ++ [b]","name":"Append","description":"append","token":"&"},{"overloads":"a: any, b: any -> a.indexOf(b) (-1 if not found)\na: any, b: fun -> truthy indices of mapping b over a","name":"Find","description":"find","token":"Ḟ"},{"overloads":"a: fun, b: lst -> Filter b by truthy results of a\na: lst, b: fun -> Filter a by truthy results of b\na: num, b: num -> a from base b to base 10\na: num, b: str|lst -> a from base with alphabet b to base 10","name":"Filter by Function | From Base","description":"filter keep-by from-base 10->b","token":"F"},{"overloads":" -> push the value of the register","name":"Get Register","description":"get-register get-reg register <-register <-reg","token":"¥"},{"overloads":"a: num -> a!","name":"Factorial","description":"fact factorial","token":"!"},{"overloads":"a: any -> dump all values on the stack","name":"Dump","description":"dump","token":"\\"},{"overloads":"a: str -> is (a) a vowel? vectorises for strings len > 1\na: list -> is (a) all truthy?","name":"All Truthy | All() | Is Vowel?","description":"all is-vowel? vowel?","token":"A"},{"overloads":"a: str -> is (a) uppercase? vectorises for strings len > 1\na: list -> is (a) any truthy?","name":"Any Truthy | Any() | Is Uppercase?","description":"any is-uppercase? is-upper? upper?","token":"a"},{"overloads":"a: num, b: num -> |a - b|\na: lst, b: fun -> apply b to each pair of neighbours in a [applies to windows of length 2]","name":"Absolute Difference | Apply to Neighbours","description":"abs-diff apply-to-neighbours","token":"ȧ"},{"overloads":"-> \"*\"","name":"Asterisk","description":"asterisk","token":"•"},{"overloads":"a: lst -> List partitions of a\na: num -> Integer partitions of a (all possible ways to sum to a)","name":"List Partitions | Integer Partitions","description":"list-partitions list-parts integer-partitions int-partitions int-parts","token":"ṗ"},{"overloads":"a: fun, b: any -> sort iterable b by function a\na: any, b: fun -> sort iterable a by function b\na: lst, b: lst[num] -> partition a into sublists of length items in b","name":"Sort by Function Object | Partition by Numbers","description":"sort-by sortby sort-by-fun sortbyfun sort-fun sortfun partition-by","token":"ṡ"},{"overloads":"a: num -> a ** 2\na: str -> a split into pairs","name":"Square | Pairs","description":"square pairs","token":"⁺"},{"overloads":"a: lst -> max(a) without popping a","name":"Maximum without popping","description":"max-no-pop","token":"Ɠ"},{"overloads":"a: any, b: any -> a !== b (non-vectorising)","name":"Not Equal","description":"not-equal =n't","token":"≠"},{"overloads":"->  -> context variable m","name":"Get Context Variable M","description":"get-context-m context-m c-var-m ctx-m ctx-secondary","token":"m"},{"overloads":"a: any, b: fun -> a.map(b)\na: fun, b: any -> b.map(a)\na: lst, b: lst -> a molded to the shape of b\na: num, b: num -> how many times b divides a","name":"Map Function | Mold Lists | Multiplicity","description":"map mold multiplicity times-divide","token":"M"},{"overloads":"a: any, b: any -> a && b","name":"Logical And","description":"and logical-and","token":"∧"},{"overloads":" -> rotate the entire stack right once","name":"Rotate Stack Right","description":"rotate-stack-right","token":"→"},{"overloads":"a: num -> ceil(a)","name":"Ceiling","description":"ceiling ceil","token":"⌈"},{"overloads":"a: num -> a + 2\na: lst -> [x[0] for x in a]","name":"Increment Twice | Vectorised Head","description":"incr-twice vec-head","token":"…"},{"overloads":"a: fun -> Execute a without popping\na: str -> Evaluate a as Vyxal without popping\na: lst -> Return a boolean array with 1s at the indices in a list.\na: num -> Is a == 1?","name":"Execute lambda without popping | Evaluate as Vyxal without popping | Boolean Mask | Is 1?","description":"peek-call exec-peek boolean-mask bool-mask strict-boolify is-1?","token":"Ḃ"},{"overloads":"ඞ","name":"ඞ","description":"sus","token":"ඞ"},{"overloads":"a: num, b: num -> a ^ b","name":"Bitwise Xor","description":"bitwise-xor","token":"⊻"},{"overloads":"-> 128","name":"One hundred twenty-eight","description":"one-hundred-twenty-eight","token":"₆"},{"overloads":"a: lst -> a join on newlines\na: str -> a padded to a multiple of 8 with 0s\na: num -> a if a == 1 push context variable n","name":"Join On Newlines | Pad Binary to Mod 8 | Context if 1","description":"join-newlines newline-join join-on-newlines binary-pad-8 bin-pad-8 one?->context one?->n","token":"ṅ"},{"overloads":"a: lst, b: lst -> Interleave a and b\na: any, b: fun -> Reject elements of a by applying b","name":"Interleave / Reject By Function","description":"interleave reject","token":"I"},{"overloads":"a: lst, b: num -> a[b]\na: lst, b: lst -> a[_] for _ in b\na: str, b: lst -> ''.join(a[i] for i in b)\na: any, b: fun -> Apply b on a and collect unique values. Does include the initial value.\na: str, b: str -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])","name":"Index | Collect Unique Application Values | Enclose","description":"index at item-at nth-item collect-unique enclose","token":"i"},{"overloads":"a: any -> reverse a","name":"Reverse","description":"reverse","token":"Ṛ"},{"overloads":"a: lst -> a ++ a ++ a ++ ...\na: num -> a > 0","name":"Cycle | Is Positive?","description":"cycle is-positive? positive? >0?","token":"Ċ"},{"overloads":"_ -> push a copy of the second item on the stack over the first\na b -> a b a","name":"Over","description":"over","token":"Ȯ"},{"overloads":"a: any -> `[0, 1, 2, ..., len(a)-1]`","name":"Length 0-Range","description":"zero->len","token":"ι"},{"overloads":"-> 26","name":"Twenty-six","description":"twenty-six","token":"₂"},{"overloads":"-> \"|\"","name":"Pipe","description":"pipe","token":"¦"},{"overloads":"a: num, b: num -> a - b\na: str, b: num -> a + b '-'s (or '-'s + a if b < 0)\na: num, b: str -> a '-'s + b (or b + '-'s if a < 0)\na: str, b: str -> a with b removed","name":"Subtraction","description":"sub subtract minus str-remove remove str-remove-all remove-all","token":"-"},{"overloads":"a: num -> 1/a\na: str -> a with all whitespace removed","name":"Reciprocal | Remove Whitespace","description":"reciprocal recip remove-whitespace remove-space 1/","token":"ė"},{"overloads":"a: str -> a[1:]\na: any -> toList(a)[1:]","name":"Head Remove | Behead","description":"head-remove behead","token":"Ḣ"},{"overloads":"a: lst, b: lst -> partition a after truthy indices in b","name":"Partition After Truthy Indices","description":"partition-after-truthy","token":"ƒ"},{"overloads":"a -> printed to stdout","name":"Print","description":"print puts out println","token":","},{"overloads":"a, b -> [a, b]","name":"Pair","description":"pair","token":";"},{"overloads":"a: any, b: any -> a === b (non-vectorising)","name":"Exactly Equals","description":"=== exactly-equal strictly-equal?","token":"₌"},{"overloads":"a: num -> bit length of a\na: lst[lst] -> matrix inverse of a","name":"Bit Length | Matrix Inverse","description":"bit-length matrix-inverse","token":"Ṃ"},{"overloads":"a: lst -> each element of a reversed\na: num -> 1 - a\na: str -> a converted to title case","name":"Vectorised Reverse | Complement | Title Case","description":"vectorised-reverse vec-reverse complement titlecase title-case","token":"V"},{"overloads":"a: lst -> Maximum of a\na: non-lst, b: non-lst -> Maximum of a and b\na: lst, b: fun -> Call b infinitely with items of a as starting values","name":"Monadic Maximum | Dyadic Maximum | Generate From Function | Vectorised Maximum","description":"max maximum generator","token":"G"},{"overloads":"a: num, b: str -> each character in b repeated a times\na: any, b: any -> a prepended and appended to b","name":"Surround | Character Multiply","description":"surround character-multiply","token":"⁾"},{"overloads":"a: num, b: num -> a >> b","name":"Bitshift Right","description":"bitwise-right-shift right-shift","token":"»"},{"overloads":"a: any -> !a","name":"Logical Not","description":"non-vec-not non-vec-logical-not","token":"¬"},{"overloads":"a: any -> enclose a in quotes, escape backslashes and quote marks","name":"Quotify","description":"quotify","token":"q"},{"overloads":"a: num -> floor(a)","name":"Floor","description":"floor","token":"⌊"},{"overloads":"a -> Stop program execution","name":"Exit | Quit","description":"exit quit","token":"Q"},{"overloads":"a: any -> Length of a","name":"Length | Length of List","description":"length len length-of len-of size","token":"L"},{"overloads":"a: num -> convert a to binary\na: str -> bin(ord(x) for x in a)","name":"Convert To Binary","description":"to-binary dec->bin decimal->bin","token":"b"},{"overloads":"a: any -> rotate left once","name":"Rotate Left","description":"abc->bca rot-left rotate-left","token":"Ṙ"},{"overloads":"a: lst -> Minimum of a\na: non-lst, b: non-lst -> Minimum of a and b\na: lst, b: fun -> Call b infinitely with items of a as starting values (dyadic)","name":"Monadic Minimum | Dyadic Minimum | Generate From Function (Dyadic) | Vectorised Minimum","description":"min minimum generator-dyadic","token":"g"},{"overloads":"a: num -> str(a) from binary\na: str -> int(a, 2)\na: lst -> int(a, 2), using list of digits","name":"Convert From Binary","description":"from-binary bin->dec bin->decimal","token":"B"},{"overloads":"-> \" \"","name":"Space","description":"space","token":"ð"},{"overloads":"a: lst -> sublists of a","name":"Sublists","description":"sublists","token":"Ṣ"},{"overloads":"a: lst -> Length of each item in a","name":"Length of Each Item","description":"length-vectorised length-vect len-vect len-vectorised vec-len vec-length vlen","token":"l"},{"overloads":"a: lst -> are all elements of a equal?","name":"All Equal?","description":"all-equal all-equal?","token":"≈"},{"overloads":"a: fun -> Execute a\na: str -> Evaluate a as Vyxal\na: num -> 10 ** n","name":"Execute lambda | Evaluate as Vyxal | Power with base 10","description":"execute-lambda evaluate-as-vyxal power-base-10 call @","token":"Ė"},{"overloads":"a: lst -> min(a) without popping a","name":"Minimum without popping","description":"min-no-pop","token":"ɠ"},{"overloads":"a: num, b: num -> a choose b\na: str, b: str -> are the character sets of a and b equal?\na: fun, b: any -> run a on b until the result no longer changes returning all intermediate results","name":"N Choose K | Character Set Equal? | Repeat Until No Change","description":"n-choose-k ncr nck choose char-set-equal? char-set-eq? until-stable","token":"ċ"},{"overloads":"a: lst -> Prefixes of a","name":"Prefixes","description":"prefixes","token":"P"},{"overloads":"a -> printed to stdout without newline","name":"Print without newline","description":"print-no-newline","token":"§"},{"overloads":"a -> printed to stdout without popping","name":"Print without popping","description":"print-no-pop","token":"Ọ"},{"overloads":"a: any, b: any -> Trim all elements of b from both sides of a.\na: fun, b: any -> cumulative reduce b by function a","name":"Trim / Cumulative Reduce","description":"trim scanl cumulative-reduce","token":"Ṭ"},{"overloads":"a: num, b: num -> a <= b\na: str, b: num -> a <= str(b)\na: num, b: str -> str(a) <= b\na: str, b: str -> a <= b","name":"Less Than Or Equal To","description":"le less-than-or-equal-to","token":"≤"},{"overloads":"a: lst, b: any -> b prepended to a","name":"Prepend","description":"prepend","token":"p"},{"overloads":"-> 32","name":"Thirty-two","description":"thirty-two","token":"₃"},{"overloads":"a: list, b: list -> cartesian product of a and b in the standard order, but without accounting for infinite lists","name":"Cartesian Product Unsafe","description":"cartesian-product-unsafe cartesian-unsafe cart-prod-unsafe cart-unsafe","token":"ᶿ"},{"overloads":"a: any -> indices that will sort a","name":"Grade Up","description":"grade-up","token":"↑"},{"overloads":" -> rotate the entire stack left once","name":"Rotate Stack Left","description":"rotate-stack-left","token":"←"},{"overloads":"->  -> input","name":"Get Input","description":"get-input input stdin readline","token":"?"},{"overloads":"a: num -> [0..a)\na: str -> a.lower()","name":"Exclusive Zero Range | Lowercase","description":"0->n zero-range lowered-range to-lower lower lowercase","token":"ʀ"},{"overloads":"a ->","name":"Pop and Discard","description":"pop discard","token":"_"},{"overloads":"a: any -> `[1, 2, 3, ..., len(a)]`","name":"Lenght 1-Range","description":"one->len","token":"κ"},{"overloads":"a: lst -> Suffixes of a","name":"Suffixes","description":"suffixes","token":"€"},{"overloads":"a: any, b: any -> a || b","name":"Logical Or","description":"or logical-or","token":"∨"},{"overloads":"a: any, b: any -> count(b in a)","name":"Count","description":"count","token":"C"},{"overloads":"a: any -> rotate right once","name":"Rotate Right","description":"abc->cab rot-right rotate-right","token":"ṙ"},{"overloads":"-> 256","name":"Two hundred fifty-six","description":"two-hundred-fifty-six","token":"₇"},{"overloads":"a: num, b: num -> a | b","name":"Bitwise Or","description":"bitwise-or","token":"∵"},{"overloads":"a: num -> sign of a","name":"Sign","description":"sign","token":"±"},{"overloads":"-> chr(10)","name":"Newline","description":"newline","token":"¶"},{"overloads":"a: num -> a - 1","name":"Decrement","description":"decr decrement","token":"ᵛ"},{"overloads":"a: num -> a in hexadecimal\na: str -> a as a hexadecimal number to base 10","name":"Hexadecimal | To Hexadecimal","description":"hex hexadecimal to-hex to-hexadecimal","token":"H"},{"overloads":"a: lst -> forward-differences of a","name":"Deltas","description":"deltas","token":"¯"},{"overloads":"a: num, b: num -> a + b\na: num, b: str -> a + b\na: str, b: num -> a + b\na: str, b: str -> a + b","name":"Addition","description":"add + plus","token":"+"},{"overloads":"a: num, b: num -> a % b == 0\na: str, b: num -> a + ' ' * b\na: num, b: str -> b + ' ' * a\na: lst, b: fun -> Remove duplicates from a by applying b to each element","name":"Divides? | Append Spaces | Remove Duplicates by Function","description":"divides? +-spaces dedup-by","token":"Ḋ"},{"overloads":"a: any, b: lst -> is element a in list b?\na: any, b: any -> is str(b) in str(a)?","name":"Contains","description":"contains in","token":"c"},{"overloads":"a, b, c, ..., -> [a, b, c, ...]","name":"Wrap","description":"wrap","token":"W"},{"overloads":"a: lst -> a[0]","name":"Head | First Item","description":"head first first-item","token":"h"},{"overloads":"a: num, b: num -> log_b(a)\na: fun, b: any -> apply until a previous value is repeated, collecting intermediate results\na: str, b: str -> a same length as b\na: str, b: num -> len(a) == b","name":"Logarithm | Scan Fixpoint | Same Length? | Length Equals?","description":"log logarithm scan-fixpoint scan-fix same-length? same-length length-equals? length-equals len-eq?","token":"Ŀ"},{"overloads":"a: num, b: num -> a.real + b.real * i\na: any, b: lst -> `[a[item] for item in b]`\na: any, b: fun -> Apply b on a and collect unique values (until fixpoint). Does not include the initial value.","name":"Index into Multiple | Collect While Unique | Complex Number","description":"index-into-multiple collect-while-unique complex","token":"İ"},{"overloads":"a: lst, b: num, c: non-fun -> assign c to a at the index b / a[b] = c\na: lst, b: num, c: fun -> a[b] c= <stack items> (augmented assignment to list)\na: lst, b: lst, c: lst -> assign c to a at the indices in b","name":"Assign","description":"assign assign-at assign<> assign<x> a<x>= a<x>=y a<x>?=y set-item apply-at","token":"Ạ"},{"overloads":"a: str, b: str, c: str -> replace all instances of b in a with c\na: fun, b: any, c: any -> reduce items in zip(b, c) by a","name":"Replace","description":"replace zip-with","token":"r"},{"overloads":"a: num, b: num -> a << b","name":"Bitshift Left","description":"bitwise-left-shift left-shift","token":"«"},{"overloads":"a: num, b: num -> a >= b\na: str, b: num -> a >= str(b)\na: num, b: str -> str(a) >= b\na: str, b: str -> a >= b","name":"Greater Than Or Equal To","description":"ge greater-than-or-equal-to","token":"≥"},{"overloads":"a: num -> Factors of a\na: str -> Is a numeric?","name":"Factors | Is Numeric?","description":"factors divisors is-numeric is-num is-number is-num? is-number?","token":"K"},{"overloads":"a: lst|str -> Push a[0], then a[1:] onto the stack","name":"Head Extract","description":"head-extract split-at-head","token":"ḣ"},{"overloads":"The first input to the program","name":"First Input","description":"first-input input-0","token":"⁰"},{"overloads":"a: lst -> sum of a","name":"Sum","description":"sum /+ +/","token":"∑"},{"overloads":"a: fun, b: any -> reduce iterable b by function a\na: any, b: fun -> reduce iterable a by function b\na: num, b: num -> the range [a, b)\na: str, b: num|str -> does regex pattern b match haystack a?","name":"Reduce by Function Object | Dyadic Range | Regex Match","description":"fun-reduce reduce fold-by range a->b regex-match? re-match? has-regex-match? fold","token":"R"},{"overloads":"a -> [a]","name":"Wrap Singleton","description":"wrap-singleton enlist","token":"w"},{"overloads":"a -> a, a","name":"Duplicate","description":"dup","token":":"},{"overloads":"-> 64","name":"Sixty-four","description":"sixty-four","token":"₄"},{"overloads":"a, b -> b, a","name":"Swap","description":"swap","token":"$"},{"overloads":"a: str|lst, b: num -> return every b-th element of a. If b is zero, mirror: prepend a to its reverse.\na: num, b: str|lst -> return every a-th element of b. If a is zero, mirror: append b to its reverse.\na: lst, b: lst -> a * b (matrix multiply)\na: str, b: str -> does the entirety of a match b?","name":"Modular | Matrix Multiply | Regex Full Match?","description":"nth-items modular maxtrix-multiply mat-multiply mat-mul regex-full-match? full-match?","token":"Ṁ"},{"overloads":"a: lst|str -> Push a[-1], then a[:-1] onto the stack","name":"Last Extract","description":"last-extract split-at-last","token":"ṫ"},{"overloads":"a: str -> ord(a)\na: num -> chr(a)","name":"Ord/Chr","description":"ord chr","token":"O"},{"overloads":"a: num -> unique prime factors of a\na: str -> case of each character of a (uppercase = 1, lowercase = 0)","name":"Unique Prime Factors | Case Of","description":"unique-prime-factors case-of","token":"Ḅ"},{"overloads":"a: lst, b: num -> cart_prod([a] * n)","name":"Cartesian Power","description":"cartesian-power","token":"ẋ"},{"overloads":"a: lst -> product of a","name":"Product","description":"product prod","token":"Π"},{"overloads":"-> \"abcdefghijklmnopqrstuvwxyz\"","name":"Alphabet","description":"alphabet a-z","token":"₈"},{"overloads":"a: num -> sqrt(a)","name":"Square Root","description":"sqrt square-root","token":"√"},{"overloads":"a: any -> register = a","name":"Set Register","description":"set-register ->register set-reg ->reg","token":"£"},{"overloads":"a -> [a, a, a]","name":"Triplicate","description":"trip","token":"D"},{"overloads":"a: num, b: num -> a > b\na: str, b: num -> a > str(b)\na: num, b: str -> str(a) > b\na: str, b: str -> a > b","name":"Greater Than","description":"gt greater greater-than greater? bigger?","token":">"},{"overloads":"The third input to the program","name":"Third Input","description":"third-input input-2","token":"²"},{"overloads":"a: any -> convert to list and sort ascending","name":"Sort ascending","description":"sort sortasc sort-asc","token":"S"},{"overloads":"a: num -> a * 2\na: str -> a + a","name":"Double","description":"double","token":"d"},{"overloads":"a: lst, b: lst -> zip a and b\na: lst, b: fun -> [[x, b(x)] for x in a]\na: fun, b: lst -> [[a(x), x] for x in b]","name":"Zip","description":"zip zip-map","token":"Z"},{"overloads":"a: lst, b: num -> Overlapping slices of a of length b\na: lst|str -> Overlapping slices of a of length 2","name":"Overlap | Overlapping Slices","description":"overlap overlaps overlapping overlapping-slices","token":"o"},{"overloads":"a: lst -> sum of each element of a","name":"Vectorised Sums","description":"vectorised-sums vec-sums","token":"Ṡ"},{"overloads":"a: num -> [0, 1, ..., a]\na: str -> is a lowercase?","name":"Inclusive zero Range | Is Lowercase","description":"inclusive-zero-range zero->n is-lowercase? lowercase? lower?","token":"z"},{"overloads":"a: any -> str(a)","name":"Stringify","description":"to-string stringify str","token":"ᶲ"},{"overloads":"a: num, b: num -> a * b\na: num, b: str -> b repeated a times\na: str, b: num -> a repeated b times\na: str, b: str -> ring translate a according to b","name":"Multiplication","description":"mul multiply times str-repeat * ring-trans","token":"×"},{"overloads":"****:","name":"Quadruple Element Lambda","description":"Turn the next four elements (whether that be a structure/modifier/element) into a lambda\nЧfghi: Push the equivalent of λfghi} to the stack","token":"Ч"},{"overloads":"*2:","name":"Dyadic Single Element Lambda","description":"Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda\nᵈf: Push the equivalent of λ2|f} to the stack","token":"ᵈ"},{"overloads":"first-index-where: first-index-of: ind-of: find-by:","name":"First Index Where","description":"Find the first index where an element is truthy\nᶤf: find the first index where f is truthy","token":"ᶤ"},{"overloads":"parallel-apply-and-wrap: para-apply-and-wrap: <paraply>: <!!>:","name":"Parallel Apply and Wrap","description":"Parallel apply two elements to the top of the stack\nand wrap the result in a list\n","token":"∦"},{"overloads":"invariant-under: vertical-scan: vscan: v-scan: invariant?: same?:","name":"Invariant Under? / Vertical Scan","description":"Check if a function is invariant under a transformation / vertical scan\nᵞf: check if top of stack is invariant under a transformation\nᵞf: scanl columns by f","token":"ᵞ"},{"overloads":"key:","name":"Key","description":"Map an element over the groups formed by identical items.\nᵏf: Map f over the groups formed by identical items","token":"ᵏ"},{"overloads":"min-by: minimum-by:","name":"Minimum By","description":"Minimum By Element\nᵐf: Minimum of top of stack based on results of f","token":"ⁿ"},{"overloads":"vec-dump: map-dump:","name":"Map as Stacks","description":"Map a function over the top of the stack, treating each iteration\nas if it were a stack of items. Essentially, dump before mapping\n","token":"`"},{"overloads":"without-popping: peek: dedup-by: remove-duplicates-by:","name":"Apply Without Popping | Remove Duplicates by","description":"Apply a 2+ arity element to the stack without popping\nRemove duplicates from a list by an element\nᵇf<dyad|triad|tetrad>: apply f to the stack without popping\nᵇf<monad>: remove duplicates from a list by applying f to each pair of elements","token":"ᵇ"},{"overloads":"apply-to-head:","name":"Apply To Head","description":"Apply element only to the head of list\nᴴf: Apply f to the head of the top of the stack","token":"ᴴ"},{"overloads":"loop-while-unique:","name":"Loop While Unique","description":"Loop While Unique - similar to ᶨ, but doesn't collect\nᶪf: Loop while unique","token":"ᶪ"},{"overloads":"max-by: maximum-by:","name":"Maximum By","description":"Maximum By Element\nᵐf: Maximum of top of stack based on results of f","token":"ᵐ"},{"overloads":"sort-by: scanl:","name":"Sort By","description":"Sort By Element / Scanl\nᶳf: Sort top of stack based on results of f\nᶳf: Cumulatively reduce a list of items","token":"ᶳ"},{"overloads":"dip:","name":"Dip","description":"Stash the top of the stack temporarily, and then apply\nthe function. Finally, push the stashed value\nᵂf: pop M, apply f, push M","token":"ᵂ"},{"overloads":"reduce-columns: map-over-suffixes: fold-cols: foldl-cols: fold-columns-by: reduce-columns-by: over-suffixes:","name":"Reduce Columns | Map Over Suffixes","description":"Reduce columns of a 2d list by a function\nMap an element over suffixes","token":"ᶜ"},{"overloads":"***:","name":"Triple Element Lambda","description":"Turn the next three elements (whether that be a structure/modifier/element) into a lambda\nэfgh: Push the equivalent of λfgh} to the stack","token":"э"},{"overloads":"map-over-prefixes: over-prefixes:","name":"Map Over Prefixes","description":"Map an element over the prefixes of a list\nᵖf: Map f over prefixes","token":"ᵖ"},{"overloads":"**:","name":"Double Element Lambda","description":"Turn the next two elements (whether that be a structure/modifier/element) into a lambda\nϩfg: Push the equivalent of λfg} to the stack","token":"ϩ"},{"overloads":"collect-while-unique:","name":"Loop and Collect While Unique","description":"Loop and Collect While Unique\nᶨf: Loop and collect while unique","token":"ᶨ"},{"overloads":"collect-until-no-change: until-stable: stablise: neighbours-equals:","name":"Collect Until No Change / Neighbours All Equal?","description":"Run func on the prev result until the result no longer changes\nreturning all intermediate results\nGiven a dyadic function, apply the function to all overlapping pairs of elements\nand test if all results are equal\nᵘf: Collect until no change","token":"ᵘ"},{"overloads":"apply-to-neighbours: count-truthy: apply-neighbours: apply-to-neighbors: apply-neighbors: 2lvf: twolif: to-pairs: to-overlaps: count:","name":"Apply to Neighbours | Number of Truthy Elements","description":"To each overlapping pair, reduce it by an element\nApply a dyadic element for all pairs of neighboring elements.\nCount the number of truthy elements in a list under a mondaic element\nȧf<monad>: Count how many items in a list are truthy after applying f to each\nᵃf<dyad>: equivalent to pushing the function, then calling ȧ","token":"ᵃ"},{"overloads":"zip-with: zipwith:","name":"Zip With / Reject by","description":"\n      |Given a dyadic function, zip two lists and reduce each by f\n      | and then check if all results are equal.\n      |Given a monadic function, the inverse of monadic /.\n      |Filters where the function is falsey","token":"ᶻ"},{"overloads":"if-top: if:","name":"Conditional Execution","description":"Pop the top of the stack, and, if it's truthy,\napply a function","token":"¿"},{"overloads":"**2:","name":"Dyadic Double Element Lambda","description":"Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda\nᵉfg: Push the equivalent of λ2|fg} to the stack","token":"ᵉ"},{"overloads":"apply-to-register: to-register: to-reg:","name":"Apply to Register","description":"Apply a function to the register. Essentially, push\nthe reigster value to the stack, apply the function, and\nthen pop back into the register\nᴿf: Apply f to the register","token":"ᴿ"},{"overloads":"vectorise: vec: v:","name":"Vectorise","description":"Vectorises\nvf: f but vectorised","token":"v"},{"overloads":"****2:","name":"Dyadic Quadruple Element Lambda","description":"Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda\nᵍfghi: Push the equivalent of λ2|fghi} to the stack","token":"ᴳ"},{"overloads":"*:","name":"Single Element Lambda","description":"Turn the next element (whether that be a structure/modifier/element) into a lambda\n⸠f: Push the equivalent of λf} to the stack","token":"⸠"},{"overloads":"","name":"Unassigned","description":"Unassigned","token":"ᵗ"},{"overloads":"***2:","name":"Dyadic Triple Element Lambda","description":"Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda\nᶠfgh: Push the equivalent of λ2|fgh} to the stack","token":"ᶠ"},{"overloads":"outer-product: table:","name":"Outer Product | Table","description":"Outer product\nᵒf: Pop two lists, then make a matrix from them by applying f to each pair of elements","token":"ᵒ"},{"overloads":"foldl: reduce: /: fold: reduceby:-","name":"Foldl | Reduce By | Filter by","description":"Reduce a list by an element\n/f: reduce by element f","token":"/"},{"overloads":"parallel-apply: para-apply: paraply: !!:","name":"Parallel Apply","description":"Parallel apply two elements to the top of the stack\n","token":"∥"},{"overloads":"scan-fix:","name":"Scan Fixed Point","description":"Scan a function until it reaches a fixed point\nᵡf: scan f until a fixed point is reached / apply until a previous value is repeated, collecting intermediate results","token":"ᵡ"}],"88":[{"overloads":" -> break out of the current loop","name":"Loop Break","description":"break","token":"#X"}]}
+{
+    "120": [
+        {
+            "overloads": " -> continue the current loop",
+            "name": "Loop Continue",
+            "description": "continue",
+            "token": "#x"
+        }
+    ],
+    "84": [
+        {
+            "overloads": "a: any -> transpose a",
+            "name": "Transpose Safe",
+            "description": "transpose-safe",
+            "token": "ÞT"
+        }
+    ],
+    "118": [
+        {
+            "overloads": "*a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead",
+            "name": "[Internal Use] Vectorise (Element Form) ",
+            "description": "",
+            "token": "#v"
+        }
+    ],
+    "67": [
+        {
+            "overloads": "a: str -> compress a using the dictionary",
+            "name": "Compress String Using Dictionary",
+            "description": "compress-dict dict-comp compress",
+            "token": "#C"
+        }
+    ],
+    "126": [
+        {
+            "overloads": "*a, f -> f applied to the stack without popping items. Use the modifier instead.",
+            "name": "[Internal Use] Apply Without Popping (Element Form)",
+            "description": "",
+            "token": "#~"
+        }
+    ],
+    "0": [
+        {
+            "overloads": "a: num -> 2^a\na: str -> evaluate (not execute) a",
+            "name": "2 Power | Evaluate",
+            "description": "two^ two** eval",
+            "token": "E"
+        },
+        {
+            "overloads": "a: lst -> Permutations of a",
+            "name": "Permutations",
+            "description": "permutations perms",
+            "token": "Ṗ"
+        },
+        {
+            "overloads": "a: num -> a % 2 == 0\na: str -> a split on newlines",
+            "name": "Is Even / Split on Newlines",
+            "description": "even? even is-even? split-on-newlines newline-split split-newlines",
+            "token": "e"
+        },
+        {
+            "overloads": "a: num -> ~a",
+            "name": "Bitwise Not",
+            "description": "bitwise-not",
+            "token": "⌐"
+        },
+        {
+            "overloads": "a -> return a",
+            "name": "Return Statement",
+            "description": "return ret",
+            "token": "X"
+        },
+        {
+            "overloads": "a: num -> a + 1",
+            "name": "Increment",
+            "description": "incr increment",
+            "token": "ꜝ"
+        },
+        {
+            "overloads": "a: lst, b: lst -> Dot product of a and b\na: num, b: num -> Convert a to bijective base b",
+            "name": "Dot Product | To Bijective Base | First Index Where Predicate Truthy",
+            "description": "dot-product bijective-base dot-prod first-index-where",
+            "token": "ḋ"
+        },
+        {
+            "overloads": "a: any, b: any -> split a by b",
+            "name": "Split",
+            "description": "split",
+            "token": "s"
+        },
+        {
+            "overloads": "a: num -> a ** 3\na: str -> a split into chunks of length 3",
+            "name": "Cube | Threes",
+            "description": "cube threes",
+            "token": "⁻"
+        },
+        {
+            "overloads": " -> call the current function recursively",
+            "name": "Recursion | Recurse",
+            "description": "recurse",
+            "token": "x"
+        },
+        {
+            "overloads": "a: num, b: num -> a / b\na: str, b: str -> Split a on the regex b",
+            "name": "Divide | Split",
+            "description": "divide div str-split",
+            "token": "÷"
+        },
+        {
+            "overloads": "-> 10",
+            "name": "Ten",
+            "description": "ten",
+            "token": "₀"
+        },
+        {
+            "overloads": "a: num -> |a|\na: str -> keep alphabet characters of a",
+            "name": "Absolute Value | Keep Alphabet Characters",
+            "description": "abs absolute-value keep-alphabet",
+            "token": "Ȧ"
+        },
+        {
+            "overloads": "a: lst|str -> Push a[1:], then a[0] onto the stack",
+            "name": "Head Extract",
+            "description": "head-extract-swap split-at-head-swap",
+            "token": "Ḥ"
+        },
+        {
+            "overloads": "a: lst -> a join on nothing\na: str -> is a alphanumeric?\na: fun -> First positive integer ([1, 2, 3, ...]) for which a returns true",
+            "name": "Join on Nothing | First Positive Integer | Is Alphanumeric",
+            "description": "nothing-join concat-fold join-on-nothing empty-join single-string as-single-string first-positive-integer first-n>0 is-alphanumeric is-alphanum is-alnum",
+            "token": "Ṅ"
+        },
+        {
+            "overloads": "The second input to the program",
+            "name": "Second Input",
+            "description": "second-input input-1",
+            "token": "¹"
+        },
+        {
+            "overloads": "a: lst -> sort a by length",
+            "name": "Sort by Length",
+            "description": "sort-by-length sort-by-len order-by-length order-by-len length-sort len-sort",
+            "token": "Ḷ"
+        },
+        {
+            "overloads": "a: any, b: fun -> group a by the results of b\na: fun, b: any -> group b by the results of a",
+            "name": "Group by Function Result",
+            "description": "group-by",
+            "token": "Ġ"
+        },
+        {
+            "overloads": "any a, any b, any c -> transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)\na: fun, b: fun, c: any -> call b on c until a(c) is falsy",
+            "name": "Transliterate | Call While",
+            "description": "transliterate call-while",
+            "token": "ŀ"
+        },
+        {
+            "overloads": "a: num, b: num -> a % b\na: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)",
+            "name": "Modulo | String Formatting",
+            "description": "mod modulo str-format format % strfmt",
+            "token": "%"
+        },
+        {
+            "overloads": "a: any -> lengths of consecutive groups of a",
+            "name": "Length of Consecutive Groups",
+            "description": "len-consecutive gvl gavel",
+            "token": "†"
+        },
+        {
+            "overloads": "-> 100",
+            "name": "One hundred",
+            "description": "one-hundred",
+            "token": "₅"
+        },
+        {
+            "overloads": "a: num, b: num -> a ^ b\na: str, b: num -> a with the bth letter removed\na: num, b: str -> b with the ath letter removed\na: str, b: str -> trim b from both sides of a",
+            "name": "Exponentation | Remove Nth Letter | Trim",
+            "description": "exp ** pow exponent remove-letter str-trim",
+            "token": "*"
+        },
+        {
+            "overloads": "a: num -> parity of a (a % 2)\na: str -> last half of a",
+            "name": "Bit | Parity | Last Half of String",
+            "description": "bit parity str-last-half",
+            "token": "ḃ"
+        },
+        {
+            "overloads": "->  -> context variable n",
+            "name": "Get Context Variable N",
+            "description": "get-context-n context-n c-var-n ctx-n ctx-primary",
+            "token": "n"
+        },
+        {
+            "overloads": "a: lst, b: num -> a[1:b]\na: num, b: lst -> b[1:a]",
+            "name": "Slice from 1",
+            "description": "1->b",
+            "token": "Φ"
+        },
+        {
+            "overloads": "a: any -> bool(a)",
+            "name": "Boolify",
+            "description": "boolify",
+            "token": "ȯ"
+        },
+        {
+            "overloads": "a: num -> [1..a]\na: str -> a.upper()",
+            "name": "Inclusive One Range | Uppercase",
+            "description": "one->n one-range to-upper upper uppercase",
+            "token": "ɾ"
+        },
+        {
+            "overloads": "a: num -> prime factors of a\na: str -> a with all non-alphabet characters removed",
+            "name": "Prime Factors | Remove Non-Alphabet",
+            "description": "prime-factors remove-non-alphabet",
+            "token": "ḟ"
+        },
+        {
+            "overloads": "a: num -> a / 2\na: str -> a split into two pieces",
+            "name": "Halve",
+            "description": "halve",
+            "token": "½"
+        },
+        {
+            "overloads": "a: any -> group consecutive identical items of lst(a)",
+            "name": "Group By Consecutive Items",
+            "description": "group-by-consecutive",
+            "token": "ġ"
+        },
+        {
+            "overloads": "a: num -> -a\na: str -> a.swapCase()\na: fun -> first non-negative integer where predicate a is true",
+            "name": "Negation | Swap Case | First Non-Negative Integer Where Predicate is True",
+            "description": "neg negate swap-case caseswap first-non-negative first-nonneg first>-1",
+            "token": "N"
+        },
+        {
+            "overloads": "a: lst -> a[:-1]\na: str -> a[:-1]",
+            "name": "Init",
+            "description": "init remove-last",
+            "token": "Ṫ"
+        },
+        {
+            "overloads": "a: list, b: list -> cartesian product of a and b",
+            "name": "Cartesian Product",
+            "description": "cartesian-product cartesian cart-prod cart",
+            "token": "Ẋ"
+        },
+        {
+            "overloads": "a: lst, b: str|num -> a join on b\na: lst, b: lst -> Intersperse elements of b within a",
+            "name": "Join On",
+            "description": "join-on join join-with join-by",
+            "token": "j"
+        },
+        {
+            "overloads": "-> 16",
+            "name": "Sixteen",
+            "description": "sixteen",
+            "token": "₁"
+        },
+        {
+            "overloads": "a: num, b: num -> a in base b\na: num, b: str|lst -> a in base with alphabet b\na: lst, b: num -> each x in a in base b\na: lst, b: str|lst -> each x in a in base with alphabet b",
+            "name": "To Base",
+            "description": "to-base",
+            "token": "y"
+        },
+        {
+            "overloads": "a: num -> 3 * a\na: str -> does a contain only alphabet characters?\na: any -> transpose a",
+            "name": "Triple | Contains Only Alphabet | Transpose",
+            "description": "triple alphabet? alphabetical? contains-only-alphabet? contains-only-alphabetical? transpose flip reverse-axes flip-axes permute-axes",
+            "token": "T"
+        },
+        {
+            "overloads": "a: any -> indices that will reverse-sort a",
+            "name": "Grade Down",
+            "description": "grade-down",
+            "token": "↓"
+        },
+        {
+            "overloads": "a: any, b: any -> a == b",
+            "name": "Equals",
+            "description": "eq == equal same? equals? equal?",
+            "token": "="
+        },
+        {
+            "overloads": "a: lst -> a[-1]",
+            "name": "Tail | Last Item",
+            "description": "tail last last-item",
+            "token": "t"
+        },
+        {
+            "overloads": "a: lst, b: lst -> Merge a and b\na: any, b: lst -> Prepend a to b\na: lst, b: any -> Append b to a\na: num, b: num -> num(str(a) + str(b))\na: any, b: any -> str(a) + str(b)",
+            "name": "Merge",
+            "description": "merge",
+            "token": "J"
+        },
+        {
+            "overloads": "a: any, b: num, c: any -> insert c at position b in a\na: any, b: lst, c: any -> insert c at positions b in a\na: any, b: lst[num], c: lst -> insert c[i] at position b[i] in a",
+            "name": "Insert",
+            "description": "insert insert-at",
+            "token": "Ị"
+        },
+        {
+            "overloads": "a: any, b: num -> a repeated b times, wrapped in a list\na: num, b: any -> b repeated a times, wrapped in a list\na: lst|str, b: lst[num] -> a[_] repeated b[_] times, wrapped in a list",
+            "name": "List Repeat",
+            "description": "wrap-repeat",
+            "token": "Y"
+        },
+        {
+            "overloads": "a: lst, b: num -> [a[0], a[1], ..., a[b-1]]",
+            "name": "Zero Slice Until",
+            "description": "0>b zero-slice zero-slice-until take slice-to lst-truncate first-n-items first-n",
+            "token": "Θ"
+        },
+        {
+            "overloads": "num a: a + reversed(a) (as number)\nstr a: a + reversed(a)\nlst a: append reversed(a) to a",
+            "name": "Mirror",
+            "description": "mirror",
+            "token": "ṁ"
+        },
+        {
+            "overloads": "a: lst -> Flattened a",
+            "name": "Flatten",
+            "description": "flatten flat",
+            "token": "f"
+        },
+        {
+            "overloads": "a: num, b: num -> a < b\na: str, b: num -> a < str(b)\na: num, b: str -> str(a) < b\na: str, b: str -> a < b",
+            "name": "Less Than",
+            "description": "lt less less-than < less? smaller?",
+            "token": "<"
+        },
+        {
+            "overloads": "a: lst|str|num -> a with duplicates removed",
+            "name": "Uniquify",
+            "description": "uniquify",
+            "token": "u"
+        },
+        {
+            "overloads": "a: lst, b: num -> a wrapped in chunks of length b\na: fun, b: num -> first b truthy integers where a is truthy",
+            "name": "Wrap to Length | Predicate Slice From 0",
+            "description": "wrap-length pred-slice-0",
+            "token": "Ẇ"
+        },
+        {
+            "overloads": "a: any -> uninterleave a",
+            "name": "Uninterleave",
+            "description": "uninterleave",
+            "token": "U"
+        },
+        {
+            "overloads": "-> []",
+            "name": "Empty array",
+            "description": "empty-list nil-list new-list",
+            "token": "₉"
+        },
+        {
+            "overloads": "a: num, b: num -> a & b",
+            "name": "Bitwise And",
+            "description": "bitwise-and",
+            "token": "∴"
+        },
+        {
+            "overloads": "a: any, b: any -> list(a) ++ [b]",
+            "name": "Append",
+            "description": "append",
+            "token": "&"
+        },
+        {
+            "overloads": "a: any, b: any -> a.indexOf(b) (-1 if not found)\na: any, b: fun -> truthy indices of mapping b over a",
+            "name": "Find",
+            "description": "find",
+            "token": "Ḟ"
+        },
+        {
+            "overloads": "a: fun, b: lst -> Filter b by truthy results of a\na: lst, b: fun -> Filter a by truthy results of b\na: num, b: num -> a from base b to base 10\na: num, b: str|lst -> a from base with alphabet b to base 10",
+            "name": "Filter by Function | From Base",
+            "description": "filter keep-by from-base 10->b",
+            "token": "F"
+        },
+        {
+            "overloads": " -> push the value of the register",
+            "name": "Get Register",
+            "description": "get-register get-reg register <-register <-reg",
+            "token": "¥"
+        },
+        {
+            "overloads": "a: num -> a!",
+            "name": "Factorial",
+            "description": "fact factorial",
+            "token": "!"
+        },
+        {
+            "overloads": "a: any -> dump all values on the stack",
+            "name": "Dump",
+            "description": "dump",
+            "token": "\\"
+        },
+        {
+            "overloads": "a: str -> is (a) a vowel? vectorises for strings len > 1\na: list -> is (a) all truthy?",
+            "name": "All Truthy | All() | Is Vowel?",
+            "description": "all is-vowel? vowel?",
+            "token": "A"
+        },
+        {
+            "overloads": "a: str -> is (a) uppercase? vectorises for strings len > 1\na: list -> is (a) any truthy?",
+            "name": "Any Truthy | Any() | Is Uppercase?",
+            "description": "any is-uppercase? is-upper? upper?",
+            "token": "a"
+        },
+        {
+            "overloads": "a: num, b: num -> |a - b|\na: lst, b: fun -> apply b to each pair of neighbours in a [applies to windows of length 2]",
+            "name": "Absolute Difference | Apply to Neighbours",
+            "description": "abs-diff apply-to-neighbours",
+            "token": "ȧ"
+        },
+        {
+            "overloads": "-> \"*\"",
+            "name": "Asterisk",
+            "description": "asterisk",
+            "token": "•"
+        },
+        {
+            "overloads": "a: lst -> List partitions of a\na: num -> Integer partitions of a (all possible ways to sum to a)",
+            "name": "List Partitions | Integer Partitions",
+            "description": "list-partitions list-parts integer-partitions int-partitions int-parts",
+            "token": "ṗ"
+        },
+        {
+            "overloads": "a: fun, b: any -> sort iterable b by function a\na: any, b: fun -> sort iterable a by function b\na: lst, b: lst[num] -> partition a into sublists of length items in b",
+            "name": "Sort by Function Object | Partition by Numbers",
+            "description": "sort-by sortby sort-by-fun sortbyfun sort-fun sortfun partition-by",
+            "token": "ṡ"
+        },
+        {
+            "overloads": "a: num -> a ** 2\na: str -> a split into pairs",
+            "name": "Square | Pairs",
+            "description": "square pairs",
+            "token": "⁺"
+        },
+        {
+            "overloads": "a: lst -> max(a) without popping a",
+            "name": "Maximum without popping",
+            "description": "max-no-pop",
+            "token": "Ɠ"
+        },
+        {
+            "overloads": "a: any, b: any -> a !== b (non-vectorising)",
+            "name": "Not Equal",
+            "description": "not-equal =n't",
+            "token": "≠"
+        },
+        {
+            "overloads": "->  -> context variable m",
+            "name": "Get Context Variable M",
+            "description": "get-context-m context-m c-var-m ctx-m ctx-secondary",
+            "token": "m"
+        },
+        {
+            "overloads": "a: any, b: fun -> a.map(b)\na: fun, b: any -> b.map(a)\na: lst, b: lst -> a molded to the shape of b\na: num, b: num -> how many times b divides a",
+            "name": "Map Function | Mold Lists | Multiplicity",
+            "description": "map mold multiplicity times-divide",
+            "token": "M"
+        },
+        {
+            "overloads": "a: any, b: any -> a && b",
+            "name": "Logical And",
+            "description": "and logical-and",
+            "token": "∧"
+        },
+        {
+            "overloads": " -> rotate the entire stack right once",
+            "name": "Rotate Stack Right",
+            "description": "rotate-stack-right",
+            "token": "→"
+        },
+        {
+            "overloads": "a: num -> ceil(a)",
+            "name": "Ceiling",
+            "description": "ceiling ceil",
+            "token": "⌈"
+        },
+        {
+            "overloads": "a: num -> a + 2\na: lst -> [x[0] for x in a]",
+            "name": "Increment Twice | Vectorised Head",
+            "description": "incr-twice vec-head",
+            "token": "…"
+        },
+        {
+            "overloads": "a: fun -> Execute a without popping\na: str -> Evaluate a as Vyxal without popping\na: lst -> Return a boolean array with 1s at the indices in a list.\na: num -> Is a == 1?",
+            "name": "Execute lambda without popping | Evaluate as Vyxal without popping | Boolean Mask | Is 1?",
+            "description": "peek-call exec-peek boolean-mask bool-mask strict-boolify is-1?",
+            "token": "Ḃ"
+        },
+        {
+            "overloads": "ඞ",
+            "name": "ඞ",
+            "description": "sus",
+            "token": "ඞ"
+        },
+        {
+            "overloads": "a: num, b: num -> a ^ b",
+            "name": "Bitwise Xor",
+            "description": "bitwise-xor",
+            "token": "⊻"
+        },
+        {
+            "overloads": "-> 128",
+            "name": "One hundred twenty-eight",
+            "description": "one-hundred-twenty-eight",
+            "token": "₆"
+        },
+        {
+            "overloads": "a: lst -> a join on newlines\na: str -> a padded to a multiple of 8 with 0s\na: num -> a if a == 1 push context variable n",
+            "name": "Join On Newlines | Pad Binary to Mod 8 | Context if 1",
+            "description": "join-newlines newline-join join-on-newlines binary-pad-8 bin-pad-8 one?->context one?->n",
+            "token": "ṅ"
+        },
+        {
+            "overloads": "a: lst, b: lst -> Interleave a and b\na: any, b: fun -> Reject elements of a by applying b",
+            "name": "Interleave / Reject By Function",
+            "description": "interleave reject",
+            "token": "I"
+        },
+        {
+            "overloads": "a: lst, b: num -> a[b]\na: lst, b: lst -> a[_] for _ in b\na: str, b: lst -> ''.join(a[i] for i in b)\na: any, b: fun -> Apply b on a and collect unique values. Does include the initial value.\na: str, b: str -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])",
+            "name": "Index | Collect Unique Application Values | Enclose",
+            "description": "index at item-at nth-item collect-unique enclose",
+            "token": "i"
+        },
+        {
+            "overloads": "a: any -> reverse a",
+            "name": "Reverse",
+            "description": "reverse",
+            "token": "Ṛ"
+        },
+        {
+            "overloads": "a: lst -> a ++ a ++ a ++ ...\na: num -> a > 0",
+            "name": "Cycle | Is Positive?",
+            "description": "cycle is-positive? positive? >0?",
+            "token": "Ċ"
+        },
+        {
+            "overloads": "_ -> push a copy of the second item on the stack over the first\na b -> a b a",
+            "name": "Over",
+            "description": "over",
+            "token": "Ȯ"
+        },
+        {
+            "overloads": "a: any -> `[0, 1, 2, ..., len(a)-1]`",
+            "name": "Length 0-Range",
+            "description": "zero->len",
+            "token": "ι"
+        },
+        {
+            "overloads": "-> 26",
+            "name": "Twenty-six",
+            "description": "twenty-six",
+            "token": "₂"
+        },
+        {
+            "overloads": "-> \"|\"",
+            "name": "Pipe",
+            "description": "pipe",
+            "token": "¦"
+        },
+        {
+            "overloads": "a: num, b: num -> a - b\na: str, b: num -> a + b '-'s (or '-'s + a if b < 0)\na: num, b: str -> a '-'s + b (or b + '-'s if a < 0)\na: str, b: str -> a with b removed",
+            "name": "Subtraction",
+            "description": "sub subtract minus str-remove remove str-remove-all remove-all",
+            "token": "-"
+        },
+        {
+            "overloads": "a: num -> 1/a\na: str -> a with all whitespace removed",
+            "name": "Reciprocal | Remove Whitespace",
+            "description": "reciprocal recip remove-whitespace remove-space 1/",
+            "token": "ė"
+        },
+        {
+            "overloads": "a: str -> a[1:]\na: any -> toList(a)[1:]",
+            "name": "Head Remove | Behead",
+            "description": "head-remove behead",
+            "token": "Ḣ"
+        },
+        {
+            "overloads": "a: lst, b: lst -> partition a after truthy indices in b",
+            "name": "Partition After Truthy Indices",
+            "description": "partition-after-truthy",
+            "token": "ƒ"
+        },
+        {
+            "overloads": "a -> printed to stdout",
+            "name": "Print",
+            "description": "print puts out println",
+            "token": ","
+        },
+        {
+            "overloads": "a, b -> [a, b]",
+            "name": "Pair",
+            "description": "pair",
+            "token": ";"
+        },
+        {
+            "overloads": "a: any, b: any -> a === b (non-vectorising)",
+            "name": "Exactly Equals",
+            "description": "=== exactly-equal strictly-equal?",
+            "token": "₌"
+        },
+        {
+            "overloads": "a: num -> bit length of a\na: lst[lst] -> matrix inverse of a",
+            "name": "Bit Length | Matrix Inverse",
+            "description": "bit-length matrix-inverse",
+            "token": "Ṃ"
+        },
+        {
+            "overloads": "a: lst -> each element of a reversed\na: num -> 1 - a\na: str -> a converted to title case",
+            "name": "Vectorised Reverse | Complement | Title Case",
+            "description": "vectorised-reverse vec-reverse complement titlecase title-case",
+            "token": "V"
+        },
+        {
+            "overloads": "a: lst -> Maximum of a\na: non-lst, b: non-lst -> Maximum of a and b\na: lst, b: fun -> Call b infinitely with items of a as starting values",
+            "name": "Monadic Maximum | Dyadic Maximum | Generate From Function | Vectorised Maximum",
+            "description": "max maximum generator",
+            "token": "G"
+        },
+        {
+            "overloads": "a: num, b: str -> each character in b repeated a times\na: any, b: any -> a prepended and appended to b",
+            "name": "Surround | Character Multiply",
+            "description": "surround character-multiply",
+            "token": "⁾"
+        },
+        {
+            "overloads": "a: num, b: num -> a >> b",
+            "name": "Bitshift Right",
+            "description": "bitwise-right-shift right-shift",
+            "token": "»"
+        },
+        {
+            "overloads": "a: any -> !a",
+            "name": "Logical Not",
+            "description": "non-vec-not non-vec-logical-not",
+            "token": "¬"
+        },
+        {
+            "overloads": "a: any -> enclose a in quotes, escape backslashes and quote marks",
+            "name": "Quotify",
+            "description": "quotify",
+            "token": "q"
+        },
+        {
+            "overloads": "a: num -> floor(a)",
+            "name": "Floor",
+            "description": "floor",
+            "token": "⌊"
+        },
+        {
+            "overloads": "a -> Stop program execution",
+            "name": "Exit | Quit",
+            "description": "exit quit",
+            "token": "Q"
+        },
+        {
+            "overloads": "a: any -> Length of a",
+            "name": "Length | Length of List",
+            "description": "length len length-of len-of size",
+            "token": "L"
+        },
+        {
+            "overloads": "a: num -> convert a to binary\na: str -> bin(ord(x) for x in a)",
+            "name": "Convert To Binary",
+            "description": "to-binary dec->bin decimal->bin",
+            "token": "b"
+        },
+        {
+            "overloads": "a: any -> rotate left once",
+            "name": "Rotate Left",
+            "description": "abc->bca rot-left rotate-left",
+            "token": "Ṙ"
+        },
+        {
+            "overloads": "a: lst -> Minimum of a\na: non-lst, b: non-lst -> Minimum of a and b\na: lst, b: fun -> Call b infinitely with items of a as starting values (dyadic)",
+            "name": "Monadic Minimum | Dyadic Minimum | Generate From Function (Dyadic) | Vectorised Minimum",
+            "description": "min minimum generator-dyadic",
+            "token": "g"
+        },
+        {
+            "overloads": "a: num -> str(a) from binary\na: str -> int(a, 2)\na: lst -> int(a, 2), using list of digits",
+            "name": "Convert From Binary",
+            "description": "from-binary bin->dec bin->decimal",
+            "token": "B"
+        },
+        {
+            "overloads": "-> \" \"",
+            "name": "Space",
+            "description": "space",
+            "token": "ð"
+        },
+        {
+            "overloads": "a: lst -> sublists of a",
+            "name": "Sublists",
+            "description": "sublists",
+            "token": "Ṣ"
+        },
+        {
+            "overloads": "a: lst -> Length of each item in a",
+            "name": "Length of Each Item",
+            "description": "length-vectorised length-vect len-vect len-vectorised vec-len vec-length vlen",
+            "token": "l"
+        },
+        {
+            "overloads": "a: lst -> are all elements of a equal?",
+            "name": "All Equal?",
+            "description": "all-equal all-equal?",
+            "token": "≈"
+        },
+        {
+            "overloads": "a: fun -> Execute a\na: str -> Evaluate a as Vyxal\na: num -> 10 ** n",
+            "name": "Execute lambda | Evaluate as Vyxal | Power with base 10",
+            "description": "execute-lambda evaluate-as-vyxal power-base-10 call @",
+            "token": "Ė"
+        },
+        {
+            "overloads": "a: lst -> min(a) without popping a",
+            "name": "Minimum without popping",
+            "description": "min-no-pop",
+            "token": "ɠ"
+        },
+        {
+            "overloads": "a: num, b: num -> a choose b\na: str, b: str -> are the character sets of a and b equal?\na: fun, b: any -> run a on b until the result no longer changes returning all intermediate results",
+            "name": "N Choose K | Character Set Equal? | Repeat Until No Change",
+            "description": "n-choose-k ncr nck choose char-set-equal? char-set-eq? until-stable",
+            "token": "ċ"
+        },
+        {
+            "overloads": "a: lst -> Prefixes of a",
+            "name": "Prefixes",
+            "description": "prefixes",
+            "token": "P"
+        },
+        {
+            "overloads": "a -> printed to stdout without newline",
+            "name": "Print without newline",
+            "description": "print-no-newline",
+            "token": "§"
+        },
+        {
+            "overloads": "a -> printed to stdout without popping",
+            "name": "Print without popping",
+            "description": "print-no-pop",
+            "token": "Ọ"
+        },
+        {
+            "overloads": "a: any, b: any -> Trim all elements of b from both sides of a.\na: fun, b: any -> cumulative reduce b by function a",
+            "name": "Trim / Cumulative Reduce",
+            "description": "trim scanl cumulative-reduce",
+            "token": "Ṭ"
+        },
+        {
+            "overloads": "a: num, b: num -> a <= b\na: str, b: num -> a <= str(b)\na: num, b: str -> str(a) <= b\na: str, b: str -> a <= b",
+            "name": "Less Than Or Equal To",
+            "description": "le less-than-or-equal-to",
+            "token": "≤"
+        },
+        {
+            "overloads": "a: lst, b: any -> b prepended to a",
+            "name": "Prepend",
+            "description": "prepend",
+            "token": "p"
+        },
+        {
+            "overloads": "-> 32",
+            "name": "Thirty-two",
+            "description": "thirty-two",
+            "token": "₃"
+        },
+        {
+            "overloads": "a: list, b: list -> cartesian product of a and b in the standard order, but without accounting for infinite lists",
+            "name": "Cartesian Product Unsafe",
+            "description": "cartesian-product-unsafe cartesian-unsafe cart-prod-unsafe cart-unsafe",
+            "token": "ᶿ"
+        },
+        {
+            "overloads": "a: any -> indices that will sort a",
+            "name": "Grade Up",
+            "description": "grade-up",
+            "token": "↑"
+        },
+        {
+            "overloads": " -> rotate the entire stack left once",
+            "name": "Rotate Stack Left",
+            "description": "rotate-stack-left",
+            "token": "←"
+        },
+        {
+            "overloads": "->  -> input",
+            "name": "Get Input",
+            "description": "get-input input stdin readline",
+            "token": "?"
+        },
+        {
+            "overloads": "a: num -> [0..a)\na: str -> a.lower()",
+            "name": "Exclusive Zero Range | Lowercase",
+            "description": "0->n zero-range lowered-range to-lower lower lowercase",
+            "token": "ʀ"
+        },
+        {
+            "overloads": "a ->",
+            "name": "Pop and Discard",
+            "description": "pop discard",
+            "token": "_"
+        },
+        {
+            "overloads": "a: any -> `[1, 2, 3, ..., len(a)]`",
+            "name": "Lenght 1-Range",
+            "description": "one->len",
+            "token": "κ"
+        },
+        {
+            "overloads": "a: lst -> Suffixes of a",
+            "name": "Suffixes",
+            "description": "suffixes",
+            "token": "€"
+        },
+        {
+            "overloads": "a: any, b: any -> a || b",
+            "name": "Logical Or",
+            "description": "or logical-or",
+            "token": "∨"
+        },
+        {
+            "overloads": "a: any, b: any -> count(b in a)",
+            "name": "Count",
+            "description": "count",
+            "token": "C"
+        },
+        {
+            "overloads": "a: any -> rotate right once",
+            "name": "Rotate Right",
+            "description": "abc->cab rot-right rotate-right",
+            "token": "ṙ"
+        },
+        {
+            "overloads": "-> 256",
+            "name": "Two hundred fifty-six",
+            "description": "two-hundred-fifty-six",
+            "token": "₇"
+        },
+        {
+            "overloads": "a: num, b: num -> a | b",
+            "name": "Bitwise Or",
+            "description": "bitwise-or",
+            "token": "∵"
+        },
+        {
+            "overloads": "a: num -> sign of a",
+            "name": "Sign",
+            "description": "sign",
+            "token": "±"
+        },
+        {
+            "overloads": "-> chr(10)",
+            "name": "Newline",
+            "description": "newline",
+            "token": "¶"
+        },
+        {
+            "overloads": "a: num -> a - 1",
+            "name": "Decrement",
+            "description": "decr decrement",
+            "token": "ᵛ"
+        },
+        {
+            "overloads": "a: num -> a in hexadecimal\na: str -> a as a hexadecimal number to base 10",
+            "name": "Hexadecimal | To Hexadecimal",
+            "description": "hex hexadecimal to-hex to-hexadecimal",
+            "token": "H"
+        },
+        {
+            "overloads": "a: lst -> forward-differences of a",
+            "name": "Deltas",
+            "description": "deltas",
+            "token": "¯"
+        },
+        {
+            "overloads": "a: num, b: num -> a + b\na: num, b: str -> a + b\na: str, b: num -> a + b\na: str, b: str -> a + b",
+            "name": "Addition",
+            "description": "add + plus",
+            "token": "+"
+        },
+        {
+            "overloads": "a: num, b: num -> a % b == 0\na: str, b: num -> a + ' ' * b\na: num, b: str -> b + ' ' * a\na: lst, b: fun -> Remove duplicates from a by applying b to each element",
+            "name": "Divides? | Append Spaces | Remove Duplicates by Function",
+            "description": "divides? +-spaces dedup-by",
+            "token": "Ḋ"
+        },
+        {
+            "overloads": "a: any, b: lst -> is element a in list b?\na: any, b: any -> is str(b) in str(a)?",
+            "name": "Contains",
+            "description": "contains in",
+            "token": "c"
+        },
+        {
+            "overloads": "a, b, c, ..., -> [a, b, c, ...]",
+            "name": "Wrap",
+            "description": "wrap",
+            "token": "W"
+        },
+        {
+            "overloads": "a: lst -> a[0]",
+            "name": "Head | First Item",
+            "description": "head first first-item",
+            "token": "h"
+        },
+        {
+            "overloads": "a: num, b: num -> log_b(a)\na: fun, b: any -> apply until a previous value is repeated, collecting intermediate results\na: str, b: str -> a same length as b\na: str, b: num -> len(a) == b",
+            "name": "Logarithm | Scan Fixpoint | Same Length? | Length Equals?",
+            "description": "log logarithm scan-fixpoint scan-fix same-length? same-length length-equals? length-equals len-eq?",
+            "token": "Ŀ"
+        },
+        {
+            "overloads": "a: num, b: num -> a.real + b.real * i\na: any, b: lst -> `[a[item] for item in b]`\na: any, b: fun -> Apply b on a and collect unique values (until fixpoint). Does not include the initial value.",
+            "name": "Index into Multiple | Collect While Unique | Complex Number",
+            "description": "index-into-multiple collect-while-unique complex",
+            "token": "İ"
+        },
+        {
+            "overloads": "a: lst, b: num, c: non-fun -> assign c to a at the index b / a[b] = c\na: lst, b: num, c: fun -> a[b] c= <stack items> (augmented assignment to list)\na: lst, b: lst, c: lst -> assign c to a at the indices in b",
+            "name": "Assign",
+            "description": "assign assign-at assign<> assign<x> a<x>= a<x>=y a<x>?=y set-item apply-at",
+            "token": "Ạ"
+        },
+        {
+            "overloads": "a: str, b: str, c: str -> replace all instances of b in a with c\na: fun, b: any, c: any -> reduce items in zip(b, c) by a",
+            "name": "Replace",
+            "description": "replace zip-with",
+            "token": "r"
+        },
+        {
+            "overloads": "a: num, b: num -> a << b",
+            "name": "Bitshift Left",
+            "description": "bitwise-left-shift left-shift",
+            "token": "«"
+        },
+        {
+            "overloads": "a: num, b: num -> a >= b\na: str, b: num -> a >= str(b)\na: num, b: str -> str(a) >= b\na: str, b: str -> a >= b",
+            "name": "Greater Than Or Equal To",
+            "description": "ge greater-than-or-equal-to",
+            "token": "≥"
+        },
+        {
+            "overloads": "a: num -> Factors of a\na: str -> Is a numeric?",
+            "name": "Factors | Is Numeric?",
+            "description": "factors divisors is-numeric is-num is-number is-num? is-number?",
+            "token": "K"
+        },
+        {
+            "overloads": "a: lst|str -> Push a[0], then a[1:] onto the stack",
+            "name": "Head Extract",
+            "description": "head-extract split-at-head",
+            "token": "ḣ"
+        },
+        {
+            "overloads": "The first input to the program",
+            "name": "First Input",
+            "description": "first-input input-0",
+            "token": "⁰"
+        },
+        {
+            "overloads": "a: lst -> sum of a",
+            "name": "Sum",
+            "description": "sum /+ +/",
+            "token": "∑"
+        },
+        {
+            "overloads": "a: fun, b: any -> reduce iterable b by function a\na: any, b: fun -> reduce iterable a by function b\na: num, b: num -> the range [a, b)\na: str, b: num|str -> does regex pattern b match haystack a?",
+            "name": "Reduce by Function Object | Dyadic Range | Regex Match",
+            "description": "fun-reduce reduce fold-by range a->b regex-match? re-match? has-regex-match? fold",
+            "token": "R"
+        },
+        {
+            "overloads": "a -> [a]",
+            "name": "Wrap Singleton",
+            "description": "wrap-singleton enlist",
+            "token": "w"
+        },
+        {
+            "overloads": "a -> a, a",
+            "name": "Duplicate",
+            "description": "dup",
+            "token": ":"
+        },
+        {
+            "overloads": "-> 64",
+            "name": "Sixty-four",
+            "description": "sixty-four",
+            "token": "₄"
+        },
+        {
+            "overloads": "a, b -> b, a",
+            "name": "Swap",
+            "description": "swap",
+            "token": "$"
+        },
+        {
+            "overloads": "a: str|lst, b: num -> return every b-th element of a. If b is zero, mirror: prepend a to its reverse.\na: num, b: str|lst -> return every a-th element of b. If a is zero, mirror: append b to its reverse.\na: lst, b: lst -> a * b (matrix multiply)\na: str, b: str -> does the entirety of a match b?",
+            "name": "Modular | Matrix Multiply | Regex Full Match?",
+            "description": "nth-items modular maxtrix-multiply mat-multiply mat-mul regex-full-match? full-match?",
+            "token": "Ṁ"
+        },
+        {
+            "overloads": "a: lst|str -> Push a[-1], then a[:-1] onto the stack",
+            "name": "Last Extract",
+            "description": "last-extract split-at-last",
+            "token": "ṫ"
+        },
+        {
+            "overloads": "a: str -> ord(a)\na: num -> chr(a)",
+            "name": "Ord/Chr",
+            "description": "ord chr",
+            "token": "O"
+        },
+        {
+            "overloads": "a: num -> unique prime factors of a\na: str -> case of each character of a (uppercase = 1, lowercase = 0)",
+            "name": "Unique Prime Factors | Case Of",
+            "description": "unique-prime-factors case-of",
+            "token": "Ḅ"
+        },
+        {
+            "overloads": "a: lst, b: num -> cart_prod([a] * n)",
+            "name": "Cartesian Power",
+            "description": "cartesian-power",
+            "token": "ẋ"
+        },
+        {
+            "overloads": "a: lst -> product of a",
+            "name": "Product",
+            "description": "product prod",
+            "token": "Π"
+        },
+        {
+            "overloads": "-> \"abcdefghijklmnopqrstuvwxyz\"",
+            "name": "Alphabet",
+            "description": "alphabet a-z",
+            "token": "₈"
+        },
+        {
+            "overloads": "a: num -> sqrt(a)",
+            "name": "Square Root",
+            "description": "sqrt square-root",
+            "token": "√"
+        },
+        {
+            "overloads": "a: any -> register = a",
+            "name": "Set Register",
+            "description": "set-register ->register set-reg ->reg",
+            "token": "£"
+        },
+        {
+            "overloads": "a -> [a, a, a]",
+            "name": "Triplicate",
+            "description": "trip",
+            "token": "D"
+        },
+        {
+            "overloads": "a: num, b: num -> a > b\na: str, b: num -> a > str(b)\na: num, b: str -> str(a) > b\na: str, b: str -> a > b",
+            "name": "Greater Than",
+            "description": "gt greater greater-than greater? bigger?",
+            "token": ">"
+        },
+        {
+            "overloads": "The third input to the program",
+            "name": "Third Input",
+            "description": "third-input input-2",
+            "token": "²"
+        },
+        {
+            "overloads": "a: any -> convert to list and sort ascending",
+            "name": "Sort ascending",
+            "description": "sort sortasc sort-asc",
+            "token": "S"
+        },
+        {
+            "overloads": "a: num -> a * 2\na: str -> a + a",
+            "name": "Double",
+            "description": "double",
+            "token": "d"
+        },
+        {
+            "overloads": "a: lst, b: lst -> zip a and b\na: lst, b: fun -> [[x, b(x)] for x in a]\na: fun, b: lst -> [[a(x), x] for x in b]",
+            "name": "Zip",
+            "description": "zip zip-map",
+            "token": "Z"
+        },
+        {
+            "overloads": "a: lst, b: num -> Overlapping slices of a of length b\na: lst|str -> Overlapping slices of a of length 2",
+            "name": "Overlap | Overlapping Slices",
+            "description": "overlap overlaps overlapping overlapping-slices",
+            "token": "o"
+        },
+        {
+            "overloads": "a: lst -> sum of each element of a",
+            "name": "Vectorised Sums",
+            "description": "vectorised-sums vec-sums",
+            "token": "Ṡ"
+        },
+        {
+            "overloads": "a: num -> [0, 1, ..., a]\na: str -> is a lowercase?",
+            "name": "Inclusive zero Range | Is Lowercase",
+            "description": "inclusive-zero-range zero->n is-lowercase? lowercase? lower?",
+            "token": "z"
+        },
+        {
+            "overloads": "a: any -> str(a)",
+            "name": "Stringify",
+            "description": "to-string stringify str",
+            "token": "ᶲ"
+        },
+        {
+            "overloads": "a: num, b: num -> a * b\na: num, b: str -> b repeated a times\na: str, b: num -> a repeated b times\na: str, b: str -> ring translate a according to b",
+            "name": "Multiplication",
+            "description": "mul multiply times str-repeat * ring-trans",
+            "token": "×"
+        },
+        {
+            "overloads": "****:",
+            "name": "Quadruple Element Lambda",
+            "description": "Turn the next four elements (whether that be a structure/modifier/element) into a lambda\nЧfghi: Push the equivalent of λfghi} to the stack",
+            "token": "Ч"
+        },
+        {
+            "overloads": "*2:",
+            "name": "Dyadic Single Element Lambda",
+            "description": "Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda\nᵈf: Push the equivalent of λ2|f} to the stack",
+            "token": "ᵈ"
+        },
+        {
+            "overloads": "first-index-where: first-index-of: ind-of: find-by:",
+            "name": "First Index Where",
+            "description": "Find the first index where an element is truthy\nᶤf: find the first index where f is truthy",
+            "token": "ᶤ"
+        },
+        {
+            "overloads": "parallel-apply-and-wrap: para-apply-and-wrap: <paraply>: <!!>:",
+            "name": "Parallel Apply and Wrap",
+            "description": "Parallel apply two elements to the top of the stack\nand wrap the result in a list\n",
+            "token": "∦"
+        },
+        {
+            "overloads": "invariant-under: vertical-scan: vscan: v-scan: invariant?: same?:",
+            "name": "Invariant Under? / Vertical Scan",
+            "description": "Check if a function is invariant under a transformation / vertical scan\nᵞf: check if top of stack is invariant under a transformation\nᵞf: scanl columns by f",
+            "token": "ᵞ"
+        },
+        {
+            "overloads": "key:",
+            "name": "Key",
+            "description": "Map an element over the groups formed by identical items.\nᵏf: Map f over the groups formed by identical items",
+            "token": "ᵏ"
+        },
+        {
+            "overloads": "min-by: minimum-by:",
+            "name": "Minimum By",
+            "description": "Minimum By Element\nᵐf: Minimum of top of stack based on results of f",
+            "token": "ⁿ"
+        },
+        {
+            "overloads": "vec-dump: map-dump:",
+            "name": "Map as Stacks",
+            "description": "Map a function over the top of the stack, treating each iteration\nas if it were a stack of items. Essentially, dump before mapping\n",
+            "token": "`"
+        },
+        {
+            "overloads": "without-popping: peek: dedup-by: remove-duplicates-by:",
+            "name": "Apply Without Popping | Remove Duplicates by",
+            "description": "Apply a 2+ arity element to the stack without popping\nRemove duplicates from a list by an element\nᵇf<dyad|triad|tetrad>: apply f to the stack without popping\nᵇf<monad>: remove duplicates from a list by applying f to each pair of elements",
+            "token": "ᵇ"
+        },
+        {
+            "overloads": "apply-to-head:",
+            "name": "Apply To Head",
+            "description": "Apply element only to the head of list\nᴴf: Apply f to the head of the top of the stack",
+            "token": "ᴴ"
+        },
+        {
+            "overloads": "loop-while-unique:",
+            "name": "Loop While Unique",
+            "description": "Loop While Unique - similar to ᶨ, but doesn't collect\nᶪf: Loop while unique",
+            "token": "ᶪ"
+        },
+        {
+            "overloads": "max-by: maximum-by:",
+            "name": "Maximum By",
+            "description": "Maximum By Element\nᵐf: Maximum of top of stack based on results of f",
+            "token": "ᵐ"
+        },
+        {
+            "overloads": "sort-by: scanl:",
+            "name": "Sort By",
+            "description": "Sort By Element / Scanl\nᶳf: Sort top of stack based on results of f\nᶳf: Cumulatively reduce a list of items",
+            "token": "ᶳ"
+        },
+        {
+            "overloads": "dip:",
+            "name": "Dip",
+            "description": "Stash the top of the stack temporarily, and then apply\nthe function. Finally, push the stashed value\nᵂf: pop M, apply f, push M",
+            "token": "ᵂ"
+        },
+        {
+            "overloads": "reduce-columns: map-over-suffixes: fold-cols: foldl-cols: fold-columns-by: reduce-columns-by: over-suffixes:",
+            "name": "Reduce Columns | Map Over Suffixes",
+            "description": "Reduce columns of a 2d list by a function\nMap an element over suffixes",
+            "token": "ᶜ"
+        },
+        {
+            "overloads": "***:",
+            "name": "Triple Element Lambda",
+            "description": "Turn the next three elements (whether that be a structure/modifier/element) into a lambda\nэfgh: Push the equivalent of λfgh} to the stack",
+            "token": "э"
+        },
+        {
+            "overloads": "map-over-prefixes: over-prefixes:",
+            "name": "Map Over Prefixes",
+            "description": "Map an element over the prefixes of a list\nᵖf: Map f over prefixes",
+            "token": "ᵖ"
+        },
+        {
+            "overloads": "**:",
+            "name": "Double Element Lambda",
+            "description": "Turn the next two elements (whether that be a structure/modifier/element) into a lambda\nϩfg: Push the equivalent of λfg} to the stack",
+            "token": "ϩ"
+        },
+        {
+            "overloads": "collect-while-unique:",
+            "name": "Loop and Collect While Unique",
+            "description": "Loop and Collect While Unique\nᶨf: Loop and collect while unique",
+            "token": "ᶨ"
+        },
+        {
+            "overloads": "collect-until-no-change: until-stable: stablise: neighbours-equals:",
+            "name": "Collect Until No Change / Neighbours All Equal?",
+            "description": "Run func on the prev result until the result no longer changes\nreturning all intermediate results\nGiven a dyadic function, apply the function to all overlapping pairs of elements\nand test if all results are equal\nᵘf: Collect until no change",
+            "token": "ᵘ"
+        },
+        {
+            "overloads": "apply-to-neighbours: count-truthy: apply-neighbours: apply-to-neighbors: apply-neighbors: 2lvf: twolif: to-pairs: to-overlaps: count:",
+            "name": "Apply to Neighbours | Number of Truthy Elements",
+            "description": "To each overlapping pair, reduce it by an element\nApply a dyadic element for all pairs of neighboring elements.\nCount the number of truthy elements in a list under a mondaic element\nȧf<monad>: Count how many items in a list are truthy after applying f to each\nᵃf<dyad>: equivalent to pushing the function, then calling ȧ",
+            "token": "ᵃ"
+        },
+        {
+            "overloads": "zip-with: zipwith:",
+            "name": "Zip With / Reject by",
+            "description": "\n      |Given a dyadic function, zip two lists and reduce each by f\n      | and then check if all results are equal.\n      |Given a monadic function, the inverse of monadic /.\n      |Filters where the function is falsey",
+            "token": "ᶻ"
+        },
+        {
+            "overloads": "if-top: if:",
+            "name": "Conditional Execution",
+            "description": "Pop the top of the stack, and, if it's truthy,\napply a function",
+            "token": "¿"
+        },
+        {
+            "overloads": "**2:",
+            "name": "Dyadic Double Element Lambda",
+            "description": "Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda\nᵉfg: Push the equivalent of λ2|fg} to the stack",
+            "token": "ᵉ"
+        },
+        {
+            "overloads": "apply-to-register: to-register: to-reg:",
+            "name": "Apply to Register",
+            "description": "Apply a function to the register. Essentially, push\nthe reigster value to the stack, apply the function, and\nthen pop back into the register\nᴿf: Apply f to the register",
+            "token": "ᴿ"
+        },
+        {
+            "overloads": "vectorise: vec: v:",
+            "name": "Vectorise",
+            "description": "Vectorises\nvf: f but vectorised",
+            "token": "v"
+        },
+        {
+            "overloads": "****2:",
+            "name": "Dyadic Quadruple Element Lambda",
+            "description": "Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda\nᵍfghi: Push the equivalent of λ2|fghi} to the stack",
+            "token": "ᴳ"
+        },
+        {
+            "overloads": "*:",
+            "name": "Single Element Lambda",
+            "description": "Turn the next element (whether that be a structure/modifier/element) into a lambda\n⸠f: Push the equivalent of λf} to the stack",
+            "token": "⸠"
+        },
+        {
+            "overloads": "",
+            "name": "Unassigned",
+            "description": "Unassigned",
+            "token": "ᵗ"
+        },
+        {
+            "overloads": "***2:",
+            "name": "Dyadic Triple Element Lambda",
+            "description": "Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda\nᶠfgh: Push the equivalent of λ2|fgh} to the stack",
+            "token": "ᶠ"
+        },
+        {
+            "overloads": "outer-product: table:",
+            "name": "Outer Product | Table",
+            "description": "Outer product\nᵒf: Pop two lists, then make a matrix from them by applying f to each pair of elements",
+            "token": "ᵒ"
+        },
+        {
+            "overloads": "foldl: reduce: /: fold: reduceby:-",
+            "name": "Foldl | Reduce By | Filter by",
+            "description": "Reduce a list by an element\n/f: reduce by element f",
+            "token": "/"
+        },
+        {
+            "overloads": "parallel-apply: para-apply: paraply: !!:",
+            "name": "Parallel Apply",
+            "description": "Parallel apply two elements to the top of the stack\n",
+            "token": "∥"
+        },
+        {
+            "overloads": "scan-fix:",
+            "name": "Scan Fixed Point",
+            "description": "Scan a function until it reaches a fixed point\nᵡf: scan f until a fixed point is reached / apply until a previous value is repeated, collecting intermediate results",
+            "token": "ᵡ"
+        }
+    ],
+    "88": [
+        {
+            "overloads": " -> break out of the current loop",
+            "name": "Loop Break",
+            "description": "break",
+            "token": "#X"
+        }
+    ]
+}

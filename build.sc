@@ -24,7 +24,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
       ivy"com.lihaoyi::fastparse::3.0.2",
       ivy"com.github.scopt::scopt::4.1.0",
       ivy"com.outr::scribe::3.12.2",
-      ivy"org.scala-lang::toolkit:0.1.7",
+      ivy"com.lihaoyi::upickle:3.1.3",
     )
 
   override def scalacOptions =

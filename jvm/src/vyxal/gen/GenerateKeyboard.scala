@@ -18,11 +18,11 @@ private object GenerateKeyboard:
     ]] = HashMap()
     for
       (symbol, element) <- Elements.elements
-      if Lexer.Codepage.contains(symbol.tail)
+      if Lexer.Codepage.contains(symbol.last)
     do
       val token = symbol
       val index =
-        if token == " " then 32 else Lexer.Codepage.indexOf(token.tail)
+        if token == " " then 32 else Lexer.Codepage.indexOf(token.last)
 
       val thisElement = scala.collection.mutable.Map[String, String]()
       thisElement("name") = element.name
@@ -39,7 +39,7 @@ private object GenerateKeyboard:
         case Modifier(name, description, keywords, _) =>
           val token = symbol
           val index =
-            if token == " " then 32 else Lexer.Codepage.indexOf(token.tail)
+            if token == " " then 32 else Lexer.Codepage.indexOf(token.last)
           val thisElement = scala.collection.mutable.HashMap[String, String]()
           thisElement("name") = name
           thisElement("description") = description
