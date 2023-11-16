@@ -198,7 +198,6 @@ object Lexer:
     for i <- bound.indices do
       bound(i) match
         case (token, offset) =>
-          println(s"Moving $token $offset")
           bound.insert(Math.min(bound.length, i + offset + 1), token)
           bound.remove(i)
         case _ => ()
@@ -215,8 +214,6 @@ object Lexer:
     val tokens = LiterateLexer.lex(code) match
       case Right(tokens) => tokens
       case Left(err) => return Left(err)
-
-    println(s"Tokens are $tokens")
     val moved = performMoves(tokens)
 
     // Convert all tokens into SBCS tokens
@@ -225,7 +222,7 @@ object Lexer:
       moved
         .map {
           case LitToken(tokenType, value, range) => tokenType match
-              case Group => value.asInstanceOf[List[LitToken]]
+              case Group => flattenGroup(LitToken(tokenType, value, range))
               case _ => List(LitToken(tokenType, value, range))
         }
         .flatten
@@ -238,6 +235,12 @@ object Lexer:
         }
     )
   end lexLiterate
+
+  private def flattenGroup(token: LitToken): List[LitToken] =
+    token.tokenType match
+      case TokenType.Group =>
+        token.value.asInstanceOf[List[LitToken]].map(flattenGroup).flatten
+      case _ => List(token)
 
   def isList(code: String): Boolean =
     parse(code, LiterateLexer.list(_)).isSuccess
