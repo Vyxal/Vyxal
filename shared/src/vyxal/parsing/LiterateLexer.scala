@@ -149,7 +149,7 @@ private[parsing] object LiterateLexer:
       !branchKeywords.contains(word) && !endKeywords.contains(word)
 
   val lambdaOpenerSet = lambdaOpeners.keys.toSet
-  def lambdaBlock[$: P]: P[Seq[LitToken]] =
+  def lambdaBlock[$: P]: P[LitToken] =
     P(
       withRange("{".! | Common.lambdaOpen | word.filter(lambdaOpenerSet).!) ~/
         ( // Keep going until the branch indicating params end, but don't stop at ","
@@ -179,11 +179,13 @@ private[parsing] object LiterateLexer:
             paramsWithCommas :+ branch
           case None => Nil
         val withoutEnd = openerTok +: (possParams ++ body)
-        endTok match
+        val total = endTok match
           case tok: LitToken => withoutEnd :+ tok
           case _ =>
             // This means there was a StructureAllClose or we hit EOF
             withoutEnd
+
+        LitToken(TokenType.Group, total.toList, openRange)
     }
   end lambdaBlock
 
@@ -360,12 +362,12 @@ private[parsing] object LiterateLexer:
 
   def singleToken[$: P]: P[Seq[LitToken]] =
     P(
-      lambdaBlock | list | unpackVar |
-        (contextIndex | litGetVariable | litSetVariable | litSetConstant |
-          litAugVariable | elementKeyword | negatedElementKeyword | tokenMove |
-          modifierKeyword | structOpener | otherKeyword | litBranch |
-          litStructClose | litNumber | litString | normalGroup).map(Seq(_)) |
-        rawCode |
+      list | unpackVar |
+        (lambdaBlock | contextIndex | litGetVariable | litSetVariable |
+          litSetConstant | litAugVariable | elementKeyword |
+          negatedElementKeyword | tokenMove | modifierKeyword | structOpener |
+          otherKeyword | litBranch | litStructClose | litNumber | litString |
+          normalGroup).map(Seq(_)) | rawCode |
         SBCSLexer.token.map((token) =>
           Seq(LitToken(token.tokenType, token.value, token.range))
         )
