@@ -199,7 +199,7 @@ object Lexer:
       bound(i) match
         case (token, offset) =>
           println(s"Moving $token $offset")
-          bound.insert(Math.min(i + offset + 1, bound.length - 1), token)
+          bound.insert(Math.min(bound.length, i + offset + 1), token)
           bound.remove(i)
         case _ => ()
 

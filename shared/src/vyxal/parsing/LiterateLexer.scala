@@ -150,11 +150,10 @@ private[parsing] object LiterateLexer:
         ( // Keep going until the branch indicating params end, but don't stop at ","
           withRange(",".! | word.filter(isLambdaParam)).rep ~ litBranch
         ).? ~
-        (!(litStructClose | SBCSLexer.structureSingleClose |
-          SBCSLexer.structureDoubleClose | SBCSLexer.structureAllClose) ~
-          NoCut(singleToken)).rep.map(_.flatten) ~
-        (End | litStructClose | SBCSLexer.structureSingleClose |
-          SBCSLexer.structureDoubleClose | &(SBCSLexer.structureAllClose))
+        (!(litStructClose | structureSingleClose | structureDoubleClose |
+          structureAllClose) ~ NoCut(singleToken)).rep.map(_.flatten) ~
+        (End | litStructClose | structureSingleClose | structureDoubleClose |
+          &(structureAllClose))
     ).map {
       case (opener, openRange, possibleParams, body, endTok) =>
         val openerTok = LitToken(
@@ -182,6 +181,15 @@ private[parsing] object LiterateLexer:
             withoutEnd
     }
   end lambdaBlock
+
+  def structureSingleClose[$: P]: P[LitToken] =
+    parseToken(StructureClose, "}".!)
+
+  def structureDoubleClose[$: P]: P[LitToken] =
+    parseToken(StructureDoubleClose, ")".!)
+
+  def structureAllClose[$: P]: P[LitToken] =
+    parseToken(StructureAllClose, "]".!)
 
   def litString[$: P]: P[LitToken] =
     parseToken(Str, "\"" ~~ ("\\" ~~ AnyChar | !"\"" ~ AnyChar).repX.! ~~ "\"")
