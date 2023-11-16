@@ -127,7 +127,7 @@ object CLI:
   end run
 
   def helpText = OParser.usage(parser)
-  def version = "3.0.0-beta.3(indev)"
+  def version = "3.0.0"
   private def runCode(code: String)(using Context): Unit =
     try Interpreter.execute(code)
     catch
