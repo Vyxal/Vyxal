@@ -28,8 +28,8 @@ jobs:
           private-key: ${{ secrets.VB_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
 
-      #- uses: olegtarasov/get-tag@v2.1.2
-      #  id: tagName
+      - uses: olegtarasov/get-tag@v2.1.2
+        id: tagName
 
       - name: Get all the files
         id: names
