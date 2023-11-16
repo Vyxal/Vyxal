@@ -108,7 +108,7 @@ private object GenerateDocs:
                 .getOrElse("NA")} | $vectorises | ${formatOverload(overloads.head)}\n"
           overloads = overloads.tail
           while overloads.nonEmpty do
-            contents ++= s"| | | | | | | ${formatOverload(overloads.head)}\n"
+            contents ++= s"| | | | | | | | ${formatOverload(overloads.head)}\n"
             overloads = overloads.tail
       )
 
