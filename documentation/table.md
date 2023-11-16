@@ -224,7 +224,7 @@
  `ẋ` | `#.x` | Cartesian Power | `cartesian-power` | 2 | :x: | `a: lst, b: num` => `cart_prod([a] * n)`
  `ƒ` |  | Partition After Truthy Indices | `partition-after-truthy` | 2 | :x: | `a: lst, b: lst` => `partition a after truthy indices in b`
  `Θ` | `#.`` | Zero Slice Until | `0>b`, `zero-slice`, `zero-slice-until`, `take`, `slice-to`, `lst-truncate`, `first-n-items`, `first-n` | 2 | :x: | `a: lst, b: num` => `[a[0], a[1], ..., a[b-1]]`
- `Φ` | `#.|` | Slice from 1 | `1->b` | 2 | :x: | `a: lst, b: num` => `a[1:b]`
+ `Φ` | `#.\|` | Slice from 1 | `1->b` | 2 | :x: | `a: lst, b: num` => `a[1:b]`
  | | | | | | | `a: num, b: lst` => `b[1:a]`
  `§` | `#,o` | Print without newline | `print-no-newline` | NA | :x: | `a` => `printed to stdout without newline`
  `Ạ` | `#,A` | Assign | `assign`, `assign-at`, `assign<>`, `assign<x>`, `a<x>=`, `a<x>=y`, `a<x>?=y`, `set-item`, `apply-at` | 3 | :x: | `a: lst, b: num, c: non-fun` => `assign c to a at the index b / a[b] = c`
@@ -304,7 +304,7 @@
  `Π` |  | Product | `product`, `prod` | 1 | :x: | `a: lst` => `product of a`
  `¬` | `#,!` | Logical Not | `non-vec-not`, `non-vec-logical-not` | 1 | :x: | `a: any` => `!a`
  `∧` | `#,&` | Logical And | `and`, `logical-and` | 2 | :white_check_mark: | `a: any, b: any` => `a && b`
- `∨` | `#,|` | Logical Or | `or`, `logical-or` | 2 | :white_check_mark: | `a: any, b: any` => `a \|\| b`
+ `∨` | `#,\|` | Logical Or | `or`, `logical-or` | 2 | :white_check_mark: | `a: any, b: any` => `a \|\| b`
  `⁰` | `#^0` | First Input | `first-input`, `input-0` | 0 | :x: | `The first input to the program`
  `¹` | `#^1` | Second Input | `second-input`, `input-1` | 0 | :x: | `The second input to the program`
  `²` | `#^2` | Third Input | `third-input`, `input-2` | 0 | :x: | `The third input to the program`
@@ -317,7 +317,7 @@
  `¶` | `#,
 ` | Newline | `newline` | 0 | :x: | `chr(10)`
  `ᶿ` | `#^`` | Cartesian Product Unsafe | `cartesian-product-unsafe`, `cartesian-unsafe`, `cart-prod-unsafe`, `cart-unsafe` | 2 | :x: | `a: list, b: list` => `cartesian product of a and b in the standard order, but without accounting for infinite lists`
- `ᶲ` | `#^|` | Stringify | `to-string`, `stringify`, `str` | 1 | :x: | `a: any` => `str(a)`
+ `ᶲ` | `#^\|` | Stringify | `to-string`, `stringify`, `str` | 1 | :x: | `a: any` => `str(a)`
  `•` | `#,.` | Asterisk | `asterisk` | 0 | :x: | `"*"`
  `≈` | `#^~` | All Equal? | `all-equal`, `all-equal?` | 1 | :x: | `a: lst` => `are all elements of a equal?`
  `ꜝ` | `#^!` | Increment | `incr`, `increment` | 1 | :white_check_mark: | `a: num` => `a + 1`
