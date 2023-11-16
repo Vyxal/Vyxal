@@ -215,7 +215,7 @@ object Lexer:
     val tokens = LiterateLexer.lex(code) match
       case Right(tokens) => tokens
       case Left(err) => return Left(err)
-    
+
     println(s"Tokens are $tokens")
     val moved = performMoves(tokens)
 
