@@ -49,14 +49,19 @@ private[parsing] object LiterateLexer:
     "lam" -> StructureType.Lambda,
     "map-lambda" -> StructureType.LambdaMap,
     "map-lam" -> StructureType.LambdaMap,
+    "map<" -> StructureType.LambdaMap,
     "filter-lambda" -> StructureType.LambdaFilter,
     "filter-lam" -> StructureType.LambdaFilter,
+    "filter<" -> StructureType.LambdaFilter,
     "sort-lambda" -> StructureType.LambdaSort,
     "sort-lam" -> StructureType.LambdaSort,
+    "sort<" -> StructureType.LambdaSort,
     "reduce-lambda" -> StructureType.LambdaReduce,
     "reduce-lam" -> StructureType.LambdaReduce,
+    "reduce<" -> StructureType.LambdaReduce,
     "fold-lambda" -> StructureType.LambdaReduce,
     "fold-lam" -> StructureType.LambdaReduce,
+    "fold<" -> StructureType.LambdaReduce,
   )
 
   /** Keywords for opening structures. Has to be a separate map because while
