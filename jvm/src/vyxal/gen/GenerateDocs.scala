@@ -3,6 +3,8 @@ package vyxal.gen
 import vyxal.{Element, Elements, Modifiers, SugarMap}
 import vyxal.parsing.Lexer
 import vyxal.Modifier
+import vyxal.Syntax
+import vyxal.SyntaxInfo
 
 /** For generating elements.txt and trigraphs.txt. See build.sc */
 private object GenerateDocs:
@@ -91,6 +93,7 @@ private object GenerateDocs:
           SugarMap.trigraphs
             .collect { case (tri, s) if s == elem.symbol => tri }
             .foreach { tri => trigraph = tri }
+          if trigraph.nonEmpty then trigraph = s"`$trigraph`"
           var overloads = elem.overloads
           val name = elem.name.replace("|", "/")
           val symbol = "\\".repeat(if elem.symbol == "`" then 1 else 0) +
@@ -101,11 +104,11 @@ private object GenerateDocs:
             else ":x:"
 
           contents ++=
-            s"| `$symbol` | $trigraph | $name | $keywords | ${elem.arity
+            s"| `$symbol` | ${trigraph.replace("|", "\\|")} | $name | $keywords | ${elem.arity
                 .getOrElse("NA")} | $vectorises | ${formatOverload(overloads.head)}\n"
           overloads = overloads.tail
           while overloads.nonEmpty do
-            contents ++= s"| | | | | | | ${formatOverload(overloads.head)}\n"
+            contents ++= s"| | | | | | | | ${formatOverload(overloads.head)}\n"
             overloads = overloads.tail
       )
 
@@ -133,16 +136,55 @@ private object GenerateDocs:
           SugarMap.trigraphs
             .collect { case (tri, s) if s == symbol => tri }
             .foreach { tri => trigraph = tri }
-          val formatSymbol = "\\".repeat(if symbol == "`" then 1 else 0) +
-            symbol.replace("|", "\\|")
+          if trigraph.nonEmpty then trigraph = s"`$trigraph`"
+          val formatSymbol =
+            if symbol != "`" then symbol.replace("|", "\\|")
+            else "<code>`</code>"
           val formatKeywords = keywords.map("`" + _ + "`").mkString(", ")
           contents ++=
-            s"| `$formatSymbol` | `$trigraph` | ${name.replace("|", "/")} | $formatKeywords | ${arity} | <pre>${description
+            s"| `$formatSymbol` | $trigraph | ${name.replace("|", "/")} | $formatKeywords | ${arity} | <pre>${description
                 .replace("|", "")
                 .replace("\n", "<br>")}</pre> |\n"
       }
 
     val modifiers = modifierHeader + "\n" + modiDivider + "\n" +
+      contents.toString
+
+    contents.setLength(0)
+
+    val syntaxHeader = "| Symbol | Trigraph | Name | Description | Usage |"
+    val syntaxDivider = "| --- | --- | --- | --- | --- |"
+
+    SyntaxInfo.info.keys
+      .zip(SyntaxInfo.info.values)
+      .toSeq
+      .sortBy((symbol, _) =>
+        (
+          Lexer.Codepage.indexOf(symbol.charAt(0)) +
+            (if "#∆øÞ".contains(symbol.charAt(0)) then 400 else 0),
+          Lexer.Codepage.indexOf(symbol.substring(1)),
+        )
+      )
+      .foreach {
+        case (symbol, Syntax(name, description, usage)) =>
+          var trigraph = ""
+          SugarMap.trigraphs
+            .collect { case (tri, s) if s == symbol => tri }
+            .foreach { tri => trigraph = tri }
+
+          if trigraph.nonEmpty then trigraph = s"`$trigraph`"
+          val formatSymbol = "\\".repeat(if symbol == "`" then 1 else 0) +
+            symbol.replace("|", "\\|")
+          val formatUsage = usage
+            .replace("|", "\\|")
+            .replace("\n", "<br>")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+          contents ++=
+            s"| `$formatSymbol` | $trigraph | $name | $description | <pre>$formatUsage</pre> |\n"
+      }
+
+    val syntaxInformation = syntaxHeader + "\n" + syntaxDivider + "\n" +
       contents.toString
 
     s"""
@@ -155,6 +197,10 @@ private object GenerateDocs:
        |## Modifiers
        |
        |$modifiers
+       |
+       |## Syntax Features
+       |
+       |$syntaxInformation
        |""".stripMargin
 
   end elementTable
