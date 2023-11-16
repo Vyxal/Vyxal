@@ -127,6 +127,7 @@ object CLI:
   end run
 
   def helpText = OParser.usage(parser)
+  def version = "3.0.0"
   private def runCode(code: String)(using Context): Unit =
     try Interpreter.execute(code)
     catch
@@ -149,7 +150,7 @@ object CLI:
     // todo come up with better names for the flags
     OParser.sequence(
       programName("vyxal"),
-      head("vyxal", "3.0.0-beta.3(indev)"),
+      head("vyxal", CLI.version),
       cmd("debug")
         .action((_, cfg) => cfg.copy(debug = true))
         .text("Run the debugger"),
