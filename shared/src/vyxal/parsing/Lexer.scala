@@ -182,7 +182,7 @@ object Lexer:
 
     // Now, bind the move right tokens to the next token
 
-    val bound = ListBuffer[LitToken | Tuple2[LitToken, Int]]()
+    var bound = ListBuffer[LitToken | Tuple2[LitToken, Int]]()
     for token <- merged do
       if bound.nonEmpty then
         bound.last match
@@ -194,13 +194,13 @@ object Lexer:
             else bound += token
       else bound += token
 
-    // Finally, move the tuple2's to the right
-    for i <- bound.indices do
-      bound(i) match
-        case (token, offset) =>
-          bound.insert(Math.min(bound.length, i + offset + 1), token)
-          bound.remove(i)
-        case _ => ()
+    // Move the tuple2's to the right, storing indices of where they were
+
+    while bound.exists(_.isInstanceOf[Tuple2[LitToken, Int]]) do
+      val index = bound.indexWhere(_.isInstanceOf[Tuple2[LitToken, Int]])
+      val (token, offset) = bound(index).asInstanceOf[Tuple2[LitToken, Int]]
+      bound.remove(index)
+      bound.insert(index + offset, token)
 
     // And flatten the list into just tokens
     bound.map {
@@ -214,6 +214,7 @@ object Lexer:
     val tokens = LiterateLexer.lex(code) match
       case Right(tokens) => tokens
       case Left(err) => return Left(err)
+    println(tokens)
     val moved = performMoves(tokens)
 
     // Convert all tokens into SBCS tokens
