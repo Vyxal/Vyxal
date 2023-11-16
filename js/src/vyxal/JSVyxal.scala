@@ -100,4 +100,6 @@ object JSVyxal:
         )
     }.toJSArray
 
+  @JSExport
+  def getVersion(): String = CLI.version.split("-").head
 end JSVyxal
