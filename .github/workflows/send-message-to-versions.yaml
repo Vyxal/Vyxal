@@ -1,17 +1,9 @@
 name: Dispatch Release Information to Versions Repository
 
-# TODO BEFORE MERGING: Change to on-release
-
-#on:
-#  push:
-#    branches:
-#      - version-3
-#    paths-ignore:
-#      - "documentation/**"
-#      - "contributing/**"
-#      - "jvm/**"
-#      - "native/**"
-on: [push]
+on:
+  push:
+    tags:
+      - "v3*"
 
 jobs:
   release:
@@ -55,6 +47,4 @@ jobs:
           token: ${{ steps.generate_token.outputs.token }}
           repository: vyxal/versions
           event-type: vyxal3-release
-          #client-payload: '{"tag": "${{ steps.tagName.outputs.tag }}", "files": "${{ env.FILES }}"}'
-          # TODO BEFORE MERGING: Change the tag to the actual tag
-          client-payload: '{"tag": "3.0.0", "files": "${{ env.FILES }}"}'
+          client-payload: '{"tag": "${{ steps.tagName.outputs.tag }}", "files": "${{ env.FILES }}"}'
