@@ -175,6 +175,38 @@ object jvm extends VyxalModule {
   object test extends ScalaTests with VyxalTestModule
 }
 
+object jvmLiterate extends VyxalModule {
+  val platform = "jvm"
+
+  def ivyDeps =
+    T {
+      super.ivyDeps() ++
+        Seq(
+          // For the REPL
+          ivy"org.jline:jline:3.23.0",
+          ivy"org.jline:jline-terminal-jansi:3.23.0",
+          ivy"org.fusesource.jansi:jansi:2.4.0",
+        )
+    }
+
+  def forkEnv: T[Map[String, String]] =
+    Map("REPL" -> "false", "VYXAL_LOG_LEVEL" -> "Debug")
+
+  override def assembly =
+    T {
+      // Make sure to generate nanorcs first
+      jvm.nanorc()
+      // Rename jar to vyxal-<version>.jar
+      val out = T.dest / s"vyxal-$vyxalVersion-literate.jar"
+      os.move(super.assembly().path, out)
+      PathRef(out)
+    }
+
+  def mainClass: T[Option[String]] = Some("vyxal.MainLit")
+
+  object test extends ScalaTests with VyxalTestModule
+}
+
 /** Shared and JS-specific code */
 object js extends VyxalModule with ScalaJSModule {
   val platform = "js"

@@ -120,7 +120,7 @@ object CLI:
 
           if config.filename.isEmpty && config.code.isEmpty then
             repl.startRepl(
-              config.runFancyRepl || sys.env.getOrElse("REPL", "") != "false"
+              config.runFancyRepl
             )
       case None => ???
     end match
