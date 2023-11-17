@@ -26,11 +26,17 @@ stdin := n ## read the input into n
 $n $collatz call
 ```
 
+([Try it Online!](https://vyxal.github.io/latest.html#WyJsIiwiIiwiIyMgQSBjb2xsYXR6IGNvbmplY3R1cmUgcHJvZ3JhbVxuc3RkaW4gOj0gbiAjIyByZWFkIHRoZSBpbnB1dCBpbnRvIG5cbiguIHNjYW4tZml4OiB7aWYgZXZlbj8gdGhlbiBoYWx2ZSBlbHNlIGluY3JlbWVudCBlbmRpZn0pIDo9IGNvbGxhdHpcbiRuICRjb2xsYXR6IGNhbGwiLCIiLCIiLCIzLjAuMCJd))
+
 turns into:
 
 ```
 ?#=n⸠ᵡλ#{e|½|ꜝ}#{}#=collatz#$n#$collatzĖ
 ```
+
+([Try it Online!](https://vyxal.github.io/latest.html#WyIiLCIiLCI/Iz1u4rig4bWhzrsje2V8wr186pydfSN7fSM9Y29sbGF0eiMkbiMkY29sbGF0esSWIiwiIiwiIiwiMy4wLjAiXQ==))
+
+---
 
 ```
 ## The classic fizzbuzz
@@ -41,11 +47,17 @@ turns into:
 } join-on-newlines
 ```
 
+([Try it Online!](https://vyxal.github.io/latest.html#WyJsIiwiIiwiIyMgVGhlIGNsYXNzaWMgZml6emJ1enpcbjEwMCBtYXB7XG4gIG4gWzMsIDVdIGRpdmlkZXM/XG4gIFwiRml6ekJ1enpcIiBoYWx2ZVxuICBkb3QtcHJvZHVjdCBtYXhpbXVtXG59IGpvaW4tb24tbmV3bGluZXMiLCIiLCIiLCIzLjAuMCJd))
+
 turns into:
 
 ```
 100Mλn#[3|5#]Ḋ"FizzBuzz"½ḋG}ṅ
 ```
+
+([Try it Online!](https://vyxal.github.io/latest.html#WyIiLCIiLCIxMDBNzrtuI1szfDUjXeG4ilwiRml6ekJ1enpcIsK94biLR33huYUiLCIiLCIiLCIzLjAuMCJd))
+
+---
 
 ```
 ## How about something that generates all the fibonacci numbers?
@@ -56,13 +68,15 @@ relation add from [1, 1] end
 ## is it really that simple?!
 ```
 
-([yes!](online interpreter link))
+([yes!](https://vyxal.github.io/latest.html#WyJsIiwiIiwicmVsYXRpb24gYWRkIGZyb20gWzEsIDFdIGVuZCIsIiIsIiIsIjMuMC4wIl0=))
 
 turns into:
 
 ```
 Ṇ+|#[1|1#]}
 ```
+
+([Try it Online!](https://vyxal.github.io/latest.html#WyIiLCIiLCLhuYYrfCNbMXwxI119IiwiIiwiIiwiMy4wLjAiXQ==))
 
 Isn't it snazzy? You can finally do well at golf without needing to smash your head on a weird looking keyboard!
 
@@ -130,7 +144,7 @@ java -jar vyxal-jar <arguments>
 
 2. Download one of the executables and run as you would usually run an executable
 
-3. Head over to [the online interpreter](vyxal.github.io)
+3. Head over to [the online interpreter](vyxal.github.io/latest)
 
 4. Download the repository source and use one of the [build tool options](https://github.com/Vyxal/Vyxal/blob/version-3/contributing/BuildTools.md) to build and run.
 
