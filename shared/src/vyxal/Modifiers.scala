@@ -404,7 +404,7 @@ object Modifiers:
       Modifier(
         "Apply to Register",
         """|Apply a function to the register. Essentially, push
-           |the reigster value to the stack, apply the function, and
+           |the register value to the stack, apply the function, and
            |then pop back into the register
            |ᴿf: Apply f to the register""".stripMargin,
         List("apply-to-register:", "to-register:", "to-reg:"),
