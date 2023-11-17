@@ -1,12 +1,17 @@
 # A Tour of Vyxal 3
 
+_Note that this tour assumes SBCS syntax. For a guide on the specifics of
+literate mode, see the [Literate Mode help file](./Literate%20Mode.md)._
+
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Stacks](#stacks)
-- [Numeric Literals](#numeric-literals)
-- [Strings](#strings)
-- [Glossary](#glossary)
+0. [Introduction](#introduction)
+1. [Stacks](#stacks)
+2. [Numeric Literals](#numeric-literals)
+3. [Strings](#strings)
+4. [Lists](#lists)
+5. [Basic Operations](#basic-operations)
+6. [Glossary](#glossary)
 
 ## Introduction
 
@@ -99,6 +104,13 @@ Much like floats, complex numbers can have the real and/or imaginary part omitte
 ı => 0+1j
 ```
 
+Consecutive numeric literals require a space or other non-numeric separator:
+
+```
+3 4 5 => counts as 3, 4, and 5
+345 => counts as 345
+```
+
 ## Strings
 
 Another very useful type of value that can exist on the stack are strings.
@@ -138,6 +150,84 @@ Finally, if a string is at the end of a program, it can be left unterminated. Fo
 ```
 
 at the end of a program will automatically fill in the missing `"`.
+
+## Lists
+
+Lists are a core feature of Vyxal; a lot of data processing in code golf
+challenges involves lists in one way or another. Vyxal lists are
+(potentially infinite) sequences of values. Lists can be nested, meaning
+that a list can contain other lists.
+
+The syntax for lists is:
+
+```
+#[item|item|item|...|item#]
+```
+
+The `#[` opens the list, the `|` separates items, and the `#]` closes the list.
+That's similar to how `[` opens a list, `,` separates items, and `]` closes a
+list in languages like Python and JavaScript.
+
+Some example lists include:
+
+```
+#[1|2|3|4|5#]
+#[#[1|2|3#]|#[4|5|6#]|7|8|9#]
+#[#]
+```
+
+Note that lists do not need to have a fixed shape. That is to say, they do
+not follow a strict array model like you might find in APL or J. Some might
+argue that not having an actual array model means Vyxal isn't an array
+language, but the other key component of array languages are present. If K
+is an array language, then Vyxal is an array language.
+
+## Basic Operations
+
+Now that the basic literal types have been covered (more on functions later),
+it's time to start doing things with them. The typical first program in any
+language is the classic "Hello, World!" program. However, the first program
+covered here will be addition of two numbers, as "Hello, World!" has been
+done in basically every beginner tutorial ever. And we appreciate originality
+here at Vyxal! :p
+
+To add two numbers, you first need to push them onto the stack. For this example,
+5 will be used as the first number, and 7 will be used as the second number.
+
+In order to achieve that order, the 5 must be put on the stack first, then the 7.
+So our program starts as:
+
+```
+5 7
+```
+
+which sets the stack as:
+
+```
+7 -- top
+5 -- bottom
+```
+
+Now comes the juicy part: adding the numbers. To add two numbers, you use the
+`+` element. Elements are what other languages might call built-in functions or
+commands or operators. `+` takes the top two values on the stack, adds them
+together, and pushes its result back onto the stack. 
+
+The program therefore is:
+
+```
+5 7+
+```
+
+The first value taken from the stack is designated as the right-hand value. 
+The second value taken from the stack is designated as the left-hand value.
+So in this case, the 7 is the right-hand value, and the 5 is the left-hand value.
+
+After addition, the stack is:
+
+```
+12 -- top | bottom
+```
 
 ## Glossary
 
