@@ -349,7 +349,7 @@
  `ⁿ` | `#^n` | Minimum By | `min-by:`, `minimum-by:` | 1 | <pre>Minimum By Element<br>ᵐf: Minimum of top of stack based on results of f</pre> |
  `ᵒ` | `#^o` | Outer Product / Table | `outer-product:`, `table:` | 1 | <pre>Outer product<br>ᵒf: Pop two lists, then make a matrix from them by applying f to each pair of elements</pre> |
  `ᵖ` | `#^p` | Map Over Prefixes | `map-over-prefixes:`, `over-prefixes:` | 1 | <pre>Map an element over the prefixes of a list<br>ᵖf: Map f over prefixes</pre> |
- `ᴿ` | `#^R` | Apply to Register | `apply-to-register:`, `to-register:`, `to-reg:` | 1 | <pre>Apply a function to the register. Essentially, push<br>the reigster value to the stack, apply the function, and<br>then pop back into the register<br>ᴿf: Apply f to the register</pre> |
+ `ᴿ` | `#^R` | Apply to Register | `apply-to-register:`, `to-register:`, `to-reg:` | 1 | <pre>Apply a function to the register. Essentially, push<br>the register value to the stack, apply the function, and<br>then pop back into the register<br>ᴿf: Apply f to the register</pre> |
  `ᶳ` | `#^s` | Sort By | `sort-by:`, `scanl:` | 1 | <pre>Sort By Element / Scanl<br>ᶳf: Sort top of stack based on results of f<br>ᶳf: Cumulatively reduce a list of items</pre> |
  `ᵗ` | `#^t` | Unassigned |  | 1 | <pre>Unassigned</pre> |
  `ᵘ` | `#^u` | Collect Until No Change / Neighbours All Equal? | `collect-until-no-change:`, `until-stable:`, `stablise:`, `neighbours-equals:` | 1 | <pre>Run func on the prev result until the result no longer changes<br>returning all intermediate results<br>Given a dyadic function, apply the function to all overlapping pairs of elements<br>and test if all results are equal<br>ᵘf: Collect until no change</pre> |
