@@ -21,7 +21,6 @@ literate mode, see the [Literate Mode help file](./Literate%20Mode.md)._
 13. [What is a SBCS?](#single-byte-character-set)
 14. [Arity Grouping](#arity-grouping)
 15. [Nilad Moving](#nilad-moving)
- [Glossary](#glossary)
 
 ## Introduction
 
@@ -137,7 +136,7 @@ them with `"`s. For example:
 are all examples of string literals. Note that the empty string is a valid
 string, as shown in the last example. 
 
-Strings can contain any character within the Vyxal [codepage](#codepage) (well, technically any character can be used, but using a character outside the codepage requires UTF-8 scoring). To include a `"` in a string, escape it with a `\`. For example:
+Strings can contain any character within the Vyxal codepage (well, technically any character can be used, but using a character outside the codepage requires UTF-8 scoring). To include a `"` in a string, escape it with a `\`. For example:
 
 ```
 "\""
@@ -449,11 +448,7 @@ W -- Wrap the entire stack in a list
 
 More stack control elements may be added in the future.
 
-## Glossary
+## Functions
 
-### Codepage
-
-The codepage is a byte-to-character mapping that Vyxal uses to display bytes
-as characters.
-
-
+Right now, you have everything you need to solve every problem ever. Like
+literally, the current subset of Vyxal is Turing complete. However, 
