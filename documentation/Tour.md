@@ -5,6 +5,7 @@
 - [Introduction](#introduction)
 - [Stacks](#stacks)
 - [Numeric Literals](#numeric-literals)
+- [Strings](#strings)
 - [Glossary](#glossary)
 
 ## Introduction
@@ -100,6 +101,49 @@ Much like floats, complex numbers can have the real and/or imaginary part omitte
 
 ## Strings
 
-Another very useful type of value that can exist on the stack is Strings.
+Another very useful type of value that can exist on the stack are strings.
+Strings are much like strings in any other programming language; they are
+a sequence of characters. Strings can be pushed onto the stack by surrounding
+them with `"`s. For example:
+
+```
+"Hello, World!"
+"Red is sus."
+""
+```
+
+are all examples of string literals. Note that the empty string is a valid
+string, as shown in the last example. 
+
+Strings can contain any character within the Vyxal [codepage](#codepage) (well, technically any character can be used, but using a character outside the codepage requires UTF-8 scoring). To include a `"` in a string, escape it with a `\`. For example:
+
+```
+"\""
+```
+
+Further, strings can span multiple lines:
+
+```
+"Hello World!
+Hey wait why is this string still going
+who put these newlines in my string?!?"
+```
+
+is a self-aware multi-line string.
+
+Finally, if a string is at the end of a program, it can be left unterminated. For example:
+
+```
+"Hello, World!
+```
+
+at the end of a program will automatically fill in the missing `"`.
 
 ## Glossary
+
+### Codepage
+
+The codepage is a byte-to-character mapping that Vyxal uses to display bytes
+as characters.
+
+
