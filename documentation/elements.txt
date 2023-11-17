@@ -237,6 +237,10 @@ _ (Pop and Discard) (non-vectorising)
 Keywords: pop, discard
 - a ->
 ----------------------
+` (Length of Stack) (non-vectorising)
+Keywords: length-of-stack, stack-length, stack-len
+-  -> push the length of the stack
+----------------------
 a (Any Truthy | Any() | Is Uppercase?) (non-vectorising)
 Keywords: any, is-uppercase?, is-upper?, upper?
 - a: str -> is (a) uppercase? vectorises for strings len > 1
@@ -1084,12 +1088,6 @@ Description: Minimum By Element
 ᵐf: Minimum of top of stack based on results of f
 Trigraph: #^n
 -----------------------
-`
-Keywords: vec-dump:, map-dump:
-Description: Map a function over the top of the stack, treating each iteration
-as if it were a stack of items. Essentially, dump before mapping
-
------------------------
 ᵇ
 Keywords: without-popping:, peek:, dedup-by:, remove-duplicates-by:
 Description: Apply a 2+ arity element to the stack without popping
@@ -1224,8 +1222,10 @@ Description: Turn the next element (whether that be a structure/modifier/element
 Trigraph: #^.
 -----------------------
 ᵗ
-Keywords: 
-Description: Unassigned
+Keywords: vec-dump:, map-dump:
+Description: Map a function over the top of the stack, treating each iteration
+as if it were a stack of items. Essentially, dump before mapping
+
 Trigraph: #^t
 -----------------------
 ᶠ
