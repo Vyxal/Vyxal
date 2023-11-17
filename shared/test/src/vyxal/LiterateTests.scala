@@ -139,4 +139,41 @@ class LiterateTests extends VyxalTests:
       testLiterate("i is-vowel?", "ıA")
     }
   }
+
+  describe("Right Moving") {
+    it("should move tokens right once when given a single quote") {
+      testLiterate("3 '+ 4", "3 4+")
+      testLiterate("'print \"Hello, World!\"", "\"Hello, World!\",")
+    }
+
+    it("should leave tokens at the end alone") {
+      testLiterate("3 4 +'", "3 4+")
+      testLiterate("'print", ",")
+    }
+
+    it("should move more than once if there's more than one") {
+      testLiterate("''+ 3 4", "3 4+")
+      testLiterate("''''+ 3 4", "3 4+")
+      testLiterate("1 2 '''3 4 5 6 7", "1 2 4 5 6 3 7")
+    }
+
+    it("should move multiple in order of left to right") {
+      testLiterate("'3 '+ 4", "3+4")
+      testLiterate("''''for ''''$i ''''-> 'range(1 100)", "1 100R(i")
+    }
+
+    it("should move and count groups as a single unit") {
+      testLiterate("'(4 +) 5", "5 4+")
+      testLiterate("'print(69)", "69,")
+    }
+
+    it("should move tokens inside groups within the group") {
+      testLiterate("(3 '+ 4)", "3 4+")
+      testLiterate("(3 4 '+) 5 +", "3 4+5+")
+    }
+
+    it("should count lambdas as a single unit") {
+      testLiterate("[1,2,3] 'filter {'% 2 '== 0}", "#[1|2|3#]λ2%0=}F")
+    }
+  }
 end LiterateTests
