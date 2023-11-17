@@ -2633,16 +2633,16 @@ object Elements:
       " -> push the length of the stack",
     ) { ctx ?=>
       ctx.push(ctx.length)
-    }, addDirect
-      (
-        "\\",
-        "Dump",
-        List("dump"),
-        Some(1),
-        "a: any -> dump all values on the stack",
-      ) { ctx ?=>
-        ListHelpers.makeIterable(ctx.pop()).foreach(v => ctx.push(v))
-      },
+    },
+    addDirect(
+      "\\",
+      "Dump",
+      List("dump"),
+      Some(1),
+      "a: any -> dump all values on the stack",
+    ) { ctx ?=>
+      ListHelpers.makeIterable(ctx.pop()).foreach(v => ctx.push(v))
+    },
     addPart(
       Monad,
       "†",
