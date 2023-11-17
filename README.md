@@ -132,6 +132,8 @@ Variable unpacking can support any number of depths (e.g. `[a|b|[[[[c|d]]]|e]|f]
 
 The entire list of elements has been re-worked to remove some unnecessary overloads in version 2, and add some sorely missing elements that would make golfing a lot easier and shorter.
 
+For a more specific overview of Vyxal 3, check out the [tour](./documentation/Tour.md)
+
 ## How do I run Vyxal 3?
 
 There's a few methods:
