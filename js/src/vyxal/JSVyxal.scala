@@ -101,5 +101,5 @@ object JSVyxal:
     }.toJSArray
 
   @JSExport
-  def getVersion(): String = CLI.version.split("-").head
+  def getVersion(): String = Interpreter.version
 end JSVyxal
