@@ -11,7 +11,8 @@ literate mode, see the [Literate Mode help file](./Literate%20Mode.md)._
 3. [Strings](#strings)
 4. [Lists](#lists)
 5. [Basic Operations](#basic-operations)
-6. [Glossary](#glossary)
+6. [Control Flow](#control-flow)
+7. [Glossary](#glossary)
 
 ## Introduction
 
@@ -228,6 +229,39 @@ After addition, the stack is:
 ```
 12 -- top | bottom
 ```
+
+Congratulations! You've just written your first Vyxal program! Now, let's do
+the inverse of addition: subtraction. Subtraction is done with the `-` element.
+Using the numbers 5 and 7 again, to compute `5 - 7`, you would write:
+
+```
+5 7-
+```
+
+which has the following stack trace:
+
+```
+(push 5)    (push 7)     (subtract)
+5       ... 7        ... -2 -- top
+        ... 5        ...    -- bottom
+```
+
+Notice how the left-hand value is the first value pushed onto the stack, and
+the right-hand value is the second value pushed onto the stack. This is
+typical of most stack based languages; instead of writing `lhs op rhs` as you
+might in a traditional language, you write `lhs rhs op`. This is called
+reverse Polish notation (RPN), and is the standard notation for stack based
+languages.
+
+## Control Flow
+
+Using the basic operations, you can now write simple programs! Execellent stuff.
+But to do anything more useful than what you can accomplish with a calculator,
+you need to be able to control the flow of your program. That is to say, you
+need to be able to conditionally execute code, or execute code multiple times.
+
+I haven't written this section yet because it's 11:33pm and writing all the
+above took like half an hour.
 
 ## Glossary
 
