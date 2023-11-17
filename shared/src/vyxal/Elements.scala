@@ -2626,14 +2626,23 @@ object Elements:
       ctx.rotateRight
     },
     addDirect(
-      "\\",
-      "Dump",
-      List("dump"),
-      Some(1),
-      "a: any -> dump all values on the stack",
+      "`",
+      "Length of Stack",
+      List("length-of-stack", "stack-length", "stack-len"),
+      None,
+      " -> push the length of the stack",
     ) { ctx ?=>
-      ListHelpers.makeIterable(ctx.pop()).foreach(v => ctx.push(v))
-    },
+      ctx.push(ctx.length)
+    }, addDirect
+      (
+        "\\",
+        "Dump",
+        List("dump"),
+        Some(1),
+        "a: any -> dump all values on the stack",
+      ) { ctx ?=>
+        ListHelpers.makeIterable(ctx.pop()).foreach(v => ctx.push(v))
+      },
     addPart(
       Monad,
       "†",

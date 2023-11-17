@@ -12,7 +12,16 @@ literate mode, see the [Literate Mode help file](./Literate%20Mode.md)._
 4. [Lists](#lists)
 5. [Basic Operations](#basic-operations)
 6. [Control Flow](#control-flow)
-7. [Glossary](#glossary)
+7. [Stack Control](#stack-control)
+8. [Input/Output](#io)
+9. [Functions](#functions)
+10. [Context](#number-ranges)
+11. [Modifiers](#modifiers)
+12. [Variables](#variables)
+13. [What is a SBCS?](#single-byte-character-set)
+14. [Arity Grouping](#arity-grouping)
+15. [Nilad Moving](#nilad-moving)
+ [Glossary](#glossary)
 
 ## Introduction
 
@@ -260,8 +269,185 @@ But to do anything more useful than what you can accomplish with a calculator,
 you need to be able to control the flow of your program. That is to say, you
 need to be able to conditionally execute code, or execute code multiple times.
 
-I haven't written this section yet because it's 11:33pm and writing all the
-above took like half an hour.
+Control flow is accomplished with what are called "structures". These structures
+represent traditional programming constructs like ternarys, loops, and if/else 
+statements.
+
+### The Ternary Structure
+
+Some languages have a ternary operator that acts as an inline if/else statement.
+Typically, they are of the form `condition ? if_true : if_false`. Vyxal has a
+similar structure:
+
+```
+[if_true|if_false}
+```
+
+This structure first pops the top of the stack. If that value is considered
+truthy (non-0 for numbers, non-empty for strings and lists, functions are always truthy), then the `if_true` part is executed. Otherwise, the `if_false` part is executed.
+
+The `if_false` part can be omitted. If it is, then it is assumed to be an empty branch. The `if_true` part can be empty, in case you want to only execute the `if_false` part. For example:
+
+```
+[if_true}
+[if_true|if_false}
+[|if_false}
+```
+
+Note that the ternary structure is _not_ an if-statement. Those have their own
+structure.
+
+For a demonstration of the ternary, say you wanted to print whether a number
+is even or odd. You could do that with the following program:
+
+```
+2%0= ["even"|"odd"},
+```
+
+The `2%0=` retrieves the even-ness of the top of the stack. This value is used
+as the condition. If the number is even, the `if_true` part is executed, which
+pushes the string `"even"` onto the stack. If the number is odd, the `if_false`
+part is executed, which pushes the string `"odd"` onto the stack. The `,` then
+prints the top of the stack.
+
+### The For Loop Structure
+
+The for loop structure is the same as you would find in a traditional language:
+
+```
+(loop_variable|code}
+```
+
+The keen among us (!) will notice that there is no explicit iterable. That's
+because the iterable is popped from the top of the stack. If the popped
+value is a number, it is converted to the range `[1, number]` (1 through to
+number inclusive).
+
+The `loop_variable` part specifies the variable to store the current iteration
+value. This part is optional; if it is omitted, no variables are created.
+
+"But how do I access the loop value then?" you ask. For that you can use `n`,
+which is the "context variable". It has different meanings depending on the
+structure it's used in. More on that later.
+
+The `code` part is the code to execute for each iteration.
+
+For a demonstration of the for loop, say you wanted to print the numbers 1
+through 10. You could do that with any of the following programs:
+
+```
+10ɾ (i|#$i,}
+10ɾ (n,}
+10 (i|#i,}
+10 (n,}
+```
+
+Note how `#$i` is used to retrieve the loop variable `i`. Variables will be
+discussed in depth later, but know for now that the loop variable declaration
+does not require any sigil, while the variable retrieval does.
+
+### The While Loop Structure
+
+The while loop structure is used to execute code while a certain condition
+is truthy. Note that it is a while loop, not a do-while loop. That is to say,
+the condition is checked _before_ the code is executed.
+
+The structure is:
+
+```
+{condition|code}
+{code}
+```
+
+The `condition` part is the condition to check. If it is truthy, the `code`
+part is executed. If it is falsy, the loop is exited.
+
+The `condition` part can also be omitted. If it is, then it is assumed to be
+truthy, and the loop will run forever. This is a nice shorthand for when you
+want to execute an infinite loop.
+
+For a demonstration of the while loop, say you wanted to implement a simple
+collatz sequence. A collatz sequence is a sequence of numbers where each
+number is either halved if it is even, or tripled and incremented by 1 if it
+is odd. The sequence ends when the number 1 is reached.
+
+The condition for the while loop might be:
+
+```
+:1≠
+```
+
+Which checks if the top of the stack is not equal to 1, while retaining the
+value on the stack. The code to execute might be:
+
+```
+:2%0=[2/|3*1+}:,
+```
+
+Which halves the number if it is even, or triples it and increments it by 1.
+It then prints the number without popping it.
+
+Putting this all together, you get:
+
+```
+{:1≠|:2%0=[2/|3*1+}:,}
+```
+
+### The If/Else Structure
+
+Vyxal 3 also has a more traditional if/else structure. Unlike versions 1 and 2,
+this structure represents an if-statement with self-contained conditions.
+
+The structure is:
+
+```
+#{condition|if_true|if_false}
+#{condition|if_true|elif_condition|elif_true|...|else_code}
+```
+
+This is similar to a python if/elif/else statement. Rather than give a 
+theoretical example, a direct translation of a python program will be given.
+
+```python
+if some_condition:
+    print("some_condition is truthy")
+elif some_other_condition:
+    print("some_other_condition is truthy")
+else:
+    print("neither condition is truthy")
+```
+
+would be written as
+
+```
+#{some_condition|"some_condition is truthy"|some_other_condition|"some_other_condition is truthy"|"neither condition is truthy"},
+```
+
+An if statement with more than 3 branches will always have the `else` branch
+as the last branch.
+
+## Stack Control
+
+All these structures are great, but things quickly become difficult if
+the data you're working with is in the wrong order. For example, you might
+need to swap the top two values on the stack, or you might need to duplicate
+the top value on the stack so that you can use it in multiple places.
+
+Vyxal has a number of elements that allow you to control the stack. These
+elements include:
+
+```
+: -- Duplicate the top of the stack
+$ -- Swap the top two values on the stack
+_ -- Pop the top of the stack (unless following a number)
+^ -- Reverse the stack
+← -- Rotate the stack left
+→ -- Rotate the stack right
+W -- Wrap the entire stack in a list
+` -- Length of the stack
+```
+
+More stack control elements may be added in the future.
 
 ## Glossary
 
