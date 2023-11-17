@@ -200,7 +200,8 @@ object Lexer:
       val index = bound.indexWhere(_.isInstanceOf[Tuple2[LitToken, Int]])
       val (token, offset) = bound(index).asInstanceOf[Tuple2[LitToken, Int]]
       bound.remove(index)
-      bound.insert(index + offset, token)
+      if index + offset >= bound.length then bound += token
+      else bound.insert(index + offset, token)
 
     // And flatten the list into just tokens
     bound.map {
@@ -214,7 +215,6 @@ object Lexer:
     val tokens = LiterateLexer.lex(code) match
       case Right(tokens) => tokens
       case Left(err) => return Left(err)
-    println(tokens)
     val moved = performMoves(tokens)
 
     // Convert all tokens into SBCS tokens
