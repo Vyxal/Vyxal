@@ -147,7 +147,7 @@ class LiterateTests extends VyxalTests:
     }
 
     it("should leave tokens at the end alone") {
-      testLiterate("3 4 +'", "3 4+")
+      testLiterate("3 4 '+", "3 4+")
       testLiterate("'print", ",")
     }
 
@@ -159,7 +159,7 @@ class LiterateTests extends VyxalTests:
 
     it("should move multiple in order of left to right") {
       testLiterate("'3 '+ 4", "3+4")
-      testLiterate("''''for ''''$i ''''-> 'range(1 100)", "1 100R(i")
+      testLiterate("''''for ''''i ''''-> 'range(1 100)", "1 100R(i")
     }
 
     it("should move and count groups as a single unit") {
