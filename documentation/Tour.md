@@ -11,16 +11,17 @@ literate mode, see the [Literate Mode help file](./Literate%20Mode.md)._
 3. [Strings](#strings)
 4. [Lists](#lists)
 5. [Basic Operations](#basic-operations)
-6. [Control Flow](#control-flow)
-7. [Stack Control](#stack-control)
-8. [Input/Output](#io)
-9. [Functions](#functions)
-10. [Context](#number-ranges)
-11. [Modifiers](#modifiers)
-12. [Variables](#variables)
-13. [What is a SBCS?](#single-byte-character-set)
-14. [Arity Grouping](#arity-grouping)
-15. [Nilad Moving](#nilad-moving)
+6. [Vectorisation](#vectorisation)
+7. [Control Flow](#control-flow)
+8. [Stack Control](#stack-control)
+9. [Input/Output](#io)
+10. [Functions](#functions)
+11. [Context](#context)
+12. [Modifiers](#modifiers)
+13. [Variables](#variables)
+14. [What is a SBCS?](#single-byte-character-set)
+15. [Arity Grouping](#arity-grouping)
+16. [Nilad Moving](#nilad-moving)
 
 ## Introduction
 
@@ -260,6 +261,74 @@ typical of most stack based languages; instead of writing `lhs op rhs` as you
 might in a traditional language, you write `lhs rhs op`. This is called
 reverse Polish notation (RPN), and is the standard notation for stack based
 languages.
+
+## Vectorisation
+
+It is worth noting that a lot of elements in Vyxal are vectorised. Vectorisation
+is when a function is applied to each element of a list, rather than the list
+as a whole. Essentially, vectorisation is a form of implicit mapping.
+
+For example, say you wanted to add 1 to each element of a list. In a traditional
+language, you might write:
+
+```python
+[1, 2, 3, 4, 5].map(lambda x: x + 1)
+```
+
+or
+
+```python
+lst = [1, 2, 3, 4, 5]
+for i in range(len(lst)):
+    lst[i] += 1
+```
+
+In Vyxal, you would write:
+
+```
+#[1|2|3|4|5#]1+
+```
+
+The `+` is automatically applied to each item in the list.
+
+Vectorisation will "dig down" into nested lists until it reaches a non-list
+value. This is what is known as "pervasiveness" or "deep vectorisation".
+
+### Vectorisation and Arity
+
+How many arguments a function takes (its arity) impacts how vectorisation is
+performed.
+
+If an element is monadic (takes one argument), then it is applied to each
+non-list item in the list. This occurs regardless of the type of the top
+of the stack. Numbers are converted to ranges.
+
+If an element is dyadic (takes two arguments), the following table describes
+how it is applied:
+
+| Top of Stack (`a`) | Second on Stack (`b`)| Result |
+|--------------------|----------------------|--------|
+|List                |List                  |`[a op b for a, b in zip(a, b)]`|
+|List                |Non-list              |`[x op b for x in a]`| 
+|Non-list            |List                  |`[a op x for x in b]`|
+|Non-list            |Non-list              |`a op b`|
+
+If an element is triadic (takes three arguments), the following table describes
+how it is applied:
+
+| Top of Stack (`a`) | Second on Stack (`b`)| Third on Stack (`c`) | Result |
+|--------------------|----------------------|----------------------|--------|
+|List                |List                  |List                  |`[a op b op c for a, b, c in zip(a, b, c)]`|
+|List                |List                  |Non-list              |`[x op y op c for x, y in zip(a, b)]`|
+|List                |Non-list              |List                  |`[x op b op y for x, y in zip(a, c)]`|
+|List                |Non-list              |Non-list              |`[x op b op c for x in a]`|
+|Non-list            |List                  |List                  |`[a op x op y for x, y in zip(b, c)]`|
+|Non-list            |List                  |Non-list              |`[a op x op c for x in b]`|
+|Non-list            |Non-list              |List                  |`[a op b op x for x in c]`|
+|Non-list            |Non-list              |Non-list              |`a op b op c`|
+
+If an element takes 4 arguments, a similar method to the triadic case is used.
+The behaviour table is omitted for brevity.
 
 ## Control Flow
 
@@ -611,4 +680,3 @@ and `m` is set to the next value in the list.
 Sorted functions are called using the `ṡ` element, or through a sorting lambda.
 `n` is set to the current value being sorted, as is `m`. This may be changed
 in the future.
-
