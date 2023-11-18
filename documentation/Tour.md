@@ -491,6 +491,10 @@ In Vyxal, you would write:
 λ5+}
 ```
 
+### Function Arguments
+
+The `arguments` part of the lambda structure requires its own section
+
 ### Function Execution
 
 When a function is executed, it pops its arguments from the stack, and
