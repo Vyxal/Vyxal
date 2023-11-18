@@ -493,7 +493,29 @@ In Vyxal, you would write:
 
 ### Function Arguments
 
-The `arguments` part of the lambda structure requires its own section
+The `arguments` part of the lambda structure requires its own section, as it
+veers away from the usual "push a value onto the stack" syntax. The argument
+list defines the parameters a lambda will take. Arguments can be: a) unnamed
+arguments popped directly from the stack, b) named parameters, or c) variadic
+parameters. 
+
+Rather than trying to explain the syntax of the argument list, it's probably
+easier to just give some examples. The following are all valid argument lists:
+
+```
+λ3|...} # Pop 3 values from the outer stack. Push them to the inner stack.
+λ1|...} # Pop 1 value from the outer stack. Push it to the inner stack.
+λname|...} # Pop 1 value from the outer stack. Assign it to the variable `name`.
+λ*|...} # First, pop a number from the stack. Then, pop that many arguments from the stack and push to inner stack.
+λ3,name|...} # Pop 3 values from the outer stack. Push them to the inner stack. Then pop another value from the outer stack and assign it to the variable `name`.
+λa,b,c|...} # Pop the top of the stack into `a`, the second value into `b`, and the third value into `c`.
+λ3,4|...} # Pop 3 values from the outer stack. Push them to the inner stack. Then pop 4 values from the outer stack and push them to the inner stack.
+λ7|...} # Not exactly equivalent to the above. Pops 7 consecutive values from the outer stack and pushes them to the inner stack.
+λ1,name,2|...} # Names and numbers can be mixed together
+λ3,name,*|...} # As can varargs
+λ*,*,*|...} # As can multiple varargs
+λ!|...} # A `!` indicates that the function operates on the outer stack. All pops and pushes are done on the outer stack.
+```
 
 ### Function Execution
 
