@@ -451,4 +451,50 @@ More stack control elements may be added in the future.
 ## Functions
 
 Right now, you have everything you need to solve every problem ever. Like
-literally, the current subset of Vyxal is Turing complete. However, 
+literally, the current subset of Vyxal is Turing complete. However, only
+using structures and basic elements misses out on a lot of the power of Vyxal.
+Indeed, the real power of Vyxal comes from doing cool things with functions.
+
+Functions are a core part of Vyxal. They are first class objects, meaning
+that you can have functions on the stack, functions can take functions as
+arguments, and functions can return functions. Practical languages like
+Python have such function features, so that'll be used as the base line
+for comparison.
+
+### Function Declaration
+
+To create a function, you use the lambda structure. And you thought we
+were done with structures! The lambda structure is:
+
+```
+λcode}
+λarguments|code}
+```
+
+The `code` part is the code to execute when the function is called. The
+`arguments` part is the argument list for the function. If it is omitted,
+the function takes a single argument. This structure does not immediately
+execute the function. Rather, it pushes the function onto the stack. One
+way to think about this is that it pushes a reference to the function.
+
+The idea is that functions are like python lambdas. They are anonymous
+functions that can be passed around and used in other functions. For example,
+say you wanted to add 5 to a number. In python, you might write:
+
+```python
+lambda x: x + 5
+```
+
+In Vyxal, you would write:
+
+```
+λ5+}
+```
+
+### Function Execution
+
+When a function is executed, it pops its arguments from the stack, and
+creates its own inner stack. This inner stack is used for all operations
+within the function, and is destroyed when the function returns. This inner
+stack does not interact with the outer stack in any way - popping from an
+empty inner stack does not pop from the outer stack.
