@@ -534,9 +534,81 @@ how the function was called. More on that in the next section.
 Functions can recursively call themselves by using the `x` element. This
 will execute the function again, taking its arguments from the inner stack.
 
-### Function Return
+Returning early from a function is done with the `X` element. This will
+halt execution of the function, and push the top of the inner stack to
+the outer stack.
 
 When a function returns, it pushes whatever is on the top of the inner stack
 back onto the outer stack.
 
+### Specialised Lambda Structures
+
+There are a few specialised lambda structures that are shortcuts for
+common lambda-element combinations. These are:
+
+```
+ƛ...} # Mapping lambda. Equivalent to λ...}M
+Ω...} # Filter lambda. Equivalent to λ...}F
+₳...} # Accumulation lambda. Equivalent to λ...}R
+µ...} # Sorting lambda. Equivalent to λ...}ṡ
+```
+
+## Context
+
+The concept of a "context" has been alluded to a few times now, but what is it?
+Well, vyxal contexts are what they sound like - different environmental settings
+that depend on the type of structure being executed. Each context has two
+dedicated variables that are elements: `n` and `m`. `n` is referred to as the
+primary context variable, and `m` is referred to as the secondary context
+variable. The meaning of these variables depends on the context (ha) of the
+structure.
+
+### Global Context
+
+The global context is the context that is used when no structure is being
+executed. `n` is set to the string `"abcdefghijklmnopqrstuvwxyz"`. `m` is simply set to `0`.
+
+### For Loop Context
+
+Within a for loop, `n` is set to the current iteration value. `m` is set to the
+current iteration index.
+
+### While Loop Context
+
+Within a while loop, `n` is set to the last value of the condition. `m` is set
+to the number of iterations.
+
+### Standard Function Context
+
+In addition to the inner-stack mentioned in the function section, functions
+set `n` to the first argument, and `m` to the list of all arguments.
+
+Functions can also have their argument list indexed using `¤`. `¤<number>` is equivalent to `m<number>i`.
+
+### Mapped Function Context
+
+The way a function is called can also affect the context. If a function is
+called using the `M` element, or through a mapping lambda, then `n` is set to
+the current value being mapped over. `m` is set to the index of `n` in the
+original list.
+
+### Filtered Function Context
+
+Like mapped functions, filtered functions also have their context affected by
+the way they are called. If a function is called using the `F` element, or
+through a filter lambda, then `n` is set to the current value being filtered.
+`m` is set to the index of `n` in the original list.
+
+### Accumulated Function Context
+
+Accumulated functions are called using the `R` element, or through an
+accumulation lambda, or by using the fold/scan modifiers (more on those later).
+Typically, such a function is dyadic, so `n` is set to the accumulator value,
+and `m` is set to the next value in the list.
+
+### Sorted Function Context
+
+Sorted functions are called using the `ṡ` element, or through a sorting lambda.
+`n` is set to the current value being sorted, as is `m`. This may be changed
+in the future.
 
