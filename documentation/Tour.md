@@ -519,8 +519,24 @@ easier to just give some examples. The following are all valid argument lists:
 
 ### Function Execution
 
-When a function is executed, it pops its arguments from the stack, and
-creates its own inner stack. This inner stack is used for all operations
-within the function, and is destroyed when the function returns. This inner
-stack does not interact with the outer stack in any way - popping from an
-empty inner stack does not pop from the outer stack.
+When a function is executed, it pops its arguments from the stack, 
+according to the argument list. These arguments are pushed to an inner
+stack. This inner stack is used for all operations within the function, 
+and is destroyed when the function returns. This inner stack does not 
+interact with the outer stack in any way, unless the function is marked
+with a `!` in the argument list.
+
+The function stores the first argument in the context variable `n`. This
+is the same `n` that is used in the for loop structure. The function will
+also store an additional value in the context variable `m`, depending on
+how the function was called. More on that in the next section.
+
+Functions can recursively call themselves by using the `x` element. This
+will execute the function again, taking its arguments from the inner stack.
+
+### Function Return
+
+When a function returns, it pushes whatever is on the top of the inner stack
+back onto the outer stack.
+
+
