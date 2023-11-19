@@ -19,9 +19,9 @@ literate mode, see the [Literate Mode help file](./Literate%20Mode.md)._
 11. [Context](#context)
 12. [Specialised Structures](#specialised-structures)
 13. [Modifiers](#modifiers)
-14. [Variables](#variables)
-15. [What is a SBCS?](#single-byte-character-set)
-16. [Arity Grouping](#arity-grouping)
+14. [Arity Grouping](#arity-grouping)
+15. [Variables](#variables)
+16. [What is a SBCS?](#single-byte-character-set)
 17. [Nilad Moving](#nilad-moving)
 
 ## Introduction
@@ -848,6 +848,60 @@ results in the stack:
 12 -- top
 7  -- bottom
 ```
+
+### Shorthand Lambda Modifiers
+
+Some modifiers are shorthand for wrapping a number of elements in a lambda.
+These modifiers will take the next _n_ elements, wrap them in a lambda, and
+then push the lambda to the stack. These modifiers are:
+
+| Modifier | Number of Elements | Arity of Lambda |
+|----------|--------------------|-----------------|
+| `⸠`      | 1                  | 1               |
+| `ϩ`     | 2                   | 1               |
+| `э`      | 3                  | 1               |
+| `Ч`      | 4                  | 1               |
+| `ᵈ`      | 1                  | 2               |
+| `ᵉ`      | 2                  | 2               |
+| `ᶠ`      | 3                  | 2               |
+| `ᴳ`      | 4                  | 2               |
+
+## Arity Grouping
+
+Sometimes, you'll feel like a series of elements should be grouped together
+when using a modifier. For example, you might expect `5+` to be a single
+element, as it's effectively a monadic element. Therefore, Vyxal will
+automatically group elements together if they effectively act as a single
+element. This is called "arity grouping".
+
+The following arity sequences are grouped together:
+
+```
+0 1 # grouped as a nilad
+0 0 2 # grouped as a nilad
+0 0 0 3 # grouped as a nilad
+0 0 0 0 4 # grouped as a nilad
+0 2 # grouped as a monad
+0 0 3 # grouped as a monad
+0 0 0 4 # grouped as a monad
+```
+
+This can best be seen with the lambda shorthand modifiers. For example:
+
+```
+⸠5+ # Pushes a monadic lambda that adds 5 to its argument
+ϩ5+8× # Pushes a dyadic lambda that adds 5 to its first argument and multiplies it by 8
+```
+
+While it looks like `⸠5+` should be `⸠5` then `+`, it is grouped as a monad.
+
+Arity grouping stacks too. For example, `5 4++` is grouped as a monad, as
+`5 4+` is first grouped as a nilad. That leaves a nilad-dyad pattern,
+which is grouped as a monad.
+
+It may not make sense now, but it will when you start writing more complex
+programs.
+
 
 ## Variables
 
