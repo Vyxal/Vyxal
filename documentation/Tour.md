@@ -623,6 +623,22 @@ common lambda-element combinations. These are:
 µ...} # Sorting lambda. Equivalent to λ...}ṡ
 ```
 
+Mapping lambdas, filter lambdas, and sorting lambdas also have another special
+feature: multiple branches. Where a normal lambda only has a single code
+section, these lambdas can have multiple code sections.
+
+For mapping lambdas, each code section resets the context variable `n` to
+whatever is on the top of the inner stack. This will make more sense when
+context variables are discussed later.
+
+For filter lambdas, each code section acts as an additional filter. Essentially,
+the `|`s become logical ands. This is helpful for when you want to filter
+by multiple conditions without using multiple `n`s.
+
+For sorting lambdas, each code section acts as an additional key. The first
+code section is the primary key, the second code section is the secondary key,
+and so on.
+
 ## Context
 
 The concept of a "context" has been alluded to a few times now, but what is it?
