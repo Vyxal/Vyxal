@@ -887,3 +887,30 @@ are a neat little feature.
 Variables can be declared as constant by using `#!` instead of `#=`. This
 will prevent the variable from being reassigned. Attempting to reassign a
 constant variable will result in an error.
+
+## Single Byte Character Set
+
+At the very top of this tour, there was a statement that this document
+assumes SBCS syntax. This is because Vyxal has two syntaxes: SBCS and
+literate mode. But what is a SBCS? 
+
+SBCS stands for "single byte character set". It is a mapping from bytes
+to a set of human readable characters. Indeed, when writing Vyxal code,
+you are technically writing bytes, not characters. But for convenience, 
+UTF-8 characters are used to represent the bytes. Imagine if you had to
+write your code in binary or hex!
+
+The SBCS used by Vyxal is a custom codepage. It can be found 
+[in codepage.txt](./codepage.txt) and [in codepage.md](./codepage.md).
+
+It's important to know that a SBCS is used, as it means that only the
+characters in the codepage can be used in Vyxal code. If you need to
+use a character outside of the codepage, you will have to use UTF-8
+scoring.
+
+By default, the interpreter will assume that the code is in UTF-8. This
+may seem like it contradicts the point of a SBCS, but it is done for
+user convenience. Indeed, the SBCS is only for code golf scoring purposes.
+To prove to someone that your program is indeed x amount of bytes, you
+can use the `-v` or `--bytes` flag. This will tell the interpreter to
+read the input program as a series of bytes, rather than UTF-8 characters.
