@@ -9,7 +9,6 @@
  `🍪` |  | Cookie | `cookie` | NA | :x: | `cookie.`
  `ඞ` |  | ඞ | `sus` | NA | :x: | `ඞ`
  `¦` | `#.;` | Pipe | `pipe` | 0 | :x: | `"\|"`
- `ᵛ` | `#^v` | Decrement | `decr`, `decrement` | 1 | :white_check_mark: | `a: num` => `a - 1`
  `!` |  | Factorial | `fact`, `factorial` | 1 | :white_check_mark: | `a: num` => `a!`
  `$` |  | Swap | `swap` | NA | :x: | `a, b` => `b, a`
  `%` |  | Modulo / String Formatting | `mod`, `modulo`, `str-format`, `format`, `%`, `strfmt` | 2 | :x: | `a: num, b: num` => `a % b`
@@ -136,6 +135,7 @@
  `s` |  | Split | `split` | 2 | :x: | `a: any, b: any` => `split a by b`
  `t` |  | Tail / Last Item | `tail`, `last`, `last-item` | 1 | :x: | `a: lst` => `a[-1]`
  `u` |  | Uniquify | `uniquify` | 1 | :x: | `a: lst\|str\|num` => `a with duplicates removed`
+ `v` |  | Decrement | `decr`, `decrement` | 1 | :white_check_mark: | `a: num` => `a - 1`
  `w` |  | Wrap Singleton | `wrap-singleton`, `enlist` | 1 | :x: | `a` => `[a]`
  `x` |  | Recursion / Recurse | `recurse` | NA | :x: | `call the current function recursively`
  `y` |  | To Base | `to-base` | 2 | :x: | `a: num, b: num` => `a in base b`
@@ -354,6 +354,7 @@
  `ᶳ` | `#^s` | Sort By | `sort-by:`, `scanl:` | 1 | <pre>Sort By Element / Scanl<br>ᶳf: Sort top of stack based on results of f<br>ᶳf: Cumulatively reduce a list of items</pre> |
  `ᵗ` | `#^t` | Map as Stacks | `vec-dump:`, `map-dump:` | 1 | <pre>Map a function over the top of the stack, treating each iteration<br>as if it were a stack of items. Essentially, dump before mapping<br></pre> |
  `ᵘ` | `#^u` | Collect Until No Change / Neighbours All Equal? | `collect-until-no-change:`, `until-stable:`, `stablise:`, `neighbours-equals:` | 1 | <pre>Run func on the prev result until the result no longer changes<br>returning all intermediate results<br>Given a dyadic function, apply the function to all overlapping pairs of elements<br>and test if all results are equal<br>ᵘf: Collect until no change</pre> |
+ `ᵛ` | `#^v` | Vectorise | `vectorise:`, `vec:`, `v:` | 1 | <pre>Vectorises<br>ᵛf: f but vectorised</pre> |
  `ᵂ` | `#^W` | Dip | `dip:` | 1 | <pre>Stash the top of the stack temporarily, and then apply<br>the function. Finally, push the stashed value<br>ᵂf: pop M, apply f, push M</pre> |
  `ᵡ` | `#^X` | Scan Fixed Point | `scan-fix:` | 1 | <pre>Scan a function until it reaches a fixed point<br>ᵡf: scan f until a fixed point is reached / apply until a previous value is repeated, collecting intermediate results</pre> |
  `ᵞ` | `#^y` | Invariant Under? / Vertical Scan | `invariant-under:`, `vertical-scan:`, `vscan:`, `v-scan:`, `invariant?:`, `same?:` | 1 | <pre>Check if a function is invariant under a transformation / vertical scan<br>ᵞf: check if top of stack is invariant under a transformation<br>ᵞf: scanl columns by f</pre> |
@@ -363,7 +364,6 @@
  `э` | `#^%` | Triple Element Lambda | `***:` | 3 | <pre>Turn the next three elements (whether that be a structure/modifier/element) into a lambda<br>эfgh: Push the equivalent of λfgh} to the stack</pre> |
  `Ч` | `#^4` | Quadruple Element Lambda | `****:` | 4 | <pre>Turn the next four elements (whether that be a structure/modifier/element) into a lambda<br>Чfghi: Push the equivalent of λfghi} to the stack</pre> |
  `/` |  | Foldl / Reduce By / Filter by | `foldl:`, `reduce:`, `/:`, `fold:`, `reduceby:-` | 1 | <pre>Reduce a list by an element<br>/f: reduce by element f</pre> |
- `v` |  | Vectorise | `vectorise:`, `vec:`, `v:` | 1 | <pre>Vectorises<br>vf: f but vectorised</pre> |
  `∥` |  | Parallel Apply | `parallel-apply:`, `para-apply:`, `paraply:`, `!!:` | 2 | <pre>Parallel apply two elements to the top of the stack<br></pre> |
  `∦` |  | Parallel Apply and Wrap | `parallel-apply-and-wrap:`, `para-apply-and-wrap:`, `<paraply>:`, `<!!>:` | 2 | <pre>Parallel apply two elements to the top of the stack<br>and wrap the result in a list<br></pre> |
  `¿` | `#.?` | Conditional Execution | `if-top:`, `if:` | 1 | <pre>Pop the top of the stack, and, if it's truthy,<br>apply a function</pre> |
