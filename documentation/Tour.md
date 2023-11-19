@@ -730,3 +730,48 @@ infinitely generate values. A way to stop the generator will be added in the
 future.
 
 ## Modifiers
+
+Most elements in Vyxal operate on stack values - they pop values from the stack
+and push their result back onto the stack. However, some elements modify the
+behaviour of other elements - instead of popping values from the stack, they
+modify the behaviour of the next element. These are called "modifiers".
+
+For example, the most commonly used modifier is the `ᵛ` modifier. This modifier
+`ᵛ`ectorises (vectorises) the next element over the top of the stack. For
+elements that do not vectorise by default, this allows them to be vectorised.
+
+Another common modifier is the `/` modifier. This modifier is used to reduce
+a list of values by a function. It's as if you wrapped the element in a lambda
+and then used the `R` element.
+
+That's the case with most modifiers - they are just shorthand for wrapping
+an element in a lambda and then using another element. However, there are
+cases where modifiers perform different actions based on the arity of the
+modified element.
+
+Going back to `/` for a second, `/` will reduce if the element is dyadic,
+but will instead filter if the element is monadic. This is because it makes
+no sense to reduce a list of values by a monadic function. When there
+are multiple possible actions for a modifier, the different actions are
+documented in the modifier's help text.
+
+### Dyadic Modifiers
+
+Some modifiers take two elements instead of one. One such modifier is the
+`∥` modifier, which is called "parallel apply". This modifier takes two
+elements, and applies them to the same stack as if they were executed
+with their own copy of the stack. The results of both elements are then
+pushed to the stack.
+
+For example:
+
+```
+3 4∥+×
+```
+
+results in the stack:
+
+```
+12 -- top
+7  -- bottom
+```
