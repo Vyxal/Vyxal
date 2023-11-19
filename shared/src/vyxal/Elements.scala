@@ -1560,13 +1560,13 @@ object Elements:
       Monad,
       "ḟ",
       "Prime Factors | Remove Non-Alphabet",
-      List("prime-factors", "remove-non-alphabet"),
+      List("prime-factors", "remove-alphabet"),
       true,
       "a: num -> prime factors of a",
-      "a: str -> a with all non-alphabet characters removed",
+      "a: str -> a with all alphabet characters removed",
     ) {
       case a: VNum => NumberHelpers.primeFactors(a)
-      case a: String => StringHelpers.removeNonAlphabet(a)
+      case a: String => a.filter(!_.isLetter)
     },
     addDirect(
       ",",
