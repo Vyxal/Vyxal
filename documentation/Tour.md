@@ -518,6 +518,60 @@ W -- Wrap the entire stack in a list
 
 More stack control elements may be added in the future.
 
+## Input and Output
+
+99.9% of all code golf challenges require input and output. The other .1% are
+closed as unobservable. Vyxal has two forms of input and output: implicit and
+explicit. Explicit IO is the easiest to explain - `,` is used to send values
+to STDOUT, and `?` is used to read values from argv/STDIN. Upon reading 
+from argv/STDIN, `?` will attempt to evaluate the input as a number, then
+a list, and finally as a string literal. Failing all 3, it will push 
+the input as-is, as a string.
+
+_Note that `,` is not the only way to print to STDOUT. Indeed, there is an
+element to print without a trailing newline (`,` prints with a trailing
+newline), and an element to print without popping. Likewise, there will
+be a "read from STDIN" element at some point to explicitly read from STDIN_
+
+Implicit IO is split into two parts: implicit input and implicit output. Implicit
+output occurs at the end of program execution if no explicit output has occurred.
+
+Implicit input occurs when popping from an empty stack. In most practical
+stack languages, popping from an empty stack is an error. In Vyxal, it 
+is the equivalent of inserting `?`s before an element.
+
+For example:
+
+```
++
+```
+
+will first try to pop a lhs value from the stack. Seeing nothing on the stack,
+it reads from argv/STDIN. 
+It will then try to pop a rhs value from the stack. Seeing nothing on the stack,
+it once again reads from argv/STDIN.
+
+### Argv vs STDIN
+
+By default, input is read from argv (command line arguments). This is the
+preferred method of input, as it cleanly lets the interpreter know how
+much input there is. However, if no inputs are provided on the command line,
+input is read from STDIN (standard input).
+
+When input is read from argv, the interpreter is able to cycle through
+inputs once it reaches the end. For example, if the program `+` is run
+with the arguments `1`, the result will be `2`. The `1` is reused.
+
+When input is read from STDIN, the interpreter does not cycle through inputs.
+After all, how would it know when to stop? Instead, the interpreter will
+prompt for more input each time it is needed.
+
+### Empty Input
+
+If no input at all is provided (e.g. running the interpreter online with no 
+inputs in the input box -- inputs are treated as argv online), 
+the interpreter will push `0` to the stack.
+
 ## Functions
 
 Right now, you have everything you need to solve every problem ever. Like
@@ -638,6 +692,9 @@ by multiple conditions without using multiple `n`s.
 For sorting lambdas, each code section acts as an additional key. The first
 code section is the primary key, the second code section is the secondary key,
 and so on.
+
+Normal lambdas and accumulation lambdas do not perform any special actions
+with multiple code sections.
 
 ## Context
 
@@ -791,3 +848,42 @@ results in the stack:
 12 -- top
 7  -- bottom
 ```
+
+## Variables
+
+So far, a lot of features have involved a lot of concepts that may be new to
+people who haven't experienced a stack/array/golfing language before. However,
+to ease people into the language, Vyxal has support for locally scoped variables.
+When golfing, variables end up being unnecessary most of the time, but they
+can be useful for readability and for longer/more complex programs outside of
+golfing.
+
+Variables are declared by writing `#=` followed by the variable name. This will
+pop the top of the stack and assign it to the variable. For example:
+
+```
+42 #=x
+```
+
+will assign the number `42` to the variable `x`. Variables can be retrieved
+by writing `#$` followed by the variable name. For example:
+
+```
+#$x
+```
+
+will push the value of `x` to the stack. An unassigned variable will push `0`
+to the stack.
+
+Variables are local to the current scope. That is to say, if you declare a
+variable in a function, it will only exist within that function. And assigning
+variables inside a scope will not affect variables outside of that scope.
+
+Global variables will be added in the future, as version 2 had them and they
+are a neat little feature.
+
+### Constant Variables
+
+Variables can be declared as constant by using `#!` instead of `#=`. This
+will prevent the variable from being reassigned. Attempting to reassign a
+constant variable will result in an error.
