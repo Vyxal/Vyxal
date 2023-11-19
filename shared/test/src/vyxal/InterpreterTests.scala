@@ -47,17 +47,17 @@ class InterpreterTests extends VyxalTests:
 
   describe("Vectorisation") {
     describe("Simple monads") {
-      testMulti("#[100 | #[101 | 0#] #] vB" -> VList(4, 202))
+      testMulti("#[100 | #[101 | 0#] #] ᵛB" -> VList(4, 202))
     }
 
     describe("Simple dyads") {
       testMulti(
-        "#[4 | #[5 | 6#] #] 3 v;" ->
+        "#[4 | #[5 | 6#] #] 3 ᵛ;" ->
           VList(
             VList(4, 3),
             VList(VList(5, 6), 3),
           ),
-        "#[4 | #[5 | 6#] #] #[4#] v;" ->
+        "#[4 | #[5 | 6#] #] #[4#] ᵛ;" ->
           VList(
             VList(4, VList(4)),
             VList(VList(5, 6), VList(4)),
@@ -69,7 +69,7 @@ class InterpreterTests extends VyxalTests:
       it("should vectorise lambda for factorial") {
         testAST(
           Modifiers
-            .modifiers("v")
+            .modifiers("ᵛ")
             .from(List(AST.Lambda(1, List.empty, List(AST.Command("!"))))),
           VList(1, 6, VList(2, 1)),
           inputs = Seq(VList(0, 3, VList(2, 1))),
@@ -81,7 +81,7 @@ class InterpreterTests extends VyxalTests:
       it("should vectorise lambda for subtraction") {
         testAST(
           Modifiers
-            .modifiers("v")
+            .modifiers("ᵛ")
             .from(List(AST.Lambda(2, List.empty, List(AST.Command("-"))))),
           VList(VList(-4, -2, -6), VList(-1, 1, -3), VList(-2, -1, -6)),
           inputs = Seq(VList(0, 3, VList(2, 1)), VList(4, 2, 6)),
