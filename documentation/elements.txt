@@ -516,9 +516,9 @@ Keywords: reciprocal, recip, remove-whitespace, remove-space, 1/
 ----------------------
 ḟ (Prime Factors | Remove Non-Alphabet) (vectorising)
 Trigraph: #.f
-Keywords: prime-factors, remove-non-alphabet
+Keywords: prime-factors, remove-alphabet
 - a: num -> prime factors of a
-- a: str -> a with all non-alphabet characters removed
+- a: str -> a with all alphabet characters removed
 ----------------------
 ġ (Group By Consecutive Items) (non-vectorising)
 Trigraph: #.g
