@@ -202,8 +202,8 @@
  | | | | | | | `a: num, b: num` => `Convert a to bijective base b`
  `ė` | `#.e` | Reciprocal / Remove Whitespace | `reciprocal`, `recip`, `remove-whitespace`, `remove-space`, `1/` | 1 | :white_check_mark: | `a: num` => `1/a`
  | | | | | | | `a: str` => `a with all whitespace removed`
- `ḟ` | `#.f` | Prime Factors / Remove Non-Alphabet | `prime-factors`, `remove-non-alphabet` | 1 | :white_check_mark: | `a: num` => `prime factors of a`
- | | | | | | | `a: str` => `a with all non-alphabet characters removed`
+ `ḟ` | `#.f` | Prime Factors / Remove Non-Alphabet | `prime-factors`, `remove-alphabet` | 1 | :white_check_mark: | `a: num` => `prime factors of a`
+ | | | | | | | `a: str` => `a with all alphabet characters removed`
  `ġ` | `#.g` | Group By Consecutive Items | `group-by-consecutive` | 1 | :x: | `a: any` => `group consecutive identical items of lst(a)`
  `ḣ` | `#.h` | Head Extract | `head-extract`, `split-at-head` | 1 | :x: | `a: lst\|str` => `Push a[0], then a[1:] onto the stack`
  `ŀ` | `#.l` | Transliterate / Call While | `transliterate`, `call-while` | 3 | :x: | `any a, any b, any c` => `transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)`
