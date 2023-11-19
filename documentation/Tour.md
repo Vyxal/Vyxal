@@ -17,11 +17,12 @@ literate mode, see the [Literate Mode help file](./Literate%20Mode.md)._
 9. [Input/Output](#io)
 10. [Functions](#functions)
 11. [Context](#context)
-12. [Modifiers](#modifiers)
-13. [Variables](#variables)
-14. [What is a SBCS?](#single-byte-character-set)
-15. [Arity Grouping](#arity-grouping)
-16. [Nilad Moving](#nilad-moving)
+12. [Specialised Structures](#specialised-structures)
+13. [Modifiers](#modifiers)
+14. [Variables](#variables)
+15. [What is a SBCS?](#single-byte-character-set)
+16. [Arity Grouping](#arity-grouping)
+17. [Nilad Moving](#nilad-moving)
 
 ## Introduction
 
@@ -680,3 +681,52 @@ and `m` is set to the next value in the list.
 Sorted functions are called using the `ṡ` element, or through a sorting lambda.
 `n` is set to the current value being sorted, as is `m`. This may be changed
 in the future.
+
+## Specialised Structures
+
+There exist two structures within the Vyxal language that don't fit in
+the category of "control flow" or "function". These are the "specialised
+structures". These structures are the decision problem structure, and the
+generator structure.
+
+### The Decision Problem Structure
+
+A common problem in code golf is to determine whether an input contains
+an item that satisfies a certain condition. It can be seen as a shortcut
+for `ƛ...}a` or `Ω...}ȯ`.
+
+The structure is:
+
+```
+Ḍpredicate|iterable}
+```
+
+The `predicate` part is the predicate to check. The `iterable` part is the
+iterable to check. If `iterable` is omitted, it is assumed to be the top of
+the stack.
+
+The decision problem structure will push `1` if the predicate is satisfied
+by any item in the iterable, and `0` otherwise.
+
+### The Generator Structure
+
+The generator structure is used to generate a list of values. It maintains a
+list of all values generated, and allows those values to be used to generate
+new values. Basically, a state-mainaining generator like python's `yield`.
+
+The structure is:
+
+```
+Ṇcode|inital vector}
+```
+
+The `code` part is the code to execute to generate the next value. It operates
+on a stack pre-filled with all previously generated values. The `initial vector`
+part is the initial vector to use. If it is omitted, it is assumed to be the
+top of the stack.
+
+The generator structure will push the generated list to the stack, which will
+infinitely generate values. A way to stop the generator will be added in the
+future.
+
+## Modifiers

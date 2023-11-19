@@ -6,10 +6,10 @@ import org.scalatest.funspec.AnyFunSpec
 
 /** Tests for specific elements */
 class ModifierTests extends VyxalTests:
-  describe("Modifier v") {
+  describe("Modifier ᵛ") {
     testMulti(
-      "#[1 10 R|1 5 R|6 8 R#] λ+} v R" -> VList(45, 10, 13),
-      "#[1 10 R|1 5 R|6 8 R#] vA" -> VList(1, 1, 1),
+      "#[1 10 R|1 5 R|6 8 R#] λ+} ᵛ R" -> VList(45, 10, 13),
+      "#[1 10 R|1 5 R|6 8 R#] ᵛA" -> VList(1, 1, 1),
     )
   }
   describe("Modifier /") {

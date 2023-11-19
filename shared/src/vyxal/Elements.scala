@@ -377,7 +377,7 @@ object Elements:
     },
     addPart(
       Monad,
-      "ᵛ",
+      "v",
       "Decrement",
       List("decr", "decrement"),
       true,
