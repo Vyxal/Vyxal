@@ -38,6 +38,7 @@ object CLI:
       runLiterateLexer: Boolean = false,
       runFancyRepl: Boolean = false,
       debug: Boolean = false,
+      readBytes: Boolean = false,
   )
 
   /** Run the CLI
@@ -109,6 +110,15 @@ object CLI:
                     "Either file name or code must be given to debug"
                   )
           DebugRepl.start(code)
+        else if config.readBytes then
+          config.filename.foreach { filename =>
+            val fileObj = java.io.File(filename)
+            val source = java.io.FileInputStream(fileObj)
+            val sbcs = source.readAllBytes().map(c => Lexer.Codepage(c & 0xff))
+            try runCode(sbcs.mkString)
+            finally source.close()
+
+          }
         else
           config.filename.foreach { filename =>
             val source = io.Source.fromFile(filename)
@@ -122,6 +132,7 @@ object CLI:
             repl.startRepl(
               config.runFancyRepl
             )
+        end if
       case None => ???
     end match
   end run
@@ -185,6 +196,10 @@ object CLI:
       opt[Unit]("fancy-repl")
         .action((_, cfg) => cfg.copy(runFancyRepl = true))
         .text("Run the fancy REPL")
+        .optional(),
+      opt[Unit]('v', "bytes")
+        .action((_, cfg) => cfg.copy(readBytes = true))
+        .text("Read program as raw bytes - used for code golf scoring")
         .optional(),
       arg[String]("<input>...")
         .unbounded()
