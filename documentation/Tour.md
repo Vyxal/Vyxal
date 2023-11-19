@@ -1014,3 +1014,8 @@ program. This means that the program will be executed as:
 ```
 
 which will push `14` to the stack.
+
+## Conclusion
+
+That's the end of the tour. Hopefully you've learned something about Vyxal,
+and are now ready to start writing your own programs.
