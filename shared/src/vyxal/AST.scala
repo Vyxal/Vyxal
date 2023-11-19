@@ -143,7 +143,8 @@ enum AST(val arity: Option[Int]) derives CanEqual:
       case CompressedNumber(value, _) => s"\"$value„"
       case DictionaryString(value, _) => s"\"$value”"
       case Ternary(thenBody, elseBody, _) => s"[$thenBody|$elseBody}"
-      case For(loopVar, body, _) => s"(${loopVar.getOrElse("")}|${body.toVyxal}"
+      case For(loopVar, body, _) =>
+        s"(${loopVar.getOrElse("")}|${body.toVyxal}}"
       case While(cond, body, _) =>
         s"{${cond.fold("")(_.toVyxal)}|${body.toVyxal}}"
       case Lambda(_, params, body, originallyFunction, _) =>
