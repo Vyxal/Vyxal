@@ -166,7 +166,7 @@ class InterpreterTests extends VyxalTests:
       testMulti(
         "3 6 1λ!|+}ĖW" -> VList(3, 7),
         "3 6 1λ!|++}ĖW" -> VList(10),
-        "3 6 1λ!|n}ĖW" -> VList(3, 6, 1, 0),
+        "3 6 1λ!|n}ĖW" -> VList(3, 6, 1, "abcdefghijklmnopqrstuvwxyz"),
       )
     }
 
