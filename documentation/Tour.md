@@ -968,3 +968,49 @@ user convenience. Indeed, the SBCS is only for code golf scoring purposes.
 To prove to someone that your program is indeed x amount of bytes, you
 can use the `-v` or `--bytes` flag. This will tell the interpreter to
 read the input program as a series of bytes, rather than UTF-8 characters.
+
+## Nilad Moving
+
+The last thing to cover in this tour is nilad moving. Nilad moving is a
+way to cut down on the number of redundant programs.
+
+Say you have a long complex program, followed by pushing the number 5 to
+the stack:
+
+```
+<really long program>5
+```
+
+Due to the fact that implicit output will print the top of the stack upon
+execution, the result will always be `5`. This makes it as if the 
+`<really long program>` wasn't there. How useless!
+
+And if `<really long program>` happens to use explicit output, then the
+`5` will be ignored. Also useless!
+
+Therefore, to get some utility out of situations like this, Vyxal will
+move trailing nilads to the front of the program. So the above program
+will be executed as:
+
+```
+5<really long program>
+```
+
+This is done for all nilads, not just numbers. So if you have a program
+that ends with a string literal, that string literal will be moved to
+the front of the program.
+
+For a concrete example, say you had:
+
+```
+5 + 9
+```
+
+That `9` at the end is a nilad, so it will be moved to the front of the
+program. This means that the program will be executed as:
+
+```
+9 5 +
+```
+
+which will push `14` to the stack.
