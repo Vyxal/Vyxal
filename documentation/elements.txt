@@ -513,7 +513,7 @@ Keywords: reciprocal, recip, remove-whitespace, remove-space, 1/
 - a: num -> 1/a
 - a: str -> a with all whitespace removed
 ----------------------
-ḟ (Prime Factors | Remove Non-Alphabet) (vectorising)
+ḟ (Prime Factors | Remove Alphabet) (vectorising)
 Trigraph: #.f
 Keywords: prime-factors, remove-alphabet
 - a: num -> prime factors of a
