@@ -1559,7 +1559,7 @@ object Elements:
     addPart(
       Monad,
       "ḟ",
-      "Prime Factors | Remove Non-Alphabet",
+      "Prime Factors | Remove Alphabet",
       List("prime-factors", "remove-alphabet"),
       true,
       "a: num -> prime factors of a",
