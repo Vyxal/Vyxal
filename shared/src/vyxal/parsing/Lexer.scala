@@ -196,7 +196,7 @@ object Lexer:
 
     // Move the tuple2's to the right, storing indices of where they were
 
-    while bound.exists(_.isInstanceOf[Tuple2[LitToken, Int]]) do
+    while bound.exists(_.isInstanceOf[(LitToken, Int)]) do
       val index = bound.indexWhere(_.isInstanceOf[Tuple2[LitToken, Int]])
       val (token, offset) = bound(index).asInstanceOf[Tuple2[LitToken, Int]]
       bound.remove(index)
