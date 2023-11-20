@@ -105,6 +105,38 @@ is the same as
 100 λ 3× 5+} M
 ```
 
+### `n't` suffix
+
+Appending `n't` to a word will insert a logical negation element after the
+word. For example, `containsn't` is the same as `contains not`.
+
+Note that the resulting element is 2 bytes long, and counts as 2 units of
+stuff for modifiers (unless arity grouped).
+
+`n't`s can be stacked, with each `n't` cancelling out the previous chain of
+`n't`s. For example, `containsn'tn't` is the same as `contains`.
+
+This suffix serves no practical purpose other than to provide a laugh and
+pontentially upvotes on your answer.
+
+### Keyword Moving
+
+Prepending a `'` in front of a keyword will move it right once when
+converting to sbcs. For example, `3 'times 4` will be converted to
+`3 4 times` and then `3 4×`.
+
+These can be stacked. `''times 3 4` will be converted to `3 4 times` and
+then `3 4×`.
+
+The purpose of this is to allow for more prac-lang looking literate programs.
+
+Using `'` does not increase the SBCS byte count.
+
+Using `'` inside a group will move the keyword within the group, and will
+not move it outside of the group. The same is true for inside functions.
+
+A `'` before a group or `{}` lambda will move the entire group/lambda right once.
+
 ## Usage for Golfing
 
 Literate mode is scored in UTF-8. That's because there is no codepage. If you want to use literate
