@@ -182,7 +182,7 @@ object Lexer:
 
     // Now, bind the move right tokens to the next token
 
-    var bound = ListBuffer[LitToken | Tuple2[LitToken, Int]]()
+    var bound = ListBuffer[LitToken | (LitToken, Int)]()
     for token <- merged do
       if bound.nonEmpty then
         bound.last match
