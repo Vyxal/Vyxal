@@ -186,7 +186,7 @@ object Lexer:
     for token <- merged do
       if bound.nonEmpty then
         bound.last match
-          case _: Tuple2[LitToken, Int] => bound += token
+          case _: (LitToken, Int) => bound += token
           case last: LitToken =>
             if last.tokenType == TokenType.MoveRight then
               bound.dropRightInPlace(1)
