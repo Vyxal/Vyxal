@@ -90,6 +90,8 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
 object jvm extends VyxalModule {
   val platform = "jvm"
 
+  def mainClass: T[Option[String]] = Some("vyxal.Main")
+
   def ivyDeps =
     T {
       super.ivyDeps() ++
