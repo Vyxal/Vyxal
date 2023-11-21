@@ -159,3 +159,5 @@ java -jar vyxal-jar <arguments>
 - [Vycord (Discord)](https://discord.gg/hER4Avd6fz)
 - [Elements](https://github.com/Vyxal/Vyxal/blob/main/documents/knowledge/elements.md)
 - [Vyxapedia](https://vyxapedia.hyper-neutrino.xyz/)
+
+Enjoy the cookies.
