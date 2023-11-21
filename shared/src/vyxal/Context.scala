@@ -28,7 +28,8 @@ import scala.io.StdIn
   */
 class Context private (
     private val stack: mut.ArrayBuffer[VAny],
-    private var _ctxVarPrimary: Option[VAny] = None,
+    private var _ctxVarPrimary: Option[VAny] =
+      Some("abcdefghijklmnopqrstuvwxyz"),
     private var _ctxVarSecondary: Option[VAny] = None,
     val ctxArgs: Option[Seq[VAny]] = None,
     private val vars: mut.Map[String, VAny] = mut.Map(),

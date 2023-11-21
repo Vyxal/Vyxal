@@ -118,11 +118,11 @@ object Modifiers:
             val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
             AST.makeSingle(lambdaAst, AST.Command("#|reduce-cols"))
       },
-    "v" ->
+    "ᵛ" ->
       Modifier(
         "Vectorise",
         """|Vectorises
-           |vf: f but vectorised""".stripMargin,
+           |ᵛf: f but vectorised""".stripMargin,
         List("vectorise:", "vec:", "v:"),
         1,
       ) {
@@ -404,7 +404,7 @@ object Modifiers:
       Modifier(
         "Apply to Register",
         """|Apply a function to the register. Essentially, push
-           |the reigster value to the stack, apply the function, and
+           |the register value to the stack, apply the function, and
            |then pop back into the register
            |ᴿf: Apply f to the register""".stripMargin,
         List("apply-to-register:", "to-register:", "to-reg:"),
@@ -434,12 +434,17 @@ object Modifiers:
       },
     "ᵗ" ->
       Modifier(
-        "Unassigned",
-        """Unassigned""".stripMargin,
-        List(),
+        "Map as Stacks",
+        """|Map a function over the top of the stack, treating each iteration
+           |as if it were a stack of items. Essentially, dump before mapping
+           |""".stripMargin,
+        List("vec-dump:", "map-dump:"),
         1,
       ) {
-        case List(ast) => ast
+        case List(ast) => AST.makeSingle(
+            astToLambda(ast, ast.arity.getOrElse(1)),
+            AST.Command("#|vec-dump"),
+          )
       },
     "ᵘ" ->
       Modifier(
@@ -591,20 +596,6 @@ object Modifiers:
               ),
               None,
             )
-          )
-      },
-    "`" ->
-      Modifier(
-        "Map as Stacks",
-        """|Map a function over the top of the stack, treating each iteration
-           |as if it were a stack of items. Essentially, dump before mapping
-           |""".stripMargin,
-        List("vec-dump:", "map-dump:"),
-        1,
-      ) {
-        case List(ast) => AST.makeSingle(
-            astToLambda(ast, ast.arity.getOrElse(1)),
-            AST.Command("#|vec-dump"),
           )
       },
   )

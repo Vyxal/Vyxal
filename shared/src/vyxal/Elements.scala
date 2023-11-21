@@ -377,7 +377,7 @@ object Elements:
     },
     addPart(
       Monad,
-      "ᵛ",
+      "v",
       "Decrement",
       List("decr", "decrement"),
       true,
@@ -1559,14 +1559,14 @@ object Elements:
     addPart(
       Monad,
       "ḟ",
-      "Prime Factors | Remove Non-Alphabet",
-      List("prime-factors", "remove-non-alphabet"),
+      "Prime Factors | Remove Alphabet",
+      List("prime-factors", "remove-alphabet"),
       true,
       "a: num -> prime factors of a",
-      "a: str -> a with all non-alphabet characters removed",
+      "a: str -> a with all alphabet characters removed",
     ) {
       case a: VNum => NumberHelpers.primeFactors(a)
-      case a: String => StringHelpers.removeNonAlphabet(a)
+      case a: String => a.filter(!_.isLetter)
     },
     addDirect(
       ",",
@@ -2624,6 +2624,15 @@ object Elements:
       " -> rotate the entire stack right once",
     ) { ctx ?=>
       ctx.rotateRight
+    },
+    addDirect(
+      "`",
+      "Length of Stack",
+      List("length-of-stack", "stack-length", "stack-len"),
+      None,
+      " -> push the length of the stack",
+    ) { ctx ?=>
+      ctx.push(ctx.length)
     },
     addDirect(
       "\\",

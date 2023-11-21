@@ -47,17 +47,17 @@ class InterpreterTests extends VyxalTests:
 
   describe("Vectorisation") {
     describe("Simple monads") {
-      testMulti("#[100 | #[101 | 0#] #] vB" -> VList(4, 202))
+      testMulti("#[100 | #[101 | 0#] #] ᵛB" -> VList(4, 202))
     }
 
     describe("Simple dyads") {
       testMulti(
-        "#[4 | #[5 | 6#] #] 3 v;" ->
+        "#[4 | #[5 | 6#] #] 3 ᵛ;" ->
           VList(
             VList(4, 3),
             VList(VList(5, 6), 3),
           ),
-        "#[4 | #[5 | 6#] #] #[4#] v;" ->
+        "#[4 | #[5 | 6#] #] #[4#] ᵛ;" ->
           VList(
             VList(4, VList(4)),
             VList(VList(5, 6), VList(4)),
@@ -69,7 +69,7 @@ class InterpreterTests extends VyxalTests:
       it("should vectorise lambda for factorial") {
         testAST(
           Modifiers
-            .modifiers("v")
+            .modifiers("ᵛ")
             .from(List(AST.Lambda(1, List.empty, List(AST.Command("!"))))),
           VList(1, 6, VList(2, 1)),
           inputs = Seq(VList(0, 3, VList(2, 1))),
@@ -81,7 +81,7 @@ class InterpreterTests extends VyxalTests:
       it("should vectorise lambda for subtraction") {
         testAST(
           Modifiers
-            .modifiers("v")
+            .modifiers("ᵛ")
             .from(List(AST.Lambda(2, List.empty, List(AST.Command("-"))))),
           VList(VList(-4, -2, -6), VList(-1, 1, -3), VList(-2, -1, -6)),
           inputs = Seq(VList(0, 3, VList(2, 1)), VList(4, 2, 6)),
@@ -166,7 +166,7 @@ class InterpreterTests extends VyxalTests:
       testMulti(
         "3 6 1λ!|+}ĖW" -> VList(3, 7),
         "3 6 1λ!|++}ĖW" -> VList(10),
-        "3 6 1λ!|n}ĖW" -> VList(3, 6, 1, 0),
+        "3 6 1λ!|n}ĖW" -> VList(3, 6, 1, "abcdefghijklmnopqrstuvwxyz"),
       )
     }
 
@@ -413,7 +413,7 @@ class InterpreterTests extends VyxalTests:
   }
 
   describe("Global Recursion (Factorial)") {
-    testMulti(":1>[:ᵛx×}")(
+    testMulti(":1>[:vx×}")(
       VList(1) -> VNum(1),
       VList(2) -> VNum(2),
       VList(3) -> VNum(6),
@@ -427,7 +427,7 @@ class InterpreterTests extends VyxalTests:
 
   describe("Global Recursion (Fibonacci)") {
 
-    testMulti("#{:0=|_0|:1=|_1|:ᵛx$2-x+")(
+    testMulti("#{:0=|_0|:1=|_1|:vx$2-x+")(
       VList(0) -> VNum(0),
       VList(1) -> VNum(1),
       VList(2) -> VNum(1),
@@ -441,7 +441,7 @@ class InterpreterTests extends VyxalTests:
   }
 
   describe("Vectorised recursion") {
-    testCode("#[#[1|2|3#]|#[4|5|6#]#]λᶲ\"[\"c[vx∑}}Ė", VNum(21), Seq())
+    testCode("#[#[1|2|3#]|#[4|5|6#]#]λᶲ\"[\"c[ᵛx∑}}Ė", VNum(21), Seq())
   }
 
   describe("Register chicanery") {

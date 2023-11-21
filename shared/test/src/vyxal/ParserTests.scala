@@ -250,7 +250,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser handle basic modifiers?") {
     assert(
-      parse("v+ +") ===
+      parse("ᵛ+ +") ===
         Right(
           Group(
             List(
@@ -302,7 +302,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser handle nested modifiers?") {
     assert(
-      parse("#[#[1|2|3#]|#[4|5|6#]#] v/+") ===
+      parse("#[#[1|2|3#]|#[4|5|6#]#] ᵛ/+") ===
         Right(
           Group(
             List(

@@ -44,7 +44,7 @@ class LexerTests extends VyxalTests:
 
         testLex(
           """ k"vy """,
-          List(Digraph("k\""), MonadicModifier("v"), Command("y")),
+          List(Digraph("k\""), Command("v"), Command("y")),
         )
       }
     }
