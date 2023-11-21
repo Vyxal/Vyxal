@@ -92,8 +92,8 @@ private object GenerateDocs:
           var trigraph = ""
           SugarMap.trigraphs
             .collect { case (tri, s) if s == elem.symbol => tri }
-            .foreach { tri => trigraph = tri }
-          if trigraph.nonEmpty then trigraph = s"`$trigraph`"
+            .foreach { tri => trigraph = tri.replace("\n", "␤") }
+          if trigraph.nonEmpty then trigraph = s"<code>$trigraph</code>"
           var overloads = elem.overloads
           val name = elem.name.replace("|", "/")
           val symbol = "\\".repeat(if elem.symbol == "`" then 1 else 0) +
@@ -136,15 +136,11 @@ private object GenerateDocs:
           SugarMap.trigraphs
             .collect { case (tri, s) if s == symbol => tri }
             .foreach { tri => trigraph = tri }
-          if trigraph.nonEmpty then trigraph = s"`$trigraph`"
-          val formatSymbol =
-            if symbol != "`" then symbol.replace("|", "\\|")
-            else "<code>`</code>"
+          val formatSymbol = symbol.replace("|", "\\|")
           val formatKeywords = keywords.map("`" + _ + "`").mkString(", ")
           contents ++=
-            s"| `$formatSymbol` | $trigraph | ${name.replace("|", "/")} | $formatKeywords | ${arity} | <pre>${description
-                .replace("|", "")
-                .replace("\n", "<br>")}</pre> |\n"
+            s"| <code>$formatSymbol</code> | <code>$trigraph</code> | ${name
+                .replace("|", "/")} | $formatKeywords | ${arity} | <pre>${description.replace("|", "").replace("\n", "<br>")}</pre> |\n"
       }
 
     val modifiers = modifierHeader + "\n" + modiDivider + "\n" +
