@@ -26,13 +26,4 @@ private[parsing] object Common:
         (value, Range(startOffset, endOffset))
     }
 
-  def parseToken[$: P](
-      tokenType: TokenType,
-      tokenParser: => P[String],
-  ): P[Token] =
-    withRange(tokenParser)
-      .map { (value, range) =>
-        Token(tokenType, value, range)
-      }
-      .opaque(tokenType.toString)
 end Common

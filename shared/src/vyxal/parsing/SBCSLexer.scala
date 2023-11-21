@@ -3,13 +3,13 @@ package vyxal.parsing
 import scala.language.strictEquality
 
 import vyxal.{Elements, Modifiers, SugarMap}
-import vyxal.parsing.Common.{parseToken, withRange}
 import vyxal.parsing.Common.given // For custom whitespace
+import vyxal.parsing.Common.withRange
 import vyxal.parsing.TokenType.*
 
 import fastparse.*
 
-private[parsing] object SBCSLexer extends Lexer:
+private[parsing] object SBCSLexer:
   /** Whether the code lexed so far has sugar trigraphs */
   var sugarUsed = false
 
@@ -186,8 +186,31 @@ private[parsing] object SBCSLexer extends Lexer:
         newlines | command
     )
 
+  def parseToken[$: P](
+      tokenType: TokenType,
+      tokenParser: => P[String],
+  ): P[Token] =
+    withRange(tokenParser)
+      .map { (value, range) =>
+        Token(tokenType, value, range)
+      }
+      .opaque(tokenType.toString)
   // structureDoubleClose (")") has to be here to avoid interfering with `normalGroup` in literate lexer
-  override def parseAll[$: P]: P[Seq[Token]] =
+  def parseAll[$: P]: P[Seq[Token]] =
     P((token | structureDoubleClose).rep ~ End)
+
+  def lex(code: String): Either[VyxalCompilationError, List[Token]] =
+    parse(code, this.parseAll) match
+      case Parsed.Success(res, ind) =>
+        if ind == code.length then Right(res.toList)
+        else
+          Left(
+            VyxalCompilationError(
+              s"Parsed $res but did not consume '${code.substring(ind)}'"
+            )
+          )
+      case f @ Parsed.Failure(label, index, extra) =>
+        val trace = f.trace()
+        Left(VyxalCompilationError(s"Lexing failed: ${trace.longMsg}"))
 
 end SBCSLexer

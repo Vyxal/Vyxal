@@ -6,16 +6,42 @@ import vyxal.parsing.TokenType.*
 import vyxal.Context
 import vyxal.Elements
 
+import scala.collection.mutable.ListBuffer
+
 import fastparse.*
 
 case class VyxalCompilationError(msg: String)
 
-case class Token(tokenType: TokenType, value: String, range: Range)
-    derives CanEqual:
+case class Token(
+    tokenType: TokenType,
+    value: String,
+    range: Range,
+) derives CanEqual:
   override def equals(obj: Any): Boolean =
     obj match
       case other: Token => (other `eq` this) ||
         (other.tokenType == this.tokenType && other.value == this.value)
+
+      case _ => false
+
+  override def toString: String = s"$tokenType(\"$value\")"
+
+case class LitToken(
+    tokenType: TokenType,
+    value: String | List[LitToken],
+    range: Range,
+) derives CanEqual:
+  override def equals(obj: Any): Boolean =
+    obj match
+      case other: LitToken => (other `eq` this) ||
+        (other.tokenType == this.tokenType &&
+          (other.value match
+            case otherValue: String => otherValue ==
+                this.value.asInstanceOf[String]
+            case otherValue: List[LitToken] => otherValue ==
+                this.value.asInstanceOf[List[LitToken]]
+          ))
+
       case _ => false
 
   override def toString: String = s"$tokenType(\"$value\")"
@@ -76,6 +102,8 @@ enum TokenType(val canonicalSBCS: Option[String] = None) derives CanEqual:
   case UnpackClose extends TokenType(Some("]"))
   case GroupType
   case NegatedCommand
+  case MoveRight
+  case Group
 
   /** Helper to help go from the old VyxalToken to the new Token(TokenType,
     * text, range) format
@@ -83,7 +111,7 @@ enum TokenType(val canonicalSBCS: Option[String] = None) derives CanEqual:
   def apply(text: String): Token = Token(this, text, Range.fake)
 
   /** Helper to destructure tokens more concisely */
-  def unapply(tok: Token): Option[(String, Range)] =
+  def unapply(tok: Token): Option[(String | List[Token], Range)] =
     if tok.tokenType == this then Some((tok.value, tok.range)) else None
 end TokenType
 
@@ -109,24 +137,6 @@ object StructureType:
     StructureType.LambdaSort,
   )
 
-private[parsing] trait Lexer:
-  def parseAll[$: P]: P[Seq[Token]]
-
-  final def lex(code: String): Either[VyxalCompilationError, List[Token]] =
-    parse(code, this.parseAll) match
-      case Parsed.Success(res, ind) =>
-        if ind == code.length then Right(res.toList)
-        else
-          Left(
-            VyxalCompilationError(
-              s"Parsed $res but did not consume '${code.substring(ind)}'"
-            )
-          )
-      case f @ Parsed.Failure(label, index, extra) =>
-        val trace = f.trace()
-        Left(VyxalCompilationError(s"Lexing failed: ${trace.longMsg}"))
-end Lexer
-
 object Lexer:
   val structureOpenRegex: String = """[\[\(\{λƛΩ₳µḌṆ]|#@|#\{"""
 
@@ -150,8 +160,88 @@ object Lexer:
   def lexSBCS(code: String): Either[VyxalCompilationError, List[Token]] =
     SBCSLexer.lex(code)
 
+  def performMoves(tkns: List[LitToken]): List[LitToken] =
+    val tokens = tkns.map {
+      case LitToken(TokenType.Group, tokens, range) => LitToken(
+          TokenType.Group,
+          performMoves(tokens.asInstanceOf[List[LitToken]]),
+          range,
+        )
+      case token => token
+    }
+    val merged = ListBuffer[LitToken]()
+    for token <- tokens do
+      if token.tokenType == TokenType.MoveRight then
+        if merged.nonEmpty && merged.last.tokenType == TokenType.MoveRight then
+          merged.last.copy(value =
+            merged.last.value.asInstanceOf[String] +
+              token.value.asInstanceOf[String]
+          )
+        else merged += token
+      else merged += token
+
+    // Now, bind the move right tokens to the next token
+
+    var bound = ListBuffer[LitToken | (LitToken, Int)]()
+    for token <- merged do
+      if bound.nonEmpty then
+        bound.last match
+          case _: (LitToken, Int) => bound += token
+          case last: LitToken =>
+            if last.tokenType == TokenType.MoveRight then
+              bound.dropRightInPlace(1)
+              bound += (token -> last.value.asInstanceOf[String].length)
+            else bound += token
+      else bound += token
+
+    // Move the tuple2's to the right, storing indices of where they were
+
+    while bound.exists(_.isInstanceOf[(LitToken, Int)]) do
+      val index = bound.indexWhere(_.isInstanceOf[(LitToken, Int)])
+      val (token, offset) = bound(index).asInstanceOf[(LitToken, Int)]
+      bound.remove(index)
+      if index + offset >= bound.length then bound += token
+      else bound.insert(index + offset, token)
+
+    // And flatten the list into just tokens
+    bound.map {
+      case (y, _) => y
+      case token: LitToken => token
+    }.toList
+
+  end performMoves
+
   def lexLiterate(code: String): Either[VyxalCompilationError, List[Token]] =
-    LiterateLexer.lex(code)
+    val tokens = LiterateLexer.lex(code) match
+      case Right(tokens) => tokens
+      case Left(err) => return Left(err)
+    val moved = performMoves(tokens)
+
+    // Convert all tokens into SBCS tokens
+
+    Right(
+      moved
+        .map {
+          case LitToken(tokenType, value, range) => tokenType match
+              case Group => flattenGroup(LitToken(tokenType, value, range))
+              case _ => List(LitToken(tokenType, value, range))
+        }
+        .flatten
+        .map {
+          case LitToken(tokenType, value, range) => Token(
+              tokenType,
+              value.asInstanceOf[String],
+              range,
+            )
+        }
+    )
+  end lexLiterate
+
+  private def flattenGroup(token: LitToken): List[LitToken] =
+    token.tokenType match
+      case TokenType.Group =>
+        token.value.asInstanceOf[List[LitToken]].map(flattenGroup).flatten
+      case _ => List(token)
 
   def isList(code: String): Boolean =
     parse(code, LiterateLexer.list(_)).isSuccess
@@ -164,6 +254,7 @@ object Lexer:
 
   private def sbcsifySingle(token: Token): String =
     val Token(tokenType, value, _) = token
+
     tokenType match
       case GetVar => "#$" + value
       case SetVar => s"#=$value"
