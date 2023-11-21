@@ -1171,14 +1171,13 @@ def table(
 ) -> VyList:
     """Returns a table of the function applied to each pair of elements in left and right"""
 
-    @lazylist_from(left)
-    def gen():
-        for item in left:
-            yield vy_map(
-                lambda x: safe_apply(function, item, x, ctx=ctx), right, ctx=ctx
-            )
-
-    return gen()
+    return vy_map(
+        lambda x: vy_map(
+            lambda y: safe_apply(function, x, y, ctx=ctx), right, ctx=ctx
+        ),
+        left,
+        ctx=ctx,
+    )
 
 
 def takes_ctx(function: types.FunctionType) -> bool:
