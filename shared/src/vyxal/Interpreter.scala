@@ -30,8 +30,9 @@ object Interpreter:
         ctx.globals.originalProgram = ast
         try execute(ast)
         catch case _: QuitException => scribe.debug("Program quit using Q")
-
         if !ctx.globals.printed || !ctx.testMode then
+          println(ctx.settings.endPrintMode)
+          println(code)
           if ctx.settings.endPrintMode == EndPrintMode.Default then
             vyPrintln(ctx.pop())
           else if ctx.settings.endPrintMode == EndPrintMode.JoinNewlines then
@@ -68,6 +69,7 @@ object Interpreter:
             vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString(" "))
           else if ctx.settings.endPrintMode == EndPrintMode.JoinNothing then
             vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString)
+          end if
         end if
         if ctx.settings.endPrintMode == EndPrintMode.Force then
           vyPrintln(ctx.pop())
