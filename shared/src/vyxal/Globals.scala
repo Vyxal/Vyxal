@@ -175,4 +175,7 @@ case class Settings(
     */
   def withFlags(flags: List[Char]): Settings =
     flags.foldLeft(this)(_.withFlag(_))
+
+  /** Set an end print mode based */
+  def useMode(mode: EndPrintMode): Settings = this.copy(endPrintMode = mode)
 end Settings
