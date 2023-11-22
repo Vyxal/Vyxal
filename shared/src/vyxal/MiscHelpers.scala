@@ -2,7 +2,6 @@ package vyxal
 
 import vyxal.parsing.Lexer
 import vyxal.Interpreter.executeFn
-import vyxal.ListHelpers.reduce
 import vyxal.VNum.given
 
 import scala.annotation.tailrec
@@ -181,7 +180,16 @@ object MiscHelpers:
   end unpackHelper
 
   def vyPrint(x: VAny)(using ctx: Context): Unit =
-    ctx.globals.printFn(StringHelpers.vyToString(x))
+    x match
+      case lst: VList =>
+        ctx.globals.printFn("[")
+        var temp = lst
+        while temp.nonEmpty do
+          vyPrint(temp.head)
+          temp = temp.tail
+          if temp.nonEmpty then vyPrint(", ")
+        vyPrint("]")
+      case _ => ctx.globals.printFn(StringHelpers.vyToString(x))
 
   def vyPrintln(x: VAny)(using Context): Unit =
     vyPrint(x)
