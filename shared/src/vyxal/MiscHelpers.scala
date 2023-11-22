@@ -185,9 +185,9 @@ object MiscHelpers:
         case lst: VList =>
             ctx.globals.printFn("[")
             var temp = lst
-            while temp.nonEmpty() do
+            while temp.nonEmpty do
                 vyPrint(temp.head)
-                if temp.nonEmpty() then
+                if temp.nonEmpty then
                     vyPrint(", ")
                 temp = temp.tail
             vyPrint("]")
