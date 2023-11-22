@@ -191,7 +191,7 @@ object MiscHelpers:
                     vyPrint(", ")
                 temp = temp.tail
             vyPrint("]")
-        case _: vyPrint(x)
+        case _ => vyPrint(x)
                 
     ctx.globals.printFn(StringHelpers.vyToString(x))
 
