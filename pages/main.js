@@ -4,6 +4,7 @@ import { HelpText } from "./helpText.js";
 const $ = x => document.getElementById(x)
 
 var codepage = Vyxal.getCodepage()
+var sessioncode = ""
 
 const search = window
 const glyphQuery = String.fromCharCode(0o162, 105, 0o143, 107)
@@ -760,7 +761,7 @@ window.addEventListener("DOMContentLoaded", e => {
             return;
         }
         // generate random 32 character session string
-        const sessioncode = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        sessioncode = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         let timeout = 10000
         if (flags.value.includes("5")) {
             timeout = 5000;
@@ -777,7 +778,10 @@ window.addEventListener("DOMContentLoaded", e => {
 
         worker = new Worker('./worker.js', { type: "module" });
         worker.onmessage = function (e) {
-            if (e.data.session != sessioncode) { return; }
+            console.log("PRINT!⌈⌈");
+            if (e.data.session != sessioncode || !runButton.innerHTML.includes('fa-spin')) {
+                return;
+            }
             if (e.data.command == "done") { runButton.innerHTML = '<i class="fas fa-play-circle"></i>'; }
             else { output.value += e.data.val; expandBoxes() }
         }
