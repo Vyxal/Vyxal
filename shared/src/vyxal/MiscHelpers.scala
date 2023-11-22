@@ -190,7 +190,7 @@ object MiscHelpers:
           if temp.nonEmpty then vyPrint(", ")
           temp = temp.tail
         vyPrint("]")
-      case _ => vyPrint(x)
+      case _ => ctx.globals.printFn(x)
 
     ctx.globals.printFn(StringHelpers.vyToString(x))
 
