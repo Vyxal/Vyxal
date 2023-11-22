@@ -649,7 +649,6 @@ class ElementTests extends VyxalTests:
       it("should use the same context for executing the code") {
         // Doesn't use the test helpers because of context handling
         given ctx: Context = Context(inputs = List(3, 4), testMode = true)
-        ctx.settings.useMode(EndPrintMode.None)
         ctx.push("+")
         Interpreter.execute("Ė")
         assertResult(7: VNum)(ctx.peek)
