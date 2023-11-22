@@ -27,7 +27,7 @@ import scala.io.StdIn
   *   the function was *defined* in, not the one it is executing inside.
   */
 class Context private (
-    private val stack: mut.ArrayBuffer[VAny],
+    val stack: mut.ArrayBuffer[VAny],
     private var _ctxVarPrimary: Option[VAny] =
       Some("abcdefghijklmnopqrstuvwxyz"),
     private var _ctxVarSecondary: Option[VAny] = None,

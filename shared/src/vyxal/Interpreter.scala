@@ -33,9 +33,47 @@ object Interpreter:
 
         if !ctx.globals.printed then
           if ctx.settings.endPrintMode == EndPrintMode.Default then
-            vyPrintln(ctx.peek)
+            vyPrintln(ctx.pop())
+          else if ctx.settings.endPrintMode == EndPrintMode.JoinNewlines then
+            vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString("\n"))
+          else if ctx.settings.endPrintMode == EndPrintMode.Sum then
+            vyPrintln(ListHelpers.sum(ListHelpers.makeIterable(ctx.pop())))
+          else if ctx.settings.endPrintMode == EndPrintMode.DeepSum then
+            vyPrintln(
+              ListHelpers.sum(
+                ListHelpers.flatten(ListHelpers.makeIterable(ctx.pop()))
+              )
+            )
+          else if ctx.settings.endPrintMode == EndPrintMode.Length then
+            vyPrintln(
+              VNum(
+                ListHelpers.makeIterable(ctx.pop()).length
+              )
+            )
+          else if ctx.settings.endPrintMode == EndPrintMode.Maximum then
+            vyPrintln(
+              ListHelpers.makeIterable(ctx.pop()).maxOption.getOrElse(VList())
+            )
+          else if ctx.settings.endPrintMode == EndPrintMode.Minimum then
+            vyPrintln(
+              ListHelpers.makeIterable(ctx.pop()).minOption.getOrElse(VList())
+            )
+          else if ctx.settings.endPrintMode == EndPrintMode.LengthStack then
+            vyPrintln(VNum(ctx.length))
+          else if ctx.settings.endPrintMode == EndPrintMode.SumStack then
+            vyPrintln(ListHelpers.sum(VList.from(ctx.stack.toSeq)))
+          else if ctx.settings.endPrintMode == EndPrintMode.SpaceStack then
+            vyPrintln(ctx.stack.mkString(" "))
+          else if ctx.settings.endPrintMode == EndPrintMode.JoinSpaces then
+            vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString(" "))
+          else if ctx.settings.endPrintMode == EndPrintMode.JoinNothing then
+            vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString)
+        end if
+        if ctx.settings.endPrintMode == EndPrintMode.Force then
+          vyPrintln(ctx.pop())
 
       case Left(error) => throw Error(s"Error while executing $code: $error")
+    end match
   end execute
 
   def execute(ast: AST)(using ctx: Context): Unit =
