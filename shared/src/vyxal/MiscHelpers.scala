@@ -182,17 +182,16 @@ object MiscHelpers:
 
   def vyPrint(x: VAny)(using ctx: Context): Unit =
     x match
-        case lst: VList =>
-            ctx.globals.printFn("[")
-            var temp = lst
-            while temp.nonEmpty do
-                vyPrint(temp.head)
-                if temp.nonEmpty then
-                    vyPrint(", ")
-                temp = temp.tail
-            vyPrint("]")
-        case _ => vyPrint(x)
-                
+      case lst: VList =>
+        ctx.globals.printFn("[")
+        var temp = lst
+        while temp.nonEmpty do
+          vyPrint(temp.head)
+          if temp.nonEmpty then vyPrint(", ")
+          temp = temp.tail
+        vyPrint("]")
+      case _ => vyPrint(x)
+
     ctx.globals.printFn(StringHelpers.vyToString(x))
 
   def vyPrintln(x: VAny)(using Context): Unit =
