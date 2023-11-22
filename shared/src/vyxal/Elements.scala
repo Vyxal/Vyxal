@@ -1574,7 +1574,10 @@ object Elements:
       List("print", "puts", "out", "println"),
       None,
       "a -> printed to stdout",
-    ) { ctx ?=> MiscHelpers.vyPrintln(ctx.pop()) },
+    ) { ctx ?=>
+      MiscHelpers.vyPrintln(ctx.pop())
+      ctx.globals.printed = true
+    },
     addDirect(
       "§",
       "Print without newline",

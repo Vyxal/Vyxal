@@ -29,13 +29,12 @@ object Interpreter:
         scribe.debug(s"Executing '$code' (ast: $ast)")
         ctx.globals.originalProgram = ast
         try execute(ast)
-        catch
-          case _: QuitException => scribe.debug("Program quit using Q")
+        catch case _: QuitException => scribe.debug("Program quit using Q")
 
-          // todo implicit output according to settings
-        if !ctx.isStackEmpty &&
-          ctx.settings.endPrintMode == EndPrintMode.Default
-        then vyPrintln(ctx.peek)
+        if !ctx.globals.printed then
+          if ctx.settings.endPrintMode == EndPrintMode.Default then
+            vyPrintln(ctx.peek)
+
       case Left(error) => throw Error(s"Error while executing $code: $error")
   end execute
 
