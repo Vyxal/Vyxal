@@ -56,11 +56,13 @@ class Context private (
           if settings.online then settings.defaultValue.toString
           else
             print("<: ")
-            StdIn.readLine()
+            val g = StdIn.readLine()
+            if g == null then return settings.defaultValue.toString
         if temp.nonEmpty then MiscHelpers.eval(temp)(using this)
         else settings.defaultValue
     scribe.trace(s"Popped $elem")
     elem
+  end pop
 
   /** Pop n elements and wrap in a list. The top of the stack will be at the
     * start of the list.
