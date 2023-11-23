@@ -39,7 +39,7 @@ class Context private (
     val testMode: Boolean = false,
     val useStack: Boolean = false,
 ):
-  def settings: Settings = globals.settings
+  var settings: Settings = globals.settings
 
   /** Pop the top of the stack
     *

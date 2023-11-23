@@ -2763,9 +2763,9 @@ object Elements:
     value match
       case code: String =>
         val originalMode = ctx.settings.endPrintMode
-        ctx.settings.useMode(EndPrintMode.None)
+        ctx.settings = ctx.settings.useMode(EndPrintMode.None)
         Interpreter.execute(code)(using ctx)
-        ctx.settings.useMode(originalMode)
+        ctx.settings = ctx.settings.useMode(originalMode)
         ctx.pop()
       case n: VNum => 10 ** n
       case list: VList => list.vmap(execHelper)
