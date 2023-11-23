@@ -372,8 +372,8 @@ object Modifiers:
         case List(ast) => AST.Generated(
             () =>
               ctx ?=>
-                val rhs = ListHelpers.makeIterable(ctx.pop())
-                val lhs = ListHelpers.makeIterable(ctx.pop())
+                val rhs = ListHelpers.makeIterable(ctx.pop(), Some(true))
+                val lhs = ListHelpers.makeIterable(ctx.pop(), Some(true))
                 val matrix = VList.from(lhs.map { l =>
                   VList.from(rhs.map { r =>
                     ctx.push(l)
