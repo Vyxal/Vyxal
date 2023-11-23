@@ -185,7 +185,12 @@ object MiscHelpers:
         ctx.globals.printFn("[")
         var temp = lst
         while temp.nonEmpty do
-          vyPrint(temp.head)
+          temp.head match
+            case n: VNum => vyPrint(n)
+            case s: String => vyPrint(StringHelpers.quotify(s))
+            case l: VList => vyPrint(l)
+            case f: VFun => vyPrint(executeFn(f))
+
           temp = temp.tail
           if temp.nonEmpty then vyPrint(", ")
         vyPrint("]")
