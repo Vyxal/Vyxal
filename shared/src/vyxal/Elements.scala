@@ -2707,7 +2707,9 @@ object Elements:
       "a: lst -> powerset of a",
     ) {
       case a: VList => ListHelpers.powerset(a)
-      case a: String => ListHelpers.powerset(ListHelpers.makeIterable(a))
+      case a: String =>
+        val temp = ListHelpers.powerset(ListHelpers.makeIterable(a))
+        VList.from(temp.map(_.asInstanceOf[VList].mkString))
       case a: VNum => ListHelpers.powerset(ListHelpers.makeIterable(a))
     },
     addPart(
