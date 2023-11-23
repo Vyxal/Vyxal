@@ -632,10 +632,11 @@ Trigraph: #,L
 Keywords: sort-by-length, sort-by-len, order-by-length, order-by-len, length-sort, len-sort
 - a: lst -> sort a by length
 ----------------------
-Ṃ (-1 Power Of) (vectorising)
+Ṃ (-1 Power Of | Split on Spaces) (vectorising)
 Trigraph: #,M
-Keywords: neg-one-power-of, neg1**, neg1^, neg1-power-of, neg1-power
+Keywords: neg-one-power-of, neg1**, neg1^, neg1-power-of, neg1-power, split-on-spaces, split-spaces, space-split
 - a: num -> -1 ** a
+- a: str -> a split on spaces
 ----------------------
 Ọ (Print without popping) (non-vectorising)
 Trigraph: #,O
