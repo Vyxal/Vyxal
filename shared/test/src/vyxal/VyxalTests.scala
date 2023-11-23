@@ -22,6 +22,7 @@ trait VyxalTests extends AnyFunSpec:
       inputs: Seq[VAny] = Seq.empty,
   ) =
     val ctx = VyxalTests.testContext(inputs = inputs)
+    ctx.settings.useMode(EndPrintMode.None)
     Interpreter.execute(code)(using ctx)
     assert(!ctx.isStackEmpty)
     assertResult(expected)(ctx.peek)

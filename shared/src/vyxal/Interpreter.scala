@@ -8,7 +8,7 @@ import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
 
 object Interpreter:
-  def version = "3.0.0"
+  def version = "3.1.0"
   def execute(code: String)(using ctx: Context): Unit =
     val lexRes = Lexer(code)
     val tokens = lexRes match
@@ -29,14 +29,51 @@ object Interpreter:
         scribe.debug(s"Executing '$code' (ast: $ast)")
         ctx.globals.originalProgram = ast
         try execute(ast)
-        catch
-          case _: QuitException => scribe.debug("Program quit using Q")
+        catch case _: QuitException => scribe.debug("Program quit using Q")
+        if !ctx.globals.printed || !ctx.testMode then
+          if ctx.settings.endPrintMode == EndPrintMode.Default then
+            vyPrintln(ctx.pop())
+          else if ctx.settings.endPrintMode == EndPrintMode.JoinNewlines then
+            vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString("\n"))
+          else if ctx.settings.endPrintMode == EndPrintMode.Sum then
+            vyPrintln(ListHelpers.sum(ListHelpers.makeIterable(ctx.pop())))
+          else if ctx.settings.endPrintMode == EndPrintMode.DeepSum then
+            vyPrintln(
+              ListHelpers.sum(
+                ListHelpers.flatten(ListHelpers.makeIterable(ctx.pop()))
+              )
+            )
+          else if ctx.settings.endPrintMode == EndPrintMode.Length then
+            vyPrintln(
+              VNum(
+                ListHelpers.makeIterable(ctx.pop()).length
+              )
+            )
+          else if ctx.settings.endPrintMode == EndPrintMode.Maximum then
+            vyPrintln(
+              ListHelpers.makeIterable(ctx.pop()).maxOption.getOrElse(VList())
+            )
+          else if ctx.settings.endPrintMode == EndPrintMode.Minimum then
+            vyPrintln(
+              ListHelpers.makeIterable(ctx.pop()).minOption.getOrElse(VList())
+            )
+          else if ctx.settings.endPrintMode == EndPrintMode.LengthStack then
+            vyPrintln(VNum(ctx.length))
+          else if ctx.settings.endPrintMode == EndPrintMode.SumStack then
+            vyPrintln(ListHelpers.sum(VList.from(ctx.stack.toSeq)))
+          else if ctx.settings.endPrintMode == EndPrintMode.SpaceStack then
+            vyPrintln(ctx.stack.mkString(" "))
+          else if ctx.settings.endPrintMode == EndPrintMode.JoinSpaces then
+            vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString(" "))
+          else if ctx.settings.endPrintMode == EndPrintMode.JoinNothing then
+            vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString)
+          end if
+        end if
+        if ctx.settings.endPrintMode == EndPrintMode.Force then
+          vyPrintln(ctx.pop())
 
-          // todo implicit output according to settings
-        if !ctx.isStackEmpty &&
-          ctx.settings.endPrintMode == EndPrintMode.Default
-        then vyPrintln(ctx.peek)
       case Left(error) => throw Error(s"Error while executing $code: $error")
+    end match
   end execute
 
   def execute(ast: AST)(using ctx: Context): Unit =

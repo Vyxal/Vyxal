@@ -234,31 +234,15 @@ object CLI:
         "Make implicit range generation end at n-1 instead of n",
       ),
       flag('Ṁ', "range-programmery", "Equivalent to having both m and M flags"),
-      flag('v', "vyxal-enc", "Use Vyxal encoding for input file"),
-      flag(
-        'a',
-        "newline-sep-as-list",
-        "Treat newline seperated values as a list",
-      ),
       flag(
         'd',
         "print-deep-sum",
         "Print deep sum of top of stack on end of execution",
       ),
       flag(
-        'r',
-        "reverse-ops",
-        "Makes all operations happen with reverse arguments",
-      ),
-      flag(
         'S',
         "print-join-spaces",
         "Print top of stack joined by spaces on end of execution",
-      ),
-      flag(
-        'C',
-        "print-centre-join-newlines",
-        "Centre the output and join on newlines on end of execution",
       ),
       flag('O', "disable-implicit-output", "Disable implicit output"),
       flag('o', "force-implicit-output", "Force implicit output"),
@@ -284,16 +268,6 @@ object CLI:
         "numbers-as-ranges",
         "Treat numbers as ranges if ever used as an iterable",
       ),
-      flag(
-        'D',
-        "no-decompress-str",
-        "Treat all strings as raw strings (don't decompress strings)",
-      ),
-      flag(
-        'U',
-        "strings-utf8",
-        "Treat all strings as UTF-8 byte sequences (also don't decompress strings)",
-      ),
       flag('Ṫ', "print-sum-all", "Print the sum of the entire stack"),
       flag(
         'ṡ',
@@ -301,31 +275,12 @@ object CLI:
         "Print the entire stack, joined on spaces",
       ),
       flag(
-        'Z',
-        "zip-tetrad",
-        "With four argument vectorization where all arguments are lists, use zip(zip(a, b), zip(c, d)) instead of zip(a, b, c, d)",
-      ),
-      flag(
         'J',
         "print-all-join-newlines",
         "Print the entire stack, separated by newlines",
       ),
-      flag('t', "vect-boolify", "Vectorise boolify on Lists"),
-      flag(
-        'P',
-        "print-lists-python",
-        "Print lists as their python representation",
-      ),
-      flag('ḋ', "print-rat-decimal", "Print rationals in their decimal form"),
-      flag('V', "var-single-char", "Variables are one character long"),
-      flag(
-        '?',
-        "empty-as-0",
-        "If there is empty input, treat it as 0 instead of empty string.",
-      ),
       flag('2', "arity-2", "Make the default arity of lambdas 2"),
       flag('3', "arity-3", "Make the default arity of lambdas 3"),
-      flag('A', "run-tests", "Run test cases on all inputs"),
       flag(
         '…',
         "limit-output",

@@ -27,7 +27,7 @@ import scala.io.StdIn
   *   the function was *defined* in, not the one it is executing inside.
   */
 class Context private (
-    private val stack: mut.ArrayBuffer[VAny],
+    val stack: mut.ArrayBuffer[VAny],
     private var _ctxVarPrimary: Option[VAny] =
       Some("abcdefghijklmnopqrstuvwxyz"),
     private var _ctxVarSecondary: Option[VAny] = None,
@@ -39,7 +39,7 @@ class Context private (
     val testMode: Boolean = false,
     val useStack: Boolean = false,
 ):
-  def settings: Settings = globals.settings
+  var settings: Settings = globals.settings
 
   /** Pop the top of the stack
     *
@@ -56,11 +56,13 @@ class Context private (
           if settings.online then settings.defaultValue.toString
           else
             print("<: ")
-            StdIn.readLine()
+            val g = StdIn.readLine()
+            if g == null then settings.defaultValue.toString else g
         if temp.nonEmpty then MiscHelpers.eval(temp)(using this)
         else settings.defaultValue
     scribe.trace(s"Popped $elem")
     elem
+  end pop
 
   /** Pop n elements and wrap in a list. The top of the stack will be at the
     * start of the list.

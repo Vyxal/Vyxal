@@ -1574,7 +1574,10 @@ object Elements:
       List("print", "puts", "out", "println"),
       None,
       "a -> printed to stdout",
-    ) { ctx ?=> MiscHelpers.vyPrintln(ctx.pop()) },
+    ) { ctx ?=>
+      MiscHelpers.vyPrintln(ctx.pop())
+      ctx.globals.printed = true
+    },
     addDirect(
       "§",
       "Print without newline",
@@ -2759,7 +2762,10 @@ object Elements:
   private def execHelper(value: VAny)(using ctx: Context): VAny =
     value match
       case code: String =>
-        Interpreter.execute(code)
+        val originalMode = ctx.settings.endPrintMode
+        ctx.settings = ctx.settings.useMode(EndPrintMode.None)
+        Interpreter.execute(code)(using ctx)
+        ctx.settings = ctx.settings.useMode(originalMode)
         ctx.pop()
       case n: VNum => 10 ** n
       case list: VList => list.vmap(execHelper)
