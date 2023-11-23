@@ -27,10 +27,15 @@ object JSVyxal:
     // The help flag should be handled in the JS
     if flags.contains('h') then return
 
+    var printRequestCount = 0
+
     val settings = Settings(online = true).withFlags(flags.toList)
-    val globals = Globals(
+    val globals: Globals = Globals(
       settings = settings,
-      printFn = printFunc,
+      printFn = str =>
+        if printRequestCount <= 20000 then
+          printFunc(str)
+          printRequestCount += 1,
       inputs = Inputs(
         inputs.split("\n").map(x => MiscHelpers.eval(x)(using Context())).toSeq
       ),
