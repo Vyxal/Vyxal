@@ -1538,18 +1538,23 @@ object Elements:
     addPart(
       Monad,
       "Ṃ",
-      "-1 Power Of",
+      "-1 Power Of | Split on Spaces",
       List(
         "neg-one-power-of",
         "neg1**",
         "neg1^",
         "neg1-power-of",
         "neg1-power",
+        "split-on-spaces",
+        "split-spaces",
+        "space-split",
       ),
       true,
       "a: num -> -1 ** a",
+      "a: str -> a split on spaces",
     ) {
       case a: VNum => (-1) ** a
+      case a: String => VList.from(a.split(" ").toSeq)
     },
     addPart(
       Dyad,
