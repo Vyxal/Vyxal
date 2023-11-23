@@ -738,6 +738,16 @@ object ListHelpers:
       if j.toBool then res += VList()
     VList.from(res.toList)
 
+  def powerset(iterable: VList)(using Context): VList =
+    val temp: LazyList[Seq[VList]] = LazyList.unfold((iterable, Seq(VList()))) {
+      case (it, prevSets) =>
+        if it.isEmpty then None
+        else
+          val newSets = prevSets.map(_ :+ it.head).map(VList.from)
+          Some((newSets, (it.tail, prevSets ++ newSets)))
+    }
+    VList.from(VList() +: temp.flatten)
+
   def sortByLength(lst: VAny)(using ctx: Context): VList =
     VList.from(
       makeIterable(lst).sortBy((a: VAny) => ListHelpers.makeIterable(a).length)
