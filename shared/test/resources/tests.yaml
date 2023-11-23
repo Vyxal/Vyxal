@@ -979,7 +979,7 @@
     - {in: [-1], out: -1}
   Split on spaces:
     - {in: ["Hello world"], out: ["Hello", "world"]}
-    - {in: ["multi space      string"], out: ["multi", "space", "", "", "", "", "", "", "string"]}
+    - {in: ["multi space      string"], out: ["multi", "space", "", "", "", "", "", "string"]}
 
 "ÞṂ":
   Matrix inverse:
