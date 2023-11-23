@@ -31,8 +31,6 @@ object Interpreter:
         try execute(ast)
         catch case _: QuitException => scribe.debug("Program quit using Q")
         if !ctx.globals.printed || !ctx.testMode then
-          println(ctx.settings.endPrintMode)
-          println(code)
           if ctx.settings.endPrintMode == EndPrintMode.Default then
             vyPrintln(ctx.pop())
           else if ctx.settings.endPrintMode == EndPrintMode.JoinNewlines then
