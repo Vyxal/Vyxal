@@ -238,8 +238,8 @@
  | | | | | | | `a: any, b: lst, c: any` => `insert c at positions b in a`
  | | | | | | | `a: any, b: lst[num], c: lst` => `insert c[i] at position b[i] in a`
  <code>Ḷ</code> | <code>#,L</code> | Sort by Length | `sort-by-length`, `sort-by-len`, `order-by-length`, `order-by-len`, `length-sort`, `len-sort` | 1 | :x: | `a: lst` => `sort a by length`
- <code>Ṃ</code> | <code>#,M</code> | Bit Length / Matrix Inverse | `bit-length`, `matrix-inverse` | 1 | :white_check_mark: | `a: num` => `bit length of a`
- | | | | | | | `a: lst[lst]` => `matrix inverse of a`
+ <code>Ṃ</code> | <code>#,M</code> | -1 Power Of / Split on Spaces | `neg-one-power-of`, `neg1**`, `neg1^`, `neg1-power-of`, `neg1-power`, `split-on-spaces`, `split-spaces`, `space-split` | 1 | :white_check_mark: | `a: num` => `-1 ** a`
+ | | | | | | | `a: str` => `a split on spaces`
  <code>Ọ</code> | <code>#,O</code> | Print without popping | `print-no-pop` | NA | :x: | `a` => `printed to stdout without popping`
  <code>Ṛ</code> | <code>#,R</code> | Reverse | `reverse` | 1 | :x: | `a: any` => `reverse a`
  <code>Ṣ</code> | <code>#,S</code> | Sublists | `sublists` | 1 | :x: | `a: lst` => `sublists of a`
@@ -257,8 +257,7 @@
  | | | | | | | `a: str, b: str` => `a >= b`
  <code>≠</code> | <code>#.=</code> | Not Equal | `not-equal`, `=n't` | 2 | :x: | `a: any, b: any` => `a !== b (non-vectorising)`
  <code>₌</code> | <code>#,=</code> | Exactly Equals | `===`, `exactly-equal`, `strictly-equal?` | 2 | :x: | `a: any, b: any` => `a === b (non-vectorising)`
- <code>⁺</code> | <code>#^+</code> | Square / Pairs | `square`, `pairs` | 1 | :white_check_mark: | `a: num` => `a ** 2`
- | | | | | | | `a: str` => `a split into pairs`
+ <code>⁺</code> | <code>#^+</code> | Powerset | `powerset` | 1 | :x: | `a: lst` => `powerset of a`
  <code>⁻</code> | <code>#^-</code> | Cube / Threes | `cube`, `threes` | 1 | :white_check_mark: | `a: num` => `a ** 3`
  | | | | | | | `a: str` => `a split into chunks of length 3`
  <code>⁾</code> | <code>#^)</code> | Surround / Character Multiply | `surround`, `character-multiply` | 2 | :x: | `a: num, b: str` => `each character in b repeated a times`
@@ -279,7 +278,7 @@
  <code>₅</code> | <code>#,5</code> | One hundred | `one-hundred` | 0 | :x: | `100`
  <code>₆</code> | <code>#,6</code> | One hundred twenty-eight | `one-hundred-twenty-eight` | 0 | :x: | `128`
  <code>₇</code> | <code>#,7</code> | Two hundred fifty-six | `two-hundred-fifty-six` | 0 | :x: | `256`
- <code>₈</code> | <code>#,8</code> | Alphabet | `alphabet`, `a-z` | 0 | :x: | `"abcdefghijklmnopqrstuvwxyz"`
+ <code>₈</code> | <code>#,8</code> | -1 | `negative-one`, `neg-1` | 0 | :x: | `-1`
  <code>₉</code> | <code>#,9</code> | Empty array | `empty-list`, `nil-list`, `new-list` | 0 | :x: | `[]`
  <code>½</code> | <code>#.5</code> | Halve | `halve` | 1 | :white_check_mark: | `a: num` => `a / 2`
  | | | | | | | `a: str` => `a split into two pieces`
@@ -308,7 +307,8 @@
  <code>∨</code> | <code>#,\|</code> | Logical Or | `or`, `logical-or` | 2 | :white_check_mark: | `a: any, b: any` => `a \|\| b`
  <code>⁰</code> | <code>#^0</code> | First Input | `first-input`, `input-0` | 0 | :x: | `The first input to the program`
  <code>¹</code> | <code>#^1</code> | Second Input | `second-input`, `input-1` | 0 | :x: | `The second input to the program`
- <code>²</code> | <code>#^2</code> | Third Input | `third-input`, `input-2` | 0 | :x: | `The third input to the program`
+ <code>²</code> | <code>#^2</code> | Square / Pairs | `square`, `pairs` | 1 | :white_check_mark: | `a: num` => `a ** 2`
+ | | | | | | | `a: str` => `a split into pairs`
  <code>⌈</code> |  | Ceiling | `ceiling`, `ceil` | 1 | :white_check_mark: | `a: num` => `ceil(a)`
  <code>⌊</code> |  | Floor | `floor` | 1 | :white_check_mark: | `a: num` => `floor(a)`
  <code>Ɠ</code> | <code>#.9</code> | Maximum without popping | `max-no-pop` | 1 | :x: | `a: lst` => `max(a) without popping a`
@@ -327,6 +327,7 @@
  <code>#x</code> |  | Loop Continue | `continue` | 0 | :x: | `continue the current loop`
  <code>#~</code> |  | [Internal Use] Apply Without Popping (Element Form) |  | NA | :x: | `*a, f` => `f applied to the stack without popping items. Use the modifier instead.`
  <code>ÞT</code> |  | Transpose Safe | `transpose-safe` | 1 | :x: | `a: any` => `transpose a`
+ <code>ÞṂ</code> |  | Matrix Inverse | `matrix-inverse` | 1 | :white_check_mark: | `a: lst[lst]` => `matrix inverse of a`
 
 
 ## Modifiers

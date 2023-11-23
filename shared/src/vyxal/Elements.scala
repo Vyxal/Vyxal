@@ -181,24 +181,17 @@ object Elements:
     },
     addPart(
       Monad,
-      "Ṃ",
-      "Bit Length | Matrix Inverse",
-      List("bit-length", "matrix-inverse"),
+      "ÞṂ",
+      "Matrix Inverse",
+      List("matrix-inverse"),
       true,
-      "a: num -> bit length of a",
       "a: lst[lst] -> matrix inverse of a",
     ) {
-      case n: VNum => VNum(NumberHelpers.toBinary(n).size)
       case l: VList if l.forall(_.isInstanceOf[VList]) =>
         ListHelpers.matrixInverse(l).getOrElse {
           scribe.warn(s"Could not invert matrix $l")
           l
         }
-      case l: VList => l.vmap {
-          case n: VNum => VNum(NumberHelpers.toBinary(n).size)
-          case default => default
-        }
-
     },
     addPart(
       Monad,
@@ -1543,6 +1536,27 @@ object Elements:
         )
     },
     addPart(
+      Monad,
+      "Ṃ",
+      "-1 Power Of | Split on Spaces",
+      List(
+        "neg-one-power-of",
+        "neg1**",
+        "neg1^",
+        "neg1-power-of",
+        "neg1-power",
+        "split-on-spaces",
+        "split-spaces",
+        "space-split",
+      ),
+      true,
+      "a: num -> -1 ** a",
+      "a: str -> a split on spaces",
+    ) {
+      case a: VNum => (-1) ** a
+      case a: String => VList.from(a.split(" ").toSeq)
+    },
+    addPart(
       Dyad,
       "p",
       "Prepend",
@@ -1893,7 +1907,7 @@ object Elements:
     },
     addPart(
       Monad,
-      "⁺",
+      "²",
       "Square | Pairs",
       List("square", "pairs"),
       true,
@@ -2692,14 +2706,19 @@ object Elements:
     ) { ctx ?=>
       ctx.globals.inputs(1)
     },
-    addDirect(
-      "²",
-      "Third Input",
-      List("third-input", "input-2"),
-      Some(0),
-      "The third input to the program",
-    ) { ctx ?=>
-      ctx.globals.inputs(2)
+    addPart(
+      Monad,
+      "⁺",
+      "Powerset",
+      List("powerset"),
+      false,
+      "a: lst -> powerset of a",
+    ) {
+      case a: VList => ListHelpers.powerset(a)
+      case a: String =>
+        val temp = ListHelpers.powerset(ListHelpers.makeIterable(a))
+        VList.from(temp.map(_.asInstanceOf[VList].mkString))
+      case a: VNum => ListHelpers.powerset(ListHelpers.makeIterable(a))
     },
     addPart(
       Monad,
@@ -2747,10 +2766,10 @@ object Elements:
     ) { 256 },
     addNilad(
       "₈",
-      "Alphabet",
-      List("alphabet", "a-z"),
-      "\"abcdefghijklmnopqrstuvwxyz\"",
-    ) { "abcdefghijklmnopqrstuvwxyz" },
+      "-1",
+      List("negative-one", "neg-1"),
+      "-1",
+    ) { -1 },
     addNilad(
       "₉",
       "Empty array",

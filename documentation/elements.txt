@@ -632,11 +632,11 @@ Trigraph: #,L
 Keywords: sort-by-length, sort-by-len, order-by-length, order-by-len, length-sort, len-sort
 - a: lst -> sort a by length
 ----------------------
-Ṃ (Bit Length | Matrix Inverse) (vectorising)
+Ṃ (-1 Power Of | Split on Spaces) (vectorising)
 Trigraph: #,M
-Keywords: bit-length, matrix-inverse
-- a: num -> bit length of a
-- a: lst[lst] -> matrix inverse of a
+Keywords: neg-one-power-of, neg1**, neg1^, neg1-power-of, neg1-power, split-on-spaces, split-spaces, space-split
+- a: num -> -1 ** a
+- a: str -> a split on spaces
 ----------------------
 Ọ (Print without popping) (non-vectorising)
 Trigraph: #,O
@@ -691,11 +691,10 @@ Trigraph: #,=
 Keywords: ===, exactly-equal, strictly-equal?
 - a: any, b: any -> a === b (non-vectorising)
 ----------------------
-⁺ (Square | Pairs) (vectorising)
+⁺ (Powerset) (non-vectorising)
 Trigraph: #^+
-Keywords: square, pairs
-- a: num -> a ** 2
-- a: str -> a split into pairs
+Keywords: powerset
+- a: lst -> powerset of a
 ----------------------
 ⁻ (Cube | Threes) (vectorising)
 Trigraph: #^-
@@ -788,10 +787,10 @@ Trigraph: #,7
 Keywords: two-hundred-fifty-six
 - -> 256
 ----------------------
-₈ (Alphabet) (non-vectorising)
+₈ (-1) (non-vectorising)
 Trigraph: #,8
-Keywords: alphabet, a-z
-- -> "abcdefghijklmnopqrstuvwxyz"
+Keywords: negative-one, neg-1
+- -> -1
 ----------------------
 ₉ (Empty array) (non-vectorising)
 Trigraph: #,9
@@ -904,10 +903,11 @@ Trigraph: #^1
 Keywords: second-input, input-1
 - The second input to the program
 ----------------------
-² (Third Input) (non-vectorising)
+² (Square | Pairs) (vectorising)
 Trigraph: #^2
-Keywords: third-input, input-2
-- The third input to the program
+Keywords: square, pairs
+- a: num -> a ** 2
+- a: str -> a split into pairs
 ----------------------
 ⌈ (Ceiling) (vectorising)
 Keywords: ceiling, ceil
@@ -1043,6 +1043,10 @@ Keywords:
 ÞT (Transpose Safe) (non-vectorising)
 Keywords: transpose-safe
 - a: any -> transpose a
+----------------------
+ÞṂ (Matrix Inverse) (vectorising)
+Keywords: matrix-inverse
+- a: lst[lst] -> matrix inverse of a
 ----------------------
 Ч
 Keywords: ****:
