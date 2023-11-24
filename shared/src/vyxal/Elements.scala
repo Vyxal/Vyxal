@@ -2560,15 +2560,46 @@ object Elements:
       case a: VNum => 1 - a
       case a: String => StringHelpers.titlecase(a)
     },
-    addPart(
-      Monad,
+    addDirect(
       "Ṡ",
-      "Vectorised Sums",
-      List("vectorised-sums", "vec-sums"),
-      false,
+      "Vectorised Sums | Integer Division",
+      List(
+        "vectorised-sums",
+        "vec-sums",
+        "integer-division",
+        "int-div",
+        "int-rizz",
+      ),
+      Some(1),
       "a: lst -> sum of each element of a",
-    ) {
-      case a: VList => a.vmap(x => ListHelpers.sum(ListHelpers.makeIterable(x)))
+      "a: num, b: num -> a // b",
+    ) { ctx ?=>
+      ctx.pop() match
+        case b: VNum =>
+          val a = ctx.pop()
+          (a, b) match
+            case (a: VNum, b: VNum) => ctx.push((a / b).floor)
+            case (a: VList, b: VNum) => ctx.push(
+                VList.from(
+                  a.lst.map(x =>
+                    x match
+                      case n: VNum => (n / b).floor
+                      case _ => throw IllegalArgumentException(
+                          "Integer Divison: First argument should be a list of numbers"
+                        )
+                  )
+                )
+              )
+            case _ => throw IllegalArgumentException(
+                "Integer Division: First argument should be a list or number"
+              )
+          end match
+        case a: VList =>
+          ctx.push(a.vmap(x => ListHelpers.sum(ListHelpers.makeIterable(x))))
+        case _ => throw IllegalArgumentException(
+            "Vectorised Sums: First argument should be a list or number"
+          )
+
     },
     addDirect(
       "W",
