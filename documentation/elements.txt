@@ -479,7 +479,7 @@ Keywords: cartesian-product, cartesian, cart-prod, cart
 Keywords: zero->len
 - a: any -> `[0, 1, 2, ..., len(a)-1]`
 ----------------------
-κ (Lenght 1-Range) (non-vectorising)
+κ (Length 1-Range) (non-vectorising)
 Keywords: one->len
 - a: any -> `[1, 2, 3, ..., len(a)]`
 ----------------------
@@ -719,13 +719,19 @@ Keywords: sum, /+, +/
 ----------------------
 « (Bitshift Left) (vectorising)
 Trigraph: #.<
-Keywords: bitwise-left-shift, left-shift
+Keywords: bitwise-left-shift, left-shift, left-pad, pad-left
 - a: num, b: num -> a << b
+- a: num, b: str -> b padded to length a with spaces prepended
+- a: str, b: num -> a padded to length b with spaces prepended
+- a: str, b: str -> a padded to length of b with spaces prepended
 ----------------------
 » (Bitshift Right) (vectorising)
 Trigraph: #.>
-Keywords: bitwise-right-shift, right-shift
+Keywords: bitwise-right-shift, right-shift, right-pad, pad-right
 - a: num, b: num -> a >> b
+- a: num, b: str -> b padded to length a with spaces appended
+- a: str, b: num -> a padded to length b with spaces appended
+- a: str, b: str -> a padded to length of b with spaces appended
 ----------------------
 ⌐ (Bitwise Not) (vectorising)
 Trigraph: #.!
@@ -744,8 +750,9 @@ Keywords: bitwise-or
 ----------------------
 ⊻ (Bitwise Xor) (vectorising)
 Trigraph: #,v
-Keywords: bitwise-xor
+Keywords: bitwise-xor, insert-space
 - a: num, b: num -> a ^ b
+- a: str, b: str -> a + space + b
 ----------------------
 ₀ (Ten) (non-vectorising)
 Trigraph: #,0

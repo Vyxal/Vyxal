@@ -190,7 +190,7 @@
  | | | | | | | `a: fun, b: num` => `first b truthy integers where a is truthy`
  <code>Ẋ</code> | <code>#.X</code> | Cartesian Product | `cartesian-product`, `cartesian`, `cart-prod`, `cart` | 2 | :x: | `a: list, b: list` => `cartesian product of a and b`
  <code>ι</code> |  | Length 0-Range | `zero->len` | 1 | :x: | `a: any` => ``[0, 1, 2, ..., len(a)-1]``
- <code>κ</code> |  | Lenght 1-Range | `one->len` | 1 | :x: | `a: any` => ``[1, 2, 3, ..., len(a)]``
+ <code>κ</code> |  | Length 1-Range | `one->len` | 1 | :x: | `a: any` => ``[1, 2, 3, ..., len(a)]``
  <code>ȧ</code> | <code>#.a</code> | Absolute Difference / Apply to Neighbours | `abs-diff`, `apply-to-neighbours` | 2 | :white_check_mark: | `a: num, b: num` => `\|a - b\|`
  | | | | | | | `a: lst, b: fun` => `apply b to each pair of neighbours in a [applies to windows of length 2]`
  <code>ḃ</code> |  | Bit / Parity / Last Half of String | `bit`, `parity`, `str-last-half` | 1 | :white_check_mark: | `a: num` => `parity of a (a % 2)`
@@ -264,12 +264,19 @@
  | | | | | | | `a: any, b: any` => `a prepended and appended to b`
  <code>√</code> | <code>#,*</code> | Square Root | `sqrt`, `square-root` | 1 | :white_check_mark: | `a: num` => `sqrt(a)`
  <code>∑</code> |  | Sum | `sum`, `/+`, `+/` | 1 | :x: | `a: lst` => `sum of a`
- <code>«</code> | <code>#.<</code> | Bitshift Left | `bitwise-left-shift`, `left-shift` | 2 | :white_check_mark: | `a: num, b: num` => `a << b`
- <code>»</code> | <code>#.></code> | Bitshift Right | `bitwise-right-shift`, `right-shift` | 2 | :white_check_mark: | `a: num, b: num` => `a >> b`
+ <code>«</code> | <code>#.<</code> | Bitshift Left | `bitwise-left-shift`, `left-shift`, `left-pad`, `pad-left` | 2 | :white_check_mark: | `a: num, b: num` => `a << b`
+ | | | | | | | `a: num, b: str` => `b padded to length a with spaces prepended`
+ | | | | | | | `a: str, b: num` => `a padded to length b with spaces prepended`
+ | | | | | | | `a: str, b: str` => `a padded to length of b with spaces prepended`
+ <code>»</code> | <code>#.></code> | Bitshift Right | `bitwise-right-shift`, `right-shift`, `right-pad`, `pad-right` | 2 | :white_check_mark: | `a: num, b: num` => `a >> b`
+ | | | | | | | `a: num, b: str` => `b padded to length a with spaces appended`
+ | | | | | | | `a: str, b: num` => `a padded to length b with spaces appended`
+ | | | | | | | `a: str, b: str` => `a padded to length of b with spaces appended`
  <code>⌐</code> | <code>#.!</code> | Bitwise Not | `bitwise-not` | 1 | :white_check_mark: | `a: num` => `~a`
  <code>∴</code> | <code>#.:</code> | Bitwise And | `bitwise-and` | 2 | :white_check_mark: | `a: num, b: num` => `a & b`
  <code>∵</code> | <code>#,:</code> | Bitwise Or | `bitwise-or` | 2 | :white_check_mark: | `a: num, b: num` => `a \| b`
- <code>⊻</code> | <code>#,v</code> | Bitwise Xor | `bitwise-xor` | 2 | :white_check_mark: | `a: num, b: num` => `a ^ b`
+ <code>⊻</code> | <code>#,v</code> | Bitwise Xor | `bitwise-xor`, `insert-space` | 2 | :white_check_mark: | `a: num, b: num` => `a ^ b`
+ | | | | | | | `a: str, b: str` => `a + space + b`
  <code>₀</code> | <code>#,0</code> | Ten | `ten` | 0 | :x: | `10`
  <code>₁</code> | <code>#,1</code> | Sixteen | `sixteen` | 0 | :x: | `16`
  <code>₂</code> | <code>#,2</code> | Twenty-six | `twenty-six` | 0 | :x: | `26`
