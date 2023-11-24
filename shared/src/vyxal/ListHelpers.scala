@@ -170,6 +170,60 @@ object ListHelpers:
       initial ++: Interpreter.generator(function, firstN, firstM, 2, initial)
     )
 
+  def gridNeighbours(matrix: VList)(using Context): VList =
+    val temp = matrix.zipWithIndex.map { (row, r) =>
+      VList.from(makeIterable(row).zipWithIndex.map { (_, c) =>
+        val neighbours = ArrayBuffer.empty[VAny]
+        if r > 0 then neighbours += makeIterable(matrix.index(r - 1)).index(c)
+        if r < matrix.length - 1 then
+          neighbours += makeIterable(matrix.index(r + 1)).index(c)
+        if c > 0 then neighbours += makeIterable(matrix.index(r)).index(c - 1)
+        if c < makeIterable(row).length - 1 then
+          neighbours += makeIterable(matrix.index(r)).index(c + 1)
+        VList.from(neighbours.toList)
+      })
+    }
+    VList.from(temp)
+
+  def gridNeighboursWrap(matrix: VList)(using Context): VList =
+    val temp = matrix.zipWithIndex.map { (row, r) =>
+      VList.from(makeIterable(row).zipWithIndex.map { (_, c) =>
+        val neighbours = ArrayBuffer.empty[VAny]
+        neighbours += makeIterable(matrix.index((r - 1))).index(c)
+        neighbours += makeIterable(matrix.index((r + 1))).index(c)
+        neighbours += makeIterable(matrix.index(r)).index((c - 1))
+        neighbours += makeIterable(matrix.index(r)).index((c + 1))
+        VList.from(neighbours.toList)
+      })
+    }
+
+    VList.from(temp)
+
+  def gridNeighboursDiagonal(matrix: VList)(using Context): VList =
+    val temp = matrix.zipWithIndex.map { (row, r) =>
+      VList.from(makeIterable(row).zipWithIndex.map { (_, c) =>
+        val neighbours = ArrayBuffer.empty[VAny]
+        if r > 0 then
+          neighbours += makeIterable(matrix.index(r - 1)).index(c)
+          if c > 0 then
+            neighbours += makeIterable(matrix.index(r - 1)).index(c - 1)
+          if c < makeIterable(row).length - 1 then
+            neighbours += makeIterable(matrix.index(r - 1)).index(c + 1)
+        if r < matrix.length - 1 then
+          neighbours += makeIterable(matrix.index(r + 1)).index(c)
+          if c > 0 then
+            neighbours += makeIterable(matrix.index(r + 1)).index(c - 1)
+          if c < makeIterable(row).length - 1 then
+            neighbours += makeIterable(matrix.index(r + 1)).index(c + 1)
+        if c > 0 then neighbours += makeIterable(matrix.index(r)).index(c - 1)
+        if c < makeIterable(row).length - 1 then
+          neighbours += makeIterable(matrix.index(r)).index(c + 1)
+        VList.from(neighbours.toList)
+      })
+    }
+    VList.from(temp)
+  end gridNeighboursDiagonal
+
   /** Group elements according to the result of some function
     * @return
     *   A VList where each element is again a VList containing a group of
