@@ -1028,6 +1028,11 @@ Keywords: compress-dict, dict-comp, compress
 Keywords: break
 -  -> break out of the current loop
 ----------------------
+#c (Base-252 Compress String or Number) (vectorising)
+Keywords: compress-252, compress-b
+- a: str -> compress a using base 252
+- a: num -> compress a using base 252
+----------------------
 #v ([Internal Use] Vectorise (Element Form) ) (non-vectorising)
 Keywords: 
 - *a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead
