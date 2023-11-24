@@ -1529,7 +1529,7 @@ object Elements:
       List("grid-neighbours"),
       false,
       "a: lst[lst] -> Grid neighbours of a - up, down, left and right of a",
-    ){
+    ) {
       case value => ListHelpers.gridNeighbours(ListHelpers.makeIterable(value))
     },
     addPart(
@@ -1539,8 +1539,9 @@ object Elements:
       List("grid-neighbours-wrap"),
       false,
       "a: lst[lst] -> Grid neighbours of a - up, down, left, right - wrapping around",
-    ){
-      case value => ListHelpers.gridNeighboursWrap(ListHelpers.makeIterable(value))
+    ) {
+      case value =>
+        ListHelpers.gridNeighboursWrap(ListHelpers.makeIterable(value))
     },
     addPart(
       Monad,
@@ -1549,8 +1550,9 @@ object Elements:
       List("grid-neighbours-diagonals"),
       false,
       "a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals",
-    ){
-      case value => ListHelpers.gridNeighboursDiagonal(ListHelpers.makeIterable(value))
+    ) {
+      case value =>
+        ListHelpers.gridNeighboursDiagonal(ListHelpers.makeIterable(value))
     },
     addFull(Dyad, ";", "Pair", List("pair"), false, "a, b -> [a, b]") {
       VList(_, _)
