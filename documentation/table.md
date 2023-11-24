@@ -183,7 +183,8 @@
  | | | | | | | `a b` => `a b a`
  <code>Ṗ</code> | <code>#.P</code> | Permutations | `permutations`, `perms` | 1 | :x: | `a: lst` => `Permutations of a`
  <code>Ṙ</code> | <code>#.R</code> | Rotate Left | `abc->bca`, `rot-left`, `rotate-left` | 1 | :x: | `a: any` => `rotate left once`
- <code>Ṡ</code> | <code>#.S</code> | Vectorised Sums | `vectorised-sums`, `vec-sums` | 1 | :x: | `a: lst` => `sum of each element of a`
+ <code>Ṡ</code> | <code>#.S</code> | Vectorised Sums / Integer Division | `vectorised-sums`, `vec-sums`, `integer-division`, `int-div`, `int-rizz` | 1 | :x: | `a: lst` => `sum of each element of a`
+ | | | | | | | `a: num, b: num` => `a // b`
  <code>Ṫ</code> | <code>#.T</code> | Init | `init`, `remove-last` | 1 | :x: | `a: lst` => `a[:-1]`
  | | | | | | | `a: str` => `a[:-1]`
  <code>Ẇ</code> | <code>#.W</code> | Wrap to Length / Predicate Slice From 0 | `wrap-length`, `pred-slice-0` | 2 | :x: | `a: lst, b: num` => `a wrapped in chunks of length b`
@@ -335,7 +336,10 @@
  <code>#v</code> |  | [Internal Use] Vectorise (Element Form)  |  | NA | :x: | `*a, f` => `f vectorised over however many arguments in a. It is recommended to use the modifier instead`
  <code>#x</code> |  | Loop Continue | `continue` | 0 | :x: | `continue the current loop`
  <code>#~</code> |  | [Internal Use] Apply Without Popping (Element Form) |  | NA | :x: | `*a, f` => `f applied to the stack without popping items. Use the modifier instead.`
+ <code>ÞO</code> |  | Grid Neighbours (Wrap Around) | `grid-neighbours-wrap` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right - wrapping around`
  <code>ÞT</code> |  | Transpose Safe | `transpose-safe` | 1 | :x: | `a: any` => `transpose a`
+ <code>Þo</code> |  | Grid Neighbours | `grid-neighbours` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left and right of a`
+ <code>ÞȮ</code> |  | Grid Neighbours (Diagonals) | `grid-neighbours-diagonals` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right, diagonals`
  <code>ÞṂ</code> |  | Matrix Inverse | `matrix-inverse` | 1 | :white_check_mark: | `a: lst[lst]` => `matrix inverse of a`
 
 
