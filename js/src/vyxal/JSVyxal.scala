@@ -48,11 +48,7 @@ object JSVyxal:
         .toIndexedSeq,
       globals = globals,
     )
-    try Interpreter.execute(code)(using ctx)
-    catch
-      case e: Throwable =>
-        printFunc(e.getMessage)
-        printFunc(e.getStackTrace.mkString("\n"))
+    Interpreter.execute(code)(using ctx)
   end execute
 
   @JSExport

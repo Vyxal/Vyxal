@@ -145,6 +145,13 @@ object StringHelpers:
 
   def isVowel(c: Char): VNum = "aeiouAEIOU".contains(c)
 
+  def padLeft(s: String, to: VNum): String =
+    if to < 0 then padLeft(s, to.vabs)
+    else s.reverse.padTo(to.toInt, ' ').reverse
+  def padRight(s: String, to: VNum): String =
+    if to < 0 then padRight(s, to.vabs)
+    else s.padTo(to.toInt, ' ')
+
   /** Remove the character at the given index */
   def remove(s: String, i: Int): String =
     val wrapped = (i + s.length) % s.length

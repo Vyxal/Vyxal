@@ -1061,14 +1061,24 @@
 "⊻":
   - {in: [123, 456], out: 435}
   - {in: [-12.34, 56.78], out: -52}
+  - {in: ["abc", "def"], out: "abc def"}
+  - {in: ["ff", ""], out: "ff "}
 
 "«":
   - {in: [100, 3], out: 800}
   - {in: [-1.23, 0], out: -1}
+  - {in: ["hello", 6], out: " hello"}
+  - {in: ["hello", 0], out: "hello"}
+  - {in: ["hello", 5], out: "hello"}
+  - {in: ["hello", -7], out: "  hello"}
 
 "»":
   - {in: [100, 3], out: 12}
   - {in: [-1.23, 0], out: -1}
+  - {in: ["hello", 6], out: "hello "}
+  - {in: ["hello", 0], out: "hello"}
+  - {in: ["hello", 5], out: "hello"}
+  - {in: ["hello", -7], out: "hello  "}
 
 "Ɠ":
   - {in: [[1, 2, 3]], stack: [3, [1, 2, 3]]}

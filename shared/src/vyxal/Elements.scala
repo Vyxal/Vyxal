@@ -227,21 +227,29 @@ object Elements:
       Dyad,
       "⊻",
       "Bitwise Xor",
-      List("bitwise-xor"),
+      List("bitwise-xor", "insert-space"),
       true,
       "a: num, b: num -> a ^ b",
+      "a: str, b: str -> a + space + b",
     ) {
       case (a: VNum, b: VNum) => a.toBigInt ^ b.toBigInt
+      case (a: String, b: String) => a + " " + b
     },
     addPart(
       Dyad,
       "«",
       "Bitshift Left",
-      List("bitwise-left-shift", "left-shift"),
+      List("bitwise-left-shift", "left-shift", "left-pad"),
       true,
       "a: num, b: num -> a << b",
+      "a: num, b: str -> b padded to length a with spaces prepended",
+      "a: str, b: num -> a padded to length b with spaces prepended",
+      "a: str, b: str -> a padded to length of b with spaces prepended",
     ) {
       case (a: VNum, b: VNum) => a.toBigInt << b.toInt
+      case (a: VNum, b: String) => StringHelpers.padLeft(b, a)
+      case (a: String, b: VNum) => StringHelpers.padLeft(a, b)
+      case (a: String, b: String) => StringHelpers.padLeft(a, b.length)
     },
     addPart(
       Dyad,
@@ -250,8 +258,14 @@ object Elements:
       List("bitwise-right-shift", "right-shift"),
       true,
       "a: num, b: num -> a >> b",
+      "a: num, b: str -> b padded to length a with spaces appended",
+      "a: str, b: num -> a padded to length b with spaces appended",
+      "a: str, b: str -> a padded to length of b with spaces appended",
     ) {
       case (a: VNum, b: VNum) => a.toBigInt >> b.toInt
+      case (a: VNum, b: String) => StringHelpers.padRight(b, a)
+      case (a: String, b: VNum) => StringHelpers.padRight(a, b)
+      case (a: String, b: String) => StringHelpers.padRight(a, b.length)
     },
     addFull(
       Monad,
