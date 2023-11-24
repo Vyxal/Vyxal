@@ -83,6 +83,10 @@ object Interpreter:
       case AST.Str(value, _) => ctx.push(value)
       case AST.DictionaryString(value, _) =>
         ctx.push(StringHelpers.decompress(value))
+      case AST.CompressedNumber(value, _) =>
+        ctx.push(StringHelpers.decompress252Number(value))
+      case AST.CompressedString(value, _) =>
+        ctx.push(StringHelpers.decompress252String(value))
       case AST.Lst(elems, _) =>
         val list = collection.mutable.ListBuffer.empty[VAny]
         for elem <- elems do

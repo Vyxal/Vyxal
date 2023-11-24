@@ -54,6 +54,10 @@ object Parser:
         case TokenType.Str => asts.push(AST.Str(value, range))
         case TokenType.DictionaryString =>
           asts.push(AST.DictionaryString(value, range))
+        case TokenType.CompressedString =>
+          asts.push(AST.CompressedString(value, range))
+        case TokenType.CompressedNumber =>
+          asts.push(AST.CompressedNumber(value, range))
         case TokenType.Newline => asts.push(AST.Newline)
         case TokenType.StructureOpen =>
           parseStructure(

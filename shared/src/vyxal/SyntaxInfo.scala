@@ -192,19 +192,19 @@ object SyntaxInfo:
       Syntax(
         "Base-255 Compressed String",
         "Decompress and push a string, converted from a bijective base 255 number using the codepage",
-        "„<compressed string>\"",
+        "\"<compressed string>„",
       ),
     "”" ->
       Syntax(
         "Dictionary Compressed String",
         "Decompress and push a string using SSS compression, shamelessly stolen from Jelly",
-        "”<compressed string>\"",
+        "\"<compressed string>”",
       ),
     "“" ->
       Syntax(
         "Base-255 Compressed Number",
         "Decompress and push a number, converted from a bijective base 255 number using the codepage",
-        "“<compressed number>\"",
+        "\"<compressed number>“",
       ),
     "#$" ->
       Syntax(

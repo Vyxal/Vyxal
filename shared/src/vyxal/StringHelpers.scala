@@ -13,6 +13,25 @@ object StringHelpers:
       case a: VNum => a.toInt.toChar.toString
       case a: VList => VList(a.map(chrord)*)
 
+  def compress252(s: String)(using Context): String =
+    val temp = NumberHelpers
+      .fromBaseAlphabet(s, "abcdefghijklmnopqrstuvwxyz ")
+      .asInstanceOf[VNum]
+    s"\"${NumberHelpers
+        .toBaseAlphabet(
+          temp,
+          Lexer.Codepage.filterNot(Lexer.StringClosers.contains(_)),
+        )
+        .asInstanceOf[String]}„"
+
+  def compress252(n: VNum)(using Context): String =
+    s"\"${NumberHelpers
+        .toBaseAlphabet(
+          n,
+          Lexer.Codepage.filterNot(Lexer.StringClosers.contains(_)),
+        )
+        .asInstanceOf[String]}“"
+
   // https://codegolf.stackexchange.com/a/151721/78850
   def compressDictionary(s: String): String =
     val endLength = 2 + Dictionary.longDictionary.map(_.length).max
@@ -87,6 +106,21 @@ object StringHelpers:
 
   def countString(haystack: String, needle: String): Int =
     haystack.split(needle, -1).length - 1
+
+  def decompress252Number(s: String)(using Context): VAny =
+    NumberHelpers.fromBaseAlphabet(
+      s,
+      Lexer.Codepage.filterNot(Lexer.StringClosers.contains(_)),
+    )
+
+  def decompress252String(s: String)(using Context): VAny =
+    val temp = NumberHelpers
+      .fromBaseAlphabet(
+        s,
+        Lexer.Codepage.filterNot(Lexer.StringClosers.contains(_)),
+      )
+      .asInstanceOf[VNum]
+    NumberHelpers.toBaseAlphabet(temp, "abcdefghijklmnopqrstuvwxyz ")
 
   def formatString(fmtstr: String, args: VAny*): String =
     val sb = StringBuilder()

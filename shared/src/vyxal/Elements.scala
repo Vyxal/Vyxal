@@ -315,6 +315,18 @@ object Elements:
       "a: str -> compress a using the dictionary",
     ) { case a: String => StringHelpers.compressDictionary(a) },
     addPart(
+      Monad,
+      "#c",
+      "Base-252 Compress String or Number",
+      List("compress-252", "compress-b"),
+      true,
+      "a: str -> compress a using base 252",
+      "a: num -> compress a using base 252",
+    ) {
+      case a: String => StringHelpers.compress252(a)
+      case a: VNum => StringHelpers.compress252(a)
+    },
+    addPart(
       Dyad,
       "c",
       "Contains",

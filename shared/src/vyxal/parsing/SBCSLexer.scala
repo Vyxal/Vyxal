@@ -5,6 +5,7 @@ import scala.language.strictEquality
 import vyxal.{Elements, Modifiers, SugarMap}
 import vyxal.parsing.Common.given // For custom whitespace
 import vyxal.parsing.Common.withRange
+import vyxal.parsing.Lexer.StringClosers
 import vyxal.parsing.TokenType.*
 
 import fastparse.*

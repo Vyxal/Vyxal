@@ -149,6 +149,8 @@ object Lexer:
 
   val UnicodeCommands = "🍪ඞ"
 
+  val StringClosers = "\"„”“"
+
   def literateModeMappings: Map[String, String] =
     LiterateLexer.literateModeMappings
 
