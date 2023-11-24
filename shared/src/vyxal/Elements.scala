@@ -1124,7 +1124,7 @@ object Elements:
     addPart(
       Monad,
       "κ",
-      "Lenght 1-Range",
+      "Length 1-Range",
       List("one->len"),
       false,
       "a: any -> `[1, 2, 3, ..., len(a)]`",
