@@ -1459,7 +1459,7 @@ object Elements:
       true,
       "a: any, b: any -> a && b",
     ) { (a, b) =>
-      a.toBool || b.toBool
+      if !a.toBool then a else b
     },
     addPart(
       Dyad,
@@ -1469,7 +1469,7 @@ object Elements:
       true,
       "a: any, b: any -> a || b",
     ) { (a, b) =>
-      a.toBool && b.toBool
+      if a.toBool then a else b
     },
     addPart(
       Monad,
