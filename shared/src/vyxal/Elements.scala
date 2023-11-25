@@ -1458,8 +1458,8 @@ object Elements:
       List("and", "logical-and"),
       true,
       "a: any, b: any -> a && b",
-    ) { (a, b) =>
-      if !a.toBool then a else b
+    ) {
+      case (a: VVal, b: VVal) => if !a.toBool then a else b
     },
     addPart(
       Dyad,
@@ -1468,9 +1468,7 @@ object Elements:
       List("or", "logical-or"),
       true,
       "a: any, b: any -> a || b",
-    ) { (a, b) =>
-      if a.toBool then a else b
-    },
+    ) { case (a: VVal, b: VVal) => if a.toBool then a else b },
     addPart(
       Monad,
       "O",
