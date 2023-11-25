@@ -1068,8 +1068,12 @@ Keywords: grid-neighbours, grid-neighbors, adjacent-cells, adj-cells, surroundin
 - a: lst[lst] -> Grid neighbours of a - up, down, left and right of a
 ----------------------
 ÞȮ (Grid Neighbours (Diagonals)) (non-vectorising)
-Keywords: grid-neighbours-diagonals, grid-neighbors-diagonals, adjacent-cells-diagonals, adj-cells-diagonals, surrounding-cells-diagonals
+Keywords: grid-neighbours-diagonals, grid-neighbors-diagonals, adjacent-cells-diagonals, adj-cells-diagonals, surrounding-cells-diagonals, eight-cells
 - a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals
+----------------------
+Þȯ (Grid Neighbours (Diagonals, Wrap Around)) (non-vectorising)
+Keywords: grid-neighbours-diagonals-wrap, grid-neighbors-diagonals-wrap, adjacent-cells-diagonals-wrap, adj-cells-diagonals-wrap, surrounding-cells-diagonals-wrap, eight-cells-wrap
+- a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals - wrapping around
 ----------------------
 ÞṂ (Matrix Inverse) (vectorising)
 Keywords: matrix-inverse
