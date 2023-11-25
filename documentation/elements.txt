@@ -1058,6 +1058,8 @@ Keywords:
 ÞO (Grid Neighbours (Wrap Around)) (non-vectorising)
 Keywords: grid-neighbours-wrap, grid-neighbors-wrap, adjacent-cells-wrap, adj-cells-wrap, surrounding-cells-wrap
 - a: lst[lst] -> Grid neighbours of a - up, down, left, right - wrapping around
+- a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b
+0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does
 ----------------------
 ÞT (Transpose Safe) (non-vectorising)
 Keywords: transpose-safe
@@ -1065,15 +1067,21 @@ Keywords: transpose-safe
 ----------------------
 Þo (Grid Neighbours) (non-vectorising)
 Keywords: grid-neighbours, grid-neighbors, adjacent-cells, adj-cells, surrounding-cells
-- a: lst[lst] -> Grid neighbours of a - up, down, left and right of a
+- a: lst[lst] -> Grid neighbours of a - right, down, left, up of a
+- a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a and start from direction b
+0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does
 ----------------------
 ÞȮ (Grid Neighbours (Diagonals)) (non-vectorising)
 Keywords: grid-neighbours-diagonals, grid-neighbors-diagonals, adjacent-cells-diagonals, adj-cells-diagonals, surrounding-cells-diagonals, eight-cells
 - a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals
+- a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a and start from direction b
+0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does
 ----------------------
 Þȯ (Grid Neighbours (Diagonals, Wrap Around)) (non-vectorising)
 Keywords: grid-neighbours-diagonals-wrap, grid-neighbors-diagonals-wrap, adjacent-cells-diagonals-wrap, adj-cells-diagonals-wrap, surrounding-cells-diagonals-wrap, eight-cells-wrap
 - a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals - wrapping around
+- a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b
+0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does
 ----------------------
 ÞṂ (Matrix Inverse) (vectorising)
 Keywords: matrix-inverse
