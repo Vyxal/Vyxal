@@ -1585,7 +1585,7 @@ object Elements:
             case _ => throw Exception("Invalid arguments for grid neighbours")
     },
     addDirect(
-      "ÞȮ",
+      "Þȯ",
       "Grid Neighbours (Diagonals)",
       List(
         "grid-neighbours-diagonals",
@@ -1618,7 +1618,7 @@ object Elements:
             case _ => throw Exception("Invalid arguments for grid neighbours")
     },
     addDirect(
-      "Þȯ",
+      "ÞȮ",
       "Grid Neighbours (Diagonals, Wrap Around)",
       List(
         "grid-neighbours-diagonals-wrap",
