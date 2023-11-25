@@ -75,6 +75,7 @@ object MiscHelpers:
       Lexer.lexLiterate(s) match
         case Right(tokens) =>
           val tempContext = Context(globals = Globals(settings = ctx.settings))
+          tempContext.settings = tempContext.settings.useMode(EndPrintMode.None)
           Interpreter.execute(Lexer.sbcsify(tokens))(using tempContext)
           tempContext.peek
         case Left(err) => throw RuntimeException(s"Couldn't parse list: $err")

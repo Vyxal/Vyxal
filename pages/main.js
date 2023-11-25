@@ -778,7 +778,6 @@ window.addEventListener("DOMContentLoaded", e => {
 
         worker = new Worker('./worker.js', { type: "module" });
         worker.onmessage = function (e) {
-            console.log("PRINT!⌈⌈");
             if (e.data.session != sessioncode || !runButton.innerHTML.includes('fa-spin')) {
                 return;
             }
