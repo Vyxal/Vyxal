@@ -2689,9 +2689,16 @@ object Elements:
         "first-n",
       ),
       false,
-      "a: lst, b: num -> [a[0], a[1], ..., a[b-1]]",
+      "a: lst, b: num>=0 -> [a[0], a[1], ..., a[b-1]]",
+      "a: lst, b: num<0 -> [a[b + 1], a[b + 2], ..., a[-1]]",
+      "a: lst, b: lst[num] -> apl style take",
     ) {
-      case (a, b: VNum) => ListHelpers.makeIterable(a, Some(true)).take(b.toInt)
+      case (a, b: VNum) => ListHelpers.take(ListHelpers.makeIterable(a), b)
+      case (a: VNum, b: (VList | String)) =>
+        ListHelpers.take(ListHelpers.makeIterable(b), a)
+      case (a: VList, b: VList) =>
+        if !b.lst.forall(_.isInstanceOf[VNum]) then ???
+        else ListHelpers.take(a, b.lst.map(_.asInstanceOf[VNum]))
     },
     addPart(
       Dyad,

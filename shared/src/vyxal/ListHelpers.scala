@@ -2,6 +2,7 @@ package vyxal
 
 import vyxal.VNum.given
 
+import scala.annotation.unchecked.uncheckedVariance
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
@@ -650,6 +651,33 @@ object ListHelpers:
   def splitNormal(iterable: VList, sep: VAny)(using Context): VList =
     val out = split(iterable, Seq(sep))
     VList(out.map(VList.from)*)
+
+  def take(iterable: VList, amount: VNum): VList =
+    val temp = iterable.toList
+    if amount < 0 then VList.from(temp.takeRight(amount.toInt.abs))
+    else VList.from(temp.take(amount.toInt))
+
+  def take(iterable: VList, amount: VNum, fill: VAny): VList =
+    val temp = iterable.toList
+    if amount < 0 then
+      VList.from(
+        (List.fill(amount.toInt.abs)(fill) ++ temp).takeRight(amount.toInt.abs)
+      )
+    else
+      VList.from(
+        (temp ++ List.fill(amount.toInt)(fill)).take(amount.toInt)
+      )
+
+  def take(iterable: VList, shape: Seq[VNum])(using
+      Context
+  ): VList =
+    if shape.isEmpty then iterable
+    else if shape.length == 1 then take(iterable, shape.head, 0)
+    else
+      VList.from(take(iterable, shape.head, 0).map { row =>
+        val temp = makeIterable(row)
+        take(temp, shape.tail)
+      })
 
   def transliterate(source: VList, from: VAny, to: VAny)(using
       ctx: Context
