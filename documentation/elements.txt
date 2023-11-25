@@ -453,10 +453,11 @@ Trigraph: #.R
 Keywords: abc->bca, rot-left, rotate-left
 - a: any -> rotate left once
 ----------------------
-Ṡ (Vectorised Sums) (non-vectorising)
+Ṡ (Vectorised Sums | Integer Division) (non-vectorising)
 Trigraph: #.S
-Keywords: vectorised-sums, vec-sums
+Keywords: vectorised-sums, vec-sums, integer-division, int-div, int-rizz
 - a: lst -> sum of each element of a
+- a: num, b: num -> a // b
 ----------------------
 Ṫ (Init) (non-vectorising)
 Trigraph: #.T
@@ -1052,9 +1053,21 @@ Keywords: continue
 Keywords: 
 - *a, f -> f applied to the stack without popping items. Use the modifier instead.
 ----------------------
+ÞO (Grid Neighbours (Wrap Around)) (non-vectorising)
+Keywords: grid-neighbours-wrap
+- a: lst[lst] -> Grid neighbours of a - up, down, left, right - wrapping around
+----------------------
 ÞT (Transpose Safe) (non-vectorising)
 Keywords: transpose-safe
 - a: any -> transpose a
+----------------------
+Þo (Grid Neighbours) (non-vectorising)
+Keywords: grid-neighbours
+- a: lst[lst] -> Grid neighbours of a - up, down, left and right of a
+----------------------
+ÞȮ (Grid Neighbours (Diagonals)) (non-vectorising)
+Keywords: grid-neighbours-diagonals
+- a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals
 ----------------------
 ÞṂ (Matrix Inverse) (vectorising)
 Keywords: matrix-inverse
