@@ -123,6 +123,25 @@
  | | | | | | | `a: str, b: str` => `enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])`
  <code>j</code> |  | Join On | `join-on`, `join`, `join-with`, `join-by` | 2 | :x: | `a: lst, b: str\|num` => `a join on b`
  | | | | | | | `a: lst, b: lst` => `Intersperse elements of b within a`
+ <code>k1</code> |  | 1000 | `one-thousand`, `l000`, `lk` | 0 | :x: | `1000`
+ <code>k2</code> |  | 10000 | `ten-thousand`, `l0000`, `l0k` | 0 | :x: | `10000`
+ <code>k3</code> |  | 100000 | `one-hundered-thousand`, `l00000`, `l00k` | 0 | :x: | `100000`
+ <code>k4</code> |  | 1000000 | `one-million`, `l000000`, `l000k`, `lm` | 0 | :x: | `1000000`
+ <code>k6</code> |  | Hex Digits (lowercase) | `hex-digits`, `hex-digs`, `hex-lowercase`, `hex-lower`, `hex-l`, `hex-lc`, `hex-lowercase`, `hex-lower`, `hex-l`, `hex-lc` | 0 | :x: | `"0123456789abcdef"`
+ <code>kA</code> |  | Uppercase Alphabet | `uppercase-alphabet`, `uppercase-alpha`, `A->Z`, `A-Z`, `amazon` | 0 | :x: | `"ABCDEFGHIJKLMNOPQRSTUVWXYZ"`
+ <code>kF</code> |  | FizzBuzz | `fizzbuzz`, `FB` | 0 | :x: | `"FizzBuzz"`
+ <code>kH</code> |  | Hello, World! | `hello-world!`, `HW!` | 0 | :x: | `"Hello, World!"`
+ <code>kL</code> |  | Lowercase and Uppercase Alphabet | `lowercase-and-uppercase-alphabet`, `lowercase-and-uppercase-alpha`, `a->zA->Z`, `a-zA-Z` | 0 | :x: | `"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"`
+ <code>kP</code> |  | Printable Ascii | `printable-ascii`, `all-ascii` | 0 | :x: | `All of printable ascci. That excludes newline`
+ <code>k^</code> |  | Hex Digits (uppercase) | `hex-uppercase`, `hex-upper`, `hex-u`, `hex-uc`, `hex-uppercase`, `hex-upper`, `hex-u`, `hex-uc` | 0 | :x: | `"0123456789ABCDEF"`
+ <code>ka</code> |  | Lowercase Alphabet | `lowercase-alphabet`, `lowercase-alpha`, `a->z`, `a-z` | 0 | :x: | `"abcdefghijklmnopqrstuvwxyz"`
+ <code>kb</code> |  | Buzz | `buzz`, `BUZZ` | 0 | :x: | `"Buzz"`
+ <code>kd</code> |  | Digits | `digits`, `digs`, `o-9` | 0 | :x: | `"0123456789"`
+ <code>ke</code> |  | Euler's Number | `euler's-number`, `euler`, `e-num` | 0 | :x: | `2.718281828459045`
+ <code>kf</code> |  | Fizz | `fizz`, `FIZZ` | 0 | :x: | `"Fizz"`
+ <code>kh</code> |  | Hello World | `hello-world`, `HW` | 0 | :x: | `"Hello World"`
+ <code>ko</code> |  | Octal Digits | `octal-digits`, `octal-digs`, `o-7` | 0 | :x: | `"01234567"`
+ <code>kp</code> |  | Punctuation | `punctuation`, `punct` | 0 | :x: | `All punctuation characters`
  <code>l</code> |  | Length of Each Item | `length-vectorised`, `length-vect`, `len-vect`, `len-vectorised`, `vec-len`, `vec-length`, `vlen` | 1 | :x: | `a: lst` => `Length of each item in a`
  <code>m</code> |  | Get Context Variable M | `get-context-m`, `context-m`, `c-var-m`, `ctx-m`, `ctx-secondary` | 0 | :x: | `context variable m`
  <code>n</code> |  | Get Context Variable N | `get-context-n`, `context-n`, `c-var-n`, `ctx-n`, `ctx-primary` | 0 | :x: | `context variable n`
@@ -281,11 +300,11 @@
  <code>⊻</code> | <code>#,v</code> | Bitwise Xor | `bitwise-xor`, `insert-space` | 2 | :white_check_mark: | `a: num, b: num` => `a ^ b`
  | | | | | | | `a: str, b: str` => `a + space + b`
  <code>₀</code> | <code>#,0</code> | Ten | `ten` | 0 | :x: | `10`
- <code>₁</code> | <code>#,1</code> | Sixteen | `sixteen` | 0 | :x: | `16`
- <code>₂</code> | <code>#,2</code> | Twenty-six | `twenty-six` | 0 | :x: | `26`
- <code>₃</code> | <code>#,3</code> | Thirty-two | `thirty-two` | 0 | :x: | `32`
- <code>₄</code> | <code>#,4</code> | Sixty-four | `sixty-four` | 0 | :x: | `64`
- <code>₅</code> | <code>#,5</code> | One hundred | `one-hundred` | 0 | :x: | `100`
+ <code>₁</code> | <code>#,1</code> | Sixteen | `sixteen`, `l6` | 0 | :x: | `16`
+ <code>₂</code> | <code>#,2</code> | Twenty-six | `twenty-six`, `Z6` | 0 | :x: | `26`
+ <code>₃</code> | <code>#,3</code> | Thirty-two | `thirty-two`, `E2` | 0 | :x: | `32`
+ <code>₄</code> | <code>#,4</code> | Sixty-four | `sixty-four`, `b4` | 0 | :x: | `64`
+ <code>₅</code> | <code>#,5</code> | One hundred | `one-hundred`, `l00` | 0 | :x: | `100`
  <code>₆</code> | <code>#,6</code> | One hundred twenty-eight | `one-hundred-twenty-eight` | 0 | :x: | `128`
  <code>₇</code> | <code>#,7</code> | Two hundred fifty-six | `two-hundred-fifty-six` | 0 | :x: | `256`
  <code>₈</code> | <code>#,8</code> | -1 | `negative-one`, `neg-1` | 0 | :x: | `-1`
