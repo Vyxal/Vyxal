@@ -3087,10 +3087,6 @@ object Elements:
         "hex-lower",
         "hex-l",
         "hex-lc",
-        "hex-lowercase",
-        "hex-lower",
-        "hex-l",
-        "hex-lc",
       ),
       "\"0123456789abcdef\"",
     ) {
@@ -3100,10 +3096,6 @@ object Elements:
       "k^",
       "Hex Digits (uppercase)",
       List(
-        "hex-uppercase",
-        "hex-upper",
-        "hex-u",
-        "hex-uc",
         "hex-uppercase",
         "hex-upper",
         "hex-u",
