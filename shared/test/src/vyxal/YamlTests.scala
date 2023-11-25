@@ -76,7 +76,7 @@ class YamlTests extends AnyFunSpec:
                   s"[Element $element] Inputs (${inputs.mkString(",")}) don't match arity ($arity)"
                 )
             case _ => ()
-
+          println(msg)
           it(msg) {
             given ctx: Context =
               VyxalTests.testContext(inputs = inputs, flags = flags)
