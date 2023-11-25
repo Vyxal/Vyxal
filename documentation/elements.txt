@@ -590,7 +590,9 @@ Keywords: partition-after-truthy
 Θ (Zero Slice Until) (non-vectorising)
 Trigraph: #.`
 Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first-n
-- a: lst, b: num -> [a[0], a[1], ..., a[b-1]]
+- a: lst, b: num>=0 -> [a[0], a[1], ..., a[b-1]]
+- a: lst, b: num<0 -> [a[b + 1], a[b + 2], ..., a[-1]]
+- a: lst, b: lst[num] -> apl style take
 ----------------------
 Φ (Slice from 1) (non-vectorising)
 Trigraph: #.|
