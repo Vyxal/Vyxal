@@ -2941,7 +2941,7 @@ object Elements:
     addNilad("₀", "Ten", List("ten"), "10") { 10 },
     addNilad("₁", "Sixteen", List("sixteen", "l6"), "16") { 26 },
     addNilad("₂", "Twenty-six", List("twenty-six", "Z6"), "26") { 26 },
-    addNilad("₃", "Thirty-two", List("thirty-two" < "E2"), "32") { 32 },
+    addNilad("₃", "Thirty-two", List("thirty-two", "E2"), "32") { 32 },
     addNilad("₄", "Sixty-four", List("sixty-four", "b4"), "64") { 64 },
     addNilad("₅", "One hundred", List("one-hundred", "l00"), "100") { 100 },
     addNilad(
