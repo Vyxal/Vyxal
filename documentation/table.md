@@ -127,13 +127,13 @@
  <code>k2</code> |  | 10000 | `ten-thousand`, `l0000`, `l0k` | 0 | :x: | `10000`
  <code>k3</code> |  | 100000 | `one-hundered-thousand`, `l00000`, `l00k` | 0 | :x: | `100000`
  <code>k4</code> |  | 1000000 | `one-million`, `l000000`, `l000k`, `lm` | 0 | :x: | `1000000`
- <code>k6</code> |  | Hex Digits (lowercase) | `hex-digits`, `hex-digs`, `hex-lowercase`, `hex-lower`, `hex-l`, `hex-lc`, `hex-lowercase`, `hex-lower`, `hex-l`, `hex-lc` | 0 | :x: | `"0123456789abcdef"`
+ <code>k6</code> |  | Hex Digits (lowercase) | `hex-digits`, `hex-digs`, `hex-lowercase`, `hex-lower`, `hex-l`, `hex-lc` | 0 | :x: | `"0123456789abcdef"`
  <code>kA</code> |  | Uppercase Alphabet | `uppercase-alphabet`, `uppercase-alpha`, `A->Z`, `A-Z`, `amazon` | 0 | :x: | `"ABCDEFGHIJKLMNOPQRSTUVWXYZ"`
  <code>kF</code> |  | FizzBuzz | `fizzbuzz`, `FB` | 0 | :x: | `"FizzBuzz"`
  <code>kH</code> |  | Hello, World! | `hello-world!`, `HW!` | 0 | :x: | `"Hello, World!"`
  <code>kL</code> |  | Lowercase and Uppercase Alphabet | `lowercase-and-uppercase-alphabet`, `lowercase-and-uppercase-alpha`, `a->zA->Z`, `a-zA-Z` | 0 | :x: | `"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"`
  <code>kP</code> |  | Printable Ascii | `printable-ascii`, `all-ascii` | 0 | :x: | `All of printable ascci. That excludes newline`
- <code>k^</code> |  | Hex Digits (uppercase) | `hex-uppercase`, `hex-upper`, `hex-u`, `hex-uc`, `hex-uppercase`, `hex-upper`, `hex-u`, `hex-uc` | 0 | :x: | `"0123456789ABCDEF"`
+ <code>k^</code> |  | Hex Digits (uppercase) | `hex-uppercase`, `hex-upper`, `hex-u`, `hex-uc` | 0 | :x: | `"0123456789ABCDEF"`
  <code>ka</code> |  | Lowercase Alphabet | `lowercase-alphabet`, `lowercase-alpha`, `a->z`, `a-z` | 0 | :x: | `"abcdefghijklmnopqrstuvwxyz"`
  <code>kb</code> |  | Buzz | `buzz`, `BUZZ` | 0 | :x: | `"Buzz"`
  <code>kd</code> |  | Digits | `digits`, `digs`, `o-9` | 0 | :x: | `"0123456789"`

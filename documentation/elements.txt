@@ -305,7 +305,7 @@ Keywords: one-million, l000000, l000k, lm
 - -> 1000000
 ----------------------
 k6 (Hex Digits (lowercase)) (non-vectorising)
-Keywords: hex-digits, hex-digs, hex-lowercase, hex-lower, hex-l, hex-lc, hex-lowercase, hex-lower, hex-l, hex-lc
+Keywords: hex-digits, hex-digs, hex-lowercase, hex-lower, hex-l, hex-lc
 - -> "0123456789abcdef"
 ----------------------
 kA (Uppercase Alphabet) (non-vectorising)
@@ -329,7 +329,7 @@ Keywords: printable-ascii, all-ascii
 - -> All of printable ascci. That excludes newline
 ----------------------
 k^ (Hex Digits (uppercase)) (non-vectorising)
-Keywords: hex-uppercase, hex-upper, hex-u, hex-uc, hex-uppercase, hex-upper, hex-u, hex-uc
+Keywords: hex-uppercase, hex-upper, hex-u, hex-uc
 - -> "0123456789ABCDEF"
 ----------------------
 ka (Lowercase Alphabet) (non-vectorising)
