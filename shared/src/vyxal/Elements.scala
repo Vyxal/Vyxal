@@ -2939,11 +2939,11 @@ object Elements:
     addNilad("¶", "Newline", List("newline"), "chr(10)") { "\n" },
     addNilad("•", "Asterisk", List("asterisk"), "\"*\"") { "*" },
     addNilad("₀", "Ten", List("ten"), "10") { 10 },
-    addNilad("₁", "Sixteen", List("sixteen"), "16") { 26 },
-    addNilad("₂", "Twenty-six", List("twenty-six"), "26") { 26 },
-    addNilad("₃", "Thirty-two", List("thirty-two"), "32") { 32 },
-    addNilad("₄", "Sixty-four", List("sixty-four"), "64") { 64 },
-    addNilad("₅", "One hundred", List("one-hundred"), "100") { 100 },
+    addNilad("₁", "Sixteen", List("sixteen", "l6"), "16") { 26 },
+    addNilad("₂", "Twenty-six", List("twenty-six", "Z6"), "26") { 26 },
+    addNilad("₃", "Thirty-two", List("thirty-two" < "E2"), "32") { 32 },
+    addNilad("₄", "Sixty-four", List("sixty-four", "b4"), "64") { 64 },
+    addNilad("₅", "One hundred", List("one-hundred", "l00"), "100") { 100 },
     addNilad(
       "₆",
       "One hundred twenty-eight",
@@ -2968,6 +2968,180 @@ object Elements:
       List("empty-list", "nil-list", "new-list"),
       "[]",
     ) { VList.empty },
+
+    // k-constants
+    addNilad(
+      "kH",
+      "Hello, World!",
+      List("hello-world!", "HW!"),
+      "\"Hello, World!\"",
+    ) { "Hello, World!" },
+    addNilad(
+      "kh",
+      "Hello World",
+      List("hello-world", "HW"),
+      "\"Hello World\"",
+    ) { "Hello World" },
+    addNilad(
+      "kF",
+      "FizzBuzz",
+      List("fizzbuzz", "FB"),
+      "\"FizzBuzz\"",
+    ) { "FizzBuzz" },
+    addNilad(
+      "kf",
+      "Fizz",
+      List("fizz", "FIZZ"),
+      "\"Fizz\"",
+    ) {
+      "Fizz"
+    },
+    addNilad(
+      "kb",
+      "Buzz",
+      List("buzz", "BUZZ"),
+      "\"Buzz\"",
+    ) {
+      "Buzz"
+    },
+    addNilad(
+      "kA",
+      "Uppercase Alphabet",
+      List("uppercase-alphabet", "uppercase-alpha", "A->Z", "A-Z", "amazon"),
+      "\"ABCDEFGHIJKLMNOPQRSTUVWXYZ\"",
+    ) { "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
+    addNilad(
+      "ka",
+      "Lowercase Alphabet",
+      List("lowercase-alphabet", "lowercase-alpha", "a->z", "a-z"),
+      "\"abcdefghijklmnopqrstuvwxyz\"",
+    ) { "abcdefghijklmnopqrstuvwxyz" },
+    addNilad(
+      "ke",
+      "Euler's Number",
+      List("euler's-number", "euler", "e-num"),
+      "2.718281828459045",
+    ) {
+      spire.math.Real.e
+    },
+    addNilad(
+      "k1",
+      "1000",
+      List("one-thousand", "l000", "lk"),
+      "1000",
+    ) {
+      1000
+    },
+    addNilad(
+      "k2",
+      "10000",
+      List("ten-thousand", "l0000", "l0k"),
+      "10000",
+    ) {
+      10000
+    },
+    addNilad(
+      "k3",
+      "100000",
+      List("one-hundered-thousand", "l00000", "l00k"),
+      "100000",
+    ) {
+      100000
+    },
+    addNilad(
+      "k4",
+      "1000000",
+      List("one-million", "l000000", "l000k", "lm"),
+      "1000000",
+    ) {
+      1000000
+    },
+    addNilad(
+      "kL",
+      "Lowercase and Uppercase Alphabet",
+      List(
+        "lowercase-and-uppercase-alphabet",
+        "lowercase-and-uppercase-alpha",
+        "a->zA->Z",
+        "a-zA-Z",
+      ),
+      "\"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\"",
+    ) {
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    },
+    addNilad(
+      "kd",
+      "Digits",
+      List("digits", "digs", "o-9"),
+      "\"0123456789\"",
+    ) {
+      "0123456789"
+    },
+    addNilad(
+      "k6",
+      "Hex Digits (lowercase)",
+      List(
+        "hex-digits",
+        "hex-digs",
+        "hex-lowercase",
+        "hex-lower",
+        "hex-l",
+        "hex-lc",
+        "hex-lowercase",
+        "hex-lower",
+        "hex-l",
+        "hex-lc",
+      ),
+      "\"0123456789abcdef\"",
+    ) {
+      "0123456789abcdef"
+    },
+    addNilad(
+      "k^",
+      "Hex Digits (uppercase)",
+      List(
+        "hex-uppercase",
+        "hex-upper",
+        "hex-u",
+        "hex-uc",
+        "hex-uppercase",
+        "hex-upper",
+        "hex-u",
+        "hex-uc",
+      ),
+      "\"0123456789ABCDEF\"",
+    ) {
+      "0123456789ABCDEF"
+    },
+    addNilad(
+      "ko",
+      "Octal Digits",
+      List("octal-digits", "octal-digs", "o-7"),
+      "\"01234567\"",
+    ) {
+      "01234567"
+    },
+    addNilad(
+      "kp",
+      "Punctuation",
+      List("punctuation", "punct"),
+      "All punctuation characters",
+    ) {
+      // Code from https://alvinalexander.com/source-code/scala-sequence-list-all-ascii-printable-characters/
+      ((' ' to '/').toList ++:
+        (':' to '@').toList ++:
+        ('[' to '`').toList ++:
+        ('{' to '~').toList).mkString
+    },
+    addNilad(
+      "kP",
+      "Printable Ascii",
+      List("printable-ascii", "all-ascii"),
+      "All of printable ascci. That excludes newline",
+    ) {
+      // https://alvinalexander.com/source-code/scala-sequence-list-all-ascii-printable-characters/
+      ((' ' to '~').toList).mkString
+    },
   )
 
   private def execHelper(value: VAny)(using ctx: Context): VAny =
