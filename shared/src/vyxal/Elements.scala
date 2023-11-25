@@ -1526,7 +1526,13 @@ object Elements:
       Monad,
       "Þo",
       "Grid Neighbours",
-      List("grid-neighbours"),
+      List(
+        "grid-neighbours",
+        "grid-neighbors",
+        "adjacent-cells",
+        "adj-cells",
+        "surrounding-cells",
+      ),
       false,
       "a: lst[lst] -> Grid neighbours of a - up, down, left and right of a",
     ) {
@@ -1536,7 +1542,13 @@ object Elements:
       Monad,
       "ÞO",
       "Grid Neighbours (Wrap Around)",
-      List("grid-neighbours-wrap"),
+      List(
+        "grid-neighbours-wrap",
+        "grid-neighbors-wrap",
+        "adjacent-cells-wrap",
+        "adj-cells-wrap",
+        "surrounding-cells-wrap",
+      ),
       false,
       "a: lst[lst] -> Grid neighbours of a - up, down, left, right - wrapping around",
     ) {
@@ -1547,7 +1559,13 @@ object Elements:
       Monad,
       "ÞȮ",
       "Grid Neighbours (Diagonals)",
-      List("grid-neighbours-diagonals"),
+      List(
+        "grid-neighbours-diagonals",
+        "grid-neighbors-diagonals",
+        "adjacent-cells-diagonals",
+        "adj-cells-diagonals",
+        "surrounding-cells-diagonals",
+      ),
       false,
       "a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals",
     ) {
