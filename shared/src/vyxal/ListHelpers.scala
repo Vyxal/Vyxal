@@ -225,6 +225,25 @@ object ListHelpers:
     VList.from(temp)
   end gridNeighboursDiagonal
 
+  def gridNeighboursDiagonalWrap(matrix: VList)(using Context): VList =
+    val temp = matrix.zipWithIndex.map { (row, r) =>
+      VList.from(makeIterable(row).zipWithIndex.map { (_, c) =>
+        val neighbours = ArrayBuffer.empty[VAny]
+        neighbours += makeIterable(matrix.index((r - 1))).index(c)
+        neighbours += makeIterable(matrix.index((r + 1))).index(c)
+        neighbours += makeIterable(matrix.index(r)).index((c - 1))
+        neighbours += makeIterable(matrix.index(r)).index((c + 1))
+        neighbours += makeIterable(matrix.index((r - 1))).index((c - 1))
+        neighbours += makeIterable(matrix.index((r - 1))).index((c + 1))
+        neighbours += makeIterable(matrix.index((r + 1))).index((c - 1))
+        neighbours += makeIterable(matrix.index((r + 1))).index((c + 1))
+        VList.from(neighbours.toList)
+      })
+    }
+
+    VList.from(temp)
+  end gridNeighboursDiagonalWrap
+
   /** Group elements according to the result of some function
     * @return
     *   A VList where each element is again a VList containing a group of

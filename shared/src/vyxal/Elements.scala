@@ -1565,12 +1565,31 @@ object Elements:
         "adjacent-cells-diagonals",
         "adj-cells-diagonals",
         "surrounding-cells-diagonals",
+        "eight-cells",
       ),
       false,
       "a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals",
     ) {
       case value =>
         ListHelpers.gridNeighboursDiagonal(ListHelpers.makeIterable(value))
+    },
+    addPart(
+      Monad,
+      "Þȯ",
+      "Grid Neighbours (Diagonals, Wrap Around)",
+      List(
+        "grid-neighbours-diagonals-wrap",
+        "grid-neighbors-diagonals-wrap",
+        "adjacent-cells-diagonals-wrap",
+        "adj-cells-diagonals-wrap",
+        "surrounding-cells-diagonals-wrap",
+        "eight-cells-wrap",
+      ),
+      false,
+      "a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals - wrapping around",
+    ) {
+      case value =>
+        ListHelpers.gridNeighboursDiagonalWrap(ListHelpers.makeIterable(value))
     },
     addFull(Dyad, ";", "Pair", List("pair"), false, "a, b -> [a, b]") {
       VList(_, _)
