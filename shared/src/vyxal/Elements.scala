@@ -1520,8 +1520,7 @@ object Elements:
               ctx.push(VList.from(ListHelpers.overlaps(b.lst, a.toInt)))
             case _ => throw Exception("Invalid arguments for overlaps")
     },
-    addPart(
-      Monad,
+    addDirect(
       "Þo",
       "Grid Neighbours",
       List(
@@ -1531,13 +1530,29 @@ object Elements:
         "adj-cells",
         "surrounding-cells",
       ),
-      false,
-      "a: lst[lst] -> Grid neighbours of a - up, down, left and right of a",
-    ) {
-      case value => ListHelpers.gridNeighbours(ListHelpers.makeIterable(value))
+      Some(1),
+      "a: lst[lst] -> Grid neighbours of a - right, down, left, up of a",
+      "a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a and start from direction b\n" +
+        "0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does",
+    ) { ctx ?=>
+      val top = ctx.pop()
+      top match
+        case a: VList => ctx.push(
+            ListHelpers.gridNeighbours(a)
+          )
+        case _ =>
+          val next = ctx.pop()
+          (top, next) match
+            case (a: VNum, b: VList) => ctx.push(
+                ListHelpers.gridNeighbours(
+                  b,
+                  a >= 0,
+                  (a.vabs % 4).toInt,
+                )
+              )
+            case _ => throw Exception("Invalid arguments for grid neighbours")
     },
-    addPart(
-      Monad,
+    addDirect(
       "ÞO",
       "Grid Neighbours (Wrap Around)",
       List(
@@ -1547,14 +1562,29 @@ object Elements:
         "adj-cells-wrap",
         "surrounding-cells-wrap",
       ),
-      false,
+      Some(1),
       "a: lst[lst] -> Grid neighbours of a - up, down, left, right - wrapping around",
-    ) {
-      case value =>
-        ListHelpers.gridNeighboursWrap(ListHelpers.makeIterable(value))
+      "a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b\n" +
+        "0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does",
+    ) { ctx ?=>
+      val top = ctx.pop()
+      top match
+        case a: VList => ctx.push(
+            ListHelpers.gridNeighboursWrap(ListHelpers.makeIterable(a))
+          )
+        case _ =>
+          val next = ctx.pop()
+          (top, next) match
+            case (a: VNum, b: VList) => ctx.push(
+                ListHelpers.gridNeighboursWrap(
+                  ListHelpers.makeIterable(b),
+                  a >= 0,
+                  (a.vabs % 4).toInt,
+                )
+              )
+            case _ => throw Exception("Invalid arguments for grid neighbours")
     },
-    addPart(
-      Monad,
+    addDirect(
       "ÞȮ",
       "Grid Neighbours (Diagonals)",
       List(
@@ -1565,14 +1595,29 @@ object Elements:
         "surrounding-cells-diagonals",
         "eight-cells",
       ),
-      false,
+      Some(1),
       "a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals",
-    ) {
-      case value =>
-        ListHelpers.gridNeighboursDiagonal(ListHelpers.makeIterable(value))
+      "a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a and start from direction b\n" +
+        "0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does",
+    ) { ctx ?=>
+      val top = ctx.pop()
+      top match
+        case a: VList => ctx.push(
+            ListHelpers.gridNeighboursDiagonal(a)
+          )
+        case _ =>
+          val next = ctx.pop()
+          (top, next) match
+            case (a: VNum, b: VList) => ctx.push(
+                ListHelpers.gridNeighboursDiagonal(
+                  b,
+                  a >= 0,
+                  (a.vabs % 8).toInt,
+                )
+              )
+            case _ => throw Exception("Invalid arguments for grid neighbours")
     },
-    addPart(
-      Monad,
+    addDirect(
       "Þȯ",
       "Grid Neighbours (Diagonals, Wrap Around)",
       List(
@@ -1583,11 +1628,27 @@ object Elements:
         "surrounding-cells-diagonals-wrap",
         "eight-cells-wrap",
       ),
-      false,
+      Some(1),
       "a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals - wrapping around",
-    ) {
-      case value =>
-        ListHelpers.gridNeighboursDiagonalWrap(ListHelpers.makeIterable(value))
+      "a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b\n" +
+        "0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does",
+    ) { ctx ?=>
+      val top = ctx.pop()
+      top match
+        case a: VList => ctx.push(
+            ListHelpers.gridNeighboursDiagonalWrap(a)
+          )
+        case _ =>
+          val next = ctx.pop()
+          (top, next) match
+            case (a: VNum, b: VList) => ctx.push(
+                ListHelpers.gridNeighboursDiagonalWrap(
+                  b,
+                  a >= 0,
+                  (a.vabs % 8).toInt,
+                )
+              )
+            case _ => throw Exception("Invalid arguments for grid neighbours")
     },
     addFull(Dyad, ";", "Pair", List("pair"), false, "a, b -> [a, b]") {
       VList(_, _)
