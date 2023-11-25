@@ -653,19 +653,18 @@ object ListHelpers:
     VList(out.map(VList.from)*)
 
   def take(iterable: VList, amount: VNum): VList =
-    val temp = iterable.toList
-    if amount < 0 then VList.from(temp.takeRight(amount.toInt.abs))
-    else VList.from(temp.take(amount.toInt))
+    if amount < 0 then VList.from(iterable.lst.takeRight(amount.toInt.abs))
+    else VList.from(iterable.lst.take(amount.toInt))
 
   def take(iterable: VList, amount: VNum, fill: VAny): VList =
-    val temp = iterable.toList
     if amount < 0 then
       VList.from(
-        (List.fill(amount.toInt.abs)(fill) ++ temp).takeRight(amount.toInt.abs)
+        (List.fill(amount.toInt.abs)(fill) ++ iterable.lst)
+          .takeRight(amount.toInt.abs)
       )
     else
       VList.from(
-        (temp ++ List.fill(amount.toInt)(fill)).take(amount.toInt)
+        (iterable.lst ++ List.fill(amount.toInt)(fill)).take(amount.toInt)
       )
 
   def take(iterable: VList, shape: Seq[VNum])(using
