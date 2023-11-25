@@ -1054,7 +1054,7 @@ Keywords:
 - *a, f -> f applied to the stack without popping items. Use the modifier instead.
 ----------------------
 ÞO (Grid Neighbours (Wrap Around)) (non-vectorising)
-Keywords: grid-neighbours-wrap
+Keywords: grid-neighbours-wrap, grid-neighbors-wrap, adjacent-cells-wrap, adj-cells-wrap, surrounding-cells-wrap
 - a: lst[lst] -> Grid neighbours of a - up, down, left, right - wrapping around
 ----------------------
 ÞT (Transpose Safe) (non-vectorising)
@@ -1062,11 +1062,11 @@ Keywords: transpose-safe
 - a: any -> transpose a
 ----------------------
 Þo (Grid Neighbours) (non-vectorising)
-Keywords: grid-neighbours
+Keywords: grid-neighbours, grid-neighbors, adjacent-cells, adj-cells, surrounding-cells
 - a: lst[lst] -> Grid neighbours of a - up, down, left and right of a
 ----------------------
 ÞȮ (Grid Neighbours (Diagonals)) (non-vectorising)
-Keywords: grid-neighbours-diagonals
+Keywords: grid-neighbours-diagonals, grid-neighbors-diagonals, adjacent-cells-diagonals, adj-cells-diagonals, surrounding-cells-diagonals
 - a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals
 ----------------------
 ÞṂ (Matrix Inverse) (vectorising)

@@ -336,10 +336,10 @@
  <code>#v</code> |  | [Internal Use] Vectorise (Element Form)  |  | NA | :x: | `*a, f` => `f vectorised over however many arguments in a. It is recommended to use the modifier instead`
  <code>#x</code> |  | Loop Continue | `continue` | 0 | :x: | `continue the current loop`
  <code>#~</code> |  | [Internal Use] Apply Without Popping (Element Form) |  | NA | :x: | `*a, f` => `f applied to the stack without popping items. Use the modifier instead.`
- <code>ÞO</code> |  | Grid Neighbours (Wrap Around) | `grid-neighbours-wrap` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right - wrapping around`
+ <code>ÞO</code> |  | Grid Neighbours (Wrap Around) | `grid-neighbours-wrap`, `grid-neighbors-wrap`, `adjacent-cells-wrap`, `adj-cells-wrap`, `surrounding-cells-wrap` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right - wrapping around`
  <code>ÞT</code> |  | Transpose Safe | `transpose-safe` | 1 | :x: | `a: any` => `transpose a`
- <code>Þo</code> |  | Grid Neighbours | `grid-neighbours` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left and right of a`
- <code>ÞȮ</code> |  | Grid Neighbours (Diagonals) | `grid-neighbours-diagonals` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right, diagonals`
+ <code>Þo</code> |  | Grid Neighbours | `grid-neighbours`, `grid-neighbors`, `adjacent-cells`, `adj-cells`, `surrounding-cells` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left and right of a`
+ <code>ÞȮ</code> |  | Grid Neighbours (Diagonals) | `grid-neighbours-diagonals`, `grid-neighbors-diagonals`, `adjacent-cells-diagonals`, `adj-cells-diagonals`, `surrounding-cells-diagonals` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right, diagonals`
  <code>ÞṂ</code> |  | Matrix Inverse | `matrix-inverse` | 1 | :white_check_mark: | `a: lst[lst]` => `matrix inverse of a`
 
 
