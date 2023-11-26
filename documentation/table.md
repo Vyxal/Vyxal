@@ -345,7 +345,7 @@
  <code>ð</code> | <code>#.b</code> | Space | `space` | 0 | :x: | `" "`
  <code>€</code> | <code>#^(</code> | Suffixes | `suffixes` | 1 | :x: | `a: lst` => `Suffixes of a`
  <code>¶</code> | <code>#,␤</code> | Newline | `newline` | 0 | :x: | `chr(10)`
- <code>ᶿ</code> | <code>#^`</code> | Cartesian Product Unsafe | `cartesian-product-unsafe`, `cartesian-unsafe`, `cart-prod-unsafe`, `cart-unsafe` | 2 | :x: | `a: list, b: list` => `cartesian product of a and b in the standard order, but without accounting for infinite lists`
+ <code>ᶿ</code> | <code>#^`</code> | Bifuricate | `bifuricate`, `bifur`, `bif`, `furry`, `uwu`, `dup-rev`, `dup-reverse` | 1 | :x: | `a: lst` => `Push a, then push a reversed`
  <code>ᶲ</code> | <code>#^\|</code> | Stringify | `to-string`, `stringify`, `str` | 1 | :x: | `a: any` => `str(a)`
  <code>•</code> | <code>#,.</code> | Asterisk | `asterisk` | 0 | :x: | `"*"`
  <code>≈</code> | <code>#^~</code> | All Equal? | `all-equal`, `all-equal?` | 1 | :x: | `a: lst` => `are all elements of a equal?`
@@ -367,6 +367,7 @@
  <code>ÞȮ</code> |  | Grid Neighbours (Diagonals, Wrap Around) | `grid-neighbours-diagonals-wrap`, `grid-neighbors-diagonals-wrap`, `adjacent-cells-diagonals-wrap`, `adj-cells-diagonals-wrap`, `surrounding-cells-diagonals-wrap`, `eight-cells-wrap` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right, diagonals - wrapping around`
  | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b
 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does`
+ <code>ÞẊ</code> |  | Cartesian Product Unsafe | `cartesian-product-unsafe`, `cartesian-unsafe`, `cart-prod-unsafe`, `cart-unsafe` | 2 | :x: | `a: list, b: list` => `cartesian product of a and b in the standard order, but without accounting for infinite lists`
  <code>Þȯ</code> |  | Grid Neighbours (Diagonals) | `grid-neighbours-diagonals`, `grid-neighbors-diagonals`, `adjacent-cells-diagonals`, `adj-cells-diagonals`, `surrounding-cells-diagonals`, `eight-cells` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right, diagonals`
  | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a and start from direction b
 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does`
