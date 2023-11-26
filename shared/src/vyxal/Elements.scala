@@ -193,6 +193,24 @@ object Elements:
           l
         }
     },
+    addDirect(
+      "ᶿ",
+      "Bifuricate",
+      List(
+        "bifuricate",
+        "bifur",
+        "bif",
+        "furry",
+        "uwu",
+        "dup-rev",
+        "dup-reverse",
+      ),
+      Some(1),
+      "a: lst -> Push a, then push a reversed",
+    ) { ctx ?=>
+      val a = ctx.pop()
+      ctx.push(a, a.reverse)
+    },
     addPart(
       Monad,
       "⌐",
@@ -285,7 +303,7 @@ object Elements:
     )(ListHelpers.cartesianProduct(_, _)),
     addFull(
       Dyad,
-      "ᶿ",
+      "ÞẊ",
       "Cartesian Product Unsafe",
       List(
         "cartesian-product-unsafe",
