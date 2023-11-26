@@ -3160,7 +3160,7 @@ object Elements:
         "digits-lowercase-uppercase",
         "digs-lower-upper",
         "o9azAZ",
-        "o-9A-z",
+        "o-9a-zA-Z",
       ),
       "\"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\"",
     ) {
@@ -3173,7 +3173,7 @@ object Elements:
         "digits-uppercase-lowercase",
         "digs-upper-lower",
         "o9AZaz",
-        "o-9A-z",
+        "o-9A-Za-z",
       ),
       "\"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\"",
     ) {
