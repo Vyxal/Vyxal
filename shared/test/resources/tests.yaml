@@ -905,7 +905,7 @@
     - {in: [0], out: [[]]}
   string:
    - in: "abc"
-  out: [["a", "b", "c"], ["a", "bc"], ["ab", "c"], ["abc"]]
+     out: [["a", "b", "c"], ["a", "bc"], ["ab", "c"], ["abc"]]
 
 "ṙ":
   - {in: ["abc"], out: "cab"}
