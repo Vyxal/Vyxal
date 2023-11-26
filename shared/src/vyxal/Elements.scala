@@ -204,6 +204,7 @@ object Elements:
         "uwu",
         "dup-rev",
         "dup-reverse",
+        "owo",
       ),
       Some(1),
       "a: lst -> Push a, then push a reversed",
