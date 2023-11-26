@@ -385,8 +385,10 @@ object ListHelpers:
     sep match
       case s: String => lst.mkString(s)
       case sep: (VNum | VList) =>
-        val l = ListHelpers.makeIterable(sep)
-        ListHelpers.flatten(lst.map(Seq(_)).reduce(_ ++ l ++ _))
+        val l =
+          if sep.isInstanceOf[VList] then sep.asInstanceOf[VList]
+          else VList(sep)
+        VList.from(lst.map(Seq(_)).reduce(_ ++ l ++ _))
       case _: VFun => ??? // todo reduce?
 
   def matrixInverse(lst: VList)(using Context): Option[VList] =
