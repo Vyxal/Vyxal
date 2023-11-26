@@ -1031,7 +1031,7 @@ Keywords: newline
 ----------------------
 ᶿ (Bifuricate) (non-vectorising)
 Trigraph: #^`
-Keywords: bifuricate, bifur, bif, furry, uwu, dup-rev, dup-reverse
+Keywords: bifuricate, bifur, bif, furry, uwu, dup-rev, dup-reverse, owo
 - a: lst -> Push a, then push a reversed
 ----------------------
 ᶲ (Stringify) (non-vectorising)

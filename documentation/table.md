@@ -345,7 +345,7 @@
  <code>ð</code> | <code>#.b</code> | Space | `space` | 0 | :x: | `" "`
  <code>€</code> | <code>#^(</code> | Suffixes | `suffixes` | 1 | :x: | `a: lst` => `Suffixes of a`
  <code>¶</code> | <code>#,␤</code> | Newline | `newline` | 0 | :x: | `chr(10)`
- <code>ᶿ</code> | <code>#^`</code> | Bifuricate | `bifuricate`, `bifur`, `bif`, `furry`, `uwu`, `dup-rev`, `dup-reverse` | 1 | :x: | `a: lst` => `Push a, then push a reversed`
+ <code>ᶿ</code> | <code>#^`</code> | Bifuricate | `bifuricate`, `bifur`, `bif`, `furry`, `uwu`, `dup-rev`, `dup-reverse`, `owo` | 1 | :x: | `a: lst` => `Push a, then push a reversed`
  <code>ᶲ</code> | <code>#^\|</code> | Stringify | `to-string`, `stringify`, `str` | 1 | :x: | `a: any` => `str(a)`
  <code>•</code> | <code>#,.</code> | Asterisk | `asterisk` | 0 | :x: | `"*"`
  <code>≈</code> | <code>#^~</code> | All Equal? | `all-equal`, `all-equal?` | 1 | :x: | `a: lst` => `are all elements of a equal?`
