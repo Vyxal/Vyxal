@@ -312,6 +312,10 @@ kA (Uppercase Alphabet) (non-vectorising)
 Keywords: uppercase-alphabet, uppercase-alpha, A->Z, A-Z, amazon
 - -> "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 ----------------------
+kB (Uppercase and lowercase) (non-vectorising)
+Keywords: uppercase-and-lowercase, uppercase-and-lowercase-alpha, A->Za->z, A-Za-z
+- -> "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+----------------------
 kF (FizzBuzz) (non-vectorising)
 Keywords: fizzbuzz, FB
 - -> "FizzBuzz"
@@ -327,6 +331,14 @@ Keywords: lowercase-and-uppercase-alphabet, lowercase-and-uppercase-alpha, a->zA
 kP (Printable Ascii) (non-vectorising)
 Keywords: printable-ascii, all-ascii
 - -> All of printable ascci. That excludes newline
+----------------------
+kR (Digits, Uppercase, Lowercase) (non-vectorising)
+Keywords: digits-uppercase-lowercase, digs-upper-lower, o9AZaz, o-9A-Za-z
+- -> "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+----------------------
+kZ (Uppercase Alphabet Reversed) (non-vectorising)
+Keywords: uppercase-alphabet-reversed, uppercase-alpha-reversed, Z->A
+- -> "ZYXWVUTSRQPONMLKJIHGFEDCBA"
 ----------------------
 k^ (Hex Digits (uppercase)) (non-vectorising)
 Keywords: hex-uppercase, hex-upper, hex-u, hex-uc
@@ -352,9 +364,21 @@ kf (Fizz) (non-vectorising)
 Keywords: fizz, FIZZ
 - -> "Fizz"
 ----------------------
+kg (Phi) (non-vectorising)
+Keywords: phi, golden-ratio, golden, l-618033988749895
+- -> Literally just phi
+----------------------
 kh (Hello World) (non-vectorising)
 Keywords: hello-world, HW
 - -> "Hello World"
+----------------------
+ki (Pi) (non-vectorising)
+Keywords: pi, E-14, E-1415926535897
+- -> Literally just pi
+----------------------
+kl (Upper and Lowercase Alphabet Reversed) (non-vectorising)
+Keywords: upper-and-lowercase-alphabet-reversed, upper-and-lowercase-alpha-reversed, Z->Az->a, Z-Az-a
+- -> "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"
 ----------------------
 ko (Octal Digits) (non-vectorising)
 Keywords: octal-digits, octal-digs, o-7
@@ -363,6 +387,14 @@ Keywords: octal-digits, octal-digs, o-7
 kp (Punctuation) (non-vectorising)
 Keywords: punctuation, punct
 - -> All punctuation characters
+----------------------
+kr (Digits, Lowercase, Uppercase) (non-vectorising)
+Keywords: digits-lowercase-uppercase, digs-lower-upper, o9azAZ, o-9a-zA-Z
+- -> "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+----------------------
+kz (Lowercase Alphabet Reversed) (non-vectorising)
+Keywords: lowercase-alphabet-reversed, lowercase-alpha-reversed, z->a, nozama
+- -> "zyxwvutsrqponmlkjihgfedcba"
 ----------------------
 l (Length of Each Item) (non-vectorising)
 Keywords: length-vectorised, length-vect, len-vect, len-vectorised, vec-len, vec-length, vlen

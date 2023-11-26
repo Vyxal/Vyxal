@@ -129,19 +129,27 @@
  <code>k4</code> |  | 1000000 | `one-million`, `l000000`, `l000k`, `lm` | 0 | :x: | `1000000`
  <code>k6</code> |  | Hex Digits (lowercase) | `hex-digits`, `hex-digs`, `hex-lowercase`, `hex-lower`, `hex-l`, `hex-lc` | 0 | :x: | `"0123456789abcdef"`
  <code>kA</code> |  | Uppercase Alphabet | `uppercase-alphabet`, `uppercase-alpha`, `A->Z`, `A-Z`, `amazon` | 0 | :x: | `"ABCDEFGHIJKLMNOPQRSTUVWXYZ"`
+ <code>kB</code> |  | Uppercase and lowercase | `uppercase-and-lowercase`, `uppercase-and-lowercase-alpha`, `A->Za->z`, `A-Za-z` | 0 | :x: | `"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"`
  <code>kF</code> |  | FizzBuzz | `fizzbuzz`, `FB` | 0 | :x: | `"FizzBuzz"`
  <code>kH</code> |  | Hello, World! | `hello-world!`, `HW!` | 0 | :x: | `"Hello, World!"`
  <code>kL</code> |  | Lowercase and Uppercase Alphabet | `lowercase-and-uppercase-alphabet`, `lowercase-and-uppercase-alpha`, `a->zA->Z`, `a-zA-Z` | 0 | :x: | `"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"`
  <code>kP</code> |  | Printable Ascii | `printable-ascii`, `all-ascii` | 0 | :x: | `All of printable ascci. That excludes newline`
+ <code>kR</code> |  | Digits, Uppercase, Lowercase | `digits-uppercase-lowercase`, `digs-upper-lower`, `o9AZaz`, `o-9A-Za-z` | 0 | :x: | `"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"`
+ <code>kZ</code> |  | Uppercase Alphabet Reversed | `uppercase-alphabet-reversed`, `uppercase-alpha-reversed`, `Z->A` | 0 | :x: | `"ZYXWVUTSRQPONMLKJIHGFEDCBA"`
  <code>k^</code> |  | Hex Digits (uppercase) | `hex-uppercase`, `hex-upper`, `hex-u`, `hex-uc` | 0 | :x: | `"0123456789ABCDEF"`
  <code>ka</code> |  | Lowercase Alphabet | `lowercase-alphabet`, `lowercase-alpha`, `a->z`, `a-z` | 0 | :x: | `"abcdefghijklmnopqrstuvwxyz"`
  <code>kb</code> |  | Buzz | `buzz`, `BUZZ` | 0 | :x: | `"Buzz"`
  <code>kd</code> |  | Digits | `digits`, `digs`, `o-9` | 0 | :x: | `"0123456789"`
  <code>ke</code> |  | Euler's Number | `euler's-number`, `euler`, `e-num` | 0 | :x: | `2.718281828459045`
  <code>kf</code> |  | Fizz | `fizz`, `FIZZ` | 0 | :x: | `"Fizz"`
+ <code>kg</code> |  | Phi | `phi`, `golden-ratio`, `golden`, `l-618033988749895` | 0 | :x: | `Literally just phi`
  <code>kh</code> |  | Hello World | `hello-world`, `HW` | 0 | :x: | `"Hello World"`
+ <code>ki</code> |  | Pi | `pi`, `E-14`, `E-1415926535897` | 0 | :x: | `Literally just pi`
+ <code>kl</code> |  | Upper and Lowercase Alphabet Reversed | `upper-and-lowercase-alphabet-reversed`, `upper-and-lowercase-alpha-reversed`, `Z->Az->a`, `Z-Az-a` | 0 | :x: | `"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"`
  <code>ko</code> |  | Octal Digits | `octal-digits`, `octal-digs`, `o-7` | 0 | :x: | `"01234567"`
  <code>kp</code> |  | Punctuation | `punctuation`, `punct` | 0 | :x: | `All punctuation characters`
+ <code>kr</code> |  | Digits, Lowercase, Uppercase | `digits-lowercase-uppercase`, `digs-lower-upper`, `o9azAZ`, `o-9a-zA-Z` | 0 | :x: | `"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"`
+ <code>kz</code> |  | Lowercase Alphabet Reversed | `lowercase-alphabet-reversed`, `lowercase-alpha-reversed`, `z->a`, `nozama` | 0 | :x: | `"zyxwvutsrqponmlkjihgfedcba"`
  <code>l</code> |  | Length of Each Item | `length-vectorised`, `length-vect`, `len-vect`, `len-vectorised`, `vec-len`, `vec-length`, `vlen` | 1 | :x: | `a: lst` => `Length of each item in a`
  <code>m</code> |  | Get Context Variable M | `get-context-m`, `context-m`, `c-var-m`, `ctx-m`, `ctx-secondary` | 0 | :x: | `context variable m`
  <code>n</code> |  | Get Context Variable N | `get-context-n`, `context-n`, `c-var-n`, `ctx-n`, `ctx-primary` | 0 | :x: | `context variable n`
