@@ -388,7 +388,11 @@ object ListHelpers:
         val l =
           if sep.isInstanceOf[VList] then sep.asInstanceOf[VList]
           else VList(sep)
-        VList.from(lst.map(Seq(_)).reduce(_ ++ l ++ _))
+        VList.from(
+          lst.lst
+            .map(makeIterable(_).lst)
+            .reduce((ret, item) => ret ++ l ++ item)
+        )
       case _: VFun => ??? // todo reduce?
 
   def matrixInverse(lst: VList)(using Context): Option[VList] =
