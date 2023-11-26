@@ -3153,6 +3153,73 @@ object Elements:
       // https://alvinalexander.com/source-code/scala-sequence-list-all-ascii-printable-characters/
       ((' ' to '~').toList).mkString
     },
+    addNilad(
+      "kr",
+      "Digits, Lowercase, Uppercase",
+      List("digits-lowercase-uppercase", "digs-lower-upper", "o9azAZ", "o-9A-z"),
+      "\"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\"",
+    ){
+      "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    },
+    addNilad(
+      "kR",
+      "Digits, Uppercase, Lowercase",
+      List("digits-uppercase-lowercase", "digs-upper-lower", "o9AZaz", "o-9A-z"),
+      "\"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\"",
+    ){
+      "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    },
+    addNilad(
+      "kB",
+      "Uppercase and lowercase"
+    , List("uppercase-and-lowercase", "uppercase-and-lowercase-alpha", "A->Za->z", "A-Za-z"),
+      "\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\"",
+    ) {
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    },
+    addNilad(
+      "kZ",
+      "Uppercase Alphabet Reversed",
+      List("uppercase-alphabet-reversed", "uppercase-alpha-reversed", "Z->A"),
+      "\"ZYXWVUTSRQPONMLKJIHGFEDCBA\"",
+    
+    ){
+      "ZYXWVUTSRQPONMLKJIHGFEDCBA"
+    },
+    addNilad(
+      "kz",
+      "Lowercase Alphabet Reversed",
+      List("lowercase-alphabet-reversed", "lowercase-alpha-reversed", "z->a", "nozama"),
+      "\"zyxwvutsrqponmlkjihgfedcba\"",
+    ) {
+      "zyxwvutsrqponmlkjihgfedcba"
+    },
+    addNilad(
+      "kl",
+      "Upper and Lowercase Alphabet Reversed",
+      List("upper-and-lowercase-alphabet-reversed", "upper-and-lowercase-alpha-reversed", "Z->Az->a", "Z-Az-a"),
+      "\"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba\"",
+    ){
+      "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"
+    },
+    addNilad(
+      "ki",
+      "Pi",
+      List("pi", "E-14", "E-1415926535897"),
+      "Literally just pi",
+    ){
+      spire.math.Real.pi
+    },
+    addNilad(
+      "kg",
+      "Phi",
+      List("phi", "golden-ratio", "golden", "l-618033988749895"),
+      "Literally just phi",
+    ){
+      spire.math.Real.phi
+    },
+    }
+  
   )
 
   private def execHelper(value: VAny)(using ctx: Context): VAny =
