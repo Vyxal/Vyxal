@@ -1834,12 +1834,18 @@ object Elements:
         "integer-partitions",
         "int-partitions",
         "int-parts",
+        "partitions",
       ),
       false,
       "a: lst -> List partitions of a",
       "a: num -> Integer partitions of a (all possible ways to sum to a)",
     ) {
       case a: VList => ListHelpers.partitions(a)
+      case s: String => ListHelpers
+          .partitions(ListHelpers.makeIterable(s))
+          .vmap(
+            _.asInstanceOf[VList].vmap(_.asInstanceOf[VList].mkString)
+          )
       case n: VNum => NumberHelpers.partitions(n)
     },
     addFull(
