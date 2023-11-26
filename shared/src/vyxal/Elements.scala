@@ -3218,8 +3218,7 @@ object Elements:
     ){
       spire.math.Real.phi
     },
-    }
-  
+    
   )
 
   private def execHelper(value: VAny)(using ctx: Context): VAny =
