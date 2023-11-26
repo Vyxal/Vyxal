@@ -243,7 +243,7 @@
  | | | | | | | `a: str` => `a padded to a multiple of 8 with 0s`
  | | | | | | | `a: num` => `a if a == 1 push context variable n`
  <code>ȯ</code> | <code>#.o</code> | Boolify | `boolify` | 1 | :x: | `a: any` => `bool(a)`
- <code>ṗ</code> | <code>#.p</code> | List Partitions / Integer Partitions | `list-partitions`, `list-parts`, `integer-partitions`, `int-partitions`, `int-parts` | 1 | :x: | `a: lst` => `List partitions of a`
+ <code>ṗ</code> | <code>#.p</code> | List Partitions / Integer Partitions | `list-partitions`, `list-parts`, `integer-partitions`, `int-partitions`, `int-parts`, `partitions` | 1 | :x: | `a: lst` => `List partitions of a`
  | | | | | | | `a: num` => `Integer partitions of a (all possible ways to sum to a)`
  <code>ṙ</code> | <code>#.r</code> | Rotate Right | `abc->cab`, `rot-right`, `rotate-right` | 1 | :x: | `a: any` => `rotate right once`
  <code>ṡ</code> | <code>#.s</code> | Sort by Function Object / Partition by Numbers | `sort-by`, `sortby`, `sort-by-fun`, `sortbyfun`, `sort-fun`, `sortfun`, `partition-by` | 2 | :x: | `a: fun, b: any` => `sort iterable b by function a`
