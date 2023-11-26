@@ -151,9 +151,9 @@ object NumberHelpers:
   def toBinary(a: VAny)(using Context): VList =
     a match
       case n: VNum =>
-        val binary = n.toInt.abs.toBinaryString
+        val binary = n.toBigInt.abs.toString(2)
         val temp = VList(binary.map(_.asDigit: VNum)*)
-        if n.toInt < 0 then temp.vmap(v => -v.asInstanceOf[VNum]) else temp
+        if n.toBigInt < 0 then temp.vmap(v => -v.asInstanceOf[VNum]) else temp
       case s: String =>
         // get binary representation of each character
         val result = ListBuffer.empty[VAny]
