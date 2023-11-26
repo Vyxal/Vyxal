@@ -209,7 +209,7 @@ object Elements:
       "a: lst -> Push a, then push a reversed",
     ) { ctx ?=>
       val a = ctx.pop()
-      ctx.push(a, a.reverse)
+      ctx.push(a, ListHelpers.reverse(a))
     },
     addPart(
       Monad,
