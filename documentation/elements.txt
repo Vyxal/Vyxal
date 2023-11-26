@@ -665,7 +665,7 @@ Keywords: boolify
 ----------------------
 ṗ (List Partitions | Integer Partitions) (non-vectorising)
 Trigraph: #.p
-Keywords: list-partitions, list-parts, integer-partitions, int-partitions, int-parts
+Keywords: list-partitions, list-parts, integer-partitions, int-partitions, int-parts, partitions
 - a: lst -> List partitions of a
 - a: num -> Integer partitions of a (all possible ways to sum to a)
 ----------------------
