@@ -289,7 +289,7 @@ function Keyboard() {
   };
 
   const ELEMENTS_LINK =
-    "https://github.com/Vyxal/Vyxal/blob/main/documents/knowledge/elements.md";
+    "https://github.com/Vyxal/Vyxal/blob/version-2/documents/knowledge/elements.md";
 
   return html`
     <div className="row">
