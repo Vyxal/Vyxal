@@ -867,7 +867,7 @@ Keywords: bitwise-xor, insert-space
 ----------------------
 ₀ (Ten) (non-vectorising)
 Trigraph: #,0
-Keywords: ten
+Keywords: ten, l0
 - -> 10
 ----------------------
 ₁ (Sixteen) (non-vectorising)
@@ -877,7 +877,7 @@ Keywords: sixteen, l6
 ----------------------
 ₂ (Twenty-six) (non-vectorising)
 Trigraph: #,2
-Keywords: twenty-six, Z6
+Keywords: twenty-six, Z6, z6
 - -> 26
 ----------------------
 ₃ (Thirty-two) (non-vectorising)
@@ -897,22 +897,22 @@ Keywords: one-hundred, l00
 ----------------------
 ₆ (One hundred twenty-eight) (non-vectorising)
 Trigraph: #,6
-Keywords: one-hundred-twenty-eight
+Keywords: one-hundred-twenty-eight, l28
 - -> 128
 ----------------------
 ₇ (Two hundred fifty-six) (non-vectorising)
 Trigraph: #,7
-Keywords: two-hundred-fifty-six
+Keywords: two-hundred-fifty-six, Z56, z56
 - -> 256
 ----------------------
 ₈ (-1) (non-vectorising)
 Trigraph: #,8
-Keywords: negative-one, neg-1
+Keywords: negative-one, neg-1, -1
 - -> -1
 ----------------------
 ₉ (Empty array) (non-vectorising)
 Trigraph: #,9
-Keywords: empty-list, nil-list, new-list
+Keywords: empty-list, nil-list, new-list, <>
 - -> []
 ----------------------
 ½ (Halve) (vectorising)

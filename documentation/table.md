@@ -307,16 +307,16 @@
  <code>∵</code> | <code>#,:</code> | Bitwise Or | `bitwise-or` | 2 | :white_check_mark: | `a: num, b: num` => `a \| b`
  <code>⊻</code> | <code>#,v</code> | Bitwise Xor | `bitwise-xor`, `insert-space` | 2 | :white_check_mark: | `a: num, b: num` => `a ^ b`
  | | | | | | | `a: str, b: str` => `a + space + b`
- <code>₀</code> | <code>#,0</code> | Ten | `ten` | 0 | :x: | `10`
+ <code>₀</code> | <code>#,0</code> | Ten | `ten`, `l0` | 0 | :x: | `10`
  <code>₁</code> | <code>#,1</code> | Sixteen | `sixteen`, `l6` | 0 | :x: | `16`
- <code>₂</code> | <code>#,2</code> | Twenty-six | `twenty-six`, `Z6` | 0 | :x: | `26`
+ <code>₂</code> | <code>#,2</code> | Twenty-six | `twenty-six`, `Z6`, `z6` | 0 | :x: | `26`
  <code>₃</code> | <code>#,3</code> | Thirty-two | `thirty-two`, `E2` | 0 | :x: | `32`
  <code>₄</code> | <code>#,4</code> | Sixty-four | `sixty-four`, `b4` | 0 | :x: | `64`
  <code>₅</code> | <code>#,5</code> | One hundred | `one-hundred`, `l00` | 0 | :x: | `100`
- <code>₆</code> | <code>#,6</code> | One hundred twenty-eight | `one-hundred-twenty-eight` | 0 | :x: | `128`
- <code>₇</code> | <code>#,7</code> | Two hundred fifty-six | `two-hundred-fifty-six` | 0 | :x: | `256`
- <code>₈</code> | <code>#,8</code> | -1 | `negative-one`, `neg-1` | 0 | :x: | `-1`
- <code>₉</code> | <code>#,9</code> | Empty array | `empty-list`, `nil-list`, `new-list` | 0 | :x: | `[]`
+ <code>₆</code> | <code>#,6</code> | One hundred twenty-eight | `one-hundred-twenty-eight`, `l28` | 0 | :x: | `128`
+ <code>₇</code> | <code>#,7</code> | Two hundred fifty-six | `two-hundred-fifty-six`, `Z56`, `z56` | 0 | :x: | `256`
+ <code>₈</code> | <code>#,8</code> | -1 | `negative-one`, `neg-1`, `-1` | 0 | :x: | `-1`
+ <code>₉</code> | <code>#,9</code> | Empty array | `empty-list`, `nil-list`, `new-list`, `<>` | 0 | :x: | `[]`
  <code>½</code> | <code>#.5</code> | Halve | `halve` | 1 | :white_check_mark: | `a: num` => `a / 2`
  | | | | | | | `a: str` => `a split into two pieces`
  <code>ʀ</code> | <code>#.~</code> | Exclusive Zero Range / Lowercase | `0->n`, `zero-range`, `lowered-range`, `to-lower`, `lower`, `lowercase` | 1 | :white_check_mark: | `a: num` => `[0..a)`
