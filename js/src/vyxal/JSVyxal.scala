@@ -29,6 +29,12 @@ object JSVyxal:
 
     var printRequestCount = 0
 
+    val inputList = inputs
+      .split("\n")
+      .map(x => MiscHelpers.eval(x)(using Context()))
+      .toSeq
+      .reverse
+
     val settings = Settings(online = true).withFlags(flags.toList)
     val globals: Globals = Globals(
       settings = settings,
@@ -36,16 +42,11 @@ object JSVyxal:
         if printRequestCount <= 20000 then
           printFunc(str)
           printRequestCount += 1,
-      inputs = Inputs(
-        inputs.split("\n").map(x => MiscHelpers.eval(x)(using Context())).toSeq
-      ),
+      inputs = Inputs(inputList),
     )
 
     val ctx = Context(
-      inputs = inputs
-        .split("\n")
-        .map(x => MiscHelpers.eval(x)(using Context()))
-        .toIndexedSeq,
+      inputs = inputList,
       globals = globals,
     )
     Interpreter.execute(code)(using ctx)
