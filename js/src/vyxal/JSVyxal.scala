@@ -50,7 +50,17 @@ object JSVyxal:
       globals = globals,
     )
     try Interpreter.execute(code)(using ctx)
-    catch case _: Exception => errorFunc("Code errored :(")
+    catch
+      case ex: VyxalException => errorFunc(
+          ex.getMessage() +
+          (if (ctx.settings.fullTrace) "\n" + ex.getStackTrace().mkString("\n")
+          else "")
+        )
+      case ex: Throwable => errorFunc(
+          "Unrecognized error" +
+          (if (ctx.settings.fullTrace) ":\n" + ex.getStackTrace().mkString("\n")
+          else ", use the '--trace' flag for full traceback")
+        ) 
   end execute
 
   @JSExport

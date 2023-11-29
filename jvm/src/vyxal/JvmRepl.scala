@@ -30,9 +30,14 @@ object JvmRepl extends Repl:
       try Interpreter.execute(code)
       catch
         case ex: VyxalException => scribe.error(
-            ex.getMessage(),
-            if ctx.settings.fullTrace then ex.getStackTrace.mkString("\n")
-            else "",
+            ex.getMessage() +
+            (if ctx.settings.fullTrace then "\n" + ex.getStackTrace.mkString("\n")
+            else "")
+          )
+        case ex: Throwable => scribe.error(
+            "Unrecognized error" +
+            (if (ctx.settings.fullTrace) ":\n" + ex.getStackTrace().mkString("\n")
+            else ", use the '--trace' flag for full traceback")
           )
 
   private def fancyRepl()(using ctx: Context): Unit =
@@ -83,9 +88,14 @@ object JvmRepl extends Repl:
         Interpreter.execute(code)
       catch
         case ex: VyxalException => scribe.error(
-            ex.getMessage(),
-            if ctx.settings.fullTrace then ex.getStackTrace.mkString("\n")
-            else "",
+            ex.getMessage() +
+            (if ctx.settings.fullTrace then "\n" + ex.getStackTrace.mkString("\n")
+            else "")
+          )
+        case ex: Throwable => scribe.error(
+            "Unrecognized error" +
+            (if (ctx.settings.fullTrace) ":\n" + ex.getStackTrace().mkString("\n")
+            else ", use the '--trace' flag for full traceback")
           )
         case _: UserInterruptException => return
         case _: EndOfFileException => return
