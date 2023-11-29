@@ -290,8 +290,11 @@
  <code>⁺</code> | <code>#^+</code> | Powerset | `powerset` | 1 | :x: | `a: lst` => `powerset of a`
  <code>⁻</code> | <code>#^-</code> | Cube / Threes | `cube`, `threes` | 1 | :white_check_mark: | `a: num` => `a ** 3`
  | | | | | | | `a: str` => `a split into chunks of length 3`
- <code>⁾</code> | <code>#^)</code> | Surround / Character Multiply | `surround`, `character-multiply` | 2 | :x: | `a: num, b: str` => `each character in b repeated a times`
- | | | | | | | `a: any, b: any` => `a prepended and appended to b`
+ <code>⁾</code> | <code>#^)</code> | Set Intersection / Flatten By Depth / Character Multiply | `set-intersection`, `intersection`, `flatten-by-depth`, `intersect` | 2 | :x: | `a: lst, b: lst` => `set intersection of a and b`
+ | | | | | | | `a: str, b: str` => `set intersection of a and b`
+ | | | | | | | `a: lst, b: num` => `flatten a by depth b`
+ | | | | | | | `a: num, b: str` => `each character in b repeated a times`
+ | | | | | | | `a: str, b: num` => `each character in a repeated b times`
  <code>√</code> | <code>#,*</code> | Square Root | `sqrt`, `square-root` | 1 | :white_check_mark: | `a: num` => `sqrt(a)`
  <code>∑</code> |  | Sum | `sum`, `/+`, `+/` | 1 | :x: | `a: lst` => `sum of a`
  <code>«</code> | <code>#.<</code> | Bitshift Left | `bitwise-left-shift`, `left-shift`, `left-pad`, `pad-left` | 2 | :white_check_mark: | `a: num, b: num` => `a << b`
@@ -380,6 +383,7 @@
  | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a and start from direction b
 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does`
  <code>ÞṂ</code> |  | Matrix Inverse | `matrix-inverse` | 1 | :white_check_mark: | `a: lst[lst]` => `matrix inverse of a`
+ <code>Þ⁾</code> |  | Surround | `surround` | 2 | :x: | `a: any, b: any` => `a prepended and appended to b`
 
 
 ## Modifiers
