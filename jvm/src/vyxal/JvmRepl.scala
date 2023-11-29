@@ -31,14 +31,18 @@ object JvmRepl extends Repl:
       catch
         case ex: VyxalException => scribe.error(
             ex.getMessage() +
-            (if ctx.settings.fullTrace then "\n" + ex.getStackTrace.mkString("\n")
-            else "")
+              (if ctx.settings.fullTrace then
+                 "\n" + ex.getStackTrace.mkString("\n")
+               else "")
           )
         case ex: Throwable => scribe.error(
             "Unrecognized error" +
-            (if (ctx.settings.fullTrace) ":\n" + ex.getStackTrace().mkString("\n")
-            else ", use the '--trace' flag for full traceback")
+              (if ctx.settings.fullTrace then
+                 ":\n" + ex.getStackTrace().mkString("\n")
+               else ", use the '--trace' flag for full traceback")
           )
+    end while
+  end plainRepl
 
   private def fancyRepl()(using ctx: Context): Unit =
     // Enable debug logging
@@ -89,15 +93,18 @@ object JvmRepl extends Repl:
       catch
         case ex: VyxalException => scribe.error(
             ex.getMessage() +
-            (if ctx.settings.fullTrace then "\n" + ex.getStackTrace.mkString("\n")
-            else "")
+              (if ctx.settings.fullTrace then
+                 "\n" + ex.getStackTrace.mkString("\n")
+               else "")
           )
         case ex: Throwable => scribe.error(
             "Unrecognized error" +
-            (if (ctx.settings.fullTrace) ":\n" + ex.getStackTrace().mkString("\n")
-            else ", use the '--trace' flag for full traceback")
+              (if ctx.settings.fullTrace then
+                 ":\n" + ex.getStackTrace().mkString("\n")
+               else ", use the '--trace' flag for full traceback")
           )
         case _: UserInterruptException => return
         case _: EndOfFileException => return
+    end while
   end fancyRepl
 end JvmRepl

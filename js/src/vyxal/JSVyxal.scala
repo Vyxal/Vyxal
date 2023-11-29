@@ -53,14 +53,16 @@ object JSVyxal:
     catch
       case ex: VyxalException => errorFunc(
           ex.getMessage() +
-          (if (ctx.settings.fullTrace) "\n" + ex.getStackTrace().mkString("\n")
-          else "")
+            (if ctx.settings.fullTrace then
+               "\n" + ex.getStackTrace().mkString("\n")
+             else "")
         )
       case ex: Throwable => errorFunc(
           "Unrecognized error" +
-          (if (ctx.settings.fullTrace) ":\n" + ex.getStackTrace().mkString("\n")
-          else ", use the 'X' flag for full traceback")
-        ) 
+            (if ctx.settings.fullTrace then
+               ":\n" + ex.getStackTrace().mkString("\n")
+             else ", use the 'X' flag for full traceback")
+        )
   end execute
 
   @JSExport
