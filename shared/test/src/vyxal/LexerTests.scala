@@ -95,14 +95,16 @@ class LexerTests extends VyxalTests:
       testLex("1 #a", List(Number("1"), Digraph("#a")))
     }
     it("should handle empty comments") {
-      testLex(
-        "1 ##\n",
-        List(Number("1"), Comment(""), Token(Newline, "\n", Range.fake)),
-      )
-      testLex(
-        "1 ##",
-        List(Number("1"), Comment("")),
-      )
+      group {
+        testLex(
+          "1 ##\n",
+          List(Number("1"), Comment(""), Token(Newline, "\n", Range.fake)),
+        )
+        testLex(
+          "1 ##",
+          List(Number("1"), Comment("")),
+        )
+      }
     }
   }
 
