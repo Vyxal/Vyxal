@@ -91,6 +91,8 @@ object JvmRepl extends Repl:
         val code = lineReader.readLine("> ")
         Interpreter.execute(code)
       catch
+        case _: UserInterruptException => return
+        case _: EndOfFileException => return
         case ex: VyxalException => scribe.error(
             ex.getMessage() +
               (if ctx.settings.fullTrace then
@@ -103,8 +105,6 @@ object JvmRepl extends Repl:
                  ":\n" + ex.getStackTrace().mkString("\n")
                else ", use the '--trace' flag for full traceback")
           )
-        case _: UserInterruptException => return
-        case _: EndOfFileException => return
     end while
   end fancyRepl
 end JvmRepl
