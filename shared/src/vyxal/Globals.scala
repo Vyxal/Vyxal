@@ -167,11 +167,7 @@ case class Settings(
       case 'N' => this.copy(endPrintMode = EndPrintMode.JoinNothing)
       case 'Ṫ' => this.copy(endPrintMode = EndPrintMode.SumStack)
       case 'ṡ' => this.copy(endPrintMode = EndPrintMode.SpaceStack)
-      case _ => throw IllegalArgumentException(s"$flag is an invalid flag")
-
-  def withLongFlag(flag: String): Settings =
-    flag match
-      case "trace" => this.copy(fullTrace = true)
+      case 'X' => this.copy(fullTrace = true)
       case _ => throw IllegalArgumentException(s"$flag is an invalid flag")
 
   /** Helper to update these settings with multiple flags

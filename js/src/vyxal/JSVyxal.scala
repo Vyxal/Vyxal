@@ -59,7 +59,7 @@ object JSVyxal:
       case ex: Throwable => errorFunc(
           "Unrecognized error" +
           (if (ctx.settings.fullTrace) ":\n" + ex.getStackTrace().mkString("\n")
-          else ", use the '--trace' flag for full traceback")
+          else ", use the 'X' flag for full traceback")
         ) 
   end execute
 

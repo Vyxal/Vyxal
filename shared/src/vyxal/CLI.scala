@@ -158,14 +158,6 @@ object CLI:
         .text(text)
         .optional()
 
-    def longFlag(long: String, text: String) =
-      opt[Unit](long)
-        .action((_, cfg) =>
-          cfg.copy(settings = cfg.settings.withLongFlag(long))
-        )
-        .text(text)
-        .optional()
-
     // todo come up with better names for the flags
     OParser.sequence(
       programName("vyxal"),
@@ -177,7 +169,7 @@ object CLI:
         .action((_, cfg) => cfg.copy(printHelp = true))
         .text("Print this help message and exit")
         .optional(),
-      longFlag("trace", "Return full traceback on program error"),
+      flag('X', "trace", "Return full traceback on program error"),
       opt[String]("file")
         .action((file, cfg) => cfg.copy(filename = Some(file)))
         .text("The file to read the program from")
