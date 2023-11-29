@@ -621,17 +621,7 @@ object ListHelpers:
         (left, right, (List.empty[VAny], List.empty[VAny]), ListBuffer[VAny]())
       ) {
         case (left, right, (leftGenerated, rightGenerated), inBoth) =>
-          if left.isEmpty && right.isEmpty then None
-          else if left.isEmpty then
-            Some(
-              right.lst.toList ->
-                (VList.empty, VList.empty, (List.empty, List.empty), inBoth)
-            )
-          else if right.isEmpty then
-            Some(
-              left.lst.toList ->
-                (VList.empty, VList.empty, (List.empty, List.empty), inBoth)
-            )
+          if left.isEmpty || right.isEmpty then None
           else
             val leftGen = leftGenerated :+ left.head
             val rightGen = rightGenerated :+ right.head
