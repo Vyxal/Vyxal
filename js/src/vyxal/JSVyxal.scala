@@ -21,7 +21,7 @@ object JSVyxal:
       inputs: String,
       flags: String,
       printFunc: js.Function1[String, Unit],
-      errorFunc: js.Function1[String, Unit]
+      errorFunc: js.Function1[String, Unit],
   ): Unit =
     // todo take functions to print to custom stdout and stderr
 
@@ -49,10 +49,8 @@ object JSVyxal:
         .toIndexedSeq,
       globals = globals,
     )
-    try
-      Interpreter.execute(code)(using ctx)
-    catch
-      case _: Exception => errorFunc("Code errored :(")
+    try Interpreter.execute(code)(using ctx)
+    catch case _: Exception => errorFunc("Code errored :(")
   end execute
 
   @JSExport
