@@ -781,8 +781,13 @@ window.addEventListener("DOMContentLoaded", e => {
             if (e.data.session != sessioncode || !runButton.innerHTML.includes('fa-spin')) {
                 return;
             }
-            if (e.data.command == "done") { runButton.innerHTML = '<i class="fas fa-play-circle"></i>'; }
-            else { output.value += e.data.val; expandBoxes() }
+            if (e.data.command == "done") {
+                runButton.innerHTML = '<i class="fas fa-play-circle"></i>';
+            }
+            else if (e.data.command == "error") {
+                console.log("test error");
+            }
+            else { output.value += e.data.val; expandBoxes(); }
         }
         if (runButton.innerHTML.includes('fa-spin')) {
             cancelWorker("Code terminated by user")
