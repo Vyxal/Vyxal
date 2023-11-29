@@ -174,7 +174,7 @@ private[parsing] object SBCSLexer:
   def newlines[$: P]: P[Token] = parseToken(Newline, Common.eol.!)
 
   def comment[$: P]: P[Token] =
-    parseToken(Comment, "##" ~~/ CharsWhile(c => c != '\n' && c != '\r').!)
+    parseToken(Comment, "##" ~~/ CharsWhile(c => c != '\n' && c != '\r').?.!)
 
   def token[$: P]: P[Token] =
     P(
