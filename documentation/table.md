@@ -100,7 +100,7 @@
  | | | | | | | `a: fun, b: lst` => `[[a(x), x] for x in b]`
  <code>\</code> |  | Dump | `dump` | 1 | :x: | `a: any` => `dump all values on the stack`
  <code>_</code> |  | Pop and Discard | `pop`, `discard` | NA | :x: | `a` => ``
- <code>\\`</code> |  | Length of Stack | `length-of-stack`, `stack-length`, `stack-len` | NA | :x: | `push the length of the stack`
+ <code>\&#96;</code> |  | Length of Stack | `length-of-stack`, `stack-length`, `stack-len` | NA | :x: | `push the length of the stack`
  <code>a</code> |  | Any Truthy / Any() / Is Uppercase? | `any`, `is-uppercase?`, `is-upper?`, `upper?` | 1 | :x: | `a: str` => `is (a) uppercase? vectorises for strings len > 1`
  | | | | | | | `a: list` => `is (a) any truthy?`
  <code>b</code> |  | Convert To Binary | `to-binary`, `dec->bin`, `decimal->bin` | 1 | :white_check_mark: | `a: num` => `convert a to binary`
