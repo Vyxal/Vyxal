@@ -190,8 +190,8 @@ object SyntaxInfo:
     "9" -> Syntax("Numeric Literal", "The number 9", "9"),
     "„" ->
       Syntax(
-        "Base-255 Compressed String",
-        "Decompress and push a string, converted from a bijective base 255 number using the codepage",
+        "Base-252 Compressed String",
+        "Decompress and push a string, converted from a bijective base 252 number using the codepage",
         "\"<compressed string>„",
       ),
     "”" ->
@@ -202,8 +202,8 @@ object SyntaxInfo:
       ),
     "“" ->
       Syntax(
-        "Base-255 Compressed Number",
-        "Decompress and push a number, converted from a bijective base 255 number using the codepage",
+        "Base-252 Compressed Number",
+        "Decompress and push a number, converted from a bijective base 252 number using the codepage",
         "\"<compressed number>“",
       ),
     "#$" ->
