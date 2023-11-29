@@ -104,7 +104,7 @@ private object GenerateDocs:
             else ":x:"
 
           contents ++=
-            s"| <code>${symbol.replace("`", "&#96;")}</code> | ${trigraph
+            s"| <code>${symbol.replace("\\", "\\\\")}</code> | ${trigraph
                 .replace("|", "\\|")} | $name | $keywords | ${elem.arity
                 .getOrElse("NA")} | $vectorises | ${formatOverload(overloads.head)}\n"
           overloads = overloads.tail
