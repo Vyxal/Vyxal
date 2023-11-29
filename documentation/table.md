@@ -461,9 +461,9 @@
  `µ` | `#,(` | Open Sort Lambda | Open a lambda that automatically sorts the top of the stack by its function | <pre>µ&lt;code&gt;}</pre> |
  `¤` | `#.@` | Context Paramter Index | Index into the list of context parameters. | <pre>¤&lt;number&gt;</pre> |
  `ı` | `#.i` | Imaginary Number | Used to represent the imaginary unit | <pre>&lt;real&gt;ı&lt;imaginary&gt;</pre> |
- `„` | `#,"` | Base-255 Compressed String | Decompress and push a string, converted from a bijective base 255 number using the codepage | <pre>"&lt;compressed string&gt;„</pre> |
+ `„` | `#,"` | Base-252 Compressed String | Decompress and push a string, converted from a bijective base 252 number using the codepage | <pre>"&lt;compressed string&gt;„</pre> |
  `”` | `#^'` | Dictionary Compressed String | Decompress and push a string using SSS compression, shamelessly stolen from Jelly | <pre>"&lt;compressed string&gt;”</pre> |
- `“` | `#^"` | Base-255 Compressed Number | Decompress and push a number, converted from a bijective base 255 number using the codepage | <pre>"&lt;compressed number&gt;“</pre> |
+ `“` | `#^"` | Base-252 Compressed Number | Decompress and push a number, converted from a bijective base 252 number using the codepage | <pre>"&lt;compressed number&gt;“</pre> |
  `#:[` |  | Variable Unpacking | Unpack the top of the stack into a list of variables. | <pre>#:[&lt;var&gt;\|&lt;var&gt;\|&lt;var&gt;]</pre> |
  `#` |  | Miscellaneous Digraphs | Used for miscellaneous digraphs | <pre>#&lt;character&gt;</pre> |
  `##` |  | Comment | Comment out the rest of the line | <pre>##&lt;comment&gt;</pre> |
