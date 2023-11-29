@@ -813,11 +813,14 @@ Keywords: cube, threes
 - a: num -> a ** 3
 - a: str -> a split into chunks of length 3
 ----------------------
-⁾ (Surround | Character Multiply) (non-vectorising)
+⁾ (Set Intersection | Flatten By Depth | Character Multiply) (non-vectorising)
 Trigraph: #^)
-Keywords: surround, character-multiply
+Keywords: set-intersection, intersection, flatten-by-depth, intersect
+- a: lst, b: lst -> set intersection of a and b
+- a: str, b: str -> set intersection of a and b
+- a: lst, b: num -> flatten a by depth b
 - a: num, b: str -> each character in b repeated a times
-- a: any, b: any -> a prepended and appended to b
+- a: str, b: num -> each character in a repeated b times
 ----------------------
 √ (Square Root) (vectorising)
 Trigraph: #,*
@@ -1198,6 +1201,10 @@ Keywords: grid-neighbours-diagonals, grid-neighbors-diagonals, adjacent-cells-di
 ÞṂ (Matrix Inverse) (vectorising)
 Keywords: matrix-inverse
 - a: lst[lst] -> matrix inverse of a
+----------------------
+Þ⁾ (Surround) (non-vectorising)
+Keywords: surround
+- a: any, b: any -> a prepended and appended to b
 ----------------------
 Ч
 Keywords: ****:
