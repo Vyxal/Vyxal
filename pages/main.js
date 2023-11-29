@@ -785,7 +785,7 @@ window.addEventListener("DOMContentLoaded", e => {
                 runButton.innerHTML = '<i class="fas fa-play-circle"></i>';
             }
             else if (e.data.command == "error") {
-                console.log("test error");
+                extra.value += e.data.val; expandBoxes();
             }
             else { output.value += e.data.val; expandBoxes(); }
         }
