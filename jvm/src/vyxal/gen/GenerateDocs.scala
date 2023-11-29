@@ -96,8 +96,7 @@ private object GenerateDocs:
           if trigraph.nonEmpty then trigraph = s"<code>$trigraph</code>"
           var overloads = elem.overloads
           val name = elem.name.replace("|", "/")
-          val symbol = "\\".repeat(if elem.symbol == "`" then 1 else 0) +
-            elem.symbol.replace("|", "\\|")
+          val symbol = elem.symbol.replace("|", "\\|")
           val keywords = elem.keywords.map("`" + _ + "`").mkString(", ")
           val vectorises =
             if elem.vectorises then ":white_check_mark:"
