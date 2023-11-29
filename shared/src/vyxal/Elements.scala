@@ -645,7 +645,12 @@ object Elements:
       Dyad,
       "F",
       "Filter by Function | From Base",
-      List("filter", "keep-by", "from-base", "10->b"),
+      List(
+        "filter",
+        "keep-by",
+        "from-base",
+        "10->b",
+      ),
       false,
       "a: fun, b: lst -> Filter b by truthy results of a",
       "a: lst, b: fun -> Filter a by truthy results of b",
@@ -2273,18 +2278,32 @@ object Elements:
     },
     addPart(
       Dyad,
-      "⁾",
-      "Surround | Character Multiply",
-      List("surround", "character-multiply"),
+      "Þ⁾",
+      "Surround",
+      List("surround"),
       false,
-      "a: num, b: str -> each character in b repeated a times",
       "a: any, b: any -> a prepended and appended to b",
     ) {
       case (a: VList, b) => VList.from((b +: a) :+ b)
       case (a: String, b: String) => b + a + b
       case (a, b: VList) => VList.from((a +: b) :+ a)
+    },
+    addPart(
+      Dyad,
+      "⁾",
+      "Set Intersection | Flatten By Depth | Character Multiply",
+      List("set-intersection", "intersection", "flatten-by-depth", "intersect"),
+      false,
+      "a: lst, b: lst -> set intersection of a and b",
+      "a: str, b: str -> set intersection of a and b",
+      "a: lst, b: num -> flatten a by depth b",
+      "a: num, b: str -> each character in b repeated a times",
+      "a: str, b: num -> each character in a repeated b times",
+    ) {
       case (a: VNum, b: String) => StringHelpers.characterMultiply(a, b)
       case (a: String, b: VNum) => StringHelpers.characterMultiply(b, a)
+      case (a: VList, b: VList) => ListHelpers.setIntersection(a, b)
+      case (a: VList, b: VNum) => ListHelpers.flattenByDepth(a, b)
     },
     addPart(
       Monad,
