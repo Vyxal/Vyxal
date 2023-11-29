@@ -3,7 +3,9 @@ package vyxal
 class VyxalException(message: String) extends RuntimeException(message)
 
 case class UnimplementedOverloadException(element: String, args: Seq[VAny])
-  extends VyxalException(s"$element not supported for input(s) ${args.mkString("[", ", ", "]")}")
+    extends VyxalException(
+      s"$element not supported for input(s) ${args.mkString("[", ", ", "]")}"
+    )
 
 /** Exception to end program using element Q */
 class QuitException extends VyxalException("Program quit")

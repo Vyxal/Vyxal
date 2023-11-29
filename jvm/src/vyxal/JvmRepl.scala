@@ -27,10 +27,13 @@ object JvmRepl extends Repl:
     println("Starting plain repl...")
     while true do
       val code = StdIn.readLine("> ")
-      try
-        Interpreter.execute(code)
+      try Interpreter.execute(code)
       catch
-        case ex: VyxalException => scribe.error(ex.getMessage(), if (ctx.settings.fullTrace) ex.getStackTrace.mkString("\n") else "")
+        case ex: VyxalException => scribe.error(
+            ex.getMessage(),
+            if ctx.settings.fullTrace then ex.getStackTrace.mkString("\n")
+            else "",
+          )
 
   private def fancyRepl()(using ctx: Context): Unit =
     // Enable debug logging
@@ -79,7 +82,11 @@ object JvmRepl extends Repl:
         val code = lineReader.readLine("> ")
         Interpreter.execute(code)
       catch
-        case ex: VyxalException => scribe.error(ex.getMessage(), if (ctx.settings.fullTrace) ex.getStackTrace.mkString("\n") else "")
+        case ex: VyxalException => scribe.error(
+            ex.getMessage(),
+            if ctx.settings.fullTrace then ex.getStackTrace.mkString("\n")
+            else "",
+          )
         case _: UserInterruptException => return
         case _: EndOfFileException => return
   end fancyRepl

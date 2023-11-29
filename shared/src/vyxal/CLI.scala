@@ -110,7 +110,6 @@ object CLI:
                     "Either file name or code must be given to debug"
                   )
           DebugRepl.start(code)
-
         else if config.readBytes then
           config.filename.foreach { filename =>
             val fileObj = java.io.File(filename)
@@ -161,7 +160,9 @@ object CLI:
 
     def longFlag(long: String, text: String) =
       opt[Unit](long)
-        .action((_, cfg) => cfg.copy(settings = cfg.settings.withLongFlag(long)))
+        .action((_, cfg) =>
+          cfg.copy(settings = cfg.settings.withLongFlag(long))
+        )
         .text(text)
         .optional()
 
