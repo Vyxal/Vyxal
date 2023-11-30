@@ -21,6 +21,7 @@ object JSVyxal:
       inputs: String,
       flags: String,
       printFunc: js.Function1[String, Unit],
+      errorFunc: js.Function1[String, Unit],
   ): Unit =
     // todo take functions to print to custom stdout and stderr
 
@@ -49,7 +50,20 @@ object JSVyxal:
       inputs = inputList,
       globals = globals,
     )
-    Interpreter.execute(code)(using ctx)
+    try Interpreter.execute(code)(using ctx)
+    catch
+      case ex: VyxalException => errorFunc(
+          ex.getMessage() +
+            (if ctx.settings.fullTrace then
+               "\n" + ex.getStackTrace().mkString("\n")
+             else "")
+        )
+      case ex: Throwable => errorFunc(
+          "Unrecognized error" +
+            (if ctx.settings.fullTrace then
+               ":\n" + ex.getStackTrace().mkString("\n")
+             else ", use the 'X' flag for full traceback")
+        )
   end execute
 
   @JSExport

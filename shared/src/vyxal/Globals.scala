@@ -140,6 +140,7 @@ case class Settings(
     numToRange: Boolean = false,
     online: Boolean = false,
     literate: Boolean = false,
+    fullTrace: Boolean = false,
 ):
 
   /** Add a flag to these settings
@@ -166,6 +167,7 @@ case class Settings(
       case 'N' => this.copy(endPrintMode = EndPrintMode.JoinNothing)
       case 'Ṫ' => this.copy(endPrintMode = EndPrintMode.SumStack)
       case 'ṡ' => this.copy(endPrintMode = EndPrintMode.SpaceStack)
+      case 'X' => this.copy(fullTrace = true)
       case _ => throw IllegalArgumentException(s"$flag is an invalid flag")
 
   /** Helper to update these settings with multiple flags

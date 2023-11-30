@@ -27,7 +27,22 @@ object JvmRepl extends Repl:
     println("Starting plain repl...")
     while true do
       val code = StdIn.readLine("> ")
-      Interpreter.execute(code)
+      try Interpreter.execute(code)
+      catch
+        case ex: VyxalException => scribe.error(
+            ex.getMessage() +
+              (if ctx.settings.fullTrace then
+                 "\n" + ex.getStackTrace.mkString("\n")
+               else "")
+          )
+        case ex: Throwable => scribe.error(
+            "Unrecognized error" +
+              (if ctx.settings.fullTrace then
+                 ":\n" + ex.getStackTrace().mkString("\n")
+               else ", use the '--trace' flag for full traceback")
+          )
+    end while
+  end plainRepl
 
   private def fancyRepl()(using ctx: Context): Unit =
     // Enable debug logging
@@ -78,5 +93,18 @@ object JvmRepl extends Repl:
       catch
         case _: UserInterruptException => return
         case _: EndOfFileException => return
+        case ex: VyxalException => scribe.error(
+            ex.getMessage() +
+              (if ctx.settings.fullTrace then
+                 "\n" + ex.getStackTrace.mkString("\n")
+               else "")
+          )
+        case ex: Throwable => scribe.error(
+            "Unrecognized error" +
+              (if ctx.settings.fullTrace then
+                 ":\n" + ex.getStackTrace().mkString("\n")
+               else ", use the '--trace' flag for full traceback")
+          )
+    end while
   end fancyRepl
 end JvmRepl

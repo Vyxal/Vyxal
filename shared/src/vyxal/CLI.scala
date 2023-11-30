@@ -151,7 +151,7 @@ object CLI:
   private val parser =
     import builder.*
 
-    /** Helper to for adding flags that go into Settings */
+    /** Helpers for adding flags that go into Settings */
     def flag(short: Char, name: String, text: String) =
       opt[Unit](short, name)
         .action((_, cfg) => cfg.copy(settings = cfg.settings.withFlag(short)))
@@ -169,6 +169,7 @@ object CLI:
         .action((_, cfg) => cfg.copy(printHelp = true))
         .text("Print this help message and exit")
         .optional(),
+      flag('X', "trace", "Return full traceback on program error"),
       opt[String]("file")
         .action((file, cfg) => cfg.copy(filename = Some(file)))
         .text("The file to read the program from")
