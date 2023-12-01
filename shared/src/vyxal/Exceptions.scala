@@ -11,13 +11,20 @@ class VyxalRuntimeException(message: String)
     extends VyxalException(s"RuntimeException: $message")
 
 /** VyxalLexingExceptions */
-class LeftoverCodeException(leftover: String) extends VyxalLexingException(s"Lexing completed with leftover code: '$leftover'")
+class LeftoverCodeException(leftover: String)
+    extends VyxalLexingException(
+      s"Lexing completed with leftover code: '$leftover'"
+    )
 
 /** VyxalParsingExceptions */
-class NoSuchElementException(token: Token) extends VyxalParsingException(s"No such element: ${token.value}")
-class BadStructureException(structure: String) extends VyxalParsingException(s"Invalid $structure statement")
-class NoSuchModifierException(modifier: String) extends VyxalParsingException(s"No such modifier: ${modifier}")
-class BadAugmentedAssignException() extends VyxalParsingException("Missing element for augmented assign")
+class NoSuchElementException(token: Token)
+    extends VyxalParsingException(s"No such element: ${token.value}")
+class BadStructureException(structure: String)
+    extends VyxalParsingException(s"Invalid $structure statement")
+class NoSuchModifierException(modifier: String)
+    extends VyxalParsingException(s"No such modifier: ${modifier}")
+class BadAugmentedAssignException()
+    extends VyxalParsingException("Missing element for augmented assign")
 
 /** VyxalRuntimeExceptions */
 case class UnimplementedOverloadException(element: String, args: Seq[VAny])
@@ -25,7 +32,6 @@ case class UnimplementedOverloadException(element: String, args: Seq[VAny])
       s"$element not supported for input(s) ${args.mkString("[", ", ", "]")}"
     )
 class RecursionError(message: String) extends VyxalRuntimeException(message)
-
 
 /** Exception to end program using element Q */
 class QuitException extends VyxalException("Program quit")

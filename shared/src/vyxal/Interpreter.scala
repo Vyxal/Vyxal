@@ -65,10 +65,7 @@ object Interpreter:
         vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString)
       end if
     end if
-    if ctx.settings.endPrintMode == EndPrintMode.Force then
-      vyPrintln(ctx.pop())
-
-      //case Left(error) => throw NoSuchElementException(s"Error while executing $code: $error")
+    if ctx.settings.endPrintMode == EndPrintMode.Force then vyPrintln(ctx.pop())
   end execute
 
   def execute(ast: AST)(using ctx: Context): Unit =

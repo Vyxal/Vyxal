@@ -157,8 +157,7 @@ object Lexer:
   )(using ctx: Context): List[Token] =
     if ctx.settings.literate then lexLiterate(code) else lexSBCS(code)
 
-  def lexSBCS(code: String): List[Token] =
-    SBCSLexer.lex(code)
+  def lexSBCS(code: String): List[Token] = SBCSLexer.lex(code)
 
   def performMoves(tkns: List[LitToken]): List[LitToken] =
     val tokens = tkns.map {
@@ -243,7 +242,8 @@ object Lexer:
     parse(code, LiterateLexer.list(_)).isSuccess
 
   def removeSugar(code: String): Option[String] =
-    if SBCSLexer.sugarUsed then Some(SBCSLexer.lex(code).map(_.value).mkString) else None
+    if SBCSLexer.sugarUsed then Some(SBCSLexer.lex(code).map(_.value).mkString)
+    else None
 
   private def sbcsifySingle(token: Token): String =
     val Token(tokenType, value, _) = token

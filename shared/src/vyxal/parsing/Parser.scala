@@ -54,10 +54,12 @@ object Parser:
           asts.push(AST.CompressedNumber(value, range))
         case TokenType.Newline => asts.push(AST.Newline)
         case TokenType.StructureOpen =>
-          asts.push(parseStructure(
-            StructureType.values.find(_.open == value).get,
-            program,
-          ))
+          asts.push(
+            parseStructure(
+              StructureType.values.find(_.open == value).get,
+              program,
+            )
+          )
           if topLevel && program.nonEmpty &&
             program.front.tokenType == TokenType.StructureAllClose
           then program.dequeue()
@@ -65,8 +67,9 @@ object Parser:
          * List are just structures with two different opening and closing
          * token possibilities, so handle them the same way.
          */
-        case TokenType.ListOpen =>
-          asts.push(AST.Lst((parseBranches(program, true)(_ == TokenType.ListClose))))
+        case TokenType.ListOpen => asts.push(
+            AST.Lst((parseBranches(program, true)(_ == TokenType.ListClose)))
+          )
 
         /*
          * Now comes command handling. When handling commands, we need to
@@ -132,8 +135,7 @@ object Parser:
             val modifierArgs = List.fill(arity)(finalAsts.pop())
             if modifier.from.isDefinedAt(modifierArgs) then
               finalAsts.push(modifier.from(modifierArgs))
-            else
-              throw NoSuchModifierException(name)
+            else throw NoSuchModifierException(name)
         case AST.SpecialModifier(name, _) => (name: @unchecked) match
             case "ᵜ" =>
               val lambdaAsts = ListBuffer[AST]()
@@ -148,8 +150,7 @@ object Parser:
               )
             case "ᵗ" => ??? // TODO: Implement tie
         case AST.AuxAugmentVar(name, _) =>
-          if asts.isEmpty then
-            throw BadAugmentedAssignException()
+          if asts.isEmpty then throw BadAugmentedAssignException()
           finalAsts.push(AST.AugmentVar(name, asts.pop()))
         case _ => finalAsts.push(topAst)
       end match
@@ -198,10 +199,10 @@ object Parser:
             asts.top.arity.fold(false)(_ == 0)
           do nilads += asts.pop()
           if nilads.isEmpty then return AST.Command(cmd, cmdTok.range)
-            AST.Group(
-              (AST.Command(cmd, cmdTok.range) :: nilads.toList).reverse,
-              Some(arity - nilads.size),
-            )
+          AST.Group(
+            (AST.Command(cmd, cmdTok.range) :: nilads.toList).reverse,
+            Some(arity - nilads.size),
+          )
     end match
   end parseCommand
 
@@ -283,8 +284,7 @@ object Parser:
             AST.Ternary(thenBranch, Some(elseBranch))
           case _ => throw BadStructureException("if")
       case StructureType.IfStatement =>
-        if branches.sizeIs < 2 then
-          throw BadStructureException("if")
+        if branches.sizeIs < 2 then throw BadStructureException("if")
         else
           val odd = branches.size % 2 == 1
           val grouped =
@@ -336,8 +336,7 @@ object Parser:
           case List(pred) => AST.DecisionStructure(pred, None)
           case _ => throw BadStructureException("decision")
       case StructureType.GeneratorStructure =>
-        if branches.sizeIs > 2 then
-          throw BadStructureException("generator")
+        if branches.sizeIs > 2 then throw BadStructureException("generator")
         else
           var rel = branches.head
           val vals = (branches: @unchecked) match
@@ -364,6 +363,8 @@ object Parser:
             case _ => rel.arity.getOrElse(2)
 
           AST.GeneratorStructure(rel, vals, arity)
+    end match
+  end parseStructure
 
   private def parseParameters(params: AST): (List[String | Int], Int) =
     val paramString = params.toVyxal
@@ -412,9 +413,10 @@ object Parser:
     val parsed = parse(preprocessed, true)
     if preprocessed.nonEmpty then
       // Some tokens were left at the end, which should never happen
-      throw VyxalParsingException(s"Some tokens failed to parse: ${preprocessed.toList}")
-    else
-      postprocess(parsed)
+      throw VyxalParsingException(
+        s"Some tokens failed to parse: ${preprocessed.toList}"
+      )
+    else postprocess(parsed)
 
   private def preprocess(tokens: List[Token]): List[Token] =
     val doubleClose = ListBuffer[Token]()
