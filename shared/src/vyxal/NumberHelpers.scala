@@ -90,7 +90,7 @@ object NumberHelpers:
 
   end gamma
 
-  def gcd(a: VNum, b: VNum): VNum = if b == VNum(0) then a else gcd(b, a % b)
+  def gcd(a: VNum, b: VNum): VNum = if b == VNum(0) then a.vabs else gcd(b.vabs, a.vabs % b.vabs)
 
   def gcd(a: Seq[VAny]): VNum =
     a.foldLeft(VNum(0)) { (a, b) =>
