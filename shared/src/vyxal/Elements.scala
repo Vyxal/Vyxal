@@ -2977,14 +2977,17 @@ object Elements:
     ) {
       case a: VNum => a.floor
       case a: String =>
-        val filtered = a.filter(c => c.isDigit || "-.".contains(c))
-        val negated = s"${filtered.head}${filtered.tail.replace("-", "")}"
-        val decimaled = negated.splitAt(negated.indexOf('.')) match
-          case ("", s) =>
-            if a.count('.' == _) > 1 then s.stripPrefix(".") else s
-          case (a, b) => a + "." + b.replace(".", "")
-        if decimaled.isEmpty then 0
-        else MiscHelpers.eval(decimaled)
+        if a.isEmpty then 0
+        else
+          val filtered = a.filter(c => c.isDigit || "-.".contains(c))
+          val negated = s"${filtered.head}${filtered.tail.replace("-", "")}"
+          val decimaled = negated.splitAt(negated.indexOf('.')) match
+            case ("", s) =>
+              if a.count('.' == _) > 1 then s.stripPrefix(".") else s
+            case (a, b) => a + "." + b.replace(".", "")
+          val zeroless = decimaled.stripPrefix("0")
+          if zeroless.isEmpty then 0
+          else MiscHelpers.eval(zeroless)
     },
 
     // Constants
