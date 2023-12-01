@@ -354,6 +354,8 @@
  | | | | | | | `a: str` => `cast a to num by ignoring non-numeric digits. Returns 0 if there's no valid number`
  <code>Ɠ</code> | <code>#.9</code> | Maximum without popping | `max-no-pop` | 1 | :x: | `a: lst` => `max(a) without popping a`
  <code>ɠ</code> | <code>#.6</code> | Minimum without popping | `min-no-pop` | 1 | :x: | `a: lst` => `min(a) without popping a`
+ <code>„</code> | <code>#,"</code> | Join on Spaces / Is Negative? (Used when not closing a string) | `space-join`, `join-on-spaces`, `is-negative?`, `negative?` | 1 | :x: | `a: lst` => `a join on spaces`
+ | | | | | | | `a: num` => `a < 0`
  <code>ð</code> | <code>#.b</code> | Space | `space` | 0 | :x: | `" "`
  <code>€</code> | <code>#^(</code> | Suffixes | `suffixes` | 1 | :x: | `a: lst` => `Suffixes of a`
  <code>¶</code> | <code>#,␤</code> | Newline | `newline` | 0 | :x: | `chr(10)`

@@ -1049,6 +1049,12 @@ Trigraph: #.6
 Keywords: min-no-pop
 - a: lst -> min(a) without popping a
 ----------------------
+„ (Join on Spaces | Is Negative? (Used when not closing a string)) (non-vectorising)
+Trigraph: #,"
+Keywords: space-join, join-on-spaces, is-negative?, negative?
+- a: lst -> a join on spaces
+- a: num -> a < 0
+----------------------
 ð (Space) (non-vectorising)
 Trigraph: #.b
 Keywords: space
