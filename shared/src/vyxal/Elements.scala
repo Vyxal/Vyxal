@@ -2971,11 +2971,13 @@ object Elements:
       Monad,
       "⌈",
       "Ceiling",
-      List("ceiling", "ceil"),
+      List("ceiling", "ceil", "split-spaces", "space-split"),
       true,
       "a: num -> ceil(a)",
+      "a: str -> split on spaces",
     ) {
       case a: VNum => a.ceil
+      case a: String => VList.from(a.split(" ").toIndexedSeq)
     },
     addPart(
       Monad,
