@@ -2970,11 +2970,20 @@ object Elements:
       Monad,
       "⌊",
       "Floor",
-      List("floor"),
+      List("floor", "num-str", "num->str", "num-to-str"),
       true,
       "a: num -> floor(a)",
+      "a: str -> cast a to num by ignoring non-numeric digits. Returns 0 if there's no valid number",
     ) {
       case a: VNum => a.floor
+      case a: String =>
+        val filtered = a.filter(c => c.isDigit || "-.".contains(c))
+        val negated = filtered.head + filtered.tail.replace("-", "")
+        val decimaled = negated.splitAt(negated.indexOf('.')) match
+          case ("", s) =>
+            if a.count('.' == _) > 1 then s.stripPrefix(".") else s
+          case (a, b) => a + "." + b.replace(".", "")
+        MiscHelpers.eval(decimaled)
     },
 
     // Constants

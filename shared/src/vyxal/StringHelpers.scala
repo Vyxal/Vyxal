@@ -3,6 +3,7 @@ package vyxal
 import vyxal.parsing.Lexer
 
 import scala.collection.mutable.StringBuilder
+import scala.util.matching.Regex
 
 object StringHelpers:
 
