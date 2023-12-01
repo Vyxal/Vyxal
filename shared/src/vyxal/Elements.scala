@@ -2970,7 +2970,7 @@ object Elements:
       Monad,
       "⌊",
       "Floor",
-      List("floor", "num-str", "num->str", "num-to-str"),
+      List("floor", "str-num", "str->num", "str-to-num"),
       true,
       "a: num -> floor(a)",
       "a: str -> cast a to num by ignoring non-numeric digits. Returns 0 if there's no valid number",
@@ -2983,7 +2983,8 @@ object Elements:
           case ("", s) =>
             if a.count('.' == _) > 1 then s.stripPrefix(".") else s
           case (a, b) => a + "." + b.replace(".", "")
-        MiscHelpers.eval(decimaled)
+        if decimaled.isEmpty then 0
+        else MiscHelpers.eval(decimaled)
     },
 
     // Constants
