@@ -96,15 +96,14 @@ private object GenerateDocs:
           if trigraph.nonEmpty then trigraph = s"<code>$trigraph</code>"
           var overloads = elem.overloads
           val name = elem.name.replace("|", "/")
-          val symbol = "\\".repeat(if elem.symbol == "`" then 1 else 0) +
-            elem.symbol.replace("|", "\\|")
+          val symbol = elem.symbol.replace("|", "\\|")
           val keywords = elem.keywords.map("`" + _ + "`").mkString(", ")
           val vectorises =
             if elem.vectorises then ":white_check_mark:"
             else ":x:"
 
           contents ++=
-            s"| <code>$symbol</code> | ${trigraph
+            s"| <code>${symbol.replace("\\", "\\\\")}</code> | ${trigraph
                 .replace("|", "\\|")} | $name | $keywords | ${elem.arity
                 .getOrElse("NA")} | $vectorises | ${formatOverload(overloads.head)}\n"
           overloads = overloads.tail

@@ -130,6 +130,14 @@ object ListHelpers:
       case x => Seq(x)
     })
 
+  def flattenByDepth(iterable: VList, depth: VNum)(using Context): VList =
+    if depth == VNum(0) then iterable
+    else
+      VList.from(iterable.flatMap {
+        case l: VList => flattenByDepth(l, depth - 1)
+        case x => Seq(x)
+      })
+
   /** A wrapper call to the generator method in interpreter */
   def generate(function: VFun, initial: VList)(using ctx: Context): VList =
     val firstN = initial.length match
@@ -606,6 +614,37 @@ object ListHelpers:
       // Cartesian product over the list
       val temp = iterable.map(ListHelpers.makeIterable(_))
       cartesianProductMulti(temp)
+
+  def setIntersection(left: VList, right: VList): VList =
+    val result = LazyList
+      .unfold(
+        (left, right, (List.empty[VAny], List.empty[VAny]), ListBuffer[VAny]())
+      ) {
+        case (left, right, (leftGenerated, rightGenerated), inBoth) =>
+          if left.isEmpty || right.isEmpty then None
+          else
+            val leftGen = leftGenerated :+ left.head
+            val rightGen = rightGenerated :+ right.head
+            val thisReturn = ListBuffer.empty[VAny]
+            if rightGen.contains(left.head) && !inBoth.contains(left.head) then
+              inBoth += left.head
+              thisReturn += left.head
+            if leftGen.contains(right.head) && !inBoth.contains(right.head) then
+              inBoth += right.head
+              thisReturn += right.head
+            Some(
+              thisReturn.toList ->
+                (
+                  VList.from(left.tail),
+                  VList.from(right.tail),
+                  (leftGen, rightGen),
+                  inBoth,
+                )
+            )
+      }
+      .flatten
+    VList.from(result)
+  end setIntersection
   def sortBy(iterable: VList, key: VFun)(using Context): VList =
     key.originalAST match
       case Some(lam) =>

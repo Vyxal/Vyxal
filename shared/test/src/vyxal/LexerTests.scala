@@ -94,6 +94,18 @@ class LexerTests extends VyxalTests:
     it("should not treat single #s as comments") {
       testLex("1 #a", List(Number("1"), Digraph("#a")))
     }
+    it("should handle empty comments") {
+      group {
+        testLex(
+          "1 ##\n",
+          List(Number("1"), Comment(""), Token(Newline, "\n", Range.fake)),
+        )
+        testLex(
+          "1 ##",
+          List(Number("1"), Comment("")),
+        )
+      }
+    }
   }
 
   describe("Modifiers") {

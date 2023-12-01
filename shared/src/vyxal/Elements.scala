@@ -2,7 +2,6 @@ package vyxal
 
 import scala.language.implicitConversions
 
-import vyxal.debugger.Lazy
 import vyxal.ListHelpers.makeIterable
 import vyxal.NumberHelpers.range
 import vyxal.VNum.given
@@ -645,7 +644,12 @@ object Elements:
       Dyad,
       "F",
       "Filter by Function | From Base",
-      List("filter", "keep-by", "from-base", "10->b"),
+      List(
+        "filter",
+        "keep-by",
+        "from-base",
+        "10->b",
+      ),
       false,
       "a: fun, b: lst -> Filter b by truthy results of a",
       "a: lst, b: fun -> Filter a by truthy results of b",
@@ -749,17 +753,34 @@ object Elements:
       "a: num, b: str -> str(a) >= b",
       "a: str, b: str -> a >= b",
     ) { case (a: VVal, b: VVal) => a >= b },
-    addPart(
-      Dyad,
+    addDirect(
       "Ġ",
-      "Group by Function Result",
-      List("group-by"),
-      false,
+      "Group by Function Result | Greatest Common Divisor",
+      List("group-by", "gcd"),
+      Some(2),
       "a: any, b: fun -> group a by the results of b",
       "a: fun, b: any -> group b by the results of a",
-    ) {
-      case (a, b: VFun) => ListHelpers.groupBy(ListHelpers.makeIterable(a), b)
-      case (a: VFun, b) => ListHelpers.groupBy(ListHelpers.makeIterable(b), a)
+      "a: num, b: num -> gcd(a, b)",
+      "a: lst[num], b: num -> gcd of b and all elements of a",
+      "a: lst[num] -> gcd of all items in a.",
+    ) { ctx ?=>
+      val b = ctx.pop()
+      if b.isInstanceOf[VList] then
+        ctx.push(NumberHelpers.gcd(b.asInstanceOf[VList]))
+      else
+        val a = ctx.pop()
+        ctx.push((a, b) match
+          case (a: VNum, b: VNum) => NumberHelpers.gcd(a, b)
+          case (a: VList, b: VNum) => NumberHelpers.gcd(b +: a)
+          case (a: VNum, b: VList) =>
+            summon[Context].push(a)
+            NumberHelpers.gcd(b)
+          case (a, b: VFun) =>
+            ListHelpers.groupBy(ListHelpers.makeIterable(a), b)
+          case (a: VFun, b) =>
+            ListHelpers.groupBy(ListHelpers.makeIterable(b), a)
+          case _ => throw UnimplementedOverloadException("Ġ", List(a, b))
+        )
     },
     addPart(
       Monad,
@@ -1083,6 +1104,18 @@ object Elements:
       "a: str -> is a alphanumeric?",
       "a: fun -> First positive integer ([1, 2, 3, ...]) for which a returns true",
     ) { a => MiscHelpers.joinNothing(a) },
+    addPart(
+      Monad,
+      "„",
+      "Join on Spaces | Is Negative? (Used when not closing a string)",
+      List("space-join", "join-on-spaces", "is-negative?", "negative?"),
+      false,
+      "a: lst -> a join on spaces",
+      "a: num -> a < 0",
+    ) {
+      case a: VList => a.mkString(" ")
+      case a: VNum => a < 0
+    },
     addPart(
       Monad,
       "L",
@@ -1834,12 +1867,18 @@ object Elements:
         "integer-partitions",
         "int-partitions",
         "int-parts",
+        "partitions",
       ),
       false,
       "a: lst -> List partitions of a",
       "a: num -> Integer partitions of a (all possible ways to sum to a)",
     ) {
       case a: VList => ListHelpers.partitions(a)
+      case s: String => ListHelpers
+          .partitions(ListHelpers.makeIterable(s))
+          .vmap(
+            _.asInstanceOf[VList].vmap(_.asInstanceOf[VList].mkString)
+          )
       case n: VNum => NumberHelpers.partitions(n)
     },
     addFull(
@@ -2267,18 +2306,32 @@ object Elements:
     },
     addPart(
       Dyad,
-      "⁾",
-      "Surround | Character Multiply",
-      List("surround", "character-multiply"),
+      "Þ⁾",
+      "Surround",
+      List("surround"),
       false,
-      "a: num, b: str -> each character in b repeated a times",
       "a: any, b: any -> a prepended and appended to b",
     ) {
       case (a: VList, b) => VList.from((b +: a) :+ b)
       case (a: String, b: String) => b + a + b
       case (a, b: VList) => VList.from((a +: b) :+ a)
+    },
+    addPart(
+      Dyad,
+      "⁾",
+      "Set Intersection | Flatten By Depth | Character Multiply",
+      List("set-intersection", "intersection", "flatten-by-depth", "intersect"),
+      false,
+      "a: lst, b: lst -> set intersection of a and b",
+      "a: str, b: str -> set intersection of a and b",
+      "a: lst, b: num -> flatten a by depth b",
+      "a: num, b: str -> each character in b repeated a times",
+      "a: str, b: num -> each character in a repeated b times",
+    ) {
       case (a: VNum, b: String) => StringHelpers.characterMultiply(a, b)
       case (a: String, b: VNum) => StringHelpers.characterMultiply(b, a)
+      case (a: VList, b: VList) => ListHelpers.setIntersection(a, b)
+      case (a: VList, b: VNum) => ListHelpers.flattenByDepth(a, b)
     },
     addPart(
       Monad,
@@ -2945,11 +2998,27 @@ object Elements:
       Monad,
       "⌊",
       "Floor",
-      List("floor"),
+      List("floor", "str-num", "str->num", "str-to-num"),
       true,
       "a: num -> floor(a)",
+      "a: str -> cast a to num by ignoring non-numeric digits. Returns 0 if there's no valid number",
     ) {
       case a: VNum => a.floor
+      case a: String =>
+        if a.isEmpty then 0
+        else
+          val filtered = a.filter(c => c.isDigit || "-.".contains(c))
+          val negated = s"${filtered.head}${filtered.tail.replace("-", "")}"
+          val decimaled = negated.splitAt(negated.indexOf('.')) match
+            case ("", s) =>
+              if a.count('.' == _) > 1 then s.stripPrefix(".") else s
+            case (a, b) => a + "." + b.replace(".", "")
+          val zeroless =
+            if decimaled.startsWith("-") then
+              "-" + decimaled.drop(1).dropWhile(_ == '0')
+            else decimaled.dropWhile(_ == '0')
+          if zeroless.isEmpty then 0
+          else MiscHelpers.eval(zeroless)
     },
 
     // Constants
@@ -2957,34 +3026,34 @@ object Elements:
     addNilad("ð", "Space", List("space"), "\" \"") { " " },
     addNilad("¶", "Newline", List("newline"), "chr(10)") { "\n" },
     addNilad("•", "Asterisk", List("asterisk"), "\"*\"") { "*" },
-    addNilad("₀", "Ten", List("ten"), "10") { 10 },
-    addNilad("₁", "Sixteen", List("sixteen", "l6"), "16") { 26 },
-    addNilad("₂", "Twenty-six", List("twenty-six", "Z6"), "26") { 26 },
+    addNilad("₀", "Ten", List("ten", "l0"), "10") { 10 },
+    addNilad("₁", "Sixteen", List("sixteen", "l6"), "16") { 16 },
+    addNilad("₂", "Twenty-six", List("twenty-six", "Z6", "z6"), "26") { 26 },
     addNilad("₃", "Thirty-two", List("thirty-two", "E2"), "32") { 32 },
     addNilad("₄", "Sixty-four", List("sixty-four", "b4"), "64") { 64 },
     addNilad("₅", "One hundred", List("one-hundred", "l00"), "100") { 100 },
     addNilad(
       "₆",
       "One hundred twenty-eight",
-      List("one-hundred-twenty-eight"),
+      List("one-hundred-twenty-eight", "l28"),
       "128",
     ) { 128 },
     addNilad(
       "₇",
       "Two hundred fifty-six",
-      List("two-hundred-fifty-six"),
+      List("two-hundred-fifty-six", "Z56", "z56"),
       "256",
     ) { 256 },
     addNilad(
       "₈",
       "-1",
-      List("negative-one", "neg-1"),
+      List("negative-one", "neg-1", "-1"),
       "-1",
     ) { -1 },
     addNilad(
       "₉",
       "Empty array",
-      List("empty-list", "nil-list", "new-list"),
+      List("empty-list", "nil-list", "new-list", "<>"),
       "[]",
     ) { VList.empty },
 

@@ -90,6 +90,16 @@ object NumberHelpers:
 
   end gamma
 
+  def gcd(a: VNum, b: VNum): VNum =
+    if b == VNum(0) then a.vabs else gcd(b.vabs, a.vabs % b.vabs)
+
+  def gcd(a: Seq[VAny]): VNum =
+    a.foldLeft(VNum(0)) { (a, b) =>
+      b match
+        case b: VNum => gcd(a, b)
+        case _ => throw Exception("Cannot find gcd of non-numbers")
+    }
+
   def log(a: VNum, b: VNum): VNum =
     // Only works for real numbers for now
     VNum(

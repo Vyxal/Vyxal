@@ -98,9 +98,9 @@
  <code>Z</code> |  | Zip | `zip`, `zip-map` | 2 | :x: | `a: lst, b: lst` => `zip a and b`
  | | | | | | | `a: lst, b: fun` => `[[x, b(x)] for x in a]`
  | | | | | | | `a: fun, b: lst` => `[[a(x), x] for x in b]`
- <code>\</code> |  | Dump | `dump` | 1 | :x: | `a: any` => `dump all values on the stack`
+ <code>\\</code> |  | Dump | `dump` | 1 | :x: | `a: any` => `dump all values on the stack`
  <code>_</code> |  | Pop and Discard | `pop`, `discard` | NA | :x: | `a` => ``
- <code>\`</code> |  | Length of Stack | `length-of-stack`, `stack-length`, `stack-len` | NA | :x: | `push the length of the stack`
+ <code>`</code> |  | Length of Stack | `length-of-stack`, `stack-length`, `stack-len` | NA | :x: | `push the length of the stack`
  <code>a</code> |  | Any Truthy / Any() / Is Uppercase? | `any`, `is-uppercase?`, `is-upper?`, `upper?` | 1 | :x: | `a: str` => `is (a) uppercase? vectorises for strings len > 1`
  | | | | | | | `a: list` => `is (a) any truthy?`
  <code>b</code> |  | Convert To Binary | `to-binary`, `dec->bin`, `decimal->bin` | 1 | :white_check_mark: | `a: num` => `convert a to binary`
@@ -188,8 +188,11 @@
  | | | | | | | `a: num` => `10 ** n`
  <code>Ḟ</code> | <code>#.F</code> | Find | `find` | 2 | :x: | `a: any, b: any` => `a.indexOf(b) (-1 if not found)`
  | | | | | | | `a: any, b: fun` => `truthy indices of mapping b over a`
- <code>Ġ</code> | <code>#.G</code> | Group by Function Result | `group-by` | 2 | :x: | `a: any, b: fun` => `group a by the results of b`
+ <code>Ġ</code> | <code>#.G</code> | Group by Function Result / Greatest Common Divisor | `group-by`, `gcd` | 2 | :x: | `a: any, b: fun` => `group a by the results of b`
  | | | | | | | `a: fun, b: any` => `group b by the results of a`
+ | | | | | | | `a: num, b: num` => `gcd(a, b)`
+ | | | | | | | `a: lst[num], b: num` => `gcd of b and all elements of a`
+ | | | | | | | `a: lst[num]` => `gcd of all items in a.`
  <code>Ḣ</code> | <code>#.H</code> | Head Remove / Behead | `head-remove`, `behead` | 1 | :x: | `a: str` => `a[1:]`
  | | | | | | | `a: any` => `toList(a)[1:]`
  <code>İ</code> | <code>#.I</code> | Index into Multiple / Collect While Unique / Complex Number | `index-into-multiple`, `collect-while-unique`, `complex` | 2 | :x: | `a: num, b: num` => `a.real + b.real * i`
@@ -243,7 +246,7 @@
  | | | | | | | `a: str` => `a padded to a multiple of 8 with 0s`
  | | | | | | | `a: num` => `a if a == 1 push context variable n`
  <code>ȯ</code> | <code>#.o</code> | Boolify | `boolify` | 1 | :x: | `a: any` => `bool(a)`
- <code>ṗ</code> | <code>#.p</code> | List Partitions / Integer Partitions | `list-partitions`, `list-parts`, `integer-partitions`, `int-partitions`, `int-parts` | 1 | :x: | `a: lst` => `List partitions of a`
+ <code>ṗ</code> | <code>#.p</code> | List Partitions / Integer Partitions | `list-partitions`, `list-parts`, `integer-partitions`, `int-partitions`, `int-parts`, `partitions` | 1 | :x: | `a: lst` => `List partitions of a`
  | | | | | | | `a: num` => `Integer partitions of a (all possible ways to sum to a)`
  <code>ṙ</code> | <code>#.r</code> | Rotate Right | `abc->cab`, `rot-right`, `rotate-right` | 1 | :x: | `a: any` => `rotate right once`
  <code>ṡ</code> | <code>#.s</code> | Sort by Function Object / Partition by Numbers | `sort-by`, `sortby`, `sort-by-fun`, `sortbyfun`, `sort-fun`, `sortfun`, `partition-by` | 2 | :x: | `a: fun, b: any` => `sort iterable b by function a`
@@ -290,8 +293,11 @@
  <code>⁺</code> | <code>#^+</code> | Powerset | `powerset` | 1 | :x: | `a: lst` => `powerset of a`
  <code>⁻</code> | <code>#^-</code> | Cube / Threes | `cube`, `threes` | 1 | :white_check_mark: | `a: num` => `a ** 3`
  | | | | | | | `a: str` => `a split into chunks of length 3`
- <code>⁾</code> | <code>#^)</code> | Surround / Character Multiply | `surround`, `character-multiply` | 2 | :x: | `a: num, b: str` => `each character in b repeated a times`
- | | | | | | | `a: any, b: any` => `a prepended and appended to b`
+ <code>⁾</code> | <code>#^)</code> | Set Intersection / Flatten By Depth / Character Multiply | `set-intersection`, `intersection`, `flatten-by-depth`, `intersect` | 2 | :x: | `a: lst, b: lst` => `set intersection of a and b`
+ | | | | | | | `a: str, b: str` => `set intersection of a and b`
+ | | | | | | | `a: lst, b: num` => `flatten a by depth b`
+ | | | | | | | `a: num, b: str` => `each character in b repeated a times`
+ | | | | | | | `a: str, b: num` => `each character in a repeated b times`
  <code>√</code> | <code>#,*</code> | Square Root | `sqrt`, `square-root` | 1 | :white_check_mark: | `a: num` => `sqrt(a)`
  <code>∑</code> |  | Sum | `sum`, `/+`, `+/` | 1 | :x: | `a: lst` => `sum of a`
  <code>«</code> | <code>#.<</code> | Bitshift Left | `bitwise-left-shift`, `left-shift`, `left-pad`, `pad-left` | 2 | :white_check_mark: | `a: num, b: num` => `a << b`
@@ -307,16 +313,16 @@
  <code>∵</code> | <code>#,:</code> | Bitwise Or | `bitwise-or` | 2 | :white_check_mark: | `a: num, b: num` => `a \| b`
  <code>⊻</code> | <code>#,v</code> | Bitwise Xor | `bitwise-xor`, `insert-space` | 2 | :white_check_mark: | `a: num, b: num` => `a ^ b`
  | | | | | | | `a: str, b: str` => `a + space + b`
- <code>₀</code> | <code>#,0</code> | Ten | `ten` | 0 | :x: | `10`
+ <code>₀</code> | <code>#,0</code> | Ten | `ten`, `l0` | 0 | :x: | `10`
  <code>₁</code> | <code>#,1</code> | Sixteen | `sixteen`, `l6` | 0 | :x: | `16`
- <code>₂</code> | <code>#,2</code> | Twenty-six | `twenty-six`, `Z6` | 0 | :x: | `26`
+ <code>₂</code> | <code>#,2</code> | Twenty-six | `twenty-six`, `Z6`, `z6` | 0 | :x: | `26`
  <code>₃</code> | <code>#,3</code> | Thirty-two | `thirty-two`, `E2` | 0 | :x: | `32`
  <code>₄</code> | <code>#,4</code> | Sixty-four | `sixty-four`, `b4` | 0 | :x: | `64`
  <code>₅</code> | <code>#,5</code> | One hundred | `one-hundred`, `l00` | 0 | :x: | `100`
- <code>₆</code> | <code>#,6</code> | One hundred twenty-eight | `one-hundred-twenty-eight` | 0 | :x: | `128`
- <code>₇</code> | <code>#,7</code> | Two hundred fifty-six | `two-hundred-fifty-six` | 0 | :x: | `256`
- <code>₈</code> | <code>#,8</code> | -1 | `negative-one`, `neg-1` | 0 | :x: | `-1`
- <code>₉</code> | <code>#,9</code> | Empty array | `empty-list`, `nil-list`, `new-list` | 0 | :x: | `[]`
+ <code>₆</code> | <code>#,6</code> | One hundred twenty-eight | `one-hundred-twenty-eight`, `l28` | 0 | :x: | `128`
+ <code>₇</code> | <code>#,7</code> | Two hundred fifty-six | `two-hundred-fifty-six`, `Z56`, `z56` | 0 | :x: | `256`
+ <code>₈</code> | <code>#,8</code> | -1 | `negative-one`, `neg-1`, `-1` | 0 | :x: | `-1`
+ <code>₉</code> | <code>#,9</code> | Empty array | `empty-list`, `nil-list`, `new-list`, `<>` | 0 | :x: | `[]`
  <code>½</code> | <code>#.5</code> | Halve | `halve` | 1 | :white_check_mark: | `a: num` => `a / 2`
  | | | | | | | `a: str` => `a split into two pieces`
  <code>ʀ</code> | <code>#.~</code> | Exclusive Zero Range / Lowercase | `0->n`, `zero-range`, `lowered-range`, `to-lower`, `lower`, `lowercase` | 1 | :white_check_mark: | `a: num` => `[0..a)`
@@ -347,9 +353,12 @@
  <code>²</code> | <code>#^2</code> | Square / Pairs | `square`, `pairs` | 1 | :white_check_mark: | `a: num` => `a ** 2`
  | | | | | | | `a: str` => `a split into pairs`
  <code>⌈</code> |  | Ceiling | `ceiling`, `ceil` | 1 | :white_check_mark: | `a: num` => `ceil(a)`
- <code>⌊</code> |  | Floor | `floor` | 1 | :white_check_mark: | `a: num` => `floor(a)`
+ <code>⌊</code> |  | Floor | `floor`, `str-num`, `str->num`, `str-to-num` | 1 | :white_check_mark: | `a: num` => `floor(a)`
+ | | | | | | | `a: str` => `cast a to num by ignoring non-numeric digits. Returns 0 if there's no valid number`
  <code>Ɠ</code> | <code>#.9</code> | Maximum without popping | `max-no-pop` | 1 | :x: | `a: lst` => `max(a) without popping a`
  <code>ɠ</code> | <code>#.6</code> | Minimum without popping | `min-no-pop` | 1 | :x: | `a: lst` => `min(a) without popping a`
+ <code>„</code> | <code>#,"</code> | Join on Spaces / Is Negative? (Used when not closing a string) | `space-join`, `join-on-spaces`, `is-negative?`, `negative?` | 1 | :x: | `a: lst` => `a join on spaces`
+ | | | | | | | `a: num` => `a < 0`
  <code>ð</code> | <code>#.b</code> | Space | `space` | 0 | :x: | `" "`
  <code>€</code> | <code>#^(</code> | Suffixes | `suffixes` | 1 | :x: | `a: lst` => `Suffixes of a`
  <code>¶</code> | <code>#,␤</code> | Newline | `newline` | 0 | :x: | `chr(10)`
@@ -380,6 +389,7 @@
  | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a and start from direction b
 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does`
  <code>ÞṂ</code> |  | Matrix Inverse | `matrix-inverse` | 1 | :white_check_mark: | `a: lst[lst]` => `matrix inverse of a`
+ <code>Þ⁾</code> |  | Surround | `surround` | 2 | :x: | `a: any, b: any` => `a prepended and appended to b`
 
 
 ## Modifiers
@@ -457,9 +467,9 @@
  `µ` | `#,(` | Open Sort Lambda | Open a lambda that automatically sorts the top of the stack by its function | <pre>µ&lt;code&gt;}</pre> |
  `¤` | `#.@` | Context Paramter Index | Index into the list of context parameters. | <pre>¤&lt;number&gt;</pre> |
  `ı` | `#.i` | Imaginary Number | Used to represent the imaginary unit | <pre>&lt;real&gt;ı&lt;imaginary&gt;</pre> |
- `„` | `#,"` | Base-255 Compressed String | Decompress and push a string, converted from a bijective base 255 number using the codepage | <pre>"&lt;compressed string&gt;„</pre> |
+ `„` | `#,"` | Base-252 Compressed String | Decompress and push a string, converted from a bijective base 252 number using the codepage | <pre>"&lt;compressed string&gt;„</pre> |
  `”` | `#^'` | Dictionary Compressed String | Decompress and push a string using SSS compression, shamelessly stolen from Jelly | <pre>"&lt;compressed string&gt;”</pre> |
- `“` | `#^"` | Base-255 Compressed Number | Decompress and push a number, converted from a bijective base 255 number using the codepage | <pre>"&lt;compressed number&gt;“</pre> |
+ `“` | `#^"` | Base-252 Compressed Number | Decompress and push a number, converted from a bijective base 252 number using the codepage | <pre>"&lt;compressed number&gt;“</pre> |
  `#:[` |  | Variable Unpacking | Unpack the top of the stack into a list of variables. | <pre>#:[&lt;var&gt;\|&lt;var&gt;\|&lt;var&gt;]</pre> |
  `#` |  | Miscellaneous Digraphs | Used for miscellaneous digraphs | <pre>#&lt;character&gt;</pre> |
  `##` |  | Comment | Comment out the rest of the line | <pre>##&lt;comment&gt;</pre> |

@@ -503,11 +503,14 @@ Keywords: find
 - a: any, b: any -> a.indexOf(b) (-1 if not found)
 - a: any, b: fun -> truthy indices of mapping b over a
 ----------------------
-Ġ (Group by Function Result) (non-vectorising)
+Ġ (Group by Function Result | Greatest Common Divisor) (non-vectorising)
 Trigraph: #.G
-Keywords: group-by
+Keywords: group-by, gcd
 - a: any, b: fun -> group a by the results of b
 - a: fun, b: any -> group b by the results of a
+- a: num, b: num -> gcd(a, b)
+- a: lst[num], b: num -> gcd of b and all elements of a
+- a: lst[num] -> gcd of all items in a.
 ----------------------
 Ḣ (Head Remove | Behead) (non-vectorising)
 Trigraph: #.H
@@ -665,7 +668,7 @@ Keywords: boolify
 ----------------------
 ṗ (List Partitions | Integer Partitions) (non-vectorising)
 Trigraph: #.p
-Keywords: list-partitions, list-parts, integer-partitions, int-partitions, int-parts
+Keywords: list-partitions, list-parts, integer-partitions, int-partitions, int-parts, partitions
 - a: lst -> List partitions of a
 - a: num -> Integer partitions of a (all possible ways to sum to a)
 ----------------------
@@ -813,11 +816,14 @@ Keywords: cube, threes
 - a: num -> a ** 3
 - a: str -> a split into chunks of length 3
 ----------------------
-⁾ (Surround | Character Multiply) (non-vectorising)
+⁾ (Set Intersection | Flatten By Depth | Character Multiply) (non-vectorising)
 Trigraph: #^)
-Keywords: surround, character-multiply
+Keywords: set-intersection, intersection, flatten-by-depth, intersect
+- a: lst, b: lst -> set intersection of a and b
+- a: str, b: str -> set intersection of a and b
+- a: lst, b: num -> flatten a by depth b
 - a: num, b: str -> each character in b repeated a times
-- a: any, b: any -> a prepended and appended to b
+- a: str, b: num -> each character in a repeated b times
 ----------------------
 √ (Square Root) (vectorising)
 Trigraph: #,*
@@ -867,7 +873,7 @@ Keywords: bitwise-xor, insert-space
 ----------------------
 ₀ (Ten) (non-vectorising)
 Trigraph: #,0
-Keywords: ten
+Keywords: ten, l0
 - -> 10
 ----------------------
 ₁ (Sixteen) (non-vectorising)
@@ -877,7 +883,7 @@ Keywords: sixteen, l6
 ----------------------
 ₂ (Twenty-six) (non-vectorising)
 Trigraph: #,2
-Keywords: twenty-six, Z6
+Keywords: twenty-six, Z6, z6
 - -> 26
 ----------------------
 ₃ (Thirty-two) (non-vectorising)
@@ -897,22 +903,22 @@ Keywords: one-hundred, l00
 ----------------------
 ₆ (One hundred twenty-eight) (non-vectorising)
 Trigraph: #,6
-Keywords: one-hundred-twenty-eight
+Keywords: one-hundred-twenty-eight, l28
 - -> 128
 ----------------------
 ₇ (Two hundred fifty-six) (non-vectorising)
 Trigraph: #,7
-Keywords: two-hundred-fifty-six
+Keywords: two-hundred-fifty-six, Z56, z56
 - -> 256
 ----------------------
 ₈ (-1) (non-vectorising)
 Trigraph: #,8
-Keywords: negative-one, neg-1
+Keywords: negative-one, neg-1, -1
 - -> -1
 ----------------------
 ₉ (Empty array) (non-vectorising)
 Trigraph: #,9
-Keywords: empty-list, nil-list, new-list
+Keywords: empty-list, nil-list, new-list, <>
 - -> []
 ----------------------
 ½ (Halve) (vectorising)
@@ -1032,8 +1038,9 @@ Keywords: ceiling, ceil
 - a: num -> ceil(a)
 ----------------------
 ⌊ (Floor) (vectorising)
-Keywords: floor
+Keywords: floor, str-num, str->num, str-to-num
 - a: num -> floor(a)
+- a: str -> cast a to num by ignoring non-numeric digits. Returns 0 if there's no valid number
 ----------------------
 Ɠ (Maximum without popping) (non-vectorising)
 Trigraph: #.9
@@ -1044,6 +1051,12 @@ Keywords: max-no-pop
 Trigraph: #.6
 Keywords: min-no-pop
 - a: lst -> min(a) without popping a
+----------------------
+„ (Join on Spaces | Is Negative? (Used when not closing a string)) (non-vectorising)
+Trigraph: #,"
+Keywords: space-join, join-on-spaces, is-negative?, negative?
+- a: lst -> a join on spaces
+- a: num -> a < 0
 ----------------------
 ð (Space) (non-vectorising)
 Trigraph: #.b
@@ -1198,6 +1211,10 @@ Keywords: grid-neighbours-diagonals, grid-neighbors-diagonals, adjacent-cells-di
 ÞṂ (Matrix Inverse) (vectorising)
 Keywords: matrix-inverse
 - a: lst[lst] -> matrix inverse of a
+----------------------
+Þ⁾ (Surround) (non-vectorising)
+Keywords: surround
+- a: any, b: any -> a prepended and appended to b
 ----------------------
 Ч
 Keywords: ****:
