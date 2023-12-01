@@ -758,6 +758,7 @@ object Elements:
       "Ġ",
       "Group by Function Result | Greatest Common Divisor",
       List("group-by", "gcd"),
+      false,
       "a: any, b: fun -> group a by the results of b",
       "a: fun, b: any -> group b by the results of a",
       "a: num, b: num -> gcd(a, b)",
