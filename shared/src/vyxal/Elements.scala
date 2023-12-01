@@ -1089,6 +1089,18 @@ object Elements:
     ) { a => MiscHelpers.joinNothing(a) },
     addPart(
       Monad,
+      "„",
+      "Join on Spaces | Is Negative? (Used when not closing a string)",
+      List("space-join", "join-on-spaces", "is-negative?", "negative?"),
+      false,
+      "a: lst -> a join on spaces",
+      "a: num -> a < 0",
+    ) {
+      case a: VList => a.mkString(" ")
+      case a: VNum => a < 0
+    },
+    addPart(
+      Monad,
       "L",
       "Length | Length of List",
       List("length", "len", "length-of", "len-of", "size"),
