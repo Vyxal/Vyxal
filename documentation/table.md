@@ -350,7 +350,7 @@
  <code>²</code> | <code>#^2</code> | Square / Pairs | `square`, `pairs` | 1 | :white_check_mark: | `a: num` => `a ** 2`
  | | | | | | | `a: str` => `a split into pairs`
  <code>⌈</code> |  | Ceiling | `ceiling`, `ceil` | 1 | :white_check_mark: | `a: num` => `ceil(a)`
- <code>⌊</code> |  | Floor | `floor`, `num-str`, `num->str`, `num-to-str` | 1 | :white_check_mark: | `a: num` => `floor(a)`
+ <code>⌊</code> |  | Floor | `floor`, `str-num`, `str->num`, `str-to-num` | 1 | :white_check_mark: | `a: num` => `floor(a)`
  | | | | | | | `a: str` => `cast a to num by ignoring non-numeric digits. Returns 0 if there's no valid number`
  <code>Ɠ</code> | <code>#.9</code> | Maximum without popping | `max-no-pop` | 1 | :x: | `a: lst` => `max(a) without popping a`
  <code>ɠ</code> | <code>#.6</code> | Minimum without popping | `min-no-pop` | 1 | :x: | `a: lst` => `min(a) without popping a`

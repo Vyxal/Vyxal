@@ -1035,7 +1035,7 @@ Keywords: ceiling, ceil
 - a: num -> ceil(a)
 ----------------------
 ⌊ (Floor) (vectorising)
-Keywords: floor, num-str, num->str, num-to-str
+Keywords: floor, str-num, str->num, str-to-num
 - a: num -> floor(a)
 - a: str -> cast a to num by ignoring non-numeric digits. Returns 0 if there's no valid number
 ----------------------
