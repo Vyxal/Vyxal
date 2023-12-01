@@ -10,8 +10,6 @@ import scala.collection.mutable.ListBuffer
 
 import fastparse.*
 
-case class VyxalCompilationError(msg: String)
-
 case class Token(
     tokenType: TokenType,
     value: String,
@@ -156,10 +154,10 @@ object Lexer:
 
   def apply(
       code: String
-  )(using ctx: Context): Either[VyxalCompilationError, List[Token]] =
+  )(using ctx: Context): List[Token] =
     if ctx.settings.literate then lexLiterate(code) else lexSBCS(code)
 
-  def lexSBCS(code: String): Either[VyxalCompilationError, List[Token]] =
+  def lexSBCS(code: String): List[Token] =
     SBCSLexer.lex(code)
 
   def performMoves(tkns: List[LitToken]): List[LitToken] =
@@ -213,30 +211,26 @@ object Lexer:
 
   end performMoves
 
-  def lexLiterate(code: String): Either[VyxalCompilationError, List[Token]] =
-    val tokens = LiterateLexer.lex(code) match
-      case Right(tokens) => tokens
-      case Left(err) => return Left(err)
+  def lexLiterate(code: String): List[Token] =
+    val tokens = LiterateLexer.lex(code)
     val moved = performMoves(tokens)
 
     // Convert all tokens into SBCS tokens
 
-    Right(
-      moved
-        .map {
-          case LitToken(tokenType, value, range) => tokenType match
-              case Group => flattenGroup(LitToken(tokenType, value, range))
-              case _ => List(LitToken(tokenType, value, range))
-        }
-        .flatten
-        .map {
-          case LitToken(tokenType, value, range) => Token(
-              tokenType,
-              value.asInstanceOf[String],
-              range,
-            )
-        }
-    )
+    moved
+      .map {
+        case LitToken(tokenType, value, range) => tokenType match
+            case Group => flattenGroup(LitToken(tokenType, value, range))
+            case _ => List(LitToken(tokenType, value, range))
+      }
+      .flatten
+      .map {
+        case LitToken(tokenType, value, range) => Token(
+            tokenType,
+            value.asInstanceOf[String],
+            range,
+          )
+      }
   end lexLiterate
 
   private def flattenGroup(token: LitToken): List[LitToken] =
@@ -249,10 +243,7 @@ object Lexer:
     parse(code, LiterateLexer.list(_)).isSuccess
 
   def removeSugar(code: String): Option[String] =
-    SBCSLexer.lex(code) match
-      case Right(result) =>
-        if SBCSLexer.sugarUsed then Some(result.map(_.value).mkString) else None
-      case _ => None
+    if SBCSLexer.sugarUsed then Some(SBCSLexer.lex(code).map(_.value).mkString) else None
 
   private def sbcsifySingle(token: Token): String =
     val Token(tokenType, value, _) = token

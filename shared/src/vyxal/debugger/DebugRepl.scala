@@ -8,9 +8,7 @@ import scopt.OParser
 object DebugRepl:
   def start(code: String)(using Context): Unit =
     scribe.trace("Starting debugger REPL")
-    val ast = Lexer(code).flatMap(Parser.parse) match
-      case Right(ast) => ast
-      case Left(err) => throw RuntimeException(err.msg)
+    val ast = Parser.parse(Lexer(code))
     val dbg = Debugger(ast)
     printState(dbg)
     while !dbg.finished do

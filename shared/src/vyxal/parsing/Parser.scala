@@ -2,18 +2,12 @@ package vyxal
 
 import scala.language.strictEquality
 
-import vyxal.parsing.{StructureType, Token, TokenType, VyxalCompilationError}
+import vyxal.parsing.{StructureType, Token, TokenType}
 
 import scala.collection.mutable
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
 
 object Parser:
-
-  /** The return type of a parser. If the parser fails, then it's a `Left`
-    * containing a `VyxalCompilationError`. If the parser succeeds, it's a tuple
-    * containing whatever it parsed
-    */
-  type ParserRet[T] = Either[VyxalCompilationError, T]
 
   private def toValidName(name: String): String =
     name
@@ -36,7 +30,7 @@ object Parser:
   private def parse(
       program: Queue[Token],
       topLevel: Boolean = false,
-  ): ParserRet[AST] =
+  ): AST =
     val asts = Stack[AST]()
     // Convert the list of tokens to a queue so that ASTs like Structures can
     // freely take as many tokens as they need without needing to worry about
@@ -60,12 +54,10 @@ object Parser:
           asts.push(AST.CompressedNumber(value, range))
         case TokenType.Newline => asts.push(AST.Newline)
         case TokenType.StructureOpen =>
-          parseStructure(
+          asts.push(parseStructure(
             StructureType.values.find(_.open == value).get,
             program,
-          ) match
-            case Right(ast) => asts.push(ast)
-            case l => return l
+          ))
           if topLevel && program.nonEmpty &&
             program.front.tokenType == TokenType.StructureAllClose
           then program.dequeue()
@@ -74,9 +66,7 @@ object Parser:
          * token possibilities, so handle them the same way.
          */
         case TokenType.ListOpen =>
-          parseBranches(program, true)(_ == TokenType.ListClose) match
-            case Right(elements) => asts.push(AST.Lst(elements))
-            case Left(err) => return Left(err)
+          asts.push(AST.Lst((parseBranches(program, true)(_ == TokenType.ListClose))))
 
         /*
          * Now comes command handling. When handling commands, we need to
@@ -85,16 +75,11 @@ object Parser:
          * top stack elements are needed to make the command equivalent to a
          * nilad. For arities -1 and 0, the command doesn't need to be grouped.
          */
-        case TokenType.Command => parseCommand(token, asts, program) match
-            case Right(ast) => asts.push(ast)
-            case l => return l
+        case TokenType.Command => asts.push(parseCommand(token, asts, program))
 
         case TokenType.NegatedCommand =>
-          parseCommand(token, asts, program) match
-            case Right(ast) =>
-              asts.push(ast)
-              asts.push(AST.Command("¬"))
-            case l => return l
+          asts.push(parseCommand(token, asts, program))
+          asts.push(AST.Command("¬"))
 
         // At this stage, modifiers aren't explicitly handled, so just push a
         // temporary AST to comply with the type of the AST stack
@@ -135,7 +120,6 @@ object Parser:
           asts.push(AST.UnpackVar(names.toList))
         case TokenType.Param => asts.push(AST.Parameter(value))
       end match
-
     end while
 
     val finalAsts = Stack[AST]()
@@ -149,11 +133,7 @@ object Parser:
             if modifier.from.isDefinedAt(modifierArgs) then
               finalAsts.push(modifier.from(modifierArgs))
             else
-              return Left(
-                VyxalCompilationError(
-                  s"Modifier $name not defined for $modifierArgs"
-                )
-              )
+              throw NoSuchModifierException(name)
         case AST.SpecialModifier(name, _) => (name: @unchecked) match
             case "ᵜ" =>
               val lambdaAsts = ListBuffer[AST]()
@@ -169,15 +149,13 @@ object Parser:
             case "ᵗ" => ??? // TODO: Implement tie
         case AST.AuxAugmentVar(name, _) =>
           if asts.isEmpty then
-            return Left(
-              VyxalCompilationError("Missing element for augmented assign")
-            )
+            throw BadAugmentedAssignException()
           finalAsts.push(AST.AugmentVar(name, asts.pop()))
         case _ => finalAsts.push(topAst)
       end match
     end while
 
-    Right(AST.makeSingle(finalAsts.toList*))
+    AST.makeSingle(finalAsts.toList*)
   end parse
 
   /** This is the function that performs arity grouping of elements. Here's a
@@ -203,16 +181,15 @@ object Parser:
       cmdTok: Token,
       asts: Stack[AST],
       program: Queue[Token],
-  ): ParserRet[AST] =
+  ): AST =
     val cmd =
       if !Elements.elements.contains(cmdTok.value) then
-        Elements.symbolFor(cmdTok.value).get
+        Elements.symbolFor(cmdTok.value).getOrElse("Nonexistent")
       else cmdTok.value
     Elements.elements.get(cmd) match
-      case None => Right(AST.Command(cmd))
-      // Left(VyxalCompilationError(s"No such element: $name"))
+      case None => throw NoSuchElementException(cmdTok)
       case Some(element) =>
-        if asts.isEmpty then Right(AST.Command(cmd, cmdTok.range))
+        if asts.isEmpty then AST.Command(cmd, cmdTok.range)
         else
           val arity = element.arity.getOrElse(0)
           val nilads = ListBuffer[AST]()
@@ -220,13 +197,11 @@ object Parser:
           while asts.nonEmpty && nilads.sizeIs < arity &&
             asts.top.arity.fold(false)(_ == 0)
           do nilads += asts.pop()
-          if nilads.isEmpty then return Right(AST.Command(cmd, cmdTok.range))
-          Right(
+          if nilads.isEmpty then return AST.Command(cmd, cmdTok.range)
             AST.Group(
               (AST.Command(cmd, cmdTok.range) :: nilads.toList).reverse,
               Some(arity - nilads.size),
             )
-          )
     end match
   end parseCommand
 
@@ -243,27 +218,24 @@ object Parser:
     */
   def parseBranches(program: Queue[Token], canBeEmpty: Boolean)(
       isEnd: TokenType => Boolean
-  ): ParserRet[List[AST]] =
-    if program.isEmpty then return Right(List(AST.makeSingle()))
+  ): List[AST] =
+    if program.isEmpty then return List(AST.makeSingle())
     val branches = ListBuffer.empty[AST]
 
     while program.nonEmpty &&
       (!isCloser(program.front) || program.front.tokenType == TokenType.Branch)
     do
-      parse(program) match
-        case Left(err) => return Left(err)
-        case Right(ast) =>
-          branches += ast
-          if program.nonEmpty && program.front.tokenType == TokenType.Branch
-          then
-            // Get rid of the `|` token to move on to the next branch
-            program.dequeue()
-            if program.isEmpty ||
-              (isCloser(program.front) &&
-                program.front.tokenType != TokenType.Branch)
-            then
-              // Don't forget empty branches at the end
-              branches += AST.makeSingle()
+      branches += parse(program)
+      if program.nonEmpty && program.front.tokenType == TokenType.Branch
+      then
+        // Get rid of the `|` token to move on to the next branch
+        program.dequeue()
+        if program.isEmpty ||
+          (isCloser(program.front) &&
+            program.front.tokenType != TokenType.Branch)
+        then
+          // Don't forget empty branches at the end
+          branches += AST.makeSingle()
 
     if branches.isEmpty && !canBeEmpty then branches += AST.makeSingle()
 
@@ -273,7 +245,7 @@ object Parser:
       // Get rid of the structure/list closer
       program.dequeue()
 
-    Right(branches.toList)
+    branches.toList
   end parseBranches
 
   /** Structures are a bit more complicated. They require keeping track of a)
@@ -297,106 +269,101 @@ object Parser:
   private def parseStructure(
       structureType: StructureType,
       program: Queue[Token],
-  ): ParserRet[AST] =
-    parseBranches(program, false) {
+  ): AST =
+    val branches = parseBranches(program, false) {
       case TokenType.StructureAllClose | TokenType.StructureClose |
           TokenType.StructureDoubleClose => true
       case _ => false
-    }.flatMap { branches =>
-      // Now, we can create the appropriate AST for the structure
-      structureType match
-        case StructureType.Ternary => branches match
-            case List(thenBranch) => Right(AST.Ternary(thenBranch, None))
-            case List(thenBranch, elseBranch) =>
-              Right(AST.Ternary(thenBranch, Some(elseBranch)))
-            case _ => Left(VyxalCompilationError("Invalid if statement"))
-        case StructureType.IfStatement =>
-          if branches.sizeIs < 2 then
-            Left(VyxalCompilationError("Invalid if statement"))
-          else
-            val odd = branches.size % 2 == 1
-            val grouped =
-              if odd then branches.init.grouped(2).toList
-              else branches.grouped(2).toList
-            Right(
-              AST.IfStatement(
-                grouped.map(_(0)),
-                grouped.map(_(1)),
-                Option.when(odd)(branches.last),
-              )
-            )
-        case StructureType.While => branches match
-            case List(cond, body) => Right(AST.While(Some(cond), body))
-            case List(body) => Right(AST.While(None, body))
-            case _ => Left(VyxalCompilationError("Invalid while statement"))
-        case StructureType.For => branches match
-            case List(name, body) =>
-              Right(AST.For(Some(toValidName(name.toVyxal)), body))
-            case List(body) => Right(AST.For(None, body))
-            case _ => Left(VyxalCompilationError("Invalid for statement"))
-        case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
-            StructureType.LambdaFilter | StructureType.LambdaReduce |
-            StructureType.LambdaSort) =>
-          val lambda =
-            if lambdaType == StructureType.Lambda then
-              branches match
-                case List() => AST.Lambda(1, List.empty, List.empty)
-                case List(body) => AST.Lambda(1, List.empty, List(body))
-                case List(params, body) =>
-                  val (param, arity) = parseParameters(params)
-                  AST.Lambda(arity, param, List(body))
-                case _ =>
-                  val (param, arity) = parseParameters(branches.head)
-                  AST.Lambda(arity, param, branches.drop(1))
-            else AST.Lambda(1, List.empty, branches)
-
-          Right(
-            lambdaType match
-              case StructureType.Lambda => lambda
-              case StructureType.LambdaMap =>
-                AST.makeSingle(lambda, AST.Command("M"))
-              case StructureType.LambdaFilter =>
-                AST.makeSingle(lambda, AST.Command("F"))
-              case StructureType.LambdaReduce =>
-                AST.makeSingle(lambda, AST.Command("R"))
-              case StructureType.LambdaSort =>
-                AST.makeSingle(lambda, AST.Command("ṡ"))
-          )
-        case StructureType.DecisionStructure => branches match
-            case List(pred, container) =>
-              Right(AST.DecisionStructure(pred, Some(container)))
-            case List(pred) => Right(AST.DecisionStructure(pred, None))
-            case _ => Left(VyxalCompilationError("Invalid decision structure"))
-        case StructureType.GeneratorStructure =>
-          if branches.sizeIs > 2 then
-            Left(VyxalCompilationError("Invalid generator structure"))
-          else
-            var rel = branches.head
-            val vals = (branches: @unchecked) match
-              case List(_, initial) => Some(initial)
-              case List(_) => None
-
-            val arity = rel match
-              case AST.Group(elems, _, _) => elems.last match
-                  case number: AST.Number =>
-                    rel = AST.Group(elems.init, None)
-                    number.value.toInt
-                  case _ =>
-                    var stackItems = 0
-                    var popped = 0
-                    for elem <- elems do
-                      val elemArity = elem.arity.getOrElse(0)
-                      if elemArity < stackItems then
-                        stackItems -= elemArity +
-                          1 // assume everything only returns one value
-                      else
-                        popped += elemArity - stackItems
-                        stackItems = 1
-                    popped
-              case _ => rel.arity.getOrElse(2)
-
-            Right(AST.GeneratorStructure(rel, vals, arity))
     }
+    // Now, we can create the appropriate AST for the structure
+    structureType match
+      case StructureType.Ternary => branches match
+          case List(thenBranch) => AST.Ternary(thenBranch, None)
+          case List(thenBranch, elseBranch) =>
+            AST.Ternary(thenBranch, Some(elseBranch))
+          case _ => throw BadStructureException("if")
+      case StructureType.IfStatement =>
+        if branches.sizeIs < 2 then
+          throw BadStructureException("if")
+        else
+          val odd = branches.size % 2 == 1
+          val grouped =
+            if odd then branches.init.grouped(2).toList
+            else branches.grouped(2).toList
+          AST.IfStatement(
+            grouped.map(_(0)),
+            grouped.map(_(1)),
+            Option.when(odd)(branches.last),
+          )
+      case StructureType.While => branches match
+          case List(cond, body) => AST.While(Some(cond), body)
+          case List(body) => AST.While(None, body)
+          case _ => throw BadStructureException("while")
+      case StructureType.For => branches match
+          case List(name, body) =>
+            AST.For(Some(toValidName(name.toVyxal)), body)
+          case List(body) => AST.For(None, body)
+          case _ => throw BadStructureException("for")
+      case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
+          StructureType.LambdaFilter | StructureType.LambdaReduce |
+          StructureType.LambdaSort) =>
+        val lambda =
+          if lambdaType == StructureType.Lambda then
+            branches match
+              case List() => AST.Lambda(1, List.empty, List.empty)
+              case List(body) => AST.Lambda(1, List.empty, List(body))
+              case List(params, body) =>
+                val (param, arity) = parseParameters(params)
+                AST.Lambda(arity, param, List(body))
+              case _ =>
+                val (param, arity) = parseParameters(branches.head)
+                AST.Lambda(arity, param, branches.drop(1))
+          else AST.Lambda(1, List.empty, branches)
+
+        lambdaType match
+          case StructureType.Lambda => lambda
+          case StructureType.LambdaMap =>
+            AST.makeSingle(lambda, AST.Command("M"))
+          case StructureType.LambdaFilter =>
+            AST.makeSingle(lambda, AST.Command("F"))
+          case StructureType.LambdaReduce =>
+            AST.makeSingle(lambda, AST.Command("R"))
+          case StructureType.LambdaSort =>
+            AST.makeSingle(lambda, AST.Command("ṡ"))
+      case StructureType.DecisionStructure => branches match
+          case List(pred, container) =>
+            AST.DecisionStructure(pred, Some(container))
+          case List(pred) => AST.DecisionStructure(pred, None)
+          case _ => throw BadStructureException("decision")
+      case StructureType.GeneratorStructure =>
+        if branches.sizeIs > 2 then
+          throw BadStructureException("generator")
+        else
+          var rel = branches.head
+          val vals = (branches: @unchecked) match
+            case List(_, initial) => Some(initial)
+            case List(_) => None
+
+          val arity = rel match
+            case AST.Group(elems, _, _) => elems.last match
+                case number: AST.Number =>
+                  rel = AST.Group(elems.init, None)
+                  number.value.toInt
+                case _ =>
+                  var stackItems = 0
+                  var popped = 0
+                  for elem <- elems do
+                    val elemArity = elem.arity.getOrElse(0)
+                    if elemArity < stackItems then
+                      stackItems -= elemArity +
+                        1 // assume everything only returns one value
+                    else
+                      popped += elemArity - stackItems
+                      stackItems = 1
+                  popped
+            case _ => rel.arity.getOrElse(2)
+
+          AST.GeneratorStructure(rel, vals, arity)
 
   private def parseParameters(params: AST): (List[String | Int], Int) =
     val paramString = params.toVyxal
@@ -440,21 +407,14 @@ object Parser:
       case TokenType.StructureAllClose => true
       case _ => false
 
-  def parse(tokens: List[Token]): Either[VyxalCompilationError, AST] =
+  def parse(tokens: List[Token]): AST =
     val preprocessed = preprocess(tokens).to(Queue)
     val parsed = parse(preprocessed, true)
     if preprocessed.nonEmpty then
       // Some tokens were left at the end, which should never happen
-      Left(
-        VyxalCompilationError(
-          s"Error parsing code: These tokens were not parsed ${preprocessed.toList}. Only parsed $parsed"
-        )
-      )
+      throw VyxalParsingException(s"Some tokens failed to parse: ${preprocessed.toList}")
     else
-      parsed match
-        case Right(ast) => Right(postprocess(ast))
-        case Left(error) =>
-          Left(VyxalCompilationError(s"Error parsing code: $error"))
+      postprocess(parsed)
 
   private def preprocess(tokens: List[Token]): List[Token] =
     val doubleClose = ListBuffer[Token]()
