@@ -2985,7 +2985,10 @@ object Elements:
             case ("", s) =>
               if a.count('.' == _) > 1 then s.stripPrefix(".") else s
             case (a, b) => a + "." + b.replace(".", "")
-          val zeroless = decimaled.stripPrefix("0")
+          val zeroless =
+            if decimaled.startsWith("-") then
+              "-" + decimaled.drop(1).stripPrefix("0")
+            else decimaled.stripPrefix("0")
           if zeroless.isEmpty then 0
           else MiscHelpers.eval(zeroless)
     },
