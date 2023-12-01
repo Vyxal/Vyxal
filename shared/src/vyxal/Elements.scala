@@ -2,7 +2,6 @@ package vyxal
 
 import scala.language.implicitConversions
 
-import vyxal.debugger.Lazy
 import vyxal.ListHelpers.makeIterable
 import vyxal.NumberHelpers.range
 import vyxal.VNum.given
@@ -2987,8 +2986,8 @@ object Elements:
             case (a, b) => a + "." + b.replace(".", "")
           val zeroless =
             if decimaled.startsWith("-") then
-              "-" + decimaled.drop(1).stripPrefix("0")
-            else decimaled.stripPrefix("0")
+              "-" + decimaled.drop(1).dropWhile(_ == '0')
+            else decimaled.dropWhile(_ == '0')
           if zeroless.isEmpty then 0
           else MiscHelpers.eval(zeroless)
     },
