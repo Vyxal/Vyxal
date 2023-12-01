@@ -1031,9 +1031,8 @@ Keywords: square, pairs
 - a: str -> a split into pairs
 ----------------------
 ⌈ (Ceiling) (vectorising)
-Keywords: ceiling, ceil, split-spaces, space-split
+Keywords: ceiling, ceil
 - a: num -> ceil(a)
-- a: str -> split on spaces
 ----------------------
 ⌊ (Floor) (vectorising)
 Keywords: floor, str-num, str->num, str-to-num
