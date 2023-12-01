@@ -503,11 +503,14 @@ Keywords: find
 - a: any, b: any -> a.indexOf(b) (-1 if not found)
 - a: any, b: fun -> truthy indices of mapping b over a
 ----------------------
-Ġ (Group by Function Result) (non-vectorising)
+Ġ (Group by Function Result | Greatest Common Divisor) (non-vectorising)
 Trigraph: #.G
-Keywords: group-by
+Keywords: group-by, gcd
 - a: any, b: fun -> group a by the results of b
 - a: fun, b: any -> group b by the results of a
+- a: num, b: num -> gcd(a, b)
+- a: lst[num], b: num -> gcd of b and all elements of a
+- a: lst[num] -> gcd of all items in a.
 ----------------------
 Ḣ (Head Remove | Behead) (non-vectorising)
 Trigraph: #.H

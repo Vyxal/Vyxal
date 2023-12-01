@@ -188,8 +188,11 @@
  | | | | | | | `a: num` => `10 ** n`
  <code>Ḟ</code> | <code>#.F</code> | Find | `find` | 2 | :x: | `a: any, b: any` => `a.indexOf(b) (-1 if not found)`
  | | | | | | | `a: any, b: fun` => `truthy indices of mapping b over a`
- <code>Ġ</code> | <code>#.G</code> | Group by Function Result | `group-by` | 2 | :x: | `a: any, b: fun` => `group a by the results of b`
+ <code>Ġ</code> | <code>#.G</code> | Group by Function Result / Greatest Common Divisor | `group-by`, `gcd` | 2 | :x: | `a: any, b: fun` => `group a by the results of b`
  | | | | | | | `a: fun, b: any` => `group b by the results of a`
+ | | | | | | | `a: num, b: num` => `gcd(a, b)`
+ | | | | | | | `a: lst[num], b: num` => `gcd of b and all elements of a`
+ | | | | | | | `a: lst[num]` => `gcd of all items in a.`
  <code>Ḣ</code> | <code>#.H</code> | Head Remove / Behead | `head-remove`, `behead` | 1 | :x: | `a: str` => `a[1:]`
  | | | | | | | `a: any` => `toList(a)[1:]`
  <code>İ</code> | <code>#.I</code> | Index into Multiple / Collect While Unique / Complex Number | `index-into-multiple`, `collect-while-unique`, `complex` | 2 | :x: | `a: num, b: num` => `a.real + b.real * i`
