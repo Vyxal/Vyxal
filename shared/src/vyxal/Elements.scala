@@ -2978,7 +2978,7 @@ object Elements:
       case a: VNum => a.floor
       case a: String =>
         val filtered = a.filter(c => c.isDigit || "-.".contains(c))
-        val negated = filtered.head + filtered.tail.replace("-", "")
+        val negated = s"${filtered.head}${filtered.tail.replace("-", "")}"
         val decimaled = negated.splitAt(negated.indexOf('.')) match
           case ("", s) =>
             if a.count('.' == _) > 1 then s.stripPrefix(".") else s
