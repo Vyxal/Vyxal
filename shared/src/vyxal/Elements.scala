@@ -767,11 +767,11 @@ object Elements:
     ) {
       case (a: VNum, b: VNum) => NumberHelpers.gcd(a, b)
       case (a: VList, b: VNum) => NumberHelpers.gcd(b +: a)
+      case (a: VFun, b) => ListHelpers.groupBy(ListHelpers.makeIterable(b), a)
       case (a, b: VList) =>
         summon[Context].push(a)
         NumberHelpers.gcd(b)
       case (a, b: VFun) => ListHelpers.groupBy(ListHelpers.makeIterable(a), b)
-      case (a: VFun, b) => ListHelpers.groupBy(ListHelpers.makeIterable(b), a)
 
     },
     addPart(
