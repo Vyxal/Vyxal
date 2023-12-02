@@ -477,11 +477,10 @@ Keywords: peek-call, exec-peek, boolean-mask, bool-mask, strict-boolify, is-1?
 - a: lst -> Return a boolean array with 1s at the indices in a list.
 - a: num -> Is a == 1?
 ----------------------
-Ċ (Cycle | Is Positive?) (non-vectorising)
+Ċ (Set XOR) (non-vectorising)
 Trigraph: #.C
-Keywords: cycle, is-positive?, positive?, >0?
-- a: lst -> a ++ a ++ a ++ ...
-- a: num -> a > 0
+Keywords: set-xor
+- a: lst, b: lst -> set xor of a and b
 ----------------------
 Ḋ (Divides? | Append Spaces | Remove Duplicates by Function) (non-vectorising)
 Trigraph: #.D
@@ -1203,6 +1202,11 @@ Keywords: grid-neighbours, grid-neighbors, adjacent-cells, adj-cells, surroundin
 - a: lst[lst] -> Grid neighbours of a - right, down, left, up of a
 - a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a and start from direction b
 0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does
+----------------------
+ÞĊ (Cycle | Is Positive?) (non-vectorising)
+Keywords: cycle, is-positive?, positive?, >0?
+- a: lst -> a ++ a ++ a ++ ...
+- a: num -> a > 0
 ----------------------
 ÞȮ (Grid Neighbours (Diagonals, Wrap Around)) (non-vectorising)
 Keywords: grid-neighbours-diagonals-wrap, grid-neighbors-diagonals-wrap, adjacent-cells-diagonals-wrap, adj-cells-diagonals-wrap, surrounding-cells-diagonals-wrap, eight-cells-wrap

@@ -178,8 +178,7 @@
  | | | | | | | `a: str` => `Evaluate a as Vyxal without popping`
  | | | | | | | `a: lst` => `Return a boolean array with 1s at the indices in a list.`
  | | | | | | | `a: num` => `Is a == 1?`
- <code>Ċ</code> | <code>#.C</code> | Cycle / Is Positive? | `cycle`, `is-positive?`, `positive?`, `>0?` | 1 | :x: | `a: lst` => `a ++ a ++ a ++ ...`
- | | | | | | | `a: num` => `a > 0`
+ <code>Ċ</code> | <code>#.C</code> | Set XOR | `set-xor` | 2 | :x: | `a: lst, b: lst` => `set xor of a and b`
  <code>Ḋ</code> | <code>#.D</code> | Divides? / Append Spaces / Remove Duplicates by Function | `divides?`, `+-spaces`, `dedup-by` | 2 | :x: | `a: num, b: num` => `a % b == 0`
  | | | | | | | `a: str, b: num` => `a + ' ' * b`
  | | | | | | | `a: num, b: str` => `b + ' ' * a`
@@ -385,6 +384,8 @@
  <code>Þo</code> |  | Grid Neighbours | `grid-neighbours`, `grid-neighbors`, `adjacent-cells`, `adj-cells`, `surrounding-cells` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - right, down, left, up of a`
  | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a and start from direction b
 0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does`
+ <code>ÞĊ</code> |  | Cycle / Is Positive? | `cycle`, `is-positive?`, `positive?`, `>0?` | 1 | :x: | `a: lst` => `a ++ a ++ a ++ ...`
+ | | | | | | | `a: num` => `a > 0`
  <code>ÞȮ</code> |  | Grid Neighbours (Diagonals, Wrap Around) | `grid-neighbours-diagonals-wrap`, `grid-neighbors-diagonals-wrap`, `adjacent-cells-diagonals-wrap`, `adj-cells-diagonals-wrap`, `surrounding-cells-diagonals-wrap`, `eight-cells-wrap` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right, diagonals - wrapping around`
  | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b
 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does`
