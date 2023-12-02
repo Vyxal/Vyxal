@@ -168,9 +168,9 @@ P (Prefixes) (non-vectorising)
 Keywords: prefixes
 - a: lst -> Prefixes of a
 ----------------------
-Q (Exit | Quit) (non-vectorising)
-Keywords: exit, quit
-- a -> Stop program execution
+Q (Remove At) (non-vectorising)
+Keywords: remove-at
+- a: lst, b: num -> a with bth element removed
 ----------------------
 R (Reduce by Function Object | Dyadic Range | Regex Match) (non-vectorising)
 Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has-regex-match?, fold
@@ -1160,6 +1160,10 @@ Keywords:
 #C (Compress String Using Dictionary) (non-vectorising)
 Keywords: compress-dict, dict-comp, compress
 - a: str -> compress a using the dictionary
+----------------------
+#Q (Exit | Quit) (non-vectorising)
+Keywords: exit, quit
+- a -> Stop program execution
 ----------------------
 #X (Loop Break) (non-vectorising)
 Keywords: break

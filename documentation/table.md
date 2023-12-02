@@ -76,7 +76,7 @@
  <code>O</code> |  | Ord/Chr | `ord`, `chr` | 1 | :x: | `a: str` => `ord(a)`
  | | | | | | | `a: num` => `chr(a)`
  <code>P</code> |  | Prefixes | `prefixes` | 1 | :x: | `a: lst` => `Prefixes of a`
- <code>Q</code> |  | Exit / Quit | `exit`, `quit` | NA | :x: | `a` => `Stop program execution`
+ <code>Q</code> |  | Remove At | `remove-at` | 2 | :x: | `a: lst, b: num` => `a with bth element removed`
  <code>R</code> |  | Reduce by Function Object / Dyadic Range / Regex Match | `fun-reduce`, `reduce`, `fold-by`, `range`, `a->b`, `regex-match?`, `re-match?`, `has-regex-match?`, `fold` | 2 | :x: | `a: fun, b: any` => `reduce iterable b by function a`
  | | | | | | | `a: any, b: fun` => `reduce iterable a by function b`
  | | | | | | | `a: num, b: num` => `the range [a, b)`
@@ -370,6 +370,7 @@
  <code>≈</code> | <code>#^~</code> | All Equal? | `all-equal`, `all-equal?` | 1 | :x: | `a: lst` => `are all elements of a equal?`
  <code>ꜝ</code> | <code>#^!</code> | Increment | `incr`, `increment` | 1 | :white_check_mark: | `a: num` => `a + 1`
  <code>#C</code> |  | Compress String Using Dictionary | `compress-dict`, `dict-comp`, `compress` | 1 | :x: | `a: str` => `compress a using the dictionary`
+ <code>#Q</code> |  | Exit / Quit | `exit`, `quit` | NA | :x: | `a` => `Stop program execution`
  <code>#X</code> |  | Loop Break | `break` | 0 | :x: | `break out of the current loop`
  <code>#c</code> |  | Base-252 Compress String or Number | `compress-252`, `compress-b` | 1 | :white_check_mark: | `a: str` => `compress a using base 252`
  | | | | | | | `a: num` => `compress a using base 252`
