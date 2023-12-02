@@ -8,7 +8,6 @@
  <code>🌮</code> |  | Taco | `taco` | NA | :x: | `very funky`
  <code>🍪</code> |  | Cookie | `cookie` | NA | :x: | `cookie.`
  <code>ඞ</code> |  | ඞ | `sus` | NA | :x: | `ඞ`
- <code>¦</code> | <code>#.;</code> | Palindromise | `palindromise`, `palindrome`, `ab->aba` | 1 | :x: | `a: any` => `palindromise a`
  <code>!</code> |  | Factorial | `fact`, `factorial` | 1 | :white_check_mark: | `a: num` => `a!`
  <code>$</code> |  | Swap | `swap` | NA | :x: | `a, b` => `b, a`
  <code>%</code> |  | Modulo / String Formatting | `mod`, `modulo`, `str-format`, `format`, `%`, `strfmt` | 2 | :x: | `a: num, b: num` => `a % b`
@@ -263,7 +262,7 @@
  | | | | | | | `a: lst, b: lst, c: lst` => `assign c to a at the indices in b`
  <code>Ḅ</code> | <code>#,B</code> | Unique Prime Factors / Case Of | `unique-prime-factors`, `case-of` | 1 | :white_check_mark: | `a: num` => `unique prime factors of a`
  | | | | | | | `a: str` => `case of each character of a (uppercase = 1, lowercase = 0)`
- <code>Ḥ</code> | <code>#,H</code> | Head Extract | `head-extract-swap`, `split-at-head-swap` | 1 | :x: | `a: lst\|str` => `Push a[1:], then a[0] onto the stack`
+ <code>Ḥ</code> | <code>#,H</code> | Palindromise | `palindromise`, `palindrome`, `ab->aba` | 1 | :x: | `a: any` => `palindromise a`
  <code>Ị</code> | <code>#,I</code> | Insert | `insert`, `insert-at` | 3 | :x: | `a: any, b: num, c: any` => `insert c at position b in a`
  | | | | | | | `a: any, b: lst, c: any` => `insert c at positions b in a`
  | | | | | | | `a: any, b: lst[num], c: lst` => `insert c[i] at position b[i] in a`
@@ -392,6 +391,7 @@
  | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b
 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does`
  <code>ÞẊ</code> |  | Cartesian Product Unsafe | `cartesian-product-unsafe`, `cartesian-unsafe`, `cart-prod-unsafe`, `cart-unsafe` | 2 | :x: | `a: list, b: list` => `cartesian product of a and b in the standard order, but without accounting for infinite lists`
+ <code>Þṅ</code> |  | Multi-Set Difference | `multi-set-difference`, `multi-set-diff` | 2 | :x: | `a: lst, b: lst` => `multi-set difference of a and b`
  <code>Þȯ</code> |  | Grid Neighbours (Diagonals) | `grid-neighbours-diagonals`, `grid-neighbors-diagonals`, `adjacent-cells-diagonals`, `adj-cells-diagonals`, `surrounding-cells-diagonals`, `eight-cells` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right, diagonals`
  | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a and start from direction b
 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does`

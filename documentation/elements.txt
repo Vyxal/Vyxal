@@ -10,11 +10,6 @@ Keywords: cookie
 Keywords: sus
 - ඞ
 ----------------------
-¦ (Palindromise) (non-vectorising)
-Trigraph: #.;
-Keywords: palindromise, palindrome, ab->aba
-- a: any -> palindromise a
-----------------------
 ! (Factorial) (vectorising)
 Keywords: fact, factorial
 - a: num -> a!
@@ -726,10 +721,10 @@ Keywords: unique-prime-factors, case-of
 - a: num -> unique prime factors of a
 - a: str -> case of each character of a (uppercase = 1, lowercase = 0)
 ----------------------
-Ḥ (Head Extract) (non-vectorising)
+Ḥ (Palindromise) (non-vectorising)
 Trigraph: #,H
-Keywords: head-extract-swap, split-at-head-swap
-- a: lst|str -> Push a[1:], then a[0] onto the stack
+Keywords: palindromise, palindrome, ab->aba
+- a: any -> palindromise a
 ----------------------
 Ị (Insert) (non-vectorising)
 Trigraph: #,I
@@ -1225,6 +1220,10 @@ Keywords: grid-neighbours-diagonals-wrap, grid-neighbors-diagonals-wrap, adjacen
 ÞẊ (Cartesian Product Unsafe) (non-vectorising)
 Keywords: cartesian-product-unsafe, cartesian-unsafe, cart-prod-unsafe, cart-unsafe
 - a: list, b: list -> cartesian product of a and b in the standard order, but without accounting for infinite lists
+----------------------
+Þṅ (Multi-Set Difference) (non-vectorising)
+Keywords: multi-set-difference, multi-set-diff
+- a: lst, b: lst -> multi-set difference of a and b
 ----------------------
 Þȯ (Grid Neighbours (Diagonals)) (non-vectorising)
 Keywords: grid-neighbours-diagonals, grid-neighbors-diagonals, adjacent-cells-diagonals, adj-cells-diagonals, surrounding-cells-diagonals, eight-cells
