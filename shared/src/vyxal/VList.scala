@@ -54,7 +54,9 @@ class VList private (val lst: Seq[VAny])
       lst(Math.floorMod(ind, lst.length))
     else
       try lst(ind)
-      catch case _: IndexOutOfBoundsException => lst(ind % lst.length)
+      catch
+        case e: (IndexOutOfBoundsException | ArrayIndexOutOfBoundsException) =>
+          lst(ind % lst.length)
 
   /** Override to specify return type as VList */
   override def take(n: Int): VList = VList.from(lst.take(n))
