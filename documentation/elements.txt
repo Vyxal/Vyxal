@@ -542,12 +542,11 @@ Keywords: nth-items, modular, maxtrix-multiply, mat-multiply, mat-mul, regex-ful
 - a: lst, b: lst -> a * b (matrix multiply)
 - a: str, b: str -> does the entirety of a match b?
 ----------------------
-Ṅ (Join on Nothing | First Positive Integer | Is Alphanumeric) (non-vectorising)
+Ṅ (Is Prime? | Quine Cheese) (vectorising)
 Trigraph: #.N
-Keywords: nothing-join, concat-fold, join-on-nothing, empty-join, single-string, as-single-string, first-positive-integer, first-n>0, is-alphanumeric, is-alphanum, is-alnum, prime?
-- a: lst -> a join on nothing
-- a: str -> is a alphanumeric?
-- a: fun -> First positive integer ([1, 2, 3, ...]) for which a returns true
+Keywords: prime?, quineify
+- a: num -> is a prime?
+- a: str -> quote a and prepend to a
 ----------------------
 Ȯ (Over) (non-vectorising)
 Trigraph: #.O
@@ -655,12 +654,10 @@ Keywords: mirror
 - str a: a + reversed(a)
 - lst a: append reversed(a) to a
 ----------------------
-ṅ (Join On Newlines | Pad Binary to Mod 8 | Context if 1) (non-vectorising)
+ṅ (Set Difference) (non-vectorising)
 Trigraph: #.n
-Keywords: join-newlines, newline-join, join-on-newlines, binary-pad-8, bin-pad-8, one?->context, one?->n
-- a: lst -> a join on newlines
-- a: str -> a padded to a multiple of 8 with 0s
-- a: num -> a if a == 1 push context variable n
+Keywords: set-difference, set-diff
+- a: lst, b: lst -> set difference of a and b
 ----------------------
 ȯ (Boolify) (non-vectorising)
 Trigraph: #.o
@@ -1059,6 +1056,13 @@ Keywords: space-join, join-on-spaces, is-negative?, negative?
 - a: lst -> a join on spaces
 - a: num -> a < 0
 ----------------------
+” (Join On Newlines | Pad Binary to Mod 8 | Context if 1) (non-vectorising)
+Trigraph: #^'
+Keywords: join-newlines, newline-join, join-on-newlines, binary-pad-8, bin-pad-8, one?->context, one?->n
+- a: lst -> a join on newlines
+- a: str -> a padded to a multiple of 8 with 0s
+- a: num -> a if a == 1 push context variable n
+----------------------
 ð (Space) (non-vectorising)
 Trigraph: #.b
 Keywords: space
@@ -1068,6 +1072,13 @@ Keywords: space
 Trigraph: #^(
 Keywords: suffixes
 - a: lst -> Suffixes of a
+----------------------
+“ (Join on Nothing | First Positive Integer | Is Alphanumeric) (non-vectorising)
+Trigraph: #^"
+Keywords: nothing-join, concat-fold, join-on-nothing, empty-join, single-string, as-single-string, first-positive-integer, first-n>0, is-alphanumeric, is-alphanum, is-alnum
+- a: lst -> a join on nothing
+- a: str -> is a alphanumeric?
+- a: fun -> First positive integer ([1, 2, 3, ...]) for which a returns true
 ----------------------
 ¶ (Newline) (non-vectorising)
 Trigraph: #,

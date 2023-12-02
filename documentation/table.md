@@ -207,9 +207,8 @@
  | | | | | | | `a: num, b: str\|lst` => `return every a-th element of b. If a is zero, mirror: append b to its reverse.`
  | | | | | | | `a: lst, b: lst` => `a * b (matrix multiply)`
  | | | | | | | `a: str, b: str` => `does the entirety of a match b?`
- <code>Ṅ</code> | <code>#.N</code> | Join on Nothing / First Positive Integer / Is Alphanumeric | `nothing-join`, `concat-fold`, `join-on-nothing`, `empty-join`, `single-string`, `as-single-string`, `first-positive-integer`, `first-n>0`, `is-alphanumeric`, `is-alphanum`, `is-alnum`, `prime?` | 1 | :x: | `a: lst` => `a join on nothing`
- | | | | | | | `a: str` => `is a alphanumeric?`
- | | | | | | | `a: fun` => `First positive integer ([1, 2, 3, ...]) for which a returns true`
+ <code>Ṅ</code> | <code>#.N</code> | Is Prime? / Quine Cheese | `prime?`, `quineify` | 1 | :white_check_mark: | `a: num` => `is a prime?`
+ | | | | | | | `a: str` => `quote a and prepend to a`
  <code>Ȯ</code> | <code>#.O</code> | Over | `over` | 0 | :x: | `_` => `push a copy of the second item on the stack over the first`
  | | | | | | | `a b` => `a b a`
  <code>Ṗ</code> | <code>#.P</code> | Permutations | `permutations`, `perms` | 1 | :x: | `a: lst` => `Permutations of a`
@@ -243,9 +242,7 @@
  <code>ṁ</code> | <code>#.m</code> | Mirror | `mirror` | 1 | :x: | `num a: a + reversed(a) (as number)`
  | | | | | | | `str a: a + reversed(a)`
  | | | | | | | `lst a: append reversed(a) to a`
- <code>ṅ</code> | <code>#.n</code> | Join On Newlines / Pad Binary to Mod 8 / Context if 1 | `join-newlines`, `newline-join`, `join-on-newlines`, `binary-pad-8`, `bin-pad-8`, `one?->context`, `one?->n` | 1 | :x: | `a: lst` => `a join on newlines`
- | | | | | | | `a: str` => `a padded to a multiple of 8 with 0s`
- | | | | | | | `a: num` => `a if a == 1 push context variable n`
+ <code>ṅ</code> | <code>#.n</code> | Set Difference | `set-difference`, `set-diff` | 2 | :x: | `a: lst, b: lst` => `set difference of a and b`
  <code>ȯ</code> | <code>#.o</code> | Boolify | `boolify` | 1 | :x: | `a: any` => `bool(a)`
  <code>ṗ</code> | <code>#.p</code> | List Partitions / Integer Partitions | `list-partitions`, `list-parts`, `integer-partitions`, `int-partitions`, `int-parts`, `partitions` | 1 | :x: | `a: lst` => `List partitions of a`
  | | | | | | | `a: num` => `Integer partitions of a (all possible ways to sum to a)`
@@ -360,8 +357,14 @@
  <code>ɠ</code> | <code>#.6</code> | Minimum without popping | `min-no-pop` | 1 | :x: | `a: lst` => `min(a) without popping a`
  <code>„</code> | <code>#,"</code> | Join on Spaces / Is Negative? (Used when not closing a string) | `space-join`, `join-on-spaces`, `is-negative?`, `negative?` | 1 | :x: | `a: lst` => `a join on spaces`
  | | | | | | | `a: num` => `a < 0`
+ <code>”</code> | <code>#^'</code> | Join On Newlines / Pad Binary to Mod 8 / Context if 1 | `join-newlines`, `newline-join`, `join-on-newlines`, `binary-pad-8`, `bin-pad-8`, `one?->context`, `one?->n` | 1 | :x: | `a: lst` => `a join on newlines`
+ | | | | | | | `a: str` => `a padded to a multiple of 8 with 0s`
+ | | | | | | | `a: num` => `a if a == 1 push context variable n`
  <code>ð</code> | <code>#.b</code> | Space | `space` | 0 | :x: | `" "`
  <code>€</code> | <code>#^(</code> | Suffixes | `suffixes` | 1 | :x: | `a: lst` => `Suffixes of a`
+ <code>“</code> | <code>#^"</code> | Join on Nothing / First Positive Integer / Is Alphanumeric | `nothing-join`, `concat-fold`, `join-on-nothing`, `empty-join`, `single-string`, `as-single-string`, `first-positive-integer`, `first-n>0`, `is-alphanumeric`, `is-alphanum`, `is-alnum` | 1 | :x: | `a: lst` => `a join on nothing`
+ | | | | | | | `a: str` => `is a alphanumeric?`
+ | | | | | | | `a: fun` => `First positive integer ([1, 2, 3, ...]) for which a returns true`
  <code>¶</code> | <code>#,␤</code> | Newline | `newline` | 0 | :x: | `chr(10)`
  <code>ᶿ</code> | <code>#^`</code> | Bifuricate | `bifuricate`, `bifur`, `bif`, `furry`, `uwu`, `dup-rev`, `dup-reverse`, `owo` | 1 | :x: | `a: lst` => `Push a, then push a reversed`
  <code>ᶲ</code> | <code>#^\|</code> | Stringify | `to-string`, `stringify`, `str` | 1 | :x: | `a: any` => `str(a)`
