@@ -207,7 +207,7 @@
  | | | | | | | `a: num, b: str\|lst` => `return every a-th element of b. If a is zero, mirror: append b to its reverse.`
  | | | | | | | `a: lst, b: lst` => `a * b (matrix multiply)`
  | | | | | | | `a: str, b: str` => `does the entirety of a match b?`
- <code>Ṅ</code> | <code>#.N</code> | Join on Nothing / First Positive Integer / Is Alphanumeric | `nothing-join`, `concat-fold`, `join-on-nothing`, `empty-join`, `single-string`, `as-single-string`, `first-positive-integer`, `first-n>0`, `is-alphanumeric`, `is-alphanum`, `is-alnum` | 1 | :x: | `a: lst` => `a join on nothing`
+ <code>Ṅ</code> | <code>#.N</code> | Join on Nothing / First Positive Integer / Is Alphanumeric | `nothing-join`, `concat-fold`, `join-on-nothing`, `empty-join`, `single-string`, `as-single-string`, `first-positive-integer`, `first-n>0`, `is-alphanumeric`, `is-alphanum`, `is-alnum`, `prime?` | 1 | :x: | `a: lst` => `a join on nothing`
  | | | | | | | `a: str` => `is a alphanumeric?`
  | | | | | | | `a: fun` => `First positive integer ([1, 2, 3, ...]) for which a returns true`
  <code>Ȯ</code> | <code>#.O</code> | Over | `over` | 0 | :x: | `_` => `push a copy of the second item on the stack over the first`
