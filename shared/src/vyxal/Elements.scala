@@ -1782,6 +1782,38 @@ object Elements:
     },
     addPart(
       Monad,
+      "∆q",
+      "Prime Exponents",
+      List("prime-exponents", "prime-exps"),
+      true,
+      "a: num -> push a list of the power of each prime in the prime factors of a",
+    ) {
+      case a: VNum =>
+        val factors = NumberHelpers.primeFactors(a)
+        val primes = factors.distinct
+        val exponents = primes.map(prime =>
+          NumberHelpers.multiplicity(a, prime.asInstanceOf[VNum])
+        )
+        VList.from(exponents)
+    },
+    addPart(
+      Monad,
+      "∆ḟ",
+      "All Prime Exponents",
+      List("all-prime-exponents", "all-prime-exps"),
+      true,
+      "a: num -> for all primes less than or equal to a, push the power of that prime in the factorisation of a",
+    ) {
+      case a: VNum =>
+        val primes = NumberHelpers.probablePrimes
+          .takeWhile(_ <= NumberHelpers.primeFactors(a).maxOption.getOrElse(2))
+        val exponents = primes.map(prime =>
+          NumberHelpers.multiplicity(a, prime.asInstanceOf[VNum])
+        )
+        VList.from(exponents)
+    },
+    addPart(
+      Monad,
       "ḟ",
       "Prime Factors | Remove Alphabet",
       List("prime-factors", "remove-alphabet"),
