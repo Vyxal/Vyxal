@@ -131,6 +131,7 @@ object Parser:
       topAst match
         case AST.Newline => ()
         case AST.JunkModifier(name, arity) => if arity > 0 then
+            if finalAsts.length < arity then throw BadModifierException(name)
             val modifier = Modifiers.modifiers(name)
             val modifierArgs = List.fill(arity)(finalAsts.pop())
             if modifier.from.isDefinedAt(modifierArgs) then

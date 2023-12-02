@@ -23,6 +23,8 @@ class BadStructureException(structure: String)
     extends VyxalParsingException(s"Invalid $structure statement")
 class NoSuchModifierException(modifier: String)
     extends VyxalParsingException(s"No such modifier: ${modifier}")
+class BadModifierException(modifier: String)
+    extends VyxalParsingException(s"Modifier '$modifier' is missing arguments")
 class BadAugmentedAssignException()
     extends VyxalParsingException("Missing element for augmented assign")
 
