@@ -1090,6 +1090,7 @@ object Elements:
         "is-alphanumeric",
         "is-alphanum",
         "is-alnum",
+        "prime?",
       ),
       false,
       "a: lst -> a join on nothing",

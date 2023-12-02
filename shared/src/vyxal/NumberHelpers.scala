@@ -107,11 +107,19 @@ object NumberHelpers:
     if a < 2 || (a > 2 && a % 2 == VNum(0)) then return false
     if a == VNum(2) || a == VNum(3) then return true
     val s = a - 1
-    for _ <- 0 until k.toInt do
-      val test = randrange(VNum(2), Some(a - 1))
-      val modResult = modpow(test, s, a)
-      if modResult != VNum(1) && modResult != a - 1 then return false
+    try
+      for _ <- 0 until k.toInt do
+        val test = randrange(VNum(2), Some(a - 1))
+        println(test)
+        val modResult = modpow(test, s, a)
+        println(modResult)
+        if modResult != VNum(1) && modResult != a - 1 then
+          throw Exception(
+            "this is scala being silly and not allowing me to return from a for loop because it isn't actually a for loop"
+          )
+    catch case _ => return false
     true
+  end isMostLikelyPrime
 
   def log(a: VNum, b: VNum): VNum =
     // Only works for real numbers for now
@@ -122,10 +130,11 @@ object NumberHelpers:
 
   def modpow(base: VNum, power: VNum, modulus: VNum): VNum =
     // https://en.wikipedia.org/wiki/Modular_exponentiation#Right-to-left_binary_method
+    if modulus == VNum(1) then return VNum(0)
     var result = VNum(1)
     var current = base % modulus
     var currentPower = power
-    while currentPower > 0 do
+    while currentPower > VNum(0) do
       if currentPower % VNum(2) == VNum(1) then
         result = (result * current) % modulus
       currentPower /= VNum(2)
