@@ -432,7 +432,7 @@ object ListHelpers:
   ): VList =
     value match
       case list: VList => list
-      case str: String => VList.from(str.map(_.toString))
+      case str: String => VList.from(str.map(_.toString).toList)
       case fn: VFun => VList(fn)
       case num: VNum =>
         if overrideRangify.getOrElse(ctx.settings.rangify) then
