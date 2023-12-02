@@ -1807,8 +1807,9 @@ object Elements:
       case a: VNum =>
         if a < 2 then VList()
         else
-          val primes = NumberHelpers.probablePrimes
-            .takeWhile(_ <= NumberHelpers.primeFactors(a).maxOption.getOrElse(2))
+          val primes = NumberHelpers.probablePrimes.takeWhile(
+            _ <= NumberHelpers.primeFactors(a).maxOption.getOrElse(2)
+          )
           val exponents = primes.map(prime =>
             NumberHelpers.multiplicity(a, prime.asInstanceOf[VNum])
           )
