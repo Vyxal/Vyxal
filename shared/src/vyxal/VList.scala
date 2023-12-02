@@ -2,6 +2,7 @@ package vyxal
 
 import vyxal.VNum.given
 
+import scala.annotation.targetName
 import scala.collection.immutable.SeqOps
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
@@ -173,6 +174,16 @@ class VList private (val lst: Seq[VAny])
       else
         seen += elem
         true
+    })
+
+  @targetName("setDiff")
+  def -(other: VList): VList =
+    val seen = mutable.ArrayBuffer.empty[VAny]
+    VList.from(this.lst.filter { elem =>
+      if seen.contains(elem) then false
+      else
+        seen += elem
+        !other.contains(elem)
     })
 end VList
 

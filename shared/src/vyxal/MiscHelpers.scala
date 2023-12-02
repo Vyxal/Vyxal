@@ -99,7 +99,7 @@ object MiscHelpers:
     case a: VList =>
       if a.exists(_.isInstanceOf[VList]) then a.vmap(MiscHelpers.joinNothing)
       else a.mkString
-    case n: VNum => NumberHelpers.isMostLikelyPrime(n)
+    case n: VNum => n.toString
     case s: String => StringHelpers.isAlphaNumeric(s)
     case f: VFun => firstPositive(f)
   }

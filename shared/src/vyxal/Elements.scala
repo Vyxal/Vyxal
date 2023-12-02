@@ -1033,8 +1033,20 @@ object Elements:
       case a: VNum => (a.underlying % 2) == VNum(0)
       case a: String => VList.from(a.split("\n").toSeq)
     },
+    addPart(
+      Monad,
+      "Ṅ",
+      "Is Prime? | Quine Cheese",
+      List("prime?", "quineify"),
+      true,
+      "a: num -> is a prime?",
+      "a: str -> quote a and prepend to a",
+    ) {
+      case a: VNum => NumberHelpers.isMostLikelyPrime(a)
+      case a: String => StringHelpers.quotify(a) + a
+    },
     addDirect(
-      "ṅ",
+      "”",
       "Join On Newlines | Pad Binary to Mod 8 | Context if 1",
       List(
         "join-newlines",
@@ -1076,7 +1088,7 @@ object Elements:
     },
     addFull(
       Monad,
-      "Ṅ",
+      "“",
       "Join on Nothing | First Positive Integer | Is Alphanumeric",
       List(
         "nothing-join",
@@ -1090,7 +1102,6 @@ object Elements:
         "is-alphanumeric",
         "is-alphanum",
         "is-alnum",
-        "prime?",
       ),
       false,
       "a: lst -> a join on nothing",
@@ -2013,6 +2024,17 @@ object Elements:
       case a: VNum => VNum(s"${a.toString.last}${a.toString.dropRight(1)}")
       case a: VList => VList.from(a.lst.last +: a.lst.dropRight(1))
 
+    },
+    addPart(
+      Dyad,
+      "ṅ",
+      "Set Difference",
+      List("set-difference", "set-diff"),
+      false,
+      "a: lst, b: lst -> set difference of a and b",
+    ) {
+      case (a, b) =>
+        VList.from(ListHelpers.makeIterable(a) - (ListHelpers.makeIterable(b)))
     },
     addPart(
       Monad,
