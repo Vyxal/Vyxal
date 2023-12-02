@@ -8,7 +8,10 @@ import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.math
 
+import fastparse.internal.Lazy
+import spire.*
 import spire.math.Real
+import spire.math.SafeLong
 import spire.syntax.isReal.partialOrderOps // So we can compare Reals to stuff
 
 object NumberHelpers:
@@ -100,12 +103,34 @@ object NumberHelpers:
         case _ => throw Exception("Cannot find gcd of non-numbers")
     }
 
+  def isMostLikelyPrime(a: VNum, k: VNum = 40): Boolean =
+    if a < 2 || (a > 2 && a % 2 == VNum(0)) then return false
+    if a == VNum(2) || a == VNum(3) then return true
+    val s = a - 1
+    for _ <- 0 until k.toInt do
+      val test = randrange(VNum(2), Some(a - 1))
+      val modResult = modpow(test, s, a)
+      if modResult != VNum(1) && modResult != a - 1 then return false
+    true
+
   def log(a: VNum, b: VNum): VNum =
     // Only works for real numbers for now
     VNum(
       spire.math.Real.log(a.underlying.real) /
         spire.math.Real.log(b.underlying.real)
     )
+
+  def modpow(base: VNum, power: VNum, modulus: VNum): VNum =
+    // https://en.wikipedia.org/wiki/Modular_exponentiation#Right-to-left_binary_method
+    var result = VNum(1)
+    var current = base % modulus
+    var currentPower = power
+    while currentPower > 0 do
+      if currentPower % VNum(2) == VNum(1) then
+        result = (result * current) % modulus
+      currentPower /= VNum(2)
+      current = (current * current) % modulus
+    result
   def multiplicity(a: VNum, b: VNum): VNum =
     if a == VNum(0) || b == VNum(0) then return VNum(0)
     if b.vabs == VNum(1) then return a.vabs
@@ -143,6 +168,15 @@ object NumberHelpers:
     helper(VList(), a, VNum(1))
     VList.from(result.toList)
 
+  def probablePrimes: VList =
+    VList.from(
+      LazyList
+        .unfold(VNum(2)) { n =>
+          Some(n -> (n + 1))
+        }
+        .filter(isMostLikelyPrime(_))
+    )
+
   def primeFactors(a: VNum): VList =
     val result = mutable.ListBuffer.empty[VNum]
     var current = a
@@ -153,6 +187,40 @@ object NumberHelpers:
         current /= i
       else i += 1
     VList.from(result.toList)
+
+  def randrange(start: VNum, stop: Option[VNum] = None, step: VNum = 1): VNum =
+    if stop.isEmpty then
+      if step != VNum(1) then throw Exception("Cannot have step without stop")
+      if start > 0 then return randbelow(start)
+      else throw Exception("empty range for randrange()")
+
+    val stopVal = stop.get
+    val width = stopVal - start
+
+    if step == VNum(1) then
+      if width > 0 then return start + randbelow(width)
+      else throw Exception("empty range for randrange()")
+
+    if step == VNum(0) then throw Exception("step cannot be 0 in randrange()")
+    val n =
+      if step > 0 then (width + step - 1) / step else (width + step + 1) / step
+    if n <= 0 then
+      throw Exception(s"empty range for randrange($start, $stopVal, $step)")
+    return start + step * randbelow(n)
+  end randrange
+
+  private def randbelow(n: VNum): VNum =
+    val bitCount = n.toBigInt.bitLength
+    var temp = getRandBits(bitCount)
+    while temp >= n do temp = getRandBits(bitCount)
+    temp
+
+  private def getRandBits(n: VNum): VNum =
+    val bits = ListBuffer.empty[VNum]
+    for _ <- 0 until n.toInt do bits += VNum(scala.util.Random.nextInt(2))
+    bits.foldLeft(VNum(0)) { (ret, digit) =>
+      2 * ret + digit
+    }
 
   def range(start: VNum, end: VNum): VList =
     val step = if start < end then 1 else -1
@@ -262,7 +330,7 @@ object NumberHelpers:
     val codepage = temp + Lexer.Codepage.filterNot(temp.contains(_))
     lst.map(d => codepage((d % 256).toInt)).mkString
 
-  def toInt(value: VAny, radix: Int)(using ctx: Context): VAny =
+  def toInt(value: VAny, radix: Int)(using Context): VAny =
     value match
       case n: VNum =>
         if radix != 10 then toInt(n.toIntegral.toString(), radix)

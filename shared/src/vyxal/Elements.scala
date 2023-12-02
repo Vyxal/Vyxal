@@ -1807,13 +1807,14 @@ object Elements:
     addPart(
       Monad,
       "q",
-      "Quotify",
-      List("quotify"),
-      false,
-      "a: any -> enclose a in quotes, escape backslashes and quote marks",
+      "Quotify | Nth Prime",
+      List("quotify", "nth-prime", "prime-n"),
+      true,
+      "a: str -> enclose a in quotes, escape backslashes and quote marks",
+      "a: num -> nth prime",
     ) {
       case a: String => StringHelpers.quotify(a)
-      case a => StringHelpers.quotify(a.toString)
+      case a: VNum => NumberHelpers.probablePrimes.index(a)
     },
     addPart(
       Monad,
