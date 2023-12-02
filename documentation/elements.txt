@@ -1187,6 +1187,14 @@ Keywords: continue
 Keywords: 
 - *a, f -> f applied to the stack without popping items. Use the modifier instead.
 ----------------------
+∆q (Prime Exponents) (vectorising)
+Keywords: prime-exponents, prime-exps
+- a: num -> push a list of the power of each prime in the prime factors of a
+----------------------
+∆ḟ (All Prime Exponents) (vectorising)
+Keywords: all-prime-exponents, all-prime-exps
+- a: num -> for all primes less than or equal to a, push the power of that prime in the factorisation of a
+----------------------
 ÞO (Grid Neighbours (Wrap Around)) (non-vectorising)
 Keywords: grid-neighbours-wrap, grid-neighbors-wrap, adjacent-cells-wrap, adj-cells-wrap, surrounding-cells-wrap
 - a: lst[lst] -> Grid neighbours of a - up, down, left, right - wrapping around
