@@ -540,7 +540,7 @@ object Elements:
       "a: num -> 10 ** n",
     ) { ctx ?=> ctx.push(execHelper(ctx.pop())) },
     addDirect(
-      "Q",
+      "#Q",
       "Exit | Quit",
       List("exit", "quit"),
       None,
@@ -3089,6 +3089,28 @@ object Elements:
       case a: VList => ListHelpers.palindromise(a)
       case a: String => ListHelpers.palindromise(a)
       case a: VNum => ListHelpers.palindromise(a)
+    },
+    addPart(
+      Dyad,
+      "Q",
+      "Remove At",
+      List("remove-at"),
+      false,
+      "a: lst, b: num -> a with bth element removed",
+    ) {
+      case (a: String, b: VNum) =>
+        val index = b.toInt
+        if index < 0 then
+          a.take(a.length + index) + a.drop(a.length + index + 1)
+        else a.take(index) + a.drop(index + 1)
+      case (a, b: VNum) =>
+        val lst = ListHelpers.makeIterable(a)
+        val index = b.toInt
+        if index < 0 then
+          VList.from(
+            lst.take(lst.length + index) ++ lst.drop(lst.length + index + 1)
+          )
+        else VList.from(lst.take(index) ++ lst.drop(index + 1))
     },
 
     // Constants
