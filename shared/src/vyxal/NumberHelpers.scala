@@ -110,16 +110,13 @@ object NumberHelpers:
     try
       for _ <- 0 until k.toInt do
         val test = randrange(VNum(2), Some(a - 1))
-        println(test)
         val modResult = modpow(test, s, a)
-        println(modResult)
         if modResult != VNum(1) && modResult != a - 1 then
           throw Exception(
             "this is scala being silly and not allowing me to return from a for loop because it isn't actually a for loop"
           )
     catch case _ => return false
     true
-  end isMostLikelyPrime
 
   def log(a: VNum, b: VNum): VNum =
     // Only works for real numbers for now
@@ -134,10 +131,11 @@ object NumberHelpers:
     var result = VNum(1)
     var current = base % modulus
     var currentPower = power
-    while currentPower > VNum(0) do
+    while currentPower > 0 do
       if currentPower % VNum(2) == VNum(1) then
         result = (result * current) % modulus
       currentPower /= VNum(2)
+      currentPower = currentPower.floor
       current = (current * current) % modulus
     result
   def multiplicity(a: VNum, b: VNum): VNum =
