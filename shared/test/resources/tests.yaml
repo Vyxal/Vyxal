@@ -3,6 +3,15 @@
 # Replace List\[VAny\]\((.+)\) -> (.+?),?$ with - { in: [$1], out: $2 }
 # Replace VNum\((-?\d+)\) with $1
 
+"¦":
+  - {in: [[1,2,3]], out: [1,2,3,2,1]}
+  - {in: [[1,2,3,4]], out: [1,2,3,4,3,2,1]}
+  - {in: [[1,2,3,4,5]], out: [1,2,3,4,5,4,3,2,1]}
+  - {in: [[1,2,3,4,5,6]], out: [1,2,3,4,5,6,5,4,3,2,1]}
+  - {in: ["hello"], out: "hellolleh"}
+  - {in: ["hello world"], out: "hello worldlrow olleh"}
+  - {in: [4839], out: [4839384]}
+
 "*":
   when given two numbers:
     - { in: [3, 2], out: 9 }

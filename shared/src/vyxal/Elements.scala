@@ -1370,7 +1370,7 @@ object Elements:
       Monad,
       "ṁ",
       "Mirror",
-      List("mirror"),
+      List("mirror", "ab->abba"),
       false,
       "num a: a + reversed(a) (as number)",
       "str a: a + reversed(a)",
@@ -3082,9 +3082,20 @@ object Elements:
           if zeroless.isEmpty then 0
           else MiscHelpers.eval(zeroless)
     },
+    addPart(
+      Monad,
+      "¦",
+      "Palindromise",
+      List("palindromise", "palindrome", "ab->aba"),
+      false,
+      "a: any -> palindromise a",
+    ) {
+      case a: VList => ListHelpers.palindromise(a)
+      case a: String => ListHelpers.palindromise(a)
+      case a: VNum => ListHelpers.palindromise(a)
+    },
 
     // Constants
-    addNilad("¦", "Pipe", List("pipe"), "\"|\"") { "|" },
     addNilad("ð", "Space", List("space"), "\" \"") { " " },
     addNilad("¶", "Newline", List("newline"), "chr(10)") { "\n" },
     addNilad("•", "Asterisk", List("asterisk"), "\"*\"") { "*" },
