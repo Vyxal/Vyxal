@@ -398,7 +398,7 @@ object Elements:
     },
     addPart(
       Monad,
-      "Ċ",
+      "ÞĊ",
       "Cycle | Is Positive?",
       List("cycle", "is-positive?", "positive?", ">0?"),
       false,
@@ -2035,6 +2035,17 @@ object Elements:
     ) {
       case (a, b) =>
         VList.from(ListHelpers.makeIterable(a) - (ListHelpers.makeIterable(b)))
+    },
+    addPart(
+      Dyad,
+      "Ċ",
+      "Set XOR",
+      List("set-xor"),
+      false,
+      "a: lst, b: lst -> set xor of a and b",
+    ) {
+      case (a, b) =>
+        VList.from(ListHelpers.makeIterable(a) ^ (ListHelpers.makeIterable(b)))
     },
     addPart(
       Monad,

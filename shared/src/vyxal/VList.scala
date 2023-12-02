@@ -185,6 +185,25 @@ class VList private (val lst: Seq[VAny])
         seen += elem
         !other.contains(elem)
     })
+
+  @targetName("xor")
+  def ^(other: VList): VList =
+    val seen = mutable.ArrayBuffer.empty[VAny]
+    VList.from(
+      this.lst.filter { elem =>
+        if seen.contains(elem) then false
+        else
+          seen += elem
+          !other.contains(elem)
+      } ++
+        other.lst.filter { elem =>
+          if seen.contains(elem) then false
+          else
+            seen += elem
+            !this.contains(elem)
+        }
+    )
+  end ^
 end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:
