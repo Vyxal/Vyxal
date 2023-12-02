@@ -1805,12 +1805,14 @@ object Elements:
       "a: num -> for all primes less than or equal to a, push the power of that prime in the factorisation of a",
     ) {
       case a: VNum =>
-        val primes = NumberHelpers.probablePrimes
-          .takeWhile(_ <= NumberHelpers.primeFactors(a).maxOption.getOrElse(2))
-        val exponents = primes.map(prime =>
-          NumberHelpers.multiplicity(a, prime.asInstanceOf[VNum])
-        )
-        VList.from(exponents)
+        if a < 2 then VList()
+        else
+          val primes = NumberHelpers.probablePrimes
+            .takeWhile(_ <= NumberHelpers.primeFactors(a).maxOption.getOrElse(2))
+          val exponents = primes.map(prime =>
+            NumberHelpers.multiplicity(a, prime.asInstanceOf[VNum])
+          )
+          VList.from(exponents)
     },
     addPart(
       Monad,
