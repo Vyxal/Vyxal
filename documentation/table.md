@@ -156,7 +156,8 @@
  <code>o</code> |  | Overlap / Overlapping Slices | `overlap`, `overlaps`, `overlapping`, `overlapping-slices` | 2 | :x: | `a: lst, b: num` => `Overlapping slices of a of length b`
  | | | | | | | `a: lst\|str` => `Overlapping slices of a of length 2`
  <code>p</code> |  | Prepend | `prepend` | 2 | :x: | `a: lst, b: any` => `b prepended to a`
- <code>q</code> |  | Quotify | `quotify` | 1 | :x: | `a: any` => `enclose a in quotes, escape backslashes and quote marks`
+ <code>q</code> |  | Quotify / Nth Prime | `quotify`, `nth-prime`, `prime-n` | 1 | :white_check_mark: | `a: str` => `enclose a in quotes, escape backslashes and quote marks`
+ | | | | | | | `a: num` => `nth prime`
  <code>r</code> |  | Replace | `replace`, `zip-with` | 3 | :x: | `a: str, b: str, c: str` => `replace all instances of b in a with c`
  | | | | | | | `a: fun, b: any, c: any` => `reduce items in zip(b, c) by a`
  <code>s</code> |  | Split | `split` | 2 | :x: | `a: any, b: any` => `split a by b`
