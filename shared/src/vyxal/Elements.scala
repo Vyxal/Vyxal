@@ -842,22 +842,6 @@ object Elements:
         case arg => throw UnimplementedOverloadException("ḣ", List(arg))
     },
     addDirect(
-      "Ḥ",
-      "Head Extract",
-      List("head-extract-swap", "split-at-head-swap"),
-      Some(1),
-      "a: lst|str -> Push a[1:], then a[0] onto the stack",
-    ) { ctx ?=>
-      ctx.pop() match
-        case lst: VList => ctx.push(
-            lst.drop(1),
-            lst.headOption.getOrElse(ctx.settings.defaultValue),
-          )
-        case s: String =>
-          ctx.push(s.drop(1), if s.isEmpty then "" else s.charAt(0).toString)
-        case arg => throw UnimplementedOverloadException("Ḥ", List(arg))
-    },
-    addDirect(
       "ṫ",
       "Last Extract",
       List("last-extract", "split-at-last"),
@@ -2073,6 +2057,18 @@ object Elements:
     },
     addPart(
       Dyad,
+      "Þṅ",
+      "Multi-Set Difference",
+      List("multi-set-difference", "multi-set-diff"),
+      false,
+      "a: lst, b: lst -> multi-set difference of a and b",
+    ) {
+      case (a, b) => VList.from(
+          ListHelpers.makeIterable(a).diff(ListHelpers.makeIterable(b))
+        )
+    },
+    addPart(
+      Dyad,
       "Ċ",
       "Set XOR",
       List("set-xor"),
@@ -3084,7 +3080,7 @@ object Elements:
     },
     addPart(
       Monad,
-      "¦",
+      "Ḥ",
       "Palindromise",
       List("palindromise", "palindrome", "ab->aba"),
       false,
