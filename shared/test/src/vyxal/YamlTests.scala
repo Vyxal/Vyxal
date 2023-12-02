@@ -67,7 +67,7 @@ class YamlTests extends AnyFunSpec:
           val code = codeOverride.getOrElse(element)
           val inputStr = inputs.map(StringHelpers.repr).mkString(", ")
           val msg =
-            if codeOverride.isEmpty then s"Inputs: $inputStr"
+            if codeOverride.isEmpty then s"Element: $code, Inputs: $inputStr"
             else s"Code: `$code, inputs: $inputStr"
 
           Elements.elements(element).arity match
