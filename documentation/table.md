@@ -8,7 +8,7 @@
  <code>🌮</code> |  | Taco | `taco` | NA | :x: | `very funky`
  <code>🍪</code> |  | Cookie | `cookie` | NA | :x: | `cookie.`
  <code>ඞ</code> |  | ඞ | `sus` | NA | :x: | `ඞ`
- <code>¦</code> | <code>#.;</code> | Pipe | `pipe` | 0 | :x: | `"\|"`
+ <code>¦</code> | <code>#.;</code> | Palindromise | `palindromise`, `palindrome`, `ab->aba` | 1 | :x: | `a: any` => `palindromise a`
  <code>!</code> |  | Factorial | `fact`, `factorial` | 1 | :white_check_mark: | `a: num` => `a!`
  <code>$</code> |  | Swap | `swap` | NA | :x: | `a, b` => `b, a`
  <code>%</code> |  | Modulo / String Formatting | `mod`, `modulo`, `str-format`, `format`, `%`, `strfmt` | 2 | :x: | `a: num, b: num` => `a % b`
@@ -238,7 +238,7 @@
  <code>ḣ</code> | <code>#.h</code> | Head Extract | `head-extract`, `split-at-head` | 1 | :x: | `a: lst\|str` => `Push a[0], then a[1:] onto the stack`
  <code>ŀ</code> | <code>#.l</code> | Transliterate / Call While | `transliterate`, `call-while` | 3 | :x: | `any a, any b, any c` => `transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)`
  | | | | | | | `a: fun, b: fun, c: any` => `call b on c until a(c) is falsy`
- <code>ṁ</code> | <code>#.m</code> | Mirror | `mirror` | 1 | :x: | `num a: a + reversed(a) (as number)`
+ <code>ṁ</code> | <code>#.m</code> | Mirror | `mirror`, `ab->abba` | 1 | :x: | `num a: a + reversed(a) (as number)`
  | | | | | | | `str a: a + reversed(a)`
  | | | | | | | `lst a: append reversed(a) to a`
  <code>ṅ</code> | <code>#.n</code> | Set Difference | `set-difference`, `set-diff` | 2 | :x: | `a: lst, b: lst` => `set difference of a and b`

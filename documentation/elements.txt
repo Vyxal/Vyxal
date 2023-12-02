@@ -10,10 +10,10 @@ Keywords: cookie
 Keywords: sus
 - ඞ
 ----------------------
-¦ (Pipe) (non-vectorising)
+¦ (Palindromise) (non-vectorising)
 Trigraph: #.;
-Keywords: pipe
-- -> "|"
+Keywords: palindromise, palindrome, ab->aba
+- a: any -> palindromise a
 ----------------------
 ! (Factorial) (vectorising)
 Keywords: fact, factorial
@@ -648,7 +648,7 @@ Keywords: transliterate, call-while
 ----------------------
 ṁ (Mirror) (non-vectorising)
 Trigraph: #.m
-Keywords: mirror
+Keywords: mirror, ab->abba
 - num a: a + reversed(a) (as number)
 - str a: a + reversed(a)
 - lst a: append reversed(a) to a
