@@ -84,7 +84,7 @@ object JSVyxal:
   /** Bridge to turn literate code into SBCS */
   @JSExport
   def getSBCSified(code: String): String =
-    Lexer.lexLiterate(code).map(Lexer.sbcsify).getOrElse(code)
+    Lexer.sbcsify(Lexer.lexLiterate(code))
 
   @JSExport
   def getCodepage(): String = Lexer.Codepage

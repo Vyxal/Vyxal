@@ -9,9 +9,7 @@ import org.scalatest.funspec.AnyFunSpec
 
 class LiterateTests extends VyxalTests:
   def testLiterate(input: String, expected: String): Assertion =
-    val literate = Lexer.lexLiterate(input) match
-      case Right(res) => res
-      case Left(err) => throw RuntimeException(err.toString)
+    val literate = Lexer.lexLiterate(input)
     val sbcsified = Lexer.sbcsify(literate)
     assertResult(
       expected,

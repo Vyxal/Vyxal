@@ -3,6 +3,7 @@ package vyxal.parsing
 import scala.language.strictEquality
 
 import vyxal.{Elements, Modifiers, SugarMap}
+import vyxal.{LeftoverCodeException, VyxalLexingException}
 import vyxal.parsing.Common.given // For custom whitespace
 import vyxal.parsing.Common.withRange
 import vyxal.parsing.Lexer.StringClosers
@@ -118,7 +119,7 @@ private[parsing] object SBCSLexer:
         this.sugarUsed = true
         SugarMap.trigraphs
           .get(value)
-          .flatMap(char => this.lex(char).toOption.map(_.head))
+          .flatMap(char => Some(this.lex(char)).map(_.head))
           .getOrElse(Token(Command, value, range))
     }
 
@@ -200,18 +201,12 @@ private[parsing] object SBCSLexer:
   def parseAll[$: P]: P[Seq[Token]] =
     P((token | structureDoubleClose).rep ~ End)
 
-  def lex(code: String): Either[VyxalCompilationError, List[Token]] =
+  def lex(code: String): List[Token] =
     parse(code, this.parseAll) match
       case Parsed.Success(res, ind) =>
-        if ind == code.length then Right(res.toList)
-        else
-          Left(
-            VyxalCompilationError(
-              s"Parsed $res but did not consume '${code.substring(ind)}'"
-            )
-          )
+        if ind == code.length then res.toList
+        else throw LeftoverCodeException(code.substring(ind))
       case f @ Parsed.Failure(label, index, extra) =>
         val trace = f.trace()
-        Left(VyxalCompilationError(s"Lexing failed: ${trace.longMsg}"))
-
+        throw VyxalLexingException("Unknown Reason")
 end SBCSLexer

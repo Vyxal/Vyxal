@@ -72,13 +72,11 @@ object MiscHelpers:
     else if s.matches("""("(?:[^"\\]|\\.)*["])""") then
       s.substring(1, s.length - 1)
     else if Lexer.isList(s) then
-      Lexer.lexLiterate(s) match
-        case Right(tokens) =>
-          val tempContext = Context(globals = Globals(settings = ctx.settings))
-          tempContext.settings = tempContext.settings.useMode(EndPrintMode.None)
-          Interpreter.execute(Lexer.sbcsify(tokens))(using tempContext)
-          tempContext.peek
-        case Left(err) => throw RuntimeException(s"Couldn't parse list: $err")
+      val tokens = Lexer.lexLiterate(s)
+      val tempContext = Context(globals = Globals(settings = ctx.settings))
+      tempContext.settings = tempContext.settings.useMode(EndPrintMode.None)
+      Interpreter.execute(Lexer.sbcsify(tokens))(using tempContext)
+      tempContext.peek
     else s
 
   /** A generalised "count up until the first positive integer is found that
