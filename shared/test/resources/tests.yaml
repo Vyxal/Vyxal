@@ -310,6 +310,9 @@
     - { in: ["Hello, World", ".+"], out: 1 }
     - { in: ["Hello, World", "Hello, world"], out: 0 }
     - { in: ["https://www.google.com", "https?://.+"], out: 1 }
+  When given two lists:
+    - {in: [[1,2],[2,3,4]], out: [1,2,3,4]}
+    
 
 "S":
   - { in: ["qzqadbA;z"], out: ";Aabdqqzz" }

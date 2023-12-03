@@ -530,6 +530,17 @@ object ListHelpers:
     moldHelper(content, shape, 0)
   end mold
 
+  def multiSetIntersection(left: VList, right: VList): VList =
+    val out = ListBuffer.empty[VAny]
+    var rightMut = right.lst
+    for item <- left do
+      if rightMut.contains(item) then
+        out += item
+        rightMut = rightMut.indexOf(item) match
+          case -1 => rightMut
+          case ind => rightMut.take(ind) ++ rightMut.drop(ind + 1)
+    VList.from(out.toSeq)
+
   def nthItems(iterable: VList | String, index: VNum): VAny =
     val temp = iterable match
       case iterable: VList => iterable

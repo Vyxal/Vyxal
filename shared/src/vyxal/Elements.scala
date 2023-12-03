@@ -1932,7 +1932,7 @@ object Elements:
     addPart(
       Dyad,
       "R",
-      "Reduce by Function Object | Dyadic Range | Regex Match",
+      "Reduce by Function Object | Dyadic Range | Regex Match | Set Union",
       List(
         "fun-reduce",
         "reduce",
@@ -1943,12 +1943,14 @@ object Elements:
         "re-match?",
         "has-regex-match?",
         "fold",
+        "union",
       ),
       false,
       "a: fun, b: any -> reduce iterable b by function a",
       "a: any, b: fun -> reduce iterable a by function b",
       "a: num, b: num -> the range [a, b)",
       "a: str, b: num|str -> does regex pattern b match haystack a?",
+      "a: lst, b: lst -> union of a and b",
     ) {
       case (a: VNum, b: VNum) => NumberHelpers.range(a, b).dropRight(1)
       case (a: String, b: String) => b.r.findFirstIn(a).isDefined
@@ -1956,6 +1958,7 @@ object Elements:
       case (a: VNum, b: String) => b.r.findFirstIn(a.toString).isDefined
       case (a: VFun, b) => ListHelpers.reduce(b, a)
       case (a, b: VFun) => ListHelpers.reduce(a, b)
+      case (a: VList, b: VList) => VList.from(a ++ b).distinct
     },
     addPart(
       Triad,
@@ -2053,7 +2056,7 @@ object Elements:
       "a: lst, b: lst -> set difference of a and b",
     ) {
       case (a, b) =>
-        VList.from(ListHelpers.makeIterable(a) - (ListHelpers.makeIterable(b)))
+        VList.from(ListHelpers.makeIterable(a) - ListHelpers.makeIterable(b))
     },
     addPart(
       Dyad,
@@ -2064,7 +2067,7 @@ object Elements:
       "a: lst, b: lst -> multi-set difference of a and b",
     ) {
       case (a, b) => VList.from(
-          ListHelpers.makeIterable(a).diff(ListHelpers.makeIterable(b))
+          ListHelpers.makeIterable(a) -- ListHelpers.makeIterable(b)
         )
     },
     addPart(
@@ -2077,6 +2080,19 @@ object Elements:
     ) {
       case (a, b) =>
         VList.from(ListHelpers.makeIterable(a) ^ (ListHelpers.makeIterable(b)))
+    },
+    addPart(
+      Dyad,
+      "Þċ",
+      "Multi-Set XOR",
+      List("multi-set-xor"),
+      false,
+      "a: lst, b: lst -> multi-set xor of a and b",
+    ) {
+      case (a, b) =>
+        val aSet = ListHelpers.makeIterable(a)
+        val bSet = ListHelpers.makeIterable(b)
+        VList.from((aSet -- bSet) ++ (bSet -- aSet))
     },
     addPart(
       Monad,
@@ -2364,7 +2380,7 @@ object Elements:
     },
     addPart(
       Dyad,
-      "Þ⁾",
+      "ø⁾",
       "Surround",
       List("surround"),
       false,
@@ -2390,6 +2406,17 @@ object Elements:
       case (a: String, b: VNum) => StringHelpers.characterMultiply(b, a)
       case (a: VList, b: VList) => ListHelpers.setIntersection(a, b)
       case (a: VList, b: VNum) => ListHelpers.flattenByDepth(a, b)
+    },
+    addPart(
+      Dyad,
+      "Þ⁾",
+      "Multi-Set Intersection",
+      List("multi-set-intersection", "multi-set-intersect"),
+      false,
+      "a: lst, b: lst -> multi-set intersection of a and b",
+    ) {
+      case (a, b) =>
+        ListHelpers.multiSetIntersection(makeIterable(a), makeIterable(b))
     },
     addPart(
       Monad,

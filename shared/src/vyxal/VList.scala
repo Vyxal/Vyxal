@@ -188,6 +188,17 @@ class VList private (val lst: Seq[VAny])
         !other.contains(elem)
     })
 
+  @targetName("multiSetDiff")
+  def --(other: VList): VList =
+    var ret = lst
+
+    for elem <- other do
+      if ret.contains(elem) then
+        ret = ret.indexWhere(_ == elem) match
+          case -1 => ret
+          case ind => ret.take(ind) ++ ret.drop(ind + 1)
+    VList.from(ret)
+
   @targetName("xor")
   def ^(other: VList): VList =
     val seen = mutable.ArrayBuffer.empty[VAny]
