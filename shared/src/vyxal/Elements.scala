@@ -2199,9 +2199,11 @@ object Elements:
       true,
       "a: num -> a ** 2",
       "a: str -> a split into pairs",
+      "a: lst -> a split into pairs",
     ) {
       case a: VNum => a ** 2
       case a: String => VList.from(a.grouped(2).toSeq)
+      case a: VList => VList.from(a.grouped(2).toSeq)
     },
     addPart(
       Monad,
@@ -2211,9 +2213,11 @@ object Elements:
       true,
       "a: num -> a ** 3",
       "a: str -> a split into chunks of length 3",
+      "a: lst -> a split into chunks of length 3",
     ) {
       case a: VNum => a ** 3
       case a: String => VList.from(a.grouped(3).toSeq)
+      case a: VList => VList.from(a.grouped(3).toSeq)
     },
     addPart(
       Monad,
