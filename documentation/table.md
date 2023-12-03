@@ -382,23 +382,19 @@
  <code>∆ḟ</code> |  | All Prime Exponents | `all-prime-exponents`, `all-prime-exps` | 1 | :white_check_mark: | `a: num` => `for all primes less than or equal to a, push the power of that prime in the factorisation of a`
  <code>ø⁾</code> |  | Surround | `surround` | 2 | :x: | `a: any, b: any` => `a prepended and appended to b`
  <code>ÞO</code> |  | Grid Neighbours (Wrap Around) | `grid-neighbours-wrap`, `grid-neighbors-wrap`, `adjacent-cells-wrap`, `adj-cells-wrap`, `surrounding-cells-wrap` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right - wrapping around`
- | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b
-0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does`
+ | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b =>0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does`
  <code>ÞT</code> |  | Transpose Safe | `transpose-safe` | 1 | :x: | `a: any` => `transpose a`
  <code>Þo</code> |  | Grid Neighbours | `grid-neighbours`, `grid-neighbors`, `adjacent-cells`, `adj-cells`, `surrounding-cells` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - right, down, left, up of a`
- | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a and start from direction b
-0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does`
+ | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a and start from direction b =>0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does`
  <code>ÞĊ</code> |  | Cycle / Is Positive? | `cycle`, `is-positive?`, `positive?`, `>0?` | 1 | :x: | `a: lst` => `a ++ a ++ a ++ ...`
  | | | | | | | `a: num` => `a > 0`
  <code>ÞȮ</code> |  | Grid Neighbours (Diagonals, Wrap Around) | `grid-neighbours-diagonals-wrap`, `grid-neighbors-diagonals-wrap`, `adjacent-cells-diagonals-wrap`, `adj-cells-diagonals-wrap`, `surrounding-cells-diagonals-wrap`, `eight-cells-wrap` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right, diagonals - wrapping around`
- | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b
-0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does`
+ | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b =>0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does`
  <code>ÞẊ</code> |  | Cartesian Product Unsafe | `cartesian-product-unsafe`, `cartesian-unsafe`, `cart-prod-unsafe`, `cart-unsafe` | 2 | :x: | `a: list, b: list` => `cartesian product of a and b in the standard order, but without accounting for infinite lists`
  <code>Þċ</code> |  | Multi-Set XOR | `multi-set-xor` | 2 | :x: | `a: lst, b: lst` => `multi-set xor of a and b`
  <code>Þṅ</code> |  | Multi-Set Difference | `multi-set-difference`, `multi-set-diff` | 2 | :x: | `a: lst, b: lst` => `multi-set difference of a and b`
  <code>Þȯ</code> |  | Grid Neighbours (Diagonals) | `grid-neighbours-diagonals`, `grid-neighbors-diagonals`, `adjacent-cells-diagonals`, `adj-cells-diagonals`, `surrounding-cells-diagonals`, `eight-cells` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right, diagonals`
- | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a and start from direction b
-0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does`
+ | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a and start from direction b =>0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does`
  <code>ÞṂ</code> |  | Matrix Inverse | `matrix-inverse` | 1 | :white_check_mark: | `a: lst[lst]` => `matrix inverse of a`
  <code>Þ⁾</code> |  | Multi-Set Intersection | `multi-set-intersection`, `multi-set-intersect` | 2 | :x: | `a: lst, b: lst` => `multi-set intersection of a and b`
 
