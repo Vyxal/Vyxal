@@ -77,10 +77,11 @@
  | | | | | | | `a: num` => `chr(a)`
  <code>P</code> |  | Prefixes | `prefixes` | 1 | :x: | `a: lst` => `Prefixes of a`
  <code>Q</code> |  | Remove At | `remove-at` | 2 | :x: | `a: lst, b: num` => `a with bth element removed`
- <code>R</code> |  | Reduce by Function Object / Dyadic Range / Regex Match | `fun-reduce`, `reduce`, `fold-by`, `range`, `a->b`, `regex-match?`, `re-match?`, `has-regex-match?`, `fold` | 2 | :x: | `a: fun, b: any` => `reduce iterable b by function a`
+ <code>R</code> |  | Reduce by Function Object / Dyadic Range / Regex Match / Set Union | `fun-reduce`, `reduce`, `fold-by`, `range`, `a->b`, `regex-match?`, `re-match?`, `has-regex-match?`, `fold`, `union` | 2 | :x: | `a: fun, b: any` => `reduce iterable b by function a`
  | | | | | | | `a: any, b: fun` => `reduce iterable a by function b`
  | | | | | | | `a: num, b: num` => `the range [a, b)`
  | | | | | | | `a: str, b: num\|str` => `does regex pattern b match haystack a?`
+ | | | | | | | `a: lst, b: lst` => `union of a and b`
  <code>S</code> |  | Sort ascending | `sort`, `sortasc`, `sort-asc` | 1 | :x: | `a: any` => `convert to list and sort ascending`
  <code>T</code> |  | Triple / Contains Only Alphabet / Transpose | `triple`, `alphabet?`, `alphabetical?`, `contains-only-alphabet?`, `contains-only-alphabetical?`, `transpose`, `flip`, `reverse-axes`, `flip-axes`, `permute-axes` | 1 | :x: | `a: num` => `3 * a`
  | | | | | | | `a: str` => `does a contain only alphabet characters?`
@@ -379,6 +380,7 @@
  <code>#~</code> |  | [Internal Use] Apply Without Popping (Element Form) |  | NA | :x: | `*a, f` => `f applied to the stack without popping items. Use the modifier instead.`
  <code>∆q</code> |  | Prime Exponents | `prime-exponents`, `prime-exps` | 1 | :white_check_mark: | `a: num` => `push a list of the power of each prime in the prime factors of a`
  <code>∆ḟ</code> |  | All Prime Exponents | `all-prime-exponents`, `all-prime-exps` | 1 | :white_check_mark: | `a: num` => `for all primes less than or equal to a, push the power of that prime in the factorisation of a`
+ <code>ø⁾</code> |  | Surround | `surround` | 2 | :x: | `a: any, b: any` => `a prepended and appended to b`
  <code>ÞO</code> |  | Grid Neighbours (Wrap Around) | `grid-neighbours-wrap`, `grid-neighbors-wrap`, `adjacent-cells-wrap`, `adj-cells-wrap`, `surrounding-cells-wrap` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right - wrapping around`
  | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b
 0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does`
@@ -392,12 +394,13 @@
  | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b
 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does`
  <code>ÞẊ</code> |  | Cartesian Product Unsafe | `cartesian-product-unsafe`, `cartesian-unsafe`, `cart-prod-unsafe`, `cart-unsafe` | 2 | :x: | `a: list, b: list` => `cartesian product of a and b in the standard order, but without accounting for infinite lists`
+ <code>Þċ</code> |  | Multi-Set XOR | `multi-set-xor` | 2 | :x: | `a: lst, b: lst` => `multi-set xor of a and b`
  <code>Þṅ</code> |  | Multi-Set Difference | `multi-set-difference`, `multi-set-diff` | 2 | :x: | `a: lst, b: lst` => `multi-set difference of a and b`
  <code>Þȯ</code> |  | Grid Neighbours (Diagonals) | `grid-neighbours-diagonals`, `grid-neighbors-diagonals`, `adjacent-cells-diagonals`, `adj-cells-diagonals`, `surrounding-cells-diagonals`, `eight-cells` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right, diagonals`
  | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a and start from direction b
 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does`
  <code>ÞṂ</code> |  | Matrix Inverse | `matrix-inverse` | 1 | :white_check_mark: | `a: lst[lst]` => `matrix inverse of a`
- <code>Þ⁾</code> |  | Surround | `surround` | 2 | :x: | `a: any, b: any` => `a prepended and appended to b`
+ <code>Þ⁾</code> |  | Multi-Set Intersection | `multi-set-intersection`, `multi-set-intersect` | 2 | :x: | `a: lst, b: lst` => `multi-set intersection of a and b`
 
 
 ## Modifiers
