@@ -2,6 +2,7 @@ package vyxal
 
 import scala.language.implicitConversions
 
+import vyxal.InvalidLHSException
 import vyxal.ListHelpers.makeIterable
 import vyxal.NumberHelpers.range
 import vyxal.VNum.given
@@ -2049,17 +2050,6 @@ object Elements:
     },
     addPart(
       Dyad,
-      "ṅ",
-      "Set Difference",
-      List("set-difference", "set-diff"),
-      false,
-      "a: lst, b: lst -> set difference of a and b",
-    ) {
-      case (a, b) =>
-        VList.from(ListHelpers.makeIterable(a) - ListHelpers.makeIterable(b))
-    },
-    addPart(
-      Dyad,
       "Þṅ",
       "Multi-Set Difference",
       List("multi-set-difference", "multi-set-diff"),
@@ -2107,7 +2097,7 @@ object Elements:
     addPart(
       Dyad,
       "ṡ",
-      "Sort by Function Object | Partition by Numbers",
+      "Sort by Function Object | Partition by Numbers | Set Difference",
       List(
         "sort-by",
         "sortby",
@@ -2116,20 +2106,20 @@ object Elements:
         "sort-fun",
         "sortfun",
         "partition-by",
+        "set-difference",
+        "set-diff",
       ),
       false,
       "a: fun, b: any -> sort iterable b by function a",
       "a: any, b: fun -> sort iterable a by function b",
-      "a: lst, b: lst[num] -> partition a into sublists of length items in b",
+      "a: lst, b: lst -> set difference",
     ) {
       case (a: VFun, b) =>
         ListHelpers.sortBy(ListHelpers.makeIterable(b, Some(true)), a)
       case (a, b: VFun) =>
         ListHelpers.sortBy(ListHelpers.makeIterable(a, Some(true)), b)
-      case (a: VList, b: VList) =>
-        if b.lst.forall(_.isInstanceOf[VNum]) then
-          ListHelpers.partitionBy(a, b.lst.map(_.asInstanceOf[VNum]))
-        else ???
+      case (a, b) =>
+        VList.from(ListHelpers.makeIterable(a) - ListHelpers.makeIterable(b))
     },
     addPart(
       Dyad,
@@ -2873,7 +2863,7 @@ object Elements:
       Dyad,
       "Ẇ",
       "Wrap to Length | Predicate Slice From 0",
-      List("wrap-length", "pred-slice-0"),
+      List("wrap-length", "pred-slice-0", "size-chunk"),
       false,
       "a: lst, b: num -> a wrapped in chunks of length b",
       "a: fun, b: num -> first b truthy integers where a is truthy",
@@ -2886,6 +2876,15 @@ object Elements:
         if a <= 0 then VList.empty
         else VList.from(b.grouped(a.toInt).toSeq)
       case (a: VNum, b: VList) => ListHelpers.wrapLength(b, a)
+      case (a: VList, b: VList) =>
+        if b.lst.forall(_.isInstanceOf[VNum]) then
+          ListHelpers.partitionBy(a, b.lst.map(_.asInstanceOf[VNum]))
+        else
+          throw InvalidRHSException(
+            "Ẇ",
+            b,
+            "second argument should be a list of numbers",
+          )
       case (a: VFun, b: VNum) => MiscHelpers.predicateSlice(a, b, 0)
       case (a: VNum, b: VFun) => MiscHelpers.predicateSlice(b, a, 0)
     },
@@ -3107,7 +3106,7 @@ object Elements:
     },
     addPart(
       Monad,
-      "Ḥ",
+      "ṅ",
       "Palindromise",
       List("palindromise", "palindrome", "ab->aba"),
       false,

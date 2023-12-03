@@ -33,6 +33,14 @@ case class UnimplementedOverloadException(element: String, args: Seq[VAny])
     extends VyxalException(
       s"$element not supported for input(s) ${args.mkString("[", ", ", "]")}"
     )
+case class InvalidLHSException(element: String, lhs: VAny, message: String)
+    extends VyxalException(
+      s"Invalid LHS for $element: $lhs ($message)"
+    )
+case class InvalidRHSException(element: String, rhs: VAny, message: String)
+    extends VyxalException(
+      s"Invalid RHS for $element: $rhs ($message)"
+    )
 class RecursionError(message: String) extends VyxalRuntimeException(message)
 
 /** Exception to end program using element Q */
