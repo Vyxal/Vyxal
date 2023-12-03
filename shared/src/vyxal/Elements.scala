@@ -1572,7 +1572,7 @@ object Elements:
       ),
       Some(1),
       "a: lst[lst] -> Grid neighbours of a - right, down, left, up of a",
-      "a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a and start from direction b =>" +
+      "a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a and start from direction b => " +
         "0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does",
     ) { ctx ?=>
       val top = ctx.pop()
@@ -1604,7 +1604,7 @@ object Elements:
       ),
       Some(1),
       "a: lst[lst] -> Grid neighbours of a - up, down, left, right - wrapping around",
-      "a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b =>" +
+      "a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b => " +
         "0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does",
     ) { ctx ?=>
       val top = ctx.pop()
@@ -1637,7 +1637,7 @@ object Elements:
       ),
       Some(1),
       "a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals",
-      "a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a and start from direction b =>" +
+      "a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a and start from direction b => " +
         "0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does",
     ) { ctx ?=>
       val top = ctx.pop()
@@ -1670,7 +1670,7 @@ object Elements:
       ),
       Some(1),
       "a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals - wrapping around",
-      "a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b =>" +
+      "a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b => " +
         "0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does",
     ) { ctx ?=>
       val top = ctx.pop()
