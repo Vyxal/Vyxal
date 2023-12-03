@@ -189,9 +189,7 @@ object Debugger:
 
   /** Make a step to execute code */
   def execCode(code: String)(using Context): Step =
-    val ast = Lexer(code)
-      .flatMap(Parser.parse)
-      .getOrElse(throw Error("Could not parse code"))
+    val ast = Parser.parse(Lexer(code))
     Step.stepsForAST(ast)
 
 end Debugger

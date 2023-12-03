@@ -2,11 +2,11 @@ package vyxal.parsing
 
 import scala.language.strictEquality
 
+import vyxal.{Elements, Modifiers}
+import vyxal.{LeftoverCodeException, VyxalLexingException}
 import vyxal.parsing.Common.withRange
 // import vyxal.parsing.Common.given // For custom whitespace
 import vyxal.parsing.TokenType.*
-import vyxal.Elements
-import vyxal.Modifiers
 
 import fastparse.*
 import fastparse.JavaWhitespace.whitespace
@@ -347,17 +347,15 @@ private[parsing] object LiterateLexer:
 
   def rawCode[$: P]: P[Seq[LitToken]] =
     P("#" ~ Index ~ (!"#}" ~ AnyChar).rep.! ~ "#}").map {
-      case (offset, value) => SBCSLexer.lex(value) match
-          case Right(tokens) => tokens.map { tok =>
-              val newTok = LitToken(tok.tokenType, tok.value, tok.range)
-              newTok.copy(range =
-                Range(
-                  startOffset = offset + tok.range.startOffset,
-                  endOffset = offset + tok.range.endOffset,
-                )
-              )
-            }
-          case Left(err) => throw RuntimeException(err.toString)
+      case (offset, value) => SBCSLexer.lex(value).map { tok =>
+          val newTok = LitToken(tok.tokenType, tok.value, tok.range)
+          newTok.copy(range =
+            Range(
+              startOffset = offset + tok.range.startOffset,
+              endOffset = offset + tok.range.endOffset,
+            )
+          )
+        }
     }
 
   def singleToken[$: P]: P[Seq[LitToken]] =
@@ -386,17 +384,12 @@ private[parsing] object LiterateLexer:
       .opaque(tokenType.toString)
   def parseAll[$: P]: P[List[LitToken]] = P(tokens ~ End)
 
-  def lex(code: String): Either[VyxalCompilationError, List[LitToken]] =
+  def lex(code: String): List[LitToken] =
     parse(code, this.parseAll) match
       case Parsed.Success(res, ind) =>
-        if ind == code.length then Right(res.toList)
-        else
-          Left(
-            VyxalCompilationError(
-              s"Parsed $res but did not consume '${code.substring(ind)}'"
-            )
-          )
+        if ind == code.length then res.toList
+        else throw LeftoverCodeException(code.substring(ind))
       case f @ Parsed.Failure(label, index, extra) =>
         val trace = f.trace()
-        Left(VyxalCompilationError(s"Lexing failed: ${trace.longMsg}"))
+        throw VyxalLexingException("Unknown reason")
 end LiterateLexer

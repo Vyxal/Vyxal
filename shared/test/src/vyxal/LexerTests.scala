@@ -7,9 +7,7 @@ import vyxal.parsing.TokenType.*
 
 class LexerTests extends VyxalTests:
   def testLex(input: String, expected: List[Token]) =
-    Lexer.lexSBCS(input) match
-      case Left(err) => fail(s"Lexing failed due to $err")
-      case Right(res) => assertResult(expected)(res)
+    assertResult(expected)(Lexer.lexSBCS(input))
 
   describe("Literals") {
     it("should recognize numbers") {
