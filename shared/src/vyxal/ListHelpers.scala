@@ -530,6 +530,17 @@ object ListHelpers:
     moldHelper(content, shape, 0)
   end mold
 
+  def multiSetIntersection(left: VList, right: VList): VList =
+    val out = ListBuffer.empty[VAny]
+    var rightMut = right.lst
+    for item <- left do
+      if rightMut.contains(item) then
+        out += item
+        rightMut = rightMut.indexOf(item) match
+          case -1 => rightMut
+          case ind => rightMut.take(ind) ++ rightMut.drop(ind + 1)
+    VList.from(out.toSeq)
+
   def nthItems(iterable: VList | String, index: VNum): VAny =
     val temp = iterable match
       case iterable: VList => iterable
@@ -553,6 +564,16 @@ object ListHelpers:
   // Just for strings
   def overlaps(iterable: String, size: Int): Seq[String] =
     if size == 0 then Seq.empty else iterable.sliding(size).toSeq
+
+  def palindromise(lst: VList): VList =
+    val temp = lst.lst
+    VList.from(temp ++ temp.reverse.tail)
+
+  def palindromise(str: String): String = str + str.reverse.tail
+
+  def palindromise(num: VNum): VNum =
+    val str = num.toString
+    VNum(str + str.reverse.tail)
 
   /** List partitions (like set partitions, but contiguous sublists) */
   def partitions(lst: VList)(using Context): VList =

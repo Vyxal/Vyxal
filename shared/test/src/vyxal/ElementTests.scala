@@ -616,9 +616,9 @@ class ElementTests extends VyxalTests:
     testCode("0 λ0=[1|1-x×}}Ė", 1)
   }
 
-  describe("Element Ċ") {
+  describe("Element ÞĊ") {
     it("should work on lists") {
-      testCode("#[1|2|3#] Ċ 10 Θ", VList(1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
+      testCode("#[1|2|3#] ÞĊ 10 Θ", VList(1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
     }
   }
 
@@ -676,12 +676,12 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  describe("Element Ṅ") {
+  describe("Element Form of “") {
     testMulti(
-      "λ5-0=}Ṅ" -> 5,
-      "λ1+} Ṅ" -> 1,
-      "λ×16=}Ṅ" -> 4,
-      "λ7×35=}Ṅ" -> 5,
+      "λ5-0=}“" -> 5,
+      "λ1+} “" -> 1,
+      "λ×16=}“" -> 4,
+      "λ7×35=}“" -> 5,
     )
   }
 
@@ -738,9 +738,9 @@ class ElementTests extends VyxalTests:
     )
   }
 
-  describe("Element ṅ") {
+  describe("Element form of ”") {
     testMulti(
-      "#[1|2|3|4|5|6#] ƛ0neṅ}" -> VList(0, 2, 0, 4, 0, 6)
+      "#[1|2|3|4|5|6#] ƛ0ne”}" -> VList(0, 2, 0, 4, 0, 6)
     )
   }
 

@@ -8,7 +8,6 @@
  <code>🌮</code> |  | Taco | `taco` | NA | :x: | `very funky`
  <code>🍪</code> |  | Cookie | `cookie` | NA | :x: | `cookie.`
  <code>ඞ</code> |  | ඞ | `sus` | NA | :x: | `ඞ`
- <code>¦</code> | <code>#.;</code> | Pipe | `pipe` | 0 | :x: | `"\|"`
  <code>!</code> |  | Factorial | `fact`, `factorial` | 1 | :white_check_mark: | `a: num` => `a!`
  <code>$</code> |  | Swap | `swap` | NA | :x: | `a, b` => `b, a`
  <code>%</code> |  | Modulo / String Formatting | `mod`, `modulo`, `str-format`, `format`, `%`, `strfmt` | 2 | :x: | `a: num, b: num` => `a % b`
@@ -77,11 +76,12 @@
  <code>O</code> |  | Ord/Chr | `ord`, `chr` | 1 | :x: | `a: str` => `ord(a)`
  | | | | | | | `a: num` => `chr(a)`
  <code>P</code> |  | Prefixes | `prefixes` | 1 | :x: | `a: lst` => `Prefixes of a`
- <code>Q</code> |  | Exit / Quit | `exit`, `quit` | NA | :x: | `a` => `Stop program execution`
- <code>R</code> |  | Reduce by Function Object / Dyadic Range / Regex Match | `fun-reduce`, `reduce`, `fold-by`, `range`, `a->b`, `regex-match?`, `re-match?`, `has-regex-match?`, `fold` | 2 | :x: | `a: fun, b: any` => `reduce iterable b by function a`
+ <code>Q</code> |  | Remove At | `remove-at` | 2 | :x: | `a: lst, b: num` => `a with bth element removed`
+ <code>R</code> |  | Reduce by Function Object / Dyadic Range / Regex Match / Set Union | `fun-reduce`, `reduce`, `fold-by`, `range`, `a->b`, `regex-match?`, `re-match?`, `has-regex-match?`, `fold`, `union` | 2 | :x: | `a: fun, b: any` => `reduce iterable b by function a`
  | | | | | | | `a: any, b: fun` => `reduce iterable a by function b`
  | | | | | | | `a: num, b: num` => `the range [a, b)`
  | | | | | | | `a: str, b: num\|str` => `does regex pattern b match haystack a?`
+ | | | | | | | `a: lst, b: lst` => `union of a and b`
  <code>S</code> |  | Sort ascending | `sort`, `sortasc`, `sort-asc` | 1 | :x: | `a: any` => `convert to list and sort ascending`
  <code>T</code> |  | Triple / Contains Only Alphabet / Transpose | `triple`, `alphabet?`, `alphabetical?`, `contains-only-alphabet?`, `contains-only-alphabetical?`, `transpose`, `flip`, `reverse-axes`, `flip-axes`, `permute-axes` | 1 | :x: | `a: num` => `3 * a`
  | | | | | | | `a: str` => `does a contain only alphabet characters?`
@@ -156,7 +156,8 @@
  <code>o</code> |  | Overlap / Overlapping Slices | `overlap`, `overlaps`, `overlapping`, `overlapping-slices` | 2 | :x: | `a: lst, b: num` => `Overlapping slices of a of length b`
  | | | | | | | `a: lst\|str` => `Overlapping slices of a of length 2`
  <code>p</code> |  | Prepend | `prepend` | 2 | :x: | `a: lst, b: any` => `b prepended to a`
- <code>q</code> |  | Quotify | `quotify` | 1 | :x: | `a: any` => `enclose a in quotes, escape backslashes and quote marks`
+ <code>q</code> |  | Quotify / Nth Prime | `quotify`, `nth-prime`, `prime-n` | 1 | :white_check_mark: | `a: str` => `enclose a in quotes, escape backslashes and quote marks`
+ | | | | | | | `a: num` => `nth prime`
  <code>r</code> |  | Replace | `replace`, `zip-with` | 3 | :x: | `a: str, b: str, c: str` => `replace all instances of b in a with c`
  | | | | | | | `a: fun, b: any, c: any` => `reduce items in zip(b, c) by a`
  <code>s</code> |  | Split | `split` | 2 | :x: | `a: any, b: any` => `split a by b`
@@ -177,8 +178,7 @@
  | | | | | | | `a: str` => `Evaluate a as Vyxal without popping`
  | | | | | | | `a: lst` => `Return a boolean array with 1s at the indices in a list.`
  | | | | | | | `a: num` => `Is a == 1?`
- <code>Ċ</code> | <code>#.C</code> | Cycle / Is Positive? | `cycle`, `is-positive?`, `positive?`, `>0?` | 1 | :x: | `a: lst` => `a ++ a ++ a ++ ...`
- | | | | | | | `a: num` => `a > 0`
+ <code>Ċ</code> | <code>#.C</code> | Set XOR | `set-xor` | 2 | :x: | `a: lst, b: lst` => `set xor of a and b`
  <code>Ḋ</code> | <code>#.D</code> | Divides? / Append Spaces / Remove Duplicates by Function | `divides?`, `+-spaces`, `dedup-by` | 2 | :x: | `a: num, b: num` => `a % b == 0`
  | | | | | | | `a: str, b: num` => `a + ' ' * b`
  | | | | | | | `a: num, b: str` => `b + ' ' * a`
@@ -206,9 +206,8 @@
  | | | | | | | `a: num, b: str\|lst` => `return every a-th element of b. If a is zero, mirror: append b to its reverse.`
  | | | | | | | `a: lst, b: lst` => `a * b (matrix multiply)`
  | | | | | | | `a: str, b: str` => `does the entirety of a match b?`
- <code>Ṅ</code> | <code>#.N</code> | Join on Nothing / First Positive Integer / Is Alphanumeric | `nothing-join`, `concat-fold`, `join-on-nothing`, `empty-join`, `single-string`, `as-single-string`, `first-positive-integer`, `first-n>0`, `is-alphanumeric`, `is-alphanum`, `is-alnum` | 1 | :x: | `a: lst` => `a join on nothing`
- | | | | | | | `a: str` => `is a alphanumeric?`
- | | | | | | | `a: fun` => `First positive integer ([1, 2, 3, ...]) for which a returns true`
+ <code>Ṅ</code> | <code>#.N</code> | Is Prime? / Quine Cheese | `prime?`, `quineify` | 1 | :white_check_mark: | `a: num` => `is a prime?`
+ | | | | | | | `a: str` => `quote a and prepend to a`
  <code>Ȯ</code> | <code>#.O</code> | Over | `over` | 0 | :x: | `_` => `push a copy of the second item on the stack over the first`
  | | | | | | | `a b` => `a b a`
  <code>Ṗ</code> | <code>#.P</code> | Permutations | `permutations`, `perms` | 1 | :x: | `a: lst` => `Permutations of a`
@@ -239,12 +238,10 @@
  <code>ḣ</code> | <code>#.h</code> | Head Extract | `head-extract`, `split-at-head` | 1 | :x: | `a: lst\|str` => `Push a[0], then a[1:] onto the stack`
  <code>ŀ</code> | <code>#.l</code> | Transliterate / Call While | `transliterate`, `call-while` | 3 | :x: | `any a, any b, any c` => `transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)`
  | | | | | | | `a: fun, b: fun, c: any` => `call b on c until a(c) is falsy`
- <code>ṁ</code> | <code>#.m</code> | Mirror | `mirror` | 1 | :x: | `num a: a + reversed(a) (as number)`
+ <code>ṁ</code> | <code>#.m</code> | Mirror | `mirror`, `ab->abba` | 1 | :x: | `num a: a + reversed(a) (as number)`
  | | | | | | | `str a: a + reversed(a)`
  | | | | | | | `lst a: append reversed(a) to a`
- <code>ṅ</code> | <code>#.n</code> | Join On Newlines / Pad Binary to Mod 8 / Context if 1 | `join-newlines`, `newline-join`, `join-on-newlines`, `binary-pad-8`, `bin-pad-8`, `one?->context`, `one?->n` | 1 | :x: | `a: lst` => `a join on newlines`
- | | | | | | | `a: str` => `a padded to a multiple of 8 with 0s`
- | | | | | | | `a: num` => `a if a == 1 push context variable n`
+ <code>ṅ</code> | <code>#.n</code> | Set Difference | `set-difference`, `set-diff` | 2 | :x: | `a: lst, b: lst` => `set difference of a and b`
  <code>ȯ</code> | <code>#.o</code> | Boolify | `boolify` | 1 | :x: | `a: any` => `bool(a)`
  <code>ṗ</code> | <code>#.p</code> | List Partitions / Integer Partitions | `list-partitions`, `list-parts`, `integer-partitions`, `int-partitions`, `int-parts`, `partitions` | 1 | :x: | `a: lst` => `List partitions of a`
  | | | | | | | `a: num` => `Integer partitions of a (all possible ways to sum to a)`
@@ -266,7 +263,7 @@
  | | | | | | | `a: lst, b: lst, c: lst` => `assign c to a at the indices in b`
  <code>Ḅ</code> | <code>#,B</code> | Unique Prime Factors / Case Of | `unique-prime-factors`, `case-of` | 1 | :white_check_mark: | `a: num` => `unique prime factors of a`
  | | | | | | | `a: str` => `case of each character of a (uppercase = 1, lowercase = 0)`
- <code>Ḥ</code> | <code>#,H</code> | Head Extract | `head-extract-swap`, `split-at-head-swap` | 1 | :x: | `a: lst\|str` => `Push a[1:], then a[0] onto the stack`
+ <code>Ḥ</code> | <code>#,H</code> | Palindromise | `palindromise`, `palindrome`, `ab->aba` | 1 | :x: | `a: any` => `palindromise a`
  <code>Ị</code> | <code>#,I</code> | Insert | `insert`, `insert-at` | 3 | :x: | `a: any, b: num, c: any` => `insert c at position b in a`
  | | | | | | | `a: any, b: lst, c: any` => `insert c at positions b in a`
  | | | | | | | `a: any, b: lst[num], c: lst` => `insert c[i] at position b[i] in a`
@@ -359,8 +356,14 @@
  <code>ɠ</code> | <code>#.6</code> | Minimum without popping | `min-no-pop` | 1 | :x: | `a: lst` => `min(a) without popping a`
  <code>„</code> | <code>#,"</code> | Join on Spaces / Is Negative? (Used when not closing a string) | `space-join`, `join-on-spaces`, `is-negative?`, `negative?` | 1 | :x: | `a: lst` => `a join on spaces`
  | | | | | | | `a: num` => `a < 0`
+ <code>”</code> | <code>#^'</code> | Join On Newlines / Pad Binary to Mod 8 / Context if 1 | `join-newlines`, `newline-join`, `join-on-newlines`, `binary-pad-8`, `bin-pad-8`, `one?->context`, `one?->n` | 1 | :x: | `a: lst` => `a join on newlines`
+ | | | | | | | `a: str` => `a padded to a multiple of 8 with 0s`
+ | | | | | | | `a: num` => `a if a == 1 push context variable n`
  <code>ð</code> | <code>#.b</code> | Space | `space` | 0 | :x: | `" "`
  <code>€</code> | <code>#^(</code> | Suffixes | `suffixes` | 1 | :x: | `a: lst` => `Suffixes of a`
+ <code>“</code> | <code>#^"</code> | Join on Nothing / First Positive Integer / Is Alphanumeric | `nothing-join`, `concat-fold`, `join-on-nothing`, `empty-join`, `single-string`, `as-single-string`, `first-positive-integer`, `first-n>0`, `is-alphanumeric`, `is-alphanum`, `is-alnum` | 1 | :x: | `a: lst` => `a join on nothing`
+ | | | | | | | `a: str` => `is a alphanumeric?`
+ | | | | | | | `a: fun` => `First positive integer ([1, 2, 3, ...]) for which a returns true`
  <code>¶</code> | <code>#,␤</code> | Newline | `newline` | 0 | :x: | `chr(10)`
  <code>ᶿ</code> | <code>#^`</code> | Bifuricate | `bifuricate`, `bifur`, `bif`, `furry`, `uwu`, `dup-rev`, `dup-reverse`, `owo` | 1 | :x: | `a: lst` => `Push a, then push a reversed`
  <code>ᶲ</code> | <code>#^\|</code> | Stringify | `to-string`, `stringify`, `str` | 1 | :x: | `a: any` => `str(a)`
@@ -368,12 +371,16 @@
  <code>≈</code> | <code>#^~</code> | All Equal? | `all-equal`, `all-equal?` | 1 | :x: | `a: lst` => `are all elements of a equal?`
  <code>ꜝ</code> | <code>#^!</code> | Increment | `incr`, `increment` | 1 | :white_check_mark: | `a: num` => `a + 1`
  <code>#C</code> |  | Compress String Using Dictionary | `compress-dict`, `dict-comp`, `compress` | 1 | :x: | `a: str` => `compress a using the dictionary`
+ <code>#Q</code> |  | Exit / Quit | `exit`, `quit` | NA | :x: | `a` => `Stop program execution`
  <code>#X</code> |  | Loop Break | `break` | 0 | :x: | `break out of the current loop`
  <code>#c</code> |  | Base-252 Compress String or Number | `compress-252`, `compress-b` | 1 | :white_check_mark: | `a: str` => `compress a using base 252`
  | | | | | | | `a: num` => `compress a using base 252`
  <code>#v</code> |  | [Internal Use] Vectorise (Element Form)  |  | NA | :x: | `*a, f` => `f vectorised over however many arguments in a. It is recommended to use the modifier instead`
  <code>#x</code> |  | Loop Continue | `continue` | 0 | :x: | `continue the current loop`
  <code>#~</code> |  | [Internal Use] Apply Without Popping (Element Form) |  | NA | :x: | `*a, f` => `f applied to the stack without popping items. Use the modifier instead.`
+ <code>∆q</code> |  | Prime Exponents | `prime-exponents`, `prime-exps` | 1 | :white_check_mark: | `a: num` => `push a list of the power of each prime in the prime factors of a`
+ <code>∆ḟ</code> |  | All Prime Exponents | `all-prime-exponents`, `all-prime-exps` | 1 | :white_check_mark: | `a: num` => `for all primes less than or equal to a, push the power of that prime in the factorisation of a`
+ <code>ø⁾</code> |  | Surround | `surround` | 2 | :x: | `a: any, b: any` => `a prepended and appended to b`
  <code>ÞO</code> |  | Grid Neighbours (Wrap Around) | `grid-neighbours-wrap`, `grid-neighbors-wrap`, `adjacent-cells-wrap`, `adj-cells-wrap`, `surrounding-cells-wrap` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right - wrapping around`
  | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b
 0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does`
@@ -381,15 +388,19 @@
  <code>Þo</code> |  | Grid Neighbours | `grid-neighbours`, `grid-neighbors`, `adjacent-cells`, `adj-cells`, `surrounding-cells` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - right, down, left, up of a`
  | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a and start from direction b
 0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does`
+ <code>ÞĊ</code> |  | Cycle / Is Positive? | `cycle`, `is-positive?`, `positive?`, `>0?` | 1 | :x: | `a: lst` => `a ++ a ++ a ++ ...`
+ | | | | | | | `a: num` => `a > 0`
  <code>ÞȮ</code> |  | Grid Neighbours (Diagonals, Wrap Around) | `grid-neighbours-diagonals-wrap`, `grid-neighbors-diagonals-wrap`, `adjacent-cells-diagonals-wrap`, `adj-cells-diagonals-wrap`, `surrounding-cells-diagonals-wrap`, `eight-cells-wrap` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right, diagonals - wrapping around`
  | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b
 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does`
  <code>ÞẊ</code> |  | Cartesian Product Unsafe | `cartesian-product-unsafe`, `cartesian-unsafe`, `cart-prod-unsafe`, `cart-unsafe` | 2 | :x: | `a: list, b: list` => `cartesian product of a and b in the standard order, but without accounting for infinite lists`
+ <code>Þċ</code> |  | Multi-Set XOR | `multi-set-xor` | 2 | :x: | `a: lst, b: lst` => `multi-set xor of a and b`
+ <code>Þṅ</code> |  | Multi-Set Difference | `multi-set-difference`, `multi-set-diff` | 2 | :x: | `a: lst, b: lst` => `multi-set difference of a and b`
  <code>Þȯ</code> |  | Grid Neighbours (Diagonals) | `grid-neighbours-diagonals`, `grid-neighbors-diagonals`, `adjacent-cells-diagonals`, `adj-cells-diagonals`, `surrounding-cells-diagonals`, `eight-cells` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right, diagonals`
  | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a and start from direction b
 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does`
  <code>ÞṂ</code> |  | Matrix Inverse | `matrix-inverse` | 1 | :white_check_mark: | `a: lst[lst]` => `matrix inverse of a`
- <code>Þ⁾</code> |  | Surround | `surround` | 2 | :x: | `a: any, b: any` => `a prepended and appended to b`
+ <code>Þ⁾</code> |  | Multi-Set Intersection | `multi-set-intersection`, `multi-set-intersect` | 2 | :x: | `a: lst, b: lst` => `multi-set intersection of a and b`
 
 
 ## Modifiers

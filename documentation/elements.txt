@@ -10,11 +10,6 @@ Keywords: cookie
 Keywords: sus
 - ඞ
 ----------------------
-¦ (Pipe) (non-vectorising)
-Trigraph: #.;
-Keywords: pipe
-- -> "|"
-----------------------
 ! (Factorial) (vectorising)
 Keywords: fact, factorial
 - a: num -> a!
@@ -173,16 +168,17 @@ P (Prefixes) (non-vectorising)
 Keywords: prefixes
 - a: lst -> Prefixes of a
 ----------------------
-Q (Exit | Quit) (non-vectorising)
-Keywords: exit, quit
-- a -> Stop program execution
+Q (Remove At) (non-vectorising)
+Keywords: remove-at
+- a: lst, b: num -> a with bth element removed
 ----------------------
-R (Reduce by Function Object | Dyadic Range | Regex Match) (non-vectorising)
-Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has-regex-match?, fold
+R (Reduce by Function Object | Dyadic Range | Regex Match | Set Union) (non-vectorising)
+Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has-regex-match?, fold, union
 - a: fun, b: any -> reduce iterable b by function a
 - a: any, b: fun -> reduce iterable a by function b
 - a: num, b: num -> the range [a, b)
 - a: str, b: num|str -> does regex pattern b match haystack a?
+- a: lst, b: lst -> union of a and b
 ----------------------
 S (Sort ascending) (non-vectorising)
 Keywords: sort, sortasc, sort-asc
@@ -417,9 +413,10 @@ p (Prepend) (non-vectorising)
 Keywords: prepend
 - a: lst, b: any -> b prepended to a
 ----------------------
-q (Quotify) (non-vectorising)
-Keywords: quotify
-- a: any -> enclose a in quotes, escape backslashes and quote marks
+q (Quotify | Nth Prime) (vectorising)
+Keywords: quotify, nth-prime, prime-n
+- a: str -> enclose a in quotes, escape backslashes and quote marks
+- a: num -> nth prime
 ----------------------
 r (Replace) (non-vectorising)
 Keywords: replace, zip-with
@@ -476,11 +473,10 @@ Keywords: peek-call, exec-peek, boolean-mask, bool-mask, strict-boolify, is-1?
 - a: lst -> Return a boolean array with 1s at the indices in a list.
 - a: num -> Is a == 1?
 ----------------------
-Ċ (Cycle | Is Positive?) (non-vectorising)
+Ċ (Set XOR) (non-vectorising)
 Trigraph: #.C
-Keywords: cycle, is-positive?, positive?, >0?
-- a: lst -> a ++ a ++ a ++ ...
-- a: num -> a > 0
+Keywords: set-xor
+- a: lst, b: lst -> set xor of a and b
 ----------------------
 Ḋ (Divides? | Append Spaces | Remove Duplicates by Function) (non-vectorising)
 Trigraph: #.D
@@ -541,12 +537,11 @@ Keywords: nth-items, modular, maxtrix-multiply, mat-multiply, mat-mul, regex-ful
 - a: lst, b: lst -> a * b (matrix multiply)
 - a: str, b: str -> does the entirety of a match b?
 ----------------------
-Ṅ (Join on Nothing | First Positive Integer | Is Alphanumeric) (non-vectorising)
+Ṅ (Is Prime? | Quine Cheese) (vectorising)
 Trigraph: #.N
-Keywords: nothing-join, concat-fold, join-on-nothing, empty-join, single-string, as-single-string, first-positive-integer, first-n>0, is-alphanumeric, is-alphanum, is-alnum
-- a: lst -> a join on nothing
-- a: str -> is a alphanumeric?
-- a: fun -> First positive integer ([1, 2, 3, ...]) for which a returns true
+Keywords: prime?, quineify
+- a: num -> is a prime?
+- a: str -> quote a and prepend to a
 ----------------------
 Ȯ (Over) (non-vectorising)
 Trigraph: #.O
@@ -649,17 +644,15 @@ Keywords: transliterate, call-while
 ----------------------
 ṁ (Mirror) (non-vectorising)
 Trigraph: #.m
-Keywords: mirror
+Keywords: mirror, ab->abba
 - num a: a + reversed(a) (as number)
 - str a: a + reversed(a)
 - lst a: append reversed(a) to a
 ----------------------
-ṅ (Join On Newlines | Pad Binary to Mod 8 | Context if 1) (non-vectorising)
+ṅ (Set Difference) (non-vectorising)
 Trigraph: #.n
-Keywords: join-newlines, newline-join, join-on-newlines, binary-pad-8, bin-pad-8, one?->context, one?->n
-- a: lst -> a join on newlines
-- a: str -> a padded to a multiple of 8 with 0s
-- a: num -> a if a == 1 push context variable n
+Keywords: set-difference, set-diff
+- a: lst, b: lst -> set difference of a and b
 ----------------------
 ȯ (Boolify) (non-vectorising)
 Trigraph: #.o
@@ -729,10 +722,10 @@ Keywords: unique-prime-factors, case-of
 - a: num -> unique prime factors of a
 - a: str -> case of each character of a (uppercase = 1, lowercase = 0)
 ----------------------
-Ḥ (Head Extract) (non-vectorising)
+Ḥ (Palindromise) (non-vectorising)
 Trigraph: #,H
-Keywords: head-extract-swap, split-at-head-swap
-- a: lst|str -> Push a[1:], then a[0] onto the stack
+Keywords: palindromise, palindrome, ab->aba
+- a: any -> palindromise a
 ----------------------
 Ị (Insert) (non-vectorising)
 Trigraph: #,I
@@ -1058,6 +1051,13 @@ Keywords: space-join, join-on-spaces, is-negative?, negative?
 - a: lst -> a join on spaces
 - a: num -> a < 0
 ----------------------
+” (Join On Newlines | Pad Binary to Mod 8 | Context if 1) (non-vectorising)
+Trigraph: #^'
+Keywords: join-newlines, newline-join, join-on-newlines, binary-pad-8, bin-pad-8, one?->context, one?->n
+- a: lst -> a join on newlines
+- a: str -> a padded to a multiple of 8 with 0s
+- a: num -> a if a == 1 push context variable n
+----------------------
 ð (Space) (non-vectorising)
 Trigraph: #.b
 Keywords: space
@@ -1067,6 +1067,13 @@ Keywords: space
 Trigraph: #^(
 Keywords: suffixes
 - a: lst -> Suffixes of a
+----------------------
+“ (Join on Nothing | First Positive Integer | Is Alphanumeric) (non-vectorising)
+Trigraph: #^"
+Keywords: nothing-join, concat-fold, join-on-nothing, empty-join, single-string, as-single-string, first-positive-integer, first-n>0, is-alphanumeric, is-alphanum, is-alnum
+- a: lst -> a join on nothing
+- a: str -> is a alphanumeric?
+- a: fun -> First positive integer ([1, 2, 3, ...]) for which a returns true
 ----------------------
 ¶ (Newline) (non-vectorising)
 Trigraph: #,
@@ -1155,6 +1162,10 @@ Keywords:
 Keywords: compress-dict, dict-comp, compress
 - a: str -> compress a using the dictionary
 ----------------------
+#Q (Exit | Quit) (non-vectorising)
+Keywords: exit, quit
+- a -> Stop program execution
+----------------------
 #X (Loop Break) (non-vectorising)
 Keywords: break
 -  -> break out of the current loop
@@ -1176,6 +1187,18 @@ Keywords: continue
 Keywords: 
 - *a, f -> f applied to the stack without popping items. Use the modifier instead.
 ----------------------
+∆q (Prime Exponents) (vectorising)
+Keywords: prime-exponents, prime-exps
+- a: num -> push a list of the power of each prime in the prime factors of a
+----------------------
+∆ḟ (All Prime Exponents) (vectorising)
+Keywords: all-prime-exponents, all-prime-exps
+- a: num -> for all primes less than or equal to a, push the power of that prime in the factorisation of a
+----------------------
+ø⁾ (Surround) (non-vectorising)
+Keywords: surround
+- a: any, b: any -> a prepended and appended to b
+----------------------
 ÞO (Grid Neighbours (Wrap Around)) (non-vectorising)
 Keywords: grid-neighbours-wrap, grid-neighbors-wrap, adjacent-cells-wrap, adj-cells-wrap, surrounding-cells-wrap
 - a: lst[lst] -> Grid neighbours of a - up, down, left, right - wrapping around
@@ -1192,6 +1215,11 @@ Keywords: grid-neighbours, grid-neighbors, adjacent-cells, adj-cells, surroundin
 - a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a and start from direction b
 0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does
 ----------------------
+ÞĊ (Cycle | Is Positive?) (non-vectorising)
+Keywords: cycle, is-positive?, positive?, >0?
+- a: lst -> a ++ a ++ a ++ ...
+- a: num -> a > 0
+----------------------
 ÞȮ (Grid Neighbours (Diagonals, Wrap Around)) (non-vectorising)
 Keywords: grid-neighbours-diagonals-wrap, grid-neighbors-diagonals-wrap, adjacent-cells-diagonals-wrap, adj-cells-diagonals-wrap, surrounding-cells-diagonals-wrap, eight-cells-wrap
 - a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals - wrapping around
@@ -1201,6 +1229,14 @@ Keywords: grid-neighbours-diagonals-wrap, grid-neighbors-diagonals-wrap, adjacen
 ÞẊ (Cartesian Product Unsafe) (non-vectorising)
 Keywords: cartesian-product-unsafe, cartesian-unsafe, cart-prod-unsafe, cart-unsafe
 - a: list, b: list -> cartesian product of a and b in the standard order, but without accounting for infinite lists
+----------------------
+Þċ (Multi-Set XOR) (non-vectorising)
+Keywords: multi-set-xor
+- a: lst, b: lst -> multi-set xor of a and b
+----------------------
+Þṅ (Multi-Set Difference) (non-vectorising)
+Keywords: multi-set-difference, multi-set-diff
+- a: lst, b: lst -> multi-set difference of a and b
 ----------------------
 Þȯ (Grid Neighbours (Diagonals)) (non-vectorising)
 Keywords: grid-neighbours-diagonals, grid-neighbors-diagonals, adjacent-cells-diagonals, adj-cells-diagonals, surrounding-cells-diagonals, eight-cells
@@ -1212,9 +1248,9 @@ Keywords: grid-neighbours-diagonals, grid-neighbors-diagonals, adjacent-cells-di
 Keywords: matrix-inverse
 - a: lst[lst] -> matrix inverse of a
 ----------------------
-Þ⁾ (Surround) (non-vectorising)
-Keywords: surround
-- a: any, b: any -> a prepended and appended to b
+Þ⁾ (Multi-Set Intersection) (non-vectorising)
+Keywords: multi-set-intersection, multi-set-intersect
+- a: lst, b: lst -> multi-set intersection of a and b
 ----------------------
 Ч
 Keywords: ****:

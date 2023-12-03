@@ -2,6 +2,7 @@ package vyxal
 
 import vyxal.VNum.given
 
+import scala.annotation.targetName
 import scala.collection.immutable.SeqOps
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
@@ -53,7 +54,9 @@ class VList private (val lst: Seq[VAny])
       lst(Math.floorMod(ind, lst.length))
     else
       try lst(ind)
-      catch case _: IndexOutOfBoundsException => lst(ind % lst.length)
+      catch
+        case e: (IndexOutOfBoundsException | ArrayIndexOutOfBoundsException) =>
+          lst(ind % lst.length)
 
   /** Override to specify return type as VList */
   override def take(n: Int): VList = VList.from(lst.take(n))
@@ -174,6 +177,46 @@ class VList private (val lst: Seq[VAny])
         seen += elem
         true
     })
+
+  @targetName("setDiff")
+  def -(other: VList): VList =
+    val seen = mutable.ArrayBuffer.empty[VAny]
+    VList.from(this.lst.filter { elem =>
+      if seen.contains(elem) then false
+      else
+        seen += elem
+        !other.contains(elem)
+    })
+
+  @targetName("multiSetDiff")
+  def --(other: VList): VList =
+    var ret = lst
+
+    for elem <- other do
+      if ret.contains(elem) then
+        ret = ret.indexWhere(_ == elem) match
+          case -1 => ret
+          case ind => ret.take(ind) ++ ret.drop(ind + 1)
+    VList.from(ret)
+
+  @targetName("xor")
+  def ^(other: VList): VList =
+    val seen = mutable.ArrayBuffer.empty[VAny]
+    VList.from(
+      this.lst.filter { elem =>
+        if seen.contains(elem) then false
+        else
+          seen += elem
+          !other.contains(elem)
+      } ++
+        other.lst.filter { elem =>
+          if seen.contains(elem) then false
+          else
+            seen += elem
+            !this.contains(elem)
+        }
+    )
+  end ^
 end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:
