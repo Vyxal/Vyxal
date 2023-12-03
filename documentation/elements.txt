@@ -172,12 +172,13 @@ Q (Remove At) (non-vectorising)
 Keywords: remove-at
 - a: lst, b: num -> a with bth element removed
 ----------------------
-R (Reduce by Function Object | Dyadic Range | Regex Match) (non-vectorising)
-Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has-regex-match?, fold
+R (Reduce by Function Object | Dyadic Range | Regex Match | Set Union) (non-vectorising)
+Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has-regex-match?, fold, union
 - a: fun, b: any -> reduce iterable b by function a
 - a: any, b: fun -> reduce iterable a by function b
 - a: num, b: num -> the range [a, b)
 - a: str, b: num|str -> does regex pattern b match haystack a?
+- a: lst, b: lst -> union of a and b
 ----------------------
 S (Sort ascending) (non-vectorising)
 Keywords: sort, sortasc, sort-asc
@@ -1194,6 +1195,10 @@ Keywords: prime-exponents, prime-exps
 Keywords: all-prime-exponents, all-prime-exps
 - a: num -> for all primes less than or equal to a, push the power of that prime in the factorisation of a
 ----------------------
+ø⁾ (Surround) (non-vectorising)
+Keywords: surround
+- a: any, b: any -> a prepended and appended to b
+----------------------
 ÞO (Grid Neighbours (Wrap Around)) (non-vectorising)
 Keywords: grid-neighbours-wrap, grid-neighbors-wrap, adjacent-cells-wrap, adj-cells-wrap, surrounding-cells-wrap
 - a: lst[lst] -> Grid neighbours of a - up, down, left, right - wrapping around
@@ -1225,6 +1230,10 @@ Keywords: grid-neighbours-diagonals-wrap, grid-neighbors-diagonals-wrap, adjacen
 Keywords: cartesian-product-unsafe, cartesian-unsafe, cart-prod-unsafe, cart-unsafe
 - a: list, b: list -> cartesian product of a and b in the standard order, but without accounting for infinite lists
 ----------------------
+Þċ (Multi-Set XOR) (non-vectorising)
+Keywords: multi-set-xor
+- a: lst, b: lst -> multi-set xor of a and b
+----------------------
 Þṅ (Multi-Set Difference) (non-vectorising)
 Keywords: multi-set-difference, multi-set-diff
 - a: lst, b: lst -> multi-set difference of a and b
@@ -1239,9 +1248,9 @@ Keywords: grid-neighbours-diagonals, grid-neighbors-diagonals, adjacent-cells-di
 Keywords: matrix-inverse
 - a: lst[lst] -> matrix inverse of a
 ----------------------
-Þ⁾ (Surround) (non-vectorising)
-Keywords: surround
-- a: any, b: any -> a prepended and appended to b
+Þ⁾ (Multi-Set Intersection) (non-vectorising)
+Keywords: multi-set-intersection, multi-set-intersect
+- a: lst, b: lst -> multi-set intersection of a and b
 ----------------------
 Ч
 Keywords: ****:
