@@ -573,7 +573,7 @@ Keywords: init, remove-last
 ----------------------
 Ẇ (Wrap to Length | Predicate Slice From 0) (non-vectorising)
 Trigraph: #.W
-Keywords: wrap-length, pred-slice-0
+Keywords: wrap-length, pred-slice-0, size-chunk
 - a: lst, b: num -> a wrapped in chunks of length b
 - a: fun, b: num -> first b truthy integers where a is truthy
 ----------------------
@@ -649,10 +649,10 @@ Keywords: mirror, ab->abba
 - str a: a + reversed(a)
 - lst a: append reversed(a) to a
 ----------------------
-ṅ (Set Difference) (non-vectorising)
+ṅ (Palindromise) (non-vectorising)
 Trigraph: #.n
-Keywords: set-difference, set-diff
-- a: lst, b: lst -> set difference of a and b
+Keywords: palindromise, palindrome, ab->aba
+- a: any -> palindromise a
 ----------------------
 ȯ (Boolify) (non-vectorising)
 Trigraph: #.o
@@ -670,12 +670,12 @@ Trigraph: #.r
 Keywords: abc->cab, rot-right, rotate-right
 - a: any -> rotate right once
 ----------------------
-ṡ (Sort by Function Object | Partition by Numbers) (non-vectorising)
+ṡ (Sort by Function Object | Partition by Numbers | Set Difference) (non-vectorising)
 Trigraph: #.s
-Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun, partition-by
+Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun, partition-by, set-difference, set-diff
 - a: fun, b: any -> sort iterable b by function a
 - a: any, b: fun -> sort iterable a by function b
-- a: lst, b: lst[num] -> partition a into sublists of length items in b
+- a: lst, b: lst -> set difference
 ----------------------
 ṫ (Last Extract) (non-vectorising)
 Trigraph: #.t
@@ -721,11 +721,6 @@ Trigraph: #,B
 Keywords: unique-prime-factors, case-of
 - a: num -> unique prime factors of a
 - a: str -> case of each character of a (uppercase = 1, lowercase = 0)
-----------------------
-Ḥ (Palindromise) (non-vectorising)
-Trigraph: #,H
-Keywords: palindromise, palindrome, ab->aba
-- a: any -> palindromise a
 ----------------------
 Ị (Insert) (non-vectorising)
 Trigraph: #,I
