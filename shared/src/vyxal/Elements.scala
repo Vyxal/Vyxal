@@ -2,7 +2,6 @@ package vyxal
 
 import scala.language.implicitConversions
 
-import vyxal.InvalidLHSException
 import vyxal.ListHelpers.makeIterable
 import vyxal.NumberHelpers.range
 import vyxal.VNum.given
