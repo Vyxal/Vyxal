@@ -811,7 +811,7 @@ object Elements:
       "a: any -> toList(a)[1:]",
     ) {
       case s: String => if s.nonEmpty then s.substring(1) else ""
-      case a => ListHelpers.makeIterable(a).drop(1)
+      case a => ListHelpers.makeIterable(a, Some(true)).drop(1)
     },
     addPart(
       Monad,
@@ -839,6 +839,12 @@ object Elements:
           )
         case s: String =>
           ctx.push(if s.isEmpty then "" else s.charAt(0).toString, s.drop(1))
+        case n: VNum =>
+          val iter = makeIterable(n, Some(true))
+          ctx.push(
+            iter.headOption.getOrElse(ctx.settings.defaultValue),
+            iter.drop(1),
+          )
         case arg => throw UnimplementedOverloadException("ḣ", List(arg))
     },
     addDirect(
@@ -861,6 +867,12 @@ object Elements:
           )
         case s: String =>
           ctx.push(s.drop(1), if s.isEmpty then "" else s.charAt(0).toString)
+        case n: VNum =>
+          val iter = makeIterable(n, Some(true))
+          ctx.push(
+            iter.drop(1),
+            iter.headOption.getOrElse(ctx.settings.defaultValue),
+          )
         case arg => throw UnimplementedOverloadException("Ḥ", List(arg))
     },
     addDirect(
