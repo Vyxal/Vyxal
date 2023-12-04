@@ -811,7 +811,7 @@ object Elements:
       "a: any -> toList(a)[1:]",
     ) {
       case s: String => if s.nonEmpty then s.substring(1) else ""
-      case a => ListHelpers.makeIterable(a).drop(1)
+      case a => ListHelpers.makeIterable(a, Some(true)).drop(1)
     },
     addPart(
       Monad,
