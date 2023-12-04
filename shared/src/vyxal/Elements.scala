@@ -867,6 +867,12 @@ object Elements:
           )
         case s: String =>
           ctx.push(s.drop(1), if s.isEmpty then "" else s.charAt(0).toString)
+        case n: VNum =>
+          val iter = makeIterable(n, Some(true))
+          ctx.push(
+            iter.drop(1),
+            iter.headOption.getOrElse(ctx.settings.defaultValue),
+          )
         case arg => throw UnimplementedOverloadException("Ḥ", List(arg))
     },
     addDirect(
