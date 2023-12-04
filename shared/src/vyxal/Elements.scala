@@ -842,6 +842,28 @@ object Elements:
         case arg => throw UnimplementedOverloadException("ḣ", List(arg))
     },
     addDirect(
+      "Ḥ",
+      "Head Extract Under",
+      List(
+        "head-extract-under",
+        "split-at-head-under",
+        "head-extract-swap",
+        "headless-swap",
+        "head-swap",
+      ),
+      Some(1),
+      "a: lst|str -> Push a[1:], then a[0] onto the stack",
+    ) { ctx ?=>
+      ctx.pop() match
+        case lst: VList => ctx.push(
+            lst.drop(1),
+            lst.headOption.getOrElse(ctx.settings.defaultValue),
+          )
+        case s: String =>
+          ctx.push(s.drop(1), if s.isEmpty then "" else s.charAt(0).toString)
+        case arg => throw UnimplementedOverloadException("Ḥ", List(arg))
+    },
+    addDirect(
       "ṫ",
       "Last Extract",
       List("last-extract", "split-at-last"),
