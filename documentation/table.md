@@ -216,7 +216,7 @@
  | | | | | | | `a: num, b: num` => `a // b`
  <code>Ṫ</code> | <code>#.T</code> | Init | `init`, `remove-last` | 1 | :x: | `a: lst` => `a[:-1]`
  | | | | | | | `a: str` => `a[:-1]`
- <code>Ẇ</code> | <code>#.W</code> | Wrap to Length / Predicate Slice From 0 | `wrap-length`, `pred-slice-0` | 2 | :x: | `a: lst, b: num` => `a wrapped in chunks of length b`
+ <code>Ẇ</code> | <code>#.W</code> | Wrap to Length / Predicate Slice From 0 | `wrap-length`, `pred-slice-0`, `size-chunk` | 2 | :x: | `a: lst, b: num` => `a wrapped in chunks of length b`
  | | | | | | | `a: fun, b: num` => `first b truthy integers where a is truthy`
  <code>Ẋ</code> | <code>#.X</code> | Cartesian Product | `cartesian-product`, `cartesian`, `cart-prod`, `cart` | 2 | :x: | `a: list, b: list` => `cartesian product of a and b`
  <code>ι</code> |  | Length 0-Range | `zero->len` | 1 | :x: | `a: any` => ``[0, 1, 2, ..., len(a)-1]``
@@ -241,14 +241,14 @@
  <code>ṁ</code> | <code>#.m</code> | Mirror | `mirror`, `ab->abba` | 1 | :x: | `num a: a + reversed(a) (as number)`
  | | | | | | | `str a: a + reversed(a)`
  | | | | | | | `lst a: append reversed(a) to a`
- <code>ṅ</code> | <code>#.n</code> | Set Difference | `set-difference`, `set-diff` | 2 | :x: | `a: lst, b: lst` => `set difference of a and b`
+ <code>ṅ</code> | <code>#.n</code> | Palindromise | `palindromise`, `palindrome`, `ab->aba` | 1 | :x: | `a: any` => `palindromise a`
  <code>ȯ</code> | <code>#.o</code> | Boolify | `boolify` | 1 | :x: | `a: any` => `bool(a)`
  <code>ṗ</code> | <code>#.p</code> | List Partitions / Integer Partitions | `list-partitions`, `list-parts`, `integer-partitions`, `int-partitions`, `int-parts`, `partitions` | 1 | :x: | `a: lst` => `List partitions of a`
  | | | | | | | `a: num` => `Integer partitions of a (all possible ways to sum to a)`
  <code>ṙ</code> | <code>#.r</code> | Rotate Right | `abc->cab`, `rot-right`, `rotate-right` | 1 | :x: | `a: any` => `rotate right once`
- <code>ṡ</code> | <code>#.s</code> | Sort by Function Object / Partition by Numbers | `sort-by`, `sortby`, `sort-by-fun`, `sortbyfun`, `sort-fun`, `sortfun`, `partition-by` | 2 | :x: | `a: fun, b: any` => `sort iterable b by function a`
+ <code>ṡ</code> | <code>#.s</code> | Sort by Function Object / Partition by Numbers / Set Difference | `sort-by`, `sortby`, `sort-by-fun`, `sortbyfun`, `sort-fun`, `sortfun`, `partition-by`, `set-difference`, `set-diff` | 2 | :x: | `a: fun, b: any` => `sort iterable b by function a`
  | | | | | | | `a: any, b: fun` => `sort iterable a by function b`
- | | | | | | | `a: lst, b: lst[num]` => `partition a into sublists of length items in b`
+ | | | | | | | `a: lst, b: lst` => `set difference`
  <code>ṫ</code> | <code>#.t</code> | Last Extract | `last-extract`, `split-at-last` | 1 | :x: | `a: lst\|str` => `Push a[-1], then a[:-1] onto the stack`
  <code>ẋ</code> | <code>#.x</code> | Cartesian Power | `cartesian-power` | 2 | :x: | `a: lst, b: num` => `cart_prod([a] * n)`
  <code>ƒ</code> |  | Partition After Truthy Indices | `partition-after-truthy` | 2 | :x: | `a: lst, b: lst` => `partition a after truthy indices in b`
@@ -263,7 +263,7 @@
  | | | | | | | `a: lst, b: lst, c: lst` => `assign c to a at the indices in b`
  <code>Ḅ</code> | <code>#,B</code> | Unique Prime Factors / Case Of | `unique-prime-factors`, `case-of` | 1 | :white_check_mark: | `a: num` => `unique prime factors of a`
  | | | | | | | `a: str` => `case of each character of a (uppercase = 1, lowercase = 0)`
- <code>Ḥ</code> | <code>#,H</code> | Palindromise | `palindromise`, `palindrome`, `ab->aba` | 1 | :x: | `a: any` => `palindromise a`
+ <code>Ḥ</code> | <code>#,H</code> | Head Extract Under | `head-extract-under`, `split-at-head-under`, `head-extract-swap`, `headless-swap`, `head-swap` | 1 | :x: | `a: lst\|str` => `Push a[1:], then a[0] onto the stack`
  <code>Ị</code> | <code>#,I</code> | Insert | `insert`, `insert-at` | 3 | :x: | `a: any, b: num, c: any` => `insert c at position b in a`
  | | | | | | | `a: any, b: lst, c: any` => `insert c at positions b in a`
  | | | | | | | `a: any, b: lst[num], c: lst` => `insert c[i] at position b[i] in a`
