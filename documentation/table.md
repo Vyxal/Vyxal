@@ -263,6 +263,7 @@
  | | | | | | | `a: lst, b: lst, c: lst` => `assign c to a at the indices in b`
  <code>Ḅ</code> | <code>#,B</code> | Unique Prime Factors / Case Of | `unique-prime-factors`, `case-of` | 1 | :white_check_mark: | `a: num` => `unique prime factors of a`
  | | | | | | | `a: str` => `case of each character of a (uppercase = 1, lowercase = 0)`
+ <code>Ḥ</code> | <code>#,H</code> | Head Extract Under | `head-extract-under`, `split-at-head-under`, `head-extract-swap`, `headless-swap`, `head-swap` | 1 | :x: | `a: lst\|str` => `Push a[1:], then a[0] onto the stack`
  <code>Ị</code> | <code>#,I</code> | Insert | `insert`, `insert-at` | 3 | :x: | `a: any, b: num, c: any` => `insert c at position b in a`
  | | | | | | | `a: any, b: lst, c: any` => `insert c at positions b in a`
  | | | | | | | `a: any, b: lst[num], c: lst` => `insert c[i] at position b[i] in a`

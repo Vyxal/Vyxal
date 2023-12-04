@@ -722,6 +722,11 @@ Keywords: unique-prime-factors, case-of
 - a: num -> unique prime factors of a
 - a: str -> case of each character of a (uppercase = 1, lowercase = 0)
 ----------------------
+Ḥ (Head Extract Under) (non-vectorising)
+Trigraph: #,H
+Keywords: head-extract-under, split-at-head-under, head-extract-swap, headless-swap, head-swap
+- a: lst|str -> Push a[1:], then a[0] onto the stack
+----------------------
 Ị (Insert) (non-vectorising)
 Trigraph: #,I
 Keywords: insert, insert-at
