@@ -2,13 +2,24 @@ package vyxal
 
 import vyxal.parsing.Token
 
-class VyxalException(message: String) extends RuntimeException(message)
+class VyxalException(message: String, ex: Throwable = Exception(), known: Boolean = true) extends RuntimeException(message, ex):
+  def getMessage(using ctx: Context): String =
+    if (ctx.settings.fullTrace)
+      super.getMessage() + "\n" + super.getCause().getStackTrace.mkString("\n")
+    else
+      if (!known)
+        super.getMessage() + ", use 'X' flag for full traceback"
+      else
+        super.getMessage()
+class QuitException extends VyxalException("Program quit using Q")
 class VyxalLexingException(message: String)
     extends VyxalException(s"LexingException: $message")
 class VyxalParsingException(message: String)
     extends VyxalException(s"ParsingException: $message")
 class VyxalRuntimeException(message: String)
     extends VyxalException(s"RuntimeException: $message")
+class VyxalUnknownException(location: String, ex: Throwable)
+    extends VyxalException(s"Unknown $location Exception", ex, false)
 
 /** VyxalLexingExceptions */
 class LeftoverCodeException(leftover: String)
@@ -29,22 +40,24 @@ class BadAugmentedAssignException()
     extends VyxalParsingException("Missing element for augmented assign")
 
 /** VyxalRuntimeExceptions */
-case class UnimplementedOverloadException(element: String, args: Seq[VAny])
-    extends VyxalException(
+class UnimplementedOverloadException(element: String, args: Seq[VAny])
+    extends VyxalRuntimeException(
       s"$element not supported for input(s) ${args.mkString("[", ", ", "]")}"
     )
-case class InvalidLHSException(element: String, lhs: VAny, message: String)
-    extends VyxalException(
+class InvalidLHSException(element: String, lhs: VAny, message: String)
+    extends VyxalRuntimeException(
       s"Invalid LHS for $element: $lhs ($message)"
     )
-case class InvalidRHSException(element: String, rhs: VAny, message: String)
-    extends VyxalException(
+class InvalidRHSException(element: String, rhs: VAny, message: String)
+    extends VyxalRuntimeException(
       s"Invalid RHS for $element: $rhs ($message)"
     )
 class RecursionError(message: String) extends VyxalRuntimeException(message)
 
-/** Exception to end program using element Q */
-class QuitException extends VyxalException("Program quit")
+/** Unrecognized Exceptions */
+class UnknownLexingException(ex: Throwable) extends VyxalUnknownException("Lexing", ex)
+class UnknownParsingException(ex: Throwable) extends VyxalUnknownException("Parsing", ex)
+class UnknownRuntimeException(ex: Throwable) extends VyxalUnknownException("Runtime", ex)
 
 /** These exceptions should never be unhandled */
 class ContinueLoopException
