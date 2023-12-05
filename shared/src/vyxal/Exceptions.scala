@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.parsing.Token
+import fastparse.Parsed
 
 class VyxalException(message: String, ex: Throwable = Exception(), known: Boolean = true) extends RuntimeException(message, ex):
   def getMessage(using ctx: Context): String =
@@ -55,7 +56,8 @@ class InvalidRHSException(element: String, rhs: VAny, message: String)
 class RecursionError(message: String) extends VyxalRuntimeException(message)
 
 /** Unrecognized Exceptions */
-class UnknownLexingException(ex: Throwable) extends VyxalUnknownException("Lexing", ex)
+// Due to the fastparse library, the lexing exception is a bit different
+class UnknownLexingException(ex: Parsed.TracedFailure) extends VyxalLexingException(ex.longMsg)
 class UnknownParsingException(ex: Throwable) extends VyxalUnknownException("Parsing", ex)
 class UnknownRuntimeException(ex: Throwable) extends VyxalUnknownException("Runtime", ex)
 
