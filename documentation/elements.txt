@@ -682,10 +682,13 @@ Trigraph: #.t
 Keywords: last-extract, split-at-last
 - a: lst|str -> Push a[-1], then a[:-1] onto the stack
 ----------------------
-ẋ (Cartesian Power) (non-vectorising)
+ẋ (Cartesian Power | Regex Get Match) (non-vectorising)
 Trigraph: #.x
-Keywords: cartesian-power
+Keywords: cartesian-power, re-match, regex-match
 - a: lst, b: num -> cart_prod([a] * n)
+- a: str, b: str -> regex match of b in a
+- a: list, b: str -> regex match of b of each element of a
+- a: str, b: list -> regex match of each element of b in a
 ----------------------
 ƒ (Partition After Truthy Indices) (non-vectorising)
 Keywords: partition-after-truthy
