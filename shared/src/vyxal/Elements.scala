@@ -2393,13 +2393,21 @@ object Elements:
     addPart(
       Dyad,
       "ẋ",
-      "Cartesian Power",
-      List("cartesian-power"),
+      "Cartesian Power | Regex Get Match",
+      List("cartesian-power", "re-match", "regex-match"),
       false,
       "a: lst, b: num -> cart_prod([a] * n)",
+      "a: str, b: str -> regex match of b in a",
+      "a: list, b: str -> regex match of b of each element of a",
+      "a: str, b: list -> regex match of each element of b in a",
     ) {
       case (a, n: VNum) => ListHelpers.cartesianPower(a, n)
       case (n: VNum, a) => ListHelpers.cartesianPower(a, n)
+      case (a: String, b: String) => b.r.findFirstIn(a).getOrElse("")
+      case (a: String, b: VList) =>
+        VList.from(b.lst.map(_.toString.r.findFirstIn(a).getOrElse("")))
+      case (a: VList, b: String) =>
+        VList.from(a.lst.map(x => b.r.findFirstIn(x.toString()).getOrElse("")))
     },
     addPart(
       Dyad,
