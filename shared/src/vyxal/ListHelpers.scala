@@ -7,8 +7,6 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
 
-import fastparse.internal.Lazy
-
 object ListHelpers:
 
   def assign(iterable: VList, index: VNum, value: VAny): VList =
