@@ -8,10 +8,8 @@ import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.math
 
-import fastparse.internal.Lazy
 import spire.*
 import spire.math.Real
-import spire.math.SafeLong
 import spire.syntax.isReal.partialOrderOps // So we can compare Reals to stuff
 
 object NumberHelpers:
