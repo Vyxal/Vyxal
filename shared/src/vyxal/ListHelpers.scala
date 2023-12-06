@@ -995,14 +995,15 @@ object ListHelpers:
 
   def zeroPad(lst: VList, length: VNum)(using Context): VList =
     val temp = lst.lst
-    val extra = length - lst.bigLength
+    val extra = MiscHelpers
+      .dyadicMaximum(0, length.vabs - lst.bigLength)
+      .asInstanceOf[VNum]
     val zeros = LazyList.unfold(extra) { n =>
       Option.when(n > 0) {
         (VNum(0), n - 1)
       }
     }
-    if extra == VNum(0) then lst
-    else if extra < 0 then VList.from(temp ++ zeros)
+    if length < 0 then VList.from(temp ++ zeros)
     else VList.from(zeros ++ temp)
 
 end ListHelpers
