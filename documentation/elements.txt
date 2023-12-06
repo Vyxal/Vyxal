@@ -147,11 +147,14 @@ Keywords: length, len, length-of, len-of, size
 - a: any -> Length of a
 ----------------------
 M (Map Function | Mold Lists | Multiplicity) (non-vectorising)
-Keywords: map, mold, multiplicity, times-divide
+Keywords: map, mold, multiplicity, times-divide, re-match, regex-match
 - a: any, b: fun -> a.map(b)
 - a: fun, b: any -> b.map(a)
 - a: lst, b: lst -> a molded to the shape of b
 - a: num, b: num -> how many times b divides a
+- a: str, b: str -> regex match of b in a
+- a: list, b: str -> regex match of b of each element of a
+- a: str, b: list -> regex match of each element of b in a
 ----------------------
 N (Negation | Swap Case | First Non-Negative Integer Where Predicate is True) (vectorising)
 Keywords: neg, negate, swap-case, caseswap, first-non-negative, first-nonneg, first>-1
@@ -684,11 +687,8 @@ Keywords: last-extract, split-at-last
 ----------------------
 ẋ (Cartesian Power | Regex Get Match) (non-vectorising)
 Trigraph: #.x
-Keywords: cartesian-power, re-match, regex-match
+Keywords: cartesian-power
 - a: lst, b: num -> cart_prod([a] * n)
-- a: str, b: str -> regex match of b in a
-- a: list, b: str -> regex match of b of each element of a
-- a: str, b: list -> regex match of each element of b in a
 ----------------------
 ƒ (Partition After Truthy Indices) (non-vectorising)
 Keywords: partition-after-truthy

@@ -66,10 +66,13 @@
  <code>K</code> |  | Factors / Is Numeric? | `factors`, `divisors`, `is-numeric`, `is-num`, `is-number`, `is-num?`, `is-number?` | 1 | :white_check_mark: | `a: num` => `Factors of a`
  | | | | | | | `a: str` => `Is a numeric?`
  <code>L</code> |  | Length / Length of List | `length`, `len`, `length-of`, `len-of`, `size` | 1 | :x: | `a: any` => `Length of a`
- <code>M</code> |  | Map Function / Mold Lists / Multiplicity | `map`, `mold`, `multiplicity`, `times-divide` | 2 | :x: | `a: any, b: fun` => `a.map(b)`
+ <code>M</code> |  | Map Function / Mold Lists / Multiplicity | `map`, `mold`, `multiplicity`, `times-divide`, `re-match`, `regex-match` | 2 | :x: | `a: any, b: fun` => `a.map(b)`
  | | | | | | | `a: fun, b: any` => `b.map(a)`
  | | | | | | | `a: lst, b: lst` => `a molded to the shape of b`
  | | | | | | | `a: num, b: num` => `how many times b divides a`
+ | | | | | | | `a: str, b: str` => `regex match of b in a`
+ | | | | | | | `a: list, b: str` => `regex match of b of each element of a`
+ | | | | | | | `a: str, b: list` => `regex match of each element of b in a`
  <code>N</code> |  | Negation / Swap Case / First Non-Negative Integer Where Predicate is True | `neg`, `negate`, `swap-case`, `caseswap`, `first-non-negative`, `first-nonneg`, `first>-1` | 1 | :white_check_mark: | `a: num` => `-a`
  | | | | | | | `a: str` => `a.swapCase()`
  | | | | | | | `a: fun` => `first non-negative integer where predicate a is true`
@@ -250,10 +253,7 @@
  | | | | | | | `a: any, b: fun` => `sort iterable a by function b`
  | | | | | | | `a: lst, b: lst` => `set difference`
  <code>ṫ</code> | <code>#.t</code> | Last Extract | `last-extract`, `split-at-last` | 1 | :x: | `a: lst\|str` => `Push a[-1], then a[:-1] onto the stack`
- <code>ẋ</code> | <code>#.x</code> | Cartesian Power / Regex Get Match | `cartesian-power`, `re-match`, `regex-match` | 2 | :x: | `a: lst, b: num` => `cart_prod([a] * n)`
- | | | | | | | `a: str, b: str` => `regex match of b in a`
- | | | | | | | `a: list, b: str` => `regex match of b of each element of a`
- | | | | | | | `a: str, b: list` => `regex match of each element of b in a`
+ <code>ẋ</code> | <code>#.x</code> | Cartesian Power / Regex Get Match | `cartesian-power` | 2 | :x: | `a: lst, b: num` => `cart_prod([a] * n)`
  <code>ƒ</code> |  | Partition After Truthy Indices | `partition-after-truthy` | 2 | :x: | `a: lst, b: lst` => `partition a after truthy indices in b`
  <code>Θ</code> | <code>#.`</code> | Zero Slice Until | `0>b`, `zero-slice`, `zero-slice-until`, `take`, `slice-to`, `lst-truncate`, `first-n-items`, `first-n` | 2 | :x: | `a: lst, b: num>=0` => `[a[0], a[1], ..., a[b-1]]`
  | | | | | | | `a: lst, b: num<0` => `[a[b + 1], a[b + 2], ..., a[-1]]`
