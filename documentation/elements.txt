@@ -1200,9 +1200,9 @@ Keywords: surround
 - a: any, b: any -> a prepended and appended to b
 ----------------------
 Þ0 (Zero Pad) (non-vectorising)
-Keywords: zero-pad
-- a: lst|str, b: num -> a padded with 0s to length b
-- a: lst|str, b: lst|str -> a padded with 0s to length of b
+Keywords: zero-pad, pizza-tower
+- a: lst|str, b: num -> a padded with 0s to length b. Positive b prepends 0s, negative b appends 0s
+- a: lst|str, b: lst|str -> a padded with 0s to length of b. Positive b prepends 0s, negative b appends 0s
 ----------------------
 ÞO (Grid Neighbours (Wrap Around)) (non-vectorising)
 Keywords: grid-neighbours-wrap, grid-neighbors-wrap, adjacent-cells-wrap, adj-cells-wrap, surrounding-cells-wrap

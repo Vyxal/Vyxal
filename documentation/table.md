@@ -381,8 +381,8 @@
  <code>∆q</code> |  | Prime Exponents | `prime-exponents`, `prime-exps` | 1 | :white_check_mark: | `a: num` => `push a list of the power of each prime in the prime factors of a`
  <code>∆ḟ</code> |  | All Prime Exponents | `all-prime-exponents`, `all-prime-exps` | 1 | :white_check_mark: | `a: num` => `for all primes less than or equal to a, push the power of that prime in the factorisation of a`
  <code>ø⁾</code> |  | Surround | `surround` | 2 | :x: | `a: any, b: any` => `a prepended and appended to b`
- <code>Þ0</code> |  | Zero Pad | `zero-pad` | 2 | :x: | `a: lst\|str, b: num` => `a padded with 0s to length b`
- | | | | | | | `a: lst\|str, b: lst\|str` => `a padded with 0s to length of b`
+ <code>Þ0</code> |  | Zero Pad | `zero-pad`, `pizza-tower` | 2 | :x: | `a: lst\|str, b: num` => `a padded with 0s to length b. Positive b prepends 0s, negative b appends 0s`
+ | | | | | | | `a: lst\|str, b: lst\|str` => `a padded with 0s to length of b. Positive b prepends 0s, negative b appends 0s`
  <code>ÞO</code> |  | Grid Neighbours (Wrap Around) | `grid-neighbours-wrap`, `grid-neighbors-wrap`, `adjacent-cells-wrap`, `adj-cells-wrap`, `surrounding-cells-wrap` | 1 | :x: | `a: lst[lst]` => `Grid neighbours of a - up, down, left, right - wrapping around`
  | | | | | | | `a: lst[lst], b: num` => `Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b => 0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does`
  <code>ÞT</code> |  | Transpose Safe | `transpose-safe` | 1 | :x: | `a: any` => `transpose a`
