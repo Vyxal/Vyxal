@@ -322,7 +322,7 @@
  <code>₆</code> | <code>#,6</code> | One hundred twenty-eight | `one-hundred-twenty-eight`, `l28` | 0 | :x: | `128`
  <code>₇</code> | <code>#,7</code> | Two hundred fifty-six | `two-hundred-fifty-six`, `Z56`, `z56` | 0 | :x: | `256`
  <code>₈</code> | <code>#,8</code> | -1 | `negative-one`, `neg-1`, `-1` | 0 | :x: | `-1`
- <code>₉</code> | <code>#,9</code> | Empty array | `empty-list`, `nil-list`, `new-list`, `<>` | 0 | :x: | `[]`
+ <code>₉</code> | <code>#,9</code> | Empty string | `empty-string`, `<>` | 0 | :x: | `""`
  <code>½</code> | <code>#.5</code> | Halve | `halve` | 1 | :white_check_mark: | `a: num` => `a / 2`
  | | | | | | | `a: str` => `a split into two pieces`
  <code>ʀ</code> | <code>#.~</code> | Exclusive Zero Range / Lowercase | `0->n`, `zero-range`, `lowered-range`, `to-lower`, `lower`, `lowercase` | 1 | :white_check_mark: | `a: num` => `[0..a)`

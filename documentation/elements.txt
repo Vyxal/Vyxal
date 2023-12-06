@@ -912,10 +912,10 @@ Trigraph: #,8
 Keywords: negative-one, neg-1, -1
 - -> -1
 ----------------------
-₉ (Empty array) (non-vectorising)
+₉ (Empty string) (non-vectorising)
 Trigraph: #,9
-Keywords: empty-list, nil-list, new-list, <>
-- -> []
+Keywords: empty-string, <>
+- -> ""
 ----------------------
 ½ (Halve) (vectorising)
 Trigraph: #.5
