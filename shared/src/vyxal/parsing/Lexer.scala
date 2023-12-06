@@ -254,11 +254,15 @@ object Lexer:
       case AugmentVar => s"#>$value"
       case Constant => s"#!$value"
       case Str => s""""$value""""
+      case DictionaryString => s""""$value”"""
+      case CompressedString => s""""$value„"""
+      case CompressedNumber => s""""$value“"""
       case SyntaxTrigraph if value == ":=[" => "#:["
       case Command if !Elements.elements.contains(value) =>
         Elements.symbolFor(value).getOrElse(value)
       case Comment => ""
       case _ => tokenType.canonicalSBCS.getOrElse(value)
+  end sbcsifySingle
 
   /** Convert literate mode code into SBCS mode code */
   def sbcsify(tokens: List[Token]): String =
