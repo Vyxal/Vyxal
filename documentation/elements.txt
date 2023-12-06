@@ -1199,6 +1199,11 @@ Keywords: all-prime-exponents, all-prime-exps
 Keywords: surround
 - a: any, b: any -> a prepended and appended to b
 ----------------------
+Þ0 (Zero Pad) (non-vectorising)
+Keywords: zero-pad
+- a: lst|str, b: num -> a padded with 0s to length b
+- a: lst|str, b: lst|str -> a padded with 0s to length of b
+----------------------
 ÞO (Grid Neighbours (Wrap Around)) (non-vectorising)
 Keywords: grid-neighbours-wrap, grid-neighbors-wrap, adjacent-cells-wrap, adj-cells-wrap, surrounding-cells-wrap
 - a: lst[lst] -> Grid neighbours of a - up, down, left, right - wrapping around
