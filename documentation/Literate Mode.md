@@ -12,13 +12,13 @@ command format. A word is any sequence of `A-Z`, `a-z`, `0-9` and `-?!*+=&%><`.
 For example:
 
 ```
-100 { 3 5 pair mod 0 == } map { fold- times if "Fizz" else "Buzz" endif } map
+100 { 3 5 pair mod 0 == } map { fold- times ? "Fizz" : "Buzz" end } map
 ```
 
 Would turn into
 
 ```
-100 λ3 5 ; % 0 =} M λ/× ["Fizz"|"Buzz"}} M
+100λ3 5;%0=}Mλ/×["Fizz"|"Buzz"}}M
 ```
 
 ## Using Literate Mode
