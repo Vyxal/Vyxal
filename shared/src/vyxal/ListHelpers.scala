@@ -1002,7 +1002,7 @@ object ListHelpers:
       }
     }
     if extra == VNum(0) then lst
-    else if extra > 0 then VList.from(temp ++ zeros)
+    else if extra < 0 then VList.from(temp ++ zeros)
     else VList.from(zeros ++ temp)
 
 end ListHelpers

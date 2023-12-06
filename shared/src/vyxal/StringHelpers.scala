@@ -291,8 +291,10 @@ object StringHelpers:
       else if c != ' ' then capitalise = false
     res.toString
 
-  def zeroPad(s: String, n: VNum): String =
-    val temp = s.replace("\\", raw"\\").replace("\"", "\\\"")
-    s""""${temp.padTo(n.toInt, '0')}""""
+  def zeroPad(s: String, n: VNum)(using Context): String =
+    val zeros = "0".repeat(
+      MiscHelpers.dyadicMaximum(0, n.vabs - s.length()).asInstanceOf[VNum].toInt
+    )
+    if n > 0 then zeros + s else s + zeros
 
 end StringHelpers

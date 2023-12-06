@@ -3175,10 +3175,10 @@ object Elements:
       Dyad,
       "Þ0",
       "Zero Pad",
-      List("zero-pad"),
+      List("zero-pad", "pizza-tower"),
       false,
-      "a: lst|str, b: num -> a padded with 0s to length b",
-      "a: lst|str, b: lst|str -> a padded with 0s to length of b",
+      "a: lst|str, b: num -> a padded with 0s to length b. Positive b prepends 0s, negative b appends 0s",
+      "a: lst|str, b: lst|str -> a padded with 0s to length of b. Positive b prepends 0s, negative b appends 0s",
     ) {
       case (a: VList, b: VNum) => ListHelpers.zeroPad(a, b)
       case (a: String, b: VNum) => StringHelpers.zeroPad(a, b)
