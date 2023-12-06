@@ -61,8 +61,26 @@ do so.
 
 ### Groups
 
-You can surround any series of tokens in `()`. This is purely for readability, and is not required. In
-fact, the brackets are removed when the code is transpiled.
+You can surround any series of tokens in `()`. Outside of token moving and modifier
+groups, `()` are purely aesthetic. 
+
+#### Modifier Groups
+
+In addition to having keywords for each of `⸠ϩэЧᵈᵉᶠᴳ`, there's a special group
+syntax to indicate how many elements to group, and the arity of the modifier.
+
+```
+(. *) -> 1 element, arity 1
+(: * *) -> 2 elements, arity 1
+(:. * * *) -> 3 elements, arity 1
+(:: * * * *) -> 4 elements, arity 1
+(, *) -> 1 element, arity 2
+(; * *) -> 2 elements, arity 2
+(;, * * *) -> 3 elements, arity 2
+(;; * * * *) -> 4 elements, arity 2
+```
+
+A helpful way to remember this is that the number of dots/commas is the number of elements, and the shape of the bottom dots is the arity. `.` is arity 1, `,` is arity 2.
 
 ### Lists
 
