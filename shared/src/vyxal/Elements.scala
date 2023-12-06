@@ -3234,10 +3234,10 @@ object Elements:
     ) { -1 },
     addNilad(
       "₉",
-      "Empty array",
-      List("empty-list", "nil-list", "new-list", "<>"),
-      "[]",
-    ) { VList.empty },
+      "Empty string",
+      List("empty-string", "<>"),
+      "\"\"",
+    ) { "" },
 
     // k-constants
     addNilad(
