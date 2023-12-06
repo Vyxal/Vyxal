@@ -3171,6 +3171,23 @@ object Elements:
           )
         else VList.from(lst.take(index) ++ lst.drop(index + 1))
     },
+    addPart(
+      Dyad,
+      "Þ0",
+      "Zero Pad",
+      List("zero-pad"),
+      false,
+      "a: lst|str, b: num -> a padded with 0s to length b",
+      "a: lst|str, b: lst|str -> a padded with 0s to length of b",
+    ) {
+      case (a: VList, b: VNum) => ListHelpers.zeroPad(a, b)
+      case (a: String, b: VNum) => StringHelpers.zeroPad(a, b)
+      case (a: VNum, b: VNum) => StringHelpers.zeroPad(a.toString, b)
+      case (a: VNum, b: VList) => ListHelpers.zeroPad(b, a)
+      case (a: VNum, b: String) => StringHelpers.zeroPad(b, a)
+      case (a: VList, b) => ListHelpers.zeroPad(a, makeIterable(b).bigLength)
+      case (a: String, b) => StringHelpers.zeroPad(a, makeIterable(b).bigLength)
+    },
 
     // Constants
     addNilad("ð", "Space", List("space"), "\" \"") { " " },

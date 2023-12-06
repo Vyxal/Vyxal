@@ -7,6 +7,8 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
 
+import fastparse.internal.Lazy
+
 object ListHelpers:
 
   def assign(iterable: VList, index: VNum, value: VAny): VList =
@@ -990,5 +992,17 @@ object ListHelpers:
 
   def deltas(lst: VList)(using Context): VList =
     VList.from(lst.drop(1).zip(lst).map(MiscHelpers.subtract(_, _)))
+
+  def zeroPad(lst: VList, length: VNum)(using Context): VList =
+    val temp = lst.lst
+    val extra = length - lst.bigLength
+    val zeros = LazyList.unfold(extra) { n =>
+      Option.when(n > 0) {
+        (VNum(0), n - 1)
+      }
+    }
+    if extra == VNum(0) then lst
+    else if extra > 0 then VList.from(temp ++ zeros)
+    else VList.from(zeros ++ temp)
 
 end ListHelpers

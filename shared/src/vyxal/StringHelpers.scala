@@ -291,4 +291,8 @@ object StringHelpers:
       else if c != ' ' then capitalise = false
     res.toString
 
+  def zeroPad(s: String, n: VNum): String =
+    val temp = s.replace("\\", raw"\\").replace("\"", "\\\"")
+    s""""${temp.padTo(n.toInt, '0')}""""
+
 end StringHelpers
