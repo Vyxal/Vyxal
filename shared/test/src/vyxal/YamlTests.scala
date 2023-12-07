@@ -44,7 +44,7 @@ enum Criterion:
 class YamlTests extends AnyFunSpec with BeforeAndAfterAll:
 
   var usingNative = false
-  
+
   try "(?!.*@)".r.findFirstMatchIn("h")
   catch case _ => usingNative = true
   println(s"using native? $usingNative")
@@ -57,8 +57,6 @@ class YamlTests extends AnyFunSpec with BeforeAndAfterAll:
 
   /** YAML tag for scalars that are to be evaluated as Vyxal values */
   val VAnyTag = CustomTag("!vany")
-
- 
 
   for (element, testGroup) <- loadTests() do
     describe(s"Element $element") {
