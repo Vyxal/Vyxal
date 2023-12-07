@@ -77,9 +77,9 @@ class YamlTests extends AnyFunSpec with BeforeAndAfterAll:
             tests
         do
           if element == "ẋ" then
-              println("print")
-              println(excludeNative) 
-              println(usingNative)
+            println("print")
+            println(excludeNative)
+            println(usingNative)
           if usingNative && excludeNative then
             println(s"Skipping JVM-only test for $element")
           else
@@ -129,6 +129,7 @@ class YamlTests extends AnyFunSpec with BeforeAndAfterAll:
 
               checkpoint.reportAll()
             }
+          end if
         end for
 
   end execTests
