@@ -29,7 +29,7 @@ jobs:
           distribution: "adopt"
       - uses: coursier/cache-action@v6
       - name: Test
-        run: sbt vyxalNative/testOnly * -- -Dnative=true
+        run: sbt vyxalNative/test
 
   js:
     name: Compile JS
