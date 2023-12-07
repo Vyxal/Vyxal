@@ -253,7 +253,11 @@
  | | | | | | | `a: any, b: fun` => `sort iterable a by function b`
  | | | | | | | `a: lst, b: lst` => `set difference`
  <code>ṫ</code> | <code>#.t</code> | Last Extract | `last-extract`, `split-at-last` | 1 | :x: | `a: lst\|str` => `Push a[-1], then a[:-1] onto the stack`
- <code>ẋ</code> | <code>#.x</code> | Cartesian Power / Regex Get Match | `cartesian-power` | 2 | :x: | `a: lst, b: num` => `cart_prod([a] * n)`
+ <code>ẋ</code> | <code>#.x</code> | Cartesian Power / Regex Search for Match | `cartesian-power`, `re-search`, `regex-search` | 2 | :x: | `a: lst, b: num` => `cart_prod([a] * n)`
+ | | | | | | | `a: num, b: lst` => `cart_prod([b] * n)`
+ | | | | | | | `a: str, b: str` => `return first index of pattern match b in target string a, -1 if not found`
+ | | | | | | | `a: lst, b: str` => `regex search vectorised`
+ | | | | | | | `a: str\|lst, b: lst` => `push a, push cartesian product of b and b`
  <code>ƒ</code> |  | Partition After Truthy Indices | `partition-after-truthy` | 2 | :x: | `a: lst, b: lst` => `partition a after truthy indices in b`
  <code>Θ</code> | <code>#.`</code> | Zero Slice Until | `0>b`, `zero-slice`, `zero-slice-until`, `take`, `slice-to`, `lst-truncate`, `first-n-items`, `first-n` | 2 | :x: | `a: lst, b: num>=0` => `[a[0], a[1], ..., a[b-1]]`
  | | | | | | | `a: lst, b: num<0` => `[a[b + 1], a[b + 2], ..., a[-1]]`
