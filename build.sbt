@@ -154,6 +154,5 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     },
     Test / testOptions +=
       Tests.Argument(TestFrameworks.ScalaTest, "-Dnative=true"),
-  )
-    
+  
   )
