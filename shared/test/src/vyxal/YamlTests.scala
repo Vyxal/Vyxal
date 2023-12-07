@@ -41,7 +41,7 @@ enum Criterion:
 /** Tests for specific elements, loaded from tests.yaml. See the documentation
   * for information about the format.
   */
-class YamlTests extends AnyFunSpec with BeforeAndAfterAll:
+class YamlTests extends AnyFunSpec:
 
   var usingNative = false
 
