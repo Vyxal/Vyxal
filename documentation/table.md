@@ -276,7 +276,8 @@
  <code>Ị</code> | <code>#,I</code> | Insert | `insert`, `insert-at` | 3 | :x: | `a: any, b: num, c: any` => `insert c at position b in a`
  | | | | | | | `a: any, b: lst, c: any` => `insert c at positions b in a`
  | | | | | | | `a: any, b: lst[num], c: lst` => `insert c[i] at position b[i] in a`
- <code>Ḷ</code> | <code>#,L</code> | Sort by Length | `sort-by-length`, `sort-by-len`, `order-by-length`, `order-by-len`, `length-sort`, `len-sort` | 1 | :x: | `a: lst` => `sort a by length`
+ <code>Ḷ</code> | <code>#,L</code> | Sort by Length / Regex Escape | `sort-by-length`, `sort-by-len`, `order-by-length`, `order-by-len`, `length-sort`, `len-sort`, `re-escape`, `regex-escape` | 1 | :x: | `a: lst` => `sort a by length`
+ | | | | | | | `a: str` => `escape a for regex`
  <code>Ṃ</code> | <code>#,M</code> | -1 Power Of / Split on Spaces | `neg-one-power-of`, `neg1**`, `neg1^`, `neg1-power-of`, `neg1-power`, `split-on-spaces`, `split-spaces`, `space-split` | 1 | :white_check_mark: | `a: num` => `-1 ** a`
  | | | | | | | `a: str` => `a split on spaces`
  <code>Ọ</code> | <code>#,O</code> | Print without popping | `print-no-pop` | NA | :x: | `a` => `printed to stdout without popping`

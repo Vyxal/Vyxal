@@ -743,10 +743,11 @@ Keywords: insert, insert-at
 - a: any, b: lst, c: any -> insert c at positions b in a
 - a: any, b: lst[num], c: lst -> insert c[i] at position b[i] in a
 ----------------------
-Ḷ (Sort by Length) (non-vectorising)
+Ḷ (Sort by Length | Regex Escape) (non-vectorising)
 Trigraph: #,L
-Keywords: sort-by-length, sort-by-len, order-by-length, order-by-len, length-sort, len-sort
+Keywords: sort-by-length, sort-by-len, order-by-length, order-by-len, length-sort, len-sort, re-escape, regex-escape
 - a: lst -> sort a by length
+- a: str -> escape a for regex
 ----------------------
 Ṃ (-1 Power Of | Split on Spaces) (vectorising)
 Trigraph: #,M
