@@ -4,7 +4,9 @@ import scala.collection.mutable
 import scala.io.Source
 
 import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.BeforeAndAfterAllConfigMap
 import org.scalatest.Checkpoints.Checkpoint
+import org.scalatest.ConfigMap
 import org.virtuslab.yaml.*
 
 /** A list of tests. Can be nested */
@@ -23,6 +25,7 @@ case class YamlTest(
     flags: List[Char],
     code: Option[String],
     criterion: Seq[Criterion],
+    excludeNative: Boolean = false,
 )
 
 /** A criterion for the output of a test to meet */
@@ -40,7 +43,11 @@ enum Criterion:
 /** Tests for specific elements, loaded from tests.yaml. See the documentation
   * for information about the format.
   */
-class YamlTests extends AnyFunSpec:
+class YamlTests extends AnyFunSpec with BeforeAndAfterAllConfigMap:
+
+  override def beforeAll(configMap: ConfigMap): Unit =
+    this.usingNative = configMap.getOptional[Boolean]("native").getOrElse(false)
+
   /** The file to load tests from */
   val TestsFile = "/tests.yaml"
 
@@ -49,6 +56,8 @@ class YamlTests extends AnyFunSpec:
 
   /** YAML tag for scalars that are to be evaluated as Vyxal values */
   val VAnyTag = CustomTag("!vany")
+
+  var usingNative = false
 
   for (element, testGroup) <- loadTests() do
     describe(s"Element $element") {
@@ -63,52 +72,58 @@ class YamlTests extends AnyFunSpec:
             execTests(element, subgroup)
           }
       case TestGroup.Tests(tests) =>
-        for YamlTest(inputs, flags, codeOverride, criteria) <- tests do
-          val code = codeOverride.getOrElse(element)
-          val inputStr = inputs.map(StringHelpers.repr).mkString(", ")
-          val msg =
-            if codeOverride.isEmpty then s"Element: $code, Inputs: $inputStr"
-            else s"Code: `$code, inputs: $inputStr"
+        for YamlTest(inputs, flags, codeOverride, criteria, excludeNative) <-
+            tests
+        do
+          if usingNative && excludeNative then
+            println(s"Skipping JVM-only test for $element")
+          else
+            val code = codeOverride.getOrElse(element)
+            val inputStr = inputs.map(StringHelpers.repr).mkString(", ")
+            val msg =
+              if codeOverride.isEmpty then s"Element: $code, Inputs: $inputStr"
+              else s"Code: `$code, inputs: $inputStr"
 
-          Elements.elements(element).arity match
-            case Some(arity) => if arity > 0 && arity != inputs.size then
-                println(
-                  s"[Element $element] Inputs (${inputs.mkString(",")}) don't match arity ($arity)"
-                )
-            case _ => ()
-          it(msg) {
-            given ctx: Context =
-              VyxalTests.testContext(inputs = inputs, flags = flags)
-            Interpreter.execute(code)
-            val output = ctx.peek
-            val checkpoint = Checkpoint()
+            Elements.elements(element).arity match
+              case Some(arity) => if arity > 0 && arity != inputs.size then
+                  println(
+                    s"[Element $element] Inputs (${inputs.mkString(",")}) don't match arity ($arity)"
+                  )
+              case _ => ()
+            it(msg) {
+              given ctx: Context =
+                VyxalTests.testContext(inputs = inputs, flags = flags)
+              Interpreter.execute(code)
+              val output = ctx.peek
+              val checkpoint = Checkpoint()
 
-            criteria.foreach {
-              case Criterion.Equals(expected) =>
-                checkpoint { assertResult(expected)(output) }
-              case Criterion.Stack(elems) =>
-                checkpoint { assertResult(elems)(ctx.peek(elems.length)) }
-              case crit => checkpoint {
-                  output match
-                    case lst: VList => (crit: @unchecked) match
-                        case Criterion.StartsWith(prefix) =>
-                          assertResult(prefix)(lst.slice(0, prefix.length))
-                        case Criterion.EndsWith(suffix) => assertResult(suffix)(
-                            lst.slice(lst.length - suffix.length, lst.length)
-                          )
-                        case Criterion.Contains(elems, false) =>
-                          val notFound = elems.filterNot(lst.contains)
-                          if notFound.nonEmpty then
-                            fail(
-                              s"$lst does not contain ${notFound.mkString(",")}"
+              criteria.foreach {
+                case Criterion.Equals(expected) =>
+                  checkpoint { assertResult(expected)(output) }
+                case Criterion.Stack(elems) =>
+                  checkpoint { assertResult(elems)(ctx.peek(elems.length)) }
+                case crit => checkpoint {
+                    output match
+                      case lst: VList => (crit: @unchecked) match
+                          case Criterion.StartsWith(prefix) =>
+                            assertResult(prefix)(lst.slice(0, prefix.length))
+                          case Criterion.EndsWith(suffix) =>
+                            assertResult(suffix)(
+                              lst.slice(lst.length - suffix.length, lst.length)
                             )
-                        case Criterion.Contains(elems, true) => ???
-                    case _ => fail(s"$output is not a list")
-                }
-            }
+                          case Criterion.Contains(elems, false) =>
+                            val notFound = elems.filterNot(lst.contains)
+                            if notFound.nonEmpty then
+                              fail(
+                                s"$lst does not contain ${notFound.mkString(",")}"
+                              )
+                          case Criterion.Contains(elems, true) => ???
+                      case _ => fail(s"$output is not a list")
+                  }
+              }
 
-            checkpoint.reportAll()
-          }
+              checkpoint.reportAll()
+            }
         end for
 
   end execTests
@@ -170,7 +185,14 @@ class YamlTests extends AnyFunSpec:
                 getValue(test, "flags").fold(Nil)(scalarText(_).toList)
               val code = getValue(test, "code").map(scalarText)
               val output = getOutputCriteria(test)
-              YamlTest(inputs.map(decodeNode), flags, code, output)
+              val excludeNative = getValue(test, "jvm-only").isDefined
+              YamlTest(
+                inputs.map(decodeNode),
+                flags,
+                code,
+                output,
+                excludeNative,
+              )
             }
             Right(TestGroup.Tests(tests))
           case Node.MappingNode(subgroupNodes, _) =>
