@@ -76,6 +76,10 @@ class YamlTests extends AnyFunSpec with BeforeAndAfterAll:
         for YamlTest(inputs, flags, codeOverride, criteria, excludeNative) <-
             tests
         do
+          if element == "ẋ" then
+              println("print")
+              println(excludeNative) 
+              println(usingNative)
           if usingNative && excludeNative then
             println(s"Skipping JVM-only test for $element")
           else
