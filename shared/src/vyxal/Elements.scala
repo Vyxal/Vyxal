@@ -2344,16 +2344,18 @@ object Elements:
     addPart(
       Dyad,
       "y",
-      "To Base",
-      List("to-base"),
+      "To Base | Regex Find",
+      List("to-base", "re-find", "regex-find"),
       false,
       "a: num, b: num -> a in base b",
       "a: num, b: str|lst -> a in base with alphabet b",
       "a: lst, b: num -> each x in a in base b",
       "a: lst, b: str|lst -> each x in a in base with alphabet b",
+      "a: str, b: str -> All matches of b in a",
     ) {
       case (a: VNum, b) => NumberHelpers.toBase(a, b)
       case (a: VList, b) => a.vmap(NumberHelpers.toBase(_, b))
+      case (a: String, b: String) => VList.from(b.r.findAllIn(a).toSeq)
     },
     addPart(
       Triad,
