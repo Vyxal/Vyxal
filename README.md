@@ -3,7 +3,7 @@
 _If you are looking for version 2 of Vyxal, you can find it [here](https://github.com/Vyxal/Vyxal/tree/version-2)_
 
 
-Vyxal is an stack-based esoteric array language that is dedicated to dominating competition in code golf challenges. This means that it strips away all need for boilerplate, long function names and impractical source layouts. However, it also has a more traditional and familiar way of expressing itself if needed. Vyxal 3 is the third major iteration of the language that drives home this key design goal. Here's how
+Vyxal is an stack-based esoteric array language that is dedicated to dominating competition in code golf challenges. This means that it strips away all need for boilerplate, long function names and impractical source layouts. However, it also has a more traditional and familiar way of expressing itself if needed. Vyxal 3 is the third major iteration of the language that drives home this key design goal. Here's how. 
 
 ## What's the Same as Version 2?
 
