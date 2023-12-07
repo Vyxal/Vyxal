@@ -36,8 +36,11 @@ object ListHelpers:
   def cartesianPower(lhs: VAny, pow: VNum)(using Context): VList =
     if pow == VNum(0) then VList(VList())
     else
-      val lst = ListHelpers.makeIterable(lhs)
-      cartesianProductMulti(Seq.fill(pow.toInt)(lst))
+      val lst = makeIterable(lhs)
+      val temp = cartesianProductMulti(Seq.fill(pow.toInt)(lst))
+      if lhs.isInstanceOf[String] then
+        VList.from(temp.map(_.asInstanceOf[VList].mkString))
+      else temp
 
   /** Cartesian product */
   def cartesianProduct(left: VAny, right: VAny, unsafe: Boolean = false)(using

@@ -2408,13 +2408,32 @@ object Elements:
     addPart(
       Dyad,
       "ẋ",
-      "Cartesian Power | Regex Get Match",
-      List("cartesian-power"),
+      "Cartesian Power | Regex Search for Match",
+      List("cartesian-power", "re-search", "regex-search"),
       false,
       "a: lst, b: num -> cart_prod([a] * n)",
+      "a: num, b: lst -> cart_prod([b] * n)",
+      "a: str, b: str -> return first index of pattern match b in target string a, -1 if not found",
+      "a: lst, b: str -> regex search vectorised",
+      "a: str|lst, b: lst -> push a, push cartesian product of b and b",
     ) {
       case (a, n: VNum) => ListHelpers.cartesianPower(a, n)
       case (n: VNum, a) => ListHelpers.cartesianPower(a, n)
+      case (a: String, b: String) =>
+        val res = b.r.findFirstMatchIn(a)
+        if res.isDefined then res.get.start else -1
+      case (a: VList, b: String) => VList.from(
+          a.lst
+            .map(_.toString)
+            .map(x =>
+              val res = b.r.findFirstMatchIn(x)
+              if res.isDefined then res.get.start else -1
+            )
+        )
+      case (a, b: VList) =>
+        summon[Context].push(a)
+        ListHelpers.cartesianProduct(b, b)
+
     },
     addPart(
       Dyad,
