@@ -122,6 +122,29 @@ object StringHelpers:
       .asInstanceOf[VNum]
     NumberHelpers.toBaseAlphabet(temp, "abcdefghijklmnopqrstuvwxyz ")
 
+  def escapeRegex(s: String): String =
+    val specialChars = List(
+      "\\",
+      "^",
+      "$",
+      ".",
+      "|",
+      "?",
+      "*",
+      "+",
+      "(",
+      ")",
+      "[",
+      "]",
+      "{",
+      "}",
+      "-",
+    )
+    s.map { c =>
+      if specialChars.contains(c.toString) then "\\" + c else c.toString
+    }.mkString
+  end escapeRegex
+
   def formatString(fmtstr: String, args: VAny*): String =
     val sb = StringBuilder()
     var i = 0

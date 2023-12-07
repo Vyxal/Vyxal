@@ -1076,6 +1076,8 @@
   - {in: [["abc", "de", "fghi", "j"]], out: ["j", "de", "abc", "fghi"]}
   - {in: [["Thunno 2", "Vyxal", "05AB1E", "Jelly"]], out: ["Vyxal", "Jelly", "05AB1E", "Thunno 2"]}
   - {in: [[1, 2, 3, 4]], out: [1, 2, 3, 4]}
+  - {in: ["Hello"], out: "Hello"}
+  - {in: ["https://vyxal.github.io"], out: "https://vyxal\.github\.io"}
 
 
 "Ṃ":

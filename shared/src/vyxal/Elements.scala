@@ -1172,7 +1172,7 @@ object Elements:
     addPart(
       Monad,
       "Ḷ",
-      "Sort by Length",
+      "Sort by Length | Regex Escape",
       List(
         "sort-by-length",
         "sort-by-len",
@@ -1180,12 +1180,15 @@ object Elements:
         "order-by-len",
         "length-sort",
         "len-sort",
+        "re-escape",
+        "regex-escape",
       ),
       false,
       "a: lst -> sort a by length",
+      "a: str -> escape a for regex",
     ) {
-      case a: VFun => ??? // Not implemented
-      case a => ListHelpers.sortByLength(a)
+      case a: VList => ListHelpers.sortByLength(a)
+      case a: String => StringHelpers.escapeRegex(a)
     },
     addFull(
       Monad,
