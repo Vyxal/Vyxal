@@ -3188,10 +3188,11 @@ object Elements:
     addPart(
       Dyad,
       "Q",
-      "Remove At",
-      List("remove-at"),
+      "Remove At | Regex Groups",
+      List("remove-at", "re-groups", "regex-groups"),
       false,
       "a: lst, b: num -> a with bth element removed",
+      "a: str, b: str -> regex groups of a with regex b",
     ) {
       case (a: String, b: VNum) =>
         val index = b.toInt
@@ -3206,6 +3207,9 @@ object Elements:
             lst.take(lst.length + index) ++ lst.drop(lst.length + index + 1)
           )
         else VList.from(lst.take(index) ++ lst.drop(index + 1))
+      case (a: String, b: String) =>
+        val res = b.r.findFirstMatchIn(a)
+        if res.isDefined then VList(res.get.subgroups) else VList.empty
     },
     addPart(
       Dyad,

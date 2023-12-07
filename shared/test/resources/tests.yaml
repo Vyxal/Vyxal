@@ -301,6 +301,7 @@
   - {in: ["abcdef", 3], out: "abcef"}
   - {in: [[1,2,3,4,5], 0], out: [2,3,4,5]}
   - {in: [[1,2,3,4,5], -1], out: [1,2,3,4]}
+  - {in: ["username@domain.com", "([a-z]+)@([a-z]+)\.co(m)"], out: ["username", "domain", "m"]}
 
 "R":
   When given two numbers:
