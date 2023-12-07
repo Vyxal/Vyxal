@@ -46,6 +46,10 @@ enum Criterion:
 class YamlTests extends AnyFunSpec with BeforeAndAfterAllConfigMap:
 
   override def beforeAll(configMap: ConfigMap): Unit =
+    println("$$$$$$$$$%$=$=#=")
+    println("config map is")
+    println(configMap)
+    println("====================================================================")
     this.usingNative = configMap.getOptional[Boolean]("native").getOrElse(false)
 
   /** The file to load tests from */
