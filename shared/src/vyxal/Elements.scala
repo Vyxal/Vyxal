@@ -3209,7 +3209,7 @@ object Elements:
         else VList.from(lst.take(index) ++ lst.drop(index + 1))
       case (a: String, b: String) =>
         val res = b.r.findFirstMatchIn(a)
-        if res.isDefined then VList(res.get.subgroups) else VList.empty
+        if res.isDefined then VList.from(res.get.subgroups) else VList.empty
     },
     addPart(
       Dyad,
