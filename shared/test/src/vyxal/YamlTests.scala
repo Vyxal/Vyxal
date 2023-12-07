@@ -4,7 +4,7 @@ import scala.collection.mutable
 import scala.io.Source
 
 import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.BeforeAndAfterAllConfigMap
+import org.scalatest.BeforeAndAfterAll
 import org.scalatest.Checkpoints.Checkpoint
 import org.scalatest.ConfigMap
 import org.virtuslab.yaml.*
