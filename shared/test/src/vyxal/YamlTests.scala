@@ -4,9 +4,7 @@ import scala.collection.mutable
 import scala.io.Source
 
 import org.scalatest.funspec.AnyFunSpec
-import org.scalatest.BeforeAndAfterAll
 import org.scalatest.Checkpoints.Checkpoint
-import org.scalatest.ConfigMap
 import org.virtuslab.yaml.*
 
 /** A list of tests. Can be nested */
@@ -45,9 +43,11 @@ enum Criterion:
   */
 class YamlTests extends AnyFunSpec with BeforeAndAfterAll:
 
-  override def beforeAll(): Unit =
-    try "(?!.*@)".r.findFirstMatchIn("h")
-    catch case _ => usingNative = true
+  var usingNative = false
+  
+  try "(?!.*@)".r.findFirstMatchIn("h")
+  catch case _ => usingNative = true
+  println(s"using native? $usingNative")
 
   /** The file to load tests from */
   val TestsFile = "/tests.yaml"
@@ -58,7 +58,7 @@ class YamlTests extends AnyFunSpec with BeforeAndAfterAll:
   /** YAML tag for scalars that are to be evaluated as Vyxal values */
   val VAnyTag = CustomTag("!vany")
 
-  var usingNative = false
+ 
 
   for (element, testGroup) <- loadTests() do
     describe(s"Element $element") {
