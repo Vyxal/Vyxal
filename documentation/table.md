@@ -169,10 +169,11 @@
  <code>v</code> |  | Decrement | `decr`, `decrement` | 1 | :white_check_mark: | `a: num` => `a - 1`
  <code>w</code> |  | Wrap Singleton | `wrap-singleton`, `enlist` | 1 | :x: | `a` => `[a]`
  <code>x</code> |  | Recursion / Recurse | `recurse` | NA | :x: | `call the current function recursively`
- <code>y</code> |  | To Base | `to-base` | 2 | :x: | `a: num, b: num` => `a in base b`
+ <code>y</code> |  | To Base / Regex Find | `to-base`, `re-find`, `regex-find` | 2 | :x: | `a: num, b: num` => `a in base b`
  | | | | | | | `a: num, b: str\|lst` => `a in base with alphabet b`
  | | | | | | | `a: lst, b: num` => `each x in a in base b`
  | | | | | | | `a: lst, b: str\|lst` => `each x in a in base with alphabet b`
+ | | | | | | | `a: str, b: str` => `All matches of b in a`
  <code>z</code> |  | Inclusive zero Range / Is Lowercase | `inclusive-zero-range`, `zero->n`, `is-lowercase?`, `lowercase?`, `lower?` | 1 | :white_check_mark: | `a: num` => `[0, 1, ..., a]`
  | | | | | | | `a: str` => `is a lowercase?`
  <code>Ȧ</code> | <code>#.A</code> | Absolute Value / Keep Alphabet Characters | `abs`, `absolute-value`, `keep-alphabet` | 1 | :white_check_mark: | `a: num` => `\|a\|`

@@ -450,12 +450,13 @@ x (Recursion | Recurse) (non-vectorising)
 Keywords: recurse
 -  -> call the current function recursively
 ----------------------
-y (To Base) (non-vectorising)
-Keywords: to-base
+y (To Base | Regex Find) (non-vectorising)
+Keywords: to-base, re-find, regex-find
 - a: num, b: num -> a in base b
 - a: num, b: str|lst -> a in base with alphabet b
 - a: lst, b: num -> each x in a in base b
 - a: lst, b: str|lst -> each x in a in base with alphabet b
+- a: str, b: str -> All matches of b in a
 ----------------------
 z (Inclusive zero Range | Is Lowercase) (vectorising)
 Keywords: inclusive-zero-range, zero->n, is-lowercase?, lowercase?, lower?
