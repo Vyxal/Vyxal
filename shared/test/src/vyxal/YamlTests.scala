@@ -45,7 +45,7 @@ enum Criterion:
   */
 class YamlTests extends AnyFunSpec with BeforeAndAfterAll:
 
-  override def beforeAll(configMap: ConfigMap): Unit =
+  override def beforeAll(): Unit =
     try "(?!.*@)".r.findFirstMatchIn("h")
     catch case _ => usingNative = true
 
