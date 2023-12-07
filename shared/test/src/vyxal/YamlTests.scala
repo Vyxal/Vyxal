@@ -43,16 +43,14 @@ enum Criterion:
 /** Tests for specific elements, loaded from tests.yaml. See the documentation
   * for information about the format.
   */
-class YamlTests extends AnyFunSpec with BeforeAndAfterAllConfigMap:
+class YamlTests extends AnyFunSpec with BeforeAndAfterAll:
 
   override def beforeAll(configMap: ConfigMap): Unit =
-    println("$$$$$$$$$%$=$=#=")
-    println("config map is")
-    println(configMap)
-    println(
-      "===================================================================="
-    )
-    this.usingNative = configMap.getOptional[Boolean]("native").getOrElse(false)
+    try
+      "(?!h)".r.findFirstMatchIn("h")
+    catch
+       case _ => this.usingNative = true
+    
 
   /** The file to load tests from */
   val TestsFile = "/tests.yaml"
