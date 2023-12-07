@@ -47,7 +47,7 @@ class YamlTests extends AnyFunSpec:
 
   try "(?!.*@)".r.findFirstMatchIn("h")
   catch case _ => usingNative = true
-  println(s"using native? $usingNative")
+  
 
   /** The file to load tests from */
   val TestsFile = "/tests.yaml"
@@ -74,10 +74,6 @@ class YamlTests extends AnyFunSpec:
         for YamlTest(inputs, flags, codeOverride, criteria, excludeNative) <-
             tests
         do
-          if excludeNative then
-            println("print")
-            println(excludeNative)
-            println(usingNative)
           if usingNative && excludeNative then
             println(s"Skipping JVM-only test for $element")
           else
