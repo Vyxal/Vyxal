@@ -46,8 +46,10 @@ enum Criterion:
 class YamlTests extends AnyFunSpec with BeforeAndAfterAll:
 
   override def beforeAll(configMap: ConfigMap): Unit =
-    try "(?!.*@)".r.findFirstMatchIn("h")
-    catch case _ => usingNative = true
+    try
+      "(?!.*@)".r.findFirstMatchIn("h")
+    catch 
+      case _ => usingNative = true
 
   /** The file to load tests from */
   val TestsFile = "/tests.yaml"
