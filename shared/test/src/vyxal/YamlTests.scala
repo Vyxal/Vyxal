@@ -49,7 +49,9 @@ class YamlTests extends AnyFunSpec with BeforeAndAfterAllConfigMap:
     println("$$$$$$$$$%$=$=#=")
     println("config map is")
     println(configMap)
-    println("====================================================================")
+    println(
+      "===================================================================="
+    )
     this.usingNative = configMap.getOptional[Boolean]("native").getOrElse(false)
 
   /** The file to load tests from */
