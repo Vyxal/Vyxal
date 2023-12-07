@@ -152,5 +152,8 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
     nativeConfig ~= {
       _.withEmbedResources(true)
     },
+    Test / testOptions +=
+      Tests.Argument(TestFrameworks.ScalaTest, "-Dnative=true"),
+  )
     
   )
