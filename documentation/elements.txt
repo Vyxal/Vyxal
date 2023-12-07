@@ -171,9 +171,10 @@ P (Prefixes) (non-vectorising)
 Keywords: prefixes
 - a: lst -> Prefixes of a
 ----------------------
-Q (Remove At) (non-vectorising)
-Keywords: remove-at
+Q (Remove At | Regex Groups) (non-vectorising)
+Keywords: remove-at, re-groups, regex-groups
 - a: lst, b: num -> a with bth element removed
+- a: str, b: str -> regex groups of a with regex b
 ----------------------
 R (Reduce by Function Object | Dyadic Range | Regex Match | Set Union) (non-vectorising)
 Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has-regex-match?, fold, union

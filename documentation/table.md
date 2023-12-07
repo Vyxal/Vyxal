@@ -79,7 +79,8 @@
  <code>O</code> |  | Ord/Chr | `ord`, `chr` | 1 | :x: | `a: str` => `ord(a)`
  | | | | | | | `a: num` => `chr(a)`
  <code>P</code> |  | Prefixes | `prefixes` | 1 | :x: | `a: lst` => `Prefixes of a`
- <code>Q</code> |  | Remove At | `remove-at` | 2 | :x: | `a: lst, b: num` => `a with bth element removed`
+ <code>Q</code> |  | Remove At / Regex Groups | `remove-at`, `re-groups`, `regex-groups` | 2 | :x: | `a: lst, b: num` => `a with bth element removed`
+ | | | | | | | `a: str, b: str` => `regex groups of a with regex b`
  <code>R</code> |  | Reduce by Function Object / Dyadic Range / Regex Match / Set Union | `fun-reduce`, `reduce`, `fold-by`, `range`, `a->b`, `regex-match?`, `re-match?`, `has-regex-match?`, `fold`, `union` | 2 | :x: | `a: fun, b: any` => `reduce iterable b by function a`
  | | | | | | | `a: any, b: fun` => `reduce iterable a by function b`
  | | | | | | | `a: num, b: num` => `the range [a, b)`
