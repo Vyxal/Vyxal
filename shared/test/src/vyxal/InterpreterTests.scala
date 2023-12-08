@@ -410,6 +410,16 @@ class InterpreterTests extends VyxalTests:
         )
       }
     }
+    describe("Base-252 compression") {
+      it("should not remove leading 'a' characters") {
+        val compressed = StringHelpers.compress252("aabbcc sussybaka")
+        assertResult("aabbcc sussybaka")(
+          StringHelpers.decompress252String(
+            compressed.substring(1, compressed.length - 1)
+          )
+        )
+      }
+    }
   }
 
   describe("Global Recursion (Factorial)") {
