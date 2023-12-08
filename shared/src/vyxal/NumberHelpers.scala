@@ -354,6 +354,12 @@ object NumberHelpers:
     (a, b) match
       case (a: VNum, b: VNum) => (a % b) == VNum(0)
       case (a: String, b: VNum) => a.toString + MiscHelpers.multiply(" ", b)
+      case (a: String, b: String) =>
+        val mobj = b.r.findFirstMatchIn(a)
+        mobj match
+          case None => VList()
+          case Some(value) => VList(value.start, value.end)
+
       case (a: VNum, b: String) => b.toString + MiscHelpers.multiply(" ", a)
       case (a: VList, b: VFun) => ListHelpers.dedupBy(a, b)
       case (a: VFun, b: VList) => ListHelpers.dedupBy(b, a)

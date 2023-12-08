@@ -709,6 +709,8 @@
   - {in: ["Vyxal", 5], out: "Vyxal     "}
   - {in: ["Vyxal", 0], out: "Vyxal"}
   - {in: [5, "Vyxal"], out: "Vyxal     "}
+  - {in: ["bkflweioauamrw", "[aeiou]+"], out: [5, 11]}
+  - {in: ["bkflweioauamrw", "1+"], out: []}
 
 "Ė":
   When given a number:
