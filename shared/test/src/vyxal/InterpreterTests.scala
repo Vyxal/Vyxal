@@ -412,6 +412,7 @@ class InterpreterTests extends VyxalTests:
     }
     describe("Base-252 compression") {
       it("should not remove leading 'a' characters") {
+        given Context = VyxalTests.testContext()
         val compressed = StringHelpers.compress252("aabbcc sussybaka")
         assertResult("aabbcc sussybaka")(
           StringHelpers.decompress252String(
