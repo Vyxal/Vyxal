@@ -698,7 +698,7 @@ ${bits}
             output = `[Vyxal, ${bytesLink}${utfable ? '' : ' (UTF-8)'}: \`${code.replaceAll("`", "\\`")}\`](${url})` + (bytesLink.includes("bits") ? " ([vyncoded](https://github.com/Vyxal/Vyncode/blob/main/README.md))" : "")
             break
         case "post-template":
-            output = `# [Vyxal](https://github.com/Vyxal/Vyxal)${flagAppendage} ${bytesLink} ${utfable ? '' : ' (UTF-8)'}
+            output = `# [Vyxal](https://github.com/Vyxal/Vyxal/tree/version-2)${flagAppendage} ${bytesLink} ${utfable ? '' : ' (UTF-8)'}
 
 \`\`\`
 ${code}
