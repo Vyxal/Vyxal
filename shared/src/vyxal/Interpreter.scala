@@ -103,7 +103,7 @@ object Interpreter:
         ctx.push(VList.from(list.toList))
       case AST.Command(cmd, _) => Elements.elements.get(cmd) match
           case Some(elem) => elem.impl()
-          case None => throw RuntimeException(s"No such command: '$cmd'")
+          case None => throw NoSuchElementException(cmd)
       case AST.Group(elems, _, _) => elems.foreach(Interpreter.execute)
       case AST.CompositeNilad(elems, _) => elems.foreach(Interpreter.execute)
       case AST.Ternary(thenBody, elseBody, _) =>
