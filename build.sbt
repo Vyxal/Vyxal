@@ -124,6 +124,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
         "org.jline" % "jline" % "3.24.1",
         "org.jline" % "jline-terminal-jansi" % "3.24.1",
         "org.fusesource.jansi" % "jansi" % "2.4.1",
+        // "org.scala-js" %% "scalajs-stubs" % "1.1.0" % "provided",
       ),
     Compile / run / fork := true,
     Compile / run / connectInput := true,

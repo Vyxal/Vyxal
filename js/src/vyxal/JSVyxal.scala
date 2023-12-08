@@ -12,6 +12,7 @@ object HelpText:
   @JSExport
   def getHelpText(): String = CLI.helpText
 
+
 /** A bridge between the interpreter and JS */
 @JSExportTopLevel("Vyxal", moduleID = "vyxal")
 object JSVyxal:
@@ -60,26 +61,17 @@ object JSVyxal:
       inputs: js.Array[String],
       printFunc: js.Function1[String, Unit],
       errorFunc: js.Function1[String, Unit],
-      presetStack: Boolean = false,
-      endPrintMode: EndPrintMode = EndPrintMode.Default,
+      flags: js.Array[String],
       defaultValue: String = "0",
       rangify: Boolean = false,
-      rangeStart: Int = 1,
-      rangeOffset: Int = 0,
-      literate: Boolean = false,
   ): Unit =
     val inputList =
       inputs.map(MiscHelpers.eval(_)(using Context())).toSeq.reverse
     val settings = Settings(
-      presetStack = presetStack,
-      endPrintMode = endPrintMode,
       defaultValue = MiscHelpers.eval(defaultValue)(using Context()),
       rangify = rangify,
-      rangeStart = rangeStart,
-      rangeOffset = rangeOffset,
-      literate = literate,
       online = true,
-    )
+    ).withFlags(flags.map(_.charAt(0)).toList)
     val globals = Globals(
       inputs = Inputs(inputList),
       settings = settings,
