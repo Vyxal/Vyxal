@@ -504,14 +504,17 @@ Keywords: find
 - a: any, b: any -> a.indexOf(b) (-1 if not found)
 - a: any, b: fun -> truthy indices of mapping b over a
 ----------------------
-Ġ (Group by Function Result | Greatest Common Divisor) (non-vectorising)
+Ġ (Group by Function Result | Greatest Common Divisor | Find all overlapping regex matches) (non-vectorising)
 Trigraph: #.G
-Keywords: group-by, gcd
+Keywords: group-by, gcd, re-find-overlapping, regex-find-overlapping, re-find-overlap, regex-find-overlap
 - a: any, b: fun -> group a by the results of b
 - a: fun, b: any -> group b by the results of a
 - a: num, b: num -> gcd(a, b)
 - a: lst[num], b: num -> gcd of b and all elements of a
 - a: lst[num] -> gcd of all items in a.
+- a: str, b: str -> all overlapping regex matches of b in a (similar to `y` but with overlaps)
+- a: str, b: lst[str] -> vectorised string overload of the above
+- a: lst, b: str -> vectorised pattern overload of the above
 ----------------------
 Ḣ (Head Remove | Behead) (non-vectorising)
 Trigraph: #.H
