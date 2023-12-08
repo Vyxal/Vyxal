@@ -167,6 +167,7 @@ case class Settings(
       case 'N' => this.copy(endPrintMode = EndPrintMode.JoinNothing)
       case 'Ṫ' => this.copy(endPrintMode = EndPrintMode.SumStack)
       case 'ṡ' => this.copy(endPrintMode = EndPrintMode.SpaceStack)
+      case 'R' => this.copy(rangify = true)
       case 'X' => this.copy(fullTrace = true)
       case _ => throw VyxalException(s"$flag is an invalid flag")
 
