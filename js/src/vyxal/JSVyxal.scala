@@ -55,6 +55,45 @@ object JSVyxal:
   end execute
 
   @JSExport
+  def theCoolerExecute(
+    code: String,
+    inputs: js.Array[String],
+    printFunc: js.Function1[String, Unit],
+    errorFunc: js.Function1[String, Unit],
+    presetStack: Boolean = false,
+    endPrintMode: EndPrintMode = EndPrintMode.Default,
+    defaultValue: String = "0",
+    rangify: Boolean = false,
+    rangeStart: Int = 1,
+    rangeOffset: Int = 0,
+    literate: Boolean = false,
+  ): Unit =
+    val inputList = inputs.map(MiscHelpers.eval(_)(using Context())).toSeq.reverse
+    val settings = Settings(
+      presetStack = presetStack,
+      endPrintMode = endPrintMode,
+      defaultValue = MiscHelpers.eval(defaultValue)(using Context()),
+      rangify = rangify,
+      rangeStart = rangeStart,
+      rangeOffset = rangeOffset,
+      literate = literate,
+      online = true,
+    )
+    val globals = Globals(
+      inputs = Inputs(inputList),
+      settings = settings,
+      printFn = printFunc
+    )
+    val ctx = Context(
+      inputs = inputList,
+      globals = globals 
+    )
+    try 
+      Interpreter.execute(code)(using ctx)
+    catch
+      case ex: VyxalException => errorFunc(ex.getMessage(using ctx))
+
+  @JSExport
   def setShortDict(dict: String): Unit =
     Dictionary._shortDictionary = dict.split("\r\n").toSeq
 
