@@ -168,7 +168,7 @@ case class Settings(
       case 'Ṫ' => this.copy(endPrintMode = EndPrintMode.SumStack)
       case 'ṡ' => this.copy(endPrintMode = EndPrintMode.SpaceStack)
       case 'X' => this.copy(fullTrace = true)
-      case _ => throw IllegalArgumentException(s"$flag is an invalid flag")
+      case _ => throw VyxalException(s"$flag is an invalid flag")
 
   /** Helper to update these settings with multiple flags
     *

@@ -48,7 +48,7 @@ object NumberHelpers:
       case n: VNum => fromBinary(n.toString())
       case l: VList => toInt(l, 2)
       case s: String => toInt(s, 2)
-      case _ => throw Exception("Cannot convert to binary")
+      case arg => throw UnimplementedOverloadException("fromBinary", List(arg))
 
   def gamma(a: VNum): VNum =
     val colist = List(
@@ -100,7 +100,7 @@ object NumberHelpers:
     a.foldLeft(VNum(0)) { (a, b) =>
       b match
         case b: VNum => gcd(a, b)
-        case _ => throw Exception("Cannot find gcd of non-numbers")
+        case b => throw UnimplementedOverloadException("gcd", List(a, b))
     }
 
   def isMostLikelyPrime(a: VNum, k: VNum = 40): Boolean =
@@ -112,7 +112,7 @@ object NumberHelpers:
         val test = randrange(VNum(2), Some(a - 1))
         val modResult = modpow(test, s, a)
         if modResult != VNum(1) && modResult != a - 1 then
-          throw Exception(
+          throw VyxalYikesException(
             "this is scala being silly and not allowing me to return from a for loop because it isn't actually a for loop"
           )
     catch case _ => return false
@@ -195,24 +195,25 @@ object NumberHelpers:
       else i += 1
     VList.from(result.toList)
 
+  // The exceptions for 'randrange' are very specific, so it just throws VyxalRuntimeExceptions
   def randrange(start: VNum, stop: Option[VNum] = None, step: VNum = 1): VNum =
     if stop.isEmpty then
-      if step != VNum(1) then throw Exception("Cannot have step without stop")
+      if step != VNum(1) then throw VyxalRuntimeException("Cannot have step without stop")
       if start > 0 then return randbelow(start)
-      else throw Exception("empty range for randrange()")
+      else throw VyxalRuntimeException("empty range for randrange()")
 
     val stopVal = stop.get
     val width = stopVal - start
 
     if step == VNum(1) then
       if width > 0 then return start + randbelow(width)
-      else throw Exception("empty range for randrange()")
+      else throw VyxalRuntimeException("empty range for randrange()")
 
-    if step == VNum(0) then throw Exception("step cannot be 0 in randrange()")
+    if step == VNum(0) then throw VyxalRuntimeException("step cannot be 0 in randrange()")
     val n =
       if step > 0 then (width + step - 1) / step else (width + step + 1) / step
     if n <= 0 then
-      throw Exception(s"empty range for randrange($start, $stopVal, $step)")
+      throw VyxalRuntimeException(s"empty range for randrange($start, $stopVal, $step)")
     return start + step * randbelow(n)
   end randrange
 
@@ -246,16 +247,14 @@ object NumberHelpers:
           val binary = c.toInt.toBinaryString
           result += VList(binary.map(_.asDigit).map(VNum(_)).toList*)
         VList(result.toList*)
-      case _ => throw Exception("Cannot convert to binary")
+      case arg => throw UnimplementedOverloadException("toBinary", List(arg))
 
   def toBase(a: VAny, b: VAny)(using ctx: Context): VAny =
     (a, b) match
       case (a: VNum, b: VNum) => VList.from(toBaseDigits(a, b))
       case (n: VNum, b: (String | VList)) => toBaseAlphabet(n, b)
       case (a: VList, _) => VList(a.map(toBase(_, b))*)
-      case _ => throw Exception(
-          s"toBase only works on numbers and lists, was given $a and $b instead"
-        )
+      case (a, b) => throw UnimplementedOverloadException("toBase", List(a, b))
 
   /** Returns value in base len(alphabet) using base 10 [bijective base]. If the
     * alphabet is a string, returns a string.
@@ -350,7 +349,7 @@ object NumberHelpers:
           exponent += 1
         res
       case s: String => VNum(s, radix).toIntegral
-      case _ => throw Exception("Cannot convert to int")
+      case _ => throw UnimplementedOverloadException("toInt", List(value, radix))
 
   def divides(a: VAny, b: VAny)(using Context): VAny =
     (a, b) match
