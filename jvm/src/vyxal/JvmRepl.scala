@@ -28,10 +28,7 @@ object JvmRepl extends Repl:
     while true do
       val code = StdIn.readLine("> ")
       try Interpreter.execute(code)
-      catch
-        case ex: VyxalException => scribe.error(ex.getMessage(using ctx))
-    end while
-  end plainRepl
+      catch case ex: VyxalException => scribe.error(ex.getMessage(using ctx))
 
   private def fancyRepl()(using ctx: Context): Unit =
     // Enable debug logging
@@ -83,6 +80,5 @@ object JvmRepl extends Repl:
         case _: UserInterruptException => return
         case _: EndOfFileException => return
         case ex: VyxalException => scribe.error(ex.getMessage(using ctx))
-    end while
   end fancyRepl
 end JvmRepl

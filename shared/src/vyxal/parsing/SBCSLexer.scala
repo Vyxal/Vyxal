@@ -105,7 +105,8 @@ private[parsing] object SBCSLexer:
             case 3 => TriadicModifier
             case 4 => TetradicModifier
             case -1 => SpecialModifier
-            case arity => throw VyxalYikesException(s"Invalid modifier arity: $arity")
+            case arity =>
+              throw VyxalYikesException(s"Invalid modifier arity: $arity")
           Token(tokenType, digraph, range)
         else Token(Digraph, digraph, range)
     }

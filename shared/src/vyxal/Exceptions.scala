@@ -2,17 +2,22 @@ package vyxal
 
 import vyxal.parsing.Token
 
-class VyxalException(message: String, ex: Throwable = Exception(), unknown: Boolean = false, report: Boolean = false) extends RuntimeException(message, ex):
+class VyxalException(
+    message: String,
+    ex: Throwable = Exception(),
+    unknown: Boolean = false,
+    report: Boolean = false,
+) extends RuntimeException(message, ex):
   def getMessage(using ctx: Context): String =
     var message = ex match
       case _: VyxalException => super.getCause().getMessage()
       case _: Throwable => super.getMessage()
-    if (report) then
-      message += "\nPlease report this to the Vyxal devs"
-    if (unknown && !report && !ctx.settings.fullTrace) then
+    if report then message += "\nPlease report this to the Vyxal devs"
+    if unknown && !report && !ctx.settings.fullTrace then
       message += "\nUse 'X' flag for full traceback"
-    if (ctx.settings.fullTrace || report) then
-      message += "\n" + super.getCause().getStackTrace.mkString("  ", "\n  ", "")
+    if ctx.settings.fullTrace || report then
+      message += "\n" +
+        super.getCause().getStackTrace.mkString("  ", "\n  ", "")
     message
 class QuitException extends VyxalException("Program quit using Q")
 class VyxalLexingException(message: String)
@@ -22,7 +27,7 @@ class VyxalParsingException(message: String)
 class VyxalRuntimeException(message: String)
     extends VyxalException(s"RuntimeException: $message")
 class VyxalUnknownException(location: String, ex: Throwable)
-    extends VyxalException(s"Unknown $location Exception", ex, unknown = true, report = true)
+    extends VyxalException(s"Unknown $location Exception", ex, true, true)
 
 /** VyxalLexingExceptions */
 class LeftoverCodeException(leftover: String)
@@ -44,7 +49,9 @@ class NoSuchModifierException(modifier: String)
 class TokensFailedParsingException(tokens: List[Token])
     extends VyxalParsingException(s"Some elements failed to parse: $tokens")
 class UnmatchedCloserException(closer: Token)
-    extends VyxalParsingException(s"A closer/branch was found outside of a structure: ${closer.value}")
+    extends VyxalParsingException(
+      s"A closer/branch was found outside of a structure: ${closer.value}"
+    )
 
 /** VyxalRuntimeExceptions */
 class InvalidLHSException(element: String, lhs: VAny, message: String)
@@ -62,9 +69,12 @@ class UnimplementedOverloadException(element: String, args: Seq[VAny])
     )
 
 /** Unrecognized Exceptions */
-class UnknownLexingException(ex: Throwable) extends VyxalUnknownException("Lexing", ex)
-class UnknownParsingException(ex: Throwable) extends VyxalUnknownException("Parsing", ex)
-class UnknownRuntimeException(ex: Throwable) extends VyxalUnknownException("Runtime", ex)
+class UnknownLexingException(ex: Throwable)
+    extends VyxalUnknownException("Lexing", ex)
+class UnknownParsingException(ex: Throwable)
+    extends VyxalUnknownException("Parsing", ex)
+class UnknownRuntimeException(ex: Throwable)
+    extends VyxalUnknownException("Runtime", ex)
 
 /** These exceptions should never be unhandled */
 class ContinueLoopException
@@ -74,9 +84,8 @@ class BreakLoopException
 class ReturnFromFunctionException
     extends VyxalException("Tried to return outside of a function context")
 
-
-/** This is for any errors that are caught, but should NEVER happen.
-  * If this gets thrown, somebody done messed up
+/** This is for any errors that are caught, but should NEVER happen. If this
+  * gets thrown, somebody done messed up
   */
 class VyxalYikesException(message: String)
-    extends VyxalException(s"Something is very not right: $message", report = true)
+    extends VyxalException(s"Something is very yikes: $message", report = true)

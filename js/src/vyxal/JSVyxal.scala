@@ -51,8 +51,7 @@ object JSVyxal:
       globals = globals,
     )
     try Interpreter.execute(code)(using ctx)
-    catch
-      case ex: VyxalException => errorFunc(ex.getMessage(using ctx))
+    catch case ex: VyxalException => errorFunc(ex.getMessage(using ctx))
   end execute
 
   @JSExport

@@ -11,25 +11,27 @@ object Interpreter:
   def version = "3.2.0"
   def execute(code: String)(using ctx: Context): Unit =
     /** Attempt lexing */
-    val tokens = try
-      val lexRes = Lexer(code)
-      scribe.debug(s"Lexed tokens: $lexRes")
-      val sugarless = Lexer.removeSugar(
-        if ctx.settings.literate then Lexer.sbcsify(lexRes) else code
-      )
-      sugarless match
-        case Some(code) => scribe.debug(s"Sugarless: $code")
-        case None => ()
-      lexRes
-    catch
-      case ex: VyxalException => throw VyxalException("VyxalException", ex)
-      case ex: Throwable => throw UnknownLexingException(ex)
+    val tokens =
+      try
+        val lexRes = Lexer(code)
+        scribe.debug(s"Lexed tokens: $lexRes")
+        val sugarless = Lexer.removeSugar(
+          if ctx.settings.literate then Lexer.sbcsify(lexRes) else code
+        )
+        sugarless match
+          case Some(code) => scribe.debug(s"Sugarless: $code")
+          case None => ()
+        lexRes
+      catch
+        case ex: VyxalException => throw VyxalException("VyxalException", ex)
+        case ex: Throwable => throw UnknownLexingException(ex)
 
     /** Attempt parsing */
-    val ast = try Parser.parse(tokens)
-    catch
-      case ex: VyxalException => throw VyxalException("VyxalException", ex)
-      case ex: Throwable => throw UnknownParsingException(ex)
+    val ast =
+      try Parser.parse(tokens)
+      catch
+        case ex: VyxalException => throw VyxalException("VyxalException", ex)
+        case ex: Throwable => throw UnknownParsingException(ex)
 
     /** Attempt execution */
     try
@@ -75,7 +77,8 @@ object Interpreter:
           vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString)
         end if
       end if
-      if ctx.settings.endPrintMode == EndPrintMode.Force then vyPrintln(ctx.pop())
+      if ctx.settings.endPrintMode == EndPrintMode.Force then
+        vyPrintln(ctx.pop())
     catch
       case ex: VyxalException => throw VyxalException("VyxalException", ex)
       case ex: Throwable => throw UnknownRuntimeException(ex)
