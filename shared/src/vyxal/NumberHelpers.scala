@@ -198,7 +198,8 @@ object NumberHelpers:
   // The exceptions for 'randrange' are very specific, so it just throws VyxalRuntimeExceptions
   def randrange(start: VNum, stop: Option[VNum] = None, step: VNum = 1): VNum =
     if stop.isEmpty then
-      if step != VNum(1) then throw VyxalRuntimeException("Cannot have step without stop")
+      if step != VNum(1) then
+        throw VyxalRuntimeException("Cannot have step without stop")
       if start > 0 then return randbelow(start)
       else throw VyxalRuntimeException("empty range for randrange()")
 
@@ -209,11 +210,14 @@ object NumberHelpers:
       if width > 0 then return start + randbelow(width)
       else throw VyxalRuntimeException("empty range for randrange()")
 
-    if step == VNum(0) then throw VyxalRuntimeException("step cannot be 0 in randrange()")
+    if step == VNum(0) then
+      throw VyxalRuntimeException("step cannot be 0 in randrange()")
     val n =
       if step > 0 then (width + step - 1) / step else (width + step + 1) / step
     if n <= 0 then
-      throw VyxalRuntimeException(s"empty range for randrange($start, $stopVal, $step)")
+      throw VyxalRuntimeException(
+        s"empty range for randrange($start, $stopVal, $step)"
+      )
     return start + step * randbelow(n)
   end randrange
 
@@ -349,7 +353,8 @@ object NumberHelpers:
           exponent += 1
         res
       case s: String => VNum(s, radix).toIntegral
-      case _ => throw UnimplementedOverloadException("toInt", List(value, radix))
+      case _ =>
+        throw UnimplementedOverloadException("toInt", List(value, radix))
 
   def divides(a: VAny, b: VAny)(using Context): VAny =
     (a, b) match

@@ -1620,7 +1620,9 @@ object Elements:
                   (a.vabs % 4).toInt,
                 )
               )
-            case (a, b) => throw UnimplementedOverloadException("Þo", List(a, b))
+            case (a, b) =>
+              throw UnimplementedOverloadException("Þo", List(a, b))
+      end match
     },
     addDirect(
       "ÞO",
@@ -1652,7 +1654,9 @@ object Elements:
                   (a.vabs % 4).toInt,
                 )
               )
-            case (a, b) => throw UnimplementedOverloadException("ÞO", List(a, b))
+            case (a, b) =>
+              throw UnimplementedOverloadException("ÞO", List(a, b))
+      end match
     },
     addDirect(
       "Þȯ",
@@ -1685,7 +1689,9 @@ object Elements:
                   (a.vabs % 8).toInt,
                 )
               )
-            case (a, b) => throw UnimplementedOverloadException("Þȯ", List(a, b))
+            case (a, b) =>
+              throw UnimplementedOverloadException("Þȯ", List(a, b))
+      end match
     },
     addDirect(
       "ÞȮ",
@@ -1718,7 +1724,9 @@ object Elements:
                   (a.vabs % 8).toInt,
                 )
               )
-            case (a, b) => throw UnimplementedOverloadException("ÞȮ", List(a, b))
+            case (a, b) =>
+              throw UnimplementedOverloadException("ÞȮ", List(a, b))
+      end match
     },
     addFull(Dyad, ";", "Pair", List("pair"), false, "a, b -> [a, b]") {
       VList(_, _)
@@ -2445,8 +2453,7 @@ object Elements:
       false,
       "a: any -> transpose a",
     ) {
-      case a: VFun =>
-        throw UnimplementedOverloadException("ÞT", List(a))
+      case a: VFun => throw UnimplementedOverloadException("ÞT", List(a))
       case a => ListHelpers.transposeSafe(ListHelpers.makeIterable(a))
     },
     addPart(
@@ -2507,8 +2514,7 @@ object Elements:
         case _: VNum => MiscHelpers.eval(evens.map(_._1).mkString) ->
             MiscHelpers.eval(odds.map(_._1).mkString)
         case _: String => evens.map(_._1).mkString -> odds.map(_._1).mkString
-        case a =>
-          throw UnimplementedOverloadException("U", List(a))
+        case a => throw UnimplementedOverloadException("U", List(a))
 
       ctx.push(pushEven, pushOdd)
     },
@@ -2586,7 +2592,8 @@ object Elements:
           val arg = ListHelpers.makeIterable(ctx.pop())
           val suffixes = ListHelpers.suffixes(arg)
           ctx.push(VList.from(suffixes.map(suffix => f(suffix))))
-        case arg => throw UnimplementedOverloadException("#|map-suffixes", List(arg))
+        case arg =>
+          throw UnimplementedOverloadException("#|map-suffixes", List(arg))
     },
     addDirect(
       "#|map-prefixes",
@@ -2600,7 +2607,8 @@ object Elements:
           val arg = ListHelpers.makeIterable(ctx.pop())
           val prefixes = arg.indices.map(i => arg.slice(0, i + 1))
           ctx.push(VList.from(prefixes.map(prefix => f(prefix))))
-        case arg => throw UnimplementedOverloadException("#|map-prefixes", List(arg))
+        case arg =>
+          throw UnimplementedOverloadException("#|map-prefixes", List(arg))
     },
     addDirect(
       "#|reduce-cols",
@@ -2616,7 +2624,8 @@ object Elements:
           ctx.push(
             VList.from(cols.map(col => ListHelpers.reduce(col, f, None)))
           )
-        case arg => throw UnimplementedOverloadException("#|reduce-cols", List(arg))
+        case arg =>
+          throw UnimplementedOverloadException("#|reduce-cols", List(arg))
     },
     addDirect(
       "#|maximum-by",
@@ -2629,7 +2638,8 @@ object Elements:
         case f: VFun =>
           val arg = ListHelpers.makeIterable(ctx.pop())
           ctx.push(arg.maxBy(v => f(v)))
-        case arg => throw UnimplementedOverloadException("#|maximum-by", List(arg))
+        case arg =>
+          throw UnimplementedOverloadException("#|maximum-by", List(arg))
     },
     addDirect(
       "#|minimum-by",
@@ -2642,7 +2652,8 @@ object Elements:
         case f: VFun =>
           val arg = ListHelpers.makeIterable(ctx.pop())
           ctx.push(arg.minBy(v => f(v)))
-        case arg => throw UnimplementedOverloadException("#|minimum-by", List(arg))
+        case arg =>
+          throw UnimplementedOverloadException("#|minimum-by", List(arg))
     },
     addDirect(
       "#|apply-to-register",
@@ -2656,7 +2667,8 @@ object Elements:
           ctx.push(ctx.globals.register)
           ctx.push(Interpreter.executeFn(f)(using ctx.makeChild()))
           ctx.globals.register = ctx.pop()
-        case arg => throw UnimplementedOverloadException("#|apply-to-register", List(arg))
+        case arg =>
+          throw UnimplementedOverloadException("#|apply-to-register", List(arg))
     },
     addDirect(
       "#|dip",
@@ -2724,7 +2736,8 @@ object Elements:
             ListHelpers.overlaps(ListHelpers.makeIterable(ctx.pop()), 2)
           val results = neighbours.map(x => f(x*))
           ctx.push(results.forall(_ == results(0)))
-        case arg => throw UnimplementedOverloadException("#|all-neigh", List(arg))
+        case arg =>
+          throw UnimplementedOverloadException("#|all-neigh", List(arg))
     },
     addDirect(
       "#|para-apply",
@@ -2780,7 +2793,8 @@ object Elements:
               )
             )
           )
-        case arg => throw UnimplementedOverloadException("#|vec-dump", List(arg))
+        case arg =>
+          throw UnimplementedOverloadException("#|vec-dump", List(arg))
     },
     addPart(
       Monad,
@@ -2826,12 +2840,12 @@ object Elements:
                   a.lst.map(x =>
                     x match
                       case n: VNum => (n / b).floor
-                      case _ => throw InvalidListOverloadException("Ṡ", a, "Numbers")
+                      case _ =>
+                        throw InvalidListOverloadException("Ṡ", a, "Numbers")
                   )
                 )
               )
             case (a, b) => throw UnimplementedOverloadException("Ṡ", List(a, b))
-          end match
         case a: VList =>
           ctx.push(a.vmap(x => ListHelpers.sum(ListHelpers.makeIterable(x))))
         case arg => throw UnimplementedOverloadException("Ṡ", List(arg))
@@ -2871,8 +2885,7 @@ object Elements:
       case (a: VList, b: VList) =>
         if b.lst.forall(_.isInstanceOf[VNum]) then
           ListHelpers.partitionBy(a, b.lst.map(_.asInstanceOf[VNum]))
-        else
-          throw InvalidListOverloadException("Ẇ", b, "Number")
+        else throw InvalidListOverloadException("Ẇ", b, "Number")
       case (a: VFun, b: VNum) => MiscHelpers.predicateSlice(a, b, 0)
       case (a: VNum, b: VFun) => MiscHelpers.predicateSlice(b, a, 0)
     },
