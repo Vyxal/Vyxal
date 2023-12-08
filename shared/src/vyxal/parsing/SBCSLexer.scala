@@ -3,7 +3,7 @@ package vyxal.parsing
 import scala.language.strictEquality
 
 import vyxal.{Elements, Modifiers, SugarMap}
-import vyxal.{LeftoverCodeException, UnknownLexingException}
+import vyxal.{LeftoverCodeException, VyxalLexingException, VyxalYikesException}
 import vyxal.parsing.Common.given // For custom whitespace
 import vyxal.parsing.Common.withRange
 import vyxal.parsing.Lexer.StringClosers
@@ -105,7 +105,7 @@ private[parsing] object SBCSLexer:
             case 3 => TriadicModifier
             case 4 => TetradicModifier
             case -1 => SpecialModifier
-            case arity => throw Exception(s"Invalid modifier arity: $arity")
+            case arity => throw VyxalYikesException(s"Invalid modifier arity: $arity")
           Token(tokenType, digraph, range)
         else Token(Digraph, digraph, range)
     }
@@ -208,5 +208,5 @@ private[parsing] object SBCSLexer:
         else throw LeftoverCodeException(code.substring(ind))
       case f @ Parsed.Failure(label, index, extra) =>
         val trace = f.trace()
-        throw UnknownLexingException(trace)
+        throw VyxalLexingException(trace.longMsg)
 end SBCSLexer

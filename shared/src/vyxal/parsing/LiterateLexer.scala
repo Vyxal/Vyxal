@@ -3,7 +3,7 @@ package vyxal.parsing
 import scala.language.strictEquality
 
 import vyxal.{Elements, Modifiers}
-import vyxal.{LeftoverCodeException, UnknownLexingException}
+import vyxal.{LeftoverCodeException, VyxalLexingException}
 import vyxal.parsing.Common.withRange
 // import vyxal.parsing.Common.given // For custom whitespace
 import vyxal.parsing.TokenType.*
@@ -391,5 +391,5 @@ private[parsing] object LiterateLexer:
         else throw LeftoverCodeException(code.substring(ind))
       case f @ Parsed.Failure(label, index, extra) =>
         val trace = f.trace()
-        throw UnknownLexingException(trace)
+        throw VyxalLexingException(trace.longMsg)
 end LiterateLexer

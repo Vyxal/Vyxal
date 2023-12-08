@@ -122,6 +122,7 @@ object Parser:
           if depth != -1 then names += ((name, depth))
           asts.push(AST.UnpackVar(names.toList))
         case TokenType.Param => asts.push(AST.Parameter(value))
+        case TokenType.Digraph => throw NoSuchElementException(token)
       end match
     end while
 
@@ -413,10 +414,10 @@ object Parser:
     val preprocessed = preprocess(tokens).to(Queue)
     val parsed = parse(preprocessed, true)
     if preprocessed.nonEmpty then
+      if isCloser(preprocessed.front) then
+        throw UnmatchedCloserException(preprocessed.dequeue())
       // Some tokens were left at the end, which should never happen
-      throw VyxalParsingException(
-        s"Some tokens failed to parse: ${preprocessed.toList}"
-      )
+      throw TokensFailedParsingException(preprocessed.toList)
     else postprocess(parsed)
 
   private def preprocess(tokens: List[Token]): List[Token] =
