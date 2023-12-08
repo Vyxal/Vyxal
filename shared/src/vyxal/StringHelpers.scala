@@ -175,6 +175,17 @@ object StringHelpers:
     if to < 0 then padRight(s, to.vabs)
     else s.padTo(to.toInt, ' ')
 
+  def regexSub(string: String, pattern: String, replacement: String): String =
+    string.replaceAll(pattern, replacement)
+
+  def regexSub(string: String, pattern: String, function: VFun)(using
+      Context
+  ): String =
+    s"($pattern)".r.replaceAllIn(
+      string,
+      m => function(m.group(0)).toString,
+    )
+
   /** Remove the character at the given index */
   def remove(s: String, i: Int): String =
     val wrapped = (i + s.length) % s.length

@@ -126,11 +126,17 @@ object Elements:
         "a<x>?=y",
         "set-item",
         "apply-at",
+        "re-sub",
+        "regex-sub",
       ),
       false,
       "a: lst, b: num, c: non-fun -> assign c to a at the index b / a[b] = c",
       "a: lst, b: num, c: fun -> a[b] c= <stack items> (augmented assignment to list)",
       "a: lst, b: lst, c: lst -> assign c to a at the indices in b",
+      "a: str, b: str, c: str -> replace regex matches of pattern b in string a with c",
+      "a: str, b: str, c: fun -> replace regex matches of pattern b in string a with the result of applying c to each match",
+      "a: str, b: fun, c: str -> replace regex matches of pattern c in string a with the result of applying b to each match",
+      "a: fun, b: str, c: str -> replace regex matches of pattern c in string b with the result of applying a to each match",
     ) {
       case (a, b: VNum, c: VPhysical) =>
         val temp = ListHelpers.assign(ListHelpers.makeIterable(a), b, c)
@@ -165,6 +171,10 @@ object Elements:
             case _ => throw IllegalArgumentException("Index must be a number")
         if a.isInstanceOf[String] then temp.mkString
         else temp
+      case (a: String, b: String, c: String) => StringHelpers.regexSub(a, b, c)
+      case (a: String, b: String, c: VFun) => StringHelpers.regexSub(a, b, c)
+      case (a: String, b: VFun, c: String) => StringHelpers.regexSub(a, c, b)
+      case (a: VFun, b: String, c: String) => StringHelpers.regexSub(b, c, a)
     },
     addPart(
       Monad,
@@ -436,7 +446,7 @@ object Elements:
       Dyad,
       "÷",
       "Divide | Split",
-      List("divide", "div", "str-split"),
+      List("divide", "div", "str-split", "re-split"),
       true,
       "a: num, b: num -> a / b",
       "a: str, b: str -> Split a on the regex b",
