@@ -61,14 +61,8 @@ class ConstantDuplicateException(name: String)
     extends VyxalRuntimeException(s"Constant $name already exists")
 class InvalidCompressionCharException(char: Char)
     extends VyxalRuntimeException(s"Unable to compress character '$char'")
-class InvalidLHSException(element: String, lhs: VAny, message: String)
-    extends VyxalRuntimeException(
-      s"Invalid LHS for $element: $lhs ($message)"
-    )
-class InvalidRHSException(element: String, rhs: VAny, message: String)
-    extends VyxalRuntimeException(
-      s"Invalid RHS for $element: $rhs ($message)"
-    )
+class InvalidListOverloadException(element: String, list: VList, expected: String)
+    extends VyxalRuntimeException(s"List $list contains invalid values. Element $element expected $expected values")
 class RecursionError(message: String) extends VyxalRuntimeException(message)
 class UnimplementedOverloadException(element: String, args: Seq[VAny])
     extends VyxalRuntimeException(
