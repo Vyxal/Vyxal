@@ -15,7 +15,7 @@ object StringHelpers:
 
   def compress252(s: String)(using Context): String =
     val temp = NumberHelpers
-      .fromBaseAlphabet(s, "abcdefghijklmnopqrstuvwxyz ")
+      .fromBaseAlphabet(s, "ඞabcdefghijklmnopqrstuvwxyz ")
       .asInstanceOf[VNum]
     s"\"${NumberHelpers
         .toBaseAlphabet(
@@ -120,7 +120,7 @@ object StringHelpers:
         Lexer.Codepage.filterNot(Lexer.StringClosers.contains(_)),
       )
       .asInstanceOf[VNum]
-    NumberHelpers.toBaseAlphabet(temp, "abcdefghijklmnopqrstuvwxyz ")
+    NumberHelpers.toBaseAlphabet(temp, "ඞabcdefghijklmnopqrstuvwxyz ")
 
   def escapeRegex(s: String): String =
     val specialChars = List(
