@@ -17,6 +17,45 @@ object HelpText:
 object JSVyxal:
   @JSExport
   def execute(
+    code: String,
+    inputs: String,
+    flags: String,
+    printFunc: js.Function1[String, Unit],
+    errorFunc: js.Function1[String, Unit],
+  ): Unit =
+    // todo take functions to print to custom stdout and stderr
+
+    // The help flag should be handled in the JS
+    if flags.contains('h') then return
+
+    var printRequestCount = 0
+
+    val inputList = inputs
+      .split("\n")
+      .map(x => MiscHelpers.eval(x)(using Context()))
+      .toSeq
+      .reverse
+
+    val settings = Settings(online = true).withFlags(flags.toList)
+    val globals: Globals = Globals(
+      settings = settings,
+      printFn = str =>
+        if printRequestCount <= 20000 then
+          printFunc(str)
+          printRequestCount += 1,
+      inputs = Inputs(inputList),
+    )
+
+    val ctx = Context(
+      inputs = inputList,
+      globals = globals,
+    )
+    try Interpreter.execute(code)(using ctx)
+    catch case ex: VyxalException => errorFunc(ex.getMessage(using ctx))
+  end execute
+
+  @JSExport
+  def theCoolerExecute(
       code: String,
       inputs: js.Array[String],
       printFunc: js.Function1[String, Unit],
@@ -52,7 +91,7 @@ object JSVyxal:
     )
     try Interpreter.execute(code)(using ctx)
     catch case ex: VyxalException => errorFunc(ex.getMessage(using ctx))
-  end execute
+  end theCoolerExecute
 
   @JSExport
   def setShortDict(dict: String): Unit =
