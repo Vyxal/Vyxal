@@ -14,6 +14,9 @@ object StringHelpers:
       case a: VList => VList(a.map(chrord)*)
 
   def compress252(s: String)(using Context): String =
+    "[^a-z ]".r.findFirstIn(s) match
+      case Some(str) => throw InvalidCompressionCharException(str.charAt(0))
+      case _ =>
     val temp = NumberHelpers
       .fromBaseAlphabet(s, "abcdefghijklmnopqrstuvwxyz ")
       .asInstanceOf[VNum]
@@ -43,7 +46,7 @@ object StringHelpers:
       val o =
         if c.toInt == 10 then 95
         else if ' ' <= c && c <= '~' then c.toInt - 32
-        else throw Exception(s"Invalid character $c")
+        else throw InvalidCompressionCharException(c)
 
       3 * (96 * z + o)
 

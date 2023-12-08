@@ -54,6 +54,8 @@ class UnmatchedCloserException(closer: Token)
     )
 
 /** VyxalRuntimeExceptions */
+class InvalidCompressionCharException(char: Char)
+    extends VyxalRuntimeException(s"Unable to compress character '$char'")
 class InvalidLHSException(element: String, lhs: VAny, message: String)
     extends VyxalRuntimeException(
       s"Invalid LHS for $element: $lhs ($message)"
