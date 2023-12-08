@@ -62,14 +62,10 @@ object JSVyxal:
       printFunc: js.Function1[String, Unit],
       errorFunc: js.Function1[String, Unit],
       flags: js.Array[String],
-      defaultValue: String = "0",
-      rangify: Boolean = false,
   ): Unit =
     val inputList =
       inputs.map(MiscHelpers.eval(_)(using Context())).toSeq.reverse
     val settings = Settings(
-      defaultValue = MiscHelpers.eval(defaultValue)(using Context()),
-      rangify = rangify,
       online = true,
     ).withFlags(flags.map(_.charAt(0)).toList)
     val globals = Globals(
