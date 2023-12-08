@@ -17,11 +17,11 @@ object HelpText:
 object JSVyxal:
   @JSExport
   def execute(
-    code: String,
-    inputs: String,
-    flags: String,
-    printFunc: js.Function1[String, Unit],
-    errorFunc: js.Function1[String, Unit],
+      code: String,
+      inputs: String,
+      flags: String,
+      printFunc: js.Function1[String, Unit],
+      errorFunc: js.Function1[String, Unit],
   ): Unit =
     // todo take functions to print to custom stdout and stderr
 
