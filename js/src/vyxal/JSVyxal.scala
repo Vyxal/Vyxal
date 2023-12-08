@@ -12,7 +12,6 @@ object HelpText:
   @JSExport
   def getHelpText(): String = CLI.helpText
 
-
 /** A bridge between the interpreter and JS */
 @JSExportTopLevel("Vyxal", moduleID = "vyxal")
 object JSVyxal:
@@ -66,7 +65,7 @@ object JSVyxal:
     val inputList =
       inputs.map(MiscHelpers.eval(_)(using Context())).toSeq.reverse
     val settings = Settings(
-      online = true,
+      online = true
     ).withFlags(flags.map(_.charAt(0)).toList)
     val globals = Globals(
       inputs = Inputs(inputList),
