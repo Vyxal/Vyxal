@@ -184,10 +184,11 @@
  | | | | | | | `a: lst` => `Return a boolean array with 1s at the indices in a list.`
  | | | | | | | `a: num` => `Is a == 1?`
  <code>Ċ</code> | <code>#.C</code> | Set XOR | `set-xor` | 2 | :x: | `a: lst, b: lst` => `set xor of a and b`
- <code>Ḋ</code> | <code>#.D</code> | Divides? / Append Spaces / Remove Duplicates by Function | `divides?`, `+-spaces`, `dedup-by` | 2 | :x: | `a: num, b: num` => `a % b == 0`
+ <code>Ḋ</code> | <code>#.D</code> | Divides? / Append Spaces / Remove Duplicates by Function | `divides?`, `+-spaces`, `dedup-by`, `re-span`, `regex-span` | 2 | :x: | `a: num, b: num` => `a % b == 0`
  | | | | | | | `a: str, b: num` => `a + ' ' * b`
  | | | | | | | `a: num, b: str` => `b + ' ' * a`
  | | | | | | | `a: lst, b: fun` => `Remove duplicates from a by applying b to each element`
+ | | | | | | | `a: str, b: str` => `span of first regex match of b in a`
  <code>Ė</code> | <code>#.E</code> | Execute lambda / Evaluate as Vyxal / Power with base 10 | `execute-lambda`, `evaluate-as-vyxal`, `power-base-10`, `call`, `@` | 1 | :x: | `a: fun` => `Execute a`
  | | | | | | | `a: str` => `Evaluate a as Vyxal`
  | | | | | | | `a: num` => `10 ** n`

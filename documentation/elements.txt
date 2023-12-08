@@ -485,11 +485,12 @@ Keywords: set-xor
 ----------------------
 Ḋ (Divides? | Append Spaces | Remove Duplicates by Function) (non-vectorising)
 Trigraph: #.D
-Keywords: divides?, +-spaces, dedup-by
+Keywords: divides?, +-spaces, dedup-by, re-span, regex-span
 - a: num, b: num -> a % b == 0
 - a: str, b: num -> a + ' ' * b
 - a: num, b: str -> b + ' ' * a
 - a: lst, b: fun -> Remove duplicates from a by applying b to each element
+- a: str, b: str -> span of first regex match of b in a
 ----------------------
 Ė (Execute lambda | Evaluate as Vyxal | Power with base 10) (non-vectorising)
 Trigraph: #.E
