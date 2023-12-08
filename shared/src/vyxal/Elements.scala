@@ -782,7 +782,7 @@ object Elements:
       "a: num, b: num -> gcd(a, b)",
       "a: lst[num], b: num -> gcd of b and all elements of a",
       "a: lst[num] -> gcd of all items in a.",
-      "a: str, b: str -> all overlapping regex matches of b in a (similar to `y` but with overlaps)",
+      "a: str, b: str -> all overlapping regex matches of b in a (similar to `y` but with overlaps) (JVM/JS Only)",
       "a: str, b: lst[str] -> vectorised string overload of the above",
       "a: lst, b: str -> vectorised pattern overload of the above",
     ) {
