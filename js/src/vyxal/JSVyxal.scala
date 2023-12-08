@@ -31,6 +31,8 @@ object JSVyxal:
   ): Unit =
     val inputList =
       inputs.map(MiscHelpers.eval(_)(using Context())).toSeq.reverse
+    val inputList =
+      inputs.map(MiscHelpers.eval(_)(using Context())).toSeq.reverse
     val settings = Settings(
       presetStack = presetStack,
       endPrintMode = endPrintMode,
@@ -45,9 +47,11 @@ object JSVyxal:
       inputs = Inputs(inputList),
       settings = settings,
       printFn = printFunc,
+      printFn = printFunc,
     )
     val ctx = Context(
       inputs = inputList,
+      globals = globals,
       globals = globals,
     )
     try Interpreter.execute(code)(using ctx)
