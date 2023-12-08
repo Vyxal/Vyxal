@@ -267,9 +267,13 @@
  <code>Φ</code> | <code>#.\|</code> | Slice from 1 | `1->b` | 2 | :x: | `a: lst, b: num` => `a[1:b]`
  | | | | | | | `a: num, b: lst` => `b[1:a]`
  <code>§</code> | <code>#,o</code> | Print without newline | `print-no-newline` | NA | :x: | `a` => `printed to stdout without newline`
- <code>Ạ</code> | <code>#,A</code> | Assign | `assign`, `assign-at`, `assign<>`, `assign<x>`, `a<x>=`, `a<x>=y`, `a<x>?=y`, `set-item`, `apply-at` | 3 | :x: | `a: lst, b: num, c: non-fun` => `assign c to a at the index b / a[b] = c`
+ <code>Ạ</code> | <code>#,A</code> | Assign | `assign`, `assign-at`, `assign<>`, `assign<x>`, `a<x>=`, `a<x>=y`, `a<x>?=y`, `set-item`, `apply-at`, `re-sub`, `regex-sub` | 3 | :x: | `a: lst, b: num, c: non-fun` => `assign c to a at the index b / a[b] = c`
  | | | | | | | `a: lst, b: num, c: fun` => `a[b] c= <stack items> (augmented assignment to list)`
  | | | | | | | `a: lst, b: lst, c: lst` => `assign c to a at the indices in b`
+ | | | | | | | `a: str, b: str, c: str` => `replace regex matches of pattern b in string a with c`
+ | | | | | | | `a: str, b: str, c: fun` => `replace regex matches of pattern b in string a with the result of applying c to each match`
+ | | | | | | | `a: str, b: fun, c: str` => `replace regex matches of pattern c in string a with the result of applying b to each match`
+ | | | | | | | `a: fun, b: str, c: str` => `replace regex matches of pattern c in string b with the result of applying a to each match`
  <code>Ḅ</code> | <code>#,B</code> | Unique Prime Factors / Case Of | `unique-prime-factors`, `case-of` | 1 | :white_check_mark: | `a: num` => `unique prime factors of a`
  | | | | | | | `a: str` => `case of each character of a (uppercase = 1, lowercase = 0)`
  <code>Ḥ</code> | <code>#,H</code> | Head Extract Under | `head-extract-under`, `split-at-head-under`, `head-extract-swap`, `headless-swap`, `head-swap` | 1 | :x: | `a: lst\|str` => `Push a[1:], then a[0] onto the stack`
@@ -341,7 +345,7 @@
  | | | | | | | `a: num, b: str` => `b repeated a times`
  | | | | | | | `a: str, b: num` => `a repeated b times`
  | | | | | | | `a: str, b: str` => `ring translate a according to b`
- <code>÷</code> | <code>#./</code> | Divide / Split | `divide`, `div`, `str-split` | 2 | :white_check_mark: | `a: num, b: num` => `a / b`
+ <code>÷</code> | <code>#./</code> | Divide / Split | `divide`, `div`, `str-split`, `re-split` | 2 | :white_check_mark: | `a: num, b: num` => `a / b`
  | | | | | | | `a: str, b: str` => `Split a on the regex b`
  <code>£</code> | <code>#^=</code> | Set Register | `set-register`, `->register`, `set-reg`, `->reg` | 1 | :x: | `a: any` => `register = a`
  <code>¥</code> | <code>#^$</code> | Get Register | `get-register`, `get-reg`, `register`, `<-register`, `<-reg` | NA | :x: | `push the value of the register`

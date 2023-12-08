@@ -720,10 +720,14 @@ Keywords: print-no-newline
 ----------------------
 Ạ (Assign) (non-vectorising)
 Trigraph: #,A
-Keywords: assign, assign-at, assign<>, assign<x>, a<x>=, a<x>=y, a<x>?=y, set-item, apply-at
+Keywords: assign, assign-at, assign<>, assign<x>, a<x>=, a<x>=y, a<x>?=y, set-item, apply-at, re-sub, regex-sub
 - a: lst, b: num, c: non-fun -> assign c to a at the index b / a[b] = c
 - a: lst, b: num, c: fun -> a[b] c= <stack items> (augmented assignment to list)
 - a: lst, b: lst, c: lst -> assign c to a at the indices in b
+- a: str, b: str, c: str -> replace regex matches of pattern b in string a with c
+- a: str, b: str, c: fun -> replace regex matches of pattern b in string a with the result of applying c to each match
+- a: str, b: fun, c: str -> replace regex matches of pattern c in string a with the result of applying b to each match
+- a: fun, b: str, c: str -> replace regex matches of pattern c in string b with the result of applying a to each match
 ----------------------
 Ḅ (Unique Prime Factors | Case Of) (vectorising)
 Trigraph: #,B
@@ -957,7 +961,7 @@ Keywords: mul, multiply, times, str-repeat, *, ring-trans
 ----------------------
 ÷ (Divide | Split) (vectorising)
 Trigraph: #./
-Keywords: divide, div, str-split
+Keywords: divide, div, str-split, re-split
 - a: num, b: num -> a / b
 - a: str, b: str -> Split a on the regex b
 ----------------------
