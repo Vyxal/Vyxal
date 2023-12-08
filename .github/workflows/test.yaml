@@ -44,3 +44,11 @@ jobs:
       - uses: coursier/cache-action@v6
       - name: Compile
         run: sbt vyxalJS/compile
+      - name: Link
+        run: sbt vyxalJS/fastLinkJS
+      - name: Upload JS
+        uses: actions/upload-artifact@v3.1.3
+        with:
+          name: js
+          path: js/target/scala-3.3.0/vyxal-fastopt/
+          
