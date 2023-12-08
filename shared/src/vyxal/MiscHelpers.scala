@@ -59,7 +59,7 @@ object MiscHelpers:
       case _: VNum => VNum(0)
       case _: String => ""
       case _: VList => 0
-      case _ => throw Exception(s"Cannot get default value for $a")
+      case _ => throw NoDefaultException(a)
 
   def dyadicMaximum(a: VAny, b: VAny)(using Context): VAny =
     if a > b then a else b

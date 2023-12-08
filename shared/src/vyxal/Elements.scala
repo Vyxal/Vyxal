@@ -155,7 +155,7 @@ object Elements:
         for i <- ListHelpers.makeIterable(b) do
           i match
             case ind: VNum => temp = ListHelpers.assign(temp, ind, c)
-            case _ => throw IllegalArgumentException("Index must be a number")
+            case _ => throw InvalidListOverloadException("Ạ", b, "Number")
         if a.isInstanceOf[String] then temp.mkString
         else temp
       case (a, b: VList, c: VList) =>
@@ -168,7 +168,7 @@ object Elements:
                 case value: VPhysical => temp = ListHelpers.assign(temp, ind, j)
                 case function: VFun =>
                   temp = ListHelpers.augmentAssign(temp, ind, function)
-            case _ => throw IllegalArgumentException("Index must be a number")
+            case _ => throw InvalidListOverloadException("Ạ", b, "Number")
         if a.isInstanceOf[String] then temp.mkString
         else temp
       case (a: String, b: String, c: String) => StringHelpers.regexSub(a, b, c)
@@ -586,7 +586,7 @@ object Elements:
           else
             val indices = ListHelpers.makeIterable(a).map {
               case x: VNum => x.toInt
-              case x => throw IllegalArgumentException(s"$x is not a number")
+              case x => throw InvalidListOverloadException("Ḃ", a, "Number")
             }
             ctx.push(
               VList(
@@ -1032,7 +1032,7 @@ object Elements:
         for i <- b.reverse do
           i match
             case index: VNum => temp = ListHelpers.insert(temp, index, c)
-            case _ => throw IllegalArgumentException(s"$i is not a number")
+            case _ => throw InvalidListOverloadException("Ị", b, "Number")
         temp
       case (a, b: VList, c: VList) =>
         var temp = ListHelpers.makeIterable(a)
@@ -1040,7 +1040,7 @@ object Elements:
           (i, j) match
             case (index: VNum, elem) =>
               temp = ListHelpers.insert(temp, index, elem)
-            case _ => throw IllegalArgumentException(s"$i is not a number")
+            case _ => throw InvalidListOverloadException("Ị", b, "Number")
         temp
     },
     addPart(
@@ -1278,17 +1278,13 @@ object Elements:
               //              something instead of erroring?
               // @user: how you gonna convert something that isn't a VNum to
               // a VNum? You goofy. ~ lyxal
-              throw IllegalArgumentException(
-                s"Can't repeat an item a non-integer number of times (found $x in $b)"
-              )
+              throw InvalidListOverloadException("Y", b, "Number")
           }
           .lazyZip(ListHelpers.makeIterable(a))
           .map((n, item) => VList.fill(n)(item))
         if a.isInstanceOf[String] then temp.map(_.mkString).mkString
         else VList.from(temp)
-      case _ => throw IllegalArgumentException(
-          "Can't repeat an item a non-integer number of times"
-        )
+      case (a, b) => throw UnimplementedOverloadException("Y", List(a, b))
     },
     addPart(
       Dyad,
@@ -1392,7 +1388,7 @@ object Elements:
             case (a: VVal, b: VList) =>
               ctx.push(ListHelpers.vectorisedMaximum(b, a))
             case (a: VVal, b: VVal) => ctx.push(MiscHelpers.dyadicMaximum(a, b))
-            case _ => throw Exception("Invalid arguments for maximum")
+            case (a, b) => throw UnimplementedOverloadException("G", List(a, b))
     },
     addDirect(
       "Ɠ",
@@ -1493,7 +1489,7 @@ object Elements:
             case (a: VVal, b: VList) =>
               ctx.push(ListHelpers.vectorisedMinimum(b, a))
             case (a: VVal, b: VVal) => ctx.push(MiscHelpers.dyadicMinimum(a, b))
-            case _ => throw Exception("Invalid arguments for mimimum")
+            case (a, b) => throw UnimplementedOverloadException("g", List(a, b))
     },
     addFull(
       Dyad,
@@ -1638,7 +1634,7 @@ object Elements:
               ctx.push(VList.from(ListHelpers.overlaps(b, a.toInt)))
             case (a: VNum, b: VList) =>
               ctx.push(VList.from(ListHelpers.overlaps(b.lst, a.toInt)))
-            case _ => throw Exception("Invalid arguments for overlaps")
+            case (a, b) => throw UnimplementedOverloadException("o", List(a, b))
     },
     addDirect(
       "Þo",
@@ -1670,7 +1666,9 @@ object Elements:
                   (a.vabs % 4).toInt,
                 )
               )
-            case _ => throw Exception("Invalid arguments for grid neighbours")
+            case (a, b) =>
+              throw UnimplementedOverloadException("Þo", List(a, b))
+      end match
     },
     addDirect(
       "ÞO",
@@ -1702,7 +1700,9 @@ object Elements:
                   (a.vabs % 4).toInt,
                 )
               )
-            case _ => throw Exception("Invalid arguments for grid neighbours")
+            case (a, b) =>
+              throw UnimplementedOverloadException("ÞO", List(a, b))
+      end match
     },
     addDirect(
       "Þȯ",
@@ -1735,7 +1735,9 @@ object Elements:
                   (a.vabs % 8).toInt,
                 )
               )
-            case _ => throw Exception("Invalid arguments for grid neighbours")
+            case (a, b) =>
+              throw UnimplementedOverloadException("Þȯ", List(a, b))
+      end match
     },
     addDirect(
       "ÞȮ",
@@ -1768,7 +1770,9 @@ object Elements:
                   (a.vabs % 8).toInt,
                 )
               )
-            case _ => throw Exception("Invalid arguments for grid neighbours")
+            case (a, b) =>
+              throw UnimplementedOverloadException("ÞȮ", List(a, b))
+      end match
     },
     addFull(Dyad, ";", "Pair", List("pair"), false, "a, b -> [a, b]") {
       VList(_, _)
@@ -2516,8 +2520,7 @@ object Elements:
       false,
       "a: any -> transpose a",
     ) {
-      case a: VFun =>
-        throw RuntimeException(s"Can't transpose (ÞT) function: $a")
+      case a: VFun => throw UnimplementedOverloadException("ÞT", List(a))
       case a => ListHelpers.transposeSafe(ListHelpers.makeIterable(a))
     },
     addPart(
@@ -2578,8 +2581,7 @@ object Elements:
         case _: VNum => MiscHelpers.eval(evens.map(_._1).mkString) ->
             MiscHelpers.eval(odds.map(_._1).mkString)
         case _: String => evens.map(_._1).mkString -> odds.map(_._1).mkString
-        case _ =>
-          throw RuntimeException("Uninterleave: Can't uninterleave functions")
+        case a => throw UnimplementedOverloadException("U", List(a))
 
       ctx.push(pushEven, pushOdd)
     },
@@ -2630,9 +2632,7 @@ object Elements:
       // For sake of simplicity, error if not a function
       ctx.pop() match
         case f: VFun => FuncHelpers.vectorise(f)
-        case _ => throw IllegalArgumentException(
-            "Vectorise: First argument should be a function"
-          )
+        case arg => UnimplementedOverloadException("#v", List(arg))
     },
     addDirect(
       "#~",
@@ -2645,10 +2645,7 @@ object Elements:
         case f: VFun =>
           val args = ctx.peek(f.arity)
           ctx.push(f(args*))
-        case _ => throw IllegalArgumentException(
-            "Apply Without Popping: First argument should be a function"
-          )
-
+        case arg => throw UnimplementedOverloadException("#~", List(arg))
     },
     addDirect(
       "#|map-suffixes",
@@ -2662,10 +2659,8 @@ object Elements:
           val arg = ListHelpers.makeIterable(ctx.pop())
           val suffixes = ListHelpers.suffixes(arg)
           ctx.push(VList.from(suffixes.map(suffix => f(suffix))))
-
-        case _ => throw IllegalArgumentException(
-            "Map Suffixes: First argument should be a function"
-          )
+        case arg =>
+          throw UnimplementedOverloadException("#|map-suffixes", List(arg))
     },
     addDirect(
       "#|map-prefixes",
@@ -2679,10 +2674,8 @@ object Elements:
           val arg = ListHelpers.makeIterable(ctx.pop())
           val prefixes = arg.indices.map(i => arg.slice(0, i + 1))
           ctx.push(VList.from(prefixes.map(prefix => f(prefix))))
-
-        case _ => throw IllegalArgumentException(
-            "Map Prefixes: First argument should be a function"
-          )
+        case arg =>
+          throw UnimplementedOverloadException("#|map-prefixes", List(arg))
     },
     addDirect(
       "#|reduce-cols",
@@ -2698,9 +2691,8 @@ object Elements:
           ctx.push(
             VList.from(cols.map(col => ListHelpers.reduce(col, f, None)))
           )
-        case _ => throw IllegalArgumentException(
-            "Reduce Columns: First argument should be a function"
-          )
+        case arg =>
+          throw UnimplementedOverloadException("#|reduce-cols", List(arg))
     },
     addDirect(
       "#|maximum-by",
@@ -2713,9 +2705,8 @@ object Elements:
         case f: VFun =>
           val arg = ListHelpers.makeIterable(ctx.pop())
           ctx.push(arg.maxBy(v => f(v)))
-        case _ => throw IllegalArgumentException(
-            "Maximum By: First argument should be a function"
-          )
+        case arg =>
+          throw UnimplementedOverloadException("#|maximum-by", List(arg))
     },
     addDirect(
       "#|minimum-by",
@@ -2728,9 +2719,8 @@ object Elements:
         case f: VFun =>
           val arg = ListHelpers.makeIterable(ctx.pop())
           ctx.push(arg.minBy(v => f(v)))
-        case _ => throw IllegalArgumentException(
-            "Maximum By: First argument should be a function"
-          )
+        case arg =>
+          throw UnimplementedOverloadException("#|minimum-by", List(arg))
     },
     addDirect(
       "#|apply-to-register",
@@ -2744,10 +2734,8 @@ object Elements:
           ctx.push(ctx.globals.register)
           ctx.push(Interpreter.executeFn(f)(using ctx.makeChild()))
           ctx.globals.register = ctx.pop()
-        case _ => throw IllegalArgumentException(
-            "Apply to Register: First argument should be a function"
-          )
-
+        case arg =>
+          throw UnimplementedOverloadException("#|apply-to-register", List(arg))
     },
     addDirect(
       "#|dip",
@@ -2762,9 +2750,7 @@ object Elements:
         case fun: VFun =>
           Interpreter.executeFn(fun)(using ctx.makeChild())
           ctx.push(top)
-        case _ => throw IllegalArgumentException(
-            "Dip: First argument should be a function"
-          )
+        case arg => throw UnimplementedOverloadException("#|dip", List(arg))
     },
     addDirect(
       "#|invar",
@@ -2779,9 +2765,7 @@ object Elements:
         case fun: VFun =>
           val result = Interpreter.executeFn(fun)(using ctx.makeChild())
           ctx.push(result === copy)
-        case _ => throw IllegalArgumentException(
-            "Invariant: First argument should be a function"
-          )
+        case arg => throw UnimplementedOverloadException("#|invar", List(arg))
     },
     addDirect(
       "#|vscan",
@@ -2804,9 +2788,7 @@ object Elements:
                 .map(col => MiscHelpers.scanl(col.asInstanceOf[VList], fun))
             )
           )
-        case _ => throw IllegalArgumentException(
-            "Vectorised Scan: First argument should be a function"
-          )
+        case arg => throw UnimplementedOverloadException("#|vscan", List(arg))
     },
     addDirect(
       "#|all-neigh",
@@ -2821,9 +2803,8 @@ object Elements:
             ListHelpers.overlaps(ListHelpers.makeIterable(ctx.pop()), 2)
           val results = neighbours.map(x => f(x*))
           ctx.push(results.forall(_ == results(0)))
-        case _ => throw IllegalArgumentException(
-            "All Neighbours: First argument should be a function"
-          )
+        case arg =>
+          throw UnimplementedOverloadException("#|all-neigh", List(arg))
     },
     addDirect(
       "#|para-apply",
@@ -2879,9 +2860,8 @@ object Elements:
               )
             )
           )
-        case _ => throw IllegalArgumentException(
-            "Map Dump: First argument should be a function"
-          )
+        case arg =>
+          throw UnimplementedOverloadException("#|vec-dump", List(arg))
     },
     addPart(
       Monad,
@@ -2927,22 +2907,15 @@ object Elements:
                   a.lst.map(x =>
                     x match
                       case n: VNum => (n / b).floor
-                      case _ => throw IllegalArgumentException(
-                          "Integer Divison: First argument should be a list of numbers"
-                        )
+                      case _ =>
+                        throw InvalidListOverloadException("Ṡ", a, "Numbers")
                   )
                 )
               )
-            case _ => throw IllegalArgumentException(
-                "Integer Division: First argument should be a list or number"
-              )
-          end match
+            case (a, b) => throw UnimplementedOverloadException("Ṡ", List(a, b))
         case a: VList =>
           ctx.push(a.vmap(x => ListHelpers.sum(ListHelpers.makeIterable(x))))
-        case _ => throw IllegalArgumentException(
-            "Vectorised Sums: First argument should be a list or number"
-          )
-
+        case arg => throw UnimplementedOverloadException("Ṡ", List(arg))
     },
     addDirect(
       "W",
@@ -2979,12 +2952,7 @@ object Elements:
       case (a: VList, b: VList) =>
         if b.lst.forall(_.isInstanceOf[VNum]) then
           ListHelpers.partitionBy(a, b.lst.map(_.asInstanceOf[VNum]))
-        else
-          throw InvalidRHSException(
-            "Ẇ",
-            b,
-            "second argument should be a list of numbers",
-          )
+        else throw InvalidListOverloadException("Ẇ", b, "Number")
       case (a: VFun, b: VNum) => MiscHelpers.predicateSlice(a, b, 0)
       case (a: VNum, b: VFun) => MiscHelpers.predicateSlice(b, a, 0)
     },

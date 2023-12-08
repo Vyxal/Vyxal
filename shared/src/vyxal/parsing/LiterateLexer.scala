@@ -391,5 +391,5 @@ private[parsing] object LiterateLexer:
         else throw LeftoverCodeException(code.substring(ind))
       case f @ Parsed.Failure(label, index, extra) =>
         val trace = f.trace()
-        throw VyxalLexingException("Unknown reason")
+        throw VyxalLexingException(trace.longMsg)
 end LiterateLexer

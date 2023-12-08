@@ -106,7 +106,7 @@ object CLI:
               finally source.close()
             case None => config.code match
                 case Some(code) => code
-                case None => throw RuntimeException(
+                case None => throw VyxalException(
                     "Either file name or code must be given to debug"
                   )
           DebugRepl.start(code)
@@ -139,12 +139,9 @@ object CLI:
 
   def helpText = OParser.usage(parser)
   def version = Interpreter.version
-  private def runCode(code: String)(using Context): Unit =
+  private def runCode(code: String)(using ctx: Context): Unit =
     try Interpreter.execute(code)
-    catch
-      case e: Error =>
-        println(s"Error: ${e.getMessage}")
-        e.printStackTrace()
+    catch case ex: VyxalException => println(ex.getMessage(using ctx))
 
   private val builder = OParser.builder[CLIConfig]
 

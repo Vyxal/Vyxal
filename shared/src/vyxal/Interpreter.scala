@@ -10,62 +10,78 @@ import scala.collection.mutable as mut
 object Interpreter:
   def version = "3.3.0"
   def execute(code: String)(using ctx: Context): Unit =
-    val lexRes = Lexer(code)
-    val tokens = lexRes
-    scribe.debug(s"Lexed tokens: $tokens")
-    val sugarless = Lexer.removeSugar(
-      if ctx.settings.literate then Lexer.sbcsify(tokens) else code
-    )
-    sugarless match
-      case Some(code) => scribe.debug(s"Sugarless: $code")
-      case None => ()
+    /** Attempt lexing */
+    val tokens =
+      try
+        val lexRes = Lexer(code)
+        scribe.debug(s"Lexed tokens: $lexRes")
+        val sugarless = Lexer.removeSugar(
+          if ctx.settings.literate then Lexer.sbcsify(lexRes) else code
+        )
+        sugarless match
+          case Some(code) => scribe.debug(s"Sugarless: $code")
+          case None => ()
+        lexRes
+      catch
+        case ex: VyxalException => throw VyxalException("VyxalException", ex)
+        case ex: Throwable => throw UnknownLexingException(ex)
 
-    val ast = Parser.parse(tokens)
+    /** Attempt parsing */
+    val ast =
+      try Parser.parse(tokens)
+      catch
+        case ex: VyxalException => throw VyxalException("VyxalException", ex)
+        case ex: Throwable => throw UnknownParsingException(ex)
 
-    scribe.debug(s"Executing '$code' (ast: $ast)")
-    ctx.globals.originalProgram = ast
-    try execute(ast)
-    catch case _: QuitException => scribe.debug("Program quit using Q")
-    if !ctx.globals.printed || !ctx.testMode then
-      if ctx.settings.endPrintMode == EndPrintMode.Default then
-        vyPrintln(ctx.pop())
-      else if ctx.settings.endPrintMode == EndPrintMode.JoinNewlines then
-        vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString("\n"))
-      else if ctx.settings.endPrintMode == EndPrintMode.Sum then
-        vyPrintln(ListHelpers.sum(ListHelpers.makeIterable(ctx.pop())))
-      else if ctx.settings.endPrintMode == EndPrintMode.DeepSum then
-        vyPrintln(
-          ListHelpers.sum(
-            ListHelpers.flatten(ListHelpers.makeIterable(ctx.pop()))
+    /** Attempt execution */
+    try
+      scribe.debug(s"Executing '$code' (ast: $ast)")
+      ctx.globals.originalProgram = ast
+      execute(ast)
+      if !ctx.globals.printed || !ctx.testMode then
+        if ctx.settings.endPrintMode == EndPrintMode.Default then
+          vyPrintln(ctx.pop())
+        else if ctx.settings.endPrintMode == EndPrintMode.JoinNewlines then
+          vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString("\n"))
+        else if ctx.settings.endPrintMode == EndPrintMode.Sum then
+          vyPrintln(ListHelpers.sum(ListHelpers.makeIterable(ctx.pop())))
+        else if ctx.settings.endPrintMode == EndPrintMode.DeepSum then
+          vyPrintln(
+            ListHelpers.sum(
+              ListHelpers.flatten(ListHelpers.makeIterable(ctx.pop()))
+            )
           )
-        )
-      else if ctx.settings.endPrintMode == EndPrintMode.Length then
-        vyPrintln(
-          VNum(
-            ListHelpers.makeIterable(ctx.pop()).length
+        else if ctx.settings.endPrintMode == EndPrintMode.Length then
+          vyPrintln(
+            VNum(
+              ListHelpers.makeIterable(ctx.pop()).length
+            )
           )
-        )
-      else if ctx.settings.endPrintMode == EndPrintMode.Maximum then
-        vyPrintln(
-          ListHelpers.makeIterable(ctx.pop()).maxOption.getOrElse(VList())
-        )
-      else if ctx.settings.endPrintMode == EndPrintMode.Minimum then
-        vyPrintln(
-          ListHelpers.makeIterable(ctx.pop()).minOption.getOrElse(VList())
-        )
-      else if ctx.settings.endPrintMode == EndPrintMode.LengthStack then
-        vyPrintln(VNum(ctx.length))
-      else if ctx.settings.endPrintMode == EndPrintMode.SumStack then
-        vyPrintln(ListHelpers.sum(VList.from(ctx.stack.toSeq)))
-      else if ctx.settings.endPrintMode == EndPrintMode.SpaceStack then
-        vyPrintln(ctx.stack.mkString(" "))
-      else if ctx.settings.endPrintMode == EndPrintMode.JoinSpaces then
-        vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString(" "))
-      else if ctx.settings.endPrintMode == EndPrintMode.JoinNothing then
-        vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString)
+        else if ctx.settings.endPrintMode == EndPrintMode.Maximum then
+          vyPrintln(
+            ListHelpers.makeIterable(ctx.pop()).maxOption.getOrElse(VList())
+          )
+        else if ctx.settings.endPrintMode == EndPrintMode.Minimum then
+          vyPrintln(
+            ListHelpers.makeIterable(ctx.pop()).minOption.getOrElse(VList())
+          )
+        else if ctx.settings.endPrintMode == EndPrintMode.LengthStack then
+          vyPrintln(VNum(ctx.length))
+        else if ctx.settings.endPrintMode == EndPrintMode.SumStack then
+          vyPrintln(ListHelpers.sum(VList.from(ctx.stack.toSeq)))
+        else if ctx.settings.endPrintMode == EndPrintMode.SpaceStack then
+          vyPrintln(ctx.stack.mkString(" "))
+        else if ctx.settings.endPrintMode == EndPrintMode.JoinSpaces then
+          vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString(" "))
+        else if ctx.settings.endPrintMode == EndPrintMode.JoinNothing then
+          vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString)
+        end if
       end if
-    end if
-    if ctx.settings.endPrintMode == EndPrintMode.Force then vyPrintln(ctx.pop())
+      if ctx.settings.endPrintMode == EndPrintMode.Force then
+        vyPrintln(ctx.pop())
+    catch
+      case ex: VyxalException => throw VyxalException("VyxalException", ex)
+      case ex: Throwable => throw UnknownRuntimeException(ex)
   end execute
 
   def execute(ast: AST)(using ctx: Context): Unit =
@@ -87,7 +103,7 @@ object Interpreter:
         ctx.push(VList.from(list.toList))
       case AST.Command(cmd, _) => Elements.elements.get(cmd) match
           case Some(elem) => elem.impl()
-          case None => throw RuntimeException(s"No such command: '$cmd'")
+          case None => throw NoSuchElementException(cmd)
       case AST.Group(elems, _, _) => elems.foreach(Interpreter.execute)
       case AST.CompositeNilad(elems, _) => elems.foreach(Interpreter.execute)
       case AST.Ternary(thenBody, elseBody, _) =>

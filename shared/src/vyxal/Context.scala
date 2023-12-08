@@ -150,14 +150,12 @@ class Context private (
 
   /** Set a variable to a given value. */
   def setVar(name: String, value: VAny): Unit =
-    if vars.contains(s"!$name") then
-      throw Exception(s"Variable $name is constant")
+    if vars.contains(s"!$name") then throw ConstantAssignmentException(name)
     else vars(name) = value
 
   /** Set a constant variable to a given value */
   def setConst(name: String, value: VAny): Unit =
-    if vars.contains(s"!$name") then
-      throw Exception(s"Variable $name already exists")
+    if vars.contains(s"!$name") then throw ConstantDuplicateException(name)
     else vars(s"!$name") = value
 
   /** Get all variables in this Context (parent variables not included) */
