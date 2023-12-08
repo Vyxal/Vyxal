@@ -766,22 +766,39 @@ object Elements:
     addPart(
       Dyad,
       "Ġ",
-      "Group by Function Result | Greatest Common Divisor",
-      List("group-by", "gcd"),
+      "Group by Function Result | Greatest Common Divisor | Find all overlapping regex matches",
+      List(
+        "group-by",
+        "gcd",
+        "re-find-overlapping",
+        "regex-find-overlapping",
+        "re-find-overlap",
+        "regex-find-overlap",
+      ),
       false,
       "a: any, b: fun -> group a by the results of b",
       "a: fun, b: any -> group b by the results of a",
       "a: num, b: num -> gcd(a, b)",
       "a: lst[num], b: num -> gcd of b and all elements of a",
       "a: lst[num] -> gcd of all items in a.",
+      "a: str, b: str -> all overlapping regex matches of b in a (similar to `y` but with overlaps)",
+      "a: str, b: lst[str] -> vectorised string overload of the above",
+      "a: lst, b: str -> vectorised pattern overload of the above",
     ) {
       case (a: VNum, b: VNum) => NumberHelpers.gcd(a, b)
       case (a: VList, b: VNum) => NumberHelpers.gcd(b +: a)
       case (a: VFun, b) => ListHelpers.groupBy(ListHelpers.makeIterable(b), a)
       case (a, b: VList) =>
-        summon[Context].push(a)
-        NumberHelpers.gcd(b)
+        if a.isInstanceOf[String] && b.lst.forall(_.isInstanceOf[String]) then
+          val pattern = b.map(_.toString.r).map(_.findAllMatchIn(a.toString))
+          VList.from(pattern.map(x => VList.from(x.map(_.group(1)).toSeq)))
+        else
+          summon[Context].push(a)
+          NumberHelpers.gcd(b)
       case (a, b: VFun) => ListHelpers.groupBy(ListHelpers.makeIterable(a), b)
+      case (a: String, b: String) =>
+        val pattern = s"(?=($b))".r
+        VList.from(pattern.findAllMatchIn(a).map(_.group(1)).toSeq)
 
     },
     addPart(
