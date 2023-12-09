@@ -1,0 +1,32 @@
+# Version 3.<minor>.<patch>
+
+_Alternatively, tagline_
+
+## Breaking Changes
+
+* List breaking changes here
+
+## New Elements
+
+* List new elements here
+
+## New Overloads
+
+* List new overloads here
+
+## Changed Overloads
+
+* List changed/removed overloads here
+
+## Bug Fixes
+
+* List bug fixes here
+
+## Other Changes (QoL, Interpreter, Ecosystem, etc)
+
+* List other changes here
+
+## Closing Remarks
+
+* Serious dot point(s) about the general gist of the release
+* Non-serious dot point(s) about anything really.
