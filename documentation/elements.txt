@@ -1176,6 +1176,10 @@ Keywords:
 Keywords: 
 - *a, f -> f applied to each neighbour of a. Use the modifier instead.
 ----------------------
+#? (All Inputs) (non-vectorising)
+Keywords: all-inputs, inputs, all-stdin, all-stdin?
+- A list of all inputs to the program
+----------------------
 #C (Compress String Using Dictionary) (non-vectorising)
 Keywords: compress-dict, dict-comp, compress
 - a: str -> compress a using the dictionary
