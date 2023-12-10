@@ -39,12 +39,12 @@ object JSVyxal:
     val settings = Settings(online = true).withFlags(flags.toList)
     val globals: Globals = Globals(
       settings = settings,
-      printFn = str =>
+      printFn = (str: String) =>
         if printRequestCount <= 20000 then
           printFunc(str)
           printRequestCount += 1,
-      inputs = Inputs(inputList),
     )
+    globals.inputs = Inputs(inputList)
 
     val ctx = Context(
       inputs = inputList,
