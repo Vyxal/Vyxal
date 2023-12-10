@@ -388,6 +388,7 @@
  <code>•</code> | <code>#,.</code> | Asterisk | `asterisk` | 0 | :x: | `"*"`
  <code>≈</code> | <code>#^~</code> | All Equal? | `all-equal`, `all-equal?` | 1 | :x: | `a: lst` => `are all elements of a equal?`
  <code>ꜝ</code> | <code>#^!</code> | Increment | `incr`, `increment` | 1 | :white_check_mark: | `a: num` => `a + 1`
+ <code>#?</code> |  | All Inputs | `all-inputs`, `inputs`, `all-stdin`, `all-stdin?` | NA | :x: | `A list of all inputs to the program`
  <code>#C</code> |  | Compress String Using Dictionary | `compress-dict`, `dict-comp`, `compress` | 1 | :x: | `a: str` => `compress a using the dictionary`
  <code>#Q</code> |  | Exit / Quit | `exit`, `quit` | NA | :x: | `a` => `Stop program execution`
  <code>#X</code> |  | Loop Break | `break` | 0 | :x: | `break out of the current loop`
