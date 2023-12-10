@@ -71,6 +71,8 @@ object CLI:
             globals = Globals(settings = config.settings),
           )
 
+        ctx.globals.inputs = ctx.inputs
+
         if config.printHelp then
           println(OParser.usage(parser))
           return

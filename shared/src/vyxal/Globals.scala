@@ -12,7 +12,6 @@ import scala.collection.mutable as mut
   *   Settings set through flags
   */
 case class Globals(
-    inputs: Inputs = Inputs(),
     settings: Settings = Settings(),
     printFn: String => Unit = print,
     callStack: mut.Stack[VFun] = mut.Stack(),
@@ -21,6 +20,7 @@ case class Globals(
   var debug: Boolean = false
   var originalProgram: AST = null
   var printed: Boolean = false
+  var inputs: Inputs = Inputs()
 
 /** Stores the inputs for some Context. Inputs can be overridden (see
   * [[Inputs#overrideInputs]]).
@@ -32,6 +32,7 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
 
   /** Uses an array for constant access, not for mutating items */
   private var currInputs = origArr
+  private var allInputs = origInputs.reverse
 
   /** Keeps track of the next input's index */
   private var ind = 0
@@ -40,6 +41,7 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
 
   /** Make sure to call [[this.nonEmpty]] first */
   def next(): VAny =
+    println(s"currInputs = ${currInputs.toList}")
     val res = currInputs(ind)
     ind = (ind + 1) % currInputs.length
     res
@@ -89,6 +91,8 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
   end peek
 
   def apply(i: Int): VAny = currInputs(i)
+
+  def getAll: Seq[VAny] = allInputs
 
   override def toString = origArr.mkString("Inputs(", ", ", ")")
 end Inputs

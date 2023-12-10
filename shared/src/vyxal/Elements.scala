@@ -64,6 +64,15 @@ object Elements:
       case a: VNum => a.vabs
       case a: String => a.filter(_.isLetter)
     },
+    addDirect(
+      "#?",
+      "All Inputs",
+      List("all-inputs", "inputs", "all-stdin", "all-stdin?"),
+      None,
+      "A list of all inputs to the program",
+    ) { ctx ?=>
+      ctx.push(VList.from(ctx.globals.inputs.getAll))
+    },
     addPart(
       Monad,
       "A",

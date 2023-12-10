@@ -20,6 +20,7 @@ object Interpreter:
         )
         sugarless match
           case Some(code) => scribe.debug(s"Sugarless: $code")
+
           case None => ()
         lexRes
       catch

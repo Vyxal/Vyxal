@@ -33,7 +33,7 @@ class Context private (
     private var _ctxVarSecondary: Option[VAny] = None,
     val ctxArgs: Option[Seq[VAny]] = None,
     private val vars: mut.Map[String, VAny] = mut.Map(),
-    private val inputs: Inputs = Inputs(),
+    val inputs: Inputs = Inputs(),
     private val parent: Option[Context] = None,
     val globals: Globals = Globals(),
     val testMode: Boolean = false,
@@ -47,7 +47,7 @@ class Context private (
     * inputs, read a line of input from stdin.
     */
   def pop(): VAny =
-    if useStack then return parent.getOrElse(getTopCxt()).pop()
+    if useStack then return parent.getOrElse(getTopCtx()).pop()
     val elem =
       if stack.nonEmpty then stack.remove(stack.size - 1)
       else if inputs.nonEmpty then inputs.next()
@@ -68,12 +68,12 @@ class Context private (
     * start of the list.
     */
   def pop(n: Int): Seq[VAny] =
-    if useStack then return getTopCxt().pop(n)
+    if useStack then return getTopCtx().pop(n)
     Seq.fill(n)(this.pop())
 
   /** Get the top element on the stack without popping */
   def peek: VAny =
-    if useStack then getTopCxt().peek
+    if useStack then getTopCtx().peek
     else if stack.nonEmpty then stack.last
     else if inputs.nonEmpty then inputs.peek
     else settings.defaultValue
@@ -82,19 +82,19 @@ class Context private (
     * will be at the start of the list.
     */
   def peek(n: Int): List[VAny] =
-    if useStack then getTopCxt().peek(n)
+    if useStack then getTopCtx().peek(n)
     else if n <= stack.length then
       stack.slice(stack.length - n, stack.length).toList.reverse
     else stack.toList.reverse ::: inputs.peek(n - stack.length)
 
   /** Push items onto the stack. The first argument will be pushed first. */
   def push(items: VAny*): Unit =
-    if useStack then getTopCxt().push(items*) else stack ++= items
+    if useStack then getTopCtx().push(items*) else stack ++= items
 
   def length: Int = stack.length
 
   def wrap(): Unit =
-    if useStack then getTopCxt().wrap()
+    if useStack then getTopCtx().wrap()
     else
       val temp = stack.toList
       stack.clear()
@@ -175,9 +175,9 @@ class Context private (
       testMode, // child shouldn't use stack just because parent does
     )
 
-  def getTopCxt(): Context =
+  def getTopCtx(): Context =
     parent match
-      case Some(p) => p.getTopCxt()
+      case Some(p) => p.getTopCtx()
       case None => this
 
   def rotateLeft: Unit =
