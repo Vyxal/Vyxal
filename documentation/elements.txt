@@ -1231,6 +1231,10 @@ Keywords: grid-neighbours-wrap, grid-neighbors-wrap, adjacent-cells-wrap, adj-ce
 - a: lst[lst] -> Grid neighbours of a - up, down, left, right - wrapping around
 - a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b => 0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does
 ----------------------
+ÞP (Set of All Primes) (non-vectorising)
+Keywords: PP, primes
+- -> The set of all primes
+----------------------
 ÞT (Transpose Safe) (non-vectorising)
 Keywords: transpose-safe
 - a: any -> transpose a
@@ -1270,6 +1274,14 @@ Keywords: grid-neighbours-diagonals, grid-neighbors-diagonals, adjacent-cells-di
 ÞṂ (Matrix Inverse) (vectorising)
 Keywords: matrix-inverse
 - a: lst[lst] -> matrix inverse of a
+----------------------
+ÞṆ (Set of Natural Numbers) (non-vectorising)
+Keywords: NN
+- -> The set of all natural numbers
+----------------------
+ÞṬ (Set of Integers) (non-vectorising)
+Keywords: ZZ
+- -> The set of all integers
 ----------------------
 Þ⁾ (Multi-Set Intersection) (non-vectorising)
 Keywords: multi-set-intersection, multi-set-intersect
