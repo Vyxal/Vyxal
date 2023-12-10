@@ -3526,6 +3526,39 @@ object Elements:
     ) {
       spire.math.Real.phi
     },
+    addNilad(
+      "ÞṆ",
+      "Set of Natural Numbers",
+      List("NN"),
+      "The set of all natural numbers",
+    ) {
+      VList.from(LazyList.unfold(VNum(1)) {
+        case VNum(n, _) => Some((VNum(n), VNum(n + 1)))
+      })
+    },
+    addNilad(
+      "ÞṬ",
+      "Set of Integers",
+      List("ZZ"),
+      "The set of all integers",
+    ) {
+      VList.from(
+        LazyList.unfold(VNum(0) -> true) {
+          case (num, negate) =>
+            val now = if negate then -num else num
+            val next = if negate then num + 1 else num
+            Some((now, next -> !negate))
+        }
+      )
+    },
+    addNilad(
+      "ÞP",
+      "Set of All Primes",
+      List("PP", "primes"),
+      "The set of all primes",
+    ) {
+      NumberHelpers.probablePrimes
+    },
   )
 
   private def execHelper(value: VAny)(using ctx: Context): VAny =

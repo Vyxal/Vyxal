@@ -787,4 +787,30 @@ class ElementTests extends VyxalTests:
       "9ϩ½⌊ċ" -> VList(9, 4, 2, 1, 0)
     )
   }
+
+  describe("Element ÞṆ") {
+    testMulti(
+      "ÞṆ10Θ" -> VList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+      "ÞṆ5+10Θ" -> VList(5, 6, 7, 8, 9, 10, 11, 12, 13, 14),
+    )
+  }
+
+  describe("Element ÞṬ") {
+    testMulti(
+      "ÞṬ20Θ" ->
+        VList(0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9,
+          10),
+      "ÞṬ5+20Θ" ->
+        VList(5, 6, 4, 7, 3, 8, 2, 9, 1, 10, 0, 11, -1, 12, -2, 13, -3, 14, -4,
+          15),
+    )
+  }
+
+  describe("Element ÞP") {
+    testMulti(
+      "ÞP20Θ" ->
+        VList(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59,
+          61, 67, 71)
+    )
+  }
 end ElementTests
