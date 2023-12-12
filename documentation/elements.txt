@@ -46,7 +46,7 @@ Keywords: print, puts, out, println
 - a -> printed to stdout
 ----------------------
 - (Subtraction) (vectorising)
-Keywords: sub, subtract, minus, str-remove, remove, str-remove-all, remove-all
+Keywords: sub, subtract, minus, str-remove, str-remove-all, remove-all
 - a: num, b: num -> a - b
 - a: str, b: num -> a + b '-'s (or '-'s + a if b < 0)
 - a: num, b: str -> a '-'s + b (or b + '-'s if a < 0)
@@ -622,6 +622,7 @@ Trigraph: #.d
 Keywords: dot-product, bijective-base, dot-prod, first-index-where, _*
 - a: lst, b: lst -> Dot product of a and b
 - a: num, b: num -> Convert a to bijective base b
+- a: lst, b: fun -> First index of a where b is truthy
 ----------------------
 ė (Reciprocal | Remove Whitespace) (vectorising)
 Trigraph: #.e
@@ -684,7 +685,9 @@ Trigraph: #.s
 Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun, partition-by, set-difference, set-diff
 - a: fun, b: any -> sort iterable b by function a
 - a: any, b: fun -> sort iterable a by function b
-- a: lst, b: lst -> set difference
+- a: lst, b: lst -> set difference of a and b
+- a: lst, b: num|str -> remove b from a
+- a: num|str, b: lst -> remove a from b
 ----------------------
 ṫ (Last Extract) (non-vectorising)
 Trigraph: #.t

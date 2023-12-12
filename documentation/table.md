@@ -22,7 +22,7 @@
  | | | | | | | `a: str, b: num` => `a + b`
  | | | | | | | `a: str, b: str` => `a + b`
  <code>,</code> |  | Print | `print`, `puts`, `out`, `println` | NA | :x: | `a` => `printed to stdout`
- <code>-</code> |  | Subtraction | `sub`, `subtract`, `minus`, `str-remove`, `remove`, `str-remove-all`, `remove-all` | 2 | :white_check_mark: | `a: num, b: num` => `a - b`
+ <code>-</code> |  | Subtraction | `sub`, `subtract`, `minus`, `str-remove`, `str-remove-all`, `remove-all` | 2 | :white_check_mark: | `a: num, b: num` => `a - b`
  | | | | | | | `a: str, b: num` => `a + b '-'s (or '-'s + a if b < 0)`
  | | | | | | | `a: num, b: str` => `a '-'s + b (or b + '-'s if a < 0)`
  | | | | | | | `a: str, b: str` => `a with b removed`
@@ -239,6 +239,7 @@
  | | | | | | | `a: fun, b: any` => `run a on b until the result no longer changes returning all intermediate results`
  <code>ḋ</code> | <code>#.d</code> | Dot Product / To Bijective Base / First Index Where Predicate Truthy | `dot-product`, `bijective-base`, `dot-prod`, `first-index-where`, `_*` | 2 | :x: | `a: lst, b: lst` => `Dot product of a and b`
  | | | | | | | `a: num, b: num` => `Convert a to bijective base b`
+ | | | | | | | `a: lst, b: fun` => `First index of a where b is truthy`
  <code>ė</code> | <code>#.e</code> | Reciprocal / Remove Whitespace | `reciprocal`, `recip`, `remove-whitespace`, `remove-space`, `1/` | 1 | :white_check_mark: | `a: num` => `1/a`
  | | | | | | | `a: str` => `a with all whitespace removed`
  <code>ḟ</code> | <code>#.f</code> | Prime Factors / Remove Alphabet | `prime-factors`, `remove-alphabet` | 1 | :white_check_mark: | `a: num` => `prime factors of a`
@@ -257,7 +258,9 @@
  <code>ṙ</code> | <code>#.r</code> | Rotate Right | `abc->cab`, `rot-right`, `rotate-right` | 1 | :x: | `a: any` => `rotate right once`
  <code>ṡ</code> | <code>#.s</code> | Sort by Function Object / Partition by Numbers / Set Difference | `sort-by`, `sortby`, `sort-by-fun`, `sortbyfun`, `sort-fun`, `sortfun`, `partition-by`, `set-difference`, `set-diff` | 2 | :x: | `a: fun, b: any` => `sort iterable b by function a`
  | | | | | | | `a: any, b: fun` => `sort iterable a by function b`
- | | | | | | | `a: lst, b: lst` => `set difference`
+ | | | | | | | `a: lst, b: lst` => `set difference of a and b`
+ | | | | | | | `a: lst, b: num\|str` => `remove b from a`
+ | | | | | | | `a: num\|str, b: lst` => `remove a from b`
  <code>ṫ</code> | <code>#.t</code> | Last Extract | `last-extract`, `split-at-last` | 1 | :x: | `a: lst\|str` => `Push a[-1], then a[:-1] onto the stack`
  <code>ẋ</code> | <code>#.x</code> | Cartesian Power / Regex Search for Match | `cartesian-power`, `re-search`, `regex-search` | 2 | :x: | `a: lst, b: num` => `cart_prod([a] * n)`
  | | | | | | | `a: num, b: lst` => `cart_prod([b] * n)`
