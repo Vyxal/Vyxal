@@ -646,17 +646,25 @@ object ListHelpers:
         (left, right, (List.empty[VAny], List.empty[VAny]), ListBuffer[VAny]())
       ) {
         case (left, right, (leftGenerated, rightGenerated), inBoth) =>
-          if left.isEmpty || right.isEmpty then None
+          if left.isEmpty && right.isEmpty then None
           else
-            val leftGen = leftGenerated :+ left.head
-            val rightGen = rightGenerated :+ right.head
+            val leftGen =
+              if left.nonEmpty then leftGenerated :+ left.head
+              else leftGenerated
+            val rightGen =
+              if right.nonEmpty then rightGenerated :+ right.head
+              else rightGenerated
             val thisReturn = ListBuffer.empty[VAny]
-            if rightGen.contains(left.head) && !inBoth.contains(left.head) then
-              inBoth += left.head
-              thisReturn += left.head
-            if leftGen.contains(right.head) && !inBoth.contains(right.head) then
-              inBoth += right.head
-              thisReturn += right.head
+            if left.nonEmpty then
+              if rightGen.contains(left.head) && !inBoth.contains(left.head)
+              then
+                inBoth += left.head
+                thisReturn += left.head
+            if right.nonEmpty then
+              if leftGen.contains(right.head) && !inBoth.contains(right.head)
+              then
+                inBoth += right.head
+                thisReturn += right.head
             Some(
               thisReturn.toList ->
                 (
