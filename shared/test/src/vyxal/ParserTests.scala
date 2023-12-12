@@ -182,7 +182,7 @@ class ParserTests extends AnyFunSuite:
             Group(
               List(
                 Lambda(
-                  Some(1),
+                  None,
                   List(),
                   List(
                     Group(
