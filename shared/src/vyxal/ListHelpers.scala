@@ -668,8 +668,8 @@ object ListHelpers:
             Some(
               thisReturn.toList ->
                 (
-                  VList.from(left.tail),
-                  VList.from(right.tail),
+                  if left.nonEmpty then VList.from(left.tail) else VList(),
+                  if right.nonEmpty then VList.from(right.tail) else VList(),
                   (leftGen, rightGen),
                   inBoth,
                 )
