@@ -177,7 +177,7 @@ Keywords: remove-at, re-groups, regex-groups
 - a: str, b: str -> regex groups of a with regex b
 ----------------------
 R (Reduce by Function Object | Dyadic Range | Regex Match | Set Union) (non-vectorising)
-Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has-regex-match?, fold, union
+Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has-regex-match?, fold, union, to
 - a: fun, b: any -> reduce iterable b by function a
 - a: any, b: fun -> reduce iterable a by function b
 - a: num, b: num -> the range [a, b)
@@ -619,7 +619,7 @@ Keywords: n-choose-k, ncr, nck, choose, char-set-equal?, char-set-eq?, until-sta
 ----------------------
 ḋ (Dot Product | To Bijective Base | First Index Where Predicate Truthy) (non-vectorising)
 Trigraph: #.d
-Keywords: dot-product, bijective-base, dot-prod, first-index-where
+Keywords: dot-product, bijective-base, dot-prod, first-index-where, _*
 - a: lst, b: lst -> Dot product of a and b
 - a: num, b: num -> Convert a to bijective base b
 ----------------------

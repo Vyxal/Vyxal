@@ -81,7 +81,7 @@
  <code>P</code> |  | Prefixes | `prefixes` | 1 | :x: | `a: lst` => `Prefixes of a`
  <code>Q</code> |  | Remove At / Regex Groups | `remove-at`, `re-groups`, `regex-groups` | 2 | :x: | `a: lst, b: num` => `a with bth element removed`
  | | | | | | | `a: str, b: str` => `regex groups of a with regex b`
- <code>R</code> |  | Reduce by Function Object / Dyadic Range / Regex Match / Set Union | `fun-reduce`, `reduce`, `fold-by`, `range`, `a->b`, `regex-match?`, `re-match?`, `has-regex-match?`, `fold`, `union` | 2 | :x: | `a: fun, b: any` => `reduce iterable b by function a`
+ <code>R</code> |  | Reduce by Function Object / Dyadic Range / Regex Match / Set Union | `fun-reduce`, `reduce`, `fold-by`, `range`, `a->b`, `regex-match?`, `re-match?`, `has-regex-match?`, `fold`, `union`, `to` | 2 | :x: | `a: fun, b: any` => `reduce iterable b by function a`
  | | | | | | | `a: any, b: fun` => `reduce iterable a by function b`
  | | | | | | | `a: num, b: num` => `the range [a, b)`
  | | | | | | | `a: str, b: num\|str` => `does regex pattern b match haystack a?`
@@ -237,7 +237,7 @@
  <code>ċ</code> | <code>#.c</code> | N Choose K / Character Set Equal? / Repeat Until No Change | `n-choose-k`, `ncr`, `nck`, `choose`, `char-set-equal?`, `char-set-eq?`, `until-stable` | 2 | :white_check_mark: | `a: num, b: num` => `a choose b`
  | | | | | | | `a: str, b: str` => `are the character sets of a and b equal?`
  | | | | | | | `a: fun, b: any` => `run a on b until the result no longer changes returning all intermediate results`
- <code>ḋ</code> | <code>#.d</code> | Dot Product / To Bijective Base / First Index Where Predicate Truthy | `dot-product`, `bijective-base`, `dot-prod`, `first-index-where` | 2 | :x: | `a: lst, b: lst` => `Dot product of a and b`
+ <code>ḋ</code> | <code>#.d</code> | Dot Product / To Bijective Base / First Index Where Predicate Truthy | `dot-product`, `bijective-base`, `dot-prod`, `first-index-where`, `_*` | 2 | :x: | `a: lst, b: lst` => `Dot product of a and b`
  | | | | | | | `a: num, b: num` => `Convert a to bijective base b`
  <code>ė</code> | <code>#.e</code> | Reciprocal / Remove Whitespace | `reciprocal`, `recip`, `remove-whitespace`, `remove-space`, `1/` | 1 | :white_check_mark: | `a: num` => `1/a`
  | | | | | | | `a: str` => `a with all whitespace removed`
