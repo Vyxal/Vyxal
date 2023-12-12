@@ -56,12 +56,12 @@ enum AST(val arity: Option[Int]) derives CanEqual:
       override val range: Range = Range.fake,
   ) extends AST(None)
   case Lambda(
-      lambdaArity: Int,
+      lambdaArity: Option[Int],
       params: List[String | Int],
       body: List[AST],
       originallyFunction: Boolean = true,
       override val range: Range = Range.fake,
-  ) extends AST(Some(lambdaArity))
+  ) extends AST(Some(lambdaArity.getOrElse(-2)))
 
   case DecisionStructure(
       predicate: AST,

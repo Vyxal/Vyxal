@@ -31,7 +31,7 @@ object Modifiers:
   ): AST =
     ast match
       case _: AST.Lambda => ast
-      case _ => AST.Lambda(arity, List(), List(ast), ogOverride)
+      case _ => AST.Lambda(Some(arity), List(), List(ast), ogOverride)
 
   private def isExplicitMonad(ast: AST): Boolean =
     ast.arity.getOrElse(-1) == 1 &&
@@ -68,7 +68,7 @@ object Modifiers:
             AST.makeSingle(
               lambdaAst,
               AST.Command("M"),
-              AST.Lambda(1, List(), List(AST.Command("ȯ"))),
+              AST.Lambda(Some(1), List(), List(AST.Command("ȯ"))),
               AST.Command("#v"),
               AST.Command("∑"),
             )

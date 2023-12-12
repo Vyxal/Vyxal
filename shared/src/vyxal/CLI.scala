@@ -62,8 +62,10 @@ object CLI:
 
     OParser.parse(parser, args, CLIConfig()) match
       case Some(config) =>
-        val inputList =
-          config.inputs.reverse.map(x => MiscHelpers.eval(x)(using Context()))
+        val inputList = config.inputs.reverse.map(x =>
+          if config.settings.dontEvalInputs then x
+          else MiscHelpers.eval(x)(using Context())
+        )
         given ctx: Context =
           Context(
             inputs = inputList,
@@ -285,6 +287,11 @@ object CLI:
         '…',
         "limit-output",
         "Limit list output to the first 100 items of that list",
+      ),
+      flag(
+        '¬',
+        "logical-not",
+        "Logically negate the top of the stack on end of execution",
       ),
     )
   end parser

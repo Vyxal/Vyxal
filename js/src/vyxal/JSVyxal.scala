@@ -30,13 +30,17 @@ object JSVyxal:
 
     var printRequestCount = 0
 
+    val settings = Settings(online = true).withFlags(flags.toList)
+
     val inputList = inputs
       .split("\n")
-      .map(x => MiscHelpers.eval(x)(using Context()))
+      .map(x =>
+        if settings.dontEvalInputs then x
+        else MiscHelpers.eval(x)(using Context())
+      )
       .toSeq
       .reverse
 
-    val settings = Settings(online = true).withFlags(flags.toList)
     val globals: Globals = Globals(
       settings = settings,
       printFn = (str: String) =>

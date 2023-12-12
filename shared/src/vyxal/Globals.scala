@@ -41,7 +41,6 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
 
   /** Make sure to call [[this.nonEmpty]] first */
   def next(): VAny =
-    println(s"currInputs = ${currInputs.toList}")
     val res = currInputs(ind)
     ind = (ind + 1) % currInputs.length
     res
@@ -110,6 +109,9 @@ enum EndPrintMode:
   case Sum
   case DeepSum
 
+  /** Do stuff to the top of the stack */
+  case LogicalNot
+
   /** Print property of top of stack */
   case Maximum
   case Minimum
@@ -145,6 +147,9 @@ case class Settings(
     online: Boolean = false,
     literate: Boolean = false,
     fullTrace: Boolean = false,
+    defaultArity: Int = 1,
+    limitPrint: Boolean = false,
+    dontEvalInputs: Boolean = false,
 ):
 
   /** Add a flag to these settings
@@ -173,6 +178,11 @@ case class Settings(
       case 'ṡ' => this.copy(endPrintMode = EndPrintMode.SpaceStack)
       case 'R' => this.copy(rangify = true)
       case 'X' => this.copy(fullTrace = true)
+      case '2' => this.copy(defaultArity = 2)
+      case '3' => this.copy(defaultArity = 3)
+      case '¬' => this.copy(endPrintMode = EndPrintMode.LogicalNot)
+      case '…' => this.copy(limitPrint = true)
+      case 'Ṡ' => this.copy(dontEvalInputs = true)
       case _ => throw VyxalException(s"$flag is an invalid flag")
 
   /** Helper to update these settings with multiple flags

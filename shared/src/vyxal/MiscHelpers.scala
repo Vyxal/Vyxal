@@ -182,7 +182,7 @@ object MiscHelpers:
     x match
       case lst: VList =>
         ctx.globals.printFn("[")
-        var temp = lst
+        var temp = if ctx.settings.limitPrint then lst.take(100) else lst
         while temp.nonEmpty do
           temp.head match
             case n: VNum => vyPrint(n)

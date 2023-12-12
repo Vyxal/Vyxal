@@ -145,7 +145,7 @@ object Parser:
                 lambdaAsts += asts.pop()
               finalAsts.push(
                 AST.Lambda(
-                  1,
+                  Some(1),
                   List(),
                   List(AST.makeSingle(lambdaAsts.toList.reverse*)),
                 )
@@ -312,15 +312,15 @@ object Parser:
         val lambda =
           if lambdaType == StructureType.Lambda then
             branches match
-              case List() => AST.Lambda(1, List.empty, List.empty)
-              case List(body) => AST.Lambda(1, List.empty, List(body))
+              case List() => AST.Lambda(None, List.empty, List.empty)
+              case List(body) => AST.Lambda(None, List.empty, List(body))
               case List(params, body) =>
                 val (param, arity) = parseParameters(params)
-                AST.Lambda(arity, param, List(body))
+                AST.Lambda(Some(arity), param, List(body))
               case _ =>
                 val (param, arity) = parseParameters(branches.head)
-                AST.Lambda(arity, param, branches.drop(1))
-          else AST.Lambda(1, List.empty, branches)
+                AST.Lambda(Some(arity), param, branches.drop(1))
+          else AST.Lambda(None, List.empty, branches)
 
         lambdaType match
           case StructureType.Lambda => lambda

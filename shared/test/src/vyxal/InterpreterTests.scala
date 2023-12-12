@@ -70,7 +70,9 @@ class InterpreterTests extends VyxalTests:
         testAST(
           Modifiers
             .modifiers("ᵛ")
-            .from(List(AST.Lambda(1, List.empty, List(AST.Command("!"))))),
+            .from(
+              List(AST.Lambda(Some(1), List.empty, List(AST.Command("!"))))
+            ),
           VList(1, 6, VList(2, 1)),
           inputs = Seq(VList(0, 3, VList(2, 1))),
         )
@@ -82,7 +84,9 @@ class InterpreterTests extends VyxalTests:
         testAST(
           Modifiers
             .modifiers("ᵛ")
-            .from(List(AST.Lambda(2, List.empty, List(AST.Command("-"))))),
+            .from(
+              List(AST.Lambda(Some(2), List.empty, List(AST.Command("-"))))
+            ),
           VList(VList(-4, -2, -6), VList(-1, 1, -3), VList(-2, -1, -6)),
           inputs = Seq(VList(0, 3, VList(2, 1)), VList(4, 2, 6)),
         )
@@ -94,7 +98,10 @@ class InterpreterTests extends VyxalTests:
     it("should execute a simple named function") {
       testAST(
         AST.makeSingle(
-          AST.FnDef("f", AST.Lambda(2, List.empty, List(AST.Command("-")))),
+          AST.FnDef(
+            "f",
+            AST.Lambda(Some(2), List.empty, List(AST.Command("-"))),
+          ),
           AST.GetVar("f"),
           AST.Command("Ė"),
         ),
@@ -107,7 +114,7 @@ class InterpreterTests extends VyxalTests:
       it("Simple lambda") {
         testAST(
           AST.makeSingle(
-            AST.Lambda(1, List.empty, List(AST.Command("!"))),
+            AST.Lambda(Some(1), List.empty, List(AST.Command("!"))),
             AST.Command("Ė"),
           ),
           VNum(6),
@@ -120,7 +127,7 @@ class InterpreterTests extends VyxalTests:
       it("Simple lambda") {
         testAST(
           AST.makeSingle(
-            AST.Lambda(2, List.empty, List(AST.Command("-"))),
+            AST.Lambda(Some(2), List.empty, List(AST.Command("-"))),
             AST.Command("Ė"),
           ),
           VNum(2),
@@ -264,7 +271,7 @@ class InterpreterTests extends VyxalTests:
         ctx.push(1)
         assertResult(VNum(5))(
           Interpreter.executeFn(
-            VFun.fromLambda(AST.Lambda(1, Nil, List(AST.GetVar("x"))))
+            VFun.fromLambda(AST.Lambda(Some(1), Nil, List(AST.GetVar("x"))))
           )
         )
       }
@@ -274,7 +281,8 @@ class InterpreterTests extends VyxalTests:
         ctx.push(1)
         Interpreter.executeFn(
           VFun.fromLambda(
-            AST.Lambda(1, Nil, List(AST.AugmentVar("x", AST.Command("+"))))
+            AST
+              .Lambda(Some(1), Nil, List(AST.AugmentVar("x", AST.Command("+"))))
           )
         )
         assertResult(VNum(5))(ctx.getVar("x"))

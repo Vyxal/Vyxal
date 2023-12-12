@@ -71,7 +71,7 @@ class ElementTests extends VyxalTests:
         // Function to subtract 8
         val g = VFun.fromLambda(
           AST.Lambda(
-            1,
+            Some(1),
             List.empty,
             List(AST.Number(8), AST.Command("-")),
           )

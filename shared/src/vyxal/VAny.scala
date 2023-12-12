@@ -81,14 +81,20 @@ object VFun:
     val AST.Lambda(arity, params, body, originallyFunction, _) = lam
     VFun(
       () => ctx ?=> body.foreach(Interpreter.execute(_)(using ctx)),
-      arity,
+      arity.getOrElse(origCtx.settings.defaultArity),
       params,
       origCtx,
       Some(lam),
     )
 
   def fromElement(elem: Element)(using origCtx: Context): VFun =
-    VFun(elem.impl, elem.arity.getOrElse(1), List.empty, origCtx)
+    VFun(
+      elem.impl,
+      elem.arity.getOrElse(origCtx.settings.defaultArity),
+      List.empty,
+      origCtx,
+    )
+end VFun
 
 extension (self: VAny)
   @targetName("vEquals")

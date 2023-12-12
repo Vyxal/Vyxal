@@ -104,8 +104,9 @@ object ListHelpers:
           val sharedVars = mut.Map.empty[String, VAny]
 
           while branchList.nonEmpty && keep do
-            val fun =
-              VFun.fromLambda(AST.Lambda(1, List.empty, List(branchList.head)))
+            val fun = VFun.fromLambda(
+              AST.Lambda(Some(1), List.empty, List(branchList.head))
+            )
             val res = Interpreter.executeFn(
               fun,
               ctxVarPrimary = item,
@@ -470,7 +471,7 @@ object ListHelpers:
           val sharedVars = mut.Map.empty[String, VAny]
           branches.foldLeft(item) { (out, branch) =>
             Interpreter.executeFn(
-              VFun.fromLambda(AST.Lambda(1, params, List(branch))),
+              VFun.fromLambda(AST.Lambda(Some(1), params, List(branch))),
               ctxVarPrimary = out,
               ctxVarSecondary = index,
               args = List(out),
@@ -689,7 +690,8 @@ object ListHelpers:
           .sortWith { (a, b) =>
             branches.view
               .map { branch =>
-                val f = VFun.fromLambda(AST.Lambda(1, List.empty, List(branch)))
+                val f =
+                  VFun.fromLambda(AST.Lambda(Some(1), List.empty, List(branch)))
                 (
                   f.execute(a(0), a(1), List(a(0))),
                   f.execute(b(0), b(1), List(b(0))),

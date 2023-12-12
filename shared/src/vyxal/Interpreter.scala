@@ -182,28 +182,30 @@ object Interpreter:
       case AST.UnpackVar(names, _) => MiscHelpers.unpack(names)
       case AST.DecisionStructure(predicate, container, _) =>
         val iterable = container match
-          case Some(ast) =>
-            executeFn(VFun.fromLambda(AST.Lambda(0, List.empty, List(ast))))
+          case Some(ast) => executeFn(
+              VFun.fromLambda(AST.Lambda(Some(0), List.empty, List(ast)))
+            )
           case None => ctx.pop()
 
         val list = ListHelpers.makeIterable(iterable, Some(true))
         if ListHelpers
             .filter(
               list,
-              VFun.fromLambda(AST.Lambda(1, List.empty, List(predicate))),
+              VFun.fromLambda(AST.Lambda(None, List.empty, List(predicate))),
             )
             .nonEmpty
         then ctx.push(VNum(1))
         else ctx.push(VNum(0))
       case AST.GeneratorStructure(relation, initial, arity, _) =>
         val initVals = initial match
-          case Some(ast) =>
-            executeFn(VFun.fromLambda(AST.Lambda(0, List.empty, List(ast))))
+          case Some(ast) => executeFn(
+              VFun.fromLambda(AST.Lambda(Some(0), List.empty, List(ast)))
+            )
           case None => ctx.pop()
 
         val list = ListHelpers.makeIterable(initVals)
         val relationFn =
-          VFun.fromLambda(AST.Lambda(arity, List.empty, List(relation)))
+          VFun.fromLambda(AST.Lambda(Some(arity), List.empty, List(relation)))
 
         val firstN = list.length match
           case 0 => ctx.settings.defaultValue

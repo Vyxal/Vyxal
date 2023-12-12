@@ -58,7 +58,9 @@ class Context private (
             print("<: ")
             val g = StdIn.readLine()
             if g == null then settings.defaultValue.toString else g
-        if temp.nonEmpty then MiscHelpers.eval(temp)(using this)
+        if temp.nonEmpty then
+          if settings.dontEvalInputs then temp
+          else MiscHelpers.eval(temp)(using this)
         else settings.defaultValue
     scribe.trace(s"Popped $elem")
     elem
