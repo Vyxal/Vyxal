@@ -489,6 +489,7 @@ object Elements:
       false,
       "a: lst, b: lst -> Dot product of a and b",
       "a: num, b: num -> Convert a to bijective base b",
+      "a: lst, b: fun -> First index of a where b is truthy",
     ) {
       case (a: VList, b: VList) => ListHelpers.dotProduct(a, b)
       case (a: VNum, b: VNum) => NumberHelpers.toBijectiveBase(a, b)
@@ -2211,12 +2212,16 @@ object Elements:
       false,
       "a: fun, b: any -> sort iterable b by function a",
       "a: any, b: fun -> sort iterable a by function b",
-      "a: lst, b: lst -> set difference",
+      "a: lst, b: lst -> set difference of a and b",
+      "a: lst, b: num|str -> remove b from a",
+      "a: num|str, b: lst -> remove a from b",
     ) {
       case (a: VFun, b) =>
         ListHelpers.sortBy(ListHelpers.makeIterable(b, Some(true)), a)
       case (a, b: VFun) =>
         ListHelpers.sortBy(ListHelpers.makeIterable(a, Some(true)), b)
+      case (a: VList, b: (VNum | String)) => a.filter(_ != b)
+      case (a: (VNum | String), b: VList) => b.filter(_ != a)
       case (a, b) =>
         VList.from(ListHelpers.makeIterable(a) - ListHelpers.makeIterable(b))
     },
@@ -2354,7 +2359,6 @@ object Elements:
         "subtract",
         "minus",
         "str-remove",
-        "remove",
         "str-remove-all",
         "remove-all",
       ),
