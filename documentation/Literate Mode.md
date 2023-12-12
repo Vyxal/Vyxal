@@ -39,7 +39,7 @@ Structures share the exact same syntax as they do in SBCS form. But instead of s
 like `if`, `for` and `while`. Here's a list of all the structure words:
 
 ```
-[} -> if endif
+[} -> ? end
 [|} -> if else endif
 (} -> for endfor
 (|} -> for do endfor
