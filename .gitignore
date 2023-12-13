@@ -173,6 +173,8 @@ pages/vyxal.js
 pages/vyxal.js.map
 pages/helpText.js
 pages/helpText.js.map
+pages/codepage.js
+pages/modifiers.js
 pages/internal-*
 pages/ShortDictionary.txt
 pages/LongDictionary.txt

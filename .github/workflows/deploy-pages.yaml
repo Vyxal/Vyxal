@@ -46,6 +46,9 @@ jobs:
       - name: Scala to JS
         run: ./mill js.fullLinkJS
 
+      - name: Generate files for web interpreter
+        run: ./mill jvm.theseus
+
       - name: Upload built HTML
         uses: actions/upload-pages-artifact@v1
         with:

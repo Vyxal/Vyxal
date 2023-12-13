@@ -174,6 +174,21 @@ object jvm extends VyxalModule {
       }.toSeq
     }
 
+  def theseus = 
+    T.sources {
+      val codepage = runMethod[String](jvm.runClasspath(), "vyxal.gen.GenerateTheseusData", "codepage")
+      val modifiers = runMethod[String](jvm.runClasspath(), "vyxal.gen.GenerateTheseusData", "modifiers")
+      val codepageFile = build.millSourcePath / "pages" / "codepage.js"
+      val modifiersFile = build.millSourcePath / "pages" / "modifiers.js"
+      os.write.over(codepageFile, codepage)
+      os.write.over(modifiersFile, modifiers)
+
+      Seq(
+        PathRef(codepageFile),
+        PathRef(modifiersFile)
+      )
+    }
+
   object test extends ScalaTests with VyxalTestModule
 }
 
