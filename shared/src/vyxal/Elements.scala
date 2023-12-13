@@ -932,7 +932,7 @@ object Elements:
             lst.lastOption.getOrElse(ctx.settings.defaultValue),
           )
         case s: String =>
-          ctx.push(if s.isEmpty then "" else s.dropRight(1), s.last.toString)
+          ctx.push(s.dropRight(1), if s.isEmpty then "" else s.last.toString)
         case arg => throw UnimplementedOverloadException("ṫ", List(arg))
     },
     addPart(
