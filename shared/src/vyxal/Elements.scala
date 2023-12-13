@@ -921,15 +921,15 @@ object Elements:
     },
     addDirect(
       "ṫ",
-      "Last Extract",
-      List("last-extract", "split-at-last"),
+      "Last Extract | Tail Extract",
+      List("last-extract", "split-at-last", "tail-extract"),
       Some(1),
-      "a: lst|str -> Push a[-1], then a[:-1] onto the stack",
+      "a: lst|str -> Push a[:-1], a[-1] onto the stack",
     ) { ctx ?=>
       ctx.pop() match
         case lst: VList => ctx.push(
-            lst.lastOption.getOrElse(ctx.settings.defaultValue),
             lst.dropRight(1),
+            lst.lastOption.getOrElse(ctx.settings.defaultValue),
           )
         case s: String =>
           ctx.push(if s.isEmpty then "" else s.last.toString, s.dropRight(1))
