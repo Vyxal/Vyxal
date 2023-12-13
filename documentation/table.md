@@ -261,7 +261,7 @@
  | | | | | | | `a: lst, b: lst` => `set difference of a and b`
  | | | | | | | `a: lst, b: num\|str` => `remove b from a`
  | | | | | | | `a: num\|str, b: lst` => `remove a from b`
- <code>ṫ</code> | <code>#.t</code> | Last Extract | `last-extract`, `split-at-last` | 1 | :x: | `a: lst\|str` => `Push a[-1], then a[:-1] onto the stack`
+ <code>ṫ</code> | <code>#.t</code> | Last Extract / Tail Extract | `last-extract`, `split-at-last`, `tail-extract` | 1 | :x: | `a: lst\|str` => `Push a[:-1], a[-1] onto the stack`
  <code>ẋ</code> | <code>#.x</code> | Cartesian Power / Regex Search for Match | `cartesian-power`, `re-search`, `regex-search` | 2 | :x: | `a: lst, b: num` => `cart_prod([a] * n)`
  | | | | | | | `a: num, b: lst` => `cart_prod([b] * n)`
  | | | | | | | `a: str, b: str` => `return first index of pattern match b in target string a, -1 if not found`

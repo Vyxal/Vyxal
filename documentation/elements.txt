@@ -689,10 +689,10 @@ Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun, partition-
 - a: lst, b: num|str -> remove b from a
 - a: num|str, b: lst -> remove a from b
 ----------------------
-ṫ (Last Extract) (non-vectorising)
+ṫ (Last Extract | Tail Extract) (non-vectorising)
 Trigraph: #.t
-Keywords: last-extract, split-at-last
-- a: lst|str -> Push a[-1], then a[:-1] onto the stack
+Keywords: last-extract, split-at-last, tail-extract
+- a: lst|str -> Push a[:-1], a[-1] onto the stack
 ----------------------
 ẋ (Cartesian Power | Regex Search for Match) (non-vectorising)
 Trigraph: #.x
