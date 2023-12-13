@@ -151,7 +151,7 @@ private[parsing] object LiterateLexer:
   val lambdaOpenerSet = lambdaOpeners.keys.toSet
   def lambdaBlock[$: P]: P[LitToken] =
     P(
-      withRange("{".! | Common.lambdaOpen | word.filter(lambdaOpenerSet).!) ~/
+      withRange("{".! | "lambda".! | "lam".! | "λ".!) ~/
         ( // Keep going until the branch indicating params end, but don't stop at ","
           withRange(",".! | word.filter(isLambdaParam)).rep ~ litBranch
         ).? ~
@@ -163,9 +163,7 @@ private[parsing] object LiterateLexer:
       case (opener, openRange, possibleParams, body, endTok) =>
         val openerTok = LitToken(
           StructureOpen,
-          // If it's a keyword, map it to SBCS
-          if opener == "{" then StructureType.Lambda.open
-          else lambdaOpeners.get(opener).map(_.open).getOrElse(opener),
+          StructureType.Lambda.open,
           openRange,
         )
         val possParams = possibleParams match
@@ -188,6 +186,33 @@ private[parsing] object LiterateLexer:
         LitToken(TokenType.Group, total.toList, openRange)
     }
   end lambdaBlock
+
+  def specialLambdaBlock[$: P]: P[LitToken] =
+    P(
+      withRange("{".! | Common.lambdaOpen | word.filter(lambdaOpenerSet).!) ~
+        (!(litStructClose | structureSingleClose | structureDoubleClose |
+          structureAllClose) ~ NoCut(singleToken)).rep.map(_.flatten) ~
+        (End | litStructClose | structureSingleClose | structureDoubleClose |
+          &(structureAllClose))
+    ).map {
+      case (opener, openRange, body, endTok) =>
+        val openerTok = LitToken(
+          StructureOpen,
+
+          // If it's a keyword, map it to SBCS
+          if opener == "{" then StructureType.Lambda.open
+          else lambdaOpeners.get(opener).map(_.open).getOrElse(opener),
+          openRange,
+        )
+        val withoutEnd = openerTok +: body
+        val total = endTok match
+          case tok: LitToken => withoutEnd :+ tok
+          case _ =>
+            // This means there was a StructureAllClose or we hit EOF
+            withoutEnd
+
+        LitToken(TokenType.Group, total.toList, openRange)
+    }
 
   def structureSingleClose[$: P]: P[LitToken] =
     parseToken(StructureClose, "}".!)
@@ -361,8 +386,8 @@ private[parsing] object LiterateLexer:
   def singleToken[$: P]: P[Seq[LitToken]] =
     P(
       list | unpackVar |
-        (lambdaBlock | contextIndex | litGetVariable | litSetVariable |
-          litSetConstant | litAugVariable | elementKeyword |
+        (lambdaBlock | specialLambdaBlock | contextIndex | litGetVariable |
+          litSetVariable | litSetConstant | litAugVariable | elementKeyword |
           negatedElementKeyword | tokenMove | modifierKeyword | structOpener |
           otherKeyword | litBranch | litStructClose | litNumber | litString |
           normalGroup).map(Seq(_)) | rawCode |
