@@ -346,7 +346,9 @@ object Parser:
             case List(_) => None
 
           val arity = rel match
-            case AST.Group(elems, _, _) => elems.last match
+            case AST.Group(elems, _, _) =>
+              if elems.length == 0 then throw BadStructureException("generator")
+              elems.last match
                 case number: AST.Number =>
                   rel = AST.Group(elems.init, None)
                   number.value.toInt
@@ -362,6 +364,7 @@ object Parser:
                       popped += elemArity - stackItems
                       stackItems = 1
                   popped
+              end match
             case _ => rel.arity.getOrElse(2)
 
           AST.GeneratorStructure(rel, vals, arity)
