@@ -459,6 +459,7 @@
  <code>ϩ</code> | <code>#^:</code> | Double Element Lambda | `**:` | 2 | <pre>Turn the next two elements (whether that be a structure/modifier/element) into a lambda<br>ϩfg: Push the equivalent of λfg} to the stack</pre> |
  <code>э</code> | <code>#^%</code> | Triple Element Lambda | `***:` | 3 | <pre>Turn the next three elements (whether that be a structure/modifier/element) into a lambda<br>эfgh: Push the equivalent of λfgh} to the stack</pre> |
  <code>Ч</code> | <code>#^4</code> | Quadruple Element Lambda | `****:` | 4 | <pre>Turn the next four elements (whether that be a structure/modifier/element) into a lambda<br>Чfghi: Push the equivalent of λfghi} to the stack</pre> |
+ <code>ᵜ</code> | <code>#^*</code> | Lambda to Newline | `<-}` | -1 | <pre>Scan elements to the left until a newline is found. Push a<br>lambda with all of the scanned elements<br><elements>ᵜ: Push a lambda</pre> |
  <code>/</code> | <code></code> | Foldl / Reduce By / Filter by | `foldl:`, `reduce:`, `/:`, `fold:`, `reduceby:-` | 1 | <pre>Reduce a list by an element<br>/f: reduce by element f</pre> |
  <code>∥</code> | <code></code> | Parallel Apply | `parallel-apply:`, `para-apply:`, `paraply:`, `!!:` | 2 | <pre>Parallel apply two elements to the top of the stack<br></pre> |
  <code>∦</code> | <code></code> | Parallel Apply and Wrap | `parallel-apply-and-wrap:`, `para-apply-and-wrap:`, `<paraply>:`, `<!!>:` | 2 | <pre>Parallel apply two elements to the top of the stack<br>and wrap the result in a list<br></pre> |
@@ -467,53 +468,53 @@
 
 ## Syntax Features
 
-| Symbol | Trigraph | Name | Description | Usage |
- --- | --- | --- | --- | --- |
- `ᶴ` |  | Two Character String | Push the next two characters as a string | <pre>ᶴ&lt;character&gt;&lt;character&gt;</pre> |
- `"` |  | Open/Close String | Open/close a string. If the string is closed, push it to the stack. Closes all string types | <pre>"string contents"</pre> |
- `'` |  | One Character String | Push the next character as a string | <pre>'&lt;character&gt;</pre> |
- `(` |  | For Loop | Open a for loop. For each item in the top of the stack, execute code, storing loop variable. | <pre>&lt;iterable&gt; (&lt;variable&gt;\|&lt;code&gt;}</pre> |
- `)` |  | Close Two Structures | Match and close two open structures. | <pre>&lt;structure open&gt;&lt;structure open&gt; &lt;code&gt; ) &lt;code not in structure&gt;</pre> |
- `.` |  | Decimal Separator | Used to separate the integer and fractional parts of a number | <pre>&lt;integer&gt;.&lt;fractional&gt;</pre> |
- `0` |  | Numeric Literal | The number 0 | <pre>0</pre> |
- `1` |  | Numeric Literal | The number 1 | <pre>1</pre> |
- `2` |  | Numeric Literal | The number 2 | <pre>2</pre> |
- `3` |  | Numeric Literal | The number 3 | <pre>3</pre> |
- `4` |  | Numeric Literal | The number 4 | <pre>4</pre> |
- `5` |  | Numeric Literal | The number 5 | <pre>5</pre> |
- `6` |  | Numeric Literal | The number 6 | <pre>6</pre> |
- `7` |  | Numeric Literal | The number 7 | <pre>7</pre> |
- `8` |  | Numeric Literal | The number 8 | <pre>8</pre> |
- `9` |  | Numeric Literal | The number 9 | <pre>9</pre> |
- `[` |  | Ternary Statement | Open a ternary statement. Pop condition, if truthy, run <ontrue>, else run <onfalse> | <pre>&lt;condition&gt; [&lt;ontrue&gt;\|&lt;onfalse&gt;}</pre> |
- `]` |  | Close All Structures | Match and close all open structures. | <pre>&lt;structure openers&gt;] &lt;code not in structure&gt;</pre> |
- `k` |  | Constant Digraphs | Used for constant-related digraphs | <pre>k&lt;character&gt;</pre> |
- `{` |  | While Loop | Open a while loop. While the top of the stack is truthy, execute code. | <pre>{&lt;condition&gt;\|&lt;code&gt;}</pre> |
- `\|` |  | Structure Branch | Delimit the next section in a structure. | <pre>&lt;structure open&gt; &lt;code&gt; \| &lt;code&gt; ...</pre> |
- `}` |  | Close A Structure | Match and close the nearest open structure. | <pre>&lt;structure open&gt; &lt;code&gt; } &lt;code not in structure&gt;</pre> |
- `~` |  | Two Byte Number | Push the next two bytes as a number, converted from bijective base 255 using the codepage | <pre>~&lt;character&gt;&lt;character&gt;</pre> |
- `Ḍ` | `#,D` | Open Decision Problem Structure | Open a decision problem structure. Returns whether an iterable has any items that match a predicate | <pre>Ḍ&lt;predicate&gt;\|&lt;container&gt; }</pre> |
- `Ṇ` | `#,N` | Generator Structure | Open a generator structure. Allows for generator expressions | <pre>Ṇ&lt;code&gt;\|&lt;initial vector&gt;}</pre> |
- `λ` | `#.{` | Open Lambda | Open a lambda. | <pre>λ&lt;parameters&gt;\|&lt;code&gt;}</pre> |
- `ƛ` | `#.[` | Open Map Lambda | Open a lambda that automatically maps its function to the top of the stack | <pre>ƛ&lt;code&gt;}</pre> |
- `Ω` | `#.(` | Open Filter Lambda | Open a lambda that automatically filters the top of the stack by its function | <pre>Ω&lt;code&gt;}</pre> |
- `₳` | `#,{` | Open Reduce/Accumulate Lambda | Open a lambda that automatically reduces/accumulates the top of the stack by its function | <pre>₳&lt;code&gt;}</pre> |
- `µ` | `#,(` | Open Sort Lambda | Open a lambda that automatically sorts the top of the stack by its function | <pre>µ&lt;code&gt;}</pre> |
- `¤` | `#.@` | Context Paramter Index | Index into the list of context parameters. | <pre>¤&lt;number&gt;</pre> |
- `ı` | `#.i` | Imaginary Number | Used to represent the imaginary unit | <pre>&lt;real&gt;ı&lt;imaginary&gt;</pre> |
- `„` | `#,"` | Base-252 Compressed String | Decompress and push a string, converted from a bijective base 252 number using the codepage | <pre>"&lt;compressed string&gt;„</pre> |
- `”` | `#^'` | Dictionary Compressed String | Decompress and push a string using SSS compression, shamelessly stolen from Jelly | <pre>"&lt;compressed string&gt;”</pre> |
- `“` | `#^"` | Base-252 Compressed Number | Decompress and push a number, converted from a bijective base 252 number using the codepage | <pre>"&lt;compressed number&gt;“</pre> |
- `#:[` |  | Variable Unpacking | Unpack the top of the stack into a list of variables. | <pre>#:[&lt;var&gt;\|&lt;var&gt;\|&lt;var&gt;]</pre> |
- `#` |  | Miscellaneous Digraphs | Used for miscellaneous digraphs | <pre>#&lt;character&gt;</pre> |
- `##` |  | Comment | Comment out the rest of the line | <pre>##&lt;comment&gt;</pre> |
- `#$` |  | Retrieve Variable | Push the value of a variable. | <pre>#$&lt;variable&gt;</pre> |
- `#=` |  | Assign Variable | Assign a variable to a value. | <pre>#=&lt;variable&gt;</pre> |
- `#>` |  | Augmented Assignment | Apply a function to a variable value and store the result in the same variable. | <pre>&lt;function&gt; #&gt; &lt;variable&gt;</pre> |
- `#[` |  | Open List | Open a list. Pushes the list to the stack when closed. | <pre>#[item\|item\|item#]</pre> |
- `#]` |  | Close List | Close a list. Pushes the list to the stack when closed. | <pre>#[item\|item\|item#]</pre> |
- `#{` |  | If/Elif/Else Statement | Open an if statement. Allows for if/elif/else statements | <pre>#{&lt;if condition&gt;\|&lt;code&gt;\|&lt;else if condition&gt;\|&lt;code&gt;\|&lt;else code&gt;}</pre> |
- `∆` | `#.\` | Mathematical Digraphs | Used for math-related digraphs | <pre>∆&lt;character&gt;</pre> |
- `ø` | `#,/` | String Digraphs | Used for string-related digraphs | <pre>ø&lt;character&gt;</pre> |
- `Þ` | `#.)` | List Digraphs | Used for list-related digraphs | <pre>Þ&lt;character&gt;</pre> |
+| Symbol | Trigraph | Name | Keywords (if applicable) | Description | Usage |
+ --- | --- | --- | --- | --- | --- |
+ `ᶴ` |  | Two Character String | <code></code> | Push the next two characters as a string | <pre>ᶴ&lt;character&gt;&lt;character&gt;</pre> |
+ `"` |  | Open/Close String | <code></code> | Open/close a string. If the string is closed, push it to the stack. Closes all string types | <pre>"string contents"</pre> |
+ `'` |  | One Character String | <code></code> | Push the next character as a string | <pre>'&lt;character&gt;</pre> |
+ `(` |  | For Loop | <code>for for< do-to-each each-as</code> | Open a for loop. For each item in the top of the stack, execute code, storing loop variable. | <pre>&lt;iterable&gt; (&lt;variable&gt;\|&lt;code&gt;}</pre> |
+ `)` |  | Close Two Structures | <code>end-end</code> | Match and close two open structures. | <pre>&lt;structure open&gt;&lt;structure open&gt; &lt;code&gt; ) &lt;code not in structure&gt;</pre> |
+ `.` |  | Decimal Separator | <code></code> | Used to separate the integer and fractional parts of a number | <pre>&lt;integer&gt;.&lt;fractional&gt;</pre> |
+ `0` |  | Numeric Literal | <code></code> | The number 0 | <pre>0</pre> |
+ `1` |  | Numeric Literal | <code></code> | The number 1 | <pre>1</pre> |
+ `2` |  | Numeric Literal | <code></code> | The number 2 | <pre>2</pre> |
+ `3` |  | Numeric Literal | <code></code> | The number 3 | <pre>3</pre> |
+ `4` |  | Numeric Literal | <code></code> | The number 4 | <pre>4</pre> |
+ `5` |  | Numeric Literal | <code></code> | The number 5 | <pre>5</pre> |
+ `6` |  | Numeric Literal | <code></code> | The number 6 | <pre>6</pre> |
+ `7` |  | Numeric Literal | <code></code> | The number 7 | <pre>7</pre> |
+ `8` |  | Numeric Literal | <code></code> | The number 8 | <pre>8</pre> |
+ `9` |  | Numeric Literal | <code></code> | The number 9 | <pre>9</pre> |
+ `[` |  | Ternary Statement | <code>? ?-></code> | Open a ternary statement. Pop condition, if truthy, run <ontrue>, else run <onfalse> | <pre>&lt;condition&gt; [&lt;ontrue&gt;\|&lt;onfalse&gt;}</pre> |
+ `]` |  | Close All Structures | <code>close-all end-all</code> | Match and close all open structures. | <pre>&lt;structure openers&gt;] &lt;code not in structure&gt;</pre> |
+ `k` |  | Constant Digraphs | <code></code> | Used for constant-related digraphs | <pre>k&lt;character&gt;</pre> |
+ `{` |  | While Loop | <code>while while<</code> | Open a while loop. While the top of the stack is truthy, execute code. | <pre>{&lt;condition&gt;\|&lt;code&gt;}</pre> |
+ `\|` |  | Structure Branch | <code>: -> else: else elif else-if body do branch then in using no? => from</code> | Delimit the next section in a structure. | <pre>&lt;structure open&gt; &lt;code&gt; \| &lt;code&gt; ...</pre> |
+ `}` |  | Close A Structure | <code>end endfor end-for endwhile end-while endlambda end-lambda end</code> | Match and close the nearest open structure. | <pre>&lt;structure open&gt; &lt;code&gt; } &lt;code not in structure&gt;</pre> |
+ `~` |  | Two Byte Number | <code></code> | Push the next two bytes as a number, converted from bijective base 255 using the codepage | <pre>~&lt;character&gt;&lt;character&gt;</pre> |
+ `Ḍ` | `#,D` | Open Decision Problem Structure | <code>exists<</code> | Open a decision problem structure. Returns whether an iterable has any items that match a predicate | <pre>Ḍ&lt;predicate&gt;\|&lt;container&gt; }</pre> |
+ `Ṇ` | `#,N` | Generator Structure | <code>relation< generate< generate-from<</code> | Open a generator structure. Allows for generator expressions | <pre>Ṇ&lt;code&gt;\|&lt;initial vector&gt;}</pre> |
+ `λ` | `#.{` | Open Lambda | <code>lam lambda {</code> | Open a lambda. | <pre>λ&lt;parameters&gt;\|&lt;code&gt;}</pre> |
+ `ƛ` | `#.[` | Open Map Lambda | <code>map-lam map< map-lambda</code> | Open a lambda that automatically maps its function to the top of the stack | <pre>ƛ&lt;code&gt;}</pre> |
+ `Ω` | `#.(` | Open Filter Lambda | <code>filter-lam filter< filter-lambda</code> | Open a lambda that automatically filters the top of the stack by its function | <pre>Ω&lt;code&gt;}</pre> |
+ `₳` | `#,{` | Open Reduce/Accumulate Lambda | <code>reduce-lam reduce< reduce-lambda fold< fold-lam fold-lambda</code> | Open a lambda that automatically reduces/accumulates the top of the stack by its function | <pre>₳&lt;code&gt;}</pre> |
+ `µ` | `#,(` | Open Sort Lambda | <code>sort-lam sort< sort-lambda</code> | Open a lambda that automatically sorts the top of the stack by its function | <pre>µ&lt;code&gt;}</pre> |
+ `¤` | `#.@` | Context Paramter Index | <code>`n`</code> | Index into the list of context parameters. | <pre>¤&lt;number&gt;</pre> |
+ `ı` | `#.i` | Imaginary Number | <code>i</code> | Used to represent the imaginary unit | <pre>&lt;real&gt;ı&lt;imaginary&gt;</pre> |
+ `„` | `#,"` | Base-252 Compressed String | <code></code> | Decompress and push a string, converted from a bijective base 252 number using the codepage | <pre>"&lt;compressed string&gt;„</pre> |
+ `”` | `#^'` | Dictionary Compressed String | <code></code> | Decompress and push a string using SSS compression, shamelessly stolen from Jelly | <pre>"&lt;compressed string&gt;”</pre> |
+ `“` | `#^"` | Base-252 Compressed Number | <code></code> | Decompress and push a number, converted from a bijective base 252 number using the codepage | <pre>"&lt;compressed number&gt;“</pre> |
+ `#:[` |  | Variable Unpacking | <code>:=[</code> | Unpack the top of the stack into a list of variables. | <pre>#:[&lt;var&gt;\|&lt;var&gt;\|&lt;var&gt;]</pre> |
+ `#` |  | Miscellaneous Digraphs | <code></code> | Used for miscellaneous digraphs | <pre>#&lt;character&gt;</pre> |
+ `##` |  | Comment | <code></code> | Comment out the rest of the line | <pre>##&lt;comment&gt;</pre> |
+ `#$` |  | Retrieve Variable | <code>$</code> | Push the value of a variable. | <pre>#$&lt;variable&gt;</pre> |
+ `#=` |  | Assign Variable | <code>:=</code> | Assign a variable to a value. | <pre>#=&lt;variable&gt;</pre> |
+ `#>` |  | Augmented Assignment | <code>:></code> | Apply a function to a variable value and store the result in the same variable. | <pre>&lt;function&gt; #&gt; &lt;variable&gt;</pre> |
+ `#[` |  | Open List | <code>[</code> | Open a list. Pushes the list to the stack when closed. | <pre>#[item\|item\|item#]</pre> |
+ `#]` |  | Close List | <code>]</code> | Close a list. Pushes the list to the stack when closed. | <pre>#[item\|item\|item#]</pre> |
+ `#{` |  | If/Elif/Else Statement | <code>if</code> | Open an if statement. Allows for if/elif/else statements | <pre>#{&lt;if condition&gt;\|&lt;code&gt;\|&lt;else if condition&gt;\|&lt;code&gt;\|&lt;else code&gt;}</pre> |
+ `∆` | `#.\` | Mathematical Digraphs | <code></code> | Used for math-related digraphs | <pre>∆&lt;character&gt;</pre> |
+ `ø` | `#,/` | String Digraphs | <code></code> | Used for string-related digraphs | <pre>ø&lt;character&gt;</pre> |
+ `Þ` | `#.)` | List Digraphs | <code></code> | Used for list-related digraphs | <pre>Þ&lt;character&gt;</pre> |
 

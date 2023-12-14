@@ -1290,6 +1290,13 @@ Keywords: ZZ
 Keywords: multi-set-intersection, multi-set-intersect
 - a: lst, b: lst -> multi-set intersection of a and b
 ----------------------
+ᵜ
+Keywords: <-}
+Description: Scan elements to the left until a newline is found. Push a
+lambda with all of the scanned elements
+<elements>ᵜ: Push a lambda
+Trigraph: #^*
+-----------------------
 Ч
 Keywords: ****:
 Description: Turn the next four elements (whether that be a structure/modifier/element) into a lambda
