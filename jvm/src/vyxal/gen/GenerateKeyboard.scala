@@ -54,18 +54,20 @@ private object GenerateKeyboard:
     for syntax <- SyntaxInfo.info do
       val (symbol, info) = syntax
       info match
-        case Syntax(name, description, usage) =>
+        case Syntax(name, literate, description, usage) =>
           val token = symbol
           val index =
             if token == " " then 32 else Lexer.Codepage.indexOf(token.last)
           val thisElement = scala.collection.mutable.HashMap[String, String]()
           thisElement("name") = name
-          thisElement("description") = description
+          thisElement("description") =
+            s"${literate.mkString(" ")}\n$description"
           thisElement("overloads") = usage
           thisElement("token") = symbol
 
           if data.contains(index) then data(index) += thisElement.toMap
           else data(index) = ListBuffer(thisElement.toMap)
+    end for
 
     val finalData =
       scala.collection.mutable.HashMap[Int, List[Map[String, String]]]()
