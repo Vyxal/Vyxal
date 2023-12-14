@@ -1261,6 +1261,14 @@ Keywords: grid-neighbours-diagonals-wrap, grid-neighbors-diagonals-wrap, adjacen
 Keywords: cartesian-product-unsafe, cartesian-unsafe, cart-prod-unsafe, cart-unsafe
 - a: list, b: list -> cartesian product of a and b in the standard order, but without accounting for infinite lists
 ----------------------
+Þι (0-Lift) (non-vectorising)
+Keywords: zero-lift, lift-0, O-lift
+- a: lst -> each item of a multiplied by its 0-based index
+----------------------
+Þκ (1-Lift) (non-vectorising)
+Keywords: one-lift, lift-1, l-lift
+- a: lst -> each item of a multiplied by its 1-based index
+----------------------
 Þċ (Multi-Set XOR) (non-vectorising)
 Keywords: multi-set-xor
 - a: lst, b: lst -> multi-set xor of a and b
