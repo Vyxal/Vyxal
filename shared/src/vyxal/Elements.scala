@@ -1575,6 +1575,28 @@ object Elements:
     },
     addPart(
       Monad,
+      "Þι",
+      "0-Lift",
+      List("zero-lift", "lift-0", "O-lift"),
+      false,
+      "a: lst -> each item of a multiplied by its 0-based index",
+    ) {
+      case a: VList =>
+        VList.from(a.zipWithIndex.map((x, i) => MiscHelpers.multiply(x, i)))
+    },
+    addPart(
+      Monad,
+      "Þκ",
+      "1-Lift",
+      List("one-lift", "lift-1", "l-lift"),
+      false,
+      "a: lst -> each item of a multiplied by its 1-based index",
+    ) {
+      case a: VList =>
+        VList.from(a.zipWithIndex.map((x, i) => MiscHelpers.multiply(x, i + 1)))
+    },
+    addPart(
+      Monad,
       "¬",
       "Logical Not",
       List("non-vec-not", "non-vec-logical-not"),
