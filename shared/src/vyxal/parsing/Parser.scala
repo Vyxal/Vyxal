@@ -347,7 +347,7 @@ object Parser:
 
           val arity = rel match
             case AST.Group(elems, _, _) =>
-              if elems.length == 0 then throw BadStructureException("generator")
+              if elems.isEmpty then throw BadStructureException("generator")
               elems.last match
                 case number: AST.Number =>
                   rel = AST.Group(elems.init, None)
