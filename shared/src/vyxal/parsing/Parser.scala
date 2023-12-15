@@ -125,7 +125,6 @@ object Parser:
         case TokenType.Digraph => throw NoSuchElementException(token)
       end match
     end while
-
     // Second stage parsing
     val finalAsts = parse(asts)
     AST.makeSingle(finalAsts.toList*)
