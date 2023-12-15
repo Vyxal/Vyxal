@@ -126,6 +126,12 @@ object Parser:
       end match
     end while
 
+    // Second stage parsing
+    val finalAsts = parse(asts)
+    AST.makeSingle(finalAsts.toList*)
+  end parse
+
+  private def parse(asts: Stack[AST]): Stack[AST] =
     val finalAsts = Stack[AST]()
     while asts.nonEmpty do
       val topAst = asts.pop()
@@ -140,14 +146,14 @@ object Parser:
             else throw NoSuchModifierException(name)
         case AST.SpecialModifier(name, _) => (name: @unchecked) match
             case "ᵜ" =>
-              val lambdaAsts = ListBuffer[AST]()
+              val lambdaAsts = Stack[AST]()
               while asts.nonEmpty && asts.top != AST.Newline do
-                lambdaAsts += asts.pop()
+                lambdaAsts.push(asts.pop())
               finalAsts.push(
                 AST.Lambda(
                   Some(1),
                   List(),
-                  List(AST.makeSingle(lambdaAsts.toList.reverse*)),
+                  List(AST.makeSingle(parse(lambdaAsts.reverse).toList*)),
                 )
               )
             case "ᵗ" => ??? // TODO: Implement tie
@@ -157,8 +163,7 @@ object Parser:
         case _ => finalAsts.push(topAst)
       end match
     end while
-
-    AST.makeSingle(finalAsts.toList*)
+    finalAsts
   end parse
 
   /** This is the function that performs arity grouping of elements. Here's a
