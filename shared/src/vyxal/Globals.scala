@@ -150,6 +150,7 @@ case class Settings(
     defaultArity: Int = 1,
     limitPrint: Boolean = false,
     dontEvalInputs: Boolean = false,
+    recursionLimit: Int = 100,
 ):
 
   /** Add a flag to these settings

@@ -27,6 +27,10 @@ Keywords: mod, modulo, str-format, format, %, strfmt
 Keywords: append
 - a: any, b: any -> list(a) ++ [b]
 ----------------------
+' (Join Sublists on Spaces then Newlines (Element Form of ')) (non-vectorising)
+Keywords: join-sublists, join-sublists-on-spaces-then-newlines, grid
+- a: lst -> sublists of a joined on spaces then that joined on newlines
+----------------------
 * (Exponentation | Remove Nth Letter | Trim) (vectorising)
 Keywords: exp, **, pow, exponent, remove-letter, str-trim
 - a: num, b: num -> a ^ b

@@ -138,26 +138,18 @@ object jvm extends VyxalModule {
         "vyxal.gen.GenerateDocs",
         "generate",
       )
-      val descriptions = runMethod[String](
-        jvm.runClasspath(),
-        "vyxal.gen.GenerateKeyboard",
-        "generateDescriptions",
-      )
       val elementsFile = build.millSourcePath / "documentation" / "elements.txt"
       val trigraphsFile = build.millSourcePath / "documentation" /
         "trigraphs.txt"
       val tableFile = build.millSourcePath / "documentation" / "table.md"
-      val descriptionsFile = build.millSourcePath / "pages" / "parsed_yaml.js"
       os.write.over(elementsFile, elements)
       os.write.over(trigraphsFile, trigraphs)
       os.write.over(tableFile, table)
-      os.write.over(descriptionsFile, descriptions)
 
       Seq(
         PathRef(elementsFile),
         PathRef(trigraphsFile),
         PathRef(tableFile),
-        PathRef(descriptionsFile),
       )
     }
 
@@ -174,18 +166,23 @@ object jvm extends VyxalModule {
       }.toSeq
     }
 
+  /** Generate data file(s) for online interpreter */
   def theseus = 
     T.sources {
-      val codepage = runMethod[String](jvm.runClasspath(), "vyxal.gen.GenerateTheseusData", "codepage")
-      val modifiers = runMethod[String](jvm.runClasspath(), "vyxal.gen.GenerateTheseusData", "modifiers")
-      val codepageFile = build.millSourcePath / "pages" / "codepage.js"
-      val modifiersFile = build.millSourcePath / "pages" / "modifiers.js"
-      os.write.over(codepageFile, codepage)
-      os.write.over(modifiersFile, modifiers)
+      val descriptions = runMethod[String](
+        jvm.runClasspath(),
+        "vyxal.gen.GenerateKeyboard",
+        "generateDescriptions",
+      )
+      val data = runMethod[String](jvm.runClasspath(), "vyxal.gen.GenerateTheseusData", "generate")
+      val descriptionsFile = build.millSourcePath / "pages" / "parsed_yaml.js"
+      val dataFile = build.millSourcePath / "pages" / "theseus.json"
+      os.write.over(descriptionsFile, descriptions)
+      os.write.over(dataFile, data)
 
       Seq(
-        PathRef(codepageFile),
-        PathRef(modifiersFile)
+        PathRef(descriptionsFile),
+        PathRef(dataFile),
       )
     }
 

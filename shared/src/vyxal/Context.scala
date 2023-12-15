@@ -38,6 +38,7 @@ class Context private (
     val globals: Globals = Globals(),
     val testMode: Boolean = false,
     val useStack: Boolean = false,
+    var recursion: Int = 0,
 ):
   var settings: Settings = globals.settings
 
@@ -175,6 +176,7 @@ class Context private (
       Some(this),
       globals,
       testMode, // child shouldn't use stack just because parent does
+      recursion = recursion,
     )
 
   def getTopCtx(): Context =
@@ -254,6 +256,7 @@ object Context:
       globals = currCtx.globals,
       testMode = currCtx.testMode,
       useStack = useStack,
+      recursion = currCtx.recursion,
     )
   end makeFnCtx
 

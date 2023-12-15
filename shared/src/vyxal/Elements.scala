@@ -2042,6 +2042,9 @@ object Elements:
       None,
       " -> call the current function recursively",
     ) { ctx ?=>
+      if ctx.recursion >= ctx.settings.recursionLimit then
+        throw VyxalRecursionException()
+      ctx.recursion += 1
       if ctx.globals.callStack.isEmpty then
         Interpreter.execute(ctx.globals.originalProgram)(using ctx)
       else
@@ -3268,6 +3271,17 @@ object Elements:
       case (a: VNum, b: String) => StringHelpers.zeroPad(b, a)
       case (a: VList, b) => ListHelpers.zeroPad(a, makeIterable(b).bigLength)
       case (a: String, b) => StringHelpers.zeroPad(a, makeIterable(b).bigLength)
+    },
+    addPart(
+      Monad,
+      "'",
+      "Join Sublists on Spaces then Newlines (Element Form of ')",
+      List("join-sublists", "join-sublists-on-spaces-then-newlines", "grid"),
+      false,
+      "a: lst -> sublists of a joined on spaces then that joined on newlines",
+    ) {
+      case a =>
+        makeIterable(a).map(v => makeIterable(v).mkString(" ")).mkString("\n")
     },
 
     // Constants

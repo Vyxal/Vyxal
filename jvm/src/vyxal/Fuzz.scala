@@ -26,7 +26,9 @@ object Fuzz:
             Duration(timeout, "seconds"),
           )
         catch
-          case _ => {} // println(s"` $fuzz ` Timeout after $timeout seconds")
+          case _ =>
+            print(".") // println(s"` $fuzz ` Timeout after $timeout seconds")
+      end for
     end for
   end fuzz
   def makeFuzz(length: Int): IndexedSeq[String] =

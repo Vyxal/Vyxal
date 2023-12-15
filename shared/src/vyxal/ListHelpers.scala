@@ -46,8 +46,8 @@ object ListHelpers:
   def cartesianProduct(left: VAny, right: VAny, unsafe: Boolean = false)(using
       ctx: Context
   ): VList =
-    val lhs = makeIterable(left)
-    val rhs = makeIterable(right)
+    val lhs = makeIterable(left, Some(true))
+    val rhs = makeIterable(right, Some(true))
 
     if unsafe || (lhs.knownSize != -1 && rhs.knownSize != -1) then
       VList.from(lhs.flatMap(l => rhs.map(r => VList(l, r))))

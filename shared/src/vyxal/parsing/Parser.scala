@@ -138,11 +138,12 @@ object Parser:
         case AST.Newline => ()
         case AST.JunkModifier(name, arity) => if arity > 0 then
             if finalAsts.length < arity then throw BadModifierException(name)
-            val modifier = Modifiers.modifiers(name)
+            val modifier = Modifiers.modifiers.getOrElse(
+              name,
+              throw VyxalYikesException(s"Modifier $name not implemented"),
+            )
             val modifierArgs = List.fill(arity)(finalAsts.pop())
-            if modifier.from.isDefinedAt(modifierArgs) then
-              finalAsts.push(modifier.from(modifierArgs))
-            else throw NoSuchModifierException(name)
+            finalAsts.push(modifier.from(modifierArgs))
         case AST.SpecialModifier(name, _) => (name: @unchecked) match
             case "ᵜ" =>
               val lambdaAsts = Stack[AST]()

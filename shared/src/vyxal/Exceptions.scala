@@ -45,8 +45,6 @@ class BadStructureException(structure: String)
 class NoSuchElementException(element: String)
     extends VyxalParsingException(s"No such element: $element"):
   def this(token: Token) = this(token.value)
-class NoSuchModifierException(modifier: String)
-    extends VyxalParsingException(s"No such modifier: $modifier")
 class TokensFailedParsingException(tokens: List[Token])
     extends VyxalParsingException(s"Some elements failed to parse: $tokens")
 class UnmatchedCloserException(closer: Token)
@@ -70,7 +68,8 @@ class InvalidListOverloadException(
     )
 class NoDefaultException(value: VAny)
     extends VyxalRuntimeException(s"No default value exists for $value")
-class RecursionError(message: String) extends VyxalRuntimeException(message)
+class VyxalRecursionException()
+    extends VyxalRuntimeException("Too many recursions")
 class UnimplementedOverloadException(element: String, args: Seq[VAny])
     extends VyxalRuntimeException(
       s"$element not supported for input(s) ${args.mkString("[", ", ", "]")}"
