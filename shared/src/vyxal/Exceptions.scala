@@ -45,8 +45,6 @@ class BadStructureException(structure: String)
 class NoSuchElementException(element: String)
     extends VyxalParsingException(s"No such element: $element"):
   def this(token: Token) = this(token.value)
-class NoSuchModifierException(modifier: String)
-    extends VyxalParsingException(s"No such modifier: $modifier")
 class TokensFailedParsingException(tokens: List[Token])
     extends VyxalParsingException(s"Some elements failed to parse: $tokens")
 class UnmatchedCloserException(closer: Token)
