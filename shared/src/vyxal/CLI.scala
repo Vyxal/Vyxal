@@ -183,7 +183,7 @@ object CLI:
         .action((limit, cfg) =>
           cfg.copy(settings = cfg.settings.copy(recursionLimit = limit))
         )
-        .text("Set recursion limit (default 500)")
+        .text("Set recursion limit (default 100)")
         .optional(),
       opt[String]("docs-literate")
         .action((symbol, cfg) => cfg.copy(litInfoFor = Some(symbol)))
