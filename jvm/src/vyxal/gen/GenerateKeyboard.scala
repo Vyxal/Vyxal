@@ -44,8 +44,8 @@ private object GenerateKeyboard:
             if token == " " then 32 else Lexer.Codepage.indexOf(token.last)
           val thisElement = scala.collection.mutable.HashMap[String, String]()
           thisElement("name") = name
-          thisElement("description") = description
-          thisElement("overloads") = keywords.mkString(" ")
+          thisElement("description") = keywords.mkString(" ")
+          thisElement("overloads") = description
           thisElement("token") = symbol
 
           if data.contains(index) then data(index) += thisElement.toMap
