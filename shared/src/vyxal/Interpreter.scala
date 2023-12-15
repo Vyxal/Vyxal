@@ -226,7 +226,7 @@ object Interpreter:
         else if args.sizeIs < index then ctx.push(ctx.settings.defaultValue)
         else ctx.push(args(index))
       case AST.Generated(exec, _) => exec()
-      case _ => throw NotImplementedError(s"$ast not implemented")
+      case _ => throw VyxalYikesException(s"$ast not implemented")
     end match
     scribe.trace(s"Top of stack: ${ctx.peek}")
   end execute
