@@ -561,6 +561,8 @@
   - { in: [[2, 3, 4, 5], [2]], out: [4]}
   - { in: [[1, 3, 5, 7], [1, 3]], out: [3, 7]}
   - { in: [4, [1, 3, 4]], out: 3}
+  - { in: ["abc", [1, 2, "foo"]], out: ["b", "c", "afoobc"]}
+  - { in: ["abc", ["foo", "bar", "baz"]], out: ["afoobc", "abarbc", "abazbc"]}
 
 "j":
   - { in: [[1, 2, 3], "penguin"], out: "1penguin2penguin3"}
