@@ -180,7 +180,9 @@ object CLI:
         .text("Code to execute directly")
         .optional(),
       opt[Int]("recursions")
-        .action((limit, cfg) => cfg.copy(settings = cfg.settings.copy(recursionLimit = limit)))
+        .action((limit, cfg) =>
+          cfg.copy(settings = cfg.settings.copy(recursionLimit = limit))
+        )
         .text("Set recursion limit (default 500)")
         .optional(),
       opt[String]("docs-literate")
