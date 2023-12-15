@@ -179,6 +179,12 @@ object CLI:
         .action((code, cfg) => cfg.copy(code = Some(code)))
         .text("Code to execute directly")
         .optional(),
+      opt[Int]("recursions")
+        .action((limit, cfg) =>
+          cfg.copy(settings = cfg.settings.copy(recursionLimit = limit))
+        )
+        .text("Set recursion limit (default 100)")
+        .optional(),
       opt[String]("docs-literate")
         .action((symbol, cfg) => cfg.copy(litInfoFor = Some(symbol)))
         .text("Print literate mode mappings and exit")

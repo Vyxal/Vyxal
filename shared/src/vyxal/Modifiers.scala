@@ -40,6 +40,15 @@ object Modifiers:
         case _ => true
       )
   val modifiers: Map[String, Modifier] = Map(
+    "ᵜ" ->
+      Modifier(
+        "Lambda to Newline",
+        """|Scan elements to the left until a newline is found. Push a
+           |lambda with all of the scanned elements
+           |<elements>ᵜ: Push a lambda""".stripMargin,
+        List("<-}"),
+        -1,
+      ) { case _ => ??? },
     "ᵃ" ->
       Modifier(
         "Apply to Neighbours | Number of Truthy Elements",

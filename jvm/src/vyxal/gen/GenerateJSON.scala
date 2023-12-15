@@ -11,7 +11,7 @@ import scala.collection.mutable.ListBuffer
 
 import upickle.default.*
 
-private object GenerateKeyboard:
+private object GenerateJSON:
   def generate(): String = generateDescriptions()
 
   def generateDescriptions(): String =
@@ -73,12 +73,6 @@ private object GenerateKeyboard:
       scala.collection.mutable.HashMap[Int, List[Map[String, String]]]()
     for (index, elements) <- data do finalData(index) = elements.toList
 
-    val escapedCodepage = Lexer.Codepage
-      .replace("\\", "\\\\")
-      .replace("\"", "\\\"")
-      .replace("\n", "\\n")
-    val header =
-      s"var codepage = \"$escapedCodepage\";\nvar codepage_descriptions ="
-    header + upickle.default.write(finalData.toMap)
+    upickle.default.write(finalData.toMap)
   end generateDescriptions
-end GenerateKeyboard
+end GenerateJSON

@@ -27,6 +27,10 @@ Keywords: mod, modulo, str-format, format, %, strfmt
 Keywords: append
 - a: any, b: any -> list(a) ++ [b]
 ----------------------
+' (Join Sublists on Spaces then Newlines (Element Form of ')) (non-vectorising)
+Keywords: join-sublists, join-sublists-on-spaces-then-newlines, grid
+- a: lst -> sublists of a joined on spaces then that joined on newlines
+----------------------
 * (Exponentation | Remove Nth Letter | Trim) (vectorising)
 Keywords: exp, **, pow, exponent, remove-letter, str-trim
 - a: num, b: num -> a ^ b
@@ -1261,6 +1265,14 @@ Keywords: grid-neighbours-diagonals-wrap, grid-neighbors-diagonals-wrap, adjacen
 Keywords: cartesian-product-unsafe, cartesian-unsafe, cart-prod-unsafe, cart-unsafe
 - a: list, b: list -> cartesian product of a and b in the standard order, but without accounting for infinite lists
 ----------------------
+Þι (0-Lift) (non-vectorising)
+Keywords: zero-lift, lift-0, O-lift
+- a: lst -> each item of a multiplied by its 0-based index
+----------------------
+Þκ (1-Lift) (non-vectorising)
+Keywords: one-lift, lift-1, l-lift
+- a: lst -> each item of a multiplied by its 1-based index
+----------------------
 Þċ (Multi-Set XOR) (non-vectorising)
 Keywords: multi-set-xor
 - a: lst, b: lst -> multi-set xor of a and b
@@ -1290,6 +1302,13 @@ Keywords: ZZ
 Keywords: multi-set-intersection, multi-set-intersect
 - a: lst, b: lst -> multi-set intersection of a and b
 ----------------------
+ᵜ
+Keywords: <-}
+Description: Scan elements to the left until a newline is found. Push a
+lambda with all of the scanned elements
+<elements>ᵜ: Push a lambda
+Trigraph: #^*
+-----------------------
 Ч
 Keywords: ****:
 Description: Turn the next four elements (whether that be a structure/modifier/element) into a lambda

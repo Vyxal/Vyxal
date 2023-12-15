@@ -148,8 +148,9 @@ private object GenerateDocs:
 
     contents.setLength(0)
 
-    val syntaxHeader = "| Symbol | Trigraph | Name | Description | Usage |"
-    val syntaxDivider = "| --- | --- | --- | --- | --- |"
+    val syntaxHeader =
+      "| Symbol | Trigraph | Name | Keywords (if applicable) | Description | Usage |"
+    val syntaxDivider = "| --- | --- | --- | --- | --- | --- |"
 
     SyntaxInfo.info.keys
       .zip(SyntaxInfo.info.values)
@@ -162,7 +163,7 @@ private object GenerateDocs:
         )
       )
       .foreach {
-        case (symbol, Syntax(name, description, usage)) =>
+        case (symbol, Syntax(name, literate, description, usage)) =>
           var trigraph = ""
           SugarMap.trigraphs
             .collect { case (tri, s) if s == symbol => tri }
@@ -177,7 +178,7 @@ private object GenerateDocs:
             .replace("<", "&lt;")
             .replace(">", "&gt;")
           contents ++=
-            s"| `$formatSymbol` | $trigraph | $name | $description | <pre>$formatUsage</pre> |\n"
+            s"| `$formatSymbol` | $trigraph | $name | <code>${literate.mkString(" ")}</code> | $description | <pre>$formatUsage</pre> |\n"
       }
 
     val syntaxInformation = syntaxHeader + "\n" + syntaxDivider + "\n" +

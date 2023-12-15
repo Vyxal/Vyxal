@@ -42,7 +42,11 @@ private[parsing] object LiterateLexer:
   )
 
   /** Map keywords to their token types */
-  private val keywords = Map("close-all" -> TokenType.StructureAllClose)
+  private val keywords = Map(
+    "close-all" -> TokenType.StructureAllClose,
+    "end-all" -> TokenType.StructureAllClose,
+    "end-end" -> TokenType.StructureDoubleClose,
+  )
 
   private val lambdaOpeners = Map(
     "lambda" -> StructureType.Lambda,
@@ -73,16 +77,15 @@ private[parsing] object LiterateLexer:
     "yes?" -> StructureType.Ternary,
     "if" -> StructureType.IfStatement,
     "for" -> StructureType.For,
+    "for<" -> StructureType.For,
     "do-to-each" -> StructureType.For,
+    "each-as" -> StructureType.For,
     "while" -> StructureType.While,
-    "is-there?" -> StructureType.DecisionStructure,
-    "does-exist?" -> StructureType.DecisionStructure,
-    "is-there" -> StructureType.DecisionStructure,
-    "does-exist" -> StructureType.DecisionStructure,
-    "any-in" -> StructureType.DecisionStructure,
-    "relation" -> StructureType.GeneratorStructure,
-    "generate-from" -> StructureType.GeneratorStructure,
-    "generate" -> StructureType.GeneratorStructure,
+    "while<" -> StructureType.While,
+    "exists<" -> StructureType.DecisionStructure,
+    "relation<" -> StructureType.GeneratorStructure,
+    "generate-from<" -> StructureType.GeneratorStructure,
+    "generate<" -> StructureType.GeneratorStructure,
   )
 
   private val groupModifierToToken = Map(
@@ -286,21 +289,21 @@ private[parsing] object LiterateLexer:
     ).opaque("<negated element keyword>")
 
   def modifierKeyword[$: P]: P[LitToken] =
-    withRange(keywordsParser(Modifiers.modifiers.values.flatMap(_.keywords)))
-      .opaque("<modifier keyword>")
-      .map {
-        case (keyword, range) =>
-          val mod =
-            Modifiers.modifiers.values.find(_.keywords.contains(keyword)).get
-          val name = Modifiers.modifiers.find(_._2._3.contains(keyword)).get._1
-          val tokenType = mod.arity match
-            case 1 => MonadicModifier
-            case 2 => DyadicModifier
-            case 3 => TriadicModifier
-            case 4 => TetradicModifier
-            case _ => SpecialModifier
-          LitToken(tokenType, name, range)
-      }
+    withRange(
+      keywordsParser(Modifiers.modifiers.values.flatMap(_.keywords)) | "<-}".!
+    ).opaque("<modifier keyword>").map {
+      case (keyword, range) =>
+        val mod =
+          Modifiers.modifiers.values.find(_.keywords.contains(keyword)).get
+        val name = Modifiers.modifiers.find(_._2._3.contains(keyword)).get._1
+        val tokenType = mod.arity match
+          case 1 => MonadicModifier
+          case 2 => DyadicModifier
+          case 3 => TriadicModifier
+          case 4 => TetradicModifier
+          case _ => SpecialModifier
+        LitToken(tokenType, name, range)
+    }
 
   def structOpener[$: P]: P[LitToken] =
     withRange("?->" | "?").opaque("<ternary>").map {

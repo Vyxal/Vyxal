@@ -6,6 +6,8 @@ import vyxal.Elements
 import vyxal.SyntaxInfo
 import vyxal.SugarMap
 
+import upickle.default.*
+
 private object GenerateTheseusData:
     def generate(): String = 
         val data = ujson.Obj(
