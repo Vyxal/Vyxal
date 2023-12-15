@@ -13,6 +13,7 @@
  <code>%</code> |  | Modulo / String Formatting | `mod`, `modulo`, `str-format`, `format`, `%`, `strfmt` | 2 | :x: | `a: num, b: num` => `a % b`
  | | | | | | | `a: str, b: any` => `a.format(b) (replace %s with b if scalar value or each item in b if vector)`
  <code>&</code> |  | Append | `append` | 2 | :x: | `a: any, b: any` => `list(a) ++ [b]`
+ <code>'</code> |  | Join Sublists on Spaces then Newlines (Element Form of ') | `join-sublists`, `join-sublists-on-spaces-then-newlines`, `grid` | 1 | :x: | `a: lst` => `sublists of a joined on spaces then that joined on newlines`
  <code>*</code> |  | Exponentation / Remove Nth Letter / Trim | `exp`, `**`, `pow`, `exponent`, `remove-letter`, `str-trim` | 2 | :white_check_mark: | `a: num, b: num` => `a ^ b`
  | | | | | | | `a: str, b: num` => `a with the bth letter removed`
  | | | | | | | `a: num, b: str` => `b with the ath letter removed`
