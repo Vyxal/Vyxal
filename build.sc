@@ -143,15 +143,22 @@ object jvm extends VyxalModule {
         "vyxal.gen.GenerateKeyboard",
         "generateDescriptions",
       )
+      val jsons = runMethod[String](
+        jvm.runClasspath(),
+        "vyxal.gen.GenerateJSON",
+        "generateDescriptions",
+      )
       val elementsFile = build.millSourcePath / "documentation" / "elements.txt"
       val trigraphsFile = build.millSourcePath / "documentation" /
         "trigraphs.txt"
       val tableFile = build.millSourcePath / "documentation" / "table.md"
       val descriptionsFile = build.millSourcePath / "pages" / "parsed_yaml.js"
+      val jasonFile = build.millSourcePath / "pages" / "description.json"
       os.write.over(elementsFile, elements)
       os.write.over(trigraphsFile, trigraphs)
       os.write.over(tableFile, table)
       os.write.over(descriptionsFile, descriptions)
+      os.write.over(jasonFile, jsons)
 
       Seq(
         PathRef(elementsFile),
@@ -174,10 +181,18 @@ object jvm extends VyxalModule {
       }.toSeq
     }
 
-  def theseus = 
+  def theseus =
     T.sources {
-      val codepage = runMethod[String](jvm.runClasspath(), "vyxal.gen.GenerateTheseusData", "codepage")
-      val modifiers = runMethod[String](jvm.runClasspath(), "vyxal.gen.GenerateTheseusData", "modifiers")
+      val codepage = runMethod[String](
+        jvm.runClasspath(),
+        "vyxal.gen.GenerateTheseusData",
+        "codepage",
+      )
+      val modifiers = runMethod[String](
+        jvm.runClasspath(),
+        "vyxal.gen.GenerateTheseusData",
+        "modifiers",
+      )
       val codepageFile = build.millSourcePath / "pages" / "codepage.js"
       val modifiersFile = build.millSourcePath / "pages" / "modifiers.js"
       os.write.over(codepageFile, codepage)
@@ -185,7 +200,7 @@ object jvm extends VyxalModule {
 
       Seq(
         PathRef(codepageFile),
-        PathRef(modifiersFile)
+        PathRef(modifiersFile),
       )
     }
 
