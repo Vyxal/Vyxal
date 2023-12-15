@@ -2042,6 +2042,9 @@ object Elements:
       None,
       " -> call the current function recursively",
     ) { ctx ?=>
+      if ctx.recursion >= ctx.settings.recursionLimit then
+        throw VyxalRecursionException()
+      ctx.recursion += 1
       if ctx.globals.callStack.isEmpty then
         Interpreter.execute(ctx.globals.originalProgram)(using ctx)
       else

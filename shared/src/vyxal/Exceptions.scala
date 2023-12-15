@@ -70,7 +70,8 @@ class InvalidListOverloadException(
     )
 class NoDefaultException(value: VAny)
     extends VyxalRuntimeException(s"No default value exists for $value")
-class RecursionError(message: String) extends VyxalRuntimeException(message)
+class VyxalRecursionException()
+    extends VyxalRuntimeException("Too many recursions")
 class UnimplementedOverloadException(element: String, args: Seq[VAny])
     extends VyxalRuntimeException(
       s"$element not supported for input(s) ${args.mkString("[", ", ", "]")}"
