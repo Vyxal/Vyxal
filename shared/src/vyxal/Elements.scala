@@ -3272,6 +3272,17 @@ object Elements:
       case (a: VList, b) => ListHelpers.zeroPad(a, makeIterable(b).bigLength)
       case (a: String, b) => StringHelpers.zeroPad(a, makeIterable(b).bigLength)
     },
+    addPart(
+      Monad,
+      "'",
+      "Join Sublists on Spaces then Newlines (Element Form of ')",
+      List("join-sublists", "join-sublists-on-spaces-then-newlines", "grid"),
+      false,
+      "a: lst -> sublists of a joined on spaces then that joined on newlines",
+    ) {
+      case a =>
+        makeIterable(a).map(v => makeIterable(v).mkString(" ")).mkString("\n")
+    },
 
     // Constants
     addNilad("ð", "Space", List("space"), "\" \"") { " " },
