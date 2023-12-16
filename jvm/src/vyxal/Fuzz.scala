@@ -28,17 +28,13 @@ object Fuzz:
             },
             Duration(tm, "seconds"),
           )
-        catch
-          case _ =>
-            println(s"` $fuzz ` Timeout after $tm seconds")
-      end for
+        catch case _ => println(s"` $fuzz ` Timeout after $tm seconds")
     end for
   end fuzz
   def makeFuzz(length: Int, noLoop: Boolean): IndexedSeq[String] =
     val lazyLoops = raw"[xᶨᶪ\(\{?Ṇᵡ]"
     var cp = Lexer.Codepage
-    if noLoop then
-      cp = Lexer.Codepage.replaceAll(lazyLoops, "")
+    if noLoop then cp = Lexer.Codepage.replaceAll(lazyLoops, "")
     if length == 1 then return cp.map(_.toString)
     else return cp.flatMap(x => makeFuzz(length - 1, noLoop).map(y => y + x))
 
