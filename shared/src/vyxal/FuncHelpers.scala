@@ -5,6 +5,9 @@ object FuncHelpers:
   /** Vectorise a function object */
   def vectorise(fn: VFun)(using ctx: Context): Unit =
     val res = fn.arity match
+      case 0 => ListHelpers.makeIterable(ctx.pop()).vmap { _ =>
+          Interpreter.executeFn(fn)
+        }
       case 1 => ListHelpers.makeIterable(ctx.pop()).vmap { a =>
           Interpreter.executeFn(fn, args = List(a))
         }
