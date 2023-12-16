@@ -135,7 +135,7 @@
  <code>k6</code> |  | Hex Digits (lowercase) | `hex-digits`, `hex-digs`, `hex-lowercase`, `hex-lower`, `hex-l`, `hex-lc` | 0 | :x: | `"0123456789abcdef"`
  <code>kA</code> |  | Uppercase Alphabet | `uppercase-alphabet`, `uppercase-alpha`, `A->Z`, `A-Z`, `amazon` | 0 | :x: | `"ABCDEFGHIJKLMNOPQRSTUVWXYZ"`
  <code>kB</code> |  | Uppercase and lowercase | `uppercase-and-lowercase`, `uppercase-and-lowercase-alpha`, `A->Za->z`, `A-Za-z` | 0 | :x: | `"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"`
- <code>kD</code> |  | Lines | `Lines`, `Dashes`, `Bars` | 0 | :x: | `"\|/-\_"`
+ <code>kD</code> |  | Lines | `lines`, `dashes`, `bars` | 0 | :x: | `"\|/-\_"`
  <code>kF</code> |  | FizzBuzz | `fizzbuzz`, `FB` | 0 | :x: | `"FizzBuzz"`
  <code>kH</code> |  | Hello, World! | `hello-world!`, `HW!` | 0 | :x: | `"Hello, World!"`
  <code>kL</code> |  | Lowercase and Uppercase Alphabet | `lowercase-and-uppercase-alphabet`, `lowercase-and-uppercase-alpha`, `a->zA->Z`, `a-zA-Z` | 0 | :x: | `"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"`

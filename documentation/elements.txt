@@ -321,7 +321,7 @@ Keywords: uppercase-and-lowercase, uppercase-and-lowercase-alpha, A->Za->z, A-Za
 - -> "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 ----------------------
 kD (Lines) (non-vectorising)
-Keywords: Lines, Dashes, Bars
+Keywords: lines, dashes, bars
 - -> "|/-\_"
 ----------------------
 kF (FizzBuzz) (non-vectorising)
