@@ -21,6 +21,7 @@ object FuncHelpers:
         }
 
     ctx.push(res)
+  end vectorise
 
   def reduceByElement(fn: VFun)(using ctx: Context): Unit =
     val iter = ctx.pop()
