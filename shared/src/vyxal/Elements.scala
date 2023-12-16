@@ -417,6 +417,25 @@ object Elements:
     },
     addPart(
       Monad,
+      "@",
+      "Cumulative Sums",
+      List("cumulative-sums", "cumsums", "cumsum", "cum-sum", "-_-"),
+      false,
+      "a: lst -> cumulative sums of a",
+    ) {
+      case a =>
+        val list = ListHelpers.makeIterable(a)
+        if list.isEmpty then VList()
+        else if list.tail.isEmpty then VList(list.head)
+        else
+          VList.from(
+            list.tail.scanLeft(
+              list.head
+            )((x, y) => MiscHelpers.add(x, y))
+          )
+    },
+    addPart(
+      Monad,
       "ÞĊ",
       "Cycle | Is Positive?",
       List("cycle", "is-positive?", "positive?", ">0?"),
