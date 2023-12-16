@@ -2965,6 +2965,7 @@ object Elements:
         "integer-division",
         "int-div",
         "int-rizz",
+        "sums",
       ),
       Some(1),
       "a: lst -> sum of each element of a",
