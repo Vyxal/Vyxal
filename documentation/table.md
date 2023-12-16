@@ -39,6 +39,7 @@
  | | | | | | | `a: num, b: str` => `str(a) > b`
  | | | | | | | `a: str, b: str` => `a > b`
  <code>?</code> |  | Get Input | `get-input`, `input`, `stdin`, `readline` | 0 | :x: | `input`
+ <code>@</code> |  | Cumulative Sums | `cumulative-sums`, `cumsums`, `cumsum`, `cum-sum`, `-_-` | 1 | :x: | `a: lst` => `cumulative sums of a`
  <code>A</code> |  | All Truthy / All() / Is Vowel? | `all`, `is-vowel?`, `vowel?` | 1 | :x: | `a: str` => `is (a) a vowel? vectorises for strings len > 1`
  | | | | | | | `a: list` => `is (a) all truthy?`
  <code>B</code> |  | Convert From Binary | `from-binary`, `bin->dec`, `bin->decimal` | 1 | :x: | `a: num` => `str(a) from binary`
@@ -223,7 +224,7 @@
  | | | | | | | `a b` => `a b a`
  <code>Ṗ</code> | <code>#.P</code> | Permutations | `permutations`, `perms` | 1 | :x: | `a: lst` => `Permutations of a`
  <code>Ṙ</code> | <code>#.R</code> | Rotate Left | `abc->bca`, `rot-left`, `rotate-left` | 1 | :x: | `a: any` => `rotate left once`
- <code>Ṡ</code> | <code>#.S</code> | Vectorised Sums / Integer Division | `vectorised-sums`, `vec-sums`, `integer-division`, `int-div`, `int-rizz` | 1 | :x: | `a: lst` => `sum of each element of a`
+ <code>Ṡ</code> | <code>#.S</code> | Vectorised Sums / Integer Division | `vectorised-sums`, `vec-sums`, `integer-division`, `int-div`, `int-rizz`, `sums` | 1 | :x: | `a: lst` => `sum of each element of a`
  | | | | | | | `a: num, b: num` => `a // b`
  <code>Ṫ</code> | <code>#.T</code> | Init | `init`, `remove-last` | 1 | :x: | `a: lst` => `a[:-1]`
  | | | | | | | `a: str` => `a[:-1]`

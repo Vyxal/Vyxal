@@ -86,6 +86,10 @@ Keywords: gt, greater, greater-than, greater?, bigger?
 Keywords: get-input, input, stdin, readline
 - ->  -> input
 ----------------------
+@ (Cumulative Sums) (non-vectorising)
+Keywords: cumulative-sums, cumsums, cumsum, cum-sum, -_-
+- a: lst -> cumulative sums of a
+----------------------
 A (All Truthy | All() | Is Vowel?) (non-vectorising)
 Keywords: all, is-vowel?, vowel?
 - a: str -> is (a) a vowel? vectorises for strings len > 1
@@ -578,7 +582,7 @@ Keywords: abc->bca, rot-left, rotate-left
 ----------------------
 Ṡ (Vectorised Sums | Integer Division) (non-vectorising)
 Trigraph: #.S
-Keywords: vectorised-sums, vec-sums, integer-division, int-div, int-rizz
+Keywords: vectorised-sums, vec-sums, integer-division, int-div, int-rizz, sums
 - a: lst -> sum of each element of a
 - a: num, b: num -> a // b
 ----------------------
