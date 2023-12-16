@@ -3583,6 +3583,14 @@ object Elements:
       spire.math.Real.phi
     },
     addNilad(
+      "kD",
+      "Lines",
+      List("Lines", "Dashes", "Bars")
+      "\"|/-\\_\""
+    ) {
+      "|/-\\_"
+    },
+    addNilad(
       "ÞṆ",
       "Set of Natural Numbers",
       List("NN"),
