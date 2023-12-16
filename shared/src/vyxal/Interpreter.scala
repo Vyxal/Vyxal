@@ -39,7 +39,7 @@ object Interpreter:
       scribe.debug(s"Executing '$code' (ast: $ast)")
       ctx.globals.originalProgram = ast
       execute(ast)
-      if !ctx.globals.printed || !ctx.testMode then
+      if !ctx.globals.printed && !ctx.testMode then
         if ctx.settings.endPrintMode == EndPrintMode.Default then
           vyPrintln(ctx.pop())
         else if ctx.settings.endPrintMode == EndPrintMode.JoinNewlines then
