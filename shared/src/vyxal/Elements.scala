@@ -3174,7 +3174,10 @@ object Elements:
       Some(0),
       "The first input to the program",
     ) { ctx ?=>
-      ctx.globals.inputs(0)
+      if ctx.globals.inputs.nonEmpty then
+        ctx.push(ctx.globals.inputs(0))
+      else
+        ctx.push("0")
     },
     addDirect(
       "¹",
@@ -3183,7 +3186,10 @@ object Elements:
       Some(0),
       "The second input to the program",
     ) { ctx ?=>
-      ctx.globals.inputs(1)
+      if ctx.globals.inputs.length > 1 then
+        ctx.push(ctx.globals.inputs(1))
+      else
+        ctx.push(VList.from(Seq.empty))
     },
     addPart(
       Monad,

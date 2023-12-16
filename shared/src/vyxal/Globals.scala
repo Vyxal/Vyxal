@@ -39,6 +39,8 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
 
   def nonEmpty: Boolean = currInputs.nonEmpty
 
+  def length: Int = currInputs.length
+
   /** Make sure to call [[this.nonEmpty]] first */
   def next(): VAny =
     val res = currInputs(ind)
