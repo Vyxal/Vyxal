@@ -1327,10 +1327,19 @@ object Elements:
       case (a: String, b: VNum) => a.length == b.toInt
       case (a: String, b: String) => a.length == b.length
       case (a: VNum, b: String) => b.length == a.toInt
-      case (a: VVal, b: VFun) =>
+      case (a: VPhysical, b: VFun) =>
         val prevVals = ArrayBuffer.empty[VAny]
         VList.from(LazyList.unfold(a: VAny) { prevVal =>
           val next = b(prevVal)
+          if prevVals.contains(next) then None
+          else
+            prevVals += next
+            Some(next -> next)
+        })
+      case (a: VFun, b) =>
+        val prevVals = ArrayBuffer.empty[VAny]
+        VList.from(LazyList.unfold(b: VAny) { prevVal =>
+          val next = a(prevVal)
           if prevVals.contains(next) then None
           else
             prevVals += next
