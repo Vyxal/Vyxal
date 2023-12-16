@@ -3585,8 +3585,8 @@ object Elements:
     addNilad(
       "kD",
       "Lines",
-      List("Lines", "Dashes", "Bars")
-      "\"|/-\\_\""
+      List("Lines", "Dashes", "Bars"),
+      "\"|/-\\_\"",
     ) {
       "|/-\\_"
     },

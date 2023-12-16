@@ -320,6 +320,10 @@ kB (Uppercase and lowercase) (non-vectorising)
 Keywords: uppercase-and-lowercase, uppercase-and-lowercase-alpha, A->Za->z, A-Za-z
 - -> "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 ----------------------
+kD (Lines) (non-vectorising)
+Keywords: Lines, Dashes, Bars
+- -> "|/-\_"
+----------------------
 kF (FizzBuzz) (non-vectorising)
 Keywords: fizzbuzz, FB
 - -> "FizzBuzz"
