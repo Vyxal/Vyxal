@@ -2163,10 +2163,9 @@ object Elements:
       "a: any -> rotate left once",
     ) { a =>
       val iterable = ListHelpers.makeIterable(a)
-      val temp = if iterable.isEmpty then
-        VList.from(Seq.empty)
-      else
-        VList.from(iterable.tail :+ iterable.head)
+      val temp =
+        if iterable.isEmpty then VList.from(Seq.empty)
+        else VList.from(iterable.tail :+ iterable.head)
       a match
         case _: String => temp.mkString
         case _: VNum => VNum(temp.mkString)
@@ -2181,10 +2180,9 @@ object Elements:
       "a: any -> rotate right once",
     ) { a =>
       val iterable = ListHelpers.makeIterable(a)
-      val temp = if iterable.isEmpty then
-        VList.from(Seq.empty)
-      else
-        VList.from(iterable.last +: iterable.init)
+      val temp =
+        if iterable.isEmpty then VList.from(Seq.empty)
+        else VList.from(iterable.last +: iterable.init)
       a match
         case _: String => temp.mkString
         case _: VNum => VNum(temp.mkString)
@@ -3174,10 +3172,8 @@ object Elements:
       Some(0),
       "The first input to the program",
     ) { ctx ?=>
-      if ctx.globals.inputs.nonEmpty then
-        ctx.push(ctx.globals.inputs(0))
-      else
-        ctx.push("0")
+      if ctx.globals.inputs.nonEmpty then ctx.push(ctx.globals.inputs(0))
+      else ctx.push("0")
     },
     addDirect(
       "¹",
@@ -3186,10 +3182,8 @@ object Elements:
       Some(0),
       "The second input to the program",
     ) { ctx ?=>
-      if ctx.globals.inputs.length > 1 then
-        ctx.push(ctx.globals.inputs(1))
-      else
-        ctx.push(VList.from(Seq.empty))
+      if ctx.globals.inputs.length > 1 then ctx.push(ctx.globals.inputs(1))
+      else ctx.push(VList.from(Seq.empty))
     },
     addPart(
       Monad,
@@ -3229,7 +3223,8 @@ object Elements:
         if a.isEmpty then 0
         else
           val filtered = a.filter(c => c.isDigit || "-.".contains(c))
-          val negated = s"${filtered.headOption.getOrElse(0)}${filtered.tail.replace("-", "")}"
+          val negated =
+            s"${filtered.headOption.getOrElse(0)}${filtered.tail.replace("-", "")}"
           val decimaled = negated.splitAt(negated.indexOf('.')) match
             case ("", s) =>
               if a.count('.' == _) > 1 then s.stripPrefix(".") else s
