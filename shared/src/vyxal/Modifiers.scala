@@ -248,26 +248,20 @@ object Modifiers:
       ) {
         case List(ast) =>
           var returnStr = false
-          AST.makeSingle(
-            AST.Generated(
-              () =>
-                ctx ?=>
-                  val top = ctx.pop()
-                  val iterable = ListHelpers.makeIterable(top)
-                  returnStr = top.isInstanceOf[String]
-                  ctx.push(iterable.tail)
-                  if ast.arity != Some(0) then ctx.push(iterable.head)
-              ,
-              arity = Some(1),
-            ),
-            ast.arity match
-              case Some(0) | Some(1) => ast
-              case Some(2) =>
-                AST.makeSingle(astToLambda(ast, 2), AST.Command("#v"))
-              case _ => throw ModifierArityException("ᴴ", ast.arity)
-            ,
-            ast.arity match
-              case Some(0) | Some(1) => AST.Generated(
+          ast.arity match
+            case Some(0) | Some(1) => AST.makeSingle(
+                AST.Generated(
+                  () =>
+                    ctx ?=>
+                      returnStr = ctx.peek.isInstanceOf[String]
+                      val top = ListHelpers.makeIterable(ctx.pop())
+                      ctx.push(top.tail)
+                      if ast.arity == Some(1) then ctx.push(top.head)
+                  ,
+                  arity = Some(1),
+                ),
+                ast,
+                AST.Generated(
                   () =>
                     ctx ?=>
                       val head = ctx.pop()
@@ -281,18 +275,35 @@ object Modifiers:
                       else ctx.push(list)
                   ,
                   arity = Some(1),
-                )
-              case Some(2) => AST.Generated(() =>
-                  ctx ?=>
-                    val head =
-                      if ctx.peek.isInstanceOf[VList] then
-                        ctx.pop().asInstanceOf[VList]
-                      else VList.from(ctx.pop(1))
-                    if returnStr then
-                      ctx.push(ListHelpers.flatten(head).mkString)
-                    else ctx.push(head)
                 ),
-          )
+              )
+            case Some(2) => AST.makeSingle(
+                AST.Generated(
+                  () =>
+                    ctx ?=>
+                      returnStr = ctx.peek.isInstanceOf[String]
+                      val top = ListHelpers.makeIterable(ctx.pop())
+                      ctx.push(top.tail)
+                      ctx.push(top.head)
+                  ,
+                  arity = Some(1),
+                ),
+                AST.makeSingle(astToLambda(ast, 2), AST.Command("#v")),
+                AST.Generated(
+                  () =>
+                    ctx ?=>
+                      val head =
+                        if ctx.peek.isInstanceOf[VList] then
+                          ctx.pop().asInstanceOf[VList]
+                        else VList.from(ctx.pop(1))
+                      if returnStr then
+                        ctx.push(ListHelpers.flatten(head).mkString)
+                      else ctx.push(head)
+                  ,
+                  arity = Some(1)
+                ),
+              )
+            case _ => throw ModifierArityException("ᴴ", ast.arity)
       },
     "ᶤ" ->
       Modifier(
