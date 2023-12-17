@@ -983,7 +983,7 @@ object Elements:
           )
         )
     },
-    addPart(
+    addFull(
       Dyad,
       "i",
       "Index | Collect Unique Application Values | Enclose",
@@ -994,26 +994,7 @@ object Elements:
       "a: str, b: lst -> ''.join(a[i] for i in b)",
       "a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value.",
       "a: str, b: str -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])",
-    ) {
-      case (a: VList, b: VList) => a.index(b)
-      case (a: String, b: VList) =>
-        val temp = ListHelpers.makeIterable(a).index(b)
-        temp match
-          case l: VList => l.mkString
-          case _ => temp
-      case (a: VList, b: String) =>
-        val temp = ListHelpers.makeIterable(b).index(a)
-        temp match
-          case l: VList => l.mkString
-          case _ => temp
-      case (a, b: VFun) => MiscHelpers.collectUnique(b, a)
-      case (a: VFun, b) => MiscHelpers.collectUnique(a, b)
-      case (a: VNum, b) => ListHelpers.makeIterable(b).index(a)
-      case (a, b: VNum) => ListHelpers.makeIterable(a).index(b)
-      case (a: String, b: String) =>
-        val temp = a.length / 2
-        a.slice(0, temp) + b + a.slice(temp, a.length)
-    },
+    ) { MiscHelpers.index },
     addPart(
       Dyad,
       "İ",
