@@ -16,6 +16,7 @@ class VyxalException(
     if unknown && !report && !ctx.settings.fullTrace then
       message += "\nUse 'X' flag for full traceback"
     if ctx.settings.fullTrace || report then
+      if !ex.isInstanceOf[VyxalException] then message += "\n" + ex.getMessage()
       message += "\n" +
         super.getCause().getStackTrace.mkString("  ", "\n  ", "")
     message
