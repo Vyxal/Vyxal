@@ -562,12 +562,17 @@ object ListHelpers:
       case _: String => value.mkString
 
   def overlaps(iterable: Seq[VAny], size: Int): Seq[VList] =
-    if size == 0 then Seq.empty
-    else iterable.sliding(size).toSeq.map(VList.from)
+    size compare 0 match
+      case 0 => Seq.empty
+      case 1 => iterable.sliding(size).toSeq.map(VList.from)
+      case -1 => iterable.sliding(-size).toSeq.reverse.map(VList.from)
 
   // Just for strings
   def overlaps(iterable: String, size: Int): Seq[String] =
-    if size == 0 then Seq.empty else iterable.sliding(size).toSeq
+    size compare 0 match
+      case 0 => Seq.empty
+      case 1 => iterable.sliding(size).toSeq
+      case -1 => iterable.sliding(-size).toSeq.reverse
 
   def palindromise(lst: VList): VList =
     val temp = lst.lst

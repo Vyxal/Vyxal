@@ -2154,20 +2154,22 @@ object Elements:
       case a => VList
           .from(ListHelpers.makeIterable(a).sorted(MiscHelpers.compare(_, _)))
     },
-    addDirect(
+    addPart(
+      Monad,
       "Ṙ",
       "Rotate Left",
       List("abc->bca", "rot-left", "rotate-left"),
-      Some(1),
+      false,
       "a: any -> rotate left once",
-    ) { ctx ?=>
-      val original = ctx.pop()
-      val a = ListHelpers.makeIterable(original)
-      val temp = VList.from(a.tail :+ a.head)
-      original match
-        case _: String => ctx.push(temp.mkString)
-        case _: VNum => ctx.push(VNum(temp.mkString))
-        case _ => ctx.push(temp)
+    ) { a =>
+      val iterable = ListHelpers.makeIterable(a)
+      val temp =
+        if iterable.isEmpty then VList.from(Seq.empty)
+        else VList.from(iterable.tail :+ iterable.head)
+      a match
+        case _: String => temp.mkString
+        case _: VNum => VNum(temp.mkString)
+        case _ => temp
     },
     addPart(
       Monad,
@@ -2176,10 +2178,15 @@ object Elements:
       List("abc->cab", "rot-right", "rotate-right"),
       false,
       "a: any -> rotate right once",
-    ) {
-      case a: String => s"${a.last}${a.dropRight(1)}"
-      case a: VNum => VNum(s"${a.toString.last}${a.toString.dropRight(1)}")
-      case a: VList => VList.from(a.lst.last +: a.lst.dropRight(1))
+    ) { a =>
+      val iterable = ListHelpers.makeIterable(a)
+      val temp =
+        if iterable.isEmpty then VList.from(Seq.empty)
+        else VList.from(iterable.last +: iterable.init)
+      a match
+        case _: String => temp.mkString
+        case _: VNum => VNum(temp.mkString)
+        case _ => temp
 
     },
     addPart(
@@ -3166,7 +3173,8 @@ object Elements:
       Some(0),
       "The first input to the program",
     ) { ctx ?=>
-      ctx.globals.inputs(0)
+      if ctx.globals.inputs.nonEmpty then ctx.push(ctx.globals.inputs(0))
+      else ctx.push("0")
     },
     addDirect(
       "¹",
@@ -3175,7 +3183,8 @@ object Elements:
       Some(0),
       "The second input to the program",
     ) { ctx ?=>
-      ctx.globals.inputs(1)
+      if ctx.globals.inputs.length > 1 then ctx.push(ctx.globals.inputs(1))
+      else ctx.push(VList.from(Seq.empty))
     },
     addPart(
       Monad,
@@ -3215,7 +3224,8 @@ object Elements:
         if a.isEmpty then 0
         else
           val filtered = a.filter(c => c.isDigit || "-.".contains(c))
-          val negated = s"${filtered.head}${filtered.tail.replace("-", "")}"
+          val negated =
+            s"${filtered.headOption.getOrElse(0)}${filtered.tail.replace("-", "")}"
           val decimaled = negated.splitAt(negated.indexOf('.')) match
             case ("", s) =>
               if a.count('.' == _) > 1 then s.stripPrefix(".") else s
