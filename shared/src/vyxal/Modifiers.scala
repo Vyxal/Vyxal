@@ -300,10 +300,11 @@ object Modifiers:
                         ctx.push(ListHelpers.flatten(head).mkString)
                       else ctx.push(head)
                   ,
-                  arity = Some(1)
+                  arity = Some(1),
                 ),
               )
             case _ => throw ModifierArityException("ᴴ", ast.arity)
+          end match
       },
     "ᶤ" ->
       Modifier(
