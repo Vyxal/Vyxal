@@ -91,7 +91,8 @@ class ModifierTests extends VyxalTests:
       "\"abcde\"ᴴ+" -> "bacadaea",
       "#[3|4|\"abc\"#]ᴴ+" -> VList(7, "abc3"),
       "#[#[1|\"abc\"#]|2|\"def\"#]ᴴN" -> VList(VList(-1, "ABC"), 2, "def"),
-      "#[#[1|\"abc\"#]|2|\"def\"#]ᴴ+" -> VList(VList(3, "2abc"), VList("def1", "defabc")),
+      "#[#[1|\"abc\"#]|2|\"def\"#]ᴴ+" ->
+        VList(VList(3, "2abc"), VList("def1", "defabc")),
     )
   }
 
