@@ -25,6 +25,15 @@ enum AST(val arity: Option[Int]) derives CanEqual:
   ) extends AST(arity)
   case SpecialModifier(modi: String, override val range: Range = Range.fake)
       extends AST(None)
+
+  case RedefineModifier(
+      name: String,
+      mode: String,
+      args: List[String],
+      implArity: Int,
+      var impl: Option[AST],
+      override val range: Range = Range.fake,
+  ) extends AST(None)
   case CompositeNilad(elems: List[AST], override val range: Range = Range.fake)
       extends AST(Some(0))
 

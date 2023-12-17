@@ -147,6 +147,9 @@ private[parsing] object LiterateLexer:
   def contextIndex[$: P]: P[LitToken] =
     parseToken(ContextIndex, "`" ~~ CharsWhileIn("0-9", 0).! ~~ "`")
 
+  def functionCall[$: P]: P[LitToken] =
+    parseToken(FunctionCall, "`" ~~ Common.varName.! ~~ "`")
+
   def isLambdaParam(word: String): Boolean =
     !structOpeners.contains(word) && !lambdaOpenerSet.contains(word) &&
       !branchKeywords.contains(word) && !endKeywords.contains(word)
@@ -386,14 +389,34 @@ private[parsing] object LiterateLexer:
         }
     }
 
+  def redefineMod[$: P]: P[LitToken] =
+    withRange(
+      "~" ~/
+        (CharPred(c =>
+          Lexer.Codepage.filterNot(c => c.isLetter || c.isDigit).contains(c)
+        ).! | Common.varName.!) ~/ CharIn("@*").! ~/
+        (Common.varName.! ~ rep("," ~ Common.varName.!).?).? ~ litBranch
+    ).map {
+      case ((name, mode, args, _), range) =>
+        val convertedArgs = args match
+          case Some((first, rest)) => first +: rest.getOrElse(Seq.empty)
+          case None => Seq.empty
+        LitToken(
+          RedefineModifier,
+          s"$name|$mode|${convertedArgs.mkString(",")}",
+          range,
+        )
+    }
+
   def singleToken[$: P]: P[Seq[LitToken]] =
     P(
       list | unpackVar |
-        (lambdaBlock | specialLambdaBlock | contextIndex | litGetVariable |
-          litSetVariable | litSetConstant | litAugVariable | elementKeyword |
-          negatedElementKeyword | tokenMove | modifierKeyword | structOpener |
-          otherKeyword | litBranch | litStructClose | litNumber | litString |
-          normalGroup).map(Seq(_)) | rawCode |
+        (lambdaBlock | specialLambdaBlock | contextIndex | functionCall |
+          redefineMod | litGetVariable | litSetVariable | litSetConstant |
+          litAugVariable | elementKeyword | negatedElementKeyword | tokenMove |
+          modifierKeyword | structOpener | otherKeyword | litBranch |
+          litStructClose | litNumber | litString | normalGroup).map(Seq(_)) |
+        rawCode |
         SBCSLexer.token.map((token) =>
           Seq(LitToken(token.tokenType, token.value, token.range))
         )

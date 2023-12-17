@@ -90,7 +90,7 @@ private[parsing] object SBCSLexer:
     P(
       withRange(
         (CharIn("∆øÞk") ~~ AnyChar).! |
-          ("#" ~~ !CharIn("[]$!=#>@{") ~~ AnyChar).!
+          ("#" ~~ !CharIn("[]$!=#>@{~") ~~ AnyChar).!
       )
     ).map {
       case (digraph, range) =>
@@ -175,16 +175,35 @@ private[parsing] object SBCSLexer:
 
   def newlines[$: P]: P[Token] = parseToken(Newline, Common.eol.!)
 
+  def redefineMod[$: P]: P[Token] =
+    withRange(
+      "#~" ~/
+        (CharPred(c =>
+          Lexer.Codepage.filterNot(c => c.isLetter || c.isDigit).contains(c)
+        ).! | Common.varName.!) ~/ CharIn("@*").! ~/
+        (Common.varName.! ~ rep("," ~ Common.varName.!).?).? ~ "|"
+    ).map {
+      case ((name, mode, args), range) =>
+        val convertedArgs = args match
+          case Some((first, rest)) => first +: rest.getOrElse(Seq.empty)
+          case None => Seq.empty
+        Token(
+          RedefineModifier,
+          s"$name|$mode|${convertedArgs.mkString(",")}",
+          range,
+        )
+    }
+
   def comment[$: P]: P[Token] =
     parseToken(Comment, "##" ~~/ CharsWhile(c => c != '\n' && c != '\r').?.!)
 
   def token[$: P]: P[Token] =
     P(
       comment | sugarTrigraph | syntaxTrigraph | digraph | branch |
-        contextIndex | sbcsNumber | string | augVariable | getVariable |
-        setVariable | setConstant | twoCharNumber | twoCharString |
-        singleCharString | monadicModifier | dyadicModifier | triadicModifier |
-        tetradicModifier | specialModifier | structureOpen |
+        redefineMod | contextIndex | sbcsNumber | string | augVariable |
+        getVariable | setVariable | setConstant | twoCharNumber |
+        twoCharString | singleCharString | monadicModifier | dyadicModifier |
+        triadicModifier | tetradicModifier | specialModifier | structureOpen |
         structureSingleClose | structureAllClose | listOpen | listClose |
         newlines | command
     )

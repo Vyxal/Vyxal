@@ -88,6 +88,8 @@ enum TokenType(val canonicalSBCS: Option[String] = None) derives CanEqual:
   case CompressedNumber
   case DictionaryString
   case ContextIndex
+  case FunctionCall
+  case RedefineModifier
   case Comment
   case GetVar
   case SetVar

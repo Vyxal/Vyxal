@@ -86,6 +86,15 @@ object Parser:
 
         // At this stage, modifiers aren't explicitly handled, so just push a
         // temporary AST to comply with the type of the AST stack
+        case TokenType.RedefineModifier =>
+          val components = value.split(raw"\|")
+          val name = components(0)
+          val mode = components(1)
+          val args = components(2)
+          val params = args.split(",").toList
+          val arity = params.length
+          asts.push(AST.RedefineModifier(name, mode, params, arity, None))
+
         case TokenType.MonadicModifier => asts.push(AST.JunkModifier(value, 1))
         case TokenType.DyadicModifier => asts.push(AST.JunkModifier(value, 2))
         case TokenType.TriadicModifier => asts.push(AST.JunkModifier(value, 3))
@@ -95,6 +104,10 @@ object Parser:
         case TokenType.ContextIndex => asts.push(
             AST.ContextIndex(if value.nonEmpty then value.toInt else -1)
           )
+        case TokenType.FunctionCall =>
+          val funcName = value
+          asts.push(AST.GetVar(funcName, range))
+          asts.push(AST.Command("Ė"))
         case TokenType.GetVar => asts.push(AST.GetVar(value, range))
         case TokenType.SetVar => asts.push(AST.SetVar(value, range))
         case TokenType.Constant => asts.push(AST.SetConstant(value, range))
@@ -156,7 +169,10 @@ object Parser:
                   List(AST.makeSingle(parse(lambdaAsts.reverse).toList*)),
                 )
               )
-            case "ᵗ" => ??? // TODO: Implement tie
+        case redef: AST.RedefineModifier =>
+          if finalAsts.isEmpty then throw BadModifierException(redef.name)
+          redef.impl = Some(finalAsts.pop())
+          finalAsts.push(redef)
         case AST.AuxAugmentVar(name, _) =>
           if asts.isEmpty then throw BadAugmentedAssignException()
           finalAsts.push(AST.AugmentVar(name, asts.pop()))
