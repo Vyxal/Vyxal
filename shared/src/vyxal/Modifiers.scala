@@ -265,10 +265,9 @@ object Modifiers:
                   () =>
                     ctx ?=>
                       val head = ctx.pop()
-                      val tail =
-                        if ctx.peek.isInstanceOf[VList] then
-                          ctx.pop().asInstanceOf[VList]
-                        else VList.from(ctx.pop(1))
+                      val tail = ctx.peek match
+                        case _: VList => ctx.pop().asInstanceOf[VList]
+                        case _ => VList.from(ctx.pop(1))
                       val list = VList.from(head +: tail)
                       if returnStr then
                         ctx.push(ListHelpers.flatten(list).mkString)
@@ -292,10 +291,9 @@ object Modifiers:
                 AST.Generated(
                   () =>
                     ctx ?=>
-                      val head =
-                        if ctx.peek.isInstanceOf[VList] then
-                          ctx.pop().asInstanceOf[VList]
-                        else VList.from(ctx.pop(1))
+                      val head = ctx.peek match
+                        case _: VList => ctx.pop().asInstanceOf[VList]
+                        case _ => VList.from(ctx.pop(1))
                       if returnStr then
                         ctx.push(ListHelpers.flatten(head).mkString)
                       else ctx.push(head)
