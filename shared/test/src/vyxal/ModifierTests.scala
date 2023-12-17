@@ -83,7 +83,15 @@ class ModifierTests extends VyxalTests:
 
   describe("Modifier ᴴ") {
     testMulti(
-      "#[3|4|5#]ᴴd" -> VList(6, 4, 5)
+      "#[3|4|5#]ᴴ69" -> VList(69, 4, 5),
+      "#[3|4|5#]ᴴd" -> VList(6, 4, 5),
+      "#[3|4|5#]ᴴ+" -> VList(7, 8),
+      "\"abcde\"ᴴ69" -> "69bcde",
+      "\"abcde\"ᴴd" -> "aabcde",
+      "\"abcde\"ᴴ+" -> "bacadaea",
+      "#[3|4|\"abc\"#]ᴴ+" -> VList(7, "abc3"),
+      "#[#[1|\"abc\"#]|2|\"def\"#]ᴴN" -> VList(VList(-1, "ABC"), 2, "def"),
+      "#[#[1|\"abc\"#]|2|\"def\"#]ᴴ+" -> VList(VList(3, "2abc"), VList("def1", "defabc")),
     )
   }
 
