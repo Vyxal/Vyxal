@@ -247,28 +247,51 @@ object Modifiers:
         1,
       ) {
         case List(ast) =>
-          // TODO this only works if f takes pops exactly one value and pushes
-          //   exactly one value. Is that a problem?
+          var returnStr = false
           AST.makeSingle(
             AST.Generated(
               () =>
                 ctx ?=>
-                  val top = ListHelpers.makeIterable(ctx.peek)
-                  ctx.push(top.tail)
-                  ctx.push(top.head)
+                  val top = ctx.pop()
+                  val iterable = ListHelpers.makeIterable(top)
+                  returnStr = top.isInstanceOf[String]
+                  ctx.push(iterable.tail)
+                  if ast.arity != Some(0) then ctx.push(iterable.head)
               ,
               arity = Some(1),
             ),
-            ast,
-            AST.Generated(
-              () =>
-                ctx ?=>
-                  val head = ctx.pop()
-                  val tail = ctx.pop().asInstanceOf[VList]
-                  ctx.push(VList.from(head +: tail))
-              ,
-              arity = Some(1),
-            ),
+            ast.arity match
+              case Some(0) | Some(1) => ast
+              case Some(2) =>
+                AST.makeSingle(astToLambda(ast, 2), AST.Command("#v"))
+              case _ => throw ModifierArityException("ᴴ", ast.arity)
+            ,
+            ast.arity match
+              case Some(0) | Some(1) => AST.Generated(
+                  () =>
+                    ctx ?=>
+                      val head = ctx.pop()
+                      val tail =
+                        if ctx.peek.isInstanceOf[VList] then
+                          ctx.pop().asInstanceOf[VList]
+                        else VList.from(ctx.pop(1))
+                      val list = VList.from(head +: tail)
+                      if returnStr then
+                        ctx.push(ListHelpers.flatten(list).mkString)
+                      else ctx.push(list)
+                  ,
+                  arity = Some(1),
+                )
+              case Some(2) => AST.Generated(() =>
+                  ctx ?=>
+                    val head =
+                      if ctx.peek.isInstanceOf[VList] then
+                        ctx.pop().asInstanceOf[VList]
+                      else VList.from(ctx.pop(1))
+                    if returnStr then
+                      ctx.push(ListHelpers.flatten(head).mkString)
+                    else ctx.push(head)
+                ),
           )
       },
     "ᶤ" ->

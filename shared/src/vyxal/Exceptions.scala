@@ -42,6 +42,10 @@ class BadModifierException(modifier: String)
     extends VyxalParsingException(s"Modifier '$modifier' is missing arguments")
 class BadStructureException(structure: String)
     extends VyxalParsingException(s"Invalid $structure statement")
+class ModifierArityException(modifier: String, arity: Option[Int])
+    extends VyxalParsingException(
+      s"Modifier '$modifier' does not support elements of arity ${arity.getOrElse("None")}"
+    )
 class NoSuchElementException(element: String)
     extends VyxalParsingException(s"No such element: $element"):
   def this(token: Token) = this(token.value)
