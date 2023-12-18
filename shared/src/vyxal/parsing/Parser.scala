@@ -107,7 +107,6 @@ object Parser:
             arity,
             params,
           )
-          println(customs)
           asts.push(AST.RedefineModifier(name, mode, params, arity, None))
 
         case TokenType.ElementSymbol =>
@@ -131,13 +130,11 @@ object Parser:
           if !customs.contains(name) then
             throw VyxalYikesException(s"Custom modifier $name not implemented")
           val (elementType, impl, arity, args) = customs(name)
-          println(customs(name))
           elementType match
             case CustomElementType.Element => throw VyxalYikesException(
                 s"Custom modifier $name is actually a custom element"
               )
             case CustomElementType.Modifier =>
-              println(s"Custom modifier $name with arity $arity")
               asts.push(AST.JunkModifier(name, arity))
         case TokenType.MonadicModifier => asts.push(AST.JunkModifier(value, 1))
         case TokenType.DyadicModifier => asts.push(AST.JunkModifier(value, 2))
@@ -228,9 +225,22 @@ object Parser:
               )
         case redef: AST.RedefineModifier =>
           if finalAsts.isEmpty then throw BadModifierException(redef.name)
+          var implementation = finalAsts.pop()
+          if redef.mode == "@" then
+            implementation = AST.makeSingle(
+              if implementation.isInstanceOf[AST.Lambda] then implementation
+              else
+                AST.Lambda(
+                  Some(customs(redef.name)._3),
+                  redef.args,
+                  List(implementation),
+                )
+              ,
+              AST.Command("Ė"),
+            )
           customs(redef.name) = (
             customs(redef.name)._1,
-            Some(finalAsts.pop()),
+            Some(implementation),
             customs(redef.name)._3,
             redef.args,
           )

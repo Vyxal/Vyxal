@@ -104,7 +104,6 @@ object Interpreter:
           list += ctx.pop()
         ctx.push(VList.from(list.toList))
       case AST.Command(cmd, _) =>
-        println(s"Symbols = ${ctx.globals.symbols}")
         if ctx.globals.symbols.contains(cmd) then
           execute(ctx.globals.symbols(cmd)(1).get)
         else
