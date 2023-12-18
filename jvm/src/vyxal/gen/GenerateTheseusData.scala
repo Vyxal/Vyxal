@@ -33,6 +33,7 @@ private object GenerateTheseusData:
     do
       val modifierData = ujson.Obj()
       modifierData("name") = modifier.name
+      modifierData("symbol") = symbol
       modifierData("description") = modifier.description
       modifierData("keywords") = modifier.keywords.toList
       data("modifiers").arr.addOne(modifierData)
@@ -40,6 +41,7 @@ private object GenerateTheseusData:
     for (symbol, syntax) <- SyntaxInfo.info do
       val syntaxData = ujson.Obj()
       syntaxData("name") = syntax.name
+      syntaxData("symbol") = symbol
       syntaxData("description") = syntax.description
       syntaxData("usage") = syntax.usage
       data("syntax").arr.addOne(syntaxData)
