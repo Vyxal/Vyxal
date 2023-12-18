@@ -403,6 +403,8 @@
  <code>#v</code> |  | [Internal Use] Vectorise (Element Form)  |  | NA | :x: | `*a, f` => `f vectorised over however many arguments in a. It is recommended to use the modifier instead`
  <code>#x</code> |  | Loop Continue | `continue` | 0 | :x: | `continue the current loop`
  <code>#~</code> |  | [Internal Use] Apply Without Popping (Element Form) |  | NA | :x: | `*a, f` => `f applied to the stack without popping items. Use the modifier instead.`
+ <code>#¤</code> |  | Number of Context Parameters | `number-of-context`, `context-number`, `context-count` | 0 | :x: | `number of context parameters`
+ <code>#¿</code> |  | Number of Inputs | `number-of-inputs`, `count-inputs`, `count-stdin` | 0 | :x: | `The number of inputs to the program`
  <code>∆q</code> |  | Prime Exponents | `prime-exponents`, `prime-exps` | 1 | :white_check_mark: | `a: num` => `push a list of the power of each prime in the prime factors of a`
  <code>∆ḟ</code> |  | All Prime Exponents | `all-prime-exponents`, `all-prime-exps` | 1 | :white_check_mark: | `a: num` => `for all primes less than or equal to a, push the power of that prime in the factorisation of a`
  <code>ø⁾</code> |  | Surround | `surround` | 2 | :x: | `a: any, b: any` => `a prepended and appended to b`
