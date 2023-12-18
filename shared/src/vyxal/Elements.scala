@@ -480,7 +480,7 @@ object Elements:
       "a: str, b: str -> Split a on the regex b",
     ) {
       case (a: VNum, b: VNum) => a / b
-      case (a: String, b: String) => VList(a.split(b)*)
+      case (a: String, b: String) => StringHelpers.split(a, b)
     },
     addFull(
       Dyad,
@@ -826,14 +826,14 @@ object Elements:
       case (a: VFun, b) => ListHelpers.groupBy(ListHelpers.makeIterable(b), a)
       case (a, b: VList) =>
         if a.isInstanceOf[String] && b.lst.forall(_.isInstanceOf[String]) then
-          val pattern = b.map(_.toString.r).map(_.findAllMatchIn(a.toString))
+          val pattern = b.map(StringHelpers.r).map(_.findAllMatchIn(a.toString))
           VList.from(pattern.map(x => VList.from(x.map(_.group(1)).toSeq)))
         else
           summon[Context].push(a)
           NumberHelpers.gcd(b)
       case (a, b: VFun) => ListHelpers.groupBy(ListHelpers.makeIterable(a), b)
       case (a: String, b: String) =>
-        val pattern = s"(?=($b))".r
+        val pattern = StringHelpers.r(s"(?=($b))")
         VList.from(pattern.findAllMatchIn(a).map(_.group(1)).toSeq)
 
     },
@@ -1093,7 +1093,7 @@ object Elements:
       "a: str -> a split on newlines",
     ) {
       case a: VNum => (a.underlying % 2) == VNum(0)
-      case a: String => VList.from(a.split("\n").toSeq)
+      case a: String => StringHelpers.split(a, "\n")
     },
     addPart(
       Monad,
@@ -1388,11 +1388,15 @@ object Elements:
         ListHelpers.map(b, ListHelpers.makeIterable(a, Some(true)))
       case (a: VFun, b) =>
         ListHelpers.map(a, ListHelpers.makeIterable(b, Some(true)))
-      case (a: String, b: String) => b.r.findFirstIn(a).getOrElse("")
+      case (a: String, b: String) =>
+        StringHelpers.r(b).findFirstIn(a).getOrElse("")
       case (a: String, b: VList) =>
-        VList.from(b.lst.map(_.toString.r.findFirstIn(a).getOrElse("")))
-      case (a: VList, b: String) =>
-        VList.from(a.lst.map(x => b.r.findFirstIn(x.toString()).getOrElse("")))
+        VList.from(b.lst.map(StringHelpers.r(_).findFirstIn(a).getOrElse("")))
+      case (a: VList, b: String) => VList.from(
+          a.lst.map(x =>
+            StringHelpers.r(b).findFirstIn(x.toString()).getOrElse("")
+          )
+        )
     },
     addDirect(
       "G",
@@ -1492,7 +1496,7 @@ object Elements:
       case (a: (VList | String), b: VNum) => ListHelpers.nthItems(a, b)
       case (a: VNum, b: (VList | String)) => ListHelpers.nthItems(b, a)
       case (a: VList, b: VList) => ListHelpers.matrixMultiply(a, b)
-      case (a: String, b: String) => a.r.matches(b)
+      case (a: String, b: String) => StringHelpers.r(a).matches(b)
     },
     addDirect(
       "g",
@@ -1879,7 +1883,7 @@ object Elements:
       "a: str -> a split on spaces",
     ) {
       case a: VNum => (-1) ** a
-      case a: String => VList.from(a.split(" ").toSeq)
+      case a: String => StringHelpers.split(a, " ")
     },
     addPart(
       Dyad,
@@ -2088,9 +2092,10 @@ object Elements:
       "a: lst, b: lst -> union of a and b",
     ) {
       case (a: VNum, b: VNum) => NumberHelpers.range(a, b).dropRight(1)
-      case (a: String, b: String) => b.r.findFirstIn(a).isDefined
-      case (a: String, b: VNum) => b.toString.r.findFirstIn(a).isDefined
-      case (a: VNum, b: String) => b.r.findFirstIn(a.toString).isDefined
+      case (a: String, b: String) => StringHelpers.r(b).findFirstIn(a).isDefined
+      case (a: String, b: VNum) => StringHelpers.r(b).findFirstIn(a).isDefined
+      case (a: VNum, b: String) =>
+        StringHelpers.r(b).findFirstIn(a.toString).isDefined
       case (a: VFun, b) => ListHelpers.reduce(b, a)
       case (a, b: VFun) => ListHelpers.reduce(a, b)
       case (a: VList, b: VList) => VList.from(a ++ b).distinct
@@ -2277,9 +2282,8 @@ object Elements:
       case (a: String, b) =>
         if b.isInstanceOf[String] && b.toString.isEmpty then
           ListHelpers.makeIterable(a)
-        else VList.from(a.split(b.toString()).toSeq)
-      case (a: VNum, b) =>
-        VList.from(a.toString().split(b.toString()).toSeq.map(MiscHelpers.eval))
+        else StringHelpers.split(a, b.toString())
+      case (a: VNum, b) => StringHelpers.split(a, b.toString())
       case (a: VList, b) => ListHelpers.splitNormal(a, b)
     },
     addPart(
@@ -2451,7 +2455,8 @@ object Elements:
     ) {
       case (a: VNum, b) => NumberHelpers.toBase(a, b)
       case (a: VList, b) => a.vmap(NumberHelpers.toBase(_, b))
-      case (a: String, b: String) => VList.from(b.r.findAllIn(a).toSeq)
+      case (a: String, b: String) =>
+        VList.from(StringHelpers.r(b).findAllIn(a).toSeq)
     },
     addPart(
       Triad,
@@ -2518,13 +2523,13 @@ object Elements:
       case (a, n: VNum) => ListHelpers.cartesianPower(a, n)
       case (n: VNum, a) => ListHelpers.cartesianPower(a, n)
       case (a: String, b: String) =>
-        val res = b.r.findFirstMatchIn(a)
+        val res = StringHelpers.r(b).findFirstMatchIn(a)
         if res.isDefined then res.get.start else -1
       case (a: VList, b: String) => VList.from(
           a.lst
             .map(_.toString)
             .map(x =>
-              val res = b.r.findFirstMatchIn(x)
+              val res = StringHelpers.r(b).findFirstMatchIn(x)
               if res.isDefined then res.get.start else -1
             )
         )
@@ -3272,7 +3277,7 @@ object Elements:
           )
         else VList.from(lst.take(index) ++ lst.drop(index + 1))
       case (a: String, b: String) =>
-        val res = b.r.findFirstMatchIn(a)
+        val res = StringHelpers.r(b).findFirstMatchIn(a)
         if res.isDefined then VList.from(res.get.subgroups) else VList.empty
     },
     addPart(

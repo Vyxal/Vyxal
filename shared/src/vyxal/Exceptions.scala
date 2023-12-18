@@ -54,6 +54,8 @@ class UnmatchedCloserException(closer: Token)
     )
 
 /** VyxalRuntimeExceptions */
+class BadRegexException(regex: String)
+    extends VyxalRuntimeException(s"Invalid regex syntax: /$regex/")
 class ConstantAssignmentException(name: String)
     extends VyxalRuntimeException(s"Variable $name is constant")
 class ConstantDuplicateException(name: String)
@@ -69,12 +71,12 @@ class InvalidListOverloadException(
     )
 class NoDefaultException(value: VAny)
     extends VyxalRuntimeException(s"No default value exists for $value")
-class VyxalRecursionException()
-    extends VyxalRuntimeException("Too many recursions")
 class UnimplementedOverloadException(element: String, args: Seq[VAny])
     extends VyxalRuntimeException(
       s"$element not supported for input(s) ${args.mkString("[", ", ", "]")}"
     )
+class VyxalRecursionException()
+    extends VyxalRuntimeException("Too many recursions")
 
 /** Unrecognized Exceptions */
 class UnknownLexingException(ex: Throwable)
