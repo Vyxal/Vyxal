@@ -199,8 +199,16 @@ object Parser:
               }
               val ast = AST.Group(
                 modifierArgs :+
-                  AST.Lambda(Some(arity), args.toList, List(impl.get)) :+
-                  AST.Command("Ė"),
+                  AST.Lambda(
+                    Some(
+                      impl
+                        .getOrElse(AST.Group(List(), None))
+                        .arity
+                        .getOrElse(arity)
+                    ),
+                    args.toList,
+                    List(impl.get),
+                  ) :+ AST.Command("Ė"),
                 None,
               )
               finalAsts.push(ast)
