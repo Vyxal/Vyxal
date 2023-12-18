@@ -414,11 +414,11 @@ Keywords: length-vectorised, length-vect, len-vect, len-vectorised, vec-len, vec
 ----------------------
 m (Get Context Variable M) (non-vectorising)
 Keywords: get-context-m, context-m, c-var-m, ctx-m, ctx-secondary
-- ->  -> context variable m
+- -> context variable m
 ----------------------
 n (Get Context Variable N) (non-vectorising)
 Keywords: get-context-n, context-n, c-var-n, ctx-n, ctx-primary
-- ->  -> context variable n
+- -> context variable n
 ----------------------
 o (Overlap | Overlapping Slices) (non-vectorising)
 Keywords: overlap, overlaps, overlapping, overlapping-slices
@@ -1223,6 +1223,14 @@ Keywords: continue
 #~ ([Internal Use] Apply Without Popping (Element Form)) (non-vectorising)
 Keywords: 
 - *a, f -> f applied to the stack without popping items. Use the modifier instead.
+----------------------
+#¤ (Number of Context Parameters) (non-vectorising)
+Keywords: number-of-context, context-number, context-count
+- -> number of context parameters
+----------------------
+#¿ (Number of Inputs) (non-vectorising)
+Keywords: number-of-inputs, count-inputs, count-stdin
+- -> The number of inputs to the program
 ----------------------
 ∆q (Prime Exponents) (vectorising)
 Keywords: prime-exponents, prime-exps
