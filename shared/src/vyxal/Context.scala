@@ -39,7 +39,6 @@ class Context private (
     val testMode: Boolean = false,
     val useStack: Boolean = false,
     var recursion: Int = 0,
-    val symbols: mut.Map[String, VFun] = mut.Map(),
 ):
   var settings: Settings = globals.settings
 

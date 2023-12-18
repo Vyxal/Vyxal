@@ -38,6 +38,7 @@ object Interpreter:
     try
       scribe.debug(s"Executing '$code' (ast: $ast)")
       ctx.globals.originalProgram = ast
+      ctx.globals.symbols = Parser.customs
       execute(ast)
       if !ctx.globals.printed && !ctx.testMode then
         if ctx.settings.endPrintMode == EndPrintMode.Default then
@@ -103,31 +104,16 @@ object Interpreter:
           list += ctx.pop()
         ctx.push(VList.from(list.toList))
       case AST.Command(cmd, _) =>
-        if ctx.symbols.contains(cmd) then executeFn(ctx.symbols(cmd))
+        println(s"Symbols = ${ctx.globals.symbols}")
+        if ctx.globals.symbols.contains(cmd) then
+          execute(ctx.globals.symbols(cmd)(1).get)
         else
           Elements.elements.get(cmd) match
             case Some(elem) => elem.impl()
             case None => throw NoSuchElementException(cmd)
       case AST.Group(elems, _, _) => elems.foreach(Interpreter.execute)
       case AST.CompositeNilad(elems, _) => elems.foreach(Interpreter.execute)
-      case AST.RedefineModifier(name, mode, args, implArity, impl, range) =>
-        val arity = impl match
-          case Some(ast) => ast.arity
-          case None => Some(implArity)
-        val fn = VFun.fromLambda(
-          AST.Lambda(
-            arity,
-            args,
-            List(impl.getOrElse(AST.Group(List.empty, None, range))),
-            false,
-            range,
-          )
-        )
-
-        if mode == "@" then ctx.symbols(name) = fn
-        else
-          // Modifier
-          ??? // todo
+      case AST.RedefineModifier(name, mode, args, implArity, impl, range) => ???
 
       case AST.Ternary(thenBody, elseBody, _) =>
         if ctx.pop().toBool then execute(thenBody)

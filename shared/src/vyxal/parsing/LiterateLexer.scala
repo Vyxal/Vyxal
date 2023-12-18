@@ -408,15 +408,21 @@ private[parsing] object LiterateLexer:
         )
     }
 
+  def modifierSymbol[$: P]: P[LitToken] =
+    parseToken(ModifierSymbol, "$:" ~~/ Common.varName)
+
+  def elementSymbol[$: P]: P[LitToken] =
+    parseToken(ElementSymbol, "$`" ~~/ Common.varName)
+
   def singleToken[$: P]: P[Seq[LitToken]] =
     P(
       list | unpackVar |
         (lambdaBlock | specialLambdaBlock | contextIndex | functionCall |
-          redefineMod | litGetVariable | litSetVariable | litSetConstant |
-          litAugVariable | elementKeyword | negatedElementKeyword | tokenMove |
-          modifierKeyword | structOpener | otherKeyword | litBranch |
-          litStructClose | litNumber | litString | normalGroup).map(Seq(_)) |
-        rawCode |
+          modifierSymbol | elementSymbol | redefineMod | litGetVariable |
+          litSetVariable | litSetConstant | litAugVariable | elementKeyword |
+          negatedElementKeyword | tokenMove | modifierKeyword | structOpener |
+          otherKeyword | litBranch | litStructClose | litNumber | litString |
+          normalGroup).map(Seq(_)) | rawCode |
         SBCSLexer.token.map((token) =>
           Seq(LitToken(token.tokenType, token.value, token.range))
         )

@@ -21,6 +21,10 @@ case class Globals(
   var originalProgram: AST = null
   var printed: Boolean = false
   var inputs: Inputs = Inputs()
+  var symbols: mut.Map[
+    String,
+    (CustomElementType, Option[AST], Int, Seq[String]),
+  ] = mut.Map()
 
 /** Stores the inputs for some Context. Inputs can be overridden (see
   * [[Inputs#overrideInputs]]).

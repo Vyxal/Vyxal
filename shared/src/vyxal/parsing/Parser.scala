@@ -7,7 +7,14 @@ import vyxal.parsing.{StructureType, Token, TokenType}
 import scala.collection.mutable
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
 
+enum CustomElementType derives CanEqual:
+  case Element
+  case Modifier
+
 object Parser:
+
+  var customs =
+    mutable.Map[String, (CustomElementType, Option[AST], Int, Seq[String])]()
 
   private def toValidName(name: String): String =
     name
@@ -93,8 +100,45 @@ object Parser:
           val args = components(2)
           val params = args.split(",").toList
           val arity = params.length
+          customs(name) = (
+            if mode == "@" then CustomElementType.Element
+            else CustomElementType.Modifier,
+            None,
+            arity,
+            params,
+          )
+          println(customs)
           asts.push(AST.RedefineModifier(name, mode, params, arity, None))
 
+        case TokenType.ElementSymbol =>
+          val name = value
+          if !customs.contains(name) then
+            throw VyxalYikesException(s"Custom element $name not implemented")
+          val (elementType, impl, arity, args) = customs(name)
+          elementType match
+            case CustomElementType.Element => asts.push(
+                parseCommand(
+                  Token(TokenType.Command, name, range),
+                  asts,
+                  program,
+                )
+              )
+            case CustomElementType.Modifier => throw VyxalYikesException(
+                s"Custom element $name is actually a custom modifier"
+              )
+        case TokenType.ModifierSymbol =>
+          val name = value
+          if !customs.contains(name) then
+            throw VyxalYikesException(s"Custom modifier $name not implemented")
+          val (elementType, impl, arity, args) = customs(name)
+          println(customs(name))
+          elementType match
+            case CustomElementType.Element => throw VyxalYikesException(
+                s"Custom modifier $name is actually a custom element"
+              )
+            case CustomElementType.Modifier =>
+              println(s"Custom modifier $name with arity $arity")
+              asts.push(AST.JunkModifier(name, arity))
         case TokenType.MonadicModifier => asts.push(AST.JunkModifier(value, 1))
         case TokenType.DyadicModifier => asts.push(AST.JunkModifier(value, 2))
         case TokenType.TriadicModifier => asts.push(AST.JunkModifier(value, 3))
@@ -151,12 +195,25 @@ object Parser:
         case AST.Newline => ()
         case AST.JunkModifier(name, arity) => if arity > 0 then
             if finalAsts.length < arity then throw BadModifierException(name)
-            val modifier = Modifiers.modifiers.getOrElse(
-              name,
-              throw VyxalYikesException(s"Modifier $name not implemented"),
-            )
-            val modifierArgs = List.fill(arity)(finalAsts.pop())
-            finalAsts.push(modifier.from(modifierArgs))
+            if customs.contains(name) then
+              val (_, impl, arity, args) = customs(name)
+              val modifierArgs = List.fill(arity)(finalAsts.pop()).map { fn =>
+                AST.Lambda(fn.arity, List(), List(fn))
+              }
+              val ast = AST.Group(
+                modifierArgs :+
+                  AST.Lambda(Some(arity), args.toList, List(impl.get)) :+
+                  AST.Command("Ė"),
+                None,
+              )
+              finalAsts.push(ast)
+            else
+              val modifier = Modifiers.modifiers.getOrElse(
+                name,
+                throw VyxalYikesException(s"Modifier $name not implemented"),
+              )
+              val modifierArgs = List.fill(arity)(finalAsts.pop())
+              finalAsts.push(modifier.from(modifierArgs))
         case AST.SpecialModifier(name, _) => (name: @unchecked) match
             case "ᵜ" =>
               val lambdaAsts = Stack[AST]()
@@ -171,8 +228,12 @@ object Parser:
               )
         case redef: AST.RedefineModifier =>
           if finalAsts.isEmpty then throw BadModifierException(redef.name)
-          redef.impl = Some(finalAsts.pop())
-          finalAsts.push(redef)
+          customs(redef.name) = (
+            customs(redef.name)._1,
+            Some(finalAsts.pop()),
+            customs(redef.name)._3,
+            redef.args,
+          )
         case AST.AuxAugmentVar(name, _) =>
           if asts.isEmpty then throw BadAugmentedAssignException()
           finalAsts.push(AST.AugmentVar(name, asts.pop()))
@@ -207,26 +268,30 @@ object Parser:
       program: Queue[Token],
   ): AST =
     val cmd =
-      if !Elements.elements.contains(cmdTok.value) then
+      if customs.contains(cmdTok.value) then cmdTok.value
+      else if !Elements.elements.contains(cmdTok.value) then
         Elements.symbolFor(cmdTok.value).getOrElse("Nonexistent")
       else cmdTok.value
-    Elements.elements.get(cmd) match
-      case None => throw NoSuchElementException(cmdTok)
-      case Some(element) =>
-        if asts.isEmpty then AST.Command(cmd, cmdTok.range)
-        else
-          val arity = element.arity.getOrElse(0)
-          val nilads = ListBuffer[AST]()
 
-          while asts.nonEmpty && nilads.sizeIs < arity &&
-            asts.top.arity.fold(false)(_ == 0)
-          do nilads += asts.pop()
-          if nilads.isEmpty then return AST.Command(cmd, cmdTok.range)
-          AST.Group(
-            (AST.Command(cmd, cmdTok.range) :: nilads.toList).reverse,
-            Some(arity - nilads.size),
-          )
-    end match
+    val arity = Elements.elements.get(cmd) match
+      case None =>
+        if !customs.contains(cmd) then throw NoSuchElementException(cmdTok)
+        else
+          val (_, _, arity, _) = customs(cmd)
+          arity
+      case Some(element) =>
+        if asts.isEmpty then return AST.Command(cmd, cmdTok.range)
+        else element.arity.getOrElse(0)
+    val nilads = ListBuffer[AST]()
+
+    while asts.nonEmpty && nilads.sizeIs < arity &&
+      asts.top.arity.fold(false)(_ == 0)
+    do nilads += asts.pop()
+    if nilads.isEmpty then return AST.Command(cmd, cmdTok.range)
+    AST.Group(
+      (AST.Command(cmd, cmdTok.range) :: nilads.toList).reverse,
+      Some(arity - nilads.size),
+    )
   end parseCommand
 
   /** Parse branches for an unknown structure or list, nothing more.

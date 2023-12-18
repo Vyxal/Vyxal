@@ -90,6 +90,8 @@ enum TokenType(val canonicalSBCS: Option[String] = None) derives CanEqual:
   case ContextIndex
   case FunctionCall
   case RedefineModifier
+  case ModifierSymbol
+  case ElementSymbol
   case Comment
   case GetVar
   case SetVar
