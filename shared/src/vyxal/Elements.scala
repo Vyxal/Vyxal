@@ -73,6 +73,12 @@ object Elements:
     ) { ctx ?=>
       ctx.push(VList.from(ctx.globals.inputs.getAll))
     },
+    addNilad(
+      "#¿",
+      "Number of Inputs",
+      List("number-of-inputs", "count-inputs", "count-stdin"),
+      "The number of inputs to the program",
+    ) { ctx ?=> ctx.globals.inputs.length },
     addPart(
       Monad,
       "A",
@@ -740,14 +746,20 @@ object Elements:
       "m",
       "Get Context Variable M",
       List("get-context-m", "context-m", "c-var-m", "ctx-m", "ctx-secondary"),
-      " -> context variable m",
+      "context variable m",
     ) { ctx ?=> ctx.ctxVarSecondary },
     addNilad(
       "n",
       "Get Context Variable N",
       List("get-context-n", "context-n", "c-var-n", "ctx-n", "ctx-primary"),
-      " -> context variable n",
+      "context variable n",
     ) { ctx ?=> ctx.ctxVarPrimary },
+    addNilad(
+      "#¤",
+      "Number of Context Parameters",
+      List("number-of-context", "context-number", "context-count"),
+      "number of context parameters",
+    ) { ctx ?=> ctx.ctxArgs.getOrElse(Seq.empty).length },
     addNilad(
       "?",
       "Get Input",
