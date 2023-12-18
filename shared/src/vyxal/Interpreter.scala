@@ -314,7 +314,7 @@ object Interpreter:
                 popped += termCount
                 val terms = popFunction(termCount)
                 popped ++= terms
-                temp += VList(terms*)
+                temp ++= terms
               else
                 val top = popOneFunction()
                 vars(name) = top // set variable
