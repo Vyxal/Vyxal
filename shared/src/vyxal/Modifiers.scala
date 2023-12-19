@@ -247,29 +247,62 @@ object Modifiers:
         1,
       ) {
         case List(ast) =>
-          // TODO this only works if f takes pops exactly one value and pushes
-          //   exactly one value. Is that a problem?
-          AST.makeSingle(
-            AST.Generated(
-              () =>
-                ctx ?=>
-                  val top = ListHelpers.makeIterable(ctx.peek)
-                  ctx.push(top.tail)
-                  ctx.push(top.head)
-              ,
-              arity = Some(1),
-            ),
-            ast,
-            AST.Generated(
-              () =>
-                ctx ?=>
-                  val head = ctx.pop()
-                  val tail = ctx.pop().asInstanceOf[VList]
-                  ctx.push(VList.from(head +: tail))
-              ,
-              arity = Some(1),
-            ),
-          )
+          var returnStr = false
+          ast.arity match
+            case Some(0) | Some(1) => AST.makeSingle(
+                AST.Generated(
+                  () =>
+                    ctx ?=>
+                      returnStr = ctx.peek.isInstanceOf[String]
+                      val top = ListHelpers.makeIterable(ctx.pop())
+                      ctx.push(top.tail)
+                      if ast.arity == Some(1) then ctx.push(top.head)
+                  ,
+                  arity = Some(1),
+                ),
+                ast,
+                AST.Generated(
+                  () =>
+                    ctx ?=>
+                      val head = ctx.pop()
+                      val tail = ctx.peek match
+                        case _: VList => ctx.pop().asInstanceOf[VList]
+                        case _ => VList.from(ctx.pop(1))
+                      val list = VList.from(head +: tail)
+                      if returnStr then
+                        ctx.push(ListHelpers.flatten(list).mkString)
+                      else ctx.push(list)
+                  ,
+                  arity = Some(1),
+                ),
+              )
+            case Some(2) => AST.makeSingle(
+                AST.Generated(
+                  () =>
+                    ctx ?=>
+                      returnStr = ctx.peek.isInstanceOf[String]
+                      val top = ListHelpers.makeIterable(ctx.pop())
+                      ctx.push(top.tail)
+                      ctx.push(top.head)
+                  ,
+                  arity = Some(1),
+                ),
+                AST.makeSingle(astToLambda(ast, 2), AST.Command("#v")),
+                AST.Generated(
+                  () =>
+                    ctx ?=>
+                      val head = ctx.peek match
+                        case _: VList => ctx.pop().asInstanceOf[VList]
+                        case _ => VList.from(ctx.pop(1))
+                      if returnStr then
+                        ctx.push(ListHelpers.flatten(head).mkString)
+                      else ctx.push(head)
+                  ,
+                  arity = Some(1),
+                ),
+              )
+            case _ => throw ModifierArityException("ᴴ", ast.arity)
+          end match
       },
     "ᶤ" ->
       Modifier(
