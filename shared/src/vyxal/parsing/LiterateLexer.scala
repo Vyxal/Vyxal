@@ -341,7 +341,7 @@ private[parsing] object LiterateLexer:
   def unpackVar[$: P]: P[Seq[LitToken]] =
     P(withRange(":=") ~ list).map {
       case (_, unpackRange, listTokens) =>
-        (LitToken(SyntaxTrigraph, "#:[", unpackRange) +:
+        (LitToken(UnpackTrigraph, "#:[", unpackRange) +:
           listTokens.slice(1, listTokens.size - 1)) :+
           LitToken(UnpackClose, "]", listTokens.last.range)
     }
@@ -391,13 +391,13 @@ private[parsing] object LiterateLexer:
 
   def redefineMod[$: P]: P[LitToken] =
     withRange(
-      "~" ~/
+      "::~" ~/
         (CharPred(c =>
           Lexer.Codepage.filterNot(c => c.isLetter || c.isDigit).contains(c)
         ).! | Common.varName.!) ~/ CharIn("@*").! ~/
-        (Common.varName.! ~ rep("," ~ Common.varName.!).?).? ~ litBranch
+        (Common.varName.! ~ rep("," ~ Common.varName.!).?).? ~ "}"
     ).map {
-      case ((name, mode, args, _), range) =>
+      case ((name, mode, args), range) =>
         val convertedArgs = args match
           case Some((first, rest)) => first +: rest.getOrElse(Seq.empty)
           case None => Seq.empty

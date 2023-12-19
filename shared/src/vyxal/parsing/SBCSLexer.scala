@@ -90,7 +90,7 @@ private[parsing] object SBCSLexer:
     P(
       withRange(
         (CharIn("∆øÞk") ~~ AnyChar).! |
-          ("#" ~~ !CharIn("[]$!=#>@{~'⸠") ~~ AnyChar).!
+          ("#" ~~ !CharIn("[]$!=#>@{~'⸠:") ~~ AnyChar).!
       )
     ).map {
       case (digraph, range) =>
@@ -110,8 +110,7 @@ private[parsing] object SBCSLexer:
         else Token(Digraph, digraph, range)
     }
 
-  def syntaxTrigraph[$: P]: P[Token] =
-    parseToken(SyntaxTrigraph, ("#:" ~~ AnyChar).!)
+  def unpackTrigraph[$: P]: P[Token] = parseToken(UnpackTrigraph, "#:[".!)
 
   def sugarTrigraph[$: P]: P[Token] =
     withRange(("#" ~~ CharIn(".,^") ~~ AnyChar).!).map {
@@ -182,11 +181,11 @@ private[parsing] object SBCSLexer:
 
   def redefineMod[$: P]: P[Token] =
     withRange(
-      "#~" ~/
+      "#::" ~/
         (CharPred(c =>
           Lexer.Codepage.filterNot(c => c.isLetter || c.isDigit).contains(c)
         ).! | Common.varName.!) ~/ CharIn("@*").! ~/
-        (Common.varName.! ~ rep("," ~ Common.varName.!).?).? ~ "|"
+        (Common.varName.! ~ rep("," ~ Common.varName.!).?).? ~ "}"
     ).map {
       case ((name, mode, args), range) =>
         val convertedArgs = args match
@@ -204,7 +203,7 @@ private[parsing] object SBCSLexer:
 
   def token[$: P]: P[Token] =
     P(
-      comment | sugarTrigraph | syntaxTrigraph | digraph | branch |
+      comment | sugarTrigraph | unpackTrigraph | digraph | branch |
         modifierSymbol | elementSymbol | redefineMod | contextIndex |
         sbcsNumber | string | augVariable | getVariable | setVariable |
         setConstant | twoCharNumber | twoCharString | singleCharString |

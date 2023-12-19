@@ -78,7 +78,7 @@ enum TokenType(val canonicalSBCS: Option[String] = None) derives CanEqual:
   case ListClose extends TokenType(Some("#]"))
   case Command
   case Digraph
-  case SyntaxTrigraph
+  case UnpackTrigraph
   case MonadicModifier
   case DyadicModifier
   case TriadicModifier
@@ -261,7 +261,7 @@ object Lexer:
       case DictionaryString => s""""$value”"""
       case CompressedString => s""""$value„"""
       case CompressedNumber => s""""$value“"""
-      case SyntaxTrigraph if value == ":=[" => "#:["
+      case UnpackTrigraph if value == ":=[" => "#:["
       case Command if !Elements.elements.contains(value) =>
         Elements.symbolFor(value).getOrElse(value)
       case Comment => ""

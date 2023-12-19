@@ -105,7 +105,12 @@ object Interpreter:
         ctx.push(VList.from(list.toList))
       case AST.Command(cmd, _) =>
         if ctx.globals.symbols.contains(cmd) then
+          println("Before")
+          println(ctx.stack)
+          println(ctx.globals.symbols(cmd)(1).get)
           execute(ctx.globals.symbols(cmd)(1).get)
+          println("After")
+          println(ctx.stack)
         else
           Elements.elements.get(cmd) match
             case Some(elem) => elem.impl()

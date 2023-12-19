@@ -112,7 +112,7 @@ object Parser:
         case TokenType.ElementSymbol =>
           val name = value
           if !customs.contains(name) then
-            throw VyxalYikesException(s"Custom element $name not implemented")
+            throw UndefinedCustomElementException(name)
           val (elementType, impl, arity, args) = customs(name)
           elementType match
             case CustomElementType.Element => asts.push(
@@ -122,18 +122,16 @@ object Parser:
                   program,
                 )
               )
-            case CustomElementType.Modifier => throw VyxalYikesException(
-                s"Custom element $name is actually a custom modifier"
-              )
+            case CustomElementType.Modifier =>
+              throw CustomElementActuallyModifierException(name)
         case TokenType.ModifierSymbol =>
           val name = value
           if !customs.contains(name) then
-            throw VyxalYikesException(s"Custom modifier $name not implemented")
+            throw UndefinedCustomModifierException(name)
           val (elementType, impl, arity, args) = customs(name)
           elementType match
-            case CustomElementType.Element => throw VyxalYikesException(
-                s"Custom modifier $name is actually a custom element"
-              )
+            case CustomElementType.Element =>
+              throw CustomModifierActuallyElementException(name)
             case CustomElementType.Modifier =>
               asts.push(AST.JunkModifier(name, arity))
         case TokenType.MonadicModifier => asts.push(AST.JunkModifier(value, 1))
@@ -209,13 +207,13 @@ object Parser:
                     args.toList,
                     List(impl.get),
                   ) :+ AST.Command("Ė"),
-                None,
+                Some(arity),
               )
               finalAsts.push(ast)
             else
               val modifier = Modifiers.modifiers.getOrElse(
                 name,
-                throw VyxalYikesException(s"Modifier $name not implemented"),
+                throw UndefinedCustomModifierException(name),
               )
               val modifierArgs = List.fill(arity)(finalAsts.pop())
               finalAsts.push(modifier.from(modifierArgs))
@@ -232,20 +230,25 @@ object Parser:
                 )
               )
         case redef: AST.RedefineModifier =>
-          if finalAsts.isEmpty then throw BadModifierException(redef.name)
-          var implementation = finalAsts.pop()
+          if asts.isEmpty then throw BadModifierException(redef.name)
+          var implementation = asts.pop()
           if redef.mode == "@" then
             implementation = AST.makeSingle(
-              if implementation.isInstanceOf[AST.Lambda] then implementation
+              if implementation.isInstanceOf[AST.Lambda] then
+                val lambda = implementation.asInstanceOf[AST.Lambda]
+                lambda
+                  .copy(lambdaArity = redef.arity)
+                  .copy(params = lambda.params ++ redef.args.toList)
               else
                 AST.Lambda(
-                  Some(customs(redef.name)._3),
+                  redef.arity,
                   redef.args,
                   List(implementation),
                 )
               ,
               AST.Command("Ė"),
             )
+          end if
           customs(redef.name) = (
             customs(redef.name)._1,
             Some(implementation),
@@ -541,13 +544,13 @@ object Parser:
     while lineup.nonEmpty do
       val temp = lineup.dequeue()
       temp match
-        case Token(TokenType.SyntaxTrigraph, "#:[", _) =>
+        case Token(TokenType.UnpackTrigraph, "#:[", _) =>
           val contents = mutable.StringBuilder()
           var depth = 1
           while depth != 0 do
             val top = lineup.dequeue()
             top match
-              case Token(TokenType.SyntaxTrigraph, "#:[", _) => depth += 1
+              case Token(TokenType.UnpackTrigraph, "#:[", _) => depth += 1
               case Token(TokenType.UnpackVar, _, _) => depth += 1
               case Token(TokenType.StructureOpen, open, _) =>
                 if open == StructureType.Ternary.open then depth += 1

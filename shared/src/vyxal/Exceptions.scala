@@ -51,6 +51,21 @@ class UnmatchedCloserException(closer: Token)
     extends VyxalParsingException(
       s"A closer/branch was found outside of a structure: ${closer.value}"
     )
+class UndefinedCustomModifierException(modifier: String)
+    extends VyxalParsingException(s"Custom modifier '$modifier' not defined")
+
+class UndefinedCustomElementException(element: String)
+    extends VyxalParsingException(s"Custom element '$element' not defined")
+
+class CustomModifierActuallyElementException(modifier: String)
+    extends VyxalParsingException(
+      s"Custom modifier '$modifier' is actually a custom element"
+    )
+
+class CustomElementActuallyModifierException(element: String)
+    extends VyxalParsingException(
+      s"Custom element '$element' is actually a custom modifier"
+    )
 
 /** VyxalRuntimeExceptions */
 class ConstantAssignmentException(name: String)
