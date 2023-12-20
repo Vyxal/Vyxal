@@ -67,6 +67,16 @@ class CustomElementActuallyModifierException(element: String)
       s"Custom element '$element' is actually a custom modifier"
     )
 
+class EmptyRedefine()
+    extends VyxalParsingException(
+      "Redefine statement is empty. Requires at least name and implementation."
+    )
+
+class BadRedefineMode(mode: String)
+    extends VyxalParsingException(
+      s"Invalid redefine mode: '$mode'. Should either be @ for element, or * for modifier"
+    )
+
 /** VyxalRuntimeExceptions */
 class ConstantAssignmentException(name: String)
     extends VyxalRuntimeException(s"Variable $name is constant")

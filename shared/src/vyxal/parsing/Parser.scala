@@ -11,10 +11,34 @@ enum CustomElementType derives CanEqual:
   case Element
   case Modifier
 
+class CustomDefinition(
+    name: String,
+    elementType: CustomElementType,
+    implementation: Option[AST],
+    arity: Option[Int],
+    args: (List[String | Int], List[String | Int]),
+):
+  def info: (
+      String,
+      CustomElementType,
+      Option[AST],
+      Option[Int],
+      (List[String | Int], List[String | Int]),
+  ) =
+    (
+      name,
+      elementType,
+      implementation,
+      arity,
+      args,
+    )
+
+  def getImpl: Option[AST] = implementation
+end CustomDefinition
+
 object Parser:
 
-  var customs =
-    mutable.Map[String, (CustomElementType, Option[AST], Int, Seq[String])]()
+  var customs = mutable.Map[String, CustomDefinition]()
 
   private def toValidName(name: String): String =
     name
@@ -93,27 +117,11 @@ object Parser:
 
         // At this stage, modifiers aren't explicitly handled, so just push a
         // temporary AST to comply with the type of the AST stack
-        case TokenType.RedefineModifier =>
-          val components = value.split(raw"\|")
-          val name = components(0)
-          val mode = components(1)
-          val args = components(2)
-          val params = args.split(",").toList
-          val arity = params.length
-          customs(name) = (
-            if mode == "@" then CustomElementType.Element
-            else CustomElementType.Modifier,
-            None,
-            arity,
-            params,
-          )
-          asts.push(AST.RedefineModifier(name, mode, params, arity, None))
-
         case TokenType.ElementSymbol =>
           val name = value
           if !customs.contains(name) then
             throw UndefinedCustomElementException(name)
-          val (elementType, impl, arity, args) = customs(name)
+          val (_, elementType, impl, arity, args) = customs(name).info
           elementType match
             case CustomElementType.Element => asts.push(
                 parseCommand(
@@ -128,12 +136,12 @@ object Parser:
           val name = value
           if !customs.contains(name) then
             throw UndefinedCustomModifierException(name)
-          val (elementType, impl, arity, args) = customs(name)
+          val (_, elementType, impl, arity, args) = customs(name).info
           elementType match
             case CustomElementType.Element =>
               throw CustomModifierActuallyElementException(name)
             case CustomElementType.Modifier =>
-              asts.push(AST.JunkModifier(name, arity))
+              asts.push(AST.JunkModifier(name, args(0).length))
         case TokenType.MonadicModifier => asts.push(AST.JunkModifier(value, 1))
         case TokenType.DyadicModifier => asts.push(AST.JunkModifier(value, 2))
         case TokenType.TriadicModifier => asts.push(AST.JunkModifier(value, 3))
@@ -191,25 +199,29 @@ object Parser:
         case AST.JunkModifier(name, arity) => if arity > 0 then
             if finalAsts.length < arity then throw BadModifierException(name)
             if customs.contains(name) then
-              val (_, impl, arity, args) = customs(name)
-              val modifierArgs = List.fill(arity)(finalAsts.pop()).map { fn =>
-                AST.Lambda(fn.arity, List(), List(fn))
-              }
-              val ast = AST.Group(
+              // First, get the ASTs for the custom modifier
+              val (_, _, impl, arity, args) = customs(name).info
+              val modifierArgs =
+                List.fill(arity.getOrElse(0))(finalAsts.pop()).map { ast =>
+                  AST.Lambda(ast.arity, List(), List(ast))
+                }
+
+              // Then, create a lambda that wraps the implementation
+              // in a context where it recieves both function arguments, and
+              // stack arguments
+
+              val wrapped = AST.Lambda(
+                arity,
+                args._1 ++ args._2,
                 modifierArgs :+
-                  AST.Lambda(
-                    Some(
-                      impl
-                        .getOrElse(AST.Group(List(), None))
-                        .arity
-                        .getOrElse(arity)
-                    ),
-                    args.toList,
-                    List(impl.get),
+                  (
+                    impl.getOrElse(throw UndefinedCustomModifierException(name))
                   ) :+ AST.Command("Ė"),
-                Some(arity),
               )
-              finalAsts.push(ast)
+
+              // Finally, push the wrapped lambda to the stack
+
+              finalAsts.push(wrapped)
             else
               val modifier = Modifiers.modifiers.getOrElse(
                 name,
@@ -229,32 +241,6 @@ object Parser:
                   List(AST.makeSingle(parse(lambdaAsts.reverse).toList*)),
                 )
               )
-        case redef: AST.RedefineModifier =>
-          if asts.isEmpty then throw BadModifierException(redef.name)
-          var implementation = asts.pop()
-          if redef.mode == "@" then
-            implementation = AST.makeSingle(
-              if implementation.isInstanceOf[AST.Lambda] then
-                val lambda = implementation.asInstanceOf[AST.Lambda]
-                lambda
-                  .copy(lambdaArity = redef.arity)
-                  .copy(params = lambda.params ++ redef.args.toList)
-              else
-                AST.Lambda(
-                  redef.arity,
-                  redef.args,
-                  List(implementation),
-                )
-              ,
-              AST.Command("Ė"),
-            )
-          end if
-          customs(redef.name) = (
-            customs(redef.name)._1,
-            Some(implementation),
-            customs(redef.name)._3,
-            redef.args,
-          )
         case AST.AuxAugmentVar(name, _) =>
           if asts.isEmpty then throw BadAugmentedAssignException()
           finalAsts.push(AST.AugmentVar(name, asts.pop()))
@@ -298,8 +284,8 @@ object Parser:
       case None =>
         if !customs.contains(cmd) then throw NoSuchElementException(cmdTok)
         else
-          val (_, _, arity, _) = customs(cmd)
-          arity
+          val (_, _, _, arity, _) = customs(cmd).info
+          arity.getOrElse(1)
       case Some(element) =>
         if asts.isEmpty then return AST.Command(cmd, cmdTok.range)
         else element.arity.getOrElse(0)
@@ -413,6 +399,55 @@ object Parser:
             AST.For(Some(toValidName(name.toVyxal)), body)
           case List(body) => AST.For(None, body)
           case _ => throw BadStructureException("for")
+      case StructureType.RedefineStructure =>
+        // Name: The name of the element/modifier
+        // Mode: Whether it's an element or modifier
+        // Implementation: The implementation of the element/modifier
+        // Arity: How many arguments the element/modifier takes
+        // Args: The names of the arguments given to the implementation
+
+        val (name, functions, args, impl) = branches match
+          case List() => throw EmptyRedefine()
+          case List(name, impl) => (name, (List() -> 0), (List() -> 0), impl)
+          case List(name, args, impl) =>
+            (name, (List() -> 0), parseParameters(args), impl)
+          case List(name, functions, args, impl) =>
+            (name, parseParameters(functions), parseParameters(args), impl)
+          case _ => throw BadStructureException("redefine")
+
+        val actualName = toValidName(name.toVyxal)
+        val mode = name.toVyxal.headOption match
+          case Some('@') => CustomElementType.Element
+          case Some('*') => CustomElementType.Modifier
+          case _ => throw BadRedefineMode(
+              name.toVyxal.headOption.getOrElse("").toString()
+            )
+
+        val arity = mode match
+          case CustomElementType.Element => args(1)
+          case CustomElementType.Modifier =>
+            Math.max(functions(1) + args(1), -1)
+
+        val actualImpl = mode match
+          case CustomElementType.Element =>
+            if impl.isInstanceOf[AST.Lambda] then impl
+            else AST.Lambda(Some(arity), args(0), List(impl))
+          case CustomElementType.Modifier =>
+            val lambda =
+              if impl.isInstanceOf[AST.Lambda] then impl
+              else AST.Lambda(Some(arity), functions(0) ++ args(0), List(impl))
+            AST.makeSingle(lambda, AST.Command("Ė"))
+
+        customs(actualName) = CustomDefinition(
+          actualName,
+          mode,
+          Some(actualImpl),
+          Some(arity),
+          (functions(0) -> args(0)),
+        )
+
+        AST.Group(List(), None)
+
       case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
           StructureType.LambdaFilter | StructureType.LambdaReduce |
           StructureType.LambdaSort) =>

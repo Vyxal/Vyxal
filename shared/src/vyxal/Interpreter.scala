@@ -105,12 +105,11 @@ object Interpreter:
         ctx.push(VList.from(list.toList))
       case AST.Command(cmd, _) =>
         if ctx.globals.symbols.contains(cmd) then
-          println("Before")
-          println(ctx.stack)
-          println(ctx.globals.symbols(cmd)(1).get)
-          execute(ctx.globals.symbols(cmd)(1).get)
-          println("After")
-          println(ctx.stack)
+          ctx.globals.symbols(cmd).getImpl match
+            case Some(implementation) => execute(implementation)
+            case None => throw VyxalYikesException(
+                s"Symbol $cmd has no impl. Should have already been caught :skull:"
+              )
         else
           Elements.elements.get(cmd) match
             case Some(elem) => elem.impl()
@@ -284,7 +283,6 @@ object Interpreter:
     val useStack = arity == -1
     val inputs =
       if args != null && params.isEmpty then args
-      else if arity == -1 then List.empty // operates on entire stack
       else if params.isEmpty then // no params, so just pop the args
         if popArgs then ctx.pop(arity) else ctx.peek(arity)
       else

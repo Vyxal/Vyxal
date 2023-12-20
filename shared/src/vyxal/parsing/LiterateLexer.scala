@@ -39,6 +39,10 @@ private[parsing] object LiterateLexer:
     "no?",
     "=>",
     "from",
+    "as",
+    "with",
+    "given",
+    ":and:",
   )
 
   /** Map keywords to their token types */
@@ -86,6 +90,7 @@ private[parsing] object LiterateLexer:
     "relation<" -> StructureType.GeneratorStructure,
     "generate-from<" -> StructureType.GeneratorStructure,
     "generate<" -> StructureType.GeneratorStructure,
+    "define" -> StructureType.RedefineStructure,
   )
 
   private val groupModifierToToken = Map(
@@ -389,25 +394,6 @@ private[parsing] object LiterateLexer:
         }
     }
 
-  def redefineMod[$: P]: P[LitToken] =
-    withRange(
-      "::~" ~/
-        (CharPred(c =>
-          Lexer.Codepage.filterNot(c => c.isLetter || c.isDigit).contains(c)
-        ).! | Common.varName.!) ~/ CharIn("@*").! ~/
-        (Common.varName.! ~ rep("," ~ Common.varName.!).?).? ~ "}"
-    ).map {
-      case ((name, mode, args), range) =>
-        val convertedArgs = args match
-          case Some((first, rest)) => first +: rest.getOrElse(Seq.empty)
-          case None => Seq.empty
-        LitToken(
-          RedefineModifier,
-          s"$name|$mode|${convertedArgs.mkString(",")}",
-          range,
-        )
-    }
-
   def modifierSymbol[$: P]: P[LitToken] =
     parseToken(ModifierSymbol, "$:" ~~/ Common.varName)
 
@@ -418,8 +404,8 @@ private[parsing] object LiterateLexer:
     P(
       list | unpackVar |
         (lambdaBlock | specialLambdaBlock | contextIndex | functionCall |
-          modifierSymbol | elementSymbol | redefineMod | litGetVariable |
-          litSetVariable | litSetConstant | litAugVariable | elementKeyword |
+          modifierSymbol | elementSymbol | litGetVariable | litSetVariable |
+          litSetConstant | litAugVariable | elementKeyword |
           negatedElementKeyword | tokenMove | modifierKeyword | structOpener |
           otherKeyword | litBranch | litStructClose | litNumber | litString |
           normalGroup).map(Seq(_)) | rawCode |

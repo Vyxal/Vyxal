@@ -1,5 +1,6 @@
 package vyxal
 
+import vyxal.CustomDefinition
 import vyxal.VNum.given
 
 import scala.collection.mutable as mut
@@ -23,7 +24,7 @@ case class Globals(
   var inputs: Inputs = Inputs()
   var symbols: mut.Map[
     String,
-    (CustomElementType, Option[AST], Int, Seq[String]),
+    CustomDefinition,
   ] = mut.Map()
 
 /** Stores the inputs for some Context. Inputs can be overridden (see

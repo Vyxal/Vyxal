@@ -71,7 +71,7 @@ private[parsing] object SBCSLexer:
   def structureOpen[$: P]: P[Token] =
     parseToken(
       StructureOpen,
-      StringIn("[", "{", "(", "#{", "Ḍ", "Ṇ").! | Common.lambdaOpen,
+      StringIn("[", "{", "(", "#{", "Ḍ", "Ṇ", "#::").! | Common.lambdaOpen,
     ) // StructureType.values.map(_.open.!).reduce(_ | _))
     // TODO(user): figure out why the commented version doesn't work
 
@@ -179,37 +179,18 @@ private[parsing] object SBCSLexer:
 
   def newlines[$: P]: P[Token] = parseToken(Newline, Common.eol.!)
 
-  def redefineMod[$: P]: P[Token] =
-    withRange(
-      "#::" ~/
-        (CharPred(c =>
-          Lexer.Codepage.filterNot(c => c.isLetter || c.isDigit).contains(c)
-        ).! | Common.varName.!) ~/ CharIn("@*").! ~/
-        (Common.varName.! ~ rep("," ~ Common.varName.!).?).? ~ "}"
-    ).map {
-      case ((name, mode, args), range) =>
-        val convertedArgs = args match
-          case Some((first, rest)) => first +: rest.getOrElse(Seq.empty)
-          case None => Seq.empty
-        Token(
-          RedefineModifier,
-          s"$name|$mode|${convertedArgs.mkString(",")}",
-          range,
-        )
-    }
-
   def comment[$: P]: P[Token] =
     parseToken(Comment, "##" ~~/ CharsWhile(c => c != '\n' && c != '\r').?.!)
 
   def token[$: P]: P[Token] =
     P(
       comment | sugarTrigraph | unpackTrigraph | digraph | branch |
-        modifierSymbol | elementSymbol | redefineMod | contextIndex |
-        sbcsNumber | string | augVariable | getVariable | setVariable |
-        setConstant | twoCharNumber | twoCharString | singleCharString |
-        monadicModifier | dyadicModifier | triadicModifier | tetradicModifier |
-        specialModifier | structureOpen | structureSingleClose |
-        structureAllClose | listOpen | listClose | newlines | command
+        modifierSymbol | elementSymbol | contextIndex | sbcsNumber | string |
+        augVariable | getVariable | setVariable | setConstant | twoCharNumber |
+        twoCharString | singleCharString | monadicModifier | dyadicModifier |
+        triadicModifier | tetradicModifier | specialModifier | structureOpen |
+        structureSingleClose | structureAllClose | listOpen | listClose |
+        newlines | command
     )
 
   def parseToken[$: P](
