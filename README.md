@@ -138,17 +138,18 @@ For a more specific overview of Vyxal 3, check out the [tour](./documentation/To
 
 There's a few methods:
 
-1. Download one of the release `jar` files, and run using
+1. Head over to [the online interpreter](vyxal.github.io/latest) (this is the easiest).
+
+2. Download one of the release `jar` files, and run using
 
 ```
 java -jar vyxal-jar <arguments>
 ```
 
-2. Download one of the executables and run as you would usually run an executable
+3. Download one of the executables for your platform and run as you would usually run an executable.
 
-3. Head over to [the online interpreter](vyxal.github.io/latest)
-
-4. Download the repository source and use one of the [build tool options](https://github.com/Vyxal/Vyxal/blob/version-3/contributing/BuildTools.md) to build and run.
+4. Download the repository source and run with `./mill jvm.run`.
+   See [Building.md](./contributing/Building.md) for more details.
 
 ## Links
 

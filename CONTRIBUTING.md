@@ -3,25 +3,13 @@
 ## Setting up a development environment
 
 Vyxal v3 is written in Scala, which is a JVM language, so you're going to need
-to install Java first.
+to install Java. That's the only requirement for working on Vyxal!
 
-If you want to try the Scala REPL or use other Scala stuff, you probably want to
-install [Coursier](https://get-coursier.io/docs/overview). Once you do that, you
-can either install Scala-related applications individually (e.g.
-`cs install scalafmt`) or you can run
-[`cs setup`](https://get-coursier.io/docs/cli-setup) to install a bunch of stuff
-at once.
-
-If, instead, you want to install as little as possible, you probably want to use
-the Mill build tool rather than sbt (see the Build tool section below). This
-project includes a little bootstrap script for Mill (`mill`/`mill.bat`) so all
-you need to install is Java and you'll be good to go.
-
-### Build tool
-
-Vyxal can be built with either sbt or Mill. See
-[`contributing/BuildTools.md`](/contributing/BuildTools.md) for more
-information on both of those build tools.
+This is optional, but if you want to try the Scala REPL or use other Scala stuff,
+you may want to install [Coursier](https://get-coursier.io/docs/overview).
+Once you do that, you can either install Scala-related applications individually
+(e.g. `cs install scalafmt`) or you can run [`cs setup`](https://get-coursier.io/docs/cli-setup)
+to install a bunch of stuff at once.
 
 ### Editor
 
@@ -56,6 +44,11 @@ Now that you're done setting up, take a look at the README in the
 [`contributing`](/contributing/) folder to get more information about how
 the interpreter works so you can add to it.
 
+## Building
+
+See [Building.md](./Building.md) for instructions on compiling
+
+
 ## Testing
 
 You'll want to add tests if you're adding a new element (to ensure it works) or
@@ -66,7 +59,7 @@ write and run tests, take a look at [`Tests.md`](/contributing/Tests.md).
 
 ### Generating the JS
 
-Generating `pages/vyxal.js` is already covered in [`BuildTools.md`](/contributing/BuildTools.md),
+Generating `pages/vyxal.js` is already covered in [`Building.md`](/contributing/Building.md),
 but here it is again:
 
 - Run `mill js.fastLinkJS` to compile JS and produce `pages/vyxal.js`.
@@ -94,10 +87,11 @@ And that's it - head over to 127.0.0.1:8080 (or whatever url it gives you) and t
 
 ## Running the JVM REPL
 
-If you want to test out the fancy JLine REPL that only the JVM has, you can run:
+If you want to test out the fancy JLine REPL that only the JVM has, you can run
 
-- `mill -i jvm.runLocal` (if using Mill). The `-i` stands for interactive mode,
-  and the `runLocal` must be used instead of `run` so that it doesn't start a
-  new process.
-- `vyxalJVM/run` (if using sbt). Note that using `sbt --client vyxalJVM/run`
-  will mean only the basic REPL will run, not the fancy REPL.
+```sh
+mill -i jvm.runLocal
+```
+
+The `-i` stands for interactive mode, and the `runLocal` must be used instead of
+`run` so that it doesn't start a new process.

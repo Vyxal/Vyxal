@@ -15,8 +15,7 @@ If any part of the documentation is lacking (either the Markdown files here or
 doc comments in the source code), please let us know (through an issue or in
 chat) so we can improve it.
 
-You can use either sbt or Mill as your build tool. See [here](BuildTools.md) for
-info on using sbt and Mill.
+We use the Mill build tool. See [Building.md](Building.md) for more information.
 
 If you don't know Scala but do know another language, here are some helpful guides:
 
