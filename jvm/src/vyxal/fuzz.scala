@@ -6,6 +6,7 @@ import scala.concurrent.*
 import scala.concurrent.duration.Duration
 import scala.concurrent.ExecutionContext.Implicits.global
 
+/** Main method for fuzzing. See the contributing folder for more info. */
 @main def fuzz(min: Int, max: Int, timeout: Int): Unit =
   val noLoop = timeout == -1
   val tm = if noLoop then 1 else timeout
