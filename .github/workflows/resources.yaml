@@ -14,14 +14,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: "17"
-          distribution: "adopt"
       - uses: coursier/cache-action@v6
+      - uses: coursier/setup-action@v1
+        with:
+          jvm: 17
+          apps: sbtn scalafix
       - name: Run Scalafix
-        run: sbt vyxalJVM/scalafix
+        run: scalafix --check --syntactic --scala-version=3.3.0 shared jvm js native
       - name: Run Scalafmt
         run: |
           ./mill mill.scalalib.scalafmt.ScalafmtModule/reformatAll __.sources
