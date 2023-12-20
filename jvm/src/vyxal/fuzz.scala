@@ -21,10 +21,12 @@ import scala.concurrent.ExecutionContext.Implicits.global
           Future {
             try Interpreter.execute(fuzz)(using ctx.copy)
             catch
-              case ex: VyxalUnknownException =>
-                println(s"` $fuzz `  ${ex.getMessage()}: ${ex.getCause().getMessage()}")
+              case ex: VyxalUnknownException => println(
+                  s"` $fuzz `  ${ex.getMessage()}: ${ex.getCause().getMessage()}"
+                )
               case ex: VyxalException => // println(s"` $fuzz ` VyxalException")
-              case ex: Throwable => println(s"` $fuzz ` Uncaught Exception: ${ex.getMessage()}")
+              case ex: Throwable =>
+                println(s"` $fuzz ` Uncaught Exception: ${ex.getMessage()}")
           },
           Duration(tm, "seconds"),
         )
