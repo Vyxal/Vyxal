@@ -167,14 +167,18 @@ object jvm extends VyxalModule {
     }
 
   /** Generate data file(s) for online interpreter */
-  def theseus = 
+  def theseus =
     T.sources {
       val descriptions = runMethod[String](
         jvm.runClasspath(),
         "vyxal.gen.GenerateKeyboard",
         "generateDescriptions",
       )
-      val data = runMethod[String](jvm.runClasspath(), "vyxal.gen.GenerateTheseusData", "generate")
+      val data = runMethod[String](
+        jvm.runClasspath(),
+        "vyxal.gen.GenerateTheseusData",
+        "generate",
+      )
       val descriptionsFile = build.millSourcePath / "pages" / "parsed_yaml.js"
       val dataFile = build.millSourcePath / "pages" / "theseus.json"
       os.write.over(descriptionsFile, descriptions)
