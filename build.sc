@@ -186,6 +186,10 @@ object jvm extends VyxalModule {
       )
     }
 
+  def fuzz(length: Int, timeout: Int) = T.command {
+    jvm.runMain("vyxal.fuzz", length.toString, timeout.toString)
+  }
+
   object test extends ScalaTests with VyxalTestModule
 }
 
