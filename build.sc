@@ -167,14 +167,18 @@ object jvm extends VyxalModule {
     }
 
   /** Generate data file(s) for online interpreter */
-  def theseus = 
+  def theseus =
     T.sources {
       val descriptions = runMethod[String](
         jvm.runClasspath(),
         "vyxal.gen.GenerateKeyboard",
         "generateDescriptions",
       )
-      val data = runMethod[String](jvm.runClasspath(), "vyxal.gen.GenerateTheseusData", "generate")
+      val data = runMethod[String](
+        jvm.runClasspath(),
+        "vyxal.gen.GenerateTheseusData",
+        "generate",
+      )
       val descriptionsFile = build.millSourcePath / "pages" / "parsed_yaml.js"
       val dataFile = build.millSourcePath / "pages" / "theseus.json"
       os.write.over(descriptionsFile, descriptions)
@@ -186,9 +190,10 @@ object jvm extends VyxalModule {
       )
     }
 
-  def fuzz(length: Int, timeout: Int) = T.command {
-    jvm.runMain("vyxal.fuzz", length.toString, timeout.toString)
-  }
+  def fuzz(min: Int, max: Int, timeout: Int) =
+    T.command {
+      jvm.runMain("vyxal.fuzz", min.toString, max.toString, timeout.toString)
+    }
 
   object test extends ScalaTests with VyxalTestModule
 }
