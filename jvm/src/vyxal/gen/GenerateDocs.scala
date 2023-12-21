@@ -50,7 +50,8 @@ private object GenerateDocs:
         sb ++= s"$name\n"
         sb ++= s"Keywords:${info.keywords.mkString(" ", ", ", "")}\n"
         sb ++= s"Description: ${info.description}\n"
-        if info.overloads.nonEmpty then sb ++= info.overloads.mkString("", "\n", "\n")
+        if info.overloads.nonEmpty then
+          sb ++= info.overloads.mkString("", "\n", "\n")
         SugarMap.trigraphs
           .collect { case (tri, s) if s == name => tri }
           .foreach { tri => sb ++= s"Trigraph: $tri\n" }
@@ -67,7 +68,7 @@ private object GenerateDocs:
 
   /** Prepare some text to be put into a Markdown table */
   private def sanitizeTable(text: String): String =
-    text.replace("\\", "\\\\").replace("`", raw"\`").replace("|", raw"\|")
+    text.replace("\\", "\\\\").replace("|", raw"\|")
 
   /** Generate the Markdown for table.md */
   def elementsMarkdown(): String =
@@ -141,10 +142,9 @@ private object GenerateDocs:
               symbol,
               Modifier(name, description, keywords, arity, overloads),
             ) =>
-          var trigraph = ""
-          SugarMap.trigraphs
-            .collect { case (tri, s) if s == symbol => tri }
-            .foreach { tri => trigraph = tri }
+          val trigraph = SugarMap.trigraphs
+            .collectFirst { case (tri, s) if s == symbol => tri }
+            .getOrElse("")
           val formatSymbol = symbol.replace("|", "\\|")
           val formatKeywords = keywords.map("`" + _ + "`").mkString(", ")
           Seq(
@@ -187,9 +187,9 @@ private object GenerateDocs:
             .collectFirst { case (tri, s) if s == symbol => s"`$tri`" }
             .getOrElse("")
           val formatUsage =
-            usage.replace("|", "\\|").replace("<", "&lt;").replace(">", "&gt;")
+            sanitizeTable(usage).replace("<", "&lt;").replace(">", "&gt;")
           Seq(
-            s"`${sanitizeTable(symbol)}`",
+            s"`${sanitizeTable(symbol.replace("`", raw"\`"))}`",
             trigraph,
             name,
             s"<code>${literate.mkString(" ")}</code>",
