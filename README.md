@@ -151,6 +151,11 @@ java -jar vyxal-jar <arguments>
 4. Download the repository source and run with `./mill jvm.run`.
    See [Building.md](./contributing/Building.md) for more details.
 
+## Contributing
+
+For instructions on how to set up a development environment and an overview of
+how the interpreter works, see the [`contributing`](/contributing/) folder.
+
 ## Links
 
 - [Repository](https://github.com/Vyxal/Vyxal)

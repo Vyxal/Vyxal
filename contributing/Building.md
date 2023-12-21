@@ -76,11 +76,11 @@ make any changes).
 
 - `compile`: Compile your code to see if there's any errors or warnings
 - `run`: Run the Vyxal CLI/REPL
-  - Note that if you want to run `vyxalJS` directly, you need Node.js on your computer
+  - Note that if you want to run the JS version directly, you need Node.js on your computer
 - Testing (see [Tests.md](Tests.md) for more info):
   - `test`: Run all tests.
   - `testOnly`: Run specific tests.
-  - `testQuiet`: Only defined for Mill (currently). Runs tests and suppresses output from passed/ignored tests.
+  - `testQuiet`: Custom task. Runs tests and suppresses output from passed/ignored tests.
 - `fastOptJS` - Quickly build and link the JS code, not too many optimizations.
   Use this one for development.
   - Use `fullOptJS` to build and link the JS code with optimizations. This will
