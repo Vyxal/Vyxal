@@ -8,6 +8,7 @@ import vyxal.VNum.given
 
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 import scala.io.StdIn
+import vyxal.MiscHelpers.collectUnique
 
 case class Element(
     symbol: String,
@@ -1010,26 +1011,21 @@ object Elements:
     addPart(
       Dyad,
       "İ",
-      "Index into Multiple | Collect While Unique | Complex Number",
-      List("index-into-multiple", "collect-while-unique", "complex"),
+      "Drop | Collect While Unique | Complex Number",
+      List("drop", "collect-while-unique", "complex"),
       false,
       "a: num, b: num -> a.real + b.real * i",
-      "a: any, b: lst -> `[a[item] for item in b]`",
+      "a: str|lst, b: num -> a[b:]",
       "a: any, b: fun -> Apply b on a and collect unique values (until fixpoint). Does not include the initial value.",
     ) {
       case (a: VNum, b: VNum) => VNum.complex(a.real, b.real)
-      case (a, inds: VList) =>
-        val lst = ListHelpers.makeIterable(a)
-        inds.vmap(lst.index(_))
+      case (a: VList, b: VNum) => ListHelpers.drop(a, b)
+      case (a: String, b: VNum) => ListHelpers.drop(ListHelpers.makeIterable(a), b).mkString
+      case (a: VNum, b: VList) => ListHelpers.drop(b, a)
+      case (a: VNum, b: String) => ListHelpers.drop(ListHelpers.makeIterable(b), a).mkString
       case (init, fn: VFun) =>
-        val prevVals = ArrayBuffer.empty[VAny]
-        VList.from(LazyList.unfold(init) { prev =>
-          val newVal = fn(prev)
-          if prevVals.contains(newVal) then None
-          else
-            prevVals += newVal
-            Some((newVal, newVal))
-        })
+        collectUnique(fn, init).tail
+      case (fn: VFun, init) => collectUnique(fn, init).tail
     },
     addPart(
       Monad,
