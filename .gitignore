@@ -178,7 +178,6 @@ pages/modifiers.js
 pages/internal-*
 pages/ShortDictionary.txt
 pages/LongDictionary.txt
-pages/theseus.json
 
 node_modules/
 package.json
