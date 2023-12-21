@@ -55,9 +55,7 @@ def ivyDeps = Agg(
 > [!note]
 > Java dependencies use a single colon between the group and artifact (`ivy"groupId:artifactId::version"`).
 
-## Tasks
-
-### Running tasks
+## Running tasks
 
 If on Windows, you can run tasks using `.\mill <taskname>`. If on Linux or MacOS,
 you can run tasks using `./mill <taskname>`. The rest of this guide will use
@@ -72,26 +70,66 @@ If you want Mill to watch files and automatically recompile/rerun tasks, use the
 `-w` option (e.g. `mill -w js.fastLinkJS` to keep building the JS every time you
 make any changes).
 
-### List of tasks
+## Building
 
-- `compile`: Compile your code to see if there's any errors or warnings
-- `run`: Run the Vyxal CLI/REPL
-  - Note that if you want to run the JS version directly, you need Node.js on your computer
-- Testing (see [Tests.md](Tests.md) for more info):
-  - `test`: Run all tests.
-  - `testOnly`: Run specific tests.
-  - `testQuiet`: Custom task. Runs tests and suppresses output from passed/ignored tests.
-- `fastOptJS` - Quickly build and link the JS code, not too many optimizations.
-  Use this one for development.
-  - Use `fullOptJS` to build and link the JS code with optimizations. This will
-  only be needed when releasing, not when developing.
-  - Both tasks output `lib/scalajs-<version>.js`.
-  - Both tasks only work for the JS target.
-- `assembly` - Package everything up into an uber jar, outputs
-  `jvm/target/scala-<scalaVersion>/vyxal-<vyxalVersoin>.jar`. Only works inside
-  the JVM target, i.e., you need to use the `jvm.assembly` task.
-- `nativeLink` - Generate an executable. Only works inside the Scala Native target.
-  Beware, this is quite slow! You probably want to let the GitHub workflow do this.
+To compile your code to see if there's any errors or warnings, use `<platform>.compile`,
+e.g., `mill jvm.compile`.
+
+### Building a JAR
+
+`jvm.assembly` packages everything up into an uber jar and outputs to
+`jvm/target/scala-<scalaVersion>/vyxal-<vyxalVersion>.jar`.
+
+### Building a native executable
+
+`native.nativeLink` will generate an executable. Beware, this is quite slow!
+You probably want to let the GitHub workflow do this. The JVM version should be
+good enough for most purposes.
+
+### Building JS
+
+If you want to quickly build and link the JS code for development purposes, without
+too many optimizations, use
+
+```sh
+mill js.fastOptJS
+```
+
+When releasing, we use `js.fullOptJS` instead, which will perform all optimizations.
+Both tasks output `lib/scalajs-<version>.js`.
+
+## Running
+
+To run the JVM version of the Vyxal REPL, use
+
+```sh
+mill -i jvm.runLocal
+```
+
+The `-i`/`--interactive` flag will tell Mill not to run as a client/daemon, so that
+interactive programs (such as our REPL) will work. It's also necessary to use
+`jvm.runLocal` rather than `jvm.run` so the REPL won't be run as a subprocess.
+
+However, if you don't want the REPL, i.e., you want to use the Vyxal CLI non-interactively,
+you can use `mill jvm.run ...<args>`.
+
+To run the Native version of the Vyxal REPL, use
+
+```sh
+mill -i native.run
+```
+
+To run the JS version of the Vyxal REPL, use
+
+```sh
+mill -i js.run
+```
+
+Note that we haven't actually tried this. Also, for this to work, you need Node.js on your computer.
+
+## Testing
+
+See [`Tests.md`](./Tests.md) for more information.
 
 ## Formatting
 
