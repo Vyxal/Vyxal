@@ -50,7 +50,8 @@ private object GenerateDocs:
         sb ++= s"$name\n"
         sb ++= s"Keywords:${info.keywords.mkString(" ", ", ", "")}\n"
         sb ++= s"Description: ${info.description}\n"
-        if info.overloads.nonEmpty then sb ++= info.overloads.mkString("", "\n", "\n")
+        if info.overloads.nonEmpty then
+          sb ++= info.overloads.mkString("", "\n", "\n")
         SugarMap.trigraphs
           .collect { case (tri, s) if s == name => tri }
           .foreach { tri => sb ++= s"Trigraph: $tri\n" }
