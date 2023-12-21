@@ -6,8 +6,6 @@ import vyxal.Modifiers
 import vyxal.SugarMap
 import vyxal.SyntaxInfo
 
-import upickle.default.*
-
 private object GenerateTheseusData:
   def generate(): String =
     val data = ujson.Obj(
@@ -28,14 +26,13 @@ private object GenerateTheseusData:
       elementData("vectorises") = element.vectorises
       data("elements").arr.addOne(elementData)
 
-    for
-      (symbol, modifier) <- Modifiers.modifiers if !modifier._1.startsWith("#|")
-    do
+    for (symbol, modifier) <- Modifiers.modifiers do
       val modifierData = ujson.Obj()
       modifierData("name") = modifier.name
       modifierData("symbol") = symbol
       modifierData("description") = modifier.description
       modifierData("keywords") = modifier.keywords.toList
+      modifierData("overloads") = modifier.overloads
       data("modifiers").arr.addOne(modifierData)
 
     for (symbol, syntax) <- SyntaxInfo.info do

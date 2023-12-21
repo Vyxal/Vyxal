@@ -139,7 +139,7 @@ private object GenerateDocs:
       .map {
         case (
               symbol,
-              Modifier(name, description, keywords, arity, overloads*),
+              Modifier(name, description, keywords, arity, overloads),
             ) =>
           var trigraph = ""
           SugarMap.trigraphs

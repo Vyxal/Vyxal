@@ -20,7 +20,7 @@ case class Modifier(
     description: String,
     keywords: List[String],
     arity: Int,
-    overloads: String*
+    overloads: Seq[String],
 )(val from: PartialFunction[List[AST], AST])
 
 /** Implementations of modifiers */
@@ -48,7 +48,7 @@ object Modifiers:
            |lambda with all of the scanned elements""".stripMargin,
         List("<-}"),
         -1,
-        "<elements>ᵜ: Push a lambda",
+        Seq("<elements>ᵜ: Push a lambda"),
       ) { case _ => ??? },
     "ᵃ" ->
       Modifier(
@@ -69,8 +69,10 @@ object Modifiers:
           "count:",
         ),
         1,
-        "ȧf<monad>: Count how many items in a list are truthy after applying f to each",
-        "ᵃf<dyad>: equivalent to pushing the function, then calling ȧ",
+        Seq(
+          "ȧf<monad>: Count how many items in a list are truthy after applying f to each",
+          "ᵃf<dyad>: equivalent to pushing the function, then calling ȧ",
+        ),
       ) {
         case List(ast) =>
           if isExplicitMonad(ast) then
@@ -93,8 +95,10 @@ object Modifiers:
            |Remove duplicates from a list by an element""".stripMargin,
         List("without-popping:", "peek:", "dedup-by:", "remove-duplicates-by:"),
         1,
-        "ᵇf<dyad|triad|tetrad>: apply f to the stack without popping",
-        "ᵇf<monad>: remove duplicates from a list by applying f to each pair of elements",
+        Seq(
+          "ᵇf<dyad|triad|tetrad>: apply f to the stack without popping",
+          "ᵇf<monad>: remove duplicates from a list by applying f to each pair of elements",
+        ),
       ) {
         case List(ast) =>
           if isExplicitMonad(ast) then
@@ -119,6 +123,7 @@ object Modifiers:
           "over-suffixes:",
         ),
         1,
+        Seq(),
       ) {
         case List(ast) =>
           if isExplicitMonad(ast) then
@@ -134,7 +139,7 @@ object Modifiers:
         "Vectorises",
         List("vectorise:", "vec:", "v:"),
         1,
-        "ᵛf: f but vectorised",
+        Seq("ᵛf: f but vectorised"),
       ) {
         case List(ast) =>
           val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))
@@ -146,7 +151,7 @@ object Modifiers:
         "Reduce a list by an element",
         List("foldl:", "reduce:", "/:", "fold:", "reduceby:-"),
         1,
-        "/f: reduce by element f",
+        Seq("/f: reduce by element f"),
       ) {
         case List(ast) =>
           scribe.trace(s"Modifier /, ast: $ast")
@@ -163,7 +168,7 @@ object Modifiers:
         "Turn the next element (whether that be a structure/modifier/element) into a lambda",
         List("*:"),
         1,
-        "⸠f: Push the equivalent of λf} to the stack",
+        Seq("⸠f: Push the equivalent of λf} to the stack"),
       ) { case List(ast) => astToLambda(ast, 1, true) },
     "ϩ" ->
       Modifier(
@@ -171,7 +176,7 @@ object Modifiers:
         "Turn the next two elements (whether that be a structure/modifier/element) into a lambda",
         List("**:"),
         2,
-        "ϩfg: Push the equivalent of λfg} to the stack",
+        Seq("ϩfg: Push the equivalent of λfg} to the stack"),
       ) {
         case List(ast1, ast2) =>
           astToLambda(AST.makeSingle(ast1, ast2), 1, true)
@@ -182,7 +187,7 @@ object Modifiers:
         "Turn the next three elements (whether that be a structure/modifier/element) into a lambda",
         List("***:"),
         3,
-        "эfgh: Push the equivalent of λfgh} to the stack",
+        Seq("эfgh: Push the equivalent of λfgh} to the stack"),
       ) {
         case List(ast1, ast2, ast3) =>
           astToLambda(AST.makeSingle(ast1, ast2, ast3), 1, true)
@@ -193,7 +198,7 @@ object Modifiers:
         "Turn the next four elements (whether that be a structure/modifier/element) into a lambda",
         List("****:"),
         4,
-        "Чfghi: Push the equivalent of λfghi} to the stack",
+        Seq("Чfghi: Push the equivalent of λfghi} to the stack"),
       ) {
         case List(ast1, ast2, ast3, ast4) =>
           astToLambda(AST.makeSingle(ast1, ast2, ast3, ast4), 1, true)
@@ -204,7 +209,7 @@ object Modifiers:
         "Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda",
         List("*2:"),
         1,
-        "ᵈf: Push the equivalent of λ2|f} to the stack",
+        Seq("ᵈf: Push the equivalent of λ2|f} to the stack"),
       ) { case List(ast) => astToLambda(ast, 2, true) },
     "ᵉ" ->
       Modifier(
@@ -212,7 +217,7 @@ object Modifiers:
         "Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda",
         List("**2:"),
         2,
-        "ᵉfg: Push the equivalent of λ2|fg} to the stack",
+        Seq("ᵉfg: Push the equivalent of λ2|fg} to the stack"),
       ) {
         case List(ast1, ast2) =>
           astToLambda(AST.makeSingle(ast1, ast2), 2, true)
@@ -223,7 +228,7 @@ object Modifiers:
         "Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda",
         List("***2:"),
         3,
-        "ᶠfgh: Push the equivalent of λ2|fgh} to the stack",
+        Seq("ᶠfgh: Push the equivalent of λ2|fgh} to the stack"),
       ) {
         case List(ast1, ast2, ast3) =>
           astToLambda(AST.makeSingle(ast1, ast2, ast3), 2, true)
@@ -234,7 +239,7 @@ object Modifiers:
         "Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda",
         List("****2:"),
         4,
-        "ᵍfghi: Push the equivalent of λ2|fghi} to the stack",
+        Seq("ᵍfghi: Push the equivalent of λ2|fghi} to the stack"),
       ) {
         case List(ast1, ast2, ast3, ast4) =>
           astToLambda(AST.makeSingle(ast1, ast2, ast3, ast4), 2, true)
@@ -245,7 +250,7 @@ object Modifiers:
         "Apply element only to the head of list",
         List("apply-to-head:"),
         1,
-        "ᴴf: Apply f to the head of the top of the stack",
+        Seq("ᴴf: Apply f to the head of the top of the stack"),
       ) {
         case List(ast) =>
           var returnStr = false
@@ -311,7 +316,7 @@ object Modifiers:
         "Find the first index where an element is truthy",
         List("first-index-where:", "first-index-of:", "ind-of:", "find-by:"),
         1,
-        "ᶤf: find the first index where f is truthy",
+        Seq("ᶤf: find the first index where f is truthy"),
       ) {
         case List(ast) =>
           val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))
@@ -323,7 +328,7 @@ object Modifiers:
         "Loop and Collect While Unique",
         List("collect-while-unique:"),
         1,
-        "ᶨf: Loop and collect while unique",
+        Seq("ᶨf: Loop and collect while unique"),
       ) {
         case List(ast) => AST.makeSingle(
             astToLambda(ast, ast.arity.getOrElse(1)),
@@ -336,7 +341,7 @@ object Modifiers:
         "Map an element over the groups formed by identical items.",
         List("key:"),
         1,
-        "ᵏf: Map f over the groups formed by identical items",
+        Seq("ᵏf: Map f over the groups formed by identical items"),
       ) {
         case List(ast) => AST.makeSingle(
             AST.Generated(
@@ -370,7 +375,7 @@ object Modifiers:
         "Loop While Unique - similar to ᶨ, but doesn't collect",
         List("loop-while-unique:"),
         1,
-        "ᶪf: Loop while unique",
+        Seq("ᶪf: Loop while unique"),
       ) {
         case List(ast) => AST.makeSingle(
             astToLambda(ast, ast.arity.getOrElse(1)),
@@ -384,7 +389,7 @@ object Modifiers:
         "Maximum By Element",
         List("max-by:", "maximum-by:"),
         1,
-        "ᵐf: Maximum of top of stack based on results of f",
+        Seq("ᵐf: Maximum of top of stack based on results of f"),
       ) {
         case List(ast) => AST.makeSingle(
             astToLambda(ast, ast.arity.getOrElse(1)),
@@ -397,7 +402,7 @@ object Modifiers:
         "Minimum By Element",
         List("min-by:", "minimum-by:"),
         1,
-        "ᵐf: Minimum of top of stack based on results of f",
+        Seq("ᵐf: Minimum of top of stack based on results of f"),
       ) {
         case List(ast) => AST.makeSingle(
             astToLambda(ast, ast.arity.getOrElse(1)),
@@ -410,7 +415,9 @@ object Modifiers:
         "Outer product",
         List("outer-product:", "table:"),
         1,
-        "ᵒf: Pop two lists, then make a matrix from them by applying f to each pair of elements",
+        Seq(
+          "ᵒf: Pop two lists, then make a matrix from them by applying f to each pair of elements"
+        ),
       ) {
         case List(ast) => AST.Generated(
             () =>
@@ -436,7 +443,7 @@ object Modifiers:
         "Map an element over the prefixes of a list",
         List("map-over-prefixes:", "over-prefixes:"),
         1,
-        "ᵖf: Map f over prefixes",
+        Seq("ᵖf: Map f over prefixes"),
       ) {
         case List(ast) => AST.makeSingle(
             astToLambda(ast, ast.arity.getOrElse(1)),
@@ -451,7 +458,7 @@ object Modifiers:
            |then pop back into the register""".stripMargin,
         List("apply-to-register:", "to-register:", "to-reg:"),
         1,
-        "ᴿf: Apply f to the register",
+        Seq("ᴿf: Apply f to the register"),
       ) {
         case List(ast) => AST.makeSingle(
             astToLambda(ast, ast.arity.getOrElse(1)),
@@ -464,8 +471,10 @@ object Modifiers:
         "Sort By Element / Scanl",
         List("sort-by:", "scanl:"),
         1,
-        "ᶳf: Sort top of stack based on results of f",
-        "ᶳf: Cumulatively reduce a list of items",
+        Seq(
+          "ᶳf: Sort top of stack based on results of f",
+          "ᶳf: Cumulatively reduce a list of items",
+        ),
       ) {
         case List(ast) =>
           if isExplicitMonad(ast) then
@@ -483,6 +492,7 @@ object Modifiers:
            |""".stripMargin,
         List("vec-dump:", "map-dump:"),
         1,
+        Seq(),
       ) {
         case List(ast) => AST.makeSingle(
             astToLambda(ast, ast.arity.getOrElse(1)),
@@ -503,7 +513,7 @@ object Modifiers:
           "neighbours-equals:",
         ),
         1,
-        "ᵘf: Collect until no change",
+        Seq("ᵘf: Collect until no change"),
       ) {
         case List(ast) =>
           if !isExplicitMonad(ast) then
@@ -522,7 +532,7 @@ object Modifiers:
            |the function. Finally, push the stashed value""".stripMargin,
         List("dip:"),
         1,
-        "ᵂf: pop M, apply f, push M",
+        Seq("ᵂf: pop M, apply f, push M"),
       ) {
         // See, Vyxal can do this too!
         // We don't need no fancy array model around here
@@ -538,7 +548,9 @@ object Modifiers:
         "Scan a function until it reaches a fixed point",
         List("scan-fix:"),
         1,
-        "ᵡf: scan f until a fixed point is reached / apply until a previous value is repeated, collecting intermediate results",
+        Seq(
+          "ᵡf: scan f until a fixed point is reached / apply until a previous value is repeated, collecting intermediate results"
+        ),
       ) {
         case List(ast) =>
           val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))
@@ -557,8 +569,10 @@ object Modifiers:
           "same?:",
         ),
         1,
-        "ᵞf: check if top of stack is invariant under a transformation",
-        "ᵞf: scanl columns by f",
+        Seq(
+          "ᵞf: check if top of stack is invariant under a transformation",
+          "ᵞf: scanl columns by f",
+        ),
       ) {
         case List(ast) =>
           if isExplicitMonad(ast) then
@@ -577,6 +591,7 @@ object Modifiers:
            |Filters where the function is falsey""".stripMargin,
         List("zip-with:", "zipwith:"),
         1,
+        Seq(),
       ) {
         case List(ast) =>
           if isExplicitMonad(ast) then
@@ -594,6 +609,7 @@ object Modifiers:
         "Parallel apply two elements to the top of the stack",
         List("parallel-apply:", "para-apply:", "paraply:", "!!:"),
         2,
+        Seq(),
       ) {
         case List(ast1, ast2) => AST.makeSingle(
             astToLambda(ast1, ast1.arity.getOrElse(-1)),
@@ -613,6 +629,7 @@ object Modifiers:
           "<!!>:",
         ),
         2,
+        Seq(),
       ) {
         case List(ast1, ast2) => AST.makeSingle(
             astToLambda(ast1, -1),
@@ -626,6 +643,7 @@ object Modifiers:
         "Pop the top of the stack, and, if it's truthy, apply a function",
         List("if-top:", "if:"),
         1,
+        Seq(),
       ) {
         case List(ast) => AST.makeSingle(
             AST.Ternary(
