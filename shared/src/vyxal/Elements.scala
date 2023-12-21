@@ -3,12 +3,12 @@ package vyxal
 import scala.language.implicitConversions
 
 import vyxal.ListHelpers.makeIterable
+import vyxal.MiscHelpers.collectUnique
 import vyxal.NumberHelpers.range
 import vyxal.VNum.given
 
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 import scala.io.StdIn
-import vyxal.MiscHelpers.collectUnique
 
 case class Element(
     symbol: String,
@@ -1020,11 +1020,12 @@ object Elements:
     ) {
       case (a: VNum, b: VNum) => VNum.complex(a.real, b.real)
       case (a: VList, b: VNum) => ListHelpers.drop(a, b)
-      case (a: String, b: VNum) => ListHelpers.drop(ListHelpers.makeIterable(a), b).mkString
+      case (a: String, b: VNum) =>
+        ListHelpers.drop(ListHelpers.makeIterable(a), b).mkString
       case (a: VNum, b: VList) => ListHelpers.drop(b, a)
-      case (a: VNum, b: String) => ListHelpers.drop(ListHelpers.makeIterable(b), a).mkString
-      case (init, fn: VFun) =>
-        collectUnique(fn, init).tail
+      case (a: VNum, b: String) =>
+        ListHelpers.drop(ListHelpers.makeIterable(b), a).mkString
+      case (init, fn: VFun) => collectUnique(fn, init).tail
       case (fn: VFun, init) => collectUnique(fn, init).tail
     },
     addPart(
