@@ -51,6 +51,7 @@ private object GenerateKeyboard:
 
           if data.contains(index) then data(index) += thisElement.toMap
           else data(index) = ListBuffer(thisElement.toMap)
+    end for
 
     for syntax <- SyntaxInfo.info do
       val (symbol, info) = syntax
