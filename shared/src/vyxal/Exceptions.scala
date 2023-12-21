@@ -73,6 +73,12 @@ class InvalidListOverloadException(
 ) extends VyxalRuntimeException(
       s"List $list contains invalid values. Element $element expected $expected values"
     )
+class BadLHSException(element: String, lhs: VAny)
+    extends VyxalRuntimeException(s"Element $element received bad LHS: $lhs")
+
+class BadRHSException(element: String, rhs: VAny)
+    extends VyxalRuntimeException(s"Element $element received bad RHS: $rhs")
+
 class NoDefaultException(value: VAny)
     extends VyxalRuntimeException(s"No default value exists for $value")
 class UnimplementedOverloadException(element: String, args: Seq[VAny])

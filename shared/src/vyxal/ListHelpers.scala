@@ -94,6 +94,10 @@ object ListHelpers:
       case l: VList => ListHelpers.sum(l)
       case x => x
 
+  def drop(iterable: VList, index: VNum): VList =
+    val ind = if index < 0 then iterable.bigLength + index else index
+    VList.from(iterable.drop(ind))
+
   def filter(iterable: VList, predicate: VFun)(using Context): VList =
     predicate.originalAST match
       case Some(lam) =>

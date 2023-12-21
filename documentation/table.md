@@ -207,8 +207,8 @@
  | | | | | | | `a: lst, b: str` => `vectorised pattern overload of the above`
  <code>Ḣ</code> | <code>#.H</code> | Head Remove / Behead | `head-remove`, `behead` | 1 | :x: | `a: str` => `a[1:]`
  | | | | | | | `a: any` => `toList(a)[1:]`
- <code>İ</code> | <code>#.I</code> | Index into Multiple / Collect While Unique / Complex Number | `index-into-multiple`, `collect-while-unique`, `complex` | 2 | :x: | `a: num, b: num` => `a.real + b.real * i`
- | | | | | | | `a: any, b: lst` => ``[a[item] for item in b]``
+ <code>İ</code> | <code>#.I</code> | Drop / Collect While Unique / Complex Number | `drop`, `collect-while-unique`, `complex` | 2 | :x: | `a: num, b: num` => `a.real + b.real * i`
+ | | | | | | | `a: str\|lst, b: num` => `a[b:]`
  | | | | | | | `a: any, b: fun` => `Apply b on a and collect unique values (until fixpoint). Does not include the initial value.`
  <code>Ŀ</code> | <code>#.L</code> | Logarithm / Scan Fixpoint / Same Length? / Length Equals? | `log`, `logarithm`, `scan-fixpoint`, `scan-fix`, `same-length?`, `same-length`, `length-equals?`, `length-equals`, `len-eq?` | 2 | :white_check_mark: | `a: num, b: num` => `log_b(a)`
  | | | | | | | `a: fun, b: any` => `apply until a previous value is repeated, collecting intermediate results`
