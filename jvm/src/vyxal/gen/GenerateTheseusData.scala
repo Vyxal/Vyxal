@@ -2,10 +2,10 @@ package vyxal.gen
 
 import vyxal.parsing.Lexer
 import vyxal.Elements
+import vyxal.Interpreter
 import vyxal.Modifiers
 import vyxal.SugarMap
 import vyxal.SyntaxInfo
-import vyxal.Interpreter
 
 private object GenerateTheseusData:
   def generate(): String =
