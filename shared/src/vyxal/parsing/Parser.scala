@@ -202,7 +202,7 @@ object Parser:
               // First, get the ASTs for the custom modifier
               val (_, _, impl, arity, args) = customs(name).info
               val modifierArgs =
-                List.fill(arity.getOrElse(0))(finalAsts.pop()).map { ast =>
+                List.fill(args(0).length)(finalAsts.pop()).map { ast =>
                   AST.Lambda(ast.arity, List(), List(ast))
                 }
 
@@ -216,7 +216,7 @@ object Parser:
                 modifierArgs :+
                   (
                     impl.getOrElse(throw UndefinedCustomModifierException(name))
-                  ) :+ AST.Command("Ė"),
+                  ),
               )
 
               // Finally, push the wrapped lambda to the stack
@@ -426,7 +426,8 @@ object Parser:
         val arity = mode match
           case CustomElementType.Element => args(1)
           case CustomElementType.Modifier =>
-            Math.max(functions(1) + args(1), -1)
+            if args(1) == -1 then -1
+            else args(1) + functions(1)
 
         val actualImpl = mode match
           case CustomElementType.Element =>

@@ -305,7 +305,9 @@ object StringHelpers:
       case n: VNum => NumberHelpers.numToString(n)
       case s: String => s
       case l: VList => l.map(vyToString).mkString("[", "|", "]")
-      case f: VFun => vyToString(Interpreter.executeFn(f))
+      case f: VFun =>
+        println(f"stringing a function $f")
+        vyToString(Interpreter.executeFn(f))
 
   def characterMultiply(n: VNum, s: String)(using Context): VAny =
     s.map(_.toString * n.toInt).mkString
