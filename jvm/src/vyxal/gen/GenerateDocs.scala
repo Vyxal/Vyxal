@@ -166,7 +166,7 @@ private object GenerateDocs:
         "Keywords",
         "Arity",
         "Description",
-        "Overloads",
+        "Usage",
       ),
       modifiers,
     )
