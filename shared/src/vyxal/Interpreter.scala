@@ -328,7 +328,6 @@ object Interpreter:
               else
                 val top = popOneFunction()
                 vars(name) = top // set variable
-                popped += top
         end for
         if !popArgs && args.isEmpty then
           ctx.push(popped.toList.take(origLength).reverse*)

@@ -211,8 +211,8 @@ object Parser:
               // stack arguments
 
               val wrapped = AST.Lambda(
-                arity,
-                args._1 ++ args._2,
+                Some(-1),
+                List(),
                 modifierArgs :+
                   (
                     impl.getOrElse(throw UndefinedCustomModifierException(name))
@@ -221,7 +221,7 @@ object Parser:
 
               // Finally, push the wrapped lambda to the stack
 
-              finalAsts.push(wrapped)
+              finalAsts.push(AST.makeSingle(wrapped, AST.Command("Ė")))
             else
               val modifier = Modifiers.modifiers.getOrElse(
                 name,
