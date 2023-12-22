@@ -2,11 +2,10 @@ package vyxal.gen
 
 import vyxal.parsing.Lexer
 import vyxal.Elements
+import vyxal.Interpreter
 import vyxal.Modifiers
 import vyxal.SugarMap
 import vyxal.SyntaxInfo
-
-import upickle.default.*
 
 private object GenerateTheseusData:
   def generate(): String =
@@ -15,6 +14,8 @@ private object GenerateTheseusData:
       "modifiers" -> ujson.Arr(),
       "syntax" -> ujson.Arr(),
       "sugars" -> SugarMap.trigraphs,
+      "codepage" -> Lexer.Codepage,
+      "version" -> Interpreter.version,
     )
     for
       (symbol, element) <- Elements.elements
