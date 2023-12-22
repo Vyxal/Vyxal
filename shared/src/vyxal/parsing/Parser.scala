@@ -12,11 +12,11 @@ enum CustomElementType derives CanEqual:
   case Modifier
 
 class CustomDefinition(
-    name: String,
-    elementType: CustomElementType,
-    implementation: Option[AST],
-    arity: Option[Int],
-    args: (List[String | Int], List[String | Int]),
+    val name: String,
+    val elementType: CustomElementType,
+    val implementation: Option[AST],
+    val arity: Option[Int],
+    val args: (List[String | Int], List[String | Int]),
 ):
   def info: (
       String,
@@ -109,7 +109,11 @@ object Parser:
          * top stack elements are needed to make the command equivalent to a
          * nilad. For arities -1 and 0, the command doesn't need to be grouped.
          */
-        case TokenType.Command => asts.push(parseCommand(token, asts, program))
+        case TokenType.Command =>
+          if customs.contains(value) &&
+            customs(value).elementType == CustomElementType.Modifier
+          then asts.push(AST.JunkModifier(value, customs(value).args(0).length))
+          else asts.push(parseCommand(token, asts, program))
 
         case TokenType.NegatedCommand =>
           asts.push(parseCommand(token, asts, program))

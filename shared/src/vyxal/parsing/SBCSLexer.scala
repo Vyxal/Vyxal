@@ -90,7 +90,7 @@ private[parsing] object SBCSLexer:
     P(
       withRange(
         (CharIn("∆øÞk") ~~ AnyChar).! |
-          ("#" ~~ !CharIn("[]$!=#>@{~'⸠:") ~~ AnyChar).!
+          ("#" ~~ !CharIn("[]$!=#>@{:") ~~ AnyChar).!
       )
     ).map {
       case (digraph, range) =>
@@ -167,9 +167,9 @@ private[parsing] object SBCSLexer:
   def setVariable[$: P]: P[Token] = parseToken(SetVar, "#=" ~~/ Common.varName)
 
   def modifierSymbol[$: P]: P[Token] =
-    parseToken(ModifierSymbol, "#⸠" ~~/ Common.varName)
+    parseToken(ModifierSymbol, "#:`" ~~/ Common.varName)
   def elementSymbol[$: P]: P[Token] =
-    parseToken(ElementSymbol, "#'" ~~/ Common.varName)
+    parseToken(ElementSymbol, "#:@" ~~/ Common.varName)
 
   def setConstant[$: P]: P[Token] =
     parseToken(Constant, "#!" ~~/ Common.varName)
