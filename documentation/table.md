@@ -253,7 +253,7 @@
 
 ## Modifiers
 
-| Symbol | Trigraph | Name | Keywords | Arity | Description | Overloads |
+| Symbol | Trigraph | Name | Keywords | Arity | Description | Usage |
  --- | --- | --- | --- | --- | --- | --- |
  <code>ᵃ</code> | <code>#^a</code> | Apply to Neighbours \| Number of Truthy Elements | `apply-to-neighbours:`, `count-truthy:`, `apply-neighbours:`, `apply-to-neighbors:`, `apply-neighbors:`, `2lvf:`, `twolif:`, `to-pairs:`, `to-overlaps:`, `count:` | 1 | To each overlapping pair, reduce it by an element<br>Apply a dyadic element for all pairs of neighboring elements.<br>Count the number of truthy elements in a list under a mondaic element | <code>ȧf<monad>: Count how many items in a list are truthy after applying f to each</code><br><code>ᵃf<dyad>: equivalent to pushing the function, then calling ȧ</code>
  <code>ᵇ</code> | <code>#^b</code> | Apply Without Popping \| Remove Duplicates by | `without-popping:`, `peek:`, `dedup-by:`, `remove-duplicates-by:` | 1 | Apply a 2+ arity element to the stack without popping<br>Remove duplicates from a list by an element | <code>ᵇf<dyad|triad|tetrad>: apply f to the stack without popping</code><br><code>ᵇf<monad>: remove duplicates from a list by applying f to each pair of elements</code>
