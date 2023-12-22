@@ -5,6 +5,7 @@ documentation/table.md linguist-generated=true
 **/LongDictionary.txt linguist-generated=true
 jvm/resources/*.nanorc linguist-generated=true
 pages/parsed_yaml.js linguist-generated=true
+pages/theseus.json linguist-generated=true
 tests/test_elements.py linguist-generated=true
 mill linguist-generated=true
 mill.bat linguist-generated=true
