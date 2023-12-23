@@ -1099,6 +1099,20 @@ object Elements:
         else temp
     },
     addPart(
+      Dyad,
+      "Þ÷",
+      "Into N Pieces | Split Into N Pieces",
+      List("into-n-pieces", "split-into-n-pieces"),
+      false,
+      "a: lst, b: num -> a split into b equal sized chunks, with the last chunk potentially smaller",
+      "a: str, b: num -> a split into b equal sized chunks, with the last chunk potentially smaller",
+    ) {
+      case (a: VList, b: VNum) => ListHelpers.intoNPieces(a, b)
+      case (a: VNum, b: VList) => ListHelpers.intoNPieces(b, a)
+      case (a: String, b: VNum) => StringHelpers.intoNPieces(a, b)
+      case (a: VNum, b: String) => StringHelpers.intoNPieces(b, a)
+    },
+    addPart(
       Monad,
       "e",
       "Is Even / Split on Newlines",
