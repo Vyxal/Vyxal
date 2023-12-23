@@ -398,7 +398,7 @@ object ListHelpers:
 
   def intoNPieces(iterable: VList, pieces: VNum)(using Context): VList =
     if pieces == VNum(0) then return VList()
-    if iterable.empty then return VList()
+    if iterable.isEmpty then return VList()
     val size = iterable.length
     val pieceSize = size / pieces
     var remaining = iterable
