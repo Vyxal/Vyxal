@@ -7,6 +7,7 @@ import vyxal.Modifiers
 import vyxal.SugarMap
 import vyxal.SyntaxInfo
 
+/** Generates the theseus.json data file for the New Vyxal 3 Web Interpreter™ */
 private object GenerateTheseusData:
   def generate(): String =
     val data = ujson.Obj(
