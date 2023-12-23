@@ -143,6 +143,7 @@ object CLI:
 
   def helpText = OParser.usage(parser)
   def version = Interpreter.version
+
   private def runCode(code: String)(using ctx: Context): Unit =
     try Interpreter.execute(code)
     catch case ex: VyxalException => println(ex.getMessage(using ctx))

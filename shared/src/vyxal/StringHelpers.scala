@@ -2,7 +2,9 @@ package vyxal
 
 import vyxal.parsing.Lexer
 
+import java.util.regex.PatternSyntaxException
 import scala.collection.mutable.StringBuilder
+import scala.util.matching.Regex
 
 object StringHelpers:
 
@@ -178,16 +180,23 @@ object StringHelpers:
     if to < 0 then padRight(s, to.vabs)
     else s.padTo(to.toInt, ' ')
 
+  def r(s: VAny): Regex =
+    try s.toString.r
+    catch case _: PatternSyntaxException => throw BadRegexException(s.toString)
+
   def regexSub(string: String, pattern: String, replacement: String): String =
-    string.replaceAll(pattern, replacement)
+    try string.replaceAll(pattern, replacement)
+    catch case _: PatternSyntaxException => throw BadRegexException(pattern)
 
   def regexSub(string: String, pattern: String, function: VFun)(using
       Context
   ): String =
-    s"($pattern)".r.replaceAllIn(
-      string,
-      m => function(m.group(0)).toString,
-    )
+    try
+      s"($pattern)".r.replaceAllIn(
+        string,
+        m => function(m.group(0)).toString,
+      )
+    catch case _: PatternSyntaxException => throw BadRegexException(pattern)
 
   /** Remove the character at the given index */
   def remove(s: String, i: Int): String =
@@ -285,6 +294,14 @@ object StringHelpers:
     val temp = s.replace("\\", raw"\\").replace("\"", "\\\"")
 
     s""""$temp""""
+
+  def split(s: String | VNum, pattern: String)(using Context): VList =
+    try
+      s match
+        case str: String => VList.from(str.split(pattern).toSeq)
+        case num: VNum =>
+          VList.from(num.toString.split(pattern).toSeq.map(MiscHelpers.eval))
+    catch case _: PatternSyntaxException => throw BadRegexException(pattern)
 
   /** Toggle case of each character in the string */
   def swapCase(s: String): String =

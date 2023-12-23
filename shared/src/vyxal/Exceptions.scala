@@ -16,6 +16,7 @@ class VyxalException(
     if unknown && !report && !ctx.settings.fullTrace then
       message += "\nUse 'X' flag for full traceback"
     if ctx.settings.fullTrace || report then
+      if !ex.isInstanceOf[VyxalException] then message += "\n" + ex.getMessage()
       message += "\n" +
         super.getCause().getStackTrace.mkString("  ", "\n  ", "")
     message
@@ -42,6 +43,10 @@ class BadModifierException(modifier: String)
     extends VyxalParsingException(s"Modifier '$modifier' is missing arguments")
 class BadStructureException(structure: String)
     extends VyxalParsingException(s"Invalid $structure statement")
+class ModifierArityException(modifier: String, arity: Option[Int])
+    extends VyxalParsingException(
+      s"Modifier '$modifier' does not support elements of arity ${arity.getOrElse("None")}"
+    )
 class NoSuchElementException(element: String)
     extends VyxalParsingException(s"No such element: $element"):
   def this(token: Token) = this(token.value)
@@ -78,6 +83,8 @@ class BadRedefineMode(mode: String)
     )
 
 /** VyxalRuntimeExceptions */
+class BadRegexException(regex: String)
+    extends VyxalRuntimeException(s"Invalid regex syntax: /$regex/")
 class ConstantAssignmentException(name: String)
     extends VyxalRuntimeException(s"Variable $name is constant")
 class ConstantDuplicateException(name: String)
@@ -91,14 +98,20 @@ class InvalidListOverloadException(
 ) extends VyxalRuntimeException(
       s"List $list contains invalid values. Element $element expected $expected values"
     )
+class BadLHSException(element: String, lhs: VAny)
+    extends VyxalRuntimeException(s"Element $element received bad LHS: $lhs")
+
+class BadRHSException(element: String, rhs: VAny)
+    extends VyxalRuntimeException(s"Element $element received bad RHS: $rhs")
+
 class NoDefaultException(value: VAny)
     extends VyxalRuntimeException(s"No default value exists for $value")
-class VyxalRecursionException()
-    extends VyxalRuntimeException("Too many recursions")
 class UnimplementedOverloadException(element: String, args: Seq[VAny])
     extends VyxalRuntimeException(
       s"$element not supported for input(s) ${args.mkString("[", ", ", "]")}"
     )
+class VyxalRecursionException()
+    extends VyxalRuntimeException("Too many recursions")
 
 /** Unrecognized Exceptions */
 class UnknownLexingException(ex: Throwable)

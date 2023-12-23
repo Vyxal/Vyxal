@@ -2,11 +2,10 @@ package vyxal.gen
 
 import vyxal.parsing.Lexer
 import vyxal.Elements
+import vyxal.Interpreter
 import vyxal.Modifiers
 import vyxal.SugarMap
 import vyxal.SyntaxInfo
-
-import upickle.default.*
 
 private object GenerateTheseusData:
   def generate(): String =
@@ -15,6 +14,8 @@ private object GenerateTheseusData:
       "modifiers" -> ujson.Arr(),
       "syntax" -> ujson.Arr(),
       "sugars" -> SugarMap.trigraphs,
+      "codepage" -> Lexer.Codepage,
+      "version" -> Interpreter.version,
     )
     for
       (symbol, element) <- Elements.elements
@@ -28,18 +29,19 @@ private object GenerateTheseusData:
       elementData("vectorises") = element.vectorises
       data("elements").arr.addOne(elementData)
 
-    for
-      (symbol, modifier) <- Modifiers.modifiers if !modifier._1.startsWith("#|")
-    do
+    for (symbol, modifier) <- Modifiers.modifiers do
       val modifierData = ujson.Obj()
       modifierData("name") = modifier.name
+      modifierData("symbol") = symbol
       modifierData("description") = modifier.description
       modifierData("keywords") = modifier.keywords.toList
+      modifierData("overloads") = modifier.overloads
       data("modifiers").arr.addOne(modifierData)
 
     for (symbol, syntax) <- SyntaxInfo.info do
       val syntaxData = ujson.Obj()
       syntaxData("name") = syntax.name
+      syntaxData("symbol") = symbol
       syntaxData("description") = syntax.description
       syntaxData("usage") = syntax.usage
       data("syntax").arr.addOne(syntaxData)

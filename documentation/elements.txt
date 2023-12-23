@@ -414,11 +414,11 @@ Keywords: length-vectorised, length-vect, len-vect, len-vectorised, vec-len, vec
 ----------------------
 m (Get Context Variable M) (non-vectorising)
 Keywords: get-context-m, context-m, c-var-m, ctx-m, ctx-secondary
-- ->  -> context variable m
+- -> context variable m
 ----------------------
 n (Get Context Variable N) (non-vectorising)
 Keywords: get-context-n, context-n, c-var-n, ctx-n, ctx-primary
-- ->  -> context variable n
+- -> context variable n
 ----------------------
 o (Overlap | Overlapping Slices) (non-vectorising)
 Keywords: overlap, overlaps, overlapping, overlapping-slices
@@ -535,11 +535,11 @@ Keywords: head-remove, behead
 - a: str -> a[1:]
 - a: any -> toList(a)[1:]
 ----------------------
-İ (Index into Multiple | Collect While Unique | Complex Number) (non-vectorising)
+İ (Drop | Collect While Unique | Complex Number) (non-vectorising)
 Trigraph: #.I
-Keywords: index-into-multiple, collect-while-unique, complex
+Keywords: drop, collect-while-unique, complex
 - a: num, b: num -> a.real + b.real * i
-- a: any, b: lst -> `[a[item] for item in b]`
+- a: str|lst, b: num -> a[b:]
 - a: any, b: fun -> Apply b on a and collect unique values (until fixpoint). Does not include the initial value.
 ----------------------
 Ŀ (Logarithm | Scan Fixpoint | Same Length? | Length Equals?) (vectorising)
@@ -1224,6 +1224,14 @@ Keywords: continue
 Keywords: 
 - *a, f -> f applied to the stack without popping items. Use the modifier instead.
 ----------------------
+#¤ (Number of Context Parameters) (non-vectorising)
+Keywords: number-of-context, context-number, context-count
+- -> number of context parameters
+----------------------
+#¿ (Number of Inputs) (non-vectorising)
+Keywords: number-of-inputs, count-inputs, count-stdin
+- -> The number of inputs to the program
+----------------------
 ∆q (Prime Exponents) (vectorising)
 Keywords: prime-exponents, prime-exps
 - a: num -> push a list of the power of each prime in the prime factors of a
@@ -1339,7 +1347,6 @@ Trigraph: #^i
 Keywords: parallel-apply-and-wrap:, para-apply-and-wrap:, <paraply>:, <!!>:
 Description: Parallel apply two elements to the top of the stack
 and wrap the result in a list
-
 -----------------------
 ᵞ
 Keywords: invariant-under:, vertical-scan:, vscan:, v-scan:, invariant?:, same?:
@@ -1444,17 +1451,15 @@ Trigraph: #^a
 -----------------------
 ᶻ
 Keywords: zip-with:, zipwith:
-Description: 
-      |Given a dyadic function, zip two lists and reduce each by f
-      | and then check if all results are equal.
-      |Given a monadic function, the inverse of monadic /.
-      |Filters where the function is falsey
+Description: Given a dyadic function, zip two lists and reduce each by f
+ and then check if all results are equal.
+Given a monadic function, the inverse of monadic /.
+Filters where the function is falsey
 Trigraph: #^z
 -----------------------
 ¿
 Keywords: if-top:, if:
-Description: Pop the top of the stack, and, if it's truthy,
-apply a function
+Description: Pop the top of the stack, and, if it's truthy, apply a function
 Trigraph: #.?
 -----------------------
 ᵉ
@@ -1521,7 +1526,6 @@ Description: Reduce a list by an element
 ∥
 Keywords: parallel-apply:, para-apply:, paraply:, !!:
 Description: Parallel apply two elements to the top of the stack
-
 -----------------------
 ᵡ
 Keywords: scan-fix:

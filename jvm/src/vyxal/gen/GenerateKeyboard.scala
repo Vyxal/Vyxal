@@ -35,21 +35,23 @@ private object GenerateKeyboard:
       if data.contains(index) then data(index) += thisElement.toMap
       else data(index) = ListBuffer(thisElement.toMap)
 
-    for modifier <- Modifiers.modifiers if !modifier._1.startsWith("#|") do
+    for modifier <- Modifiers.modifiers do
       val (symbol, info) = modifier
       info match
-        case Modifier(name, description, keywords, _) =>
+        case Modifier(name, description, keywords, _, overloads) =>
           val token = symbol
           val index =
             if token == " " then 32 else Lexer.Codepage.indexOf(token.last)
           val thisElement = scala.collection.mutable.HashMap[String, String]()
           thisElement("name") = name
-          thisElement("description") = keywords.mkString(" ")
-          thisElement("overloads") = description
+          thisElement("description") = description
+          thisElement("keywords") = keywords.mkString(" ")
+          thisElement("overloads") = overloads.mkString("\n")
           thisElement("token") = symbol
 
           if data.contains(index) then data(index) += thisElement.toMap
           else data(index) = ListBuffer(thisElement.toMap)
+    end for
 
     for syntax <- SyntaxInfo.info do
       val (symbol, info) = syntax

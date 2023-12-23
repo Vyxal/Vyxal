@@ -178,7 +178,7 @@ class InterpreterTests extends VyxalTests:
     }
 
     describe("Varargs") {
-      testMulti("1 2 3 3λ*|/+}Ė" -> 6, "1 2 3 2λ*|/+}Ė" -> 5)
+      testMulti("1 2 3 3λ*|W/+}Ė" -> 6, "1 2 3 2λ*|W/+}Ė" -> 5)
     }
 
     describe("Explicit arguments") {

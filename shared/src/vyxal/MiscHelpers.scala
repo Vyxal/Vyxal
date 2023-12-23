@@ -91,6 +91,25 @@ object MiscHelpers:
 
   def firstPositive(f: VFun)(using Context): Int = firstFromN(f, 1)
 
+  val index: Dyad = Dyad.fill("index") {
+    case (a: VList, b: VList) => a.index(b)
+    case (a: String, b: VList) =>
+      val temp = b.vmap(MiscHelpers.index(a, _))
+      if b.lst.forall(_.isInstanceOf[VNum]) then temp.mkString
+      else temp
+    case (a: VList, b: String) =>
+      val temp = a.vmap(MiscHelpers.index(_, b))
+      if a.lst.forall(_.isInstanceOf[VNum]) then temp.mkString
+      else temp
+    case (a, b: VFun) => MiscHelpers.collectUnique(b, a)
+    case (a: VFun, b) => MiscHelpers.collectUnique(a, b)
+    case (a: VNum, b) => ListHelpers.makeIterable(b).index(a)
+    case (a, b: VNum) => ListHelpers.makeIterable(a).index(b)
+    case (a: String, b: String) =>
+      val temp = a.length / 2
+      a.slice(0, temp) + b + a.slice(temp, a.length)
+  }
+
   val joinNothing: Monad = Monad.fill("joinNothing") {
     // ALTERNATIVE (No vectorisation):
     // case a: VList => a.mkString

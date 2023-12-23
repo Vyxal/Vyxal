@@ -86,11 +86,8 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
   }
 }
 
-/** Shared and JVM-specific code */
-object jvm extends VyxalModule {
+trait JvmCommon extends VyxalModule {
   val platform = "jvm"
-
-  def mainClass: T[Option[String]] = Some("vyxal.Main")
 
   def ivyDeps =
     T {
@@ -115,9 +112,16 @@ object jvm extends VyxalModule {
       os.move(super.assembly().path, out)
       PathRef(out)
     }
+}
+
+/** Shared and JVM-specific code */
+object jvm extends JvmCommon {
+  val platform = "jvm"
+
+  def mainClass: T[Option[String]] = Some("vyxal.Main")
 
   /** Run a method on a singleton object */
-  def runMethod[T](
+  private def runMethod[T](
       classpath: Seq[PathRef],
       objectName: String,
       methodName: String,
@@ -167,14 +171,18 @@ object jvm extends VyxalModule {
     }
 
   /** Generate data file(s) for online interpreter */
-  def theseus = 
+  def theseus =
     T.sources {
       val descriptions = runMethod[String](
         jvm.runClasspath(),
         "vyxal.gen.GenerateKeyboard",
         "generateDescriptions",
       )
-      val data = runMethod[String](jvm.runClasspath(), "vyxal.gen.GenerateTheseusData", "generate")
+      val data = runMethod[String](
+        jvm.runClasspath(),
+        "vyxal.gen.GenerateTheseusData",
+        "generate",
+      )
       val descriptionsFile = build.millSourcePath / "pages" / "parsed_yaml.js"
       val dataFile = build.millSourcePath / "pages" / "theseus.json"
       os.write.over(descriptionsFile, descriptions)
@@ -186,36 +194,15 @@ object jvm extends VyxalModule {
       )
     }
 
+  def fuzz(min: Int, max: Int, timeout: Int) =
+    T.command {
+      jvm.runMain("vyxal.fuzz", min.toString, max.toString, timeout.toString)
+    }
+
   object test extends ScalaTests with VyxalTestModule
 }
 
-object jvmLiterate extends VyxalModule {
-  val platform = "jvm"
-
-  def ivyDeps =
-    T {
-      super.ivyDeps() ++
-        Seq(
-          // For the REPL
-          ivy"org.jline:jline:3.23.0",
-          ivy"org.jline:jline-terminal-jansi:3.23.0",
-          ivy"org.fusesource.jansi:jansi:2.4.0",
-        )
-    }
-
-  def forkEnv: T[Map[String, String]] =
-    Map("REPL" -> "false", "VYXAL_LOG_LEVEL" -> "Debug")
-
-  override def assembly =
-    T {
-      // Make sure to generate nanorcs first
-      jvm.nanorc()
-      // Rename jar to vyxal-<version>.jar
-      val out = T.dest / s"vyxal-$vyxalVersion-literate.jar"
-      os.move(super.assembly().path, out)
-      PathRef(out)
-    }
-
+object jvmLiterate extends JvmCommon {
   def mainClass: T[Option[String]] = Some("vyxal.MainLit")
 
   object test extends ScalaTests with VyxalTestModule

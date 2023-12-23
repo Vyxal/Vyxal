@@ -94,6 +94,10 @@ object ListHelpers:
       case l: VList => ListHelpers.sum(l)
       case x => x
 
+  def drop(iterable: VList, index: VNum): VList =
+    val ind = if index < 0 then iterable.bigLength + index else index
+    VList.from(iterable.drop(ind))
+
   def filter(iterable: VList, predicate: VFun)(using Context): VList =
     predicate.originalAST match
       case Some(lam) =>
@@ -562,12 +566,17 @@ object ListHelpers:
       case _: String => value.mkString
 
   def overlaps(iterable: Seq[VAny], size: Int): Seq[VList] =
-    if size == 0 then Seq.empty
-    else iterable.sliding(size).toSeq.map(VList.from)
+    size compare 0 match
+      case 0 => Seq.empty
+      case 1 => iterable.sliding(size).toSeq.map(VList.from)
+      case -1 => iterable.sliding(-size).toSeq.reverse.map(VList.from)
 
   // Just for strings
   def overlaps(iterable: String, size: Int): Seq[String] =
-    if size == 0 then Seq.empty else iterable.sliding(size).toSeq
+    size compare 0 match
+      case 0 => Seq.empty
+      case 1 => iterable.sliding(size).toSeq
+      case -1 => iterable.sliding(-size).toSeq.reverse
 
   def palindromise(lst: VList): VList =
     val temp = lst.lst

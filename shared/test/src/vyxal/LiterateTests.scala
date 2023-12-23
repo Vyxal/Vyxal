@@ -37,8 +37,8 @@ class LiterateTests extends VyxalTests:
     it("should leave strings as-is") {
       testLiterate(""""Hello, Vyxal!"""", """"Hello, Vyxal!"""")
       testLiterate(
-        raw""""Vyxal is what \"you\" want!"""",
-        raw""""Vyxal is what \"you\" want!"""",
+        """"Vyxal is what \"you\" want!"""",
+        """"Vyxal is what \"you\" want!"""",
       )
     }
   }
