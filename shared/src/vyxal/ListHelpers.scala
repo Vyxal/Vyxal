@@ -400,7 +400,7 @@ object ListHelpers:
     if pieces == VNum(0) then return VList()
     if iterable.isEmpty then return VList()
     val size = iterable.length
-    val pieceSize = size / pieces
+    val pieceSize = (size / pieces).floor
     var remaining = iterable
     var out = ListBuffer.empty[VList]
     while remaining.length >= pieceSize do
