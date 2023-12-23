@@ -401,12 +401,12 @@ object ListHelpers:
     val pieceSize = size / pieces
     var remaining = iterable
     var out = ListBuffer.empty[VList]
-    while remaining.nonEmpty do
+    while remaining.length >= pieceSize do
       val (thisPiece, rest) =
         (remaining.take(pieceSize), remaining.drop(pieceSize))
       out += VList.from(thisPiece)
       remaining = rest
-    VList.from(out.toSeq)
+    VList.from(out.toSeq :+ remaining)
 
   /** Join a list on a string/number, or intersperse a list within `lst` */
   def join(lst: VList, sep: VAny)(using Context): VAny =
