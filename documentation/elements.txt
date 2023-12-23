@@ -1320,6 +1320,11 @@ Keywords: ZZ
 Keywords: multi-set-intersection, multi-set-intersect
 - a: lst, b: lst -> multi-set intersection of a and b
 ----------------------
+Þ÷ (Into N Pieces | Split Into N Pieces) (non-vectorising)
+Keywords: into-n-pieces, split-into-n-pieces
+- a: lst, b: num -> a split into b equal sized chunks, with the last chunk potentially smaller
+- a: str, b: num -> a split into b equal sized chunks, with the last chunk potentially smaller
+----------------------
 ᵜ
 Keywords: <-}
 Description: Scan elements to the left until a newline is found. Push a

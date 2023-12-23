@@ -250,6 +250,7 @@
  <code>ÞṆ</code> |  | Set of Natural Numbers | `NN` | 0 | :x: | <code></code> => <code> The set of all natural numbers</code>
  <code>ÞṬ</code> |  | Set of Integers | `ZZ` | 0 | :x: | <code></code> => <code> The set of all integers</code>
  <code>Þ⁾</code> |  | Multi-Set Intersection | `multi-set-intersection`, `multi-set-intersect` | 2 | :x: | <code>a: lst, b: lst </code> => <code> multi-set intersection of a and b</code>
+ <code>Þ÷</code> |  | Into N Pieces \| Split Into N Pieces | `into-n-pieces`, `split-into-n-pieces` | 2 | :x: | <code>a: lst, b: num </code> => <code> a split into b equal sized chunks, with the last chunk potentially smaller</code><br><code>a: str, b: num </code> => <code> a split into b equal sized chunks, with the last chunk potentially smaller</code>
 
 ## Modifiers
 
