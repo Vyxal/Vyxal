@@ -189,7 +189,7 @@
  <code>ɾ</code> | #,~ | Inclusive One Range \| Uppercase | `one->n`, `one-range`, `to-upper`, `upper`, `uppercase` | 1 | :white_check_mark: | <code>a: num </code> => <code> [1..a]</code><br><code>a: str </code> => <code> a.upper()</code>
  <code>¯</code> | #^_ | Deltas | `deltas` | 1 | :x: | <code>a: lst </code> => <code> forward-differences of a</code>
  <code>×</code> | #.* | Multiplication | `mul`, `multiply`, `times`, `str-repeat`, `*`, `ring-trans` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a * b</code><br><code>a: num, b: str </code> => <code> b repeated a times</code><br><code>a: str, b: num </code> => <code> a repeated b times</code><br><code>a: str, b: str </code> => <code> ring translate a according to b</code>
- <code>÷</code> | #./ | Divide \| Split | `divide`, `div`, `str-split`, `re-split` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a / b</code><br><code>a: str, b: str </code> => <code> Split a on the regex b</code>
+ <code>÷</code> | #./ | Divide \| Split | `divide`, `div`, `str-split`, `re-split`, `str-n-pieces`, `n-strings`, `str-pieces`, `string-pieces` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a / b</code><br><code>a: str, b: num </code> => <code> a split into b equal sized chunks, with the last chunk potentially smaller</code><br><code>a: num, b: str </code> => <code> b split into a equal sized chunks, with the last chunk potentially smaller</code><br><code>a: str, b: str </code> => <code> Split a on the regex b</code>
  <code>£</code> | #^= | Set Register | `set-register`, `->register`, `set-reg`, `->reg` | 1 | :x: | <code>a: any </code> => <code> register = a</code>
  <code>¥</code> | #^$ | Get Register | `get-register`, `get-reg`, `register`, `<-register`, `<-reg` | NA | :x: | <code> </code> => <code> push the value of the register</code>
  <code>←</code> | #^< | Rotate Stack Left | `rotate-stack-left` | NA | :x: | <code> </code> => <code> rotate the entire stack left once</code>
@@ -250,6 +250,7 @@
  <code>ÞṆ</code> |  | Set of Natural Numbers | `NN` | 0 | :x: | <code></code> => <code> The set of all natural numbers</code>
  <code>ÞṬ</code> |  | Set of Integers | `ZZ` | 0 | :x: | <code></code> => <code> The set of all integers</code>
  <code>Þ⁾</code> |  | Multi-Set Intersection | `multi-set-intersection`, `multi-set-intersect` | 2 | :x: | <code>a: lst, b: lst </code> => <code> multi-set intersection of a and b</code>
+ <code>Þ÷</code> |  | Into N Pieces \| Split Into N Pieces | `into-n-pieces`, `split-into-n-pieces` | 2 | :x: | <code>a: lst, b: num </code> => <code> a split into b equal sized chunks, with the last chunk potentially smaller</code><br><code>a: str, b: num </code> => <code> a split into b equal sized chunks, with the last chunk potentially smaller</code>
 
 ## Modifiers
 

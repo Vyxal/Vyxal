@@ -481,12 +481,25 @@ object Elements:
       Dyad,
       "÷",
       "Divide | Split",
-      List("divide", "div", "str-split", "re-split"),
+      List(
+        "divide",
+        "div",
+        "str-split",
+        "re-split",
+        "str-n-pieces",
+        "n-strings",
+        "str-pieces",
+        "string-pieces",
+      ),
       true,
       "a: num, b: num -> a / b",
+      "a: str, b: num -> a split into b equal sized chunks, with the last chunk potentially smaller",
+      "a: num, b: str -> b split into a equal sized chunks, with the last chunk potentially smaller",
       "a: str, b: str -> Split a on the regex b",
     ) {
       case (a: VNum, b: VNum) => a / b
+      case (a: String, b: VNum) => StringHelpers.intoNPieces(a, b)
+      case (a: VNum, b: String) => StringHelpers.intoNPieces(b, a)
       case (a: String, b: String) => StringHelpers.split(a, b)
     },
     addFull(
@@ -1084,6 +1097,20 @@ object Elements:
           .interleave(ListHelpers.makeIterable(a), ListHelpers.makeIterable(b))
         if a.isInstanceOf[String] && b.isInstanceOf[String] then temp.mkString
         else temp
+    },
+    addPart(
+      Dyad,
+      "Þ÷",
+      "Into N Pieces | Split Into N Pieces",
+      List("into-n-pieces", "split-into-n-pieces"),
+      false,
+      "a: lst, b: num -> a split into b equal sized chunks, with the last chunk potentially smaller",
+      "a: str, b: num -> a split into b equal sized chunks, with the last chunk potentially smaller",
+    ) {
+      case (a: VList, b: VNum) => ListHelpers.intoNPieces(a, b)
+      case (a: VNum, b: VList) => ListHelpers.intoNPieces(b, a)
+      case (a: String, b: VNum) => StringHelpers.intoNPieces(a, b)
+      case (a: VNum, b: String) => StringHelpers.intoNPieces(b, a)
     },
     addPart(
       Monad,
