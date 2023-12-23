@@ -169,6 +169,11 @@ object StringHelpers:
     sb.toString
   end formatString
 
+  def intoNPieces(s: String, n: VNum)(using Context): VList =
+    val chars = ListHelpers.makeIterable(s)
+    val pieces = ListHelpers.intoNPieces(chars, n)
+    VList.from(pieces.map(_.asInstanceOf[VList].mkString))
+
   def isAlphaNumeric(s: String): Boolean = s.matches("^[0-9A-Za-z]*$")
 
   def isVowel(c: Char): VNum = "aeiouAEIOU".contains(c)

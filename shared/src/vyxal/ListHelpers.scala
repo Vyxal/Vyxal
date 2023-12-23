@@ -396,6 +396,18 @@ object ListHelpers:
 
     VList(out.toSeq*)
 
+  def intoNPieces(iterable: VList, pieces: VNum)(using Context): VList =
+    val size = iterable.length
+    val pieceSize = size / pieces
+    var remaining = iterable
+    var out = ListBuffer.empty[VList]
+    while remaining.nonEmpty do
+      val (thisPiece, rest) =
+        (remaining.take(pieceSize), remaining.drop(pieceSize))
+      out += VList.from(thisPiece)
+      remaining = rest
+    VList.from(out.toSeq)
+
   /** Join a list on a string/number, or intersperse a list within `lst` */
   def join(lst: VList, sep: VAny)(using Context): VAny =
     sep match
