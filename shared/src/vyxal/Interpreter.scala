@@ -106,7 +106,10 @@ object Interpreter:
       case AST.Command(cmd, _, overwriteable) =>
         if overwriteable && ctx.globals.symbols.contains(cmd) then
           ctx.globals.symbols(cmd).getImpl match
-            case Some(implementation) => execute(implementation)
+            case Some(implementation) =>
+              val lam = VFun.fromLambda(implementation.asInstanceOf[AST.Lambda])
+              if implementation.arity.getOrElse(0) == -1 then executeFn(lam)
+              else ctx.push(executeFn(lam))
             case None => throw VyxalYikesException(
                 s"Symbol $cmd has no impl. Should have already been caught :skull:"
               )

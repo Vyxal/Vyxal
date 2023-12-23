@@ -442,17 +442,15 @@ object Parser:
             if args(1) == -1 then -1
             else args(1) + functions(1)
 
-        val actualImpl = AST.makeSingle(
-          (mode match
-            case CustomElementType.Element =>
+        val actualImpl = mode match
+          case CustomElementType.Element =>
+            if impl.isInstanceOf[AST.Lambda] then impl
+            else AST.Lambda(Some(arity), args(0), List(impl))
+          case CustomElementType.Modifier => AST.makeSingle(
               if impl.isInstanceOf[AST.Lambda] then impl
-              else AST.Lambda(Some(arity), args(0), List(impl))
-            case CustomElementType.Modifier =>
-              if impl.isInstanceOf[AST.Lambda] then impl
-              else AST.Lambda(Some(arity), functions(0) ++ args(0), List(impl))
-          ),
-          AST.Command("Ė"),
-        )
+              else AST.Lambda(Some(arity), functions(0) ++ args(0), List(impl)),
+              AST.Command("Ė"),
+            )
 
         customs(actualName) = CustomDefinition(
           actualName,
