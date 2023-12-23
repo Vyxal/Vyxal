@@ -398,7 +398,7 @@ private[parsing] object LiterateLexer:
     parseToken(ModifierSymbol, "$:" ~~/ Common.varName)
 
   def elementSymbol[$: P]: P[LitToken] =
-    parseToken(ElementSymbol, "$`" ~~/ Common.varName)
+    parseToken(ElementSymbol, "$@" ~~/ Common.varName)
 
   def singleToken[$: P]: P[Seq[LitToken]] =
     P(

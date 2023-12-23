@@ -103,8 +103,8 @@ object Interpreter:
           execute(elem)(using ctx.makeChild())
           list += ctx.pop()
         ctx.push(VList.from(list.toList))
-      case AST.Command(cmd, _) =>
-        if ctx.globals.symbols.contains(cmd) then
+      case AST.Command(cmd, _, overwriteable) =>
+        if overwriteable && ctx.globals.symbols.contains(cmd) then
           ctx.globals.symbols(cmd).getImpl match
             case Some(implementation) => execute(implementation)
             case None => throw VyxalYikesException(

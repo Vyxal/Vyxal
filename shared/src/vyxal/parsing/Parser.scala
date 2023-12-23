@@ -115,8 +115,11 @@ object Parser:
           then asts.push(AST.JunkModifier(value, customs(value).args(0).length))
           else asts.push(parseCommand(token, asts, program))
 
+        case TokenType.OriginalSymbol =>
+          asts.push(parseCommand(token, asts, program, false))
+
         case TokenType.NegatedCommand =>
-          asts.push(parseCommand(token, asts, program))
+          asts.push(parseCommand(token, asts, program, false))
           asts.push(AST.Command("¬"))
 
         // At this stage, modifiers aren't explicitly handled, so just push a
@@ -277,30 +280,33 @@ object Parser:
       cmdTok: Token,
       asts: Stack[AST],
       program: Queue[Token],
+      checkCustoms: Boolean = true,
   ): AST =
     val cmd =
-      if customs.contains(cmdTok.value) then cmdTok.value
+      if checkCustoms && customs.contains(cmdTok.value) then cmdTok.value
       else if !Elements.elements.contains(cmdTok.value) then
         Elements.symbolFor(cmdTok.value).getOrElse("Nonexistent")
       else cmdTok.value
 
     val arity = Elements.elements.get(cmd) match
       case None =>
-        if !customs.contains(cmd) then throw NoSuchElementException(cmdTok)
-        else
-          val (_, _, _, arity, _) = customs(cmd).info
-          arity.getOrElse(1)
+        if checkCustoms then
+          if !customs.contains(cmd) then throw NoSuchElementException(cmdTok)
+          else
+            val (_, _, _, arity, _) = customs(cmd).info
+            arity.getOrElse(1)
+        else throw NoSuchElementException(cmdTok)
       case Some(element) =>
-        if asts.isEmpty then return AST.Command(cmd, cmdTok.range)
+        if asts.isEmpty then return AST.Command(cmd, cmdTok.range, checkCustoms)
         else element.arity.getOrElse(0)
     val nilads = ListBuffer[AST]()
 
     while asts.nonEmpty && nilads.sizeIs < arity &&
       asts.top.arity.fold(false)(_ == 0)
     do nilads += asts.pop()
-    if nilads.isEmpty then return AST.Command(cmd, cmdTok.range)
+    if nilads.isEmpty then return AST.Command(cmd, cmdTok.range, checkCustoms)
     AST.Group(
-      (AST.Command(cmd, cmdTok.range) :: nilads.toList).reverse,
+      (AST.Command(cmd, cmdTok.range, checkCustoms) :: nilads.toList).reverse,
       Some(arity - nilads.size),
     )
   end parseCommand
@@ -419,12 +425,15 @@ object Parser:
             (name, parseParameters(functions), parseParameters(args), impl)
           case _ => throw BadStructureException("redefine")
 
-        val actualName = toValidName(name.toVyxal)
-        val mode = name.toVyxal.headOption match
+        val nameString = name.toVyxal
+        val actualName =
+          if nameString.length() == 2 then nameString(1).toString()
+          else toValidName(nameString)
+        val mode = nameString.headOption match
           case Some('@') => CustomElementType.Element
           case Some('*') => CustomElementType.Modifier
           case _ => throw BadRedefineMode(
-              name.toVyxal.headOption.getOrElse("").toString()
+              nameString.headOption.getOrElse("").toString()
             )
 
         val arity = mode match
@@ -433,15 +442,17 @@ object Parser:
             if args(1) == -1 then -1
             else args(1) + functions(1)
 
-        val actualImpl = mode match
-          case CustomElementType.Element =>
-            if impl.isInstanceOf[AST.Lambda] then impl
-            else AST.Lambda(Some(arity), args(0), List(impl))
-          case CustomElementType.Modifier =>
-            val lambda =
+        val actualImpl = AST.makeSingle(
+          (mode match
+            case CustomElementType.Element =>
+              if impl.isInstanceOf[AST.Lambda] then impl
+              else AST.Lambda(Some(arity), args(0), List(impl))
+            case CustomElementType.Modifier =>
               if impl.isInstanceOf[AST.Lambda] then impl
               else AST.Lambda(Some(arity), functions(0) ++ args(0), List(impl))
-            AST.makeSingle(lambda, AST.Command("Ė"))
+          ),
+          AST.Command("Ė"),
+        )
 
         customs(actualName) = CustomDefinition(
           actualName,
