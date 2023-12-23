@@ -492,45 +492,47 @@ class InterpreterTests extends VyxalTests:
   }
 
   describe("The define structure") {
-    group {
-      testCode(
-        "#:: @incrementAndHalf | x | #$x 1+ 2÷} 5 #:@incrementAndHalf",
-        VNum(3),
-        Seq(),
-      )
+    it("does stuff") {
+      group {
+        testCode(
+          "#:: @incrementAndHalf | x | #$x 1+ 2÷} 5 #:@incrementAndHalf",
+          VNum(3),
+          Seq(),
+        )
 
-      testCode("#:: @+ | lhs, rhs | #$lhs #$rhs -} 4 6 +", VNum(2), Seq())
-      testCode("#:: @+ | lhs, rhs | #$lhs #$rhs -} 1 1 +", VNum(0), Seq())
+        testCode("#:: @+ | lhs, rhs | #$lhs #$rhs -} 4 6 +", VNum(2), Seq())
+        testCode("#:: @+ | lhs, rhs | #$lhs #$rhs -} 1 1 +", VNum(0), Seq())
 
-      testCode(
-        "#:: *ReduceRange | f | 1 | ɾ #$f R } 5 #:`ReduceRange +",
-        VNum(15),
-        Seq(),
-      )
+        testCode(
+          "#:: *ReduceRange | f | 1 | ɾ #$f R } 5 #:`ReduceRange +",
+          VNum(15),
+          Seq(),
+        )
 
-      testCode(
-        "#:: *RevRow | f | arr | #$arr V #$f M V } 12ʀ4Ẇ #:`RevRow 1İ",
-        VList(VList(0, 1, 2), VList(4, 5, 6), VList(8, 9, 10)),
-        Seq(),
-      )
+        testCode(
+          "#:: *RevRow | f | arr | #$arr V #$f M V } 12ʀ4Ẇ #:`RevRow 1İ",
+          VList(VList(0, 1, 2), VList(4, 5, 6), VList(8, 9, 10)),
+          Seq(),
+        )
 
-      testCode(
-        "#:: *p | f, g | ! | #$f Ḃ #=temp #$g Ė #$temp } 4 5 p+- ;",
-        VList(9, -1),
-        Seq(),
-      )
+        testCode(
+          "#:: *p | f, g | ! | #$f Ḃ #=temp #$g Ė #$temp } 4 5 p+- ;",
+          VList(9, -1),
+          Seq(),
+        )
 
-      testCode(
-        "#:: @+ | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}} 2 2 +",
-        VNum(5),
-        Seq(),
-      )
+        testCode(
+          "#:: @+ | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}} 2 2 +",
+          VNum(5),
+          Seq(),
+        )
 
-      testCode(
-        "#:: @+ | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}} 6 9 +",
-        VNum(15),
-        Seq(),
-      )
+        testCode(
+          "#:: @+ | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}} 6 9 +",
+          VNum(15),
+          Seq(),
+        )
+      }
     }
   }
 
