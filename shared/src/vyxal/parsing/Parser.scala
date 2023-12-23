@@ -409,7 +409,7 @@ object Parser:
             AST.For(Some(toValidName(name.toVyxal)), body)
           case List(body) => AST.For(None, body)
           case _ => throw BadStructureException("for")
-      case StructureType.RedefineStructure =>
+      case StructureType.DefineStructure =>
         // Name: The name of the element/modifier
         // Mode: Whether it's an element or modifier
         // Implementation: The implementation of the element/modifier
@@ -423,7 +423,7 @@ object Parser:
             (name, (List() -> 0), parseParameters(args), impl)
           case List(name, functions, args, impl) =>
             (name, parseParameters(functions), parseParameters(args), impl)
-          case _ => throw BadStructureException("redefine")
+          case _ => throw BadStructureException("define")
 
         val nameString = name.toVyxal
         val actualName =

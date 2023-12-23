@@ -93,7 +93,53 @@ E.g.
 
 Uses the original behaviour of `+` to add the two numbers if both arguments aren't 2, and returns `5` otherwise.
 
-### Literate Mode
+### Customs in Literate Mode
 
-It is not reccomended to do this with literate mode because keyword lexing can
-get a little funky. For now, only use this with SBCS.
+The literate mode syntax is roughly the same as SBCS, except instead of `#::`, `define` is used. Other than that, the only other difference is greater choice in
+branch keywords:
+
+```
+define @elementName | parameters | implementation }
+define *modifierName | element parameters | implementation parameters | implementation }
+```
+
+```
+$@elementName
+$:modifierName <element(s)>
+```
+
+For example:
+
+```
+define @add given lhs, rhs as
+  $lhs $rhs - 
+}
+3 4 $@add ## -1
+
+
+define @incrementAndHalf given x as
+  $x 1+ 2/
+}
+
+5 $@incrementAndHalf ## 3
+```
+
+and modifiers:
+
+```
+define *ReduceRange given (f | 1) | one->n $f reduce}
+5 $:ReduceRange + ## 15
+
+define *RevRow given (f | arr) | $arr vec-reverse $f map vec-reverse}
+12 zero-range 4 wrap-length $:RevRow (1 drop) ## [[0,1,2], [4,5,6], [8,9,10]]
+```
+
+One thing to note is that single character names will redefine for all keywords
+that turn into that character. E.g.
+
+```
+define @+ given lhs, rhs as
+  $lhs $rhs - 
+}
+3 4 add ## -1
+```

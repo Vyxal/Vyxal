@@ -129,7 +129,7 @@ enum StructureType(val open: String) derives CanEqual:
   case IfStatement extends StructureType("#{")
   case DecisionStructure extends StructureType("Ḍ")
   case GeneratorStructure extends StructureType("Ṇ")
-  case RedefineStructure extends StructureType("#::")
+  case DefineStructure extends StructureType("#::")
 
 object StructureType:
   val lambdaStructures: List[StructureType] = List(
@@ -263,10 +263,10 @@ object Lexer:
       case CompressedString => s""""$value„"""
       case CompressedNumber => s""""$value“"""
       case UnpackTrigraph if value == ":=[" => "#:["
-      case ElementSymbol => s"#'$value"
-      case ModifierSymbol => s"#⸠$value"
+      case ElementSymbol => s"#:@$value"
+      case ModifierSymbol => s"#:`$value"
       case Command if !Elements.elements.contains(value) =>
-        Elements.symbolFor(value).getOrElse(value)
+        Elements.symbolFor(value).getOrElse(value.stripSuffix("|"))
       case Comment => ""
       case _ => tokenType.canonicalSBCS.getOrElse(value)
     end match
