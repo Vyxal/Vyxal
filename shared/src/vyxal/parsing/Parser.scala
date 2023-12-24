@@ -38,7 +38,7 @@ end CustomDefinition
 
 class Parser:
 
-  private var customs = mutable.Map[String, CustomDefinition]()
+  private val customs = mutable.Map[String, CustomDefinition]()
 
   def getCustoms: Map[String, CustomDefinition] = customs.toMap
 
