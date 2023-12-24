@@ -1,6 +1,5 @@
 package vyxal
 
-import vyxal.CustomDefinition
 import vyxal.VNum.given
 
 import scala.collection.mutable as mut

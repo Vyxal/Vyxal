@@ -106,7 +106,7 @@ object Interpreter:
         ctx.push(VList.from(list.toList))
       case AST.Command(cmd, _, overwriteable) =>
         if overwriteable && ctx.globals.symbols.contains(cmd) then
-          ctx.globals.symbols(cmd).getImpl match
+          ctx.globals.symbols(cmd).impl match
             case Some(implementation) =>
               val lam = VFun.fromLambda(implementation.asInstanceOf[AST.Lambda])
               if implementation.arity.getOrElse(0) == -1 then executeFn(lam)

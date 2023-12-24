@@ -11,30 +11,13 @@ enum CustomElementType derives CanEqual:
   case Element
   case Modifier
 
-class CustomDefinition(
-    val name: String,
-    val elementType: CustomElementType,
-    val implementation: Option[AST],
-    val arity: Option[Int],
-    val args: (List[String | Int], List[String | Int]),
-):
-  def info: (
-      String,
-      CustomElementType,
-      Option[AST],
-      Option[Int],
-      (List[String | Int], List[String | Int]),
-  ) =
-    (
-      name,
-      elementType,
-      implementation,
-      arity,
-      args,
-    )
-
-  def getImpl: Option[AST] = implementation
-end CustomDefinition
+case class CustomDefinition(
+    name: String,
+    elementType: CustomElementType,
+    impl: Option[AST],
+    arity: Option[Int],
+    args: (List[String | Int], List[String | Int]),
+)
 
 class Parser:
 
@@ -130,7 +113,8 @@ class Parser:
           val name = value
           if !customs.contains(name) then
             throw UndefinedCustomElementException(name)
-          val (_, elementType, impl, arity, args) = customs(name).info
+          val CustomDefinition(_, elementType, impl, arity, args) =
+            customs(name)
           elementType match
             case CustomElementType.Element => asts.push(
                 parseCommand(
@@ -145,7 +129,8 @@ class Parser:
           val name = value
           if !customs.contains(name) then
             throw UndefinedCustomModifierException(name)
-          val (_, elementType, impl, arity, args) = customs(name).info
+          val CustomDefinition(_, elementType, impl, arity, args) =
+            customs(name)
           elementType match
             case CustomElementType.Element =>
               throw CustomModifierActuallyElementException(name)
@@ -209,7 +194,7 @@ class Parser:
             if finalAsts.length < arity then throw BadModifierException(name)
             if customs.contains(name) then
               // First, get the ASTs for the custom modifier
-              val (_, _, impl, arity, args) = customs(name).info
+              val CustomDefinition(_, _, impl, arity, args) = customs(name)
               val modifierArgs =
                 List.fill(args(0).length)(finalAsts.pop()).map { ast =>
                   AST.Lambda(ast.arity, List(), List(ast))
@@ -295,7 +280,7 @@ class Parser:
         if checkCustoms then
           if !customs.contains(cmd) then throw NoSuchElementException(cmdTok)
           else
-            val (_, _, _, arity, _) = customs(cmd).info
+            val CustomDefinition(_, _, _, arity, _) = customs(cmd)
             arity.getOrElse(1)
         else throw NoSuchElementException(cmdTok)
       case Some(element) =>
