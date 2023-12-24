@@ -19,11 +19,18 @@ case class CustomDefinition(
     args: (List[String | Int], List[String | Int]),
 )
 
-class Parser:
+case class ParserResult(ast: AST, customs: Map[String, CustomDefinition])
 
+object Parser:
+  @throws[VyxalParsingException]
+  def parse(tokens: List[Token]): ParserResult =
+    val parser = Parser()
+    val ast = parser.parse(tokens)
+    ParserResult(ast, parser.customs.toMap)
+
+private class Parser:
+  /** Custom definitions found so far */
   private val customs = mutable.Map[String, CustomDefinition]()
-
-  def getCustoms: Map[String, CustomDefinition] = customs.toMap
 
   private def toValidName(name: String): String =
     name
@@ -616,5 +623,4 @@ class Parser:
       case AST.GetVar(_, _) => false // you might want a variable at the end
       // after doing stuff like augmented assignment
       case _ => ast.arity.contains(0)
-
 end Parser

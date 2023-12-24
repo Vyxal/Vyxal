@@ -28,9 +28,8 @@ object Interpreter:
         case ex: Throwable => throw UnknownLexingException(ex)
 
     /** Attempt parsing */
-    val parser = Parser()
-    val ast =
-      try parser.parse(tokens)
+    val ParserResult(ast, customDefns) =
+      try Parser.parse(tokens)
       catch
         case ex: VyxalException => throw VyxalException("VyxalException", ex)
         case ex: Throwable => throw UnknownParsingException(ex)
@@ -39,7 +38,7 @@ object Interpreter:
     try
       scribe.debug(s"Executing '$code' (ast: $ast)")
       ctx.globals.originalProgram = ast
-      ctx.globals.symbols = parser.getCustoms
+      ctx.globals.symbols = customDefns
       execute(ast)
       if !ctx.globals.printed && !ctx.testMode then
         if ctx.settings.endPrintMode == EndPrintMode.Default then

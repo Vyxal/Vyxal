@@ -189,7 +189,7 @@ object Debugger:
 
   /** Make a step to execute code */
   def execCode(code: String)(using Context): Step =
-    val ast = Parser().parse(Lexer(code))
+    val ast = Parser.parse(Lexer(code)).ast
     Step.stepsForAST(ast)
 
 end Debugger
