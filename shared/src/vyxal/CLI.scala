@@ -100,7 +100,7 @@ object CLI:
           while true do
             val line = io.StdIn.readLine(">")
             if line.isEmpty then return
-            println(Parser.parse(Lexer(line)))
+            println(Parser().parse(Lexer(line)))
 
         if config.debug then
           val code = config.filename match

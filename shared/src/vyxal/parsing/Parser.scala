@@ -36,7 +36,7 @@ class CustomDefinition(
   def getImpl: Option[AST] = implementation
 end CustomDefinition
 
-object Parser:
+class Parser:
 
   var customs = mutable.Map[String, CustomDefinition]()
 
