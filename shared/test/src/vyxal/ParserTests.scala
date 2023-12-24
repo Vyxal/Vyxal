@@ -5,7 +5,7 @@ import vyxal.AST.*
 
 import org.scalatest.funsuite.AnyFunSuite
 
-def parse(code: String) = Parser.parse(Lexer.lexSBCS(code))
+def parse(code: String) = Parser().parse(Lexer.lexSBCS(code))
 
 class ParserTests extends AnyFunSuite:
   test("Can the parser parse an empty string?") {
