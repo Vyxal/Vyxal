@@ -39,7 +39,7 @@ object Interpreter:
     try
       scribe.debug(s"Executing '$code' (ast: $ast)")
       ctx.globals.originalProgram = ast
-      ctx.globals.symbols = parser.customs
+      ctx.globals.symbols = parser.getCustoms
       execute(ast)
       if !ctx.globals.printed && !ctx.testMode then
         if ctx.settings.endPrintMode == EndPrintMode.Default then
