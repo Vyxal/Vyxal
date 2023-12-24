@@ -11,6 +11,10 @@ enum CustomElementType derives CanEqual:
   case Element
   case Modifier
 
+enum Visibility derives CanEqual:
+  case Public
+  case Private
+
 class CustomDefinition(
     val name: String,
     val elementType: CustomElementType,
@@ -35,6 +39,11 @@ class CustomDefinition(
 
   def getImpl: Option[AST] = implementation
 end CustomDefinition
+
+class CustomObject(
+    val name: String,
+    val members: Map[String, Visibility],
+)
 
 class Parser:
 
@@ -86,6 +95,15 @@ class Parser:
         case TokenType.CompressedNumber =>
           asts.push(AST.CompressedNumber(value, range))
         case TokenType.Newline => asts.push(AST.Newline)
+        case TokenType.ClassDefinition =>
+          val branches = parseBranches(program, false) {
+            case TokenType.StructureAllClose | TokenType.StructureClose |
+                TokenType.StructureDoubleClose => true
+            case _ => false
+          }
+          val name = value
+          ???
+
         case TokenType.StructureOpen =>
           asts.push(
             parseStructure(
