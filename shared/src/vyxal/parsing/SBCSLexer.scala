@@ -168,10 +168,13 @@ private[parsing] object SBCSLexer:
 
   def modifierSymbol[$: P]: P[Token] =
     parseToken(ModifierSymbol, "#:`" ~~/ Common.varName)
+
   def elementSymbol[$: P]: P[Token] =
     parseToken(ElementSymbol, "#:@" ~~/ Common.varName)
+
   def originalSymbol[$: P]: P[Token] =
     parseToken(OriginalSymbol, "#:~" ~ CharPred(allCommands).!)
+
   def defineClass[$: P]: P[Token] =
     parseToken(DefineClass, "#:∆" ~~/ Common.varName)
 
@@ -188,10 +191,10 @@ private[parsing] object SBCSLexer:
 
   def token[$: P]: P[Token] =
     P(
-      comment | sugarTrigraph | unpackTrigraph | digraph | branch |
-        modifierSymbol | elementSymbol | originalSymbol | contextIndex |
-        sbcsNumber | string | augVariable | getVariable | setVariable |
-        setConstant | defineClass | twoCharNumber | twoCharString |
+      comment | sugarTrigraph | unpackTrigraph | defineClass | digraph |
+        branch | modifierSymbol | elementSymbol | originalSymbol |
+        contextIndex | sbcsNumber | string | augVariable | getVariable |
+        setVariable | setConstant | twoCharNumber | twoCharString |
         singleCharString | monadicModifier | dyadicModifier | triadicModifier |
         tetradicModifier | specialModifier | structureOpen |
         structureSingleClose | structureAllClose | listOpen | listClose |
