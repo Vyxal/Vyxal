@@ -11,25 +11,43 @@ enum CustomElementType derives CanEqual:
   case Element
   case Modifier
 
-case class CustomDefinition(
-    name: String,
-    elementType: CustomElementType,
-    impl: Option[AST],
-    arity: Option[Int],
-    args: (List[String | Int], List[String | Int]),
+  enum Visibility derives CanEqual:
+  case Public
+  case Private
+
+class CustomDefinition(
+    val name: String,
+    val elementType: CustomElementType,
+    val implementation: Option[AST],
+    val arity: Option[Int],
+    val args: (List[String | Int], List[String | Int]),
+):
+  def info: (
+      String,
+      CustomElementType,
+      Option[AST],
+      Option[Int],
+      (List[String | Int], List[String | Int]),
+  ) =
+    (
+      name,
+      elementType,
+      implementation,
+      arity,
+      args,
+    )
+
+  def getImpl: Option[AST] = implementation
+end CustomDefinition
+
+
+
+class CustomObject(
+    val name: String,
+    val members: Map[String, Visibility],
 )
+class Parser:
 
-case class ParserResult(ast: AST, customs: Map[String, CustomDefinition])
-
-object Parser:
-  @throws[VyxalParsingException]
-  def parse(tokens: List[Token]): ParserResult =
-    val parser = Parser()
-    val ast = parser.parse(tokens)
-    ParserResult(ast, parser.customs.toMap)
-
-private class Parser:
-  /** Custom definitions found so far */
   private val customs = mutable.Map[String, CustomDefinition]()
 
   private def toValidName(name: String): String =
@@ -76,6 +94,15 @@ private class Parser:
         case TokenType.CompressedNumber =>
           asts.push(AST.CompressedNumber(value, range))
         case TokenType.Newline => asts.push(AST.Newline)
+        case TokenType.ClassDefinition =>
+          val branches = parseBranches(program, false) {
+            case TokenType.StructureAllClose | TokenType.StructureClose |
+                TokenType.StructureDoubleClose => true
+            case _ => false
+          }
+          val name = value
+          ???
+
         case TokenType.StructureOpen =>
           asts.push(
             parseStructure(

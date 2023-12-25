@@ -106,6 +106,7 @@ enum TokenType(val canonicalSBCS: Option[String] = None) derives CanEqual:
   case NegatedCommand
   case MoveRight
   case Group
+  case ClassDefinition
 
   /** Helper to help go from the old VyxalToken to the new Token(TokenType,
     * text, range) format
