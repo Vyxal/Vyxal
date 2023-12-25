@@ -198,7 +198,7 @@ private[parsing] object SBCSLexer:
   def token[$: P]: P[Token] =
     P(
       comment | sugarTrigraph | unpackTrigraph | digraph | branch |
-        modifierSymbol | defineObj | defineExtension | elementSymbol |
+        defineExtension | modifierSymbol | defineObj | elementSymbol |
         originalSymbol | contextIndex | sbcsNumber | string | augVariable |
         getVariable | setVariable | setConstant | twoCharNumber |
         twoCharString | singleCharString | monadicModifier | dyadicModifier |

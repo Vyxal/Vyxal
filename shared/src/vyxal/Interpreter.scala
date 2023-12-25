@@ -374,4 +374,15 @@ object Interpreter:
 
     VObject(con.name, assignedFields)
 
+  private def getOverload(
+      givenTypes: List[String],
+      overloads: List[(List[String], CustomDefinition)],
+  ): Option[AST] =
+    overloads.find {
+      case (types, _) =>
+        types.zip(givenTypes).forall((a, b) => a == b || a == "*")
+    } match
+      case Some((_, defn)) => Some(defn.impl.get)
+      case None => None
+
 end Interpreter
