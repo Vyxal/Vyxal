@@ -3,6 +3,7 @@ package vyxal
 import scala.language.strictEquality
 
 import vyxal.parsing.{StructureType, Token, TokenType}
+import vyxal.Parser.reservedTypes
 
 import scala.collection.mutable
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
@@ -37,12 +38,17 @@ object Parser:
   def parse(tokens: List[Token]): ParserResult =
     val parser = Parser()
     val ast = parser.parse(tokens)
+    println(parser.customs)
     ParserResult(ast, parser.customs.toMap, parser.classes.toMap)
+
+  val reservedTypes = List("num", "str", "lst", "fun", "con")
 
 private class Parser:
   /** Custom definitions found so far */
   private val customs = mutable.Map[String, CustomDefinition]()
   private val classes = mutable.Map[String, CustomClass]()
+  private val typedCustoms =
+    mutable.Map[(String, List[String]), CustomDefinition]()
 
   private def flatten(ast: AST): List[AST] =
     ast match
@@ -170,6 +176,8 @@ private class Parser:
           val branches =
             parseBranches(program, true)(_ == TokenType.StructureClose)
           val className = value
+          if reservedTypes.contains(className) then
+            throw ReservedClassNameException(className)
           branches match
             case List() => classes(value) = CustomClass(Map())
             case _ :: fields :: _ =>
@@ -214,6 +222,27 @@ private class Parser:
 
             case _ => throw BadStructureException("class definition")
           end match
+        case TokenType.DefineExtension =>
+          val branches =
+            parseBranches(program, false)(_ == TokenType.StructureClose)
+          if branches.size < 3 then throw BadStructureException("extension")
+          val symbol = value
+          val impl = branches.last
+          val arguments = branches.tail.init
+          if arguments.size % 2 != 0 then
+            throw BadStructureException("extension")
+          val argPairs = arguments.grouped(2).toList.transpose
+          val argNames = argPairs.head
+            .map(_.toVyxal)
+            .map(x => if x != "*" then toValidName(x) else x)
+          val argTypes = argPairs.last.map(_.toVyxal)
+          typedCustoms(symbol -> argTypes) = CustomDefinition(
+            symbol,
+            CustomElementType.Element,
+            Some(impl),
+            Some(argNames.length),
+            (List(), argNames),
+          )
 
         case TokenType.ContextIndex => asts.push(
             AST.ContextIndex(if value.nonEmpty then value.toInt else -1)

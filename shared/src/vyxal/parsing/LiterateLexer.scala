@@ -155,6 +155,9 @@ private[parsing] object LiterateLexer:
   def functionCall[$: P]: P[LitToken] =
     parseToken(FunctionCall, "`" ~~ Common.varName.! ~~ "`")
 
+  def defineObj[$: P]: P[LitToken] =
+    parseToken(DefineClass, "class" ~ Common.varName.!)
+
   def isLambdaParam(word: String): Boolean =
     !structOpeners.contains(word) && !lambdaOpenerSet.contains(word) &&
       !branchKeywords.contains(word) && !endKeywords.contains(word)
@@ -481,12 +484,13 @@ private[parsing] object LiterateLexer:
   def singleToken[$: P]: P[Seq[LitToken]] =
     P(
       list | unpackVar |
-        (lambdaBlock | defineModBlock | defineElemBlock | specialLambdaBlock |
-          contextIndex | functionCall | modifierSymbol | elementSymbol |
-          litGetVariable | litSetVariable | litSetConstant | litAugVariable |
-          elementKeyword | negatedElementKeyword | tokenMove | modifierKeyword |
-          structOpener | otherKeyword | litBranch | litStructClose | litNumber |
-          litString | normalGroup).map(Seq(_)) | rawCode |
+        (lambdaBlock | defineObj | defineModBlock | defineElemBlock |
+          specialLambdaBlock | contextIndex | functionCall | modifierSymbol |
+          elementSymbol | litGetVariable | litSetVariable | litSetConstant |
+          litAugVariable | elementKeyword | negatedElementKeyword | tokenMove |
+          modifierKeyword | structOpener | otherKeyword | litBranch |
+          litStructClose | litNumber | litString | normalGroup).map(Seq(_)) |
+        rawCode |
         SBCSLexer.token.map((token) =>
           Seq(LitToken(token.tokenType, token.value, token.range))
         )

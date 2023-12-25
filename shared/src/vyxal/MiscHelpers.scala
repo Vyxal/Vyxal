@@ -157,6 +157,16 @@ object MiscHelpers:
       i += 1
     VList.from(result.result())
 
+  def typesOf(values: VAny*): List[String] =
+    values.map {
+      case _: VNum => "num"
+      case _: String => "str"
+      case _: VList => "lst"
+      case _: VFun => "fun"
+      case _: VConstructor => "con"
+      case o: VObject => o.className
+    }.toList
+
   /** For pattern-matching. Unpacks the top of the stack into some variables */
   def unpack(names: List[(String, Int)])(using ctx: Context): Unit =
     // String = variable name
