@@ -7,7 +7,30 @@ import vyxal.parsing.{StructureType, Token, TokenType}
 import scala.collection.mutable
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
 
+enum CustomElementType derives CanEqual:
+  case Element
+  case Modifier
+
+case class CustomDefinition(
+    name: String,
+    elementType: CustomElementType,
+    impl: Option[AST],
+    arity: Option[Int],
+    args: (List[String | Int], List[String | Int]),
+)
+
+case class ParserResult(ast: AST, customs: Map[String, CustomDefinition])
+
 object Parser:
+  @throws[VyxalParsingException]
+  def parse(tokens: List[Token]): ParserResult =
+    val parser = Parser()
+    val ast = parser.parse(tokens)
+    ParserResult(ast, parser.customs.toMap)
+
+private class Parser:
+  /** Custom definitions found so far */
+  private val customs = mutable.Map[String, CustomDefinition]()
 
   private def toValidName(name: String): String =
     name
@@ -78,14 +101,48 @@ object Parser:
          * top stack elements are needed to make the command equivalent to a
          * nilad. For arities -1 and 0, the command doesn't need to be grouped.
          */
-        case TokenType.Command => asts.push(parseCommand(token, asts, program))
+        case TokenType.Command =>
+          if customs.contains(value) &&
+            customs(value).elementType == CustomElementType.Modifier
+          then asts.push(AST.JunkModifier(value, customs(value).args(0).length))
+          else asts.push(parseCommand(token, asts, program))
+
+        case TokenType.OriginalSymbol =>
+          asts.push(parseCommand(token, asts, program, false))
 
         case TokenType.NegatedCommand =>
-          asts.push(parseCommand(token, asts, program))
+          asts.push(parseCommand(token, asts, program, false))
           asts.push(AST.Command("¬"))
 
         // At this stage, modifiers aren't explicitly handled, so just push a
         // temporary AST to comply with the type of the AST stack
+        case TokenType.ElementSymbol =>
+          val name = value
+          if !customs.contains(name) then
+            throw UndefinedCustomElementException(name)
+          val CustomDefinition(_, elementType, impl, arity, args) =
+            customs(name)
+          elementType match
+            case CustomElementType.Element => asts.push(
+                parseCommand(
+                  Token(TokenType.Command, name, range),
+                  asts,
+                  program,
+                )
+              )
+            case CustomElementType.Modifier =>
+              throw CustomElementActuallyModifierException(name)
+        case TokenType.ModifierSymbol =>
+          val name = value
+          if !customs.contains(name) then
+            throw UndefinedCustomModifierException(name)
+          val CustomDefinition(_, elementType, impl, arity, args) =
+            customs(name)
+          elementType match
+            case CustomElementType.Element =>
+              throw CustomModifierActuallyElementException(name)
+            case CustomElementType.Modifier =>
+              asts.push(AST.JunkModifier(name, args(0).length))
         case TokenType.MonadicModifier => asts.push(AST.JunkModifier(value, 1))
         case TokenType.DyadicModifier => asts.push(AST.JunkModifier(value, 2))
         case TokenType.TriadicModifier => asts.push(AST.JunkModifier(value, 3))
@@ -95,6 +152,10 @@ object Parser:
         case TokenType.ContextIndex => asts.push(
             AST.ContextIndex(if value.nonEmpty then value.toInt else -1)
           )
+        case TokenType.FunctionCall =>
+          val funcName = value
+          asts.push(AST.GetVar(funcName, range))
+          asts.push(AST.Command("Ė"))
         case TokenType.GetVar => asts.push(AST.GetVar(value, range))
         case TokenType.SetVar => asts.push(AST.SetVar(value, range))
         case TokenType.Constant => asts.push(AST.SetConstant(value, range))
@@ -138,12 +199,37 @@ object Parser:
         case AST.Newline => ()
         case AST.JunkModifier(name, arity) => if arity > 0 then
             if finalAsts.length < arity then throw BadModifierException(name)
-            val modifier = Modifiers.modifiers.getOrElse(
-              name,
-              throw VyxalYikesException(s"Modifier $name not implemented"),
-            )
-            val modifierArgs = List.fill(arity)(finalAsts.pop())
-            finalAsts.push(modifier.from(modifierArgs))
+            if customs.contains(name) then
+              // First, get the ASTs for the custom modifier
+              val CustomDefinition(_, _, impl, arity, args) = customs(name)
+              val modifierArgs =
+                List.fill(args(0).length)(finalAsts.pop()).map { ast =>
+                  AST.Lambda(ast.arity, List(), List(ast))
+                }
+
+              // Then, create a lambda that wraps the implementation
+              // in a context where it recieves both function arguments, and
+              // stack arguments
+
+              val wrapped = AST.Lambda(
+                Some(-1),
+                List(),
+                modifierArgs :+
+                  (
+                    impl.getOrElse(throw UndefinedCustomModifierException(name))
+                  ),
+              )
+
+              // Finally, push the wrapped lambda to the stack
+
+              finalAsts.push(AST.makeSingle(wrapped, AST.Command("Ė")))
+            else
+              val modifier = Modifiers.modifiers.getOrElse(
+                name,
+                throw UndefinedCustomModifierException(name),
+              )
+              val modifierArgs = List.fill(arity)(finalAsts.pop())
+              finalAsts.push(modifier.from(modifierArgs))
         case AST.SpecialModifier(name, _) => (name: @unchecked) match
             case "ᵜ" =>
               val lambdaAsts = Stack[AST]()
@@ -156,7 +242,6 @@ object Parser:
                   List(AST.makeSingle(parse(lambdaAsts.reverse).toList*)),
                 )
               )
-            case "ᵗ" => ??? // TODO: Implement tie
         case AST.AuxAugmentVar(name, _) =>
           if asts.isEmpty then throw BadAugmentedAssignException()
           finalAsts.push(AST.AugmentVar(name, asts.pop()))
@@ -189,28 +274,35 @@ object Parser:
       cmdTok: Token,
       asts: Stack[AST],
       program: Queue[Token],
+      checkCustoms: Boolean = true,
   ): AST =
     val cmd =
-      if !Elements.elements.contains(cmdTok.value) then
+      if checkCustoms && customs.contains(cmdTok.value) then cmdTok.value
+      else if !Elements.elements.contains(cmdTok.value) then
         Elements.symbolFor(cmdTok.value).getOrElse("Nonexistent")
       else cmdTok.value
-    Elements.elements.get(cmd) match
-      case None => throw NoSuchElementException(cmdTok)
-      case Some(element) =>
-        if asts.isEmpty then AST.Command(cmd, cmdTok.range)
-        else
-          val arity = element.arity.getOrElse(0)
-          val nilads = ListBuffer[AST]()
 
-          while asts.nonEmpty && nilads.sizeIs < arity &&
-            asts.top.arity.fold(false)(_ == 0)
-          do nilads += asts.pop()
-          if nilads.isEmpty then return AST.Command(cmd, cmdTok.range)
-          AST.Group(
-            (AST.Command(cmd, cmdTok.range) :: nilads.toList).reverse,
-            Some(arity - nilads.size),
-          )
-    end match
+    val arity = Elements.elements.get(cmd) match
+      case None =>
+        if checkCustoms then
+          if !customs.contains(cmd) then throw NoSuchElementException(cmdTok)
+          else
+            val CustomDefinition(_, _, _, arity, _) = customs(cmd)
+            arity.getOrElse(1)
+        else throw NoSuchElementException(cmdTok)
+      case Some(element) =>
+        if asts.isEmpty then return AST.Command(cmd, cmdTok.range, checkCustoms)
+        else element.arity.getOrElse(0)
+    val nilads = ListBuffer[AST]()
+
+    while asts.nonEmpty && nilads.sizeIs < arity &&
+      asts.top.arity.fold(false)(_ == 0)
+    do nilads += asts.pop()
+    if nilads.isEmpty then return AST.Command(cmd, cmdTok.range, checkCustoms)
+    AST.Group(
+      (AST.Command(cmd, cmdTok.range, checkCustoms) :: nilads.toList).reverse,
+      Some(arity - nilads.size),
+    )
   end parseCommand
 
   /** Parse branches for an unknown structure or list, nothing more.
@@ -311,6 +403,59 @@ object Parser:
             AST.For(Some(toValidName(name.toVyxal)), body)
           case List(body) => AST.For(None, body)
           case _ => throw BadStructureException("for")
+      case StructureType.DefineStructure =>
+        // Name: The name of the element/modifier
+        // Mode: Whether it's an element or modifier
+        // Implementation: The implementation of the element/modifier
+        // Arity: How many arguments the element/modifier takes
+        // Args: The names of the arguments given to the implementation
+
+        val (name, functions, args, impl) = branches match
+          case List() => throw EmptyRedefine()
+          case List(name, impl) => (name, (List() -> 0), (List() -> 0), impl)
+          case List(name, args, impl) =>
+            (name, (List() -> 0), parseParameters(args), impl)
+          case List(name, functions, args, impl) =>
+            (name, parseParameters(functions), parseParameters(args), impl)
+          case _ => throw BadStructureException("define")
+
+        val nameString = name.toVyxal
+        val actualName =
+          if nameString.length() == 2 then nameString(1).toString()
+          else toValidName(nameString)
+        val mode = nameString.headOption match
+          case Some('@') => CustomElementType.Element
+          case Some('*') => CustomElementType.Modifier
+          case _ => throw BadRedefineMode(
+              nameString.headOption.getOrElse("").toString()
+            )
+
+        val arity = mode match
+          case CustomElementType.Element => args(1)
+          case CustomElementType.Modifier =>
+            if args(1) == -1 then -1
+            else args(1) + functions(1)
+
+        val actualImpl = mode match
+          case CustomElementType.Element =>
+            if impl.isInstanceOf[AST.Lambda] then impl
+            else AST.Lambda(Some(arity), args(0), List(impl))
+          case CustomElementType.Modifier => AST.makeSingle(
+              if impl.isInstanceOf[AST.Lambda] then impl
+              else AST.Lambda(Some(arity), functions(0) ++ args(0), List(impl)),
+              AST.Command("Ė"),
+            )
+
+        customs(actualName) = CustomDefinition(
+          actualName,
+          mode,
+          Some(actualImpl),
+          Some(arity),
+          (functions(0) -> args(0)),
+        )
+
+        AST.Group(List(), None)
+
       case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
           StructureType.LambdaFilter | StructureType.LambdaReduce |
           StructureType.LambdaSort) =>
@@ -442,13 +587,13 @@ object Parser:
     while lineup.nonEmpty do
       val temp = lineup.dequeue()
       temp match
-        case Token(TokenType.SyntaxTrigraph, "#:[", _) =>
+        case Token(TokenType.UnpackTrigraph, "#:[", _) =>
           val contents = mutable.StringBuilder()
           var depth = 1
           while depth != 0 do
             val top = lineup.dequeue()
             top match
-              case Token(TokenType.SyntaxTrigraph, "#:[", _) => depth += 1
+              case Token(TokenType.UnpackTrigraph, "#:[", _) => depth += 1
               case Token(TokenType.UnpackVar, _, _) => depth += 1
               case Token(TokenType.StructureOpen, open, _) =>
                 if open == StructureType.Ternary.open then depth += 1
@@ -478,5 +623,4 @@ object Parser:
       case AST.GetVar(_, _) => false // you might want a variable at the end
       // after doing stuff like augmented assignment
       case _ => ast.arity.contains(0)
-
 end Parser

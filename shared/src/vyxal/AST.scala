@@ -14,8 +14,11 @@ enum AST(val arity: Option[Int]) derives CanEqual:
       extends AST(Some(0))
   case Lst(elems: List[AST], override val range: Range = Range.fake)
       extends AST(Some(0))
-  case Command(value: String, override val range: Range = Range.fake)
-      extends AST(Elements.elements.get(value).flatMap(_.arity))
+  case Command(
+      value: String,
+      override val range: Range = Range.fake,
+      overwriteable: Boolean = true,
+  ) extends AST(Elements.elements.get(value).flatMap(_.arity))
 
   /** Multiple ASTs grouped into one list */
   case Group(
@@ -25,6 +28,15 @@ enum AST(val arity: Option[Int]) derives CanEqual:
   ) extends AST(arity)
   case SpecialModifier(modi: String, override val range: Range = Range.fake)
       extends AST(None)
+
+  case RedefineModifier(
+      name: String,
+      mode: String,
+      args: List[String],
+      implArity: Int,
+      var impl: Option[AST],
+      override val range: Range = Range.fake,
+  ) extends AST(None)
   case CompositeNilad(elems: List[AST], override val range: Range = Range.fake)
       extends AST(Some(0))
 
@@ -120,7 +132,7 @@ enum AST(val arity: Option[Int]) derives CanEqual:
       case Number(n, _) => n.toString
       case Str(value, _) => s"\"$value\""
       case Lst(elems, _) => elems.map(_.toVyxal).mkString("#[", "|", "#]")
-      case Command(value, _) => value
+      case Command(value, _, _) => value
       case Group(elems, _, _) =>
         val asts = elems.toBuffer
         val newElems = ListBuffer[AST]()

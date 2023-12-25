@@ -71,7 +71,7 @@ private[parsing] object SBCSLexer:
   def structureOpen[$: P]: P[Token] =
     parseToken(
       StructureOpen,
-      StringIn("[", "{", "(", "#{", "Ḍ", "Ṇ").! | Common.lambdaOpen,
+      StringIn("[", "{", "(", "#{", "Ḍ", "Ṇ", "#::").! | Common.lambdaOpen,
     ) // StructureType.values.map(_.open.!).reduce(_ | _))
     // TODO(user): figure out why the commented version doesn't work
 
@@ -90,7 +90,7 @@ private[parsing] object SBCSLexer:
     P(
       withRange(
         (CharIn("∆øÞk") ~~ AnyChar).! |
-          ("#" ~~ !CharIn("[]$!=#>@{") ~~ AnyChar).!
+          ("#" ~~ !CharIn("[]$!=#>@{:") ~~ AnyChar).!
       )
     ).map {
       case (digraph, range) =>
@@ -110,8 +110,7 @@ private[parsing] object SBCSLexer:
         else Token(Digraph, digraph, range)
     }
 
-  def syntaxTrigraph[$: P]: P[Token] =
-    parseToken(SyntaxTrigraph, ("#:" ~~ AnyChar).!)
+  def unpackTrigraph[$: P]: P[Token] = parseToken(UnpackTrigraph, "#:[".!)
 
   def sugarTrigraph[$: P]: P[Token] =
     withRange(("#" ~~ CharIn(".,^") ~~ AnyChar).!).map {
@@ -167,6 +166,13 @@ private[parsing] object SBCSLexer:
 
   def setVariable[$: P]: P[Token] = parseToken(SetVar, "#=" ~~/ Common.varName)
 
+  def modifierSymbol[$: P]: P[Token] =
+    parseToken(ModifierSymbol, "#:`" ~~/ Common.varName)
+  def elementSymbol[$: P]: P[Token] =
+    parseToken(ElementSymbol, "#:@" ~~/ Common.varName)
+  def originalSymbol[$: P]: P[Token] =
+    parseToken(OriginalSymbol, "#:~" ~ CharPred(allCommands).!)
+
   def setConstant[$: P]: P[Token] =
     parseToken(Constant, "#!" ~~/ Common.varName)
 
@@ -180,13 +186,13 @@ private[parsing] object SBCSLexer:
 
   def token[$: P]: P[Token] =
     P(
-      comment | sugarTrigraph | syntaxTrigraph | digraph | branch |
-        contextIndex | sbcsNumber | string | augVariable | getVariable |
-        setVariable | setConstant | twoCharNumber | twoCharString |
-        singleCharString | monadicModifier | dyadicModifier | triadicModifier |
-        tetradicModifier | specialModifier | structureOpen |
-        structureSingleClose | structureAllClose | listOpen | listClose |
-        newlines | command
+      comment | sugarTrigraph | unpackTrigraph | digraph | branch |
+        modifierSymbol | elementSymbol | originalSymbol | contextIndex |
+        sbcsNumber | string | augVariable | getVariable | setVariable |
+        setConstant | twoCharNumber | twoCharString | singleCharString |
+        monadicModifier | dyadicModifier | triadicModifier | tetradicModifier |
+        specialModifier | structureOpen | structureSingleClose |
+        structureAllClose | listOpen | listClose | newlines | command
     )
 
   def parseToken[$: P](

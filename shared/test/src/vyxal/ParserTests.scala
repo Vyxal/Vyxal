@@ -5,7 +5,7 @@ import vyxal.AST.*
 
 import org.scalatest.funsuite.AnyFunSuite
 
-def parse(code: String) = Parser.parse(Lexer.lexSBCS(code))
+def parse(code: String) = Parser.parse(Lexer.lexSBCS(code)).ast
 
 class ParserTests extends AnyFunSuite:
   test("Can the parser parse an empty string?") {
@@ -429,5 +429,84 @@ class ParserTests extends AnyFunSuite:
     )
 
     assert(parse("#:[[[[[a]]]]]") === UnpackVar(List(("a", 4))))
+  }
+
+  test("Does the parser remove define structures?") {
+    assert(
+      parse(
+        "#:: @+ | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}}"
+      ) === Group(List(), None)
+    )
+  }
+
+  test("Do custom elements group properly?") {
+    assert(
+      parse("#::@temp|2|+} 3 4 #:@temp") ===
+        Group(
+          List(
+            Group(
+              List(
+                Number(3),
+                Number(4),
+                Command("temp"),
+              ),
+              Some(0),
+            ),
+            Group(List(), None),
+          ),
+          None,
+        )
+    )
+
+    assert(
+      parse("#::@temp|!|+} 3 4 #:@temp") ===
+        Group(
+          List(Group(List(), None), Number(3), Number(4), Command("temp")),
+          None,
+        )
+    )
+  }
+
+  test("Do custom modifiers group elements?") {
+    assert(
+      parse("#::*temp|f|2|+} #:`temp !") ===
+        Group(
+          List(
+            Group(List(), None),
+            Group(
+              List(
+                Lambda(
+                  Some(-1),
+                  List(),
+                  List(
+                    Lambda(
+                      Some(1),
+                      List(),
+                      List(Command("!")),
+                      true,
+                    ),
+                    Group(
+                      List(
+                        Lambda(
+                          Some(3),
+                          List("f", 2),
+                          List(Command("+")),
+                          true,
+                        ),
+                        Command("Ė"),
+                      ),
+                      None,
+                    ),
+                  ),
+                  true,
+                ),
+                Command("Ė"),
+              ),
+              None,
+            ),
+          ),
+          None,
+        )
+    )
   }
 end ParserTests

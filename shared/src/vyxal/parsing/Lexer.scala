@@ -78,7 +78,7 @@ enum TokenType(val canonicalSBCS: Option[String] = None) derives CanEqual:
   case ListClose extends TokenType(Some("#]"))
   case Command
   case Digraph
-  case SyntaxTrigraph
+  case UnpackTrigraph
   case MonadicModifier
   case DyadicModifier
   case TriadicModifier
@@ -88,6 +88,10 @@ enum TokenType(val canonicalSBCS: Option[String] = None) derives CanEqual:
   case CompressedNumber
   case DictionaryString
   case ContextIndex
+  case FunctionCall
+  case ModifierSymbol
+  case ElementSymbol
+  case OriginalSymbol
   case Comment
   case GetVar
   case SetVar
@@ -125,6 +129,7 @@ enum StructureType(val open: String) derives CanEqual:
   case IfStatement extends StructureType("#{")
   case DecisionStructure extends StructureType("Ḍ")
   case GeneratorStructure extends StructureType("Ṇ")
+  case DefineStructure extends StructureType("#::")
 
 object StructureType:
   val lambdaStructures: List[StructureType] = List(
@@ -257,11 +262,14 @@ object Lexer:
       case DictionaryString => s""""$value”"""
       case CompressedString => s""""$value„"""
       case CompressedNumber => s""""$value“"""
-      case SyntaxTrigraph if value == ":=[" => "#:["
+      case UnpackTrigraph if value == ":=[" => "#:["
+      case ElementSymbol => s"#:@$value"
+      case ModifierSymbol => s"#:`$value"
       case Command if !Elements.elements.contains(value) =>
-        Elements.symbolFor(value).getOrElse(value)
+        Elements.symbolFor(value).getOrElse(value.stripSuffix("|"))
       case Comment => ""
       case _ => tokenType.canonicalSBCS.getOrElse(value)
+    end match
   end sbcsifySingle
 
   /** Convert literate mode code into SBCS mode code */

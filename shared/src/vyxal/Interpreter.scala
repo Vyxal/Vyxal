@@ -28,7 +28,7 @@ object Interpreter:
         case ex: Throwable => throw UnknownLexingException(ex)
 
     /** Attempt parsing */
-    val ast =
+    val ParserResult(ast, customDefns) =
       try Parser.parse(tokens)
       catch
         case ex: VyxalException => throw VyxalException("VyxalException", ex)
@@ -38,6 +38,7 @@ object Interpreter:
     try
       scribe.debug(s"Executing '$code' (ast: $ast)")
       ctx.globals.originalProgram = ast
+      ctx.globals.symbols = customDefns
       execute(ast)
       if !ctx.globals.printed && !ctx.testMode then
         if ctx.settings.endPrintMode == EndPrintMode.Default then
@@ -102,11 +103,24 @@ object Interpreter:
           execute(elem)(using ctx.makeChild())
           list += ctx.pop()
         ctx.push(VList.from(list.toList))
-      case AST.Command(cmd, _) => Elements.elements.get(cmd) match
-          case Some(elem) => elem.impl()
-          case None => throw NoSuchElementException(cmd)
+      case AST.Command(cmd, _, overwriteable) =>
+        if overwriteable && ctx.globals.symbols.contains(cmd) then
+          ctx.globals.symbols(cmd).impl match
+            case Some(implementation) =>
+              val lam = VFun.fromLambda(implementation.asInstanceOf[AST.Lambda])
+              if implementation.arity.getOrElse(0) == -1 then executeFn(lam)
+              else ctx.push(executeFn(lam))
+            case None => throw VyxalYikesException(
+                s"Symbol $cmd has no impl. Should have already been caught :skull:"
+              )
+        else
+          Elements.elements.get(cmd) match
+            case Some(elem) => elem.impl()
+            case None => throw NoSuchElementException(cmd)
       case AST.Group(elems, _, _) => elems.foreach(Interpreter.execute)
       case AST.CompositeNilad(elems, _) => elems.foreach(Interpreter.execute)
+      case AST.RedefineModifier(name, mode, args, implArity, impl, range) => ???
+
       case AST.Ternary(thenBody, elseBody, _) =>
         if ctx.pop().toBool then execute(thenBody)
         else if elseBody.nonEmpty then execute(elseBody.get)
@@ -272,7 +286,6 @@ object Interpreter:
     val useStack = arity == -1
     val inputs =
       if args != null && params.isEmpty then args
-      else if arity == -1 then List.empty // operates on entire stack
       else if params.isEmpty then // no params, so just pop the args
         if popArgs then ctx.pop(arity) else ctx.peek(arity)
       else
@@ -318,7 +331,6 @@ object Interpreter:
               else
                 val top = popOneFunction()
                 vars(name) = top // set variable
-                popped += top
         end for
         if !popArgs && args.isEmpty then
           ctx.push(popped.toList.take(origLength).reverse*)

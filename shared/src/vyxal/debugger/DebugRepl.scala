@@ -8,7 +8,7 @@ import scopt.OParser
 object DebugRepl:
   def start(code: String)(using Context): Unit =
     scribe.trace("Starting debugger REPL")
-    val ast = Parser.parse(Lexer(code))
+    val ast = Parser.parse(Lexer(code)).ast
     val dbg = Debugger(ast)
     printState(dbg)
     while !dbg.finished do

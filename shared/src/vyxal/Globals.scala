@@ -21,6 +21,10 @@ case class Globals(
   var originalProgram: AST = null
   var printed: Boolean = false
   var inputs: Inputs = Inputs()
+  var symbols: Map[
+    String,
+    CustomDefinition,
+  ] = Map()
 
 /** Stores the inputs for some Context. Inputs can be overridden (see
   * [[Inputs#overrideInputs]]).
