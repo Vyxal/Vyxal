@@ -207,9 +207,9 @@ object MiscHelpers:
             case n: VNum => vyPrint(n)
             case s: String => vyPrint(StringHelpers.quotify(s))
             case l: VList => vyPrint(l)
-            case f: VFun =>
-              println(f"printing a function $f")
-              vyPrint(executeFn(f))
+            case f: VFun => vyPrint(executeFn(f))
+            case c: VConstructor => vyPrint("Constructor(" + c.name + ")")
+            case o: VObject => vyPrint("Object(" + o + ")")
 
           temp = temp.tail
           if temp.nonEmpty then vyPrint(", ")

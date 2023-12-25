@@ -11,6 +11,9 @@ enum CustomElementType derives CanEqual:
   case Element
   case Modifier
 
+enum Visibility derives CanEqual:
+  case Public
+  case Private
 case class CustomDefinition(
     name: String,
     elementType: CustomElementType,
@@ -19,18 +22,32 @@ case class CustomDefinition(
     args: (List[String | Int], List[String | Int]),
 )
 
-case class ParserResult(ast: AST, customs: Map[String, CustomDefinition])
+case class CustomClass(
+    fields: Map[String, (Visibility, Option[AST])]
+)
+
+case class ParserResult(
+    ast: AST,
+    customs: Map[String, CustomDefinition],
+    classes: Map[String, CustomClass],
+)
 
 object Parser:
   @throws[VyxalParsingException]
   def parse(tokens: List[Token]): ParserResult =
     val parser = Parser()
     val ast = parser.parse(tokens)
-    ParserResult(ast, parser.customs.toMap)
+    ParserResult(ast, parser.customs.toMap, parser.classes.toMap)
 
 private class Parser:
   /** Custom definitions found so far */
   private val customs = mutable.Map[String, CustomDefinition]()
+  private val classes = mutable.Map[String, CustomClass]()
+
+  private def flatten(ast: AST): List[AST] =
+    ast match
+      case AST.Group(elems, _, _) => elems.flatMap(flatten)
+      case _ => List(ast)
 
   private def toValidName(name: String): String =
     name
@@ -149,6 +166,55 @@ private class Parser:
         case TokenType.TetradicModifier => asts.push(AST.JunkModifier(value, 4))
         case TokenType.SpecialModifier => asts.push(AST.SpecialModifier(value))
         case TokenType.Comment => ()
+        case TokenType.DefineClass =>
+          val branches =
+            parseBranches(program, true)(_ == TokenType.StructureClose)
+          val className = value
+          branches match
+            case List() => classes(value) = CustomClass(Map())
+            case _ :: fields :: _ =>
+              val flat = flatten(fields)
+              val variables = flat.zipWithIndex.filter(
+                _(0) match
+                  case _: AST.SetVar => true
+                  case _: AST.GetVar => true
+                  case _ => false
+              )
+
+              val valuedFields = variables.map((variableAST, index) =>
+                val name = variableAST match
+                  case AST.SetVar(name, _) => name
+                  case AST.GetVar(name, _) => name
+                  case _ => throw VyxalYikesException(
+                      "Somehow received non-variable AST after filtering. Ping lyxal about this please."
+                    )
+                val visibility = variableAST match
+                  case _: AST.SetVar => Visibility.Private
+                  case _: AST.GetVar => Visibility.Public
+                  case _ => throw VyxalYikesException(
+                      "Somehow received non-variable AST after filtering. Ping lyxal about this please."
+                    )
+
+                val value =
+                  if index == 0 then None
+                  else
+                    val prev = flat(index - 1)
+                    prev match
+                      case _: AST.SetVar => None
+                      case _: AST.GetVar => None
+                      case _ => prev match
+                          case _: AST.Lambda => Some(prev)
+                          case _ =>
+                            Some(AST.Lambda(Some(0), List(), List(prev)))
+
+                name -> (visibility, value)
+              )
+
+              classes(className) = CustomClass(valuedFields.toMap)
+
+            case _ => throw BadStructureException("class definition")
+          end match
+
         case TokenType.ContextIndex => asts.push(
             AST.ContextIndex(if value.nonEmpty then value.toInt else -1)
           )

@@ -282,8 +282,8 @@ object Elements:
     addPart(
       Dyad,
       "«",
-      "Bitshift Left",
-      List("bitwise-left-shift", "left-shift", "left-pad", "pad-left"),
+      "Bitshift Left | Read Member",
+      List("bitwise-left-shift", "left-shift", "left-pad", "pad-left", "<<<"),
       true,
       "a: num, b: num -> a << b",
       "a: num, b: str -> b padded to length a with spaces prepended",
@@ -294,12 +294,23 @@ object Elements:
       case (a: VNum, b: String) => StringHelpers.padLeft(b, a)
       case (a: String, b: VNum) => StringHelpers.padLeft(a, b)
       case (a: String, b: String) => StringHelpers.padLeft(a, b.length)
+      case (a: VObject, b: String) => a.fields.get(b) match
+          case Some(x) => x._1 match
+              case Visibility.Public => x._2
+              case _ => throw AttemptedReadPrivateException(a.className, b)
+          case _ => throw FieldNotFoundException(a.className, b)
+
     },
     addPart(
       Dyad,
       "»",
       "Bitshift Right",
-      List("bitwise-right-shift", "right-shift", "right-pad", "pad-right"),
+      List(
+        "bitwise-right-shift",
+        "right-shift",
+        "right-pad",
+        "pad-right",
+      ),
       true,
       "a: num, b: num -> a >> b",
       "a: num, b: str -> b padded to length a with spaces appended",
@@ -648,6 +659,8 @@ object Elements:
                 (0 until indices.max + 1).map(x => VNum(indices.contains(x)))*
               )
             )
+        case a => throw BadArgumentException("Ḃ", a)
+
     },
     addPart(
       Dyad,
@@ -2497,8 +2510,8 @@ object Elements:
     addPart(
       Triad,
       "ŀ",
-      "Transliterate | Call While",
-      List("transliterate", "call-while"),
+      "Transliterate | Call While | Write Member",
+      List("transliterate", "call-while", ">>>"),
       false,
       "any a, any b, any c -> transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)",
       "a: fun, b: fun, c: any -> call b on c until a(c) is falsy",
@@ -2520,6 +2533,14 @@ object Elements:
         val temp =
           ListHelpers.transliterate(ListHelpers.makeIterable(a), b, c).mkString
         if VNum.NumRegex.matches(temp) then VNum(temp) else temp
+      case (a: VObject, b: String, c) => a.fields.get(b) match
+          case Some(f) =>
+            if f._1 == Visibility.Public then
+              a.fields(b) = (Visibility.Public, c)
+              a
+            else throw AttemptedWritePrivateException(b, a.className)
+          case None => throw FieldNotFoundException(b, a.className)
+
     },
     addPart(
       Dyad,
@@ -3692,6 +3713,8 @@ object Elements:
         if fn.arity == -1 then
           ctx.pop() // Handle the extra value pushed by lambdas that operate on the stack
         res
+      case _: VObject => throw BadArgumentException("exec", "object")
+      case con: VConstructor => Interpreter.createObject(con)
 
   private def addNilad(
       symbol: String,

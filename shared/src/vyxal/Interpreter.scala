@@ -28,7 +28,7 @@ object Interpreter:
         case ex: Throwable => throw UnknownLexingException(ex)
 
     /** Attempt parsing */
-    val ParserResult(ast, customDefns) =
+    val ParserResult(ast, customDefns, classes) =
       try Parser.parse(tokens)
       catch
         case ex: VyxalException => throw VyxalException("VyxalException", ex)
@@ -39,6 +39,7 @@ object Interpreter:
       scribe.debug(s"Executing '$code' (ast: $ast)")
       ctx.globals.originalProgram = ast
       ctx.globals.symbols = customDefns
+      ctx.globals.classes = classes
       execute(ast)
       if !ctx.globals.printed && !ctx.testMode then
         if ctx.settings.endPrintMode == EndPrintMode.Default then
@@ -184,7 +185,9 @@ object Interpreter:
 
       case lam: AST.Lambda => ctx.push(VFun.fromLambda(lam))
       case AST.FnDef(name, lam, _) => ctx.setVar(name, VFun.fromLambda(lam))
-      case AST.GetVar(name, _) => ctx.push(ctx.getVar(name))
+      case AST.GetVar(name, _) =>
+        if ctx.globals.classes.contains(name) then ctx.push(VConstructor(name))
+        else ctx.push(ctx.getVar(name))
       case AST.SetVar(name, _) => ctx.setVar(name, ctx.pop())
       case AST.SetConstant(name, _) => ctx.setConst(name, ctx.pop())
       case AST.AugmentVar(name, op, _) =>
@@ -354,4 +357,20 @@ object Interpreter:
     scribe.trace(s"Result of executing function: $res")
     res
   end executeFn
+
+  def createObject(con: VConstructor)(using ctx: Context): VObject =
+    val fields = ctx.globals.classes(con.name).fields
+    val assignedFields = mut.Map[String, (Visibility, VAny)]()
+
+    for (name, (visibility, predef)) <- fields do
+      val fieldVal =
+        if predef.isDefined then
+          Interpreter.executeFn(
+            VFun.fromLambda(predef.get.asInstanceOf[AST.Lambda])
+          )
+        else ctx.pop()
+      assignedFields(name) = (visibility -> fieldVal)
+
+    VObject(con.name, assignedFields)
+
 end Interpreter

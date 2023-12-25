@@ -424,7 +424,7 @@ object ListHelpers:
             .map(makeIterable(_).lst)
             .reduce((ret, item) => ret ++ l ++ item)
         )
-      case _: VFun => ??? // todo reduce?
+      case _ => ??? // todo reduce?
 
   def matrixInverse(lst: VList)(using Context): Option[VList] =
     validateMatrix(lst).flatMap { mat =>
@@ -466,6 +466,7 @@ object ListHelpers:
           VList.from(num.toString.map { x =>
             if x.isDigit then VNum(x - '0') else x.toString
           })
+      case _ => throw IterificationOfNonIterableException(value)
 
   def matrixMinor(mat: Seq[Seq[VNum]], r: Int, c: Int): Seq[Seq[VNum]] =
     (mat.take(r) ++ mat.drop(r + 1)).map(row => row.take(c) ++ row.drop(c + 1))
