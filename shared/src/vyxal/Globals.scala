@@ -29,6 +29,7 @@ case class Globals(
     String,
     CustomClass,
   ] = Map()
+  var extensions: Map[String, List[(List[String], CustomDefinition)]] = Map()
 
 /** Stores the inputs for some Context. Inputs can be overridden (see
   * [[Inputs#overrideInputs]]).

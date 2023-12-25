@@ -31,6 +31,7 @@ case class ParserResult(
     ast: AST,
     customs: Map[String, CustomDefinition],
     classes: Map[String, CustomClass],
+    typedCustoms: Map[String, List[(List[String], CustomDefinition)]],
 )
 
 object Parser:
@@ -38,8 +39,12 @@ object Parser:
   def parse(tokens: List[Token]): ParserResult =
     val parser = Parser()
     val ast = parser.parse(tokens)
-    println(parser.customs)
-    ParserResult(ast, parser.customs.toMap, parser.classes.toMap)
+    ParserResult(
+      ast,
+      parser.customs.toMap,
+      parser.classes.toMap,
+      parser.typedCustoms.toMap,
+    )
 
   val reservedTypes = List("num", "str", "lst", "fun", "con")
 
@@ -48,7 +53,7 @@ private class Parser:
   private val customs = mutable.Map[String, CustomDefinition]()
   private val classes = mutable.Map[String, CustomClass]()
   private val typedCustoms =
-    mutable.Map[(String, List[String]), CustomDefinition]()
+    mutable.Map[String, List[(List[String], CustomDefinition)]]()
 
   private def flatten(ast: AST): List[AST] =
     ast match
@@ -141,20 +146,29 @@ private class Parser:
         // temporary AST to comply with the type of the AST stack
         case TokenType.ElementSymbol =>
           val name = value
-          if !customs.contains(name) then
-            throw UndefinedCustomElementException(name)
-          val CustomDefinition(_, elementType, impl, arity, args) =
-            customs(name)
-          elementType match
-            case CustomElementType.Element => asts.push(
-                parseCommand(
-                  Token(TokenType.Command, name, range),
-                  asts,
-                  program,
-                )
+          if typedCustoms.contains(name) then
+            asts.push(
+              parseCommand(
+                Token(TokenType.Command, name, range),
+                asts,
+                program,
               )
-            case CustomElementType.Modifier =>
-              throw CustomElementActuallyModifierException(name)
+            )
+          else
+            if !customs.contains(name) then
+              throw UndefinedCustomElementException(name)
+            val CustomDefinition(_, elementType, impl, arity, args) =
+              customs(name)
+            elementType match
+              case CustomElementType.Element => asts.push(
+                  parseCommand(
+                    Token(TokenType.Command, name, range),
+                    asts,
+                    program,
+                  )
+                )
+              case CustomElementType.Modifier =>
+                throw CustomElementActuallyModifierException(name)
         case TokenType.ModifierSymbol =>
           val name = value
           if !customs.contains(name) then
@@ -226,7 +240,8 @@ private class Parser:
           val branches =
             parseBranches(program, false)(_ == TokenType.StructureClose)
           if branches.size < 3 then throw BadStructureException("extension")
-          val symbol = value
+          var symbol = branches.head.toVyxal
+          if symbol.length() > 1 then symbol = toValidName(symbol)
           val impl = branches.last
           val arguments = branches.tail.init
           if arguments.size % 2 != 0 then
@@ -236,13 +251,28 @@ private class Parser:
             .map(_.toVyxal)
             .map(x => if x != "*" then toValidName(x) else x)
           val argTypes = argPairs.last.map(_.toVyxal)
-          typedCustoms(symbol -> argTypes) = CustomDefinition(
-            symbol,
-            CustomElementType.Element,
-            Some(impl),
-            Some(argNames.length),
-            (List(), argNames),
-          )
+          if typedCustoms.contains(symbol) then
+            val temp = typedCustoms(symbol)
+            typedCustoms(symbol) = temp :+
+              (argTypes ->
+                CustomDefinition(
+                  symbol,
+                  CustomElementType.Element,
+                  Some(impl),
+                  Some(argNames.length),
+                  (List() -> argNames),
+                ))
+          else
+            typedCustoms(symbol) = List(
+              argTypes ->
+                CustomDefinition(
+                  symbol,
+                  CustomElementType.Element,
+                  Some(impl),
+                  Some(argNames.length),
+                  (List() -> argNames),
+                )
+            )
 
         case TokenType.ContextIndex => asts.push(
             AST.ContextIndex(if value.nonEmpty then value.toInt else -1)
@@ -380,7 +410,11 @@ private class Parser:
     val arity = Elements.elements.get(cmd) match
       case None =>
         if checkCustoms then
-          if !customs.contains(cmd) then throw NoSuchElementException(cmdTok)
+          if typedCustoms.contains(cmd) then
+            val CustomDefinition(_, _, _, arity, _) = typedCustoms(cmd).head._2
+            arity.getOrElse(1)
+          else if !customs.contains(cmd) then
+            throw NoSuchElementException(cmdTok)
           else
             val CustomDefinition(_, _, _, arity, _) = customs(cmd)
             arity.getOrElse(1)

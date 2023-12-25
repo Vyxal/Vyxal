@@ -28,7 +28,7 @@ object Interpreter:
         case ex: Throwable => throw UnknownLexingException(ex)
 
     /** Attempt parsing */
-    val ParserResult(ast, customDefns, classes) =
+    val ParserResult(ast, customDefns, classes, extensions) =
       try Parser.parse(tokens)
       catch
         case ex: VyxalException => throw VyxalException("VyxalException", ex)
@@ -40,6 +40,7 @@ object Interpreter:
       ctx.globals.originalProgram = ast
       ctx.globals.symbols = customDefns
       ctx.globals.classes = classes
+      ctx.globals.extensions = extensions
       execute(ast)
       if !ctx.globals.printed && !ctx.testMode then
         if ctx.settings.endPrintMode == EndPrintMode.Default then

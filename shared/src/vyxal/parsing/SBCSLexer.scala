@@ -181,7 +181,7 @@ private[parsing] object SBCSLexer:
   def defineExtension[$: P]: P[Token] =
     parseToken(
       DefineExtension,
-      "#:>>" ~~/ (CharPred(allCommands).! | Common.varName),
+      "#:>>".!,
     )
 
   def setConstant[$: P]: P[Token] =
