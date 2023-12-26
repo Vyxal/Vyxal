@@ -106,16 +106,31 @@ object Interpreter:
           list += ctx.pop()
         ctx.push(VList.from(list.toList))
       case AST.Command(cmd, _, overwriteable) =>
-        if overwriteable && ctx.globals.symbols.contains(cmd) then
+        var executed = false
+        if overwriteable && ctx.globals.extensions.contains(cmd) then
+          val ext = ctx.globals.extensions(cmd)
+          val potentialArgs = ctx.peek(ext._2)
+          val types = MiscHelpers.typesOf(potentialArgs*)
+          val overload = getOverload(types, ext._1)
+          overload match
+            case Some((types, implementation)) =>
+              ctx.canAccessPrivate = types.forall(_ == types.head) &&
+                types.head != "*"
+              val lam = VFun.fromLambda(implementation.asInstanceOf[AST.Lambda])
+              if implementation.arity.getOrElse(0) == -1 then executeFn(lam)
+              else ctx.push(executeFn(lam))
+              executed = true
+              ctx.canAccessPrivate = false
+            case None => ()
+        if overwriteable && !executed && ctx.globals.symbols.contains(cmd) then
           ctx.globals.symbols(cmd).impl match
             case Some(implementation) =>
               val lam = VFun.fromLambda(implementation.asInstanceOf[AST.Lambda])
               if implementation.arity.getOrElse(0) == -1 then executeFn(lam)
               else ctx.push(executeFn(lam))
-            case None => throw VyxalYikesException(
-                s"Symbol $cmd has no impl. Should have already been caught :skull:"
-              )
-        else
+              executed = true
+            case None => ()
+        if !executed then
           Elements.elements.get(cmd) match
             case Some(elem) => elem.impl()
             case None => throw NoSuchElementException(cmd)
@@ -377,12 +392,12 @@ object Interpreter:
   private def getOverload(
       givenTypes: List[String],
       overloads: List[(List[String], CustomDefinition)],
-  ): Option[AST] =
+  ): Option[(List[String], AST)] =
     overloads.find {
       case (types, _) =>
         types.zip(givenTypes).forall((a, b) => a == b || a == "*")
     } match
-      case Some((_, defn)) => Some(defn.impl.get)
+      case Some((types, defn)) => Some(types -> defn.impl.get)
       case None => None
 
 end Interpreter

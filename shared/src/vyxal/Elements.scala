@@ -297,6 +297,8 @@ object Elements:
       case (a: VObject, b: String) => a.fields.get(b) match
           case Some(x) => x._1 match
               case Visibility.Public => x._2
+              case Visibility.Private if summon[Context].canAccessPrivate =>
+                x._2
               case _ => throw AttemptedReadPrivateException(a.className, b)
           case _ => throw FieldNotFoundException(a.className, b)
 
@@ -615,7 +617,9 @@ object Elements:
       "a: fun -> Execute a",
       "a: str -> Evaluate a as Vyxal",
       "a: num -> 10 ** n",
-    ) { ctx ?=> ctx.push(execHelper(ctx.pop())) },
+    ) { ctx ?=>
+      ctx.push(execHelper(ctx.pop()))
+    },
     addDirect(
       "#Q",
       "Exit | Quit",
@@ -2538,6 +2542,11 @@ object Elements:
             if f._1 == Visibility.Public then
               a.fields(b) = (Visibility.Public, c)
               a
+            else if f._1 == Visibility.Private &&
+              summon[Context].canAccessPrivate
+            then
+              a.fields(b) = (Visibility.Private, c)
+              a
             else throw AttemptedWritePrivateException(b, a.className)
           case None => throw FieldNotFoundException(b, a.className)
 
@@ -3715,6 +3724,8 @@ object Elements:
         res
       case _: VObject => throw BadArgumentException("exec", "object")
       case con: VConstructor => Interpreter.createObject(con)
+    end match
+  end execHelper
 
   private def addNilad(
       symbol: String,

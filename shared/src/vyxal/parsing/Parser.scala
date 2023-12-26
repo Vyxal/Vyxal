@@ -31,7 +31,7 @@ case class ParserResult(
     ast: AST,
     customs: Map[String, CustomDefinition],
     classes: Map[String, CustomClass],
-    typedCustoms: Map[String, List[(List[String], CustomDefinition)]],
+    typedCustoms: Map[String, (List[(List[String], CustomDefinition)], Int)],
 )
 
 object Parser:
@@ -53,7 +53,7 @@ private class Parser:
   private val customs = mutable.Map[String, CustomDefinition]()
   private val classes = mutable.Map[String, CustomClass]()
   private val typedCustoms =
-    mutable.Map[String, List[(List[String], CustomDefinition)]]()
+    mutable.Map[String, (List[(List[String], CustomDefinition)], Int)]()
 
   private def flatten(ast: AST): List[AST] =
     ast match
@@ -242,7 +242,7 @@ private class Parser:
           if branches.size < 3 then throw BadStructureException("extension")
           var symbol = branches.head.toVyxal
           if symbol.length() > 1 then symbol = toValidName(symbol)
-          val impl = branches.last
+
           val arguments = branches.tail.init
           if arguments.size % 2 != 0 then
             throw BadStructureException("extension")
@@ -250,18 +250,23 @@ private class Parser:
           val argNames = argPairs.head
             .map(_.toVyxal)
             .map(x => if x != "*" then toValidName(x) else x)
+          val impl = branches.last match
+            case lam: AST.Lambda => lam
+            case other =>
+              AST.Lambda(Some(argNames.length), argNames, List(other))
           val argTypes = argPairs.last.map(_.toVyxal)
           if typedCustoms.contains(symbol) then
-            val temp = typedCustoms(symbol)
-            typedCustoms(symbol) = temp :+
-              (argTypes ->
-                CustomDefinition(
-                  symbol,
-                  CustomElementType.Element,
-                  Some(impl),
-                  Some(argNames.length),
-                  (List() -> argNames),
-                ))
+            val temp = typedCustoms(symbol)(0)
+            typedCustoms(symbol) =
+              (temp :+
+                (argTypes ->
+                  CustomDefinition(
+                    symbol,
+                    CustomElementType.Element,
+                    Some(impl),
+                    Some(argNames.length),
+                    (List() -> argNames),
+                  ))) -> Math.max(argNames.length, typedCustoms(symbol)._2)
           else
             typedCustoms(symbol) = List(
               argTypes ->
@@ -272,7 +277,7 @@ private class Parser:
                   Some(argNames.length),
                   (List() -> argNames),
                 )
-            )
+            ) -> argNames.length
 
         case TokenType.ContextIndex => asts.push(
             AST.ContextIndex(if value.nonEmpty then value.toInt else -1)
@@ -410,9 +415,7 @@ private class Parser:
     val arity = Elements.elements.get(cmd) match
       case None =>
         if checkCustoms then
-          if typedCustoms.contains(cmd) then
-            val CustomDefinition(_, _, _, arity, _) = typedCustoms(cmd).head._2
-            arity.getOrElse(1)
+          if typedCustoms.contains(cmd) then typedCustoms(cmd)._2
           else if !customs.contains(cmd) then
             throw NoSuchElementException(cmdTok)
           else

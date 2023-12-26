@@ -39,6 +39,7 @@ class Context private (
     val testMode: Boolean = false,
     val useStack: Boolean = false,
     var recursion: Int = 0,
+    var canAccessPrivate: Boolean = false,
 ):
   var settings: Settings = globals.settings
 
@@ -257,6 +258,7 @@ object Context:
       testMode = currCtx.testMode,
       useStack = useStack,
       recursion = currCtx.recursion,
+      canAccessPrivate = currCtx.canAccessPrivate,
     )
   end makeFnCtx
 
