@@ -89,7 +89,7 @@ private[parsing] object SBCSLexer:
   def digraph[$: P]: P[Token] =
     P(
       withRange(
-        (CharIn("∆øÞk") ~~ AnyChar).! |
+        (CharIn("∆øÞk") ~~ !CharIn("|") ~~ AnyChar).! |
           ("#" ~~ !CharIn("[]$!=#>@{:") ~~ AnyChar).!
       )
     ).map {

@@ -232,11 +232,39 @@ private[parsing] object LiterateLexer:
         }
         val args = commadArgs :+ elemArgs(1)
         LitToken(
-          TokenType.Group,
-          (LitToken(TokenType.StructureOpen, "#::", openRange) +:
-            LitToken(TokenType.Command, mode, modeRange) +:
+          Group,
+          (LitToken(StructureOpen, "#::", openRange) +:
+            LitToken(Command, mode, modeRange) +:
             ((nameTok :+ branchTok) ++ args)).toList,
           nameRange,
+        )
+    }
+
+  def extensionKeyword[$: P]: P[LitToken] =
+    P(
+      withRange("extension".!) ~ withRange(word.filter(isLambdaParam)) ~/
+        litBranch ~
+        ( // Grab the first parameter branch
+          withRange("*".! | word.filter(isLambdaParam)) ~ litBranch
+        ).rep
+    ).map {
+      case (opener, openRange, name, branchTok, parameters) =>
+        val nameTok = name._1.toList.map(char =>
+          LitToken(Command, char.toString(), name._2)
+        )
+        LitToken(
+          Group,
+          (LitToken(DefineExtension, "#:>>", openRange) +: nameTok) ++
+            (branchTok +:
+              parameters
+                .map(param =>
+                  List(
+                    LitToken(Param, param(0), Range.fake),
+                    param(2),
+                  )
+                )
+                .flatten),
+          openRange,
         )
     }
 
@@ -484,13 +512,13 @@ private[parsing] object LiterateLexer:
   def singleToken[$: P]: P[Seq[LitToken]] =
     P(
       list | unpackVar |
-        (lambdaBlock | defineObj | defineModBlock | defineElemBlock |
-          specialLambdaBlock | contextIndex | functionCall | modifierSymbol |
-          elementSymbol | litGetVariable | litSetVariable | litSetConstant |
-          litAugVariable | elementKeyword | negatedElementKeyword | tokenMove |
-          modifierKeyword | structOpener | otherKeyword | litBranch |
-          litStructClose | litNumber | litString | normalGroup).map(Seq(_)) |
-        rawCode |
+        (lambdaBlock | extensionKeyword | defineObj | defineModBlock |
+          defineElemBlock | specialLambdaBlock | contextIndex | functionCall |
+          modifierSymbol | elementSymbol | litGetVariable | litSetVariable |
+          litSetConstant | litAugVariable | elementKeyword |
+          negatedElementKeyword | tokenMove | modifierKeyword | structOpener |
+          otherKeyword | litBranch | litStructClose | litNumber | litString |
+          normalGroup).map(Seq(_)) | rawCode |
         SBCSLexer.token.map((token) =>
           Seq(LitToken(token.tokenType, token.value, token.range))
         )

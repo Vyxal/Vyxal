@@ -241,6 +241,7 @@ private class Parser:
             parseBranches(program, false)(_ == TokenType.StructureClose)
           if branches.size < 3 then throw BadStructureException("extension")
           var symbol = branches.head.toVyxal
+          println(symbol)
           if symbol.length() > 1 then symbol = toValidName(symbol)
 
           val arguments = branches.tail.init
@@ -313,7 +314,9 @@ private class Parser:
           if depth != -1 then names += ((name, depth))
           asts.push(AST.UnpackVar(names.toList))
         case TokenType.Param => asts.push(AST.Parameter(value))
-        case TokenType.Digraph => throw NoSuchElementException(token)
+        case TokenType.Digraph =>
+          if !value.startsWith("k") then throw NoSuchElementException(token)
+          else asts.push(AST.Command(value))
       end match
     end while
     // Second stage parsing
@@ -409,7 +412,7 @@ private class Parser:
     val cmd =
       if checkCustoms && customs.contains(cmdTok.value) then cmdTok.value
       else if !Elements.elements.contains(cmdTok.value) then
-        Elements.symbolFor(cmdTok.value).getOrElse("Nonexistent")
+        Elements.symbolFor(cmdTok.value).getOrElse(cmdTok.value)
       else cmdTok.value
 
     val arity = Elements.elements.get(cmd) match
@@ -417,10 +420,12 @@ private class Parser:
         if checkCustoms then
           if typedCustoms.contains(cmd) then typedCustoms(cmd)._2
           else if !customs.contains(cmd) then
-            throw NoSuchElementException(cmdTok)
+            if !cmd.startsWith("k") then throw NoSuchElementException(cmdTok)
+            else 0
           else
             val CustomDefinition(_, _, _, arity, _) = customs(cmd)
             arity.getOrElse(1)
+        else if cmd.startsWith("k") then 0
         else throw NoSuchElementException(cmdTok)
       case Some(element) =>
         if asts.isEmpty then return AST.Command(cmd, cmdTok.range, checkCustoms)
