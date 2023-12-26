@@ -660,7 +660,7 @@ Keywords: head-extract, split-at-head
 ----------------------
 ŀ (Transliterate | Call While | Write Member) (non-vectorising)
 Trigraph: #.l
-Keywords: transliterate, call-while, >>>
+Keywords: transliterate, call-while, @=>
 - any a, any b, any c -> transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)
 - a: fun, b: fun, c: any -> call b on c until a(c) is falsy
 ----------------------
@@ -862,7 +862,7 @@ Keywords: sum, /+, +/
 ----------------------
 « (Bitshift Left | Read Member) (vectorising)
 Trigraph: #.<
-Keywords: bitwise-left-shift, left-shift, left-pad, pad-left, <<<
+Keywords: bitwise-left-shift, left-shift, left-pad, pad-left, @<=
 - a: num, b: num -> a << b
 - a: num, b: str -> b padded to length a with spaces prepended
 - a: str, b: num -> a padded to length b with spaces prepended
