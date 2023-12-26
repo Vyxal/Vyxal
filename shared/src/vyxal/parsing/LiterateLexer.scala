@@ -246,26 +246,30 @@ private[parsing] object LiterateLexer:
     P(
       withRange("extension".!) ~ "(".? ~ withRange(word.filter(isLambdaParam)) ~
         ")".? ~/ litBranch ~
-        ( // Grab the first parameter branch
-          withRange("*".! | word.filter(isLambdaParam)) ~ litBranch
+        // Grab the first parameter branch
+        withRange(
+          "(".? ~ ("*".! | word.filter(isLambdaParam) ~ ")".?) ~ litBranch
         ).rep
     ).map {
       case (opener, openRange, name, branchTok, parameters) =>
         val nameTok = LitToken(Param, name._1, name._2)
+        val params = parameters.map(_._1)
+
         LitToken(
           Group,
           List(LitToken(DefineExtension, "#:>>", openRange), nameTok) ++
             (branchTok +:
-              parameters
+              params
                 .map(param =>
                   List(
-                    LitToken(Param, param(0), Range.fake),
-                    param(2),
+                    LitToken(Param, param._1, Range.fake),
+                    param._2,
                   )
                 )
                 .flatten),
           openRange,
         )
+
     }
 
   val lambdaOpenerSet = lambdaOpeners.keys.toSet
