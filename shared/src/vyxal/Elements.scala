@@ -283,7 +283,7 @@ object Elements:
       Dyad,
       "«",
       "Bitshift Left | Read Member",
-      List("bitwise-left-shift", "left-shift", "left-pad", "pad-left", "<<<"),
+      List("bitwise-left-shift", "left-shift", "left-pad", "pad-left", "@<="),
       true,
       "a: num, b: num -> a << b",
       "a: num, b: str -> b padded to length a with spaces prepended",
@@ -301,6 +301,13 @@ object Elements:
                 x._2
               case _ => throw AttemptedReadPrivateException(a.className, b)
           case _ => throw FieldNotFoundException(a.className, b)
+      case (a: String, b: VObject) => b.fields.get(a) match
+          case Some(x) => x._1 match
+              case Visibility.Public => x._2
+              case Visibility.Private if summon[Context].canAccessPrivate =>
+                x._2
+              case _ => throw AttemptedReadPrivateException(b.className, a)
+          case _ => throw FieldNotFoundException(b.className, a)
 
     },
     addPart(
@@ -2515,7 +2522,7 @@ object Elements:
       Triad,
       "ŀ",
       "Transliterate | Call While | Write Member",
-      List("transliterate", "call-while", ">>>"),
+      List("transliterate", "call-while", "@=>"),
       false,
       "any a, any b, any c -> transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)",
       "a: fun, b: fun, c: any -> call b on c until a(c) is falsy",

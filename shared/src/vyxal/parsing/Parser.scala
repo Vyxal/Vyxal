@@ -149,7 +149,7 @@ private class Parser:
           if typedCustoms.contains(name) then
             asts.push(
               parseCommand(
-                Token(TokenType.Command, name, range),
+                Token(TokenType.Command, s"##$name", range),
                 asts,
                 program,
               )
@@ -162,7 +162,7 @@ private class Parser:
             elementType match
               case CustomElementType.Element => asts.push(
                   parseCommand(
-                    Token(TokenType.Command, name, range),
+                    Token(TokenType.Command, s"##$name", range),
                     asts,
                     program,
                   )
@@ -186,7 +186,7 @@ private class Parser:
         case TokenType.TetradicModifier => asts.push(AST.JunkModifier(value, 4))
         case TokenType.SpecialModifier => asts.push(AST.SpecialModifier(value))
         case TokenType.Comment => ()
-        case TokenType.DefineClass =>
+        case TokenType.DefineObject =>
           val branches =
             parseBranches(program, true)(_ == TokenType.StructureClose)
           val className = value
@@ -241,21 +241,27 @@ private class Parser:
             parseBranches(program, false)(_ == TokenType.StructureClose)
           if branches.size < 3 then throw BadStructureException("extension")
           var symbol = branches.head.toVyxal
-          println(symbol)
           if symbol.length() > 1 then symbol = toValidName(symbol)
 
           val arguments = branches.tail.init
           if arguments.size % 2 != 0 then
             throw BadStructureException("extension")
           val argPairs = arguments.grouped(2).toList.transpose
-          val argNames = argPairs.head
-            .map(_.toVyxal)
-            .map(x => if x != "*" then toValidName(x) else x)
+          val argNames = argPairs.head.map {
+            case p: AST.Parameter => p.name
+            case a => toValidName(a.toVyxal)
+          }
+
           val impl = branches.last match
             case lam: AST.Lambda => lam
             case other =>
               AST.Lambda(Some(argNames.length), argNames, List(other))
-          val argTypes = argPairs.last.map(_.toVyxal)
+          val argTypes = argPairs.last.map {
+            case p: AST.Parameter => p.name
+            case a =>
+              val temp = a.toVyxal
+              if temp == "*" then "*" else toValidName(temp)
+          }
           if typedCustoms.contains(symbol) then
             val temp = typedCustoms(symbol)(0)
             typedCustoms(symbol) =
@@ -410,7 +416,8 @@ private class Parser:
       checkCustoms: Boolean = true,
   ): AST =
     val cmd =
-      if checkCustoms && customs.contains(cmdTok.value) then cmdTok.value
+      if checkCustoms && cmdTok.value.startsWith("##")
+      then cmdTok.value.stripPrefix("##")
       else if !Elements.elements.contains(cmdTok.value) then
         Elements.symbolFor(cmdTok.value).getOrElse(cmdTok.value)
       else cmdTok.value

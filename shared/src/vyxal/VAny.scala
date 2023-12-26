@@ -101,6 +101,8 @@ extension (self: VAny)
   @targetName("vEquals")
   def ===(that: VAny)(using Context): Boolean =
     (self, that) match
+      case (a: VObject, b: VObject) => a.className == b.className &&
+        a.fields == b.fields
       case (a: VList, b: VList) => a == b
       case (_: VFun, _) =>
         scribe.warn(s"Tried comparing function $self to $that")
@@ -138,6 +140,5 @@ case class VObject(
     className: String,
     fields: mut.Map[String, (Visibility, VAny)],
 )
-
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)

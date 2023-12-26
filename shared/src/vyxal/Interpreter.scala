@@ -114,8 +114,7 @@ object Interpreter:
           val overload = getOverload(types, ext._1)
           overload match
             case Some((types, implementation)) =>
-              ctx.canAccessPrivate = types.forall(_ == types.head) &&
-                types.head != "*"
+              ctx.canAccessPrivate = true
               val lam = VFun.fromLambda(implementation.asInstanceOf[AST.Lambda])
               if implementation.arity.getOrElse(0) == -1 then executeFn(lam)
               else ctx.push(executeFn(lam))
