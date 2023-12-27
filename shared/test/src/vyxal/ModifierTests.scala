@@ -196,7 +196,7 @@ class ModifierTests extends VyxalTests:
 
   describe("Modifier ᵡ") {
     testMulti(
-      "10 ᵡϩe[2÷|3×1+}" -> VList(5, 16, 8, 4, 2, 1)
+      "10 ᵡϩe[2÷|3×1+}" -> VList(10, 5, 16, 8, 4, 2, 1)
     )
   }
 
