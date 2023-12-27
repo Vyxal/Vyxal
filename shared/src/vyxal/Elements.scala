@@ -2022,14 +2022,20 @@ object Elements:
       List("print-no-newline"),
       None,
       "a -> printed to stdout without newline",
-    ) { ctx ?=> MiscHelpers.vyPrint(ctx.pop()) },
+    ) { ctx ?=>
+      MiscHelpers.vyPrint(ctx.pop())
+      ctx.globals.printed = true
+    },
     addDirect(
       "Ọ",
       "Print without popping",
       List("print-no-pop"),
       None,
       "a -> printed to stdout without popping",
-    ) { ctx ?=> MiscHelpers.vyPrintln(ctx.peek) },
+    ) { ctx ?=>
+      MiscHelpers.vyPrintln(ctx.peek)
+      ctx.globals.printed = true
+    },
     addPart(
       Monad,
       "q",
