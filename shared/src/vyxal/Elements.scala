@@ -760,13 +760,13 @@ object Elements:
       "m",
       "Get Context Variable M",
       List("get-context-m", "context-m", "c-var-m", "ctx-m", "ctx-secondary"),
-      "context variable m",
+      "context variable m - defaults to uppercase alphabet if outside context",
     ) { ctx ?=> ctx.ctxVarSecondary },
     addNilad(
       "n",
       "Get Context Variable N",
       List("get-context-n", "context-n", "c-var-n", "ctx-n", "ctx-primary"),
-      "context variable n",
+      "context variable n - defaults to lowercase alphabet if outside context",
     ) { ctx ?=> ctx.ctxVarPrimary },
     addNilad(
       "#¤",
