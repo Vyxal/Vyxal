@@ -176,10 +176,7 @@ private[parsing] object SBCSLexer:
     parseToken(OriginalSymbol, "#:~" ~ CharPred(allCommands).!)
 
   def defineObj[$: P]: P[Token] =
-    parseToken(
-      DefineObject,
-      "#:∆" ~~/ Common.varName,
-    ) // will putting a comment here make all 3 tests pass?
+    parseToken(DefineObject, "#:∆" ~~/ Common.varName)
 
   def defineExtension[$: P]: P[Token] =
     parseToken(
