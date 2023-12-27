@@ -672,7 +672,7 @@ class ElementTests extends VyxalTests:
     it(
       "Generates a list of all numbers in the collatz conjecture minus the first number"
     ) {
-      testCode("10 λe[2÷|3×1+}} Ŀ", VList(5, 16, 8, 4, 2, 1))
+      testCode("10 λe[2÷|3×1+}} Ŀ", VList(10, 5, 16, 8, 4, 2, 1))
     }
   }
 
