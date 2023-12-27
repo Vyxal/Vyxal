@@ -24,13 +24,16 @@ object MiscHelpers:
 
   def collectUnique(function: VFun, initial: VAny)(using ctx: Context): VList =
     val prevVals = ArrayBuffer.empty[VAny]
-    VList.from(LazyList.unfold(initial: VAny) { prevVal =>
-      val next = function(prevVal)
-      if prevVals.contains(next) then None
-      else
-        prevVals += next
-        Some(next -> next)
-    })
+    VList.from(
+      initial +:
+        LazyList.unfold(initial: VAny) { prevVal =>
+          val next = function(prevVal)
+          if prevVals.contains(next) then None
+          else
+            prevVals += next
+            Some(next -> next)
+        }
+    )
 
   def compare(a: VAny, b: VAny)(using ctx: Context): Int =
     (a, b) match
