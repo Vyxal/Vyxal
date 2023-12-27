@@ -1999,8 +1999,8 @@ object Elements:
       None,
       "a -> printed to stdout without newline",
     ) { ctx ?=>
-       MiscHelpers.vyPrint(ctx.pop())
-       ctx.globals.printed = true
+      MiscHelpers.vyPrint(ctx.pop())
+      ctx.globals.printed = true
     },
     addDirect(
       "Ọ",
@@ -2009,8 +2009,8 @@ object Elements:
       None,
       "a -> printed to stdout without popping",
     ) { ctx ?=>
-       MiscHelpers.vyPrintln(ctx.peek)
-       ctx.globals.printed = true
+      MiscHelpers.vyPrintln(ctx.peek)
+      ctx.globals.printed = true
     },
     addPart(
       Monad,
