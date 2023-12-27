@@ -414,11 +414,11 @@ Keywords: length-vectorised, length-vect, len-vect, len-vectorised, vec-len, vec
 ----------------------
 m (Get Context Variable M) (non-vectorising)
 Keywords: get-context-m, context-m, c-var-m, ctx-m, ctx-secondary
-- -> context variable m
+- -> context variable m - defaults to uppercase alphabet if outside context
 ----------------------
 n (Get Context Variable N) (non-vectorising)
 Keywords: get-context-n, context-n, c-var-n, ctx-n, ctx-primary
-- -> context variable n
+- -> context variable n - defaults to lowercase alphabet if outside context
 ----------------------
 o (Overlap | Overlapping Slices) (non-vectorising)
 Keywords: overlap, overlaps, overlapping, overlapping-slices
