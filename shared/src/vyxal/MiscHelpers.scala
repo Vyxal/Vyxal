@@ -5,6 +5,7 @@ import vyxal.Interpreter.executeFn
 import vyxal.VNum.given
 
 import scala.annotation.tailrec
+import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Stack
 
@@ -22,15 +23,14 @@ object MiscHelpers:
     curr
 
   def collectUnique(function: VFun, initial: VAny)(using ctx: Context): VList =
-    val seen = collection.mutable.Set.empty[VAny]
-    val result = ListBuffer[VAny]()
-    var current = initial
-    while !seen.contains(current) do
-      seen += current
-      result += current
-      current =
-        executeFn(function, ctxVarPrimary = current, args = Seq(current))
-    VList.from(result.toList)
+    val prevVals = ArrayBuffer.empty[VAny]
+    VList.from(LazyList.unfold(initial: VAny) { prevVal =>
+      val next = function(prevVal)
+      if prevVals.contains(next) then None
+      else
+        prevVals += next
+        Some(next -> next)
+    })
 
   def compare(a: VAny, b: VAny)(using ctx: Context): Int =
     (a, b) match
