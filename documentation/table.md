@@ -92,8 +92,8 @@
  <code>kr</code> |  | Digits, Lowercase, Uppercase | `digits-lowercase-uppercase`, `digs-lower-upper`, `o9azAZ`, `o-9a-zA-Z` | 0 | :x: | <code></code> => <code> "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"</code>
  <code>kz</code> |  | Lowercase Alphabet Reversed | `lowercase-alphabet-reversed`, `lowercase-alpha-reversed`, `z->a`, `nozama` | 0 | :x: | <code></code> => <code> "zyxwvutsrqponmlkjihgfedcba"</code>
  <code>l</code> |  | Length of Each Item | `length-vectorised`, `length-vect`, `len-vect`, `len-vectorised`, `vec-len`, `vec-length`, `vlen` | 1 | :x: | <code>a: lst </code> => <code> Length of each item in a</code>
- <code>m</code> |  | Get Context Variable M | `get-context-m`, `context-m`, `c-var-m`, `ctx-m`, `ctx-secondary` | 0 | :x: | <code></code> => <code> context variable m</code>
- <code>n</code> |  | Get Context Variable N | `get-context-n`, `context-n`, `c-var-n`, `ctx-n`, `ctx-primary` | 0 | :x: | <code></code> => <code> context variable n</code>
+ <code>m</code> |  | Get Context Variable M | `get-context-m`, `context-m`, `c-var-m`, `ctx-m`, `ctx-secondary` | 0 | :x: | <code></code> => <code> context variable m - defaults to uppercase alphabet if outside context</code>
+ <code>n</code> |  | Get Context Variable N | `get-context-n`, `context-n`, `c-var-n`, `ctx-n`, `ctx-primary` | 0 | :x: | <code></code> => <code> context variable n - defaults to lowercase alphabet if outside context</code>
  <code>o</code> |  | Overlap \| Overlapping Slices | `overlap`, `overlaps`, `overlapping`, `overlapping-slices` | 2 | :x: | <code>a: lst, b: num </code> => <code> Overlapping slices of a of length b</code><br><code>a: lst|str </code> => <code> Overlapping slices of a of length 2</code>
  <code>p</code> |  | Prepend | `prepend` | 2 | :x: | <code>a: lst, b: any </code> => <code> b prepended to a</code>
  <code>q</code> |  | Quotify \| Nth Prime | `quotify`, `nth-prime`, `prime-n` | 1 | :white_check_mark: | <code>a: str </code> => <code> enclose a in quotes, escape backslashes and quote marks</code><br><code>a: num </code> => <code> nth prime</code>

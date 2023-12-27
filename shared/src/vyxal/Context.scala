@@ -30,7 +30,8 @@ class Context private (
     val stack: mut.ArrayBuffer[VAny],
     private var _ctxVarPrimary: Option[VAny] =
       Some("abcdefghijklmnopqrstuvwxyz"),
-    private var _ctxVarSecondary: Option[VAny] = None,
+    private var _ctxVarSecondary: Option[VAny] =
+      Some("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
     val ctxArgs: Option[Seq[VAny]] = None,
     private val vars: mut.Map[String, VAny] = mut.Map(),
     val inputs: Inputs = Inputs(),
