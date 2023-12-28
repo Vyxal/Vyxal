@@ -177,8 +177,8 @@ Lowest Priority
 }
 
 #:>> put | value | * | key | * | mp | Map | 
-  #$mp "keys" ᵇ« #$key ŀ 
-  #$mp "values" ᵇ« #$value ŀ
+  #$mp "keys" ᵇ« #$key & ŀ 
+  #$mp "values" ᵇ« #$value & ŀ
   #$mp
 }
 
@@ -256,8 +256,8 @@ extension put given
   key as *,
   mp as Map
 does
-  $mp "keys" peek: (@<=) $key @=>
-  $mp "values" peek: (@<=) $value @=>
+  $mp "keys" peek: (@<=) $key append @=>
+  $mp "values" peek: (@<=) $value append @=>
   $mp
 }
 
