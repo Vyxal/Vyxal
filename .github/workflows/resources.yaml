@@ -26,7 +26,7 @@ jobs:
         run: scalafix --check --syntactic --scala-version=3.3.0 shared jvm js native
       - name: Run Scalafmt
         run: |
-          ./mill mill.scalalib.scalafmt.ScalafmtModule/reformatAll __.sources
+          ./mill --no-server mill.scalalib.scalafmt.ScalafmtModule/reformatAll __.sources
       - name: Stage changes
         run: git add .
       - name: Commit and push
@@ -47,9 +47,9 @@ jobs:
           java-version: "17"
           distribution: "adopt"
       - name: Update all documentation files
-        run: ./mill jvm.docs
+        run: ./mill --no-server jvm.docs
       - name: Update nanorc files for JLine
-        run: ./mill jvm.nanorc
+        run: ./mill --no-server jvm.nanorc
       - name: Stage changes
         run: git add .
       - name: Commit and push

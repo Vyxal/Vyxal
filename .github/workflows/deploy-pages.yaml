@@ -47,10 +47,10 @@ jobs:
           distribution: "adopt"
 
       - name: Scala to JS
-        run: ./mill js.fullLinkJS
+        run: ./mill --no-server js.fullLinkJS
 
       - name: Generate files for web interpreter
-        run: ./mill jvm.theseus
+        run: ./mill --no-server jvm.theseus
 
       - name: Upload built HTML
         uses: actions/upload-pages-artifact@v1
