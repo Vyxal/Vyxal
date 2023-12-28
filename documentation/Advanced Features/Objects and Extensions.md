@@ -113,6 +113,132 @@ object in any way. It is simply a lambda that takes a map as an argument.
 
 ## Extension Methods
 
-In the previous example, we created a lambda that takes a map as an argument. We
-then had to pass the map to the lambda as an argument. This is not ideal, as it
-does not ensure that `Map` objects are used in the correct way.
+In the previous example, a lambda was used to add a key and value to a `Map` object.
+However, the lambda is in no way linked to the `Map` object - it can be called
+with any object, and will attempt to retrieve the `keys` and `values` members.
+This obviously is not desirable behaviour, even for a language as loose with types
+as Vyxal. To solve this, extension methods can be used to create fine-grained
+control over the types involved in a function.
+
+To define an extension method:
+
+```
+#:>> symbol | argA | typeA | argB | typeB | ... | argN | typeN | implementation }
+```
+
+* `symbol` is the symbol that will be used to call the extension method. This can
+be any valid symbol allowed in a custom element.
+* `arg` is the name of an argument to the extension method.
+* `type` is the type of an argument to the extension method. This can be any valid type name, as well as `*`, which indicates an any type.
+* `implementation` is the implementation of the extension method. This will always
+be the last branch.
+
+To use an extension method, call it as you would any custom element:
+
+```
+#:@symbol
+```
+
+### Important Notes
+
+* Extension methods require at least one argument. Attempting to define an
+extension method with no arguments will result in an error. Use the define
+structure instead.
+* Extension methods will be scoped globally. Currently, there is no way to define
+an extension method that is only available within a certain scope/context.
+* The types of the arguments are checked at runtime. If the types do not match,
+an error will be thrown.
+* Like custom elements, the implementation branch is where the actual code for the element or modifier is written. When called, the method will pop all arguments from the stack
+and execute the implementation as if it were a lambda. The implementation branch can be any valid Vyxal code.
+
+### Order of Extension Method Matching
+
+When a symbol is called, first the interpreter will check for an extension method
+with the appropriate types of items on the stack. If found, it will execute the
+extension. Otherwise, the interpreter will check for a custom element with the
+same symbol. If found, it will execute the custom element. Otherwise, it will
+finally try a lookup of the built-in symbols. If none of these are found, an
+error will be thrown.
+
+```
+Highest Priority
+- Extension Methods
+- Custom Elements
+- Built-in Symbols
+Lowest Priority
+```
+
+## Example
+
+```
+#:O Map | 
+  #[#] #!keys
+  #[#] #!values
+}
+
+#:>> put | value | * | key | * | mp | Map | 
+  #$mp "keys" ᵇ« #$key ŀ 
+  #$mp "values" ᵇ« #$value ŀ
+  #$mp
+}
+
+#$Map Ė
+"key1" "value1" #:@put
+```
+
+This example is the same as the previous example, except that it uses an extension
+method instead of a lambda. Calling `put` with any other value for `mp` that is
+not a `Map` object will not execute the extension method.
+
+## Literate Mode
+
+To define an object:
+
+```
+object ObjectName =>
+  $restrictedMember
+  :=privateMember
+  :!=publicMember
+}
+```
+
+To create an object:
+
+```
+`ObjectName`
+## or
+$ObjectName call
+```
+
+To access a member of an object:
+
+```
+"memberName" @<=
+```
+
+To set a member of an object:
+
+```
+"memberName" value @=>
+```
+
+To define an extension method:
+
+```
+extension symbol given
+  argA as typeA,
+  argB as typeB,
+  ...
+  argN as typeN
+does
+    implementation
+}
+```
+
+_Note that any branch keyword can be used in place of `does`, `as`, `given` and `,`._
+
+To use an extension method:
+
+```
+$@symbol
+```
