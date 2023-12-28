@@ -467,11 +467,8 @@ private[parsing] object LiterateLexer:
   def list[$: P]: P[Seq[LitToken]] =
     P(
       parseToken(ListOpen, "[".!) ~~/
-        (litBranch | !"]" ~ singleToken ~ litBranch.?).rep
-        // NoCut(singleToken).filter(toks =>
-        // toks.size != 1 || toks.head.tokenType != ListClose
-        // ) ~ litBranch.?).rep
-        ~ parseToken(ListClose, "]".!)
+        (litBranch | !"]" ~ singleToken ~ litBranch.?).rep ~
+        parseToken(ListClose, "]".!)
     ).map {
       case (startTok, elems, endTok) =>
         val middle = elems.flatMap {
