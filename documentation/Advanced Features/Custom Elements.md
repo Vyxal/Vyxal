@@ -1,12 +1,4 @@
-# Advanced Vyxal Features
-
-This document is a collection of advanced features of Vyxal. These advanced features are not useful for golfing, but are provided for people who want to use Vyxal for more than just golfing.
-
-## Table of Contents
-
-1. [Custom Elements and Modifiers](#custom-elements-and-modifiers)
-
-## Custom Elements and Modifiers
+# Custom Elements and Modifiers
 
 Vyxal has a pretty extensive set of built-in elements and modifiers - over 200 of them - but what if you want to add your own? Or what if you want to be able to overwrite the behavior of existing built-ins to do something else? The define structure has you covered.
 
@@ -17,15 +9,15 @@ The general format of the define structure is as follows:
 #:: *<modifierName> | <element parameters> | <implemenation parameters> | <implementation> }
 ```
 
-### The Name Branch
+## The Name Branch
 
 The first branch of the define structure is the name branch. The name provided in the branch will be the name of the element or modifier that is being redefined. A `@` before the name indicates that an element is being defined, and a `*` before the name indicates that a modifier is being defined. Any valid variable name is valid.
 
-#### Single Character Names
+### Single Character Names
 
 In addition to valid variable names, any single character in the vyxal codepage that is not a structure character can be used. This overrides the built-in behaviour of the character. This will be demonstrated in the examples section.
 
-### The Parameters Branches
+## The Parameters Branches
 
 For elements, there is only a single parameters branch. This branch is similar to
 lambda parameters, in that parameters will be popped from the stack and passed to the element. Anything valid in a lambda parameters branch is valid here.
@@ -36,12 +28,12 @@ elements the modifier will be applied to. That is, this branch is where the phys
 The second branch is the arguments that will be
 passed to the implementation. This is pretty much the same as the parameters branch for elements.
 
-### The Implementation Branch
+## The Implementation Branch
 
 The implementation branch is where the actual code for the element or modifier is written. When called, the custom definition will pop all arguments from the stack
 and execute the implementation as if it were a lambda. The implementation branch can be any valid Vyxal code.
 
-### Using Custom Elements and Modifiers
+## Using Custom Elements and Modifiers
 
 To use a custom element:
 
@@ -55,7 +47,7 @@ To use a custom modifier:
 #:`modifierName <element(s)>
 ```
 
-### Examples
+## Examples
 
 ```
 #:: @incrementAndHalf | x | #$x 1+ 2÷}
@@ -82,7 +74,7 @@ prints `3`.
 4 5 p+- ; ## [9, -1]
 ```
 
-### Retrieving Original Behaviour
+## Retrieving Original Behaviour
 
 If you've overwritten a built-in element or modifier and want to get the original behaviour back, you can use the `#:~` prefix. This will retrieve the original behaviour of the element or modifier. This is useful if you want to use the original behaviour in your custom definition.
 
@@ -95,7 +87,7 @@ E.g.
 
 Uses the original behaviour of `+` to add the two numbers if both arguments aren't 2, and returns `5` otherwise.
 
-### Customs in Literate Mode
+## Customs in Literate Mode
 
 The literate mode syntax is roughly the same as SBCS, except instead of `#::`, `define` is used. Other than that, the only other difference is greater choice in
 branch keywords:
