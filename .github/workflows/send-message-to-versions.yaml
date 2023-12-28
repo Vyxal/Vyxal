@@ -5,6 +5,9 @@ on:
     tags:
       - "v3*"
 
+env:
+  JAVA_OPTS: ${{ vars.JAVA_OPTS }}
+
 jobs:
   release:
     runs-on: ubuntu-latest

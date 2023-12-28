@@ -11,6 +11,7 @@ env:
   LINUX_NAME: vyxal-linux
   WINDOWS_NAME: vyxal-windows
   MACOS_NAME: vyxal-macos
+  JAVA_OPTS: ${{ vars.JAVA_OPTS }}
 
 jobs:
   native-exes:

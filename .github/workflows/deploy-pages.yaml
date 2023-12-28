@@ -23,6 +23,9 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+env:
+  JAVA_OPTS: ${{ vars.JAVA_OPTS }}
+
 jobs:
   # Single deploy job since we're just deploying
   deploy:
