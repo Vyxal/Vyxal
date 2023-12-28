@@ -242,3 +242,24 @@ To use an extension method:
 ```
 $@symbol
 ```
+
+## Map In Literate Mode
+
+```
+object Map =>
+  [] $keys
+  [] $values
+}
+
+extension put given
+  value as *,
+  key as *,
+  mp as Map
+does
+  $mp "keys" peek: (@<=) $key @=>
+  $mp "values" peek: (@<=) $value @=>
+  $mp
+}
+
+`Map` "key1" "value1" $@put
+```
