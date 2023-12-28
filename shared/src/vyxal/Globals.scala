@@ -43,7 +43,7 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
 
   /** Uses an array for constant access, not for mutating items */
   private var currInputs = origArr
-  private var allInputs = origInputs.reverse
+  private val allInputs = origInputs.reverse
 
   /** Keeps track of the next input's index */
   private var ind = 0

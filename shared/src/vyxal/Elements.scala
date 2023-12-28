@@ -166,14 +166,6 @@ object Elements:
         val temp = ListHelpers.augmentAssign(ListHelpers.makeIterable(a), b, c)
         if a.isInstanceOf[String] then temp.mkString
         else temp
-      case (a, b: VList, c) =>
-        var temp = ListHelpers.makeIterable(a)
-        for i <- ListHelpers.makeIterable(b) do
-          i match
-            case ind: VNum => temp = ListHelpers.assign(temp, ind, c)
-            case _ => throw InvalidListOverloadException("Ạ", b, "Number")
-        if a.isInstanceOf[String] then temp.mkString
-        else temp
       case (a, b: VList, c: VList) =>
         var temp = ListHelpers.makeIterable(a)
         for (i, j) <-
@@ -184,6 +176,14 @@ object Elements:
                 case value: VPhysical => temp = ListHelpers.assign(temp, ind, j)
                 case function: VFun =>
                   temp = ListHelpers.augmentAssign(temp, ind, function)
+            case _ => throw InvalidListOverloadException("Ạ", b, "Number")
+        if a.isInstanceOf[String] then temp.mkString
+        else temp
+      case (a, b: VList, c) =>
+        var temp = ListHelpers.makeIterable(a)
+        for i <- ListHelpers.makeIterable(b) do
+          i match
+            case ind: VNum => temp = ListHelpers.assign(temp, ind, c)
             case _ => throw InvalidListOverloadException("Ạ", b, "Number")
         if a.isInstanceOf[String] then temp.mkString
         else temp
@@ -1077,19 +1077,19 @@ object Elements:
     ) {
       case (a, b: VNum, c) =>
         ListHelpers.insert(ListHelpers.makeIterable(a), b, c)
-      case (a, b: VList, c) =>
-        var temp = ListHelpers.makeIterable(a)
-        for i <- b.reverse do
-          i match
-            case index: VNum => temp = ListHelpers.insert(temp, index, c)
-            case _ => throw InvalidListOverloadException("Ị", b, "Number")
-        temp
       case (a, b: VList, c: VList) =>
         var temp = ListHelpers.makeIterable(a)
         for (i, j) <- b.reverse.zip(c.reverse) do
           (i, j) match
             case (index: VNum, elem) =>
               temp = ListHelpers.insert(temp, index, elem)
+            case _ => throw InvalidListOverloadException("Ị", b, "Number")
+        temp
+      case (a, b: VList, c) =>
+        var temp = ListHelpers.makeIterable(a)
+        for i <- b.reverse do
+          i match
+            case index: VNum => temp = ListHelpers.insert(temp, index, c)
             case _ => throw InvalidListOverloadException("Ị", b, "Number")
         temp
     },

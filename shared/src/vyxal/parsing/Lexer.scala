@@ -188,7 +188,8 @@ object Lexer:
 
     // Now, bind the move right tokens to the next token
 
-    var bound = ListBuffer[LitToken | (LitToken, Int)]()
+    val bound: ListBuffer[LitToken | (LitToken, Int)] =
+      ListBuffer[LitToken | (LitToken, Int)]()
     for token <- merged do
       if bound.nonEmpty then
         bound.last match

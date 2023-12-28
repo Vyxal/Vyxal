@@ -402,7 +402,7 @@ object ListHelpers:
     val size = iterable.length
     val pieceSize = (size / pieces).floor
     var remaining = iterable
-    var out = ListBuffer.empty[VList]
+    val out = ListBuffer.empty[VList]
     while remaining.length >= pieceSize do
       val (thisPiece, rest) =
         (remaining.take(pieceSize), remaining.drop(pieceSize))

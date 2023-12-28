@@ -297,7 +297,7 @@ object Interpreter:
       vars: mut.Map[String, VAny] = mut.Map(),
   )(using ctx: Context): VAny =
     val VFun(_, arity, params, origCtx, lambda, _) = fn
-    var originallyFunction = false
+    val originallyFunction = false
     if !lambda.isEmpty then
       val AST.Lambda(_, _, _, originallyFunction, _) = lambda.get
       if originallyFunction then ctx.globals.callStack.push(fn)
