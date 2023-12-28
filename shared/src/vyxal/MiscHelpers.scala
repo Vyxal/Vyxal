@@ -94,6 +94,15 @@ object MiscHelpers:
 
   def firstPositive(f: VFun)(using Context): Int = firstFromN(f, 1)
 
+  def getObjectMember(obj: VObject, name: String)(using ctx: Context): VAny =
+    val (visibility, value) = obj.fields
+      .getOrElse(name, throw FieldNotFoundException(obj.className, name))
+    visibility match
+      case Visibility.Public => value
+      case Visibility.Restricted => value
+      case Visibility.Private if ctx.canAccessPrivate => value
+      case _ => throw AttemptedReadPrivateException(obj.className, name)
+
   val index: Dyad = Dyad.fill("index") {
     case (a: VList, b: VList) => a.index(b)
     case (a: String, b: VList) =>
@@ -159,6 +168,27 @@ object MiscHelpers:
         count += 1
       i += 1
     VList.from(result.result())
+
+  def setObjectMember(obj: VObject, name: String, value: VAny)(using
+      ctx: Context
+  ): VObject =
+    val (visibility, _) = obj.fields
+      .getOrElse(name, throw FieldNotFoundException(obj.className, name))
+
+    val newObj = obj.copy()
+    visibility match
+      case Visibility.Public => newObj.fields(name) = (visibility, value)
+      case Visibility.Restricted if ctx.canAccessPrivate =>
+        newObj.fields(name) = (visibility, value)
+      case Visibility.Restricted =>
+        throw AttemptedWriteRestrictedException(obj.className, name)
+      case Visibility.Private if ctx.canAccessPrivate =>
+        newObj.fields(name) = (visibility, value)
+      case Visibility.Private =>
+        throw AttemptedWritePrivateException(obj.className, name)
+
+    newObj
+  end setObjectMember
 
   def typesOf(values: VAny*): List[String] =
     values.map {

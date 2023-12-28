@@ -15,6 +15,7 @@ enum CustomElementType derives CanEqual:
 enum Visibility derives CanEqual:
   case Public
   case Private
+  case Restricted
 case class CustomDefinition(
     name: String,
     elementType: CustomElementType,
@@ -200,6 +201,7 @@ private class Parser:
                 _(0) match
                   case _: AST.SetVar => true
                   case _: AST.GetVar => true
+                  case _: AST.SetConstant => true
                   case _ => false
               )
 
@@ -207,12 +209,14 @@ private class Parser:
                 val name = variableAST match
                   case AST.SetVar(name, _) => name
                   case AST.GetVar(name, _) => name
+                  case AST.SetConstant(name, _) => name
                   case _ => throw VyxalYikesException(
                       "Somehow received non-variable AST after filtering. Ping lyxal about this please."
                     )
                 val visibility = variableAST match
                   case _: AST.SetVar => Visibility.Private
-                  case _: AST.GetVar => Visibility.Public
+                  case _: AST.GetVar => Visibility.Restricted
+                  case _: AST.SetConstant => Visibility.Public
                   case _ => throw VyxalYikesException(
                       "Somehow received non-variable AST after filtering. Ping lyxal about this please."
                     )
@@ -224,6 +228,7 @@ private class Parser:
                     prev match
                       case _: AST.SetVar => None
                       case _: AST.GetVar => None
+                      case _: AST.SetConstant => None
                       case _ => prev match
                           case _: AST.Lambda => Some(prev)
                           case _ =>

@@ -134,6 +134,11 @@ class AttemptedWritePrivateException(className: String, fieldName: String)
       s"Attempted to write private field $fieldName of $className outside of class"
     )
 
+class AttemptedWriteRestrictedException(className: String, fieldName: String)
+    extends VyxalRuntimeException(
+      s"Attempted to write restricted field $fieldName of $className outside of class"
+    )
+
 class ReservedClassNameException(className: String)
     extends VyxalRuntimeException(s"Class name $className is reserved")
 

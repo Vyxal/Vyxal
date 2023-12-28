@@ -7,7 +7,7 @@ import vyxal.MiscHelpers.collectUnique
 import vyxal.NumberHelpers.range
 import vyxal.VNum.given
 
-import scala.collection.mutable.{ArrayBuffer, ListBuffer}
+import scala.collection.mutable.ListBuffer
 import scala.io.StdIn
 
 case class Element(
@@ -294,20 +294,8 @@ object Elements:
       case (a: VNum, b: String) => StringHelpers.padLeft(b, a)
       case (a: String, b: VNum) => StringHelpers.padLeft(a, b)
       case (a: String, b: String) => StringHelpers.padLeft(a, b.length)
-      case (a: VObject, b: String) => a.fields.get(b) match
-          case Some(x) => x._1 match
-              case Visibility.Public => x._2
-              case Visibility.Private if summon[Context].canAccessPrivate =>
-                x._2
-              case _ => throw AttemptedReadPrivateException(a.className, b)
-          case _ => throw FieldNotFoundException(a.className, b)
-      case (a: String, b: VObject) => b.fields.get(a) match
-          case Some(x) => x._1 match
-              case Visibility.Public => x._2
-              case Visibility.Private if summon[Context].canAccessPrivate =>
-                x._2
-              case _ => throw AttemptedReadPrivateException(b.className, a)
-          case _ => throw FieldNotFoundException(b.className, a)
+      case (a: VObject, b: String) => MiscHelpers.getObjectMember(a, b)
+      case (a: String, b: VObject) => MiscHelpers.getObjectMember(b, a)
 
     },
     addPart(
@@ -2534,18 +2522,16 @@ object Elements:
         val temp =
           ListHelpers.transliterate(ListHelpers.makeIterable(a), b, c).mkString
         if VNum.NumRegex.matches(temp) then VNum(temp) else temp
-      case (a: VObject, b: String, c) => a.fields.get(b) match
-          case Some(f) =>
-            if f._1 == Visibility.Public then
-              a.fields(b) = (Visibility.Public, c)
-              a
-            else if f._1 == Visibility.Private &&
-              summon[Context].canAccessPrivate
-            then
-              a.fields(b) = (Visibility.Private, c)
-              a
-            else throw AttemptedWritePrivateException(b, a.className)
-          case None => throw FieldNotFoundException(b, a.className)
+      case (a: VObject, b: String, c) => MiscHelpers.setObjectMember(a, b, c)
+      case (a: VObject, b: VList, c) =>
+        var obj = a.copy()
+        for i <- b.lst.indices do
+          obj = MiscHelpers.setObjectMember(
+            obj,
+            b.lst(i).toString,
+            c,
+          )
+        obj
 
     },
     addPart(
