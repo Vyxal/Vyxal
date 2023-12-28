@@ -28,6 +28,10 @@ To define an object:
 
 * `ObjectName` is the name of the object. This can be any valid variable name. It
 is recommended to use PascalCase for object names.
+
+Object names cannot be one of `num`, `str`, `lst` and `fun`, as these are reserved
+for the 4 built-in types.
+
 * `restrictedMember` is a member that can be read publicly, but not written to. It
 can be updated by the object itself, but not by the user. This essentially creates
 an implicit getter for the member.
