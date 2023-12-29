@@ -9,6 +9,7 @@ class InterpreterTests extends VyxalTests:
   def testCodeAsLiterate(input: String, expected: VAny): Unit =
     val literate = Lexer.lexLiterate(input)
     val sbcsified = Lexer.sbcsify(literate)
+    println(sbcsified)
     testCode(sbcsified, expected)
   describe("Literals") {
     it("should make lists") {
