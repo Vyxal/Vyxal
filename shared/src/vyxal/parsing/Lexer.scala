@@ -270,6 +270,8 @@ object Lexer:
       case ModifierSymbol => s"#:`$value"
       case DefineObject => s"#:O $value"
       case DefineExtension => s"#:>>$value"
+      case FunctionCall => "#$" + value + "Ė"
+      case OriginalSymbol => s"#:~$value"
       case Command if !Elements.elements.contains(value) =>
         Elements.symbolFor(value).getOrElse(value.stripSuffix("|"))
       case Comment => ""
