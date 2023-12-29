@@ -100,7 +100,7 @@ object MiscHelpers:
     visibility match
       case Visibility.Public => value
       case Visibility.Restricted => value
-      case Visibility.Private if ctx.canAccessPrivate => value
+      case Visibility.Private if ctx.privatable.contains(obj.className) => value
       case _ => throw AttemptedReadPrivateException(obj.className, name)
 
   val index: Dyad = Dyad.fill("index") {
@@ -175,14 +175,15 @@ object MiscHelpers:
     val (visibility, _) = obj.fields
       .getOrElse(name, throw FieldNotFoundException(obj.className, name))
 
+    val objName = obj.className
     val newObj = obj.copy()
     visibility match
       case Visibility.Public => newObj.fields(name) = (visibility, value)
-      case Visibility.Restricted if ctx.canAccessPrivate =>
+      case Visibility.Restricted if ctx.privatable.contains(objName) =>
         newObj.fields(name) = (visibility, value)
       case Visibility.Restricted =>
         throw AttemptedWriteRestrictedException(obj.className, name)
-      case Visibility.Private if ctx.canAccessPrivate =>
+      case Visibility.Private if ctx.privatable.contains(objName) =>
         newObj.fields(name) = (visibility, value)
       case Visibility.Private =>
         throw AttemptedWritePrivateException(obj.className, name)

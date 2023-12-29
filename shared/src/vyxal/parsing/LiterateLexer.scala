@@ -43,7 +43,7 @@ private[parsing] object LiterateLexer:
     "with",
     "given",
     ":and:",
-    "as",
+    "has",
     "does",
     "using",
     "on",

@@ -1,5 +1,6 @@
 package vyxal
 
+import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
 import scala.io.StdIn
 
@@ -40,7 +41,7 @@ class Context private (
     val testMode: Boolean = false,
     val useStack: Boolean = false,
     var recursion: Int = 0,
-    var canAccessPrivate: Boolean = false,
+    val privatable: ListBuffer[String] = ListBuffer(),
 ):
   var settings: Settings = globals.settings
 
@@ -58,8 +59,7 @@ class Context private (
         val temp =
           if settings.online then settings.defaultValue.toString
           else
-            print("<: ")
-            val g = StdIn.readLine()
+            val g = StdIn.readLine("[in]: ")
             if g == null then settings.defaultValue.toString else g
         if temp.nonEmpty then
           if settings.dontEvalInputs then temp
@@ -163,6 +163,10 @@ class Context private (
     if vars.contains(s"!$name") then throw ConstantDuplicateException(name)
     else vars(s"!$name") = value
 
+  def setVarsFrom(map: Map[String, VAny]): Unit =
+    vars.clear()
+    vars ++= map
+
   /** Get all variables in this Context (parent variables not included) */
   def allVars: Map[String, VAny] = vars.toMap
 
@@ -259,7 +263,7 @@ object Context:
       testMode = currCtx.testMode,
       useStack = useStack,
       recursion = currCtx.recursion,
-      canAccessPrivate = currCtx.canAccessPrivate,
+      privatable = currCtx.privatable,
     )
   end makeFnCtx
 

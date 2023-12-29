@@ -114,12 +114,12 @@ object Interpreter:
           val overload = getOverload(types, ext._1)
           overload match
             case Some((types, implementation)) =>
-              ctx.canAccessPrivate = true
+              ctx.privatable ++= types.filter(_ != "*")
               val lam = VFun.fromLambda(implementation.asInstanceOf[AST.Lambda])
               if implementation.arity.getOrElse(0) == -1 then executeFn(lam)
               else ctx.push(executeFn(lam))
               executed = true
-              ctx.canAccessPrivate = false
+              for t <- types if t != "*" do ctx.privatable.dropRightInPlace(1)
             case None => ()
         if overwriteable && !executed && ctx.globals.symbols.contains(cmd) then
           ctx.globals.symbols(cmd).impl match
@@ -375,18 +375,30 @@ object Interpreter:
 
   def createObject(con: VConstructor)(using ctx: Context): VObject =
     val fields = ctx.globals.classes(con.name).fields
+    ctx.privatable += con.name
     val assignedFields = mut.Map[String, (Visibility, VAny)]()
+
+    val originalVariables = ctx.allVars
 
     for (name, (visibility, predef)) <- fields do
       val fieldVal =
         if predef.isDefined then
           Interpreter.executeFn(
-            VFun.fromLambda(predef.get.asInstanceOf[AST.Lambda])
+            VFun
+              .fromLambda(predef.get.asInstanceOf[AST.Lambda])
+              .copy(
+                arity = 0
+              )
           )
         else ctx.pop()
       assignedFields(name) = (visibility -> fieldVal)
+      ctx.setVar(name, fieldVal)
 
+    ctx.setVarsFrom(originalVariables)
+
+    ctx.privatable.dropRightInPlace(1)
     VObject(con.name, assignedFields)
+  end createObject
 
   private def getOverload(
       givenTypes: List[String],
