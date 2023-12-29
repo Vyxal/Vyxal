@@ -268,6 +268,8 @@ object Lexer:
       case UnpackTrigraph if value == ":=[" => "#:["
       case ElementSymbol => s"#:@$value"
       case ModifierSymbol => s"#:`$value"
+      case DefineObject => s"#:O $value"
+      case DefineExtension => s"#:>>$value"
       case Command if !Elements.elements.contains(value) =>
         Elements.symbolFor(value).getOrElse(value.stripSuffix("|"))
       case Comment => ""
