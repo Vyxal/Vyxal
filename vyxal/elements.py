@@ -7533,7 +7533,7 @@ def vy_print(lhs, end="\n", ctx=None):
                             + str(lhs.as_real_imag()[1])
                         )
                 else:
-                    lhs = sympy.Rational(str(lhs.round(20)))
+                    lhs = str(lhs)
         if ctx.online:
             ctx.online_output[1] += vy_str(lhs, ctx=ctx) + end
         else:
