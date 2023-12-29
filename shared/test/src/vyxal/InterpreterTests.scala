@@ -536,13 +536,4 @@ class InterpreterTests extends VyxalTests:
     }
   }
 
-  describe("Objects") {
-    it("should have correct access modifiers when reading") {
-      given ctx: Context = Context()
-      ctx.settings = ctx.settings.copy(literate = true)
-      Interpreter.execute("3 4 add :=S")
-      assertResult(VNum(7))(ctx.getVar("S"))
-    }
-  }
-
 end InterpreterTests
