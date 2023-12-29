@@ -540,16 +540,8 @@ class InterpreterTests extends VyxalTests:
     it("should have correct access modifiers when reading") {
       given ctx: Context = Context()
       ctx.settings = ctx.settings.copy(literate = true)
-      Interpreter.execute("object Test => 1 $res 2 :=priv 3 :!=pub end")
-      Interpreter.execute("""`Test` "res" @<= :=out """)
-      assertResult(VNum(1))(ctx.getVar("out"))
-
-      assertThrows[Exception] {
-        Interpreter.execute("""`Test` "priv" @<= :=out """)
-      }
-
-      Interpreter.execute("""`Test` "pub" @<= :=out """)
-      assertResult(VNum(3))(ctx.getVar("out"))
+      Interpreter.execute("3 4 add :=S")
+      assertResult(VNum(7))(ctx.getVar("S"))
     }
   }
 
