@@ -561,16 +561,28 @@ class InterpreterTests extends VyxalTests:
     it("should have the correct write access modifiers") {
       val boilerplate =
         "object TestObj => 1 :!=public 2 :=private 3 $restricted end"
-      testCodeAsLiterate(s"""$boilerplate `TestObj` "public" @=>""", VNum(1))
+      testCodeAsLiterate(s"""$boilerplate `TestObj` "public" 69 @=>""", VNum(1))
       try
-        testCodeAsLiterate(s"""$boilerplate `TestObj` "private" @=>""", VNum(2))
+        testCodeAsLiterate(
+          s"""$boilerplate `TestObj` "private" 69 @=>""",
+          VNum(2),
+        )
         fail("Should have thrown an exception on write private")
         testCodeAsLiterate(
-          s"""$boilerplate `TestObj` "restricted" @=>""",
+          s"""$boilerplate `TestObj` "restricted" 69 @=>""",
           VNum(3),
         )
         fail("Should have thrown an exception on write restricted")
       catch case _: Exception => ()
+    }
+
+    it("should update object attributes upon writing") {
+      testCodeAsLiterate(
+        """
+          |object TestObj => 1 :!=public 2 :=private 3 $restricted end
+          |`TestObj` "public" 69 @=> `TestObj` "public" @<=""",
+        VNum(69),
+      )
     }
   }
 
@@ -582,6 +594,28 @@ class InterpreterTests extends VyxalTests:
       assertThrows[Exception] {
         testCodeAsLiterate("extension Fail => 1 end", VNum(1))
       }
+    }
+    it("Should allow an extension with a single item") {
+      testCodeAsLiterate(
+        "extension inc given a as num does $a 1 + end 5 $@inc",
+        VNum(6),
+      )
+      testCodeAsLiterate(
+        "extension + given a as num does $a 1 + end 5 +",
+        VNum(6),
+      )
+      testCodeAsLiterate(
+        "extension + given a as num does $a 1 + end [1,2,3] [4,5,6] +",
+        VList(VNum(5), VNum(7), VNum(9)),
+      )
+      testCodeAsLiterate(
+        "extension Test given a as * does $a $a === end 5 $@Test",
+        VNum(1),
+      )
+      testCodeAsLiterate(
+        "object T => 5 $mem end extension F given a as T does $a \"mem\" @<= end `T` $@F",
+        VNum(5),
+      )
     }
   }
 
