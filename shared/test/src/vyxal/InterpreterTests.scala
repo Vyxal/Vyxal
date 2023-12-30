@@ -561,18 +561,28 @@ class InterpreterTests extends VyxalTests:
     it("should have the correct write access modifiers") {
       val boilerplate =
         "object TestObj => 1 :!=public 2 :=private 3 $restricted end"
-      testCodeAsLiterate(s"""$boilerplate `TestObj` "public" @>=""", VNum(1))
+      testCodeAsLiterate(s"""$boilerplate `TestObj` "public" @=>""", VNum(1))
       try
-        testCodeAsLiterate(s"""$boilerplate `TestObj` "private" @>=""", VNum(2))
+        testCodeAsLiterate(s"""$boilerplate `TestObj` "private" @=>""", VNum(2))
         fail("Should have thrown an exception on write private")
         testCodeAsLiterate(
-          s"""$boilerplate `TestObj` "restricted" @>=""",
+          s"""$boilerplate `TestObj` "restricted" @=>""",
           VNum(3),
         )
         fail("Should have thrown an exception on write restricted")
       catch case _: Exception => ()
     }
+  }
 
+  describe("Extension Methods") {
+    it("Should error when only < 3 branches") {
+      assertThrows[Exception] {
+        testCodeAsLiterate("extension Fail end", VNum(1))
+      }
+      assertThrows[Exception] {
+        testCodeAsLiterate("extension Fail => 1 end", VNum(1))
+      }
+    }
   }
 
 end InterpreterTests
