@@ -267,7 +267,7 @@ object CLI:
       ),
       flag(
         'g',
-        "print-max",
+        "print-min",
         "Print the minimum item of the top of the stack on end of execution",
       ),
       flag('W', "print-all", "Print the entire stack on end of execution"),
