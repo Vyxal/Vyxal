@@ -548,6 +548,14 @@ class InterpreterTests extends VyxalTests:
       val boilerplate =
         "object TestObj => 1 :!=public 2 :=private 3 $restricted end"
       testCodeAsLiterate(s"""$boilerplate `TestObj` "public" @<=""", VNum(1))
+      testCodeAsLiterate(
+        s"""$boilerplate `TestObj` "restricted" @<=""",
+        VNum(3),
+      )
+      try
+        testCodeAsLiterate(s"""$boilerplate `TestObj` "private" @<=""", VNum(2))
+        fail("Should have thrown an exception")
+      catch case _: Exception => ()
     }
   }
 
