@@ -597,15 +597,15 @@ class InterpreterTests extends VyxalTests:
     }
     it("Should allow an extension with a single item") {
       testCodeAsLiterate(
-        "extension inc given a as num does $a 1 + end 5 $@inc",
+        "extension inc given a as num does $a 1 $.+ end 5 $@inc",
         VNum(6),
       )
       testCodeAsLiterate(
-        "extension + given a as num does $a 1 + end 5 +",
+        "extension + given a as num does $a 1 $.+ end 5 +",
         VNum(6),
       )
       testCodeAsLiterate(
-        "extension + given a as num does $a 1 + end [1,2,3] [4,5,6] +",
+        "extension + given a as num does $a 1 $.+ end [1,2,3] [4,5,6] +",
         VList(VNum(5), VNum(7), VNum(9)),
       )
       testCodeAsLiterate(

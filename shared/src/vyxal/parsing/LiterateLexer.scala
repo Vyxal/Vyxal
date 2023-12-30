@@ -510,13 +510,16 @@ private[parsing] object LiterateLexer:
   def elementSymbol[$: P]: P[LitToken] =
     parseToken(ElementSymbol, "$@" ~~/ Common.varName)
 
+  def unmodSymbol[$: P]: P[LitToken] =
+    parseToken(OriginalSymbol, "$." ~~/ AnyChar.!)
+
   def singleToken[$: P]: P[Seq[LitToken]] =
     P(
       list | unpackVar |
-        (lambdaBlock | extensionKeyword | defineObj | defineModBlock |
-          defineElemBlock | specialLambdaBlock | contextIndex | functionCall |
-          modifierSymbol | elementSymbol | litGetVariable | litSetVariable |
-          litSetConstant | litAugVariable | elementKeyword |
+        (lambdaBlock | extensionKeyword | unmodSymbol | defineObj |
+          defineModBlock | defineElemBlock | specialLambdaBlock | contextIndex |
+          functionCall | modifierSymbol | elementSymbol | litGetVariable |
+          litSetVariable | litSetConstant | litAugVariable | elementKeyword |
           negatedElementKeyword | tokenMove | modifierKeyword | structOpener |
           otherKeyword | litBranch | litStructClose | litNumber | litString |
           normalGroup).map(Seq(_)) | rawCode |
