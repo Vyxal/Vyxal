@@ -587,6 +587,46 @@ class InterpreterTests extends VyxalTests:
         VNum(69),
       )
     }
+
+    it("should support a basic map object implementation") {
+      val boilerplate = """object Map =>
+  [] :=values
+  [] :=keys
+end
+
+extension (set) given
+  val as *,
+  key as *,
+  mp as Map
+does
+  $mp "keys" (peek: @<=) $key append @>=
+  $mp "values" (peek: @<=) $val append @>=
+end
+
+extension (get) given
+  key as *,
+  mp as Map
+does
+  $mp "keys" @<= $key find
+  $mp "values" @<= index
+end
+
+extension (print) given
+  mp as Map
+does
+  $mp ["keys", "values"] @<= dump zip print
+end
+"""
+      testCodeAsLiterate(
+        s"$boilerplate `Map` 59 20 $$@set `Map` 59 $$@get",
+        VNum(20),
+      )
+
+      testCodeAsLiterate(
+        s"$boilerplate `Map` 59 20 $$@set `Map` 59 80 $$@set 59 $$@get",
+        VNum(80),
+      )
+    }
   }
 
   describe("Extension Methods") {
