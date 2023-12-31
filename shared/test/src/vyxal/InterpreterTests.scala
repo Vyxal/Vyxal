@@ -582,8 +582,8 @@ class InterpreterTests extends VyxalTests:
     it("should update object attributes upon writing") {
       testCodeAsLiterate(
         """
-          |object TestObj => 1 :!=public 2 :=private 3 $restricted end
-          |`TestObj` "public" 69 @=> `TestObj` "public" @<=""",
+          object TestObj => 1 :!=public 2 :=private 3 $restricted end
+          `TestObj` "public" 69 @=> `TestObj` "public" @<=""",
         VNum(69),
       )
     }
