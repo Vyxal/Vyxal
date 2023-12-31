@@ -2161,10 +2161,19 @@ object Elements:
       Monad,
       "Ṛ",
       "Reverse",
-      List("reverse"),
+      List("reverse", "rev"),
       false,
       "a: any -> reverse a",
     ) { a => ListHelpers.reverse(a) },
+    addDirect(
+      "^",
+      "Reverse Stack",
+      List("reverse-stack", "rev-stack"),
+      None,
+      " -> reverse the stack",
+    ) { ctx ?=>
+      ctx.reverse()
+    },
     addDirect(
       "X",
       "Return Statement",

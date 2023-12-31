@@ -27,7 +27,7 @@ import scala.io.StdIn
   *   the function was *defined* in, not the one it is executing inside.
   */
 class Context private (
-    val stack: mut.ArrayBuffer[VAny],
+    var stack: mut.ArrayBuffer[VAny],
     private var _ctxVarPrimary: Option[VAny] =
       Some("abcdefghijklmnopqrstuvwxyz"),
     private var _ctxVarSecondary: Option[VAny] =
@@ -96,6 +96,8 @@ class Context private (
     if useStack then getTopCtx().push(items*) else stack ++= items
 
   def length: Int = stack.length
+
+  def reverse(): Unit = stack = stack.reverse
 
   def wrap(): Unit =
     if useStack then getTopCtx().wrap()
