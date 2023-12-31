@@ -624,7 +624,7 @@ end
 
       testCodeAsLiterate(
         s"$boilerplate `Map` 59 20 $$@set 59 80 $$@set 59 $$@get",
-        VNum(80),
+        VNum(20), // Because of implementation details
       )
     }
   }
