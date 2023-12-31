@@ -599,8 +599,8 @@ extension (set) given
   key as *,
   mp as Map
 does
-  $mp "keys" (peek: @<=) $key append @>=
-  $mp "values" (peek: @<=) $val append @>=
+  $mp "keys" (peek: @<=) $key append @=>
+  $mp "values" (peek: @<=) $val append @=>
 end
 
 extension (get) given
@@ -614,7 +614,7 @@ end
 extension (print) given
   mp as Map
 does
-  $mp ["keys", "values"] @<= dump zip print
+  $mp ["keys", "values"] @=> dump zip print
 end
 """
       testCodeAsLiterate(
