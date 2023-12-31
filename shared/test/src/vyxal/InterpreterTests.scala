@@ -561,7 +561,10 @@ class InterpreterTests extends VyxalTests:
     it("should have the correct write access modifiers") {
       val boilerplate =
         "object TestObj => 1 :!=public 2 :=private 3 $restricted end"
-      testCodeAsLiterate(s"""$boilerplate `TestObj` "public" 69 @=>""", VNum(1))
+      testCodeAsLiterate(
+        s"""$boilerplate `TestObj` "public" 69 @=> "public" @<=""",
+        VNum(69),
+      )
       try
         testCodeAsLiterate(
           s"""$boilerplate `TestObj` "private" 69 @=>""",
