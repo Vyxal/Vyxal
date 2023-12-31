@@ -583,7 +583,7 @@ class InterpreterTests extends VyxalTests:
       testCodeAsLiterate(
         """
           object TestObj => 1 :!=public 2 :=private 3 $restricted end
-          `TestObj` "public" 69 @=> `TestObj` "public" @<=""",
+          `TestObj` "public" 69 @=> "public" @<=""",
         VNum(69),
       )
     }
