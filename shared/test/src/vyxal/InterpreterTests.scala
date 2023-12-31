@@ -618,12 +618,12 @@ does
 end
 """
       testCodeAsLiterate(
-        s"$boilerplate `Map` 59 20 $$@set `Map` 59 $$@get",
+        s"$boilerplate `Map` 59 20 $$@set 59 $$@get",
         VNum(20),
       )
 
       testCodeAsLiterate(
-        s"$boilerplate `Map` 59 20 $$@set `Map` 59 80 $$@set 59 $$@get",
+        s"$boilerplate `Map` 59 20 $$@set 59 80 $$@set 59 $$@get",
         VNum(80),
       )
     }
