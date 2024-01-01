@@ -49,7 +49,7 @@ class Context private (
     * inputs, read a line of input from stdin.
     */
   def pop(): VAny =
-    if useStack then return parent.getOrElse(this).pop()
+    if useStack && parent.isDefined then return parent.getOrElse(this).pop()
     val elem =
       if stack.nonEmpty then stack.remove(stack.size - 1)
       else if inputs.nonEmpty then inputs.next()
@@ -77,7 +77,7 @@ class Context private (
 
   /** Get the top element on the stack without popping */
   def peek: VAny =
-    if useStack then getTopCtx().peek
+    if useStack && parent.isDefined then parent.getOrElse(this).peek
     else if stack.nonEmpty then stack.last
     else if inputs.nonEmpty then inputs.peek
     else settings.defaultValue
@@ -86,14 +86,15 @@ class Context private (
     * will be at the start of the list.
     */
   def peek(n: Int): List[VAny] =
-    if useStack then getTopCtx().peek(n)
+    if useStack && parent.isDefined then parent.getOrElse(this).peek(n)
     else if n <= stack.length then
       stack.slice(stack.length - n, stack.length).toList.reverse
     else stack.toList.reverse ::: inputs.peek(n - stack.length)
 
   /** Push items onto the stack. The first argument will be pushed first. */
   def push(items: VAny*): Unit =
-    if useStack then parent.getOrElse(this).push(items*) else stack ++= items
+    if useStack && parent.isDefined then parent.getOrElse(this).push(items*)
+    else stack ++= items
 
   def length: Int = stack.length
 
