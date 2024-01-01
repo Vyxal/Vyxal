@@ -51,6 +51,7 @@
  <code>Y</code> |  | List Repeat | `wrap-repeat` | 2 | :x: | <code>a: any, b: num </code> => <code> a repeated b times, wrapped in a list</code><br><code>a: num, b: any </code> => <code> b repeated a times, wrapped in a list</code><br><code>a: lst|str, b: lst[num] </code> => <code> a[_] repeated b[_] times, wrapped in a list</code>
  <code>Z</code> |  | Zip | `zip`, `zip-map` | 2 | :x: | <code>a: lst, b: lst </code> => <code> zip a and b</code><br><code>a: lst, b: fun </code> => <code> [[x, b(x)] for x in a]</code><br><code>a: fun, b: lst </code> => <code> [[a(x), x] for x in b]</code>
  <code>\\</code> |  | Dump | `dump` | 1 | :x: | <code>a: any </code> => <code> dump all values on the stack</code>
+ <code>^</code> |  | Reverse Stack | `reverse-stack`, `rev-stack` | NA | :x: | <code> </code> => <code> reverse the stack</code>
  <code>_</code> |  | Pop and Discard | `pop`, `discard` | NA | :x: | <code>a </code> => <code></code>
  <code>`</code> |  | Length of Stack | `length-of-stack`, `stack-length`, `stack-len` | NA | :x: | <code> </code> => <code> push the length of the stack</code>
  <code>a</code> |  | Any Truthy \| Any() \| Is Uppercase? | `any`, `is-uppercase?`, `is-upper?`, `upper?` | 1 | :x: | <code>a: str </code> => <code> is (a) uppercase? vectorises for strings len > 1</code><br><code>a: list </code> => <code> is (a) any truthy?</code>
@@ -155,7 +156,7 @@
  <code>Ḷ</code> | #,L | Sort by Length \| Regex Escape | `sort-by-length`, `sort-by-len`, `order-by-length`, `order-by-len`, `length-sort`, `len-sort`, `re-escape`, `regex-escape` | 1 | :x: | <code>a: lst </code> => <code> sort a by length</code><br><code>a: str </code> => <code> escape a for regex</code>
  <code>Ṃ</code> | #,M | -1 Power Of \| Split on Spaces | `neg-one-power-of`, `neg1**`, `neg1^`, `neg1-power-of`, `neg1-power`, `split-on-spaces`, `split-spaces`, `space-split` | 1 | :white_check_mark: | <code>a: num </code> => <code> -1 ** a</code><br><code>a: str </code> => <code> a split on spaces</code>
  <code>Ọ</code> | #,O | Print without popping | `print-no-pop` | NA | :x: | <code>a </code> => <code> printed to stdout without popping</code>
- <code>Ṛ</code> | #,R | Reverse | `reverse` | 1 | :x: | <code>a: any </code> => <code> reverse a</code>
+ <code>Ṛ</code> | #,R | Reverse | `reverse`, `rev` | 1 | :x: | <code>a: any </code> => <code> reverse a</code>
  <code>Ṣ</code> | #,S | Sublists | `sublists` | 1 | :x: | <code>a: lst </code> => <code> sublists of a</code>
  <code>Ṭ</code> | #,T | Trim / Cumulative Reduce | `trim`, `scanl`, `cumulative-reduce` | 2 | :x: | <code>a: any, b: any </code> => <code> Trim all elements of b from both sides of a.</code><br><code>a: fun, b: any </code> => <code> cumulative reduce b by function a</code>
  <code>…</code> | #.. | Increment Twice \| Vectorised Head | `incr-twice`, `vec-head` | 1 | :x: | <code>a: num </code> => <code> a + 2</code><br><code>a: lst </code> => <code> [x[0] for x in a]</code>

@@ -72,9 +72,9 @@ object Interpreter:
         else if ctx.settings.endPrintMode == EndPrintMode.LengthStack then
           vyPrintln(VNum(ctx.length))
         else if ctx.settings.endPrintMode == EndPrintMode.SumStack then
-          vyPrintln(ListHelpers.sum(VList.from(ctx.stack.toSeq)))
+          vyPrintln(ListHelpers.sum(VList.from(ctx.getStack)))
         else if ctx.settings.endPrintMode == EndPrintMode.SpaceStack then
-          vyPrintln(ctx.stack.mkString(" "))
+          vyPrintln(ctx.getStack.mkString(" "))
         else if ctx.settings.endPrintMode == EndPrintMode.JoinSpaces then
           vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString(" "))
         else if ctx.settings.endPrintMode == EndPrintMode.JoinNothing then

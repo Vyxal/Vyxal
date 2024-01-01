@@ -236,6 +236,10 @@ Keywords: zip, zip-map
 Keywords: dump
 - a: any -> dump all values on the stack
 ----------------------
+^ (Reverse Stack) (non-vectorising)
+Keywords: reverse-stack, rev-stack
+-  -> reverse the stack
+----------------------
 _ (Pop and Discard) (non-vectorising)
 Keywords: pop, discard
 - a ->
@@ -785,7 +789,7 @@ Keywords: print-no-pop
 ----------------------
 Ṛ (Reverse) (non-vectorising)
 Trigraph: #,R
-Keywords: reverse
+Keywords: reverse, rev
 - a: any -> reverse a
 ----------------------
 Ṣ (Sublists) (non-vectorising)
