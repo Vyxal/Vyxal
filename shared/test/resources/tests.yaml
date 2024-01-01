@@ -1396,6 +1396,13 @@
     - {in: [["Hello ", "World!"]], out: "Hello World!"}
     - {in: [[1, 2, 3, 4]], out: "1234"}
     - {in: [[[1, 2, 3], ["a", "b", "c"], 4]], out: ["123", "abc", "4"]}
+    - {in: [2], out: 0}
+    - {in: [1], out: 1}
+    - {in: [0.69], out: 1}
+    - {in: [0], out: 1}
+    - {in: [-0.69], out: 1}
+    - {in: [-1], out: 1}
+    - {in: [-2], out: 0}
 
 "”":
   - {in: [["Hello", "World"]], out: "Hello\nWorld"}
