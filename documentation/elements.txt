@@ -1107,12 +1107,13 @@ Trigraph: #^(
 Keywords: suffixes
 - a: lst -> Suffixes of a
 ----------------------
-“ (Join on Nothing | First Positive Integer | Is Alphanumeric) (non-vectorising)
+“ (Join on Nothing | First Positive Integer | Is Alphanumeric | Insignificant?) (non-vectorising)
 Trigraph: #^"
-Keywords: nothing-join, concat-fold, join-on-nothing, empty-join, single-string, as-single-string, first-positive-integer, first-n>0, is-alphanumeric, is-alphanum, is-alnum
+Keywords: nothing-join, concat-fold, join-on-nothing, empty-join, single-string, as-single-string, first-positive-integer, first-n>0, is-alphanumeric, is-alphanum, is-alnum, abs<=1, insignificant?, insignificant, insig?, insig
 - a: lst -> a join on nothing
 - a: str -> is a alphanumeric?
 - a: fun -> First positive integer ([1, 2, 3, ...]) for which a returns true
+- a: num -> abs(a) <= 1
 ----------------------
 ¶ (Newline) (non-vectorising)
 Trigraph: #,
