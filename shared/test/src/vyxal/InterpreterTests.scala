@@ -387,6 +387,10 @@ class InterpreterTests extends VyxalTests:
     )
   }
 
+  describe("Stack Lambdas") {
+    testMulti("λ0|3 4 5λ!|+}ĖW}Ė" -> VList(3, 9), "1 5λ!|4+}ĖW" -> VList(1, 9))
+  }
+
   describe("Generator structure") {
     testMulti(
       "#[1|1#]Ṇ+}10Θ" -> VList(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),

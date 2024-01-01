@@ -192,6 +192,8 @@ class ModifierTests extends VyxalTests:
     testStackLike("ᵂᵂ+") {
       List[VAny](3, 4, 5, 6) -> List[VAny](6, 5, 7)
     }
+
+    testCode("λ0|3 4 5λ!|+}ĖW}Ė", VList(3, 9), List())
   }
 
   describe("Modifier ᵡ") {
