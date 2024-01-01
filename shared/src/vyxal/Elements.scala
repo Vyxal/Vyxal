@@ -2849,7 +2849,7 @@ object Elements:
       val top = ctx.pop()
       f match
         case fun: VFun =>
-          Interpreter.executeFn(fun)(using ctx.makeChild())
+          Interpreter.executeFn(fun)
           ctx.push(top)
         case arg => throw UnimplementedOverloadException("#|dip", List(arg))
     },
