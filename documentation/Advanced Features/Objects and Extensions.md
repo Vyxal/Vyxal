@@ -87,7 +87,7 @@ To set a member of an object:
 ```
 
 This sets the value of the member to the value on the stack. If the member is a
-restriced or private member, this will fail, unless inside an extension method.
+restricted or private member, this will fail, unless inside an extension method.
 
 ## Example
 
