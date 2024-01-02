@@ -243,7 +243,8 @@ does
 }
 ```
 
-_Note that any branch keyword can be used in place of `does`, `as`, `given` and `,`._
+> [!note]
+> Any branch keyword can be used in place of `does`, `as`, `given` and `,`._
 
 To use an extension method:
 
