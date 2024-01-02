@@ -22,8 +22,12 @@ simpler.
 To define an object:
 
 ```
-#:O ObjectName | #$restrictedMember #=privateMember <data> #$restrictedMemberWithValue
-<data> #=privateMemberWithValue #!publicMember}
+#:O ObjectName |
+  #$restrictedMember
+  #=privateMember
+  <data> #$restrictedMemberWithValue
+  <data> #=privateMemberWithValue
+  #!publicMember}
 ```
 
 * `ObjectName` is the name of the object. This can be any valid variable name. It
