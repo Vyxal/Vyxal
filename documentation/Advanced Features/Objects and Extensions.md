@@ -196,7 +196,9 @@ Lowest Priority
 
 This example is the same as the previous example, except that it uses an extension
 method instead of a lambda. Calling `put` with any other value for `mp` that is
-not a `Map` object will not execute the extension method.
+not a `Map` object will throw an error since no `put` method has been
+defined for that value's type.
+
 
 ## Literate Mode
 
