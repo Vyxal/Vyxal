@@ -144,6 +144,7 @@ object Elements:
         "apply-at",
         "re-sub",
         "regex-sub",
+        "@=>",
       ),
       false,
       "a: lst, b: num, c: non-fun -> assign c to a at the index b / a[b] = c",
@@ -153,7 +154,18 @@ object Elements:
       "a: str, b: str, c: fun -> replace regex matches of pattern b in string a with the result of applying c to each match",
       "a: str, b: fun, c: str -> replace regex matches of pattern c in string a with the result of applying b to each match",
       "a: fun, b: str, c: str -> replace regex matches of pattern c in string b with the result of applying a to each match",
+      "a: obj, b: str, c: str -> a.b = c",
     ) {
+      case (a: VObject, b: String, c) => MiscHelpers.setObjectMember(a, b, c)
+      case (a: VObject, b: VList, c) =>
+        var obj = a
+        for i <- b do
+          obj = MiscHelpers.setObjectMember(
+            obj,
+            b.toString,
+            c,
+          )
+        obj
       case (a, b: VNum, c: VPhysical) =>
         val temp = ListHelpers.assign(ListHelpers.makeIterable(a), b, c)
         if a.isInstanceOf[String] then temp.mkString
@@ -180,11 +192,11 @@ object Elements:
         if a.isInstanceOf[String] then temp.mkString
         else temp
       case (a, b: VList, c) =>
-        var temp = ListHelpers.makeIterable(a)
-        for i <- ListHelpers.makeIterable(b) do
-          i match
-            case ind: VNum => temp = ListHelpers.assign(temp, ind, c)
+        val temp =
+          ListHelpers.makeIterable(b).foldLeft(ListHelpers.makeIterable(a)) {
+            case (temp, ind: VNum) => ListHelpers.assign(temp, ind, c)
             case _ => throw InvalidListOverloadException("Ạ", b, "Number")
+          }
         if a.isInstanceOf[String] then temp.mkString
         else temp
       case (a: String, b: String, c: String) => StringHelpers.regexSub(a, b, c)
@@ -1085,13 +1097,10 @@ object Elements:
               temp = ListHelpers.insert(temp, index, elem)
             case _ => throw InvalidListOverloadException("Ị", b, "Number")
         temp
-      case (a, b: VList, c) =>
-        var temp = ListHelpers.makeIterable(a)
-        for i <- b.reverse do
-          i match
-            case index: VNum => temp = ListHelpers.insert(temp, index, c)
-            case _ => throw InvalidListOverloadException("Ị", b, "Number")
-        temp
+      case (a, b: VList, c) => b.foldRight(ListHelpers.makeIterable(a)) {
+          case (index: VNum, acc) => ListHelpers.insert(acc, index, c)
+          case _ => throw InvalidListOverloadException("Ị", b, "Number")
+        }
     },
     addPart(
       Dyad,
@@ -2514,8 +2523,8 @@ object Elements:
     addPart(
       Triad,
       "ŀ",
-      "Transliterate | Call While | Write Member",
-      List("transliterate", "call-while", "@=>"),
+      "Transliterate | Call While",
+      List("transliterate", "call-while"),
       false,
       "any a, any b, any c -> transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)",
       "a: fun, b: fun, c: any -> call b on c until a(c) is falsy",
@@ -2537,16 +2546,6 @@ object Elements:
         val temp =
           ListHelpers.transliterate(ListHelpers.makeIterable(a), b, c).mkString
         if VNum.NumRegex.matches(temp) then VNum(temp) else temp
-      case (a: VObject, b: String, c) => MiscHelpers.setObjectMember(a, b, c)
-      case (a: VObject, b: VList, c) =>
-        var obj = a.copy()
-        for i <- b.lst.indices do
-          obj = MiscHelpers.setObjectMember(
-            obj,
-            b.lst(i).toString,
-            c,
-          )
-        obj
 
     },
     addPart(
