@@ -187,7 +187,7 @@ private class Parser:
         case TokenType.TetradicModifier => asts.push(AST.JunkModifier(value, 4))
         case TokenType.SpecialModifier => asts.push(AST.SpecialModifier(value))
         case TokenType.Comment => ()
-        case TokenType.DefineObject =>
+        case TokenType.DefineRecord =>
           val branches =
             parseBranches(program, true)(_ == TokenType.StructureClose)
           val className = value

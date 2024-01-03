@@ -1,28 +1,28 @@
-# Objects and Extension Methods
+# Records and Extension Methods
 
 Vyxal is already turing complete, and can be used to easily solve many problems.
 However, say there was a situation where you needed to model a complex real-world
-object, such as a car. You could use two lists to map keys to values, but that
-would require making sure that the two lists are always in sync. Objects take
-away this hassle, and allow you to model real-world objects in a way that is
+record, such as a car. You could use two lists to map keys to values, but that
+would require making sure that the two lists are always in sync. Records take
+away this hassle, and allow you to model real-world records in a way that is
 convienient and easy to use.
 
 ## The OOP Model
 
 Unlike most OOP languages, Vyxal does not have traditional classes. Instead, it
-has struct-like objects. These objects contain only data, and no methods. To add
-methods to an object, you can use extension methods (covered later).
+has struct-like records. These records contain only data, and no methods. To add
+methods to a record, you can use extension methods (covered later).
 
 There is also no inheritance, meaning that composition is the only way to reuse
-code. This is not a bad thing, as it makes the implementation of objects much
+code. This is not a bad thing, as it makes the implementation of records much
 simpler.
 
-## Defining Objects
+## Defining Records
 
-To define an object:
+To define a record:
 
 ```
-#:O ObjectName |
+#:R RecordName |
   #$restrictedMember
   #=privateMember
   <data> #$restrictedMemberWithValue
@@ -30,17 +30,17 @@ To define an object:
   #!publicMember}
 ```
 
-* `ObjectName` is the name of the object. This can be any valid variable name. It
-is recommended to use PascalCase for object names.
+* `RecordName` is the name of the record. This can be any valid variable name. It
+is recommended to use PascalCase for record names.
 
-Object names cannot be one of `num`, `str`, `lst` and `fun`, as these are reserved
+Record names cannot be one of `num`, `str`, `lst` and `fun`, as these are reserved
 for the 4 built-in types.
 
 * `restrictedMember` is a member that can be read publicly, but not written to. It
-can be updated by the object itself, but not by the user. This essentially creates
+can be updated by the record itself, but not by the user. This essentially creates
 an implicit getter for the member.
-* `privateMember` is a member that can only be read and written to by the object.
-Attempting to access it from outside the object will result in an error.
+* `privateMember` is a member that can only be read and written to by the record.
+Attempting to access it from outside the record will result in an error.
 * `<data>` is any single element. It'll be used as a default value for the
 member.
 
@@ -56,37 +56,37 @@ variable, which is something that should be done in a private context.
 members are typically a bad idea. It doesn't have the same meaning as `#!` for
 constants, but the `!` was appropriate to signify the danger of public members.
 
-Members without a default value will be set from the stack when the object is
+Members without a default value will be set from the stack when the record is
 created.
 
-## Using Objects
+## Using Records
 
-To create a new object:
+To create a new record:
 
 ```
-#$ObjectName Ė
+#$RecordName Ė
 ```
 
-Defining an object creates a variable with the same name as the object. This
-pushes a constructor for the object onto the stack. The `Ė` element calls the
-constructor and pushes the created object onto the stack. This is analogous to
+Defining a record creates a variable with the same name as the record. This
+pushes a constructor for the record onto the stack. The `Ė` element calls the
+constructor and pushes the created record onto the stack. This is analogous to
 calling a function, which is intentional - there's no need for a `new` keyword
 when you can just call the constructor in a similar way to a function.
 
-To access a member of an object:
+To access a member of a record:
 
 ```
-## Assuming the object is on the stack
+## Assuming the record is on the stack
 "memberName" «
 ```
 
 This pushes the value of the member onto the stack. If the member is a private
 member, this will fail, unless inside an extension method.
 
-To set a member of an object:
+To set a member of a record:
 
 ```
-## Assuming the object is on the stack  
+## Assuming the record is on the stack  
 "memberName" <value> ŀ
 ```
 
@@ -96,7 +96,7 @@ restricted or private member, this will fail, unless inside an extension method.
 ## Example
 
 ```
-#:O Map | 
+#:R Map | 
   #[#] #!keys
   #[#] #!values
 }
@@ -111,19 +111,19 @@ restricted or private member, this will fail, unless inside an extension method.
 "key1" "value1" #$put Ė
 ```
 
-This example creates an object that acts like a map. It has two public members,
+This example creates a record that acts like a map. It has two public members,
 `keys` and `values`, which are lists of the keys and values in the map. It then
 creates a lambda that takes a value, a key, and a map, and adds the value and key
 to the map. Finally, it creates a new map, and adds a key and value to it.
 
-Note that the lambda is not a member of the object, nor is it linked to the
-object in any way. It is simply a lambda that takes a map as an argument.
+Note that the lambda is not a member of the record, nor is it linked to the
+record in any way. It is simply a lambda that takes a map as an argument.
 
 ## Extension Methods
 
-In the previous example, a lambda was used to add a key and value to a `Map` object.
-However, the lambda is in no way linked to the `Map` object - it can be called
-with any object, and will attempt to retrieve the `keys` and `values` members.
+In the previous example, a lambda was used to add a key and value to a `Map` record.
+However, the lambda is in no way linked to the `Map` record - it can be called
+with any record, and will attempt to retrieve the `keys` and `values` members.
 This obviously is not desirable behaviour, even for a language as loose with types
 as Vyxal. To solve this, extension methods can be used to create fine-grained
 control over the types involved in a function.
@@ -179,7 +179,7 @@ Lowest Priority
 ## Example
 
 ```
-#:O Map | 
+#:R Map | 
   #[#] #!keys
   #[#] #!values
 }
@@ -196,37 +196,37 @@ Lowest Priority
 
 This example is the same as the previous example, except that it uses an extension
 method instead of a lambda. Calling `put` with any other value for `mp` that is
-not a `Map` object will throw an error since no `put` method has been
+not a `Map` record will throw an error since no `put` method has been
 defined for that value's type.
 
 
 ## Literate Mode
 
-To define an object:
+To define a record:
 
 ```
-object ObjectName =>
+record RecordName =>
   $restrictedMember
   :=privateMember
   :!=publicMember
 }
 ```
 
-To create an object:
+To create a record:
 
 ```
-`ObjectName`
+`RecordName`
 ## or
-$ObjectName call
+$RecordName call
 ```
 
-To access a member of an object:
+To access a member of a record:
 
 ```
 "memberName" @<=
 ```
 
-To set a member of an object:
+To set a member of a record:
 
 ```
 "memberName" value @=>
@@ -257,7 +257,7 @@ $@symbol
 ## Map In Literate Mode
 
 ```
-object Map =>
+record Map =>
   [] $keys
   [] $values
 }

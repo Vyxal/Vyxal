@@ -176,7 +176,7 @@ private[parsing] object SBCSLexer:
     parseToken(OriginalSymbol, "#:~" ~ CharPred(allCommands).!)
 
   def defineObj[$: P]: P[Token] =
-    parseToken(DefineObject, "#:O" ~/ Common.varName)
+    parseToken(DefineRecord, "#:R" ~/ Common.varName)
 
   def defineExtension[$: P]: P[Token] =
     parseToken(

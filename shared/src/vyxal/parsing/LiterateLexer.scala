@@ -160,7 +160,7 @@ private[parsing] object LiterateLexer:
     parseToken(FunctionCall, "`" ~~ Common.varName.! ~~ "`")
 
   def defineObj[$: P]: P[LitToken] =
-    parseToken(DefineObject, "object" ~ Common.varName.!)
+    parseToken(DefineRecord, "object" ~ Common.varName.!)
 
   def isLambdaParam(word: String): Boolean =
     !structOpeners.contains(word) && !lambdaOpenerSet.contains(word) &&

@@ -92,7 +92,7 @@ enum TokenType(val canonicalSBCS: Option[String] = None) derives CanEqual:
   case ModifierSymbol
   case ElementSymbol
   case OriginalSymbol
-  case DefineObject
+  case DefineRecord
   case DefineExtension
   case Comment
   case GetVar
@@ -268,7 +268,7 @@ object Lexer:
       case UnpackTrigraph if value == ":=[" => "#:["
       case ElementSymbol => s"#:@$value "
       case ModifierSymbol => s"#:`$value "
-      case DefineObject => s"#:O $value"
+      case DefineRecord => s"#:R $value"
       case FunctionCall => "#$" + value + "Ė"
       case OriginalSymbol => s"#:~$value"
       case Command if !Elements.elements.contains(value) =>
