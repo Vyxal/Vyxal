@@ -558,7 +558,13 @@ object ListHelpers:
       Context
   ): VList =
     if !indices.forall(_.isInstanceOf[VNum]) then
-      VList.from(
+      value match 
+        case v: VList => 
+          var out = iterable
+          for (index, subvalue) <- indices.zip(v) do
+            out = multiDimAssign(out, makeIterable(index), subvalue)
+          return out
+        case _ => VList.from(
         indices.map(index =>
           multiDimAssign(iterable, makeIterable(index), value)
         )
