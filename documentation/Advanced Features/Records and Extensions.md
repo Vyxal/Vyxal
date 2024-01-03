@@ -159,11 +159,11 @@ an error will be thrown.
 * Like custom elements, the implementation branch is where the actual code for the element or modifier is written. When called, the method will pop all arguments from the stack
 and execute the implementation as if it were a lambda. The implementation branch can be any valid Vyxal code.
 
-### Order of Extension Method Matching
+### Order of Extension Dispatching
 
 When a symbol is called, first the interpreter will check for an extension method
 with the appropriate types of items on the stack. If found, it will execute the
-extension. Otherwise, the interpreter will check for a custom element with the
+extension, in a multiple-dispatch manner. Otherwise, the interpreter will check for a custom element with the
 same symbol. If found, it will execute the custom element. Otherwise, it will
 finally try a lookup of the built-in symbols. If none of these are found, an
 error will be thrown.
