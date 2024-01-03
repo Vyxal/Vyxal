@@ -558,17 +558,17 @@ object ListHelpers:
       Context
   ): VList =
     if !indices.forall(_.isInstanceOf[VNum]) then
-      value match 
-        case v: VList => 
+      value match
+        case v: VList =>
           var out = iterable
           for (index, subvalue) <- indices.zip(v) do
             out = multiDimAssign(out, makeIterable(index), subvalue)
           return out
         case _ => VList.from(
-        indices.map(index =>
-          multiDimAssign(iterable, makeIterable(index), value)
-        )
-      )
+            indices.map(index =>
+              multiDimAssign(iterable, makeIterable(index), value)
+            )
+          )
     else
       // Move down the list of indices, assigning the value at the last index
       val dimensionItems = ListBuffer[VList](iterable)
