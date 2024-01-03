@@ -570,6 +570,7 @@ object ListHelpers:
             )
           )
     else
+      if indices.isEmpty then return iterable
       // Move down the list of indices, assigning the value at the last index
       val dimensionItems = ListBuffer[VList](iterable)
 
