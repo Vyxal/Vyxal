@@ -1,0 +1,33 @@
+object Map =>
+  [] :=pairs ## [[key, value]...]
+end
+
+extension (set) given
+  val as *,
+  key as *,
+  mp as Map
+does
+  $mp "pairs" @<= 
+    dup :=pairs 
+  vec-head 'find $key :=ind
+  if $ind '== -1 then
+    ($mp "pairs") ($pairs [$key, $val] append) @=>
+  else 
+    ($mp "pairs") ($pairs [$ind, -1] $val md-assign) @=>
+  end
+end
+
+extension (get) given
+  key as *,
+  mp as Map
+does
+  $mp "pairs" @<= (dup $key find) -1 pair md-index
+end
+
+extension (print) given
+  mp as Map
+does
+  $mp ["keys", "values"] @<= dump zip print
+end
+
+`Map` 59 20 $@set 59 80 $@set 59 $@get

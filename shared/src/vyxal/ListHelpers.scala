@@ -554,6 +554,42 @@ object ListHelpers:
     moldHelper(content, shape, 0)
   end mold
 
+  def multiDimAssign(iterable: VList, indices: VList, value: VAny)(using
+      Context
+  ): VList =
+    if !indices.forall(_.isInstanceOf[VNum]) then
+      VList.from(
+        indices.map(index =>
+          multiDimAssign(iterable, makeIterable(index), value)
+        )
+      )
+    else
+      // Move down the list of indices, assigning the value at the last index
+      val dimensionItems = ListBuffer[VList](iterable)
+
+      for index <- indices.init do
+        dimensionItems +=
+          makeIterable(makeIterable(dimensionItems.last).index(index))
+
+      var out =
+        assign(dimensionItems.last, indices.last.asInstanceOf[VNum], value)
+      dimensionItems.dropRightInPlace(1)
+      for index <- indices.init.reverse do
+        out = assign(dimensionItems.last, index.asInstanceOf[VNum], out)
+        dimensionItems.dropRightInPlace(1)
+      out
+
+  def multiDimIndex(iterable: VList, indices: VList)(using Context): VAny =
+    if !indices.forall(_.isInstanceOf[VNum]) then
+      VList.from(
+        indices.map(index => multiDimIndex(iterable, makeIterable(index)))
+      )
+    else
+      var temp = iterable
+      for ind <- indices.init do
+        temp = makeIterable(makeIterable(temp).index(ind))
+      temp.index(indices.last)
+
   def multiSetIntersection(left: VList, right: VList): VList =
     val out = ListBuffer.empty[VAny]
     var rightMut = right.lst

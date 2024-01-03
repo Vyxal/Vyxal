@@ -592,7 +592,7 @@ class InterpreterTests extends VyxalTests:
       )
     }
 
-    it("should support a basic map object implementation") {
+    it("should support a basic (somewhat flawed) map object implementation") {
       val boilerplate = """object Map =>
   [] :=values
   [] :=keys
@@ -604,7 +604,7 @@ extension (set) given
   mp as Map
 does
   $mp "keys" (peek: @<=) $key append @=>
-  $mp "values" (peek: @<=) $val append @=>
+  "values" (peek: @<=) $val append @=>
 end
 
 extension (get) given
@@ -618,7 +618,7 @@ end
 extension (print) given
   mp as Map
 does
-  $mp ["keys", "values"] @=> dump zip print
+  $mp ["keys", "values"] @<= dump zip print
 end
 """
       testCodeAsLiterate(

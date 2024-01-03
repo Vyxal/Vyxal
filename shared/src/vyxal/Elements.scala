@@ -1576,6 +1576,28 @@ object Elements:
       "a: num, b: num -> a % b",
       "a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)",
     )(MiscHelpers.modulo),
+    addPart(
+      Triad,
+      "ÞẠ",
+      "Multidimensional Assignment",
+      List("md-assign"),
+      false,
+      "a: lst, b: lst[num], c: any -> a[b[0]][b[1]]...[b[n]] = c",
+    ) {
+      case (a, b: VList, c) => ListHelpers.multiDimAssign(makeIterable(a), b, c)
+
+    },
+    addPart(
+      Dyad,
+      "Þi",
+      "Multidimensional Index",
+      List("md-index"),
+      false,
+      "a: lst, b: lst[num] -> a[b[0]][b[1]]...[b[n]]",
+    ) {
+      case (a, b: VList) => ListHelpers.multiDimIndex(makeIterable(a), b)
+
+    },
     addFull(
       Dyad,
       "×",
