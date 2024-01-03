@@ -1270,6 +1270,10 @@ Keywords: PP, primes
 Keywords: transpose-safe
 - a: any -> transpose a
 ----------------------
+Þi (Multidimensional Index) (non-vectorising)
+Keywords: md-index
+- a: lst, b: lst[num] -> a[b[0]][b[1]]...[b[n]]
+----------------------
 Þo (Grid Neighbours) (non-vectorising)
 Keywords: grid-neighbours, grid-neighbors, adjacent-cells, adj-cells, surrounding-cells
 - a: lst[lst] -> Grid neighbours of a - right, down, left, up of a
@@ -1309,6 +1313,10 @@ Keywords: multi-set-difference, multi-set-diff
 Keywords: grid-neighbours-diagonals, grid-neighbors-diagonals, adjacent-cells-diagonals, adj-cells-diagonals, surrounding-cells-diagonals, eight-cells
 - a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals
 - a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a and start from direction b => 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does
+----------------------
+ÞẠ (Multidimensional Assignment) (non-vectorising)
+Keywords: md-assign
+- a: lst, b: lst[num], c: any -> a[b[0]][b[1]]...[b[n]] = c
 ----------------------
 ÞṂ (Matrix Inverse) (vectorising)
 Keywords: matrix-inverse
