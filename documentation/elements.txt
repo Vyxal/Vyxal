@@ -662,9 +662,9 @@ Trigraph: #.h
 Keywords: head-extract, split-at-head
 - a: lst|str -> Push a[0], then a[1:] onto the stack
 ----------------------
-ŀ (Transliterate | Call While | Write Member) (non-vectorising)
+ŀ (Transliterate | Call While) (non-vectorising)
 Trigraph: #.l
-Keywords: transliterate, call-while, @=>
+Keywords: transliterate, call-while
 - any a, any b, any c -> transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)
 - a: fun, b: fun, c: any -> call b on c until a(c) is falsy
 ----------------------
@@ -743,7 +743,7 @@ Keywords: print-no-newline
 ----------------------
 Ạ (Assign) (non-vectorising)
 Trigraph: #,A
-Keywords: assign, assign-at, assign<>, assign<x>, a<x>=, a<x>=y, a<x>?=y, set-item, apply-at, re-sub, regex-sub
+Keywords: assign, assign-at, assign<>, assign<x>, a<x>=, a<x>=y, a<x>?=y, set-item, apply-at, re-sub, regex-sub, @=>
 - a: lst, b: num, c: non-fun -> assign c to a at the index b / a[b] = c
 - a: lst, b: num, c: fun -> a[b] c= <stack items> (augmented assignment to list)
 - a: lst, b: lst, c: lst -> assign c to a at the indices in b
@@ -751,6 +751,7 @@ Keywords: assign, assign-at, assign<>, assign<x>, a<x>=, a<x>=y, a<x>?=y, set-it
 - a: str, b: str, c: fun -> replace regex matches of pattern b in string a with the result of applying c to each match
 - a: str, b: fun, c: str -> replace regex matches of pattern c in string a with the result of applying b to each match
 - a: fun, b: str, c: str -> replace regex matches of pattern c in string b with the result of applying a to each match
+- a: obj, b: str, c: str -> a.b = c
 ----------------------
 Ḅ (Unique Prime Factors | Case Of) (vectorising)
 Trigraph: #,B
