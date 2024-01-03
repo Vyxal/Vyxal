@@ -138,7 +138,7 @@ case class VConstructor(
 
 case class VObject(
     className: String,
-    fields: mut.Map[String, (Visibility, VAny)],
+    fields: Map[String, (Visibility, VAny)],
 )
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)

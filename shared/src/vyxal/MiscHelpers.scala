@@ -176,19 +176,17 @@ object MiscHelpers:
       .getOrElse(name, throw FieldNotFoundException(obj.className, name))
 
     val objName = obj.className
-    val newObj = obj.copy()
-    visibility match
-      case Visibility.Public => newObj.fields(name) = (visibility, value)
-      case Visibility.Restricted if ctx.privatable.contains(objName) =>
-        newObj.fields(name) = (visibility, value)
-      case Visibility.Restricted =>
-        throw AttemptedWriteRestrictedException(obj.className, name)
-      case Visibility.Private if ctx.privatable.contains(objName) =>
-        newObj.fields(name) = (visibility, value)
-      case Visibility.Private =>
-        throw AttemptedWritePrivateException(obj.className, name)
+    val newPair = (name -> (visibility -> value))
+    val fields = obj.fields
 
-    newObj
+    visibility match
+      case Visibility.Restricted if !ctx.privatable.contains(objName) =>
+        throw AttemptedWriteRestrictedException(obj.className, name)
+      case Visibility.Private if !ctx.privatable.contains(objName) =>
+        throw AttemptedWritePrivateException(obj.className, name)
+      case _ => ()
+
+    VObject(obj.className, fields + newPair)
   end setObjectMember
 
   def typesOf(values: VAny*): List[String] =

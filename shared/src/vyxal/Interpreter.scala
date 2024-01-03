@@ -397,7 +397,7 @@ object Interpreter:
     ctx.setVarsFrom(originalVariables)
 
     ctx.privatable.dropRightInPlace(1)
-    VObject(con.name, assignedFields)
+    VObject(con.name, assignedFields.toMap)
   end createObject
 
   private def getOverload(
