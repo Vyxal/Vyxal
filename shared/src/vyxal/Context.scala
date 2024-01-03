@@ -26,6 +26,9 @@ import scala.io.StdIn
   *   The context inside which this context is (to inherit variables). `None`
   *   for toplevel contexts. When executing a [[VFun]], this is the context that
   *   the function was *defined* in, not the one it is executing inside.
+  * @param privatable
+  *   A list of all record types that are allowed to access private variables in
+  *   this context.
   */
 class Context private (
     private var stack: mut.ArrayBuffer[VAny],
