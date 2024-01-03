@@ -564,11 +564,11 @@ object ListHelpers:
           for (index, subvalue) <- indices.zip(v) do
             out = multiDimAssign(out, makeIterable(index), subvalue)
           return out
-        case _ => VList.from(
-            indices.map(index =>
-              multiDimAssign(iterable, makeIterable(index), value)
-            )
-          )
+        case _ =>
+          var temp = iterable
+          for index <- indices do
+            temp = multiDimAssign(temp, makeIterable(index), value)
+          temp
     else
       if indices.isEmpty then return iterable
       // Move down the list of indices, assigning the value at the last index
