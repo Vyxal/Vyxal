@@ -27,7 +27,9 @@ dyadic 3mda ♵
 dyadic 4mda ♶
 lambda to newline ⋊
 dip ⎇
-Loop While Unique / Neighbours All Equal?
+Loop While Unique / Neighbours All Equal? ↻
+⊙ = fine grained stack access - 1 2 3 4 ⊙1100 + W -> [3, 3, 4]
+⁙ = ⁙fg -> f g f 
 
 Digraphs
 
@@ -52,7 +54,7 @@ Codepage
   0123456789ABCDEF
   ┌────────────────
 0 │⎂⇝∯⊠≣≟₾◌▼␤⸠ϩэЧ♳♴
-1 │♵♶⋊∥∦¿⎇↻∩∪⊕⊝⌙⚃⚇῟
+1 │♵♶⋊∥∦¿⎇↻⊙⁙∩∪⊕⊝⚇῟
 2 │ !"#$%&'()*+,-./
 3 │0123456789:;<=>?
 4 │@ABCDEFGHIJKLMNO
@@ -66,4 +68,4 @@ B │ṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«
 C │»⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λ
 D │ƛΩ₳µ∆øÞ½ʀɾ¯×÷£¥←
 E │↑→↓±¤†0¬∧∨⁰¹²⌈⌊Ɠ
-F │ɠı┉„”ð€“¶ᶿᶲ•≈ꜝ⊙⁙
+F │ɠı┉„”ð€“¶ᶿᶲ•≈ꜝ⌙⚃
