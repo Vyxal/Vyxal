@@ -3,7 +3,7 @@ Revised:
 Monographs
 
 Both (new) (any) ⎂
-Remove duplicates by (1) / Apply Without Popping (2+) ~
+Filter from stack / Apply Without Popping (2+) ~
 First Index Where (1) / Apply to Neighbours (2) ⇝
 collect until no change (1) / zip with (2) ∯
 Loop and Collect While Unique (1) / Outer Product (2) ⊠
@@ -27,7 +27,7 @@ dyadic 3mda ♵
 dyadic 4mda ♶
 lambda to newline ⋊
 dip ⎇
-Loop While Unique / Neighbours All Equal? ↻
+Loop While Unique ↻
 ⊙ = fine grained stack access - 1 2 3 4 ⊙1100 + W -> [3, 3, 4]
 ⁙ = ⁙fg -> f g f 
 
