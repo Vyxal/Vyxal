@@ -157,6 +157,10 @@ class VList private (val lst: Seq[VAny])
 
   override def empty: VList = VList.empty
 
+  override def tail: VList =
+    if lst.isEmpty then VList.empty
+    else VList.from(lst.tail)
+
   protected def from(it: Seq[VAny]): VList = VList.from(it)
 
   override def equals(o: Any): Boolean =
