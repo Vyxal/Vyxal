@@ -8,7 +8,7 @@ First Index Where (1) / Apply to Neighbours (2) ⇝
 collect until no change (1) / zip with (2) ∯
 Loop and Collect While Unique (1) / Outer Product (2) ⊠
 Key (1) / scan (2) \
-Sort by (1) / all equal (2)  ≣
+Sort by (1) ß
 invariant (1) / Reduce Columns (2) ≟
 filter by (1) / fold (2+) /
 Apply to register (any) ₾
@@ -30,6 +30,8 @@ dip ⎇
 Loop While Unique ↻
 ⊙ = fine grained stack access - 1 2 3 4 ⊙1100 + W -> [3, 3, 4]
 ⁙ = ⁙fg -> f g f 
+
+that reminds me that there also needs to be map-using-stack and filter-using-stack lambdas too
 
 Digraphs
 
@@ -53,7 +55,7 @@ Codepage
 
   0123456789ABCDEF
   ┌────────────────
-0 │⎂⇝∯⊠≣≟₾◌▼␤⸠ϩэЧ♳♴
+0 │⎂⇝∯⊠ß≟₾◌▼␤⸠ϩэЧ♳♴
 1 │♵♶⋊∥∦¿⎇↻⊙⁙∩∪⊕⊝⚇῟
 2 │ !"#$%&'()*+,-./
 3 │0123456789:;<=>?
