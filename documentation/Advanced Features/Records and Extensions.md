@@ -87,7 +87,7 @@ To set a member of a record:
 
 ```
 ## Assuming the record is on the stack  
-"memberName" <value> ŀ
+"memberName" <value> Ạ
 ```
 
 This sets the value of the member to the value on the stack. If the member is a
@@ -102,8 +102,8 @@ restricted or private member, this will fail, unless inside an extension method.
 }
 
 λ value, key, mp | 
-  #$mp "keys" ᵇ« #$key ŀ 
-  #$mp "values" ᵇ« #$value ŀ
+  #$mp "keys" ᵇ« #$key Ạ 
+  #$mp "values" ᵇ« #$value Ạ
   #$mp
 } #=put
 
@@ -185,8 +185,8 @@ Lowest Priority
 }
 
 #:>> put | value | * | key | * | mp | Map | 
-  #$mp "keys" ᵇ« #$key & ŀ 
-  #$mp "values" ᵇ« #$value & ŀ
+  #$mp "keys" ᵇ« #$key & Ạ 
+  #$mp "values" ᵇ« #$value & Ạ
   #$mp
 }
 
