@@ -1,0 +1,63 @@
+Revised:
+
+Monographs
+
+Both (new) (any) ⎂
+Remove duplicates by (1) / Apply Without Popping (2+) ~
+First Index Where (1) / Apply to Neighbours (2) ⇝
+collect until no change (1) / zip with (2) ∯
+Loop and Collect While Unique (1) / Outer Product (2) ⊠
+Key (1) / scan (2) \
+Sort by (1) / all equal (2)  ≣
+invariant (1) / Reduce Columns (2) ≟
+filter by (1) / fold (2+) /
+Apply to register (any) ₾
+map as stacks (any) ◌ (dump = ┉)
+vectorise (any) ▼
+parallel apply (any) ∥
+parallel apply and wrap (any) ∦
+conditional (any) ¿
+monadic 1mda ⸠
+monadic 2mda ϩ
+monadic 3mda э
+monadic 4mda Ч
+dyadic 1mda ♳
+dyadic 2mda ♴
+dyadic 3mda ♵
+dyadic 4mda ♶
+lambda to newline ⋊
+dip ⎇
+Loop While Unique / Neighbours All Equal?
+
+Digraphs
+
+Map over suffixes (1)
+reject by (1)
+Maximum By (1)
+Minimum By (1)
+Apply to head (any)
+Number of Truthy Elements (1) 
+Map Over Prefixes (1)
+
+==========
+
+Codepage
+
+  0123456789ABCDEF
+  ┌────────────────
+0 │⎂⇝∯⊠≣≟₾◌▼␤⸠ϩэЧ♳♴
+1 │♵♶⋊∥∦¿⎇↻∩∪⊕⊝
+2 │ !"#$%&'()*+,-./
+3 │0123456789:;<=>?
+4 │@ABCDEFGHIJKLMNO
+5 │PQRSTUVWXYZ[\]^_
+6 │`abcdefghijklmno
+7 │pqrstuvwxyz{|}~Ȧ
+8 │ḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪ
+9 │ẆẊικȧḃċḋėḟġḣŀṁṅȯ
+A │ṗṙṡṫẋƒΘΦ§ẠḄḌḤỊḶṂ
+B │ṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«
+C │»⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λ
+D │ƛΩ₳µ∆øÞ½ʀɾ¯×÷£¥←
+E │↑→↓±¤†0¬∧∨⁰¹²⌈⌊Ɠ
+F │ɠı┉„”ð€“¶ᶿᶲ•≈ꜝ
