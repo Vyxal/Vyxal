@@ -184,12 +184,8 @@ class VList private (val lst: Seq[VAny])
 
   @targetName("setDiff")
   def -(other: VList): VList =
-    val seen = mutable.ArrayBuffer.empty[VAny]
     VList.from(this.lst.filter { elem =>
-      if seen.contains(elem) then false
-      else
-        seen += elem
-        !other.contains(elem)
+      !other.contains(elem)
     })
 
   @targetName("multiSetDiff")
