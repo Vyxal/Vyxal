@@ -130,7 +130,9 @@ class YamlTests extends AnyFunSpec:
 
   /** Load all the tests, mapping elements to test groups */
   private def loadTests(): Map[String, TestGroup] =
-    val file = Source.fromInputStream(getClass().getResourceAsStream(TestsFile))(using io.Codec.UTF8)
+    val file = Source.fromInputStream(
+      getClass().getResourceAsStream(TestsFile)
+    )(using io.Codec.UTF8)
     val yaml = file.mkString
     file.close()
 
