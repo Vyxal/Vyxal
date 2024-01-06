@@ -201,7 +201,9 @@ class VList private (val lst: Seq[VAny])
 
   @targetName("xor")
   def ^(other: VList): VList =
-    VList.from(this.filterNot(other.contains(_)) ++ other.filterNot(this.contains(_)))
+    VList.from(
+      this.filterNot(other.contains(_)) ++ other.filterNot(this.contains(_))
+    )
 end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:
