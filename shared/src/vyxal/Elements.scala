@@ -294,8 +294,8 @@ object Elements:
     addPart(
       Dyad,
       "«",
-      "Bitshift Left | Read Member",
-      List("bitwise-left-shift", "left-shift", "left-pad", "pad-left", "@<="),
+      "Bitshift Left",
+      List("bitwise-left-shift", "left-shift", "left-pad", "pad-left"),
       true,
       "a: num, b: num -> a << b",
       "a: num, b: str -> b padded to length a with spaces prepended",
@@ -306,8 +306,6 @@ object Elements:
       case (a: VNum, b: String) => StringHelpers.padLeft(b, a)
       case (a: String, b: VNum) => StringHelpers.padLeft(a, b)
       case (a: String, b: String) => StringHelpers.padLeft(a, b.length)
-      case (a: VObject, b: String) => MiscHelpers.getObjectMember(a, b)
-      case (a: String, b: VObject) => MiscHelpers.getObjectMember(b, a)
 
     },
     addPart(
@@ -1036,14 +1034,24 @@ object Elements:
     addFull(
       Dyad,
       "i",
-      "Index | Collect Unique Application Values | Enclose",
-      List("index", "at", "item-at", "nth-item", "collect-unique", "enclose"),
+      "Index | Collect Unique Application Values | Enclose | Read Member",
+      List(
+        "index",
+        "at",
+        "item-at",
+        "nth-item",
+        "collect-unique",
+        "enclose",
+        "@<=",
+      ),
       false,
       "a: lst, b: num -> a[b]",
-      "a: lst, b: lst -> a[_] for _ in b",
-      "a: str, b: lst -> ''.join(a[i] for i in b)",
+      "a: lst, b: lst[num] -> a[_] for _ in b",
+      "a: str, b: lst[num] -> ''.join(a[i] for i in b)",
       "a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value.",
       "a: str, b: str -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])",
+      "a: obj, b: str -> get member b of a",
+      "a: str, b: obj -> get member a of b",
     ) { MiscHelpers.index },
     addPart(
       Dyad,
