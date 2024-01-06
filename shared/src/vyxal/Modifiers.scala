@@ -262,7 +262,10 @@ object Modifiers:
                       returnStr = ctx.peek.isInstanceOf[String]
                       val top = ListHelpers.makeIterable(ctx.pop())
                       ctx.push(top.tail)
-                      if ast.arity == Some(1) then ctx.push(top.head)
+                      if ast.arity == Some(1) then
+                        ctx.push(
+                          top.headOption.getOrElse(ctx.settings.defaultValue)
+                        )
                   ,
                   arity = Some(1),
                 ),
@@ -289,7 +292,9 @@ object Modifiers:
                       returnStr = ctx.peek.isInstanceOf[String]
                       val top = ListHelpers.makeIterable(ctx.pop())
                       ctx.push(top.tail)
-                      ctx.push(top.head)
+                      ctx.push(
+                        top.headOption.getOrElse(ctx.settings.defaultValue)
+                      )
                   ,
                   arity = Some(1),
                 ),
