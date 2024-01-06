@@ -2353,7 +2353,9 @@ object Elements:
       case (a: VList, b: (VNum | String)) => a.filter(_ != b)
       case (a: (VNum | String), b: VList) => b.filter(_ != a)
       case (a, b) =>
-        VList.from(ListHelpers.makeIterable(a) - ListHelpers.makeIterable(b))
+        val left = ListHelpers.makeIterable(a)
+        val right = ListHelpers.makeIterable(b)
+        VList.from(left.filterNot(right.contains(_)))
     },
     addPart(
       Dyad,
@@ -2649,7 +2651,7 @@ object Elements:
     ) {
       case (a: VNum, b: String) => StringHelpers.characterMultiply(a, b)
       case (a: String, b: VNum) => StringHelpers.characterMultiply(b, a)
-      case (a: VList, b: VList) => ListHelpers.setIntersection(a, b)
+      case (a: VList, b: VList) => VList.from(a.filter(b.contains(_)))
       case (a: VList, b: VNum) => ListHelpers.flattenByDepth(a, b)
     },
     addPart(
