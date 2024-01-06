@@ -182,12 +182,6 @@ class VList private (val lst: Seq[VAny])
         true
     })
 
-  @targetName("setDiff")
-  def -(other: VList): VList =
-    VList.from(this.lst.filter { elem =>
-      !other.contains(elem)
-    })
-
   @targetName("multiSetDiff")
   def --(other: VList): VList =
     var ret = lst
