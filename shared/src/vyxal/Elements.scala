@@ -2173,7 +2173,7 @@ object Elements:
         StringHelpers.r(b).findFirstIn(a.toString).isDefined
       case (a: VFun, b) => ListHelpers.reduce(b, a)
       case (a, b: VFun) => ListHelpers.reduce(a, b)
-      case (a: VList, b: VList) => VList.from(a ++ b).distinct
+      case (a: VList, b: VList) => VList.from(a ++ b.filterNot(a.contains(_)))
     },
     addPart(
       Triad,
