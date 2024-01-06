@@ -402,7 +402,7 @@ object ListHelpers:
     val size = iterable.length
     val pieceSize = (size / pieces).floor
     var remaining = iterable
-    var out = ListBuffer.empty[VList]
+    val out = ListBuffer.empty[VList]
     while remaining.length >= pieceSize do
       val (thisPiece, rest) =
         (remaining.take(pieceSize), remaining.drop(pieceSize))
@@ -424,7 +424,7 @@ object ListHelpers:
             .map(makeIterable(_).lst)
             .reduce((ret, item) => ret ++ l ++ item)
         )
-      case _: VFun => ??? // todo reduce?
+      case _ => ??? // todo reduce?
 
   def matrixInverse(lst: VList)(using Context): Option[VList] =
     validateMatrix(lst).flatMap { mat =>
@@ -466,6 +466,7 @@ object ListHelpers:
           VList.from(num.toString.map { x =>
             if x.isDigit then VNum(x - '0') else x.toString
           })
+      case _ => throw IterificationOfNonIterableException(value)
 
   def matrixMinor(mat: Seq[Seq[VNum]], r: Int, c: Int): Seq[Seq[VNum]] =
     (mat.take(r) ++ mat.drop(r + 1)).map(row => row.take(c) ++ row.drop(c + 1))
@@ -552,6 +553,49 @@ object ListHelpers:
     end moldHelper
     moldHelper(content, shape, 0)
   end mold
+
+  def multiDimAssign(iterable: VList, indices: VList, value: VAny)(using
+      Context
+  ): VList =
+    if !indices.forall(_.isInstanceOf[VNum]) then
+      value match
+        case v: VList =>
+          var out = iterable
+          for (index, subvalue) <- indices.zip(v) do
+            out = multiDimAssign(out, makeIterable(index), subvalue)
+          return out
+        case _ =>
+          var temp = iterable
+          for index <- indices do
+            temp = multiDimAssign(temp, makeIterable(index), value)
+          temp
+    else
+      if indices.isEmpty then return iterable
+      // Move down the list of indices, assigning the value at the last index
+      val dimensionItems = ListBuffer[VList](iterable)
+
+      for index <- indices.init do
+        dimensionItems +=
+          makeIterable(makeIterable(dimensionItems.last).index(index))
+
+      var out =
+        assign(dimensionItems.last, indices.last.asInstanceOf[VNum], value)
+      dimensionItems.dropRightInPlace(1)
+      for index <- indices.init.reverse do
+        out = assign(dimensionItems.last, index.asInstanceOf[VNum], out)
+        dimensionItems.dropRightInPlace(1)
+      out
+
+  def multiDimIndex(iterable: VList, indices: VList)(using Context): VAny =
+    if !indices.forall(_.isInstanceOf[VNum]) then
+      VList.from(
+        indices.map(index => multiDimIndex(iterable, makeIterable(index)))
+      )
+    else
+      var temp = iterable
+      for ind <- indices.init do
+        temp = makeIterable(makeIterable(temp).index(ind))
+      temp.index(indices.last)
 
   def multiSetIntersection(left: VList, right: VList): VList =
     val out = ListBuffer.empty[VAny]

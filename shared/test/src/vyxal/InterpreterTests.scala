@@ -1,9 +1,16 @@
 package vyxal
 
+import vyxal.parsing.Lexer
+
 import org.scalatest.tagobjects.Slow
 import spire.math.Real
 
 class InterpreterTests extends VyxalTests:
+  def testCodeAsLiterate(input: String, expected: VAny): Unit =
+    val literate = Lexer.lexLiterate(input)
+    val sbcsified = Lexer.sbcsify(literate)
+    println(sbcsified)
+    testCode(sbcsified, expected)
   describe("Literals") {
     it("should make lists") {
       testCode("#[1 | 2 3 + | 4#]", VList(1, 5, 4))
@@ -537,6 +544,125 @@ class InterpreterTests extends VyxalTests:
           Seq(),
         )
       }
+    }
+  }
+
+  describe("Objects") {
+    it("should have correct read access modifiers") {
+      val boilerplate =
+        "object TestObj => 1 :!=public 2 :=private 3 $restricted end"
+      testCodeAsLiterate(s"""$boilerplate `TestObj` "public" @<=""", VNum(1))
+      testCodeAsLiterate(
+        s"""$boilerplate `TestObj` "restricted" @<=""",
+        VNum(3),
+      )
+      try
+        testCodeAsLiterate(s"""$boilerplate `TestObj` "private" @<=""", VNum(2))
+        fail("Should have thrown an exception on read private")
+      catch case _: Exception => ()
+    }
+
+    it("should have the correct write access modifiers") {
+      val boilerplate =
+        "object TestObj => 1 :!=public 2 :=private 3 $restricted end"
+      testCodeAsLiterate(
+        s"""$boilerplate `TestObj` "public" 69 @=> "public" @<=""",
+        VNum(69),
+      )
+      try
+        testCodeAsLiterate(
+          s"""$boilerplate `TestObj` "private" 69 @=>""",
+          VNum(2),
+        )
+        fail("Should have thrown an exception on write private")
+        testCodeAsLiterate(
+          s"""$boilerplate `TestObj` "restricted" 69 @=>""",
+          VNum(3),
+        )
+        fail("Should have thrown an exception on write restricted")
+      catch case _: Exception => ()
+    }
+
+    it("should update object attributes upon writing") {
+      testCodeAsLiterate(
+        """
+          object TestObj => 1 :!=public 2 :=private 3 $restricted end
+          `TestObj` "public" 69 @=> "public" @<=""",
+        VNum(69),
+      )
+    }
+
+    it("should support a basic (somewhat flawed) map object implementation") {
+      val boilerplate = """object Map =>
+  [] :=values
+  [] :=keys
+end
+
+extension (set) given
+  val as *,
+  key as *,
+  mp as Map
+does
+  $mp "keys" (peek: @<=) $key append @=>
+  "values" (peek: @<=) $val append @=>
+end
+
+extension (get) given
+  key as *,
+  mp as Map
+does
+  $mp "keys" @<= $key find
+  $mp "values" @<= index
+end
+
+extension (print) given
+  mp as Map
+does
+  $mp ["keys", "values"] @<= dump zip print
+end
+"""
+      testCodeAsLiterate(
+        s"$boilerplate `Map` 59 20 $$@set 59 $$@get",
+        VNum(20),
+      )
+
+      testCodeAsLiterate(
+        s"$boilerplate `Map` 59 20 $$@set 59 80 $$@set 59 $$@get",
+        VNum(20), // Because of implementation details
+      )
+    }
+  }
+
+  describe("Extension Methods") {
+    it("Should error when only < 3 branches") {
+      assertThrows[Exception] {
+        testCodeAsLiterate("extension Fail end", VNum(1))
+      }
+      assertThrows[Exception] {
+        testCodeAsLiterate("extension Fail => 1 end", VNum(1))
+      }
+    }
+    it("Should allow an extension with a single item") {
+      testCodeAsLiterate(
+        "extension inc given a as num does $a 1 $.+ end 5 $@inc",
+        VNum(6),
+      )
+      testCodeAsLiterate(
+        "extension + given a as num does $a 1 $.+ end 5 +",
+        VNum(6),
+      )
+      testCodeAsLiterate(
+        "extension + given a as num does $a 1 $.+ end [1,2,3] [4,5,6] +",
+        VList(VNum(5), VNum(7), VNum(9)),
+      )
+      testCodeAsLiterate(
+        "extension Test given a as * does $a $a === end 5 $@Test",
+        VNum(1),
+      )
+      testCodeAsLiterate(
+        "object T => 5 $mem end extension F given a as T does $a \"mem\" @<= end `T` $@F",
+        VNum(5),
+      )
     }
   }
 

@@ -3,6 +3,7 @@ package vyxal
 import scala.language.strictEquality
 
 import vyxal.parsing.{StructureType, Token, TokenType}
+import vyxal.Parser.reservedTypes
 
 import scala.collection.mutable
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
@@ -11,6 +12,10 @@ enum CustomElementType derives CanEqual:
   case Element
   case Modifier
 
+enum Visibility derives CanEqual:
+  case Public
+  case Private
+  case Restricted
 case class CustomDefinition(
     name: String,
     elementType: CustomElementType,
@@ -19,18 +24,42 @@ case class CustomDefinition(
     args: (List[String | Int], List[String | Int]),
 )
 
-case class ParserResult(ast: AST, customs: Map[String, CustomDefinition])
+case class CustomClass(
+    fields: Map[String, (Visibility, Option[AST])]
+)
+
+case class ParserResult(
+    ast: AST,
+    customs: Map[String, CustomDefinition],
+    classes: Map[String, CustomClass],
+    typedCustoms: Map[String, (List[(List[String], CustomDefinition)], Int)],
+)
 
 object Parser:
   @throws[VyxalParsingException]
   def parse(tokens: List[Token]): ParserResult =
     val parser = Parser()
     val ast = parser.parse(tokens)
-    ParserResult(ast, parser.customs.toMap)
+    ParserResult(
+      ast,
+      parser.customs.toMap,
+      parser.classes.toMap,
+      parser.typedCustoms.toMap,
+    )
+
+  val reservedTypes = List("num", "str", "lst", "fun", "con")
 
 private class Parser:
   /** Custom definitions found so far */
   private val customs = mutable.Map[String, CustomDefinition]()
+  private val classes = mutable.Map[String, CustomClass]()
+  private val typedCustoms =
+    mutable.Map[String, (List[(List[String], CustomDefinition)], Int)]()
+
+  private def flatten(ast: AST): List[AST] =
+    ast match
+      case AST.Group(elems, _, _) => elems.flatMap(flatten)
+      case _ => List(ast)
 
   private def toValidName(name: String): String =
     name
@@ -118,20 +147,29 @@ private class Parser:
         // temporary AST to comply with the type of the AST stack
         case TokenType.ElementSymbol =>
           val name = value
-          if !customs.contains(name) then
-            throw UndefinedCustomElementException(name)
-          val CustomDefinition(_, elementType, impl, arity, args) =
-            customs(name)
-          elementType match
-            case CustomElementType.Element => asts.push(
-                parseCommand(
-                  Token(TokenType.Command, name, range),
-                  asts,
-                  program,
-                )
+          if typedCustoms.contains(name) then
+            asts.push(
+              parseCommand(
+                Token(TokenType.Command, s"##$name", range),
+                asts,
+                program,
               )
-            case CustomElementType.Modifier =>
-              throw CustomElementActuallyModifierException(name)
+            )
+          else
+            if !customs.contains(name) then
+              throw UndefinedCustomElementException(name)
+            val CustomDefinition(_, elementType, impl, arity, args) =
+              customs(name)
+            elementType match
+              case CustomElementType.Element => asts.push(
+                  parseCommand(
+                    Token(TokenType.Command, s"##$name", range),
+                    asts,
+                    program,
+                  )
+                )
+              case CustomElementType.Modifier =>
+                throw CustomElementActuallyModifierException(name)
         case TokenType.ModifierSymbol =>
           val name = value
           if !customs.contains(name) then
@@ -149,6 +187,110 @@ private class Parser:
         case TokenType.TetradicModifier => asts.push(AST.JunkModifier(value, 4))
         case TokenType.SpecialModifier => asts.push(AST.SpecialModifier(value))
         case TokenType.Comment => ()
+        case TokenType.DefineRecord =>
+          val branches =
+            parseBranches(program, true)(_ == TokenType.StructureClose)
+          val className = value
+          if reservedTypes.contains(className) then
+            throw ReservedClassNameException(className)
+          branches match
+            case List() => classes(value) = CustomClass(Map())
+            case _ :: fields :: _ =>
+              val flat = flatten(fields)
+              val variables = flat.zipWithIndex.filter(
+                _(0) match
+                  case _: AST.SetVar => true
+                  case _: AST.GetVar => true
+                  case _: AST.SetConstant => true
+                  case _ => false
+              )
+
+              val valuedFields = variables.map((variableAST, index) =>
+                val name = variableAST match
+                  case AST.SetVar(name, _) => name
+                  case AST.GetVar(name, _) => name
+                  case AST.SetConstant(name, _) => name
+                  case _ => throw VyxalYikesException(
+                      "Somehow received non-variable AST after filtering. Ping lyxal about this please."
+                    )
+                val visibility = variableAST match
+                  case _: AST.SetVar => Visibility.Private
+                  case _: AST.GetVar => Visibility.Restricted
+                  case _: AST.SetConstant => Visibility.Public
+                  case _ => throw VyxalYikesException(
+                      "Somehow received non-variable AST after filtering. Ping lyxal about this please."
+                    )
+
+                val value =
+                  if index == 0 then None
+                  else
+                    val prev = flat(index - 1)
+                    prev match
+                      case _: AST.SetVar => None
+                      case _: AST.GetVar => None
+                      case _: AST.SetConstant => None
+                      case _ => prev match
+                          case _: AST.Lambda => Some(prev)
+                          case _ =>
+                            Some(AST.Lambda(Some(0), List(), List(prev)))
+
+                name -> (visibility, value)
+              )
+
+              classes(className) = CustomClass(valuedFields.toMap)
+
+            case _ => throw BadStructureException("class definition")
+          end match
+        case TokenType.DefineExtension =>
+          val branches =
+            parseBranches(program, false)(_ == TokenType.StructureClose)
+          if branches.size < 3 then throw BadStructureException("extension")
+          var symbol = branches.head.toVyxal
+          if symbol.length() > 1 then symbol = toValidName(symbol)
+
+          val arguments = branches.tail.init
+          if arguments.size % 2 != 0 then
+            throw BadStructureException("extension")
+          val argPairs = arguments.grouped(2).toList.transpose
+          val argNames = argPairs.head.map {
+            case p: AST.Parameter => p.name
+            case a => toValidName(a.toVyxal)
+          }
+
+          val impl = branches.last match
+            case lam: AST.Lambda => lam
+            case other =>
+              AST.Lambda(Some(argNames.length), argNames, List(other))
+          val argTypes = argPairs.last.map {
+            case p: AST.Parameter => p.name
+            case a =>
+              val temp = a.toVyxal
+              if temp == "*" then "*" else toValidName(temp)
+          }
+          if typedCustoms.contains(symbol) then
+            val temp = typedCustoms(symbol)(0)
+            typedCustoms(symbol) =
+              (temp :+
+                (argTypes ->
+                  CustomDefinition(
+                    symbol,
+                    CustomElementType.Element,
+                    Some(impl),
+                    Some(argNames.length),
+                    (List() -> argNames),
+                  ))) -> Math.max(argNames.length, typedCustoms(symbol)._2)
+          else
+            typedCustoms(symbol) = List(
+              argTypes ->
+                CustomDefinition(
+                  symbol,
+                  CustomElementType.Element,
+                  Some(impl),
+                  Some(argNames.length),
+                  (List() -> argNames),
+                )
+            ) -> argNames.length
+
         case TokenType.ContextIndex => asts.push(
             AST.ContextIndex(if value.nonEmpty then value.toInt else -1)
           )
@@ -183,7 +325,9 @@ private class Parser:
           if depth != -1 then names += ((name, depth))
           asts.push(AST.UnpackVar(names.toList))
         case TokenType.Param => asts.push(AST.Parameter(value))
-        case TokenType.Digraph => throw NoSuchElementException(token)
+        case TokenType.Digraph =>
+          if !value.startsWith("k") then throw NoSuchElementException(token)
+          else asts.push(AST.Command(value))
       end match
     end while
     // Second stage parsing
@@ -277,18 +421,23 @@ private class Parser:
       checkCustoms: Boolean = true,
   ): AST =
     val cmd =
-      if checkCustoms && customs.contains(cmdTok.value) then cmdTok.value
+      if checkCustoms && cmdTok.value.startsWith("##")
+      then cmdTok.value.stripPrefix("##")
       else if !Elements.elements.contains(cmdTok.value) then
-        Elements.symbolFor(cmdTok.value).getOrElse("Nonexistent")
+        Elements.symbolFor(cmdTok.value).getOrElse(cmdTok.value)
       else cmdTok.value
 
     val arity = Elements.elements.get(cmd) match
       case None =>
         if checkCustoms then
-          if !customs.contains(cmd) then throw NoSuchElementException(cmdTok)
+          if typedCustoms.contains(cmd) then typedCustoms(cmd)._2
+          else if !customs.contains(cmd) then
+            if !cmd.startsWith("k") then throw NoSuchElementException(cmdTok)
+            else 0
           else
             val CustomDefinition(_, _, _, arity, _) = customs(cmd)
             arity.getOrElse(1)
+        else if cmd.startsWith("k") then 0
         else throw NoSuchElementException(cmdTok)
       case Some(element) =>
         if asts.isEmpty then return AST.Command(cmd, cmdTok.range, checkCustoms)

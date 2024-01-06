@@ -43,6 +43,10 @@ private[parsing] object LiterateLexer:
     "with",
     "given",
     ":and:",
+    "has",
+    "does",
+    "using",
+    "on",
   )
 
   /** Map keywords to their token types */
@@ -116,9 +120,9 @@ private[parsing] object LiterateLexer:
       branchKeywords.map(_ -> TokenType.Branch.canonicalSBCS.get).toMap ++
       (lambdaOpeners ++ structOpeners).map { (kw, typ) => kw -> typ.open }
 
-  def wordStart[$: P]: P[String] = P(CharIn("a-zA-Z_<>?!*+\\-=&%:").!)
+  def wordStart[$: P]: P[String] = P(CharIn("a-zA-Z_<>?!*+\\-=&%:@").!)
   def word[$: P]: P[String] =
-    P((wordStart ~~ CharsWhileIn("0-9a-zA-Z_<>?!*+\\-=&%:'", 0)).!)
+    P((wordStart ~~ CharsWhileIn("0-9a-zA-Z_<>?!*+\\-=&%:'@", 0)).!)
 
   def litInt[$: P]: P[String] =
     P(("0" | (CharIn("1-9") ~~ CharsWhileIn("_0-9", 0))).!)
@@ -155,6 +159,9 @@ private[parsing] object LiterateLexer:
   def functionCall[$: P]: P[LitToken] =
     parseToken(FunctionCall, "`" ~~ Common.varName.! ~~ "`")
 
+  def defineObj[$: P]: P[LitToken] =
+    parseToken(DefineRecord, "object" ~ Common.varName.!)
+
   def isLambdaParam(word: String): Boolean =
     !structOpeners.contains(word) && !lambdaOpenerSet.contains(word) &&
       !branchKeywords.contains(word) && !endKeywords.contains(word)
@@ -179,8 +186,7 @@ private[parsing] object LiterateLexer:
             funcArgs,
             elemArgs,
           ) =>
-        val nameTok =
-          name.toList.map(char => LitToken(Command, char.toString(), nameRange))
+        val nameTok = LitToken(Param, name, nameRange)
         val commadFuncArgs = funcArgs(0).map {
           case (param, range) =>
             if param == "," then LitToken(Command, ",", range)
@@ -198,7 +204,7 @@ private[parsing] object LiterateLexer:
           TokenType.Group,
           LitToken(TokenType.StructureOpen, "#::", openRange) +:
             LitToken(TokenType.Command, mode, modeRange) +:
-            ((nameTok :+ branchTok) ++ (fArgs ++ eArgs)).toList,
+            (List(nameTok, branchTok) ++ (fArgs ++ eArgs)).toList,
           nameRange,
         )
     }
@@ -220,8 +226,7 @@ private[parsing] object LiterateLexer:
             elemArgs,
           ) =>
         // Case of an element definition
-        val nameTok =
-          name.toList.map(char => LitToken(Command, char.toString(), nameRange))
+        val nameTok = LitToken(Param, name, nameRange)
         val commadArgs = elemArgs(0).map {
           case (param, range) =>
             if param == "," then LitToken(Command, ",", range)
@@ -229,12 +234,42 @@ private[parsing] object LiterateLexer:
         }
         val args = commadArgs :+ elemArgs(1)
         LitToken(
-          TokenType.Group,
-          (LitToken(TokenType.StructureOpen, "#::", openRange) +:
-            LitToken(TokenType.Command, mode, modeRange) +:
-            ((nameTok :+ branchTok) ++ args)).toList,
+          Group,
+          (LitToken(StructureOpen, "#::", openRange) +:
+            LitToken(Command, mode, modeRange) +:
+            (List(nameTok, branchTok) ++ args)).toList,
           nameRange,
         )
+    }
+
+  def extensionKeyword[$: P]: P[LitToken] =
+    P(
+      withRange("extension".!) ~ "(".? ~ withRange(word.filter(isLambdaParam)) ~
+        ")".? ~/ litBranch ~
+        // Grab the first parameter branch
+        withRange(
+          "(".? ~ ("*".! | word.filter(isLambdaParam) ~ ")".?) ~ litBranch
+        ).rep
+    ).map {
+      case (opener, openRange, name, branchTok, parameters) =>
+        val nameTok = LitToken(Param, name._1, name._2)
+        val params = parameters.map(_._1)
+
+        LitToken(
+          Group,
+          List(LitToken(DefineExtension, "#:>>", openRange), nameTok) ++
+            (branchTok +:
+              params
+                .map(param =>
+                  List(
+                    LitToken(Param, param._1, Range.fake),
+                    param._2,
+                  )
+                )
+                .flatten),
+          openRange,
+        )
+
     }
 
   val lambdaOpenerSet = lambdaOpeners.keys.toSet
@@ -432,11 +467,8 @@ private[parsing] object LiterateLexer:
   def list[$: P]: P[Seq[LitToken]] =
     P(
       parseToken(ListOpen, "[".!) ~~/
-        (litBranch | !"]" ~ singleToken ~ litBranch.?).rep
-        // NoCut(singleToken).filter(toks =>
-        // toks.size != 1 || toks.head.tokenType != ListClose
-        // ) ~ litBranch.?).rep
-        ~ parseToken(ListClose, "]".!)
+        (litBranch | !"]" ~ singleToken ~ litBranch.?).rep ~
+        parseToken(ListClose, "]".!)
     ).map {
       case (startTok, elems, endTok) =>
         val middle = elems.flatMap {
@@ -478,15 +510,19 @@ private[parsing] object LiterateLexer:
   def elementSymbol[$: P]: P[LitToken] =
     parseToken(ElementSymbol, "$@" ~~/ Common.varName)
 
+  def unmodSymbol[$: P]: P[LitToken] =
+    parseToken(OriginalSymbol, "$." ~~/ AnyChar.!)
+
   def singleToken[$: P]: P[Seq[LitToken]] =
     P(
       list | unpackVar |
-        (lambdaBlock | defineModBlock | defineElemBlock | specialLambdaBlock |
-          contextIndex | functionCall | modifierSymbol | elementSymbol |
-          litGetVariable | litSetVariable | litSetConstant | litAugVariable |
-          elementKeyword | negatedElementKeyword | tokenMove | modifierKeyword |
-          structOpener | otherKeyword | litBranch | litStructClose | litNumber |
-          litString | normalGroup).map(Seq(_)) | rawCode |
+        (lambdaBlock | extensionKeyword | unmodSymbol | defineObj |
+          defineModBlock | defineElemBlock | specialLambdaBlock | contextIndex |
+          functionCall | modifierSymbol | elementSymbol | litGetVariable |
+          litSetVariable | litSetConstant | litAugVariable | elementKeyword |
+          negatedElementKeyword | tokenMove | modifierKeyword | structOpener |
+          otherKeyword | litBranch | litStructClose | litNumber | litString |
+          normalGroup).map(Seq(_)) | rawCode |
         SBCSLexer.token.map((token) =>
           Seq(LitToken(token.tokenType, token.value, token.range))
         )

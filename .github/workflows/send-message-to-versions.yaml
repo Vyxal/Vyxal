@@ -5,6 +5,9 @@ on:
     tags:
       - "v3*"
 
+env:
+  JAVA_OPTS: ${{ vars.JAVA_OPTS }}
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -18,7 +21,7 @@ jobs:
           distribution: "adopt"
 
       - name: Scala to JS
-        run: ./mill js.fullLinkJS
+        run: ./mill --no-server js.fullLinkJS
 
       - name: Generate a token
         id: generate_token

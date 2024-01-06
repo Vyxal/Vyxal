@@ -113,6 +113,35 @@ class UnimplementedOverloadException(element: String, args: Seq[VAny])
 class VyxalRecursionException()
     extends VyxalRuntimeException("Too many recursions")
 
+class IterificationOfNonIterableException(value: VAny)
+    extends VyxalRuntimeException(s"Cannot iterify $value")
+
+class BadArgumentException(message: String, arg: VAny)
+    extends VyxalRuntimeException(s"$message received bad argument: $arg")
+
+/** Class related exceptions */
+
+class FieldNotFoundException(className: String, fieldName: String)
+    extends VyxalRuntimeException(s"Field $fieldName not found in $className")
+
+class AttemptedReadPrivateException(className: String, fieldName: String)
+    extends VyxalRuntimeException(
+      s"Attempted to read private field $fieldName of $className outside of class"
+    )
+
+class AttemptedWritePrivateException(className: String, fieldName: String)
+    extends VyxalRuntimeException(
+      s"Attempted to write private field $fieldName of $className outside of class"
+    )
+
+class AttemptedWriteRestrictedException(className: String, fieldName: String)
+    extends VyxalRuntimeException(
+      s"Attempted to write restricted field $fieldName of $className outside of class"
+    )
+
+class ReservedClassNameException(className: String)
+    extends VyxalRuntimeException(s"Class name $className is reserved")
+
 /** Unrecognized Exceptions */
 class UnknownLexingException(ex: Throwable)
     extends VyxalUnknownException("Lexing", ex)

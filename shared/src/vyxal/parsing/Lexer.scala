@@ -92,6 +92,8 @@ enum TokenType(val canonicalSBCS: Option[String] = None) derives CanEqual:
   case ModifierSymbol
   case ElementSymbol
   case OriginalSymbol
+  case DefineRecord
+  case DefineExtension
   case Comment
   case GetVar
   case SetVar
@@ -186,7 +188,7 @@ object Lexer:
 
     // Now, bind the move right tokens to the next token
 
-    var bound = ListBuffer[LitToken | (LitToken, Int)]()
+    val bound = ListBuffer[LitToken | (LitToken, Int)]()
     for token <- merged do
       if bound.nonEmpty then
         bound.last match
@@ -263,8 +265,11 @@ object Lexer:
       case CompressedString => s""""$value„"""
       case CompressedNumber => s""""$value“"""
       case UnpackTrigraph if value == ":=[" => "#:["
-      case ElementSymbol => s"#:@$value"
-      case ModifierSymbol => s"#:`$value"
+      case ElementSymbol => s"#:@$value "
+      case ModifierSymbol => s"#:`$value "
+      case DefineRecord => s"#:R $value"
+      case FunctionCall => "#$" + value + "Ė"
+      case OriginalSymbol => s"#:~$value"
       case Command if !Elements.elements.contains(value) =>
         Elements.symbolFor(value).getOrElse(value.stripSuffix("|"))
       case Comment => ""

@@ -89,7 +89,7 @@ private[parsing] object SBCSLexer:
   def digraph[$: P]: P[Token] =
     P(
       withRange(
-        (CharIn("∆øÞk") ~~ AnyChar).! |
+        (CharIn("∆øÞk") ~~ !CharIn("|") ~~ AnyChar).! |
           ("#" ~~ !CharIn("[]$!=#>@{:") ~~ AnyChar).!
       )
     ).map {
@@ -168,10 +168,21 @@ private[parsing] object SBCSLexer:
 
   def modifierSymbol[$: P]: P[Token] =
     parseToken(ModifierSymbol, "#:`" ~~/ Common.varName)
+
   def elementSymbol[$: P]: P[Token] =
     parseToken(ElementSymbol, "#:@" ~~/ Common.varName)
+
   def originalSymbol[$: P]: P[Token] =
     parseToken(OriginalSymbol, "#:~" ~ CharPred(allCommands).!)
+
+  def defineObj[$: P]: P[Token] =
+    parseToken(DefineRecord, "#:R" ~/ Common.varName)
+
+  def defineExtension[$: P]: P[Token] =
+    parseToken(
+      DefineExtension,
+      "#:>>".!,
+    )
 
   def setConstant[$: P]: P[Token] =
     parseToken(Constant, "#!" ~~/ Common.varName)
@@ -187,12 +198,13 @@ private[parsing] object SBCSLexer:
   def token[$: P]: P[Token] =
     P(
       comment | sugarTrigraph | unpackTrigraph | digraph | branch |
-        modifierSymbol | elementSymbol | originalSymbol | contextIndex |
-        sbcsNumber | string | augVariable | getVariable | setVariable |
-        setConstant | twoCharNumber | twoCharString | singleCharString |
-        monadicModifier | dyadicModifier | triadicModifier | tetradicModifier |
-        specialModifier | structureOpen | structureSingleClose |
-        structureAllClose | listOpen | listClose | newlines | command
+        defineExtension | modifierSymbol | defineObj | elementSymbol |
+        originalSymbol | contextIndex | sbcsNumber | string | augVariable |
+        getVariable | setVariable | setConstant | twoCharNumber |
+        twoCharString | singleCharString | monadicModifier | dyadicModifier |
+        triadicModifier | tetradicModifier | specialModifier | structureOpen |
+        structureSingleClose | structureAllClose | listOpen | listClose |
+        newlines | command
     )
 
   def parseToken[$: P](

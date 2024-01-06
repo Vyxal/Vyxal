@@ -21,10 +21,10 @@ case class Globals(
   var originalProgram: AST = null
   var printed: Boolean = false
   var inputs: Inputs = Inputs()
-  var symbols: Map[
-    String,
-    CustomDefinition,
-  ] = Map()
+  var symbols: Map[String, CustomDefinition] = Map()
+  var classes: Map[String, CustomClass] = Map()
+  var extensions: Map[String, (List[(List[String], CustomDefinition)], Int)] =
+    Map()
 
 /** Stores the inputs for some Context. Inputs can be overridden (see
   * [[Inputs#overrideInputs]]).
@@ -36,7 +36,7 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
 
   /** Uses an array for constant access, not for mutating items */
   private var currInputs = origArr
-  private var allInputs = origInputs.reverse
+  private val allInputs = origInputs.reverse
 
   /** Keeps track of the next input's index */
   private var ind = 0

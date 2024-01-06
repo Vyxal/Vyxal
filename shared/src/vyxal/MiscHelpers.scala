@@ -94,6 +94,15 @@ object MiscHelpers:
 
   def firstPositive(f: VFun)(using Context): Int = firstFromN(f, 1)
 
+  def getObjectMember(obj: VObject, name: String)(using ctx: Context): VAny =
+    val (visibility, value) = obj.fields
+      .getOrElse(name, throw FieldNotFoundException(obj.className, name))
+    visibility match
+      case Visibility.Public => value
+      case Visibility.Restricted => value
+      case Visibility.Private if ctx.privatable.contains(obj.className) => value
+      case _ => throw AttemptedReadPrivateException(obj.className, name)
+
   val index: Dyad = Dyad.fill("index") {
     case (a: VList, b: VList) => a.index(b)
     case (a: String, b: VList) =>
@@ -160,6 +169,36 @@ object MiscHelpers:
       i += 1
     VList.from(result.result())
 
+  def setObjectMember(obj: VObject, name: String, value: VAny)(using
+      ctx: Context
+  ): VObject =
+    val (visibility, _) = obj.fields
+      .getOrElse(name, throw FieldNotFoundException(obj.className, name))
+
+    val objName = obj.className
+    val newPair = (name -> (visibility -> value))
+    val fields = obj.fields
+
+    visibility match
+      case Visibility.Restricted if !ctx.privatable.contains(objName) =>
+        throw AttemptedWriteRestrictedException(obj.className, name)
+      case Visibility.Private if !ctx.privatable.contains(objName) =>
+        throw AttemptedWritePrivateException(obj.className, name)
+      case _ => ()
+
+    VObject(obj.className, fields + newPair)
+  end setObjectMember
+
+  def typesOf(values: VAny*): List[String] =
+    values.map {
+      case _: VNum => "num"
+      case _: String => "str"
+      case _: VList => "lst"
+      case _: VFun => "fun"
+      case _: VConstructor => "con"
+      case o: VObject => o.className
+    }.toList
+
   /** For pattern-matching. Unpacks the top of the stack into some variables */
   def unpack(names: List[(String, Int)])(using ctx: Context): Unit =
     // String = variable name
@@ -210,9 +249,9 @@ object MiscHelpers:
             case n: VNum => vyPrint(n)
             case s: String => vyPrint(StringHelpers.quotify(s))
             case l: VList => vyPrint(l)
-            case f: VFun =>
-              println(f"printing a function $f")
-              vyPrint(executeFn(f))
+            case f: VFun => vyPrint(executeFn(f))
+            case c: VConstructor => vyPrint("Constructor(" + c.name + ")")
+            case o: VObject => vyPrint("Object(" + o + ")")
 
           temp = temp.tail
           if temp.nonEmpty then vyPrint(", ")

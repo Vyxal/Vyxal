@@ -7,7 +7,7 @@ import scala.collection.mutable as mut
 
 import spire.implicits.*
 
-type VAny = VVal | VFun | VList
+type VAny = VVal | VFun | VList | VConstructor | VObject
 type VVal = VNum | String
 type VPhysical = VNum | String | VList
 type VIter = VList | String
@@ -101,6 +101,8 @@ extension (self: VAny)
   @targetName("vEquals")
   def ===(that: VAny)(using Context): Boolean =
     (self, that) match
+      case (a: VObject, b: VObject) => a.className == b.className &&
+        a.fields == b.fields
       case (a: VList, b: VList) => a == b
       case (_: VFun, _) =>
         scribe.warn(s"Tried comparing function $self to $that")
@@ -126,7 +128,17 @@ extension (self: VAny)
       case s: String => s.nonEmpty
       case f: VFun => true
       case l: VList => l.nonEmpty
+      case c: VConstructor => true
+      case o: VObject => true
 end extension
 
+case class VConstructor(
+    name: String
+)
+
+case class VObject(
+    className: String,
+    fields: Map[String, (Visibility, VAny)],
+)
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)

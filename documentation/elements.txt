@@ -743,7 +743,7 @@ Keywords: print-no-newline
 ----------------------
 Ạ (Assign) (non-vectorising)
 Trigraph: #,A
-Keywords: assign, assign-at, assign<>, assign<x>, a<x>=, a<x>=y, a<x>?=y, set-item, apply-at, re-sub, regex-sub
+Keywords: assign, assign-at, assign<>, assign<x>, a<x>=, a<x>=y, a<x>?=y, set-item, apply-at, re-sub, regex-sub, @=>
 - a: lst, b: num, c: non-fun -> assign c to a at the index b / a[b] = c
 - a: lst, b: num, c: fun -> a[b] c= <stack items> (augmented assignment to list)
 - a: lst, b: lst, c: lst -> assign c to a at the indices in b
@@ -751,6 +751,7 @@ Keywords: assign, assign-at, assign<>, assign<x>, a<x>=, a<x>=y, a<x>?=y, set-it
 - a: str, b: str, c: fun -> replace regex matches of pattern b in string a with the result of applying c to each match
 - a: str, b: fun, c: str -> replace regex matches of pattern c in string a with the result of applying b to each match
 - a: fun, b: str, c: str -> replace regex matches of pattern c in string b with the result of applying a to each match
+- a: obj, b: str, c: str -> a.b = c
 ----------------------
 Ḅ (Unique Prime Factors | Case Of) (vectorising)
 Trigraph: #,B
@@ -864,9 +865,9 @@ Keywords: sqrt, square-root
 Keywords: sum, /+, +/
 - a: lst -> sum of a
 ----------------------
-« (Bitshift Left) (vectorising)
+« (Bitshift Left | Read Member) (vectorising)
 Trigraph: #.<
-Keywords: bitwise-left-shift, left-shift, left-pad, pad-left
+Keywords: bitwise-left-shift, left-shift, left-pad, pad-left, @<=
 - a: num, b: num -> a << b
 - a: num, b: str -> b padded to length a with spaces prepended
 - a: str, b: num -> a padded to length b with spaces prepended
@@ -1269,6 +1270,10 @@ Keywords: PP, primes
 Keywords: transpose-safe
 - a: any -> transpose a
 ----------------------
+Þi (Multidimensional Index) (non-vectorising)
+Keywords: md-index
+- a: lst, b: lst[num] -> a[b[0]][b[1]]...[b[n]]
+----------------------
 Þo (Grid Neighbours) (non-vectorising)
 Keywords: grid-neighbours, grid-neighbors, adjacent-cells, adj-cells, surrounding-cells
 - a: lst[lst] -> Grid neighbours of a - right, down, left, up of a
@@ -1308,6 +1313,10 @@ Keywords: multi-set-difference, multi-set-diff
 Keywords: grid-neighbours-diagonals, grid-neighbors-diagonals, adjacent-cells-diagonals, adj-cells-diagonals, surrounding-cells-diagonals, eight-cells
 - a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals
 - a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a and start from direction b => 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does
+----------------------
+ÞẠ (Multidimensional Assignment) (non-vectorising)
+Keywords: md-assign
+- a: lst, b: lst[num], c: any -> a[b[0]][b[1]]...[b[n]] = c
 ----------------------
 ÞṂ (Matrix Inverse) (vectorising)
 Keywords: matrix-inverse

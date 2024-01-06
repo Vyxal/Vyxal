@@ -28,7 +28,7 @@ object Interpreter:
         case ex: Throwable => throw UnknownLexingException(ex)
 
     /** Attempt parsing */
-    val ParserResult(ast, customDefns) =
+    val ParserResult(ast, customDefns, classes, extensions) =
       try Parser.parse(tokens)
       catch
         case ex: VyxalException => throw VyxalException("VyxalException", ex)
@@ -39,6 +39,8 @@ object Interpreter:
       scribe.debug(s"Executing '$code' (ast: $ast)")
       ctx.globals.originalProgram = ast
       ctx.globals.symbols = customDefns
+      ctx.globals.classes = classes
+      ctx.globals.extensions = extensions
       execute(ast)
       if !ctx.globals.printed && !ctx.testMode then
         if ctx.settings.endPrintMode == EndPrintMode.Default then
@@ -104,16 +106,30 @@ object Interpreter:
           list += ctx.pop()
         ctx.push(VList.from(list.toList))
       case AST.Command(cmd, _, overwriteable) =>
-        if overwriteable && ctx.globals.symbols.contains(cmd) then
+        var executed = false
+        if overwriteable && ctx.globals.extensions.contains(cmd) then
+          val ext = ctx.globals.extensions(cmd)
+          val potentialArgs = ctx.peek(ext._2)
+          val types = MiscHelpers.typesOf(potentialArgs*)
+          val overload = getOverload(types, ext._1)
+          overload match
+            case Some((types, implementation)) =>
+              ctx.privatable ++= types.filter(_ != "*")
+              val lam = VFun.fromLambda(implementation.asInstanceOf[AST.Lambda])
+              if implementation.arity.getOrElse(0) == -1 then executeFn(lam)
+              else ctx.push(executeFn(lam))
+              executed = true
+              for t <- types if t != "*" do ctx.privatable.dropRightInPlace(1)
+            case None => ()
+        if overwriteable && !executed && ctx.globals.symbols.contains(cmd) then
           ctx.globals.symbols(cmd).impl match
             case Some(implementation) =>
               val lam = VFun.fromLambda(implementation.asInstanceOf[AST.Lambda])
               if implementation.arity.getOrElse(0) == -1 then executeFn(lam)
               else ctx.push(executeFn(lam))
-            case None => throw VyxalYikesException(
-                s"Symbol $cmd has no impl. Should have already been caught :skull:"
-              )
-        else
+              executed = true
+            case None => ()
+        if !executed then
           Elements.elements.get(cmd) match
             case Some(elem) => elem.impl()
             case None => throw NoSuchElementException(cmd)
@@ -184,7 +200,9 @@ object Interpreter:
 
       case lam: AST.Lambda => ctx.push(VFun.fromLambda(lam))
       case AST.FnDef(name, lam, _) => ctx.setVar(name, VFun.fromLambda(lam))
-      case AST.GetVar(name, _) => ctx.push(ctx.getVar(name))
+      case AST.GetVar(name, _) =>
+        if ctx.globals.classes.contains(name) then ctx.push(VConstructor(name))
+        else ctx.push(ctx.getVar(name))
       case AST.SetVar(name, _) => ctx.setVar(name, ctx.pop())
       case AST.SetConstant(name, _) => ctx.setConst(name, ctx.pop())
       case AST.AugmentVar(name, op, _) =>
@@ -279,7 +297,7 @@ object Interpreter:
       vars: mut.Map[String, VAny] = mut.Map(),
   )(using ctx: Context): VAny =
     val VFun(_, arity, params, origCtx, lambda, _) = fn
-    var originallyFunction = false
+    val originallyFunction = false
     if !lambda.isEmpty then
       val AST.Lambda(_, _, _, originallyFunction, _) = lambda.get
       if originallyFunction then ctx.globals.callStack.push(fn)
@@ -354,4 +372,42 @@ object Interpreter:
     scribe.trace(s"Result of executing function: $res")
     res
   end executeFn
+
+  def createObject(con: VConstructor)(using ctx: Context): VObject =
+    val fields = ctx.globals.classes(con.name).fields
+    ctx.privatable += con.name
+    val assignedFields = mut.Map[String, (Visibility, VAny)]()
+
+    val originalVariables = ctx.allVars
+
+    for (name, (visibility, predef)) <- fields do
+      val fieldVal = predef match
+        case Some(predef) => Interpreter.executeFn(
+            VFun
+              .fromLambda(predef.asInstanceOf[AST.Lambda])
+              .copy(
+                arity = 0
+              )
+          )
+        case None => ctx.pop()
+      assignedFields(name) = (visibility -> fieldVal)
+      ctx.setVar(name, fieldVal)
+
+    ctx.setVarsFrom(originalVariables)
+
+    ctx.privatable.dropRightInPlace(1)
+    VObject(con.name, assignedFields.toMap)
+  end createObject
+
+  private def getOverload(
+      givenTypes: List[String],
+      overloads: List[(List[String], CustomDefinition)],
+  ): Option[(List[String], AST)] =
+    overloads.find {
+      case (types, _) =>
+        types.zip(givenTypes).forall((a, b) => a == b || a == "*")
+    } match
+      case Some((types, defn)) => Some(types -> defn.impl.get)
+      case None => None
+
 end Interpreter

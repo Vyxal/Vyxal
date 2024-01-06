@@ -7,7 +7,7 @@ import vyxal.MiscHelpers.collectUnique
 import vyxal.NumberHelpers.range
 import vyxal.VNum.given
 
-import scala.collection.mutable.{ArrayBuffer, ListBuffer}
+import scala.collection.mutable.ListBuffer
 import scala.io.StdIn
 
 case class Element(
@@ -144,6 +144,7 @@ object Elements:
         "apply-at",
         "re-sub",
         "regex-sub",
+        "@=>",
       ),
       false,
       "a: lst, b: num, c: non-fun -> assign c to a at the index b / a[b] = c",
@@ -153,7 +154,18 @@ object Elements:
       "a: str, b: str, c: fun -> replace regex matches of pattern b in string a with the result of applying c to each match",
       "a: str, b: fun, c: str -> replace regex matches of pattern c in string a with the result of applying b to each match",
       "a: fun, b: str, c: str -> replace regex matches of pattern c in string b with the result of applying a to each match",
+      "a: obj, b: str, c: str -> a.b = c",
     ) {
+      case (a: VObject, b: String, c) => MiscHelpers.setObjectMember(a, b, c)
+      case (a: VObject, b: VList, c) =>
+        var obj = a
+        for i <- b do
+          obj = MiscHelpers.setObjectMember(
+            obj,
+            b.toString,
+            c,
+          )
+        obj
       case (a, b: VNum, c: VPhysical) =>
         val temp = ListHelpers.assign(ListHelpers.makeIterable(a), b, c)
         if a.isInstanceOf[String] then temp.mkString
@@ -164,14 +176,6 @@ object Elements:
         else temp
       case (a, b: VNum, c: VFun) =>
         val temp = ListHelpers.augmentAssign(ListHelpers.makeIterable(a), b, c)
-        if a.isInstanceOf[String] then temp.mkString
-        else temp
-      case (a, b: VList, c) =>
-        var temp = ListHelpers.makeIterable(a)
-        for i <- ListHelpers.makeIterable(b) do
-          i match
-            case ind: VNum => temp = ListHelpers.assign(temp, ind, c)
-            case _ => throw InvalidListOverloadException("Ạ", b, "Number")
         if a.isInstanceOf[String] then temp.mkString
         else temp
       case (a, b: VList, c: VList) =>
@@ -185,6 +189,14 @@ object Elements:
                 case function: VFun =>
                   temp = ListHelpers.augmentAssign(temp, ind, function)
             case _ => throw InvalidListOverloadException("Ạ", b, "Number")
+        if a.isInstanceOf[String] then temp.mkString
+        else temp
+      case (a, b: VList, c) =>
+        val temp =
+          ListHelpers.makeIterable(b).foldLeft(ListHelpers.makeIterable(a)) {
+            case (temp, ind: VNum) => ListHelpers.assign(temp, ind, c)
+            case _ => throw InvalidListOverloadException("Ạ", b, "Number")
+          }
         if a.isInstanceOf[String] then temp.mkString
         else temp
       case (a: String, b: String, c: String) => StringHelpers.regexSub(a, b, c)
@@ -282,8 +294,8 @@ object Elements:
     addPart(
       Dyad,
       "«",
-      "Bitshift Left",
-      List("bitwise-left-shift", "left-shift", "left-pad", "pad-left"),
+      "Bitshift Left | Read Member",
+      List("bitwise-left-shift", "left-shift", "left-pad", "pad-left", "@<="),
       true,
       "a: num, b: num -> a << b",
       "a: num, b: str -> b padded to length a with spaces prepended",
@@ -294,12 +306,20 @@ object Elements:
       case (a: VNum, b: String) => StringHelpers.padLeft(b, a)
       case (a: String, b: VNum) => StringHelpers.padLeft(a, b)
       case (a: String, b: String) => StringHelpers.padLeft(a, b.length)
+      case (a: VObject, b: String) => MiscHelpers.getObjectMember(a, b)
+      case (a: String, b: VObject) => MiscHelpers.getObjectMember(b, a)
+
     },
     addPart(
       Dyad,
       "»",
       "Bitshift Right",
-      List("bitwise-right-shift", "right-shift", "right-pad", "pad-right"),
+      List(
+        "bitwise-right-shift",
+        "right-shift",
+        "right-pad",
+        "pad-right",
+      ),
       true,
       "a: num, b: num -> a >> b",
       "a: num, b: str -> b padded to length a with spaces appended",
@@ -604,7 +624,9 @@ object Elements:
       "a: fun -> Execute a",
       "a: str -> Evaluate a as Vyxal",
       "a: num -> 10 ** n",
-    ) { ctx ?=> ctx.push(execHelper(ctx.pop())) },
+    ) { ctx ?=>
+      ctx.push(execHelper(ctx.pop()))
+    },
     addDirect(
       "#Q",
       "Exit | Quit",
@@ -648,6 +670,8 @@ object Elements:
                 (0 until indices.max + 1).map(x => VNum(indices.contains(x)))*
               )
             )
+        case a => throw BadArgumentException("Ḃ", a)
+
     },
     addPart(
       Dyad,
@@ -1065,13 +1089,6 @@ object Elements:
     ) {
       case (a, b: VNum, c) =>
         ListHelpers.insert(ListHelpers.makeIterable(a), b, c)
-      case (a, b: VList, c) =>
-        var temp = ListHelpers.makeIterable(a)
-        for i <- b.reverse do
-          i match
-            case index: VNum => temp = ListHelpers.insert(temp, index, c)
-            case _ => throw InvalidListOverloadException("Ị", b, "Number")
-        temp
       case (a, b: VList, c: VList) =>
         var temp = ListHelpers.makeIterable(a)
         for (i, j) <- b.reverse.zip(c.reverse) do
@@ -1080,6 +1097,10 @@ object Elements:
               temp = ListHelpers.insert(temp, index, elem)
             case _ => throw InvalidListOverloadException("Ị", b, "Number")
         temp
+      case (a, b: VList, c) => b.foldRight(ListHelpers.makeIterable(a)) {
+          case (index: VNum, acc) => ListHelpers.insert(acc, index, c)
+          case _ => throw InvalidListOverloadException("Ị", b, "Number")
+        }
     },
     addPart(
       Dyad,
@@ -1555,6 +1576,28 @@ object Elements:
       "a: num, b: num -> a % b",
       "a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)",
     )(MiscHelpers.modulo),
+    addPart(
+      Triad,
+      "ÞẠ",
+      "Multidimensional Assignment",
+      List("md-assign"),
+      false,
+      "a: lst, b: lst[num], c: any -> a[b[0]][b[1]]...[b[n]] = c",
+    ) {
+      case (a, b: VList, c) => ListHelpers.multiDimAssign(makeIterable(a), b, c)
+
+    },
+    addPart(
+      Dyad,
+      "Þi",
+      "Multidimensional Index",
+      List("md-index"),
+      false,
+      "a: lst, b: lst[num] -> a[b[0]][b[1]]...[b[n]]",
+    ) {
+      case (a, b: VList) => ListHelpers.multiDimIndex(makeIterable(a), b)
+
+    },
     addFull(
       Dyad,
       "×",
@@ -2525,6 +2568,7 @@ object Elements:
         val temp =
           ListHelpers.transliterate(ListHelpers.makeIterable(a), b, c).mkString
         if VNum.NumRegex.matches(temp) then VNum(temp) else temp
+
     },
     addPart(
       Dyad,
@@ -3697,6 +3741,10 @@ object Elements:
         if fn.arity == -1 then
           ctx.pop() // Handle the extra value pushed by lambdas that operate on the stack
         res
+      case _: VObject => throw BadArgumentException("exec", "object")
+      case con: VConstructor => Interpreter.createObject(con)
+    end match
+  end execHelper
 
   private def addNilad(
       symbol: String,
