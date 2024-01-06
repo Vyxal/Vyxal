@@ -154,7 +154,7 @@ object Elements:
       "a: str, b: str, c: fun -> replace regex matches of pattern b in string a with the result of applying c to each match",
       "a: str, b: fun, c: str -> replace regex matches of pattern c in string a with the result of applying b to each match",
       "a: fun, b: str, c: str -> replace regex matches of pattern c in string b with the result of applying a to each match",
-      "a: obj, b: str, c: str -> a.b = c",
+      "a: rec, b: str, c: str -> a.b = c",
     ) {
       case (a: VObject, b: String, c) => MiscHelpers.setObjectMember(a, b, c)
       case (a: VObject, b: VList, c) =>
@@ -1050,8 +1050,8 @@ object Elements:
       "a: str, b: lst[num] -> ''.join(a[i] for i in b)",
       "a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value.",
       "a: str, b: str -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])",
-      "a: obj, b: str -> get member b of a",
-      "a: str, b: obj -> get member a of b",
+      "a: rec, b: str -> get member b of a",
+      "a: str, b: rec -> get member a of b",
     ) { MiscHelpers.index },
     addPart(
       Dyad,
