@@ -382,15 +382,16 @@ object Interpreter:
 
     for (name, (visibility, predef)) <- fields do
       val fieldVal =
-        if predef.isDefined then
-          Interpreter.executeFn(
-            VFun
-              .fromLambda(predef.get.asInstanceOf[AST.Lambda])
-              .copy(
-                arity = 0
-              )
-          )
-        else ctx.pop()
+        predef match
+          case Some(predef) =>
+            Interpreter.executeFn(
+              VFun
+                .fromLambda(predef.asInstanceOf[AST.Lambda])
+                .copy(
+                  arity = 0
+                )
+            )
+          case None => ctx.pop()
       assignedFields(name) = (visibility -> fieldVal)
       ctx.setVar(name, fieldVal)
 
