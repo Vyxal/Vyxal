@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.parsing.ParsingException
+
 import scala.collection.mutable.ListBuffer
 
 /** @param name
@@ -312,7 +314,8 @@ object Modifiers:
                   arity = Some(1),
                 ),
               )
-            case _ => throw ModifierArityException("ᴴ", ast.arity)
+            case _ =>
+              throw ParsingException.ModifierArityException("ᴴ", ast.arity)
           end match
       },
     "ᶤ" ->

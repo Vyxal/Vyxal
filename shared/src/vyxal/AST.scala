@@ -174,3 +174,24 @@ object AST:
     */
   def makeSingle(elems: AST*): AST =
     if elems.size == 1 then elems.head else AST.Group(elems.toList, None)
+
+enum CustomElementType derives CanEqual:
+  case Element
+  case Modifier
+
+enum Visibility derives CanEqual:
+  case Public
+  case Private
+  case Restricted
+
+case class CustomDefinition(
+    name: String,
+    elementType: CustomElementType,
+    impl: Option[AST],
+    arity: Option[Int],
+    args: (List[String | Int], List[String | Int]),
+)
+
+case class CustomClass(
+    fields: Map[String, (Visibility, Option[AST])]
+)

@@ -300,3 +300,13 @@ object Lexer:
     out.toString
   end sbcsify
 end Lexer
+
+/** Lexing exceptions */
+enum LexingException(message: String)
+    extends vyxal.VyxalException(s"LexingException: $message"):
+  case LeftoverCodeException(leftover: String)
+      extends LexingException(
+        s"Lexing completed with leftover code: '$leftover'"
+      )
+  case Fastparse(msg: String)
+      extends LexingException(s"Lexing with FastParse failed: $msg")

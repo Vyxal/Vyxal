@@ -1,32 +1,14 @@
-package vyxal
+package vyxal.parsing
 
 import scala.language.strictEquality
 
-import vyxal.parsing.{StructureType, Token, TokenType}
-import vyxal.Parser.reservedTypes
+import vyxal.*
 
 import scala.collection.mutable
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
 
-enum CustomElementType derives CanEqual:
-  case Element
-  case Modifier
-
-enum Visibility derives CanEqual:
-  case Public
-  case Private
-  case Restricted
-case class CustomDefinition(
-    name: String,
-    elementType: CustomElementType,
-    impl: Option[AST],
-    arity: Option[Int],
-    args: (List[String | Int], List[String | Int]),
-)
-
-case class CustomClass(
-    fields: Map[String, (Visibility, Option[AST])]
-)
+import Parser.reservedTypes
+import ParsingException.*
 
 case class ParserResult(
     ast: AST,
@@ -36,7 +18,7 @@ case class ParserResult(
 )
 
 object Parser:
-  @throws[VyxalParsingException]
+  @throws[ParsingException]
   def parse(tokens: List[Token]): ParserResult =
     val parser = Parser()
     val ast = parser.parse(tokens)
@@ -326,7 +308,8 @@ private class Parser:
           asts.push(AST.UnpackVar(names.toList))
         case TokenType.Param => asts.push(AST.Parameter(value))
         case TokenType.Digraph =>
-          if !value.startsWith("k") then throw NoSuchElementException(token)
+          if !value.startsWith("k") then
+            throw NoSuchElementException(token.value)
           else asts.push(AST.Command(value))
       end match
     end while
@@ -432,13 +415,14 @@ private class Parser:
         if checkCustoms then
           if typedCustoms.contains(cmd) then typedCustoms(cmd)._2
           else if !customs.contains(cmd) then
-            if !cmd.startsWith("k") then throw NoSuchElementException(cmdTok)
+            if !cmd.startsWith("k") then
+              throw NoSuchElementException(cmdTok.value)
             else 0
           else
             val CustomDefinition(_, _, _, arity, _) = customs(cmd)
             arity.getOrElse(1)
         else if cmd.startsWith("k") then 0
-        else throw NoSuchElementException(cmdTok)
+        else throw NoSuchElementException(cmdTok.value)
       case Some(element) =>
         if asts.isEmpty then return AST.Command(cmd, cmdTok.range, checkCustoms)
         else element.arity.getOrElse(0)
@@ -773,3 +757,51 @@ private class Parser:
       // after doing stuff like augmented assignment
       case _ => ast.arity.contains(0)
 end Parser
+
+enum ParsingException(msg: String) extends Exception(msg):
+  case BadAugmentedAssignException()
+      extends ParsingException("Missing element for augmented assign")
+  case BadModifierException(modifier: String)
+      extends ParsingException(
+        s"Modifier '$modifier' is missing arguments"
+      )
+  case BadStructureException(structure: String)
+      extends ParsingException(s"Invalid $structure statement")
+  case ModifierArityException(modifier: String, arity: Option[Int])
+      extends ParsingException(
+        s"Modifier '$modifier' does not support elements of arity ${arity.getOrElse("None")}"
+      )
+  case NoSuchElementException(element: String)
+      extends ParsingException(s"No such element: $element")
+  case TokensFailedParsingException(tokens: List[Token])
+      extends ParsingException(s"Some elements failed to parse: $tokens")
+  case UnmatchedCloserException(closer: Token)
+      extends ParsingException(
+        s"A closer/branch was found outside of a structure: ${closer.value}"
+      )
+  case UndefinedCustomModifierException(modifier: String)
+      extends ParsingException(s"Custom modifier '$modifier' not defined")
+
+  case UndefinedCustomElementException(element: String)
+      extends ParsingException(s"Custom element '$element' not defined")
+
+  case CustomModifierActuallyElementException(modifier: String)
+      extends ParsingException(
+        s"Custom modifier '$modifier' is actually a custom element"
+      )
+
+  case CustomElementActuallyModifierException(element: String)
+      extends ParsingException(
+        s"Custom element '$element' is actually a custom modifier"
+      )
+
+  case EmptyRedefine()
+      extends ParsingException(
+        "Redefine statement is empty. Requires at least name and implementation."
+      )
+
+  case BadRedefineMode(mode: String)
+      extends ParsingException(
+        s"Invalid redefine mode: '$mode'. Should either be @ for element, or * for modifier"
+      )
+end ParsingException

@@ -1,17 +1,15 @@
 package vyxal
 
-import vyxal.parsing.Token
-
-class VyxalException(
+class VyxalException private[vyxal] (
     message: String,
-    ex: Throwable = Exception(),
+    ex: Throwable = null,
     unknown: Boolean = false,
     report: Boolean = false,
 ) extends RuntimeException(message, ex):
   def getMessage(using ctx: Context): String =
     var message = ex match
       case _: VyxalException => super.getCause().getMessage()
-      case _: Throwable => super.getMessage()
+      case _ => super.getMessage()
     if report then message += "\nPlease report this to the Vyxal devs"
     if unknown && !report && !ctx.settings.fullTrace then
       message += "\nUse 'X' flag for full traceback"
@@ -20,67 +18,12 @@ class VyxalException(
       message += "\n" +
         super.getCause().getStackTrace.mkString("  ", "\n  ", "")
     message
+
 class QuitException extends VyxalException("Program quit using Q")
-class VyxalLexingException(message: String)
-    extends VyxalException(s"LexingException: $message")
-class VyxalParsingException(message: String)
-    extends VyxalException(s"ParsingException: $message")
-class VyxalRuntimeException(message: String)
+sealed class VyxalRuntimeException(message: String)
     extends VyxalException(s"RuntimeException: $message")
-class VyxalUnknownException(location: String, ex: Throwable)
+sealed class VyxalUnknownException(location: String, ex: Throwable)
     extends VyxalException(s"Unknown $location Exception", ex, true, true)
-
-/** VyxalLexingExceptions */
-class LeftoverCodeException(leftover: String)
-    extends VyxalLexingException(
-      s"Lexing completed with leftover code: '$leftover'"
-    )
-
-/** VyxalParsingExceptions */
-class BadAugmentedAssignException()
-    extends VyxalParsingException("Missing element for augmented assign")
-class BadModifierException(modifier: String)
-    extends VyxalParsingException(s"Modifier '$modifier' is missing arguments")
-class BadStructureException(structure: String)
-    extends VyxalParsingException(s"Invalid $structure statement")
-class ModifierArityException(modifier: String, arity: Option[Int])
-    extends VyxalParsingException(
-      s"Modifier '$modifier' does not support elements of arity ${arity.getOrElse("None")}"
-    )
-class NoSuchElementException(element: String)
-    extends VyxalParsingException(s"No such element: $element"):
-  def this(token: Token) = this(token.value)
-class TokensFailedParsingException(tokens: List[Token])
-    extends VyxalParsingException(s"Some elements failed to parse: $tokens")
-class UnmatchedCloserException(closer: Token)
-    extends VyxalParsingException(
-      s"A closer/branch was found outside of a structure: ${closer.value}"
-    )
-class UndefinedCustomModifierException(modifier: String)
-    extends VyxalParsingException(s"Custom modifier '$modifier' not defined")
-
-class UndefinedCustomElementException(element: String)
-    extends VyxalParsingException(s"Custom element '$element' not defined")
-
-class CustomModifierActuallyElementException(modifier: String)
-    extends VyxalParsingException(
-      s"Custom modifier '$modifier' is actually a custom element"
-    )
-
-class CustomElementActuallyModifierException(element: String)
-    extends VyxalParsingException(
-      s"Custom element '$element' is actually a custom modifier"
-    )
-
-class EmptyRedefine()
-    extends VyxalParsingException(
-      "Redefine statement is empty. Requires at least name and implementation."
-    )
-
-class BadRedefineMode(mode: String)
-    extends VyxalParsingException(
-      s"Invalid redefine mode: '$mode'. Should either be @ for element, or * for modifier"
-    )
 
 /** VyxalRuntimeExceptions */
 class BadRegexException(regex: String)
