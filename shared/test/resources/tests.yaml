@@ -36,12 +36,20 @@
   - { in: ["foo", 3], out: "foo3" }
   - { in: [3, "foo"], out: "3foo" }
   - { in: [0.1, 0.2], out: 0.3 }
+  - in:
+      - !num 0ı2
+      - !num 3ı3
+    out: !num 3ı5
 
 "-":
   when given two numbers:
     - { in: [420, 69], out: 351 }
     - { in: [420, -69], out: 489 }
     - { in: [6.9, 4.2], out: 2.7 }
+    - in:
+        - !num 9ı5
+        - !num 3ı3
+      out: !num 6ı2
   when given a string and a number:
     - { in: ["Hello, World", 5], out: "Hello, World-----" }
     - { in: ["Hello, World", 5.2], out: "Hello, World-----" }
@@ -1242,6 +1250,10 @@
   - {in: ["Hello", "el"], out: "Hleeo"}
   - {in: ["", "stuff"], out: ""}
   - {in: ["stuff", ""], out: "stuff"}
+  - in:
+      - !num 1ı2
+      - !num 3ı5
+    out: !num 7_ı11
   
 
 "÷":
@@ -1250,6 +1262,10 @@
     - {in: [3, 0], out: 0}
     - {in: [0, 3], out: 0}
     - {in: [3, 3], out: 1}
+    - in:
+        - !num 18ı8
+        - !num 1ı1
+      out: !num 13ı5_
   Strings and Numbers:
     - {in: ["abc", 3], out: ["a", "b", "c"]}
     - {in: [3, "abc"], out: ["a", "b", "c"]}
@@ -1267,6 +1283,9 @@
 
 "±":
   - {in: [[-5, 0, 5]], out: [-1, 0, 1]}
+  - in:
+      - !num 0ı2
+    out: !num 0ı1
 
 "€":
   - {in: [[1, 2, 3, 4]], out: [[1, 2, 3, 4], [2, 3, 4], [3, 4], [4]]}
