@@ -49,7 +49,11 @@ object MiscHelpers:
         if aIter.length != bIter.length then
           return aIter.length.compare(bIter.length)
 
-        aIter.zip(bIter).map { case (a, b) => compare(a, b) }.find(_ != 0).getOrElse(0)
+        aIter
+          .zip(bIter)
+          .map { case (a, b) => compare(a, b) }
+          .find(_ != 0)
+          .getOrElse(0)
 
   // Returns the default value for a given type
   def defaultEmpty(a: VAny): VAny =
