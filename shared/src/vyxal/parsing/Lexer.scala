@@ -188,8 +188,7 @@ object Lexer:
 
     // Now, bind the move right tokens to the next token
 
-    val bound: ListBuffer[LitToken | (LitToken, Int)] =
-      ListBuffer[LitToken | (LitToken, Int)]()
+    val bound = ListBuffer[LitToken | (LitToken, Int)]()
     for token <- merged do
       if bound.nonEmpty then
         bound.last match
@@ -301,3 +300,13 @@ object Lexer:
     out.toString
   end sbcsify
 end Lexer
+
+/** Lexing exceptions */
+enum LexingException(message: String)
+    extends vyxal.VyxalException(s"LexingException: $message"):
+  case LeftoverCodeException(leftover: String)
+      extends LexingException(
+        s"Lexing completed with leftover code: '$leftover'"
+      )
+  case Fastparse(msg: String)
+      extends LexingException(s"Lexing with FastParse failed: $msg")

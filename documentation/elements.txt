@@ -287,13 +287,17 @@ h (Head | First Item) (non-vectorising)
 Keywords: head, first, first-item
 - a: lst -> a[0]
 ----------------------
-i (Index | Collect Unique Application Values | Enclose) (non-vectorising)
-Keywords: index, at, item-at, nth-item, collect-unique, enclose
+i (Index | Collect Unique Application Values | Enclose | Read Member) (non-vectorising)
+Keywords: index, at, item-at, nth-item, collect-unique, enclose, @<=
 - a: lst, b: num -> a[b]
 - a: lst, b: lst -> a[_] for _ in b
-- a: str, b: lst -> ''.join(a[i] for i in b)
+- a: str, b: lst[num] -> ''.join(a[i] for i in b)
+- a: str, b: lst[any] -> x[a] for x in b
+- a: lst, b: str -> x[b] for x in a
 - a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value.
 - a: str, b: str -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])
+- a: rec, b: str -> get member b of a
+- a: str, b: rec -> get member a of b
 ----------------------
 j (Join On) (non-vectorising)
 Keywords: join-on, join, join-with, join-by
@@ -751,7 +755,7 @@ Keywords: assign, assign-at, assign<>, assign<x>, a<x>=, a<x>=y, a<x>?=y, set-it
 - a: str, b: str, c: fun -> replace regex matches of pattern b in string a with the result of applying c to each match
 - a: str, b: fun, c: str -> replace regex matches of pattern c in string a with the result of applying b to each match
 - a: fun, b: str, c: str -> replace regex matches of pattern c in string b with the result of applying a to each match
-- a: obj, b: str, c: str -> a.b = c
+- a: rec, b: str, c: str -> a.b = c
 ----------------------
 Ḅ (Unique Prime Factors | Case Of) (vectorising)
 Trigraph: #,B
@@ -865,9 +869,9 @@ Keywords: sqrt, square-root
 Keywords: sum, /+, +/
 - a: lst -> sum of a
 ----------------------
-« (Bitshift Left | Read Member) (vectorising)
+« (Bitshift Left) (vectorising)
 Trigraph: #.<
-Keywords: bitwise-left-shift, left-shift, left-pad, pad-left, @<=
+Keywords: bitwise-left-shift, left-shift, left-pad, pad-left
 - a: num, b: num -> a << b
 - a: num, b: str -> b padded to length a with spaces prepended
 - a: str, b: num -> a padded to length b with spaces prepended

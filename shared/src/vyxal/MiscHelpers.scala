@@ -120,6 +120,8 @@ object MiscHelpers:
     case (a: String, b: String) =>
       val temp = a.length / 2
       a.slice(0, temp) + b + a.slice(temp, a.length)
+    case (a: VObject, b: String) => MiscHelpers.getObjectMember(a, b)
+    case (a: String, b: VObject) => MiscHelpers.getObjectMember(b, a)
   }
 
   val joinNothing: Monad = Monad.fill("joinNothing") {

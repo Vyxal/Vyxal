@@ -154,7 +154,7 @@ object Elements:
       "a: str, b: str, c: fun -> replace regex matches of pattern b in string a with the result of applying c to each match",
       "a: str, b: fun, c: str -> replace regex matches of pattern c in string a with the result of applying b to each match",
       "a: fun, b: str, c: str -> replace regex matches of pattern c in string b with the result of applying a to each match",
-      "a: obj, b: str, c: str -> a.b = c",
+      "a: rec, b: str, c: str -> a.b = c",
     ) {
       case (a: VObject, b: String, c) => MiscHelpers.setObjectMember(a, b, c)
       case (a: VObject, b: VList, c) =>
@@ -294,8 +294,8 @@ object Elements:
     addPart(
       Dyad,
       "«",
-      "Bitshift Left | Read Member",
-      List("bitwise-left-shift", "left-shift", "left-pad", "pad-left", "@<="),
+      "Bitshift Left",
+      List("bitwise-left-shift", "left-shift", "left-pad", "pad-left"),
       true,
       "a: num, b: num -> a << b",
       "a: num, b: str -> b padded to length a with spaces prepended",
@@ -306,8 +306,6 @@ object Elements:
       case (a: VNum, b: String) => StringHelpers.padLeft(b, a)
       case (a: String, b: VNum) => StringHelpers.padLeft(a, b)
       case (a: String, b: String) => StringHelpers.padLeft(a, b.length)
-      case (a: VObject, b: String) => MiscHelpers.getObjectMember(a, b)
-      case (a: String, b: VObject) => MiscHelpers.getObjectMember(b, a)
 
     },
     addPart(
@@ -1036,14 +1034,26 @@ object Elements:
     addFull(
       Dyad,
       "i",
-      "Index | Collect Unique Application Values | Enclose",
-      List("index", "at", "item-at", "nth-item", "collect-unique", "enclose"),
+      "Index | Collect Unique Application Values | Enclose | Read Member",
+      List(
+        "index",
+        "at",
+        "item-at",
+        "nth-item",
+        "collect-unique",
+        "enclose",
+        "@<=",
+      ),
       false,
       "a: lst, b: num -> a[b]",
       "a: lst, b: lst -> a[_] for _ in b",
-      "a: str, b: lst -> ''.join(a[i] for i in b)",
+      "a: str, b: lst[num] -> ''.join(a[i] for i in b)",
+      "a: str, b: lst[any] -> x[a] for x in b",
+      "a: lst, b: str -> x[b] for x in a",
       "a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value.",
       "a: str, b: str -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])",
+      "a: rec, b: str -> get member b of a",
+      "a: str, b: rec -> get member a of b",
     ) { MiscHelpers.index },
     addPart(
       Dyad,
@@ -2173,7 +2183,7 @@ object Elements:
         StringHelpers.r(b).findFirstIn(a.toString).isDefined
       case (a: VFun, b) => ListHelpers.reduce(b, a)
       case (a, b: VFun) => ListHelpers.reduce(a, b)
-      case (a: VList, b: VList) => VList.from(a ++ b).distinct
+      case (a: VList, b: VList) => VList.from(a ++ b.filterNot(a.contains(_)))
     },
     addPart(
       Triad,
@@ -2353,7 +2363,9 @@ object Elements:
       case (a: VList, b: (VNum | String)) => a.filter(_ != b)
       case (a: (VNum | String), b: VList) => b.filter(_ != a)
       case (a, b) =>
-        VList.from(ListHelpers.makeIterable(a) - ListHelpers.makeIterable(b))
+        val left = ListHelpers.makeIterable(a)
+        val right = ListHelpers.makeIterable(b)
+        VList.from(left.filterNot(right.contains(_)))
     },
     addPart(
       Dyad,
@@ -2649,7 +2661,7 @@ object Elements:
     ) {
       case (a: VNum, b: String) => StringHelpers.characterMultiply(a, b)
       case (a: String, b: VNum) => StringHelpers.characterMultiply(b, a)
-      case (a: VList, b: VList) => ListHelpers.setIntersection(a, b)
+      case (a: VList, b: VList) => VList.from(a.filter(b.contains(_)))
       case (a: VList, b: VNum) => ListHelpers.flattenByDepth(a, b)
     },
     addPart(

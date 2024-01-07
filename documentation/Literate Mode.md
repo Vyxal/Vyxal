@@ -54,6 +54,11 @@ Branches (`|`) can use any valid keyword for branches, as can `}`s. So `if do en
 
 As well as `lambda ... end`, lambdas can be written as `{code}`.
 
+### Calling Functions in Variables
+
+If a variable contains a function, you can call it by wrapping the variable name in
+backticks. For example, `` `f` `` will call the function stored in `f`.
+
 ### Comments
 
 Only `##` comments are avaliable at the moment. This is planned to change once it's figured out how to
