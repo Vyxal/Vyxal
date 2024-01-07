@@ -147,7 +147,7 @@ object jvm extends JvmCommon {
       val trigraphsFile = build.millSourcePath / "documentation" /
         "trigraphs.txt"
       val tableFile = build.millSourcePath / "documentation" / "table.md"
-      val trigraphsFile = build.millSourcePath / "documentation" / "info.txt"
+      val infoFile = build.millSourcePath / "documentation" / "info.txt"
       os.write.over(elementsFile, elements)
       os.write.over(trigraphsFile, trigraphs)
       os.write.over(tableFile, table)
