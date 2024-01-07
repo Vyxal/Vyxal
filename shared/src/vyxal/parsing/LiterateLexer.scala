@@ -531,7 +531,8 @@ private[parsing] object LiterateLexer:
         )
     )
 
-  def tokens[$: P]: P[List[LitToken]] = P(singleTokenGroup.rep).map(_.flatten.toList)
+  def tokens[$: P]: P[List[LitToken]] =
+    P(singleTokenGroup.rep).map(_.flatten.toList)
 
   def parseToken[$: P](
       tokenType: TokenType,
