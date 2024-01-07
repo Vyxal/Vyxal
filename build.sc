@@ -13,7 +13,7 @@ import mill.scalanativelib.api._
 trait VyxalModule extends ScalaModule with ScalafmtModule {
   override def scalaVersion = "3.3.1"
 
-  def vyxalVersion = "3.3.0"
+  def vyxalVersion = "3.5.0"
 
   def platform: String
 
@@ -137,18 +137,21 @@ object jvm extends JvmCommon {
   /** Generate elements.txt and trigraphs.txt */
   def docs =
     T.sources {
-      val (elements, trigraphs, table) = runMethod[(String, String, String)](
-        jvm.runClasspath(),
-        "vyxal.gen.GenerateDocs",
-        "generate",
-      )
+      val (elements, trigraphs, table, info) =
+        runMethod[(String, String, String)](
+          jvm.runClasspath(),
+          "vyxal.gen.GenerateDocs",
+          "generate",
+        )
       val elementsFile = build.millSourcePath / "documentation" / "elements.txt"
       val trigraphsFile = build.millSourcePath / "documentation" /
         "trigraphs.txt"
       val tableFile = build.millSourcePath / "documentation" / "table.md"
+      val trigraphsFile = build.millSourcePath / "documentation" / "info.txt"
       os.write.over(elementsFile, elements)
       os.write.over(trigraphsFile, trigraphs)
       os.write.over(tableFile, table)
+      os.write.over(infoFile, info)
 
       Seq(
         PathRef(elementsFile),

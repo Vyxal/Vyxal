@@ -8,8 +8,39 @@ import vyxal.SyntaxInfo
 
 /** For generating elements.txt and trigraphs.txt. See build.sc */
 private object GenerateDocs:
-  def generate(): (String, String, String) =
-    (elementsTxt(), trigraphs(), elementsMarkdown())
+  def generate(): (String, String, String, String) =
+    (elementsTxt(), trigraphs(), elementsMarkdown(), infoTxt())
+
+  /** Generate the text for info.txt */
+  def infoTxt(): String =
+    val sb = StringBuilder()
+    Elements.elements.values.toSeq
+      .sortBy { elem =>
+        // Have to use tuple in case of digraphs
+        (
+          Lexer.Codepage.indexOf(elem.symbol.charAt(0)) +
+            (if "#∆øÞ".contains(elem.symbol.charAt(0)) then 400 else 0),
+          Lexer.Codepage.indexOf(elem.symbol.substring(1)),
+        )
+      }
+      .foreach {
+        case Element(
+              symbol,
+              name,
+              keywords,
+              arity,
+              vectorises,
+              overloads,
+              impl,
+            ) => sb ++= s"$symbol ==> $name\n"
+      }
+
+    Modifiers.modifiers.foreach {
+      case (name, info) => sb ++= s"$name ==> ${info.description}\n"
+    }
+
+    sb.toString
+  end infoTxt
 
   /** Generate the text for elements.txt */
   def elementsTxt(): String =
