@@ -34,7 +34,7 @@ O ==> Ord/Chr
 P ==> Prefixes
 Q ==> Remove At | Regex Groups
 R ==> Reduce by Function Object | Dyadic Range | Regex Match
-S ==> Sort ascending
+S ==> Sort ascending | Sort by Function Object 
 T ==> Triple | Contains Only Alphabet | Transpose
 U ==> Uninterleave
 V ==> Vectorised Reverse | Complement | Title Case
@@ -45,7 +45,7 @@ Z ==> Zip
 \ ==> scan
 ^ ==> Reverse Stack
 _ ==> Pop and Discard | Imaginary number sep
-` ==> ⁙fg -> f g f 
+` ==> apply to every second item
 a ==> Any Truthy | Any() | Is Uppercase?
 b ==> Convert To Binary
 c ==> Contains
@@ -100,7 +100,7 @@ x ==> Recursion | Recurse
 y ==> To Base | Regex Find
 z ==> Inclusive zero Range | Is Lowercase
 Ȧ ==> Absolute Value | Keep Alphabet Characters
-Ḃ ==> Execute lambda without popping | Evaluate as Vyxal without popping | Boolean Mask | Is 1?
+Ḃ ==> Execute lambda without popping | Evaluate as Vyxal without popping| Boolean Mask | Is 1?
 Ċ ==> Counts
 Ḋ ==> Divides? | Append Spaces | Remove Duplicates by Function
 Ė ==> Execute lambda | Evaluate as Vyxal | Power with base 10
@@ -134,7 +134,7 @@ z ==> Inclusive zero Range | Is Lowercase
 ȯ ==> Boolify
 ṗ ==> List Partitions | Integer Partitions
 ṙ ==> Rotate Right
-ṡ ==> Sort by Function Object | Partition by Numbers
+ṡ ==> Split into N pieces
 ṫ ==> Last Extract | Tail Extract
 ẋ ==> Cartesian Power | Regex Search for Match
 ƒ ==> Partition After Truthy Indices
@@ -166,7 +166,7 @@ z ==> Inclusive zero Range | Is Lowercase
 ⊕ ==> set xor
 ⊝ ==> set difference
 ⚮ ==> Palindromise
-⁾ ==> Flatten By Depth | Character Multiply
+⁾ ==> Flatten By Depth | Character Multiply | Partition by Numbers
 √ ==> Square Root
 ∑ ==> Sum
 « ==> Bitshift Left
@@ -248,4 +248,4 @@ lambda to newline ⋊
 dip ⎇
 Loop While Unique ↻
 ⊙ = fine grained stack access - 1 2 3 4 ⊙1100 + W -> [3, 3, 4]
-⁙ = 
+⁙ = a,b,c -> c,a,b
