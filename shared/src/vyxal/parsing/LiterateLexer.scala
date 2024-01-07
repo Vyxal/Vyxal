@@ -127,7 +127,7 @@ private[parsing] object LiterateLexer:
     P(("0" | (CharIn("1-9") ~~ CharsWhileIn("_0-9", 0))).!)
   def litDigits[$: P]: P[String] = P(CharsWhileIn("_0-9", 0).!)
   def litDecimal[$: P]: P[String] =
-    ("-".? ~~ (litInt ~~ ("." ~~ litDigits).? | "." ~~ litDigits)).!
+    P(("-".? ~~ (litInt ~~ ("." ~~ litDigits).? | "." ~~ litDigits)).!)
   def litNumber[$: P]: P[LitToken] =
     parseToken(
       Number,
@@ -512,15 +512,27 @@ private[parsing] object LiterateLexer:
   def unmodSymbol[$: P]: P[LitToken] =
     parseToken(OriginalSymbol, "$." ~~/ AnyChar.!)
 
-  def singleToken[$: P]: P[LitToken] =
+  /** This is split from singleToken to prevent stack overflows when Fastparse's
+    * `|` macro is expanded
+    */
+  def singleTokenSplit1[$: P]: P[LitToken] =
     P(
       lambdaBlock | extensionKeyword | unmodSymbol | defineObj |
         defineModBlock | defineElemBlock | specialLambdaBlock | contextIndex |
-        functionCall | modifierSymbol | elementSymbol | litGetVariable |
-        litSetVariable | litSetConstant | litAugVariable | elementKeyword |
-        negatedElementKeyword | tokenMove | modifierKeyword | structOpener |
-        otherKeyword | litBranch | litStructClose | litNumber | litString |
-        normalGroup
+        functionCall | modifierSymbol | elementSymbol
+    )
+
+  def litVarToken[$: P]: P[LitToken] =
+    P(litGetVariable | litSetVariable | litSetConstant | litAugVariable)
+
+  def singleToken[$: P]: P[LitToken] =
+    P(
+      singleTokenSplit1 | litVarToken | elementKeyword | negatedElementKeyword |
+        tokenMove | modifierKeyword |
+        P(
+          structOpener | otherKeyword | litBranch | litStructClose | litNumber |
+            litString | normalGroup
+        )
     )
 
   def singleTokenGroup[$: P]: P[Seq[LitToken]] =
