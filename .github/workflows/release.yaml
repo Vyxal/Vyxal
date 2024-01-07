@@ -11,7 +11,6 @@ env:
   LINUX_NAME: vyxal-linux
   WINDOWS_NAME: vyxal-windows
   MACOS_NAME: vyxal-macos
-  JAVA_OPTS: ${{ vars.JAVA_OPTS }}
 
 jobs:
   native-exes:
@@ -41,7 +40,7 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
       - name: Build executable
-        run: ./mill --no-server native.nativeLink
+        run: ./millnative.nativeLink
       - uses: olegtarasov/get-tag@v2.1.2
         id: tagName
       - name: Name executable (Linux/MacOS)
@@ -70,7 +69,7 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
       - name: Build jar
-        run: ./mill --no-server jvm.assembly
+        run: ./milljvm.assembly
 
       - name: Make artifacts folder
         run: |
