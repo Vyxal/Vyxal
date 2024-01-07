@@ -1,0 +1,313 @@
+🌮 ==> Taco
+🍪 ==> Cookie
+ඞ ==> ඞ
+! ==> Factorial
+$ ==> Swap
+% ==> Modulo | String Formatting
+& ==> Append
+' ==> Join Sublists on Spaces then Newlines (Element Form of ')
+* ==> Exponentation | Remove Nth Letter | Trim
++ ==> Addition
+, ==> Print
+- ==> Subtraction
+: ==> Duplicate
+; ==> Pair
+< ==> Less Than
+= ==> Equals
+> ==> Greater Than
+? ==> Get Input
+@ ==> Cumulative Sums
+A ==> All Truthy | All() | Is Vowel?
+B ==> Convert From Binary
+C ==> Count
+D ==> Triplicate
+E ==> 2 Power | Evaluate
+F ==> Filter by Function | From Base
+G ==> Monadic Maximum | Dyadic Maximum | Generate From Function | Vectorised Maximum
+H ==> Hexadecimal | To Hexadecimal
+I ==> Interleave / Reject By Function
+J ==> Merge
+K ==> Factors | Is Numeric?
+L ==> Length | Length of List
+M ==> Map Function | Mold Lists | Multiplicity
+N ==> Negation | Swap Case | First Non-Negative Integer Where Predicate is True
+O ==> Ord/Chr
+P ==> Prefixes
+Q ==> Remove At | Regex Groups
+R ==> Reduce by Function Object | Dyadic Range | Regex Match | Set Union
+S ==> Sort ascending
+T ==> Triple | Contains Only Alphabet | Transpose
+U ==> Uninterleave
+V ==> Vectorised Reverse | Complement | Title Case
+W ==> Wrap
+X ==> Return Statement
+Y ==> List Repeat
+Z ==> Zip
+\ ==> Dump
+^ ==> Reverse Stack
+_ ==> Pop and Discard
+` ==> Length of Stack
+a ==> Any Truthy | Any() | Is Uppercase?
+b ==> Convert To Binary
+c ==> Contains
+d ==> Double
+e ==> Is Even / Split on Newlines
+f ==> Flatten
+g ==> Monadic Minimum | Dyadic Minimum | Generate From Function (Dyadic) | Vectorised Minimum
+h ==> Head | First Item
+i ==> Index | Collect Unique Application Values | Enclose | Read Member
+j ==> Join On
+k1 ==> 1000
+k2 ==> 10000
+k3 ==> 100000
+k4 ==> 1000000
+k6 ==> Hex Digits (lowercase)
+kA ==> Uppercase Alphabet
+kB ==> Uppercase and lowercase
+kD ==> Lines
+kF ==> FizzBuzz
+kH ==> Hello, World!
+kL ==> Lowercase and Uppercase Alphabet
+kP ==> Printable Ascii
+kR ==> Digits, Uppercase, Lowercase
+kZ ==> Uppercase Alphabet Reversed
+k^ ==> Hex Digits (uppercase)
+ka ==> Lowercase Alphabet
+kb ==> Buzz
+kd ==> Digits
+ke ==> Euler's Number
+kf ==> Fizz
+kg ==> Phi
+kh ==> Hello World
+ki ==> Pi
+kl ==> Upper and Lowercase Alphabet Reversed
+ko ==> Octal Digits
+kp ==> Punctuation
+kr ==> Digits, Lowercase, Uppercase
+kz ==> Lowercase Alphabet Reversed
+l ==> Length of Each Item
+m ==> Get Context Variable M
+n ==> Get Context Variable N
+o ==> Overlap | Overlapping Slices
+p ==> Prepend
+q ==> Quotify | Nth Prime
+r ==> Replace
+s ==> Split
+t ==> Tail | Last Item
+u ==> Uniquify
+v ==> Decrement
+w ==> Wrap Singleton
+x ==> Recursion | Recurse
+y ==> To Base | Regex Find
+z ==> Inclusive zero Range | Is Lowercase
+Ȧ ==> Absolute Value | Keep Alphabet Characters
+Ḃ ==> Execute lambda without popping | Evaluate as Vyxal without popping | Boolean Mask | Is 1?
+Ċ ==> Set XOR
+Ḋ ==> Divides? | Append Spaces | Remove Duplicates by Function
+Ė ==> Execute lambda | Evaluate as Vyxal | Power with base 10
+Ḟ ==> Find
+Ġ ==> Group by Function Result | Greatest Common Divisor | Find all overlapping regex matches
+Ḣ ==> Head Remove | Behead
+İ ==> Drop | Collect While Unique | Complex Number
+Ŀ ==> Logarithm | Scan Fixpoint | Same Length? | Length Equals?
+Ṁ ==> Modular | Matrix Multiply | Regex Full Match?
+Ṅ ==> Is Prime? | Quine Cheese
+Ȯ ==> Over
+Ṗ ==> Permutations
+Ṙ ==> Rotate Left
+Ṡ ==> Vectorised Sums | Integer Division
+Ṫ ==> Init
+Ẇ ==> Wrap to Length | Predicate Slice From 0
+Ẋ ==> Cartesian Product
+ι ==> Length 0-Range
+κ ==> Length 1-Range
+ȧ ==> Absolute Difference | Apply to Neighbours
+ḃ ==> Bit | Parity | Last Half of String
+ċ ==> N Choose K | Character Set Equal? | Repeat Until No Change
+ḋ ==> Dot Product | To Bijective Base | First Index Where Predicate Truthy
+ė ==> Reciprocal | Remove Whitespace
+ḟ ==> Prime Factors | Remove Alphabet
+ġ ==> Group By Consecutive Items
+ḣ ==> Head Extract
+ŀ ==> Transliterate | Call While
+ṁ ==> Mirror
+ṅ ==> Palindromise
+ȯ ==> Boolify
+ṗ ==> List Partitions | Integer Partitions
+ṙ ==> Rotate Right
+ṡ ==> Sort by Function Object | Partition by Numbers | Set Difference
+ṫ ==> Last Extract | Tail Extract
+ẋ ==> Cartesian Power | Regex Search for Match
+ƒ ==> Partition After Truthy Indices
+Θ ==> Zero Slice Until
+Φ ==> Slice from 1
+§ ==> Print without newline
+Ạ ==> Assign
+Ḅ ==> Unique Prime Factors | Case Of
+Ḥ ==> Head Extract Under
+Ị ==> Insert
+Ḷ ==> Sort by Length | Regex Escape
+Ṃ ==> -1 Power Of | Split on Spaces
+Ọ ==> Print without popping
+Ṛ ==> Reverse
+Ṣ ==> Sublists
+Ṭ ==> Trim / Cumulative Reduce
+… ==> Increment Twice | Vectorised Head
+≤ ==> Less Than Or Equal To
+≥ ==> Greater Than Or Equal To
+≠ ==> Not Equal
+₌ ==> Exactly Equals
+⁺ ==> Powerset
+⁻ ==> Cube | Threes
+⁾ ==> Set Intersection | Flatten By Depth | Character Multiply
+√ ==> Square Root
+∑ ==> Sum
+« ==> Bitshift Left
+» ==> Bitshift Right
+⌐ ==> Bitwise Not
+∴ ==> Bitwise And
+∵ ==> Bitwise Or
+⊻ ==> Bitwise Xor
+₀ ==> Ten
+₁ ==> Sixteen
+₂ ==> Twenty-six
+₃ ==> Thirty-two
+₄ ==> Sixty-four
+₅ ==> One hundred
+₆ ==> One hundred twenty-eight
+₇ ==> Two hundred fifty-six
+₈ ==> -1
+₉ ==> Empty string
+½ ==> Halve
+ʀ ==> Exclusive Zero Range | Lowercase
+ɾ ==> Inclusive One Range | Uppercase
+¯ ==> Deltas
+× ==> Multiplication
+÷ ==> Divide | Split
+£ ==> Set Register
+¥ ==> Get Register
+← ==> Rotate Stack Left
+↑ ==> Grade Up
+→ ==> Rotate Stack Right
+↓ ==> Grade Down
+± ==> Sign
+† ==> Length of Consecutive Groups
+Π ==> Product
+¬ ==> Logical Not
+∧ ==> Logical And
+∨ ==> Logical Or
+⁰ ==> First Input
+¹ ==> Second Input
+² ==> Square | Pairs
+⌈ ==> Ceiling
+⌊ ==> Floor
+Ɠ ==> Maximum without popping
+ɠ ==> Minimum without popping
+„ ==> Join on Spaces | Is Negative? (Used when not closing a string)
+” ==> Join On Newlines | Pad Binary to Mod 8 | Context if 1
+ð ==> Space
+€ ==> Suffixes
+“ ==> Join on Nothing | First Positive Integer | Is Alphanumeric | Insignificant?
+¶ ==> Newline
+ᶿ ==> Bifuricate
+ᶲ ==> Stringify
+• ==> Asterisk
+≈ ==> All Equal?
+ꜝ ==> Increment
+#|para-apply ==> [Internal Use] Parallel Apply (Element Form)
+#|minimum-by ==> [Internal Use] Minimum By (Element Form)
+#|map-prefixes ==> [Internal Use] Map Prefixes (Element Form)
+#|map-suffixes ==> [Internal Use] Map Suffixes (Element Form)
+#|reduce-cols ==> [Internal Use] Reduce Columns (Element Form)
+#|maximum-by ==> [Internal Use] Maximum By (Element Form)
+#|vscan ==> [Internal Use] Vectorised Scan (Element Form)
+#|para-apply-wrap ==> [Internal Use] Parallel Apply Wrap (Element Form)
+#|apply-to-register ==> [Internal Use] Apply to Register (Element Form)
+#|vec-dump ==> [Internal Use] Map Dump (Element Form)
+#|dip ==> [Internal Use] Dip (Element Form)
+#|invar ==> [Internal Use] Invariant (Element Form)
+#|all-neigh ==> [Internal Use] All Neighbours (Element Form)
+#? ==> All Inputs
+#C ==> Compress String Using Dictionary
+#Q ==> Exit | Quit
+#X ==> Loop Break
+#c ==> Base-252 Compress String or Number
+#v ==> [Internal Use] Vectorise (Element Form) 
+#x ==> Loop Continue
+#~ ==> [Internal Use] Apply Without Popping (Element Form)
+#¤ ==> Number of Context Parameters
+#¿ ==> Number of Inputs
+∆q ==> Prime Exponents
+∆ḟ ==> All Prime Exponents
+ø⁾ ==> Surround
+Þ0 ==> Zero Pad
+ÞO ==> Grid Neighbours (Wrap Around)
+ÞP ==> Set of All Primes
+ÞT ==> Transpose Safe
+Þi ==> Multidimensional Index
+Þo ==> Grid Neighbours
+ÞĊ ==> Cycle | Is Positive?
+ÞȮ ==> Grid Neighbours (Diagonals, Wrap Around)
+ÞẊ ==> Cartesian Product Unsafe
+Þι ==> 0-Lift
+Þκ ==> 1-Lift
+Þċ ==> Multi-Set XOR
+Þṅ ==> Multi-Set Difference
+Þȯ ==> Grid Neighbours (Diagonals)
+ÞẠ ==> Multidimensional Assignment
+ÞṂ ==> Matrix Inverse
+ÞṆ ==> Set of Natural Numbers
+ÞṬ ==> Set of Integers
+Þ⁾ ==> Multi-Set Intersection
+Þ÷ ==> Into N Pieces | Split Into N Pieces
+ᵜ ==> Scan elements to the left until a newline is found. Push a
+lambda with all of the scanned elements
+Ч ==> Turn the next four elements (whether that be a structure/modifier/element) into a lambda
+ᵈ ==> Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda
+ᶤ ==> Find the first index where an element is truthy
+∦ ==> Parallel apply two elements to the top of the stack
+and wrap the result in a list
+ᵞ ==> Check if a function is invariant under a transformation / vertical scan
+ᵏ ==> Map an element over the groups formed by identical items.
+ⁿ ==> Minimum By Element
+ᵇ ==> Apply a 2+ arity element to the stack without popping
+Remove duplicates from a list by an element
+ᴴ ==> Apply element only to the head of list
+ᶪ ==> Loop While Unique - similar to ᶨ, but doesn't collect
+ᵐ ==> Maximum By Element
+ᶳ ==> Sort By Element / Scanl
+ᵂ ==> Stash the top of the stack temporarily, and then apply
+the function. Finally, push the stashed value
+э ==> Turn the next three elements (whether that be a structure/modifier/element) into a lambda
+ᵖ ==> Map an element over the prefixes of a list
+ϩ ==> Turn the next two elements (whether that be a structure/modifier/element) into a lambda
+ᶨ ==> Loop and Collect While Unique
+ᵘ ==> Run func on the prev result until the result no longer changes
+returning all intermediate results
+Given a dyadic function, apply the function to all overlapping pairs of elements
+and test if all results are equal
+ᵃ ==> To each overlapping pair, reduce it by an element
+Apply a dyadic element for all pairs of neighboring elements.
+Count the number of truthy elements in a list under a mondaic element
+ᶻ ==> Given a dyadic function, zip two lists and reduce each by f
+ and then check if all results are equal.
+Given a monadic function, the inverse of monadic /.
+Filters where the function is falsey
+¿ ==> Pop the top of the stack, and, if it's truthy, apply a function
+ᵉ ==> Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda
+ᴿ ==> Apply a function to the register. Essentially, push
+the register value to the stack, apply the function, and
+then pop back into the register
+ᴳ ==> Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
+⸠ ==> Turn the next element (whether that be a structure/modifier/element) into a lambda
+ᵗ ==> Map a function over the top of the stack, treating each iteration
+as if it were a stack of items. Essentially, dump before mapping
+
+ᵛ ==> Vectorises
+ᶜ ==> Reduce columns of a 2d list by a function
+Map an element over suffixes
+ᶠ ==> Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda
+ᵒ ==> Outer product
+/ ==> Reduce a list by an element
+∥ ==> Parallel apply two elements to the top of the stack
+ᵡ ==> Scan a function until it reaches a fixed point
