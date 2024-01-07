@@ -279,7 +279,7 @@ private[parsing] object LiterateLexer:
           withRange(",".! | word.filter(isLambdaParam)).rep ~ litBranch
         ).? ~
         (!(litStructClose | structureSingleClose | structureDoubleClose |
-          structureAllClose) ~ NoCut(singleToken)).rep.map(_.flatten) ~
+          structureAllClose) ~ NoCut(singleTokenGroup)).rep.map(_.flatten) ~
         (End | litStructClose | structureSingleClose | structureDoubleClose |
           &(structureAllClose))
     ).map {
@@ -314,7 +314,7 @@ private[parsing] object LiterateLexer:
     P(
       withRange("{".! | Common.lambdaOpen | word.filter(lambdaOpenerSet).!) ~
         (!(litStructClose | structureSingleClose | structureDoubleClose |
-          structureAllClose) ~ NoCut(singleToken)).rep.map(_.flatten) ~
+          structureAllClose) ~ NoCut(singleTokenGroup)).rep.map(_.flatten) ~
         (End | litStructClose | structureSingleClose | structureDoubleClose |
           &(structureAllClose))
     ).map {
@@ -466,7 +466,7 @@ private[parsing] object LiterateLexer:
   def list[$: P]: P[Seq[LitToken]] =
     P(
       parseToken(ListOpen, "[".!) ~~/
-        (litBranch | !"]" ~ singleToken ~ litBranch.?).rep ~
+        (litBranch | !"]" ~ singleTokenGroup ~ litBranch.?).rep ~
         parseToken(ListClose, "]".!)
     ).map {
       case (startTok, elems, endTok) =>
@@ -512,22 +512,26 @@ private[parsing] object LiterateLexer:
   def unmodSymbol[$: P]: P[LitToken] =
     parseToken(OriginalSymbol, "$." ~~/ AnyChar.!)
 
-  def singleToken[$: P]: P[Seq[LitToken]] =
+  def singleToken[$: P]: P[LitToken] =
     P(
-      list | unpackVar |
-        (lambdaBlock | extensionKeyword | unmodSymbol | defineObj |
-          defineModBlock | defineElemBlock | specialLambdaBlock | contextIndex |
-          functionCall | modifierSymbol | elementSymbol | litGetVariable |
-          litSetVariable | litSetConstant | litAugVariable | elementKeyword |
-          negatedElementKeyword | tokenMove | modifierKeyword | structOpener |
-          otherKeyword | litBranch | litStructClose | litNumber | litString |
-          normalGroup).map(Seq(_)) | rawCode |
+      lambdaBlock | extensionKeyword | unmodSymbol | defineObj |
+        defineModBlock | defineElemBlock | specialLambdaBlock | contextIndex |
+        functionCall | modifierSymbol | elementSymbol | litGetVariable |
+        litSetVariable | litSetConstant | litAugVariable | elementKeyword |
+        negatedElementKeyword | tokenMove | modifierKeyword | structOpener |
+        otherKeyword | litBranch | litStructClose | litNumber | litString |
+        normalGroup
+    )
+
+  def singleTokenGroup[$: P]: P[Seq[LitToken]] =
+    P(
+      list | unpackVar | singleToken.map(Seq(_)) | rawCode |
         SBCSLexer.token.map((token) =>
           Seq(LitToken(token.tokenType, token.value, token.range))
         )
     )
 
-  def tokens[$: P]: P[List[LitToken]] = P(singleToken.rep).map(_.flatten.toList)
+  def tokens[$: P]: P[List[LitToken]] = P(singleTokenGroup.rep).map(_.flatten.toList)
 
   def parseToken[$: P](
       tokenType: TokenType,
