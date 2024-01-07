@@ -138,7 +138,7 @@ object jvm extends JvmCommon {
   def docs =
     T.sources {
       val (elements, trigraphs, table, info) =
-        runMethod[(String, String, String)](
+        runMethod[(String, String, String, String)](
           jvm.runClasspath(),
           "vyxal.gen.GenerateDocs",
           "generate",
