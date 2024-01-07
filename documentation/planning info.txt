@@ -1,0 +1,251 @@
+⚇ ==> two byte number
+῟ ==> two char string
+! ==> Factorial
+$ ==> Swap
+% ==> Modulo | String Formatting
+& ==> Append
+' ==> Join Sublists on Spaces then Newlines (Element Form of ')
+* ==> Exponentation | Remove Nth Letter | Trim
++ ==> Addition
+, ==> Print
+- ==> Subtraction
+: ==> Duplicate
+; ==> Pair
+< ==> Less Than
+= ==> Equals
+> ==> Greater Than
+? ==> Get Input
+@ ==> Print without newline
+A ==> All Truthy | All() | Is Vowel?
+B ==> Convert From Binary
+C ==> Count
+D ==> Triplicate
+E ==> 2 Power | Evaluate
+F ==> Filter by Function | From Base
+G ==> Monadic Maximum | Dyadic Maximum | Generate From Function | Vectorised Maximum
+H ==> Hexadecimal | To Hexadecimal
+I ==> Interleave / Reject By Function
+J ==> Merge
+K ==> Factors | Is Numeric?
+L ==> Length | Length of List
+M ==> Map Function | Mold Lists | Multiplicity
+N ==> Negation | Swap Case | First Non-Negative Integer Where Predicate is True
+O ==> Ord/Chr
+P ==> Prefixes
+Q ==> Remove At | Regex Groups
+R ==> Reduce by Function Object | Dyadic Range | Regex Match
+S ==> Sort ascending
+T ==> Triple | Contains Only Alphabet | Transpose
+U ==> Uninterleave
+V ==> Vectorised Reverse | Complement | Title Case
+W ==> Wrap
+X ==> Return Statement
+Y ==> List Repeat
+Z ==> Zip
+\ ==> scan
+^ ==> Reverse Stack
+_ ==> Pop and Discard | Imaginary number sep
+` ==> ⁙fg -> f g f 
+a ==> Any Truthy | Any() | Is Uppercase?
+b ==> Convert To Binary
+c ==> Contains
+d ==> Double
+e ==> Is Even / Split on Newlines
+f ==> Flatten
+g ==> Monadic Minimum | Dyadic Minimum | Generate From Function (Dyadic) | Vectorised Minimum
+h ==> Head | First Item
+i ==> Index | Collect Unique Application Values | Enclose | Read Member
+j ==> Join On
+k1 ==> 1000
+k2 ==> 10000
+k3 ==> 100000
+k4 ==> 1000000
+k6 ==> Hex Digits (lowercase)
+kA ==> Uppercase Alphabet
+kB ==> Uppercase and lowercase
+kD ==> Lines
+kF ==> FizzBuzz
+kH ==> Hello, World!
+kL ==> Lowercase and Uppercase Alphabet
+kP ==> Printable Ascii
+kR ==> Digits, Uppercase, Lowercase
+kZ ==> Uppercase Alphabet Reversed
+k^ ==> Hex Digits (uppercase)
+ka ==> Lowercase Alphabet
+kb ==> Buzz
+kd ==> Digits
+ke ==> Euler's Number
+kf ==> Fizz
+kg ==> Phi
+kh ==> Hello World
+ki ==> Pi
+kl ==> Upper and Lowercase Alphabet Reversed
+ko ==> Octal Digits
+kp ==> Punctuation
+kr ==> Digits, Lowercase, Uppercase
+kz ==> Lowercase Alphabet Reversed
+l ==> Length of Each Item
+m ==> Get Context Variable M
+n ==> Get Context Variable N
+o ==> Overlap | Overlapping Slices
+p ==> Prepend
+q ==> Quotify | Nth Prime
+r ==> Replace
+s ==> Split
+t ==> Tail | Last Item
+u ==> Uniquify
+v ==> Decrement
+w ==> Wrap Singleton
+x ==> Recursion | Recurse
+y ==> To Base | Regex Find
+z ==> Inclusive zero Range | Is Lowercase
+Ȧ ==> Absolute Value | Keep Alphabet Characters
+Ḃ ==> Execute lambda without popping | Evaluate as Vyxal without popping | Boolean Mask | Is 1?
+Ċ ==> Counts
+Ḋ ==> Divides? | Append Spaces | Remove Duplicates by Function
+Ė ==> Execute lambda | Evaluate as Vyxal | Power with base 10
+Ḟ ==> Find
+Ġ ==> Group by Function Result | Greatest Common Divisor | Find all overlapping regex matches
+Ḣ ==> Head Remove | Behead
+İ ==> Drop | Collect While Unique | Complex Number
+Ŀ ==> Logarithm | Scan Fixpoint | Same Length? | Length Equals?
+Ṁ ==> Modular | Matrix Multiply | Regex Full Match?
+Ṅ ==> Is Prime? | Quine Cheese
+Ȯ ==> Over
+Ṗ ==> Permutations
+Ṙ ==> Reverse
+Ṡ ==> Vectorised Sums | Integer Division
+Ṫ ==> Init
+Ẇ ==> Wrap to Length | Predicate Slice From 0
+Ẋ ==> Cartesian Product
+ι ==> Length 0-Range
+κ ==> Length 1-Range
+ȧ ==> Absolute Difference | Apply to Neighbours
+ḃ ==> Bit | Parity | Last Half of String
+ċ ==> N Choose K | Character Set Equal? | Repeat Until No Change
+ḋ ==> Dot Product | To Bijective Base | First Index Where Predicate Truthy
+ė ==> Reciprocal | Remove Whitespace
+ḟ ==> Prime Factors | Remove Alphabet
+ġ ==> Group By Consecutive Items
+ḣ ==> Head Extract
+ŀ ==> Transliterate | Call While
+ṁ ==> Mirror
+ṅ ==> into two pieces
+ȯ ==> Boolify
+ṗ ==> List Partitions | Integer Partitions
+ṙ ==> Rotate Right
+ṡ ==> Sort by Function Object | Partition by Numbers
+ṫ ==> Last Extract | Tail Extract
+ẋ ==> Cartesian Power | Regex Search for Match
+ƒ ==> Partition After Truthy Indices
+Θ ==> Zero Slice Until
+Φ ==> Slice from 1
+§ ==> cumulative sums
+Ạ ==> Assign
+Ḅ ==> Unique Prime Factors | Case Of
+Ḥ ==> Head Extract Under
+Ị ==> Insert
+Ḷ ==> Sort by Length | Regex Escape
+Ṃ ==> -1 Power Of | Split on Spaces
+Ọ ==> Print without popping
+Ṛ ==> Rotate Left
+Ṣ ==> Sublists
+Ṭ ==> Trim / Cumulative Reduce
+… ==> Increment Twice | Vectorised Head
+┉ ==> dump
+⌙ ==> vectorised not
+⚃ ==> random choice
+≤ ==> Less Than Or Equal To
+≥ ==> Greater Than Or Equal To
+≠ ==> Not Equal
+₌ ==> Exactly Equals
+⁺ ==> Powerset
+⁻ ==> Cube | Threes
+∩ ==> Set Intersection
+∪ ==> Set union
+⊕ ==> set xor
+⊝ ==> set difference
+⚮ ==> Palindromise
+⁾ ==> Flatten By Depth | Character Multiply
+√ ==> Square Root
+∑ ==> Sum
+« ==> Bitshift Left
+» ==> Bitshift Right
+⌐ ==> Bitwise Not
+∴ ==> Bitwise And
+∵ ==> Bitwise Or
+⊻ ==> Bitwise Xor
+₀ ==> Ten
+₁ ==> Sixteen
+₂ ==> Twenty-six
+₃ ==> Thirty-two
+₄ ==> Sixty-four
+₅ ==> One hundred
+₆ ==> One hundred twenty-eight
+₇ ==> Two hundred fifty-six
+₈ ==> -1
+₉ ==> Empty string
+½ ==> Halve
+ʀ ==> Exclusive Zero Range | Lowercase
+ɾ ==> Inclusive One Range | Uppercase
+¯ ==> Deltas
+× ==> Multiplication
+÷ ==> Divide | Split
+£ ==> Set Register
+¥ ==> Get Register
+← ==> Rotate Stack Left
+↑ ==> Grade Up
+→ ==> Rotate Stack Right
+↓ ==> Grade Down
+± ==> Sign
+† ==> Length of Consecutive Groups
+Π ==> Product
+¬ ==> Logical Not
+∧ ==> Logical And
+∨ ==> Logical Or
+⁰ ==> First Input
+¹ ==> Second Input
+² ==> Square | Pairs
+⌈ ==> Ceiling
+⌊ ==> Floor
+Ɠ ==> Maximum without popping
+ɠ ==> Minimum without popping
+„ ==> Join on Spaces | Is Negative? (Used when not closing a string)
+” ==> Join On Newlines | Pad Binary to Mod 8 | Context if 1
+ð ==> Space
+€ ==> Suffixes
+“ ==> Join on Nothing | First Positive Integer | Is Alphanumeric | Insignificant?
+¶ ==> Newline
+ᶿ ==> Bifuricate
+ᶲ ==> Stringify
+• ==> Asterisk
+≈ ==> All Equal?
+ꜝ ==> Increment
+Both (new) (any) ⎂
+Filter from stack / Apply Without Popping (2+) ~
+First Index Where (1) / Apply to Neighbours (2) ⇝
+collect until no change (1) / zip with (2) ∯
+Loop and Collect While Unique (1) / Outer Product (2) ⊠
+Key (1) / scan (2) \
+Sort by (1) ß
+invariant (1) / Reduce Columns (2) ≟
+filter by (1) / fold (2+) /
+Apply to register (any) ₾
+map as stacks (any) ◌
+vectorise (any) ▼
+parallel apply (any) ∥
+parallel apply and wrap (any) ∦
+conditional (any) ¿
+monadic 1mda ⸠
+monadic 2mda ϩ
+monadic 3mda э
+monadic 4mda Ч
+dyadic 1mda ♳
+dyadic 2mda ♴
+dyadic 3mda ♵
+dyadic 4mda ♶
+lambda to newline ⋊
+dip ⎇
+Loop While Unique ↻
+⊙ = fine grained stack access - 1 2 3 4 ⊙1100 + W -> [3, 3, 4]
+⁙ = 
