@@ -37,7 +37,7 @@ object MiscHelpers:
 
   def compare(a: VAny, b: VAny)(using ctx: Context): Int =
     (a, b) match
-      case (a: VNum, b: VNum) => a.real.compare(b.real)
+      case (a: VNum, b: VNum) => a.compare(b)
       case (a: String, b: VNum) => a.compareTo(b.toString)
       case (a: VNum, b: String) => a.toString.compareTo(b)
       case (a: String, b: String) => a.compareTo(b)

@@ -57,7 +57,9 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
     VList.from(Inclusive(this, end, step))
 
   override def compare(that: VNum): Int =
-    this.underlying.real.compare(that.underlying.real)
+    this.underlying.real.compare(that.underlying.real) match
+      case 0 => this.underlying.imag.compare(that.underlying.imag)
+      case x => x
 
   override def toString =
     if this.imag == 0 then this.real.getString(Real.digits)
