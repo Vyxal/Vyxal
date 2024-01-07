@@ -1,7 +1,7 @@
 package vyxal.debugger
 
 import vyxal.*
-import vyxal.parsing.Lexer
+import vyxal.parsing.{Lexer, Parser}
 
 import scala.annotation.tailrec
 import scala.collection.mutable

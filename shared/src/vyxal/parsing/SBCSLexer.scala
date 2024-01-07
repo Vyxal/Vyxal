@@ -2,8 +2,7 @@ package vyxal.parsing
 
 import scala.language.strictEquality
 
-import vyxal.{Elements, Modifiers, SugarMap}
-import vyxal.{LeftoverCodeException, VyxalLexingException, VyxalYikesException}
+import vyxal.{Elements, Modifiers, SugarMap, VyxalYikesException}
 import vyxal.parsing.Common.given // For custom whitespace
 import vyxal.parsing.Common.withRange
 import vyxal.parsing.TokenType.*
@@ -224,8 +223,8 @@ private[parsing] object SBCSLexer:
     parse(code, this.parseAll) match
       case Parsed.Success(res, ind) =>
         if ind == code.length then res.toList
-        else throw LeftoverCodeException(code.substring(ind))
+        else throw LexingException.LeftoverCodeException(code.substring(ind))
       case f @ Parsed.Failure(label, index, extra) =>
         val trace = f.trace()
-        throw VyxalLexingException(trace.longMsg)
+        throw LexingException.Fastparse(trace.longMsg)
 end SBCSLexer

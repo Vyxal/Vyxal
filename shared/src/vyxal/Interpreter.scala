@@ -1,6 +1,6 @@
 package vyxal
 
-import vyxal.parsing.Lexer
+import vyxal.parsing.{Lexer, Parser, ParserResult}
 import vyxal.MiscHelpers.vyPrintln
 import vyxal.VNum.given
 
@@ -132,7 +132,7 @@ object Interpreter:
         if !executed then
           Elements.elements.get(cmd) match
             case Some(elem) => elem.impl()
-            case None => throw NoSuchElementException(cmd)
+            case None => throw VyxalYikesException(s"No such element: '$cmd'")
       case AST.Group(elems, _, _) => elems.foreach(Interpreter.execute)
       case AST.CompositeNilad(elems, _) => elems.foreach(Interpreter.execute)
       case AST.RedefineModifier(name, mode, args, implArity, impl, range) => ???
@@ -381,16 +381,15 @@ object Interpreter:
     val originalVariables = ctx.allVars
 
     for (name, (visibility, predef)) <- fields do
-      val fieldVal =
-        if predef.isDefined then
-          Interpreter.executeFn(
+      val fieldVal = predef match
+        case Some(predef) => Interpreter.executeFn(
             VFun
-              .fromLambda(predef.get.asInstanceOf[AST.Lambda])
+              .fromLambda(predef.asInstanceOf[AST.Lambda])
               .copy(
                 arity = 0
               )
           )
-        else ctx.pop()
+        case None => ctx.pop()
       assignedFields(name) = (visibility -> fieldVal)
       ctx.setVar(name, fieldVal)
 

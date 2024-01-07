@@ -310,5 +310,47 @@ object SyntaxInfo:
         "Index into the list of context parameters.",
         "¤<number>",
       ),
+    "#::" ->
+      Syntax(
+        "Element/Modifier Definition",
+        Seq("define"),
+        "Define a custom element/modifier that can be used in programs",
+        "#::<mode><name>|<arg>|<arg>...|<code>}",
+      ),
+    "#:@" ->
+      Syntax(
+        "Defined Element Call",
+        Seq("$@"),
+        "Call a defined element",
+        "#:@<name>",
+      ),
+    "#:`" ->
+      Syntax(
+        "Defined Modifier Call",
+        Seq("$:"),
+        "Call a defined modifier",
+        "#:`<name>",
+      ),
+    "#:~" ->
+      Syntax(
+        "Retrieve Original Element",
+        Seq("$."),
+        "Call the original, vyxal defined, meaning of an element. Useful for when you want to define a new element with the same name as a built-in one",
+        "#:~<name>",
+      ),
+    "#:R" ->
+      Syntax(
+        "Record Definition",
+        Seq("record"),
+        "Define a record with members",
+        "#:R<name>|#$restricted #=private #!public}",
+      ),
+    "#:>>" ->
+      Syntax(
+        "Extension Method",
+        Seq("extension"),
+        "Define an overload on a custom element based on types. Requires at least one type to be specified.",
+        "#:>><name>|<arg1>|<type1>|<arg2>|<type2>...|<impl>}",
+      ),
   )
 end SyntaxInfo

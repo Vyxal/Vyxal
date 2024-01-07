@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.parsing.ParsingException
+
 import scala.collection.mutable.ListBuffer
 
 /** @param name
@@ -262,7 +264,10 @@ object Modifiers:
                       returnStr = ctx.peek.isInstanceOf[String]
                       val top = ListHelpers.makeIterable(ctx.pop())
                       ctx.push(top.tail)
-                      if ast.arity == Some(1) then ctx.push(top.head)
+                      if ast.arity == Some(1) then
+                        ctx.push(
+                          top.headOption.getOrElse(ctx.settings.defaultValue)
+                        )
                   ,
                   arity = Some(1),
                 ),
@@ -289,7 +294,9 @@ object Modifiers:
                       returnStr = ctx.peek.isInstanceOf[String]
                       val top = ListHelpers.makeIterable(ctx.pop())
                       ctx.push(top.tail)
-                      ctx.push(top.head)
+                      ctx.push(
+                        top.headOption.getOrElse(ctx.settings.defaultValue)
+                      )
                   ,
                   arity = Some(1),
                 ),
@@ -307,7 +314,8 @@ object Modifiers:
                   arity = Some(1),
                 ),
               )
-            case _ => throw ModifierArityException("ᴴ", ast.arity)
+            case _ =>
+              throw ParsingException.ModifierArityException("ᴴ", ast.arity)
           end match
       },
     "ᶤ" ->

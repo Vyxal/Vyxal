@@ -157,6 +157,10 @@ class VList private (val lst: Seq[VAny])
 
   override def empty: VList = VList.empty
 
+  override def tail: VList =
+    if lst.isEmpty then VList.empty
+    else VList.from(lst.tail)
+
   protected def from(it: Seq[VAny]): VList = VList.from(it)
 
   override def equals(o: Any): Boolean =
@@ -178,16 +182,6 @@ class VList private (val lst: Seq[VAny])
         true
     })
 
-  @targetName("setDiff")
-  def -(other: VList): VList =
-    val seen = mutable.ArrayBuffer.empty[VAny]
-    VList.from(this.lst.filter { elem =>
-      if seen.contains(elem) then false
-      else
-        seen += elem
-        !other.contains(elem)
-    })
-
   @targetName("multiSetDiff")
   def --(other: VList): VList =
     var ret = lst
@@ -201,22 +195,9 @@ class VList private (val lst: Seq[VAny])
 
   @targetName("xor")
   def ^(other: VList): VList =
-    val seen = mutable.ArrayBuffer.empty[VAny]
     VList.from(
-      this.lst.filter { elem =>
-        if seen.contains(elem) then false
-        else
-          seen += elem
-          !other.contains(elem)
-      } ++
-        other.lst.filter { elem =>
-          if seen.contains(elem) then false
-          else
-            seen += elem
-            !this.contains(elem)
-        }
+      this.filterNot(other.contains(_)) ++ other.filterNot(this.contains(_))
     )
-  end ^
 end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:

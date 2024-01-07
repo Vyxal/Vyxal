@@ -1,6 +1,6 @@
 package vyxal
 
-import vyxal.parsing.Lexer
+import vyxal.parsing.{Lexer, Parser}
 import vyxal.AST.*
 
 import org.scalatest.funsuite.AnyFunSuite
