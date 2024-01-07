@@ -40,7 +40,7 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
       - name: Build executable
-        run: ./millnative.nativeLink
+        run: ./mill native.nativeLink
       - uses: olegtarasov/get-tag@v2.1.2
         id: tagName
       - name: Name executable (Linux/MacOS)
@@ -69,7 +69,7 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
       - name: Build jar
-        run: ./milljvm.assembly
+        run: ./mill jvm.assembly
 
       - name: Make artifacts folder
         run: |

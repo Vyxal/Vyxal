@@ -15,7 +15,7 @@ jobs:
           java-version: "17"
           distribution: "adopt"
       - name: Test
-        run: ./milljvm.test
+        run: ./mill jvm.test
 
   native:
     name: Test Native
@@ -29,7 +29,7 @@ jobs:
           java-version: "17"
           distribution: "adopt"
       - name: Test
-        run: ./millnative.test
+        run: ./mill native.test
 
   js:
     name: Compile JS
@@ -43,4 +43,4 @@ jobs:
           java-version: "17"
           distribution: "adopt"
       - name: Compile
-        run: ./milljs.compile
+        run: ./mill js.compile
