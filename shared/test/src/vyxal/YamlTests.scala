@@ -208,14 +208,12 @@ class YamlTests extends AnyFunSpec:
                   .from("Inputs need to be a list (wrap them in [])", inNode)
               )
             case None => Left(ConstructError.from(s"Test has no inputs", test))
-          flags <- Right(getValue(test, "flags")).flatMap {
+          flags <- getValue(test, "flags") match
             case Some(flags) => scalarText(flags).map(_.toList)
             case None => Right(Nil)
-          }
-          code <- Right(getValue(test, "code")).flatMap {
+          code <- getValue(test, "code") match
             case Some(code) => scalarText(code).map(Some(_))
             case None => Right(None)
-          }
           output <- getOutputCriteria(test)
         yield
           val excludeNative = getValue(test, "jvm-only").isDefined
