@@ -1013,7 +1013,7 @@ object Elements:
     ) { a =>
       val iterable = ListHelpers.makeIterable(a)
       if iterable.isEmpty then VList.from(Seq.empty)
-      else VList(iterable.tail, iterable.head)
+      else VList(iterable.head, iterable.last)
     },
     addPart(
       Monad,
