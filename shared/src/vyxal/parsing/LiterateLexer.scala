@@ -167,7 +167,7 @@ private[parsing] object LiterateLexer:
 
   def defineModBlock[$: P]: P[LitToken] =
     P(
-      withRange("define".!) ~ withRange("*".!) ~
+      withRange("define".!) ~ withRange("*".!) ~/
         withRange(word.filter(isLambdaParam)) ~/ litBranch ~
         ( // Grab the first parameter branch
           withRange(",".! | word.filter(isLambdaParam)).rep ~ litBranch
@@ -210,7 +210,7 @@ private[parsing] object LiterateLexer:
 
   def defineElemBlock[$: P]: P[LitToken] =
     P(
-      withRange("define".!) ~ withRange("@".!) ~
+      withRange("define".!) ~ withRange("@".!) ~/
         withRange(word.filter(isLambdaParam)) ~/ litBranch ~
         ( // Grab the first parameter branch
           withRange(",".! | word.filter(isLambdaParam)).rep ~ litBranch

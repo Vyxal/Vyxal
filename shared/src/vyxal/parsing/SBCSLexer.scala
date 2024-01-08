@@ -206,14 +206,18 @@ private[parsing] object SBCSLexer:
         listClose
     )
 
+  def varToken[$: P]: P[Token] =
+    P(augVariable | getVariable | setVariable | setConstant)
+
+  def literal[$: P]: P[Token] =
+    P(sbcsNumber | string | twoCharNumber | twoCharString | singleCharString)
+
   def token[$: P]: P[Token] =
     P(
       comment | sugarTrigraph | unpackTrigraph | digraph | branch |
         defineExtension | modifierSymbol | defineObj | elementSymbol |
-        originalSymbol | contextIndex | sbcsNumber | string | augVariable |
-        getVariable | setVariable | setConstant | twoCharNumber |
-        twoCharString | singleCharString | modifier | structureToken |
-        newlines | command
+        originalSymbol | contextIndex | literal | varToken | modifier |
+        structureToken | newlines | command
     )
 
   def parseToken[$: P](
