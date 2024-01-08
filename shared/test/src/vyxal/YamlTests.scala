@@ -188,7 +188,7 @@ class YamlTests extends AnyFunSpec:
             combineEithers(lst.map(vanyDecoder.construct(_))).map(VList.from)
           case _ => Left(
               ConstructError.from(
-                s"Invalid Vyxal value (cannot be a map)",
+                "Invalid Vyxal value (cannot be a map)",
                 node,
                 "list, string, or number",
               )
@@ -207,7 +207,7 @@ class YamlTests extends AnyFunSpec:
                 ConstructError
                   .from("Inputs need to be a list (wrap them in [])", inNode)
               )
-            case None => Left(ConstructError.from(s"Test has no inputs", test))
+            case None => Left(ConstructError.from("Test has no inputs", test))
           flags <- getValue(test, "flags") match
             case Some(flags) => scalarText(flags).map(_.toList)
             case None => Right(Nil)
@@ -246,7 +246,7 @@ class YamlTests extends AnyFunSpec:
             ).map { subgroups => TestGroup.Subgroups(subgroups.toMap) }
           case _ => return Left(
               ConstructError.from(
-                s"Test groups cannot be scalars",
+                "Test groups cannot be scalars",
                 node,
                 "test subgroups or a list of test cases",
               )
@@ -277,7 +277,7 @@ class YamlTests extends AnyFunSpec:
     if criteria.isEmpty then
       Left(
         ConstructError.from(
-          s"No criteria",
+          "No criteria",
           testInfo,
           "one of out, starts-with, ends-with, contains, contains-monotonic, and stack",
         )
