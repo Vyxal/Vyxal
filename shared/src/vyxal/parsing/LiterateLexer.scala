@@ -241,6 +241,8 @@ private[parsing] object LiterateLexer:
         )
     }
 
+  def defineBlock[$: P]: P[LitToken] = P(defineModBlock | defineElemBlock)
+
   def extensionKeyword[$: P]: P[LitToken] =
     P(
       withRange("extension".!) ~ "(".? ~ withRange(word.filter(isLambdaParam)) ~
@@ -515,24 +517,26 @@ private[parsing] object LiterateLexer:
   /** This is split from singleToken to prevent stack overflows when Fastparse's
     * `|` macro is expanded
     */
-  def singleTokenSplit1[$: P]: P[LitToken] =
-    P(
-      lambdaBlock | extensionKeyword | unmodSymbol | defineObj |
-        defineModBlock | defineElemBlock | specialLambdaBlock | contextIndex |
-        functionCall | modifierSymbol | elementSymbol
-    )
+  def singleTokenSplit1[$: P]: P[LitToken] = ???
 
   def litVarToken[$: P]: P[LitToken] =
     P(litGetVariable | litSetVariable | litSetConstant | litAugVariable)
 
+  def litKeyword[$: P]: P[LitToken] =
+    P(
+      extensionKeyword | elementKeyword | negatedElementKeyword |
+        modifierKeyword | otherKeyword
+    )
+
+  def litStructToken[$: P]: P[LitToken] =
+    P(structOpener | litBranch | litStructClose)
+
   def singleToken[$: P]: P[LitToken] =
     P(
-      singleTokenSplit1 | litVarToken | elementKeyword | negatedElementKeyword |
-        tokenMove | modifierKeyword |
-        P(
-          structOpener | otherKeyword | litBranch | litStructClose | litNumber |
-            litString | normalGroup
-        )
+      lambdaBlock | litKeyword | unmodSymbol | defineObj | defineBlock |
+        specialLambdaBlock | contextIndex | functionCall | modifierSymbol |
+        elementSymbol | litVarToken | tokenMove | litStructToken | litNumber |
+        litString | normalGroup
     )
 
   def singleTokenGroup[$: P]: P[Seq[LitToken]] =
