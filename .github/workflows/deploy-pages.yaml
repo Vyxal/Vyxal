@@ -23,9 +23,6 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
-env:
-  JAVA_OPTS: ${{ vars.JAVA_OPTS }}
-
 jobs:
   # Single deploy job since we're just deploying
   deploy:
@@ -47,10 +44,10 @@ jobs:
           distribution: "adopt"
 
       - name: Scala to JS
-        run: ./mill --no-server js.fullLinkJS
+        run: ./mill js.fullLinkJS
 
       - name: Generate files for web interpreter
-        run: ./mill --no-server jvm.theseus
+        run: ./mill jvm.theseus
 
       - name: Upload built HTML
         uses: actions/upload-pages-artifact@v1

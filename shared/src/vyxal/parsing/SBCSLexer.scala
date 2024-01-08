@@ -194,16 +194,30 @@ private[parsing] object SBCSLexer:
   def comment[$: P]: P[Token] =
     parseToken(Comment, "##" ~~/ CharsWhile(c => c != '\n' && c != '\r').?.!)
 
+  def modifier[$: P]: P[Token] =
+    P(
+      monadicModifier | dyadicModifier | triadicModifier | tetradicModifier |
+        specialModifier
+    )
+
+  def structureToken[$: P]: P[Token] =
+    P(
+      structureOpen | structureSingleClose | structureAllClose | listOpen |
+        listClose
+    )
+
+  def varToken[$: P]: P[Token] =
+    P(augVariable | getVariable | setVariable | setConstant)
+
+  def literal[$: P]: P[Token] =
+    P(sbcsNumber | string | twoCharNumber | twoCharString | singleCharString)
+
   def token[$: P]: P[Token] =
     P(
       comment | sugarTrigraph | unpackTrigraph | digraph | branch |
         defineExtension | modifierSymbol | defineObj | elementSymbol |
-        originalSymbol | contextIndex | sbcsNumber | string | augVariable |
-        getVariable | setVariable | setConstant | twoCharNumber |
-        twoCharString | singleCharString | monadicModifier | dyadicModifier |
-        triadicModifier | tetradicModifier | specialModifier | structureOpen |
-        structureSingleClose | structureAllClose | listOpen | listClose |
-        newlines | command
+        originalSymbol | contextIndex | literal | varToken | modifier |
+        structureToken | newlines | command
     )
 
   def parseToken[$: P](
