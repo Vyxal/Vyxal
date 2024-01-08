@@ -7,9 +7,6 @@ on:
       - "contributing/**"
       - "pages/**"
 
-env:
-  JAVA_OPTS: ${{ vars.JAVA_OPTS }}
-
 jobs:
   lint:
     name: Lint and format
@@ -26,7 +23,7 @@ jobs:
         run: scalafix --check --syntactic --scala-version=3.3.0 shared jvm js native
       - name: Run Scalafmt
         run: |
-          ./mill --no-server mill.scalalib.scalafmt.ScalafmtModule/reformatAll __.sources
+          ./mill mill.scalalib.scalafmt.ScalafmtModule/reformatAll __.sources
       - name: Stage changes
         run: git add .
       - name: Commit and push
@@ -47,9 +44,9 @@ jobs:
           java-version: "17"
           distribution: "adopt"
       - name: Update all documentation files
-        run: ./mill --no-server jvm.docs
+        run: ./mill jvm.docs
       - name: Update nanorc files for JLine
-        run: ./mill --no-server jvm.nanorc
+        run: ./mill jvm.nanorc
       - name: Stage changes
         run: git add .
       - name: Commit and push

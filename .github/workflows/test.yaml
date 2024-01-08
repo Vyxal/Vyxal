@@ -4,9 +4,6 @@ on:
   push:
   pull_request:
 
-env:
-  JAVA_OPTS: ${{ vars.JAVA_OPTS }}
-
 jobs:
   jvm:
     name: Test JVM
@@ -20,7 +17,7 @@ jobs:
           java-version: "17"
           distribution: "adopt"
       - name: Test
-        run: ./mill --no-server jvm.test
+        run: ./mill jvm.test
 
   native:
     name: Test Native
@@ -34,7 +31,7 @@ jobs:
           java-version: "17"
           distribution: "adopt"
       - name: Test
-        run: ./mill --no-server native.test
+        run: ./mill native.test
 
   js:
     name: Compile JS
@@ -48,4 +45,4 @@ jobs:
           java-version: "17"
           distribution: "adopt"
       - name: Compile
-        run: ./mill --no-server js.compile
+        run: ./mill js.compile
