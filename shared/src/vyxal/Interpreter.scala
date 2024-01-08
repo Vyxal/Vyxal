@@ -8,7 +8,7 @@ import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
 
 object Interpreter:
-  def version = "3.4.0"
+  def version = "3.4.1"
   def execute(code: String)(using ctx: Context): Unit =
     /** Attempt lexing */
     val tokens =
