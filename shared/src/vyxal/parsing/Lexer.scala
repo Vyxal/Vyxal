@@ -67,7 +67,8 @@ object Range:
   /** A dummy Range (mainly for generated/desugared code) */
   val fake: Range = Range(-1, -1)
 
-enum TokenType(val canonicalSBCS: Option[String] = None) extends Enum[TokenType] derives CanEqual:
+enum TokenType(val canonicalSBCS: Option[String] = None) extends Enum[TokenType]
+    derives CanEqual:
   case Number
   case Str
   case StructureOpen

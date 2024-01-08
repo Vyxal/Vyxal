@@ -1,14 +1,25 @@
 package vyxal
 
-import vyxal.parsing.{ Lexer, Token }
+import vyxal.parsing.{Lexer, Token}
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 import scala.scalajs.js.JSConverters.*
 
-class JSToken(val tokenType: String, val value: String, val startOffset: Int, val endOffset: Int) extends js.Object
+class JSToken(
+    val tokenType: String,
+    val value: String,
+    val startOffset: Int,
+    val endOffset: Int,
+) extends js.Object
 object JSToken:
-  def apply(token: Token) = new JSToken(token.tokenType.name(), token.value, token.range.startOffset, token.range.endOffset)
+  def apply(token: Token) =
+    new JSToken(
+      token.tokenType.name(),
+      token.value,
+      token.range.startOffset,
+      token.range.endOffset,
+    )
 
 /** To avoid loading Scopt with the JSVyxal object */
 @JSExportTopLevel("HelpText", moduleID = "helpText")
@@ -120,8 +131,10 @@ object JSVyxal:
   def getVersion(): String = Interpreter.version
 
   @JSExport
-  def lexSBCS(code: String): js.Array[JSToken] = js.Array(Lexer.lexSBCS(code).map(JSToken(_))*)
+  def lexSBCS(code: String): js.Array[JSToken] =
+    js.Array(Lexer.lexSBCS(code).map(JSToken(_))*)
 
   @JSExport
-  def lexLiterate(code: String): js.Array[JSToken] = js.Array(Lexer.lexLiterate(code).map(JSToken(_))*)
+  def lexLiterate(code: String): js.Array[JSToken] =
+    js.Array(Lexer.lexLiterate(code).map(JSToken(_))*)
 end JSVyxal
