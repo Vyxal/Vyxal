@@ -1004,7 +1004,7 @@ object Elements:
     },
     addFull(
       Monad,
-      "øh",
+      "Þh",
       "Ends",
       List("ends", "sides", "edges"),
       false,
