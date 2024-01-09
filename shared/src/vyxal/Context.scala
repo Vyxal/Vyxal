@@ -202,6 +202,9 @@ class Context private (
 
   def rotateRight: Unit = stack.insert(0, pop())
 
+  def clear(): Unit =
+    stack.clear()
+
   def copy: Context =
     new Context(
       mut.ArrayBuffer().addAll(stack),
