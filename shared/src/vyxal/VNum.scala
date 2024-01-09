@@ -26,6 +26,7 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
 
   /** Whether there is only a real part */
   def isReal: Boolean = underlying.isReal
+
   /** Whether there is only an imaginary part */
   def isImaginary: Boolean = underlying.isImaginary
 
