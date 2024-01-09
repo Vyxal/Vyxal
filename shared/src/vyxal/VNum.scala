@@ -19,8 +19,7 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   def toLong: Long = underlying.toLong
   def toBigInt: BigInt = underlying.real.toRational.toBigInt
 
-  def signum: VNum =
-    VNum.complex(underlying.real.signum, underlying.imag.signum)
+  def signum: VNum = underlying.complexSignum
 
   /** Whether the real part is small enough to be converted to an `Int` */
   def isValidInt: Boolean = underlying.real.isValidInt
@@ -38,21 +37,17 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   @targetName("minus")
   def -(rhs: VNum): VNum = underlying - rhs.underlying
   @targetName("times")
-  def *(rhs: VNum): VNum = VNum.complex(real * rhs.real, imag * rhs.imag)
+  def *(rhs: VNum): VNum = underlying * rhs.underlying
   @targetName("divide")
   def /(rhs: VNum): VNum =
-    VNum.complex(
-      if rhs.real === 0 then 0 else real / rhs.real,
-      if rhs.imag === 0 then 0 else imag / rhs.imag,
-    )
+    if rhs == VNum(0) then 0 else underlying / rhs.underlying
   @targetName("pow")
   def **(rhs: VNum): VNum = underlying ** rhs.underlying
 
   @targetName("rem")
   def %(rhs: VNum): VNum =
     // implement floating point floored modulus
-    val q = this / rhs
-    this - spire.math.floor(q.real) * rhs
+    this - (this / rhs).floor * rhs
 
   def vabs: VNum = underlying.abs
   def arg: VNum = underlying.arg
@@ -83,7 +78,9 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   def tanh: VNum = underlying.sinh / underlying.cosh
 
   override def compare(that: VNum): Int =
-    this.underlying.real.compare(that.underlying.real)
+    this.underlying.real.compare(that.underlying.real) match
+      case 0 => this.underlying.imag.compare(that.underlying.imag)
+      case x => x
 
   override def toString =
     if this.imag == 0 then this.real.getString(Real.digits)
