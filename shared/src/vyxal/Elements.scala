@@ -3859,6 +3859,26 @@ object Elements:
     ) {
       case a: VNum => a.arg
     },
+    addPart(
+      Monad,
+      "∆R",
+      "Real Part",
+      List("real", "real-part"),
+      true,
+      "a: num -> Re(a)",
+    ) {
+      case a: VNum => VNum(a.real)
+    },
+    addPart(
+      Monad,
+      "∆I",
+      "Imaginary Part",
+      List("imag", "imaginary", "imaginary-part"),
+      true,
+      "a: num -> Im(a)",
+    ) {
+      case a: VNum => VNum(a.imag)
+    },
   )
 
   private def execHelper(value: VAny)(using ctx: Context): VAny =
