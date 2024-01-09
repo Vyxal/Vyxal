@@ -547,10 +547,10 @@ class InterpreterTests extends VyxalTests:
     }
   }
 
-  describe("Objects") {
+  describe("records") {
     it("should have correct read access modifiers") {
       val boilerplate =
-        "object TestObj => 1 :!=public 2 :=private 3 $restricted end"
+        "record TestObj => 1 :!=public 2 :=private 3 $restricted end"
       testCodeAsLiterate(s"""$boilerplate `TestObj` "public" @<=""", VNum(1))
       testCodeAsLiterate(
         s"""$boilerplate `TestObj` "restricted" @<=""",
@@ -564,7 +564,7 @@ class InterpreterTests extends VyxalTests:
 
     it("should have the correct write access modifiers") {
       val boilerplate =
-        "object TestObj => 1 :!=public 2 :=private 3 $restricted end"
+        "record TestObj => 1 :!=public 2 :=private 3 $restricted end"
       testCodeAsLiterate(
         s"""$boilerplate `TestObj` "public" 69 @=> "public" @<=""",
         VNum(69),
@@ -583,17 +583,17 @@ class InterpreterTests extends VyxalTests:
       catch case _: Exception => ()
     }
 
-    it("should update object attributes upon writing") {
+    it("should update record attributes upon writing") {
       testCodeAsLiterate(
         """
-          object TestObj => 1 :!=public 2 :=private 3 $restricted end
+          record TestObj => 1 :!=public 2 :=private 3 $restricted end
           `TestObj` "public" 69 @=> "public" @<=""",
         VNum(69),
       )
     }
 
-    it("should support a basic (somewhat flawed) map object implementation") {
-      val boilerplate = """object Map =>
+    it("should support a basic (somewhat flawed) map record implementation") {
+      val boilerplate = """record Map =>
   [] :=values
   [] :=keys
 end
@@ -660,7 +660,7 @@ end
         VNum(1),
       )
       testCodeAsLiterate(
-        "object T => 5 $mem end extension F given a as T does $a \"mem\" @<= end `T` $@F",
+        "record T => 5 $mem end extension F given a as T does $a \"mem\" @<= end `T` $@F",
         VNum(5),
       )
     }
