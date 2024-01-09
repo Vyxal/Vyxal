@@ -27,6 +27,7 @@ object JvmRepl extends Repl:
     println("Starting plain repl...")
     while true do
       val code = StdIn.readLine("> ")
+      if code == null then return
       try Interpreter.execute(code)
       catch case ex: VyxalException => scribe.error(ex.getMessage(using ctx))
 
