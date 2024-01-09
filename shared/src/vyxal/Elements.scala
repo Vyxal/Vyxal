@@ -3749,6 +3749,116 @@ object Elements:
     ) {
       NumberHelpers.probablePrimes
     },
+    addPart(
+      Monad,
+      "∆s",
+      "Sine",
+      List("sin", "sine"),
+      true,
+      "a: num -> sin(a)",
+    ) {
+      case a: VNum => a.sin
+    },
+    addPart(
+      Monad,
+      "∆c",
+      "Cosine",
+      List("cos", "cosine"),
+      true,
+      "a: num -> cos(a)",
+    ) {
+      case a: VNum => a.cos
+    },
+    addPart(
+      Monad,
+      "∆t",
+      "Tangent",
+      List("tan", "tangent"),
+      true,
+      "a: num -> tan(a)",
+    ) {
+      case a: VNum => a.tan
+    },
+    addPart(
+      Monad,
+      "∆ṡ",
+      "Arcsine / Inverse Sine",
+      List("asin", "arcsin", "arcsine"),
+      true,
+      "a: num -> asin(a)",
+    ) {
+      case a: VNum => a.asin
+    },
+    addPart(
+      Monad,
+      "∆ċ",
+      "Arccosine / Inverse Cosine",
+      List("acos", "arccos", "arccosine"),
+      true,
+      "a: num -> acos(a)",
+    ) {
+      case a: VNum => a.acos
+    },
+    addPart(
+      Monad,
+      "∆ṫ",
+      "Arctangent / Inverse Tangent",
+      List("atan", "arctan", "arctangent"),
+      true,
+      "a: num -> atan(a)",
+    ) {
+      case a: VNum => a.atan
+    },
+    addPart(
+      Dyad,
+      "∆Ṫ",
+      "Dyadic Arctangent / Dyadic Inverse Tangent",
+      List("atan2", "arctan2", "arctangent2"),
+      true,
+      "y: num, x: num -> atan2(y, x)",
+    ) {
+      case (y: VNum, x: VNum) => y.atan2(x)
+    },
+    addPart(
+      Monad,
+      "∆S",
+      "Hyperbolic Sine",
+      List("sinh", "hyperbolic-sine"),
+      true,
+      "a: num -> sinh(a)",
+    ) {
+      case a: VNum => a.sinh
+    },
+    addPart(
+      Monad,
+      "∆C",
+      "Hyperbolic Cosine",
+      List("cosh", "hyperbolic-cosine"),
+      true,
+      "a: num -> cosh(a)",
+    ) {
+      case a: VNum => a.cosh
+    },
+    addPart(
+      Monad,
+      "∆T",
+      "Hyperbolic Tangent",
+      List("tanh", "hyperbolic-tangent"),
+      true,
+      "a: num -> tanh(a)",
+    ) {
+      case a: VNum => a.tanh
+    },
+    addPart(
+      Monad,
+      "∆<",
+      "Argument / Phase / Angle",
+      List("arg", "phase", "angle"),
+      true,
+      "a: num -> Arg(a)",
+    ) {
+      case a: VNum => a.arg
+    },
   )
 
   private def execHelper(value: VAny)(using ctx: Context): VAny =

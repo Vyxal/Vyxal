@@ -7,7 +7,7 @@ import scala.collection.immutable.NumericRange.Inclusive
 import scala.math.Ordered
 import scala.util.matching.Regex
 
-import spire.implicits.partialOrderOps // For <, >, etc.
+import spire.implicits.*
 import spire.math.{Complex, Real}
 
 class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
@@ -50,10 +50,32 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
     this - (this / rhs).floor * rhs
 
   def vabs: VNum = underlying.abs
+  def arg: VNum = underlying.arg
 
   /** Inclusive range */
   def to(end: VNum, step: VNum = 1): VList =
     VList.from(Inclusive(this, end, step))
+
+  def sin: VNum = underlying.sin
+  def cos: VNum = underlying.cos
+  def tan: VNum = underlying.tan
+  def asin: VNum = underlying.asin
+  def acos: VNum = underlying.acos
+  def atan: VNum = underlying.atan
+  // TODO switch to this code when Spire fixes their bugs
+  // def atan2(rhs: VNum): VNum = spire.math.atan2(underlying, rhs.underlying)
+  def atan2(rhs: VNum): VNum =
+    // atan2(a, b) = -i * ln((b + i*a)/sqrt(a^2 + b^2)), according to WolframAlpha
+    Complex[Real](0, -1) *
+      spire.math.log(
+        (rhs.underlying + underlying * Complex[Real](0, 1)) /
+          spire.math.sqrt(underlying ** 2 + rhs.underlying ** 2)
+      )
+  def sinh: VNum = underlying.sinh
+  def cosh: VNum = underlying.cosh
+  // TODO same as above
+  // def tanh: VNum = underlying.tanh
+  def tanh: VNum = underlying.sinh / underlying.cosh
 
   override def compare(that: VNum): Int =
     this.underlying.real.compare(that.underlying.real) match
