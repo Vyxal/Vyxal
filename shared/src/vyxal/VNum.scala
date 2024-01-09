@@ -39,7 +39,8 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   @targetName("times")
   def *(rhs: VNum): VNum = underlying * rhs.underlying
   @targetName("divide")
-  def /(rhs: VNum): VNum = if rhs == VNum(0) then 0 else underlying / rhs.underlying
+  def /(rhs: VNum): VNum =
+    if rhs == VNum(0) then 0 else underlying / rhs.underlying
   @targetName("pow")
   def **(rhs: VNum): VNum = underlying ** rhs.underlying
 
