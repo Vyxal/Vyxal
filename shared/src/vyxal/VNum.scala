@@ -46,8 +46,7 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   @targetName("rem")
   def %(rhs: VNum): VNum =
     // implement floating point floored modulus
-    val q = this / rhs
-    this - spire.math.floor(q.real) * rhs
+    this - (this / rhs).floor * rhs
 
   def vabs: VNum = underlying.abs
 

@@ -454,6 +454,10 @@
     - { in: [6.9, 4.2], out: 2.7 }
     - { in: [420, -69], out: -63 }
     - { in: [420, -69.69], out: -67.83 }
+    - in:
+      - !num 3ı4
+      - !num 1ı1
+      out: !num 0ı1
   when given a string and any value:
     - { in: ["Hello, %", "World"], out: "Hello, World" }
     - { in: ["Hello, %", 69], out: "Hello, 69" }
