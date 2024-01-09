@@ -1002,6 +1002,19 @@ object Elements:
           ctx.push(s.dropRight(1), if s.isEmpty then "" else s.last.toString)
         case arg => throw UnimplementedOverloadException("ṫ", List(arg))
     },
+    addFull(
+      Monad,
+      "Þh",
+      "Ends",
+      List("ends", "sides", "edges"),
+      false,
+      "a: lst -> [a[0], a[-1]]",
+      "a: str -> [a[0], a[-1]]",
+    ) { a =>
+      val iterable = ListHelpers.makeIterable(a)
+      if iterable.isEmpty then VList.from(Seq.empty)
+      else VList(iterable.head, iterable.last)
+    },
     addPart(
       Monad,
       "ꜝ",
