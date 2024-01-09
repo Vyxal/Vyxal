@@ -70,7 +70,8 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   def atan2(rhs: VNum) = spire.math.atan2(underlying, rhs.underlying)
   def sinh: VNum = underlying.sinh
   def cosh: VNum = underlying.cosh
-  def tanh: VNum = underlying.tanh
+  // def tanh: VNum = underlying.tanh
+  def tanh: VNum = sinh / cosh
 
   override def compare(that: VNum): Int =
     this.underlying.real.compare(that.underlying.real)
