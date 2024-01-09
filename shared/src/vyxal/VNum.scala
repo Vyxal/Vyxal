@@ -7,7 +7,7 @@ import scala.collection.immutable.NumericRange.Inclusive
 import scala.math.Ordered
 import scala.util.matching.Regex
 
-import spire.implicits.partialOrderOps // For <, >, etc.
+import spire.implicits.*
 import spire.math.{Complex, Real}
 
 class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
@@ -55,10 +55,22 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
     this - spire.math.floor(q.real) * rhs
 
   def vabs: VNum = underlying.abs
+  def arg: VNum = underlying.arg
 
   /** Inclusive range */
   def to(end: VNum, step: VNum = 1): VList =
     VList.from(Inclusive(this, end, step))
+
+  def sin: VNum = underlying.sin
+  def cos: VNum = underlying.cos
+  def tan: VNum = underlying.tan
+  def asin: VNum = underlying.asin
+  def acos: VNum = underlying.acos
+  def atan: VNum = underlying.atan
+  def atan2(rhs: VNum) = spire.math.atan2(underlying, rhs.underlying)
+  def sinh: VNum = underlying.sinh
+  def cosh: VNum = underlying.cosh
+  def tanh: VNum = underlying.tanh
 
   override def compare(that: VNum): Int =
     this.underlying.real.compare(that.underlying.real)
