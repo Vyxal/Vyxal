@@ -67,6 +67,7 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   def asin: VNum = underlying.asin
   def acos: VNum = underlying.acos
   def atan: VNum = underlying.atan
+  // TODO switch to this code when Spire fixes their bugs
   // def atan2(rhs: VNum): VNum = spire.math.atan2(underlying, rhs.underlying)
   def atan2(rhs: VNum): VNum =
     // atan2(a, b) = -i * ln((b + i*a)/sqrt(a^2 + b^2)), according to WolframAlpha
@@ -77,6 +78,7 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
       )
   def sinh: VNum = underlying.sinh
   def cosh: VNum = underlying.cosh
+  // TODO same as above
   // def tanh: VNum = underlying.tanh
   def tanh: VNum = underlying.sinh / underlying.cosh
 
