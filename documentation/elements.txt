@@ -1274,6 +1274,11 @@ Keywords: PP, primes
 Keywords: transpose-safe
 - a: any -> transpose a
 ----------------------
+Þh (Ends) (non-vectorising)
+Keywords: ends, sides, edges
+- a: lst -> [a[0], a[-1]]
+- a: str -> [a[0], a[-1]]
+----------------------
 Þi (Multidimensional Index) (non-vectorising)
 Keywords: md-index
 - a: lst, b: lst[num] -> a[b[0]][b[1]]...[b[n]]
