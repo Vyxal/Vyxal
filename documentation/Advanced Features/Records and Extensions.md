@@ -77,7 +77,7 @@ To access a member of a record:
 
 ```
 ## Assuming the record is on the stack
-"memberName" «
+"memberName" i
 ```
 
 This pushes the value of the member onto the stack. If the member is a private
@@ -102,8 +102,8 @@ restricted or private member, this will fail, unless inside an extension method.
 }
 
 λ value, key, mp | 
-  #$mp "keys" ᵇ« #$key Ạ 
-  #$mp "values" ᵇ« #$value Ạ
+  #$mp "keys" ᵇi #$key Ạ 
+  #$mp "values" ᵇi #$value Ạ
   #$mp
 } #=put
 
@@ -185,8 +185,8 @@ Lowest Priority
 }
 
 #:>> put | value | * | key | * | mp | Map | 
-  #$mp "keys" ᵇ« #$key & Ạ 
-  #$mp "values" ᵇ« #$value & Ạ
+  #$mp "keys" ᵇi #$key & Ạ 
+  #$mp "values" ᵇi #$value & Ạ
   #$mp
 }
 
