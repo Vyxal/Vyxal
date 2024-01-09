@@ -92,7 +92,7 @@ If you want to quickly build and link the JS code for development purposes, with
 too many optimizations, use
 
 ```sh
-mill js.fastOptJS
+mill js.fastLinkJS
 ```
 
 When releasing, we use `js.fullOptJS` instead, which will perform all optimizations.

@@ -33,7 +33,7 @@ enum Criterion:
   case EndsWith(suffix: Seq[VAny])
 
   /** The output must be a list containing all of the given elements */
-  case Contains(elems: Seq[VAny], monotonic: Boolean = false)
+  case Contains(elems: Seq[VAny], monotonic: Boolean)
 
   /** The top of the stack must match `elems` */
   case Stack(elems: Seq[VAny])
@@ -141,102 +141,158 @@ class YamlTests extends AnyFunSpec:
       case Left(e) => throw Error(s"Parsing tests.yaml failed: $e")
 
   /** Assume a Node is a scalar, and get its text */
-  private def scalarText(node: Node): String =
-    val Node.ScalarNode(text, _) = node: @unchecked
-    text
+  private def scalarText(node: Node): Either[ConstructError, String] =
+    node match
+      case Node.ScalarNode(text, _) => Right(text)
+      case _ =>
+        Left(ConstructError.from("Node is not a string", node, "a string"))
 
   /** Assumes a Node is a mapping, and gets a value from it given the
     * corresponding key
     */
   private def getValue(node: Node, key: String): Option[Node] =
-    val Node.MappingNode(map, _) = node: @unchecked
-    map.find((k, _) => scalarText(k) == key).map(_._2)
-
-  def decodeNode(node: Node): VAny =
-    // todo make this use Lefts instead of throwing
     node match
-      case Node.ScalarNode(text, tag) =>
-        if tag == Tag.int || tag == Tag.float || tag == NumTag then VNum(text)
-        else if tag == VAnyTag then
-          given ctx: Context =
-            Context(globals =
-              Globals(settings = Settings(endPrintMode = EndPrintMode.None))
-            )
-          Interpreter.execute(text)
-          ctx.pop()
-        else if tag == Tag.str then
-          text.replaceAll("\\\\n", "\n").replaceAll("\\\\t", "\t")
-        else throw Error(s"Invalid Vyxal value: $text $tag")
-      case Node.SequenceNode(lst, _) => VList.from(lst.map(decodeNode))
-      case _ => throw Error(s"Invalid Vyxal value (cannot be map): $node")
+      case Node.MappingNode(map, _) => map.collectFirst {
+          case (k, v) if scalarText(k).map(_ == key).getOrElse(false) => v
+        }
+      case _ => None
 
-  given YamlDecoder[VAny] =
+  given vanyDecoder: YamlDecoder[VAny] =
     new YamlDecoder:
-      override def construct(node: Node)(using LoadSettings) =
-        Right(decodeNode(node))
+      override def construct(node: Node)(using
+          LoadSettings
+      ): Either[ConstructError, VAny] =
+        // todo make this use Lefts instead of throwing
+        node match
+          case Node.ScalarNode(text, tag) =>
+            if tag == Tag.int || tag == Tag.float || tag == NumTag then
+              Right(VNum(text))
+            else if tag == VAnyTag then
+              given ctx: Context =
+                Context(globals =
+                  Globals(settings = Settings(endPrintMode = EndPrintMode.None))
+                )
+              Interpreter.execute(text)
+              Right(ctx.pop())
+            else if tag == Tag.str then
+              Right(text.replaceAll("\\\\n", "\n").replaceAll("\\\\t", "\t"))
+            else
+              Left(
+                ConstructError.from(
+                  s"Invalid tag: $tag",
+                  node,
+                  "int, float, num, str, or vany",
+                )
+              )
+          case Node.SequenceNode(lst, _) =>
+            combineEithers(lst.map(vanyDecoder.construct(_))).map(VList.from)
+          case _ => Left(
+              ConstructError.from(
+                "Invalid Vyxal value (cannot be a map)",
+                node,
+                "list, string, or number",
+              )
+            )
 
   given YamlDecoder[TestGroup] =
     new YamlDecoder:
+      private def parseTest(test: Node)(using
+          LoadSettings
+      ): Either[ConstructError, YamlTest] =
+        for
+          inputs <- getValue(test, "in") match
+            case Some(Node.SequenceNode(inputs, _)) =>
+              combineEithers(inputs.map(vanyDecoder.construct(_)))
+            case Some(inNode) => Left(
+                ConstructError
+                  .from("Inputs need to be a list (wrap them in [])", inNode)
+              )
+            case None => Left(ConstructError.from("Test has no inputs", test))
+          flags <- getValue(test, "flags") match
+            case Some(flags) => scalarText(flags).map(_.toList)
+            case None => Right(Nil)
+          code <- getValue(test, "code") match
+            case Some(code) => scalarText(code).map(Some(_))
+            case None => Right(None)
+          output <- getOutputCriteria(test)
+        yield
+          val excludeNative = getValue(test, "jvm-only").isDefined
+
+          YamlTest(
+            inputs,
+            flags,
+            code,
+            output,
+            excludeNative,
+          )
+      end parseTest
+
       override def construct(node: Node)(using LoadSettings) =
         node match
           case Node.SequenceNode(testInfos, _) =>
-            val tests = testInfos.map { test =>
-              val Node.SequenceNode(inputs, _) =
-                getValue(test, "in").get: @unchecked
-              val flags =
-                getValue(test, "flags").fold(Nil)(scalarText(_).toList)
-              val code = getValue(test, "code").map(scalarText)
-              val output = getOutputCriteria(test)
-              val excludeNative = getValue(test, "jvm-only").isDefined
-              YamlTest(
-                inputs.map(decodeNode),
-                flags,
-                code,
-                output,
-                excludeNative,
-              )
-            }
-            Right(TestGroup.Tests(tests))
-          case Node.MappingNode(subgroupNodes, _) =>
-            val subgroups = subgroupNodes.map { (nameNode, groupInfo) =>
-              val Node.ScalarNode(name, _) = nameNode: @unchecked
-              name ->
-                this
-                  .construct(groupInfo)
-                  .toOption
-                  .getOrElse(
-                    throw Error(s"Error encountered parsing group $name")
+            combineEithers(testInfos.map(parseTest)).map(TestGroup.Tests(_))
+          case Node.MappingNode(subgroupNodes, _) => combineEithers(
+              subgroupNodes.map {
+                case (Node.ScalarNode(name, _), groupInfo) =>
+                  this.construct(groupInfo).map(name -> _)
+                case (nameNode, _) => Left(
+                    ConstructError.from(
+                      "Name for test subgroup must be a string",
+                      nameNode,
+                      "a string",
+                    )
                   )
-            }.toMap
-            // todo return a Left if errors were found instead of throwing immediately
-            Right(TestGroup.Subgroups(subgroups))
-          case _ => throw Error(s"Test groups cannot be scalars: $node")
+              }
+            ).map { subgroups => TestGroup.Subgroups(subgroups.toMap) }
+          case _ => return Left(
+              ConstructError.from(
+                "Test groups cannot be scalars",
+                node,
+                "test subgroups or a list of test cases",
+              )
+            )
 
-  private def getOutputCriteria(testInfo: Node): Seq[Criterion] =
-    val criteria = mutable.ArrayBuffer.empty[Criterion]
-    for output <- getValue(testInfo, "out") do
-      criteria += Criterion.Equals(decodeNode(output))
-    for case Node
-        .SequenceNode(startsWith, _) <- getValue(testInfo, "starts-with")
-    do criteria += Criterion.StartsWith(startsWith.map(decodeNode))
-    for case Node.SequenceNode(endsWith, _) <- getValue(testInfo, "ends-with")
-    do criteria += Criterion.EndsWith(endsWith.map(decodeNode))
-    for case Node.SequenceNode(contains, _) <- getValue(testInfo, "contains") do
-      criteria += Criterion.Contains(contains.map(decodeNode))
-    for case Node
-        .SequenceNode(contains, _) <- getValue(testInfo, "contains-monotonic")
-    do
-      criteria +=
-        Criterion.Contains(
-          contains.map(decodeNode),
-          monotonic = true,
-        )
-    for case Node.SequenceNode(stack, _) <- getValue(testInfo, "stack") do
-      criteria += Criterion.Stack(stack.map(decodeNode))
+  private def getOutputCriteria(testInfo: Node)(using
+      LoadSettings
+  ): Either[ConstructError, Seq[Criterion]] =
+    /** Helper to get criteria that are lists of values */
+    def getList(fieldName: String)(toCriterion: Seq[VAny] => Criterion) =
+      getValue(testInfo, fieldName) match
+        case Some(Node.SequenceNode(vals, _)) => Some(
+            combineEithers(vals.map(vanyDecoder.construct(_))).map(toCriterion)
+          )
+        case _ => None
+
+    val criteria = List(
+      getValue(testInfo, "out").map { output =>
+        vanyDecoder.construct(output).map(Criterion.Equals(_))
+      },
+      getList("starts-with")(Criterion.StartsWith(_)),
+      getList("ends-with")(Criterion.EndsWith(_)),
+      getList("contains")(Criterion.Contains(_, false)),
+      getList("contains-monotonic")(Criterion.Contains(_, true)),
+      getList("stack")(Criterion.Stack(_)),
+    ).flatten
 
     if criteria.isEmpty then
-      throw Error(s"No criteria given for test case $testInfo")
-
-    criteria.toSeq
+      Left(
+        ConstructError.from(
+          "No criteria",
+          testInfo,
+          "one of out, starts-with, ends-with, contains, contains-monotonic, and stack",
+        )
+      )
+    else combineEithers(criteria)
   end getOutputCriteria
+
+  /** Take a bunch of results from a decoder, and if all of them were Rights,
+    * return a Right with a list of the results, otherwise return a Left
+    * containing the first error
+    */
+  private def combineEithers[A, B](
+      eithers: Iterable[Either[A, B]]
+  ): Either[A, Seq[B]] =
+    eithers.foldLeft(Right(Seq.empty): Either[A, Seq[B]]) { (acc, either) =>
+      either.flatMap { right => acc.map(_ :+ right) }
+    }
 end YamlTests
