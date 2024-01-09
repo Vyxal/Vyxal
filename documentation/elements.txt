@@ -1252,6 +1252,14 @@ Keywords: arg, phase, angle
 Keywords: cosh, hyperbolic-cosine
 - a: num -> cosh(a)
 ----------------------
+∆I (Imaginary Part) (vectorising)
+Keywords: imag, imaginary, imaginary-part
+- a: num -> Im(a)
+----------------------
+∆R (Real Part) (vectorising)
+Keywords: real, real-part
+- a: num -> Re(a)
+----------------------
 ∆S (Hyperbolic Sine) (vectorising)
 Keywords: sinh, hyperbolic-sine
 - a: num -> sinh(a)
