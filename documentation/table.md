@@ -231,13 +231,27 @@
  <code>#~</code> |  | [Internal Use] Apply Without Popping (Element Form) |  | NA | :x: | <code>*a, f </code> => <code> f applied to the stack without popping items. Use the modifier instead.</code>
  <code>#¤</code> |  | Number of Context Parameters | `number-of-context`, `context-number`, `context-count` | 0 | :x: | <code></code> => <code> number of context parameters</code>
  <code>#¿</code> |  | Number of Inputs | `number-of-inputs`, `count-inputs`, `count-stdin` | 0 | :x: | <code></code> => <code> The number of inputs to the program</code>
+ <code>∆<</code> |  | Argument / Phase / Angle | `arg`, `phase`, `angle` | 1 | :white_check_mark: | <code>a: num </code> => <code> Arg(a)</code>
+ <code>∆C</code> |  | Hyperbolic Cosine | `cosh`, `hyperbolic-cosine` | 1 | :white_check_mark: | <code>a: num </code> => <code> cosh(a)</code>
+ <code>∆I</code> |  | Imaginary Part | `imag`, `imaginary`, `imaginary-part` | 1 | :white_check_mark: | <code>a: num </code> => <code> Im(a)</code>
+ <code>∆R</code> |  | Real Part | `real`, `real-part` | 1 | :white_check_mark: | <code>a: num </code> => <code> Re(a)</code>
+ <code>∆S</code> |  | Hyperbolic Sine | `sinh`, `hyperbolic-sine` | 1 | :white_check_mark: | <code>a: num </code> => <code> sinh(a)</code>
+ <code>∆T</code> |  | Hyperbolic Tangent | `tanh`, `hyperbolic-tangent` | 1 | :white_check_mark: | <code>a: num </code> => <code> tanh(a)</code>
+ <code>∆c</code> |  | Cosine | `cos`, `cosine` | 1 | :white_check_mark: | <code>a: num </code> => <code> cos(a)</code>
  <code>∆q</code> |  | Prime Exponents | `prime-exponents`, `prime-exps` | 1 | :white_check_mark: | <code>a: num </code> => <code> push a list of the power of each prime in the prime factors of a</code>
+ <code>∆s</code> |  | Sine | `sin`, `sine` | 1 | :white_check_mark: | <code>a: num </code> => <code> sin(a)</code>
+ <code>∆t</code> |  | Tangent | `tan`, `tangent` | 1 | :white_check_mark: | <code>a: num </code> => <code> tan(a)</code>
+ <code>∆Ṫ</code> |  | Dyadic Arctangent / Dyadic Inverse Tangent | `atan2`, `arctan2`, `arctangent2` | 2 | :white_check_mark: | <code>y: num, x: num </code> => <code> atan2(y, x)</code>
+ <code>∆ċ</code> |  | Arccosine / Inverse Cosine | `acos`, `arccos`, `arccosine` | 1 | :white_check_mark: | <code>a: num </code> => <code> acos(a)</code>
  <code>∆ḟ</code> |  | All Prime Exponents | `all-prime-exponents`, `all-prime-exps` | 1 | :white_check_mark: | <code>a: num </code> => <code> for all primes less than or equal to a, push the power of that prime in the factorisation of a</code>
+ <code>∆ṡ</code> |  | Arcsine / Inverse Sine | `asin`, `arcsin`, `arcsine` | 1 | :white_check_mark: | <code>a: num </code> => <code> asin(a)</code>
+ <code>∆ṫ</code> |  | Arctangent / Inverse Tangent | `atan`, `arctan`, `arctangent` | 1 | :white_check_mark: | <code>a: num </code> => <code> atan(a)</code>
  <code>ø⁾</code> |  | Surround | `surround` | 2 | :x: | <code>a: any, b: any </code> => <code> a prepended and appended to b</code>
  <code>Þ0</code> |  | Zero Pad | `zero-pad`, `pizza-tower` | 2 | :x: | <code>a: lst|str, b: num </code> => <code> a padded with 0s to length b. Positive b prepends 0s, negative b appends 0s</code><br><code>a: lst|str, b: lst|str </code> => <code> a padded with 0s to length of b. Positive b prepends 0s, negative b appends 0s</code>
  <code>ÞO</code> |  | Grid Neighbours (Wrap Around) | `grid-neighbours-wrap`, `grid-neighbors-wrap`, `adjacent-cells-wrap`, `adj-cells-wrap`, `surrounding-cells-wrap` | 1 | :x: | <code>a: lst[lst] </code> => <code> Grid neighbours of a - up, down, left, right - wrapping around</code><br><code>a: lst[lst], b: num </code> => <code> Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b => 0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does</code>
  <code>ÞP</code> |  | Set of All Primes | `PP`, `primes` | 0 | :x: | <code></code> => <code> The set of all primes</code>
  <code>ÞT</code> |  | Transpose Safe | `transpose-safe` | 1 | :x: | <code>a: any </code> => <code> transpose a</code>
+ <code>Þh</code> |  | Ends | `ends`, `sides`, `edges` | 1 | :x: | <code>a: lst </code> => <code> [a[0], a[-1]]</code><br><code>a: str </code> => <code> [a[0], a[-1]]</code>
  <code>Þi</code> |  | Multidimensional Index | `md-index` | 2 | :x: | <code>a: lst, b: lst[num] </code> => <code> a[b[0]][b[1]]...[b[n]]</code>
  <code>Þo</code> |  | Grid Neighbours | `grid-neighbours`, `grid-neighbors`, `adjacent-cells`, `adj-cells`, `surrounding-cells` | 1 | :x: | <code>a: lst[lst] </code> => <code> Grid neighbours of a - right, down, left, up of a</code><br><code>a: lst[lst], b: num </code> => <code> Grid neighbours of a - right, down, left, up of a and start from direction b => 0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does</code>
  <code>ÞĊ</code> |  | Cycle \| Is Positive? | `cycle`, `is-positive?`, `positive?`, `>0?` | 1 | :x: | <code>a: lst </code> => <code> a ++ a ++ a ++ ...</code><br><code>a: num </code> => <code> a > 0</code>

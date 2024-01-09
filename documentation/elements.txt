@@ -1244,13 +1244,65 @@ Keywords: number-of-context, context-number, context-count
 Keywords: number-of-inputs, count-inputs, count-stdin
 - -> The number of inputs to the program
 ----------------------
+∆< (Argument / Phase / Angle) (vectorising)
+Keywords: arg, phase, angle
+- a: num -> Arg(a)
+----------------------
+∆C (Hyperbolic Cosine) (vectorising)
+Keywords: cosh, hyperbolic-cosine
+- a: num -> cosh(a)
+----------------------
+∆I (Imaginary Part) (vectorising)
+Keywords: imag, imaginary, imaginary-part
+- a: num -> Im(a)
+----------------------
+∆R (Real Part) (vectorising)
+Keywords: real, real-part
+- a: num -> Re(a)
+----------------------
+∆S (Hyperbolic Sine) (vectorising)
+Keywords: sinh, hyperbolic-sine
+- a: num -> sinh(a)
+----------------------
+∆T (Hyperbolic Tangent) (vectorising)
+Keywords: tanh, hyperbolic-tangent
+- a: num -> tanh(a)
+----------------------
+∆c (Cosine) (vectorising)
+Keywords: cos, cosine
+- a: num -> cos(a)
+----------------------
 ∆q (Prime Exponents) (vectorising)
 Keywords: prime-exponents, prime-exps
 - a: num -> push a list of the power of each prime in the prime factors of a
 ----------------------
+∆s (Sine) (vectorising)
+Keywords: sin, sine
+- a: num -> sin(a)
+----------------------
+∆t (Tangent) (vectorising)
+Keywords: tan, tangent
+- a: num -> tan(a)
+----------------------
+∆Ṫ (Dyadic Arctangent / Dyadic Inverse Tangent) (vectorising)
+Keywords: atan2, arctan2, arctangent2
+- y: num, x: num -> atan2(y, x)
+----------------------
+∆ċ (Arccosine / Inverse Cosine) (vectorising)
+Keywords: acos, arccos, arccosine
+- a: num -> acos(a)
+----------------------
 ∆ḟ (All Prime Exponents) (vectorising)
 Keywords: all-prime-exponents, all-prime-exps
 - a: num -> for all primes less than or equal to a, push the power of that prime in the factorisation of a
+----------------------
+∆ṡ (Arcsine / Inverse Sine) (vectorising)
+Keywords: asin, arcsin, arcsine
+- a: num -> asin(a)
+----------------------
+∆ṫ (Arctangent / Inverse Tangent) (vectorising)
+Keywords: atan, arctan, arctangent
+- a: num -> atan(a)
 ----------------------
 ø⁾ (Surround) (non-vectorising)
 Keywords: surround
@@ -1273,6 +1325,11 @@ Keywords: PP, primes
 ÞT (Transpose Safe) (non-vectorising)
 Keywords: transpose-safe
 - a: any -> transpose a
+----------------------
+Þh (Ends) (non-vectorising)
+Keywords: ends, sides, edges
+- a: lst -> [a[0], a[-1]]
+- a: str -> [a[0], a[-1]]
 ----------------------
 Þi (Multidimensional Index) (non-vectorising)
 Keywords: md-index

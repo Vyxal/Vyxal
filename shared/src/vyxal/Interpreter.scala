@@ -100,11 +100,10 @@ object Interpreter:
       case AST.CompressedString(value, _) =>
         ctx.push(StringHelpers.decompress252String(value))
       case AST.Lst(elems, _) =>
-        val list = collection.mutable.ListBuffer.empty[VAny]
-        for elem <- elems do
-          execute(elem)(using ctx.makeChild())
-          list += ctx.pop()
-        ctx.push(VList.from(list.toList))
+        val context = ctx.copy
+        context.clear()
+        for elem <- elems do execute(elem)(using context)
+        ctx.push(VList.from(context.getStack))
       case AST.Command(cmd, _, overwriteable) =>
         var executed = false
         if overwriteable && ctx.globals.extensions.contains(cmd) then
