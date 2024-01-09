@@ -3802,7 +3802,7 @@ object Elements:
       "Dyadic Arctangent / Dyadic Inverse Tangent",
       List("atan2", "arctan2", "arctangent2"),
       true,
-      "y: num, x: num -> atan2(y, x)"
+      "y: num, x: num -> atan2(y, x)",
     ) {
       case (y: VNum, x: VNum) => y.atan2(x)
     },
