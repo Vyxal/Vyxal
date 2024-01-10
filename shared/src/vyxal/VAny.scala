@@ -153,7 +153,7 @@ case class VObject(
           case Visibility.Public => "!"
           case Visibility.Restricted => "$"
           case Visibility.Private => "="
-          
+
         s"$sigil$name: $value"
     }
     if multiline then s"$className {\n${fs.map("  " + _).mkString("\n")}\n}"
