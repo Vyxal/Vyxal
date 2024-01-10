@@ -134,11 +134,19 @@ end extension
 
 case class VConstructor(
     name: String
-)
+):
+  override def toString = s"$name constructor"
 
 case class VObject(
     className: String,
     fields: Map[String, (Visibility, VAny)],
-)
+):
+  override def toString =
+    val fs = fields.map { case (name, (vis, value)) => s"$value ${vis match
+      case Visibility.Public => "#!"
+      case Visibility.Restricted => "#$"
+      case Visibility.Private => "#="
+    }$name" }
+    s"$className { ${fs.mkString(" ")} }"
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
