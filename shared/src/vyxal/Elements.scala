@@ -1010,10 +1010,12 @@ object Elements:
       false,
       "a: lst -> [a[0], a[-1]]",
       "a: str -> [a[0], a[-1]]",
-    ) { a =>
-      val iterable = ListHelpers.makeIterable(a)
-      if iterable.isEmpty then VList.from(Seq.empty)
-      else VList(iterable.head, iterable.last)
+    ) { 
+      case c: VNum if (c.isImaginary && c.isReal) => VList(c.real, c.imag)
+      case a => 
+        val iterable = ListHelpers.makeIterable(a)
+        if iterable.isEmpty then VList.from(Seq.empty)
+        else VList(iterable.head, iterable.last)
     },
     addPart(
       Monad,
