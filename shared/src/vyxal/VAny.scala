@@ -78,7 +78,7 @@ case class VFun(
 
   override def toString =
     originalAST match
-      case None => "λ<unknown>}"
+      case None => s"λ${if arity == -1 then "!" else arity.toInt}|<unknown>}"
       case Some(ast) => ast.toVyxal
 end VFun
 
@@ -148,11 +148,13 @@ case class VObject(
 ):
   override def toString =
     val fs = fields.map {
-      case (name, (vis, value)) => s"$value ${vis match
-            case Visibility.Public => "#!"
-            case Visibility.Restricted => "#$"
-            case Visibility.Private => "#="
-          }$name"
+      case (name, (vis, value)) =>
+        val prefix = vis match
+          case Visibility.Public => "#!"
+          case Visibility.Restricted => "#$"
+          case Visibility.Private => "#="
+          
+        s"$value $prefix$name"
     }
     s"$className { ${fs.mkString(" ")} }"
 given (using Context): Ordering[VAny] with

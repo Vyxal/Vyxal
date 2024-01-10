@@ -159,8 +159,14 @@ enum AST(val arity: Option[Int]) derives CanEqual:
         s"(${loopVar.getOrElse("")}|${body.toVyxal}}"
       case While(cond, body, _) =>
         s"{${cond.fold("")(_.toVyxal)}|${body.toVyxal}}"
-      case Lambda(_, params, body, originallyFunction, _) =>
-        body.map(_.toVyxal).mkString("λ", "|", "}")
+      case Lambda(lambdaArity, params, body, originallyFunction, _) =>
+        s"λ${if params.nonEmpty then params.mkString("", ",", "|")
+          else
+            lambdaArity match
+              case Some(arity) =>
+                s"${if arity == -1 then "!" else arity.toString}|"
+              case None => ""
+          }${body.map(_.toVyxal).mkString("|")}}"
       case FnDef(name, lam, _) => ???
       case GetVar(name, _) => s"#<$name"
       case SetVar(name, _) => s"#>$name"
