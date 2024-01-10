@@ -76,9 +76,10 @@ case class VFun(
   def apply(args: VAny*)(using ctx: Context): VAny =
     Interpreter.executeFn(this, args = args)
 
-  override def toString = originalAST match
-    case None => s"λ${if arity == -1 then "!" else arity.toInt}|<unknown>}"
-    case Some(ast) => ast.toVyxal
+  override def toString =
+    originalAST match
+      case None => s"λ${if arity == -1 then "!" else arity.toInt}|<unknown>}"
+      case Some(ast) => ast.toVyxal
 end VFun
 
 object VFun:
