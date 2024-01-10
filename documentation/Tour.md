@@ -696,6 +696,10 @@ and so on.
 Normal lambdas and accumulation lambdas do not perform any special actions
 with multiple code sections.
 
+### Printing Functions 
+
+Whenever you send a function object to stdout, it calls the function and prints the result.
+
 ## Context
 
 The concept of a "context" has been alluded to a few times now, but what is it?
