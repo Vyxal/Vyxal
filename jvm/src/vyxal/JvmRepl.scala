@@ -28,6 +28,7 @@ object JvmRepl extends Repl:
     while true do
       val code = StdIn.readLine("> ")
       if code == null then return
+      ctx.globals.printed = false
       try Interpreter.execute(code)
       catch case ex: VyxalException => scribe.error(ex.getMessage(using ctx))
 
@@ -76,6 +77,7 @@ object JvmRepl extends Repl:
     while true do
       try
         val code = lineReader.readLine("> ")
+        ctx.globals.printed = false
         Interpreter.execute(code)
       catch
         case _: UserInterruptException => return
