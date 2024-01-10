@@ -147,11 +147,13 @@ case class VObject(
 ):
   override def toString =
     val fs = fields.map {
-      case (name, (vis, value)) => s"$value ${vis match
-            case Visibility.Public => "#!"
-            case Visibility.Restricted => "#$"
-            case Visibility.Private => "#="
-          }$name"
+      case (name, (vis, value)) =>
+        val prefix = vis match
+          case Visibility.Public => "#!"
+          case Visibility.Restricted => "#$"
+          case Visibility.Private => "#="
+          
+        s"$value $prefix$name"
     }
     s"$className { ${fs.mkString(" ")} }"
 given (using Context): Ordering[VAny] with
