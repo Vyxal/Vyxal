@@ -77,7 +77,7 @@ case class VFun(
     Interpreter.executeFn(this, args = args)
 
   override def toString = originalAST match
-    case None => s"λ<unknown>}"
+    case None => "λ<unknown>}"
     case Some(ast) => ast.toVyxal
 end VFun
 
