@@ -146,16 +146,19 @@ case class VObject(
     className: String,
     fields: Map[String, (Visibility, VAny)],
 ):
-  override def toString =
+  def repr(multiline: Boolean) =
     val fs = fields.map {
       case (name, (vis, value)) =>
-        val prefix = vis match
-          case Visibility.Public => "#!"
-          case Visibility.Restricted => "#$"
-          case Visibility.Private => "#="
+        val sigil = vis match
+          case Visibility.Public => "!"
+          case Visibility.Restricted => "$"
+          case Visibility.Private => "="
           
-        s"$value $prefix$name"
+        s"$sigil$name: $value"
     }
-    s"$className { ${fs.mkString(" ")} }"
+    if multiline then s"$className {\n${fs.map("  " + _).mkString("\n")}\n}"
+    else s"$className { ${fs.mkString(", ")} }"
+
+  override def toString = repr(false)
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
