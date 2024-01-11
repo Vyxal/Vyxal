@@ -543,9 +543,9 @@ Keywords: head-remove, behead
 - a: str -> a[1:]
 - a: any -> toList(a)[1:]
 ----------------------
-İ (Drop | Collect While Unique | Complex Number) (non-vectorising)
+İ (Drop/Zero Slice From | Collect While Unique | Complex Number) (non-vectorising)
 Trigraph: #.I
-Keywords: drop, collect-while-unique, complex
+Keywords: drop, zero-slice-from, slice-from, collect-while-unique, complex
 - a: num, b: num -> a.real + b.real * i
 - a: str|lst, b: num -> a[b:]
 - a: any, b: fun -> Apply b on a and collect unique values (until fixpoint). Does not include the initial value.
