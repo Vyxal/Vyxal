@@ -329,7 +329,7 @@ object StringHelpers:
       case n: VNum => NumberHelpers.numToString(n)
       case s: String => s
       case l: VList => l.map(vyToString).mkString("[", "|", "]")
-      case f: VFun => vyToString(Interpreter.executeFn(f))
+      case f: VFun => f.toString
       case c: VConstructor => s"$c()"
       case o: VObject => o.toString
 
