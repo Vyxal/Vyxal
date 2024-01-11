@@ -185,16 +185,10 @@ enum CustomElementType derives CanEqual:
   case Element
   case Modifier
 
-enum Visibility derives CanEqual:
-  case Public
-  case Private
-  case Restricted
-
-  def sigil: String =
-    this match
-      case Visibility.Public => "!"
-      case Visibility.Restricted => "$"
-      case Visibility.Private => "="
+enum Visibility(val sigil: String) derives CanEqual:
+  case Public extends Visibility("!")
+  case Private extends Visibility("=")
+  case Restricted extends Visibility("$")
 
 case class CustomDefinition(
     name: String,
