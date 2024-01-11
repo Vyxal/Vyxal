@@ -151,6 +151,5 @@ case class VObject(
       case (name, (vis, value)) => s"${vis.sigil}$name: $value"
     }
     s"$className { ${fs.mkString(", ")} }"
-end VObject
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)

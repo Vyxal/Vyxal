@@ -344,24 +344,38 @@ object StringHelpers:
           if l.isEmpty then ("[]", false)
           else
             val (items, nested) = l.map(go(_, indentation + 1)).unzip
-            val isNested = nested.exists(_ == true) || items.mkString(", ").length > 80
+            val isNested = nested.exists(_ == true) ||
+              items.mkString(", ").length > 80
             if isNested then
-              (s"[\n${items.map("  ".repeat(indentation + 1) + _).mkString(",\n")}\n${"  ".repeat(indentation)}]", true)
+              (
+                s"[\n${items.map("  ".repeat(indentation + 1) + _).mkString(",\n")}\n${"  "
+                    .repeat(indentation)}]",
+                true,
+              )
             else (s"[ ${items.mkString(", ")} ]", true)
         case o: VObject =>
           if o.fields.isEmpty then (s"${o.className} {}", false)
           else
             val (keys, values) = o.fields.unzip
-            val (vs, nested) = values.map { case (vis, value) => go(value, indentation + 1) }.unzip
+            val (vs, nested) = values.map {
+              case (vis, value) => go(value, indentation + 1)
+            }.unzip
             val sigils = values.map(_._1.sigil)
             val entries = keys.zip(vs.zip(sigils)).map {
               case (key, (value, sigil)) => s"$sigil$key: $value"
             }
-            val isNested = nested.exists(_ == true) || entries.mkString(", ").length > 80
+            val isNested = nested.exists(_ == true) ||
+              entries.mkString(", ").length > 80
             if isNested then
-              (s"${o.className} {\n${entries.map("  ".repeat(indentation + 1) + _).mkString(",\n")}${"  ".repeat(indentation)}\n}", true)
+              (
+                s"${o.className} {\n${entries
+                    .map("  ".repeat(indentation + 1) + _)
+                    .mkString(",\n")}${"  ".repeat(indentation)}\n}",
+                true,
+              )
             else (s"${o.className} { ${entries.mkString(", ")} }", true)
     go(item, 0)._1
+  end prettyPrint
 
   def characterMultiply(n: VNum, s: String)(using Context): VAny =
     s.map(_.toString * n.toInt).mkString
