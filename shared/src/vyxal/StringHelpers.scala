@@ -333,7 +333,9 @@ object StringHelpers:
       case c: VConstructor => s"$c()"
       case o: VObject => o.toString
 
-  def prettyPrint(item: VAny, indentation: Int = 0)(using Context): (String, Boolean) =
+  def prettyPrint(item: VAny, indentation: Int = 0)(using
+      Context
+  ): (String, Boolean) =
     item match
       case n: VNum => (NumberHelpers.numToString(n), false)
       case s: String => (s, false)

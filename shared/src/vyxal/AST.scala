@@ -190,10 +190,11 @@ enum Visibility derives CanEqual:
   case Private
   case Restricted
 
-  def sigil: String = this match
-    case Visibility.Public => "!"
-    case Visibility.Restricted => "$"
-    case Visibility.Private => "="
+  def sigil: String =
+    this match
+      case Visibility.Public => "!"
+      case Visibility.Restricted => "$"
+      case Visibility.Private => "="
 
 case class CustomDefinition(
     name: String,
