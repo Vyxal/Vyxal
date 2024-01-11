@@ -333,7 +333,9 @@ object StringHelpers:
       case c: VConstructor => s"$c()"
       case o: VObject => o.toString
 
-  def prettyPrintHelper(item: VAny, indentation: Int)(using Context): (String, Boolean) =
+  def prettyPrintHelper(item: VAny, indentation: Int)(using
+      Context
+  ): (String, Boolean) =
     item match
       case n: VNum => (NumberHelpers.numToString(n), false)
       case s: String => (s, false)
@@ -342,7 +344,8 @@ object StringHelpers:
       case c: VConstructor => (c.toString, false)
       case o: VObject => o.prettyPrint(indentation)
 
-  def prettyPrint(item: VAny)(using Context): String = prettyPrintHelper(item, 0)._1
+  def prettyPrint(item: VAny)(using Context): String =
+    prettyPrintHelper(item, 0)._1
 
   def characterMultiply(n: VNum, s: String)(using Context): VAny =
     s.map(_.toString * n.toInt).mkString
