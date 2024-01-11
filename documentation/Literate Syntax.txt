@@ -17,7 +17,15 @@ variable_aug_assign ::= element ":=" variable_name
 variable_unpack ::= "#[" {variable_unpack_expr} "]"
 variable_unpack_expr ::= variable_name | "[" variable_unpack_expr "]"
 
+custom_definition ::= "define" ("@" | "*") (variable_name | elementChar) branch lambda_args {element} [structure_single_close]
+record_definition ::= "record" variable_name branch {[element] (variable_get | variable_assign | variable_set_const)} [structure_single_close]
+extension_method ::= "extension" (variable_name | elementChar) branch variable_name branch variable_name {branch variable_name branch variable_name} branch {element} [structure_single_close]
+
+custom_element = "#:@" variable_name
+custom_modifier = "#:`" variable_name
+
 context_index ::= "`" number_part "`"
+function_call ::= "`" variable_name "`"
 
 monadic_1_group ::= "(. " element ")"
 monadic_2_group ::= "(: " element element ")"
@@ -34,5 +42,8 @@ list ::= list_open [element {"," element}] list_close
 lambda_args ::= "!" | {number_part | variable_name | "*"}
 
 inline_lambda ::= "{" lambda_args branch {element} "}"
+
+program ::= {element | custom_definition | record_definition | extension_method}
+
 
 (* The keywords, after mapping, follow the same sbcs syntax *)
