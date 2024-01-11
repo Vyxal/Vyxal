@@ -157,7 +157,7 @@ case class VObject(
     else
       val (keys, values) = fields.unzip
       val (vs, nested) = values.map {
-        case (vis, value) => StringHelpers.prettyPrint(value, indentation + 1)
+        case (vis, value) => StringHelpers.prettyPrintHelper(value, indentation + 1)
       }.unzip
       val sigils = values.map(_._1.sigil)
       val entries = keys.zip(vs.zip(sigils)).map {

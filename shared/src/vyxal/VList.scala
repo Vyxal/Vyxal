@@ -153,7 +153,7 @@ class VList private (val lst: Seq[VAny])
     if lst.isEmpty then ("[]", false)
     else
       val (items, nested) =
-        lst.map(StringHelpers.prettyPrint(_, indentation + 1)).unzip
+        lst.map(StringHelpers.prettyPrintHelper(_, indentation + 1)).unzip
       val isNested = nested.exists(_ == true) ||
         items.mkString(", ").length > 80
       if isNested then
