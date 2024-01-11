@@ -2,6 +2,7 @@ package vyxal
 
 import vyxal.parsing.{Lexer, Parser, ParserResult}
 import vyxal.MiscHelpers.vyPrintln
+import vyxal.StringHelpers.prettyPrint
 import vyxal.VNum.given
 
 import scala.collection.mutable.ListBuffer
@@ -44,7 +45,7 @@ object Interpreter:
       execute(ast)
       if !ctx.globals.printed && !ctx.testMode then
         if ctx.settings.endPrintMode == EndPrintMode.Default then
-          vyPrintln(ctx.pop())
+          vyPrintln(prettyPrint(ctx.pop()))
         else if ctx.settings.endPrintMode == EndPrintMode.JoinNewlines then
           vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString("\n"))
         else if ctx.settings.endPrintMode == EndPrintMode.Sum then

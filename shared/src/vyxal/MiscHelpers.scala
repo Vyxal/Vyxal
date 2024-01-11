@@ -251,8 +251,8 @@ object MiscHelpers:
             case s: String => vyPrint(StringHelpers.quotify(s))
             case l: VList => vyPrint(l)
             case f: VFun => vyPrint(executeFn(f))
-            case c: VConstructor => vyPrint("Constructor(" + c.name + ")")
-            case o: VObject => vyPrint("Object(" + o + ")")
+            case c: VConstructor => vyPrint(c.toString)
+            case o: VObject => vyPrint(o.toString)
 
           temp = temp.tail
           if temp.nonEmpty then vyPrint(", ")
