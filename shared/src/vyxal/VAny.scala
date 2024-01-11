@@ -151,29 +151,6 @@ case class VObject(
       case (name, (vis, value)) => s"${vis.sigil}$name: $value"
     }
     s"$className { ${fs.mkString(", ")} }"
-
-  def prettyPrint(indentation: Int)(using Context): (String, Boolean) =
-    if fields.isEmpty then (s"$className {}", false)
-    else
-      val (keys, values) = fields.unzip
-      val (vs, nested) = values.map {
-        case (vis, value) =>
-          StringHelpers.prettyPrintHelper(value, indentation + 1)
-      }.unzip
-      val sigils = values.map(_._1.sigil)
-      val entries = keys.zip(vs.zip(sigils)).map {
-        case (key, (value, sigil)) => s"$sigil$key: $value"
-      }
-      val isNested = nested.exists(_ == true) ||
-        fields.map(_.toString).mkString(", ").length > 80
-      if isNested then
-        (
-          s"$className {\n${entries
-              .map("  ".repeat(indentation + 1) + _)
-              .mkString(",\n")}${"  ".repeat(indentation)}\n}",
-          true,
-        )
-      else (s"$className { ${entries.mkString(", ")} }", true)
 end VObject
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)

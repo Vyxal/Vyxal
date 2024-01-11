@@ -149,21 +149,6 @@ class VList private (val lst: Seq[VAny])
   override def toString(): String =
     lst.map(_.toString).mkString("[ ", " | ", " ]")
 
-  def prettyPrint(indentation: Int)(using Context): (String, Boolean) =
-    if lst.isEmpty then ("[]", false)
-    else
-      val (items, nested) =
-        lst.map(StringHelpers.prettyPrintHelper(_, indentation + 1)).unzip
-      val isNested = nested.exists(_ == true) ||
-        items.mkString(", ").length > 80
-      if isNested then
-        (
-          s"[\n${items.map("  ".repeat(indentation + 1) + _).mkString(",\n")}\n${"  "
-              .repeat(indentation)}]",
-          true,
-        )
-      else (s"[ ${items.mkString(", ")} ]", true)
-
   override protected def fromSpecific(coll: IterableOnce[VAny]): VList =
     VList.fromSpecific(coll)
 
