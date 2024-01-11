@@ -25,14 +25,14 @@ object Interpreter:
           case None => ()
         lexRes
       catch
-        case ex: VyxalException => throw VyxalException("VyxalException", ex)
+        case ex: VyxalException => throw ex
         case ex: Throwable => throw UnknownLexingException(ex)
 
     /** Attempt parsing */
     val ParserResult(ast, customDefns, classes, extensions) =
       try Parser.parse(tokens)
       catch
-        case ex: VyxalException => throw VyxalException("VyxalException", ex)
+        case ex: VyxalException => throw ex
         case ex: Throwable => throw UnknownParsingException(ex)
 
     /** Attempt execution */
@@ -85,7 +85,7 @@ object Interpreter:
       if ctx.settings.endPrintMode == EndPrintMode.Force then
         vyPrintln(ctx.pop())
     catch
-      case ex: VyxalException => throw VyxalException("VyxalException", ex)
+      case ex: VyxalException => throw ex
       case ex: Throwable => throw UnknownRuntimeException(ex)
   end execute
 

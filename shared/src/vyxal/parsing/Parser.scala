@@ -758,7 +758,7 @@ private class Parser:
       case _ => ast.arity.contains(0)
 end Parser
 
-enum ParsingException(msg: String) extends Exception(msg):
+enum ParsingException(msg: String) extends VyxalException(msg):
   case BadAugmentedAssignException()
       extends ParsingException("Missing element for augmented assign")
   case BadModifierException(modifier: String)
