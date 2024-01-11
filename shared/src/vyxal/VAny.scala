@@ -146,19 +146,23 @@ case class VObject(
     className: String,
     fields: Map[String, (Visibility, VAny)],
 ):
-  def repr(multiline: Boolean) =
+  override def toString =
     val fs = fields.map {
-      case (name, (vis, value)) =>
-        val sigil = vis match
-          case Visibility.Public => "!"
-          case Visibility.Restricted => "$"
-          case Visibility.Private => "="
-
-        s"$sigil$name: $value"
+      case (name, (vis, value)) => s"${vis.sigil}$name: $value"
     }
-    if multiline then s"$className {\n${fs.map("  " + _).mkString("\n")}\n}"
-    else s"$className { ${fs.mkString(", ")} }"
+    s"$className { ${fs.mkString(", ")} }"
 
-  override def toString = repr(false)
+  def prettyPrint(indentation: Int)(using Context): (String, Boolean) =
+    if fields.isEmpty then (s"$className {}", false)
+    else
+      val (keys, values) = fields.unzip
+      val (vs, nested) = values.map { case (vis, value) => StringHelpers.prettyPrint(value, indentation + 1) }.unzip
+      val sigils = values.map(_._1.sigil)
+      val entries = keys.zip(vs.zip(sigils)).map { case (key, (value, sigil)) =>
+        s"$sigil$key: $value"
+      }
+      val isNested = nested.exists(_ == true) || fields.map(_.toString).mkString(", ").length > 80
+      if isNested then (s"$className {\n${entries.map("  ".repeat(indentation + 1) + _).mkString(",\n")}${"  ".repeat(indentation)}\n}", true)
+      else (s"$className { ${entries.mkString(", ")} }", true)
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)

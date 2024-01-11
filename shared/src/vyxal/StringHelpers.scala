@@ -331,7 +331,16 @@ object StringHelpers:
       case l: VList => l.map(vyToString).mkString("[", "|", "]")
       case f: VFun => vyToString(Interpreter.executeFn(f))
       case c: VConstructor => s"$c()"
-      case o: VObject => o.repr(true)
+      case o: VObject => o.toString
+
+  def prettyPrint(item: VAny, indentation: Int = 0)(using Context): (String, Boolean) =
+    item match
+      case n: VNum => (NumberHelpers.numToString(n), false)
+      case s: String => (s, false)
+      case l: VList => l.prettyPrint(indentation)
+      case f: VFun => prettyPrint(Interpreter.executeFn(f))
+      case c: VConstructor => (c.toString, false)
+      case o: VObject => o.prettyPrint(indentation)
 
   def characterMultiply(n: VNum, s: String)(using Context): VAny =
     s.map(_.toString * n.toInt).mkString
