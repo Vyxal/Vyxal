@@ -37,7 +37,7 @@ object MiscHelpers:
 
   def compare(a: VAny, b: VAny)(using ctx: Context): Int =
     (a, b) match
-      case (a: VNum, b: VNum) => a.real.compare(b.real)
+      case (a: VNum, b: VNum) => a.compare(b)
       case (a: String, b: VNum) => a.compareTo(b.toString)
       case (a: VNum, b: String) => a.toString.compareTo(b)
       case (a: String, b: String) => a.compareTo(b)
@@ -251,8 +251,8 @@ object MiscHelpers:
             case s: String => vyPrint(StringHelpers.quotify(s))
             case l: VList => vyPrint(l)
             case f: VFun => vyPrint(executeFn(f))
-            case c: VConstructor => vyPrint("Constructor(" + c.name + ")")
-            case o: VObject => vyPrint("Object(" + o + ")")
+            case c: VConstructor => vyPrint(c.toString)
+            case o: VObject => vyPrint(o.toString)
 
           temp = temp.tail
           if temp.nonEmpty then vyPrint(", ")

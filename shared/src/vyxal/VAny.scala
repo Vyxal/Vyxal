@@ -75,6 +75,11 @@ case class VFun(
 
   def apply(args: VAny*)(using ctx: Context): VAny =
     Interpreter.executeFn(this, args = args)
+
+  override def toString =
+    originalAST match
+      case None => s"λ${if arity == -1 then "!" else arity.toInt}|<unknown>}"
+      case Some(ast) => ast.toVyxal
 end VFun
 
 object VFun:
@@ -134,11 +139,17 @@ end extension
 
 case class VConstructor(
     name: String
-)
+):
+  override def toString = s"$name constructor"
 
 case class VObject(
     className: String,
     fields: Map[String, (Visibility, VAny)],
-)
+):
+  override def toString =
+    val fs = fields.map {
+      case (name, (vis, value)) => s"${vis.sigil}$name: $value"
+    }
+    s"$className { ${fs.mkString(", ")} }"
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)

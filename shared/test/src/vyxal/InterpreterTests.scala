@@ -14,6 +14,8 @@ class InterpreterTests extends VyxalTests:
   describe("Literals") {
     it("should make lists") {
       testCode("#[1 | 2 3 + | 4#]", VList(1, 5, 4))
+      testCode("#[ 1 2 | 3 ++ #]", VList(6))
+      testCode("#[1 2 | 3 4#]", VList(1, 2, 3, 4))
     }
   }
 

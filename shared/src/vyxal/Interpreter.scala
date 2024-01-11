@@ -2,6 +2,7 @@ package vyxal
 
 import vyxal.parsing.{Lexer, Parser, ParserResult}
 import vyxal.MiscHelpers.vyPrintln
+import vyxal.StringHelpers.prettyPrint
 import vyxal.VNum.given
 
 import scala.collection.mutable.ListBuffer
@@ -24,14 +25,14 @@ object Interpreter:
           case None => ()
         lexRes
       catch
-        case ex: VyxalException => throw VyxalException("VyxalException", ex)
+        case ex: VyxalException => throw ex
         case ex: Throwable => throw UnknownLexingException(ex)
 
     /** Attempt parsing */
     val ParserResult(ast, customDefns, classes, extensions) =
       try Parser.parse(tokens)
       catch
-        case ex: VyxalException => throw VyxalException("VyxalException", ex)
+        case ex: VyxalException => throw ex
         case ex: Throwable => throw UnknownParsingException(ex)
 
     /** Attempt execution */
@@ -44,7 +45,7 @@ object Interpreter:
       execute(ast)
       if !ctx.globals.printed && !ctx.testMode then
         if ctx.settings.endPrintMode == EndPrintMode.Default then
-          vyPrintln(ctx.pop())
+          vyPrintln(prettyPrint(ctx.pop()))
         else if ctx.settings.endPrintMode == EndPrintMode.JoinNewlines then
           vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString("\n"))
         else if ctx.settings.endPrintMode == EndPrintMode.Sum then
@@ -84,7 +85,7 @@ object Interpreter:
       if ctx.settings.endPrintMode == EndPrintMode.Force then
         vyPrintln(ctx.pop())
     catch
-      case ex: VyxalException => throw VyxalException("VyxalException", ex)
+      case ex: VyxalException => throw ex
       case ex: Throwable => throw UnknownRuntimeException(ex)
   end execute
 
@@ -100,11 +101,10 @@ object Interpreter:
       case AST.CompressedString(value, _) =>
         ctx.push(StringHelpers.decompress252String(value))
       case AST.Lst(elems, _) =>
-        val list = collection.mutable.ListBuffer.empty[VAny]
-        for elem <- elems do
-          execute(elem)(using ctx.makeChild())
-          list += ctx.pop()
-        ctx.push(VList.from(list.toList))
+        val context = ctx.copy
+        context.clear()
+        for elem <- elems do execute(elem)(using context)
+        ctx.push(VList.from(context.getStack))
       case AST.Command(cmd, _, overwriteable) =>
         var executed = false
         if overwriteable && ctx.globals.extensions.contains(cmd) then
