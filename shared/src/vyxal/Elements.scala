@@ -1071,8 +1071,8 @@ object Elements:
     addPart(
       Dyad,
       "İ",
-      "Drop | Collect While Unique | Complex Number",
-      List("drop", "collect-while-unique", "complex"),
+      "Zero Slice From | Collect While Unique | Complex Number",
+      List("zero-slice-from", "slice-from", "from", "drop-from", "collect-while-unique", "complex"),
       false,
       "a: num, b: num -> a.real + b.real * i",
       "a: str|lst, b: num -> a[b:]",
