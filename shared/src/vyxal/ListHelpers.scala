@@ -102,7 +102,9 @@ object ListHelpers:
     if shape.isEmpty then iterable
     else if shape.length == 1 then drop(iterable, shape.head)
     else
-      VList.from(drop(iterable, shape.head).map { row => drop(makeIterable(row), shape.tail) })
+      VList.from(drop(iterable, shape.head).map { row =>
+        drop(makeIterable(row), shape.tail)
+      })
 
   def filter(iterable: VList, predicate: VFun)(using Context): VList =
     predicate.originalAST match
