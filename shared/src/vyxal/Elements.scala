@@ -1082,6 +1082,7 @@ object Elements:
       false,
       "a: num, b: num -> a.real + b.real * i",
       "a: str|lst, b: num -> a[b:]",
+      "a: lst, b: lst[num] -> apl style drop",
       "a: any, b: fun -> Apply b on a and collect unique values (until fixpoint). Does not include the initial value.",
     ) {
       case (a: VNum, b: VNum) => VNum.complex(a.real, b.real)
@@ -1093,6 +1094,9 @@ object Elements:
         ListHelpers.drop(ListHelpers.makeIterable(b), a).mkString
       case (init, fn: VFun) => collectUnique(fn, init).tail
       case (fn: VFun, init) => collectUnique(fn, init).tail
+      case (a: VList, b: VList) =>
+        if !b.lst.forall(_.isInstanceOf[VNum]) then ???
+        else ListHelpers.drop(a, b.lst.map(_.asInstanceOf[VNum]))
     },
     addPart(
       Monad,
