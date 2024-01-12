@@ -36,6 +36,7 @@ lambda_args ::= "!" | {number_part | variable_name | "*"}
 variable_name ::= "a-Z" {"a-Z" | "0-9" | "_"}
 variable_get ::= "#$" variable_name
 variable_assign ::= "#=" variable_name
+variable_set_const ::= "#!" variable_name
 variable_aug_assign ::= element "#>" variable_name
 variable_unpack ::= "#[" {variable_unpack_expr} "]"
 variable_unpack_expr ::= variable_name | "[" variable_unpack_expr "]"
@@ -44,9 +45,19 @@ context_index ::= "¤" number_part
 
 list ::= list_open [element {"|" element}] list_close
 
+custom_definition ::= "#::" ("@" | "*") (variable_name | elementChar) "|" lambda_args {element} [structure_single_close]
+record_definition ::= "#:R" variable_name "|" {[element] (variable_get | variable_assign | variable_set_const)} [structure_single_close]
+extension_method ::= "#:>>" (variable_name | elementChar) "|" variable_name "|" variable_name {"|" variable_name "|" variable_name}  "|" {element} [structure_single_close]
+
+custom_element = "#:@" variable_name
+custom_modifier = "#:`" variable_name
+
 element ::= elementChar | 1modChar element | 2modChar element element | 
             3modChar element element element | 4modChar element element element element |
             structure | variable_assign | variable_get | variable_aug_assign | lambda | variable_unpack |
-            context_index | list
+            context_index | list | custom_element | custom_modifier
+
+program ::= {element | custom_definition | record_definition | extension_method}
+
 (* the special modifiers don't have actual behaviour yet *)
 (* this also does not account for arity grouping *)

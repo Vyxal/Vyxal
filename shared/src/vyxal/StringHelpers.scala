@@ -329,9 +329,53 @@ object StringHelpers:
       case n: VNum => NumberHelpers.numToString(n)
       case s: String => s
       case l: VList => l.map(vyToString).mkString("[", "|", "]")
-      case f: VFun => vyToString(Interpreter.executeFn(f))
+      case f: VFun => f.toString
       case c: VConstructor => s"$c()"
-      case o: VObject => s"Object[${o.className}](${o.fields})"
+      case o: VObject => o.toString
+
+  def prettyPrint(item: VAny)(using Context): String =
+    def go(item: VAny, indentation: Int)(using Context): (String, Boolean) =
+      item match
+        case n: VNum => (NumberHelpers.numToString(n), false)
+        case s: String => (s, false)
+        case f: VFun => go(Interpreter.executeFn(f), indentation)
+        case c: VConstructor => (c.toString, false)
+        case l: VList =>
+          if l.isEmpty then ("[]", false)
+          else
+            val (items, nested) = l.map(go(_, indentation + 1)).unzip
+            val isNested = nested.exists(_ == true) ||
+              items.mkString(", ").length > 80
+            if isNested then
+              (
+                s"[\n${items.map("  ".repeat(indentation + 1) + _).mkString(",\n")}\n${"  "
+                    .repeat(indentation)}]",
+                true,
+              )
+            else (s"[ ${items.mkString(", ")} ]", true)
+        case o: VObject =>
+          if o.fields.isEmpty then (s"${o.className} {}", false)
+          else
+            val (keys, values) = o.fields.unzip
+            val (vs, nested) = values.map {
+              case (vis, value) => go(value, indentation + 1)
+            }.unzip
+            val sigils = values.map(_._1.sigil)
+            val entries = keys.zip(vs.zip(sigils)).map {
+              case (key, (value, sigil)) => s"$sigil$key: $value"
+            }
+            val isNested = nested.exists(_ == true) ||
+              entries.mkString(", ").length > 80
+            if isNested then
+              (
+                s"${o.className} {\n${entries
+                    .map("  ".repeat(indentation + 1) + _)
+                    .mkString(",\n")}${"  ".repeat(indentation)}\n}",
+                true,
+              )
+            else (s"${o.className} { ${entries.mkString(", ")} }", true)
+    go(item, 0)._1
+  end prettyPrint
 
   def characterMultiply(n: VNum, s: String)(using Context): VAny =
     s.map(_.toString * n.toInt).mkString
