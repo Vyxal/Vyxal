@@ -1010,8 +1010,8 @@ object Elements:
       false,
       "a: lst -> [a[0], a[-1]]",
       "a: str -> [a[0], a[-1]]",
-    ) { 
-      case c: VNum if (c.isImaginary && c.isReal) => VList(c.real, c.imag)
+    ) {
+      case a: VNum if !(a.isImaginary || a.isReal) => VList(a.real, a.imag)
       case a => 
         val iterable = ListHelpers.makeIterable(a)
         if iterable.isEmpty then VList.from(Seq.empty)
