@@ -464,7 +464,9 @@ object ListHelpers:
           VList.from(start.to(num - offset))
         else
           VList.from(num.toString.map { x =>
-            if x.isDigit then VNum(x - '0') else x.toString
+            if x.isDigit then VNum(x - '0')
+            else if x == 'ı' || x == 'i' then VNum.complex(0, 1)
+            else x.toString
           })
       case _ => throw IterificationOfNonIterableException(value)
 
