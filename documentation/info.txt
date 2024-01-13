@@ -108,7 +108,7 @@ z ==> Inclusive zero Range | Is Lowercase
 Ḟ ==> Find
 Ġ ==> Group by Function Result | Greatest Common Divisor | Find all overlapping regex matches
 Ḣ ==> Head Remove | Behead
-İ ==> Drop | Collect While Unique | Complex Number
+İ ==> Drop/Zero Slice From | Collect While Unique | Complex Number
 Ŀ ==> Logarithm | Scan Fixpoint | Same Length? | Length Equals?
 Ṁ ==> Modular | Matrix Multiply | Regex Full Match?
 Ṅ ==> Is Prime? | Quine Cheese
@@ -237,13 +237,27 @@ z ==> Inclusive zero Range | Is Lowercase
 #~ ==> [Internal Use] Apply Without Popping (Element Form)
 #¤ ==> Number of Context Parameters
 #¿ ==> Number of Inputs
+∆< ==> Argument / Phase / Angle
+∆C ==> Hyperbolic Cosine
+∆I ==> Imaginary Part
+∆R ==> Real Part
+∆S ==> Hyperbolic Sine
+∆T ==> Hyperbolic Tangent
+∆c ==> Cosine
 ∆q ==> Prime Exponents
+∆s ==> Sine
+∆t ==> Tangent
+∆Ṫ ==> Dyadic Arctangent / Dyadic Inverse Tangent
+∆ċ ==> Arccosine / Inverse Cosine
 ∆ḟ ==> All Prime Exponents
+∆ṡ ==> Arcsine / Inverse Sine
+∆ṫ ==> Arctangent / Inverse Tangent
 ø⁾ ==> Surround
 Þ0 ==> Zero Pad
 ÞO ==> Grid Neighbours (Wrap Around)
 ÞP ==> Set of All Primes
 ÞT ==> Transpose Safe
+Þh ==> Ends
 Þi ==> Multidimensional Index
 Þo ==> Grid Neighbours
 ÞĊ ==> Cycle | Is Positive?
