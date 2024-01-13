@@ -1010,6 +1010,8 @@ object Elements:
       false,
       "a: lst -> [a[0], a[-1]]",
       "a: str -> [a[0], a[-1]]",
+      "a: complex num -> [real, imaginary]",
+      "a: num -> [digit[0], digit[-1]]
     ) {
       case a: VNum if !(a.isImaginary || a.isReal) => VList(a.real, a.imag)
       case a => 
