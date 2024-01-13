@@ -548,6 +548,7 @@ Trigraph: #.I
 Keywords: drop, zero-slice-from, slice-from, collect-while-unique, complex
 - a: num, b: num -> a.real + b.real * i
 - a: str|lst, b: num -> a[b:]
+- a: lst, b: lst[num] -> apl style drop
 - a: any, b: fun -> Apply b on a and collect unique values (until fixpoint). Does not include the initial value.
 ----------------------
 Ŀ (Logarithm | Scan Fixpoint | Same Length? | Length Equals?) (vectorising)

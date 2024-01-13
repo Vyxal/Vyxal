@@ -98,6 +98,14 @@ object ListHelpers:
     val ind = if index < 0 then iterable.bigLength + index else index
     VList.from(iterable.drop(ind))
 
+  def drop(iterable: VList, shape: Seq[VNum])(using Context): VList =
+    if shape.isEmpty then iterable
+    else if shape.length == 1 then drop(iterable, shape.head)
+    else
+      VList.from(drop(iterable, shape.head).map { row =>
+        drop(makeIterable(row), shape.tail)
+      })
+
   def filter(iterable: VList, predicate: VFun)(using Context): VList =
     predicate.originalAST match
       case Some(lam) =>
