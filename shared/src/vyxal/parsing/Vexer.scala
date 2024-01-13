@@ -1,4 +1,4 @@
-package vyxal.parsing
+package vyxal
 
 case class Token(
     tokenType: TokenType,
