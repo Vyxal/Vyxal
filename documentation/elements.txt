@@ -1299,9 +1299,17 @@ Keywords: atan2, arctan2, arctangent2
 Keywords: acos, arccos, arccosine
 - a: num -> acos(a)
 ----------------------
+∆ḋ (Radians to Degrees) (vectorising)
+Keywords: rad2deg, rad-to-deg
+- a: num -> a from radians to degrees (a * 180 / pi)
+----------------------
 ∆ḟ (All Prime Exponents) (vectorising)
 Keywords: all-prime-exponents, all-prime-exps
 - a: num -> for all primes less than or equal to a, push the power of that prime in the factorisation of a
+----------------------
+∆ṙ (Degrees to Radians) (vectorising)
+Keywords: deg2rad, deg-to-rad
+- a: num -> a from degrees to radians (a * pi / 180)
 ----------------------
 ∆ṡ (Arcsine / Inverse Sine) (vectorising)
 Keywords: asin, arcsin, arcsine
