@@ -1,5 +1,7 @@
 package vyxal.parsing
 
+import scala.collection.mutable.{ArrayBuffer, Stack, StringBuilder}
+
 case class VToken(
     tokenType: VTokenType,
     value: String,
@@ -133,4 +135,104 @@ object VStructureType:
     VStructureType.LambdaSort,
   )
 
-object Vexer {}
+object Vexer:
+  private def lookaheadEquals(program: Stack[Char], str: String): Boolean =
+    program.take(str.length).mkString == str
+
+  private def lookaheadIn(program: Stack[Char], str: String): Boolean =
+    str.contains(program.head)
+  def simpleNumber(program: Stack[Char]): String =
+    val number = StringBuilder()
+    if program.head == '0' then
+      program.pop()
+      return "0"
+
+    while program.nonEmpty && program.head.isDigit do number += program.pop()
+
+    number.result()
+
+  def simpleDecimal(program: Stack[Char]): String =
+    val number = StringBuilder()
+    if program.head.isDigit then
+      number ++= simpleNumber(program)
+      if program.head == '.' then
+        number += program.pop()
+        if program.head.isDigit then number ++= simpleNumber(program)
+      number.result()
+    else if program.head == '.' then
+      number += program.pop()
+      if program.head.isDigit then number ++= simpleNumber(program)
+      number.result()
+    else "0"
+
+  def number(program: Stack[Char]): String =
+    val number = StringBuilder()
+    if program.head.isDigit || program.head == '.' then
+      number ++= simpleDecimal(program)
+      if program.head == 'ı' then
+        number += program.pop()
+        number ++= simpleNumber(program)
+    else if program.head == 'ı' then
+      number += program.pop()
+      if program.head.isDigit || program.head == '.' then
+        number ++= simpleNumber(program)
+    else number ++= "0"
+    if program.head == '_' then number += program.pop()
+    number.result()
+
+  def string(program: Stack[Char]): String =
+    val string = StringBuilder()
+    if program.head == '"' then
+      string += program.pop()
+      while program.nonEmpty && !STRING_CLOSER(program.head) do
+        if program.head == '\\' then
+          program.pop()
+          string += program.pop()
+        else string += program.pop()
+    string.result()
+
+  def STRING_CLOSER(c: Char): Boolean =
+    c == '"' || c == '„' || c == '”' || c == '“'
+
+  def name(program: Stack[Char]): String =
+    val name = StringBuilder()
+    if program.head.isLetter || program.head == '_' then
+      name += program.pop()
+      while program.nonEmpty && program.head.isLetterOrDigit do
+        name += program.pop()
+    name.result()
+
+  def getVar(program: Stack[Char]): String =
+    val thisName = StringBuilder()
+    if lookaheadEquals(program, "#$") then
+      thisName ++= "#$"
+      program.pop()
+      program.pop()
+      thisName ++= name(program)
+    thisName.result()
+
+  def setVar(program: Stack[Char]): String =
+    val thisName = StringBuilder()
+    if lookaheadEquals(program, "#=") then
+      thisName ++= "#="
+      program.pop()
+      program.pop()
+      thisName ++= name(program)
+    thisName.result()
+
+  def digraph(program: Stack[Char]): String =
+    val graph = StringBuilder()
+    if lookaheadIn(program, "∆øÞ") then
+      graph += program.pop()
+      graph += program.pop()
+    else if program.head == '#' then
+      // Temporarily remove the # from the queue
+      program.pop()
+      // and check that this isn't a trigraph
+      if lookaheadIn(program, "[]$!=#>@{:") then program.push('#')
+      else
+        graph += '#'
+        graph += program.pop()
+    graph.result()
+
+end Vexer
