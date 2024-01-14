@@ -5,7 +5,7 @@ import scala.collection.mutable.{ArrayBuffer, Stack, StringBuilder}
 case class VToken(
     tokenType: VTokenType,
     value: String,
-    range: Range,
+    range: VRange,
 ) derives CanEqual:
   override def equals(obj: Any): Boolean =
     obj match
@@ -19,7 +19,7 @@ case class VToken(
 case class VLitToken(
     tokenType: VTokenType,
     value: String | List[VLitToken],
-    range: Range,
+    range: VRange,
 ) derives CanEqual:
   override def equals(obj: Any): Boolean =
     obj match
@@ -105,10 +105,10 @@ enum VTokenType(val canonicalSBCS: Option[String] = None)
   /** Helper to help go from the old VyxalToken to the new Token(TokenType,
     * text, range) format
     */
-  def apply(text: String): VToken = VToken(this, text, Range.fake)
+  def apply(text: String): VToken = VToken(this, text, VRange.fake)
 
   /** Helper to destructure tokens more concisely */
-  def unapply(tok: VToken): Option[(String | List[VToken], Range)] =
+  def unapply(tok: VToken): Option[(String | List[VToken], VRange)] =
     if tok.tokenType == this then Some((tok.value, tok.range)) else None
 end VTokenType
 
@@ -136,10 +136,10 @@ object VStructureType:
   )
 
 object Vexer:
-  private def lookaheadEquals(program: Stack[Char], str: String): Boolean =
+  def lookaheadEquals(program: Stack[Char], str: String): Boolean =
     program.take(str.length).mkString == str
 
-  private def lookaheadIn(program: Stack[Char], str: String): Boolean =
+  def lookaheadIn(program: Stack[Char], str: String): Boolean =
     str.contains(program.head)
   def simpleNumber(program: Stack[Char]): String =
     val number = StringBuilder()
@@ -155,9 +155,10 @@ object Vexer:
     val number = StringBuilder()
     if program.head.isDigit then
       number ++= simpleNumber(program)
-      if program.head == '.' then
+      if program.nonEmpty && program.head == '.' then
         number += program.pop()
-        if program.head.isDigit then number ++= simpleNumber(program)
+        if program.nonEmpty && program.head.isDigit then
+          number ++= simpleNumber(program)
       number.result()
     else if program.head == '.' then
       number += program.pop()
@@ -169,15 +170,15 @@ object Vexer:
     val number = StringBuilder()
     if program.head.isDigit || program.head == '.' then
       number ++= simpleDecimal(program)
-      if program.head == 'ı' then
+      if program.nonEmpty && program.head == 'ı' then
         number += program.pop()
         number ++= simpleNumber(program)
     else if program.head == 'ı' then
       number += program.pop()
-      if program.head.isDigit || program.head == '.' then
+      if program.nonEmpty && (program.head.isDigit || program.head == '.') then
         number ++= simpleNumber(program)
     else number ++= "0"
-    if program.head == '_' then number += program.pop()
+    if program.nonEmpty && program.head == '_' then number += program.pop()
     number.result()
 
   def string(program: Stack[Char]): String =
@@ -204,20 +205,19 @@ object Vexer:
 
   def getVar(program: Stack[Char]): String =
     val thisName = StringBuilder()
-    if lookaheadEquals(program, "#$") then
-      thisName ++= "#$"
-      program.pop()
-      program.pop()
-      thisName ++= name(program)
+
+    thisName ++= "#$"
+    program.pop()
+    program.pop()
+    thisName ++= name(program)
     thisName.result()
 
   def setVar(program: Stack[Char]): String =
     val thisName = StringBuilder()
-    if lookaheadEquals(program, "#=") then
-      thisName ++= "#="
-      program.pop()
-      program.pop()
-      thisName ++= name(program)
+    thisName ++= "#="
+    program.pop()
+    program.pop()
+    thisName ++= name(program)
     thisName.result()
 
   def digraph(program: Stack[Char]): String =
@@ -235,4 +235,35 @@ object Vexer:
         graph += program.pop()
     graph.result()
 
+  def lex(program: String): Seq[VToken] =
+    val tokens = ArrayBuffer[VToken]()
+
+    val programStack = Stack[Char]()
+    programStack.pushAll(program.reverseIterator)
+
+    var index = 0
+
+    while programStack.nonEmpty do
+      val char = programStack.head
+      if char != ' ' then
+        val (tokenType, tokenValue) = char match
+          case '"' => VTokenType.Str -> string(programStack)
+          case _: Char if char.isDigit =>
+            VTokenType.Number -> number(programStack)
+          case _: Char if lookaheadIn(programStack, "∆øÞ#") =>
+            VTokenType.Digraph -> digraph(programStack)
+          case _: Char if lookaheadEquals(programStack, "#$") =>
+            VTokenType.GetVar -> getVar(programStack)
+          case _: Char if lookaheadEquals(programStack, "#=") =>
+            VTokenType.SetVar -> setVar(programStack)
+          case _ => VTokenType.Command -> char.toString
+        val range = VRange(index, index + tokenValue.length)
+        index += tokenValue.length
+        tokens += VToken(tokenType, tokenValue, range)
+      else
+        programStack.pop()
+        index += 1
+    end while
+    tokens.toSeq
+  end lex
 end Vexer
