@@ -101,6 +101,15 @@ object NumberHelpers:
         case b => throw UnimplementedOverloadException("gcd", List(a, b))
     }
 
+  def lcm(a: VNum, b: VNum): VNum = a * b / gcd(a, b)
+
+  def lcm(a: Seq[VAny]): VNum =
+    a.foldLeft(VNum(1)) { (a, b) =>
+      b match
+        case b: VNum => lcm(a, b)
+        case b => throw UnimplementedOverloadException("lcm", List(a, b))
+    }
+
   def isMostLikelyPrime(a: VNum, k: VNum = 40): Boolean =
     if a < 2 || (a > 2 && a % 2 == VNum(0)) then return false
     if a == VNum(2) || a == VNum(3) then return true

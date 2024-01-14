@@ -1257,6 +1257,12 @@ Keywords: cosh, hyperbolic-cosine
 Keywords: imag, imaginary, imaginary-part
 - a: num -> Im(a)
 ----------------------
+∆L (Least Common Multiple) (non-vectorising)
+Keywords: lcm
+- a: num, b: num -> lcm(a, b)
+- a: lst[num], b: num -> lcm of b and all elements of a
+- a: lst[num] -> lcm of all items in a.
+----------------------
 ∆R (Real Part) (vectorising)
 Keywords: real, real-part
 - a: num -> Re(a)
