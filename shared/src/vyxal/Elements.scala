@@ -3889,6 +3889,26 @@ object Elements:
     ) {
       case a: VNum => VNum(a.imag)
     },
+    addPart(
+      Monad,
+      "∆ṙ",
+      "Degrees to Radians",
+      List("deg2rad", "deg-to-rad"),
+      true,
+      "a: num -> a from degrees to radians (a * pi / 180)",
+    ) {
+      case a: VNum => a * VNum(spire.math.Real.pi) / VNum(180)
+    },
+    addPart(
+      Monad,
+      "∆ḋ",
+      "Radians to Degrees",
+      List("rad2deg", "rad-to-deg"),
+      true,
+      "a: num -> a from radians to degrees (a * 180 / pi)",
+    ) {
+      case a: VNum => a / VNum(spire.math.Real.pi) * VNum(180)
+    },
   )
 
   private def execHelper(value: VAny)(using ctx: Context): VAny =
