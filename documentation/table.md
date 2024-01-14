@@ -234,6 +234,7 @@
  <code>∆<</code> |  | Argument / Phase / Angle | `arg`, `phase`, `angle` | 1 | :white_check_mark: | <code>a: num </code> => <code> Arg(a)</code>
  <code>∆C</code> |  | Hyperbolic Cosine | `cosh`, `hyperbolic-cosine` | 1 | :white_check_mark: | <code>a: num </code> => <code> cosh(a)</code>
  <code>∆I</code> |  | Imaginary Part | `imag`, `imaginary`, `imaginary-part` | 1 | :white_check_mark: | <code>a: num </code> => <code> Im(a)</code>
+ <code>∆L</code> |  | Least Common Multiple | `lcm` | 2 | :x: | <code>a: num, b: num </code> => <code> lcm(a, b)</code><br><code>a: lst[num], b: num </code> => <code> lcm of b and all elements of a</code><br><code>a: lst[num] </code> => <code> lcm of all items in a.</code>
  <code>∆R</code> |  | Real Part | `real`, `real-part` | 1 | :white_check_mark: | <code>a: num </code> => <code> Re(a)</code>
  <code>∆S</code> |  | Hyperbolic Sine | `sinh`, `hyperbolic-sine` | 1 | :white_check_mark: | <code>a: num </code> => <code> sinh(a)</code>
  <code>∆T</code> |  | Hyperbolic Tangent | `tanh`, `hyperbolic-tangent` | 1 | :white_check_mark: | <code>a: num </code> => <code> tanh(a)</code>

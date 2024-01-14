@@ -886,6 +886,22 @@ object Elements:
 
     },
     addPart(
+      Dyad,
+      "∆L",
+      "Least Common Multiple",
+      List("lcm"),
+      false,
+      "a: num, b: num -> lcm(a, b)",
+      "a: lst[num], b: num -> lcm of b and all elements of a",
+      "a: lst[num] -> lcm of all items in a.",
+    ) {
+      case (a: VNum, b: VNum) => NumberHelpers.lcm(a, b)
+      case (a: VList, b: VNum) => NumberHelpers.lcm(b +: a)
+      case (a, b: VList) =>
+        summon[Context].push(a)
+        NumberHelpers.lcm(b)
+    },
+    addPart(
       Monad,
       "½",
       "Halve",
