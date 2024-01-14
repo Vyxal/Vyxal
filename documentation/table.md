@@ -243,7 +243,9 @@
  <code>∆t</code> |  | Tangent | `tan`, `tangent` | 1 | :white_check_mark: | <code>a: num </code> => <code> tan(a)</code>
  <code>∆Ṫ</code> |  | Dyadic Arctangent / Dyadic Inverse Tangent | `atan2`, `arctan2`, `arctangent2` | 2 | :white_check_mark: | <code>y: num, x: num </code> => <code> atan2(y, x)</code>
  <code>∆ċ</code> |  | Arccosine / Inverse Cosine | `acos`, `arccos`, `arccosine` | 1 | :white_check_mark: | <code>a: num </code> => <code> acos(a)</code>
+ <code>∆ḋ</code> |  | Radians to Degrees | `rad2deg`, `rad-to-deg` | 1 | :white_check_mark: | <code>a: num </code> => <code> a from radians to degrees (a * 180 / pi)</code>
  <code>∆ḟ</code> |  | All Prime Exponents | `all-prime-exponents`, `all-prime-exps` | 1 | :white_check_mark: | <code>a: num </code> => <code> for all primes less than or equal to a, push the power of that prime in the factorisation of a</code>
+ <code>∆ṙ</code> |  | Degrees to Radians | `deg2rad`, `deg-to-rad` | 1 | :white_check_mark: | <code>a: num </code> => <code> a from degrees to radians (a * pi / 180)</code>
  <code>∆ṡ</code> |  | Arcsine / Inverse Sine | `asin`, `arcsin`, `arcsine` | 1 | :white_check_mark: | <code>a: num </code> => <code> asin(a)</code>
  <code>∆ṫ</code> |  | Arctangent / Inverse Tangent | `atan`, `arctan`, `arctangent` | 1 | :white_check_mark: | <code>a: num </code> => <code> atan(a)</code>
  <code>ø⁾</code> |  | Surround | `surround` | 2 | :x: | <code>a: any, b: any </code> => <code> a prepended and appended to b</code>
