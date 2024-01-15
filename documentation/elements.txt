@@ -631,9 +631,9 @@ Keywords: bit, parity, str-last-half
 - a: num -> parity of a (a % 2)
 - a: str -> last half of a
 ----------------------
-ċ (N Choose K | Character Set Equal? | Repeat Until No Change) (vectorising)
+ċ (N Choose K (Binomial Coefficient) | Character Set Equal? | Repeat Until No Change) (vectorising)
 Trigraph: #.c
-Keywords: n-choose-k, ncr, nck, choose, char-set-equal?, char-set-eq?, until-stable
+Keywords: n-choose-k, ncr, nck, choose, binomial, char-set-equal?, char-set-eq?, until-stable
 - a: num, b: num -> a choose b
 - a: str, b: str -> are the character sets of a and b equal?
 - a: fun, b: any -> run a on b until the result no longer changes returning all intermediate results
@@ -1257,6 +1257,12 @@ Keywords: cosh, hyperbolic-cosine
 Keywords: imag, imaginary, imaginary-part
 - a: num -> Im(a)
 ----------------------
+∆L (Least Common Multiple) (non-vectorising)
+Keywords: lcm
+- a: num, b: num -> lcm(a, b)
+- a: lst[num], b: num -> lcm of b and all elements of a
+- a: lst[num] -> lcm of all items in a.
+----------------------
 ∆R (Real Part) (vectorising)
 Keywords: real, real-part
 - a: num -> Re(a)
@@ -1293,9 +1299,17 @@ Keywords: atan2, arctan2, arctangent2
 Keywords: acos, arccos, arccosine
 - a: num -> acos(a)
 ----------------------
+∆ḋ (Radians to Degrees) (vectorising)
+Keywords: rad2deg, rad-to-deg
+- a: num -> a from radians to degrees (a * 180 / pi)
+----------------------
 ∆ḟ (All Prime Exponents) (vectorising)
 Keywords: all-prime-exponents, all-prime-exps
 - a: num -> for all primes less than or equal to a, push the power of that prime in the factorisation of a
+----------------------
+∆ṙ (Degrees to Radians) (vectorising)
+Keywords: deg2rad, deg-to-rad
+- a: num -> a from degrees to radians (a * pi / 180)
 ----------------------
 ∆ṡ (Arcsine / Inverse Sine) (vectorising)
 Keywords: asin, arcsin, arcsine

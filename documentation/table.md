@@ -130,7 +130,7 @@
  <code>κ</code> |  | Length 1-Range | `one->len` | 1 | :x: | <code>a: any </code> => <code> `[1, 2, 3, ..., len(a)]`</code>
  <code>ȧ</code> | #.a | Absolute Difference \| Apply to Neighbours | `abs-diff`, `apply-to-neighbours` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> |a - b|</code><br><code>a: lst, b: fun </code> => <code> apply b to each pair of neighbours in a [applies to windows of length 2]</code>
  <code>ḃ</code> |  | Bit \| Parity \| Last Half of String | `bit`, `parity`, `str-last-half` | 1 | :white_check_mark: | <code>a: num </code> => <code> parity of a (a % 2)</code><br><code>a: str </code> => <code> last half of a</code>
- <code>ċ</code> | #.c | N Choose K \| Character Set Equal? \| Repeat Until No Change | `n-choose-k`, `ncr`, `nck`, `choose`, `char-set-equal?`, `char-set-eq?`, `until-stable` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a choose b</code><br><code>a: str, b: str </code> => <code> are the character sets of a and b equal?</code><br><code>a: fun, b: any </code> => <code> run a on b until the result no longer changes returning all intermediate results</code>
+ <code>ċ</code> | #.c | N Choose K (Binomial Coefficient) \| Character Set Equal? \| Repeat Until No Change | `n-choose-k`, `ncr`, `nck`, `choose`, `binomial`, `char-set-equal?`, `char-set-eq?`, `until-stable` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a choose b</code><br><code>a: str, b: str </code> => <code> are the character sets of a and b equal?</code><br><code>a: fun, b: any </code> => <code> run a on b until the result no longer changes returning all intermediate results</code>
  <code>ḋ</code> | #.d | Dot Product \| To Bijective Base \| First Index Where Predicate Truthy | `dot-product`, `bijective-base`, `dot-prod`, `first-index-where`, `_*` | 2 | :x: | <code>a: lst, b: lst </code> => <code> Dot product of a and b</code><br><code>a: num, b: num </code> => <code> Convert a to bijective base b</code><br><code>a: lst, b: fun </code> => <code> First index of a where b is truthy</code>
  <code>ė</code> | #.e | Reciprocal \| Remove Whitespace | `reciprocal`, `recip`, `remove-whitespace`, `remove-space`, `1/` | 1 | :white_check_mark: | <code>a: num </code> => <code> 1/a</code><br><code>a: str </code> => <code> a with all whitespace removed</code>
  <code>ḟ</code> | #.f | Prime Factors \| Remove Alphabet | `prime-factors`, `remove-alphabet` | 1 | :white_check_mark: | <code>a: num </code> => <code> prime factors of a</code><br><code>a: str </code> => <code> a with all alphabet characters removed</code>
@@ -234,6 +234,7 @@
  <code>∆<</code> |  | Argument / Phase / Angle | `arg`, `phase`, `angle` | 1 | :white_check_mark: | <code>a: num </code> => <code> Arg(a)</code>
  <code>∆C</code> |  | Hyperbolic Cosine | `cosh`, `hyperbolic-cosine` | 1 | :white_check_mark: | <code>a: num </code> => <code> cosh(a)</code>
  <code>∆I</code> |  | Imaginary Part | `imag`, `imaginary`, `imaginary-part` | 1 | :white_check_mark: | <code>a: num </code> => <code> Im(a)</code>
+ <code>∆L</code> |  | Least Common Multiple | `lcm` | 2 | :x: | <code>a: num, b: num </code> => <code> lcm(a, b)</code><br><code>a: lst[num], b: num </code> => <code> lcm of b and all elements of a</code><br><code>a: lst[num] </code> => <code> lcm of all items in a.</code>
  <code>∆R</code> |  | Real Part | `real`, `real-part` | 1 | :white_check_mark: | <code>a: num </code> => <code> Re(a)</code>
  <code>∆S</code> |  | Hyperbolic Sine | `sinh`, `hyperbolic-sine` | 1 | :white_check_mark: | <code>a: num </code> => <code> sinh(a)</code>
  <code>∆T</code> |  | Hyperbolic Tangent | `tanh`, `hyperbolic-tangent` | 1 | :white_check_mark: | <code>a: num </code> => <code> tanh(a)</code>
@@ -243,7 +244,9 @@
  <code>∆t</code> |  | Tangent | `tan`, `tangent` | 1 | :white_check_mark: | <code>a: num </code> => <code> tan(a)</code>
  <code>∆Ṫ</code> |  | Dyadic Arctangent / Dyadic Inverse Tangent | `atan2`, `arctan2`, `arctangent2` | 2 | :white_check_mark: | <code>y: num, x: num </code> => <code> atan2(y, x)</code>
  <code>∆ċ</code> |  | Arccosine / Inverse Cosine | `acos`, `arccos`, `arccosine` | 1 | :white_check_mark: | <code>a: num </code> => <code> acos(a)</code>
+ <code>∆ḋ</code> |  | Radians to Degrees | `rad2deg`, `rad-to-deg` | 1 | :white_check_mark: | <code>a: num </code> => <code> a from radians to degrees (a * 180 / pi)</code>
  <code>∆ḟ</code> |  | All Prime Exponents | `all-prime-exponents`, `all-prime-exps` | 1 | :white_check_mark: | <code>a: num </code> => <code> for all primes less than or equal to a, push the power of that prime in the factorisation of a</code>
+ <code>∆ṙ</code> |  | Degrees to Radians | `deg2rad`, `deg-to-rad` | 1 | :white_check_mark: | <code>a: num </code> => <code> a from degrees to radians (a * pi / 180)</code>
  <code>∆ṡ</code> |  | Arcsine / Inverse Sine | `asin`, `arcsin`, `arcsine` | 1 | :white_check_mark: | <code>a: num </code> => <code> asin(a)</code>
  <code>∆ṫ</code> |  | Arctangent / Inverse Tangent | `atan`, `arctan`, `arctangent` | 1 | :white_check_mark: | <code>a: num </code> => <code> atan(a)</code>
  <code>ø⁾</code> |  | Surround | `surround` | 2 | :x: | <code>a: any, b: any </code> => <code> a prepended and appended to b</code>
