@@ -159,14 +159,17 @@ object NumberHelpers:
     if n == n.floor && n < 0 then
       // n is a negative integer, the gamma function is not defined
       // from https://mathworld.wolfram.com/BinomialCoefficient.html
-      if k != k.floor then ??? // k must be an integer if n is a negative integer
+      if k != k.floor then
+        ??? // k must be an integer if n is a negative integer
       if k >= 0 then VNum(-1) ** k * nChooseK(k - n - 1, k)
       else if k <= n then VNum(-1) ** (n - k) * nChooseK(-k - 1, n - k)
       else 0
     else if n == n.floor && k == k.floor then
       if k < 0 || k > n then 0
-      else spire.math.fact(n.toLong) / (spire.math.fact(k.toLong) * spire.math.fact((n - k).toLong))
-    else gamma(n + 1)/(gamma(k + 1) * gamma(n - k + 1))
+      else
+        spire.math.fact(n.toLong) /
+          (spire.math.fact(k.toLong) * spire.math.fact((n - k).toLong))
+    else gamma(n + 1) / (gamma(k + 1) * gamma(n - k + 1))
 
   /** A version of VNum.toString that differentiates between literate and sbcs
     * mode
