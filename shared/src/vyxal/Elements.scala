@@ -1661,12 +1661,13 @@ object Elements:
     addPart(
       Dyad,
       "ċ",
-      "N Choose K | Character Set Equal? | Repeat Until No Change",
+      "N Choose K (Binomial Coefficient) | Character Set Equal? | Repeat Until No Change",
       List(
         "n-choose-k",
         "ncr",
         "nck",
         "choose",
+        "binomial",
         "char-set-equal?",
         "char-set-eq?",
         "until-stable",
@@ -1676,8 +1677,7 @@ object Elements:
       "a: str, b: str -> are the character sets of a and b equal?",
       "a: fun, b: any -> run a on b until the result no longer changes returning all intermediate results",
     ) {
-      case (a: VNum, b: VNum) =>
-        if a > b then NumberHelpers.nChooseK(a, b) else 0
+      case (a: VNum, b: VNum) => NumberHelpers.nChooseK(a, b)
       case (a: String, b: String) => a.toSet == b.toSet
       case (a: VFun, b) => MiscHelpers.untilNoChange(a, b)
       case (a, b: VFun) => MiscHelpers.untilNoChange(b, a)
