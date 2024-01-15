@@ -150,6 +150,13 @@ class LexerTests extends VyxalTests:
         ),
       )
     }
+
+    they("should work inside digraphs") {
+      testLex(
+        "#,/#,/ ø#,/ #,/ø",
+        List(Digraph("øø"), Digraph("øø"), Digraph("øø")),
+      )
+    }
   }
 
   describe("Complex tests") {
