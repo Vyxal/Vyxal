@@ -604,15 +604,18 @@ object Elements:
     ) { (a, b) =>
       a === b
     },
-    addFull(
+    addPart(
       Dyad,
       "≠",
       "Not Equal",
       List("not-equal", "=n't"),
-      false,
-      "a: any, b: any -> a !== b (non-vectorising)",
-    ) { (a, b) =>
-      a !== b
+      true,
+      "a: any, b: any -> a != b",
+    ) {
+      case (a: VNum, b: VNum) => a != b
+      case (a: VNum, b: String) => a.toString != b
+      case (a: String, b: VNum) => a != b.toString
+      case (a: String, b: String) => a != b
     },
     addDirect(
       "Ė",
@@ -886,6 +889,22 @@ object Elements:
 
     },
     addPart(
+      Dyad,
+      "∆L",
+      "Least Common Multiple",
+      List("lcm"),
+      false,
+      "a: num, b: num -> lcm(a, b)",
+      "a: lst[num], b: num -> lcm of b and all elements of a",
+      "a: lst[num] -> lcm of all items in a.",
+    ) {
+      case (a: VNum, b: VNum) => NumberHelpers.lcm(a, b)
+      case (a: VList, b: VNum) => NumberHelpers.lcm(b +: a)
+      case (a, b: VList) =>
+        summon[Context].push(a)
+        NumberHelpers.lcm(b)
+    },
+    addPart(
       Monad,
       "½",
       "Halve",
@@ -1086,6 +1105,7 @@ object Elements:
       false,
       "a: num, b: num -> a.real + b.real * i",
       "a: str|lst, b: num -> a[b:]",
+      "a: lst, b: lst[num] -> apl style drop",
       "a: any, b: fun -> Apply b on a and collect unique values (until fixpoint). Does not include the initial value.",
     ) {
       case (a: VNum, b: VNum) => VNum.complex(a.real, b.real)
@@ -1097,6 +1117,9 @@ object Elements:
         ListHelpers.drop(ListHelpers.makeIterable(b), a).mkString
       case (init, fn: VFun) => collectUnique(fn, init).tail
       case (fn: VFun, init) => collectUnique(fn, init).tail
+      case (a: VList, b: VList) =>
+        if !b.lst.forall(_.isInstanceOf[VNum]) then ???
+        else ListHelpers.drop(a, b.lst.map(_.asInstanceOf[VNum]))
     },
     addPart(
       Monad,
@@ -1645,12 +1668,13 @@ object Elements:
     addPart(
       Dyad,
       "ċ",
-      "N Choose K | Character Set Equal? | Repeat Until No Change",
+      "N Choose K (Binomial Coefficient) | Character Set Equal? | Repeat Until No Change",
       List(
         "n-choose-k",
         "ncr",
         "nck",
         "choose",
+        "binomial",
         "char-set-equal?",
         "char-set-eq?",
         "until-stable",
@@ -1660,8 +1684,7 @@ object Elements:
       "a: str, b: str -> are the character sets of a and b equal?",
       "a: fun, b: any -> run a on b until the result no longer changes returning all intermediate results",
     ) {
-      case (a: VNum, b: VNum) =>
-        if a > b then NumberHelpers.nChooseK(a, b) else 0
+      case (a: VNum, b: VNum) => NumberHelpers.nChooseK(a, b)
       case (a: String, b: String) => a.toSet == b.toSet
       case (a: VFun, b) => MiscHelpers.untilNoChange(a, b)
       case (a, b: VFun) => MiscHelpers.untilNoChange(b, a)
@@ -3888,6 +3911,26 @@ object Elements:
       "a: num -> Im(a)",
     ) {
       case a: VNum => VNum(a.imag)
+    },
+    addPart(
+      Monad,
+      "∆ṙ",
+      "Degrees to Radians",
+      List("deg2rad", "deg-to-rad"),
+      true,
+      "a: num -> a from degrees to radians (a * pi / 180)",
+    ) {
+      case a: VNum => a * VNum(spire.math.Real.pi) / VNum(180)
+    },
+    addPart(
+      Monad,
+      "∆ḋ",
+      "Radians to Degrees",
+      List("rad2deg", "rad-to-deg"),
+      true,
+      "a: num -> a from radians to degrees (a * 180 / pi)",
+    ) {
+      case a: VNum => a / VNum(spire.math.Real.pi) * VNum(180)
     },
   )
 
