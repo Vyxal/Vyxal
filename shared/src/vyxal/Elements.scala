@@ -604,15 +604,18 @@ object Elements:
     ) { (a, b) =>
       a === b
     },
-    addFull(
+    addPart(
       Dyad,
       "≠",
       "Not Equal",
       List("not-equal", "=n't"),
-      false,
-      "a: any, b: any -> a !== b (non-vectorising)",
-    ) { (a, b) =>
-      a !== b
+      true,
+      "a: any, b: any -> a != b",
+    ) {
+      case (a: VNum, b: VNum) => a != b
+      case (a: VNum, b: String) => a.toString != b
+      case (a: String, b: VNum) => a != b.toString
+      case (a: String, b: String) => a != b
     },
     addDirect(
       "Ė",

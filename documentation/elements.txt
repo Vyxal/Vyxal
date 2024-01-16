@@ -831,10 +831,10 @@ Keywords: ge, greater-than-or-equal-to
 - a: num, b: str -> str(a) >= b
 - a: str, b: str -> a >= b
 ----------------------
-≠ (Not Equal) (non-vectorising)
+≠ (Not Equal) (vectorising)
 Trigraph: #.=
 Keywords: not-equal, =n't
-- a: any, b: any -> a !== b (non-vectorising)
+- a: any, b: any -> a != b
 ----------------------
 ₌ (Exactly Equals) (non-vectorising)
 Trigraph: #,=
