@@ -858,14 +858,16 @@ object ListHelpers:
     var index = -1
     def nextElement(): VAny =
       index += 1
-      if !iterable.isDefinedAt(index) then index = 0 // avoid %= iterable.length to hopefully work with infinite lists
+      if !iterable.isDefinedAt(index) then
+        index =
+          0 // avoid %= iterable.length to hopefully work with infinite lists
       iterable(index)
     def go(shape: Seq[Int]): VAny =
       if shape.isEmpty then iterable(0)
-      else if shape.length == 1 then VList.from((0 until shape.head).map { _ => nextElement() })
+      else if shape.length == 1 then
+        VList.from((0 until shape.head).map { _ => nextElement() })
       else VList.from((0 until shape(0)).map { _ => go(shape.tail) })
     go(shape.map(_.toInt))
-  end reshape
 
   /** Reverse a VAny - if it's a list, reverse the list, if it's a string,
     * reverse the string, if it's a number, reverse the number. Different to the

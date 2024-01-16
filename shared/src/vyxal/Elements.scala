@@ -3936,9 +3936,12 @@ object Elements:
       false,
       "a: lst, b: lst[num] => a reshaped to shape b",
     ) {
-      case (a, b: VList) if b.forall(_.isInstanceOf[VNum]) => ListHelpers.reshape(ListHelpers.makeIterable(a), b.map(_.asInstanceOf[VNum]))
-      case (a, b: VNum) => ListHelpers.reshape(ListHelpers.makeIterable(a), Seq(b))
-    }
+      case (a, b: VList) if b.forall(_.isInstanceOf[VNum]) =>
+        ListHelpers
+          .reshape(ListHelpers.makeIterable(a), b.map(_.asInstanceOf[VNum]))
+      case (a, b: VNum) =>
+        ListHelpers.reshape(ListHelpers.makeIterable(a), Seq(b))
+    },
   )
 
   private def execHelper(value: VAny)(using ctx: Context): VAny =
