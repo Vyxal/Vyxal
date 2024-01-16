@@ -162,7 +162,7 @@
  <code>…</code> | #.. | Increment Twice \| Vectorised Head | `incr-twice`, `vec-head` | 1 | :x: | <code>a: num </code> => <code> a + 2</code><br><code>a: lst </code> => <code> [x[0] for x in a]</code>
  <code>≤</code> | #,< | Less Than Or Equal To | `le`, `less-than-or-equal-to` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a <= b</code><br><code>a: str, b: num </code> => <code> a <= str(b)</code><br><code>a: num, b: str </code> => <code> str(a) <= b</code><br><code>a: str, b: str </code> => <code> a <= b</code>
  <code>≥</code> | #,> | Greater Than Or Equal To | `ge`, `greater-than-or-equal-to` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a >= b</code><br><code>a: str, b: num </code> => <code> a >= str(b)</code><br><code>a: num, b: str </code> => <code> str(a) >= b</code><br><code>a: str, b: str </code> => <code> a >= b</code>
- <code>≠</code> | #.= | Not Equal | `not-equal`, `=n't` | 2 | :x: | <code>a: any, b: any </code> => <code> a !== b (non-vectorising)</code>
+ <code>≠</code> | #.= | Not Equal | `not-equal`, `=n't` | 2 | :white_check_mark: | <code>a: any, b: any </code> => <code> a != b</code>
  <code>₌</code> | #,= | Exactly Equals | `===`, `exactly-equal`, `strictly-equal?` | 2 | :x: | <code>a: any, b: any </code> => <code> a === b (non-vectorising)</code>
  <code>⁺</code> | #^+ | Powerset | `powerset` | 1 | :x: | <code>a: lst </code> => <code> powerset of a</code>
  <code>⁻</code> | #^- | Cube \| Threes | `cube`, `threes` | 1 | :white_check_mark: | <code>a: num </code> => <code> a ** 3</code><br><code>a: str </code> => <code> a split into chunks of length 3</code>
