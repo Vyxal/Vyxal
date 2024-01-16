@@ -86,13 +86,22 @@ private[parsing] object SBCSLexer:
   def listClose[$: P]: P[Token] = parseToken(ListClose, StringIn("#]", "⟩").!)
 
   def digraph[$: P]: P[Token] =
-    P(
-      withRange(
-        (CharIn("∆øÞk") ~~ !CharIn("|") ~~ AnyChar).! |
-          ("#" ~~ !CharIn("[]$!=#>@{:") ~~ AnyChar).!
-      )
+    withRange(
+      (StringIn("∆", "#.\\", "ø", "#,/", "Þ", "#.)", "k") ~~ !CharIn("|") ~~/
+        (trigraphStr | AnyChar)).! |
+        // Note: [.,^] must be included here to avoid matching sugar trigraphs
+        ("#" ~~ !CharIn("[]$!=#>@{:.,^") ~~ AnyChar).!
     ).map {
-      case (digraph, range) =>
+      case (rawDigraph, range) =>
+        // Desugar the "digraph" if the first character was a trigraph
+        val (rawFirst, rawSecond) =
+          if rawDigraph.length == 2 then
+            (rawDigraph.substring(0, 1), rawDigraph.substring(1))
+          else if rawDigraph.startsWith("#") then
+            (rawDigraph.substring(0, 3), rawDigraph.substring(3))
+          else (rawDigraph.substring(0, 1), rawDigraph.substring(1))
+        val digraph = SugarMap.trigraphs.getOrElse(rawFirst, rawFirst) +
+          SugarMap.trigraphs.getOrElse(rawSecond, rawSecond)
         if Elements.elements.contains(digraph) then
           Token(Command, digraph, range)
         else if Modifiers.modifiers.contains(digraph) then
@@ -111,8 +120,10 @@ private[parsing] object SBCSLexer:
 
   def unpackTrigraph[$: P]: P[Token] = parseToken(UnpackTrigraph, "#:[".!)
 
+  def trigraphStr[$: P]: P[String] = P(("#" ~~ CharIn(".,^") ~~/ AnyChar).!)
+
   def sugarTrigraph[$: P]: P[Token] =
-    withRange(("#" ~~ CharIn(".,^") ~~ AnyChar).!).map {
+    withRange(trigraphStr).map {
       case (value, range) =>
         this.sugarUsed = true
         SugarMap.trigraphs
@@ -214,7 +225,7 @@ private[parsing] object SBCSLexer:
 
   def token[$: P]: P[Token] =
     P(
-      comment | sugarTrigraph | unpackTrigraph | digraph | branch |
+      comment | digraph | sugarTrigraph | unpackTrigraph | branch |
         defineExtension | modifierSymbol | defineObj | elementSymbol |
         originalSymbol | contextIndex | literal | varToken | modifier |
         structureToken | newlines | command
