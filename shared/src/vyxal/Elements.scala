@@ -3941,7 +3941,8 @@ object Elements:
           case n: VNum => n
           case other => throw BadArgumentException("reshape", other)
         }
-        ListHelpers.reshape(ListHelpers.makeIterable(a), b.map(_.asInstanceOf[VNum]))
+        ListHelpers
+          .reshape(ListHelpers.makeIterable(a), b.map(_.asInstanceOf[VNum]))
       case (a, b: VNum) =>
         ListHelpers.reshape(ListHelpers.makeIterable(a), Seq(b))
     },
