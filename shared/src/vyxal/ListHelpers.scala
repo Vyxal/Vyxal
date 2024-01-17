@@ -855,7 +855,7 @@ object ListHelpers:
   end reduce
 
   def reshape(iterable: VList, shape: Seq[VNum]): VAny =
-    var index = -1
+    if iterable.isEmpty then throw BadArgumentException("reshape", iterable)
     def nextElement(): VAny =
       index += 1
       if !iterable.isDefinedAt(index) then index = 0 // avoid %= iterable.length to hopefully work with infinite lists
