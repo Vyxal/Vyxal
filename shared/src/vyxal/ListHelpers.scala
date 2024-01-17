@@ -856,10 +856,12 @@ object ListHelpers:
 
   def reshape(iterable: VList, shape: Seq[VNum]): VAny =
     if iterable.isEmpty then throw BadArgumentException("reshape", iterable)
+    var iterator = iterable.toIterator
     def nextElement(): VAny =
-      index += 1
-      if !iterable.isDefinedAt(index) then index = 0 // avoid %= iterable.length to hopefully work with infinite lists
-      iterable(index)
+      if iterator.hasNext then iterator.next()
+      else
+        iterator = iterable.toIterator
+        iterator.next()
     def go(shape: Seq[Int]): VAny =
       if shape.isEmpty then iterable(0)
       else if shape.length == 1 then VList.from((0 until shape.head).map { _ => nextElement() })
