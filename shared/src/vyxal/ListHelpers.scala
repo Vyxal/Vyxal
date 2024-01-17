@@ -867,7 +867,6 @@ object ListHelpers:
       else if shape.length == 1 then VList.fill(shape.head)(nextElement())
       else VList.fill(shape.head)(go(shape.tail))
     go(shape.map(_.toInt))
-  end reshape
 
   /** Reverse a VAny - if it's a list, reverse the list, if it's a string,
     * reverse the string, if it's a number, reverse the number. Different to the
