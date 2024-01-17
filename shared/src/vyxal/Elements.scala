@@ -3936,9 +3936,12 @@ object Elements:
       false,
       "a: lst, b: lst[num] => a reshaped to shape b",
     ) {
-      case (a, b: VList) if b.forall(_.isInstanceOf[VNum]) =>
-        ListHelpers
-          .reshape(ListHelpers.makeIterable(a), b.map(_.asInstanceOf[VNum]))
+      case (a, b: VList) =>
+        val shape = b.map {
+          case n: VNum => n
+          case other => throw BadArgumentException("reshape", other)
+        }
+        ListHelpers.reshape(ListHelpers.makeIterable(a), b.map(_.asInstanceOf[VNum]))
       case (a, b: VNum) =>
         ListHelpers.reshape(ListHelpers.makeIterable(a), Seq(b))
     },
