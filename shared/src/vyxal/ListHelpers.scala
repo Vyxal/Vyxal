@@ -860,7 +860,7 @@ object ListHelpers:
     def nextElement(): VAny =
       if iterator.hasNext then iterator.next()
       else
-        iterator = iterable.toIterator
+        iterator = iterable.iterator
         iterator.next()
     def go(shape: Seq[Int]): VAny =
       if shape.isEmpty then iterable(0)
