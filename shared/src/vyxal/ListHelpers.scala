@@ -854,6 +854,20 @@ object ListHelpers:
     current
   end reduce
 
+  def reshape(iterable: VList, shape: Seq[VNum]): VAny =
+    if iterable.isEmpty then throw BadArgumentException("reshape", iterable)
+    var iterator = iterable.iterator
+    def nextElement(): VAny =
+      if iterator.hasNext then iterator.next()
+      else
+        iterator = iterable.iterator
+        iterator.next()
+    def go(shape: Seq[Int]): VAny =
+      if shape.isEmpty then iterable(0)
+      else if shape.length == 1 then VList.fill(shape.head)(nextElement())
+      else VList.fill(shape.head)(go(shape.tail))
+    go(shape.map(_.toInt))
+
   /** Reverse a VAny - if it's a list, reverse the list, if it's a string,
     * reverse the string, if it's a number, reverse the number. Different to the
     * VList.reverse method because this preserves the type of the input.

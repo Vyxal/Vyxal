@@ -1337,6 +1337,10 @@ Keywords: grid-neighbours-wrap, grid-neighbors-wrap, adjacent-cells-wrap, adj-ce
 Keywords: PP, primes
 - -> The set of all primes
 ----------------------
+ÞR (Reshape) (non-vectorising)
+Keywords: reshape
+- a: lst, b: lst[num] => a reshaped to shape b
+----------------------
 ÞT (Transpose Safe) (non-vectorising)
 Keywords: transpose-safe
 - a: any -> transpose a

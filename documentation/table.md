@@ -253,6 +253,7 @@
  <code>Þ0</code> |  | Zero Pad | `zero-pad`, `pizza-tower` | 2 | :x: | <code>a: lst|str, b: num </code> => <code> a padded with 0s to length b. Positive b prepends 0s, negative b appends 0s</code><br><code>a: lst|str, b: lst|str </code> => <code> a padded with 0s to length of b. Positive b prepends 0s, negative b appends 0s</code>
  <code>ÞO</code> |  | Grid Neighbours (Wrap Around) | `grid-neighbours-wrap`, `grid-neighbors-wrap`, `adjacent-cells-wrap`, `adj-cells-wrap`, `surrounding-cells-wrap` | 1 | :x: | <code>a: lst[lst] </code> => <code> Grid neighbours of a - up, down, left, right - wrapping around</code><br><code>a: lst[lst], b: num </code> => <code> Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b => 0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does</code>
  <code>ÞP</code> |  | Set of All Primes | `PP`, `primes` | 0 | :x: | <code></code> => <code> The set of all primes</code>
+ <code>ÞR</code> |  | Reshape | `reshape` | 2 | :x: | <code>a: lst, b: lst[num] => a reshaped to shape b</code>
  <code>ÞT</code> |  | Transpose Safe | `transpose-safe` | 1 | :x: | <code>a: any </code> => <code> transpose a</code>
  <code>Þh</code> |  | Ends | `ends`, `sides`, `edges` | 1 | :x: | <code>a: lst </code> => <code> [a[0], a[-1]]</code><br><code>a: str </code> => <code> [a[0], a[-1]]</code>
  <code>Þi</code> |  | Multidimensional Index | `md-index` | 2 | :x: | <code>a: lst, b: lst[num] </code> => <code> a[b[0]][b[1]]...[b[n]]</code>
