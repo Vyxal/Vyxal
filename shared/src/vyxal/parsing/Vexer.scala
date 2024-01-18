@@ -176,8 +176,19 @@ class Vexer(val program: String = ""):
       else if headIn("∆øÞ") || headLookaheadMatch("#[^[]$!=#>@{:]") then
         digraphToken
       else if headLookaheadMatch("#[.,^]") then sugarTrigraph
+      else
+        val rangeStart = index
+        val char = pop()
+        tokens +=
+          VToken(
+            VTokenType.Command,
+            char,
+            VRange(rangeStart, index),
+          )
+    end while
 
     tokens.toSeq
+  end lex
 
   /** Number = 0 | [1-9][0-9]*(\.[0-9]*)? | \.[0-9]* */
   private def numberToken: Unit =
