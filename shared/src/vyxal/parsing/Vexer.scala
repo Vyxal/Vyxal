@@ -160,8 +160,7 @@ class Vexer(val program: String = ""):
     programStack.length >= s.length &&
       programStack.slice(0, s.length).mkString == s
   private def headLookaheadMatch(s: String): Boolean =
-    programStack.length >= s.length &&
-      programStack.slice(0, s.length).mkString.matches(s)
+    programStack.nonEmpty && s.r.findFirstIn(programStack.mkString).isDefined
   private def headIsDigit: Boolean = safeCheck(c => c.isDigit)
   private def headIsWhitespace: Boolean = safeCheck(c => c.isWhitespace)
   private def headIn(s: String): Boolean = safeCheck(c => s.contains(c))
@@ -173,7 +172,7 @@ class Vexer(val program: String = ""):
       if headIsDigit || headEqual('.') then numberToken
       else if headIsWhitespace then pop(1)
       else if headEqual('"') then stringToken
-      else if headIn("∆øÞ") || headLookaheadMatch("#[^[]$!=#>@{:]") then
+      else if headIn("∆øÞ") || headLookaheadMatch("#[^[\\]$!=#>@{:]") then
         digraphToken
       else if headLookaheadMatch("#[.,^]") then sugarTrigraph
       else
