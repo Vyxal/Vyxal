@@ -254,8 +254,15 @@ object NumberHelpers:
     }
 
   def range(start: VNum, end: VNum): VList =
-    val step = if start < end then 1 else -1
-    start.to(end, step = step)
+    val step = (end - start).signum
+    start.to(end, step = if step == VNum(0) then 1 else step)
+
+  def range(start: VNum, ends: Seq[VNum])(using Context): VList =
+    if ends.isEmpty then throw BadArgumentException("range", "empty list")
+    val ranges = ends.map(start.to(_))
+    ListHelpers
+      .reshape(ListHelpers.cartesianProductMulti(ranges), ranges.map(_.length))
+      .asInstanceOf[VList]
 
   def toBinary(a: VAny)(using Context): VList =
     a match

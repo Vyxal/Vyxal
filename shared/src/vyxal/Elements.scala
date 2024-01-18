@@ -2499,9 +2499,12 @@ object Elements:
       List("one->n", "one-range", "to-upper", "upper", "uppercase"),
       true,
       "a: num -> [1..a]",
+      "a: lst[num] -> apl-style iota from 1 to a",
       "a: str -> a.upper()",
     ) {
       case a: VNum => NumberHelpers.range(1, a)
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        NumberHelpers.range(1, a.map(_.asInstanceOf[VNum]))
       case a: String => a.toUpperCase
     },
     addPart(
@@ -2518,9 +2521,15 @@ object Elements:
       ),
       true,
       "a: num -> [0..a)",
+      "a: lst[num] -> apl-style iota from 0 until a",
       "a: str -> a.lower()",
     ) {
-      case a: VNum => NumberHelpers.range(0, a - 1)
+      case a: VNum => NumberHelpers.range(0, a - a.signum)
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        NumberHelpers.range(
+          0,
+          a.map(x => x.asInstanceOf[VNum] - x.asInstanceOf[VNum].signum),
+        )
       case a: String => a.toLowerCase
     },
     addFull(
@@ -3175,9 +3184,12 @@ object Elements:
       ),
       true,
       "a: num -> [0, 1, ..., a]",
+      "a: lst[num] -> apl-style iota from 0 to a",
       "a: str -> is a lowercase?",
     ) {
       case a: VNum => NumberHelpers.range(0, a)
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        NumberHelpers.range(0, a.map(_.asInstanceOf[VNum]))
       case a: String =>
         if a.length == 1 then a.forall(_.isLower)
         else VList.from(a.map(x => VNum(x.isLower)))
@@ -3927,6 +3939,26 @@ object Elements:
       "a: num -> a from radians to degrees (a * 180 / pi)",
     ) {
       case a: VNum => a / VNum(spire.math.Real.pi) * VNum(180)
+    },
+    addPart(
+      Dyad,
+      "ÞR",
+      "Reshape",
+      List("reshape"),
+      false,
+      "a: lst, b: lst[num] => a reshaped to shape b",
+    ) {
+      case (a, b: VList) =>
+        val shape = b.map {
+          case n: VNum => n
+          case other => throw BadRHSException(
+              "ÞR",
+              s"$b (expected a list of natural numbers)",
+            )
+        }
+        ListHelpers.reshape(ListHelpers.makeIterable(a), shape)
+      case (a, b: VNum) =>
+        ListHelpers.reshape(ListHelpers.makeIterable(a), Seq(b))
     },
   )
 
