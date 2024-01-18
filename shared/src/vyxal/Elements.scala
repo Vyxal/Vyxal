@@ -2499,9 +2499,12 @@ object Elements:
       List("one->n", "one-range", "to-upper", "upper", "uppercase"),
       true,
       "a: num -> [1..a]",
+      "a: lst[num] -> apl-style iota from 1 to a",
       "a: str -> a.upper()",
     ) {
       case a: VNum => NumberHelpers.range(1, a)
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        NumberHelpers.range(1, a.map(_.asInstanceOf[VNum]))
       case a: String => a.toUpperCase
     },
     addPart(
@@ -2518,9 +2521,12 @@ object Elements:
       ),
       true,
       "a: num -> [0..a)",
+      "a: lst[num] -> apl-style iota from 0 until a",
       "a: str -> a.lower()",
     ) {
       case a: VNum => NumberHelpers.range(0, a - 1)
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        NumberHelpers.range(0, a.map(_.asInstanceOf[VNum] - 1))
       case a: String => a.toLowerCase
     },
     addFull(
@@ -3175,9 +3181,12 @@ object Elements:
       ),
       true,
       "a: num -> [0, 1, ..., a]",
+      "a: lst[num] -> apl-style iota from 0 to a",
       "a: str -> is a lowercase?",
     ) {
       case a: VNum => NumberHelpers.range(0, a)
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        NumberHelpers.range(0, a.map(_.asInstanceOf[VNum]))
       case a: String =>
         if a.length == 1 then a.forall(_.isLower)
         else VList.from(a.map(x => VNum(x.isLower)))
@@ -3939,10 +3948,12 @@ object Elements:
       case (a, b: VList) =>
         val shape = b.map {
           case n: VNum => n
-          case other => throw BadArgumentException("reshape", other)
+          case other => throw BadRHSException(
+              "ÞR",
+              s"$b (expected a list of natural numbers)",
+            )
         }
-        ListHelpers
-          .reshape(ListHelpers.makeIterable(a), b.map(_.asInstanceOf[VNum]))
+        ListHelpers.reshape(ListHelpers.makeIterable(a), shape)
       case (a, b: VNum) =>
         ListHelpers.reshape(ListHelpers.makeIterable(a), Seq(b))
     },
