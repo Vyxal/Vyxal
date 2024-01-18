@@ -230,8 +230,7 @@ private class LiteParser private ():
     val nonExprs =
       if opener.tokenType == TokenType.StructureOpen then
         nonExprBranches(opener.value, program)
-      else if opener.tokenType == TokenType.DefineRecord then
-        ???
+      else if opener.tokenType == TokenType.DefineRecord then ???
       else Nil
 
     LiteTree.Structure(
