@@ -1,5 +1,8 @@
 package vyxal.parsing
 
+import vyxal.parsing.SBCSLexer.sugarTrigraph
+import vyxal.SugarMap
+
 import scala.collection.mutable.{ArrayBuffer, StringBuilder}
 import scala.collection.mutable.Stack
 
@@ -153,15 +156,26 @@ class Vexer(val program: String = ""):
     programStack.nonEmpty && pred(programStack.head)
   private def headEqual(c: Char): Boolean =
     programStack.nonEmpty && programStack.head == c
+  private def headLookaheadEqual(s: String): Boolean =
+    programStack.length >= s.length &&
+      programStack.slice(0, s.length).mkString == s
+  private def headLookaheadMatch(s: String): Boolean =
+    programStack.length >= s.length &&
+      programStack.slice(0, s.length).mkString.matches(s)
   private def headIsDigit: Boolean = safeCheck(c => c.isDigit)
   private def headIsWhitespace: Boolean = safeCheck(c => c.isWhitespace)
+  private def headIn(s: String): Boolean = safeCheck(c => s.contains(c))
 
   def lex: Seq[VToken] =
     programStack.pushAll(program.reverse)
 
     while programStack.nonEmpty do
       if headIsDigit || headEqual('.') then numberToken
-      if headIsWhitespace then pop(1)
+      else if headIsWhitespace then pop(1)
+      else if headEqual('"') then stringToken
+      else if headIn("∆øÞ") || headLookaheadMatch("#[^[]$!=#>@{:]") then
+        digraphToken
+      else if headLookaheadMatch("#[.,^]") then sugarTrigraph
 
     tokens.toSeq
 
@@ -227,5 +241,54 @@ class Vexer(val program: String = ""):
     val numberVal = StringBuilder()
     while safeCheck(c => c.isDigit) do numberVal ++= s"${pop()}"
     numberVal.toString()
+
+  /** String = '"' (\\.|[^„”“"])* [„”“"] */
+  private def stringToken: Unit =
+    val rangeStart = index
+    val stringVal = StringBuilder()
+
+    pop() // Pop the opening quote
+
+    while !headIn("\"„”“") do
+      if headEqual('\\') then stringVal ++= pop(2)
+      else stringVal ++= pop()
+
+    val text = stringVal
+      .toString()
+      .replace("\\\"", "\"")
+      .replace(raw"\n", "\n")
+      .replace(raw"\t", "\t")
+
+    val tokenType = pop() match
+      case "\"" => VTokenType.Str
+      case "„" => VTokenType.CompressedString
+      case "”" => VTokenType.DictionaryString
+      case "“" => VTokenType.CompressedNumber
+
+    tokens +=
+      VToken(
+        tokenType,
+        text,
+        VRange(rangeStart, index),
+      )
+  end stringToken
+
+  /** Digraph = [∆øÞ] . | # [^[]$!=#>@{:] */
+  private def digraphToken: Unit =
+    val rangeStart = index
+    val digraph = pop(2)
+
+    tokens +=
+      VToken(
+        VTokenType.Digraph,
+        digraph,
+        VRange(rangeStart, index),
+      )
+
+  /** Convert a sugar trigraph to its normal form */
+  private def sugarTrigraph: Unit =
+    val trigraph = pop(3)
+    val normal = SugarMap.trigraphs.getOrElse(trigraph, trigraph)
+    programStack.pushAll(normal.reverse)
 
 end Vexer
