@@ -172,8 +172,8 @@ class Vexer(val program: String = ""):
       if headIsDigit || headEqual('.') then numberToken
       else if headIsWhitespace then pop(1)
       else if headEqual('"') then stringToken
-      else if headIn("∆øÞ") || headLookaheadMatch("#[^[\\]$!=#>@{:]") then
-        digraphToken
+      else if headIn("∆øÞ") || headLookaheadMatch("""#[^\[\]$!=#>@{:.,^]""")
+      then digraphToken
       else if headLookaheadMatch("#[.,^]") then sugarTrigraph
       else
         val rangeStart = index
