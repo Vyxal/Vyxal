@@ -40,25 +40,38 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
   private val typedCustoms =
     mutable.Map[String, (List[(List[String], CustomDefinition)], Int)]()
 
-  private def flatten(ast: AST): List[AST] =
-    ast match
-      case AST.Group(elems, _, _) => elems.flatMap(flatten)
-      case _ => List(ast)
-
-  private def toValidName(name: String): String =
-    name
-      .filter(c => c.isLetterOrDigit || c == 'ı')
-      .replace("ı", "i")
-      .dropWhile(!_.isLetter)
+  /** The parser takes a list of tokens and performs two sweeps of parsing:
+    * structures + arity grouping and then modifiers. The first sweep deals
+    * directly with the token list provided to the parser, and leaves its
+    * results in a stack of ASTs (the stack data type is used because it means
+    * that arity grouping is simply popping previous ASTs until a niladic state
+    * is reached). The second sweep takes the stack of ASTs and applies the
+    * logic of modifier grouping, placing its result in a single Group AST.
+    */
+  def parse(trees: List[LiteTree]): AST =
+    postprocess(parseLiteTrees(trees.to(Queue)))
 
   private def parseLiteTrees(trees: Queue[LiteTree]): AST =
     val asts = Stack.empty[AST]
 
     while trees.nonEmpty do
       trees.dequeue() match
-        case LiteTree.Structure(opener, branches, range) => ???
+        case LiteTree.Structure(opener, nonExprs, branches, range) =>
+          (opener.tokenType: @unchecked) match
+            case TokenType.ListOpen =>
+              asts.push(AST.Lst(branches.map(branch => parse(List(branch)))))
+            case TokenType.StructureOpen =>
+              parseStructure(opener, nonExprs, branches, range)
+            case TokenType.DefineRecord => ???
         case LiteTree.Group(trees, range) => ???
-        case LiteTree.LineLambda(modTok, body, range) => ???
+        case LiteTree.LineLambda(modTok, body, range) => asts.push(
+            AST.Lambda(
+              Some(1),
+              List(),
+              List(parse(body)),
+              range = range,
+            )
+          )
         case LiteTree.Tok(token, range) =>
           val value = token.value
           token.tokenType match
@@ -180,6 +193,102 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
     ???
   end parseLiteTrees
 
+  private def parseStructure(
+      opener: Token,
+      nonExprs: List[Token],
+      liteBranches: List[LiteTree],
+      range: Range,
+  ): AST =
+    val branches = liteBranches.map(branch => parse(List(branch)))
+    StructureType.values.find(_.open == opener.value).get match
+      case StructureType.Ternary => branches match
+          case List(thenBranch) => AST.Ternary(thenBranch, None)
+          case List(thenBranch, elseBranch) =>
+            AST.Ternary(thenBranch, Some(elseBranch))
+          case _ => throw BadStructureException("ternary", range = range)
+      case StructureType.IfStatement =>
+        if branches.sizeIs < 2 then
+          throw BadStructureException("if", range = range)
+        else
+          val odd = branches.size % 2 == 1
+          val grouped =
+            if odd then branches.init.grouped(2).toList
+            else branches.grouped(2).toList
+          AST.IfStatement(
+            grouped.map(_(0)),
+            grouped.map(_(1)),
+            Option.when(odd)(branches.last),
+          )
+      case StructureType.While => branches match
+          case List(cond, body) => AST.While(Some(cond), body)
+          case List(body) => AST.While(None, body)
+          case _ => throw BadStructureException("while", range = range)
+      case StructureType.For => branches match
+          case List(body) =>
+            if nonExprs.isEmpty then AST.For(None, body)
+            else AST.For(Some(toValidName(nonExprs.head.value)), body)
+          case _ => throw BadStructureException("for", range = range)
+      case StructureType.DefineStructure => ???
+      case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
+          StructureType.LambdaFilter | StructureType.LambdaReduce |
+          StructureType.LambdaSort) =>
+        val lambda = nonExprs match
+          case List(params) =>
+            val (param, arity) = parseParameters(params.value)
+            AST.Lambda(Some(arity), param, branches)
+          case _ => AST.Lambda(None, List.empty, branches)
+
+        lambdaType match
+          case StructureType.Lambda => lambda
+          case StructureType.LambdaMap =>
+            AST.makeSingle(lambda, AST.Command("M"))
+          case StructureType.LambdaFilter =>
+            AST.makeSingle(lambda, AST.Command("F"))
+          case StructureType.LambdaReduce =>
+            AST.makeSingle(lambda, AST.Command("R"))
+          case StructureType.LambdaSort =>
+            AST.makeSingle(lambda, AST.Command("ṡ"))
+      case StructureType.DecisionStructure => branches match
+          case List(pred, container) =>
+            AST.DecisionStructure(pred, Some(container))
+          case List(pred) => AST.DecisionStructure(pred, None)
+          case _ => throw BadStructureException("decision", range = range)
+      case StructureType.GeneratorStructure =>
+        if branches.sizeIs > 2 then
+          throw BadStructureException("generator", range = range)
+        else
+          var rel = branches.head
+          val vals = (branches: @unchecked) match
+            case List(_, initial) => Some(initial)
+            case List(_) => None
+
+          val arity = rel match
+            case AST.Group(elems, _, _) =>
+              if elems.isEmpty then
+                throw BadStructureException("generator", range = range)
+              elems.last match
+                case number: AST.Number =>
+                  rel = AST.Group(elems.init, None)
+                  number.value.toInt
+                case _ =>
+                  var stackItems = 0
+                  var popped = 0
+                  for elem <- elems do
+                    val elemArity = elem.arity.getOrElse(0)
+                    if elemArity < stackItems then
+                      stackItems -= elemArity +
+                        1 // assume everything only returns one value
+                    else
+                      popped += elemArity - stackItems
+                      stackItems = 1
+                  popped
+              end match
+            case _ => rel.arity.getOrElse(2)
+
+          AST.GeneratorStructure(rel, vals, arity)
+    end match
+  end parseStructure
+
   private def parseModifier(name: String, arity: Int, asts: Stack[AST]): AST =
     if asts.length < arity then throw BadModifierException(name)
 
@@ -275,8 +384,47 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
     )
   end parseCommand
 
-  def parse(trees: List[LiteTree]): AST =
-    postprocess(parseLiteTrees(trees.to(Queue)))
+  private def parseParameters(params: String): (List[String | Int], Int) =
+    val components = params.split(",")
+    // ^ may leave extra spaces, but that's okay, because
+    // spaces are removed when converting to a valid name
+    var arity = 0
+    val paramList = ListBuffer.empty[String | Int]
+    for component <- components do
+      if arity != -1 && component.nonEmpty then
+        if component.forall(_.isDigit) then
+          // Pop n from stack onto lambda stack
+          val num = component.toInt
+          arity += num
+          paramList += num
+        else if component.startsWith("!") then
+          // operate on entire stack, so set arity to -1 and remove all other parameters
+          // also, process no other parameters
+          arity = -1
+          paramList.drop(paramList.length)
+        else if component == "*" || component == "×" then
+          // varargs - pop n and push n items onto lambda stack
+          arity += 1
+          paramList += "*"
+        else
+          // named parameter
+          val name = toValidName(component)
+          arity += 1
+          paramList += name
+    end for
+    paramList.toList -> arity
+  end parseParameters
+
+  private def flatten(ast: AST): List[AST] =
+    ast match
+      case AST.Group(elems, _, _) => elems.flatMap(flatten)
+      case _ => List(ast)
+
+  private def toValidName(name: String): String =
+    name
+      .filter(c => c.isLetterOrDigit || c == 'ı')
+      .replace("ı", "i")
+      .dropWhile(!_.isLetter)
 
   private def postprocess(asts: AST): AST =
     val temp = asts match
@@ -295,49 +443,72 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
 end Parser
 
 enum ParsingException(msg: String) extends VyxalException(msg):
-  case BadAugmentedAssignException()
+  case BadAugmentedAssignException(override val range: Range = Range.fake)
       extends ParsingException("Missing element for augmented assign")
-  case BadModifierException(modifier: String)
-      extends ParsingException(
+  case BadModifierException(
+      modifier: String,
+      override val range: Range = Range.fake,
+  ) extends ParsingException(
         s"Modifier '$modifier' is missing arguments"
       )
-  case BadStructureException(structure: String)
-      extends ParsingException(s"Invalid $structure statement")
-  case ModifierArityException(modifier: String, arity: Option[Int])
-      extends ParsingException(
+  case BadStructureException(
+      structure: String,
+      override val range: Range = Range.fake,
+  ) extends ParsingException(s"Invalid $structure statement")
+  case ModifierArityException(
+      modifier: String,
+      arity: Option[Int],
+      override val range: Range = Range.fake,
+  ) extends ParsingException(
         s"Modifier '$modifier' does not support elements of arity ${arity.getOrElse("None")}"
       )
-  case NoSuchElementException(element: String)
-      extends ParsingException(s"No such element: $element")
-  case TokensFailedParsingException(tokens: List[Token])
-      extends ParsingException(s"Some elements failed to parse: $tokens")
-  case UnmatchedCloserException(closer: Token)
-      extends ParsingException(
+  case NoSuchElementException(
+      element: String,
+      override val range: Range = Range.fake,
+  ) extends ParsingException(s"No such element: $element")
+  case TokensFailedParsingException(
+      tokens: List[Token],
+      override val range: Range = Range.fake,
+  ) extends ParsingException(s"Some elements failed to parse: $tokens")
+  case UnmatchedCloserException(
+      closer: Token,
+      override val range: Range = Range.fake,
+  ) extends ParsingException(
         s"A closer/branch was found outside of a structure: ${closer.value}"
       )
-  case UndefinedCustomModifierException(modifier: String)
-      extends ParsingException(s"Custom modifier '$modifier' not defined")
+  case UndefinedCustomModifierException(
+      modifier: String,
+      override val range: Range = Range.fake,
+  ) extends ParsingException(s"Custom modifier '$modifier' not defined")
 
-  case UndefinedCustomElementException(element: String)
-      extends ParsingException(s"Custom element '$element' not defined")
+  case UndefinedCustomElementException(
+      element: String,
+      override val range: Range = Range.fake,
+  ) extends ParsingException(s"Custom element '$element' not defined")
 
-  case CustomModifierActuallyElementException(modifier: String)
-      extends ParsingException(
+  case CustomModifierActuallyElementException(
+      modifier: String,
+      override val range: Range = Range.fake,
+  ) extends ParsingException(
         s"Custom modifier '$modifier' is actually a custom element"
       )
 
-  case CustomElementActuallyModifierException(element: String)
-      extends ParsingException(
+  case CustomElementActuallyModifierException(
+      element: String,
+      override val range: Range = Range.fake,
+  ) extends ParsingException(
         s"Custom element '$element' is actually a custom modifier"
       )
 
-  case EmptyRedefine()
+  case EmptyRedefine(override val range: Range = Range.fake)
       extends ParsingException(
         "Redefine statement is empty. Requires at least name and implementation."
       )
 
-  case BadRedefineMode(mode: String)
+  case BadRedefineMode(mode: String, override val range: Range = Range.fake)
       extends ParsingException(
         s"Invalid redefine mode: '$mode'. Should either be @ for element, or * for modifier"
       )
+
+  def range: Range
 end ParsingException

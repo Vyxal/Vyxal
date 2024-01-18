@@ -9,8 +9,17 @@ import scala.collection.mutable.{ListBuffer, Queue}
 enum LiteTree:
   case Tok(tok: Token, override val range: Range)
   case Group(trees: List[LiteTree], override val range: Range)
+
+  /** @param opener
+    * @param nonExprs
+    *   Single-token branches at the start that aren't expressions (e.g.
+    *   variables names or parameters)
+    * @param branches
+    * @param range
+    */
   case Structure(
       opener: Token,
+      nonExprs: List[Token],
       branches: List[LiteTree],
       override val range: Range,
   )
@@ -60,6 +69,7 @@ private class LiteParser private ():
       case Token(TokenType.StructureDoubleClose, _, range) =>
         doubleClose += Token(TokenType.StructureClose, "}", range)
         doubleClose += Token(TokenType.StructureClose, "}", range)
+      case Token(TokenType.Comment, _, _) => // Don't leave comments in
       case x => doubleClose += x
     }
     val lineup = Queue(doubleClose.toList*)
@@ -90,15 +100,7 @@ private class LiteParser private ():
     processed.toList
   end preprocess
 
-  /** The parser takes a list of tokens and performs two sweeps of parsing:
-    * structures + arity grouping and then modifiers. The first sweep deals
-    * directly with the token list provided to the parser, and leaves its
-    * results in a stack of ASTs (the stack data type is used because it means
-    * that arity grouping is simply popping previous ASTs until a niladic state
-    * is reached). The second sweep takes the stack of ASTs and applies the
-    * logic of modifier grouping, placing its result in a single Group AST.
-    *
-    * @param topLevel
+  /** @param topLevel
     *   Whether this is the topmost call to parse, in which case it should
     *   remove any `StructureAllClose`s left behind by `parseStructure`
     * @param untilNewline
@@ -124,7 +126,6 @@ private class LiteParser private ():
       val value = token.value
       val range = token.range
       (token.tokenType: @unchecked) match
-        case TokenType.Comment => ()
         case TokenType.SpecialModifier if value == "ᵜ" =>
           val body = parseTokens(program, topLevel = false, untilNewline = true)
           trees +=
@@ -152,7 +153,7 @@ private class LiteParser private ():
         case TokenType.ListOpen => trees +=
             parseStructure(program, token, topLevel, TokenType.ListClose)
         case TokenType.DefineExtension =>
-          val LiteTree.Structure(_, branches, range) =
+          val LiteTree.Structure(_, _, branches, range) =
             parseStructure(program, token, topLevel, TokenType.StructureClose)
           extensions += ((branches, range))
 
@@ -184,7 +185,8 @@ private class LiteParser private ():
       topLevel: Boolean,
       closer: TokenType,
   ): LiteTree.Structure =
-    if program.isEmpty then return LiteTree.Structure(opener, Nil, opener.range)
+    if program.isEmpty then
+      return LiteTree.Structure(opener, Nil, Nil, opener.range)
 
     val branches = ListBuffer.empty[LiteTree]
     // The start offset of each branch (it's a var D:)
@@ -227,10 +229,62 @@ private class LiteParser private ():
 
     LiteTree.Structure(
       opener,
+      if opener.tokenType == TokenType.StructureOpen then
+        nonExprBranches(opener.value, program)
+      else Nil,
       branches.toList,
       Range(opener.range.startOffset, structEnd),
     )
   end parseStructure
+
+  /** Remove the branches at the beginning that shouldn't be parsed as
+    * expressions
+    */
+  private def nonExprBranches(
+      opener: String,
+      program: Queue[Token],
+  ): List[Token] =
+    /** Get the next branch if it's a single token and there's another branch
+      * after it
+      */
+    def nextBranch(): Option[Token] =
+      if program.size >= 2 && program(1).tokenType == TokenType.Branch then
+        val tok = program.dequeue()
+        program.dequeue() // Remove the branch
+        Some(tok)
+      else None
+
+    StructureType.values.find(_.open == opener).get match
+      case StructureType.For =>
+        // Treat first branch as name if there's another branch afterwards
+        nextBranch() match
+          case Some(name) => List(name)
+          case None => Nil
+      case StructureType.DefineStructure => nextBranch() match
+          case Some(name) => nextBranch() match
+              case Some(functionsOrArgs) => nextBranch() match
+                  case Some(args) =>
+                    List(name, functionsOrArgs, args)
+                  case None =>
+                    // Only name and arguments
+                    List(name, functionsOrArgs)
+              case None => List(name)
+          case None => Nil
+      case StructureType.Lambda => nextBranch() match
+          case Some(params) => List(params)
+          case None => Nil
+      case _ => Nil
+    end match
+  end nonExprBranches
+
+  private def parseParameters(program: Queue[Token]): List[Token] =
+    val params = ListBuffer.empty[Token]
+    while program.size >= 2 && program.front.tokenType != TokenType.Branch &&
+      program(1).tokenType == TokenType.Branch
+    do
+      params += program.dequeue()
+      program.dequeue() // Remove the branch
+    params.toList
 
   /** Whether this token is a branch or a structure/list closer */
   private def isCloser(token: Token): Boolean =
