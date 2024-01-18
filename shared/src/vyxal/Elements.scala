@@ -2524,9 +2524,12 @@ object Elements:
       "a: lst[num] -> apl-style iota from 0 until a",
       "a: str -> a.lower()",
     ) {
-      case a: VNum => NumberHelpers.range(0, a - 1)
+      case a: VNum => NumberHelpers.range(0, a - a.signum)
       case a: VList if a.forall(_.isInstanceOf[VNum]) =>
-        NumberHelpers.range(0, a.map(_.asInstanceOf[VNum] - 1))
+        NumberHelpers.range(
+          0,
+          a.map(x => x.asInstanceOf[VNum] - x.asInstanceOf[VNum].signum),
+        )
       case a: String => a.toLowerCase
     },
     addFull(
