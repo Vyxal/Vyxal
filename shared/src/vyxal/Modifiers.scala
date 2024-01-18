@@ -81,14 +81,14 @@ object Modifiers:
             val lambdaAst = astToLambda(ast, 1)
             AST.makeSingle(
               lambdaAst,
-              AST.Command("M"),
-              AST.Lambda(Some(1), List(), List(AST.Command("ȯ"))),
-              AST.Command("#v"),
-              AST.Command("∑"),
+              AST.builtin("M"),
+              AST.Lambda(Some(1), List(), List(AST.builtin("ȯ"))),
+              AST.builtin("#v"),
+              AST.builtin("∑"),
             )
           else
             val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
-            AST.makeSingle(lambdaAst, AST.Command("ȧ"))
+            AST.makeSingle(lambdaAst, AST.builtin("ȧ"))
       },
     "ᵇ" ->
       Modifier(
@@ -105,10 +105,10 @@ object Modifiers:
         case List(ast) =>
           if isExplicitMonad(ast) then
             val lambdaAst = astToLambda(ast, 1)
-            AST.makeSingle(lambdaAst, AST.Command("Ḋ"))
+            AST.makeSingle(lambdaAst, AST.builtin("Ḋ"))
           else
             val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
-            AST.makeSingle(lambdaAst, AST.Command("#~"))
+            AST.makeSingle(lambdaAst, AST.builtin("#~"))
       },
     "ᶜ" ->
       Modifier(
@@ -130,10 +130,10 @@ object Modifiers:
         case List(ast) =>
           if isExplicitMonad(ast) then
             val lambdaAst = astToLambda(ast, 1)
-            AST.makeSingle(lambdaAst, AST.Command("#|map-suffixes"))
+            AST.makeSingle(lambdaAst, AST.builtin("#|map-suffixes"))
           else
             val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
-            AST.makeSingle(lambdaAst, AST.Command("#|reduce-cols"))
+            AST.makeSingle(lambdaAst, AST.builtin("#|reduce-cols"))
       },
     "ᵛ" ->
       Modifier(
@@ -145,7 +145,7 @@ object Modifiers:
       ) {
         case List(ast) =>
           val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))
-          AST.makeSingle(lambdaAst, AST.Command("#v"))
+          AST.makeSingle(lambdaAst, AST.builtin("#v"))
       },
     "/" ->
       Modifier(
@@ -159,10 +159,10 @@ object Modifiers:
           scribe.trace(s"Modifier /, ast: $ast")
           if isExplicitMonad(ast) then
             val lambdaAst = astToLambda(ast, 1)
-            AST.makeSingle(lambdaAst, AST.Command("F"))
+            AST.makeSingle(lambdaAst, AST.builtin("F"))
           else
             val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
-            AST.makeSingle(lambdaAst, AST.Command("R"))
+            AST.makeSingle(lambdaAst, AST.builtin("R"))
       },
     "⸠" ->
       Modifier(
@@ -300,7 +300,7 @@ object Modifiers:
                   ,
                   arity = Some(1),
                 ),
-                AST.makeSingle(astToLambda(ast, 2), AST.Command("#v")),
+                AST.makeSingle(astToLambda(ast, 2), AST.builtin("#v")),
                 AST.Generated(
                   () =>
                     ctx ?=>
@@ -328,7 +328,7 @@ object Modifiers:
       ) {
         case List(ast) =>
           val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))
-          AST.makeSingle(lambdaAst, AST.Command("ḋ"))
+          AST.makeSingle(lambdaAst, AST.builtin("ḋ"))
       },
     "ᶨ" ->
       Modifier(
@@ -340,7 +340,7 @@ object Modifiers:
       ) {
         case List(ast) => AST.makeSingle(
             astToLambda(ast, ast.arity.getOrElse(1)),
-            AST.Command("İ"),
+            AST.builtin("İ"),
           )
       },
     "ᵏ" ->
@@ -387,8 +387,8 @@ object Modifiers:
       ) {
         case List(ast) => AST.makeSingle(
             astToLambda(ast, ast.arity.getOrElse(1)),
-            AST.Command("İ"),
-            AST.Command("t"),
+            AST.builtin("İ"),
+            AST.builtin("t"),
           )
       },
     "ᵐ" ->
@@ -401,7 +401,7 @@ object Modifiers:
       ) {
         case List(ast) => AST.makeSingle(
             astToLambda(ast, ast.arity.getOrElse(1)),
-            AST.Command("#|maximum-by"),
+            AST.builtin("#|maximum-by"),
           )
       },
     "ⁿ" ->
@@ -414,7 +414,7 @@ object Modifiers:
       ) {
         case List(ast) => AST.makeSingle(
             astToLambda(ast, ast.arity.getOrElse(1)),
-            AST.Command("#|minimum-by"),
+            AST.builtin("#|minimum-by"),
           )
       },
     "ᵒ" ->
@@ -455,7 +455,7 @@ object Modifiers:
       ) {
         case List(ast) => AST.makeSingle(
             astToLambda(ast, ast.arity.getOrElse(1)),
-            AST.Command("#|map-prefixes"),
+            AST.builtin("#|map-prefixes"),
           )
       },
     "ᴿ" ->
@@ -470,7 +470,7 @@ object Modifiers:
       ) {
         case List(ast) => AST.makeSingle(
             astToLambda(ast, ast.arity.getOrElse(1)),
-            AST.Command("#|apply-to-register"),
+            AST.builtin("#|apply-to-register"),
           )
       },
     "ᶳ" ->
@@ -487,10 +487,10 @@ object Modifiers:
         case List(ast) =>
           if isExplicitMonad(ast) then
             val lambdaAst = astToLambda(ast, 1)
-            AST.makeSingle(lambdaAst, AST.Command("ṡ"))
+            AST.makeSingle(lambdaAst, AST.builtin("ṡ"))
           else
             val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
-            AST.makeSingle(lambdaAst, AST.Command("Ṭ"))
+            AST.makeSingle(lambdaAst, AST.builtin("Ṭ"))
       },
     "ᵗ" ->
       Modifier(
@@ -504,7 +504,7 @@ object Modifiers:
       ) {
         case List(ast) => AST.makeSingle(
             astToLambda(ast, ast.arity.getOrElse(1)),
-            AST.Command("#|vec-dump"),
+            AST.builtin("#|vec-dump"),
           )
       },
     "ᵘ" ->
@@ -526,11 +526,11 @@ object Modifiers:
         case List(ast) =>
           if !isExplicitMonad(ast) then
             val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
-            AST.makeSingle(lambdaAst, AST.Command("#|all-neigh"))
+            AST.makeSingle(lambdaAst, AST.builtin("#|all-neigh"))
           else
             AST.makeSingle(
               astToLambda(ast, ast.arity.getOrElse(1)),
-              AST.Command("ċ"),
+              AST.builtin("ċ"),
             )
       },
     "ᵂ" ->
@@ -547,7 +547,7 @@ object Modifiers:
         // ragged lists do just fine.
         case List(ast) => AST.makeSingle(
             astToLambda(ast, -1),
-            AST.Command("#|dip"),
+            AST.builtin("#|dip"),
           )
       },
     "ᵡ" ->
@@ -562,7 +562,7 @@ object Modifiers:
       ) {
         case List(ast) =>
           val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))
-          AST.makeSingle(lambdaAst, AST.Command("Ŀ"))
+          AST.makeSingle(lambdaAst, AST.builtin("Ŀ"))
       },
     "ᵞ" ->
       Modifier(
@@ -585,10 +585,10 @@ object Modifiers:
         case List(ast) =>
           if isExplicitMonad(ast) then
             val lambdaAst = astToLambda(ast, 1)
-            AST.makeSingle(lambdaAst, AST.Command("#|invar"))
+            AST.makeSingle(lambdaAst, AST.builtin("#|invar"))
           else
             val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
-            AST.makeSingle(lambdaAst, AST.Command("#|vscan"))
+            AST.makeSingle(lambdaAst, AST.builtin("#|vscan"))
       },
     "ᶻ" ->
       Modifier(
@@ -605,11 +605,11 @@ object Modifiers:
           if isExplicitMonad(ast) then
             AST.makeSingle(
               astToLambda(ast, ast.arity.getOrElse(1)),
-              AST.Command("I"),
+              AST.builtin("I"),
             )
           else
             val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
-            AST.makeSingle(lambdaAst, AST.Command("r"))
+            AST.makeSingle(lambdaAst, AST.builtin("r"))
       },
     "∥" ->
       Modifier(
@@ -622,7 +622,7 @@ object Modifiers:
         case List(ast1, ast2) => AST.makeSingle(
             astToLambda(ast1, ast1.arity.getOrElse(-1)),
             astToLambda(ast2, ast2.arity.getOrElse(-1)),
-            AST.Command("#|para-apply"),
+            AST.builtin("#|para-apply"),
           )
       },
     "∦" ->
@@ -642,7 +642,7 @@ object Modifiers:
         case List(ast1, ast2) => AST.makeSingle(
             astToLambda(ast1, -1),
             astToLambda(ast2, -1),
-            AST.Command("#|para-apply-wrap"),
+            AST.builtin("#|para-apply-wrap"),
           )
       },
     "¿" ->
@@ -657,7 +657,7 @@ object Modifiers:
             AST.Ternary(
               AST.makeSingle(
                 astToLambda(ast, ast.arity.getOrElse(1)),
-                AST.Command("Ė"),
+                AST.builtin("Ė"),
               ),
               None,
             )

@@ -16,9 +16,13 @@ enum AST(val arity: Option[Int]) derives CanEqual:
       extends AST(Some(0))
   case Command(
       value: String,
-      override val range: Range = Range.fake,
+      impl: Option[Element | CustomDefinition],
+      arityOverride: Option[Int] = None,
       overwriteable: Boolean = true,
-  ) extends AST(Elements.elements.get(value).flatMap(_.arity))
+      override val range: Range = Range.fake,
+  ) extends AST(
+        arityOverride.orElse(Elements.elements.get(value).flatMap(_.arity))
+      )
 
   /** Multiple ASTs grouped into one list */
   case Group(
@@ -132,7 +136,7 @@ enum AST(val arity: Option[Int]) derives CanEqual:
       case Number(n, _) => n.toString
       case Str(value, _) => s"\"$value\""
       case Lst(elems, _) => elems.map(_.toVyxal).mkString("#[", "|", "#]")
-      case Command(value, _, _) => value
+      case Command(value, _, _, _, _) => value
       case Group(elems, _, _) =>
         val asts = elems.toBuffer
         val newElems = ListBuffer[AST]()
@@ -140,7 +144,7 @@ enum AST(val arity: Option[Int]) derives CanEqual:
         while asts.nonEmpty do
           val numbers = asts.takeWhile(_.isInstanceOf[Number])
           if numbers.nonEmpty then
-            newElems += Command(numbers.map(_.toVyxal).mkString(" "))
+            newElems += Command(numbers.map(_.toVyxal).mkString(" "), None)
             asts.remove(0, numbers.length)
           else
             newElems += asts.head
@@ -180,6 +184,13 @@ object AST:
     */
   def makeSingle(elems: AST*): AST =
     if elems.size == 1 then elems.head else AST.Group(elems.toList, None)
+
+  /** Create an [[AST.Command]] that calls a builtin element */
+  def builtin(element: String, range: Range = Range.fake): AST.Command =
+    Elements.elements.get(element) match
+      case Some(elem) =>
+        AST.Command(element, Some(elem), elem.arity, false, range)
+      case None => throw VyxalYikesException(s"Element $element doesn't exist but should")
 
 enum CustomElementType derives CanEqual:
   case Element
