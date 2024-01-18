@@ -147,7 +147,7 @@ class Vexer(val program: String = ""):
   private def pop(n: Int = 1): String =
     val res = StringBuilder()
     for _ <- 0 until n do res ++= s"${programStack.pop()}"
-    index += n
+    index += n + 1
     res.toString()
   private def safeCheck(pred: Char => Boolean): Boolean =
     programStack.nonEmpty && pred(programStack.head)
@@ -163,13 +163,17 @@ class Vexer(val program: String = ""):
 
     tokens.toSeq
 
+  /** Number = 0 | [1-9][0-9]*(\.[0-9]*)? | \.[0-9]* */
   private def numberToken: Unit =
     val rangeStart = index
+    // Check the single zero case
     if headEqual('0') then
       val zeroToken = VToken(VTokenType.Number, "0", VRange(index, index))
       pop(1)
       tokens += zeroToken
+    // Then the headless decimal case
     else if headEqual('.') then
+      pop(1)
       if safeCheck(c => c.isDigit) then
         val head = simpleNumber()
         val numberToken = VToken(
@@ -186,8 +190,10 @@ class Vexer(val program: String = ""):
         )
         tokens += zeroToken
     else
+      // Not a 0, and not a headless decimal, so it's a normal number
       val head = simpleNumber()
-      if program.head == '.' then // Check for the decimal tail
+      // Test for a decimal tail
+      if headEqual('.') then
         pop(1)
         if safeCheck(c => c.isDigit) then
           val tail = simpleNumber()
@@ -204,6 +210,7 @@ class Vexer(val program: String = ""):
             VRange(rangeStart, index),
           )
           tokens += numberToken
+      // No decimal tail, so normal number
       else
         val numberToken = VToken(
           VTokenType.Number,
