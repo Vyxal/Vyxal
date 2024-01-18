@@ -263,8 +263,7 @@ private class LiteParser private ():
       case StructureType.DefineStructure => nextBranch() match
           case Some(name) => nextBranch() match
               case Some(functionsOrArgs) => nextBranch() match
-                  case Some(args) =>
-                    List(name, functionsOrArgs, args)
+                  case Some(args) => List(name, functionsOrArgs, args)
                   case None =>
                     // Only name and arguments
                     List(name, functionsOrArgs)
