@@ -187,9 +187,9 @@ object AST:
   /** Create an [[AST.Command]] that calls a builtin element */
   def builtin(element: String, range: Range = Range.fake): AST.Command =
     Elements.elements.get(element) match
-      case Some(elem) =>
-        AST.Command(element, elem.arity, false, range)
-      case None => throw VyxalYikesException(s"Element $element doesn't exist but should")
+      case Some(elem) => AST.Command(element, elem.arity, false, range)
+      case None =>
+        throw VyxalYikesException(s"Element $element doesn't exist but should")
 
 enum CustomElementType derives CanEqual:
   case Element
