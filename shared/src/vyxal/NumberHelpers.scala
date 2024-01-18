@@ -258,6 +258,7 @@ object NumberHelpers:
     start.to(end, step = step)
 
   def range(start: VNum, ends: Seq[VNum])(using Context): VList =
+    if ends.isEmpty then throw BadArgumentException("range", "empty list")
     val ranges = ends.map(start.to(_))
     ListHelpers
       .reshape(ListHelpers.cartesianProductMulti(ranges), ranges.map(_.length))
