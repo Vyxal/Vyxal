@@ -2526,7 +2526,10 @@ object Elements:
     ) {
       case a: VNum => NumberHelpers.range(0, a - a.signum)
       case a: VList if a.forall(_.isInstanceOf[VNum]) =>
-        NumberHelpers.range(0, a.map(x => x.asInstanceOf[VNum] - x.asInstanceOf[VNum].signum))
+        NumberHelpers.range(
+          0,
+          a.map(x => x.asInstanceOf[VNum] - x.asInstanceOf[VNum].signum),
+        )
       case a: String => a.toLowerCase
     },
     addFull(
