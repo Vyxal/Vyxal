@@ -3947,7 +3947,10 @@ object Elements:
       case (a, b: VList) =>
         val shape = b.map {
           case n: VNum => n
-          case other => throw BadArgumentException("reshape", other)
+          case other => throw BadRHSException(
+              "ÞR",
+              s"$b (expected a list of natural numbers)",
+            )
         }
         ListHelpers.reshape(ListHelpers.makeIterable(a), shape)
       case (a, b: VNum) =>
