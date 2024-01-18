@@ -3168,7 +3168,7 @@ object Elements:
       case (a: VFun, b: VNum) => MiscHelpers.predicateSlice(a, b, 0)
       case (a: VNum, b: VFun) => MiscHelpers.predicateSlice(b, a, 0)
     },
-    addPartialVect(
+    addPart(
       Monad,
       "z",
       "Inclusive zero Range | Is Lowercase",
@@ -3179,6 +3179,7 @@ object Elements:
         "lowercase?",
         "lower?",
       ),
+      true,
       "a: num -> [0, 1, ..., a]",
       "a: lst[num] -> apl-style iota from 0 to a",
       "a: str -> is a lowercase?",
