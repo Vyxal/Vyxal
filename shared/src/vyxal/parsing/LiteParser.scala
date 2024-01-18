@@ -227,11 +227,16 @@ private class LiteParser private ():
         closerEnd
       else branchStart
 
-    LiteTree.Structure(
-      opener,
+    val nonExprs =
       if opener.tokenType == TokenType.StructureOpen then
         nonExprBranches(opener.value, program)
-      else Nil,
+      else if opener.tokenType == TokenType.DefineRecord then
+        ???
+      else Nil
+
+    LiteTree.Structure(
+      opener,
+      nonExprs,
       branches.toList,
       Range(opener.range.startOffset, structEnd),
     )
@@ -275,15 +280,6 @@ private class LiteParser private ():
       case _ => Nil
     end match
   end nonExprBranches
-
-  private def parseParameters(program: Queue[Token]): List[Token] =
-    val params = ListBuffer.empty[Token]
-    while program.size >= 2 && program.front.tokenType != TokenType.Branch &&
-      program(1).tokenType == TokenType.Branch
-    do
-      params += program.dequeue()
-      program.dequeue() // Remove the branch
-    params.toList
 
   /** Whether this token is a branch or a structure/list closer */
   private def isCloser(token: Token): Boolean =

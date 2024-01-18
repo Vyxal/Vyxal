@@ -62,8 +62,41 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
               asts.push(AST.Lst(branches.map(branch => parse(List(branch)))))
             case TokenType.StructureOpen =>
               parseStructure(opener, nonExprs, branches, range)
-            case TokenType.DefineRecord => ???
-        case LiteTree.Group(trees, range) => ???
+            case TokenType.DefineRecord =>
+              val className = opener.value
+              if reservedTypes.contains(className) then
+                throw ReservedClassNameException(className)
+              branches match
+                case List() => classes(className) = CustomClass(Map())
+                case _ :: LiteTree.Group(body, _) :: _ =>
+                  val fields =
+                    mutable.Map.empty[String, (Visibility, Option[AST])]
+                  val prev = ListBuffer.empty[LiteTree]
+
+                  def makeValue(): Option[AST] =
+                    if prev.nonEmpty then
+                      val trees = prev.to(Queue)
+                      prev.clear()
+                      parseLiteTrees(trees) match
+                        case lam: AST.Lambda => Some(lam)
+                        case ast => Some(AST.Lambda(Some(0), List(), List(ast)))
+                    else None
+
+                  for tree <- body do
+                    tree match
+                      case LiteTree.Tok(Token(TokenType.SetVar, name, _), _) =>
+                        fields.put(name, (Visibility.Private -> makeValue()))
+                      case LiteTree.Tok(Token(TokenType.GetVar, name, _), _) =>
+                        fields.put(name, (Visibility.Restricted -> makeValue()))
+                      case LiteTree
+                            .Tok(Token(TokenType.Constant, name, _), _) =>
+                        fields.put(name, (Visibility.Public -> makeValue()))
+                      case _ => prev += tree
+
+                  classes(className) = CustomClass(fields.toMap)
+                case _ => throw BadStructureException("record", range = range)
+              end match
+        case LiteTree.Group(trees, range) => parseLiteTrees(trees.to(Queue))
         case LiteTree.LineLambda(modTok, body, range) => asts.push(
             AST.Lambda(
               Some(1),
@@ -414,11 +447,6 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
     end for
     paramList.toList -> arity
   end parseParameters
-
-  private def flatten(ast: AST): List[AST] =
-    ast match
-      case AST.Group(elems, _, _) => elems.flatMap(flatten)
-      case _ => List(ast)
 
   private def toValidName(name: String): String =
     name

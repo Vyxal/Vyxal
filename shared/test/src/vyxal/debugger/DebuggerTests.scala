@@ -89,7 +89,7 @@ class DebuggerTests extends AnyFeatureSpec with GivenWhenThen with Matchers:
         AST.makeSingle(
           AST.Str("foo", Range(0, 3)),
           AST.Number(5, Range(3, 4)),
-          AST.Command("+", Range(4, 5)),
+          AST.Command("+", range = Range(4, 5)),
         )
       )
       dbg.addBreakpoint(Breakpoint(3))
@@ -113,7 +113,7 @@ class DebuggerTests extends AnyFeatureSpec with GivenWhenThen with Matchers:
         AST.makeSingle(
           AST.Str("foo", Range(0, 3)),
           AST.Number(5, Range(3, 4)),
-          AST.Command("+", Range(4, 5)),
+          AST.Command("+", range = Range(4, 5)),
         )
       )
       dbg.addBreakpoint(Breakpoint(3))
