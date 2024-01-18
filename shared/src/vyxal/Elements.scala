@@ -2492,19 +2492,23 @@ object Elements:
       case a: VNum => a ** 3
       case a: String => VList.from(a.grouped(3).toSeq)
     },
-    addPart(
+    addPartialVect(
       Monad,
       "ɾ",
       "Inclusive One Range | Uppercase",
       List("one->n", "one-range", "to-upper", "upper", "uppercase"),
-      true,
       "a: num -> [1..a]",
+      "a: lst[num] -> apl-style iota from 1 to a",
       "a: str -> a.upper()",
     ) {
       case a: VNum => NumberHelpers.range(1, a)
-      case a: String => a.toUpperCase
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        NumberHelpers.range(1, a.map(_.asInstanceOf[VNum]))
+      case a => (Monad.vectorise("ɾ") {
+          case a: String => a.toUpperCase
+        })(a)
     },
-    addPart(
+    addPartialVect(
       Monad,
       "ʀ",
       "Exclusive Zero Range | Lowercase",
@@ -2516,12 +2520,16 @@ object Elements:
         "lower",
         "lowercase",
       ),
-      true,
       "a: num -> [0..a)",
+      "a: lst[num] -> apl-style iota from 0 until a",
       "a: str -> a.lower()",
     ) {
       case a: VNum => NumberHelpers.range(0, a - 1)
-      case a: String => a.toLowerCase
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        NumberHelpers.range(0, a.map(_.asInstanceOf[VNum] - 1))
+      case a => (Monad.vectorise("ʀ") {
+          case a: String => a.toLowerCase
+        })(a)
     },
     addFull(
       Monad,
@@ -3162,7 +3170,7 @@ object Elements:
       case (a: VFun, b: VNum) => MiscHelpers.predicateSlice(a, b, 0)
       case (a: VNum, b: VFun) => MiscHelpers.predicateSlice(b, a, 0)
     },
-    addPart(
+    addPartialVect(
       Monad,
       "z",
       "Inclusive zero Range | Is Lowercase",
@@ -3173,14 +3181,18 @@ object Elements:
         "lowercase?",
         "lower?",
       ),
-      true,
       "a: num -> [0, 1, ..., a]",
+      "a: lst[num] -> apl-style iota from 0 to a",
       "a: str -> is a lowercase?",
     ) {
       case a: VNum => NumberHelpers.range(0, a)
-      case a: String =>
-        if a.length == 1 then a.forall(_.isLower)
-        else VList.from(a.map(x => VNum(x.isLower)))
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        NumberHelpers.range(0, a.map(_.asInstanceOf[VNum]))
+      case a => (Monad.vectorise("ʀ") {
+          case a: String =>
+            if a.length == 1 then a.forall(_.isLower)
+            else VList.from(a.map(x => VNum(x.isLower)))
+        })(a)
     },
     addPart(
       Dyad,
@@ -3941,8 +3953,7 @@ object Elements:
           case n: VNum => n
           case other => throw BadArgumentException("reshape", other)
         }
-        ListHelpers
-          .reshape(ListHelpers.makeIterable(a), b.map(_.asInstanceOf[VNum]))
+        ListHelpers.reshape(ListHelpers.makeIterable(a), shape)
       case (a, b: VNum) =>
         ListHelpers.reshape(ListHelpers.makeIterable(a), Seq(b))
     },

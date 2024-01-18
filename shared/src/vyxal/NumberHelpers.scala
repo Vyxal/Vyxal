@@ -257,6 +257,12 @@ object NumberHelpers:
     val step = if start < end then 1 else -1
     start.to(end, step = step)
 
+  def range(start: VNum, ends: Seq[VNum])(using Context): VList =
+    val ranges = ends.map(start.to(_))
+    ListHelpers
+      .reshape(ListHelpers.cartesianProductMulti(ranges), ranges.map(_.length))
+      .asInstanceOf[VList]
+
   def toBinary(a: VAny)(using Context): VList =
     a match
       case n: VNum =>
