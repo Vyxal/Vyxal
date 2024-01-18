@@ -2492,11 +2492,12 @@ object Elements:
       case a: VNum => a ** 3
       case a: String => VList.from(a.grouped(3).toSeq)
     },
-    addPartialVect(
+    addPart(
       Monad,
       "ɾ",
       "Inclusive One Range | Uppercase",
       List("one->n", "one-range", "to-upper", "upper", "uppercase"),
+      true,
       "a: num -> [1..a]",
       "a: lst[num] -> apl-style iota from 1 to a",
       "a: str -> a.upper()",
@@ -2504,11 +2505,9 @@ object Elements:
       case a: VNum => NumberHelpers.range(1, a)
       case a: VList if a.forall(_.isInstanceOf[VNum]) =>
         NumberHelpers.range(1, a.map(_.asInstanceOf[VNum]))
-      case a => (Monad.vectorise("ɾ") {
-          case a: String => a.toUpperCase
-        })(a)
+      case a: String => a.toUpperCase
     },
-    addPartialVect(
+    addPart(
       Monad,
       "ʀ",
       "Exclusive Zero Range | Lowercase",
@@ -2520,6 +2519,7 @@ object Elements:
         "lower",
         "lowercase",
       ),
+      true,
       "a: num -> [0..a)",
       "a: lst[num] -> apl-style iota from 0 until a",
       "a: str -> a.lower()",
@@ -2527,9 +2527,7 @@ object Elements:
       case a: VNum => NumberHelpers.range(0, a - 1)
       case a: VList if a.forall(_.isInstanceOf[VNum]) =>
         NumberHelpers.range(0, a.map(_.asInstanceOf[VNum] - 1))
-      case a => (Monad.vectorise("ʀ") {
-          case a: String => a.toLowerCase
-        })(a)
+      case a: String => a.toLowerCase
     },
     addFull(
       Monad,
@@ -3188,11 +3186,9 @@ object Elements:
       case a: VNum => NumberHelpers.range(0, a)
       case a: VList if a.forall(_.isInstanceOf[VNum]) =>
         NumberHelpers.range(0, a.map(_.asInstanceOf[VNum]))
-      case a => (Monad.vectorise("ʀ") {
-          case a: String =>
-            if a.length == 1 then a.forall(_.isLower)
-            else VList.from(a.map(x => VNum(x.isLower)))
-        })(a)
+      case a: String =>
+        if a.length == 1 then a.forall(_.isLower)
+        else VList.from(a.map(x => VNum(x.isLower)))
     },
     addPart(
       Dyad,
