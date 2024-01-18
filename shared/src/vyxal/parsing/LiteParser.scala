@@ -18,7 +18,11 @@ enum LiteTree:
   /** For the special modifier `ᵜ`, which makes a lambda until the end of the
     * line
     */
-  case LineLambda(modTok: Token, body: List[LiteTree], override val range: Range)
+  case LineLambda(
+      modTok: Token,
+      body: List[LiteTree],
+      override val range: Range,
+  )
 
   def range: Range
 end LiteTree
@@ -27,10 +31,18 @@ end LiteTree
   * doesn't do arity grouping or process modifiers
   */
 object LiteParser:
-  def parse(tokens: List[Token]): List[LiteTree] = LiteParser().parse(tokens)
+  def parse(tokens: List[Token]): Result =
+    val parser = LiteParser()
+    val trees = parser.parse(tokens)
+    Result(trees, parser.extensions.toList)
+
+  case class Result(
+      trees: List[LiteTree],
+      extensions: List[(List[LiteTree], Range)],
+  )
 
 private class LiteParser private ():
-  val customArities = mutable.Map.empty[String, Int]
+  val extensions = ListBuffer.empty[(List[LiteTree], Range)]
 
   def parse(tokens: List[Token]): List[LiteTree] =
     val preprocessed = preprocess(tokens).to(Queue)
@@ -129,29 +141,27 @@ private class LiteParser private ():
         case TokenType.Number | TokenType.Str | TokenType.DictionaryString |
             TokenType.CompressedString | TokenType.CompressedNumber |
             TokenType.Newline | TokenType.Command | TokenType.NegatedCommand |
-            TokenType.OriginalSymbol => trees += LiteTree.Tok(token, token.range)
-        case TokenType.StructureOpen | TokenType.DefineRecord |
-            TokenType.DefineExtension =>
-          val structure =
-            parseStructure(program, token)(_ == TokenType.StructureClose)
-          trees += structure
-
-          if !topLevel && token.tokenType == TokenType.DefineExtension then
-            // todo this shouldn't be done by scribe since it won't be seen by web interpreter users
-            // and scribe is for logging anyway
-            scribe.warn(
-              s"Extensions should be defined at toplevel, found at range ${structure.range}"
-            )
-
-          if topLevel && program.nonEmpty &&
-            program.front.tokenType == TokenType.StructureAllClose
-          then program.dequeue()
+            TokenType.OriginalSymbol => trees +=
+            LiteTree.Tok(token, token.range)
+        case TokenType.StructureOpen | TokenType.DefineRecord => trees +=
+            parseStructure(program, token, topLevel, TokenType.StructureClose)
         /*
          * List are just structures with two different opening and closing
          * token possibilities, so handle them the same way.
          */
         case TokenType.ListOpen => trees +=
-            parseStructure(program, token)(_ == TokenType.ListClose)
+            parseStructure(program, token, topLevel, TokenType.ListClose)
+        case TokenType.DefineExtension =>
+          val LiteTree.Structure(_, branches, range) =
+            parseStructure(program, token, topLevel, TokenType.StructureClose)
+          extensions += ((branches, range))
+
+          if !topLevel then
+            // todo this shouldn't be done by scribe since it won't be seen by web interpreter users
+            // and scribe is for logging anyway
+            scribe.warn(
+              s"Extensions should be defined at toplevel, found at range $range"
+            )
       end match
     end while
 
@@ -160,17 +170,20 @@ private class LiteParser private ():
 
   /** Parse either a structure or a list.
     *
-    * @param isEnd
-    *   Function to check if a token ends the structure/list
-    * @return
-    *   The parsed branches
-    *
+    * @param topLevel
+    *   Whether this is at the top level, in which case it should remove any
+    *   `StructureAllClose`s
+    * @param closer
+    *   The kind of token that ends the structure/list
     * @returns
     *   The branches parsed, as well as the offset of the structure closer
     */
-  def parseStructure(program: Queue[Token], opener: Token)(
-      isEnd: TokenType => Boolean
-  ): LiteTree =
+  def parseStructure(
+      program: Queue[Token],
+      opener: Token,
+      topLevel: Boolean,
+      closer: TokenType,
+  ): LiteTree.Structure =
     if program.isEmpty then return LiteTree.Structure(opener, Nil, opener.range)
 
     val branches = ListBuffer.empty[LiteTree]
@@ -180,7 +193,7 @@ private class LiteParser private ():
     var shouldBreak = false
 
     while !shouldBreak do
-      val branchBody = parseTokens(program)
+      val branchBody = parseTokens(program, topLevel = false)
       branches +=
         LiteTree.Group(
           branchBody,
@@ -203,10 +216,11 @@ private class LiteParser private ():
     end while
 
     val structEnd =
-      if program.nonEmpty && isEnd(program.front.tokenType) then
+      if program.nonEmpty && program.front.tokenType == closer then
         val closerEnd = program.front.range.endOffset
-        if program.front.tokenType != TokenType.StructureAllClose then
-          // Get rid of the structure/list closer
+        if topLevel || program.front.tokenType != TokenType.StructureAllClose
+        then
+          // Get rid of the structure/list closer (including StructureAllClose, if we're not inside another struct)
           program.dequeue()
         closerEnd
       else branchStart

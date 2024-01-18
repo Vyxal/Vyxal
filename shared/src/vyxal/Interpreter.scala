@@ -105,7 +105,7 @@ object Interpreter:
         context.clear()
         for elem <- elems do execute(elem)(using context)
         ctx.push(VList.from(context.getStack))
-      case AST.Command(cmd, _, _, overwriteable, _) =>
+      case AST.Command(cmd, _, overwriteable, _) =>
         var executed = false
         if overwriteable && ctx.globals.extensions.contains(cmd) then
           val ext = ctx.globals.extensions(cmd)

@@ -20,8 +20,9 @@ case class ParserResult(
 object Parser:
   @throws[ParsingException]
   def parse(tokens: List[Token]): ParserResult =
-    val parser = Parser()
-    val ast = parser.parse(tokens)
+    val LiteParser.Result(trees, extensions) = LiteParser.parse(tokens)
+    val parser = Parser(extensions)
+    val ast = parser.parse(trees)
     ParserResult(
       ast,
       parser.customs.toMap,
@@ -31,7 +32,8 @@ object Parser:
 
   val reservedTypes = List("num", "str", "lst", "fun", "con")
 
-private class Parser:
+/** @param extensionsRaw The extensions found by LiteParser */
+private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
   /** Custom definitions found so far */
   private val customs = mutable.Map[String, CustomDefinition]()
   private val classes = mutable.Map[String, CustomClass]()
@@ -257,7 +259,7 @@ private class Parser:
         else throw NoSuchElementException(cmdTok.value)
       case Some(element) =>
         if asts.isEmpty then
-          return AST.Command(cmd, None, None, checkCustoms, cmdTok.range)
+          return AST.Command(cmd, None, checkCustoms, cmdTok.range)
         else element.arity.getOrElse(0)
     val nilads = ListBuffer[AST]()
 
@@ -265,16 +267,16 @@ private class Parser:
       asts.top.arity.fold(false)(_ == 0)
     do nilads += asts.pop()
     if nilads.isEmpty then
-      return AST.Command(cmd, None, None, checkCustoms, cmdTok.range)
+      return AST.Command(cmd, None, checkCustoms, cmdTok.range)
     AST.Group(
-      (AST.Command(cmd, None, None, checkCustoms, cmdTok.range) ::
+      (AST.Command(cmd, None, checkCustoms, cmdTok.range) ::
         nilads.toList).reverse,
       Some(arity - nilads.size),
     )
   end parseCommand
 
-  def parse(tokens: List[Token]): AST =
-    postprocess(parseLiteTrees(LiteParser.parse(tokens).to(Queue)))
+  def parse(trees: List[LiteTree]): AST =
+    postprocess(parseLiteTrees(trees.to(Queue)))
 
   private def postprocess(asts: AST): AST =
     val temp = asts match

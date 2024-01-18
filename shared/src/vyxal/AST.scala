@@ -16,7 +16,6 @@ enum AST(val arity: Option[Int]) derives CanEqual:
       extends AST(Some(0))
   case Command(
       value: String,
-      impl: Option[Element | CustomDefinition],
       arityOverride: Option[Int] = None,
       overwriteable: Boolean = true,
       override val range: Range = Range.fake,
@@ -136,7 +135,7 @@ enum AST(val arity: Option[Int]) derives CanEqual:
       case Number(n, _) => n.toString
       case Str(value, _) => s"\"$value\""
       case Lst(elems, _) => elems.map(_.toVyxal).mkString("#[", "|", "#]")
-      case Command(value, _, _, _, _) => value
+      case Command(value, _, _, _) => value
       case Group(elems, _, _) =>
         val asts = elems.toBuffer
         val newElems = ListBuffer[AST]()
@@ -189,7 +188,7 @@ object AST:
   def builtin(element: String, range: Range = Range.fake): AST.Command =
     Elements.elements.get(element) match
       case Some(elem) =>
-        AST.Command(element, Some(elem), elem.arity, false, range)
+        AST.Command(element, elem.arity, false, range)
       case None => throw VyxalYikesException(s"Element $element doesn't exist but should")
 
 enum CustomElementType derives CanEqual:
