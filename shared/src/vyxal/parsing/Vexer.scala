@@ -153,13 +153,15 @@ class Vexer(val program: String = ""):
     programStack.nonEmpty && pred(programStack.head)
   private def headEqual(c: Char): Boolean =
     programStack.nonEmpty && programStack.head == c
+  private def headIsDigit: Boolean = safeCheck(c => c.isDigit)
+  private def headIsWhitespace: Boolean = safeCheck(c => c.isWhitespace)
 
   def lex: Seq[VToken] =
     programStack.pushAll(program.reverse)
 
     while programStack.nonEmpty do
-      if program.head.isDigit || program.head == '.' then numberToken
-      if program.head.isWhitespace then pop(1)
+      if headIsDigit || headEqual('.') then numberToken
+      if headIsWhitespace then pop(1)
 
     tokens.toSeq
 
