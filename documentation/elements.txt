@@ -482,6 +482,7 @@ Keywords: to-base, re-find, regex-find
 z (Inclusive zero Range | Is Lowercase) (vectorising)
 Keywords: inclusive-zero-range, zero->n, is-lowercase?, lowercase?, lower?
 - a: num -> [0, 1, ..., a]
+- a: lst[num] -> apl-style iota from 0 to a
 - a: str -> is a lowercase?
 ----------------------
 Ȧ (Absolute Value | Keep Alphabet Characters) (vectorising)
@@ -967,12 +968,14 @@ Keywords: halve
 Trigraph: #.~
 Keywords: 0->n, zero-range, lowered-range, to-lower, lower, lowercase
 - a: num -> [0..a)
+- a: lst[num] -> apl-style iota from 0 until a
 - a: str -> a.lower()
 ----------------------
 ɾ (Inclusive One Range | Uppercase) (vectorising)
 Trigraph: #,~
 Keywords: one->n, one-range, to-upper, upper, uppercase
 - a: num -> [1..a]
+- a: lst[num] -> apl-style iota from 1 to a
 - a: str -> a.upper()
 ----------------------
 ¯ (Deltas) (non-vectorising)
