@@ -274,7 +274,9 @@ private class Parser:
             ) -> argNames.length
 
         case TokenType.ContextIndex => asts.push(
-            AST.ContextIndex(if value.nonEmpty then value.toInt else -1)
+            AST.ContextIndex(
+              if value.nonEmpty && value != "¤" then value.toInt else -1
+            )
           )
         case TokenType.FunctionCall =>
           val funcName = value
