@@ -1029,10 +1029,14 @@ object Elements:
       false,
       "a: lst -> [a[0], a[-1]]",
       "a: str -> [a[0], a[-1]]",
-    ) { a =>
-      val iterable = ListHelpers.makeIterable(a)
-      if iterable.isEmpty then VList.from(Seq.empty)
-      else VList(iterable.head, iterable.last)
+      "a: cmx -> [real, imaginary]",
+      "a: num -> [digit[0], digit[-1]]",
+    ) {
+      case a: VNum if (a.isComplex || a.isImaginary) => VList(a.real, a.imag)
+      case a => 
+        val iterable = ListHelpers.makeIterable(a)
+        if iterable.isEmpty then VList.from(Seq.empty)
+        else VList(iterable.head, iterable.last)
     },
     addPart(
       Monad,
