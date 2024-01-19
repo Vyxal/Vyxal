@@ -54,7 +54,9 @@ object Parser:
       case _ => ast.arity.contains(0)
 end Parser
 
-/** @param definitionsRaw The extensions and custom definitions found by LiteParser */
+/** @param definitionsRaw
+  *   The extensions and custom definitions found by LiteParser
+  */
 private class Parser(val definitionsRaw: List[LiteTree.Structure]):
   import Parser.reservedTypes
 
