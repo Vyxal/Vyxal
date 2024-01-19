@@ -164,6 +164,10 @@ class Vexer(val program: String = ""):
   private def headIsDigit: Boolean = safeCheck(c => c.isDigit)
   private def headIsWhitespace: Boolean = safeCheck(c => c.isWhitespace)
   private def headIn(s: String): Boolean = safeCheck(c => s.contains(c))
+  private def quickToken(tokenType: VTokenType, value: String): Unit =
+    tokens += VToken(tokenType, value, VRange(index, index + value.length))
+    index += value.length
+    pop(value.length)
 
   def lex: Seq[VToken] =
     programStack.pushAll(program.reverse)
@@ -175,6 +179,31 @@ class Vexer(val program: String = ""):
       else if headIn("∆øÞ") || headLookaheadMatch("""#[^\[\]$!=#>@{:.,^]""")
       then digraphToken
       else if headLookaheadMatch("#[.,^]") then sugarTrigraph
+      else if headLookaheadEqual("#[") then
+        quickToken(VTokenType.ListOpen, "#[")
+      else if headLookaheadEqual("#]") then
+        quickToken(VTokenType.ListClose, "#]")
+      else if headIn("[({ṆḌλƛΩ₳µ") then
+        quickToken(VTokenType.StructureOpen, s"${programStack.head}")
+      else if headLookaheadEqual("#::") then
+        ???
+        // TODO: Handle define structure
+      else if headLookaheadEqual("#{") then
+        quickToken(VTokenType.StructureOpen, "#{")
+      else if headLookaheadEqual("#:[") then
+        quickToken(VTokenType.UnpackTrigraph, "#:[")
+      else if headIn("⎂⇝∯⊠ß≟₾◌▼⸠♳¿⎇↻⁙") then
+        quickToken(VTokenType.MonadicModifier, s"${programStack.head}")
+      else if headIn("ϩ∥∦♴⁙") then
+        quickToken(VTokenType.DyadicModifier, s"${programStack.head}")
+      else if headIn("э♵") then
+        quickToken(VTokenType.TriadicModifier, s"${programStack.head}")
+      else if headIn("Ч♶") then
+        quickToken(VTokenType.TetradicModifier, s"${programStack.head}")
+      else if headIn("⋊⊙") then
+        quickToken(VTokenType.SpecialModifier, s"${programStack.head}")
+      else if headEqual('|') then quickToken(VTokenType.Branch, "|")
+      else if headEqual('¤') then contextIndexToken
       else
         val rangeStart = index
         val char = pop()
@@ -300,5 +329,16 @@ class Vexer(val program: String = ""):
     val trigraph = pop(3)
     val normal = SugarMap.trigraphs.getOrElse(trigraph, trigraph)
     programStack.pushAll(normal.reverse)
+
+  private def contextIndexToken: Unit =
+    val rangeStart = index
+    pop()
+    val value = simpleNumber()
+    tokens +=
+      VToken(
+        VTokenType.ContextIndex,
+        value,
+        VRange(rangeStart, index),
+      )
 
 end Vexer
