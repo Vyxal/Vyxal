@@ -50,7 +50,7 @@ class ParserTests extends AnyFunSuite:
             AST.makeSingle(Number(1, Range(10, 12)), Number(2, Range(12, 14))),
             Number(3, Range(16, 18)),
           ),
-          Range(0, 21)
+          Range(0, 21),
         )
     )
   }
