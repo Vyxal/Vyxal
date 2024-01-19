@@ -7,7 +7,6 @@ import vyxal.*
 import scala.collection.mutable
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
 
-import Parser.reservedTypes
 import ParsingException.*
 
 case class ParserResult(
@@ -17,12 +16,22 @@ case class ParserResult(
     typedCustoms: Map[String, (List[(List[String], CustomDefinition)], Int)],
 )
 
+/** The parser takes a list of tokens and performs two sweeps of parsing:
+  * structures + arity grouping and then modifiers. The first sweep deals
+  * directly with the token list provided to the parser, and leaves its results
+  * in a stack of ASTs (the stack data type is used because it means that arity
+  * grouping is simply popping previous ASTs until a niladic state is reached).
+  * The second sweep takes the stack of ASTs and applies the logic of modifier
+  * grouping, placing its result in a single Group AST.
+  */
 object Parser:
+  private val reservedTypes = List("num", "str", "lst", "fun", "con")
+
   @throws[ParsingException]
   def parse(tokens: List[Token]): ParserResult =
-    val LiteParser.Result(trees, extensions) = LiteParser.parse(tokens)
-    val parser = Parser(extensions)
-    val ast = parser.parse(trees)
+    val LiteParser.Result(trees, definitions) = LiteParser.parse(tokens)
+    val parser = Parser(definitions)
+    val ast = postprocess(parser.parse(trees))
     ParserResult(
       ast,
       parser.customs.toMap,
@@ -30,26 +39,34 @@ object Parser:
       parser.typedCustoms.toMap,
     )
 
-  val reservedTypes = List("num", "str", "lst", "fun", "con")
+  private def postprocess(asts: AST): AST =
+    asts match
+      case AST.Group(elems, _, range) =>
+        val nilads = elems.reverse.takeWhile(isNilad).reverse
+        val rest = elems.dropRight(nilads.length)
+        AST.Group(nilads ++ rest, None, range = range)
+      case _ => asts
 
-/** @param extensionsRaw The extensions found by LiteParser */
-private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
+  private def isNilad(ast: AST) =
+    ast match
+      case AST.GetVar(_, _) => false // you might want a variable at the end
+      // after doing stuff like augmented assignment
+      case _ => ast.arity.contains(0)
+end Parser
+
+/** @param definitionsRaw The extensions and custom definitions found by LiteParser */
+private class Parser(val definitionsRaw: List[LiteTree.Structure]):
+  import Parser.reservedTypes
+
   /** Custom definitions found so far */
   private val customs = mutable.Map[String, CustomDefinition]()
   private val classes = mutable.Map[String, CustomClass]()
   private val typedCustoms =
     mutable.Map[String, (List[(List[String], CustomDefinition)], Int)]()
 
-  /** The parser takes a list of tokens and performs two sweeps of parsing:
-    * structures + arity grouping and then modifiers. The first sweep deals
-    * directly with the token list provided to the parser, and leaves its
-    * results in a stack of ASTs (the stack data type is used because it means
-    * that arity grouping is simply popping previous ASTs until a niladic state
-    * is reached). The second sweep takes the stack of ASTs and applies the
-    * logic of modifier grouping, placing its result in a single Group AST.
-    */
-  def parse(trees: List[LiteTree]): AST =
-    postprocess(parseLiteTrees(trees.to(Queue)))
+  def parse(trees: List[LiteTree]): AST = parseLiteTrees(trees.to(Queue))
+
+  def loadDefinitions() = ???
 
   private def parseLiteTrees(trees: Queue[LiteTree]): AST =
     val asts = Stack.empty[AST]
@@ -265,62 +282,6 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
               else Some(toValidName(nonExprs.head.value))
             AST.For(name, body, range = range)
           case _ => throw BadStructureException("for", range = range)
-      case StructureType.DefineStructure =>
-        // Name: The name of the element/modifier
-        // Mode: Whether it's an element or modifier
-        // Implementation: The implementation of the element/modifier
-        // Arity: How many arguments the element/modifier takes
-        // Args: The names of the arguments given to the implementation
-
-        val (nameTok, functions, args) = (nonExprs: @unchecked) match
-          case List() => throw BadStructureException("define", range = range)
-          case List(name) => (name, (Nil, 0), (Nil, 0))
-          case List(name, args) => (name, (Nil, 0), parseParameters(args.value))
-          case List(name, functions, args) => (
-              name,
-              parseParameters(functions.value),
-              parseParameters(args.value),
-            )
-
-        val impl = branches match
-          case List() => throw EmptyRedefine()
-          case List(impl) => impl
-          case _ => throw BadStructureException("define")
-
-        val name = nameTok.value
-        val actualName =
-          if name.length() == 2 then name(1).toString()
-          else toValidName(name)
-        val mode = name.headOption match
-          case Some('@') => CustomElementType.Element
-          case Some('*') => CustomElementType.Modifier
-          case _ => throw BadRedefineMode(name.substring(0, 1))
-
-        val arity = mode match
-          case CustomElementType.Element => args(1)
-          case CustomElementType.Modifier =>
-            if args(1) == -1 then -1
-            else args(1) + functions(1)
-
-        val actualImpl = mode match
-          case CustomElementType.Element =>
-            if impl.isInstanceOf[AST.Lambda] then impl
-            else AST.Lambda(Some(arity), args(0), List(impl))
-          case CustomElementType.Modifier => AST.makeSingle(
-              if impl.isInstanceOf[AST.Lambda] then impl
-              else AST.Lambda(Some(arity), functions(0) ++ args(0), List(impl)),
-              AST.Command("Ė"),
-            )
-
-        customs(actualName) = CustomDefinition(
-          actualName,
-          mode,
-          Some(actualImpl),
-          Some(arity),
-          (functions(0) -> args(0)),
-        )
-
-        AST.Group(List(), None)
       case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
           StructureType.LambdaFilter | StructureType.LambdaReduce |
           StructureType.LambdaSort) =>
@@ -380,6 +341,62 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
           AST.GeneratorStructure(rel, vals, arity)
     end match
   end parseStructure
+
+  def parseDefineStructure(tree: LiteTree.Structure): Unit =
+    val LiteTree.Structure(_, nonExprs, branches, range) = tree
+    // Name: The name of the element/modifier
+    // Mode: Whether it's an element or modifier
+    // Implementation: The implementation of the element/modifier
+    // Arity: How many arguments the element/modifier takes
+    // Args: The names of the arguments given to the implementation
+    val (nameTok, functions, args) = (nonExprs: @unchecked) match
+      case List() => throw BadStructureException("define", range = range)
+      case List(name) => (name, (Nil, 0), (Nil, 0))
+      case List(name, args) => (name, (Nil, 0), parseParameters(args.value))
+      case List(name, functions, args) => (
+          name,
+          parseParameters(functions.value),
+          parseParameters(args.value),
+        )
+
+    val impl = branches match
+      case List() => throw EmptyRedefine()
+      case List(impl) => parseLiteTrees(Queue(impl))
+      case _ => throw BadStructureException("define")
+
+    val name = nameTok.value
+    val actualName =
+      if name.length() == 2 then name(1).toString()
+      else toValidName(name)
+    val mode = name.headOption match
+      case Some('@') => CustomElementType.Element
+      case Some('*') => CustomElementType.Modifier
+      case _ => throw BadRedefineMode(name.substring(0, 1))
+
+    val arity = mode match
+      case CustomElementType.Element => args(1)
+      case CustomElementType.Modifier =>
+        if args(1) == -1 then -1
+        else args(1) + functions(1)
+
+    val actualImpl = mode match
+      case CustomElementType.Element =>
+        if impl.isInstanceOf[AST.Lambda] then impl
+        else AST.Lambda(Some(arity), args(0), List(impl))
+      case CustomElementType.Modifier => AST.makeSingle(
+          if impl.isInstanceOf[AST.Lambda] then impl
+          else AST.Lambda(Some(arity), functions(0) ++ args(0), List(impl)),
+          AST.Command("Ė"),
+        )
+
+    customs(actualName) = CustomDefinition(
+      actualName,
+      mode,
+      Some(actualImpl),
+      Some(arity),
+      (functions(0) -> args(0)),
+    )
+  end parseDefineStructure
 
   private def parseModifier(name: String, arity: Int, asts: Stack[AST]): AST =
     if asts.length < arity then throw BadModifierException(name)
@@ -512,20 +529,6 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
       .filter(c => c.isLetterOrDigit || c == 'ı')
       .replace("ı", "i")
       .dropWhile(!_.isLetter)
-
-  private def postprocess(asts: AST): AST =
-    asts match
-      case AST.Group(elems, _, range) =>
-        val nilads = elems.reverse.takeWhile(isNilad).reverse
-        val rest = elems.dropRight(nilads.length)
-        AST.Group(nilads ++ rest, None, range = range)
-      case _ => asts
-
-  private def isNilad(ast: AST) =
-    ast match
-      case AST.GetVar(_, _) => false // you might want a variable at the end
-      // after doing stuff like augmented assignment
-      case _ => ast.arity.contains(0)
 end Parser
 
 enum ParsingException(msg: String) extends VyxalException(msg):

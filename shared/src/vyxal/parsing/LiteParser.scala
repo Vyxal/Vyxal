@@ -43,15 +43,15 @@ object LiteParser:
   def parse(tokens: List[Token]): Result =
     val parser = LiteParser()
     val trees = parser.parse(tokens)
-    Result(trees, parser.extensions.toList)
+    Result(trees, parser.definitions.toList)
 
   case class Result(
       trees: List[LiteTree],
-      extensions: List[(List[LiteTree], Range)],
+      definitions: List[LiteTree.Structure],
   )
 
 private class LiteParser private ():
-  val extensions = ListBuffer.empty[(List[LiteTree], Range)]
+  val definitions = ListBuffer.empty[LiteTree.Structure]
 
   def parse(tokens: List[Token]): List[LiteTree] =
     val preprocessed = preprocess(tokens).to(Queue)
@@ -138,6 +138,18 @@ private class LiteParser private ():
                 else range.endOffset,
               ),
             )
+        case TokenType.StructureOpen
+            if token.value == StructureType.DefineStructure.open =>
+          val struct =
+            parseStructure(program, token, topLevel, TokenType.StructureClose)
+          extensions += struct
+
+          if !topLevel then
+            // todo this shouldn't be done by scribe since it won't be seen by web interpreter users
+            // and scribe is for logging anyway
+            scribe.warn(
+              s"Custom definitions should be defined at toplevel, found at range ${struct.range}"
+            )
         case TokenType.StructureOpen | TokenType.DefineRecord => trees +=
             parseStructure(program, token, topLevel, TokenType.StructureClose)
         /*
@@ -147,15 +159,15 @@ private class LiteParser private ():
         case TokenType.ListOpen => trees +=
             parseStructure(program, token, topLevel, TokenType.ListClose)
         case TokenType.DefineExtension =>
-          val LiteTree.Structure(_, _, branches, range) =
+          val struct =
             parseStructure(program, token, topLevel, TokenType.StructureClose)
-          extensions += ((branches, range))
+          extensions += struct
 
           if !topLevel then
             // todo this shouldn't be done by scribe since it won't be seen by web interpreter users
             // and scribe is for logging anyway
             scribe.warn(
-              s"Extensions should be defined at toplevel, found at range $range"
+              s"Extensions should be defined at toplevel, found at range ${struct.range}"
             )
         case _ => trees += LiteTree.Tok(token, token.range)
       end match
