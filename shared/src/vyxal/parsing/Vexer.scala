@@ -204,6 +204,8 @@ class Vexer(val program: String = ""):
         quickToken(VTokenType.SpecialModifier, s"${programStack.head}")
       else if headEqual('|') then quickToken(VTokenType.Branch, "|")
       else if headEqual('¤') then contextIndexToken
+      else if headLookaheadEqual("#$") then getVariableToken
+      else if headLookaheadEqual("#=") then setVariableToken
       else
         val rangeStart = index
         val char = pop()
@@ -340,5 +342,33 @@ class Vexer(val program: String = ""):
         value,
         VRange(rangeStart, index),
       )
+
+  private def getVariableToken: Unit =
+    val rangeStart = index
+    pop(2)
+    val name = simpleName()
+    tokens +=
+      VToken(
+        VTokenType.GetVar,
+        name,
+        VRange(rangeStart, index),
+      )
+
+  private def setVariableToken: Unit =
+    val rangeStart = index
+    pop(2)
+    val name = simpleName()
+    tokens +=
+      VToken(
+        VTokenType.SetVar,
+        name,
+        VRange(rangeStart, index),
+      )
+
+  private def simpleName(): String =
+    val name = StringBuilder()
+    if headLookaheadEqual("_") then name ++= pop()
+    while safeCheck(c => c.isLetterOrDigit || c == '_') do name ++= s"${pop()}"
+    name.toString()
 
 end Vexer
