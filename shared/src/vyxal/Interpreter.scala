@@ -45,6 +45,8 @@ object Interpreter:
       execute(ast)
       if !ctx.globals.printed && !ctx.testMode then
         if ctx.settings.endPrintMode == EndPrintMode.Default then
+          vyPrintln(ctx.pop())
+        else if ctx.settings.endPrintMode == EndPrintMode.Pretty then
           vyPrintln(prettyPrint(ctx.pop()))
         else if ctx.settings.endPrintMode == EndPrintMode.JoinNewlines then
           vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString("\n"))
