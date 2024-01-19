@@ -170,7 +170,7 @@ private[parsing] object SBCSLexer:
     ).opaque("<number (SBCS)>")
 
   def contextIndex[$: P]: P[Token] =
-    parseToken(ContextIndex, Common.digits ~ "¤")
+    parseToken(ContextIndex, (Common.digits ~ "¤") | "¤".!)
 
   def getVariable[$: P]: P[Token] = parseToken(GetVar, "#$" ~~/ Common.varName)
 
