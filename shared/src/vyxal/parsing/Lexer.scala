@@ -50,7 +50,6 @@ case class LitToken(
 case class Range(startOffset: Int, endOffset: Int) derives CanEqual:
   def includes(offset: Int): Boolean =
     startOffset <= offset && offset < endOffset
-end Range
 
 object Range:
   /** A dummy Range (mainly for generated/desugared code) */
