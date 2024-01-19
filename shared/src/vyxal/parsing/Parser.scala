@@ -54,8 +54,6 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
   private def parseLiteTrees(trees: Queue[LiteTree]): AST =
     val asts = Stack.empty[AST]
 
-    println(s"Parsing lite trees: $trees")
-
     while trees.nonEmpty do
       trees.dequeue() match
         case LiteTree.Structure(opener, nonExprs, branches, range) =>
@@ -222,11 +220,11 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
                 TokenType.UnpackTrigraph | TokenType.UnpackClose |
                 TokenType.DefineRecord | TokenType.DefineExtension |
                 TokenType.Comment | TokenType.Branch | TokenType.Group |
-                TokenType.GroupType | TokenType.MoveRight => ()
+                TokenType.GroupType | TokenType.MoveRight |
+                TokenType.Newline => // All of these have already been handled
           end match
     end while
 
-    println(s"asts: $asts")
     AST.makeSingle(asts.toSeq.reverse*)
   end parseLiteTrees
 
@@ -275,7 +273,7 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
         // Args: The names of the arguments given to the implementation
 
         val (nameTok, functions, args) = (nonExprs: @unchecked) match
-          case List() => throw EmptyRedefine(range = range)
+          case List() => throw BadStructureException("define", range = range)
           case List(name) => (name, (Nil, 0), (Nil, 0))
           case List(name, args) => (name, (Nil, 0), parseParameters(args.value))
           case List(name, functions, args) => (

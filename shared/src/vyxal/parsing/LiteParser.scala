@@ -250,7 +250,7 @@ private class LiteParser private ():
     def nextBranch(): Option[Token] =
       if program.size >= 2 then
         val branchInd = program.indexWhere { tok =>
-          tok.value.matches(raw"([0-9a-zA-Zı,]|\s)+")
+          !tok.value.matches(raw"([0-9a-zA-Zı,@*]|\s)+")
         }
         if branchInd < 1 || program(branchInd).tokenType != TokenType.Branch
         then None
