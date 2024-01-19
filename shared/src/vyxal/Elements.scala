@@ -3964,6 +3964,17 @@ object Elements:
       case (a, b: VNum) =>
         ListHelpers.reshape(ListHelpers.makeIterable(a), Seq(b))
     },
+    addPart(
+      Monad,
+      "∆Ṛ",
+      "Principal Root Of Unity",
+      List("root-of-unity"),
+      true,
+      "a: num => principal a-th root of unity (e^(2i * pi / a))",
+    ) {
+      case a: VNum => VNum(spire.math.Real.e) **
+          (VNum.complex(0, 2) * VNum(spire.math.Real.pi) / a)
+    },
   )
 
   private def execHelper(value: VAny)(using ctx: Context): VAny =
