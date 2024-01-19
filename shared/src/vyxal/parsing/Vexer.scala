@@ -168,6 +168,18 @@ class Vexer(val program: String = ""):
     tokens += VToken(tokenType, value, VRange(index, index + value.length))
     index += value.length
     pop(value.length)
+  private def eat(c: Char): Unit =
+    if headEqual(c) then pop(1)
+    else
+      throw new Exception(
+        s"Expected $c, got ${programStack.head}" + s" at index $index"
+      )
+  private def eat(s: String): Unit =
+    if headLookaheadEqual(s) then pop(s.length)
+    else
+      throw new Exception(
+        s"Expected $s, got ${programStack.mkString}" + s" at index $index"
+      )
 
   def lex: Seq[VToken] =
     programStack.pushAll(program.reverse)
@@ -206,6 +218,11 @@ class Vexer(val program: String = ""):
       else if headEqual('¤') then contextIndexToken
       else if headLookaheadEqual("#$") then getVariableToken
       else if headLookaheadEqual("#=") then setVariableToken
+      else if headLookaheadEqual("#:~") then originalCommandToken
+      else if headLookaheadEqual("#:@") then commandSymbolToken
+      else if headLookaheadEqual("#:=") then modifierSymbolToken
+      else if headLookaheadEqual("#:R") then defineRecordToken
+      else if headLookaheadEqual("#:>>") then defineExtensionToken
       else
         val rangeStart = index
         val char = pop()
@@ -370,5 +387,88 @@ class Vexer(val program: String = ""):
     if headLookaheadEqual("_") then name ++= pop()
     while safeCheck(c => c.isLetterOrDigit || c == '_') do name ++= s"${pop()}"
     name.toString()
+
+  private def originalCommandToken: Unit =
+    val rangeStart = index
+    pop(3)
+    val command = pop()
+    tokens +=
+      VToken(
+        VTokenType.OriginalSymbol,
+        command,
+        VRange(rangeStart, index),
+      )
+
+  private def commandSymbolToken: Unit =
+    val rangeStart = index
+    pop(3)
+    val command = pop()
+    tokens +=
+      VToken(
+        VTokenType.ElementSymbol,
+        command,
+        VRange(rangeStart, index),
+      )
+
+  private def modifierSymbolToken: Unit =
+    val rangeStart = index
+    pop(3)
+    val command = pop()
+    tokens +=
+      VToken(
+        VTokenType.ModifierSymbol,
+        command,
+        VRange(rangeStart, index),
+      )
+
+  private def defineRecordToken: Unit =
+    val rangeStart = index
+    pop(3)
+    val name = simpleName()
+    tokens +=
+      VToken(
+        VTokenType.DefineRecord,
+        name,
+        VRange(rangeStart, index),
+      )
+
+  /** Extension ::= "#:>>" [a-zA-Z_][a-zA-Z0-9_] "|" (Name ">" Name)* "|" impl }
+    */
+  private def defineExtensionToken: Unit =
+    val rangeStart = index
+    pop(4)
+    val name = if headLookaheadMatch(". ") then pop() else simpleName()
+    tokens +=
+      VToken(
+        VTokenType.DefineExtension,
+        name,
+        VRange(rangeStart, index),
+      )
+    if headEqual('|') then
+      pop()
+      // Get the arguments and put them into tokens
+      while !headEqual('|') do
+        val argNameStart = index
+        val argName = simpleName()
+        tokens +=
+          VToken(
+            VTokenType.Param,
+            argName,
+            VRange(argNameStart, index),
+          )
+        while headIsWhitespace do pop()
+        eat(">")
+        while headIsWhitespace do pop()
+        val argTypeStart = index
+        val argType = simpleName()
+        tokens +=
+          VToken(
+            VTokenType.Param,
+            argType,
+            VRange(argTypeStart, index),
+          )
+      end while
+    end if
+  end defineExtensionToken
 
 end Vexer
