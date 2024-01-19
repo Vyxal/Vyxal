@@ -275,7 +275,7 @@ object Interpreter:
       ctxVarPrimary,
       ctxVarSecondary,
       args = previous.take(arity),
-      overrideCtxArgs = ctxVarPrimary +: ctxVarSecondary +: previous,
+      overrideCtxArgs = previous,
     )
     next #:: generator(relation, next, ctxVarPrimary, arity, next +: previous)
 
