@@ -1322,6 +1322,10 @@ Keywords: asin, arcsin, arcsine
 Keywords: atan, arctan, arctangent
 - a: num -> atan(a)
 ----------------------
+∆Ṛ (Principal Root Of Unity) (vectorising)
+Keywords: root-of-unity
+- a: num => principal a-th root of unity (e^(2i * pi / a))
+----------------------
 ø⁾ (Surround) (non-vectorising)
 Keywords: surround
 - a: any, b: any -> a prepended and appended to b
@@ -1352,6 +1356,8 @@ Keywords: transpose-safe
 Keywords: ends, sides, edges
 - a: lst -> [a[0], a[-1]]
 - a: str -> [a[0], a[-1]]
+- a: cmx -> [real, imaginary]
+- a: num -> [digit[0], digit[-1]]
 ----------------------
 Þi (Multidimensional Index) (non-vectorising)
 Keywords: md-index
