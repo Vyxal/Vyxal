@@ -3,11 +3,23 @@ package vyxal
 import vyxal.parsing.{Lexer, Parser, Range}
 import vyxal.AST.*
 
+import org.scalactic.Equality
 import org.scalatest.funsuite.AnyFunSuite
 
 def parse(code: String) = Parser.parse(Lexer.lexSBCS(code)).ast
 
 class ParserTests extends AnyFunSuite:
+  /** So that Range.fake compares equal to everything */
+  given Equality[Range] with
+    override def areEqual(left: Range, obj: Any): Boolean =
+      obj match
+        case right: Range => (left `eq` right) ||
+          (left `eq` Range.fake) ||
+          (right `eq` Range.fake) ||
+          (right.startOffset == left.startOffset &&
+            right.endOffset == left.endOffset)
+        case _ => false
+
   test("Can the parser parse an empty string?") {
     assert(parse("") === AST.makeSingle())
   }
@@ -44,14 +56,7 @@ class ParserTests extends AnyFunSuite:
   test("Does the parser recognise lists?") {
     assert(
       parse(""" ⟨"foo" | 1 2 | 3 #] """) ===
-        Lst(
-          List(
-            Str("foo", Range(2, 8)),
-            AST.makeSingle(Number(1, Range(10, 12)), Number(2, Range(12, 14))),
-            Number(3, Range(16, 18)),
-          ),
-          Range(0, 21),
-        )
+        Lst(List(Str("foo"), AST.makeSingle(Number(1), Number(2)), Number(3)))
     )
   }
 

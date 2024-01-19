@@ -37,11 +37,9 @@ In this sweep, each token is considered in turn, and depending on the token type
 |------------------------------- |-------------------------------------- |----------------------------- |
 | `Number(value)`                | ✅ (`AST.Number`)                      | ❌                            |
 | `Str(Value)`                   | ✅ (`AST.Str`)                         | ❌                            |
-| `Newline`                      | ✅ (`AST.Newline`)                     | ❌                            |
 | `StructureOpen(value)`         | ❌                                     | `parseStructure`             |
 | `ListOpen`                     | ❌                                     | `parseBranches`              |
 | `Command(value)`               | ❌                                     | `parseCommand`               |
-| any kind of `Modifier(value)`  | ✅ (`AST.JunkModifier(value, arity)`)  | ❌                            |
 | `SpecialModifier(value)`       | ✅ (`AST.SpecialModifier`)             | ❌                            |
 | `GetVar(value)`                | ✅ (`AST.GetVar`)                      | ❌                            |
 | `SetVar(value)`                | ✅ (`AST.SetVar`)                      | ❌                            |

@@ -120,13 +120,12 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
               asts.push(AST.CompressedString(value, range))
             case TokenType.CompressedNumber =>
               asts.push(AST.CompressedNumber(value, range))
-            case TokenType.Newline => asts.push(AST.Newline)
             case TokenType.Command =>
               if customs.contains(value) &&
                 customs(value).elementType == CustomElementType.Modifier
               then
                 asts.push(
-                  AST.JunkModifier(value, customs(value).args(0).length)
+                  parseModifier(value, customs(value).args(0).length, asts)
                 )
               else asts.push(parseCommand(token, asts))
             case TokenType.OriginalSymbol =>
