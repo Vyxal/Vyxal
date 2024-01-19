@@ -54,14 +54,17 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
   private def parseLiteTrees(trees: Queue[LiteTree]): AST =
     val asts = Stack.empty[AST]
 
+    println(s"Parsing lite trees: $trees")
+
     while trees.nonEmpty do
       trees.dequeue() match
         case LiteTree.Structure(opener, nonExprs, branches, range) =>
           (opener.tokenType: @unchecked) match
-            case TokenType.ListOpen =>
-              asts.push(AST.Lst(branches.map(branch => parse(List(branch)))))
+            case TokenType.ListOpen => asts.push(
+                AST.Lst(branches.map(branch => parse(List(branch))), range)
+              )
             case TokenType.StructureOpen =>
-              parseStructure(opener, nonExprs, branches, range)
+              asts.push(parseStructure(opener, nonExprs, branches, range))
             case TokenType.DefineRecord =>
               val className = opener.value
               if reservedTypes.contains(className) then
@@ -96,7 +99,8 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
                   classes(className) = CustomClass(fields.toMap)
                 case _ => throw BadStructureException("record", range = range)
               end match
-        case LiteTree.Group(trees, range) => parseLiteTrees(trees.to(Queue))
+        case LiteTree.Group(trees, range) =>
+          asts.push(parseLiteTrees(trees.to(Queue)))
         case LiteTree.LineLambda(modTok, body, range) => asts.push(
             AST.Lambda(
               Some(1),
@@ -223,7 +227,8 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
           end match
     end while
 
-    ???
+    println(s"asts: $asts")
+    AST.makeSingle(asts.toSeq.reverse*)
   end parseLiteTrees
 
   private def parseStructure(
@@ -258,8 +263,10 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
           case _ => throw BadStructureException("while", range = range)
       case StructureType.For => branches match
           case List(body) =>
-            if nonExprs.isEmpty then AST.For(None, body)
-            else AST.For(Some(toValidName(nonExprs.head.value)), body)
+            val name =
+              if nonExprs.isEmpty then None
+              else Some(toValidName(nonExprs.head.value))
+            AST.For(name, body, range = range)
           case _ => throw BadStructureException("for", range = range)
       case StructureType.DefineStructure => ???
       case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
@@ -455,13 +462,12 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
       .dropWhile(!_.isLetter)
 
   private def postprocess(asts: AST): AST =
-    val temp = asts match
-      case AST.Group(elems, _, _) =>
+    asts match
+      case AST.Group(elems, _, range) =>
         val nilads = elems.reverse.takeWhile(isNilad).reverse
         val rest = elems.dropRight(nilads.length)
-        AST.Group(nilads ++ rest, None)
+        AST.Group(nilads ++ rest, None, range = range)
       case _ => asts
-    temp
 
   private def isNilad(ast: AST) =
     ast match

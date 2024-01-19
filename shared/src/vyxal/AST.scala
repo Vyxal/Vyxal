@@ -178,11 +178,17 @@ enum AST(val arity: Option[Int]) derives CanEqual:
 end AST
 
 object AST:
-
   /** Turn zero or more ASTs into one, wrapping in a [[AST.Group]] if necessary
     */
   def makeSingle(elems: AST*): AST =
-    if elems.size == 1 then elems.head else AST.Group(elems.toList, None)
+    if elems.isEmpty then AST.Group(Nil, None)
+    else if elems.size == 1 then elems.head
+    else
+      AST.Group(
+        elems.toList,
+        None,
+        range = Range(elems.head.range.startOffset, elems.last.range.endOffset),
+      )
 
   /** Create an [[AST.Command]] that calls a builtin element */
   def builtin(element: String, range: Range = Range.fake): AST.Command =
@@ -190,6 +196,7 @@ object AST:
       case Some(elem) => AST.Command(element, elem.arity, false, range)
       case None =>
         throw VyxalYikesException(s"Element $element doesn't exist but should")
+end AST
 
 enum CustomElementType derives CanEqual:
   case Element

@@ -56,11 +56,12 @@ case class Range(startOffset: Int, endOffset: Int) derives CanEqual:
     */
   override def equals(obj: Any): Boolean =
     obj match
-      case other: Range => (other `eq` this) ||
-        (this `eq` Range.fake) ||
-        (other `eq` Range.fake) ||
-        (other.startOffset == this.startOffset &&
-          other.endOffset == this.endOffset)
+      case _: Range => true
+      // case other: Range => (other `eq` this) ||
+      //   (this `eq` Range.fake) ||
+      //   (other `eq` Range.fake) ||
+      //   (other.startOffset == this.startOffset &&
+      //     other.endOffset == this.endOffset)
       case _ => false
 
 object Range:

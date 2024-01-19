@@ -91,7 +91,7 @@ private class LiteParser private ():
               case Token(TokenType.UnpackClose, _, _) => depth -= 1
               case Token(TokenType.StructureAllClose, _, _) => depth -= 1
               case _ =>
-            contents.++=(top.value)
+            contents ++= top.value
           processed +=
             Token(TokenType.UnpackVar, contents.toString(), temp.range)
         case _ => processed += temp
@@ -125,7 +125,7 @@ private class LiteParser private ():
       val token = program.dequeue()
       val value = token.value
       val range = token.range
-      (token.tokenType: @unchecked) match
+      token.tokenType match
         case TokenType.SpecialModifier if value == "ᵜ" =>
           val body = parseTokens(program, topLevel = false, untilNewline = true)
           trees +=
@@ -138,12 +138,6 @@ private class LiteParser private ():
                 else range.endOffset,
               ),
             )
-        // Numbers, strings and newlines are trivial, and are simply evaluated
-        case TokenType.Number | TokenType.Str | TokenType.DictionaryString |
-            TokenType.CompressedString | TokenType.CompressedNumber |
-            TokenType.Newline | TokenType.Command | TokenType.NegatedCommand |
-            TokenType.OriginalSymbol => trees +=
-            LiteTree.Tok(token, token.range)
         case TokenType.StructureOpen | TokenType.DefineRecord => trees +=
             parseStructure(program, token, topLevel, TokenType.StructureClose)
         /*
@@ -163,6 +157,7 @@ private class LiteParser private ():
             scribe.warn(
               s"Extensions should be defined at toplevel, found at range $range"
             )
+        case _ => trees += LiteTree.Tok(token, token.range)
       end match
     end while
 
@@ -187,6 +182,12 @@ private class LiteParser private ():
   ): LiteTree.Structure =
     if program.isEmpty then
       return LiteTree.Structure(opener, Nil, Nil, opener.range)
+
+    val nonExprs =
+      if opener.tokenType == TokenType.StructureOpen then
+        nonExprBranches(opener.value, program)
+      else if opener.tokenType == TokenType.DefineRecord then ???
+      else Nil
 
     val branches = ListBuffer.empty[LiteTree]
     // The start offset of each branch (it's a var D:)
@@ -218,20 +219,15 @@ private class LiteParser private ():
     end while
 
     val structEnd =
-      if program.nonEmpty && program.front.tokenType == closer then
-        val closerEnd = program.front.range.endOffset
-        if topLevel || program.front.tokenType != TokenType.StructureAllClose
-        then
-          // Get rid of the structure/list closer (including StructureAllClose, if we're not inside another struct)
-          program.dequeue()
-        closerEnd
+      if program.nonEmpty then program.front.range.endOffset
       else branchStart
 
-    val nonExprs =
-      if opener.tokenType == TokenType.StructureOpen then
-        nonExprBranches(opener.value, program)
-      else if opener.tokenType == TokenType.DefineRecord then ???
-      else Nil
+    if program.nonEmpty &&
+      ((topLevel && program.front.tokenType != TokenType.StructureAllClose) ||
+        program.front.tokenType == closer)
+    then
+      // Get rid of the structure/list closer (including StructureAllClose, if we're not inside another struct)
+      program.dequeue()
 
     LiteTree.Structure(
       opener,
@@ -248,14 +244,26 @@ private class LiteParser private ():
       opener: String,
       program: Queue[Token],
   ): List[Token] =
-    /** Get the next branch if it's a single token and there's another branch
-      * after it
+    /** Get the next branch if there's another branch after it, smoosh all the
+      * tokens into a single one
       */
     def nextBranch(): Option[Token] =
-      if program.size >= 2 && program(1).tokenType == TokenType.Branch then
-        val tok = program.dequeue()
-        program.dequeue() // Remove the branch
-        Some(tok)
+      if program.size >= 2 then
+        val branchInd = program.indexWhere { tok =>
+          tok.value.matches(raw"([0-9a-zA-Zı,]|\s)+")
+        }
+        if branchInd < 1 || program(branchInd).tokenType != TokenType.Branch
+        then None
+        else
+          val tokens = Seq.fill(branchInd)(program.dequeue())
+          program.dequeue() // Remove the branch
+          Some(
+            Token(
+              TokenType.Param, // It's not necessarily a Param but whatever
+              tokens.map(_.value).mkString.replace("ı", "i"),
+              Range(tokens.head.range.startOffset, tokens.last.range.endOffset),
+            )
+          )
       else None
 
     StructureType.values.find(_.open == opener).get match

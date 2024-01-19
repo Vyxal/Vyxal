@@ -1,6 +1,6 @@
 package vyxal
 
-import vyxal.parsing.{Lexer, Parser}
+import vyxal.parsing.{Lexer, Parser, Range}
 import vyxal.AST.*
 
 import org.scalatest.funsuite.AnyFunSuite
@@ -46,10 +46,11 @@ class ParserTests extends AnyFunSuite:
       parse(""" ⟨"foo" | 1 2 | 3 #] """) ===
         Lst(
           List(
-            Str("foo"),
-            AST.makeSingle(Number(1), Number(2)),
-            Number(3),
-          )
+            Str("foo", Range(2, 8)),
+            AST.makeSingle(Number(1, Range(10, 12)), Number(2, Range(12, 14))),
+            Number(3, Range(16, 18)),
+          ),
+          Range(0, 21)
         )
     )
   }
