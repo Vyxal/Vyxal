@@ -63,6 +63,7 @@ case class Range(startOffset: Int, endOffset: Int) derives CanEqual:
       //   (other.startOffset == this.startOffset &&
       //     other.endOffset == this.endOffset)
       case _ => false
+end Range
 
 object Range:
   /** A dummy Range (mainly for generated/desugared code) */
