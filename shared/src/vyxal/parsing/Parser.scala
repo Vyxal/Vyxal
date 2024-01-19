@@ -268,7 +268,62 @@ private class Parser(val extensionsRaw: List[(List[LiteTree], Range)]):
               else Some(toValidName(nonExprs.head.value))
             AST.For(name, body, range = range)
           case _ => throw BadStructureException("for", range = range)
-      case StructureType.DefineStructure => ???
+      case StructureType.DefineStructure =>
+        // Name: The name of the element/modifier
+        // Mode: Whether it's an element or modifier
+        // Implementation: The implementation of the element/modifier
+        // Arity: How many arguments the element/modifier takes
+        // Args: The names of the arguments given to the implementation
+
+        val (nameTok, functions, args) = (nonExprs: @unchecked) match
+          case List() => throw EmptyRedefine(range = range)
+          case List(name) => (name, (Nil, 0), (Nil, 0))
+          case List(name, args) => (name, (Nil, 0), parseParameters(args.value))
+          case List(name, functions, args) => (
+              name,
+              parseParameters(functions.value),
+              parseParameters(args.value),
+            )
+
+        val impl = branches match
+          case List() => throw EmptyRedefine()
+          case List(impl) => impl
+          case _ => throw BadStructureException("define")
+
+        val name = nameTok.value
+        val actualName =
+          if name.length() == 2 then name(1).toString()
+          else toValidName(name)
+        val mode = name.headOption match
+          case Some('@') => CustomElementType.Element
+          case Some('*') => CustomElementType.Modifier
+          case _ => throw BadRedefineMode(name.substring(0, 1))
+
+        val arity = mode match
+          case CustomElementType.Element => args(1)
+          case CustomElementType.Modifier =>
+            if args(1) == -1 then -1
+            else args(1) + functions(1)
+
+        val actualImpl = mode match
+          case CustomElementType.Element =>
+            if impl.isInstanceOf[AST.Lambda] then impl
+            else AST.Lambda(Some(arity), args(0), List(impl))
+          case CustomElementType.Modifier => AST.makeSingle(
+              if impl.isInstanceOf[AST.Lambda] then impl
+              else AST.Lambda(Some(arity), functions(0) ++ args(0), List(impl)),
+              AST.Command("Ė"),
+            )
+
+        customs(actualName) = CustomDefinition(
+          actualName,
+          mode,
+          Some(actualImpl),
+          Some(arity),
+          (functions(0) -> args(0)),
+        )
+
+        AST.Group(List(), None)
       case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
           StructureType.LambdaFilter | StructureType.LambdaReduce |
           StructureType.LambdaSort) =>
