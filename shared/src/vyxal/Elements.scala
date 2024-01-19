@@ -1033,7 +1033,7 @@ object Elements:
       "a: num -> [digit[0], digit[-1]]",
     ) {
       case a: VNum if (a.isComplex || a.isImaginary) => VList(a.real, a.imag)
-      case a => 
+      case a =>
         val iterable = ListHelpers.makeIterable(a)
         if iterable.isEmpty then VList.from(Seq.empty)
         else VList(iterable.head, iterable.last)

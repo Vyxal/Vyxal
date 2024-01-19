@@ -32,7 +32,7 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
 
   /** Whether there is both an imaginary and a real part */
   def isComplex: Boolean = !(underlying.isImaginary || underlying.isReal)
-  
+
   /** Round the real and imaginary parts */
   def toIntegral: VNum = underlying.round
 
