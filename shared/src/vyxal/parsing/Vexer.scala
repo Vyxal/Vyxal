@@ -181,6 +181,7 @@ class Vexer(val program: String = ""):
       throw new Exception(
         s"Expected $s, got ${programStack.mkString}" + s" at index $index"
       )
+  private def eatWhitespace(): Unit = while headIsWhitespace do pop()
 
   def lex: Seq[VToken] =
     programStack.pushAll(program.reverse)
@@ -389,7 +390,7 @@ class Vexer(val program: String = ""):
 
   private def originalCommandToken: Unit =
     val rangeStart = index
-    pop(3)
+    eat("#:~")
     val command = pop()
     tokens +=
       VToken(
@@ -400,7 +401,7 @@ class Vexer(val program: String = ""):
 
   private def commandSymbolToken: Unit =
     val rangeStart = index
-    pop(3)
+    eat("#:@")
     val command = pop()
     tokens +=
       VToken(
@@ -411,7 +412,7 @@ class Vexer(val program: String = ""):
 
   private def modifierSymbolToken: Unit =
     val rangeStart = index
-    pop(3)
+    eat("#:`")
     val command = pop()
     tokens +=
       VToken(
@@ -422,7 +423,8 @@ class Vexer(val program: String = ""):
 
   private def defineRecordToken: Unit =
     val rangeStart = index
-    pop(3)
+    eat("#::R")
+    eatWhitespace()
     val name = simpleName()
     tokens +=
       VToken(
@@ -431,11 +433,11 @@ class Vexer(val program: String = ""):
         VRange(rangeStart, index),
       )
 
-  /** Extension ::= "#:>>" [a-zA-Z_][a-zA-Z0-9_] "|" (Name ">" Name)* "|" impl }
+  /** Extension ::= "#::+" [a-zA-Z_][a-zA-Z0-9_] "|" (Name ">" Name)* "|" impl }
     */
   private def defineExtensionToken: Unit =
     val rangeStart = index
-    pop(4)
+    eat("#::+")
     val name = if headLookaheadMatch(". ") then pop() else simpleName()
     tokens +=
       VToken(
@@ -455,9 +457,9 @@ class Vexer(val program: String = ""):
             argName,
             VRange(argNameStart, index),
           )
-        while headIsWhitespace do pop()
+        eatWhitespace()
         eat(">")
-        while headIsWhitespace do pop()
+        eatWhitespace()
         val argTypeStart = index
         val argType = simpleName()
         tokens +=
@@ -484,6 +486,7 @@ class Vexer(val program: String = ""):
       throw VyxalException(
         s"Invalid definition type: $definitionType. Expected E or M"
       )
+    eatWhitespace()
     val nameRangeStart = index
     val name = simpleName()
 
