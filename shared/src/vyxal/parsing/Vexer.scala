@@ -2,6 +2,7 @@ package vyxal.parsing
 
 import vyxal.parsing.SBCSLexer.sugarTrigraph
 import vyxal.SugarMap
+import vyxal.VyxalException
 
 import scala.collection.mutable.{ArrayBuffer, StringBuilder}
 import scala.collection.mutable.Stack
@@ -197,9 +198,6 @@ class Vexer(val program: String = ""):
         quickToken(VTokenType.ListClose, "#]")
       else if headIn("[({ṆḌλƛΩ₳µ") then
         quickToken(VTokenType.StructureOpen, s"${programStack.head}")
-      else if headLookaheadEqual("#::") then
-        ???
-        // TODO: Handle define structure
       else if headLookaheadEqual("#{") then
         quickToken(VTokenType.StructureOpen, "#{")
       else if headLookaheadEqual("#:[") then
@@ -221,8 +219,9 @@ class Vexer(val program: String = ""):
       else if headLookaheadEqual("#:~") then originalCommandToken
       else if headLookaheadEqual("#:@") then commandSymbolToken
       else if headLookaheadEqual("#:=") then modifierSymbolToken
-      else if headLookaheadEqual("#:R") then defineRecordToken
-      else if headLookaheadEqual("#:>>") then defineExtensionToken
+      else if headLookaheadEqual("#::R") then defineRecordToken
+      else if headLookaheadEqual("#::+") then defineExtensionToken
+      else if headLookaheadMatch("#::[EM]") then customDefinitionToken
       else
         val rangeStart = index
         val char = pop()
@@ -470,5 +469,21 @@ class Vexer(val program: String = ""):
       end while
     end if
   end defineExtensionToken
+
+  private def customDefinitionToken: Unit =
+    val rangeStart = index
+    pop(3)
+    val definitionType = pop()
+    if !"EM".contains(definitionType) then
+      throw VyxalException(
+        s"Invalid definition type: $definitionType. Expected E or M"
+      )
+    val name = simpleName()
+    tokens +=
+      VToken(
+        VTokenType.DefineExtension,
+        s"$definitionType$name",
+        VRange(rangeStart, index),
+      )
 
 end Vexer
