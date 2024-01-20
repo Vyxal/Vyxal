@@ -39,7 +39,7 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   def floor: VNum = underlying.floor
   def ceil: VNum = underlying.ceil
 
-  def sqrt: VNum  = underlying.sqrt
+  def sqrt: VNum = underlying.sqrt
 
   @targetName("neg")
   def unary_- : VNum = -underlying
