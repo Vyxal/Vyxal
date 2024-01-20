@@ -473,17 +473,26 @@ class Vexer(val program: String = ""):
   private def customDefinitionToken: Unit =
     val rangeStart = index
     pop(3)
+    tokens +=
+      VToken(
+        VTokenType.StructureOpen,
+        "#::",
+        VRange(rangeStart, index),
+      )
     val definitionType = pop()
     if !"EM".contains(definitionType) then
       throw VyxalException(
         s"Invalid definition type: $definitionType. Expected E or M"
       )
+    val nameRangeStart = index
     val name = simpleName()
+
     tokens +=
       VToken(
-        VTokenType.DefineExtension,
+        VTokenType.Param,
         s"$definitionType$name",
-        VRange(rangeStart, index),
+        VRange(nameRangeStart, index),
       )
+  end customDefinitionToken
 
 end Vexer
