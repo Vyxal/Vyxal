@@ -2470,7 +2470,7 @@ object Elements:
       true,
       "a: num -> sqrt(a)",
     ) {
-      case a: VNum => VNum.complex(a.real.sqrt, a.imag.sqrt)
+      case a: VNum => a.sqrt
     },
     addPart(
       Monad,
