@@ -13,7 +13,7 @@ invariant (1) / Reduce Columns (2) ≟
 filter by (1) / fold (2+) /
 Apply to register (any) ₾
 map as stacks (any) ◌ (dump = ┉)
-vectorise (any) ▼
+vectorise (any) v
 parallel apply (any) ∥
 parallel apply and wrap (any) ∦
 conditional (any) ¿
