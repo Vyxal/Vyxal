@@ -257,6 +257,7 @@ object MiscHelpers:
           temp = temp.tail
           if temp.nonEmpty then vyPrint(", ")
         vyPrint("]")
+      case f: VFun => vyPrint(executeFn(f))
       case _ => ctx.globals.printFn(StringHelpers.vyToString(x))
 
   def vyPrintln(x: VAny)(using Context): Unit =
