@@ -166,7 +166,7 @@ private[parsing] object SBCSLexer:
       Number,
       ((sbcsDecimal ~~ ("ı".! ~~ (sbcsDecimal | "_".!).?).?) |
         "ı".! ~~
-        (sbcsDecimal ~~ "_".? ).?).!,
+        (sbcsDecimal ~~ "_".?).?).!,
     ).opaque("<number (SBCS)>")
 
   def contextIndex[$: P]: P[Token] =
