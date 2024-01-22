@@ -738,7 +738,7 @@ Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first
 ----------------------
 Φ (Slice from 1) (non-vectorising)
 Trigraph: #.|
-Keywords: 1->b
+Keywords: one->b, one-slice
 - a: lst, b: num -> a[1:b]
 - a: num, b: lst -> b[1:a]
 ----------------------
