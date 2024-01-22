@@ -2819,13 +2819,21 @@ object Elements:
       Dyad,
       "Φ",
       "Slice from 1",
-      List("1->b"),
+      List("one->b", "one-slice"),
       false,
       "a: lst, b: num -> a[1:b]",
       "a: num, b: lst -> b[1:a]",
     ) {
-      case (a, b: VNum) => ListHelpers.makeIterable(a).slice(1, b.toInt)
-      case (a: VNum, b) => ListHelpers.makeIterable(b).slice(1, a.toInt)
+      case (a, b: VNum) =>
+        val temp = ListHelpers.makeIterable(a).slice(1, b.toInt)
+        a match
+          case _: String => temp.mkString
+          case _ => temp
+      case (a: VNum, b) =>
+        val temp = ListHelpers.makeIterable(b).slice(1, a.toInt)
+        b match
+          case _: String => temp.mkString
+          case _ => temp
     },
     addPart(
       Monad,
@@ -2874,9 +2882,18 @@ object Elements:
     ) { ctx ?=>
       ctx.pop() match
         case f: VFun =>
-          val arg = ListHelpers.makeIterable(ctx.pop())
-          val suffixes = ListHelpers.suffixes(arg)
-          ctx.push(VList.from(suffixes.map(suffix => f(suffix))))
+          val arg = ctx.pop()
+          val suffixes = ListHelpers.suffixes(makeIterable(arg))
+          ctx.push(
+            VList.from(
+              suffixes.map(suffix =>
+                f(arg match
+                  case s: String => suffix.mkString
+                  case _ => suffix
+                )
+              )
+            )
+          )
         case arg =>
           throw UnimplementedOverloadException("#|map-suffixes", List(arg))
     },
@@ -2889,9 +2906,19 @@ object Elements:
     ) { ctx ?=>
       ctx.pop() match
         case f: VFun =>
-          val arg = ListHelpers.makeIterable(ctx.pop())
-          val prefixes = arg.indices.map(i => arg.slice(0, i + 1))
-          ctx.push(VList.from(prefixes.map(prefix => f(prefix))))
+          val arg = ctx.pop()
+          val iterArg = makeIterable(arg)
+          val prefixes = iterArg.indices.map(i => iterArg.slice(0, i + 1))
+          ctx.push(
+            VList.from(
+              prefixes.map(prefix =>
+                f(arg match
+                  case s: String => prefix.mkString
+                  case _ => prefix
+                )
+              )
+            )
+          )
         case arg =>
           throw UnimplementedOverloadException("#|map-prefixes", List(arg))
     },
