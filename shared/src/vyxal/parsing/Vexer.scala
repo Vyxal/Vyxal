@@ -190,8 +190,14 @@ class Vexer(val program: String = ""):
       if headIsDigit || headEqual('.') then numberToken
       else if headIsWhitespace then pop(1)
       else if headEqual('"') then stringToken
+      else if headEqual('\'') then oneCharStringToken
+      else if headEqual('῟') then twoCharStringToken
+      else if headEqual('⚇') then twoCharNumberToken
       else if headIn("∆øÞ") || headLookaheadMatch("""#[^\[\]$!=#>@{:.,^]""")
       then digraphToken
+      else if headLookaheadEqual("##") then
+        pop(2)
+        while safeCheck(c => c != '\n' && c != '\r') do pop()
       else if headLookaheadMatch("#[.,^]") then sugarTrigraph
       else if headLookaheadEqual("#[") then
         quickToken(VTokenType.ListOpen, "#[")
@@ -330,6 +336,43 @@ class Vexer(val program: String = ""):
         VRange(rangeStart, index),
       )
   end stringToken
+
+  private def oneCharStringToken: Unit =
+    val rangeStart = index
+    pop() // Pop the opening quote
+    val char = pop()
+    tokens +=
+      VToken(
+        VTokenType.Str,
+        char,
+        VRange(rangeStart, index),
+      )
+
+  private def twoCharStringToken: Unit =
+    val rangeStart = index
+    pop() // Pop the opening quote
+    val char = pop(2)
+    tokens +=
+      VToken(
+        VTokenType.Str,
+        char,
+        VRange(rangeStart, index),
+      )
+
+  private def twoCharNumberToken: Unit =
+    val rangeStart = index
+    pop() // Pop the opening quote
+    val value = pop(2)
+    val number = value.zipWithIndex
+      .map((c, ind) => math.pow(Codepage.length, ind) * Codepage.indexOf(c))
+      .sum
+      .toString
+    tokens +=
+      VToken(
+        VTokenType.Number,
+        number,
+        VRange(rangeStart, index),
+      )
 
   /** Digraph = [∆øÞ] . | # [^[]$!=#>@{:] */
   private def digraphToken: Unit =
@@ -499,3 +542,7 @@ class Vexer(val program: String = ""):
   end customDefinitionToken
 
 end Vexer
+
+object Vexer
+def Codepage: String = """⎂⇝∯⊠ß≟₾◌⋊
+ϩэЧ♳♴♵♶∥∦¿⎇↻⊙⁙∩∪⊕⊝⚇῟⚃ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊικȧḃċḋėḟġḣŀṁṅȯṗṙṡṫẋƒΘΦ§ẠḄḌḤỊḶṂṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«»⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λƛΩ₳µ∆øÞ½ʀɾ¯×÷£¥←↑→↓±¤†Π¬∧∨⁰¹²⌈⌊Ɠɠı┉„”ð€“¶ᶿᶲ•≈⌙‹›"""
