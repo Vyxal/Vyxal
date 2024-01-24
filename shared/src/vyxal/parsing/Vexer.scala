@@ -223,6 +223,8 @@ class Vexer(val program: String = ""):
       else if headEqual('¤') then contextIndexToken
       else if headLookaheadEqual("#$") then getVariableToken
       else if headLookaheadEqual("#=") then setVariableToken
+      else if headLookaheadEqual("#!") then setConstantToken
+      else if headLookaheadEqual("#>") then augmentedAssignToken
       else if headLookaheadEqual("#:~") then originalCommandToken
       else if headLookaheadEqual("#:@") then commandSymbolToken
       else if headLookaheadEqual("#:=") then modifierSymbolToken
@@ -421,6 +423,28 @@ class Vexer(val program: String = ""):
     tokens +=
       VToken(
         VTokenType.SetVar,
+        name,
+        VRange(rangeStart, index),
+      )
+
+  private def setConstantToken: Unit =
+    val rangeStart = index
+    pop(2)
+    val name = simpleName()
+    tokens +=
+      VToken(
+        VTokenType.Constant,
+        name,
+        VRange(rangeStart, index),
+      )
+
+  private def augmentedAssignToken: Unit =
+    val rangeStart = index
+    pop(2)
+    val name = simpleName()
+    tokens +=
+      VToken(
+        VTokenType.AugmentVar,
         name,
         VRange(rangeStart, index),
       )
