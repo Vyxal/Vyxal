@@ -1,6 +1,5 @@
 package vyxal.parsing
 
-import vyxal.parsing.SBCSLexer.sugarTrigraph
 import vyxal.SugarMap
 import vyxal.VyxalException
 

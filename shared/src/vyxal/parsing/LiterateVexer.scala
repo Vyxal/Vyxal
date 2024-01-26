@@ -1,6 +1,6 @@
 package vyxal.parsing
 
-import vyxal.parsing.VLitToken
+import vyxal.parsing.VTokenType.*
 import vyxal.Elements
 import vyxal.Modifier
 import vyxal.Modifiers
@@ -10,12 +10,47 @@ import scala.collection.mutable.ArrayBuffer
 class LiterateVexer extends VexerCommon:
   private val literateKeywords = Elements.elements.values.flatMap(_.keywords)
   private val _tokens = ArrayBuffer[VLitToken]()
+  private val groups = ArrayBuffer[ArrayBuffer[VLitToken]]()
+  private val groupModifierToToken = Map(
+    "." -> ((range) => VLitToken(MonadicModifier, "⸠", range)),
+    ":" -> ((range) => VLitToken(DyadicModifier, "ϩ", range)),
+    ":." -> ((range) => VLitToken(TriadicModifier, "э", range)),
+    "::" -> ((range) => VLitToken(TetradicModifier, "Ч", range)),
+    "," -> ((range) => VLitToken(MonadicModifier, "ᵈ", range)),
+    ";" -> ((range) => VLitToken(DyadicModifier, "ᵉ", range)),
+    ";," -> ((range) => VLitToken(TriadicModifier, "ᶠ", range)),
+    ";;" -> ((range) => VLitToken(TetradicModifier, "ᵍ", range)),
+  )
   def lex(program: String): Seq[VToken] =
     programStack.pushAll(program.reverse)
     while programStack.nonEmpty do
       if safeCheck(c => c.isLetter || "<>?!*+\\-=&%:@".contains(c)) then
         keywordToken
+      else if headEqual('\'') then moveRightToken
+      else if headEqual('(') then
+        eat('(')
+        groups += ArrayBuffer[VLitToken]()
+        if headIn(":.,;") then
+          appendToken(groupModifierToToken(pop(2))(VRange(index, index)))
+      else if headEqual(')') then
+        val group = groups.last
+        groups.dropRightInPlace(1)
+        appendToken(
+          VLitToken(Group, group.toSeq, VRange(index, index))
+        )
+      else if headIsWhitespace then pop(1)
+    end while
+    // Flatten _tokens into tokens
+    for token <- _tokens do
+      if token.tokenType == Group then
+        tokens ++= token.value.asInstanceOf[Seq[VLitToken]].map(_.toNormal)
+      else tokens += token.toNormal
     tokens.toSeq
+  end lex
+
+  private def appendToken(token: VLitToken): Unit =
+    if groups.nonEmpty then groups.last += token
+    else _tokens += token
 
   private def keywordToken: Unit =
     val start = index
@@ -24,15 +59,17 @@ class LiterateVexer extends VexerCommon:
       keyword ++= pop(1)
     val value = removeDoubleNt(keyword.toString())
     if isKeyword(value) then
-      _tokens +=
+      appendToken(
         VLitToken(
-          VTokenType.Command,
+          Command,
           getSymbolFromKeyword(value),
           VRange(start, index),
         )
+      )
     else if isKeyword(value.stripSuffix("n't")) then
-      _tokens +=
-        VLitToken(VTokenType.NegatedCommand, value, VRange(start, index))
+      appendToken(
+        VLitToken(NegatedCommand, value, VRange(start, index))
+      )
     else if isModifier(value) then
       val mod = getModifierFromKeyword(value)
       val name = Modifiers.modifiers.find(_._2._3.contains(keyword)).get._1
@@ -42,7 +79,17 @@ class LiterateVexer extends VexerCommon:
         case 3 => VTokenType.TriadicModifier
         case 4 => VTokenType.TetradicModifier
         case _ => VTokenType.SpecialModifier
-      _tokens += VLitToken(tokenType, name, VRange(start, index))
+      appendToken(VLitToken(tokenType, name, VRange(start, index)))
+    else
+      for char <- value do
+        appendToken(
+          VLitToken(
+            Command,
+            char.toString,
+            VRange(index, index + 1),
+          )
+        )
+        index += 1
     end if
   end keywordToken
 
@@ -65,4 +112,12 @@ class LiterateVexer extends VexerCommon:
 
   private def getModifierFromKeyword(word: String): Modifier =
     Modifiers.modifiers.values.find(mod => mod._3.contains(word)).get
+
+  private def moveRightToken: Unit =
+    val start = index
+    val quotes = StringBuilder()
+    while headEqual('\'') do quotes ++= pop(1)
+    val value = quotes.toString()
+    appendToken(VLitToken(MoveRight, value, VRange(start, index)))
+
 end LiterateVexer

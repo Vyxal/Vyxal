@@ -21,7 +21,7 @@ object VToken:
 
 case class VLitToken(
     tokenType: VTokenType,
-    value: String | List[VLitToken],
+    value: String | Seq[VLitToken],
     range: VRange,
 ) derives CanEqual:
   override def equals(obj: Any): Boolean =
@@ -38,6 +38,9 @@ case class VLitToken(
       case _ => false
 
   override def toString: String = s"$tokenType(\"$value\")"
+
+  def toNormal: VToken = VToken(tokenType, value.toString, range)
+end VLitToken
 
 /** The range of a token or AST in the source code. The start offset is
   * inclusive, the end offset is exclusive.
