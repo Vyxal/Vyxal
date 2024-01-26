@@ -4,6 +4,7 @@ import vyxal.parsing.VTokenType.*
 import vyxal.Elements
 import vyxal.Modifier
 import vyxal.Modifiers
+import vyxal.UnopenedGroupException
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -30,14 +31,19 @@ class LiterateVexer extends VexerCommon:
       else if headEqual('(') then
         eat('(')
         groups += ArrayBuffer[VLitToken]()
-        if headIn(":.,;") then
+        if headLookaheadMatch(":[.:]|;[,;]") then
           appendToken(groupModifierToToken(pop(2))(VRange(index, index)))
+        else if headIn(".:,;") then
+          appendToken(groupModifierToToken(pop(1))(VRange(index, index)))
       else if headEqual(')') then
-        val group = groups.last
-        groups.dropRightInPlace(1)
-        appendToken(
-          VLitToken(Group, group.toSeq, VRange(index, index))
-        )
+        if groups.nonEmpty then
+          val group = groups.last
+          groups.dropRightInPlace(1)
+          appendToken(
+            VLitToken(Group, group.toSeq, VRange(index, index))
+          )
+          eat(')')
+        else throw new UnopenedGroupException(index)
       else if headIsWhitespace then pop(1)
     end while
     // Flatten _tokens into tokens
