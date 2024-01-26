@@ -72,7 +72,7 @@ class LiterateVexer extends VexerCommon:
       )
     else if isModifier(value) then
       val mod = getModifierFromKeyword(value)
-      val name = Modifiers.modifiers.find(_._2._3.contains(keyword)).get._1
+      val name = Modifiers.modifiers.find(_._2._3.contains(value)).get._1
       val tokenType = mod.arity match
         case 1 => VTokenType.MonadicModifier
         case 2 => VTokenType.DyadicModifier
