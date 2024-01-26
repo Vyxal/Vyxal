@@ -66,7 +66,7 @@ class SBCSVexer extends VexerCommon:
     tokens.toSeq
   end lex
 
-  /** Number = 0 | [1-9][0-9]*(\.[0-9]*)? | \.[0-9]* */
+  /** Number = 0 | [1-9][0-9]*(\.[0-9]*)? _? | \.[0-9]* _? */
   private def numberToken: Unit =
     val rangeStart = index
     // Check the single zero case
@@ -100,9 +100,10 @@ class SBCSVexer extends VexerCommon:
         pop(1)
         if safeCheck(c => c.isDigit) then
           val tail = simpleNumber()
+          val isNegative = headEqual('_')
           val numberToken = VToken(
             VTokenType.Number,
-            s"$head.$tail",
+            s"${if isNegative then pop() else ""}$head.$tail",
             VRange(rangeStart, index),
           )
           tokens += numberToken
@@ -115,9 +116,10 @@ class SBCSVexer extends VexerCommon:
           tokens += numberToken
       // No decimal tail, so normal number
       else
+        val isNegative = headEqual('_')
         val numberToken = VToken(
           VTokenType.Number,
-          head,
+          (if isNegative then "_" else "") + head,
           VRange(rangeStart, index),
         )
         tokens += numberToken

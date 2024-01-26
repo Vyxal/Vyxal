@@ -169,7 +169,8 @@ class VexerCommon:
     programStack.length >= s.length &&
       programStack.slice(0, s.length).mkString == s
   protected def headLookaheadMatch(s: String): Boolean =
-    programStack.nonEmpty && s.r.findFirstIn(programStack.mkString).isDefined
+    programStack.nonEmpty &&
+      ("^" + s).r.findFirstIn(programStack.mkString).isDefined
   protected def headIsDigit: Boolean = safeCheck(c => c.isDigit)
   protected def headIsWhitespace: Boolean = safeCheck(c => c.isWhitespace)
   protected def headIn(s: String): Boolean = safeCheck(c => s.contains(c))

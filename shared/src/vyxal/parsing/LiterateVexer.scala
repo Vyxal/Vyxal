@@ -17,15 +17,16 @@ class LiterateVexer extends VexerCommon:
     ":" -> ((range) => VLitToken(DyadicModifier, "ϩ", range)),
     ":." -> ((range) => VLitToken(TriadicModifier, "э", range)),
     "::" -> ((range) => VLitToken(TetradicModifier, "Ч", range)),
-    "," -> ((range) => VLitToken(MonadicModifier, "ᵈ", range)),
-    ";" -> ((range) => VLitToken(DyadicModifier, "ᵉ", range)),
-    ";," -> ((range) => VLitToken(TriadicModifier, "ᶠ", range)),
-    ";;" -> ((range) => VLitToken(TetradicModifier, "ᵍ", range)),
+    "," -> ((range) => VLitToken(MonadicModifier, "♳", range)),
+    ";" -> ((range) => VLitToken(DyadicModifier, "♴", range)),
+    ";," -> ((range) => VLitToken(TriadicModifier, "♵", range)),
+    ";;" -> ((range) => VLitToken(TetradicModifier, "♶", range)),
   )
   def lex(program: String): Seq[VToken] =
     programStack.pushAll(program.reverse)
     while programStack.nonEmpty do
-      if safeCheck(c => c.isLetter || "<>?!*+\\-=&%:@".contains(c)) then
+      if headIsDigit || headLookaheadMatch("-[1-9]") then numberToken
+      else if safeCheck(c => c.isLetter || "<>?!*+\\-=&%:@".contains(c)) then
         keywordToken
       else if headEqual('\'') then moveRightToken
       else if headEqual('(') then
@@ -125,5 +126,70 @@ class LiterateVexer extends VexerCommon:
     while headEqual('\'') do quotes ++= pop(1)
     val value = quotes.toString()
     appendToken(VLitToken(MoveRight, value, VRange(start, index)))
+
+  /** Number = 0 | [1-9][0-9]*(\.[0-9]*)? | \.[0-9]* */
+  private def numberToken: Unit =
+    val rangeStart = index
+    // Check the single zero case
+    if headEqual('0') then
+      val zeroToken = VToken(VTokenType.Number, "0", VRange(index, index))
+      pop(1)
+      tokens += zeroToken
+      return
+    val negativePrefix = if headEqual('-') then pop() else ""
+    // Then the headless decimal case
+    if headEqual('.') then
+      pop(1)
+      if safeCheck(c => c.isDigit) then
+        val head = simpleNumber()
+        val numberToken = VLitToken(
+          VTokenType.Number,
+          s"${negativePrefix}0.$head",
+          VRange(rangeStart, index),
+        )
+        appendToken(numberToken)
+      else
+        val zeroToken = VLitToken(
+          VTokenType.Number,
+          "0.5",
+          VRange(rangeStart, index),
+        )
+        appendToken(zeroToken)
+    else
+      // Not a 0, and not a headless decimal, so it's a normal number
+      val head = simpleNumber()
+      // Test for a decimal tail
+      if headEqual('.') then
+        pop(1)
+        if safeCheck(c => c.isDigit) then
+          val tail = simpleNumber()
+          val numberToken = VLitToken(
+            VTokenType.Number,
+            s"$negativePrefix$head.$tail",
+            VRange(rangeStart, index),
+          )
+          appendToken(numberToken)
+        else
+          val numberToken = VLitToken(
+            VTokenType.Number,
+            s"$head.5",
+            VRange(rangeStart, index),
+          )
+          appendToken(numberToken)
+      // No decimal tail, so normal number
+      else
+        val numberToken = VLitToken(
+          VTokenType.Number,
+          negativePrefix + head,
+          VRange(rangeStart, index),
+        )
+        appendToken(numberToken)
+    end if
+  end numberToken
+
+  private def simpleNumber(): String =
+    val numberVal = StringBuilder()
+    while safeCheck(c => c.isDigit) do numberVal ++= s"${pop()}"
+    numberVal.toString()
 
 end LiterateVexer
