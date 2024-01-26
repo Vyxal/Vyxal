@@ -972,7 +972,7 @@
         - 0
         - !vany "λ5<}" # Less than 5
         - !vany "λ1+}" # Increment
-      out: 5
+      out: [0, 1, 2, 3, 4, 5]
 
 
 "ṁ":

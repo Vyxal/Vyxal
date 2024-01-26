@@ -2627,9 +2627,9 @@ object Elements:
           ListHelpers.makeIterable(b),
           ListHelpers.makeIterable(c),
         )
-      case (p: VFun, f: VFun, v) => MiscHelpers.callWhile(p, f, v)
-      case (p: VFun, v, f: VFun) => MiscHelpers.callWhile(p, f, v)
-      case (v, p: VFun, f: VFun) => MiscHelpers.callWhile(p, f, v)
+      case (p: VFun, f: VFun, v) => MiscHelpers.callWhileAndCollect(p, f, v)
+      case (p: VFun, v, f: VFun) => MiscHelpers.callWhileAndCollect(p, f, v)
+      case (v, p: VFun, f: VFun) => MiscHelpers.callWhileAndCollect(p, f, v)
       case (a: VList, b, c) => ListHelpers.transliterate(a, b, c)
       case (a: VNum, b, c) =>
         val temp =
