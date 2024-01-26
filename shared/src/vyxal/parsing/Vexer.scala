@@ -145,6 +145,10 @@ object Vexer:
     val lexer = SBCSVexer()
     lexer.lex(program)
 
+  def lexLiterate(program: String): Seq[VToken] =
+    val lexer = LiterateVexer()
+    lexer.lex(program)
+
 class VexerCommon:
   protected var index = 0
   protected val programStack = Stack[Char]()

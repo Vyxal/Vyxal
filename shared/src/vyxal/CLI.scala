@@ -2,6 +2,7 @@ package vyxal
 
 import vyxal.debugger.DebugRepl
 import vyxal.parsing.{Lexer, Parser}
+import vyxal.parsing.Vexer
 
 import scopt.OParser
 
@@ -88,13 +89,13 @@ object CLI:
           while true do
             val line = io.StdIn.readLine(">")
             if line == null || line.isEmpty then return
-            println(Lexer(line))
+            println(Vexer.lexSBCS(line))
 
         if config.runLiterateLexer then
           while true do
             val line = io.StdIn.readLine(">")
             if line == null || line.isEmpty then return
-            println(Lexer.lexLiterate(line))
+            println(Vexer.lexLiterate(line))
 
         if config.runParser then
           while true do
