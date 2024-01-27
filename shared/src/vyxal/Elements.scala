@@ -489,9 +489,9 @@ object Elements:
       Monad,
       "¯",
       "Deltas",
-      List("deltas"),
+      List("deltas", "pairwise-differences", "differences"),
       false,
-      "a: lst -> forward-differences of a",
+      "a: lst -> forward pairwise differences of a",
     ) { a =>
       ListHelpers.deltas(ListHelpers.makeIterable(a))
     },

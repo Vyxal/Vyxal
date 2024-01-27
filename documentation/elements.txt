@@ -980,8 +980,8 @@ Keywords: one->n, one-range, to-upper, upper, uppercase
 ----------------------
 ¯ (Deltas) (non-vectorising)
 Trigraph: #^_
-Keywords: deltas
-- a: lst -> forward-differences of a
+Keywords: deltas, pairwise-differences, differences
+- a: lst -> forward pairwise differences of a
 ----------------------
 × (Multiplication) (vectorising)
 Trigraph: #.*
