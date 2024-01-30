@@ -69,6 +69,10 @@ class SBCSVexer extends VexerCommon:
       else if headLookaheadEqual("#::R") then defineRecordToken
       else if headLookaheadEqual("#::+") then defineExtensionToken
       else if headLookaheadMatch("#::[EM]") then customDefinitionToken
+      else if headEqual('}') then quickToken(VTokenType.StructureClose, "}")
+      else if headEqual(')') then
+        quickToken(VTokenType.StructureDoubleClose, ")")
+      else if headEqual(']') then quickToken(VTokenType.StructureAllClose, "]")
       else
         val rangeStart = index
         val char = pop()
@@ -428,9 +432,16 @@ class SBCSVexer extends VexerCommon:
       if !stringPopped then popped ++= pop()
 
     if !branchFound then
-      for c <- popped.toString() do programStack.push(c)
+      for c <- popped.toString().reverse do programStack.push(c)
       index -= popped.length
-    else tokens ++= extractParamters(popped.toString(), start)
+    else
+      tokens ++= extractParamters(popped.toString(), start)
+      tokens +=
+        VToken(
+          VTokenType.Branch,
+          "|",
+          VRange(index, index + 1),
+        )
   end lambdaTokens
 
   private def extractParamters(popped: String, start: Int): Seq[VToken] =
@@ -454,5 +465,5 @@ class SBCSVexer extends VexerCommon:
     else if filtered.head.isDigit && !filtered.forall(c => c.isDigit) then
       filtered.dropWhile(c => c.isDigit)
     else if filtered == "*" then filtered
-    else filtered.replaceAll("*", "")
+    else filtered.replaceAll(raw"\*", "")
 end SBCSVexer
