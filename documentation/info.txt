@@ -123,7 +123,7 @@ z ==> Inclusive zero Range | Is Lowercase
 κ ==> Length 1-Range
 ȧ ==> Absolute Difference | Apply to Neighbours
 ḃ ==> Bit | Parity | Last Half of String
-ċ ==> N Choose K | Character Set Equal? | Repeat Until No Change
+ċ ==> N Choose K (Binomial Coefficient) | Character Set Equal? | Repeat Until No Change
 ḋ ==> Dot Product | To Bijective Base | First Index Where Predicate Truthy
 ė ==> Reciprocal | Remove Whitespace
 ḟ ==> Prime Factors | Remove Alphabet
@@ -240,6 +240,7 @@ z ==> Inclusive zero Range | Is Lowercase
 ∆< ==> Argument / Phase / Angle
 ∆C ==> Hyperbolic Cosine
 ∆I ==> Imaginary Part
+∆L ==> Least Common Multiple
 ∆R ==> Real Part
 ∆S ==> Hyperbolic Sine
 ∆T ==> Hyperbolic Tangent
@@ -249,13 +250,17 @@ z ==> Inclusive zero Range | Is Lowercase
 ∆t ==> Tangent
 ∆Ṫ ==> Dyadic Arctangent / Dyadic Inverse Tangent
 ∆ċ ==> Arccosine / Inverse Cosine
+∆ḋ ==> Radians to Degrees
 ∆ḟ ==> All Prime Exponents
+∆ṙ ==> Degrees to Radians
 ∆ṡ ==> Arcsine / Inverse Sine
 ∆ṫ ==> Arctangent / Inverse Tangent
+∆Ṛ ==> Principal Root Of Unity
 ø⁾ ==> Surround
 Þ0 ==> Zero Pad
 ÞO ==> Grid Neighbours (Wrap Around)
 ÞP ==> Set of All Primes
+ÞR ==> Reshape
 ÞT ==> Transpose Safe
 Þh ==> Ends
 Þi ==> Multidimensional Index
