@@ -12,6 +12,244 @@ trait Repl:
     */
   def startRepl(fancy: Boolean)(using Context): Unit
 
+enum FlagCategory(val description: String) extends Enum[FlagCategory]:
+  case RangeBehavior extends FlagCategory("Range behavior")
+  case DefaultArity extends FlagCategory("Default arity")
+  case EndPrintMode extends FlagCategory("End print mode")
+
+object FlagCategory:
+  val categories = Seq(RangeBehavior, DefaultArity, EndPrintMode)
+
+enum Flag(
+    val short: Char,
+    val long: String,
+    val description: String,
+    val category: Option[FlagCategory] = None,
+    val hidden: Boolean = false,
+) extends Enum[Flag]:
+  case Trace
+      extends Flag('X', "trace", "Return full traceback on program error")
+  case Preset100 extends Flag('H', "preset-100", "Preset stack to 100")
+  case Literate extends Flag('l', "literate", "Enable literate mode")
+  case RangeNone
+      extends Flag(
+        '\u0000',
+        "",
+        "Default behavior",
+        Some(FlagCategory.RangeBehavior),
+        true,
+      )
+  case RangeStart0
+      extends Flag(
+        'M',
+        "range-start-0",
+        "Make implicit range generation and while loop counter start at 0 instead of 1",
+        Some(FlagCategory.RangeBehavior),
+      )
+  case RangeEndExcl
+      extends Flag(
+        'm',
+        "range-end-excl",
+        "Make implicit range generation end at n-1 instead of n",
+        Some(FlagCategory.RangeBehavior),
+      )
+  case RangeProgrammery
+      extends Flag(
+        'Ṁ',
+        "range-programmery",
+        "Equivalent to having both m and M flags",
+        Some(FlagCategory.RangeBehavior),
+      )
+  case InputAsStrings
+      extends Flag('Ṡ', "inputs-as-strs", "Treat all inputs as strings")
+  case NumbersAsRanges
+      extends Flag(
+        'R',
+        "numbers-as-ranges",
+        "Treat numbers as ranges if ever used as an iterable",
+      )
+  case Arity1
+      extends Flag(
+        '\u0000',
+        "",
+        "Make the default arity of lambdas 1",
+        Some(FlagCategory.DefaultArity),
+        true,
+      )
+  case Arity2
+      extends Flag(
+        '2',
+        "arity-2",
+        "Make the default arity of lambdas 2",
+        Some(FlagCategory.DefaultArity),
+      )
+  case Arity3
+      extends Flag(
+        '3',
+        "arity-3",
+        "Make the default arity of lambdas 3",
+        Some(FlagCategory.DefaultArity),
+      )
+  case LimitOutput
+      extends Flag(
+        '…',
+        "limit-output",
+        "Limit list output to the first 100 items of that list",
+      )
+
+  case PrintTop
+      extends Flag(
+        '\u0000',
+        "",
+        "Print the top of the stack",
+        Some(FlagCategory.EndPrintMode),
+        true,
+      )
+  case PrintJoinNewlines
+      extends Flag(
+        'j',
+        "print-join-newlines",
+        "Print top of stack joined by newlines on end of execution",
+        Some(FlagCategory.EndPrintMode),
+      )
+  case PrintSum
+      extends Flag(
+        's',
+        "print-sum",
+        "Sum/concatenate top of stack on end of execution",
+        Some(FlagCategory.EndPrintMode),
+      )
+  case PrintDeepSum
+      extends Flag(
+        'd',
+        "print-deep-sum",
+        "Print deep sum of top of stack on end of execution",
+        Some(FlagCategory.EndPrintMode),
+      )
+  case PrintJoinSpaces
+      extends Flag(
+        'S',
+        "print-join-spaces",
+        "Print top of stack joined by spaces on end of execution",
+        Some(FlagCategory.EndPrintMode),
+      )
+  case PrintNone
+      extends Flag(
+        'O',
+        "disable-implicit-output",
+        "Disable implicit output",
+        Some(FlagCategory.EndPrintMode),
+      )
+  case PrintForce
+      extends Flag(
+        'o',
+        "force-implicit-output",
+        "Force implicit output",
+        Some(FlagCategory.EndPrintMode),
+      )
+  case PrintLength
+      extends Flag(
+        'L',
+        "print-length",
+        "Print length of top of stack on end of execution",
+        Some(FlagCategory.EndPrintMode),
+      )
+  case PrintPretty
+      extends Flag(
+        '§',
+        "print-pretty",
+        "Print top of stack pretty-printed on end of execution",
+        Some(FlagCategory.EndPrintMode),
+      )
+  case PrintMax
+      extends Flag(
+        'G',
+        "print-max",
+        "Print the maximum item of the top of stack on end of execution",
+        Some(FlagCategory.EndPrintMode),
+      )
+  case PrintMin
+      extends Flag(
+        'g',
+        "print-min",
+        "Print the minimum item of the top of the stack on end of execution",
+        Some(FlagCategory.EndPrintMode),
+      )
+  // case PrintAll extends Flag('W', "print-all", "Print the entire stack on end of execution", Some(FlagCategory.EndPrintMode))
+  case PrintSumAll
+      extends Flag(
+        'Ṫ',
+        "print-sum-all",
+        "Print the sum of the entire stack",
+        Some(FlagCategory.EndPrintMode),
+      )
+  case PrintStackLength
+      extends Flag(
+        '!',
+        "print-stack-length",
+        "Print the length of the stack on end of execution",
+        Some(FlagCategory.EndPrintMode),
+      )
+  case PrintAllJoinSpaces
+      extends Flag(
+        'ṡ',
+        "print-all-join-spaces",
+        "Print the entire stack, joined on spaces",
+        Some(FlagCategory.EndPrintMode),
+      )
+  // case PrintAllJoinNewlines extends Flag('J', "print-all-join-newlines", "Print the entire stack, separated by newlines", Some(FlagCategory.EndPrintMode))
+  case PrintAllJoinNothing
+      extends Flag(
+        'N',
+        "print-all-join-nothing",
+        "Print the entire stack, concatenated",
+        Some(FlagCategory.EndPrintMode),
+      )
+  case PrintNot
+      extends Flag(
+        '¬',
+        "logical-not",
+        "Logically negate the top of the stack on end of execution",
+        Some(FlagCategory.EndPrintMode),
+      )
+end Flag
+
+object Flag:
+  val flags = Seq(
+    Trace,
+    Preset100,
+    Literate,
+    RangeNone,
+    RangeStart0,
+    RangeEndExcl,
+    RangeProgrammery,
+    InputAsStrings,
+    NumbersAsRanges,
+    Arity1,
+    Arity2,
+    Arity3,
+    LimitOutput,
+    PrintTop,
+    PrintJoinNewlines,
+    PrintSum,
+    PrintDeepSum,
+    PrintJoinSpaces,
+    PrintNone,
+    PrintForce,
+    PrintLength,
+    PrintPretty,
+    PrintMax,
+    PrintMin,
+    // PrintAll,
+    PrintSumAll,
+    PrintStackLength,
+    PrintAllJoinSpaces,
+    // PrintAllJoinNewlines,
+    PrintAllJoinNothing,
+    PrintNot,
+  )
+end Flag
+
 object CLI:
   /** Configuration for the command line argument parser
     *
@@ -153,158 +391,70 @@ object CLI:
   private val parser =
     import builder.*
 
-    /** Helpers for adding flags that go into Settings */
-    def flag(short: Char, name: String, text: String) =
-      opt[Unit](short, name)
-        .action((_, cfg) => cfg.copy(settings = cfg.settings.withFlag(short)))
-        .text(text)
-        .optional()
-
     // todo come up with better names for the flags
     OParser.sequence(
       programName("vyxal"),
-      head("vyxal", CLI.version),
-      cmd("debug")
-        .action((_, cfg) => cfg.copy(debug = true))
-        .text("Run the debugger"),
-      opt[Unit]('h', "help")
-        .action((_, cfg) => cfg.copy(printHelp = true))
-        .text("Print this help message and exit")
-        .optional(),
-      flag('X', "trace", "Return full traceback on program error"),
-      opt[String]("file")
-        .action((file, cfg) => cfg.copy(filename = Some(file)))
-        .text("The file to read the program from")
-        .optional(),
-      opt[String]("code")
-        .action((code, cfg) => cfg.copy(code = Some(code)))
-        .text("Code to execute directly")
-        .optional(),
-      opt[Int]("recursions")
-        .action((limit, cfg) =>
-          cfg.copy(settings = cfg.settings.copy(recursionLimit = limit))
-        )
-        .text("Set recursion limit (default 100)")
-        .optional(),
-      opt[String]("docs-literate")
-        .action((symbol, cfg) => cfg.copy(litInfoFor = Some(symbol)))
-        .text("Print literate mode mappings and exit")
-        .optional(),
-      opt[Unit]("lexer")
-        .action((_, cfg) => cfg.copy(runLexer = true))
-        .text("Run the lexer on input. For internal use.")
-        .optional(),
-      opt[Unit]("literate-lexer")
-        .action((_, cfg) => cfg.copy(runLiterateLexer = true))
-        .text("Run the literate lexer on input. For internal use.")
-        .optional(),
-      opt[Unit]("parser")
-        .action((_, cfg) => cfg.copy(runParser = true))
-        .text("Run the parser on input. For internal use.")
-        .optional(),
-      opt[Unit]("fancy-repl")
-        .action((_, cfg) => cfg.copy(runFancyRepl = true))
-        .text("Run the fancy REPL")
-        .optional(),
-      opt[Unit]('v', "bytes")
-        .action((_, cfg) => cfg.copy(readBytes = true))
-        .text("Read program as raw bytes - used for code golf scoring")
-        .optional(),
-      arg[String]("<input>...")
-        .unbounded()
-        .optional()
-        .action((input, cfg) => cfg.copy(inputs = cfg.inputs :+ input))
-        .text("Input to the program"),
-      flag('H', "preset-100", "Preset stack to 100"),
-      flag(
-        'j',
-        "print-join-newlines",
-        "Print top of stack joined by newlines on end of execution",
-      ),
-      flag('l', "literate", "Enable literate mode"),
-      flag(
-        's',
-        "print-sum",
-        "Sum/concatenate top of stack on end of execution",
-      ),
-      flag(
-        'M',
-        "range-start-0",
-        "Make implicit range generation and while loop counter start at 0 instead of 1",
-      ),
-      flag(
-        'm',
-        "range-end-excl",
-        "Make implicit range generation end at n-1 instead of n",
-      ),
-      flag('Ṁ', "range-programmery", "Equivalent to having both m and M flags"),
-      flag(
-        'd',
-        "print-deep-sum",
-        "Print deep sum of top of stack on end of execution",
-      ),
-      flag(
-        'S',
-        "print-join-spaces",
-        "Print top of stack joined by spaces on end of execution",
-      ),
-      flag('O', "disable-implicit-output", "Disable implicit output"),
-      flag('o', "force-implicit-output", "Force implicit output"),
-      flag(
-        'L',
-        "print-length",
-        "Print length of top of stack on end of execution",
-      ),
-      flag(
-        '§',
-        "print-pretty",
-        "Print top of stack pretty-printed on end of execution",
-      ),
-      flag(
-        'G',
-        "print-max",
-        "Print the maximum item of the top of stack on end of execution",
-      ),
-      flag(
-        'g',
-        "print-min",
-        "Print the minimum item of the top of the stack on end of execution",
-      ),
-      flag('W', "print-all", "Print the entire stack on end of execution"),
-      flag('Ṡ', "inputs-as-strs", "Treat all inputs as strings"),
-      flag(
-        'R',
-        "numbers-as-ranges",
-        "Treat numbers as ranges if ever used as an iterable",
-      ),
-      flag('Ṫ', "print-sum-all", "Print the sum of the entire stack"),
-      flag(
-        '!',
-        "print-stack-length",
-        "Print the length of the stack on end of execution",
-      ),
-      flag(
-        'ṡ',
-        "print-all-join-spaces",
-        "Print the entire stack, joined on spaces",
-      ),
-      flag(
-        'J',
-        "print-all-join-newlines",
-        "Print the entire stack, separated by newlines",
-      ),
-      flag('2', "arity-2", "Make the default arity of lambdas 2"),
-      flag('3', "arity-3", "Make the default arity of lambdas 3"),
-      flag(
-        '…',
-        "limit-output",
-        "Limit list output to the first 100 items of that list",
-      ),
-      flag(
-        '¬',
-        "logical-not",
-        "Logically negate the top of the stack on end of execution",
-      ),
+      (Seq(
+        head("vyxal", CLI.version),
+        cmd("debug")
+          .action((_, cfg) => cfg.copy(debug = true))
+          .text("Run the debugger"),
+        opt[Unit]('h', "help")
+          .action((_, cfg) => cfg.copy(printHelp = true))
+          .text("Print this help message and exit")
+          .optional(),
+        opt[String]("file")
+          .action((file, cfg) => cfg.copy(filename = Some(file)))
+          .text("The file to read the program from")
+          .optional(),
+        opt[String]("code")
+          .action((code, cfg) => cfg.copy(code = Some(code)))
+          .text("Code to execute directly")
+          .optional(),
+        opt[Int]("recursions")
+          .action((limit, cfg) =>
+            cfg.copy(settings = cfg.settings.copy(recursionLimit = limit))
+          )
+          .text("Set recursion limit (default 100)")
+          .optional(),
+        opt[String]("docs-literate")
+          .action((symbol, cfg) => cfg.copy(litInfoFor = Some(symbol)))
+          .text("Print literate mode mappings and exit")
+          .optional(),
+        opt[Unit]("lexer")
+          .action((_, cfg) => cfg.copy(runLexer = true))
+          .text("Run the lexer on input. For internal use.")
+          .optional(),
+        opt[Unit]("literate-lexer")
+          .action((_, cfg) => cfg.copy(runLiterateLexer = true))
+          .text("Run the literate lexer on input. For internal use.")
+          .optional(),
+        opt[Unit]("parser")
+          .action((_, cfg) => cfg.copy(runParser = true))
+          .text("Run the parser on input. For internal use.")
+          .optional(),
+        opt[Unit]("fancy-repl")
+          .action((_, cfg) => cfg.copy(runFancyRepl = true))
+          .text("Run the fancy REPL")
+          .optional(),
+        opt[Unit]('v', "bytes")
+          .action((_, cfg) => cfg.copy(readBytes = true))
+          .text("Read program as raw bytes - used for code golf scoring")
+          .optional(),
+        arg[String]("<input>...")
+          .unbounded()
+          .optional()
+          .action((input, cfg) => cfg.copy(inputs = cfg.inputs :+ input))
+          .text("Input to the program"),
+      ) ++
+        Flag.flags.filterNot(_.hidden).map {
+          case (f: Flag) => opt[Unit](f.short, f.long)
+              .action((_, cfg) =>
+                cfg.copy(settings = cfg.settings.withFlag(f.short))
+              )
+              .text(f.description)
+              .optional()
+        })*
     )
   end parser
 end CLI
