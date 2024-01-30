@@ -338,7 +338,7 @@ object StringHelpers:
       item match
         case n: VNum => (NumberHelpers.numToString(n), false)
         case s: String => (s, false)
-        case f: VFun => go(Interpreter.executeFn(f), indentation)
+        case f: VFun => (vyToString(f), false)
         case c: VConstructor => (c.toString, false)
         case l: VList =>
           if l.isEmpty then ("[]", false)

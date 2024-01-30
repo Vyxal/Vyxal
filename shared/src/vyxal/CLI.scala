@@ -224,11 +224,6 @@ object CLI:
       ),
       flag('l', "literate", "Enable literate mode"),
       flag(
-        'L',
-        "print-join-newlines-vert",
-        "Print top of stack joined by newlines (Vertically) on end of execution",
-      ),
-      flag(
         's',
         "print-sum",
         "Sum/concatenate top of stack on end of execution",
@@ -257,9 +252,14 @@ object CLI:
       flag('O', "disable-implicit-output", "Disable implicit output"),
       flag('o', "force-implicit-output", "Force implicit output"),
       flag(
-        '!',
+        'L',
         "print-length",
         "Print length of top of stack on end of execution",
+      ),
+      flag(
+        '§',
+        "print-pretty",
+        "Print top of stack pretty-printed on end of execution",
       ),
       flag(
         'G',
@@ -279,6 +279,11 @@ object CLI:
         "Treat numbers as ranges if ever used as an iterable",
       ),
       flag('Ṫ', "print-sum-all", "Print the sum of the entire stack"),
+      flag(
+        '!',
+        "print-stack-length",
+        "Print the length of the stack on end of execution",
+      ),
       flag(
         'ṡ',
         "print-all-join-spaces",

@@ -6,7 +6,7 @@ This folder contains documentation on Vyxal. [elements.txt](./elements.txt) has 
 
 ### What's the register?
 
-TODO
+The register is a special global variable that can be set and retrieved with a single byte. 
 
 ### Context Variables
 

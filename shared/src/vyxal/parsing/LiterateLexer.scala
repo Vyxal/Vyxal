@@ -349,7 +349,10 @@ private[parsing] object LiterateLexer:
     parseToken(StructureAllClose, "]".!)
 
   def litString[$: P]: P[LitToken] =
-    parseToken(Str, "\"" ~~ ("\\" ~~ AnyChar | !"\"" ~ AnyChar).repX.! ~~ "\"")
+    parseToken(
+      Str,
+      """"""" ~/ ("\\" ~~ AnyChar | !""""""" ~ AnyChar).rep.! ~ """"""",
+    )
 
   def groupModifier[$: P]: P[LitToken] =
     parseToken(GroupType, (";;" | ";," | "::" | ":." | ";" | ":" | "." | ",").!)

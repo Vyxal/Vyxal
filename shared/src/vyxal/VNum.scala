@@ -30,11 +30,16 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   /** Whether there is only an imaginary part */
   def isImaginary: Boolean = underlying.isImaginary
 
+  /** Whether there is both an imaginary and a real part */
+  def isComplex: Boolean = !(underlying.isImaginary || underlying.isReal)
+
   /** Round the real and imaginary parts */
   def toIntegral: VNum = underlying.round
 
   def floor: VNum = underlying.floor
   def ceil: VNum = underlying.ceil
+
+  def sqrt: VNum = underlying.sqrt
 
   @targetName("neg")
   def unary_- : VNum = -underlying

@@ -489,9 +489,9 @@ object Elements:
       Monad,
       "¯",
       "Deltas",
-      List("deltas"),
+      List("deltas", "pairwise-differences", "differences"),
       false,
-      "a: lst -> forward-differences of a",
+      "a: lst -> forward pairwise differences of a",
     ) { a =>
       ListHelpers.deltas(ListHelpers.makeIterable(a))
     },
@@ -604,15 +604,18 @@ object Elements:
     ) { (a, b) =>
       a === b
     },
-    addFull(
+    addPart(
       Dyad,
       "≠",
       "Not Equal",
       List("not-equal", "=n't"),
-      false,
-      "a: any, b: any -> a !== b (non-vectorising)",
-    ) { (a, b) =>
-      a !== b
+      true,
+      "a: any, b: any -> a != b",
+    ) {
+      case (a: VNum, b: VNum) => a != b
+      case (a: VNum, b: String) => a.toString != b
+      case (a: String, b: VNum) => a != b.toString
+      case (a: String, b: String) => a != b
     },
     addDirect(
       "Ė",
@@ -886,6 +889,22 @@ object Elements:
 
     },
     addPart(
+      Dyad,
+      "∆L",
+      "Least Common Multiple",
+      List("lcm"),
+      false,
+      "a: num, b: num -> lcm(a, b)",
+      "a: lst[num], b: num -> lcm of b and all elements of a",
+      "a: lst[num] -> lcm of all items in a.",
+    ) {
+      case (a: VNum, b: VNum) => NumberHelpers.lcm(a, b)
+      case (a: VList, b: VNum) => NumberHelpers.lcm(b +: a)
+      case (a, b: VList) =>
+        summon[Context].push(a)
+        NumberHelpers.lcm(b)
+    },
+    addPart(
       Monad,
       "½",
       "Halve",
@@ -1010,10 +1029,14 @@ object Elements:
       false,
       "a: lst -> [a[0], a[-1]]",
       "a: str -> [a[0], a[-1]]",
-    ) { a =>
-      val iterable = ListHelpers.makeIterable(a)
-      if iterable.isEmpty then VList.from(Seq.empty)
-      else VList(iterable.head, iterable.last)
+      "a: cmx -> [real, imaginary]",
+      "a: num -> [digit[0], digit[-1]]",
+    ) {
+      case a: VNum if (a.isComplex || a.isImaginary) => VList(a.real, a.imag)
+      case a =>
+        val iterable = ListHelpers.makeIterable(a)
+        if iterable.isEmpty then VList.from(Seq.empty)
+        else VList(iterable.head, iterable.last)
     },
     addPart(
       Monad,
@@ -1645,12 +1668,13 @@ object Elements:
     addPart(
       Dyad,
       "ċ",
-      "N Choose K | Character Set Equal? | Repeat Until No Change",
+      "N Choose K (Binomial Coefficient) | Character Set Equal? | Repeat Until No Change",
       List(
         "n-choose-k",
         "ncr",
         "nck",
         "choose",
+        "binomial",
         "char-set-equal?",
         "char-set-eq?",
         "until-stable",
@@ -1660,8 +1684,7 @@ object Elements:
       "a: str, b: str -> are the character sets of a and b equal?",
       "a: fun, b: any -> run a on b until the result no longer changes returning all intermediate results",
     ) {
-      case (a: VNum, b: VNum) =>
-        if a > b then NumberHelpers.nChooseK(a, b) else 0
+      case (a: VNum, b: VNum) => NumberHelpers.nChooseK(a, b)
       case (a: String, b: String) => a.toSet == b.toSet
       case (a: VFun, b) => MiscHelpers.untilNoChange(a, b)
       case (a, b: VFun) => MiscHelpers.untilNoChange(b, a)
@@ -2447,7 +2470,7 @@ object Elements:
       true,
       "a: num -> sqrt(a)",
     ) {
-      case a: VNum => VNum.complex(a.real.sqrt, a.imag.sqrt)
+      case a: VNum => a.sqrt
     },
     addPart(
       Monad,
@@ -2480,9 +2503,12 @@ object Elements:
       List("one->n", "one-range", "to-upper", "upper", "uppercase"),
       true,
       "a: num -> [1..a]",
+      "a: lst[num] -> apl-style iota from 1 to a",
       "a: str -> a.upper()",
     ) {
       case a: VNum => NumberHelpers.range(1, a)
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        NumberHelpers.range(1, a.map(_.asInstanceOf[VNum]))
       case a: String => a.toUpperCase
     },
     addPart(
@@ -2499,9 +2525,15 @@ object Elements:
       ),
       true,
       "a: num -> [0..a)",
+      "a: lst[num] -> apl-style iota from 0 until a",
       "a: str -> a.lower()",
     ) {
-      case a: VNum => NumberHelpers.range(0, a - 1)
+      case a: VNum => NumberHelpers.range(0, a - a.signum)
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        NumberHelpers.range(
+          0,
+          a.map(x => x.asInstanceOf[VNum] - x.asInstanceOf[VNum].signum),
+        )
       case a: String => a.toLowerCase
     },
     addFull(
@@ -2595,9 +2627,9 @@ object Elements:
           ListHelpers.makeIterable(b),
           ListHelpers.makeIterable(c),
         )
-      case (p: VFun, f: VFun, v) => MiscHelpers.callWhile(p, f, v)
-      case (p: VFun, v, f: VFun) => MiscHelpers.callWhile(p, f, v)
-      case (v, p: VFun, f: VFun) => MiscHelpers.callWhile(p, f, v)
+      case (p: VFun, f: VFun, v) => MiscHelpers.callWhileAndCollect(p, f, v)
+      case (p: VFun, v, f: VFun) => MiscHelpers.callWhileAndCollect(p, f, v)
+      case (v, p: VFun, f: VFun) => MiscHelpers.callWhileAndCollect(p, f, v)
       case (a: VList, b, c) => ListHelpers.transliterate(a, b, c)
       case (a: VNum, b, c) =>
         val temp =
@@ -2787,13 +2819,21 @@ object Elements:
       Dyad,
       "Φ",
       "Slice from 1",
-      List("1->b"),
+      List("one->b", "one-slice"),
       false,
       "a: lst, b: num -> a[1:b]",
       "a: num, b: lst -> b[1:a]",
     ) {
-      case (a, b: VNum) => ListHelpers.makeIterable(a).slice(1, b.toInt)
-      case (a: VNum, b) => ListHelpers.makeIterable(b).slice(1, a.toInt)
+      case (a, b: VNum) =>
+        val temp = ListHelpers.makeIterable(a).slice(1, b.toInt)
+        a match
+          case _: String => temp.mkString
+          case _ => temp
+      case (a: VNum, b) =>
+        val temp = ListHelpers.makeIterable(b).slice(1, a.toInt)
+        b match
+          case _: String => temp.mkString
+          case _ => temp
     },
     addPart(
       Monad,
@@ -2842,9 +2882,18 @@ object Elements:
     ) { ctx ?=>
       ctx.pop() match
         case f: VFun =>
-          val arg = ListHelpers.makeIterable(ctx.pop())
-          val suffixes = ListHelpers.suffixes(arg)
-          ctx.push(VList.from(suffixes.map(suffix => f(suffix))))
+          val arg = ctx.pop()
+          val suffixes = ListHelpers.suffixes(makeIterable(arg))
+          ctx.push(
+            VList.from(
+              suffixes.map(suffix =>
+                f(arg match
+                  case s: String => suffix.mkString
+                  case _ => suffix
+                )
+              )
+            )
+          )
         case arg =>
           throw UnimplementedOverloadException("#|map-suffixes", List(arg))
     },
@@ -2857,9 +2906,19 @@ object Elements:
     ) { ctx ?=>
       ctx.pop() match
         case f: VFun =>
-          val arg = ListHelpers.makeIterable(ctx.pop())
-          val prefixes = arg.indices.map(i => arg.slice(0, i + 1))
-          ctx.push(VList.from(prefixes.map(prefix => f(prefix))))
+          val arg = ctx.pop()
+          val iterArg = makeIterable(arg)
+          val prefixes = iterArg.indices.map(i => iterArg.slice(0, i + 1))
+          ctx.push(
+            VList.from(
+              prefixes.map(prefix =>
+                f(arg match
+                  case s: String => prefix.mkString
+                  case _ => prefix
+                )
+              )
+            )
+          )
         case arg =>
           throw UnimplementedOverloadException("#|map-prefixes", List(arg))
     },
@@ -3156,9 +3215,12 @@ object Elements:
       ),
       true,
       "a: num -> [0, 1, ..., a]",
+      "a: lst[num] -> apl-style iota from 0 to a",
       "a: str -> is a lowercase?",
     ) {
       case a: VNum => NumberHelpers.range(0, a)
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        NumberHelpers.range(0, a.map(_.asInstanceOf[VNum]))
       case a: String =>
         if a.length == 1 then a.forall(_.isLower)
         else VList.from(a.map(x => VNum(x.isLower)))
@@ -3888,6 +3950,57 @@ object Elements:
       "a: num -> Im(a)",
     ) {
       case a: VNum => VNum(a.imag)
+    },
+    addPart(
+      Monad,
+      "∆ṙ",
+      "Degrees to Radians",
+      List("deg2rad", "deg-to-rad"),
+      true,
+      "a: num -> a from degrees to radians (a * pi / 180)",
+    ) {
+      case a: VNum => a * VNum(spire.math.Real.pi) / VNum(180)
+    },
+    addPart(
+      Monad,
+      "∆ḋ",
+      "Radians to Degrees",
+      List("rad2deg", "rad-to-deg"),
+      true,
+      "a: num -> a from radians to degrees (a * 180 / pi)",
+    ) {
+      case a: VNum => a / VNum(spire.math.Real.pi) * VNum(180)
+    },
+    addPart(
+      Dyad,
+      "ÞR",
+      "Reshape",
+      List("reshape"),
+      false,
+      "a: lst, b: lst[num] => a reshaped to shape b",
+    ) {
+      case (a, b: VList) =>
+        val shape = b.map {
+          case n: VNum => n
+          case other => throw BadRHSException(
+              "ÞR",
+              s"$b (expected a list of natural numbers)",
+            )
+        }
+        ListHelpers.reshape(ListHelpers.makeIterable(a), shape)
+      case (a, b: VNum) =>
+        ListHelpers.reshape(ListHelpers.makeIterable(a), Seq(b))
+    },
+    addPart(
+      Monad,
+      "∆Ṛ",
+      "Principal Root Of Unity",
+      List("root-of-unity"),
+      true,
+      "a: num => principal a-th root of unity (e^(2i * pi / a))",
+    ) {
+      case a: VNum => VNum(spire.math.Real.e) **
+          (VNum.complex(0, 2) * VNum(spire.math.Real.pi) / a)
     },
   )
 

@@ -22,6 +22,19 @@ object MiscHelpers:
     while pred(curr).toBool do curr = transform(curr)
     curr
 
+  def callWhileAndCollect(
+      pred: VFun,
+      transform: VFun,
+      value: VAny,
+  )(using ctx: Context): VList =
+    val res = LazyList.unfold(value) { curr =>
+      if pred(curr).toBool then
+        val next = transform(curr)
+        Some(next -> next)
+      else None
+    }
+    VList.from(value #:: res)
+
   def collectUnique(function: VFun, initial: VAny)(using ctx: Context): VList =
     val prevVals = ArrayBuffer.empty[VAny]
     VList.from(
@@ -257,6 +270,7 @@ object MiscHelpers:
           temp = temp.tail
           if temp.nonEmpty then vyPrint(", ")
         vyPrint("]")
+      case f: VFun => vyPrint(executeFn(f))
       case _ => ctx.globals.printFn(StringHelpers.vyToString(x))
 
   def vyPrintln(x: VAny)(using Context): Unit =

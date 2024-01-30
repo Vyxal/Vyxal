@@ -107,6 +107,7 @@ enum EndPrintMode:
 
   /** Just print the top of the stack */
   case Default
+  case Pretty
   case JoinNewlines
   case JoinSpaces
   case JoinNothing
@@ -173,6 +174,7 @@ case class Settings(
       case 'm' => this.copy(rangeOffset = -1)
       case 'Ṁ' => this.copy(rangeStart = 0, rangeOffset = -1)
       case 'l' => this.copy(literate = true)
+      case '§' => this.copy(endPrintMode = EndPrintMode.Pretty)
       case 'd' => this.copy(endPrintMode = EndPrintMode.DeepSum)
       case 'O' => this.copy(endPrintMode = EndPrintMode.None)
       case 'o' => this.copy(endPrintMode = EndPrintMode.Force)
@@ -183,6 +185,7 @@ case class Settings(
       case 'N' => this.copy(endPrintMode = EndPrintMode.JoinNothing)
       case 'Ṫ' => this.copy(endPrintMode = EndPrintMode.SumStack)
       case 'ṡ' => this.copy(endPrintMode = EndPrintMode.SpaceStack)
+      case 'L' => this.copy(endPrintMode = EndPrintMode.Length)
       case 'R' => this.copy(rangify = true)
       case 'X' => this.copy(fullTrace = true)
       case '2' => this.copy(defaultArity = 2)
