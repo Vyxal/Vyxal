@@ -152,7 +152,7 @@ object Vexer:
     val lexer = LiterateVexer()
     lexer.lex(program)
 
-class VexerCommon:
+abstract class VexerCommon extends VexerUtils:
   protected var index = 0
   protected val programStack = Stack[Char]()
   protected val tokens = ArrayBuffer[VToken]()
@@ -193,5 +193,8 @@ class VexerCommon:
   protected def eatWhitespace(): Unit = while headIsWhitespace do pop()
 end VexerCommon
 
+trait VexerUtils:
+  def isOpener: Boolean
+  def isBranch: Boolean
 def Codepage: String = """⎂⇝∯⊠ß≟₾◌⋊
 ϩэЧ♳♴♵♶∥∦¿⎇↻⊙⁙∩∪⊕⊝⚇῟⚃ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊικȧḃċḋėḟġḣŀṁṅȯṗṙṡṫẋƒΘΦ§ẠḄḌḤỊḶṂṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«»⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λƛΩ₳µ∆øÞ½ʀɾ¯×÷£¥←↑→↓±¤†Π¬∧∨⁰¹²⌈⌊Ɠɠı┉„”ð€“¶ᶿᶲ•≈⌙‹›"""

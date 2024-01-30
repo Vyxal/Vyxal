@@ -3,7 +3,23 @@ package vyxal.parsing
 import vyxal.SugarMap
 import vyxal.VyxalException
 
+import scala.collection.mutable.ArrayBuffer
+
 class SBCSVexer extends VexerCommon:
+
+  private val stringTokenToQuote = Map(
+    VTokenType.Str -> "\"",
+    VTokenType.CompressedString -> "„",
+    VTokenType.DictionaryString -> "”",
+    VTokenType.CompressedNumber -> "“",
+  )
+  def isOpener: Boolean =
+    headIn("[({ṆḌƛΩ₳µ") || headLookaheadEqual("#[") ||
+      headLookaheadEqual("#{") || headLookaheadEqual("#::R") ||
+      headLookaheadEqual("#::+") || headLookaheadMatch("#::[EM]")
+
+  def isBranch: Boolean = headEqual('|')
+
   def lex(program: String): Seq[VToken] =
     programStack.pushAll(program.reverse)
 
@@ -24,8 +40,9 @@ class SBCSVexer extends VexerCommon:
         quickToken(VTokenType.ListOpen, "#[")
       else if headLookaheadEqual("#]") then
         quickToken(VTokenType.ListClose, "#]")
-      else if headIn("[({ṆḌλƛΩ₳µ") then
+      else if headIn("[({ṆḌƛΩ₳µ") then
         quickToken(VTokenType.StructureOpen, s"${programStack.head}")
+      else if headEqual('λ') then lambdaTokens
       else if headLookaheadEqual("#{") then
         quickToken(VTokenType.StructureOpen, "#{")
       else if headLookaheadEqual("#:[") then
@@ -132,7 +149,7 @@ class SBCSVexer extends VexerCommon:
     numberVal.toString()
 
   /** String = '"' (\\.|[^„”“"])* [„”“"] */
-  private def stringToken: Unit =
+  private def stringToken: String =
     val rangeStart = index
     val stringVal = StringBuilder()
 
@@ -160,6 +177,7 @@ class SBCSVexer extends VexerCommon:
         text,
         VRange(rangeStart, index),
       )
+    return text
   end stringToken
 
   private def oneCharStringToken: Unit =
@@ -387,4 +405,54 @@ class SBCSVexer extends VexerCommon:
         VRange(nameRangeStart, index),
       )
   end customDefinitionToken
+
+  private def lambdaTokens: Unit =
+    quickToken(VTokenType.StructureOpen, "λ")
+    var depth = 1
+    val popped = StringBuilder()
+    val start = index
+    var branchFound = false
+    var stringPopped = false
+
+    while depth > 0 && !branchFound && programStack.nonEmpty do
+      stringPopped = false
+      if isOpener then depth += 1
+      else if headEqual('"') then
+        stringPopped = true
+        popped += '"'
+        popped ++= stringToken
+        popped ++= stringTokenToQuote(tokens.last.tokenType)
+        tokens.dropRightInPlace(1)
+      else if headEqual('}') then depth -= 1
+      else if headEqual('|') && depth == 1 then branchFound = true
+      if !stringPopped then popped ++= pop()
+
+    if !branchFound then
+      for c <- popped.toString() do programStack.push(c)
+      index -= popped.length
+    else tokens ++= extractParamters(popped.toString(), start)
+  end lambdaTokens
+
+  private def extractParamters(popped: String, start: Int): Seq[VToken] =
+    val params = popped.split(',')
+    val tokens = ArrayBuffer[VToken]()
+    for param <- params do
+      val paramStart = start + popped.indexOf(param)
+      val paramEnd = paramStart + param.length
+      tokens +=
+        VToken(
+          VTokenType.Param,
+          toValidParam(param),
+          VRange(paramStart, paramEnd),
+        )
+
+    tokens.toSeq
+
+  private def toValidParam(param: String): String =
+    val filtered = param.filter(c => c.isLetterOrDigit || c == '_' || c == '*')
+    if filtered.isEmpty then filtered
+    else if filtered.head.isDigit && !filtered.forall(c => c.isDigit) then
+      filtered.dropWhile(c => c.isDigit)
+    else if filtered == "*" then filtered
+    else filtered.replaceAll("*", "")
 end SBCSVexer

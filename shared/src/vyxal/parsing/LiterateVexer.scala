@@ -9,6 +9,8 @@ import vyxal.UnopenedGroupException
 import scala.collection.mutable.ArrayBuffer
 
 class LiterateVexer extends VexerCommon:
+  def isOpener: Boolean = false
+  def isBranch: Boolean = false
   private val literateKeywords = Elements.elements.values.flatMap(_.keywords)
   private val _tokens = ArrayBuffer[VLitToken]()
   private val groups = ArrayBuffer[ArrayBuffer[VLitToken]]()
