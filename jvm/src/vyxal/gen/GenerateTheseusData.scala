@@ -2,8 +2,6 @@ package vyxal.gen
 
 import vyxal.parsing.Lexer
 import vyxal.Elements
-import vyxal.Flag
-import vyxal.FlagCategory
 import vyxal.Interpreter
 import vyxal.Modifiers
 import vyxal.SugarMap
@@ -16,7 +14,6 @@ private object GenerateTheseusData:
       "elements" -> ujson.Arr(),
       "modifiers" -> ujson.Arr(),
       "syntax" -> ujson.Arr(),
-      "flags" -> ujson.Arr(),
       "sugars" -> SugarMap.trigraphs,
       "codepage" -> Lexer.Codepage,
       "version" -> Interpreter.version,
@@ -49,28 +46,6 @@ private object GenerateTheseusData:
       syntaxData("description") = syntax.description
       syntaxData("usage") = syntax.usage
       data("syntax").arr.addOne(syntaxData)
-
-    for category <- FlagCategory.categories do
-      val flagData = ujson.Obj()
-      flagData("name") = category.description
-      flagData("type") = "choice"
-      val choices = ujson.Arr()
-      for flag <- Flag.flags.filter(_.category == Some(category)) do
-        val choiceData = ujson.Obj()
-        choiceData("name") = flag.description
-        choiceData("flag") =
-          if flag.short == '\u0000' then "" else flag.short.toString
-        choices.arr.addOne(choiceData)
-      flagData("choices") = choices
-      data("flags").arr.addOne(flagData)
-
-    for flag <- Flag.flags.filter(_.category == None) do
-      val flagData = ujson.Obj()
-      flagData("name") = flag.description
-      flagData("type") = "boolean"
-      flagData("flag") =
-        if flag.short == '\u0000' then "" else flag.short.toString
-      data("flags").arr.addOne(flagData)
 
     ujson.write(data)
   end generate

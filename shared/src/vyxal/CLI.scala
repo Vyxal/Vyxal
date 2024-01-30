@@ -434,6 +434,13 @@ object CLI:
   private val parser =
     import builder.*
 
+    /** Helpers for adding flags that go into Settings */
+    def flag(short: Char, name: String, text: String) =
+      opt[Unit](short, name)
+        .action((_, cfg) => cfg.copy(settings = cfg.settings.withFlag(short)))
+        .text(text)
+        .optional()
+
     // todo come up with better names for the flags
     OParser.sequence(
       programName("vyxal"),
