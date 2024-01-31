@@ -56,11 +56,15 @@ private object GenerateTheseusData:
       flagData("type") = "choice"
       val choices = ujson.Arr()
       for flag <- Flag.flags.filter(_.category == Some(category)) do
-        val choiceData = ujson.Obj()
-        choiceData("name") = flag.description
-        choiceData("flag") =
-          if flag.short == '\u0000' then "" else flag.short.toString
-        choices.arr.addOne(choiceData)
+        if flag.short == '\u0000' then
+          // NOTE: the format does technically allow for the default flag to be non-empty,
+          // making it required; not sure why we'd need to do that though
+          flagData("default") = ujson.Obj("name" -> flag.description, "flag" -> "")
+        else
+          val choiceData = ujson.Obj()
+          choiceData("name") = flag.description
+          choiceData("flag") = flag.short.toString
+          choices.arr.addOne(choiceData)
       flagData("choices") = choices
       data("flags").arr.addOne(flagData)
 
