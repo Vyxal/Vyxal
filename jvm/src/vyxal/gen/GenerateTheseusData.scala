@@ -59,10 +59,10 @@ private object GenerateTheseusData:
       flagData("default") = ""
       val choices = ujson.Obj()
       for flag <- Flag.flags.filter(_.category == Some(category)) do
-        choices(if flag.short == '\u0000' then "" else flag.short.toString) = flag.description
+        choices(if flag.short == '\u0000' then "" else flag.short.toString) =
+          flag.description
       flagData("choices") = choices
       data("flags").arr.addOne(flagData)
-    end for
 
     for flag <- Flag.flags.filter(_.category == None) do
       val flagData = ujson.Obj()
