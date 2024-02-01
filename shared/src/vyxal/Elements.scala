@@ -4008,9 +4008,10 @@ object Elements:
       "Arithmetic Mean",
       List("mean", "arithmetic-mean"),
       false,
-      "a: lst[num] => arithmetic mean of a (sum(a) / len(a))"
+      "a: lst[num] => arithmetic mean of a (sum(a) / len(a))",
     ) {
-      case a: VList if a.forall(_.isInstanceOf[VNum]) => a.map(_.asInstanceOf[VNum]).sum / a.length
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        a.map(_.asInstanceOf[VNum]).sum / a.length
       case a: VNum => a
     },
     addPart(
@@ -4019,9 +4020,10 @@ object Elements:
       "Geometric Mean",
       List("geometric-mean"),
       false,
-      "a: lst[num] => geometric mean of a (prod(a) ** (1 / len(a)))"
+      "a: lst[num] => geometric mean of a (prod(a) ** (1 / len(a)))",
     ) {
-      case a: VList if a.forall(_.isInstanceOf[VNum]) => a.map(_.asInstanceOf[VNum]).product ** (1 / VNum(a.length))
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        a.map(_.asInstanceOf[VNum]).product ** (1 / VNum(a.length))
       case a: VNum => a
     },
     addPart(
@@ -4030,11 +4032,12 @@ object Elements:
       "Harmonic Mean",
       List("harmonic-mean"),
       false,
-      "a: lst[num] => harmonic mean of a (len(a) / sum(1 / a))"
+      "a: lst[num] => harmonic mean of a (len(a) / sum(1 / a))",
     ) {
-      case a: VList if a.forall(_.isInstanceOf[VNum]) => a.length / a.map(_.asInstanceOf[VNum]).map(1 / _).sum
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        a.length / a.map(_.asInstanceOf[VNum]).map(1 / _).sum
       case a: VNum => a
-    }
+    },
   )
 
   private def execHelper(value: VAny)(using ctx: Context): VAny =
