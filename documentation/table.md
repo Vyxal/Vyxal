@@ -232,7 +232,10 @@
  <code>#¤</code> |  | Number of Context Parameters | `number-of-context`, `context-number`, `context-count` | 0 | :x: | <code></code> => <code> number of context parameters</code>
  <code>#¿</code> |  | Number of Inputs | `number-of-inputs`, `count-inputs`, `count-stdin` | 0 | :x: | <code></code> => <code> The number of inputs to the program</code>
  <code>∆<</code> |  | Argument / Phase / Angle | `arg`, `phase`, `angle` | 1 | :white_check_mark: | <code>a: num </code> => <code> Arg(a)</code>
+ <code>∆A</code> |  | Arithmetic Mean | `mean`, `arithmetic-mean` | 1 | :x: | <code>a: lst[num] => arithmetic mean of a (sum(a) / len(a))</code>
  <code>∆C</code> |  | Hyperbolic Cosine | `cosh`, `hyperbolic-cosine` | 1 | :white_check_mark: | <code>a: num </code> => <code> cosh(a)</code>
+ <code>∆G</code> |  | Geometric Mean | `geometric-mean` | 1 | :x: | <code>a: lst[num] => geometric mean of a (prod(a) ** (1 / len(a)))</code>
+ <code>∆H</code> |  | Harmonic Mean | `harmonic-mean` | 1 | :x: | <code>a: lst[num] => harmonic mean of a (len(a) / sum(1 / a))</code>
  <code>∆I</code> |  | Imaginary Part | `imag`, `imaginary`, `imaginary-part` | 1 | :white_check_mark: | <code>a: num </code> => <code> Im(a)</code>
  <code>∆L</code> |  | Least Common Multiple | `lcm` | 2 | :x: | <code>a: num, b: num </code> => <code> lcm(a, b)</code><br><code>a: lst[num], b: num </code> => <code> lcm of b and all elements of a</code><br><code>a: lst[num] </code> => <code> lcm of all items in a.</code>
  <code>∆R</code> |  | Real Part | `real`, `real-part` | 1 | :white_check_mark: | <code>a: num </code> => <code> Re(a)</code>
