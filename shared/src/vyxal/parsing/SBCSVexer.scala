@@ -362,6 +362,7 @@ class SBCSVexer extends VexerCommon:
     if headEqual('|') then
       pop()
       // Get the arguments and put them into tokens
+      var arity = 0
       while !headEqual('|') do
         val argNameStart = index
         val argName = simpleName()
@@ -382,7 +383,9 @@ class SBCSVexer extends VexerCommon:
             argType,
             VRange(argTypeStart, index),
           )
+        arity += 1
       end while
+      symbolTable += name -> Some(arity)
     end if
   end defineExtensionToken
 
