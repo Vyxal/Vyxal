@@ -47,6 +47,7 @@ class LiterateVexer extends VexerCommon:
           )
           eat(')')
         else throw new UnopenedGroupException(index)
+      else if headEqual('{') then lambdaTokens
       else if headIsWhitespace then pop(1)
     end while
     // Flatten _tokens into tokens
@@ -89,6 +90,7 @@ class LiterateVexer extends VexerCommon:
         case 4 => VTokenType.TetradicModifier
         case _ => VTokenType.SpecialModifier
       appendToken(VLitToken(tokenType, name, VRange(start, index)))
+    else if Set("lam", "lambda", "{", "λ").contains(value) then lambdaTokens
     else
       for char <- value do
         appendToken(
@@ -193,5 +195,7 @@ class LiterateVexer extends VexerCommon:
     val numberVal = StringBuilder()
     while safeCheck(c => c.isDigit) do numberVal ++= s"${pop()}"
     numberVal.toString()
+
+  private def lambdaTokens: Unit = ???
 
 end LiterateVexer
