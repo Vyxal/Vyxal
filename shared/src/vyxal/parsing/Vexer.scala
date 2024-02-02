@@ -1,7 +1,11 @@
 package vyxal.parsing
 
-import scala.collection.mutable.{ArrayBuffer, StringBuilder}
-import scala.collection.mutable.Stack
+import scala.collection.mutable // For named imports
+import scala.collection.mutable.{
+  ArrayBuffer,
+  Stack,
+  StringBuilder,
+} // for things that don't shadow non-mut variants
 case class VToken(
     tokenType: VTokenType,
     value: String,
@@ -154,6 +158,7 @@ object Vexer:
 
 abstract class VexerCommon extends VexerUtils:
   protected var index = 0
+  val symbolTable = mutable.Map[String, Option[Int]]()
   protected val programStack = Stack[Char]()
   protected val tokens = ArrayBuffer[VToken]()
   protected def pop(n: Int = 1): String =
@@ -177,7 +182,7 @@ abstract class VexerCommon extends VexerUtils:
   protected def quickToken(tokenType: VTokenType, value: String): Unit =
     tokens += VToken(tokenType, value, VRange(index, index + value.length))
     index += value.length
-    pop(value.length)
+    eat(value)
   protected def eat(c: Char): Unit =
     if headEqual(c) then pop(1)
     else

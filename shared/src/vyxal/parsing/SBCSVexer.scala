@@ -42,7 +42,9 @@ class SBCSVexer extends VexerCommon:
         quickToken(VTokenType.ListClose, "#]")
       else if headIn("[({ṆḌƛΩ₳µ") then
         quickToken(VTokenType.StructureOpen, s"${programStack.head}")
-      else if headEqual('λ') then lambdaTokens
+      else if headEqual('λ') then
+        quickToken(VTokenType.StructureOpen, "λ")
+        lambdaParameters
       else if headLookaheadEqual("#{") then
         quickToken(VTokenType.StructureOpen, "#{")
       else if headLookaheadEqual("#:[") then
@@ -408,10 +410,16 @@ class SBCSVexer extends VexerCommon:
         s"$definitionType$name",
         VRange(nameRangeStart, index),
       )
+
+    quickToken(VTokenType.Branch, "|")
+    val params = lambdaParameters
+    val arity = calcArity(params)
+
+    symbolTable += s"$definitionType$name" -> arity
+
   end customDefinitionToken
 
-  private def lambdaTokens: Unit =
-    quickToken(VTokenType.StructureOpen, "λ")
+  private def lambdaParameters: String =
     var depth = 1
     val popped = StringBuilder()
     val start = index
@@ -430,9 +438,9 @@ class SBCSVexer extends VexerCommon:
       else if headEqual('}') then depth -= 1
       else if headEqual('|') && depth == 1 then branchFound = true
       if !stringPopped then popped ++= pop()
-
+    val params = popped.toString()
     if !branchFound then
-      for c <- popped.toString().reverse do programStack.push(c)
+      for c <- params.reverse do programStack.push(c)
       index -= popped.length
     else
       tokens ++= extractParamters(popped.toString(), start)
@@ -442,7 +450,9 @@ class SBCSVexer extends VexerCommon:
           "|",
           VRange(index, index + 1),
         )
-  end lambdaTokens
+
+    return params
+  end lambdaParameters
 
   private def extractParamters(popped: String, start: Int): Seq[VToken] =
     val params = popped.split(',')
@@ -460,10 +470,42 @@ class SBCSVexer extends VexerCommon:
     tokens.toSeq
 
   private def toValidParam(param: String): String =
-    val filtered = param.filter(c => c.isLetterOrDigit || c == '_' || c == '*')
+    val filtered =
+      param.filter(c => c.isLetterOrDigit || c == '_' || c == '*' || c == '!')
     if filtered.isEmpty then filtered
     else if filtered.head.isDigit && !filtered.forall(c => c.isDigit) then
       filtered.dropWhile(c => c.isDigit)
     else if filtered == "*" then filtered
+    else if filtered == "!" then filtered
     else filtered.replaceAll(raw"\*", "")
+
+  /** Returns how many arguments a parameter list expects. None represents an
+    * arity that can't be determined statically. Some(-1) represents a stack
+    * lambda Some(n) represents a lambda with a fixed arity of n
+    *
+    * @param params
+    * @return
+    */
+  private def calcArity(params: String): Option[Int] =
+    var arity: Option[Int] = Some(0)
+    try
+      for param <- params.split(",") do
+        val actual = toValidParam(param)
+        if actual == "*" then
+          arity = None
+          throw Exception()
+        else if actual == "!" then
+          arity = Some(-1)
+          throw Exception()
+        else if param.forall(c => c.isDigit) then
+          val num = param.toInt
+          arity = arity.map(_ + num)
+        else arity = arity.map(_ + 1)
+    catch
+      case _: Exception =>
+        // Poor man's break
+        ???
+
+    return arity
+  end calcArity
 end SBCSVexer
