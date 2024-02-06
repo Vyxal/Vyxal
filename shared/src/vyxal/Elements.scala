@@ -1082,6 +1082,7 @@ object Elements:
       ),
       false,
       "a: lst, b: num -> a[b]",
+      "a: num, b: num -> b[x] for x in a",
       "a: lst, b: lst -> a[_] for _ in b",
       "a: str, b: lst[num] -> ''.join(a[i] for i in b)",
       "a: str, b: lst[any] -> x[a] for x in b",
