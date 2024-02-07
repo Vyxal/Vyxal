@@ -58,13 +58,13 @@ private object GenerateTheseusData:
       // making it required; not sure why we'd need to do that though
       flagData("default") = ""
       val choices = ujson.Obj()
-      for flag <- Flag.flags.filter(_.category == Some(category)) do
+      for flag <- Flag.values.filter(_.category == Some(category)) do
         choices(if flag.short == '\u0000' then "" else flag.short.toString) =
           flag.description
       flagData("choices") = choices
       data("flags").arr.addOne(flagData)
 
-    for flag <- Flag.flags.filter(_.category == None) do
+    for flag <- Flag.values.filter(_.category == None) do
       val flagData = ujson.Obj()
       flagData("name") = flag.description
       flagData("type") = "boolean"

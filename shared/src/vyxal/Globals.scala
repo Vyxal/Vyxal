@@ -124,14 +124,9 @@ enum EndPrintMode:
   case Minimum
   case Length
 
-  /** Print something to do with stack */
-  case LengthStack
-  case SumStack
-  case SpaceStack
-
   /** Don't print anything - disable implicit output */
-  case Force
   case None
+  case Force
 end EndPrintMode
 
 /** Settings set by flags
@@ -142,6 +137,8 @@ end EndPrintMode
   *   How to print implicit output at the end
   * @param defaultValue
   *   Value to give when empty stack is popped
+  * @param wrapStack
+  *   Wrap stack at end of execution, before printing
   */
 case class Settings(
     presetStack: Boolean = false,
@@ -158,66 +155,7 @@ case class Settings(
     limitPrint: Boolean = false,
     dontEvalInputs: Boolean = false,
     recursionLimit: Int = 100,
+    wrapStack: Boolean = false,
 ):
-
-  /** Add a flag to these settings
-    *
-    * @return
-    *   An updated `Settings` object
-    */
-  def withFlag(flag: Flag): Settings =
-    import Flag.*
-    flag match
-      case Trace => this.copy(fullTrace = true)
-      case Preset100 => this.copy(presetStack = true)
-      case Literate => this.copy(literate = true)
-      case RangeNone => this
-      case RangeStart0 => this.copy(rangeStart = 0)
-      case RangeEndExcl => this.copy(rangeOffset = -1)
-      case RangeProgrammery => this.copy(rangeStart = 0, rangeOffset = -1)
-      case InputAsStrings => this.copy(dontEvalInputs = true)
-      case NumbersAsRanges => this.copy(rangify = true)
-      case Arity1 => this.copy(defaultArity = 1)
-      case Arity2 => this.copy(defaultArity = 2)
-      case Arity3 => this.copy(defaultArity = 3)
-      case LimitOutput => this.copy(limitPrint = true)
-
-      case PrintTop => this.copy(endPrintMode = EndPrintMode.Default)
-      case PrintJoinNewlines =>
-        this.copy(endPrintMode = EndPrintMode.JoinNewlines)
-      case PrintSum => this.copy(endPrintMode = EndPrintMode.Sum)
-      case PrintDeepSum => this.copy(endPrintMode = EndPrintMode.DeepSum)
-      case PrintJoinSpaces => this.copy(endPrintMode = EndPrintMode.JoinSpaces)
-      case PrintNone => this.copy(endPrintMode = EndPrintMode.None)
-      case PrintForce => this.copy(endPrintMode = EndPrintMode.Force)
-      case PrintLength => this.copy(endPrintMode = EndPrintMode.Length)
-      case PrintPretty => this.copy(endPrintMode = EndPrintMode.Pretty)
-      case PrintMax => this.copy(endPrintMode = EndPrintMode.Maximum)
-      case PrintMin => this.copy(endPrintMode = EndPrintMode.Minimum)
-      case PrintSumAll => this.copy(endPrintMode = EndPrintMode.SumStack)
-      case PrintStackLength =>
-        this.copy(endPrintMode = EndPrintMode.LengthStack)
-      case PrintAllJoinNothing =>
-        this.copy(endPrintMode = EndPrintMode.JoinNothing)
-      case PrintAllJoinSpaces =>
-        this.copy(endPrintMode = EndPrintMode.SpaceStack)
-      case PrintNot => this.copy(endPrintMode = EndPrintMode.LogicalNot)
-    end match
-  end withFlag
-
-  def withFlag(flag: Char): Settings =
-    Flag.flags.find(_.short == flag) match
-      case Some(f) => withFlag(f)
-      case None => throw VyxalException(s"$flag is an invalid flag")
-
-  /** Helper to update these settings with multiple flags
-    *
-    * @see
-    *   withFlag
-    */
-  def withFlags(flags: List[Char]): Settings =
-    flags.foldLeft(this)(_.withFlag(_))
-
   /** Set an end print mode based */
   def useMode(mode: EndPrintMode): Settings = this.copy(endPrintMode = mode)
-end Settings

@@ -44,6 +44,8 @@ object Interpreter:
       ctx.globals.extensions = extensions
       execute(ast)
       if !ctx.globals.printed && !ctx.testMode then
+        if ctx.settings.wrapStack then ctx.wrap()
+
         if ctx.settings.endPrintMode == EndPrintMode.Default then
           vyPrintln(ctx.pop())
         else if ctx.settings.endPrintMode == EndPrintMode.Pretty then
@@ -72,12 +74,6 @@ object Interpreter:
           vyPrintln(
             ListHelpers.makeIterable(ctx.pop()).minOption.getOrElse(VList())
           )
-        else if ctx.settings.endPrintMode == EndPrintMode.LengthStack then
-          vyPrintln(VNum(ctx.length))
-        else if ctx.settings.endPrintMode == EndPrintMode.SumStack then
-          vyPrintln(ListHelpers.sum(VList.from(ctx.getStack)))
-        else if ctx.settings.endPrintMode == EndPrintMode.SpaceStack then
-          vyPrintln(ctx.getStack.mkString(" "))
         else if ctx.settings.endPrintMode == EndPrintMode.JoinSpaces then
           vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString(" "))
         else if ctx.settings.endPrintMode == EndPrintMode.JoinNothing then
