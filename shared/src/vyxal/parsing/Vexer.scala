@@ -156,11 +156,28 @@ object Vexer:
     val lexer = LiterateVexer()
     lexer.lex(program)
 
-abstract class VexerCommon extends VexerUtils:
+abstract class VexerCommon:
+
+  private val stringTokenToQuote = Map(
+    VTokenType.Str -> "\"",
+    VTokenType.CompressedString -> "„",
+    VTokenType.DictionaryString -> "”",
+    VTokenType.CompressedNumber -> "“",
+  )
+
   protected var index = 0
   val symbolTable = mutable.Map[String, Option[Int]]()
   protected val programStack = Stack[Char]()
   protected val tokens = ArrayBuffer[VToken]()
+
+  // Abstract method for adding a token irregardles of lexer type
+
+  protected def addToken(
+      tokenType: VTokenType,
+      value: String,
+      range: VRange,
+  ): Unit
+
   protected def pop(n: Int = 1): String =
     val res = StringBuilder()
     for _ <- 0 until n do res ++= s"${programStack.pop()}"
@@ -179,6 +196,9 @@ abstract class VexerCommon extends VexerUtils:
   protected def headIsDigit: Boolean = safeCheck(c => c.isDigit)
   protected def headIsWhitespace: Boolean = safeCheck(c => c.isWhitespace)
   protected def headIn(s: String): Boolean = safeCheck(c => s.contains(c))
+  protected def headIsCloser: Boolean
+  protected def headIsBranch: Boolean
+  protected def headIsOpener: Boolean
   protected def quickToken(tokenType: VTokenType, value: String): Unit =
     tokens += VToken(tokenType, value, VRange(index, index + value.length))
     index += value.length
@@ -196,10 +216,126 @@ abstract class VexerCommon extends VexerUtils:
         s"Expected $s, got ${programStack.mkString}" + s" at index $index"
       )
   protected def eatWhitespace(): Unit = while headIsWhitespace do pop()
-end VexerCommon
 
-trait VexerUtils:
-  def isOpener: Boolean
-  def isBranch: Boolean
+  // Some universal token types
+  /** String = '"' (\\.|[^„”“"])* [„”“"] */
+  protected def stringToken: String =
+    val rangeStart = index
+    val stringVal = StringBuilder()
+
+    pop() // Pop the opening quote
+
+    while !headIn("\"„”“") do
+      if headEqual('\\') then stringVal ++= pop(2)
+      else stringVal ++= pop()
+
+    val text = stringVal
+      .toString()
+      .replace("\\\"", "\"")
+      .replace(raw"\n", "\n")
+      .replace(raw"\t", "\t")
+
+    val tokenType = pop() match
+      case "\"" => VTokenType.Str
+      case "„" => VTokenType.CompressedString
+      case "”" => VTokenType.DictionaryString
+      case "“" => VTokenType.CompressedNumber
+
+    addToken(
+      tokenType,
+      text,
+      VRange(rangeStart, index),
+    )
+    return text
+  end stringToken
+  protected def lambdaParameters: String =
+    var depth = 1
+    val popped = StringBuilder()
+    val start = index
+    var branchFound = false
+    var stringPopped = false
+
+    while depth > 0 && !branchFound && programStack.nonEmpty do
+      stringPopped = false
+      if headIsOpener then depth += 1
+      else if headEqual('"') then
+        stringPopped = true
+        popped += '"'
+        popped ++= stringToken
+        popped ++= stringTokenToQuote(tokens.last.tokenType)
+        tokens.dropRightInPlace(1)
+      else if headIsCloser then depth -= 1
+      else if headIsBranch && depth == 1 then branchFound = true
+      if !stringPopped then popped ++= pop()
+    val params = popped.toString()
+    if !branchFound then
+      for c <- params.reverse do programStack.push(c)
+      index -= popped.length
+    else
+      extractParamters(popped.toString(), start)
+      addToken(
+        VTokenType.Branch,
+        "|",
+        VRange(index, index + 1),
+      )
+
+    return params
+  end lambdaParameters
+
+  protected def extractParamters(popped: String, start: Int): Seq[VToken] =
+    val params = popped.split(',')
+    val tokens = ArrayBuffer[VToken]()
+    for param <- params do
+      val paramStart = start + popped.indexOf(param)
+      val paramEnd = paramStart + param.length
+      tokens +=
+        VToken(
+          VTokenType.Param,
+          toValidParam(param),
+          VRange(paramStart, paramEnd),
+        )
+
+    tokens.toSeq
+
+  protected def toValidParam(param: String): String =
+    val filtered =
+      param.filter(c => c.isLetterOrDigit || c == '_' || c == '*' || c == '!')
+    if filtered.isEmpty then filtered
+    else if filtered.head.isDigit && !filtered.forall(c => c.isDigit) then
+      filtered.dropWhile(c => c.isDigit)
+    else if filtered == "*" then filtered
+    else if filtered == "!" then filtered
+    else filtered.replaceAll(raw"\*", "")
+
+  /** Returns how many arguments a parameter list expects. None represents an
+    * arity that can't be determined statically. Some(-1) represents a stack
+    * lambda Some(n) represents a lambda with a fixed arity of n
+    *
+    * @param params
+    * @return
+    */
+  protected def calcArity(params: String): Option[Int] =
+    var arity: Option[Int] = Some(0)
+    try
+      for param <- params.split(",") do
+        val actual = toValidParam(param)
+        if actual == "*" then
+          arity = None
+          throw Exception()
+        else if actual == "!" then
+          arity = Some(-1)
+          throw Exception()
+        else if param.forall(c => c.isDigit) then
+          val num = param.toInt
+          arity = arity.map(_ + num)
+        else arity = arity.map(_ + 1)
+    catch
+      case _: Exception =>
+        // Poor man's break
+        ???
+
+    return arity
+  end calcArity
+end VexerCommon
 def Codepage: String = """⎂⇝∯⊠ß≟₾◌⋊
 ϩэЧ♳♴♵♶∥∦¿⎇↻⊙⁙∩∪⊕⊝⚇῟⚃ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊικȧḃċḋėḟġḣŀṁṅȯṗṙṡṫẋƒΘΦ§ẠḄḌḤỊḶṂṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«»⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λƛΩ₳µ∆øÞ½ʀɾ¯×÷£¥←↑→↓±¤†Π¬∧∨⁰¹²⌈⌊Ɠɠı┉„”ð€“¶ᶿᶲ•≈⌙‹›"""

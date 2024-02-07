@@ -9,8 +9,9 @@ import vyxal.UnopenedGroupException
 import scala.collection.mutable.ArrayBuffer
 
 class LiterateVexer extends VexerCommon:
-  def isOpener: Boolean = false
-  def isBranch: Boolean = false
+  def headIsOpener: Boolean = false // TODO: Implement
+  def headIsBranch: Boolean = false // TODO: Implement
+  def headIsCloser: Boolean = false // TODO: Implement
   private val literateKeywords = Elements.elements.values.flatMap(_.keywords)
   private val _tokens = ArrayBuffer[VLitToken]()
   private val groups = ArrayBuffer[ArrayBuffer[VLitToken]]()
@@ -35,14 +36,14 @@ class LiterateVexer extends VexerCommon:
         eat('(')
         groups += ArrayBuffer[VLitToken]()
         if headLookaheadMatch(":[.:]|;[,;]") then
-          appendToken(groupModifierToToken(pop(2))(VRange(index, index)))
+          addToken(groupModifierToToken(pop(2))(VRange(index, index)))
         else if headIn(".:,;") then
-          appendToken(groupModifierToToken(pop(1))(VRange(index, index)))
+          addToken(groupModifierToToken(pop(1))(VRange(index, index)))
       else if headEqual(')') then
         if groups.nonEmpty then
           val group = groups.last
           groups.dropRightInPlace(1)
-          appendToken(
+          addToken(
             VLitToken(Group, group.toSeq, VRange(index, index))
           )
           eat(')')
@@ -58,9 +59,12 @@ class LiterateVexer extends VexerCommon:
     tokens.toSeq
   end lex
 
-  private def appendToken(token: VLitToken): Unit =
+  def addToken(token: VLitToken): Unit =
     if groups.nonEmpty then groups.last += token
     else _tokens += token
+
+  def addToken(tokenType: VTokenType, value: String, range: VRange): Unit =
+    addToken(VLitToken(tokenType, value, range))
 
   private def keywordToken: Unit =
     val start = index
@@ -69,7 +73,7 @@ class LiterateVexer extends VexerCommon:
       keyword ++= pop(1)
     val value = removeDoubleNt(keyword.toString())
     if isKeyword(value) then
-      appendToken(
+      addToken(
         VLitToken(
           Command,
           getSymbolFromKeyword(value),
@@ -77,7 +81,7 @@ class LiterateVexer extends VexerCommon:
         )
       )
     else if isKeyword(value.stripSuffix("n't")) then
-      appendToken(
+      addToken(
         VLitToken(NegatedCommand, value, VRange(start, index))
       )
     else if isModifier(value) then
@@ -89,11 +93,11 @@ class LiterateVexer extends VexerCommon:
         case 3 => VTokenType.TriadicModifier
         case 4 => VTokenType.TetradicModifier
         case _ => VTokenType.SpecialModifier
-      appendToken(VLitToken(tokenType, name, VRange(start, index)))
+      addToken(VLitToken(tokenType, name, VRange(start, index)))
     else if Set("lam", "lambda", "{", "λ").contains(value) then lambdaTokens
     else
       for char <- value do
-        appendToken(
+        addToken(
           VLitToken(
             Command,
             char.toString,
@@ -129,7 +133,7 @@ class LiterateVexer extends VexerCommon:
     val quotes = StringBuilder()
     while headEqual('\'') do quotes ++= pop(1)
     val value = quotes.toString()
-    appendToken(VLitToken(MoveRight, value, VRange(start, index)))
+    addToken(VLitToken(MoveRight, value, VRange(start, index)))
 
   /** Number = 0 | [1-9][0-9]*(\.[0-9]*)? | \.[0-9]* */
   private def numberToken: Unit =
@@ -151,14 +155,14 @@ class LiterateVexer extends VexerCommon:
           s"${negativePrefix}0.$head",
           VRange(rangeStart, index),
         )
-        appendToken(numberToken)
+        addToken(numberToken)
       else
         val zeroToken = VLitToken(
           VTokenType.Number,
           "0.5",
           VRange(rangeStart, index),
         )
-        appendToken(zeroToken)
+        addToken(zeroToken)
     else
       // Not a 0, and not a headless decimal, so it's a normal number
       val head = simpleNumber()
@@ -172,14 +176,14 @@ class LiterateVexer extends VexerCommon:
             s"$negativePrefix$head.$tail",
             VRange(rangeStart, index),
           )
-          appendToken(numberToken)
+          addToken(numberToken)
         else
           val numberToken = VLitToken(
             VTokenType.Number,
             s"$head.5",
             VRange(rangeStart, index),
           )
-          appendToken(numberToken)
+          addToken(numberToken)
       // No decimal tail, so normal number
       else
         val numberToken = VLitToken(
@@ -187,7 +191,7 @@ class LiterateVexer extends VexerCommon:
           negativePrefix + head,
           VRange(rangeStart, index),
         )
-        appendToken(numberToken)
+        addToken(numberToken)
     end if
   end numberToken
 

@@ -3,22 +3,22 @@ package vyxal.parsing
 import vyxal.SugarMap
 import vyxal.VyxalException
 
-import scala.collection.mutable.ArrayBuffer
-
 class SBCSVexer extends VexerCommon:
 
-  private val stringTokenToQuote = Map(
-    VTokenType.Str -> "\"",
-    VTokenType.CompressedString -> "„",
-    VTokenType.DictionaryString -> "”",
-    VTokenType.CompressedNumber -> "“",
-  )
-  def isOpener: Boolean =
+  def headIsOpener: Boolean =
     headIn("[({ṆḌƛΩ₳µ") || headLookaheadEqual("#[") ||
       headLookaheadEqual("#{") || headLookaheadEqual("#::R") ||
       headLookaheadEqual("#::+") || headLookaheadMatch("#::[EM]")
 
-  def isBranch: Boolean = headEqual('|')
+  def headIsBranch: Boolean = headEqual('|')
+
+  def headIsCloser: Boolean = headEqual('}')
+
+  def addToken(
+      tokenType: VTokenType,
+      value: String,
+      range: VRange,
+  ): Unit = tokens += VToken(tokenType, value, range)
 
   def lex(program: String): Seq[VToken] =
     programStack.pushAll(program.reverse)
@@ -153,38 +153,6 @@ class SBCSVexer extends VexerCommon:
     val numberVal = StringBuilder()
     while safeCheck(c => c.isDigit) do numberVal ++= s"${pop()}"
     numberVal.toString()
-
-  /** String = '"' (\\.|[^„”“"])* [„”“"] */
-  private def stringToken: String =
-    val rangeStart = index
-    val stringVal = StringBuilder()
-
-    pop() // Pop the opening quote
-
-    while !headIn("\"„”“") do
-      if headEqual('\\') then stringVal ++= pop(2)
-      else stringVal ++= pop()
-
-    val text = stringVal
-      .toString()
-      .replace("\\\"", "\"")
-      .replace(raw"\n", "\n")
-      .replace(raw"\t", "\t")
-
-    val tokenType = pop() match
-      case "\"" => VTokenType.Str
-      case "„" => VTokenType.CompressedString
-      case "”" => VTokenType.DictionaryString
-      case "“" => VTokenType.CompressedNumber
-
-    tokens +=
-      VToken(
-        tokenType,
-        text,
-        VRange(rangeStart, index),
-      )
-    return text
-  end stringToken
 
   private def oneCharStringToken: Unit =
     val rangeStart = index
@@ -422,93 +390,4 @@ class SBCSVexer extends VexerCommon:
 
   end customDefinitionToken
 
-  private def lambdaParameters: String =
-    var depth = 1
-    val popped = StringBuilder()
-    val start = index
-    var branchFound = false
-    var stringPopped = false
-
-    while depth > 0 && !branchFound && programStack.nonEmpty do
-      stringPopped = false
-      if isOpener then depth += 1
-      else if headEqual('"') then
-        stringPopped = true
-        popped += '"'
-        popped ++= stringToken
-        popped ++= stringTokenToQuote(tokens.last.tokenType)
-        tokens.dropRightInPlace(1)
-      else if headEqual('}') then depth -= 1
-      else if headEqual('|') && depth == 1 then branchFound = true
-      if !stringPopped then popped ++= pop()
-    val params = popped.toString()
-    if !branchFound then
-      for c <- params.reverse do programStack.push(c)
-      index -= popped.length
-    else
-      tokens ++= extractParamters(popped.toString(), start)
-      tokens +=
-        VToken(
-          VTokenType.Branch,
-          "|",
-          VRange(index, index + 1),
-        )
-
-    return params
-  end lambdaParameters
-
-  private def extractParamters(popped: String, start: Int): Seq[VToken] =
-    val params = popped.split(',')
-    val tokens = ArrayBuffer[VToken]()
-    for param <- params do
-      val paramStart = start + popped.indexOf(param)
-      val paramEnd = paramStart + param.length
-      tokens +=
-        VToken(
-          VTokenType.Param,
-          toValidParam(param),
-          VRange(paramStart, paramEnd),
-        )
-
-    tokens.toSeq
-
-  private def toValidParam(param: String): String =
-    val filtered =
-      param.filter(c => c.isLetterOrDigit || c == '_' || c == '*' || c == '!')
-    if filtered.isEmpty then filtered
-    else if filtered.head.isDigit && !filtered.forall(c => c.isDigit) then
-      filtered.dropWhile(c => c.isDigit)
-    else if filtered == "*" then filtered
-    else if filtered == "!" then filtered
-    else filtered.replaceAll(raw"\*", "")
-
-  /** Returns how many arguments a parameter list expects. None represents an
-    * arity that can't be determined statically. Some(-1) represents a stack
-    * lambda Some(n) represents a lambda with a fixed arity of n
-    *
-    * @param params
-    * @return
-    */
-  private def calcArity(params: String): Option[Int] =
-    var arity: Option[Int] = Some(0)
-    try
-      for param <- params.split(",") do
-        val actual = toValidParam(param)
-        if actual == "*" then
-          arity = None
-          throw Exception()
-        else if actual == "!" then
-          arity = Some(-1)
-          throw Exception()
-        else if param.forall(c => c.isDigit) then
-          val num = param.toInt
-          arity = arity.map(_ + num)
-        else arity = arity.map(_ + 1)
-    catch
-      case _: Exception =>
-        // Poor man's break
-        ???
-
-    return arity
-  end calcArity
 end SBCSVexer
