@@ -211,7 +211,7 @@ object CLI:
       ) ++
         Flag.values.filterNot(_.hidden).map { f =>
           opt[Unit](f.short, f.long)
-            .action((_, cfg) => cfg.copy(settings = cfg.settings.withFlag(f)))
+            .action((_, cfg) => cfg.copy(settings = f.action(cfg.settings)))
             .text(f.helpText)
             .optional()
         })*

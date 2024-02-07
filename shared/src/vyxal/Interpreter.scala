@@ -72,9 +72,6 @@ object Interpreter:
           vyPrintln(
             ListHelpers.makeIterable(ctx.pop()).minOption.getOrElse(VList())
           )
-        else if ctx.settings.endPrintMode == EndPrintMode.LengthStack then
-          vyPrintln(VNum(ctx.length))
-          vyPrintln(ctx.getStack.mkString(" "))
         else if ctx.settings.endPrintMode == EndPrintMode.JoinSpaces then
           vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString(" "))
         else if ctx.settings.endPrintMode == EndPrintMode.JoinNothing then

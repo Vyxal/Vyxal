@@ -1,6 +1,6 @@
 package vyxal
 
-enum FlagCategory(val description: String):
+enum FlagCategory(val description: String) extends Enum[FlagCategory]:
   case RangeBehavior extends FlagCategory("Range behavior")
   case DefaultArity extends FlagCategory("Default arity")
   case EndPrintMode extends FlagCategory("End print mode")
@@ -13,6 +13,7 @@ enum Flag(
     val long: String,
     val helpText: String,
     val description: String,
+    val action: Settings => Settings,
     val category: Option[FlagCategory] = None,
     val hidden: Boolean = false,
 ) extends Enum[Flag]:
@@ -22,6 +23,7 @@ enum Flag(
         "trace",
         "Return full traceback on program error",
         "Full traceback",
+        _.copy(fullTrace = true),
       )
   case Preset100
       extends Flag(
@@ -29,15 +31,23 @@ enum Flag(
         "preset-100",
         "Preset stack to 100",
         "Preset stack to 100",
+        _.copy(presetStack = true),
       )
   case Literate
-      extends Flag('l', "literate", "Enable literate mode", "Literate mode")
+      extends Flag(
+        'l',
+        "literate",
+        "Enable literate mode",
+        "Literate mode",
+        _.copy(literate = true),
+      )
   case RangeNone
       extends Flag(
         '\u0000',
         "",
         "Default behavior",
         "Default behavior",
+        settings => settings,
         Some(FlagCategory.RangeBehavior),
         hidden = true,
       )
@@ -47,6 +57,7 @@ enum Flag(
         "range-start-0",
         "Make implicit range generation and while loop counter start at 0 instead of 1",
         "Start range at 0",
+        _.copy(rangeStart = 0),
         Some(FlagCategory.RangeBehavior),
       )
   case RangeEndExcl
@@ -55,6 +66,7 @@ enum Flag(
         "range-end-excl",
         "Make implicit range generation end at n-1 instead of n",
         "End range at n-1",
+        _.copy(rangeOffset = -1),
         Some(FlagCategory.RangeBehavior),
       )
   case RangeProgrammery
@@ -63,6 +75,7 @@ enum Flag(
         "range-programmery",
         "Equivalent to having both m and M flags",
         "Both",
+        _.copy(rangeStart = 0, rangeOffset = -1),
         Some(FlagCategory.RangeBehavior),
       )
   case InputAsStrings
@@ -71,6 +84,7 @@ enum Flag(
         "inputs-as-strs",
         "Treat all inputs as strings",
         "Don't evaluate inputs",
+        _.copy(dontEvalInputs = true),
       )
   case NumbersAsRanges
       extends Flag(
@@ -78,6 +92,7 @@ enum Flag(
         "numbers-as-ranges",
         "Treat numbers as ranges if ever used as an iterable",
         "Rangify",
+        _.copy(rangify = true),
       )
   case Arity1
       extends Flag(
@@ -85,6 +100,7 @@ enum Flag(
         "",
         "Make the default arity of lambdas 1",
         "1",
+        _.copy(defaultArity = 1),
         Some(FlagCategory.DefaultArity),
         hidden = true,
       )
@@ -94,6 +110,7 @@ enum Flag(
         "arity-2",
         "Make the default arity of lambdas 2",
         "2",
+        _.copy(defaultArity = 2),
         Some(FlagCategory.DefaultArity),
       )
   case Arity3
@@ -102,6 +119,7 @@ enum Flag(
         "arity-3",
         "Make the default arity of lambdas 3",
         "3",
+        _.copy(defaultArity = 3),
         Some(FlagCategory.DefaultArity),
       )
   case LimitOutput
@@ -110,6 +128,7 @@ enum Flag(
         "limit-output",
         "Limit list output to the first 100 items of that list",
         "Limit list output",
+        _.copy(limitPrint = true),
       )
 
   case PrintTop
@@ -118,6 +137,7 @@ enum Flag(
         "",
         "Print the top of the stack",
         "Default behavior",
+        Flag.setPrintMode(EndPrintMode.Default),
         Some(FlagCategory.EndPrintMode),
         hidden = true,
       )
@@ -127,6 +147,7 @@ enum Flag(
         "print-join-newlines",
         "Print top of stack joined by newlines on end of execution",
         "Join top with newlines",
+        Flag.setPrintMode(EndPrintMode.JoinNewlines),
         Some(FlagCategory.EndPrintMode),
       )
   case PrintSum
@@ -135,6 +156,7 @@ enum Flag(
         "print-sum",
         "Sum/concatenate top of stack on end of execution",
         "Sum/concatenate top",
+        Flag.setPrintMode(EndPrintMode.Sum),
         Some(FlagCategory.EndPrintMode),
       )
   case PrintDeepSum
@@ -143,6 +165,7 @@ enum Flag(
         "print-deep-sum",
         "Print deep sum of top of stack on end of execution",
         "Deep sum of top",
+        Flag.setPrintMode(EndPrintMode.DeepSum),
         Some(FlagCategory.EndPrintMode),
       )
   case PrintJoinSpaces
@@ -151,6 +174,7 @@ enum Flag(
         "print-join-spaces",
         "Print top of stack joined by spaces on end of execution",
         "Join top with spaces",
+        Flag.setPrintMode(EndPrintMode.JoinSpaces),
         Some(FlagCategory.EndPrintMode),
       )
   case PrintNone
@@ -159,6 +183,7 @@ enum Flag(
         "disable-implicit-output",
         "Disable implicit output",
         "No implicit output",
+        Flag.setPrintMode(EndPrintMode.None),
         Some(FlagCategory.EndPrintMode),
       )
   case PrintForce
@@ -167,6 +192,7 @@ enum Flag(
         "force-implicit-output",
         "Force implicit output",
         "Force implicit output",
+        Flag.setPrintMode(EndPrintMode.Force),
         Some(FlagCategory.EndPrintMode),
       )
   case PrintLength
@@ -175,6 +201,7 @@ enum Flag(
         "print-length",
         "Print length of top of stack on end of execution",
         "Length of top",
+        Flag.setPrintMode(EndPrintMode.Length),
         Some(FlagCategory.EndPrintMode),
       )
   case PrintPretty
@@ -183,6 +210,7 @@ enum Flag(
         "print-pretty",
         "Pretty-print top of stack on end of execution",
         "Pretty-print top",
+        Flag.setPrintMode(EndPrintMode.Pretty),
         Some(FlagCategory.EndPrintMode),
       )
   case PrintMax
@@ -191,6 +219,7 @@ enum Flag(
         "print-max",
         "Print the maximum item of the top of stack on end of execution",
         "Maximum of top",
+        Flag.setPrintMode(EndPrintMode.Maximum),
         Some(FlagCategory.EndPrintMode),
       )
   case PrintMin
@@ -199,14 +228,7 @@ enum Flag(
         "print-min",
         "Print the minimum item of the top of the stack on end of execution",
         "Minimum of top",
-        Some(FlagCategory.EndPrintMode),
-      )
-  case PrintStackLength
-      extends Flag(
-        '!',
-        "print-stack-length",
-        "Print the length of the stack on end of execution",
-        "Length of stack",
+        Flag.setPrintMode(EndPrintMode.Minimum),
         Some(FlagCategory.EndPrintMode),
       )
   case PrintNot
@@ -215,6 +237,7 @@ enum Flag(
         "logical-not",
         "Logically negate the top of the stack on end of execution",
         "Logical negation of top",
+        Flag.setPrintMode(EndPrintMode.LogicalNot),
         Some(FlagCategory.EndPrintMode),
       )
   case WrapStack
@@ -223,6 +246,21 @@ enum Flag(
         "wrap-stack",
         "Pop everything off the stack, wrap it in a list, and push that onto the stack",
         "Wrap stack",
-        Some(FlagCategory.EndPrintMode),
+        _.copy(wrapStack = true),
       )
 end Flag
+
+object Flag:
+  /** Modify the given settings by applying all of the given flags */
+  def applyFlags(flags: Seq[Flag], settings: Settings): Settings =
+    flags.foldLeft(settings) { (settings, flag) => flag.action(settings) }
+
+  /** Get the flag with the given short form */
+  def from(short: Char): Flag =
+    Flag.values.find(_.short == short) match
+      case Some(flag) => flag
+      case None => throw VyxalException(s"Invalid flag: '$short'")
+
+  /** Helper to create flags that set end print mode */
+  private def setPrintMode(mode: EndPrintMode)(settings: Settings) =
+    settings.copy(endPrintMode = mode)
