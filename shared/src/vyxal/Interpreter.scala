@@ -44,8 +44,7 @@ object Interpreter:
       ctx.globals.extensions = extensions
       execute(ast)
       if !ctx.globals.printed && !ctx.testMode then
-        if ctx.settings.wrapStack then
-          ctx.wrap()
+        if ctx.settings.wrapStack then ctx.wrap()
 
         if ctx.settings.endPrintMode == EndPrintMode.Default then
           vyPrintln(ctx.pop())
