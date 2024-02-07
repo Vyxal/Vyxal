@@ -194,19 +194,15 @@ case class Settings(
       case PrintPretty => this.copy(endPrintMode = EndPrintMode.Pretty)
       case PrintMax => this.copy(endPrintMode = EndPrintMode.Maximum)
       case PrintMin => this.copy(endPrintMode = EndPrintMode.Minimum)
-      case PrintSumAll => this.copy(endPrintMode = EndPrintMode.SumStack)
       case PrintStackLength =>
         this.copy(endPrintMode = EndPrintMode.LengthStack)
-      case PrintAllJoinNothing =>
-        this.copy(endPrintMode = EndPrintMode.JoinNothing)
-      case PrintAllJoinSpaces =>
-        this.copy(endPrintMode = EndPrintMode.SpaceStack)
       case PrintNot => this.copy(endPrintMode = EndPrintMode.LogicalNot)
+      case WrapStack => this.copy()
     end match
   end withFlag
 
   def withFlag(flag: Char): Settings =
-    Flag.flags.find(_.short == flag) match
+    Flag.values.find(_.short == flag) match
       case Some(f) => withFlag(f)
       case None => throw VyxalException(s"$flag is an invalid flag")
 

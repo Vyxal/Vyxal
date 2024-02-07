@@ -51,7 +51,7 @@ enum Flag(
         "Default behavior",
         "Default behavior",
         Some(FlagCategory.RangeBehavior),
-        true,
+        hidden = true,
       )
   case RangeStart0
       extends Flag(
@@ -98,7 +98,7 @@ enum Flag(
         "Make the default arity of lambdas 1",
         "1",
         Some(FlagCategory.DefaultArity),
-        true,
+        hidden = true,
       )
   case Arity2
       extends Flag(
@@ -131,7 +131,7 @@ enum Flag(
         "Print the top of the stack",
         "Default behavior",
         Some(FlagCategory.EndPrintMode),
-        true,
+        hidden = true,
       )
   case PrintJoinNewlines
       extends Flag(
@@ -193,7 +193,7 @@ enum Flag(
       extends Flag(
         '§',
         "print-pretty",
-        "Print top of stack pretty-printed on end of execution",
+        "Pretty-print top of stack on end of execution",
         "Pretty-print top",
         Some(FlagCategory.EndPrintMode),
       )
@@ -213,38 +213,12 @@ enum Flag(
         "Minimum of top",
         Some(FlagCategory.EndPrintMode),
       )
-  // case PrintAll extends Flag('W', "print-all", "Print the entire stack on end of execution", "All the stack", Some(FlagCategory.EndPrintMode))
-  case PrintSumAll
-      extends Flag(
-        'Ṫ',
-        "print-sum-all",
-        "Print the sum of the entire stack",
-        "Sum of stack",
-        Some(FlagCategory.EndPrintMode),
-      )
   case PrintStackLength
       extends Flag(
         '!',
         "print-stack-length",
         "Print the length of the stack on end of execution",
         "Length of stack",
-        Some(FlagCategory.EndPrintMode),
-      )
-  case PrintAllJoinSpaces
-      extends Flag(
-        'ṡ',
-        "print-all-join-spaces",
-        "Print the entire stack, joined on spaces",
-        "Join stack with spaces",
-        Some(FlagCategory.EndPrintMode),
-      )
-  // case PrintAllJoinNewlines extends Flag('J', "print-all-join-newlines", "Print the entire stack, separated by newlines", "Join stack with newlines", Some(FlagCategory.EndPrintMode))
-  case PrintAllJoinNothing
-      extends Flag(
-        'N',
-        "print-all-join-nothing",
-        "Print the entire stack, concatenated",
-        "Join stack with nothing",
         Some(FlagCategory.EndPrintMode),
       )
   case PrintNot
@@ -255,42 +229,14 @@ enum Flag(
         "Logical negation of top",
         Some(FlagCategory.EndPrintMode),
       )
-end Flag
-
-object Flag:
-  val flags = Seq(
-    Trace,
-    Preset100,
-    Literate,
-    RangeNone,
-    RangeStart0,
-    RangeEndExcl,
-    RangeProgrammery,
-    InputAsStrings,
-    NumbersAsRanges,
-    Arity1,
-    Arity2,
-    Arity3,
-    LimitOutput,
-    PrintTop,
-    PrintJoinNewlines,
-    PrintSum,
-    PrintDeepSum,
-    PrintJoinSpaces,
-    PrintNone,
-    PrintForce,
-    PrintLength,
-    PrintPretty,
-    PrintMax,
-    PrintMin,
-    // PrintAll,
-    PrintSumAll,
-    PrintStackLength,
-    PrintAllJoinSpaces,
-    // PrintAllJoinNewlines,
-    PrintAllJoinNothing,
-    PrintNot,
-  )
+  case WrapStack
+      extends Flag(
+        'W',
+        "wrap-stack",
+        "Pop everything off the stack, wrap it in a list, and push that onto the stack",
+        "Wrap stack",
+        Some(FlagCategory.EndPrintMode),
+      )
 end Flag
 
 object CLI:
@@ -490,13 +436,11 @@ object CLI:
           .action((input, cfg) => cfg.copy(inputs = cfg.inputs :+ input))
           .text("Input to the program"),
       ) ++
-        Flag.flags.filterNot(_.hidden).map {
-          case (f: Flag) => opt[Unit](f.short, f.long)
-              .action((_, cfg) =>
-                cfg.copy(settings = cfg.settings.withFlag(f.short))
-              )
-              .text(f.helpText)
-              .optional()
+        Flag.values.filterNot(_.hidden).map { f =>
+          opt[Unit](f.short, f.long)
+            .action((_, cfg) => cfg.copy(settings = cfg.settings.withFlag(f)))
+            .text(f.helpText)
+            .optional()
         })*
     )
   end parser
