@@ -125,7 +125,10 @@ object VyxalTests:
       inputs = inputs,
       testMode = true,
       globals = Globals(settings =
-        Flag.applyFlags(flags.map(Flag.from), Settings(endPrintMode = EndPrintMode.None))
+        Flag.applyFlags(
+          flags.map(Flag.from),
+          Settings(endPrintMode = EndPrintMode.None),
+        )
       ),
     )
 
