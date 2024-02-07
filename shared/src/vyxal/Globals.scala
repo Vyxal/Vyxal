@@ -165,35 +165,50 @@ case class Settings(
     * @return
     *   An updated `Settings` object
     */
-  def withFlag(flag: Char): Settings =
+  def withFlag(flag: Flag): Settings =
+    import Flag.*
     flag match
-      case 'H' => this.copy(presetStack = true)
-      case 'j' => this.copy(endPrintMode = EndPrintMode.JoinNewlines)
-      case 's' => this.copy(endPrintMode = EndPrintMode.Sum)
-      case 'M' => this.copy(rangeStart = 0)
-      case 'm' => this.copy(rangeOffset = -1)
-      case 'Ṁ' => this.copy(rangeStart = 0, rangeOffset = -1)
-      case 'l' => this.copy(literate = true)
-      case '§' => this.copy(endPrintMode = EndPrintMode.Pretty)
-      case 'd' => this.copy(endPrintMode = EndPrintMode.DeepSum)
-      case 'O' => this.copy(endPrintMode = EndPrintMode.None)
-      case 'o' => this.copy(endPrintMode = EndPrintMode.Force)
-      case '!' => this.copy(endPrintMode = EndPrintMode.LengthStack)
-      case 'G' => this.copy(endPrintMode = EndPrintMode.Maximum)
-      case 'g' => this.copy(endPrintMode = EndPrintMode.Minimum)
-      case 'S' => this.copy(endPrintMode = EndPrintMode.JoinSpaces)
-      case 'N' => this.copy(endPrintMode = EndPrintMode.JoinNothing)
-      case 'Ṫ' => this.copy(endPrintMode = EndPrintMode.SumStack)
-      case 'ṡ' => this.copy(endPrintMode = EndPrintMode.SpaceStack)
-      case 'L' => this.copy(endPrintMode = EndPrintMode.Length)
-      case 'R' => this.copy(rangify = true)
-      case 'X' => this.copy(fullTrace = true)
-      case '2' => this.copy(defaultArity = 2)
-      case '3' => this.copy(defaultArity = 3)
-      case '¬' => this.copy(endPrintMode = EndPrintMode.LogicalNot)
-      case '…' => this.copy(limitPrint = true)
-      case 'Ṡ' => this.copy(dontEvalInputs = true)
-      case _ => throw VyxalException(s"$flag is an invalid flag")
+      case Trace => this.copy(fullTrace = true)
+      case Preset100 => this.copy(presetStack = true)
+      case Literate => this.copy(literate = true)
+      case RangeNone => this
+      case RangeStart0 => this.copy(rangeStart = 0)
+      case RangeEndExcl => this.copy(rangeOffset = -1)
+      case RangeProgrammery => this.copy(rangeStart = 0, rangeOffset = -1)
+      case InputAsStrings => this.copy(dontEvalInputs = true)
+      case NumbersAsRanges => this.copy(rangify = true)
+      case Arity1 => this.copy(defaultArity = 1)
+      case Arity2 => this.copy(defaultArity = 2)
+      case Arity3 => this.copy(defaultArity = 3)
+      case LimitOutput => this.copy(limitPrint = true)
+
+      case PrintTop => this.copy(endPrintMode = EndPrintMode.Default)
+      case PrintJoinNewlines =>
+        this.copy(endPrintMode = EndPrintMode.JoinNewlines)
+      case PrintSum => this.copy(endPrintMode = EndPrintMode.Sum)
+      case PrintDeepSum => this.copy(endPrintMode = EndPrintMode.DeepSum)
+      case PrintJoinSpaces => this.copy(endPrintMode = EndPrintMode.JoinSpaces)
+      case PrintNone => this.copy(endPrintMode = EndPrintMode.None)
+      case PrintForce => this.copy(endPrintMode = EndPrintMode.Force)
+      case PrintLength => this.copy(endPrintMode = EndPrintMode.Length)
+      case PrintPretty => this.copy(endPrintMode = EndPrintMode.Pretty)
+      case PrintMax => this.copy(endPrintMode = EndPrintMode.Maximum)
+      case PrintMin => this.copy(endPrintMode = EndPrintMode.Minimum)
+      case PrintSumAll => this.copy(endPrintMode = EndPrintMode.SumStack)
+      case PrintStackLength =>
+        this.copy(endPrintMode = EndPrintMode.LengthStack)
+      case PrintAllJoinNothing =>
+        this.copy(endPrintMode = EndPrintMode.JoinNothing)
+      case PrintAllJoinSpaces =>
+        this.copy(endPrintMode = EndPrintMode.SpaceStack)
+      case PrintNot => this.copy(endPrintMode = EndPrintMode.LogicalNot)
+    end match
+  end withFlag
+
+  def withFlag(flag: Char): Settings =
+    Flag.flags.find(_.short == flag) match
+      case Some(f) => withFlag(f)
+      case None => throw VyxalException(s"$flag is an invalid flag")
 
   /** Helper to update these settings with multiple flags
     *

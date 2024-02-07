@@ -1083,6 +1083,7 @@ object Elements:
       ),
       false,
       "a: lst, b: num -> a[b]",
+      "a: num, b: num -> b[x] for x in a",
       "a: lst, b: lst -> a[_] for _ in b",
       "a: str, b: lst[num] -> ''.join(a[i] for i in b)",
       "a: str, b: lst[any] -> x[a] for x in b",
@@ -4002,6 +4003,42 @@ object Elements:
     ) {
       case a: VNum => VNum(spire.math.Real.e) **
           (VNum.complex(0, 2) * VNum(spire.math.Real.pi) / a)
+    },
+    addPart(
+      Monad,
+      "∆A",
+      "Arithmetic Mean",
+      List("mean", "arithmetic-mean"),
+      false,
+      "a: lst[num] => arithmetic mean of a (sum(a) / len(a))",
+    ) {
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        a.map(_.asInstanceOf[VNum]).sum / a.length
+      case a: VNum => a
+    },
+    addPart(
+      Monad,
+      "∆G",
+      "Geometric Mean",
+      List("geometric-mean"),
+      false,
+      "a: lst[num] => geometric mean of a (prod(a) ** (1 / len(a)))",
+    ) {
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        a.map(_.asInstanceOf[VNum]).product ** (1 / VNum(a.length))
+      case a: VNum => a
+    },
+    addPart(
+      Monad,
+      "∆H",
+      "Harmonic Mean",
+      List("harmonic-mean"),
+      false,
+      "a: lst[num] => harmonic mean of a (len(a) / sum(1 / a))",
+    ) {
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        a.length / a.map(_.asInstanceOf[VNum]).map(1 / _).sum
+      case a: VNum => a
     },
   )
 
