@@ -126,11 +126,10 @@ enum EndPrintMode:
 
   /** Print something to do with stack */
   case LengthStack
-  case SumStack
-  case SpaceStack
+
+  case Force
 
   /** Don't print anything - disable implicit output */
-  case Force
   case None
 end EndPrintMode
 
