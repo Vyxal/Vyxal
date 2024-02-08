@@ -20,6 +20,11 @@ case class VToken(
 
   override def toString: String = s"$tokenType(\"$value\")"
 
+case class CommonToken(
+    tokenType: VTokenType,
+    value: String,
+    range: VRange,
+)
 object VToken:
   def empty: VToken = VToken(VTokenType.Empty, "", VRange.fake)
 
@@ -178,6 +183,9 @@ abstract class VexerCommon:
       range: VRange,
   ): Unit
 
+  private def addToken(tok: CommonToken): Unit =
+    addToken(tok.tokenType, tok.value, tok.range)
+
   protected def pop(n: Int = 1): String =
     val res = StringBuilder()
     for _ <- 0 until n do res ++= s"${programStack.pop()}"
@@ -272,7 +280,7 @@ abstract class VexerCommon:
       for c <- params.reverse do programStack.push(c)
       index -= popped.length
     else
-      extractParamters(popped.toString(), start)
+      for tok <- extractParamters(popped.toString(), start) do addToken(tok)
       addToken(
         VTokenType.Branch,
         "|",
@@ -282,14 +290,14 @@ abstract class VexerCommon:
     return params
   end lambdaParameters
 
-  protected def extractParamters(popped: String, start: Int): Seq[VToken] =
+  protected def extractParamters(popped: String, start: Int): Seq[CommonToken] =
     val params = popped.split(',')
-    val tokens = ArrayBuffer[VToken]()
+    val tokens = ArrayBuffer[CommonToken]()
     for param <- params do
       val paramStart = start + popped.indexOf(param)
       val paramEnd = paramStart + param.length
       tokens +=
-        VToken(
+        CommonToken(
           VTokenType.Param,
           toValidParam(param),
           VRange(paramStart, paramEnd),
@@ -337,5 +345,6 @@ abstract class VexerCommon:
     return arity
   end calcArity
 end VexerCommon
+
 def Codepage: String = """⎂⇝∯⊠ß≟₾◌⋊
 ϩэЧ♳♴♵♶∥∦¿⎇↻⊙⁙∩∪⊕⊝⚇῟⚃ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊικȧḃċḋėḟġḣŀṁṅȯṗṙṡṫẋƒΘΦ§ẠḄḌḤỊḶṂṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«»⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λƛΩ₳µ∆øÞ½ʀɾ¯×÷£¥←↑→↓±¤†Π¬∧∨⁰¹²⌈⌊Ɠɠı┉„”ð€“¶ᶿᶲ•≈⌙‹›"""
