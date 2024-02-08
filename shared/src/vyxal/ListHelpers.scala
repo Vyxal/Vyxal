@@ -1110,6 +1110,8 @@ object ListHelpers:
     else VList.from(zeros ++ temp)
 
   def truthyIndices(lst: VList): VList =
-    VList.from(lst.zipWithIndex.filter { case (v, idx) => v.toBool }.map { case (_, idx) => VNum(idx) })
+    VList.from(lst.zipWithIndex.filter { case (v, idx) => v.toBool }.map {
+      case (_, idx) => VNum(idx)
+    })
 
 end ListHelpers

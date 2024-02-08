@@ -4046,8 +4046,8 @@ object Elements:
       "Indices Where Truthy",
       List("where", "where-truthy", "indices-truthy", "indices-where-truthy"),
       false,
-      "a: lst => indices of truthy elements of a"
-    ) { a => ListHelpers.truthyIndices(ListHelpers.makeIterable(a)) }
+      "a: lst => indices of truthy elements of a",
+    ) { a => ListHelpers.truthyIndices(ListHelpers.makeIterable(a)) },
   )
 
   private def execHelper(value: VAny)(using ctx: Context): VAny =
