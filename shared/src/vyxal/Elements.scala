@@ -4040,6 +4040,14 @@ object Elements:
         a.length / a.map(_.asInstanceOf[VNum]).map(1 / _).sum
       case a: VNum => a
     },
+    addFull(
+      Monad,
+      "ÞỊ",
+      "Indices Where Truthy",
+      List("where", "where-truthy", "indices-truthy", "indices-where-truthy"),
+      false,
+      "a: lst => indices of truthy elements of a"
+    ) { a => ListHelpers.truthyIndices(ListHelpers.makeIterable(a)) }
   )
 
   private def execHelper(value: VAny)(using ctx: Context): VAny =
