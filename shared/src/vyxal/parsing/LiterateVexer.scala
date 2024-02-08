@@ -9,8 +9,8 @@ import vyxal.UnopenedGroupException
 import scala.collection.mutable.ArrayBuffer
 
 class LiterateVexer extends VexerCommon:
-  def headIsOpener: Boolean = 
-    
+  def headIsOpener: Boolean = ???
+
   def headIsBranch: Boolean = false // TODO: Implement
   def headIsCloser: Boolean = false // TODO: Implement
   private val literateKeywords = Elements.elements.values.flatMap(_.keywords)
@@ -28,7 +28,7 @@ class LiterateVexer extends VexerCommon:
     ";;" -> ((range) => VLitToken(TetradicModifier, "♶", range)),
   )
 
-    private val endKeywords = List(
+  private val endKeywords = List(
     "endfor",
     "end-for",
     "endwhile",
