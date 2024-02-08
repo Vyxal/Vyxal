@@ -271,6 +271,7 @@
  <code>Þṅ</code> |  | Multi-Set Difference | `multi-set-difference`, `multi-set-diff` | 2 | :x: | <code>a: lst, b: lst </code> => <code> multi-set difference of a and b</code>
  <code>Þȯ</code> |  | Grid Neighbours (Diagonals) | `grid-neighbours-diagonals`, `grid-neighbors-diagonals`, `adjacent-cells-diagonals`, `adj-cells-diagonals`, `surrounding-cells-diagonals`, `eight-cells` | 1 | :x: | <code>a: lst[lst] </code> => <code> Grid neighbours of a - up, down, left, right, diagonals</code><br><code>a: lst[lst], b: num </code> => <code> Grid neighbours of a - right, down, left, up of a and start from direction b => 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does</code>
  <code>ÞẠ</code> |  | Multidimensional Assignment | `md-assign` | 3 | :x: | <code>a: lst, b: lst[num], c: any </code> => <code> a[b[0]][b[1]]...[b[n]] = c</code>
+ <code>ÞỊ</code> |  | Indices Where Truthy | `where`, `where-truthy`, `indices-truthy`, `indices-where-truthy` | 1 | :x: | <code>a: lst => indices of truthy elements of a</code>
  <code>ÞṂ</code> |  | Matrix Inverse | `matrix-inverse` | 1 | :white_check_mark: | <code>a: lst[lst] </code> => <code> matrix inverse of a</code>
  <code>ÞṆ</code> |  | Set of Natural Numbers | `NN` | 0 | :x: | <code></code> => <code> The set of all natural numbers</code>
  <code>ÞṬ</code> |  | Set of Integers | `ZZ` | 0 | :x: | <code></code> => <code> The set of all integers</code>
