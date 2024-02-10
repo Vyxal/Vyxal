@@ -196,7 +196,7 @@ abstract class VexerCommon:
   protected def headEqual(c: String): Boolean =
     programStack.nonEmpty && programStack.head == c
   protected def headLookaheadEqual(s: String): Boolean =
-    programStack.length >= s.length &&
+    programStack.mkString.length >= s.length &&
       programStack.slice(0, s.length).mkString == s
   protected def headLookaheadMatch(s: String): Boolean =
     programStack.nonEmpty &&
@@ -345,6 +345,87 @@ abstract class VexerCommon:
     while safeCheck(c => c.head.isLetterOrDigit || c == "_") do
       name ++= s"${pop()}"
     name.toString()
+
+  protected def getVariableToken: Unit =
+    val rangeStart = index
+    val name = simpleName()
+    tokens +=
+      VToken(
+        VTokenType.GetVar,
+        name,
+        VRange(rangeStart, index),
+      )
+
+  protected def setVariableToken: Unit =
+    val rangeStart = index
+    val name = simpleName()
+    tokens +=
+      VToken(
+        VTokenType.SetVar,
+        name,
+        VRange(rangeStart, index),
+      )
+
+  protected def setConstantToken: Unit =
+    val rangeStart = index
+    val name = simpleName()
+    tokens +=
+      VToken(
+        VTokenType.Constant,
+        name,
+        VRange(rangeStart, index),
+      )
+
+  protected def augmentedAssignToken: Unit =
+    val rangeStart = index
+    val name = simpleName()
+    tokens +=
+      VToken(
+        VTokenType.AugmentVar,
+        name,
+        VRange(rangeStart, index),
+      )
+
+  protected def originalCommandToken: Unit =
+    val rangeStart = index
+    val command = pop()
+    tokens +=
+      VToken(
+        VTokenType.OriginalSymbol,
+        command,
+        VRange(rangeStart, index),
+      )
+
+  protected def commandSymbolToken: Unit =
+    val rangeStart = index
+    val command = pop()
+    tokens +=
+      VToken(
+        VTokenType.ElementSymbol,
+        command,
+        VRange(rangeStart, index),
+      )
+
+  protected def modifierSymbolToken: Unit =
+    val rangeStart = index
+    val command = pop()
+    tokens +=
+      VToken(
+        VTokenType.ModifierSymbol,
+        command,
+        VRange(rangeStart, index),
+      )
+
+  protected def defineRecordToken: Unit =
+    val rangeStart = index
+    eatWhitespace()
+    val name = simpleName()
+    tokens +=
+      VToken(
+        VTokenType.DefineRecord,
+        name,
+        VRange(rangeStart, index),
+      )
 end VexerCommon
 
 def Codepage: String = """⎂⇝∯⊠ß≟₾◌⋊

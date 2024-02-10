@@ -61,16 +61,34 @@ class SBCSVexer extends VexerCommon:
         quickToken(VTokenType.SpecialModifier, s"${programStack.head}")
       else if headEqual("|") then quickToken(VTokenType.Branch, "|")
       else if headEqual("¤") then contextIndexToken
-      else if headLookaheadEqual("#$") then getVariableToken
-      else if headLookaheadEqual("#=") then setVariableToken
+      else if headLookaheadEqual("#$") then
+        pop(2)
+        getVariableToken
+      else if headLookaheadEqual("#=") then
+        pop(2)
+        setVariableToken
       else if headLookaheadEqual("#!") then setConstantToken
-      else if headLookaheadEqual("#>") then augmentedAssignToken
-      else if headLookaheadEqual("#:~") then originalCommandToken
-      else if headLookaheadEqual("#:@") then commandSymbolToken
-      else if headLookaheadEqual("#:=") then modifierSymbolToken
-      else if headLookaheadEqual("#::R") then defineRecordToken
-      else if headLookaheadEqual("#::+") then defineExtensionToken
-      else if headLookaheadMatch("#::[EM]") then customDefinitionToken
+      else if headLookaheadEqual("#>") then
+        pop(2)
+        augmentedAssignToken
+      else if headLookaheadEqual("#:~") then
+        pop(3)
+        originalCommandToken
+      else if headLookaheadEqual("#:@") then
+        pop(3)
+        commandSymbolToken
+      else if headLookaheadEqual("#:=") then
+        pop(3)
+        modifierSymbolToken
+      else if headLookaheadEqual("#::R") then
+        pop(4)
+        defineRecordToken
+      else if headLookaheadEqual("#::+") then
+        pop(4)
+        defineExtensionToken
+      else if headLookaheadMatch("#::[EM]") then
+        pop(4)
+        customDefinitionToken
       else if headEqual("}") then quickToken(VTokenType.StructureClose, "}")
       else if headEqual(")") then
         quickToken(VTokenType.StructureDoubleClose, ")")
@@ -217,95 +235,6 @@ class SBCSVexer extends VexerCommon:
       VToken(
         VTokenType.ContextIndex,
         value,
-        VRange(rangeStart, index),
-      )
-
-  private def getVariableToken: Unit =
-    val rangeStart = index
-    pop(2)
-    val name = simpleName()
-    tokens +=
-      VToken(
-        VTokenType.GetVar,
-        name,
-        VRange(rangeStart, index),
-      )
-
-  private def setVariableToken: Unit =
-    val rangeStart = index
-    pop(2)
-    val name = simpleName()
-    tokens +=
-      VToken(
-        VTokenType.SetVar,
-        name,
-        VRange(rangeStart, index),
-      )
-
-  private def setConstantToken: Unit =
-    val rangeStart = index
-    pop(2)
-    val name = simpleName()
-    tokens +=
-      VToken(
-        VTokenType.Constant,
-        name,
-        VRange(rangeStart, index),
-      )
-
-  private def augmentedAssignToken: Unit =
-    val rangeStart = index
-    pop(2)
-    val name = simpleName()
-    tokens +=
-      VToken(
-        VTokenType.AugmentVar,
-        name,
-        VRange(rangeStart, index),
-      )
-
-  private def originalCommandToken: Unit =
-    val rangeStart = index
-    eat("#:~")
-    val command = pop()
-    tokens +=
-      VToken(
-        VTokenType.OriginalSymbol,
-        command,
-        VRange(rangeStart, index),
-      )
-
-  private def commandSymbolToken: Unit =
-    val rangeStart = index
-    eat("#:@")
-    val command = pop()
-    tokens +=
-      VToken(
-        VTokenType.ElementSymbol,
-        command,
-        VRange(rangeStart, index),
-      )
-
-  private def modifierSymbolToken: Unit =
-    val rangeStart = index
-    eat("#:`")
-    val command = pop()
-    tokens +=
-      VToken(
-        VTokenType.ModifierSymbol,
-        command,
-        VRange(rangeStart, index),
-      )
-
-  private def defineRecordToken: Unit =
-    val rangeStart = index
-    eat("#::R")
-    eatWhitespace()
-    val name = simpleName()
-    tokens +=
-      VToken(
-        VTokenType.DefineRecord,
-        name,
         VRange(rangeStart, index),
       )
 

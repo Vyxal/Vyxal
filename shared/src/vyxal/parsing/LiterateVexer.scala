@@ -148,7 +148,21 @@ class LiterateVexer extends VexerCommon:
         quickToken(VTokenType.StructureDoubleClose, ")")
       else if closeAllKeywords.contains(programStack.head) then
         quickToken(VTokenType.StructureAllClose, "]")
-      else if headEqual("$") then getVariableToken
+      else if headLookaheadMatch("$[^@:]") then
+        pop()
+        getVariableToken
+      else if headEqual(":=") then
+        pop(2)
+        setVariableToken
+      else if headEqual(":!=") then
+        pop(3)
+        setConstantToken
+      else if headEqual(":>") then
+        pop(2)
+        augmentedAssignToken
+      else if headEqual("$@") then
+        pop(2)
+        commandSymbolToken
     end while
     // Flatten _tokens into tokens
     for token <- _tokens do
@@ -290,16 +304,5 @@ class LiterateVexer extends VexerCommon:
     val numberVal = StringBuilder()
     while safeCheck(c => c.head.isDigit) do numberVal ++= s"${pop()}"
     numberVal.toString()
-
-  private def getVariableToken: Unit =
-    val rangeStart = index
-    pop()
-    val name = simpleName()
-    tokens +=
-      VToken(
-        VTokenType.GetVar,
-        name,
-        VRange(rangeStart, index),
-      )
 
 end LiterateVexer
