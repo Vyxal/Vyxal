@@ -338,6 +338,13 @@ abstract class VexerCommon:
 
     return arity
   end calcArity
+
+  protected def simpleName(): String =
+    val name = StringBuilder()
+    if headLookaheadEqual("_") then name ++= pop()
+    while safeCheck(c => c.head.isLetterOrDigit || c == "_") do
+      name ++= s"${pop()}"
+    name.toString()
 end VexerCommon
 
 def Codepage: String = """⎂⇝∯⊠ß≟₾◌⋊

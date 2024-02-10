@@ -8,6 +8,8 @@ import vyxal.UnopenedGroupException
 
 import scala.collection.mutable.ArrayBuffer
 
+import sttp.client4.quick
+
 class LiterateVexer extends VexerCommon:
   def headIsOpener: Boolean = ???
 
@@ -65,10 +67,9 @@ class LiterateVexer extends VexerCommon:
   )
 
   /** Map keywords to their token types */
-  private val keywords = Map(
+  private val closeAllKeywords = Map(
     "close-all" -> VTokenType.StructureAllClose,
     "end-all" -> VTokenType.StructureAllClose,
-    "end-end" -> VTokenType.StructureDoubleClose,
   )
 
   private val lambdaOpeners = Map(
@@ -135,11 +136,19 @@ class LiterateVexer extends VexerCommon:
           )
           eat(")")
         else throw new UnopenedGroupException(index)
-      else if headEqual("{") then lambdaTokens
       else if headIsWhitespace then pop(1)
       else if structOpeners.contains(programStack.head) then
         quickToken(VTokenType.StructureOpen, structOpeners(pop()).open)
-      else if lambdaOpeners.contains(programStack.head) then lambdaTokens
+      else if headEqual("{") || lambdaOpeners.contains(programStack.head) then
+        quickToken(VTokenType.StructureOpen, "λ")
+        lambdaParameters
+      else if endKeywords.contains(programStack.head) then
+        quickToken(VTokenType.StructureClose, "}")
+      else if headEqual("end-end") then
+        quickToken(VTokenType.StructureDoubleClose, ")")
+      else if closeAllKeywords.contains(programStack.head) then
+        quickToken(VTokenType.StructureAllClose, "]")
+      else if headEqual("$") then getVariableToken
     end while
     // Flatten _tokens into tokens
     for token <- _tokens do
@@ -282,6 +291,15 @@ class LiterateVexer extends VexerCommon:
     while safeCheck(c => c.head.isDigit) do numberVal ++= s"${pop()}"
     numberVal.toString()
 
-  private def lambdaTokens: Unit = ???
+  private def getVariableToken: Unit =
+    val rangeStart = index
+    pop()
+    val name = simpleName()
+    tokens +=
+      VToken(
+        VTokenType.GetVar,
+        name,
+        VRange(rangeStart, index),
+      )
 
 end LiterateVexer

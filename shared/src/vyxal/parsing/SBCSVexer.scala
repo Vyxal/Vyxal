@@ -264,13 +264,6 @@ class SBCSVexer extends VexerCommon:
         VRange(rangeStart, index),
       )
 
-  private def simpleName(): String =
-    val name = StringBuilder()
-    if headLookaheadEqual("_") then name ++= pop()
-    while safeCheck(c => c.head.isLetterOrDigit || c == "_") do
-      name ++= s"${pop()}"
-    name.toString()
-
   private def originalCommandToken: Unit =
     val rangeStart = index
     eat("#:~")
