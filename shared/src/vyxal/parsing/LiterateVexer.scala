@@ -137,6 +137,9 @@ class LiterateVexer extends VexerCommon:
         else throw new UnopenedGroupException(index)
       else if headEqual("{") then lambdaTokens
       else if headIsWhitespace then pop(1)
+      else if structOpeners.contains(programStack.head) then
+        quickToken(VTokenType.StructureOpen, structOpeners(pop()).open)
+      else if lambdaOpeners.contains(programStack.head) then lambdaTokens
     end while
     // Flatten _tokens into tokens
     for token <- _tokens do
@@ -183,17 +186,7 @@ class LiterateVexer extends VexerCommon:
         case 4 => VTokenType.TetradicModifier
         case _ => VTokenType.SpecialModifier
       addToken(VLitToken(tokenType, name, VRange(start, index)))
-    else if Set("lam", "lambda", "{", "λ").contains(value) then lambdaTokens
-    else
-      for char <- value do
-        addToken(
-          VLitToken(
-            Command,
-            char.toString,
-            VRange(index, index + 1),
-          )
-        )
-        index += 1
+    else programStack.push(value)
     end if
   end keywordToken
 
