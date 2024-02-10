@@ -10,9 +10,9 @@ class SBCSVexer extends VexerCommon:
       headLookaheadEqual("#{") || headLookaheadEqual("#::R") ||
       headLookaheadEqual("#::+") || headLookaheadMatch("#::[EM]")
 
-  def headIsBranch: Boolean = headEqual('|')
+  def headIsBranch: Boolean = headEqual("|")
 
-  def headIsCloser: Boolean = headEqual('}')
+  def headIsCloser: Boolean = headEqual("}")
 
   def addToken(
       tokenType: VTokenType,
@@ -21,20 +21,20 @@ class SBCSVexer extends VexerCommon:
   ): Unit = tokens += VToken(tokenType, value, range)
 
   def lex(program: String): Seq[VToken] =
-    programStack.pushAll(program.reverse)
+    programStack.pushAll(program.reverse.map(_.toString))
 
     while programStack.nonEmpty do
-      if headIsDigit || headEqual('.') then numberToken
+      if headIsDigit || headEqual(".") then numberToken
       else if headIsWhitespace then pop(1)
-      else if headEqual('"') then stringToken
-      else if headEqual('\'') then oneCharStringToken
-      else if headEqual('῟') then twoCharStringToken
-      else if headEqual('⚇') then twoCharNumberToken
+      else if headEqual("\"") then stringToken
+      else if headEqual("'") then oneCharStringToken
+      else if headEqual("῟") then twoCharStringToken
+      else if headEqual("⚇") then twoCharNumberToken
       else if headIn("∆øÞ") || headLookaheadMatch("""#[^\[\]$!=#>@{:.,^]""")
       then digraphToken
       else if headLookaheadEqual("##") then
         pop(2)
-        while safeCheck(c => c != '\n' && c != '\r') do pop()
+        while safeCheck(c => c != "\n" && c != "\r") do pop()
       else if headLookaheadMatch("#[.,^]") then sugarTrigraph
       else if headLookaheadEqual("#[") then
         quickToken(VTokenType.ListOpen, "#[")
@@ -42,7 +42,7 @@ class SBCSVexer extends VexerCommon:
         quickToken(VTokenType.ListClose, "#]")
       else if headIn("[({ṆḌƛΩ₳µ") then
         quickToken(VTokenType.StructureOpen, s"${programStack.head}")
-      else if headEqual('λ') then
+      else if headEqual("λ") then
         quickToken(VTokenType.StructureOpen, "λ")
         lambdaParameters
       else if headLookaheadEqual("#{") then
@@ -59,8 +59,8 @@ class SBCSVexer extends VexerCommon:
         quickToken(VTokenType.TetradicModifier, s"${programStack.head}")
       else if headIn("⋊⊙") then
         quickToken(VTokenType.SpecialModifier, s"${programStack.head}")
-      else if headEqual('|') then quickToken(VTokenType.Branch, "|")
-      else if headEqual('¤') then contextIndexToken
+      else if headEqual("|") then quickToken(VTokenType.Branch, "|")
+      else if headEqual("¤") then contextIndexToken
       else if headLookaheadEqual("#$") then getVariableToken
       else if headLookaheadEqual("#=") then setVariableToken
       else if headLookaheadEqual("#!") then setConstantToken
@@ -71,10 +71,10 @@ class SBCSVexer extends VexerCommon:
       else if headLookaheadEqual("#::R") then defineRecordToken
       else if headLookaheadEqual("#::+") then defineExtensionToken
       else if headLookaheadMatch("#::[EM]") then customDefinitionToken
-      else if headEqual('}') then quickToken(VTokenType.StructureClose, "}")
-      else if headEqual(')') then
+      else if headEqual("}") then quickToken(VTokenType.StructureClose, "}")
+      else if headEqual(")") then
         quickToken(VTokenType.StructureDoubleClose, ")")
-      else if headEqual(']') then quickToken(VTokenType.StructureAllClose, "]")
+      else if headEqual("]") then quickToken(VTokenType.StructureAllClose, "]")
       else
         val rangeStart = index
         val char = pop()
@@ -93,14 +93,14 @@ class SBCSVexer extends VexerCommon:
   private def numberToken: Unit =
     val rangeStart = index
     // Check the single zero case
-    if headEqual('0') then
+    if headEqual("0") then
       val zeroToken = VToken(VTokenType.Number, "0", VRange(index, index))
       pop(1)
       tokens += zeroToken
     // Then the headless decimal case
-    else if headEqual('.') then
+    else if headEqual(".") then
       pop(1)
-      if safeCheck(c => c.isDigit) then
+      if safeCheck(c => c.head.isDigit) then
         val head = simpleNumber()
         val numberToken = VToken(
           VTokenType.Number,
@@ -119,11 +119,11 @@ class SBCSVexer extends VexerCommon:
       // Not a 0, and not a headless decimal, so it's a normal number
       val head = simpleNumber()
       // Test for a decimal tail
-      if headEqual('.') then
+      if headEqual(".") then
         pop(1)
-        if safeCheck(c => c.isDigit) then
+        if safeCheck(c => c.head.isDigit) then
           val tail = simpleNumber()
-          val isNegative = headEqual('_')
+          val isNegative = headEqual("_")
           val numberToken = VToken(
             VTokenType.Number,
             s"${if isNegative then pop() else ""}$head.$tail",
@@ -139,7 +139,7 @@ class SBCSVexer extends VexerCommon:
           tokens += numberToken
       // No decimal tail, so normal number
       else
-        val isNegative = headEqual('_')
+        val isNegative = headEqual("_")
         val numberToken = VToken(
           VTokenType.Number,
           (if isNegative then "_" else "") + head,
@@ -151,7 +151,7 @@ class SBCSVexer extends VexerCommon:
 
   private def simpleNumber(): String =
     val numberVal = StringBuilder()
-    while safeCheck(c => c.isDigit) do numberVal ++= s"${pop()}"
+    while safeCheck(c => c.head.isDigit) do numberVal ++= s"${pop()}"
     numberVal.toString()
 
   private def oneCharStringToken: Unit =
@@ -207,7 +207,7 @@ class SBCSVexer extends VexerCommon:
   private def sugarTrigraph: Unit =
     val trigraph = pop(3)
     val normal = SugarMap.trigraphs.getOrElse(trigraph, trigraph)
-    programStack.pushAll(normal.reverse)
+    programStack.pushAll(normal.reverse.map(_.toString))
 
   private def contextIndexToken: Unit =
     val rangeStart = index
@@ -267,7 +267,8 @@ class SBCSVexer extends VexerCommon:
   private def simpleName(): String =
     val name = StringBuilder()
     if headLookaheadEqual("_") then name ++= pop()
-    while safeCheck(c => c.isLetterOrDigit || c == '_') do name ++= s"${pop()}"
+    while safeCheck(c => c.head.isLetterOrDigit || c == "_") do
+      name ++= s"${pop()}"
     name.toString()
 
   private def originalCommandToken: Unit =
@@ -327,11 +328,11 @@ class SBCSVexer extends VexerCommon:
         name,
         VRange(rangeStart, index),
       )
-    if headEqual('|') then
+    if headEqual("|") then
       pop()
       // Get the arguments and put them into tokens
       var arity = 0
-      while !headEqual('|') do
+      while !headEqual("|") do
         val argNameStart = index
         val argName = simpleName()
         tokens +=

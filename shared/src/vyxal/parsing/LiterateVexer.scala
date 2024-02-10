@@ -113,29 +113,29 @@ class LiterateVexer extends VexerCommon:
   )
 
   def lex(program: String): Seq[VToken] =
-    programStack.pushAll(program.reverse)
+    programStack.pushAll(program.reverse.map(_.toString))
     while programStack.nonEmpty do
       if headIsDigit || headLookaheadMatch("-[1-9]") then numberToken
-      else if safeCheck(c => c.isLetter || "<>?!*+\\-=&%:@".contains(c)) then
-        keywordToken
-      else if headEqual('\'') then moveRightToken
-      else if headEqual('(') then
-        eat('(')
+      else if safeCheck(c => c.head.isLetter || "<>?!*+\\-=&%:@".contains(c))
+      then keywordToken
+      else if headEqual("\"") then moveRightToken
+      else if headEqual("(") then
+        eat("(")
         groups += ArrayBuffer[VLitToken]()
         if headLookaheadMatch(":[.:]|;[,;]") then
           addToken(groupModifierToToken(pop(2))(VRange(index, index)))
         else if headIn(".:,;") then
           addToken(groupModifierToToken(pop(1))(VRange(index, index)))
-      else if headEqual(')') then
+      else if headEqual(")") then
         if groups.nonEmpty then
           val group = groups.last
           groups.dropRightInPlace(1)
           addToken(
             VLitToken(Group, group.toSeq, VRange(index, index))
           )
-          eat(')')
+          eat(")")
         else throw new UnopenedGroupException(index)
-      else if headEqual('{') then lambdaTokens
+      else if headEqual("{") then lambdaTokens
       else if headIsWhitespace then pop(1)
     end while
     // Flatten _tokens into tokens
@@ -156,8 +156,10 @@ class LiterateVexer extends VexerCommon:
   private def keywordToken: Unit =
     val start = index
     val keyword = StringBuilder()
-    while safeCheck(c => c.isLetterOrDigit || "_<>?!*+\\-=&%:'@".contains(c)) do
-      keyword ++= pop(1)
+    while safeCheck(c =>
+        c.head.isLetterOrDigit || "_<>?!*+\\-=&%:'@".contains(c)
+      )
+    do keyword ++= pop(1)
     val value = removeDoubleNt(keyword.toString())
     if isKeyword(value) then
       addToken(
@@ -218,7 +220,7 @@ class LiterateVexer extends VexerCommon:
   private def moveRightToken: Unit =
     val start = index
     val quotes = StringBuilder()
-    while headEqual('\'') do quotes ++= pop(1)
+    while headEqual("\"") do quotes ++= pop(1)
     val value = quotes.toString()
     addToken(VLitToken(MoveRight, value, VRange(start, index)))
 
@@ -226,16 +228,16 @@ class LiterateVexer extends VexerCommon:
   private def numberToken: Unit =
     val rangeStart = index
     // Check the single zero case
-    if headEqual('0') then
+    if headEqual("0") then
       val zeroToken = VToken(VTokenType.Number, "0", VRange(index, index))
       pop(1)
       tokens += zeroToken
       return
-    val negativePrefix = if headEqual('-') then pop() else ""
+    val negativePrefix = if headEqual("-") then pop() else ""
     // Then the headless decimal case
-    if headEqual('.') then
+    if headEqual(".") then
       pop(1)
-      if safeCheck(c => c.isDigit) then
+      if safeCheck(c => c.head.isDigit) then
         val head = simpleNumber()
         val numberToken = VLitToken(
           VTokenType.Number,
@@ -254,9 +256,9 @@ class LiterateVexer extends VexerCommon:
       // Not a 0, and not a headless decimal, so it's a normal number
       val head = simpleNumber()
       // Test for a decimal tail
-      if headEqual('.') then
+      if headEqual(".") then
         pop(1)
-        if safeCheck(c => c.isDigit) then
+        if safeCheck(c => c.head.isDigit) then
           val tail = simpleNumber()
           val numberToken = VLitToken(
             VTokenType.Number,
@@ -284,7 +286,7 @@ class LiterateVexer extends VexerCommon:
 
   private def simpleNumber(): String =
     val numberVal = StringBuilder()
-    while safeCheck(c => c.isDigit) do numberVal ++= s"${pop()}"
+    while safeCheck(c => c.head.isDigit) do numberVal ++= s"${pop()}"
     numberVal.toString()
 
   private def lambdaTokens: Unit = ???

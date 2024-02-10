@@ -172,7 +172,7 @@ abstract class VexerCommon:
 
   protected var index = 0
   val symbolTable = mutable.Map[String, Option[Int]]()
-  protected val programStack = Stack[Char]()
+  protected val programStack = Stack[String]()
   protected val tokens = ArrayBuffer[VToken]()
 
   // Abstract method for adding a token irregardles of lexer type
@@ -188,12 +188,12 @@ abstract class VexerCommon:
 
   protected def pop(n: Int = 1): String =
     val res = StringBuilder()
-    for _ <- 0 until n do res ++= s"${programStack.pop()}"
+    for _ <- 0 until n do res ++= programStack.pop()
     index += n + 1
     res.toString()
-  protected def safeCheck(pred: Char => Boolean): Boolean =
+  protected def safeCheck(pred: String => Boolean): Boolean =
     programStack.nonEmpty && pred(programStack.head)
-  protected def headEqual(c: Char): Boolean =
+  protected def headEqual(c: String): Boolean =
     programStack.nonEmpty && programStack.head == c
   protected def headLookaheadEqual(s: String): Boolean =
     programStack.length >= s.length &&
@@ -201,8 +201,8 @@ abstract class VexerCommon:
   protected def headLookaheadMatch(s: String): Boolean =
     programStack.nonEmpty &&
       ("^" + s).r.findFirstIn(programStack.mkString).isDefined
-  protected def headIsDigit: Boolean = safeCheck(c => c.isDigit)
-  protected def headIsWhitespace: Boolean = safeCheck(c => c.isWhitespace)
+  protected def headIsDigit: Boolean = safeCheck(c => c.head.isDigit)
+  protected def headIsWhitespace: Boolean = safeCheck(c => c.head.isWhitespace)
   protected def headIn(s: String): Boolean = safeCheck(c => s.contains(c))
   protected def headIsCloser: Boolean
   protected def headIsBranch: Boolean
@@ -211,12 +211,6 @@ abstract class VexerCommon:
     tokens += VToken(tokenType, value, VRange(index, index + value.length))
     index += value.length
     eat(value)
-  protected def eat(c: Char): Unit =
-    if headEqual(c) then pop(1)
-    else
-      throw new Exception(
-        s"Expected $c, got ${programStack.head}" + s" at index $index"
-      )
   protected def eat(s: String): Unit =
     if headLookaheadEqual(s) then pop(s.length)
     else
@@ -234,7 +228,7 @@ abstract class VexerCommon:
     pop() // Pop the opening quote
 
     while !headIn("\"„”“") do
-      if headEqual('\\') then stringVal ++= pop(2)
+      if headEqual("\\") then stringVal ++= pop(2)
       else stringVal ++= pop()
 
     val text = stringVal
@@ -266,7 +260,7 @@ abstract class VexerCommon:
     while depth > 0 && !branchFound && programStack.nonEmpty do
       stringPopped = false
       if headIsOpener then depth += 1
-      else if headEqual('"') then
+      else if headEqual("\"") then
         stringPopped = true
         popped += '"'
         popped ++= stringToken
@@ -277,7 +271,7 @@ abstract class VexerCommon:
       if !stringPopped then popped ++= pop()
     val params = popped.toString()
     if !branchFound then
-      for c <- params.reverse do programStack.push(c)
+      for c <- params.reverse do programStack.push(c.toString())
       index -= popped.length
     else
       for tok <- extractParamters(popped.toString(), start) do addToken(tok)
