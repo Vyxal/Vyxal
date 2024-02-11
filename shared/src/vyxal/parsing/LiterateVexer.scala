@@ -8,8 +8,6 @@ import vyxal.UnopenedGroupException
 
 import scala.collection.mutable.ArrayBuffer
 
-import sttp.client4.quick
-
 class LiterateVexer extends VexerCommon:
   def headIsOpener: Boolean = ???
 
