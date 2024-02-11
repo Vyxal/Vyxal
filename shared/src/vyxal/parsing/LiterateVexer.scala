@@ -9,10 +9,15 @@ import vyxal.UnopenedGroupException
 import scala.collection.mutable.ArrayBuffer
 
 class LiterateVexer extends VexerCommon:
-  def headIsOpener: Boolean = ???
+  def headIsOpener: Boolean =
+    structOpeners.exists((kw, _) => headLookaheadMatch(kw)) || headEqual("{") ||
+      lambdaOpeners.exists((kw, _) => headEqual(kw))
 
-  def headIsBranch: Boolean = false // TODO: Implement
-  def headIsCloser: Boolean = false // TODO: Implement
+  def headIsBranch: Boolean =
+    branchKeywords.exists(kw => headLookaheadMatch(kw))
+  def headIsCloser: Boolean =
+    closeAllKeywords.exists((kw, _) => headLookaheadMatch(kw)) ||
+      endKeywords.exists(kw => headLookaheadMatch(kw))
   private val literateKeywords = Elements.elements.values.flatMap(_.keywords)
   private val _tokens = ArrayBuffer[VLitToken]()
   private val groups = ArrayBuffer[ArrayBuffer[VLitToken]]()
@@ -140,6 +145,8 @@ class LiterateVexer extends VexerCommon:
       else if headEqual("{") || lambdaOpeners.contains(programStack.head) then
         quickToken(VTokenType.StructureOpen, "λ")
         lambdaParameters
+      else if branchKeywords.contains(programStack.head) then
+        quickToken(VTokenType.Branch, pop())
       else if endKeywords.contains(programStack.head) then
         quickToken(VTokenType.StructureClose, "}")
       else if headEqual("end-end") then
