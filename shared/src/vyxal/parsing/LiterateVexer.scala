@@ -156,18 +156,22 @@ class LiterateVexer extends VexerCommon:
       else if headLookaheadMatch("$[^@:]") then
         pop()
         getVariableToken
-      else if headEqual(":=") then
+      else if headLookaheadEqual(":=") then
         pop(2)
         setVariableToken
-      else if headEqual(":!=") then
+      else if headLookaheadEqual(":!=") then
         pop(3)
         setConstantToken
-      else if headEqual(":>") then
+      else if headLookaheadEqual(":>") then
         pop(2)
         augmentedAssignToken
-      else if headEqual("$@") then
+      else if headLookaheadEqual("$@") then
         pop(2)
         commandSymbolToken
+      else if headIsWhitespace then pop()
+      else if headLookaheadEqual("##") then
+        while safeCheck(c => c != "\n" && c != "\r") do pop()
+      else for c <- pop() do quickToken(VTokenType.Command, c.toString)
     end while
     // Flatten _tokens into tokens
     for token <- _tokens do
