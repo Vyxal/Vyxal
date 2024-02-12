@@ -40,7 +40,7 @@ case class VLitToken(
           (other.value match
             case otherValue: String => otherValue ==
                 this.value.asInstanceOf[String]
-            case otherValue: List[VLitToken] => otherValue ==
+            case otherValue: Seq[VLitToken] => otherValue ==
                 this.value.asInstanceOf[List[VLitToken]]
           ))
 
@@ -208,9 +208,9 @@ abstract class VexerCommon:
   protected def headIsBranch: Boolean
   protected def headIsOpener: Boolean
   protected def quickToken(tokenType: VTokenType, value: String): Unit =
-    tokens += VToken(tokenType, value, VRange(index, index + value.length))
+    addToken(tokenType, value, VRange(index, index + value.length))
     index += value.length
-    eat(value)
+    pop(value.length)
   protected def eat(s: String): Unit =
     if headLookaheadEqual(s) then pop(s.length)
     else
@@ -268,36 +268,30 @@ abstract class VexerCommon:
         tokens.dropRightInPlace(1)
       else if headIsCloser then depth -= 1
       else if headIsBranch && depth == 1 then branchFound = true
-      if !stringPopped then popped ++= pop()
+      if !stringPopped && !branchFound then popped ++= pop()
     val params = popped.toString()
     if !branchFound then
       for c <- params.reverse do programStack.push(c.toString())
       index -= popped.length
-    else
-      for tok <- extractParamters(popped.toString(), start) do addToken(tok)
-      addToken(
-        VTokenType.Branch,
-        "|",
-        VRange(index, index + 1),
-      )
+    else for tok <- extractParamters(popped.toString(), start) do addToken(tok)
 
     return params
   end lambdaParameters
 
   protected def extractParamters(popped: String, start: Int): Seq[CommonToken] =
     val params = popped.split(',')
-    val tokens = ArrayBuffer[CommonToken]()
+    val paramTokens = ArrayBuffer[CommonToken]()
     for param <- params do
       val paramStart = start + popped.indexOf(param)
       val paramEnd = paramStart + param.length
-      tokens +=
+      paramTokens +=
         CommonToken(
           VTokenType.Param,
           toValidParam(param),
           VRange(paramStart, paramEnd),
         )
 
-    tokens.toSeq
+    paramTokens.toSeq
 
   protected def toValidParam(param: String): String =
     val filtered =
@@ -349,83 +343,75 @@ abstract class VexerCommon:
   protected def getVariableToken: Unit =
     val rangeStart = index
     val name = simpleName()
-    tokens +=
-      VToken(
-        VTokenType.GetVar,
-        name,
-        VRange(rangeStart, index),
-      )
+    addToken(
+      VTokenType.GetVar,
+      name,
+      VRange(rangeStart, index),
+    )
 
   protected def setVariableToken: Unit =
     val rangeStart = index
     val name = simpleName()
-    tokens +=
-      VToken(
-        VTokenType.SetVar,
-        name,
-        VRange(rangeStart, index),
-      )
+    addToken(
+      VTokenType.SetVar,
+      name,
+      VRange(rangeStart, index),
+    )
 
   protected def setConstantToken: Unit =
     val rangeStart = index
     val name = simpleName()
-    tokens +=
-      VToken(
-        VTokenType.Constant,
-        name,
-        VRange(rangeStart, index),
-      )
+    addToken(
+      VTokenType.Constant,
+      name,
+      VRange(rangeStart, index),
+    )
 
   protected def augmentedAssignToken: Unit =
     val rangeStart = index
     val name = simpleName()
-    tokens +=
-      VToken(
-        VTokenType.AugmentVar,
-        name,
-        VRange(rangeStart, index),
-      )
+    addToken(
+      VTokenType.AugmentVar,
+      name,
+      VRange(rangeStart, index),
+    )
 
   protected def originalCommandToken: Unit =
     val rangeStart = index
     val command = pop()
-    tokens +=
-      VToken(
-        VTokenType.OriginalSymbol,
-        command,
-        VRange(rangeStart, index),
-      )
+    addToken(
+      VTokenType.OriginalSymbol,
+      command,
+      VRange(rangeStart, index),
+    )
 
   protected def commandSymbolToken: Unit =
     val rangeStart = index
     val command = pop()
-    tokens +=
-      VToken(
-        VTokenType.ElementSymbol,
-        command,
-        VRange(rangeStart, index),
-      )
+    addToken(
+      VTokenType.ElementSymbol,
+      command,
+      VRange(rangeStart, index),
+    )
 
   protected def modifierSymbolToken: Unit =
     val rangeStart = index
     val command = pop()
-    tokens +=
-      VToken(
-        VTokenType.ModifierSymbol,
-        command,
-        VRange(rangeStart, index),
-      )
+    addToken(
+      VTokenType.ModifierSymbol,
+      command,
+      VRange(rangeStart, index),
+    )
 
   protected def defineRecordToken: Unit =
     val rangeStart = index
     eatWhitespace()
     val name = simpleName()
-    tokens +=
-      VToken(
-        VTokenType.DefineRecord,
-        name,
-        VRange(rangeStart, index),
-      )
+    addToken(
+      VTokenType.DefineRecord,
+      name,
+      VRange(rangeStart, index),
+    )
 end VexerCommon
 
 def Codepage: String = """⎂⇝∯⊠ß≟₾◌⋊

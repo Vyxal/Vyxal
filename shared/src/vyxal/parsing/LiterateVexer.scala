@@ -14,7 +14,7 @@ class LiterateVexer extends VexerCommon:
       lambdaOpeners.exists((kw, _) => headEqual(kw))
 
   def headIsBranch: Boolean =
-    branchKeywords.exists(kw => headLookaheadMatch(kw))
+    branchKeywords.exists(kw => headLookaheadMatch(kw)) || headEqual("|")
   def headIsCloser: Boolean =
     closeAllKeywords.exists((kw, _) => headLookaheadMatch(kw)) ||
       endKeywords.exists(kw => headLookaheadMatch(kw))
@@ -143,17 +143,18 @@ class LiterateVexer extends VexerCommon:
       else if structOpeners.contains(programStack.head) then
         quickToken(VTokenType.StructureOpen, structOpeners(pop()).open)
       else if headEqual("{") || lambdaOpeners.contains(programStack.head) then
-        quickToken(VTokenType.StructureOpen, "λ")
+        addToken(VLitToken(VTokenType.StructureOpen, "λ", VRange(index, index)))
+        pop()
         lambdaParameters
-      else if branchKeywords.contains(programStack.head) then
-        quickToken(VTokenType.Branch, pop())
+      else if branchKeywords.contains(programStack.head) || headEqual("|") then
+        quickToken(VTokenType.Branch, "|")
       else if endKeywords.contains(programStack.head) then
         quickToken(VTokenType.StructureClose, "}")
       else if headEqual("end-end") then
         quickToken(VTokenType.StructureDoubleClose, ")")
       else if closeAllKeywords.contains(programStack.head) then
         quickToken(VTokenType.StructureAllClose, "]")
-      else if headLookaheadMatch("$[^@:]") then
+      else if headLookaheadMatch("\\$[^@:]") then
         pop()
         getVariableToken
       else if headLookaheadEqual(":=") then
@@ -171,7 +172,13 @@ class LiterateVexer extends VexerCommon:
       else if headIsWhitespace then pop()
       else if headLookaheadEqual("##") then
         while safeCheck(c => c != "\n" && c != "\r") do pop()
-      else for c <- pop() do quickToken(VTokenType.Command, c.toString)
+      else
+        for c <- pop() do
+          addToken(
+            VLitToken(VTokenType.Command, c.toString, VRange(index, index))
+          )
+          index += 1
+      end if
     end while
     // Flatten _tokens into tokens
     for token <- _tokens do
