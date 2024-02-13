@@ -44,7 +44,6 @@ class LiterateVexer extends VexerCommon:
   )
 
   private val branchKeywords = List(
-    ":",
     "->",
     "else:",
     "else",
@@ -120,7 +119,7 @@ class LiterateVexer extends VexerCommon:
     programStack.pushAll(program.reverse.map(_.toString))
     while programStack.nonEmpty do
       if headIsDigit || headLookaheadMatch("-[1-9]") then numberToken
-      else if safeCheck(c => c.head.isLetter || "<>?!*+\\-=&%:@".contains(c))
+      else if safeCheck(c => c.head.isLetter || "<>?!*+\\-=&%@".contains(c))
       then keywordToken
       else if headEqual("\"") then moveRightToken
       else if headEqual("(") then
@@ -146,8 +145,9 @@ class LiterateVexer extends VexerCommon:
         addToken(VLitToken(VTokenType.StructureOpen, "λ", VRange(index, index)))
         pop()
         lambdaParameters
-      else if branchKeywords.contains(programStack.head) || headEqual("|") then
-        quickToken(VTokenType.Branch, "|")
+      else if branchKeywords.contains(programStack.head) || headEqual("|") ||
+        headLookaheadMatch(":[^=!>]")
+      then quickToken(VTokenType.Branch, "|")
       else if endKeywords.contains(programStack.head) then
         quickToken(VTokenType.StructureClose, "}")
       else if headEqual("end-end") then
@@ -198,8 +198,11 @@ class LiterateVexer extends VexerCommon:
   private def keywordToken: Unit =
     val start = index
     val keyword = StringBuilder()
+    if !safeCheck(c => c.head.isLetterOrDigit || "_<>?!*+\\-=&%@".contains(c))
+    then return
+
     while safeCheck(c =>
-        c.head.isLetterOrDigit || "_<>?!*+\\-=&%:'@".contains(c)
+        c.head.isLetterOrDigit || "_<>?!*+\\-=&%'@".contains(c)
       )
     do keyword ++= pop(1)
     val value = removeDoubleNt(keyword.toString())

@@ -197,7 +197,7 @@ abstract class VexerCommon:
     programStack.nonEmpty && programStack.head == c
   protected def headLookaheadEqual(s: String): Boolean =
     programStack.mkString.length >= s.length &&
-      programStack.slice(0, s.length).mkString == s
+      programStack.mkString.startsWith(s)
   protected def headLookaheadMatch(s: String): Boolean =
     programStack.nonEmpty &&
       ("^" + s).r.findFirstIn(programStack.mkString).isDefined
