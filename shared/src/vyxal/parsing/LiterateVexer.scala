@@ -121,7 +121,7 @@ class LiterateVexer extends VexerCommon:
       if headIsDigit || headLookaheadMatch("-[1-9]") then numberToken
       else if safeCheck(c => c.head.isLetter || "<>?!*+\\-=&%@".contains(c))
       then keywordToken
-      else if headEqual("\"") then moveRightToken
+      else if headEqual("'") then moveRightToken
       else if headEqual("(") then
         eat("(")
         groups += ArrayBuffer[VLitToken]()
@@ -181,12 +181,60 @@ class LiterateVexer extends VexerCommon:
       end if
     end while
     // Flatten _tokens into tokens
-    for token <- _tokens do
+
+    val movedTokens = moveTokens(_tokens.toSeq)
+
+    for token <- movedTokens do
       if token.tokenType == Group then
         tokens ++= token.value.asInstanceOf[Seq[VLitToken]].map(_.toNormal)
       else tokens += token.toNormal
     tokens.toSeq
   end lex
+
+  def moveTokens(toks: Seq[VLitToken]): Seq[VLitToken] =
+    var temp = toks.reverse
+    println("Doing stuff with " + temp)
+    val moved = ArrayBuffer[VLitToken]()
+    while temp.nonEmpty do
+      val token = temp.head
+      println(
+        "nom nom nom token: " + token + " moved:" + moved
+      )
+      temp = temp.drop(1)
+      token.tokenType match
+        case Group => moved +=
+            VLitToken(
+              Group,
+              moveTokens(token.value.asInstanceOf[Seq[VLitToken]]),
+              token.range,
+            )
+        case MoveRight =>
+          val places = token.value match
+            case s: String => s.size
+            case l: Seq[VLitToken] => l.size
+
+          val last = moved.last
+          moved.dropRightInPlace(1)
+
+          moved.insert(Math.max(moved.size - places, 0), last)
+        case _ => moved += token
+      end match
+    end while
+
+    moved.toSeq
+      .flatMap(token =>
+        token.tokenType match
+          case Group => Seq(
+              VLitToken(
+                Group,
+                moveTokens(token.value.asInstanceOf[Seq[VLitToken]]),
+                token.range,
+              )
+            )
+          case _ => Seq(token)
+      )
+      .reverse
+  end moveTokens
 
   def addToken(token: VLitToken): Unit =
     if groups.nonEmpty then groups.last += token
@@ -255,7 +303,7 @@ class LiterateVexer extends VexerCommon:
   private def moveRightToken: Unit =
     val start = index
     val quotes = StringBuilder()
-    while headEqual("\"") do quotes ++= pop(1)
+    while headEqual("'") do quotes ++= pop(1)
     val value = quotes.toString()
     addToken(VLitToken(MoveRight, value, VRange(start, index)))
 
