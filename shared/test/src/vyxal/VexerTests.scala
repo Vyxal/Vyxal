@@ -138,7 +138,7 @@ class VexerTests extends VyxalTests:
         "5 #.[5+",
         Seq(
           Number("5"),
-          StructureOpen(StructureType.LambdaMap.open),
+          StructureOpen(VStructureType.LambdaMap.open),
           Number("5"),
           Command("+"),
         ),
