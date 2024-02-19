@@ -238,7 +238,10 @@ z ==> Inclusive zero Range | Is Lowercase
 #¤ ==> Number of Context Parameters
 #¿ ==> Number of Inputs
 ∆< ==> Argument / Phase / Angle
+∆A ==> Arithmetic Mean
 ∆C ==> Hyperbolic Cosine
+∆G ==> Geometric Mean
+∆H ==> Harmonic Mean
 ∆I ==> Imaginary Part
 ∆L ==> Least Common Multiple
 ∆R ==> Real Part
@@ -274,6 +277,7 @@ z ==> Inclusive zero Range | Is Lowercase
 Þṅ ==> Multi-Set Difference
 Þȯ ==> Grid Neighbours (Diagonals)
 ÞẠ ==> Multidimensional Assignment
+ÞỊ ==> Indices Where Truthy
 ÞṂ ==> Matrix Inverse
 ÞṆ ==> Set of Natural Numbers
 ÞṬ ==> Set of Integers
