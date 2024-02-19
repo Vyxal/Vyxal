@@ -15,16 +15,32 @@ class VexerTests extends VyxalTests:
         testLex("123", Seq(Number("123")))
         testLex("6.", Seq(Number("6.5")))
         testLex("3.4ı1.2", Seq(Number("3.4ı1.2")))
-        testLex("3.4ı1.", Seq(Number("3.4ı1.")))
-        testLex("3.4ı.2", Seq(Number("3.4ı.2")))
-        testLex("3.4ı.", Seq(Number("3.4ı.5")))
-        testLex(".ı.", Seq(Number(".ı.")))
+        testLex("3.4ı1.", Seq(Number("3.4ı1.5")))
+        testLex("3.4ı.2", Seq(Number("3.4ı0.2")))
+        testLex("3.4ı.", Seq(Number("3.4ı0.5")))
+        testLex(".ı.", Seq(Number("0.5ı0.5")))
         testLex("3.4ı", Seq(Number("3.4ı")))
-        testLex(".4", Seq(Number(".4")))
-        testLex(".", Seq(Number(".")))
-        testLex("1000000_", Seq(Number("1000000_")))
-        testLex("5.2_", Seq(Number("5.2_")))
+        testLex(".4", Seq(Number("0.4")))
+        testLex(".", Seq(Number("0.5")))
+        testLex("1000000_", Seq(Number("_1000000")))
+        testLex("5.2_", Seq(Number("_5.2")))
         testLex("5.2ı_", Seq(Number("5.2ı_")))
+      }
+    }
+    it("should recognize strings") {
+      group {
+        testLex(""" "Hello, Vyxal!" """, Seq(Str("Hello, Vyxal!")))
+        testLex(""" "Hello, Vyxal!""", Seq(Str("Hello, Vyxal!")))
+
+        testLex(
+          """ "Vyxal is what \"you\" want!" """,
+          Seq(Str("Vyxal is what \"you\" want!")),
+        )
+
+        testLex(
+          """ k"vy """,
+          Seq(Digraph("k\""), MonadicModifier("v"), Command("y")),
+        )
       }
     }
   }

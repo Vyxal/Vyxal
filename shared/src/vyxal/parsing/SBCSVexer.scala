@@ -30,7 +30,7 @@ class SBCSVexer extends VexerCommon:
       else if headEqual("'") then oneCharStringToken
       else if headEqual("῟") then twoCharStringToken
       else if headEqual("⚇") then twoCharNumberToken
-      else if headIn("∆øÞ") || headLookaheadMatch("""#[^\[\]$!=#>@{:.,^]""")
+      else if headIn("∆øÞk") || headLookaheadMatch("""#[^\[\]$!=#>@{:.,^]""")
       then digraphToken
       else if headLookaheadEqual("##") then
         pop(2)
@@ -118,7 +118,7 @@ class SBCSVexer extends VexerCommon:
     // Then the headless decimal case
     else if headEqual(".") then
       pop(1)
-      if safeCheck(c => c.head.isDigit || c == "ı") then
+      if safeCheck(c => c.head.isDigit) then
         val head = simpleNumber()
         val numberToken = VToken(
           VTokenType.Number,
@@ -160,7 +160,7 @@ class SBCSVexer extends VexerCommon:
         val isNegative = headEqual("_")
         val numberToken = VToken(
           VTokenType.Number,
-          (if isNegative then "_" else "") + head,
+          (if isNegative then pop() else "") + head,
           VRange(rangeStart, index),
         )
         tokens += numberToken

@@ -227,7 +227,7 @@ abstract class VexerCommon:
 
     pop() // Pop the opening quote
 
-    while !headIn("\"„”“") do
+    while programStack.nonEmpty && !headIn("\"„”“") do
       if headEqual("\\") then stringVal ++= pop(2)
       else stringVal ++= pop()
 
@@ -237,11 +237,14 @@ abstract class VexerCommon:
       .replace(raw"\n", "\n")
       .replace(raw"\t", "\t")
 
-    val tokenType = pop() match
-      case "\"" => VTokenType.Str
-      case "„" => VTokenType.CompressedString
-      case "”" => VTokenType.DictionaryString
-      case "“" => VTokenType.CompressedNumber
+    val tokenType =
+      if programStack.nonEmpty then
+        pop() match
+          case "\"" => VTokenType.Str
+          case "„" => VTokenType.CompressedString
+          case "”" => VTokenType.DictionaryString
+          case "“" => VTokenType.CompressedNumber
+      else VTokenType.Str
 
     addToken(
       tokenType,
