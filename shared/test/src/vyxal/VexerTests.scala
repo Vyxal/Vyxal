@@ -30,8 +30,6 @@ class VexerTests extends VyxalTests:
     it("should recognize strings") {
       group {
         testLex(""" "Hello, Vyxal!" """, Seq(Str("Hello, Vyxal!")))
-        testLex(""" "Hello, Vyxal!""", Seq(Str("Hello, Vyxal!")))
-
         testLex(
           """ "Vyxal is what \"you\" want!" """,
           Seq(Str("Vyxal is what \"you\" want!")),
@@ -42,6 +40,79 @@ class VexerTests extends VyxalTests:
           Seq(Digraph("k\""), MonadicModifier("v"), Command("y")),
         )
       }
+    }
+    it("should differentiate between strings and dictionary strings?") {
+      group {
+        testLex(""" "Hello, Vyxal!" """, List(Str("Hello, Vyxal!")))
+
+        testLex(
+          """ "Hello, Vyxal!” """,
+          List(DictionaryString("Hello, Vyxal!")),
+        )
+      }
+    }
+
+    it("should auto-close strings") {
+      testLex(""" "Unclosed""", List(Str("Unclosed")))
+    }
+  }
+
+  describe("Comments") {
+    it("should tokenize comments after code") {
+      testLex(
+        "1 1 + ##Hello, Vyxal!",
+        List(
+          Number("1"),
+          Number("1"),
+          Command("+"),
+          Comment("Hello, Vyxal!"),
+        ),
+      )
+    }
+    it("should stop comments at the newline") {
+      testLex(
+        "1 1 + ##Hello, Vyxal!\n 1 +",
+        List(
+          Number("1"),
+          Number("1"),
+          Command("+"),
+          Comment("Hello, Vyxal!"),
+          VToken(Newline, "\n", VRange.fake),
+          Number("1"),
+          Command("+"),
+        ),
+      )
+    }
+    it("should not treat single #s as comments") {
+      testLex("1 #a", List(Number("1"), Digraph("#a")))
+    }
+    it("should handle empty comments") {
+      group {
+        testLex(
+          "1 ##\n",
+          List(Number("1"), Comment(""), VToken(Newline, "\n", VRange.fake)),
+        )
+        testLex(
+          "1 ##",
+          List(Number("1"), Comment("")),
+        )
+      }
+    }
+  }
+
+  describe("Modifiers") {
+    it("should recognize monadic modifiers") {
+      testLex(
+        "1 2 3W +/",
+        List(
+          Number("1"),
+          Number("2"),
+          Number("3"),
+          Command("W"),
+          Command("+"),
+          MonadicModifier("/"),
+        ),
+      )
     }
   }
 
