@@ -167,6 +167,7 @@ class SBCSVexer extends VexerCommon:
     end if
     if headEqual("ı") then
       // Grab an imaginary part and merge with the previous number
+      pop()
       val combinedTokenValue = tokens.last.value + "ı"
       tokens.dropRightInPlace(1)
       numberToken
