@@ -76,7 +76,6 @@ class VexerTests extends VyxalTests:
           Number("1"),
           Number("1"),
           Command("+"),
-          Comment("Hello, Vyxal!"),
           VToken(Newline, "\n", VRange.fake),
           Number("1"),
           Command("+"),

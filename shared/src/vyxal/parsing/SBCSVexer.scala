@@ -49,7 +49,7 @@ class SBCSVexer extends VexerCommon:
         quickToken(VTokenType.StructureOpen, "#{")
       else if headLookaheadEqual("#:[") then
         quickToken(VTokenType.UnpackTrigraph, "#:[")
-      else if headIn("⎂⇝∯⊠ß≟₾◌v⸠♳¿⎇↻⁙") then
+      else if headIn("⎂⇝∯⊠ß≟₾◌v⸠♳¿⎇↻⁙/\\") then
         quickToken(VTokenType.MonadicModifier, s"${programStack.head}")
       else if headIn("ϩ∥∦♴⁙") then
         quickToken(VTokenType.DyadicModifier, s"${programStack.head}")
