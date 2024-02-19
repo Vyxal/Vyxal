@@ -111,14 +111,14 @@ class SBCSVexer extends VexerCommon:
   private def numberToken: Unit =
     val rangeStart = index
     // Check the single zero case
-    if headEqual("0") then
+    if headLookaheadMatch("0[^.ı]") then
       val zeroToken = VToken(VTokenType.Number, "0", VRange(index, index))
       pop(1)
       tokens += zeroToken
     // Then the headless decimal case
     else if headEqual(".") then
       pop(1)
-      if safeCheck(c => c.head.isDigit) then
+      if safeCheck(c => c.head.isDigit || c == "ı") then
         val head = simpleNumber()
         val numberToken = VToken(
           VTokenType.Number,
@@ -165,6 +165,16 @@ class SBCSVexer extends VexerCommon:
         )
         tokens += numberToken
     end if
+    if headEqual("ı") then
+      // Grab an imaginary part and merge with the previous number
+      val combinedTokenValue = tokens.last.value + "ı"
+      tokens.dropRightInPlace(1)
+      numberToken
+      val finalTokenValue = combinedTokenValue + tokens.last.value
+      tokens.dropRightInPlace(1)
+      tokens +=
+        VToken(VTokenType.Number, finalTokenValue, VRange(rangeStart, index))
+
   end numberToken
 
   private def simpleNumber(): String =
