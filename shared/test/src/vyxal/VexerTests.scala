@@ -116,4 +116,47 @@ class VexerTests extends VyxalTests:
     }
   }
 
+  describe("Variable digraphs") {
+    it("should recognize `#$`/get var") {
+      testLex("3 #$my_var +", Seq(Number("3"), GetVar("my_var"), Command("+")))
+    }
+    it("should recognize `#=`/set var") {
+      testLex("42 #=answer", Seq(Number("42"), SetVar("answer")))
+    }
+
+    it("should recognise `#>`/augmented assignment") {
+      testLex(
+        "45 +#>answer",
+        Seq(Number("45"), Command("+"), AugmentVar("answer")),
+      )
+    }
+  }
+
+  describe("Sugar Trigraphs") {
+    it("should turn them into normal form") {
+      testLex(
+        "5 #.[5+",
+        Seq(
+          Number("5"),
+          StructureOpen(StructureType.LambdaMap.open),
+          Number("5"),
+          Command("+"),
+        ),
+      )
+    }
+
+    they("should work inside digraphs") {
+      testLex(
+        "#,/#,/ ø#,/ #,/ø",
+        Seq(Digraph("øø"), Digraph("øø"), Digraph("øø")),
+      )
+    }
+  }
+
+  describe("Complex tests") {
+    it("should understand a basic series of tokens") {
+      testLex("1 1 +", List(Number("1"), Number("1"), Command("+")))
+    }
+  }
+
 end VexerTests
