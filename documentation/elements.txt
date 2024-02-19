@@ -290,6 +290,7 @@ Keywords: head, first, first-item
 i (Index | Collect Unique Application Values | Enclose | Read Member) (non-vectorising)
 Keywords: index, at, item-at, nth-item, collect-unique, enclose, @<=
 - a: lst, b: num -> a[b]
+- a: num, b: num -> b[x] for x in a
 - a: lst, b: lst -> a[_] for _ in b
 - a: str, b: lst[num] -> ''.join(a[i] for i in b)
 - a: str, b: lst[any] -> x[a] for x in b
@@ -1252,9 +1253,21 @@ Keywords: number-of-inputs, count-inputs, count-stdin
 Keywords: arg, phase, angle
 - a: num -> Arg(a)
 ----------------------
+∆A (Arithmetic Mean) (non-vectorising)
+Keywords: mean, arithmetic-mean
+- a: lst[num] => arithmetic mean of a (sum(a) / len(a))
+----------------------
 ∆C (Hyperbolic Cosine) (vectorising)
 Keywords: cosh, hyperbolic-cosine
 - a: num -> cosh(a)
+----------------------
+∆G (Geometric Mean) (non-vectorising)
+Keywords: geometric-mean
+- a: lst[num] => geometric mean of a (prod(a) ** (1 / len(a)))
+----------------------
+∆H (Harmonic Mean) (non-vectorising)
+Keywords: harmonic-mean
+- a: lst[num] => harmonic mean of a (len(a) / sum(1 / a))
 ----------------------
 ∆I (Imaginary Part) (vectorising)
 Keywords: imag, imaginary, imaginary-part
@@ -1406,6 +1419,10 @@ Keywords: grid-neighbours-diagonals, grid-neighbors-diagonals, adjacent-cells-di
 ÞẠ (Multidimensional Assignment) (non-vectorising)
 Keywords: md-assign
 - a: lst, b: lst[num], c: any -> a[b[0]][b[1]]...[b[n]] = c
+----------------------
+ÞỊ (Indices Where Truthy) (non-vectorising)
+Keywords: where, where-truthy, indices-truthy, indices-where-truthy
+- a: lst => indices of truthy elements of a
 ----------------------
 ÞṂ (Matrix Inverse) (vectorising)
 Keywords: matrix-inverse

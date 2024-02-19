@@ -45,7 +45,8 @@ object JSVyxal:
 
     var printRequestCount = 0
 
-    val settings = Settings(online = true).withFlags(flags.toList)
+    val settings =
+      Flag.applyFlags(flags.map(Flag.from), Settings(online = true))
 
     val inputList = inputs
       .split("\n")
