@@ -12,17 +12,19 @@ class LiterateVexer extends VexerCommon:
   private val KeywordLetters = "a-zA-Z0-9_<>?!*+\\-=&%@"
   def headIsOpener: Boolean =
     structOpeners.exists((kw, _) =>
-      headLookaheadMatch("$kw[^$KeywordLetters]")
+      headLookaheadMatch(s"$kw[^$KeywordLetters]")
     ) || headEqual("{") ||
       lambdaOpeners.exists((kw, _) =>
         headLookaheadMatch(s"$kw[^$KeywordLetters]")
       )
 
   def headIsBranch: Boolean =
-    branchKeywords.exists(kw => headLookaheadMatch(kw)) || headEqual("|")
+    branchKeywords.exists(kw => headLookaheadMatch(s"$kw[^$KeywordLetters]")) ||
+      headEqual("|")
   def headIsCloser: Boolean =
-    closeAllKeywords.exists((kw, _) => headLookaheadMatch(kw)) ||
-      endKeywords.exists(kw => headLookaheadMatch(kw))
+    closeAllKeywords.exists((kw, _) =>
+      headLookaheadMatch(s"$kw[^$KeywordLetters]")
+    ) || endKeywords.exists(kw => headLookaheadMatch(s"$kw[^$KeywordLetters]"))
   private val literateKeywords = Elements.elements.values.flatMap(_.keywords)
   private val _tokens = ArrayBuffer[VLitToken]()
   private val groups = ArrayBuffer[ArrayBuffer[VLitToken]]()
@@ -124,7 +126,9 @@ class LiterateVexer extends VexerCommon:
     programStack.pushAll(program.reverse.map(_.toString))
     while programStack.nonEmpty do
       if headIsDigit || headLookaheadMatch("-[1-9]") then numberToken
-      else if safeCheck(c => c.head.isLetter || "<>?!*+\\-=&%@".contains(c))
+      else if safeCheck(c =>
+          c.length == 1 && (c.head.isLetter || "<>?!*+-=&%@".contains(c))
+        )
       then keywordToken
       else if headEqual("'") then moveRightToken
       else if headEqual("(") then
@@ -145,7 +149,8 @@ class LiterateVexer extends VexerCommon:
         else throw new UnopenedGroupException(index)
       else if headIsWhitespace then pop(1)
       else if structOpeners.contains(programStack.head) then
-        quickToken(VTokenType.StructureOpen, structOpeners(pop()).open)
+        val tempRange = VRange(index, index)
+        addToken(VTokenType.StructureOpen, structOpeners(pop()).open, tempRange)
       else if headEqual("{") || lambdaOpeners.contains(programStack.head) then
         addToken(VLitToken(VTokenType.StructureOpen, "λ", VRange(index, index)))
         pop()
@@ -177,6 +182,7 @@ class LiterateVexer extends VexerCommon:
       else if headIsWhitespace then pop()
       else if headLookaheadEqual("##") then
         while safeCheck(c => c != "\n" && c != "\r") do pop()
+        addToken(VTokenType.Newline, "", VRange(index, index))
       else
         for c <- pop() do
           addToken(
@@ -198,13 +204,9 @@ class LiterateVexer extends VexerCommon:
 
   def moveTokens(toks: Seq[VLitToken]): Seq[VLitToken] =
     var temp = toks.reverse
-    println("Doing stuff with " + temp)
     val moved = ArrayBuffer[VLitToken]()
     while temp.nonEmpty do
       val token = temp.head
-      println(
-        "nom nom nom token: " + token + " moved:" + moved
-      )
       temp = temp.drop(1)
       token.tokenType match
         case Group => moved +=
@@ -259,7 +261,7 @@ class LiterateVexer extends VexerCommon:
       )
     do keyword ++= pop(1)
     val value = removeDoubleNt(keyword.toString())
-    if isKeyword(value) then
+    if isKeyword(value) || value.length() == 1 then
       addToken(
         VLitToken(
           Command,
