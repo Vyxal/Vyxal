@@ -20,15 +20,15 @@ class VexerLiterateTests extends VyxalTests:
     it("should leave numbers as-is") {
       group {
         testLiterate("123", "123")
-        testLiterate("6.", "6.")
+        testLiterate("6.", "6.5")
         testLiterate("3.4i1.2", "3.4ı1.2")
-        testLiterate("3.4i1.", "3.4ı1.")
-        testLiterate("3.4i.2", "3.4ı.2")
-        testLiterate("3.4i.", "3.4ı.")
-        testLiterate(".i.", ".ı.")
-        testLiterate("3.4i", "3.4ı")
-        testLiterate(".4", ".4")
-        testLiterate(".", ".")
+        testLiterate("3.4i1.", "3.4ı1.5")
+        testLiterate("3.4i.2", "3.4ı0.2")
+        testLiterate("3.4i.", "3.4ı0.5")
+        testLiterate(".i.", "0.5ı0.5")
+        testLiterate("3.4i", "3.4ı0.5")
+        testLiterate(".4", "0.4")
+        testLiterate(".", "0.4")
         testLiterate("1_000_000", "1000000")
         testLiterate("1_0______0", "100")
       }

@@ -377,20 +377,31 @@ class LiterateVexer extends VexerCommon:
     if headEqual("i") then
       // Grab an imaginary part and merge with the previous number
       pop()
-      val combinedTokenValue = tokens.last.value + "i"
+      val combinedTokenValue =
+        (tokens.lastOption match
+          case None => ""
+          case Some(token) => token.value
+        ) + "ı"
       tokens.dropRightInPlace(1)
       numberToken
-      val finalTokenValue = combinedTokenValue + tokens.last.value
+      val finalTokenValue =
+        (tokens.lastOption match
+          case None => ""
+          case Some(token) => token.value
+        ) + combinedTokenValue
       tokens.dropRightInPlace(1)
       addToken(
         VLitToken(VTokenType.Number, finalTokenValue, VRange(rangeStart, index))
       )
+    end if
 
   end numberToken
 
   private def simpleNumber(): String =
     val numberVal = StringBuilder()
-    while safeCheck(c => c.head.isDigit) do numberVal ++= s"${pop()}"
+    while safeCheck(c => c.head.isDigit || c == "_") do
+      if headEqual("_") then pop()
+      else numberVal ++= s"${pop()}"
     numberVal.toString()
 
 end LiterateVexer
