@@ -65,7 +65,7 @@ class VexerTests extends VyxalTests:
           Number("1"),
           Number("1"),
           Command("+"),
-          Comment("Hello, Vyxal!"),
+          VToken(Newline, "\n", VRange.fake),
         ),
       )
     }
@@ -89,11 +89,11 @@ class VexerTests extends VyxalTests:
       group {
         testLex(
           "1 ##\n",
-          List(Number("1"), Comment(""), VToken(Newline, "\n", VRange.fake)),
+          List(Number("1"), VToken(Newline, "\n", VRange.fake)),
         )
         testLex(
           "1 ##",
-          List(Number("1"), Comment("")),
+          List(Number("1"), VToken(Newline, "\n", VRange.fake)),
         )
       }
     }

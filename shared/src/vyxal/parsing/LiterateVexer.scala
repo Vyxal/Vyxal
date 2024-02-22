@@ -318,12 +318,14 @@ class LiterateVexer extends VexerCommon:
   private def numberToken: Unit =
     val rangeStart = index
     // Check the single zero case
-    if headEqual("0") then
+    if headLookaheadMatch("0[^.ı]") then
       val zeroToken = VToken(VTokenType.Number, "0", VRange(index, index))
       pop(1)
       tokens += zeroToken
-      return
-    val negativePrefix = if headEqual("-") then pop() else ""
+
+    // Then check for negative
+    val sign = if headEqual("-") then pop(1) else ""
+
     // Then the headless decimal case
     if headEqual(".") then
       pop(1)
@@ -331,7 +333,7 @@ class LiterateVexer extends VexerCommon:
         val head = simpleNumber()
         val numberToken = VLitToken(
           VTokenType.Number,
-          s"${negativePrefix}0.$head",
+          s"${sign}0.$head",
           VRange(rangeStart, index),
         )
         addToken(numberToken)
@@ -352,14 +354,14 @@ class LiterateVexer extends VexerCommon:
           val tail = simpleNumber()
           val numberToken = VLitToken(
             VTokenType.Number,
-            s"$negativePrefix$head.$tail",
+            s"$sign$head.$tail",
             VRange(rangeStart, index),
           )
           addToken(numberToken)
         else
           val numberToken = VLitToken(
             VTokenType.Number,
-            s"$head.5",
+            s"${sign}$head.5",
             VRange(rangeStart, index),
           )
           addToken(numberToken)
@@ -367,11 +369,23 @@ class LiterateVexer extends VexerCommon:
       else
         val numberToken = VLitToken(
           VTokenType.Number,
-          negativePrefix + head,
+          s"$sign$head",
           VRange(rangeStart, index),
         )
         addToken(numberToken)
     end if
+    if headEqual("i") then
+      // Grab an imaginary part and merge with the previous number
+      pop()
+      val combinedTokenValue = tokens.last.value + "i"
+      tokens.dropRightInPlace(1)
+      numberToken
+      val finalTokenValue = combinedTokenValue + tokens.last.value
+      tokens.dropRightInPlace(1)
+      addToken(
+        VLitToken(VTokenType.Number, finalTokenValue, VRange(rangeStart, index))
+      )
+
   end numberToken
 
   private def simpleNumber(): String =
