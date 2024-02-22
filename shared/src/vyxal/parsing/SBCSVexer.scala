@@ -35,6 +35,7 @@ class SBCSVexer extends VexerCommon:
       else if headLookaheadEqual("##") then
         pop(2)
         while safeCheck(c => c != "\n" && c != "\r") do pop()
+        addToken(VTokenType.Newline, "", VRange(index, index))
       else if headLookaheadMatch("#[.,^]") then sugarTrigraph
       else if headLookaheadEqual("#[") then
         quickToken(VTokenType.ListOpen, "#[")
