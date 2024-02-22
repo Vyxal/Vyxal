@@ -174,4 +174,4 @@ class VexerLiterateTests extends VyxalTests:
       testLiterate("[1,2,3] 'filter {'% 2 '== 0}", "#[1|2|3#]λ2%0=}F")
     }
   }
-end LiterateTests
+end VexerLiterateTests
