@@ -11,8 +11,12 @@ import scala.collection.mutable.ArrayBuffer
 class LiterateVexer extends VexerCommon:
   private val KeywordLetters = "a-zA-Z0-9_<>?!*+\\-=&%@"
   def headIsOpener: Boolean =
-    structOpeners.exists((kw, _) => headLookaheadMatch("$kw[^$KeywordLetters]")) || headEqual("{") ||
-      lambdaOpeners.exists((kw, _) => headLookaheadMatch(s"$kw[^$KeywordLetters]"))
+    structOpeners.exists((kw, _) =>
+      headLookaheadMatch("$kw[^$KeywordLetters]")
+    ) || headEqual("{") ||
+      lambdaOpeners.exists((kw, _) =>
+        headLookaheadMatch(s"$kw[^$KeywordLetters]")
+      )
 
   def headIsBranch: Boolean =
     branchKeywords.exists(kw => headLookaheadMatch(kw)) || headEqual("|")
