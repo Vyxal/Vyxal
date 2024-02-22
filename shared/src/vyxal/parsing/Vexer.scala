@@ -161,6 +161,9 @@ object Vexer:
     val lexer = LiterateVexer()
     lexer.lex(program)
 
+  def sbcsify(program: Seq[VToken]): String =
+    program.map(_.tokenType.canonicalSBCS.getOrElse("")).mkString
+
 abstract class VexerCommon:
 
   private val stringTokenToQuote = Map(
