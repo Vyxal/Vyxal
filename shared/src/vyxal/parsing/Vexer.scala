@@ -1,11 +1,16 @@
 package vyxal.parsing
 
+import vyxal.Elements
+
 import scala.collection.mutable // For named imports
 import scala.collection.mutable.{
   ArrayBuffer,
   Stack,
   StringBuilder,
 } // for things that don't shadow non-mut variants
+
+import VTokenType.*
+
 case class VToken(
     tokenType: VTokenType,
     value: String,
@@ -161,8 +166,54 @@ object Vexer:
     val lexer = LiterateVexer()
     lexer.lex(program)
 
-  def sbcsify(program: Seq[VToken]): String =
-    program.map(_.tokenType.canonicalSBCS.getOrElse("")).mkString
+  private def sbcsifySingle(token: VToken): String =
+    val VToken(tokenType, value, _) = token
+
+    tokenType match
+      case GetVar => "#$" + value
+      case SetVar => s"#=$value"
+      case AugmentVar => s"#>$value"
+      case Constant => s"#!$value"
+      case Str => s""""$value""""
+      case DictionaryString => s""""$value”"""
+      case CompressedString => s""""$value„"""
+      case CompressedNumber => s""""$value“"""
+      case UnpackTrigraph if value == ":=[" => "#:["
+      case ElementSymbol => s"#:@$value "
+      case ModifierSymbol => s"#:`$value "
+      case DefineRecord => s"#:R $value"
+      case FunctionCall => "#$" + value + "Ė"
+      case OriginalSymbol => s"#:~$value"
+      case Command if !Elements.elements.contains(value) =>
+        Elements.symbolFor(value).getOrElse(value.stripSuffix("|"))
+      case Comment => ""
+      case _ => tokenType.canonicalSBCS.getOrElse(value)
+    end match
+  end sbcsifySingle
+
+  /** Convert literate mode code into SBCS mode code */
+  def sbcsify(tokens: Seq[VToken]): String =
+    val out = StringBuilder()
+
+    for i <- tokens.indices do
+      val token @ VToken(tokenType, value, _) = tokens(i)
+      val sbcs = sbcsifySingle(token)
+      out.append(sbcs)
+
+      if i < tokens.length - 1 then
+        val next = tokens(i + 1)
+        tokenType match
+          case Number =>
+            if value != "0" && next.tokenType == Number
+            then out.append(" ")
+          case GetVar | SetVar | AugmentVar | Constant =>
+            if "[a-zA-Z0-9_]+".r.matches(sbcsifySingle(next)) then
+              out.append(" ")
+          case _ =>
+
+    out.toString
+  end sbcsify
+end Vexer
 
 abstract class VexerCommon:
 
