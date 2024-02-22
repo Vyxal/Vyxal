@@ -224,12 +224,17 @@ class SBCSVexer extends VexerCommon:
   /** Digraph = [∆øÞ] . | # [^[]$!=#>@{:] */
   private def digraphToken: Unit =
     val rangeStart = index
-    val digraph = pop(2)
+
+    val digraphType = pop(1)
+
+    if headEqual("#") then sugarTrigraph
+
+    val digraphChar = pop()
 
     tokens +=
       VToken(
         VTokenType.Digraph,
-        digraph,
+        s"$digraphType$digraphChar",
         VRange(rangeStart, index),
       )
 
