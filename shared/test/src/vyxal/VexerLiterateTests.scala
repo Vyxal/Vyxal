@@ -39,7 +39,7 @@ class VexerLiterateTests extends VyxalTests:
       testLiterate(""""Hello, Vyxal!"""", """"Hello, Vyxal!"""")
       testLiterate(
         """"Vyxal is what \"you\" want!"""",
-        """"Vyxal is what \"you\" want!"""",
+        """"Vyxal is what "you" want!"""",
       )
     }
   }
