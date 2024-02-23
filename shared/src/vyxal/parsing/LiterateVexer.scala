@@ -7,24 +7,29 @@ import vyxal.Modifiers
 import vyxal.UnopenedGroupException
 
 import scala.collection.mutable.ArrayBuffer
+import scala.util.matching.Regex
 
 class LiterateVexer extends VexerCommon:
-  private val KeywordLetters = "a-zA-Z0-9_<>?!*+\\-=&%@"
+  private val KeywordLetters = raw"a-zA-Z0-9_<>?!*+\-=&%@"
   def headIsOpener: Boolean =
     structOpeners.exists((kw, _) =>
-      headLookaheadMatch(s"$kw[^$KeywordLetters]")
+      headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]")
     ) || headEqual("{") ||
       lambdaOpeners.exists((kw, _) =>
-        headLookaheadMatch(s"$kw[^$KeywordLetters]")
+        headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]")
       )
 
   def headIsBranch: Boolean =
-    branchKeywords.exists(kw => headLookaheadMatch(s"$kw[^$KeywordLetters]")) ||
-      headEqual("|")
+    branchKeywords.exists(kw =>
+      headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]")
+    ) || headEqual("|")
   def headIsCloser: Boolean =
     closeAllKeywords.exists((kw, _) =>
-      headLookaheadMatch(s"$kw[^$KeywordLetters]")
-    ) || endKeywords.exists(kw => headLookaheadMatch(s"$kw[^$KeywordLetters]"))
+      headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]")
+    ) ||
+      endKeywords.exists(kw =>
+        headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]")
+      )
   private val literateKeywords = Elements.elements.values.flatMap(_.keywords)
   private val _tokens = ArrayBuffer[VLitToken]()
   private val groups = ArrayBuffer[ArrayBuffer[VLitToken]]()

@@ -20,6 +20,8 @@ class SBCSVexer extends VexerCommon:
       range: VRange,
   ): Unit = tokens += VToken(tokenType, value, range)
 
+  def dropLastToken(): Unit = tokens.dropRightInPlace(1)
+
   def lex(program: String): Seq[VToken] =
     programStack.pushAll(program.reverse.map(_.toString))
 

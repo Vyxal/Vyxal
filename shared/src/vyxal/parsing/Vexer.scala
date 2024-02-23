@@ -237,6 +237,8 @@ abstract class VexerCommon:
       range: VRange,
   ): Unit
 
+  protected def dropLastToken(): Unit
+
   private def addToken(tok: CommonToken): Unit =
     addToken(tok.tokenType, tok.value, tok.range)
 
@@ -308,24 +310,23 @@ abstract class VexerCommon:
     return text
   end stringToken
   protected def lambdaParameters: String =
-    var depth = 1
+    var break = false
     val popped = StringBuilder()
     val start = index
     var branchFound = false
     var stringPopped = false
 
-    while depth > 0 && !branchFound && programStack.nonEmpty do
+    while !break && !branchFound && programStack.nonEmpty do
       stringPopped = false
-      if headIsOpener then depth += 1
+      if headIsOpener then break = true
       else if headEqual("\"") then
         stringPopped = true
         popped += '"'
         popped ++= stringToken
         popped ++= stringTokenToQuote(tokens.last.tokenType)
-        tokens.dropRightInPlace(1)
-      else if headIsCloser then depth -= 1
-      else if headIsBranch && depth == 1 then branchFound = true
-      if !stringPopped && !branchFound then popped ++= pop()
+        dropLastToken()
+      else if headIsBranch && !headEqual(",") then branchFound = true
+      if !break && !stringPopped && !branchFound then popped ++= pop()
     val params = popped.toString()
     if !branchFound then
       for c <- params.reverse do programStack.push(c.toString())
@@ -347,8 +348,17 @@ abstract class VexerCommon:
           toValidParam(param),
           VRange(paramStart, paramEnd),
         )
+      paramTokens +=
+        CommonToken(
+          VTokenType.Command,
+          ",",
+          VRange(paramEnd, paramEnd + 1),
+        )
+
+    paramTokens.dropRightInPlace(1) // Remove the trailing comma
 
     paramTokens.toSeq
+  end extractParamters
 
   protected def toValidParam(param: String): String =
     val filtered =
