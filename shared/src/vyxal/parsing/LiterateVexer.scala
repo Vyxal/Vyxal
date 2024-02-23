@@ -125,7 +125,8 @@ class LiterateVexer extends VexerCommon:
   def lex(program: String): Seq[VToken] =
     programStack.pushAll(program.reverse.map(_.toString))
     while programStack.nonEmpty do
-      if headIsDigit || headLookaheadMatch("-[1-9]") then numberToken
+      if headIsDigit || headLookaheadMatch("-[1-9]") || headEqual(".") then
+        numberToken
       else if safeCheck(c =>
           c.length == 1 && (c.head.isLetter || "<>?!*+-=&%@".contains(c))
         )
@@ -250,6 +251,15 @@ class LiterateVexer extends VexerCommon:
   def addToken(tokenType: VTokenType, value: String, range: VRange): Unit =
     addToken(VLitToken(tokenType, value, range))
 
+  def lastToken: VLitToken =
+    if groups.nonEmpty then
+      groups.last.lastOption.getOrElse(VLitToken(Empty, "", VRange.fake))
+    else _tokens.lastOption.getOrElse(VLitToken(Empty, "", VRange.fake))
+
+  def dropLastToken(): Unit =
+    if groups.nonEmpty then groups.last.dropRightInPlace(1)
+    else _tokens.dropRightInPlace(1)
+
   private def keywordToken: Unit =
     val start = index
     val keyword = StringBuilder()
@@ -301,8 +311,8 @@ class LiterateVexer extends VexerCommon:
   private def getSymbolFromKeyword(word: String): String =
     Elements.elements.values
       .find(elem => elem.keywords.contains(word))
-      .get
-      .symbol
+      .map(_.symbol)
+      .getOrElse(word)
 
   private def getModifierFromKeyword(word: String): Modifier =
     Modifiers.modifiers.values.find(mod => mod._3.contains(word)).get
@@ -333,14 +343,14 @@ class LiterateVexer extends VexerCommon:
         val head = simpleNumber()
         val numberToken = VLitToken(
           VTokenType.Number,
-          s"${sign}0.$head",
+          s"${sign}.$head",
           VRange(rangeStart, index),
         )
         addToken(numberToken)
       else
         val zeroToken = VLitToken(
           VTokenType.Number,
-          "0.5",
+          ".",
           VRange(rangeStart, index),
         )
         addToken(zeroToken)
@@ -361,7 +371,7 @@ class LiterateVexer extends VexerCommon:
         else
           val numberToken = VLitToken(
             VTokenType.Number,
-            s"${sign}$head.5",
+            s"${sign}$head.",
             VRange(rangeStart, index),
           )
           addToken(numberToken)
@@ -377,23 +387,15 @@ class LiterateVexer extends VexerCommon:
     if headEqual("i") then
       // Grab an imaginary part and merge with the previous number
       pop()
-      val combinedTokenValue =
-        (tokens.lastOption match
-          case None => ""
-          case Some(token) => token.value
-        ) + "ı"
-      tokens.dropRightInPlace(1)
+      val combinedTokenValue = lastToken.value.asInstanceOf[String] + "ı"
+      dropLastToken()
       numberToken
-      val finalTokenValue =
-        (tokens.lastOption match
-          case None => ""
-          case Some(token) => token.value
-        ) + combinedTokenValue
-      tokens.dropRightInPlace(1)
+      val finalTokenValue = combinedTokenValue +
+        lastToken.value.asInstanceOf[String]
+      dropLastToken()
       addToken(
         VLitToken(VTokenType.Number, finalTokenValue, VRange(rangeStart, index))
       )
-    end if
 
   end numberToken
 
