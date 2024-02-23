@@ -181,10 +181,12 @@ class LiterateVexer extends VexerCommon:
       else if headLookaheadEqual("$@") then
         pop(2)
         commandSymbolToken
-      else if headIsWhitespace then pop()
+      else if headIsWhitespace then
+        if headEqual("\n") then
+          addToken(VLitToken(Newline, "\n", VRange(index, index)))
+        pop()
       else if headLookaheadEqual("##") then
         while safeCheck(c => c != "\n" && c != "\r") do pop()
-        addToken(VTokenType.Newline, "", VRange(index, index))
       else
         for c <- pop() do
           addToken(
