@@ -13,22 +13,22 @@ class LiterateVexer extends VexerCommon:
   private val KeywordLetters = raw"a-zA-Z0-9_<>?!*+\-=&%@"
   def headIsOpener: Boolean =
     structOpeners.exists((kw, _) =>
-      headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]")
+      headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]?")
     ) || headEqual("{") ||
       lambdaOpeners.exists((kw, _) =>
-        headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]")
+        headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]?")
       )
 
   def headIsBranch: Boolean =
     branchKeywords.exists(kw =>
-      headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]")
+      headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]?")
     ) || headEqual("|")
   def headIsCloser: Boolean =
     closeAllKeywords.exists((kw, _) =>
-      headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]")
+      headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]?")
     ) ||
       endKeywords.exists(kw =>
-        headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]")
+        headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]?")
       )
   private val literateKeywords = Elements.elements.values.flatMap(_.keywords)
   private val _tokens = ArrayBuffer[VLitToken]()
@@ -155,13 +155,13 @@ class LiterateVexer extends VexerCommon:
           eat(")")
         else throw new UnopenedGroupException(index)
       else if headIsWhitespace then pop(1)
-      else if structOpeners.contains(programStack.head) then
-        val tempRange = VRange(index, index)
-        addToken(VTokenType.StructureOpen, structOpeners(pop()).open, tempRange)
       else if headEqual("{") || lambdaOpeners.contains(programStack.head) then
         addToken(VLitToken(VTokenType.StructureOpen, "λ", VRange(index, index)))
         pop()
         lambdaParameters
+      else if structOpeners.contains(programStack.head) then
+        val tempRange = VRange(index, index)
+        addToken(VTokenType.StructureOpen, structOpeners(pop()).open, tempRange)
       else if branchKeywords.contains(programStack.head) || headEqual("|") ||
         headLookaheadMatch(":[^=!>]")
       then quickToken(VTokenType.Branch, "|")
