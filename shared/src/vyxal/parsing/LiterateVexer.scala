@@ -131,7 +131,7 @@ class LiterateVexer extends VexerCommon:
   def lex(program: String): Seq[VToken] =
     programStack.pushAll(program.reverse.map(_.toString))
     while programStack.nonEmpty do
-      if headIsDigit || headLookaheadMatch(s"-[1-9]") || headEqual(".")
+      if headIsDigit || headLookaheadMatch("-[1-9]") || headEqual(".")
       then numberToken
       else if safeCheck(c =>
           c.length == 1 && (c.head.isLetter || "<>!*+-=&%@".contains(c))
