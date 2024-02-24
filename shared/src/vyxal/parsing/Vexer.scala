@@ -326,6 +326,7 @@ abstract class VexerCommon:
         popped ++= stringTokenToQuote(tokens.last.tokenType)
         dropLastToken()
       else if headIsBranch && !headEqual(",") then branchFound = true
+
       if !break && !stringPopped && !branchFound then popped ++= pop()
     val params = popped.toString()
     if !branchFound then

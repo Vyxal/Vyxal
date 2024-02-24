@@ -13,22 +13,22 @@ class LiterateVexer extends VexerCommon:
   private val KeywordLetters = raw"a-zA-Z0-9_<>?!*+\-=&%@"
   def headIsOpener: Boolean =
     structOpeners.exists((kw, _) =>
-      headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]?")
+      headLookaheadMatch(s"${Regex.quote(kw)}([^$KeywordLetters]|$$)")
     ) || headEqual("{") ||
       lambdaOpeners.exists((kw, _) =>
-        headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]?")
+        headLookaheadMatch(s"${Regex.quote(kw)}([^$KeywordLetters]|$$)")
       )
 
   def headIsBranch: Boolean =
     branchKeywords.exists(kw =>
-      headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]?")
+      headLookaheadMatch(s"${Regex.quote(kw)}([^$KeywordLetters]|$$)")
     ) || headEqual("|") || headEqual(",") || headLookaheadMatch(":[^=$!]")
   def headIsCloser: Boolean =
     closeAllKeywords.exists((kw, _) =>
-      headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]?")
+      headLookaheadMatch(s"${Regex.quote(kw)}([^$KeywordLetters]|$$)")
     ) ||
       endKeywords.exists(kw =>
-        headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]?")
+        headLookaheadMatch(s"${Regex.quote(kw)}([^$KeywordLetters]|$$)")
       )
   private val literateKeywords = Elements.elements.values.flatMap(_.keywords)
   private val _tokens = ArrayBuffer[VLitToken]()
