@@ -131,8 +131,8 @@ class LiterateVexer extends VexerCommon:
   def lex(program: String): Seq[VToken] =
     programStack.pushAll(program.reverse.map(_.toString))
     while programStack.nonEmpty do
-      if headIsDigit || headLookaheadMatch("-[1-9]") || headEqual(".") then
-        numberToken
+      if headIsDigit || headLookaheadMatch(s"-[1-9]") || headEqual(".")
+      then numberToken
       else if safeCheck(c =>
           c.length == 1 && (c.head.isLetter || "<>!*+-=&%@".contains(c))
         )
@@ -285,13 +285,16 @@ class LiterateVexer extends VexerCommon:
     do keyword ++= pop(1)
     val value = removeDoubleNt(keyword.toString())
     if isKeyword(value) || value.length() == 1 then
-      addToken(
-        VLitToken(
-          Command,
-          getSymbolFromKeyword(value),
-          VRange(start, index),
+      if value == "i" then
+        addToken(VLitToken(Number, "ı", VRange(start, index)))
+      else
+        addToken(
+          VLitToken(
+            Command,
+            getSymbolFromKeyword(value),
+            VRange(start, index),
+          )
         )
-      )
     else if isKeyword(value.stripSuffix("n't")) then
       addToken(
         VLitToken(NegatedCommand, value, VRange(start, index))
