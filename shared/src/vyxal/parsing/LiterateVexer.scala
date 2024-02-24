@@ -170,7 +170,7 @@ class LiterateVexer extends VexerCommon:
         quickToken(VTokenType.StructureDoubleClose, ")")
       else if closeAllKeywords.contains(programStack.head) then
         quickToken(VTokenType.StructureAllClose, "]")
-      else if headLookaheadMatch("\\$[^@:]") then
+      else if headLookaheadMatch("\\$([^@:]|$)") then
         pop()
         getVariableToken
       else if headLookaheadEqual(":=") then
