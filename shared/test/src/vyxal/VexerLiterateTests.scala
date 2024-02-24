@@ -71,7 +71,7 @@ class VexerLiterateTests extends VyxalTests:
 
   describe("Lists") {
     it("should transpile them correctly") {
-      testLiterate("[1|2|3|4]", "#[1|2|3|4#]")
+      testLiterate("[1,2,3,4]", "#[1|2|3|4#]")
       testLiterate("[]", "#[#]")
       testLiterate("[[]|[]]", "#[#[#]|#[#]#]")
     }

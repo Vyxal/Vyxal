@@ -22,7 +22,7 @@ class LiterateVexer extends VexerCommon:
   def headIsBranch: Boolean =
     branchKeywords.exists(kw =>
       headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]?")
-    ) || headEqual("|")
+    ) || headEqual("|") || headEqual(",") || headLookaheadMatch(":[^=$!]")
   def headIsCloser: Boolean =
     closeAllKeywords.exists((kw, _) =>
       headLookaheadMatch(s"${Regex.quote(kw)}[^$KeywordLetters]?")
@@ -163,9 +163,7 @@ class LiterateVexer extends VexerCommon:
       else if structOpeners.contains(programStack.head) then
         val tempRange = VRange(index, index)
         addToken(VTokenType.StructureOpen, structOpeners(pop()).open, tempRange)
-      else if branchKeywords.contains(programStack.head) || headEqual("|") ||
-        headLookaheadMatch(":[^=!>]")
-      then quickToken(VTokenType.Branch, "|")
+      else if headIsBranch then quickToken(VTokenType.Branch, "|")
       else if endKeywords.contains(programStack.head) then
         quickToken(VTokenType.StructureClose, "}")
       else if headEqual("end-end") then
@@ -187,6 +185,12 @@ class LiterateVexer extends VexerCommon:
       else if headLookaheadEqual("$@") then
         pop(2)
         commandSymbolToken
+      else if headEqual("[") then
+        pop()
+        addToken(VTokenType.ListOpen, "#[", VRange(index, index))
+      else if headEqual("]") then
+        pop()
+        addToken(VTokenType.ListClose, "#]", VRange(index, index))
       else if headIsWhitespace then
         if headEqual("\n") then
           addToken(VLitToken(Newline, "\n", VRange(index, index)))

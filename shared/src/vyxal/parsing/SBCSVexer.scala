@@ -92,6 +92,10 @@ class SBCSVexer extends VexerCommon:
       else if headLookaheadMatch("#::[EM]") then
         pop(4)
         customDefinitionToken
+      else if headLookaheadEqual("#[") || headEqual("⟨") then
+        quickToken(VTokenType.ListOpen, "#[")
+      else if headEqual("#]") || headEqual("⟩") then
+        quickToken(VTokenType.ListClose, "#]")
       else if headEqual("}") then quickToken(VTokenType.StructureClose, "}")
       else if headEqual(")") then
         quickToken(VTokenType.StructureDoubleClose, ")")
