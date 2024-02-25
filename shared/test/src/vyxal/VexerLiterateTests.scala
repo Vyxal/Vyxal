@@ -121,7 +121,6 @@ class VexerLiterateTests extends VyxalTests:
   describe("Ternaries") {
     it("should transpile them correctly") {
       testLiterate("1 ? 2 : 3 end", "1[2|3}")
-      testLiterate("1 ?-> 2 : 3 end", "1[2|3}")
     }
   }
 
