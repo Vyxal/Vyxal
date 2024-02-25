@@ -33,6 +33,7 @@ class LiterateVexer extends VexerCommon:
   private val literateKeywords = Elements.elements.values.flatMap(_.keywords)
   private val _tokens = ArrayBuffer[VLitToken]()
   private val groups = ArrayBuffer[ArrayBuffer[VLitToken]]()
+  private var unpackDepth = 0
 
   private val groupModifierToToken = Map(
     "." -> ((range) => VLitToken(MonadicModifier, "⸠", range)),
@@ -173,6 +174,9 @@ class LiterateVexer extends VexerCommon:
       else if headLookaheadMatch("\\$([^@:]|$)") then
         pop()
         getVariableToken
+      else if headLookaheadEqual(":=[") then
+        quickToken(VTokenType.UnpackTrigraph, "#:[")
+        unpackDepth = 1
       else if headLookaheadEqual(":=") then
         pop(2)
         setVariableToken
@@ -187,10 +191,18 @@ class LiterateVexer extends VexerCommon:
         commandSymbolToken
       else if headEqual("[") then
         pop()
-        addToken(VTokenType.ListOpen, "#[", VRange(index, index))
+        if unpackDepth > 0 then
+          unpackDepth += 1
+          addToken(VLitToken(VTokenType.ListOpen, "[", VRange(index, index)))
+        else addToken(VTokenType.ListOpen, "#[", VRange(index, index))
       else if headEqual("]") then
         pop()
-        addToken(VTokenType.ListClose, "#]", VRange(index, index))
+        if unpackDepth > 0 then
+          unpackDepth -= 1
+          addToken(
+            VLitToken(VTokenType.StructureAllClose, "]", VRange(index, index))
+          )
+        else addToken(VTokenType.ListClose, "#]", VRange(index, index))
       else if headIsWhitespace then
         if headEqual("\n") then
           addToken(VLitToken(Newline, "\n", VRange(index, index)))
