@@ -22,7 +22,7 @@ class LiterateVexer extends VexerCommon:
   def headIsBranch: Boolean =
     branchKeywords.exists(kw =>
       headLookaheadMatch(s"${Regex.quote(kw)}([^$KeywordLetters]|$$)")
-    ) || headEqual("|") || headEqual(",") || headLookaheadMatch(":[^=$!]")
+    ) || headEqual("|") || headEqual(",") || headLookaheadMatch(":[^=$!>]")
   def headIsCloser: Boolean =
     closeAllKeywords.exists((kw, _) =>
       headLookaheadMatch(s"${Regex.quote(kw)}([^$KeywordLetters]|$$)")
