@@ -5,6 +5,8 @@ import vyxal.VyxalException
 
 class SBCSVexer extends VexerCommon:
 
+  private var unpackDepth = 0
+
   def headIsOpener: Boolean =
     headIn("[({ṆḌƛΩ₳µ") || headLookaheadEqual("#[") ||
       headLookaheadEqual("#{") || headLookaheadEqual("#::R") ||
@@ -43,6 +45,12 @@ class SBCSVexer extends VexerCommon:
         quickToken(VTokenType.ListOpen, "#[")
       else if headLookaheadEqual("#]") then
         quickToken(VTokenType.ListClose, "#]")
+      else if unpackDepth > 1 && headEqual("[") then
+        addToken(VTokenType.StructureOpen, "[", VRange(index, index))
+        unpackDepth += 1
+      else if unpackDepth > 1 && headEqual("]") then
+        addToken(VTokenType.StructureAllClose, "]", VRange(index, index))
+        unpackDepth -= 1
       else if headIn("[({ṆḌƛΩ₳µ") then
         quickToken(VTokenType.StructureOpen, s"${programStack.head}")
       else if headEqual("λ") then
@@ -74,6 +82,10 @@ class SBCSVexer extends VexerCommon:
       else if headLookaheadEqual("#>") then
         pop(2)
         augmentedAssignToken
+      else if headLookaheadEqual("#:[") then
+        pop(3)
+        addToken(VTokenType.UnpackTrigraph, "#:[", VRange(index - 3, index))
+        unpackDepth = 1
       else if headLookaheadEqual("#:~") then
         pop(3)
         originalCommandToken
