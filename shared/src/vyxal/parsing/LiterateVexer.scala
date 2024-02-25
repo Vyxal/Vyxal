@@ -209,10 +209,7 @@ class LiterateVexer extends VexerCommon:
 
     val movedTokens = moveTokens(_tokens.toSeq)
 
-    for token <- movedTokens do
-      if token.tokenType == Group then
-        tokens ++= token.value.asInstanceOf[Seq[VLitToken]].map(_.toNormal)
-      else tokens += token.toNormal
+    for token <- movedTokens do tokens += token.toNormal
     tokens.toSeq
   end lex
 
@@ -245,13 +242,8 @@ class LiterateVexer extends VexerCommon:
     moved.toSeq
       .flatMap(token =>
         token.tokenType match
-          case Group => Seq(
-              VLitToken(
-                Group,
-                moveTokens(token.value.asInstanceOf[Seq[VLitToken]]),
-                token.range,
-              )
-            )
+          case Group =>
+            moveTokens(token.value.asInstanceOf[Seq[VLitToken]]).reverse
           case _ => Seq(token)
       )
       .reverse
