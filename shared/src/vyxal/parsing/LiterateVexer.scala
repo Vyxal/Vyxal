@@ -219,47 +219,9 @@ class LiterateVexer extends VexerCommon:
     end while
     // Flatten _tokens into tokens
 
-    val movedTokens = moveTokens(_tokens.toSeq)
-
-    for token <- movedTokens do tokens += token.toNormal
+    for token <- _tokens do tokens += token.toNormal
     tokens.toSeq
   end lex
-
-  def moveTokens(toks: Seq[VLitToken]): Seq[VLitToken] =
-    var temp = toks.reverse
-    val moved = ArrayBuffer[VLitToken]()
-    while temp.nonEmpty do
-      val token = temp.head
-      temp = temp.drop(1)
-      token.tokenType match
-        case Group => moved +=
-            VLitToken(
-              Group,
-              moveTokens(token.value.asInstanceOf[Seq[VLitToken]]),
-              token.range,
-            )
-        case MoveRight =>
-          val places = token.value match
-            case s: String => s.size
-            case l: Seq[VLitToken] => l.size
-
-          val last = moved.last
-          moved.dropRightInPlace(1)
-
-          moved.insert(Math.max(moved.size - places, 0), last)
-        case _ => moved += token
-      end match
-    end while
-
-    moved.toSeq
-      .flatMap(token =>
-        token.tokenType match
-          case Group =>
-            moveTokens(token.value.asInstanceOf[Seq[VLitToken]]).reverse
-          case _ => Seq(token)
-      )
-      .reverse
-  end moveTokens
 
   def addToken(token: VLitToken): Unit =
     if groups.nonEmpty then groups.last += token
