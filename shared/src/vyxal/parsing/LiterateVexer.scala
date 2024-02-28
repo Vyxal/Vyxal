@@ -219,10 +219,20 @@ class LiterateVexer extends VexerCommon:
     end while
     // Flatten _tokens into tokens
 
-    for token <- _tokens do tokens += token.toNormal
+    for token <- flattenTokens(_tokens.toSeq) do tokens += token.toNormal
     tokens.toSeq
   end lex
 
+  def flattenTokens(tokens: Seq[VLitToken]): Seq[VLitToken] =
+    val flattened = ArrayBuffer[VLitToken]()
+    for token <- tokens do
+      token.tokenType match
+        case Group =>
+          val group = token.value.asInstanceOf[Seq[VLitToken]]
+          val flattenedGroup = flattenTokens(group)
+          flattened ++= flattenedGroup
+        case _ => flattened += token
+    flattened.toSeq
   def addToken(token: VLitToken): Unit =
     if groups.nonEmpty then groups.last += token
     else _tokens += token
