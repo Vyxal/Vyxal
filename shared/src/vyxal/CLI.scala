@@ -1,8 +1,8 @@
 package vyxal
 
 import vyxal.debugger.DebugRepl
-import vyxal.parsing.{Lexer, Parser}
-import vyxal.parsing.Vexer
+import vyxal.parsing.Lexer
+import vyxal.parsing.Parser
 
 import scopt.OParser
 
@@ -81,27 +81,27 @@ object CLI:
           return
 
         if config.litInfoFor.nonEmpty then
-          val keywords = Lexer.literateModeMappings(config.litInfoFor.get)
-          println(keywords.mkString(", "))
+          // val keywords = Lexer.literateModeMappings(config.litInfoFor.get)
+          // println(keywords.mkString(", "))
           return
 
         if config.runLexer then
           while true do
             val line = io.StdIn.readLine(">")
             if line == null || line.isEmpty then return
-            println(Vexer.lexSBCS(line))
+            println(Lexer.lexSBCS(line))
 
         if config.runLiterateLexer then
           while true do
             val line = io.StdIn.readLine(">")
             if line == null || line.isEmpty then return
-            println(Vexer.lexLiterate(line))
+            println(Lexer.lexLiterate(line))
 
         if config.runParser then
           while true do
             val line = io.StdIn.readLine(">")
             if line.isEmpty then return
-            println(Parser.parse(Lexer(line)).ast)
+            println(Parser.parse(Lexer.lexSBCS(line)).ast)
 
         if config.debug then
           val code = config.filename match
@@ -116,14 +116,15 @@ object CLI:
                   )
           DebugRepl.start(code)
         else if config.readBytes then
-          config.filename.foreach { filename =>
+          /*config.filename.foreach { filename =>
             val fileObj = java.io.File(filename)
             val source = java.io.FileInputStream(fileObj)
             val sbcs = source.readAllBytes().map(c => Lexer.Codepage(c & 0xff))
             try runCode(sbcs.mkString)
             finally source.close()
 
-          }
+          }*/
+          return
         else
           config.filename.foreach { filename =>
             val source = io.Source.fromFile(filename)

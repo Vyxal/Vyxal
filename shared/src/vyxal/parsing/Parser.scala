@@ -19,9 +19,9 @@ case class ParserResult(
 
 object Parser:
   @throws[ParsingException]
-  def parse(tokens: List[Token]): ParserResult =
+  def parse(tokens: Seq[Token]): ParserResult =
     val parser = Parser()
-    val ast = parser.parse(tokens)
+    val ast = parser.parse(tokens.toList)
     ParserResult(
       ast,
       parser.customs.toMap,
