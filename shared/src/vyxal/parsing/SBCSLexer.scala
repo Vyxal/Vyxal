@@ -6,6 +6,7 @@ import vyxal.VyxalException
 class SBCSLexer extends LexerCommon:
 
   private var unpackDepth = 0
+  var sugarUsed = false
 
   def headIsOpener: Boolean =
     headIn("[({ṆḌƛΩ₳µ") || headLookaheadEqual("#[") ||
@@ -269,6 +270,7 @@ class SBCSLexer extends LexerCommon:
     val trigraph = pop(3)
     val normal = SugarMap.trigraphs.getOrElse(trigraph, trigraph)
     programStack.pushAll(normal.reverse.map(_.toString))
+    sugarUsed = true
 
   private def contextIndexToken: Unit =
     val rangeStart = index

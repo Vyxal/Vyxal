@@ -13,17 +13,7 @@ object Interpreter:
   def execute(code: String)(using ctx: Context): Unit =
     /** Attempt lexing */
     val tokens =
-      try
-        val lexRes = Lexer(code)
-        scribe.debug(s"Lexed tokens: $lexRes")
-        val sugarless = Lexer.removeSugar(
-          if ctx.settings.literate then Lexer.sbcsify(lexRes) else code
-        )
-        sugarless match
-          case Some(code) => scribe.debug(s"Sugarless: $code")
-
-          case None => ()
-        lexRes
+      try Lexer.lex(code)
       catch
         case ex: VyxalException => throw ex
         case ex: Throwable => throw UnknownLexingException(ex)

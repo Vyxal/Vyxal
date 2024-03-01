@@ -2,6 +2,7 @@ package vyxal.parsing
 
 import vyxal.parsing.LiterateLexer
 import vyxal.parsing.SBCSLexer
+import vyxal.Context
 import vyxal.Elements
 
 import scala.collection.mutable // For named imports
@@ -167,6 +168,10 @@ object Lexer:
   def lexLiterate(program: String): Seq[Token] =
     val lexer = LiterateLexer()
     lexer.lex(program)
+
+  def lex(program: String)(using ctx: Context): Seq[Token] =
+    if ctx.settings.literate then lexLiterate(program)
+    else lexSBCS(program)
 
   private def sbcsifySingle(token: Token): String =
     val Token(tokenType, value, _) = token
