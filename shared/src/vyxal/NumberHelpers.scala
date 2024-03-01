@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.*
+import vyxal.parsing.Codepage
 import vyxal.parsing.Lexer
 
 import scala.annotation.tailrec
@@ -363,7 +364,7 @@ object NumberHelpers:
   def toBaseString(value: VNum, base: VNum)(using Context): VAny =
     val lst = NumberHelpers.toBaseDigits(value, base)
     val temp = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-    val codepage = temp + Lexer.Codepage.filterNot(temp.contains(_))
+    val codepage = temp + Codepage.filterNot(temp.contains(_))
     lst.map(d => codepage((d % 256).toInt)).mkString
 
   def toInt(value: VAny, radix: Int)(using Context): VAny =
