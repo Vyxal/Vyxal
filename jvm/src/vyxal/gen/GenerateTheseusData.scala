@@ -1,6 +1,6 @@
 package vyxal.gen
 
-import vyxal.parsing.Lexer
+import vyxal.parsing.Codepage
 import vyxal.Elements
 import vyxal.Flag
 import vyxal.FlagCategory
@@ -18,12 +18,12 @@ private object GenerateTheseusData:
       "syntax" -> ujson.Arr(),
       "flags" -> ujson.Arr(),
       "sugars" -> SugarMap.trigraphs,
-      "codepage" -> Lexer.Codepage,
+      "codepage" -> Codepage,
       "version" -> Interpreter.version,
     )
     for
       (symbol, element) <- Elements.elements
-      if Lexer.Codepage.contains(symbol.last) && !symbol.startsWith("#|")
+      if Codepage.contains(symbol.last) && !symbol.startsWith("#|")
     do
       val elementData = ujson.Obj()
       elementData("name") = element.name

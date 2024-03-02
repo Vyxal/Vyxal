@@ -1,7 +1,7 @@
 package vyxal.gen
 
 import vyxal.{Element, Elements, Modifiers, SugarMap}
-import vyxal.parsing.Lexer
+import vyxal.parsing.Codepage
 import vyxal.Modifier
 import vyxal.Syntax
 import vyxal.SyntaxInfo
@@ -18,9 +18,9 @@ private object GenerateDocs:
       .sortBy { elem =>
         // Have to use tuple in case of digraphs
         (
-          Lexer.Codepage.indexOf(elem.symbol.charAt(0)) +
+          Codepage.indexOf(elem.symbol.charAt(0)) +
             (if "#∆øÞ".contains(elem.symbol.charAt(0)) then 400 else 0),
-          Lexer.Codepage.indexOf(elem.symbol.substring(1)),
+          Codepage.indexOf(elem.symbol.substring(1)),
         )
       }
       .foreach {
@@ -49,9 +49,9 @@ private object GenerateDocs:
       .sortBy { elem =>
         // Have to use tuple in case of digraphs
         (
-          Lexer.Codepage.indexOf(elem.symbol.charAt(0)) +
+          Codepage.indexOf(elem.symbol.charAt(0)) +
             (if "#∆øÞ".contains(elem.symbol.charAt(0)) then 400 else 0),
-          Lexer.Codepage.indexOf(elem.symbol.substring(1)),
+          Codepage.indexOf(elem.symbol.substring(1)),
         )
       }
       .foreach {
@@ -114,9 +114,9 @@ private object GenerateDocs:
       .sortBy { elem =>
         // Have to use tuple in case of digraphs
         (
-          Lexer.Codepage.indexOf(elem.symbol.charAt(0)) +
+          Codepage.indexOf(elem.symbol.charAt(0)) +
             (if "#∆øÞ".contains(elem.symbol.charAt(0)) then 400 else 0),
-          Lexer.Codepage.indexOf(elem.symbol.substring(1)),
+          Codepage.indexOf(elem.symbol.substring(1)),
         )
       }
       .map { elem =>
@@ -163,9 +163,9 @@ private object GenerateDocs:
       .toSeq
       .sortBy((modi, _) =>
         (
-          Lexer.Codepage.indexOf(modi.charAt(0)) +
+          Codepage.indexOf(modi.charAt(0)) +
             (if "#∆øÞ".contains(modi.charAt(0)) then 400 else 0),
-          Lexer.Codepage.indexOf(modi.substring(1)),
+          Codepage.indexOf(modi.substring(1)),
         )
       )
       .map {
@@ -207,9 +207,9 @@ private object GenerateDocs:
       .toSeq
       .sortBy((symbol, _) =>
         (
-          Lexer.Codepage.indexOf(symbol.charAt(0)) +
+          Codepage.indexOf(symbol.charAt(0)) +
             (if "#∆øÞ".contains(symbol.charAt(0)) then 400 else 0),
-          Lexer.Codepage.indexOf(symbol.substring(1)),
+          Codepage.indexOf(symbol.substring(1)),
         )
       )
       .map {
