@@ -6,47 +6,41 @@ import vyxal.parsing.{Lexer, Range, StructureType, Token}
 import vyxal.parsing.TokenType.*
 
 class LexerTests extends VyxalTests:
-  def testLex(input: String, expected: List[Token]) =
+  def testLex(input: String, expected: Seq[Token]) =
     assertResult(expected)(Lexer.lexSBCS(input))
 
   describe("Literals") {
     it("should recognize numbers") {
       group {
-        testLex("123", List(Number("123")))
-        testLex("6.", List(Number("6.")))
-        testLex("3.4ı1.2", List(Number("3.4ı1.2")))
-        testLex("3.4ı1.", List(Number("3.4ı1.")))
-        testLex("3.4ı.2", List(Number("3.4ı.2")))
-        testLex("3.4ı.", List(Number("3.4ı.")))
-        testLex(".ı.", List(Number(".ı.")))
-        testLex("3.4ı", List(Number("3.4ı")))
-        testLex(".4", List(Number(".4")))
-        testLex(".", List(Number(".")))
-        testLex("1000000_", List(Number("1000000_")))
-        testLex("5.2_", List(Number("5.2_")))
-        testLex("5.2ı_", List(Number("5.2ı_")))
+        testLex("123", Seq(Number("123")))
+        testLex("6.", Seq(Number("6.5")))
+        testLex("3.4ı1.2", Seq(Number("3.4ı1.2")))
+        testLex("3.4ı1.", Seq(Number("3.4ı1.5")))
+        testLex("3.4ı.2", Seq(Number("3.4ı0.2")))
+        testLex("3.4ı.", Seq(Number("3.4ı0.5")))
+        testLex(".ı.", Seq(Number("0.5ı0.5")))
+        testLex("3.4ı", Seq(Number("3.4ı")))
+        testLex(".4", Seq(Number("0.4")))
+        testLex(".", Seq(Number("0.5")))
+        testLex("1000000_", Seq(Number("_1000000")))
+        testLex("5.2_", Seq(Number("_5.2")))
+        testLex("5.2ı_", Seq(Number("5.2ı_")))
       }
     }
-  }
-
-  describe("Strings") {
     it("should recognize strings") {
       group {
-        testLex(""" "Hello, Vyxal!" """, List(Str("Hello, Vyxal!")))
-        testLex(""" "Hello, Vyxal!" """, List(Str("Hello, Vyxal!")))
-
+        testLex(""" "Hello, Vyxal!" """, Seq(Str("Hello, Vyxal!")))
         testLex(
           """ "Vyxal is what \"you\" want!" """,
-          List(Str("Vyxal is what \"you\" want!")),
+          Seq(Str("Vyxal is what \"you\" want!")),
         )
 
         testLex(
           """ k"vy """,
-          List(Digraph("k\""), Command("v"), Command("y")),
+          Seq(Digraph("k\""), MonadicModifier("v"), Command("y")),
         )
       }
     }
-
     it("should differentiate between strings and dictionary strings?") {
       group {
         testLex(""" "Hello, Vyxal!" """, List(Str("Hello, Vyxal!")))
@@ -71,7 +65,7 @@ class LexerTests extends VyxalTests:
           Number("1"),
           Number("1"),
           Command("+"),
-          Comment("Hello, Vyxal!"),
+          Token(Newline, "\n", Range.fake),
         ),
       )
     }
@@ -82,7 +76,6 @@ class LexerTests extends VyxalTests:
           Number("1"),
           Number("1"),
           Command("+"),
-          Comment("Hello, Vyxal!"),
           Token(Newline, "\n", Range.fake),
           Number("1"),
           Command("+"),
@@ -96,11 +89,11 @@ class LexerTests extends VyxalTests:
       group {
         testLex(
           "1 ##\n",
-          List(Number("1"), Comment(""), Token(Newline, "\n", Range.fake)),
+          List(Number("1"), Token(Newline, "\n", Range.fake)),
         )
         testLex(
           "1 ##",
-          List(Number("1"), Comment("")),
+          List(Number("1"), Token(Newline, "\n", Range.fake)),
         )
       }
     }
@@ -124,16 +117,16 @@ class LexerTests extends VyxalTests:
 
   describe("Variable digraphs") {
     it("should recognize `#$`/get var") {
-      testLex("3 #$my_var +", List(Number("3"), GetVar("my_var"), Command("+")))
+      testLex("3 #$my_var +", Seq(Number("3"), GetVar("my_var"), Command("+")))
     }
     it("should recognize `#=`/set var") {
-      testLex("42 #=answer", List(Number("42"), SetVar("answer")))
+      testLex("42 #=answer", Seq(Number("42"), SetVar("answer")))
     }
 
     it("should recognise `#>`/augmented assignment") {
       testLex(
         "45 +#>answer",
-        List(Number("45"), Command("+"), AugmentVar("answer")),
+        Seq(Number("45"), Command("+"), AugmentVar("answer")),
       )
     }
   }
@@ -142,7 +135,7 @@ class LexerTests extends VyxalTests:
     it("should turn them into normal form") {
       testLex(
         "5 #.[5+",
-        List(
+        Seq(
           Number("5"),
           StructureOpen(StructureType.LambdaMap.open),
           Number("5"),
@@ -154,7 +147,7 @@ class LexerTests extends VyxalTests:
     they("should work inside digraphs") {
       testLex(
         "#,/#,/ ø#,/ #,/ø",
-        List(Digraph("øø"), Digraph("øø"), Digraph("øø")),
+        Seq(Digraph("øø"), Digraph("øø"), Digraph("øø")),
       )
     }
   }

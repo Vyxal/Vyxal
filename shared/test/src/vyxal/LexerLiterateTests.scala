@@ -2,15 +2,15 @@ package vyxal
 
 import scala.language.strictEquality
 
-import vyxal.parsing.Vexer
+import vyxal.parsing.Lexer
 
 import org.scalatest.compatible.Assertion
 import org.scalatest.funspec.AnyFunSpec
 
-class VexerLiterateTests extends VyxalTests:
+class LexerLiterateTests extends VyxalTests:
   def testLiterate(input: String, expected: String): Assertion =
-    val literate = Vexer.lexLiterate(input)
-    val sbcsified = Vexer.sbcsify(literate)
+    val literate = Lexer.lexLiterate(input)
+    val sbcsified = Lexer.sbcsify(literate)
     assertResult(
       expected,
       literate.map(tok => s"${tok.tokenType}(${tok.value})"),
@@ -137,5 +137,4 @@ class VexerLiterateTests extends VyxalTests:
       testLiterate("i is-vowel?", "ıA")
     }
   }
-
-end VexerLiterateTests
+end LexerLiterateTests
