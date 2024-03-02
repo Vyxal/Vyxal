@@ -165,7 +165,7 @@ class LiterateLexer extends LexerCommon:
         val tempRange = Range(index, index)
         addToken(TokenType.StructureOpen, structOpeners(pop()).open, tempRange)
       else if headIsBranch then quickToken(TokenType.Branch, "|")
-      else if endKeywords.contains(programStack.head) then
+      else if endKeywords.contains(programStack.head) || headEqual("}") then
         quickToken(TokenType.StructureClose, "}")
       else if headEqual("end-end") then
         quickToken(TokenType.StructureDoubleClose, ")")
