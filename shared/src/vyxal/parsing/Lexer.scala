@@ -1,7 +1,5 @@
 package vyxal.parsing
 
-import vyxal.parsing.LiterateLexer
-import vyxal.parsing.SBCSLexer
 import vyxal.Context
 import vyxal.Elements
 
@@ -11,7 +9,6 @@ import scala.collection.mutable.{
   Stack,
   StringBuilder,
 } // for things that don't shadow non-mut variants
-import scala.compiletime.ops.double
 
 import TokenType.*
 
