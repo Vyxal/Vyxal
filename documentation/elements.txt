@@ -6,6 +6,11 @@ Keywords: taco
 Keywords: cookie
 - cookie.
 ----------------------
+ꜝ (Increment) (vectorising)
+Trigraph: #^!
+Keywords: incr, increment
+- a: num -> a + 1
+----------------------
 ඞ (ඞ) (non-vectorising)
 Keywords: sus
 - ඞ
@@ -1151,11 +1156,6 @@ Trigraph: #^~
 Keywords: all-equal, all-equal?
 - a: lst -> are all elements of a equal?
 ----------------------
-ꜝ (Increment) (vectorising)
-Trigraph: #^!
-Keywords: incr, increment
-- a: num -> a + 1
-----------------------
 #|para-apply ([Internal Use] Parallel Apply (Element Form)) (non-vectorising)
 Keywords: 
 - *a, f -> The iconic parallel apply. Use the modifier instead bingus.
@@ -1208,6 +1208,10 @@ Keywords:
 Keywords: 
 - *a, f -> f applied to each neighbour of a. Use the modifier instead.
 ----------------------
+#¿ (Number of Inputs) (non-vectorising)
+Keywords: number-of-inputs, count-inputs, count-stdin
+- -> The number of inputs to the program
+----------------------
 #? (All Inputs) (non-vectorising)
 Keywords: all-inputs, inputs, all-stdin, all-stdin?
 - A list of all inputs to the program
@@ -1244,10 +1248,6 @@ Keywords:
 #¤ (Number of Context Parameters) (non-vectorising)
 Keywords: number-of-context, context-number, context-count
 - -> number of context parameters
-----------------------
-#¿ (Number of Inputs) (non-vectorising)
-Keywords: number-of-inputs, count-inputs, count-stdin
-- -> The number of inputs to the program
 ----------------------
 ∆< (Argument / Phase / Angle) (vectorising)
 Keywords: arg, phase, angle

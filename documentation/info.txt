@@ -1,5 +1,6 @@
 🌮 ==> Taco
 🍪 ==> Cookie
+ꜝ ==> Increment
 ඞ ==> ඞ
 ! ==> Factorial
 $ ==> Swap
@@ -213,7 +214,6 @@ z ==> Inclusive zero Range | Is Lowercase
 ᶲ ==> Stringify
 • ==> Asterisk
 ≈ ==> All Equal?
-ꜝ ==> Increment
 #|para-apply ==> [Internal Use] Parallel Apply (Element Form)
 #|minimum-by ==> [Internal Use] Minimum By (Element Form)
 #|map-prefixes ==> [Internal Use] Map Prefixes (Element Form)
@@ -227,6 +227,7 @@ z ==> Inclusive zero Range | Is Lowercase
 #|dip ==> [Internal Use] Dip (Element Form)
 #|invar ==> [Internal Use] Invariant (Element Form)
 #|all-neigh ==> [Internal Use] All Neighbours (Element Form)
+#¿ ==> Number of Inputs
 #? ==> All Inputs
 #C ==> Compress String Using Dictionary
 #Q ==> Exit | Quit
@@ -236,7 +237,6 @@ z ==> Inclusive zero Range | Is Lowercase
 #x ==> Loop Continue
 #~ ==> [Internal Use] Apply Without Popping (Element Form)
 #¤ ==> Number of Context Parameters
-#¿ ==> Number of Inputs
 ∆< ==> Argument / Phase / Angle
 ∆A ==> Arithmetic Mean
 ∆C ==> Hyperbolic Cosine

@@ -7,6 +7,7 @@
  --- | --- | --- | --- | --- | --- | --- |
  <code>🌮</code> |  | Taco | `taco` | NA | :x: | <code>very funky</code>
  <code>🍪</code> |  | Cookie | `cookie` | NA | :x: | <code>cookie.</code>
+ <code>ꜝ</code> | #^! | Increment | `incr`, `increment` | 1 | :white_check_mark: | <code>a: num </code> => <code> a + 1</code>
  <code>ඞ</code> |  | ඞ | `sus` | NA | :x: | <code>ඞ</code>
  <code>!</code> |  | Factorial | `fact`, `factorial` | 1 | :white_check_mark: | <code>a: num </code> => <code> a!</code>
  <code>$</code> |  | Swap | `swap` | NA | :x: | <code>a, b </code> => <code> b, a</code>
@@ -220,7 +221,7 @@
  <code>ᶲ</code> | #^\| | Stringify | `to-string`, `stringify`, `str` | 1 | :x: | <code>a: any </code> => <code> str(a)</code>
  <code>•</code> | #,. | Asterisk | `asterisk` | 0 | :x: | <code></code> => <code> "*"</code>
  <code>≈</code> | #^~ | All Equal? | `all-equal`, `all-equal?` | 1 | :x: | <code>a: lst </code> => <code> are all elements of a equal?</code>
- <code>ꜝ</code> | #^! | Increment | `incr`, `increment` | 1 | :white_check_mark: | <code>a: num </code> => <code> a + 1</code>
+ <code>#¿</code> |  | Number of Inputs | `number-of-inputs`, `count-inputs`, `count-stdin` | 0 | :x: | <code></code> => <code> The number of inputs to the program</code>
  <code>#?</code> |  | All Inputs | `all-inputs`, `inputs`, `all-stdin`, `all-stdin?` | NA | :x: | <code>A list of all inputs to the program</code>
  <code>#C</code> |  | Compress String Using Dictionary | `compress-dict`, `dict-comp`, `compress` | 1 | :x: | <code>a: str </code> => <code> compress a using the dictionary</code>
  <code>#Q</code> |  | Exit \| Quit | `exit`, `quit` | NA | :x: | <code>a </code> => <code> Stop program execution</code>
@@ -230,7 +231,6 @@
  <code>#x</code> |  | Loop Continue | `continue` | 0 | :x: | <code> </code> => <code> continue the current loop</code>
  <code>#~</code> |  | [Internal Use] Apply Without Popping (Element Form) |  | NA | :x: | <code>*a, f </code> => <code> f applied to the stack without popping items. Use the modifier instead.</code>
  <code>#¤</code> |  | Number of Context Parameters | `number-of-context`, `context-number`, `context-count` | 0 | :x: | <code></code> => <code> number of context parameters</code>
- <code>#¿</code> |  | Number of Inputs | `number-of-inputs`, `count-inputs`, `count-stdin` | 0 | :x: | <code></code> => <code> The number of inputs to the program</code>
  <code>∆<</code> |  | Argument / Phase / Angle | `arg`, `phase`, `angle` | 1 | :white_check_mark: | <code>a: num </code> => <code> Arg(a)</code>
  <code>∆A</code> |  | Arithmetic Mean | `mean`, `arithmetic-mean` | 1 | :x: | <code>a: lst[num] => arithmetic mean of a (sum(a) / len(a))</code>
  <code>∆C</code> |  | Hyperbolic Cosine | `cosh`, `hyperbolic-cosine` | 1 | :white_check_mark: | <code>a: num </code> => <code> cosh(a)</code>
@@ -282,40 +282,40 @@
 
 | Symbol | Trigraph | Name | Keywords | Arity | Description | Usage |
  --- | --- | --- | --- | --- | --- | --- |
- <code>ᵃ</code> | <code>#^a</code> | Apply to Neighbours \| Number of Truthy Elements | `apply-to-neighbours:`, `count-truthy:`, `apply-neighbours:`, `apply-to-neighbors:`, `apply-neighbors:`, `2lvf:`, `twolif:`, `to-pairs:`, `to-overlaps:`, `count:` | 1 | To each overlapping pair, reduce it by an element<br>Apply a dyadic element for all pairs of neighboring elements.<br>Count the number of truthy elements in a list under a mondaic element | <code>ȧf<monad>: Count how many items in a list are truthy after applying f to each</code><br><code>ᵃf<dyad>: equivalent to pushing the function, then calling ȧ</code>
- <code>ᵇ</code> | <code>#^b</code> | Apply Without Popping \| Remove Duplicates by | `without-popping:`, `peek:`, `dedup-by:`, `remove-duplicates-by:` | 1 | Apply a 2+ arity element to the stack without popping<br>Remove duplicates from a list by an element | <code>ᵇf<dyad|triad|tetrad>: apply f to the stack without popping</code><br><code>ᵇf<monad>: remove duplicates from a list by applying f to each pair of elements</code>
+ <code>ᵂ</code> | <code>#^W</code> | Dip | `dip:` | 1 | Stash the top of the stack temporarily, and then apply<br>the function. Finally, push the stashed value | <code>ᵂf: pop M, apply f, push M</code>
  <code>ᶜ</code> | <code>#^c</code> | Reduce Columns \| Map Over Suffixes | `reduce-columns:`, `map-over-suffixes:`, `fold-cols:`, `foldl-cols:`, `fold-columns-by:`, `reduce-columns-by:`, `over-suffixes:` | 1 | Reduce columns of a 2d list by a function<br>Map an element over suffixes | 
- <code>ᵈ</code> | <code>#^d</code> | Dyadic Single Element Lambda | `*2:` | 1 | Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda | <code>ᵈf: Push the equivalent of λ2|f} to the stack</code>
- <code>ᵉ</code> | <code>#^e</code> | Dyadic Double Element Lambda | `**2:` | 2 | Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda | <code>ᵉfg: Push the equivalent of λ2|fg} to the stack</code>
- <code>ᶠ</code> | <code>#^f</code> | Dyadic Triple Element Lambda | `***2:` | 3 | Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda | <code>ᶠfgh: Push the equivalent of λ2|fgh} to the stack</code>
- <code>ᴳ</code> | <code></code> | Dyadic Quadruple Element Lambda | `****2:` | 4 | Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda | <code>ᵍfghi: Push the equivalent of λ2|fghi} to the stack</code>
- <code>ᴴ</code> | <code>#^H</code> | Apply To Head | `apply-to-head:` | 1 | Apply element only to the head of list | <code>ᴴf: Apply f to the head of the top of the stack</code>
- <code>ᶤ</code> | <code>#^i</code> | First Index Where | `first-index-where:`, `first-index-of:`, `ind-of:`, `find-by:` | 1 | Find the first index where an element is truthy | <code>ᶤf: find the first index where f is truthy</code>
- <code>ᶨ</code> | <code>#^j</code> | Loop and Collect While Unique | `collect-while-unique:` | 1 | Loop and Collect While Unique | <code>ᶨf: Loop and collect while unique</code>
- <code>ᵏ</code> | <code>#^k</code> | Key | `key:` | 1 | Map an element over the groups formed by identical items. | <code>ᵏf: Map f over the groups formed by identical items</code>
- <code>ᶪ</code> | <code>#^l</code> | Loop While Unique | `loop-while-unique:` | 1 | Loop While Unique - similar to ᶨ, but doesn't collect | <code>ᶪf: Loop while unique</code>
  <code>ᵐ</code> | <code>#^m</code> | Maximum By | `max-by:`, `maximum-by:` | 1 | Maximum By Element | <code>ᵐf: Maximum of top of stack based on results of f</code>
+ <code>ᴴ</code> | <code>#^H</code> | Apply To Head | `apply-to-head:` | 1 | Apply element only to the head of list | <code>ᴴf: Apply f to the head of the top of the stack</code>
+ <code>ᶪ</code> | <code>#^l</code> | Loop While Unique | `loop-while-unique:` | 1 | Loop While Unique - similar to ᶨ, but doesn't collect | <code>ᶪf: Loop while unique</code>
+ <code>ᶻ</code> | <code>#^z</code> | Zip With / Reject by | `zip-with:`, `zipwith:` | 1 | Given a dyadic function, zip two lists and reduce each by f<br> and then check if all results are equal.<br>Given a monadic function, the inverse of monadic /.<br>Filters where the function is falsey | 
+ <code>ᵇ</code> | <code>#^b</code> | Apply Without Popping \| Remove Duplicates by | `without-popping:`, `peek:`, `dedup-by:`, `remove-duplicates-by:` | 1 | Apply a 2+ arity element to the stack without popping<br>Remove duplicates from a list by an element | <code>ᵇf<dyad|triad|tetrad>: apply f to the stack without popping</code><br><code>ᵇf<monad>: remove duplicates from a list by applying f to each pair of elements</code>
+ <code>ᵛ</code> | <code>#^v</code> | Vectorise | `vectorise:`, `vec:`, `v:` | 1 | Vectorises | <code>ᵛf: f but vectorised</code>
+ <code>ᵃ</code> | <code>#^a</code> | Apply to Neighbours \| Number of Truthy Elements | `apply-to-neighbours:`, `count-truthy:`, `apply-neighbours:`, `apply-to-neighbors:`, `apply-neighbors:`, `2lvf:`, `twolif:`, `to-pairs:`, `to-overlaps:`, `count:` | 1 | To each overlapping pair, reduce it by an element<br>Apply a dyadic element for all pairs of neighboring elements.<br>Count the number of truthy elements in a list under a mondaic element | <code>ȧf<monad>: Count how many items in a list are truthy after applying f to each</code><br><code>ᵃf<dyad>: equivalent to pushing the function, then calling ȧ</code>
+ <code>ᵘ</code> | <code>#^u</code> | Collect Until No Change / Neighbours All Equal? | `collect-until-no-change:`, `until-stable:`, `stablise:`, `neighbours-equals:` | 1 | Run func on the prev result until the result no longer changes<br>returning all intermediate results<br>Given a dyadic function, apply the function to all overlapping pairs of elements<br>and test if all results are equal | <code>ᵘf: Collect until no change</code>
+ <code>ᵖ</code> | <code>#^p</code> | Map Over Prefixes | `map-over-prefixes:`, `over-prefixes:` | 1 | Map an element over the prefixes of a list | <code>ᵖf: Map f over prefixes</code>
+ <code>ᵈ</code> | <code>#^d</code> | Dyadic Single Element Lambda | `*2:` | 1 | Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda | <code>ᵈf: Push the equivalent of λ2|f} to the stack</code>
+ <code>ᶠ</code> | <code>#^f</code> | Dyadic Triple Element Lambda | `***2:` | 3 | Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda | <code>ᶠfgh: Push the equivalent of λ2|fgh} to the stack</code>
+ <code>ᶨ</code> | <code>#^j</code> | Loop and Collect While Unique | `collect-while-unique:` | 1 | Loop and Collect While Unique | <code>ᶨf: Loop and collect while unique</code>
+ <code>ᶳ</code> | <code>#^s</code> | Sort By | `sort-by:`, `scanl:` | 1 | Sort By Element / Scanl | <code>ᶳf: Sort top of stack based on results of f</code><br><code>ᶳf: Cumulatively reduce a list of items</code>
+ <code>ᵉ</code> | <code>#^e</code> | Dyadic Double Element Lambda | `**2:` | 2 | Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda | <code>ᵉfg: Push the equivalent of λ2|fg} to the stack</code>
+ <code>ᶤ</code> | <code>#^i</code> | First Index Where | `first-index-where:`, `first-index-of:`, `ind-of:`, `find-by:` | 1 | Find the first index where an element is truthy | <code>ᶤf: find the first index where f is truthy</code>
+ <code>ᴿ</code> | <code>#^R</code> | Apply to Register | `apply-to-register:`, `to-register:`, `to-reg:` | 1 | Apply a function to the register. Essentially, push<br>the register value to the stack, apply the function, and<br>then pop back into the register | <code>ᴿf: Apply f to the register</code>
+ <code>⸠</code> | <code>#^.</code> | Single Element Lambda | `*:` | 1 | Turn the next element (whether that be a structure/modifier/element) into a lambda | <code>⸠f: Push the equivalent of λf} to the stack</code>
+ <code>ᴳ</code> | <code></code> | Dyadic Quadruple Element Lambda | `****2:` | 4 | Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda | <code>ᵍfghi: Push the equivalent of λ2|fghi} to the stack</code>
  <code>ⁿ</code> | <code>#^n</code> | Minimum By | `min-by:`, `minimum-by:` | 1 | Minimum By Element | <code>ᵐf: Minimum of top of stack based on results of f</code>
  <code>ᵒ</code> | <code>#^o</code> | Outer Product \| Table | `outer-product:`, `table:` | 1 | Outer product | <code>ᵒf: Pop two lists, then make a matrix from them by applying f to each pair of elements</code>
- <code>ᵖ</code> | <code>#^p</code> | Map Over Prefixes | `map-over-prefixes:`, `over-prefixes:` | 1 | Map an element over the prefixes of a list | <code>ᵖf: Map f over prefixes</code>
- <code>ᴿ</code> | <code>#^R</code> | Apply to Register | `apply-to-register:`, `to-register:`, `to-reg:` | 1 | Apply a function to the register. Essentially, push<br>the register value to the stack, apply the function, and<br>then pop back into the register | <code>ᴿf: Apply f to the register</code>
- <code>ᶳ</code> | <code>#^s</code> | Sort By | `sort-by:`, `scanl:` | 1 | Sort By Element / Scanl | <code>ᶳf: Sort top of stack based on results of f</code><br><code>ᶳf: Cumulatively reduce a list of items</code>
- <code>ᵗ</code> | <code>#^t</code> | Map as Stacks | `vec-dump:`, `map-dump:` | 1 | Map a function over the top of the stack, treating each iteration<br>as if it were a stack of items. Essentially, dump before mapping | 
- <code>ᵘ</code> | <code>#^u</code> | Collect Until No Change / Neighbours All Equal? | `collect-until-no-change:`, `until-stable:`, `stablise:`, `neighbours-equals:` | 1 | Run func on the prev result until the result no longer changes<br>returning all intermediate results<br>Given a dyadic function, apply the function to all overlapping pairs of elements<br>and test if all results are equal | <code>ᵘf: Collect until no change</code>
- <code>ᵛ</code> | <code>#^v</code> | Vectorise | `vectorise:`, `vec:`, `v:` | 1 | Vectorises | <code>ᵛf: f but vectorised</code>
- <code>ᵂ</code> | <code>#^W</code> | Dip | `dip:` | 1 | Stash the top of the stack temporarily, and then apply<br>the function. Finally, push the stashed value | <code>ᵂf: pop M, apply f, push M</code>
+ <code>ᵜ</code> | <code>#^*</code> | Lambda to Newline | `<-}` | -1 | Scan elements to the left until a newline is found. Push a<br>lambda with all of the scanned elements | <code><elements>ᵜ: Push a lambda</code>
+ <code>ᵏ</code> | <code>#^k</code> | Key | `key:` | 1 | Map an element over the groups formed by identical items. | <code>ᵏf: Map f over the groups formed by identical items</code>
  <code>ᵡ</code> | <code>#^X</code> | Scan Fixed Point | `scan-fix:` | 1 | Scan a function until it reaches a fixed point | <code>ᵡf: scan f until a fixed point is reached / apply until a previous value is repeated, collecting intermediate results</code>
+ <code>ᵗ</code> | <code>#^t</code> | Map as Stacks | `vec-dump:`, `map-dump:` | 1 | Map a function over the top of the stack, treating each iteration<br>as if it were a stack of items. Essentially, dump before mapping | 
  <code>ᵞ</code> | <code>#^y</code> | Invariant Under? / Vertical Scan | `invariant-under:`, `vertical-scan:`, `vscan:`, `v-scan:`, `invariant?:`, `same?:` | 1 | Check if a function is invariant under a transformation / vertical scan | <code>ᵞf: check if top of stack is invariant under a transformation</code><br><code>ᵞf: scanl columns by f</code>
- <code>ᶻ</code> | <code>#^z</code> | Zip With / Reject by | `zip-with:`, `zipwith:` | 1 | Given a dyadic function, zip two lists and reduce each by f<br> and then check if all results are equal.<br>Given a monadic function, the inverse of monadic /.<br>Filters where the function is falsey | 
- <code>⸠</code> | <code>#^.</code> | Single Element Lambda | `*:` | 1 | Turn the next element (whether that be a structure/modifier/element) into a lambda | <code>⸠f: Push the equivalent of λf} to the stack</code>
  <code>ϩ</code> | <code>#^:</code> | Double Element Lambda | `**:` | 2 | Turn the next two elements (whether that be a structure/modifier/element) into a lambda | <code>ϩfg: Push the equivalent of λfg} to the stack</code>
  <code>э</code> | <code>#^%</code> | Triple Element Lambda | `***:` | 3 | Turn the next three elements (whether that be a structure/modifier/element) into a lambda | <code>эfgh: Push the equivalent of λfgh} to the stack</code>
  <code>Ч</code> | <code>#^4</code> | Quadruple Element Lambda | `****:` | 4 | Turn the next four elements (whether that be a structure/modifier/element) into a lambda | <code>Чfghi: Push the equivalent of λfghi} to the stack</code>
- <code>ᵜ</code> | <code>#^*</code> | Lambda to Newline | `<-}` | -1 | Scan elements to the left until a newline is found. Push a<br>lambda with all of the scanned elements | <code><elements>ᵜ: Push a lambda</code>
- <code>/</code> | <code></code> | Foldl \| Reduce By \| Filter by | `foldl:`, `reduce:`, `/:`, `fold:`, `reduceby:-` | 1 | Reduce a list by an element | <code>/f: reduce by element f</code>
  <code>∥</code> | <code></code> | Parallel Apply | `parallel-apply:`, `para-apply:`, `paraply:`, `!!:` | 2 | Parallel apply two elements to the top of the stack | 
  <code>∦</code> | <code></code> | Parallel Apply and Wrap | `parallel-apply-and-wrap:`, `para-apply-and-wrap:`, `<paraply>:`, `<!!>:` | 2 | Parallel apply two elements to the top of the stack<br>and wrap the result in a list | 
  <code>¿</code> | <code>#.?</code> | Conditional Execution | `if-top:`, `if:` | 1 | Pop the top of the stack, and, if it's truthy, apply a function | 
+ <code>/</code> | <code></code> | Foldl \| Reduce By \| Filter by | `foldl:`, `reduce:`, `/:`, `fold:`, `reduceby:-` | 1 | Reduce a list by an element | <code>/f: reduce by element f</code>
 
 ## Syntax Features
 
