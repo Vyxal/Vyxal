@@ -40,6 +40,7 @@ object CLI:
       runFancyRepl: Boolean = false,
       debug: Boolean = false,
       readBytes: Boolean = false,
+      runLiterateParser: Boolean = false,
   )
 
   /** Run the CLI
@@ -102,6 +103,12 @@ object CLI:
             val line = io.StdIn.readLine(">")
             if line.isEmpty then return
             println(Parser.parse(Lexer.lexSBCS(line)).ast)
+
+        if config.runLiterateParser then
+          while true do
+            val line = io.StdIn.readLine(">")
+            if line.isEmpty then return
+            println(Parser.parse(Lexer.lexLiterate(line)).ast)
 
         if config.debug then
           val code = config.filename match
@@ -196,6 +203,12 @@ object CLI:
         opt[Unit]("parser")
           .action((_, cfg) => cfg.copy(runParser = true))
           .text("Run the parser on input. For internal use.")
+          .optional(),
+        opt[Unit]("literate-parser")
+          .action((_, cfg) => cfg.copy(runLiterateParser = true))
+          .text(
+            "Run the literate lexer and then parser on input. For internal use."
+          )
           .optional(),
         opt[Unit]("fancy-repl")
           .action((_, cfg) => cfg.copy(runFancyRepl = true))
