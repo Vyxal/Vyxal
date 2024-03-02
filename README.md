@@ -1,5 +1,7 @@
 # Vyxal 3 - Better than Ever
 
+_Note that there is a version 3.5 in the works at the moment. It's going to have a slightly different codepage, less monograph modifiers, more monograph elements, and less Error-prone lexers. If you're interested in checking out Vyxal 3, keep in mind that there'll be a somewhat major breaking change release coming out hopefully some time in March._
+
 _If you are looking for version 2 of Vyxal, you can find it [here](https://github.com/Vyxal/Vyxal/tree/version-2)_
 
 
