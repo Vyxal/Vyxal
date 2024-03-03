@@ -9,7 +9,7 @@ class SBCSLexer extends LexerCommon:
   var sugarUsed = false
 
   def headIsOpener: Boolean =
-    headIn("[({ṆḌƛΩ₳µ") || headLookaheadEqual("#[") ||
+    headIn("[({ṆḌƛΩ₳µ⟨") || headLookaheadEqual("#[") ||
       headLookaheadEqual("#{") || headLookaheadEqual("#::R") ||
       headLookaheadEqual("#::+") || headLookaheadMatch("#::[EM]")
 
@@ -43,8 +43,14 @@ class SBCSLexer extends LexerCommon:
         addToken(TokenType.Newline, "\n", Range(index, index))
       else if headLookaheadMatch("#[.,^]") then sugarTrigraph
       else if headLookaheadEqual("#[") then quickToken(TokenType.ListOpen, "#[")
+      else if headLookaheadEqual("⟨") then
+        pop()
+        addToken(TokenType.ListOpen, "#[", Range(index - 1, index))
       else if headLookaheadEqual("#]") then
         quickToken(TokenType.ListClose, "#]")
+      else if headLookaheadEqual("⟩") then
+        pop()
+        addToken(TokenType.ListClose, "#]", Range(index - 1, index))
       else if unpackDepth > 1 && headEqual("[") then
         addToken(TokenType.StructureOpen, "[", Range(index, index))
         unpackDepth += 1
