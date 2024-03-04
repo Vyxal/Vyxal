@@ -301,6 +301,8 @@ Remove duplicates from a list by an element
 ᶳ ==> Sort By Element / Scanl
 ᵂ ==> Stash the top of the stack temporarily, and then apply
 the function. Finally, push the stashed value
+ᶜ ==> Reduce columns of a 2d list by a function
+Map an element over suffixes
 э ==> Turn the next three elements (whether that be a structure/modifier/element) into a lambda
 ᵖ ==> Map an element over the prefixes of a list
 ϩ ==> Turn the next two elements (whether that be a structure/modifier/element) into a lambda
@@ -321,14 +323,12 @@ Filters where the function is falsey
 ᴿ ==> Apply a function to the register. Essentially, push
 the register value to the stack, apply the function, and
 then pop back into the register
+v ==> Vectorises
 ᴳ ==> Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
 ⸠ ==> Turn the next element (whether that be a structure/modifier/element) into a lambda
 ᵗ ==> Map a function over the top of the stack, treating each iteration
 as if it were a stack of items. Essentially, dump before mapping
 
-ᵛ ==> Vectorises
-ᶜ ==> Reduce columns of a 2d list by a function
-Map an element over suffixes
 ᶠ ==> Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda
 ᵒ ==> Outer product
 / ==> Reduce a list by an element
