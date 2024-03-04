@@ -135,7 +135,7 @@ object Modifiers:
             val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
             AST.makeSingle(lambdaAst, AST.Command("#|reduce-cols"))
       },
-    "ᵛ" ->
+    "v" ->
       Modifier(
         "Vectorise",
         "Vectorises",
