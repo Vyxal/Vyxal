@@ -360,7 +360,7 @@ private class Parser:
               val modifierArgs = List.fill(arity)(finalAsts.pop())
               finalAsts.push(modifier.from(modifierArgs))
         case AST.SpecialModifier(name, _) => (name: @unchecked) match
-            case "ᵜ" =>
+            case "⋊" =>
               val lambdaAsts = Stack[AST]()
               while asts.nonEmpty && asts.top != AST.Newline do
                 lambdaAsts.push(asts.pop())
