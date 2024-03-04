@@ -223,7 +223,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser handle basic modifiers?") {
     assert(
-      parse("ᵛ+ +") ===
+      parse("v+ +") ===
         Group(
           List(
             Group(
@@ -271,7 +271,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser handle nested modifiers?") {
     assert(
-      parse("#[#[1|2|3#]|#[4|5|6#]#] ᵛ/+") ===
+      parse("#[#[1|2|3#]|#[4|5|6#]#] v/+") ===
         Group(
           List(
             Lst(
@@ -335,7 +335,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser recognise lambda to newline?") {
     assert(
-      parse("1 + 2 * ᵜ #[1|2|3#] M") ===
+      parse("1 + 2 * ⋊ #[1|2|3#] M") ===
         Group(
           List(
             Lambda(
@@ -360,7 +360,7 @@ class ParserTests extends AnyFunSuite:
         )
     )
     assert(
-      parse("1 + 2 * ᵜ") ===
+      parse("1 + 2 * ⋊") ===
         Lambda(
           Some(1),
           List(),
@@ -376,7 +376,7 @@ class ParserTests extends AnyFunSuite:
         )
     )
     assert(
-      parse("#[1|2|3#]\n1 + 2 * ᵜ M") ===
+      parse("#[1|2|3#]\n1 + 2 * ⋊ M") ===
         Group(
           List(
             Lst(List(Number(1), Number(2), Number(3))),
