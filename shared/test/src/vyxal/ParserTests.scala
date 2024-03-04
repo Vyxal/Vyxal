@@ -132,7 +132,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser recognise two-character strings in structures?") {
     assert(
-      parse("(bᶴ|c") === For(None, Group(List(Command("b"), Str("|c")), None))
+      parse("(b῟|c") === For(None, Group(List(Command("b"), Str("|c")), None))
     )
   }
 
