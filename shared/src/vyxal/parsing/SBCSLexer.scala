@@ -30,6 +30,7 @@ class SBCSLexer extends LexerCommon:
 
     while programStack.nonEmpty do
       if headIsDigit || headEqual(".") then numberToken
+      else if headEqual("\n") then quickToken(TokenType.Newline, "\n")
       else if headIsWhitespace then pop(1)
       else if headEqual("\"") then stringToken
       else if headEqual("'") then oneCharStringToken

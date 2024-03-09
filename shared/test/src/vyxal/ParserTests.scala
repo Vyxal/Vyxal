@@ -360,15 +360,15 @@ class ParserTests extends AnyFunSuite:
         )
     )
     assert(
-      parse("1 + 2 * ⋊") ===
+      parse("4 + 5 * ⋊") ===
         Lambda(
           Some(1),
           List(),
           List(
             Group(
               List(
-                Group(List(Number(1), Command("+")), Some(1)),
-                Group(List(Number(2), Command("*")), Some(1)),
+                Group(List(Number(4), Command("+")), Some(1)),
+                Group(List(Number(5), Command("*")), Some(1)),
               ),
               None,
             )
@@ -376,18 +376,18 @@ class ParserTests extends AnyFunSuite:
         )
     )
     assert(
-      parse("#[1|2|3#]\n1 + 2 * ⋊ M") ===
+      parse("#[6|7|8#]\n9 + 10 * ⋊ M") ===
         Group(
           List(
-            Lst(List(Number(1), Number(2), Number(3))),
+            Lst(List(Number(6), Number(7), Number(8))),
             Lambda(
               Some(1),
               List(),
               List(
                 Group(
                   List(
-                    Group(List(Number(1), Command("+")), Some(1)),
-                    Group(List(Number(2), Command("*")), Some(1)),
+                    Group(List(Number(9), Command("+")), Some(1)),
+                    Group(List(Number(10), Command("*")), Some(1)),
                   ),
                   None,
                 )
