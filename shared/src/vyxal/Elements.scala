@@ -2719,6 +2719,7 @@ object Elements:
       case (a: VNum, b: String) => StringHelpers.characterMultiply(a, b)
       case (a: String, b: VNum) => StringHelpers.characterMultiply(b, a)
       case (a: VList, b: VList) => VList.from(a.filter(b.contains(_)))
+      case (a: String, b: String) => a.filter(b.contains(_))
       case (a: VList, b: VNum) => ListHelpers.flattenByDepth(a, b)
     },
     addPart(
