@@ -706,7 +706,7 @@ private class Parser:
         throw UnmatchedCloserException(preprocessed.dequeue())
       // Some tokens were left at the end, which should never happen
       throw TokensFailedParsingException(preprocessed.toList)
-    else postprocess(parsed)
+    parsed
 
   private def preprocess(tokens: List[Token]): List[Token] =
     val doubleClose = ListBuffer[Token]()
@@ -743,15 +743,6 @@ private class Parser:
     end while
     processed.toList
   end preprocess
-
-  private def postprocess(asts: AST): AST =
-    val temp = asts match
-      case AST.Group(elems, _, _) =>
-        val nilads = elems.reverse.takeWhile(isNilad).reverse
-        val rest = elems.dropRight(nilads.length)
-        AST.Group(nilads ++ rest, None)
-      case _ => asts
-    temp
 
   private def isNilad(ast: AST) =
     ast match
