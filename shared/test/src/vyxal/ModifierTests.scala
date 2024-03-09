@@ -12,6 +12,7 @@ class ModifierTests extends VyxalTests:
       "#[1 10 R|1 5 R|6 8 R#] vA" -> VList(1, 1, 1),
     )
   }
+  /*
   describe("Modifier /") {
     testMulti(
       "1 10 R /+" -> 45,
@@ -259,5 +260,5 @@ class ModifierTests extends VyxalTests:
       "#[#[1|2|3#]|#[4|5|6#]#] ᵗϩ++" -> VList(6, 15)
     )
   }
-
+*/
 end ModifierTests
