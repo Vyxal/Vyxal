@@ -237,10 +237,6 @@ Keywords: zip, zip-map
 - a: lst, b: fun -> [[x, b(x)] for x in a]
 - a: fun, b: lst -> [[a(x), x] for x in b]
 ----------------------
-\ (Dump) (non-vectorising)
-Keywords: dump
-- a: any -> dump all values on the stack
-----------------------
 ^ (Reverse Stack) (non-vectorising)
 Keywords: reverse-stack, rev-stack
 -  -> reverse the stack
@@ -1099,6 +1095,10 @@ Trigraph: #.6
 Keywords: min-no-pop
 - a: lst -> min(a) without popping a
 ----------------------
+┉ (Dump) (non-vectorising)
+Keywords: dump
+- a: any -> dump all values on the stack
+----------------------
 „ (Join on Spaces | Is Negative? (Used when not closing a string)) (non-vectorising)
 Trigraph: #,"
 Keywords: space-join, join-on-spaces, is-negative?, negative?
@@ -1445,12 +1445,11 @@ Keywords: into-n-pieces, split-into-n-pieces
 - a: lst, b: num -> a split into b equal sized chunks, with the last chunk potentially smaller
 - a: str, b: num -> a split into b equal sized chunks, with the last chunk potentially smaller
 ----------------------
-ᵜ
-Keywords: <-}
-Description: Scan elements to the left until a newline is found. Push a
-lambda with all of the scanned elements
-<elements>ᵜ: Push a lambda
-Trigraph: #^*
+◌
+Keywords: vec-dump:, map-dump:
+Description: Map a function over the top of the stack, treating each iteration
+as if it were a stack of items. Essentially, dump before mapping
+
 -----------------------
 Ч
 Keywords: ****:
@@ -1458,166 +1457,39 @@ Description: Turn the next four elements (whether that be a structure/modifier/e
 Чfghi: Push the equivalent of λfghi} to the stack
 Trigraph: #^4
 -----------------------
-ᵈ
+♳
 Keywords: *2:
 Description: Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda
 ᵈf: Push the equivalent of λ2|f} to the stack
-Trigraph: #^d
------------------------
-ᶤ
-Keywords: first-index-where:, first-index-of:, ind-of:, find-by:
-Description: Find the first index where an element is truthy
-ᶤf: find the first index where f is truthy
-Trigraph: #^i
 -----------------------
 ∦
 Keywords: parallel-apply-and-wrap:, para-apply-and-wrap:, <paraply>:, <!!>:
 Description: Parallel apply two elements to the top of the stack
 and wrap the result in a list
 -----------------------
-ᵞ
-Keywords: invariant-under:, vertical-scan:, vscan:, v-scan:, invariant?:, same?:
-Description: Check if a function is invariant under a transformation / vertical scan
-ᵞf: check if top of stack is invariant under a transformation
-ᵞf: scanl columns by f
-Trigraph: #^y
------------------------
-ᵏ
-Keywords: key:
-Description: Map an element over the groups formed by identical items.
-ᵏf: Map f over the groups formed by identical items
-Trigraph: #^k
------------------------
-ⁿ
-Keywords: min-by:, minimum-by:
-Description: Minimum By Element
-ᵐf: Minimum of top of stack based on results of f
-Trigraph: #^n
------------------------
-ᵇ
-Keywords: without-popping:, peek:, dedup-by:, remove-duplicates-by:
-Description: Apply a 2+ arity element to the stack without popping
-Remove duplicates from a list by an element
-ᵇf<dyad|triad|tetrad>: apply f to the stack without popping
-ᵇf<monad>: remove duplicates from a list by applying f to each pair of elements
-Trigraph: #^b
------------------------
-ᴴ
-Keywords: apply-to-head:
-Description: Apply element only to the head of list
-ᴴf: Apply f to the head of the top of the stack
-Trigraph: #^H
------------------------
-ᶪ
-Keywords: loop-while-unique:
-Description: Loop While Unique - similar to ᶨ, but doesn't collect
-ᶪf: Loop while unique
-Trigraph: #^l
------------------------
-ᵐ
-Keywords: max-by:, maximum-by:
-Description: Maximum By Element
-ᵐf: Maximum of top of stack based on results of f
-Trigraph: #^m
------------------------
-ᶳ
-Keywords: sort-by:, scanl:
-Description: Sort By Element / Scanl
-ᶳf: Sort top of stack based on results of f
-ᶳf: Cumulatively reduce a list of items
-Trigraph: #^s
------------------------
-ᵂ
-Keywords: dip:
-Description: Stash the top of the stack temporarily, and then apply
-the function. Finally, push the stashed value
-ᵂf: pop M, apply f, push M
-Trigraph: #^W
------------------------
-ᶜ
-Keywords: reduce-columns:, map-over-suffixes:, fold-cols:, foldl-cols:, fold-columns-by:, reduce-columns-by:, over-suffixes:
-Description: Reduce columns of a 2d list by a function
-Map an element over suffixes
-Trigraph: #^c
------------------------
-э
-Keywords: ***:
-Description: Turn the next three elements (whether that be a structure/modifier/element) into a lambda
-эfgh: Push the equivalent of λfgh} to the stack
-Trigraph: #^%
------------------------
-ᵖ
-Keywords: map-over-prefixes:, over-prefixes:
-Description: Map an element over the prefixes of a list
-ᵖf: Map f over prefixes
-Trigraph: #^p
------------------------
-ϩ
-Keywords: **:
-Description: Turn the next two elements (whether that be a structure/modifier/element) into a lambda
-ϩfg: Push the equivalent of λfg} to the stack
-Trigraph: #^:
------------------------
-ᶨ
-Keywords: collect-while-unique:
-Description: Loop and Collect While Unique
-ᶨf: Loop and collect while unique
-Trigraph: #^j
------------------------
-ᵘ
-Keywords: collect-until-no-change:, until-stable:, stablise:, neighbours-equals:
-Description: Run func on the prev result until the result no longer changes
-returning all intermediate results
-Given a dyadic function, apply the function to all overlapping pairs of elements
-and test if all results are equal
-ᵘf: Collect until no change
-Trigraph: #^u
------------------------
-ᵃ
-Keywords: apply-to-neighbours:, count-truthy:, apply-neighbours:, apply-to-neighbors:, apply-neighbors:, 2lvf:, twolif:, to-pairs:, to-overlaps:, count:
-Description: To each overlapping pair, reduce it by an element
-Apply a dyadic element for all pairs of neighboring elements.
-Count the number of truthy elements in a list under a mondaic element
-ȧf<monad>: Count how many items in a list are truthy after applying f to each
-ᵃf<dyad>: equivalent to pushing the function, then calling ȧ
-Trigraph: #^a
------------------------
-ᶻ
-Keywords: zip-with:, zipwith:
-Description: Given a dyadic function, zip two lists and reduce each by f
- and then check if all results are equal.
-Given a monadic function, the inverse of monadic /.
-Filters where the function is falsey
-Trigraph: #^z
------------------------
-¿
-Keywords: if-top:, if:
-Description: Pop the top of the stack, and, if it's truthy, apply a function
-Trigraph: #.?
------------------------
-ᵉ
-Keywords: **2:
-Description: Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda
-ᵉfg: Push the equivalent of λ2|fg} to the stack
-Trigraph: #^e
------------------------
-ᴿ
+₾
 Keywords: apply-to-register:, to-register:, to-reg:
 Description: Apply a function to the register. Essentially, push
 the register value to the stack, apply the function, and
 then pop back into the register
 ᴿf: Apply f to the register
-Trigraph: #^R
 -----------------------
-v
-Keywords: vectorise:, vec:, v:
-Description: Vectorises
-ᵛf: f but vectorised
+⎇
+Keywords: dip:
+Description: Stash the top of the stack temporarily, and then apply
+the function. Finally, push the stashed value
+ᵂf: pop M, apply f, push M
 -----------------------
-ᴳ
+♶
 Keywords: ****2:
 Description: Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
 ᵍfghi: Push the equivalent of λ2|fghi} to the stack
+-----------------------
+⋊
+Keywords: <-}
+Description: Scan elements to the left until a newline is found. Push a
+lambda with all of the scanned elements
+<elements>ᵜ: Push a lambda
 -----------------------
 ⸠
 Keywords: *:
@@ -1625,24 +1497,23 @@ Description: Turn the next element (whether that be a structure/modifier/element
 ⸠f: Push the equivalent of λf} to the stack
 Trigraph: #^.
 -----------------------
-ᵗ
-Keywords: vec-dump:, map-dump:
-Description: Map a function over the top of the stack, treating each iteration
-as if it were a stack of items. Essentially, dump before mapping
-
-Trigraph: #^t
+э
+Keywords: ***:
+Description: Turn the next three elements (whether that be a structure/modifier/element) into a lambda
+эfgh: Push the equivalent of λfgh} to the stack
+Trigraph: #^%
 -----------------------
-ᶠ
-Keywords: ***2:
-Description: Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda
-ᶠfgh: Push the equivalent of λ2|fgh} to the stack
-Trigraph: #^f
+♴
+Keywords: **2:
+Description: Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda
+ᵉfg: Push the equivalent of λ2|fg} to the stack
 -----------------------
-ᵒ
-Keywords: outer-product:, table:
-Description: Outer product
-ᵒf: Pop two lists, then make a matrix from them by applying f to each pair of elements
-Trigraph: #^o
+~
+Keywords: peek:, filter-stack:
+Description: Apply the next element to the stack without popping it
+Keep only items on the stack that match a predicate
+~f<monad>: Filter the stack by f
+~f<dyad+>: Apply f to the stack without popping
 -----------------------
 /
 Keywords: foldl:, reduce:, /:, fold:, reduceby:-
@@ -1653,9 +1524,24 @@ Description: Reduce a list by an element
 Keywords: parallel-apply:, para-apply:, paraply:, !!:
 Description: Parallel apply two elements to the top of the stack
 -----------------------
-ᵡ
-Keywords: scan-fix:
-Description: Scan a function until it reaches a fixed point
-ᵡf: scan f until a fixed point is reached / apply until a previous value is repeated, collecting intermediate results
-Trigraph: #^X
+ϩ
+Keywords: **:
+Description: Turn the next two elements (whether that be a structure/modifier/element) into a lambda
+ϩfg: Push the equivalent of λfg} to the stack
+Trigraph: #^:
+-----------------------
+♵
+Keywords: ***2:
+Description: Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda
+ᶠfgh: Push the equivalent of λ2|fgh} to the stack
+-----------------------
+¿
+Keywords: if-top:, if:
+Description: Pop the top of the stack, and, if it's truthy, apply a function
+Trigraph: #.?
+-----------------------
+v
+Keywords: vectorise:, vec:, v:
+Description: Vectorises
+ᵛf: f but vectorised
 -----------------------

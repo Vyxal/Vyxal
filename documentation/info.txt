@@ -44,7 +44,6 @@ W ==> Wrap
 X ==> Return Statement
 Y ==> List Repeat
 Z ==> Zip
-\ ==> Dump
 ^ ==> Reverse Stack
 _ ==> Pop and Discard
 ` ==> Length of Stack
@@ -204,6 +203,7 @@ z ==> Inclusive zero Range | Is Lowercase
 ⌊ ==> Floor
 Ɠ ==> Maximum without popping
 ɠ ==> Minimum without popping
+┉ ==> Dump
 „ ==> Join on Spaces | Is Negative? (Used when not closing a string)
 ” ==> Join On Newlines | Pad Binary to Mod 8 | Context if 1
 ð ==> Space
@@ -283,54 +283,29 @@ z ==> Inclusive zero Range | Is Lowercase
 ÞṬ ==> Set of Integers
 Þ⁾ ==> Multi-Set Intersection
 Þ÷ ==> Into N Pieces | Split Into N Pieces
-ᵜ ==> Scan elements to the left until a newline is found. Push a
-lambda with all of the scanned elements
-Ч ==> Turn the next four elements (whether that be a structure/modifier/element) into a lambda
-ᵈ ==> Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda
-ᶤ ==> Find the first index where an element is truthy
-∦ ==> Parallel apply two elements to the top of the stack
-and wrap the result in a list
-ᵞ ==> Check if a function is invariant under a transformation / vertical scan
-ᵏ ==> Map an element over the groups formed by identical items.
-ⁿ ==> Minimum By Element
-ᵇ ==> Apply a 2+ arity element to the stack without popping
-Remove duplicates from a list by an element
-ᴴ ==> Apply element only to the head of list
-ᶪ ==> Loop While Unique - similar to ᶨ, but doesn't collect
-ᵐ ==> Maximum By Element
-ᶳ ==> Sort By Element / Scanl
-ᵂ ==> Stash the top of the stack temporarily, and then apply
-the function. Finally, push the stashed value
-ᶜ ==> Reduce columns of a 2d list by a function
-Map an element over suffixes
-э ==> Turn the next three elements (whether that be a structure/modifier/element) into a lambda
-ᵖ ==> Map an element over the prefixes of a list
-ϩ ==> Turn the next two elements (whether that be a structure/modifier/element) into a lambda
-ᶨ ==> Loop and Collect While Unique
-ᵘ ==> Run func on the prev result until the result no longer changes
-returning all intermediate results
-Given a dyadic function, apply the function to all overlapping pairs of elements
-and test if all results are equal
-ᵃ ==> To each overlapping pair, reduce it by an element
-Apply a dyadic element for all pairs of neighboring elements.
-Count the number of truthy elements in a list under a mondaic element
-ᶻ ==> Given a dyadic function, zip two lists and reduce each by f
- and then check if all results are equal.
-Given a monadic function, the inverse of monadic /.
-Filters where the function is falsey
-¿ ==> Pop the top of the stack, and, if it's truthy, apply a function
-ᵉ ==> Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda
-ᴿ ==> Apply a function to the register. Essentially, push
-the register value to the stack, apply the function, and
-then pop back into the register
-v ==> Vectorises
-ᴳ ==> Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
-⸠ ==> Turn the next element (whether that be a structure/modifier/element) into a lambda
-ᵗ ==> Map a function over the top of the stack, treating each iteration
+◌ ==> Map a function over the top of the stack, treating each iteration
 as if it were a stack of items. Essentially, dump before mapping
 
-ᶠ ==> Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda
-ᵒ ==> Outer product
+Ч ==> Turn the next four elements (whether that be a structure/modifier/element) into a lambda
+♳ ==> Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda
+∦ ==> Parallel apply two elements to the top of the stack
+and wrap the result in a list
+₾ ==> Apply a function to the register. Essentially, push
+the register value to the stack, apply the function, and
+then pop back into the register
+⎇ ==> Stash the top of the stack temporarily, and then apply
+the function. Finally, push the stashed value
+♶ ==> Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
+⋊ ==> Scan elements to the left until a newline is found. Push a
+lambda with all of the scanned elements
+⸠ ==> Turn the next element (whether that be a structure/modifier/element) into a lambda
+э ==> Turn the next three elements (whether that be a structure/modifier/element) into a lambda
+♴ ==> Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda
+~ ==> Apply the next element to the stack without popping it
+Keep only items on the stack that match a predicate
 / ==> Reduce a list by an element
 ∥ ==> Parallel apply two elements to the top of the stack
-ᵡ ==> Scan a function until it reaches a fixed point
+ϩ ==> Turn the next two elements (whether that be a structure/modifier/element) into a lambda
+♵ ==> Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda
+¿ ==> Pop the top of the stack, and, if it's truthy, apply a function
+v ==> Vectorises
