@@ -449,14 +449,14 @@ class ParserTests extends AnyFunSuite:
   test("Does the parser remove define structures?") {
     assert(
       parse(
-        "#:: @+ | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}}"
+        "#::E + | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}}"
       ) === Group(List(), None)
     )
   }
 
   test("Do custom elements group properly?") {
     assert(
-      parse("#::@temp|2|+} 3 4 #:@temp") ===
+      parse("#::E temp|2|+} 3 4 #:@temp") ===
         Group(
           List(
             Group(
@@ -474,7 +474,7 @@ class ParserTests extends AnyFunSuite:
     )
 
     assert(
-      parse("#::@temp|!|+} 3 4 #:@temp") ===
+      parse("#::E temp|!|+} 3 4 #:@temp") ===
         Group(
           List(Group(List(), None), Number(3), Number(4), Command("temp")),
           None,
@@ -484,7 +484,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Do custom modifiers group elements?") {
     assert(
-      parse("#::*temp|f|2|+} #:`temp !") ===
+      parse("#::M temp|f|2|+} #:=temp !") ===
         Group(
           List(
             Group(List(), None),

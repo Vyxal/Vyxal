@@ -107,9 +107,7 @@ class SBCSLexer extends LexerCommon:
       else if headLookaheadEqual("#::+") then
         pop(4)
         defineExtensionToken
-      else if headLookaheadMatch("#::[EM]") then
-        pop(4)
-        customDefinitionToken
+      else if headLookaheadMatch("#::[EM]") then customDefinitionToken
       else if headLookaheadEqual("#[") || headEqual("⟨") then
         quickToken(TokenType.ListOpen, "#[")
       else if headEqual("#]") || headEqual("⟩") then

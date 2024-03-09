@@ -559,8 +559,8 @@ private class Parser:
           if nameString.length() == 2 then nameString(1).toString()
           else toValidName(nameString)
         val mode = nameString.headOption match
-          case Some('@') => CustomElementType.Element
-          case Some('*') => CustomElementType.Modifier
+          case Some('E') => CustomElementType.Element
+          case Some('M') => CustomElementType.Modifier
           case _ => throw BadRedefineMode(
               nameString.headOption.getOrElse("").toString()
             )
@@ -743,12 +743,6 @@ private class Parser:
     end while
     processed.toList
   end preprocess
-
-  private def isNilad(ast: AST) =
-    ast match
-      case AST.GetVar(_, _) => false // you might want a variable at the end
-      // after doing stuff like augmented assignment
-      case _ => ast.arity.contains(0)
 end Parser
 
 enum ParsingException(msg: String) extends VyxalException(msg):
