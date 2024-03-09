@@ -24,18 +24,33 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser recognise basic expressions?") {
     assert(
-      parse("1 1 +") === Group(List(Number(1), Number(1), Command("+")), None)
+      parse("1 1 +") ===
+        Group(
+          List(
+            Number(1),
+            Number(1),
+            Command("+"),
+          ),
+          Some(0),
+        )
     )
 
     assert(
       parse("1 1 + 2 *") ===
         Group(
           List(
-            Group(List(Number(1), Number(1), Command("+")), Some(0)),
+            Group(
+              List(
+                Number(1),
+                Number(1),
+                Command("+"),
+              ),
+              Some(0),
+            ),
             Number(2),
             Command("*"),
           ),
-          None,
+          Some(0),
         )
     )
 

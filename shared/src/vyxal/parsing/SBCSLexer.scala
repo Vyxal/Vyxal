@@ -41,7 +41,6 @@ class SBCSLexer extends LexerCommon:
       else if headLookaheadEqual("##") then
         pop(2)
         while safeCheck(c => c != "\n" && c != "\r") do pop()
-        addToken(TokenType.Newline, "\n", Range(index, index))
       else if headLookaheadMatch("#[.,^]") then sugarTrigraph
       else if headLookaheadEqual("#[") then quickToken(TokenType.ListOpen, "#[")
       else if headLookaheadEqual("⟨") then
