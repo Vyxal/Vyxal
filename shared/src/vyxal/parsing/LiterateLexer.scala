@@ -156,6 +156,7 @@ class LiterateLexer extends LexerCommon:
           )
           eat(")")
         else throw new UnopenedGroupException(index)
+      else if headEqual("\n") then quickToken(Newline, "\n")
       else if headIsWhitespace then pop(1)
       else if headEqual("{") || lambdaOpeners.contains(programStack.head) then
         addToken(LitToken(TokenType.StructureOpen, "λ", Range(index, index)))
