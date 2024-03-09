@@ -76,7 +76,6 @@ class ParserTests extends AnyFunSuite:
     assert(
       parse("1 { 2 | { {3 | 4} | } } 6") ===
         AST.makeSingle(
-          Number(6),
           Number(1),
           AST.While(
             Some(Number(2)),
@@ -90,6 +89,7 @@ class ParserTests extends AnyFunSuite:
               AST.makeSingle(),
             ),
           ),
+          Number(6),
         )
     )
   }
@@ -140,7 +140,6 @@ class ParserTests extends AnyFunSuite:
     assert(
       parse("1 { 2 | { {3 | 4} | ] 6") ===
         AST.makeSingle(
-          Number(6),
           Number(1),
           AST.While(
             Some(Number(2)),
@@ -154,6 +153,7 @@ class ParserTests extends AnyFunSuite:
               AST.makeSingle(),
             ),
           ),
+          Number(6),
         )
     )
   }
@@ -243,7 +243,6 @@ class ParserTests extends AnyFunSuite:
       parse("1 /+ 2") ===
         Group(
           List(
-            Number(2),
             Number(1),
             Group(
               List(
@@ -252,6 +251,7 @@ class ParserTests extends AnyFunSuite:
               ),
               None,
             ),
+            Number(2),
           ),
           None,
         )
