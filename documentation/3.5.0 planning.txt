@@ -3,7 +3,7 @@ Revised:
 Monographs
 
 Both (new) (any) ⎂
-Filter from stack / Apply Without Popping (2+) ~
+✔️ Filter from stack / Apply Without Popping (2+) ~ 
 First Index Where (1) / Apply to Neighbours (2) ⇝
 collect until no change (1) / zip with (2) ∯
 Loop and Collect While Unique (1) / Outer Product (2) ⊠
@@ -12,22 +12,22 @@ Sort by (1) ß
 invariant (1) / Reduce Columns (2) ≟
 filter by (1) / fold (2+) /
 Apply to register (any) ₾
-map as stacks (any) ◌ (dump = ┉)
-vectorise (any) v
-parallel apply (any) ∥
-parallel apply and wrap (any) ∦
-conditional (any) ¿
-monadic 1mda ⸠
-monadic 2mda ϩ
-monadic 3mda э
-monadic 4mda Ч
-dyadic 1mda ♳
-dyadic 2mda ♴
-dyadic 3mda ♵
-dyadic 4mda ♶
-lambda to newline ⋊
-dip ⎇
-Loop While Unique ↻
+✔️ map as stacks (any) ◌ (dump = ┉)
+✔️ vectorise (any) v
+✔️ parallel apply (any) ∥
+✔️ parallel apply and wrap (any) ∦
+✔️ conditional (any) ¿
+✔️ monadic 1mda ⸠
+✔️ monadic 2mda ϩ
+✔️ monadic 3mda э
+✔️ monadic 4mda Ч
+✔️ dyadic 1mda ♳
+✔️ dyadic 2mda ♴
+✔️ dyadic 3mda ♵
+✔️ dyadic 4mda ♶
+✔️ lambda to newline ⋊
+✔️ dip ⎇
+ Loop While Unique ↻
 ⊙ = fine grained stack access - 1 2 3 4 ⊙1100 + W -> [3, 3, 4]
 ⁙ = ⁙fg -> f g f 
 

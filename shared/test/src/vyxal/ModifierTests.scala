@@ -12,7 +12,7 @@ class ModifierTests extends VyxalTests:
       "#[1 10 R|1 5 R|6 8 R#] vA" -> VList(1, 1, 1),
     )
   }
-  /*
+
   describe("Modifier /") {
     testMulti(
       "1 10 R /+" -> 45,
@@ -30,13 +30,67 @@ class ModifierTests extends VyxalTests:
       "#[1|2|3#] э2×++ M" -> VList(4, 8, 12),
       "#[1|2|3#] Ч×++× M" -> VList(3, 16, 45),
       "#[1|2|3#] Ч2×++× M" -> VList(4, 16, 36),
-      "#[1|2|3#] ᵈ+ R" -> VNum(6),
-      "#[1|2|3#] ᵉ+× R" -> VNum(27),
-      "#[1|2|3#] ᶠ+×+ R" -> VNum(37),
-      "#[1|2|3#] ᴳ+×+× R" -> VNum(195),
+      "#[1|2|3#] ♳+ R" -> VNum(6),
+      "#[1|2|3#] ♴+× R" -> VNum(27),
+      "#[1|2|3#] ♵+×+ R" -> VNum(37),
+      "#[1|2|3#] ♶+×+× R" -> VNum(195),
     )
   }
 
+  describe("Modifier ~ (Arity 2+)") {
+    testStackLike("~+")(
+      List[VAny](3, 4, 5) -> List[VAny](9, 5, 4, 3),
+      List[VAny](1, 1) -> List[VAny](2, 1, 1),
+    )
+    testStackLike("~r") {
+      List[VAny]("abc", "b", "!!") -> List[VAny]("a!!c", "!!", "b", "abc")
+    }
+  }
+
+  describe("Modifier ⎇") {
+    testStackLike("⎇+") {
+      List[VAny](3, 4, 5) -> List[VAny](5, 7)
+      List[VAny](1, 1, 1) -> List[VAny](1, 2)
+    }
+
+    testStackLike("⎇⎇+") {
+      List[VAny](3, 4, 5, 6) -> List[VAny](6, 5, 7)
+    }
+
+    testCode("λ0|3 4 5λ!|+}ĖW}Ė", VList(3, 9), List())
+  }
+
+  describe("Modifier ∥") {
+    testStackLike("∥+-")(
+      List[VAny](3, 4) -> List[VAny](-1, 7)
+    )
+
+    testStackLike("∥+d")(
+      List[VAny](3, 4) -> List[VAny](VNum(8), VNum(7), VNum(3))
+    )
+  }
+
+  describe("Modifier ∦") {
+    testMulti(
+      "3 4 ∦+-" -> VList(7, -1),
+      "3 4 ∦+d" -> VList(7, 8),
+      "1 3 4 5 ∦∦+-+" -> VList(VList(9, -1), 9),
+    )
+  }
+
+  describe("Modifier ¿") {
+    testMulti(
+      "3 4 1 ¿+" -> VNum(7),
+      "3 4 0 ¿+" -> VNum(4),
+    )
+  }
+
+  describe("Modifier ◌") {
+    testMulti(
+      "#[#[1|2|3#]|#[4|5|6#]#] ◌ϩ++" -> VList(6, 15)
+    )
+  }
+/*
   describe("Modifier ᵃ (Monadic)") {
     testMulti(
       "#[1|2|3|4|5#] ᵃe" -> VNum(2),
@@ -58,15 +112,7 @@ class ModifierTests extends VyxalTests:
     )
   }
 
-  describe("Modifier ᵇ (Arity 2+)") {
-    testStackLike("ᵇ+")(
-      List[VAny](3, 4, 5) -> List[VAny](9, 5, 4, 3),
-      List[VAny](1, 1) -> List[VAny](2, 1, 1),
-    )
-    testStackLike("ᵇr") {
-      List[VAny]("abc", "b", "!!") -> List[VAny]("a!!c", "!!", "b", "abc")
-    }
-  }
+
 
   describe("Modifier ᶜ (Monadic)") {
     testMulti(
@@ -184,18 +230,7 @@ class ModifierTests extends VyxalTests:
     )
   }
 
-  describe("Modifier ᵂ") {
-    testStackLike("ᵂ+") {
-      List[VAny](3, 4, 5) -> List[VAny](5, 7)
-      List[VAny](1, 1, 1) -> List[VAny](1, 2)
-    }
 
-    testStackLike("ᵂᵂ+") {
-      List[VAny](3, 4, 5, 6) -> List[VAny](6, 5, 7)
-    }
-
-    testCode("λ0|3 4 5λ!|+}ĖW}Ė", VList(3, 9), List())
-  }
 
   describe("Modifier ᵡ") {
     testMulti(
@@ -230,34 +265,6 @@ class ModifierTests extends VyxalTests:
 
   }
 
-  describe("Modifier ∥") {
-    testStackLike("∥+-")(
-      List[VAny](3, 4) -> List[VAny](-1, 7)
-    )
 
-    testStackLike("∥+d")(
-      List[VAny](3, 4) -> List[VAny](VNum(8), VNum(7), VNum(3))
-    )
-  }
-
-  describe("Modifier ∦") {
-    testMulti(
-      "3 4 ∦+-" -> VList(7, -1),
-      "3 4 ∦+d" -> VList(7, 8),
-      "1 3 4 5 ∦∦+-+" -> VList(VList(9, -1), 9),
-    )
-  }
-
-  describe("Modifier ¿") {
-    testMulti(
-      "3 4 1 ¿+" -> VNum(7),
-      "3 4 0 ¿+" -> VNum(4),
-    )
-  }
-
-  describe("Modifier ᵗ") {
-    testMulti(
-      "#[#[1|2|3#]|#[4|5|6#]#] ᵗϩ++" -> VList(6, 15)
-    )
-  }
-   */
+ */
+end ModifierTests
