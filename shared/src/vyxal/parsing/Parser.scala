@@ -316,6 +316,7 @@ private class Parser:
       end match
     end while
     // Second stage parsing
+    println(s"asts: $asts")
     val finalAsts = parse(asts)
     AST.makeSingle(finalAsts.toList*)
   end parse
@@ -557,7 +558,8 @@ private class Parser:
         val nameString = name.toVyxal
         val actualName =
           if nameString.length() == 2 then nameString(1).toString()
-          else toValidName(nameString)
+          else toValidName(nameString.tail)
+        println(s"actualName: $actualName")
         val mode = nameString.headOption match
           case Some('E') => CustomElementType.Element
           case Some('M') => CustomElementType.Modifier
@@ -588,6 +590,8 @@ private class Parser:
           Some(arity),
           (functions(0) -> args(0)),
         )
+
+        println(s"customs: $customs")
 
         AST.Group(List(), None)
 
@@ -789,6 +793,6 @@ enum ParsingException(msg: String) extends VyxalException(msg):
 
   case BadRedefineMode(mode: String)
       extends ParsingException(
-        s"Invalid redefine mode: '$mode'. Should either be @ for element, or * for modifier"
+        s"Invalid redefine mode: '$mode'. Should either be E for element, or Ms for modifier"
       )
 end ParsingException

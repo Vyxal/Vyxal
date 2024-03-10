@@ -462,19 +462,19 @@ abstract class LexerCommon:
 
   protected def commandSymbolToken: Unit =
     val rangeStart = index
-    val command = pop()
+    val name = simpleName()
     addToken(
       TokenType.ElementSymbol,
-      command,
+      name,
       Range(rangeStart, index),
     )
 
   protected def modifierSymbolToken: Unit =
     val rangeStart = index
-    val command = pop()
+    val name = simpleName()
     addToken(
       TokenType.ModifierSymbol,
-      command,
+      name,
       Range(rangeStart, index),
     )
 
