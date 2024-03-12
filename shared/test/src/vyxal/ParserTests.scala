@@ -459,23 +459,18 @@ class ParserTests extends AnyFunSuite:
       parse("#::E temp|2|+} 3 4 #:@temp") ===
         Group(
           List(
-            Group(
-              List(
-                Number(3),
-                Number(4),
-                Command("temp"),
-              ),
-              Some(0),
-            )
+            Number(3),
+            Number(4),
+            Command("temp"),
           ),
-          None,
+          Some(0),
         )
     )
 
     assert(
       parse("#::E temp|!|+} 3 4 #:@temp") ===
         Group(
-          List(Group(List(), None), Number(3), Number(4), Command("temp")),
+          List(Number(3), Number(4), Command("temp")),
           None,
         )
     )

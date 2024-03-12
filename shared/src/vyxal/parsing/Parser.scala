@@ -589,6 +589,8 @@ private class Parser:
           (functions(0) -> args(0)),
         )
 
+        println("customs: " + customs)
+
         AST.NotAnAST
 
       case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |

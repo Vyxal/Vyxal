@@ -403,7 +403,7 @@ abstract class LexerCommon:
     catch
       case _: Exception =>
         // Poor man's break
-        ???
+        ()
 
     return arity
   end calcArity
