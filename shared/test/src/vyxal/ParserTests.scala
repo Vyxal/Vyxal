@@ -466,8 +466,7 @@ class ParserTests extends AnyFunSuite:
                 Command("temp"),
               ),
               Some(0),
-            ),
-            Group(List(), None),
+            )
           ),
           None,
         )
