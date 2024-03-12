@@ -8,6 +8,7 @@ import scala.collection.mutable.ListBuffer
 
 // todo maybe record whether each AST has a breakpoint
 enum AST(val arity: Option[Int]) derives CanEqual:
+  case NotAnAST extends AST(None)
   case Number(value: VNum, override val range: Range = Range.fake)
       extends AST(Some(0))
   case Str(value: String, override val range: Range = Range.fake)

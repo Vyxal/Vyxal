@@ -316,8 +316,7 @@ private class Parser:
       end match
     end while
     // Second stage parsing
-    println(s"asts: $asts")
-    val finalAsts = parse(asts)
+    val finalAsts = parse(asts).filter(_ != AST.NotAnAST)
     AST.makeSingle(finalAsts.toList*)
   end parse
 
@@ -559,7 +558,6 @@ private class Parser:
         val actualName =
           if nameString.length() == 2 then nameString(1).toString()
           else toValidName(nameString.tail)
-        println(s"actualName: $actualName")
         val mode = nameString.headOption match
           case Some('E') => CustomElementType.Element
           case Some('M') => CustomElementType.Modifier
@@ -591,9 +589,7 @@ private class Parser:
           (functions(0) -> args(0)),
         )
 
-        println(s"customs: $customs")
-
-        AST.Group(List(), None)
+        AST.NotAnAST
 
       case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
           StructureType.LambdaFilter | StructureType.LambdaReduce |
