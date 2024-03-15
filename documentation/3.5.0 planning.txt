@@ -6,12 +6,12 @@ Both (new) (any) ⎂
 ✔️ Filter from stack / Apply Without Popping (2+) ~ 
 First Index Where (1) / Apply to Neighbours (2) ⇝
 collect until no change (1) / zip with (2) ∯
-Loop and Collect While Unique (1) / Outer Product (2) ⊠
-Key (1) / scan (2) \
-Sort by (1) ß
-invariant (1) / Reduce Columns (2) ≟
-filter by (1) / fold (2+) /
-Apply to register (any) ₾
+✔️ Loop and Collect While Unique (1) / Outer Product (2) ⊠
+✔️ Key (1) / scan (2) \
+✔️ Sort by (1) ß
+✔️ invariant (1) / Reduce Columns (2) ≟
+✔️ filter by (1) / fold (2+) /
+✔️ Apply to register (any) ₾
 ✔️ map as stacks (any) ◌ (dump = ┉)
 ✔️ vectorise (any) v
 ✔️ parallel apply (any) ∥
