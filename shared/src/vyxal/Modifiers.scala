@@ -132,6 +132,32 @@ object Modifiers:
             AST.Command("#|para-apply"),
           )
       },
+    "≟" ->
+      Modifier(
+        "Invariant By | Reduce Columns By",
+        "Return whether a value is unchanged under a function, or reduce all columns of a matrix by a function",
+        List(
+          "invariant-under:",
+          "vertical-scan:",
+          "vscan:",
+          "v-scan:",
+          "invariant?:",
+          "same?:",
+        ),
+        1,
+        Seq(
+          "≟f: Return whether the top of the stack is invariant under f",
+          "≟f<dyad>: Reduce all columns of a matrix by f",
+        ),
+      ) {
+        case List(ast) =>
+          if isExplicitMonad(ast) then
+            val lambdaAst = astToLambda(ast, 1)
+            AST.makeSingle(lambdaAst, AST.Command("#|invar"))
+          else
+            val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
+            AST.makeSingle(lambdaAst, AST.Command("#|vscan"))
+      },
     "₾" ->
       Modifier(
         "Apply to Register",
@@ -199,6 +225,78 @@ object Modifiers:
               None,
             )
           )
+      },
+    "ß" ->
+      Modifier(
+        "Sort By",
+        "Sort By Element",
+        List("sort-by:"),
+        1,
+        Seq(
+          "ßf: Sort top of stack based on results of f"
+        ),
+      ) {
+        case List(ast) =>
+          val lambdaAst = astToLambda(ast, 1)
+          AST.makeSingle(lambdaAst, AST.Command("ṡ"))
+      },
+    "⊠" ->
+      Modifier(
+        "Loop and Collect While Unique | Outer Product",
+        "Loop and Collect While Unique | Outer Product",
+        List("collect-while-unique:", "outer-product:", "table:"),
+        1,
+        Seq(
+          "⊠f: Loop and collect while unique",
+          "⊠f<dyad>: Pop two lists, then make a matrix from them by applying f to each pair of elements",
+        ),
+      ) {
+        case List(ast) => AST.makeSingle(
+            astToLambda(ast, ast.arity.getOrElse(1)),
+            AST.Command("İ"),
+          )
+      },
+    "\\" ->
+      Modifier(
+        "Key | Scanl",
+        "Map an element over the groups formed by identical items. | Cumulatively reduce a list by a function",
+        List("key:", "scanl:"),
+        1,
+        Seq(
+          "\\f: Map f over the groups formed by identical items",
+          "\\f<dyad>: Cumulatively reduce a list of items",
+        ),
+      ) {
+        case List(ast) =>
+          if isExplicitMonad(ast) then
+            AST.makeSingle(
+              AST.Generated(
+                () =>
+                  ctx ?=>
+                    val lst = ListHelpers.makeIterable(ctx.pop())
+                    val bins = ListBuffer[(VAny, ListBuffer[VAny])]()
+                    lst.foreach { elem =>
+                      val (key, bin) = bins.find(_._1 == elem).getOrElse {
+                        val bin = ListBuffer[VAny]()
+                        bins += ((elem, bin))
+                        (elem, bin)
+                      }
+                      bin += elem
+                    }
+                    ctx.push(VList.from(bins.map {
+                      case (key, bin) =>
+                        given elemCtx: Context = ctx.makeChild()
+                        elemCtx.push(VList.from(bin.toSeq))
+                        Interpreter.execute(ast)(using elemCtx)
+                        elemCtx.pop()
+                    }.toSeq))
+                ,
+                arity = Some(1),
+              )
+            )
+          else
+            val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
+            AST.makeSingle(lambdaAst, AST.Command("Ṭ"))
       },
     "⸠" ->
       Modifier(
