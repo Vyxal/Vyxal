@@ -1460,7 +1460,7 @@ Trigraph: #^4
 ♳
 Keywords: *2:
 Description: Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda
-ᵈf: Push the equivalent of λ2|f} to the stack
+♳f: Push the equivalent of λ2|f} to the stack
 -----------------------
 ∦
 Keywords: parallel-apply-and-wrap:, para-apply-and-wrap:, <paraply>:, <!!>:
@@ -1472,24 +1472,24 @@ Keywords: apply-to-register:, to-register:, to-reg:
 Description: Apply a function to the register. Essentially, push
 the register value to the stack, apply the function, and
 then pop back into the register
-ᴿf: Apply f to the register
+₾f: Apply f to the register
 -----------------------
 ⎇
 Keywords: dip:
 Description: Stash the top of the stack temporarily, and then apply
 the function. Finally, push the stashed value
-ᵂf: pop M, apply f, push M
+⎇f: pop M, apply f, push M
 -----------------------
 ♶
 Keywords: ****2:
 Description: Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
-ᵍfghi: Push the equivalent of λ2|fghi} to the stack
+♶fghi: Push the equivalent of λ2|fghi} to the stack
 -----------------------
 ⋊
 Keywords: <-}
 Description: Scan elements to the left until a newline is found. Push a
 lambda with all of the scanned elements
-<elements>ᵜ: Push a lambda
+<elements>⋊: Push a lambda
 -----------------------
 ⸠
 Keywords: *:
@@ -1506,7 +1506,7 @@ Trigraph: #^%
 ♴
 Keywords: **2:
 Description: Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda
-ᵉfg: Push the equivalent of λ2|fg} to the stack
+♴fg: Push the equivalent of λ2|fg} to the stack
 -----------------------
 ~
 Keywords: peek:, filter-stack:
@@ -1533,7 +1533,7 @@ Trigraph: #^:
 ♵
 Keywords: ***2:
 Description: Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda
-ᶠfgh: Push the equivalent of λ2|fgh} to the stack
+♵fgh: Push the equivalent of λ2|fgh} to the stack
 -----------------------
 ¿
 Keywords: if-top:, if:
@@ -1543,5 +1543,5 @@ Trigraph: #.?
 v
 Keywords: vectorise:, vec:, v:
 Description: Vectorises
-ᵛf: f but vectorised
+vf: f but vectorised
 -----------------------
