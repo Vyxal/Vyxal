@@ -70,13 +70,15 @@ private object GenerateDocs:
   private def sanitizeTable(text: String): String =
     text.replace("\\", "\\\\").replace("|", raw"\|")
 
+  private def replacePipes(text: String): String = text.replace("|", "&#124;")
+
   /** Generate the Markdown for table.md */
   def elementsMarkdown(): String =
     val formatOverload = (overload: String) =>
       overload.split("->", 2) match
-        case Array(description) => s"<code>$description</code>"
+        case Array(description) => s"<code>${replacePipes(description)}</code>"
         case Array(args, description) =>
-          s"<code>$args</code> => <code>$description</code>"
+          s"<code>${replacePipes(description)}</code> => <code>${replacePipes(description)}</code>"
 
     val elements = Elements.elements.values.toSeq
       .filter(!_.symbol.startsWith("#|"))
