@@ -481,38 +481,32 @@ class ParserTests extends AnyFunSuite:
       parse("#::M temp|f|2|+} #:=temp !") ===
         Group(
           List(
-            Group(List(), None),
-            Group(
+            Lambda(
+              Some(-1),
+              List(),
               List(
                 Lambda(
-                  Some(-1),
+                  Some(1),
                   List(),
-                  List(
-                    Lambda(
-                      Some(1),
-                      List(),
-                      List(Command("!")),
-                      true,
-                    ),
-                    Group(
-                      List(
-                        Lambda(
-                          Some(3),
-                          List("f", 2),
-                          List(Command("+")),
-                          true,
-                        ),
-                        Command("Ė"),
-                      ),
-                      None,
-                    ),
-                  ),
+                  List(Command("!")),
                   true,
                 ),
-                Command("Ė"),
+                Group(
+                  List(
+                    Lambda(
+                      Some(3),
+                      List("f", 2),
+                      List(Command("+")),
+                      true,
+                    ),
+                    Command("Ė"),
+                  ),
+                  None,
+                ),
               ),
-              None,
+              true,
             ),
+            Command("Ė"),
           ),
           None,
         )
