@@ -78,7 +78,7 @@ private object GenerateDocs:
       overload.split("->", 2) match
         case Array(description) => s"<code>${replacePipes(description)}</code>"
         case Array(args, description) =>
-          s"<code>${replacePipes(description)}</code> => <code>${replacePipes(description)}</code>"
+          s"<code>${replacePipes(args)}</code> => <code>${replacePipes(description)}</code>"
 
     val elements = Elements.elements.values.toSeq
       .filter(!_.symbol.startsWith("#|"))
