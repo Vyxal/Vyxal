@@ -49,7 +49,7 @@ object Modifiers:
         "Vectorises",
         List("vectorise:", "vec:", "v:"),
         1,
-        Seq("ᵛf: f but vectorised"),
+        Seq("vf: f but vectorised"),
       ) {
         case List(ast) =>
           val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))
@@ -99,7 +99,7 @@ object Modifiers:
            |lambda with all of the scanned elements""".stripMargin,
         List("<-}"),
         -1,
-        Seq("<elements>ᵜ: Push a lambda"),
+        Seq("<elements>⋊: Push a lambda"),
       ) { case _ => ??? },
     "⎇" ->
       Modifier(
@@ -108,7 +108,7 @@ object Modifiers:
            |the function. Finally, push the stashed value""".stripMargin,
         List("dip:"),
         1,
-        Seq("ᵂf: pop M, apply f, push M"),
+        Seq("⎇f: pop M, apply f, push M"),
       ) {
         // See, Vyxal can do this too!
         // We don't need no fancy array model around here
@@ -140,7 +140,7 @@ object Modifiers:
            |then pop back into the register""".stripMargin,
         List("apply-to-register:", "to-register:", "to-reg:"),
         1,
-        Seq("ᴿf: Apply f to the register"),
+        Seq("₾f: Apply f to the register"),
       ) {
         case List(ast) => AST.makeSingle(
             astToLambda(ast, ast.arity.getOrElse(1)),
@@ -247,7 +247,7 @@ object Modifiers:
         "Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda",
         List("*2:"),
         1,
-        Seq("ᵈf: Push the equivalent of λ2|f} to the stack"),
+        Seq("♳f: Push the equivalent of λ2|f} to the stack"),
       ) { case List(ast) => astToLambda(ast, 2, true) },
     "♴" ->
       Modifier(
@@ -255,7 +255,7 @@ object Modifiers:
         "Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda",
         List("**2:"),
         2,
-        Seq("ᵉfg: Push the equivalent of λ2|fg} to the stack"),
+        Seq("♴fg: Push the equivalent of λ2|fg} to the stack"),
       ) {
         case List(ast1, ast2) =>
           astToLambda(AST.makeSingle(ast1, ast2), 2, true)
@@ -266,7 +266,7 @@ object Modifiers:
         "Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda",
         List("***2:"),
         3,
-        Seq("ᶠfgh: Push the equivalent of λ2|fgh} to the stack"),
+        Seq("♵fgh: Push the equivalent of λ2|fgh} to the stack"),
       ) {
         case List(ast1, ast2, ast3) =>
           astToLambda(AST.makeSingle(ast1, ast2, ast3), 2, true)
@@ -277,7 +277,7 @@ object Modifiers:
         "Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda",
         List("****2:"),
         4,
-        Seq("ᵍfghi: Push the equivalent of λ2|fghi} to the stack"),
+        Seq("♶fghi: Push the equivalent of λ2|fghi} to the stack"),
       ) {
         case List(ast1, ast2, ast3, ast4) =>
           astToLambda(AST.makeSingle(ast1, ast2, ast3, ast4), 2, true)
