@@ -4067,10 +4067,9 @@ object Elements:
       case a: VNum =>
         "abcdefghijklmnopqrstuvwxyz" (math.floorMod((a - 1).toInt, 26)).toString
       case a: String =>
-        val inds =
-          a.map(char =>
-            VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower) + 1)
-          )
+        val inds = a.map(char =>
+          VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower) + 1)
+        )
         if inds.length == 1 then inds.head else VList.from(inds)
     },
   )
