@@ -4064,14 +4064,13 @@ object Elements:
       "a: str -> the index of a in the alphabet (one-indexed)",
       "a: int -> the a-th letter of the alphabet (one-indexed)",
     ) {
-      case a: VNum => (Math.floorMod((a - 1).toInt, 26) + 97).toChar.toString
+      case a: VNum =>
+        "abcdefghijklmnopqrstuvwxyz" (math.floorMod((a - 1).toInt, 26)).toString
       case a: String if a.length == 1 =>
-        val pos = a.head.toLower.toInt - 96
-        if pos >= 1 && pos <= 26 then VNum(pos) else VNum(0)
+        VNum("abcdefghijklmnopqrstuvwxyz".indexOf(a.head.toLower) + 1)
       case a: String => VList.from(
           a.map(char =>
-            val pos = char.toLower.toInt - 96
-            if pos >= 1 && pos <= 26 then VNum(pos) else VNum(0)
+            VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower) + 1)
           ).toList
         )
     },
