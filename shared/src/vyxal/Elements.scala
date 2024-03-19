@@ -4052,8 +4052,8 @@ object Elements:
     addPart(
       Monad,
       "øA",
-      "Letter to Number",
-      List("letter-to-number", "letter-number-swap", "a1-swap"),
+      "Letter Number Swap",
+      List("letter-to-number", "number-to-letter", "letter-number-swap", "number-letter-swap", "a1-swap"),
       true,
       "a: str -> the index of a in the alphabet (one-indexed)",
       "a: int -> the a-th letter of the alphabet (one-indexed)",
