@@ -113,9 +113,9 @@ class VList private (val lst: Seq[VAny])
   def extend(toSize: BigInt, elem: VAny): VList =
     if toSize <= Int.MaxValue && lst.sizeIs >= toSize.toInt then return this
     var ret = VList.from(lst)
-    var currSize = ret.size
+    var currSize = BigInt(ret.size)
     while currSize < toSize do
-      val rem = toSize - BigInt(currSize)
+      val rem = toSize - currSize
       val add = if rem <= Int.MaxValue then rem.toInt else Int.MaxValue
       ret = VList.from(ret.lst ++ Seq.fill(add)(elem))
       currSize += add
