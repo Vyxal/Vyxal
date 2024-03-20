@@ -90,7 +90,8 @@ object ListHelpers:
       case x => x
 
   def drop(iterable: VList, index: VNum): VList =
-    VList.from(iterable.drop((index % iterable.length).toInt))
+    val ind = if index < 0 then iterable.bigLength + index else index
+    VList.from(iterable.drop(ind))
 
   def drop(iterable: VList, shape: Seq[VNum])(using Context): VList =
     if shape.isEmpty then iterable
