@@ -4065,7 +4065,7 @@ object Elements:
       "a: int -> the a-th letter of the alphabet (one-indexed)",
     ) {
       case a: VNum =>
-        MiscHelpers.index("abcdefghijklmnopqrstuvwxyz", (a - 1) % 26)
+        "abcdefghijklmnopqrstuvwxyz".charAt(((a - 1) % 26).toInt).toString
       case a: String =>
         val inds = a.map(char =>
           VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower) + 1)
