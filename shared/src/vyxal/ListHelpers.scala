@@ -195,37 +195,24 @@ object ListHelpers:
       initial ++: Interpreter.generator(function, firstN, firstM, 2, initial)
     )
 
-  private def neighbourDirections =
-    Seq(
-      (1, 0, 'r') ->
-        ((row: Int, col: Int, matrix: VList, matRow: VList) =>
-          row < matrix.length - 1
-        ),
-      (0, -1, 'c') ->
-        ((row: Int, col: Int, matrix: VList, matRow: VList) => col > 0),
-      (-1, 0, 'r') ->
-        ((row: Int, col: Int, matrix: VList, matRow: VList) => row > 0),
-      (0, 1, 'c') ->
-        ((row: Int, col: Int, matrix: VList, matRow: VList) =>
-          col < matRow.length - 1
-        ),
-      (1, 1, 'c') ->
-        ((row: Int, col: Int, matrix: VList, matRow: VList) =>
-          col < matRow.length - 1 && row < matrix.length - 1
-        ),
-      (-1, -1, 'c') ->
-        ((row: Int, col: Int, matrix: VList, matRow: VList) =>
-          col > 0 && row > 0
-        ),
-      (1, -1, 'c') ->
-        ((row: Int, col: Int, matrix: VList, matRow: VList) =>
-          col > 0 && row < matrix.length - 1
-        ),
-      (-1, 1, 'c') ->
-        ((row: Int, col: Int, matrix: VList, matRow: VList) =>
-          col < matrix.length - 1 && row > 0
-        ),
+  private def neighbourDirections(
+      row: Int,
+      col: Int,
+      matrix: VList,
+      matRow: VList,
+      directionOffset: Int,
+  ): Seq[(Int, Int, Boolean)] =
+    val dirs = Seq(
+      (1, 0, row < matrix.length - 1),
+      (0, -1, col > 0),
+      (-1, 0, row > 0),
+      (0, 1, col < matRow.length - 1),
+      (1, 1, col < matRow.length - 1 && row < matrix.length - 1),
+      (-1, -1, col > 0 && row > 0),
+      (1, -1, col > 0 && row < matrix.length - 1),
+      (-1, 1, col < matRow.length - 1 && row > 0),
     )
+    dirs.drop(directionOffset) ++ dirs.take(directionOffset)
 
   def gridNeighbours(
       matrix: VList,
@@ -237,17 +224,13 @@ object ListHelpers:
     val temp = matrix.zipWithIndex.map { (row, r) =>
       VList.from(makeIterable(row).zipWithIndex.map { (_, c) =>
         val neighbours = ArrayBuffer.empty[VAny]
-        val directions = neighbourDirections.drop(directionOffset) ++
-          neighbourDirections.take(directionOffset)
+        val directions =
+          neighbourDirections(r, c, matrix, makeIterable(row), directionOffset)
         for
-          (dir, check) <- directions
-          if dir(0).abs != dir(1).abs
+          (dr, dc, check) <- directions
+          if dr.abs != dc.abs
         do
-          val (dr, dc, dimension) = dir
-          if dimension == 'r' then
-            if check(r, c, matrix, VList()) then
-              neighbours += makeIterable(matrix.index(r + dr)).index(c + dc)
-          else if check(r, c, matrix, makeIterable(row)) then
+          if check then
             neighbours += makeIterable(matrix.index(r + dr)).index(c + dc)
         if includeCell then neighbours += makeIterable(matrix.index(r)).index(c)
         VList.from(neighbours.toList)
@@ -266,15 +249,15 @@ object ListHelpers:
     val temp = matrix.zipWithIndex.map { (row, r) =>
       VList.from(makeIterable(row).zipWithIndex.map { (_, c) =>
         val neighbours = ArrayBuffer.empty[VAny]
-        val directions = neighbourDirections.drop(directionOffset) ++
-          neighbourDirections.take(directionOffset)
+        val directions =
+          neighbourDirections(r, c, matrix, VList(), directionOffset)
         for
-          (dir, _) <- directions
-          if dir(0).abs != dir(1).abs
+          (dr, dc, _) <- directions
+          if dr.abs != dc.abs
         do
           neighbours +=
-            makeIterable(matrix.index((r + dir(0)))).index(
-              (c + dir(1))
+            makeIterable(matrix.index(r + dr)).index(
+              c + dc
             )
         if includeCell then neighbours += makeIterable(matrix.index(r)).index(c)
         VList.from(neighbours.toList)
@@ -294,14 +277,10 @@ object ListHelpers:
     val temp = matrix.zipWithIndex.map { (row, r) =>
       VList.from(makeIterable(row).zipWithIndex.map { (_, c) =>
         val neighbours = ArrayBuffer.empty[VAny]
-        val directions = neighbourDirections.drop(directionOffset) ++
-          neighbourDirections.take(directionOffset)
-        for (dir, check) <- directions do
-          val (dr, dc, dimension) = dir
-          if dimension == 'r' then
-            if check(r, c, matrix, VList()) then
-              neighbours += makeIterable(matrix.index(r + dr)).index(c + dc)
-          else if check(r, c, matrix, makeIterable(row)) then
+        val directions =
+          neighbourDirections(r, c, matrix, makeIterable(row), directionOffset)
+        for (dr, dc, check) <- directions do
+          if check then
             neighbours += makeIterable(matrix.index(r + dr)).index(c + dc)
 
         if includeCell then neighbours += makeIterable(matrix.index(r)).index(c)
@@ -309,7 +288,6 @@ object ListHelpers:
       })
     }
     VList.from(temp)
-  end gridNeighboursDiagonal
 
   def gridNeighboursDiagonalWrap(
       matrix: VList,
@@ -321,13 +299,12 @@ object ListHelpers:
     val temp = matrix.zipWithIndex.map { (row, r) =>
       VList.from(makeIterable(row).zipWithIndex.map { (_, c) =>
         val neighbours = ArrayBuffer.empty[VAny]
-        val directions = neighbourDirections.drop(directionOffset) ++
-          neighbourDirections.take(directionOffset)
-        for (dir, _) <- directions do
-          val (dr, dc, _) = dir
+        val directions =
+          neighbourDirections(r, c, matrix, VList(), directionOffset)
+        for (dr, dc, _) <- directions do
           neighbours +=
-            makeIterable(matrix.index((r + dr))).index(
-              (c + dc)
+            makeIterable(matrix.index(r + dr)).index(
+              c + dc
             )
         if includeCell then neighbours += makeIterable(matrix.index(r)).index(c)
         VList.from(neighbours.toList)
