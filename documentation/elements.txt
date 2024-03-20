@@ -1339,6 +1339,11 @@ Keywords: atan, arctan, arctangent
 Keywords: root-of-unity
 - a: num => principal a-th root of unity (e^(2i * pi / a))
 ----------------------
+øA (Letter Number Swap) (vectorising)
+Keywords: letter-to-number, number-to-letter, letter-number-swap, number-letter-swap, a1-swap
+- a: str -> the index of a in the alphabet (one-indexed)
+- a: int -> the a-th letter of the alphabet (one-indexed)
+----------------------
 ø⁾ (Surround) (non-vectorising)
 Keywords: surround
 - a: any, b: any -> a prepended and appended to b
