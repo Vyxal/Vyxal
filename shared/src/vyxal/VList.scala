@@ -3,6 +3,7 @@ package vyxal
 import vyxal.VNum.given
 
 import scala.annotation.targetName
+import scala.collection.immutable.ArraySeq
 import scala.collection.immutable.SeqOps
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
@@ -47,21 +48,13 @@ class VList private (val lst: Seq[VAny])
     VList(temp*)
 
   /** Get the element at index `ind` */
-  override def apply(ind: Int): VAny =
-    if lst.isEmpty then 0
-    else if ind < 0 then
-      // floorMod because % gives negative results with negative dividends
-      lst(Math.floorMod(ind, lst.length))
-    else
-      try lst(ind)
-      catch
-        case e: (IndexOutOfBoundsException | ArrayIndexOutOfBoundsException) =>
-          lst(ind % lst.length)
+  override def apply(ind: Int): VAny = VList.index(lst, ind)
 
   /** Override to specify return type as VList */
   override def take(n: Int): VList = VList.from(lst.take(n))
 
   def take(n: VNum): VList =
+    if n <= Int.MaxValue then return VList.from(lst.take(n.toInt))
     val ret = ListBuffer[VAny]()
     var i: VNum = 0
     while i < n do
@@ -73,12 +66,12 @@ class VList private (val lst: Seq[VAny])
   override def drop(n: Int): VList = VList.from(lst.drop(n))
 
   def drop(n: VNum): VList =
-    var ret: Seq[VAny] = lst
-    var i: VNum = 0
-    while i < n do
-      ret = ret.tail
-      i += 1
-    VList.from(ret)
+    var ret = lst
+    var ind = n.toBigInt
+    while ind >= Int.MaxValue do
+      ret = ret.drop(Int.MaxValue)
+      ind += Int.MaxValue
+    VList.from(ret.drop(n.toInt))
 
   /** Override to specify return type as VList */
   override def dropRight(n: Int): VList = VList.from(lst.dropRight(n))
@@ -90,15 +83,14 @@ class VList private (val lst: Seq[VAny])
       case _ => throw new Exception("Index must be a number")
 
   private def indexBig(ind: BigInt): VAny =
-    if ind <= Int.MaxValue && ind >= Int.MinValue then return apply(ind.toInt)
     var pos = if ind < 0 then ind % lst.length else ind
     var temp = lst
-    while pos > 0 do
+    while pos >= Int.MaxValue do
       // Instead of using modulo, reset the list if out of bounds
       if temp.isEmpty then temp = lst
-      temp = temp.tail
-      pos -= 1
-    temp.head
+      temp = temp.drop(Int.MaxValue)
+      pos -= Int.MaxValue
+    VList.index(temp, pos.toInt)
 
   override def iterator: Iterator[VAny] = lst.iterator
 
@@ -108,18 +100,25 @@ class VList private (val lst: Seq[VAny])
   override def length: Int = lst.length
 
   def bigLength: BigInt =
-    if lst.isEmpty then 0
-    else
-      var ret = BigInt(0)
-      var temp = lst
-      while temp.nonEmpty do
-        ret += 1
-        temp = temp.tail
-      ret
+    this.lst match
+      case _: ArraySeq[?] =>
+        // We know ArraySeqs can't be bigger than Int.MaxValue elements
+        lst.length
+      case _ =>
+        val iter = lst.iterator
+        var count = BigInt(0)
+        while iter.nextOption().nonEmpty do count += 1
+        count
 
-  def extend(toSize: VNum)(elem: VAny): VList =
+  def extend(toSize: BigInt, elem: VAny): VList =
+    if toSize <= Int.MaxValue && lst.sizeIs >= toSize.toInt then return this
     var ret = VList.from(lst)
-    while !ret.hasIndex(toSize.toBigInt) do ret = VList.from(ret.lst :+ elem)
+    var currSize = ret.size
+    while currSize < toSize do
+      val rem = toSize - BigInt(currSize)
+      val add = if rem <= Int.MaxValue then rem.toInt else Int.MaxValue
+      ret = VList.from(ret.lst ++ Seq.fill(add)(elem))
+      currSize += add
     ret
 
   /** This violates the method contract, since [[List]]s actually need a
@@ -140,7 +139,6 @@ class VList private (val lst: Seq[VAny])
     var pos = if ind < 0 then ind % lst.length else ind
     var temp = lst
     while pos >= Int.MaxValue do
-      // Instead of using modulo, reset the list if out of bounds
       if temp.isEmpty then return false
       temp = temp.drop(Int.MaxValue)
       pos -= Int.MaxValue
@@ -256,4 +254,15 @@ object VList extends SpecificIterableFactory[VAny, VList]:
     new VList(it.iterator.toSeq)
 
   def seqToVList(seq: Seq[Seq[VAny]]): VList = new VList(seq.map(VList.from))
+
+  private def index(lst: Seq[VAny], ind: Int): VAny =
+    if lst.isEmpty then 0
+    else if ind < 0 then
+      // floorMod because % gives negative results with negative dividends
+      lst(math.floorMod(ind, lst.length))
+    else
+      try lst(ind)
+      catch
+        case e: (IndexOutOfBoundsException | ArrayIndexOutOfBoundsException) =>
+          lst(ind % lst.length)
 end VList
