@@ -4049,6 +4049,29 @@ object Elements:
       false,
       "a: lst => indices of truthy elements of a",
     ) { a => ListHelpers.truthyIndices(ListHelpers.makeIterable(a)) },
+    addPart(
+      Monad,
+      "øA",
+      "Letter Number Swap",
+      List(
+        "letter-to-number",
+        "number-to-letter",
+        "letter-number-swap",
+        "number-letter-swap",
+        "a1-swap",
+      ),
+      true,
+      "a: str -> the index of a in the alphabet (one-indexed)",
+      "a: int -> the a-th letter of the alphabet (one-indexed)",
+    ) {
+      case a: VNum =>
+        "abcdefghijklmnopqrstuvwxyz".charAt(((a - 1) % 26).toInt).toString
+      case a: String =>
+        val inds = a.map(char =>
+          VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower) + 1)
+        )
+        if inds.length == 1 then inds.head else VList.from(inds)
+    },
   )
 
   private def execHelper(value: VAny)(using ctx: Context): VAny =
