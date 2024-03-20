@@ -55,10 +55,9 @@ class VNum private (val underlying: Complex[Real]) extends Ordered[VNum]:
   @targetName("pow")
   def **(rhs: VNum): VNum = underlying ** rhs.underlying
 
-  @targetName("rem")
-  def %(rhs: VNum): VNum =
-    // implement floating point floored modulus
-    this - (this / rhs).floor * rhs
+  /** Floating-point floored modulus, not Java's `%` */
+  @targetName("mod")
+  def %(rhs: VNum): VNum = this - (this / rhs).floor * rhs
 
   def vabs: VNum = underlying.abs
   def arg: VNum = underlying.arg
