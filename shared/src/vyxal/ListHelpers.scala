@@ -211,7 +211,7 @@ object ListHelpers:
         ),
       (1, 1, 'c') ->
         ((row: Int, col: Int, matrix: VList, matRow: VList) =>
-          col < matRow.length - 1 && row < matrix.length -1
+          col < matRow.length - 1 && row < matrix.length - 1
         ),
       (-1, -1, 'c') ->
         ((row: Int, col: Int, matrix: VList, matRow: VList) =>
