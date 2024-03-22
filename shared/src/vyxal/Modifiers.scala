@@ -594,7 +594,6 @@ object Modifiers:
       Modifier(
         "Zip With / Reject by",
         """|Given a dyadic function, zip two lists and reduce each by f
-           | and then check if all results are equal.
            |Given a monadic function, the inverse of monadic /.
            |Filters where the function is falsey""".stripMargin,
         List("zip-with:", "zipwith:"),
