@@ -1,6 +1,6 @@
 package vyxal
 
-import vyxal.parsing.{Lexer, Token}
+import vyxal.parsing.{Codepage, Lexer, Token}
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
@@ -95,7 +95,7 @@ object JSVyxal:
     Lexer.sbcsify(Lexer.lexLiterate(code))
 
   @JSExport
-  def getCodepage(): String = Lexer.Codepage
+  def getCodepage(): String = Codepage
 
   @JSExport
   def getElements() =

@@ -8,6 +8,7 @@ import scala.collection.mutable.ListBuffer
 
 // todo maybe record whether each AST has a breakpoint
 enum AST(val arity: Option[Int]) derives CanEqual:
+  case NotAnAST extends AST(None)
   case Number(value: VNum, override val range: Range = Range.fake)
       extends AST(Some(0))
   case Str(value: String, override val range: Range = Range.fake)
@@ -37,8 +38,10 @@ enum AST(val arity: Option[Int]) derives CanEqual:
       var impl: Option[AST],
       override val range: Range = Range.fake,
   ) extends AST(None)
-  case CompositeNilad(elems: List[AST], override val range: Range = Range.fake)
-      extends AST(Some(0))
+  case CompositeNilad(
+      elems: List[AST],
+      override val range: Range = Range.fake,
+  ) extends AST(Some(0))
 
   case CompressedString(value: String, override val range: Range = Range.fake)
       extends AST(Some(0))
@@ -88,8 +91,11 @@ enum AST(val arity: Option[Int]) derives CanEqual:
   ) extends AST(Some(1))
 
   /** A function definition, basically sugar a lambda assigned to a variable */
-  case FnDef(name: String, lam: Lambda, override val range: Range = Range.fake)
-      extends AST(Some(0))
+  case FnDef(
+      name: String,
+      lam: Lambda,
+      override val range: Range = Range.fake,
+  ) extends AST(Some(0))
   case ContextIndex(index: Int, override val range: Range = Range.fake)
       extends AST(Some(0))
   case GetVar(name: String, override val range: Range = Range.fake)

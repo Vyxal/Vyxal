@@ -24,18 +24,33 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser recognise basic expressions?") {
     assert(
-      parse("1 1 +") === Group(List(Number(1), Number(1), Command("+")), None)
+      parse("1 1 +") ===
+        Group(
+          List(
+            Number(1),
+            Number(1),
+            Command("+"),
+          ),
+          Some(0),
+        )
     )
 
     assert(
       parse("1 1 + 2 *") ===
         Group(
           List(
-            Group(List(Number(1), Number(1), Command("+")), Some(0)),
+            Group(
+              List(
+                Number(1),
+                Number(1),
+                Command("+"),
+              ),
+              Some(0),
+            ),
             Number(2),
             Command("*"),
           ),
-          None,
+          Some(0),
         )
     )
 
@@ -76,7 +91,6 @@ class ParserTests extends AnyFunSuite:
     assert(
       parse("1 { 2 | { {3 | 4} | } } 6") ===
         AST.makeSingle(
-          Number(6),
           Number(1),
           AST.While(
             Some(Number(2)),
@@ -90,6 +104,7 @@ class ParserTests extends AnyFunSuite:
               AST.makeSingle(),
             ),
           ),
+          Number(6),
         )
     )
   }
@@ -132,7 +147,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser recognise two-character strings in structures?") {
     assert(
-      parse("(bᶴ|c") === For(None, Group(List(Command("b"), Str("|c")), None))
+      parse("(b῟|c") === For(None, Group(List(Command("b"), Str("|c")), None))
     )
   }
 
@@ -140,7 +155,6 @@ class ParserTests extends AnyFunSuite:
     assert(
       parse("1 { 2 | { {3 | 4} | ] 6") ===
         AST.makeSingle(
-          Number(6),
           Number(1),
           AST.While(
             Some(Number(2)),
@@ -154,6 +168,7 @@ class ParserTests extends AnyFunSuite:
               AST.makeSingle(),
             ),
           ),
+          Number(6),
         )
     )
   }
@@ -223,7 +238,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser handle basic modifiers?") {
     assert(
-      parse("ᵛ+ +") ===
+      parse("v+ +") ===
         Group(
           List(
             Group(
@@ -243,7 +258,6 @@ class ParserTests extends AnyFunSuite:
       parse("1 /+ 2") ===
         Group(
           List(
-            Number(2),
             Number(1),
             Group(
               List(
@@ -252,6 +266,7 @@ class ParserTests extends AnyFunSuite:
               ),
               None,
             ),
+            Number(2),
           ),
           None,
         )
@@ -271,7 +286,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser handle nested modifiers?") {
     assert(
-      parse("#[#[1|2|3#]|#[4|5|6#]#] ᵛ/+") ===
+      parse("#[#[1|2|3#]|#[4|5|6#]#] v/+") ===
         Group(
           List(
             Lst(
@@ -335,7 +350,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser recognise lambda to newline?") {
     assert(
-      parse("1 + 2 * ᵜ #[1|2|3#] M") ===
+      parse("1 + 2 * ⋊ #[1|2|3#] M") ===
         Group(
           List(
             Lambda(
@@ -360,15 +375,15 @@ class ParserTests extends AnyFunSuite:
         )
     )
     assert(
-      parse("1 + 2 * ᵜ") ===
+      parse("4 + 5 * ⋊") ===
         Lambda(
           Some(1),
           List(),
           List(
             Group(
               List(
-                Group(List(Number(1), Command("+")), Some(1)),
-                Group(List(Number(2), Command("*")), Some(1)),
+                Group(List(Number(4), Command("+")), Some(1)),
+                Group(List(Number(5), Command("*")), Some(1)),
               ),
               None,
             )
@@ -376,18 +391,18 @@ class ParserTests extends AnyFunSuite:
         )
     )
     assert(
-      parse("#[1|2|3#]\n1 + 2 * ᵜ M") ===
+      parse("#[6|7|8#]\n9 + 10 * ⋊ M") ===
         Group(
           List(
-            Lst(List(Number(1), Number(2), Number(3))),
+            Lst(List(Number(6), Number(7), Number(8))),
             Lambda(
               Some(1),
               List(),
               List(
                 Group(
                   List(
-                    Group(List(Number(1), Command("+")), Some(1)),
-                    Group(List(Number(2), Command("*")), Some(1)),
+                    Group(List(Number(9), Command("+")), Some(1)),
+                    Group(List(Number(10), Command("*")), Some(1)),
                   ),
                   None,
                 )
@@ -434,34 +449,28 @@ class ParserTests extends AnyFunSuite:
   test("Does the parser remove define structures?") {
     assert(
       parse(
-        "#:: @+ | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}}"
+        "#::E + | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}}"
       ) === Group(List(), None)
     )
   }
 
   test("Do custom elements group properly?") {
     assert(
-      parse("#::@temp|2|+} 3 4 #:@temp") ===
+      parse("#::E temp|2|+} 3 4 #:@temp") ===
         Group(
           List(
-            Group(
-              List(
-                Number(3),
-                Number(4),
-                Command("temp"),
-              ),
-              Some(0),
-            ),
-            Group(List(), None),
+            Number(3),
+            Number(4),
+            Command("temp"),
           ),
-          None,
+          Some(0),
         )
     )
 
     assert(
-      parse("#::@temp|!|+} 3 4 #:@temp") ===
+      parse("#::E temp|!|+} 3 4 #:@temp") ===
         Group(
-          List(Group(List(), None), Number(3), Number(4), Command("temp")),
+          List(Number(3), Number(4), Command("temp")),
           None,
         )
     )
@@ -469,41 +478,35 @@ class ParserTests extends AnyFunSuite:
 
   test("Do custom modifiers group elements?") {
     assert(
-      parse("#::*temp|f|2|+} #:`temp !") ===
+      parse("#::M temp|f|2|+} #:=temp !") ===
         Group(
           List(
-            Group(List(), None),
-            Group(
+            Lambda(
+              Some(-1),
+              List(),
               List(
                 Lambda(
-                  Some(-1),
+                  Some(1),
                   List(),
-                  List(
-                    Lambda(
-                      Some(1),
-                      List(),
-                      List(Command("!")),
-                      true,
-                    ),
-                    Group(
-                      List(
-                        Lambda(
-                          Some(3),
-                          List("f", 2),
-                          List(Command("+")),
-                          true,
-                        ),
-                        Command("Ė"),
-                      ),
-                      None,
-                    ),
-                  ),
+                  List(Command("!")),
                   true,
                 ),
-                Command("Ė"),
+                Group(
+                  List(
+                    Lambda(
+                      Some(3),
+                      List("f", 2),
+                      List(Command("+")),
+                      true,
+                    ),
+                    Command("Ė"),
+                  ),
+                  None,
+                ),
               ),
-              None,
+              true,
             ),
+            Command("Ė"),
           ),
           None,
         )

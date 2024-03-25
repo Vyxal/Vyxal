@@ -1,6 +1,6 @@
 package vyxal
 
-import vyxal.parsing.Lexer
+import vyxal.parsing.Codepage
 
 import scala.concurrent.*
 import scala.concurrent.duration.Duration
@@ -40,7 +40,7 @@ end fuzz
 
 def makeFuzz(length: Int, noLoop: Boolean): IndexedSeq[String] =
   val lazyLoops = raw"[xᶨᶪ\(\{?Ṇᵡ]"
-  var cp = Lexer.Codepage
-  if noLoop then cp = Lexer.Codepage.replaceAll(lazyLoops, "")
+  var cp = Codepage
+  if noLoop then cp = Codepage.replaceAll(lazyLoops, "")
   if length == 1 then return cp.map(_.toString)
   else return cp.flatMap(x => makeFuzz(length - 1, noLoop).map(y => x +: y))

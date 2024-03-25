@@ -1,7 +1,7 @@
 package vyxal.gen
 
 import vyxal.{Elements, Modifiers, VNum}
-import vyxal.parsing.Lexer
+import vyxal.parsing.Codepage
 
 import scala.util.matching.Regex
 
@@ -14,7 +14,7 @@ private[vyxal] object GenerateNanorc:
   val LitNanorc = "vyxal-lit.nanorc"
 
   val codepage =
-    Lexer.Codepage.filter(_ != '\n').map(c => Regex.quote(c.toString)).mkString
+    Codepage.filter(_ != '\n').map(c => Regex.quote(c.toString)).mkString
 
   /** NOTE: Make sure to escape each $ with another $ */
   val commonHeader = raw"""|syntax "Vyxal" "\.(vy)$$"

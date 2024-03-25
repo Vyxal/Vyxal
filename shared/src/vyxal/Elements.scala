@@ -3320,7 +3320,7 @@ object Elements:
       ctx.push(ctx.length)
     },
     addDirect(
-      "\\",
+      "┉",
       "Dump",
       List("dump"),
       Some(1),

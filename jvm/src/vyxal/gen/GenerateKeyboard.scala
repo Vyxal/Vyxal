@@ -1,7 +1,7 @@
 package vyxal.gen
 
 import vyxal.{Element, Elements, Modifiers}
-import vyxal.parsing.Lexer
+import vyxal.parsing.Codepage
 import vyxal.Modifier
 import vyxal.Syntax
 import vyxal.SyntaxInfo
@@ -20,11 +20,10 @@ private object GenerateKeyboard:
     ]] = HashMap()
     for
       (symbol, element) <- Elements.elements
-      if Lexer.Codepage.contains(symbol.last) && !symbol.startsWith("#|")
+      if Codepage.contains(symbol.last) && !symbol.startsWith("#|")
     do
       val token = symbol
-      val index =
-        if token == " " then 32 else Lexer.Codepage.indexOf(token.last)
+      val index = if token == " " then 32 else Codepage.indexOf(token.last)
 
       val thisElement = scala.collection.mutable.Map[String, String]()
       thisElement("name") = element.name
@@ -40,8 +39,7 @@ private object GenerateKeyboard:
       info match
         case Modifier(name, description, keywords, _, overloads) =>
           val token = symbol
-          val index =
-            if token == " " then 32 else Lexer.Codepage.indexOf(token.last)
+          val index = if token == " " then 32 else Codepage.indexOf(token.last)
           val thisElement = scala.collection.mutable.HashMap[String, String]()
           thisElement("name") = name
           thisElement("description") = description
@@ -51,15 +49,13 @@ private object GenerateKeyboard:
 
           if data.contains(index) then data(index) += thisElement.toMap
           else data(index) = ListBuffer(thisElement.toMap)
-    end for
 
     for syntax <- SyntaxInfo.info do
       val (symbol, info) = syntax
       info match
         case Syntax(name, literate, description, usage) =>
           val token = symbol
-          val index =
-            if token == " " then 32 else Lexer.Codepage.indexOf(token.last)
+          val index = if token == " " then 32 else Codepage.indexOf(token.last)
           val thisElement = scala.collection.mutable.HashMap[String, String]()
           thisElement("name") = name
           thisElement("description") =
@@ -69,16 +65,13 @@ private object GenerateKeyboard:
 
           if data.contains(index) then data(index) += thisElement.toMap
           else data(index) = ListBuffer(thisElement.toMap)
-    end for
 
     val finalData =
       scala.collection.mutable.HashMap[Int, List[Map[String, String]]]()
     for (index, elements) <- data do finalData(index) = elements.toList
 
-    val escapedCodepage = Lexer.Codepage
-      .replace("\\", "\\\\")
-      .replace("\"", "\\\"")
-      .replace("\n", "\\n")
+    val escapedCodepage =
+      Codepage.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n")
     val header =
       s"var codepage = \"$escapedCodepage\";\nvar codepage_descriptions ="
     header + upickle.default.write(finalData.toMap)
