@@ -1,0 +1,1575 @@
+🌮 (Taco) (non-vectorising)
+Keywords: taco
+- very funky
+----------------------
+🍪 (Cookie) (non-vectorising)
+Keywords: cookie
+- cookie.
+----------------------
+ꜝ (Increment) (vectorising)
+Trigraph: #^!
+Keywords: incr, increment
+- a: num -> a + 1
+----------------------
+ඞ (ඞ) (non-vectorising)
+Keywords: sus
+- ඞ
+----------------------
+! (Factorial) (vectorising)
+Keywords: fact, factorial
+- a: num -> a!
+----------------------
+$ (Swap) (non-vectorising)
+Keywords: swap
+- a, b -> b, a
+----------------------
+% (Modulo | String Formatting) (non-vectorising)
+Keywords: mod, modulo, str-format, format, %, strfmt
+- a: num, b: num -> a % b
+- a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)
+----------------------
+& (Append) (non-vectorising)
+Keywords: append
+- a: any, b: any -> list(a) ++ [b]
+----------------------
+' (Join Sublists on Spaces then Newlines (Element Form of ')) (non-vectorising)
+Keywords: join-sublists, join-sublists-on-spaces-then-newlines, grid
+- a: lst -> sublists of a joined on spaces then that joined on newlines
+----------------------
+* (Exponentation | Remove Nth Letter | Trim) (vectorising)
+Keywords: exp, **, pow, exponent, remove-letter, str-trim
+- a: num, b: num -> a ^ b
+- a: str, b: num -> a with the bth letter removed
+- a: num, b: str -> b with the ath letter removed
+- a: str, b: str -> trim b from both sides of a
+----------------------
++ (Addition) (vectorising)
+Keywords: add, +, plus
+- a: num, b: num -> a + b
+- a: num, b: str -> a + b
+- a: str, b: num -> a + b
+- a: str, b: str -> a + b
+----------------------
+, (Print) (non-vectorising)
+Keywords: print, puts, out, println
+- a -> printed to stdout
+----------------------
+- (Subtraction) (vectorising)
+Keywords: sub, subtract, minus, str-remove, str-remove-all, remove-all
+- a: num, b: num -> a - b
+- a: str, b: num -> a + b '-'s (or '-'s + a if b < 0)
+- a: num, b: str -> a '-'s + b (or b + '-'s if a < 0)
+- a: str, b: str -> a with b removed
+----------------------
+: (Duplicate) (non-vectorising)
+Keywords: dup
+- a -> a, a
+----------------------
+; (Pair) (non-vectorising)
+Keywords: pair
+- a, b -> [a, b]
+----------------------
+< (Less Than) (vectorising)
+Keywords: lt, less, less-than, <, less?, smaller?
+- a: num, b: num -> a < b
+- a: str, b: num -> a < str(b)
+- a: num, b: str -> str(a) < b
+- a: str, b: str -> a < b
+----------------------
+= (Equals) (vectorising)
+Keywords: eq, ==, equal, same?, equals?, equal?
+- a: any, b: any -> a == b
+----------------------
+> (Greater Than) (vectorising)
+Keywords: gt, greater, greater-than, greater?, bigger?
+- a: num, b: num -> a > b
+- a: str, b: num -> a > str(b)
+- a: num, b: str -> str(a) > b
+- a: str, b: str -> a > b
+----------------------
+? (Get Input) (non-vectorising)
+Keywords: get-input, input, stdin, readline
+- ->  -> input
+----------------------
+@ (Cumulative Sums) (non-vectorising)
+Keywords: cumulative-sums, cumsums, cumsum, cum-sum, -_-
+- a: lst -> cumulative sums of a
+----------------------
+A (All Truthy | All() | Is Vowel?) (non-vectorising)
+Keywords: all, is-vowel?, vowel?
+- a: str -> is (a) a vowel? vectorises for strings len > 1
+- a: list -> is (a) all truthy?
+----------------------
+B (Convert From Binary) (non-vectorising)
+Keywords: from-binary, bin->dec, bin->decimal
+- a: num -> str(a) from binary
+- a: str -> int(a, 2)
+- a: lst -> int(a, 2), using list of digits
+----------------------
+C (Count) (non-vectorising)
+Keywords: count
+- a: any, b: any -> count(b in a)
+----------------------
+D (Triplicate) (non-vectorising)
+Keywords: trip
+- a -> [a, a, a]
+----------------------
+E (2 Power | Evaluate) (vectorising)
+Keywords: two^, two**, eval
+- a: num -> 2^a
+- a: str -> evaluate (not execute) a
+----------------------
+F (Filter by Function | From Base) (non-vectorising)
+Keywords: filter, keep-by, from-base, 10->b
+- a: fun, b: lst -> Filter b by truthy results of a
+- a: lst, b: fun -> Filter a by truthy results of b
+- a: num, b: num -> a from base b to base 10
+- a: num, b: str|lst -> a from base with alphabet b to base 10
+----------------------
+G (Monadic Maximum | Dyadic Maximum | Generate From Function | Vectorised Maximum) (non-vectorising)
+Keywords: max, maximum, generator
+- a: lst -> Maximum of a
+- a: non-lst, b: non-lst -> Maximum of a and b
+- a: lst, b: fun -> Call b infinitely with items of a as starting values
+----------------------
+H (Hexadecimal | To Hexadecimal) (vectorising)
+Keywords: hex, hexadecimal, to-hex, to-hexadecimal
+- a: num -> a in hexadecimal
+- a: str -> a as a hexadecimal number to base 10
+----------------------
+I (Interleave / Reject By Function) (non-vectorising)
+Keywords: interleave, reject
+- a: lst, b: lst -> Interleave a and b
+- a: any, b: fun -> Reject elements of a by applying b
+----------------------
+J (Merge) (non-vectorising)
+Keywords: merge
+- a: lst, b: lst -> Merge a and b
+- a: any, b: lst -> Prepend a to b
+- a: lst, b: any -> Append b to a
+- a: num, b: num -> num(str(a) + str(b))
+- a: any, b: any -> str(a) + str(b)
+----------------------
+K (Factors | Is Numeric?) (vectorising)
+Keywords: factors, divisors, is-numeric, is-num, is-number, is-num?, is-number?
+- a: num -> Factors of a
+- a: str -> Is a numeric?
+----------------------
+L (Length | Length of List) (non-vectorising)
+Keywords: length, len, length-of, len-of, size
+- a: any -> Length of a
+----------------------
+M (Map Function | Mold Lists | Multiplicity) (non-vectorising)
+Keywords: map, mold, multiplicity, times-divide, re-match, regex-match
+- a: any, b: fun -> a.map(b)
+- a: fun, b: any -> b.map(a)
+- a: lst, b: lst -> a molded to the shape of b
+- a: num, b: num -> how many times b divides a
+- a: str, b: str -> regex match of b in a
+- a: list, b: str -> regex match of b of each element of a
+- a: str, b: list -> regex match of each element of b in a
+----------------------
+N (Negation | Swap Case | First Non-Negative Integer Where Predicate is True) (vectorising)
+Keywords: neg, negate, swap-case, caseswap, first-non-negative, first-nonneg, first>-1
+- a: num -> -a
+- a: str -> a.swapCase()
+- a: fun -> first non-negative integer where predicate a is true
+----------------------
+O (Ord/Chr) (non-vectorising)
+Keywords: ord, chr
+- a: str -> ord(a)
+- a: num -> chr(a)
+----------------------
+P (Prefixes) (non-vectorising)
+Keywords: prefixes
+- a: lst -> Prefixes of a
+----------------------
+Q (Remove At | Regex Groups) (non-vectorising)
+Keywords: remove-at, re-groups, regex-groups
+- a: lst, b: num -> a with bth element removed
+- a: str, b: str -> regex groups of a with regex b
+----------------------
+R (Reduce by Function Object | Dyadic Range | Regex Match | Set Union) (non-vectorising)
+Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has-regex-match?, fold, union, to
+- a: fun, b: any -> reduce iterable b by function a
+- a: any, b: fun -> reduce iterable a by function b
+- a: num, b: num -> the range [a, b)
+- a: str, b: num|str -> does regex pattern b match haystack a?
+- a: lst, b: lst -> union of a and b
+----------------------
+S (Sort ascending) (non-vectorising)
+Keywords: sort, sortasc, sort-asc
+- a: any -> convert to list and sort ascending
+----------------------
+T (Triple | Contains Only Alphabet | Transpose) (non-vectorising)
+Keywords: triple, alphabet?, alphabetical?, contains-only-alphabet?, contains-only-alphabetical?, transpose, flip, reverse-axes, flip-axes, permute-axes
+- a: num -> 3 * a
+- a: str -> does a contain only alphabet characters?
+- a: any -> transpose a
+----------------------
+U (Uninterleave) (non-vectorising)
+Keywords: uninterleave
+- a: any -> uninterleave a
+----------------------
+V (Vectorised Reverse | Complement | Title Case) (non-vectorising)
+Keywords: vectorised-reverse, vec-reverse, complement, titlecase, title-case
+- a: lst -> each element of a reversed
+- a: num -> 1 - a
+- a: str -> a converted to title case
+----------------------
+W (Wrap) (non-vectorising)
+Keywords: wrap
+- a, b, c, ..., -> [a, b, c, ...]
+----------------------
+X (Return Statement) (non-vectorising)
+Keywords: return, ret
+- a -> return a
+----------------------
+Y (List Repeat) (non-vectorising)
+Keywords: wrap-repeat
+- a: any, b: num -> a repeated b times, wrapped in a list
+- a: num, b: any -> b repeated a times, wrapped in a list
+- a: lst|str, b: lst[num] -> a[_] repeated b[_] times, wrapped in a list
+----------------------
+Z (Zip) (non-vectorising)
+Keywords: zip, zip-map
+- a: lst, b: lst -> zip a and b
+- a: lst, b: fun -> [[x, b(x)] for x in a]
+- a: fun, b: lst -> [[a(x), x] for x in b]
+----------------------
+^ (Reverse Stack) (non-vectorising)
+Keywords: reverse-stack, rev-stack
+-  -> reverse the stack
+----------------------
+_ (Pop and Discard) (non-vectorising)
+Keywords: pop, discard
+- a ->
+----------------------
+` (Length of Stack) (non-vectorising)
+Keywords: length-of-stack, stack-length, stack-len
+-  -> push the length of the stack
+----------------------
+a (Any Truthy | Any() | Is Uppercase?) (non-vectorising)
+Keywords: any, is-uppercase?, is-upper?, upper?
+- a: str -> is (a) uppercase? vectorises for strings len > 1
+- a: list -> is (a) any truthy?
+----------------------
+b (Convert To Binary) (vectorising)
+Keywords: to-binary, dec->bin, decimal->bin
+- a: num -> convert a to binary
+- a: str -> bin(ord(x) for x in a)
+----------------------
+c (Contains) (non-vectorising)
+Keywords: contains, in
+- a: any, b: lst -> is element a in list b?
+- a: any, b: any -> is str(b) in str(a)?
+----------------------
+d (Double) (vectorising)
+Keywords: double
+- a: num -> a * 2
+- a: str -> a + a
+----------------------
+e (Is Even / Split on Newlines) (vectorising)
+Keywords: even?, even, is-even?, split-on-newlines, newline-split, split-newlines
+- a: num -> a % 2 == 0
+- a: str -> a split on newlines
+----------------------
+f (Flatten) (non-vectorising)
+Keywords: flatten, flat
+- a: lst -> Flattened a
+----------------------
+g (Monadic Minimum | Dyadic Minimum | Generate From Function (Dyadic) | Vectorised Minimum) (non-vectorising)
+Keywords: min, minimum, generator-dyadic
+- a: lst -> Minimum of a
+- a: non-lst, b: non-lst -> Minimum of a and b
+- a: lst, b: fun -> Call b infinitely with items of a as starting values (dyadic)
+----------------------
+h (Head | First Item) (non-vectorising)
+Keywords: head, first, first-item
+- a: lst -> a[0]
+----------------------
+i (Index | Collect Unique Application Values | Enclose | Read Member) (non-vectorising)
+Keywords: index, at, item-at, nth-item, collect-unique, enclose, @<=
+- a: lst, b: num -> a[b]
+- a: num, b: num -> b[x] for x in a
+- a: lst, b: lst -> a[_] for _ in b
+- a: str, b: lst[num] -> ''.join(a[i] for i in b)
+- a: str, b: lst[any] -> x[a] for x in b
+- a: lst, b: str -> x[b] for x in a
+- a: any, b: fun -> Apply b on a and collect unique values. Does include the initial value.
+- a: str, b: str -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])
+- a: rec, b: str -> get member b of a
+- a: str, b: rec -> get member a of b
+----------------------
+j (Join On) (non-vectorising)
+Keywords: join-on, join, join-with, join-by
+- a: lst, b: str|num -> a join on b
+- a: lst, b: lst -> Intersperse elements of b within a
+----------------------
+k1 (1000) (non-vectorising)
+Keywords: one-thousand, l000, lk
+- -> 1000
+----------------------
+k2 (10000) (non-vectorising)
+Keywords: ten-thousand, l0000, l0k
+- -> 10000
+----------------------
+k3 (100000) (non-vectorising)
+Keywords: one-hundered-thousand, l00000, l00k
+- -> 100000
+----------------------
+k4 (1000000) (non-vectorising)
+Keywords: one-million, l000000, l000k, lm
+- -> 1000000
+----------------------
+k6 (Hex Digits (lowercase)) (non-vectorising)
+Keywords: hex-digits, hex-digs, hex-lowercase, hex-lower, hex-l, hex-lc
+- -> "0123456789abcdef"
+----------------------
+kA (Uppercase Alphabet) (non-vectorising)
+Keywords: uppercase-alphabet, uppercase-alpha, A->Z, A-Z, amazon
+- -> "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+----------------------
+kB (Uppercase and lowercase) (non-vectorising)
+Keywords: uppercase-and-lowercase, uppercase-and-lowercase-alpha, A->Za->z, A-Za-z
+- -> "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+----------------------
+kD (Lines) (non-vectorising)
+Keywords: lines, dashes, bars
+- -> "|/-\_"
+----------------------
+kF (FizzBuzz) (non-vectorising)
+Keywords: fizzbuzz, FB
+- -> "FizzBuzz"
+----------------------
+kH (Hello, World!) (non-vectorising)
+Keywords: hello-world!, HW!
+- -> "Hello, World!"
+----------------------
+kL (Lowercase and Uppercase Alphabet) (non-vectorising)
+Keywords: lowercase-and-uppercase-alphabet, lowercase-and-uppercase-alpha, a->zA->Z, a-zA-Z
+- -> "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+----------------------
+kP (Printable Ascii) (non-vectorising)
+Keywords: printable-ascii, all-ascii
+- -> All of printable ascci. That excludes newline
+----------------------
+kR (Digits, Uppercase, Lowercase) (non-vectorising)
+Keywords: digits-uppercase-lowercase, digs-upper-lower, o9AZaz, o-9A-Za-z
+- -> "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+----------------------
+kZ (Uppercase Alphabet Reversed) (non-vectorising)
+Keywords: uppercase-alphabet-reversed, uppercase-alpha-reversed, Z->A
+- -> "ZYXWVUTSRQPONMLKJIHGFEDCBA"
+----------------------
+k^ (Hex Digits (uppercase)) (non-vectorising)
+Keywords: hex-uppercase, hex-upper, hex-u, hex-uc
+- -> "0123456789ABCDEF"
+----------------------
+ka (Lowercase Alphabet) (non-vectorising)
+Keywords: lowercase-alphabet, lowercase-alpha, a->z, a-z
+- -> "abcdefghijklmnopqrstuvwxyz"
+----------------------
+kb (Buzz) (non-vectorising)
+Keywords: buzz, BUZZ
+- -> "Buzz"
+----------------------
+kd (Digits) (non-vectorising)
+Keywords: digits, digs, o-9
+- -> "0123456789"
+----------------------
+ke (Euler's Number) (non-vectorising)
+Keywords: euler's-number, euler, e-num
+- -> 2.718281828459045
+----------------------
+kf (Fizz) (non-vectorising)
+Keywords: fizz, FIZZ
+- -> "Fizz"
+----------------------
+kg (Phi) (non-vectorising)
+Keywords: phi, golden-ratio, golden, l-618033988749895
+- -> Literally just phi
+----------------------
+kh (Hello World) (non-vectorising)
+Keywords: hello-world, HW
+- -> "Hello World"
+----------------------
+ki (Pi) (non-vectorising)
+Keywords: pi, E-14, E-1415926535897
+- -> Literally just pi
+----------------------
+kl (Upper and Lowercase Alphabet Reversed) (non-vectorising)
+Keywords: upper-and-lowercase-alphabet-reversed, upper-and-lowercase-alpha-reversed, Z->Az->a, Z-Az-a
+- -> "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"
+----------------------
+ko (Octal Digits) (non-vectorising)
+Keywords: octal-digits, octal-digs, o-7
+- -> "01234567"
+----------------------
+kp (Punctuation) (non-vectorising)
+Keywords: punctuation, punct
+- -> All punctuation characters
+----------------------
+kr (Digits, Lowercase, Uppercase) (non-vectorising)
+Keywords: digits-lowercase-uppercase, digs-lower-upper, o9azAZ, o-9a-zA-Z
+- -> "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+----------------------
+kz (Lowercase Alphabet Reversed) (non-vectorising)
+Keywords: lowercase-alphabet-reversed, lowercase-alpha-reversed, z->a, nozama
+- -> "zyxwvutsrqponmlkjihgfedcba"
+----------------------
+l (Length of Each Item) (non-vectorising)
+Keywords: length-vectorised, length-vect, len-vect, len-vectorised, vec-len, vec-length, vlen
+- a: lst -> Length of each item in a
+----------------------
+m (Get Context Variable M) (non-vectorising)
+Keywords: get-context-m, context-m, c-var-m, ctx-m, ctx-secondary
+- -> context variable m - defaults to uppercase alphabet if outside context
+----------------------
+n (Get Context Variable N) (non-vectorising)
+Keywords: get-context-n, context-n, c-var-n, ctx-n, ctx-primary
+- -> context variable n - defaults to lowercase alphabet if outside context
+----------------------
+o (Overlap | Overlapping Slices) (non-vectorising)
+Keywords: overlap, overlaps, overlapping, overlapping-slices
+- a: lst, b: num -> Overlapping slices of a of length b
+- a: lst|str -> Overlapping slices of a of length 2
+----------------------
+p (Prepend) (non-vectorising)
+Keywords: prepend
+- a: lst, b: any -> b prepended to a
+----------------------
+q (Quotify | Nth Prime) (vectorising)
+Keywords: quotify, nth-prime, prime-n
+- a: str -> enclose a in quotes, escape backslashes and quote marks
+- a: num -> nth prime
+----------------------
+r (Replace) (non-vectorising)
+Keywords: replace, zip-with
+- a: str, b: str, c: str -> replace all instances of b in a with c
+- a: fun, b: any, c: any -> reduce items in zip(b, c) by a
+----------------------
+s (Split) (non-vectorising)
+Keywords: split
+- a: any, b: any -> split a by b
+----------------------
+t (Tail | Last Item) (non-vectorising)
+Keywords: tail, last, last-item
+- a: lst -> a[-1]
+----------------------
+u (Uniquify) (non-vectorising)
+Keywords: uniquify
+- a: lst|str|num -> a with duplicates removed
+----------------------
+v (Decrement) (vectorising)
+Keywords: decr, decrement
+- a: num -> a - 1
+----------------------
+w (Wrap Singleton) (non-vectorising)
+Keywords: wrap-singleton, enlist
+- a -> [a]
+----------------------
+x (Recursion | Recurse) (non-vectorising)
+Keywords: recurse
+-  -> call the current function recursively
+----------------------
+y (To Base | Regex Find) (non-vectorising)
+Keywords: to-base, re-find, regex-find
+- a: num, b: num -> a in base b
+- a: num, b: str|lst -> a in base with alphabet b
+- a: lst, b: num -> each x in a in base b
+- a: lst, b: str|lst -> each x in a in base with alphabet b
+- a: str, b: str -> All matches of b in a
+----------------------
+z (Inclusive zero Range | Is Lowercase) (vectorising)
+Keywords: inclusive-zero-range, zero->n, is-lowercase?, lowercase?, lower?
+- a: num -> [0, 1, ..., a]
+- a: lst[num] -> apl-style iota from 0 to a
+- a: str -> is a lowercase?
+----------------------
+Ȧ (Absolute Value | Keep Alphabet Characters) (vectorising)
+Trigraph: #.A
+Keywords: abs, absolute-value, keep-alphabet
+- a: num -> |a|
+- a: str -> keep alphabet characters of a
+----------------------
+Ḃ (Execute lambda without popping | Evaluate as Vyxal without popping | Boolean Mask | Is 1?) (non-vectorising)
+Trigraph: #.B
+Keywords: peek-call, exec-peek, boolean-mask, bool-mask, strict-boolify, is-1?
+- a: fun -> Execute a without popping
+- a: str -> Evaluate a as Vyxal without popping
+- a: lst -> Return a boolean array with 1s at the indices in a list.
+- a: num -> Is a == 1?
+----------------------
+Ċ (Set XOR) (non-vectorising)
+Trigraph: #.C
+Keywords: set-xor
+- a: lst, b: lst -> set xor of a and b
+----------------------
+Ḋ (Divides? | Append Spaces | Remove Duplicates by Function) (non-vectorising)
+Trigraph: #.D
+Keywords: divides?, +-spaces, dedup-by, re-span, regex-span
+- a: num, b: num -> a % b == 0
+- a: str, b: num -> a + ' ' * b
+- a: num, b: str -> b + ' ' * a
+- a: lst, b: fun -> Remove duplicates from a by applying b to each element
+- a: str, b: str -> span of first regex match of b in a
+----------------------
+Ė (Execute lambda | Evaluate as Vyxal | Power with base 10) (non-vectorising)
+Trigraph: #.E
+Keywords: execute-lambda, evaluate-as-vyxal, power-base-10, call, @
+- a: fun -> Execute a
+- a: str -> Evaluate a as Vyxal
+- a: num -> 10 ** n
+----------------------
+Ḟ (Find) (non-vectorising)
+Trigraph: #.F
+Keywords: find
+- a: any, b: any -> a.indexOf(b) (-1 if not found)
+- a: any, b: fun -> truthy indices of mapping b over a
+----------------------
+Ġ (Group by Function Result | Greatest Common Divisor | Find all overlapping regex matches) (non-vectorising)
+Trigraph: #.G
+Keywords: group-by, gcd, re-find-overlapping, regex-find-overlapping, re-find-overlap, regex-find-overlap
+- a: any, b: fun -> group a by the results of b
+- a: fun, b: any -> group b by the results of a
+- a: num, b: num -> gcd(a, b)
+- a: lst[num], b: num -> gcd of b and all elements of a
+- a: lst[num] -> gcd of all items in a.
+- a: str, b: str -> all overlapping regex matches of b in a (similar to `y` but with overlaps) (JVM/JS Only)
+- a: str, b: lst[str] -> vectorised string overload of the above
+- a: lst, b: str -> vectorised pattern overload of the above
+----------------------
+Ḣ (Head Remove | Behead) (non-vectorising)
+Trigraph: #.H
+Keywords: head-remove, behead
+- a: str -> a[1:]
+- a: any -> toList(a)[1:]
+----------------------
+İ (Drop/Zero Slice From | Collect While Unique | Complex Number) (non-vectorising)
+Trigraph: #.I
+Keywords: drop, zero-slice-from, slice-from, collect-while-unique, complex
+- a: num, b: num -> a.real + b.real * i
+- a: str|lst, b: num -> a[b:]
+- a: lst, b: lst[num] -> apl style drop
+- a: any, b: fun -> Apply b on a and collect unique values (until fixpoint). Does not include the initial value.
+----------------------
+Ŀ (Logarithm | Scan Fixpoint | Same Length? | Length Equals?) (vectorising)
+Trigraph: #.L
+Keywords: log, logarithm, scan-fixpoint, scan-fix, same-length?, same-length, length-equals?, length-equals, len-eq?
+- a: num, b: num -> log_b(a)
+- a: fun, b: any -> apply until a previous value is repeated, collecting intermediate results
+- a: str, b: str -> a same length as b
+- a: str, b: num -> len(a) == b
+----------------------
+Ṁ (Modular | Matrix Multiply | Regex Full Match?) (non-vectorising)
+Trigraph: #.M
+Keywords: nth-items, modular, maxtrix-multiply, mat-multiply, mat-mul, regex-full-match?, full-match?
+- a: str|lst, b: num -> return every b-th element of a. If b is zero, mirror: prepend a to its reverse.
+- a: num, b: str|lst -> return every a-th element of b. If a is zero, mirror: append b to its reverse.
+- a: lst, b: lst -> a * b (matrix multiply)
+- a: str, b: str -> does the entirety of a match b?
+----------------------
+Ṅ (Is Prime? | Quine Cheese) (vectorising)
+Trigraph: #.N
+Keywords: prime?, quineify
+- a: num -> is a prime?
+- a: str -> quote a and prepend to a
+----------------------
+Ȯ (Over) (non-vectorising)
+Trigraph: #.O
+Keywords: over
+- _ -> push a copy of the second item on the stack over the first
+- a b -> a b a
+----------------------
+Ṗ (Permutations) (non-vectorising)
+Trigraph: #.P
+Keywords: permutations, perms
+- a: lst -> Permutations of a
+----------------------
+Ṙ (Rotate Left) (non-vectorising)
+Trigraph: #.R
+Keywords: abc->bca, rot-left, rotate-left
+- a: any -> rotate left once
+----------------------
+Ṡ (Vectorised Sums | Integer Division) (non-vectorising)
+Trigraph: #.S
+Keywords: vectorised-sums, vec-sums, integer-division, int-div, int-rizz, sums
+- a: lst -> sum of each element of a
+- a: num, b: num -> a // b
+----------------------
+Ṫ (Init) (non-vectorising)
+Trigraph: #.T
+Keywords: init, remove-last
+- a: lst -> a[:-1]
+- a: str -> a[:-1]
+----------------------
+Ẇ (Wrap to Length | Predicate Slice From 0) (non-vectorising)
+Trigraph: #.W
+Keywords: wrap-length, pred-slice-0, size-chunk
+- a: lst, b: num -> a wrapped in chunks of length b
+- a: fun, b: num -> first b truthy integers where a is truthy
+----------------------
+Ẋ (Cartesian Product) (non-vectorising)
+Trigraph: #.X
+Keywords: cartesian-product, cartesian, cart-prod, cart
+- a: list, b: list -> cartesian product of a and b
+----------------------
+ι (Length 0-Range) (non-vectorising)
+Keywords: zero->len
+- a: any -> `[0, 1, 2, ..., len(a)-1]`
+----------------------
+κ (Length 1-Range) (non-vectorising)
+Keywords: one->len
+- a: any -> `[1, 2, 3, ..., len(a)]`
+----------------------
+ȧ (Absolute Difference | Apply to Neighbours) (vectorising)
+Trigraph: #.a
+Keywords: abs-diff, apply-to-neighbours
+- a: num, b: num -> |a - b|
+- a: lst, b: fun -> apply b to each pair of neighbours in a [applies to windows of length 2]
+----------------------
+ḃ (Bit | Parity | Last Half of String) (vectorising)
+Keywords: bit, parity, str-last-half
+- a: num -> parity of a (a % 2)
+- a: str -> last half of a
+----------------------
+ċ (N Choose K (Binomial Coefficient) | Character Set Equal? | Repeat Until No Change) (vectorising)
+Trigraph: #.c
+Keywords: n-choose-k, ncr, nck, choose, binomial, char-set-equal?, char-set-eq?, until-stable
+- a: num, b: num -> a choose b
+- a: str, b: str -> are the character sets of a and b equal?
+- a: fun, b: any -> run a on b until the result no longer changes returning all intermediate results
+----------------------
+ḋ (Dot Product | To Bijective Base | First Index Where Predicate Truthy) (non-vectorising)
+Trigraph: #.d
+Keywords: dot-product, bijective-base, dot-prod, first-index-where, _*
+- a: lst, b: lst -> Dot product of a and b
+- a: num, b: num -> Convert a to bijective base b
+- a: lst, b: fun -> First index of a where b is truthy
+----------------------
+ė (Reciprocal | Remove Whitespace) (vectorising)
+Trigraph: #.e
+Keywords: reciprocal, recip, remove-whitespace, remove-space, 1/
+- a: num -> 1/a
+- a: str -> a with all whitespace removed
+----------------------
+ḟ (Prime Factors | Remove Alphabet) (vectorising)
+Trigraph: #.f
+Keywords: prime-factors, remove-alphabet
+- a: num -> prime factors of a
+- a: str -> a with all alphabet characters removed
+----------------------
+ġ (Group By Consecutive Items) (non-vectorising)
+Trigraph: #.g
+Keywords: group-by-consecutive
+- a: any -> group consecutive identical items of lst(a)
+----------------------
+ḣ (Head Extract) (non-vectorising)
+Trigraph: #.h
+Keywords: head-extract, split-at-head
+- a: lst|str -> Push a[0], then a[1:] onto the stack
+----------------------
+ŀ (Transliterate | Call While) (non-vectorising)
+Trigraph: #.l
+Keywords: transliterate, call-while
+- any a, any b, any c -> transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)
+- a: fun, b: fun, c: any -> call b on c until a(c) is falsy
+----------------------
+ṁ (Mirror) (non-vectorising)
+Trigraph: #.m
+Keywords: mirror, ab->abba
+- num a: a + reversed(a) (as number)
+- str a: a + reversed(a)
+- lst a: append reversed(a) to a
+----------------------
+ṅ (Palindromise) (non-vectorising)
+Trigraph: #.n
+Keywords: palindromise, palindrome, ab->aba
+- a: any -> palindromise a
+----------------------
+ȯ (Boolify) (non-vectorising)
+Trigraph: #.o
+Keywords: boolify
+- a: any -> bool(a)
+----------------------
+ṗ (List Partitions | Integer Partitions) (non-vectorising)
+Trigraph: #.p
+Keywords: list-partitions, list-parts, integer-partitions, int-partitions, int-parts, partitions
+- a: lst -> List partitions of a
+- a: num -> Integer partitions of a (all possible ways to sum to a)
+----------------------
+ṙ (Rotate Right) (non-vectorising)
+Trigraph: #.r
+Keywords: abc->cab, rot-right, rotate-right
+- a: any -> rotate right once
+----------------------
+ṡ (Sort by Function Object | Partition by Numbers | Set Difference) (non-vectorising)
+Trigraph: #.s
+Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun, partition-by, set-difference, set-diff
+- a: fun, b: any -> sort iterable b by function a
+- a: any, b: fun -> sort iterable a by function b
+- a: lst, b: lst -> set difference of a and b
+- a: lst, b: num|str -> remove b from a
+- a: num|str, b: lst -> remove a from b
+----------------------
+ṫ (Last Extract | Tail Extract) (non-vectorising)
+Trigraph: #.t
+Keywords: last-extract, split-at-last, tail-extract
+- a: lst|str -> Push a[:-1], a[-1] onto the stack
+----------------------
+ẋ (Cartesian Power | Regex Search for Match) (non-vectorising)
+Trigraph: #.x
+Keywords: cartesian-power, re-search, regex-search
+- a: lst, b: num -> cart_prod([a] * n)
+- a: num, b: lst -> cart_prod([b] * n)
+- a: str, b: str -> return first index of pattern match b in target string a, -1 if not found
+- a: lst, b: str -> regex search vectorised
+- a: str|lst, b: lst -> push a, push cartesian product of b and b
+----------------------
+ƒ (Partition After Truthy Indices) (non-vectorising)
+Keywords: partition-after-truthy
+- a: lst, b: lst -> partition a after truthy indices in b
+----------------------
+Θ (Zero Slice Until) (non-vectorising)
+Trigraph: #.`
+Keywords: 0>b, zero-slice, zero-slice-until, take, slice-to, lst-truncate, first-n-items, first-n
+- a: lst, b: num>=0 -> [a[0], a[1], ..., a[b-1]]
+- a: lst, b: num<0 -> [a[b + 1], a[b + 2], ..., a[-1]]
+- a: lst, b: lst[num] -> apl style take
+----------------------
+Φ (Slice from 1) (non-vectorising)
+Trigraph: #.|
+Keywords: one->b, one-slice
+- a: lst, b: num -> a[1:b]
+- a: num, b: lst -> b[1:a]
+----------------------
+§ (Print without newline) (non-vectorising)
+Trigraph: #,o
+Keywords: print-no-newline
+- a -> printed to stdout without newline
+----------------------
+Ạ (Assign) (non-vectorising)
+Trigraph: #,A
+Keywords: assign, assign-at, assign<>, assign<x>, a<x>=, a<x>=y, a<x>?=y, set-item, apply-at, re-sub, regex-sub, @=>
+- a: lst, b: num, c: non-fun -> assign c to a at the index b / a[b] = c
+- a: lst, b: num, c: fun -> a[b] c= <stack items> (augmented assignment to list)
+- a: lst, b: lst, c: lst -> assign c to a at the indices in b
+- a: str, b: str, c: str -> replace regex matches of pattern b in string a with c
+- a: str, b: str, c: fun -> replace regex matches of pattern b in string a with the result of applying c to each match
+- a: str, b: fun, c: str -> replace regex matches of pattern c in string a with the result of applying b to each match
+- a: fun, b: str, c: str -> replace regex matches of pattern c in string b with the result of applying a to each match
+- a: rec, b: str, c: str -> a.b = c
+----------------------
+Ḅ (Unique Prime Factors | Case Of) (vectorising)
+Trigraph: #,B
+Keywords: unique-prime-factors, case-of
+- a: num -> unique prime factors of a
+- a: str -> case of each character of a (uppercase = 1, lowercase = 0)
+----------------------
+Ḥ (Head Extract Under) (non-vectorising)
+Trigraph: #,H
+Keywords: head-extract-under, split-at-head-under, head-extract-swap, headless-swap, head-swap
+- a: lst|str -> Push a[1:], then a[0] onto the stack
+----------------------
+Ị (Insert) (non-vectorising)
+Trigraph: #,I
+Keywords: insert, insert-at
+- a: any, b: num, c: any -> insert c at position b in a
+- a: any, b: lst, c: any -> insert c at positions b in a
+- a: any, b: lst[num], c: lst -> insert c[i] at position b[i] in a
+----------------------
+Ḷ (Sort by Length | Regex Escape) (non-vectorising)
+Trigraph: #,L
+Keywords: sort-by-length, sort-by-len, order-by-length, order-by-len, length-sort, len-sort, re-escape, regex-escape
+- a: lst -> sort a by length
+- a: str -> escape a for regex
+----------------------
+Ṃ (-1 Power Of | Split on Spaces) (vectorising)
+Trigraph: #,M
+Keywords: neg-one-power-of, neg1**, neg1^, neg1-power-of, neg1-power, split-on-spaces, split-spaces, space-split
+- a: num -> -1 ** a
+- a: str -> a split on spaces
+----------------------
+Ọ (Print without popping) (non-vectorising)
+Trigraph: #,O
+Keywords: print-no-pop
+- a -> printed to stdout without popping
+----------------------
+Ṛ (Reverse) (non-vectorising)
+Trigraph: #,R
+Keywords: reverse, rev
+- a: any -> reverse a
+----------------------
+Ṣ (Sublists) (non-vectorising)
+Trigraph: #,S
+Keywords: sublists
+- a: lst -> sublists of a
+----------------------
+Ṭ (Trim / Cumulative Reduce) (non-vectorising)
+Trigraph: #,T
+Keywords: trim, scanl, cumulative-reduce
+- a: any, b: any -> Trim all elements of b from both sides of a.
+- a: fun, b: any -> cumulative reduce b by function a
+----------------------
+… (Increment Twice | Vectorised Head) (non-vectorising)
+Trigraph: #..
+Keywords: incr-twice, vec-head
+- a: num -> a + 2
+- a: lst -> [x[0] for x in a]
+----------------------
+≤ (Less Than Or Equal To) (vectorising)
+Trigraph: #,<
+Keywords: le, less-than-or-equal-to
+- a: num, b: num -> a <= b
+- a: str, b: num -> a <= str(b)
+- a: num, b: str -> str(a) <= b
+- a: str, b: str -> a <= b
+----------------------
+≥ (Greater Than Or Equal To) (vectorising)
+Trigraph: #,>
+Keywords: ge, greater-than-or-equal-to
+- a: num, b: num -> a >= b
+- a: str, b: num -> a >= str(b)
+- a: num, b: str -> str(a) >= b
+- a: str, b: str -> a >= b
+----------------------
+≠ (Not Equal) (vectorising)
+Trigraph: #.=
+Keywords: not-equal, =n't
+- a: any, b: any -> a != b
+----------------------
+₌ (Exactly Equals) (non-vectorising)
+Trigraph: #,=
+Keywords: ===, exactly-equal, strictly-equal?
+- a: any, b: any -> a === b (non-vectorising)
+----------------------
+⁺ (Powerset) (non-vectorising)
+Trigraph: #^+
+Keywords: powerset
+- a: lst -> powerset of a
+----------------------
+⁻ (Cube | Threes) (vectorising)
+Trigraph: #^-
+Keywords: cube, threes
+- a: num -> a ** 3
+- a: str -> a split into chunks of length 3
+----------------------
+⁾ (Set Intersection | Flatten By Depth | Character Multiply) (non-vectorising)
+Trigraph: #^)
+Keywords: set-intersection, intersection, flatten-by-depth, intersect
+- a: lst, b: lst -> set intersection of a and b
+- a: str, b: str -> set intersection of a and b
+- a: lst, b: num -> flatten a by depth b
+- a: num, b: str -> each character in b repeated a times
+- a: str, b: num -> each character in a repeated b times
+----------------------
+√ (Square Root) (vectorising)
+Trigraph: #,*
+Keywords: sqrt, square-root
+- a: num -> sqrt(a)
+----------------------
+∑ (Sum) (non-vectorising)
+Keywords: sum, /+, +/
+- a: lst -> sum of a
+----------------------
+« (Bitshift Left) (vectorising)
+Trigraph: #.<
+Keywords: bitwise-left-shift, left-shift, left-pad, pad-left
+- a: num, b: num -> a << b
+- a: num, b: str -> b padded to length a with spaces prepended
+- a: str, b: num -> a padded to length b with spaces prepended
+- a: str, b: str -> a padded to length of b with spaces prepended
+----------------------
+» (Bitshift Right) (vectorising)
+Trigraph: #.>
+Keywords: bitwise-right-shift, right-shift, right-pad, pad-right
+- a: num, b: num -> a >> b
+- a: num, b: str -> b padded to length a with spaces appended
+- a: str, b: num -> a padded to length b with spaces appended
+- a: str, b: str -> a padded to length of b with spaces appended
+----------------------
+⌐ (Bitwise Not) (vectorising)
+Trigraph: #.!
+Keywords: bitwise-not
+- a: num -> ~a
+----------------------
+∴ (Bitwise And) (vectorising)
+Trigraph: #.:
+Keywords: bitwise-and
+- a: num, b: num -> a & b
+----------------------
+∵ (Bitwise Or) (vectorising)
+Trigraph: #,:
+Keywords: bitwise-or
+- a: num, b: num -> a | b
+----------------------
+⊻ (Bitwise Xor) (vectorising)
+Trigraph: #,v
+Keywords: bitwise-xor, insert-space
+- a: num, b: num -> a ^ b
+- a: str, b: str -> a + space + b
+----------------------
+₀ (Ten) (non-vectorising)
+Trigraph: #,0
+Keywords: ten, l0
+- -> 10
+----------------------
+₁ (Sixteen) (non-vectorising)
+Trigraph: #,1
+Keywords: sixteen, l6
+- -> 16
+----------------------
+₂ (Twenty-six) (non-vectorising)
+Trigraph: #,2
+Keywords: twenty-six, Z6, z6
+- -> 26
+----------------------
+₃ (Thirty-two) (non-vectorising)
+Trigraph: #,3
+Keywords: thirty-two, E2
+- -> 32
+----------------------
+₄ (Sixty-four) (non-vectorising)
+Trigraph: #,4
+Keywords: sixty-four, b4
+- -> 64
+----------------------
+₅ (One hundred) (non-vectorising)
+Trigraph: #,5
+Keywords: one-hundred, l00
+- -> 100
+----------------------
+₆ (One hundred twenty-eight) (non-vectorising)
+Trigraph: #,6
+Keywords: one-hundred-twenty-eight, l28
+- -> 128
+----------------------
+₇ (Two hundred fifty-six) (non-vectorising)
+Trigraph: #,7
+Keywords: two-hundred-fifty-six, Z56, z56
+- -> 256
+----------------------
+₈ (-1) (non-vectorising)
+Trigraph: #,8
+Keywords: negative-one, neg-1, -1
+- -> -1
+----------------------
+₉ (Empty string) (non-vectorising)
+Trigraph: #,9
+Keywords: empty-string, <>
+- -> ""
+----------------------
+½ (Halve) (vectorising)
+Trigraph: #.5
+Keywords: halve
+- a: num -> a / 2
+- a: str -> a split into two pieces
+----------------------
+ʀ (Exclusive Zero Range | Lowercase) (vectorising)
+Trigraph: #.~
+Keywords: 0->n, zero-range, lowered-range, to-lower, lower, lowercase
+- a: num -> [0..a)
+- a: lst[num] -> apl-style iota from 0 until a
+- a: str -> a.lower()
+----------------------
+ɾ (Inclusive One Range | Uppercase) (vectorising)
+Trigraph: #,~
+Keywords: one->n, one-range, to-upper, upper, uppercase
+- a: num -> [1..a]
+- a: lst[num] -> apl-style iota from 1 to a
+- a: str -> a.upper()
+----------------------
+¯ (Deltas) (non-vectorising)
+Trigraph: #^_
+Keywords: deltas, pairwise-differences, differences
+- a: lst -> forward pairwise differences of a
+----------------------
+× (Multiplication) (vectorising)
+Trigraph: #.*
+Keywords: mul, multiply, times, str-repeat, *, ring-trans
+- a: num, b: num -> a * b
+- a: num, b: str -> b repeated a times
+- a: str, b: num -> a repeated b times
+- a: str, b: str -> ring translate a according to b
+----------------------
+÷ (Divide | Split) (vectorising)
+Trigraph: #./
+Keywords: divide, div, str-split, re-split, str-n-pieces, n-strings, str-pieces, string-pieces
+- a: num, b: num -> a / b
+- a: str, b: num -> a split into b equal sized chunks, with the last chunk potentially smaller
+- a: num, b: str -> b split into a equal sized chunks, with the last chunk potentially smaller
+- a: str, b: str -> Split a on the regex b
+----------------------
+£ (Set Register) (non-vectorising)
+Trigraph: #^=
+Keywords: set-register, ->register, set-reg, ->reg
+- a: any -> register = a
+----------------------
+¥ (Get Register) (non-vectorising)
+Trigraph: #^$
+Keywords: get-register, get-reg, register, <-register, <-reg
+-  -> push the value of the register
+----------------------
+← (Rotate Stack Left) (non-vectorising)
+Trigraph: #^<
+Keywords: rotate-stack-left
+-  -> rotate the entire stack left once
+----------------------
+↑ (Grade Up) (non-vectorising)
+Trigraph: #^^
+Keywords: grade-up
+- a: any -> indices that will sort a
+----------------------
+→ (Rotate Stack Right) (non-vectorising)
+Trigraph: #^>
+Keywords: rotate-stack-right
+-  -> rotate the entire stack right once
+----------------------
+↓ (Grade Down) (non-vectorising)
+Trigraph: #^;
+Keywords: grade-down
+- a: any -> indices that will reverse-sort a
+----------------------
+± (Sign) (vectorising)
+Trigraph: #,+
+Keywords: sign
+- a: num -> sign of a
+----------------------
+† (Length of Consecutive Groups) (non-vectorising)
+Trigraph: #.&
+Keywords: len-consecutive, gvl, gavel
+- a: any -> lengths of consecutive groups of a
+----------------------
+Π (Product) (non-vectorising)
+Keywords: product, prod
+- a: lst -> product of a
+----------------------
+¬ (Logical Not) (non-vectorising)
+Trigraph: #,!
+Keywords: non-vec-not, non-vec-logical-not
+- a: any -> !a
+----------------------
+∧ (Logical And) (vectorising)
+Trigraph: #,&
+Keywords: and, logical-and
+- a: any, b: any -> a && b
+----------------------
+∨ (Logical Or) (vectorising)
+Trigraph: #,|
+Keywords: or, logical-or
+- a: any, b: any -> a || b
+----------------------
+⁰ (First Input) (non-vectorising)
+Trigraph: #^0
+Keywords: first-input, input-0
+- The first input to the program
+----------------------
+¹ (Second Input) (non-vectorising)
+Trigraph: #^1
+Keywords: second-input, input-1
+- The second input to the program
+----------------------
+² (Square | Pairs) (vectorising)
+Trigraph: #^2
+Keywords: square, pairs
+- a: num -> a ** 2
+- a: str -> a split into pairs
+----------------------
+⌈ (Ceiling) (vectorising)
+Keywords: ceiling, ceil
+- a: num -> ceil(a)
+----------------------
+⌊ (Floor) (vectorising)
+Keywords: floor, str-num, str->num, str-to-num
+- a: num -> floor(a)
+- a: str -> cast a to num by ignoring non-numeric digits. Returns 0 if there's no valid number
+----------------------
+Ɠ (Maximum without popping) (non-vectorising)
+Trigraph: #.9
+Keywords: max-no-pop
+- a: lst -> max(a) without popping a
+----------------------
+ɠ (Minimum without popping) (non-vectorising)
+Trigraph: #.6
+Keywords: min-no-pop
+- a: lst -> min(a) without popping a
+----------------------
+┉ (Dump) (non-vectorising)
+Keywords: dump
+- a: any -> dump all values on the stack
+----------------------
+„ (Join on Spaces | Is Negative? (Used when not closing a string)) (non-vectorising)
+Trigraph: #,"
+Keywords: space-join, join-on-spaces, is-negative?, negative?
+- a: lst -> a join on spaces
+- a: num -> a < 0
+----------------------
+” (Join On Newlines | Pad Binary to Mod 8 | Context if 1) (non-vectorising)
+Trigraph: #^'
+Keywords: join-newlines, newline-join, join-on-newlines, binary-pad-8, bin-pad-8, one?->context, one?->n
+- a: lst -> a join on newlines
+- a: str -> a padded to a multiple of 8 with 0s
+- a: num -> a if a == 1 push context variable n
+----------------------
+ð (Space) (non-vectorising)
+Trigraph: #.b
+Keywords: space
+- -> " "
+----------------------
+€ (Suffixes) (non-vectorising)
+Trigraph: #^(
+Keywords: suffixes
+- a: lst -> Suffixes of a
+----------------------
+“ (Join on Nothing | First Positive Integer | Is Alphanumeric | Insignificant?) (non-vectorising)
+Trigraph: #^"
+Keywords: nothing-join, concat-fold, join-on-nothing, empty-join, single-string, as-single-string, first-positive-integer, first-n>0, is-alphanumeric, is-alphanum, is-alnum, abs<=1, insignificant?, insignificant, insig?, insig
+- a: lst -> a join on nothing
+- a: str -> is a alphanumeric?
+- a: fun -> First positive integer ([1, 2, 3, ...]) for which a returns true
+- a: num -> abs(a) <= 1
+----------------------
+¶ (Newline) (non-vectorising)
+Trigraph: #,
+
+Keywords: newline
+- -> chr(10)
+----------------------
+ᶿ (Bifuricate) (non-vectorising)
+Trigraph: #^`
+Keywords: bifuricate, bifur, bif, furry, uwu, dup-rev, dup-reverse, owo
+- a: lst -> Push a, then push a reversed
+----------------------
+ᶲ (Stringify) (non-vectorising)
+Trigraph: #^|
+Keywords: to-string, stringify, str
+- a: any -> str(a)
+----------------------
+• (Asterisk) (non-vectorising)
+Trigraph: #,.
+Keywords: asterisk
+- -> "*"
+----------------------
+≈ (All Equal?) (non-vectorising)
+Trigraph: #^~
+Keywords: all-equal, all-equal?
+- a: lst -> are all elements of a equal?
+----------------------
+#|para-apply ([Internal Use] Parallel Apply (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> The iconic parallel apply. Use the modifier instead bingus.
+----------------------
+#|minimum-by ([Internal Use] Minimum By (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> minimum of a by f. Use the modifier instead.
+----------------------
+#|map-prefixes ([Internal Use] Map Prefixes (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to each prefix of a. Use the modifier instead.
+----------------------
+#|map-suffixes ([Internal Use] Map Suffixes (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to each suffix of a. Use the modifier instead.
+----------------------
+#|reduce-cols ([Internal Use] Reduce Columns (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> each column of a reduced by f. Use the modifier instead.
+----------------------
+#|maximum-by ([Internal Use] Maximum By (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> maximum of a by f. Use the modifier instead.
+----------------------
+#|vscan ([Internal Use] Vectorised Scan (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> scanl each column. Use the modifier instead.
+----------------------
+#|para-apply-wrap ([Internal Use] Parallel Apply Wrap (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> The iconic parallel apply. Use the modifier instead bingus.
+----------------------
+#|apply-to-register ([Internal Use] Apply to Register (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to the register. Use the modifier instead.
+----------------------
+#|vec-dump ([Internal Use] Map Dump (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to each element of a, treating as a stack. Use the modifier instead.
+----------------------
+#|dip ([Internal Use] Dip (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to a with a pushed back. Use the modifier instead.
+----------------------
+#|invar ([Internal Use] Invariant (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> Use the ᵞ modifier instead.
+----------------------
+#|all-neigh ([Internal Use] All Neighbours (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to each neighbour of a. Use the modifier instead.
+----------------------
+#¿ (Number of Inputs) (non-vectorising)
+Keywords: number-of-inputs, count-inputs, count-stdin
+- -> The number of inputs to the program
+----------------------
+#? (All Inputs) (non-vectorising)
+Keywords: all-inputs, inputs, all-stdin, all-stdin?
+- A list of all inputs to the program
+----------------------
+#C (Compress String Using Dictionary) (non-vectorising)
+Keywords: compress-dict, dict-comp, compress
+- a: str -> compress a using the dictionary
+----------------------
+#Q (Exit | Quit) (non-vectorising)
+Keywords: exit, quit
+- a -> Stop program execution
+----------------------
+#X (Loop Break) (non-vectorising)
+Keywords: break
+-  -> break out of the current loop
+----------------------
+#c (Base-252 Compress String or Number) (vectorising)
+Keywords: compress-252, compress-b
+- a: str -> compress a using base 252
+- a: num -> compress a using base 252
+----------------------
+#v ([Internal Use] Vectorise (Element Form) ) (non-vectorising)
+Keywords: 
+- *a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead
+----------------------
+#x (Loop Continue) (non-vectorising)
+Keywords: continue
+-  -> continue the current loop
+----------------------
+#~ ([Internal Use] Apply Without Popping (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to the stack without popping items. Use the modifier instead.
+----------------------
+#¤ (Number of Context Parameters) (non-vectorising)
+Keywords: number-of-context, context-number, context-count
+- -> number of context parameters
+----------------------
+∆< (Argument / Phase / Angle) (vectorising)
+Keywords: arg, phase, angle
+- a: num -> Arg(a)
+----------------------
+∆A (Arithmetic Mean) (non-vectorising)
+Keywords: mean, arithmetic-mean
+- a: lst[num] => arithmetic mean of a (sum(a) / len(a))
+----------------------
+∆C (Hyperbolic Cosine) (vectorising)
+Keywords: cosh, hyperbolic-cosine
+- a: num -> cosh(a)
+----------------------
+∆G (Geometric Mean) (non-vectorising)
+Keywords: geometric-mean
+- a: lst[num] => geometric mean of a (prod(a) ** (1 / len(a)))
+----------------------
+∆H (Harmonic Mean) (non-vectorising)
+Keywords: harmonic-mean
+- a: lst[num] => harmonic mean of a (len(a) / sum(1 / a))
+----------------------
+∆I (Imaginary Part) (vectorising)
+Keywords: imag, imaginary, imaginary-part
+- a: num -> Im(a)
+----------------------
+∆L (Least Common Multiple) (non-vectorising)
+Keywords: lcm
+- a: num, b: num -> lcm(a, b)
+- a: lst[num], b: num -> lcm of b and all elements of a
+- a: lst[num] -> lcm of all items in a.
+----------------------
+∆R (Real Part) (vectorising)
+Keywords: real, real-part
+- a: num -> Re(a)
+----------------------
+∆S (Hyperbolic Sine) (vectorising)
+Keywords: sinh, hyperbolic-sine
+- a: num -> sinh(a)
+----------------------
+∆T (Hyperbolic Tangent) (vectorising)
+Keywords: tanh, hyperbolic-tangent
+- a: num -> tanh(a)
+----------------------
+∆c (Cosine) (vectorising)
+Keywords: cos, cosine
+- a: num -> cos(a)
+----------------------
+∆q (Prime Exponents) (vectorising)
+Keywords: prime-exponents, prime-exps
+- a: num -> push a list of the power of each prime in the prime factors of a
+----------------------
+∆s (Sine) (vectorising)
+Keywords: sin, sine
+- a: num -> sin(a)
+----------------------
+∆t (Tangent) (vectorising)
+Keywords: tan, tangent
+- a: num -> tan(a)
+----------------------
+∆Ṫ (Dyadic Arctangent / Dyadic Inverse Tangent) (vectorising)
+Keywords: atan2, arctan2, arctangent2
+- y: num, x: num -> atan2(y, x)
+----------------------
+∆ċ (Arccosine / Inverse Cosine) (vectorising)
+Keywords: acos, arccos, arccosine
+- a: num -> acos(a)
+----------------------
+∆ḋ (Radians to Degrees) (vectorising)
+Keywords: rad2deg, rad-to-deg
+- a: num -> a from radians to degrees (a * 180 / pi)
+----------------------
+∆ḟ (All Prime Exponents) (vectorising)
+Keywords: all-prime-exponents, all-prime-exps
+- a: num -> for all primes less than or equal to a, push the power of that prime in the factorisation of a
+----------------------
+∆ṙ (Degrees to Radians) (vectorising)
+Keywords: deg2rad, deg-to-rad
+- a: num -> a from degrees to radians (a * pi / 180)
+----------------------
+∆ṡ (Arcsine / Inverse Sine) (vectorising)
+Keywords: asin, arcsin, arcsine
+- a: num -> asin(a)
+----------------------
+∆ṫ (Arctangent / Inverse Tangent) (vectorising)
+Keywords: atan, arctan, arctangent
+- a: num -> atan(a)
+----------------------
+∆Ṛ (Principal Root Of Unity) (vectorising)
+Keywords: root-of-unity
+- a: num => principal a-th root of unity (e^(2i * pi / a))
+----------------------
+øA (Letter Number Swap) (vectorising)
+Keywords: letter-to-number, number-to-letter, letter-number-swap, number-letter-swap, a1-swap
+- a: str -> the index of a in the alphabet (one-indexed)
+- a: int -> the a-th letter of the alphabet (one-indexed)
+----------------------
+ø⁾ (Surround) (non-vectorising)
+Keywords: surround
+- a: any, b: any -> a prepended and appended to b
+----------------------
+Þ0 (Zero Pad) (non-vectorising)
+Keywords: zero-pad, pizza-tower
+- a: lst|str, b: num -> a padded with 0s to length b. Positive b prepends 0s, negative b appends 0s
+- a: lst|str, b: lst|str -> a padded with 0s to length of b. Positive b prepends 0s, negative b appends 0s
+----------------------
+ÞO (Grid Neighbours (Wrap Around)) (non-vectorising)
+Keywords: grid-neighbours-wrap, grid-neighbors-wrap, adjacent-cells-wrap, adj-cells-wrap, surrounding-cells-wrap
+- a: lst[lst] -> Grid neighbours of a - up, down, left, right - wrapping around
+- a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b => 0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does
+----------------------
+ÞP (Set of All Primes) (non-vectorising)
+Keywords: PP, primes
+- -> The set of all primes
+----------------------
+ÞR (Reshape) (non-vectorising)
+Keywords: reshape
+- a: lst, b: lst[num] => a reshaped to shape b
+----------------------
+ÞT (Transpose Safe) (non-vectorising)
+Keywords: transpose-safe
+- a: any -> transpose a
+----------------------
+Þh (Ends) (non-vectorising)
+Keywords: ends, sides, edges
+- a: lst -> [a[0], a[-1]]
+- a: str -> [a[0], a[-1]]
+- a: cmx -> [real, imaginary]
+- a: num -> [digit[0], digit[-1]]
+----------------------
+Þi (Multidimensional Index) (non-vectorising)
+Keywords: md-index
+- a: lst, b: lst[num] -> a[b[0]][b[1]]...[b[n]]
+----------------------
+Þo (Grid Neighbours) (non-vectorising)
+Keywords: grid-neighbours, grid-neighbors, adjacent-cells, adj-cells, surrounding-cells
+- a: lst[lst] -> Grid neighbours of a - right, down, left, up of a
+- a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a and start from direction b => 0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does
+----------------------
+ÞĊ (Cycle | Is Positive?) (non-vectorising)
+Keywords: cycle, is-positive?, positive?, >0?
+- a: lst -> a ++ a ++ a ++ ...
+- a: num -> a > 0
+----------------------
+ÞȮ (Grid Neighbours (Diagonals, Wrap Around)) (non-vectorising)
+Keywords: grid-neighbours-diagonals-wrap, grid-neighbors-diagonals-wrap, adjacent-cells-diagonals-wrap, adj-cells-diagonals-wrap, surrounding-cells-diagonals-wrap, eight-cells-wrap
+- a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals - wrapping around
+- a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b => 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does
+----------------------
+ÞẊ (Cartesian Product Unsafe) (non-vectorising)
+Keywords: cartesian-product-unsafe, cartesian-unsafe, cart-prod-unsafe, cart-unsafe
+- a: list, b: list -> cartesian product of a and b in the standard order, but without accounting for infinite lists
+----------------------
+Þι (0-Lift) (non-vectorising)
+Keywords: zero-lift, lift-0, O-lift
+- a: lst -> each item of a multiplied by its 0-based index
+----------------------
+Þκ (1-Lift) (non-vectorising)
+Keywords: one-lift, lift-1, l-lift
+- a: lst -> each item of a multiplied by its 1-based index
+----------------------
+Þċ (Multi-Set XOR) (non-vectorising)
+Keywords: multi-set-xor
+- a: lst, b: lst -> multi-set xor of a and b
+----------------------
+Þṅ (Multi-Set Difference) (non-vectorising)
+Keywords: multi-set-difference, multi-set-diff
+- a: lst, b: lst -> multi-set difference of a and b
+----------------------
+Þȯ (Grid Neighbours (Diagonals)) (non-vectorising)
+Keywords: grid-neighbours-diagonals, grid-neighbors-diagonals, adjacent-cells-diagonals, adj-cells-diagonals, surrounding-cells-diagonals, eight-cells
+- a: lst[lst] -> Grid neighbours of a - up, down, left, right, diagonals
+- a: lst[lst], b: num -> Grid neighbours of a - right, down, left, up of a and start from direction b => 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does
+----------------------
+ÞẠ (Multidimensional Assignment) (non-vectorising)
+Keywords: md-assign
+- a: lst, b: lst[num], c: any -> a[b[0]][b[1]]...[b[n]] = c
+----------------------
+ÞỊ (Indices Where Truthy) (non-vectorising)
+Keywords: where, where-truthy, indices-truthy, indices-where-truthy
+- a: lst => indices of truthy elements of a
+----------------------
+ÞṂ (Matrix Inverse) (vectorising)
+Keywords: matrix-inverse
+- a: lst[lst] -> matrix inverse of a
+----------------------
+ÞṆ (Set of Natural Numbers) (non-vectorising)
+Keywords: NN
+- -> The set of all natural numbers
+----------------------
+ÞṬ (Set of Integers) (non-vectorising)
+Keywords: ZZ
+- -> The set of all integers
+----------------------
+Þ⁾ (Multi-Set Intersection) (non-vectorising)
+Keywords: multi-set-intersection, multi-set-intersect
+- a: lst, b: lst -> multi-set intersection of a and b
+----------------------
+Þ÷ (Into N Pieces | Split Into N Pieces) (non-vectorising)
+Keywords: into-n-pieces, split-into-n-pieces
+- a: lst, b: num -> a split into b equal sized chunks, with the last chunk potentially smaller
+- a: str, b: num -> a split into b equal sized chunks, with the last chunk potentially smaller
+----------------------
+◌
+Keywords: vec-dump:, map-dump:
+Description: Map a function over the top of the stack, treating each iteration
+as if it were a stack of items. Essentially, dump before mapping
+
+-----------------------
+Ч
+Keywords: ****:
+Description: Turn the next four elements (whether that be a structure/modifier/element) into a lambda
+Чfghi: Push the equivalent of λfghi} to the stack
+Trigraph: #^4
+-----------------------
+♳
+Keywords: *2:
+Description: Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda
+♳f: Push the equivalent of λ2|f} to the stack
+-----------------------
+∦
+Keywords: parallel-apply-and-wrap:, para-apply-and-wrap:, <paraply>:, <!!>:
+Description: Parallel apply two elements to the top of the stack
+and wrap the result in a list
+-----------------------
+₾
+Keywords: apply-to-register:, to-register:, to-reg:
+Description: Apply a function to the register. Essentially, push
+the register value to the stack, apply the function, and
+then pop back into the register
+₾f: Apply f to the register
+-----------------------
+⊠
+Keywords: collect-while-unique:, outer-product:, table:
+Description: Loop and Collect While Unique | Outer Product
+⊠f: Loop and collect while unique
+⊠f<dyad>: Pop two lists, then make a matrix from them by applying f to each pair of elements
+-----------------------
+♶
+Keywords: ****2:
+Description: Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
+♶fghi: Push the equivalent of λ2|fghi} to the stack
+-----------------------
+⋊
+Keywords: <-}
+Description: Scan elements to the left until a newline is found. Push a
+lambda with all of the scanned elements
+<elements>⋊: Push a lambda
+-----------------------
+≟
+Keywords: invariant-under:, vertical-scan:, vscan:, v-scan:, invariant?:, same?:
+Description: Return whether a value is unchanged under a function, or reduce all columns of a matrix by a function
+≟f: Return whether the top of the stack is invariant under f
+≟f<dyad>: Reduce all columns of a matrix by f
+-----------------------
+ß
+Keywords: sort-by:
+Description: Sort By Element
+ßf: Sort top of stack based on results of f
+-----------------------
+⸠
+Keywords: *:
+Description: Turn the next element (whether that be a structure/modifier/element) into a lambda
+⸠f: Push the equivalent of λf} to the stack
+Trigraph: #^.
+-----------------------
+э
+Keywords: ***:
+Description: Turn the next three elements (whether that be a structure/modifier/element) into a lambda
+эfgh: Push the equivalent of λfgh} to the stack
+Trigraph: #^%
+-----------------------
+♴
+Keywords: **2:
+Description: Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda
+♴fg: Push the equivalent of λ2|fg} to the stack
+-----------------------
+~
+Keywords: peek:, filter-stack:
+Description: Apply the next element to the stack without popping it
+Keep only items on the stack that match a predicate
+~f<monad>: Filter the stack by f
+~f<dyad+>: Apply f to the stack without popping
+-----------------------
+/
+Keywords: foldl:, reduce:, /:, fold:, reduceby:-
+Description: Reduce a list by an element
+/f: reduce by element f
+-----------------------
+∥
+Keywords: parallel-apply:, para-apply:, paraply:, !!:
+Description: Parallel apply two elements to the top of the stack
+-----------------------
+ϩ
+Keywords: **:
+Description: Turn the next two elements (whether that be a structure/modifier/element) into a lambda
+ϩfg: Push the equivalent of λfg} to the stack
+Trigraph: #^:
+-----------------------
+♵
+Keywords: ***2:
+Description: Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda
+♵fgh: Push the equivalent of λ2|fgh} to the stack
+-----------------------
+\
+Keywords: key:, scanl:
+Description: Map an element over the groups formed by identical items. | Cumulatively reduce a list by a function
+\f: Map f over the groups formed by identical items
+\f<dyad>: Cumulatively reduce a list of items
+-----------------------
+⎇
+Keywords: dip:
+Description: Stash the top of the stack temporarily, and then apply
+the function. Finally, push the stashed value
+⎇f: pop M, apply f, push M
+-----------------------
+¿
+Keywords: if-top:, if:
+Description: Pop the top of the stack, and, if it's truthy, apply a function
+Trigraph: #.?
+-----------------------
+v
+Keywords: vectorise:, vec:, v:
+Description: Vectorises
+vf: f but vectorised
+-----------------------

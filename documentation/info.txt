@@ -259,6 +259,7 @@ z ==> Inclusive zero Range | Is Lowercase
 ∆ṡ ==> Arcsine / Inverse Sine
 ∆ṫ ==> Arctangent / Inverse Tangent
 ∆Ṛ ==> Principal Root Of Unity
+øA ==> Letter Number Swap
 ø⁾ ==> Surround
 Þ0 ==> Zero Pad
 ÞO ==> Grid Neighbours (Wrap Around)
@@ -293,11 +294,12 @@ and wrap the result in a list
 ₾ ==> Apply a function to the register. Essentially, push
 the register value to the stack, apply the function, and
 then pop back into the register
-⎇ ==> Stash the top of the stack temporarily, and then apply
-the function. Finally, push the stashed value
+⊠ ==> Loop and Collect While Unique | Outer Product
 ♶ ==> Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
 ⋊ ==> Scan elements to the left until a newline is found. Push a
 lambda with all of the scanned elements
+≟ ==> Return whether a value is unchanged under a function, or reduce all columns of a matrix by a function
+ß ==> Sort By Element
 ⸠ ==> Turn the next element (whether that be a structure/modifier/element) into a lambda
 э ==> Turn the next three elements (whether that be a structure/modifier/element) into a lambda
 ♴ ==> Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda
@@ -307,5 +309,8 @@ Keep only items on the stack that match a predicate
 ∥ ==> Parallel apply two elements to the top of the stack
 ϩ ==> Turn the next two elements (whether that be a structure/modifier/element) into a lambda
 ♵ ==> Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda
+\ ==> Map an element over the groups formed by identical items. | Cumulatively reduce a list by a function
+⎇ ==> Stash the top of the stack temporarily, and then apply
+the function. Finally, push the stashed value
 ¿ ==> Pop the top of the stack, and, if it's truthy, apply a function
 v ==> Vectorises
