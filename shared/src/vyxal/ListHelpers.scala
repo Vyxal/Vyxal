@@ -11,19 +11,14 @@ object ListHelpers:
 
   def assign(iterable: VList, index: VNum, value: VAny): VList =
     val ind = if index < 0 then iterable.bigLength + index else index
-    val temp =
-      if !iterable.hasIndex(ind.toBigInt) then iterable.extend(ind)(VNum(0))
-      else iterable
-
+    val temp = iterable.extend(ind.toBigInt, VNum(0))
     VList.from(temp.take(ind) ++ (value +: temp.drop(ind + 1)))
 
   def augmentAssign(iterable: VList, index: VNum, function: VFun)(using
       ctx: Context
   ): VList =
     val ind = if index < 0 then iterable.bigLength + index else index
-    val temp =
-      if !iterable.hasIndex(ind.toBigInt) then iterable.extend(ind)(VNum(0))
-      else iterable
+    val temp = iterable.extend(ind.toBigInt, VNum(0))
     val item = iterable.index(ind)
     ctx.push(item)
     val res = Interpreter.executeFn(
@@ -223,7 +218,7 @@ object ListHelpers:
         ),
       (-1, 1, 'c') ->
         ((row: Int, col: Int, matrix: VList, matRow: VList) =>
-          col < matrix.length - 1 && row > 0
+          col < matRow.length - 1 && row > 0
         ),
     )
 
@@ -385,10 +380,7 @@ object ListHelpers:
       Context
   ): VList =
     val ind = if index < 0 then iterable.bigLength + index + 1 else index
-    val temp =
-      if !iterable.hasIndex(ind.toBigInt - 1) then
-        iterable.extend(ind - 1)(VNum(0))
-      else iterable
+    val temp = iterable.extend(ind.toBigInt, VNum(0))
     VList.from(temp.take(ind) ++ (value +: temp.drop(ind)))
 
   def interleave(left: VList, right: VList)(using Context): VList =
