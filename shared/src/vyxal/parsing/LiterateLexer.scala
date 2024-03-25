@@ -474,12 +474,10 @@ private[parsing] object LiterateLexer:
         (litBranch | !"]" ~ singleTokenGroup ~ litBranch.?).rep ~
         parseToken(ListClose, "]".!)
     ).map {
-      case (startTok, elems, endTok) =>
-        val middle = elems.flatMap {
+      case (startTok, elems, endTok) => val middle = elems.flatMap {
           case branch: LitToken => List(branch)
           case (elem, branch) => elem ++ branch
-        }
-        (startTok +: middle) :+ endTok
+        }(startTok +: middle) :+ endTok
     }
 
   def litBranch[$: P]: P[LitToken] =
