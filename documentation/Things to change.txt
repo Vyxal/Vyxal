@@ -1,0 +1,19 @@
+@ ==> Print without newline
+S ==> Sort ascending | Sort by Function Object 
+_ ==> Pop and Discard | Imaginary number sep
+` ==> apply to every second item
+Ċ ==> Counts
+Ṙ ==> Reverse
+ṅ ==> into two pieces
+ṡ ==> Split into N pieces
+§ ==> cumulative sums
+Ṛ ==> Rotate Left
+⌙ ==> vectorised not
+⚃ ==> random choice
+∩ ==> Set Intersection
+∪ ==> Set union
+⊕ ==> set xor
+⊝ ==> set difference
+⚮ ==> Palindromise
+⁙ ==> a,b,c -> c,a,b
+⚇ ==> divmod

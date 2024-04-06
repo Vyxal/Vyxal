@@ -35,7 +35,6 @@ class SBCSLexer extends LexerCommon:
       else if headEqual("\"") then stringToken
       else if headEqual("'") then oneCharStringToken
       else if headEqual("῟") then twoCharStringToken
-      else if headEqual("⚇") then twoCharNumberToken
       else if headIn("∆øÞk") || headLookaheadMatch("""#[^\[\]$!=#>@{:.,^]""")
       then digraphToken
       else if headLookaheadEqual("##") then
@@ -234,21 +233,6 @@ class SBCSLexer extends LexerCommon:
       Token(
         TokenType.Str,
         char,
-        Range(rangeStart, index),
-      )
-
-  private def twoCharNumberToken: Unit =
-    val rangeStart = index
-    pop() // Pop the opening quote
-    val value = pop(2)
-    val number = value.zipWithIndex
-      .map((c, ind) => math.pow(Codepage.length, ind) * Codepage.indexOf(c))
-      .sum
-      .toString
-    tokens +=
-      Token(
-        TokenType.Number,
-        number,
         Range(rangeStart, index),
       )
 
