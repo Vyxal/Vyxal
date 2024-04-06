@@ -1,4 +1,4 @@
-⚇ ==> two byte number
+⚇ ==> divmod
 ῟ ==> two char string
 ! ==> Factorial
 $ ==> Swap

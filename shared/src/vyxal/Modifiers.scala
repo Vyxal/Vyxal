@@ -43,6 +43,18 @@ object Modifiers:
         case _ => true
       )
   val modifiers: Map[String, Modifier] = Map(
+    "`" ->
+      Modifier(
+        "Apply to Every Second Item",
+        "Applies a function to every second item in a list, starting from the second item",
+        List("every-second:", "every-2nd:", "every-2:", "every-2:"),
+        1,
+        Seq("`f: Apply f to every second item"),
+      ) {
+        case List(ast) =>
+          val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))
+          AST.makeSingle(lambdaAst, AST.Command("#|apply-to-every-second"))
+      },
     "v" ->
       Modifier(
         "Vectorise",

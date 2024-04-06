@@ -442,7 +442,7 @@ object Elements:
     },
     addPart(
       Monad,
-      "@",
+      "§",
       "Cumulative Sums",
       List("cumulative-sums", "cumsums", "cumsum", "cum-sum", "-_-"),
       false,
@@ -2084,7 +2084,7 @@ object Elements:
       ctx.globals.printed = true
     },
     addDirect(
-      "§",
+      "@",
       "Print without newline",
       List("print-no-newline"),
       None,
@@ -2288,18 +2288,34 @@ object Elements:
       None,
       "a -> return a",
     ) { throw ReturnFromFunctionException() },
-    addFull(
-      Monad,
+    addDirect(
       "S",
-      "Sort ascending",
-      List("sort", "sortasc", "sort-asc"),
-      false,
+      "Sort ascending | Sort by Function Object",
+      List(
+        "sort",
+        "sortasc",
+        "sort-asc",
+        "sort-by",
+        "sortby",
+        "sort-by-fun",
+        "sortbyfun",
+        "sort-fun",
+        "sortfun",
+      ),
+      None,
       "a: any -> convert to list and sort ascending",
-    ) {
-      // should do something else for num overload later
-      case s: String => s.sorted
-      case a => VList
-          .from(ListHelpers.makeIterable(a).sorted(MiscHelpers.compare(_, _)))
+      "a: any, b: fun -> sort iterable a by function b",
+    ) { ctx ?=> 
+      val top = ctx.pop()
+      top match
+        case f: VFun =>
+          val next = ctx.pop()
+          ctx.push(ListHelpers.sortBy(ListHelpers.makeIterable(next, Some(true)), f))
+        case _ =>
+          ctx.push(top match
+          case s: String => s.sorted
+          case a => VList
+              .from(ListHelpers.makeIterable(a).sorted(MiscHelpers.compare(_, _))))
     },
     addPart(
       Monad,
@@ -2385,7 +2401,7 @@ object Elements:
     addPart(
       Dyad,
       "ṡ",
-      "Sort by Function Object | Partition by Numbers | Set Difference",
+      "Partition by Numbers | Set Difference",
       List(
         "sort-by",
         "sortby",
@@ -3111,6 +3127,28 @@ object Elements:
         case arg =>
           throw UnimplementedOverloadException("#|vec-dump", List(arg))
     },
+    addDirect(
+      "#|apply-to-every-second",
+      "[Internal Use] Apply to Every Second (Element Form)",
+      List(),
+      None,
+      "*a, f -> f applied to every second element of a. Use the modifier instead.",
+    ){ctx ?=>
+      val f = ctx.pop()
+      val arg = ListHelpers.makeIterable(ctx.pop())
+      f match
+        case fun: VFun => ctx.push(VList.from(
+          LazyList.unfold((VNum(1), arg)){
+            case (bit, lst) => 
+              if bit == 1 then
+                Some(lst.head, (VNum(0), lst.tail))
+              else
+                Some(Interpreter.executeFn(fun, args = ListHelpers.makeIterable(lst.head))(
+                  using ctx.makeChild()
+                ), (VNum(1), lst.tail))
+          }
+        ))
+    }
     addPart(
       Monad,
       "V",
