@@ -2305,17 +2305,20 @@ object Elements:
       None,
       "a: any -> convert to list and sort ascending",
       "a: any, b: fun -> sort iterable a by function b",
-    ) { ctx ?=> 
+    ) { ctx ?=>
       val top = ctx.pop()
       top match
         case f: VFun =>
           val next = ctx.pop()
-          ctx.push(ListHelpers.sortBy(ListHelpers.makeIterable(next, Some(true)), f))
-        case _ =>
-          ctx.push(top match
-          case s: String => s.sorted
-          case a => VList
-              .from(ListHelpers.makeIterable(a).sorted(MiscHelpers.compare(_, _))))
+          ctx.push(
+            ListHelpers.sortBy(ListHelpers.makeIterable(next, Some(true)), f)
+          )
+        case _ => ctx.push(top match
+            case s: String => s.sorted
+            case a => VList.from(
+                ListHelpers.makeIterable(a).sorted(MiscHelpers.compare(_, _))
+              )
+          )
     },
     addPart(
       Monad,
@@ -3133,42 +3136,50 @@ object Elements:
       List(),
       None,
       "*a, f -> f applied to every second element of a. Use the modifier instead.",
-    ){ctx ?=>
+    ) { ctx ?=>
       val f = ctx.pop()
       val arg = ListHelpers.makeIterable(ctx.pop())
       f match
-        case fun: VFun => ctx.push(VList.from(
-          LazyList.unfold((VNum(1), arg)){
-            case (bit, lst) => 
-              if bit == 1 then
-                Some(lst.head, (VNum(0), lst.tail))
-              else
-                Some(Interpreter.executeFn(fun, args = ListHelpers.makeIterable(lst.head))(
-                  using ctx.makeChild()
-                ), (VNum(1), lst.tail))
-          }
-        ))
-    }
-    addPart(
-      Monad,
-      "V",
-      "Vectorised Reverse | Complement | Title Case",
-      List(
-        "vectorised-reverse",
-        "vec-reverse",
-        "complement",
-        "titlecase",
-        "title-case",
-      ),
-      false,
-      "a: lst -> each element of a reversed",
-      "a: num -> 1 - a",
-      "a: str -> a converted to title case",
-    ) {
-      case a: VList => VList.from(a.map(ListHelpers.reverse))
-      case a: VNum => 1 - a
-      case a: String => StringHelpers.titlecase(a)
-    },
+        case fun: VFun => ctx.push(
+            VList.from(
+              LazyList.unfold((VNum(1), arg)) {
+                case (bit, lst) =>
+                  if bit == 1 then Some(lst.head, (VNum(0), lst.tail))
+                  else
+                    Some(
+                      Interpreter.executeFn(
+                        fun,
+                        args = ListHelpers.makeIterable(lst.head),
+                      )(using
+                        ctx.makeChild()
+                      ),
+                      (VNum(1), lst.tail),
+                    )
+              }
+            )
+          )
+      end match
+    } addPart
+      (
+        Monad,
+        "V",
+        "Vectorised Reverse | Complement | Title Case",
+        List(
+          "vectorised-reverse",
+          "vec-reverse",
+          "complement",
+          "titlecase",
+          "title-case",
+        ),
+        false,
+        "a: lst -> each element of a reversed",
+        "a: num -> 1 - a",
+        "a: str -> a converted to title case",
+      ) {
+        case a: VList => VList.from(a.map(ListHelpers.reverse))
+        case a: VNum => 1 - a
+        case a: String => StringHelpers.titlecase(a)
+      },
     addDirect(
       "Ṡ",
       "Vectorised Sums | Integer Division",
