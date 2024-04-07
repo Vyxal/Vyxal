@@ -1315,7 +1315,7 @@
     - {in: ["", 3], out: []}
   Strings:
     - {in: ["abcab", "c"], out: ["ab", "ab"]}
-    - {in: ["one234five678", "\d+"], out: ["one", "five"]}
+    - {in: ["one234five678", "5"], out: ["one234five678"]}
 
 
 "½":

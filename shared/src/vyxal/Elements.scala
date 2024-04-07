@@ -9,6 +9,7 @@ import vyxal.VNum.given
 
 import scala.collection.mutable.ListBuffer
 import scala.io.StdIn
+import scala.util.matching.Regex
 
 case class Element(
     symbol: String,
@@ -503,7 +504,6 @@ object Elements:
         "divide",
         "div",
         "str-split",
-        "re-split",
         "str-n-pieces",
         "n-strings",
         "str-pieces",
@@ -513,12 +513,12 @@ object Elements:
       "a: num, b: num -> a / b",
       "a: str, b: num -> a split into b equal sized chunks, with the last chunk potentially smaller",
       "a: num, b: str -> b split into a equal sized chunks, with the last chunk potentially smaller",
-      "a: str, b: str -> Split a on the regex b",
+      "a: str, b: str -> Split a on the string b",
     ) {
       case (a: VNum, b: VNum) => a / b
       case (a: String, b: VNum) => StringHelpers.intoNPieces(a, b)
       case (a: VNum, b: String) => StringHelpers.intoNPieces(b, a)
-      case (a: String, b: String) => StringHelpers.split(a, b)
+      case (a: String, b: String) => StringHelpers.split(a, Regex.quote(b))
     },
     addFull(
       Dyad,
