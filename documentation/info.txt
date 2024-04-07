@@ -17,7 +17,7 @@ $ ==> Swap
 = ==> Equals
 > ==> Greater Than
 ? ==> Get Input
-@ ==> Cumulative Sums
+@ ==> Print without newline
 A ==> All Truthy | All() | Is Vowel?
 B ==> Convert From Binary
 C ==> Count
@@ -36,7 +36,7 @@ O ==> Ord/Chr
 P ==> Prefixes
 Q ==> Remove At | Regex Groups
 R ==> Reduce by Function Object | Dyadic Range | Regex Match | Set Union
-S ==> Sort ascending
+S ==> Sort ascending | Sort by Function Object
 T ==> Triple | Contains Only Alphabet | Transpose
 U ==> Uninterleave
 V ==> Vectorised Reverse | Complement | Title Case
@@ -135,13 +135,13 @@ z ==> Inclusive zero Range | Is Lowercase
 ȯ ==> Boolify
 ṗ ==> List Partitions | Integer Partitions
 ṙ ==> Rotate Right
-ṡ ==> Sort by Function Object | Partition by Numbers | Set Difference
+ṡ ==> Partition by Numbers | Set Difference
 ṫ ==> Last Extract | Tail Extract
 ẋ ==> Cartesian Power | Regex Search for Match
 ƒ ==> Partition After Truthy Indices
 Θ ==> Zero Slice Until
 Φ ==> Slice from 1
-§ ==> Print without newline
+§ ==> Cumulative Sums
 Ạ ==> Assign
 Ḅ ==> Unique Prime Factors | Case Of
 Ḥ ==> Head Extract Under
@@ -227,6 +227,7 @@ z ==> Inclusive zero Range | Is Lowercase
 #|dip ==> [Internal Use] Dip (Element Form)
 #|invar ==> [Internal Use] Invariant (Element Form)
 #|all-neigh ==> [Internal Use] All Neighbours (Element Form)
+#|apply-to-every-second ==> [Internal Use] Apply to Every Second (Element Form)
 #¿ ==> Number of Inputs
 #? ==> All Inputs
 #C ==> Compress String Using Dictionary
@@ -294,7 +295,6 @@ and wrap the result in a list
 ₾ ==> Apply a function to the register. Essentially, push
 the register value to the stack, apply the function, and
 then pop back into the register
-⊠ ==> Loop and Collect While Unique | Outer Product
 ♶ ==> Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
 ⋊ ==> Scan elements to the left until a newline is found. Push a
 lambda with all of the scanned elements
@@ -312,5 +312,7 @@ Keep only items on the stack that match a predicate
 \ ==> Map an element over the groups formed by identical items. | Cumulatively reduce a list by a function
 ⎇ ==> Stash the top of the stack temporarily, and then apply
 the function. Finally, push the stashed value
+⊠ ==> Loop and Collect While Unique | Outer Product
+` ==> Applies a function to every second item in a list, starting from the second item
 ¿ ==> Pop the top of the stack, and, if it's truthy, apply a function
 v ==> Vectorises

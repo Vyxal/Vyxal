@@ -91,9 +91,9 @@ Keywords: gt, greater, greater-than, greater?, bigger?
 Keywords: get-input, input, stdin, readline
 - ->  -> input
 ----------------------
-@ (Cumulative Sums) (non-vectorising)
-Keywords: cumulative-sums, cumsums, cumsum, cum-sum, -_-
-- a: lst -> cumulative sums of a
+@ (Print without newline) (non-vectorising)
+Keywords: print-no-newline
+- a -> printed to stdout without newline
 ----------------------
 A (All Truthy | All() | Is Vowel?) (non-vectorising)
 Keywords: all, is-vowel?, vowel?
@@ -197,9 +197,10 @@ Keywords: fun-reduce, reduce, fold-by, range, a->b, regex-match?, re-match?, has
 - a: str, b: num|str -> does regex pattern b match haystack a?
 - a: lst, b: lst -> union of a and b
 ----------------------
-S (Sort ascending) (non-vectorising)
-Keywords: sort, sortasc, sort-asc
+S (Sort ascending | Sort by Function Object) (non-vectorising)
+Keywords: sort, sortasc, sort-asc, sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun
 - a: any -> convert to list and sort ascending
+- a: any, b: fun -> sort iterable a by function b
 ----------------------
 T (Triple | Contains Only Alphabet | Transpose) (non-vectorising)
 Keywords: triple, alphabet?, alphabetical?, contains-only-alphabet?, contains-only-alphabetical?, transpose, flip, reverse-axes, flip-axes, permute-axes
@@ -704,7 +705,7 @@ Trigraph: #.r
 Keywords: abc->cab, rot-right, rotate-right
 - a: any -> rotate right once
 ----------------------
-ṡ (Sort by Function Object | Partition by Numbers | Set Difference) (non-vectorising)
+ṡ (Partition by Numbers | Set Difference) (non-vectorising)
 Trigraph: #.s
 Keywords: sort-by, sortby, sort-by-fun, sortbyfun, sort-fun, sortfun, partition-by, set-difference, set-diff
 - a: fun, b: any -> sort iterable b by function a
@@ -744,10 +745,10 @@ Keywords: one->b, one-slice
 - a: lst, b: num -> a[1:b]
 - a: num, b: lst -> b[1:a]
 ----------------------
-§ (Print without newline) (non-vectorising)
+§ (Cumulative Sums) (non-vectorising)
 Trigraph: #,o
-Keywords: print-no-newline
-- a -> printed to stdout without newline
+Keywords: cumulative-sums, cumsums, cumsum, cum-sum, -_-
+- a: lst -> cumulative sums of a
 ----------------------
 Ạ (Assign) (non-vectorising)
 Trigraph: #,A
@@ -1208,6 +1209,10 @@ Keywords:
 Keywords: 
 - *a, f -> f applied to each neighbour of a. Use the modifier instead.
 ----------------------
+#|apply-to-every-second ([Internal Use] Apply to Every Second (Element Form)) (non-vectorising)
+Keywords: 
+- *a, f -> f applied to every second element of a. Use the modifier instead.
+----------------------
 #¿ (Number of Inputs) (non-vectorising)
 Keywords: number-of-inputs, count-inputs, count-stdin
 - -> The number of inputs to the program
@@ -1479,12 +1484,6 @@ the register value to the stack, apply the function, and
 then pop back into the register
 ₾f: Apply f to the register
 -----------------------
-⊠
-Keywords: collect-while-unique:, outer-product:, table:
-Description: Loop and Collect While Unique | Outer Product
-⊠f: Loop and collect while unique
-⊠f<dyad>: Pop two lists, then make a matrix from them by applying f to each pair of elements
------------------------
 ♶
 Keywords: ****2:
 Description: Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda
@@ -1562,6 +1561,17 @@ Keywords: dip:
 Description: Stash the top of the stack temporarily, and then apply
 the function. Finally, push the stashed value
 ⎇f: pop M, apply f, push M
+-----------------------
+⊠
+Keywords: collect-while-unique:, outer-product:, table:
+Description: Loop and Collect While Unique | Outer Product
+⊠f: Loop and collect while unique
+⊠f<dyad>: Pop two lists, then make a matrix from them by applying f to each pair of elements
+-----------------------
+`
+Keywords: every-second:, every-2nd:, every-2:, every-2:
+Description: Applies a function to every second item in a list, starting from the second item
+`f: Apply f to every second item
 -----------------------
 ¿
 Keywords: if-top:, if:
