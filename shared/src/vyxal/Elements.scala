@@ -3144,7 +3144,7 @@ object Elements:
             VList.from(
               LazyList.unfold((VNum(1), arg)) {
                 case (bit, lst) =>
-                  if bit == 1 then Some(lst.head, (VNum(0), lst.tail))
+                  if bit == VNum(1) then Some(lst.head, (VNum(0), lst.tail))
                   else
                     Some(
                       Interpreter.executeFn(
@@ -3159,27 +3159,27 @@ object Elements:
             )
           )
       end match
-    } addPart
-      (
-        Monad,
-        "V",
-        "Vectorised Reverse | Complement | Title Case",
-        List(
-          "vectorised-reverse",
-          "vec-reverse",
-          "complement",
-          "titlecase",
-          "title-case",
-        ),
-        false,
-        "a: lst -> each element of a reversed",
-        "a: num -> 1 - a",
-        "a: str -> a converted to title case",
-      ) {
-        case a: VList => VList.from(a.map(ListHelpers.reverse))
-        case a: VNum => 1 - a
-        case a: String => StringHelpers.titlecase(a)
-      },
+    },
+    addPart(
+      Monad,
+      "V",
+      "Vectorised Reverse | Complement | Title Case",
+      List(
+        "vectorised-reverse",
+        "vec-reverse",
+        "complement",
+        "titlecase",
+        "title-case",
+      ),
+      false,
+      "a: lst -> each element of a reversed",
+      "a: num -> 1 - a",
+      "a: str -> a converted to title case",
+    ) {
+      case l: VList => VList.from(l.map(ListHelpers.reverse))
+      case n: VNum => 1 - n
+      case s: String => StringHelpers.titlecase(s)
+    },
     addDirect(
       "Ṡ",
       "Vectorised Sums | Integer Division",
