@@ -66,7 +66,7 @@ enum Flag(
         "range-end-excl",
         "Make implicit range generation end at n-1 instead of n",
         "End range at n-1",
-        _.copy(rangeOffset = -1),
+        _.copy(rangeOffset = 1),
         Some(FlagCategory.RangeBehavior),
       )
   case RangeProgrammery
@@ -75,7 +75,7 @@ enum Flag(
         "range-programmery",
         "Equivalent to having both m and M flags",
         "Both",
-        _.copy(rangeStart = 0, rangeOffset = -1),
+        _.copy(rangeStart = 0, rangeOffset = 1),
         Some(FlagCategory.RangeBehavior),
       )
   case InputAsStrings
