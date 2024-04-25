@@ -305,7 +305,7 @@ object StringHelpers:
   def split(s: String | VNum, pattern: String)(using Context): VList =
     try
       s match
-        case str: String => VList.from(str.split(pattern).toSeq)
+        case str: String => VList.from(str.split(pattern, -1).toSeq)
         case num: VNum =>
           VList.from(num.toString.split(pattern).toSeq.map(MiscHelpers.eval))
     catch case _: PatternSyntaxException => throw BadRegexException(pattern)
