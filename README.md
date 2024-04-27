@@ -9,7 +9,7 @@ Vyxal is an stack-based esoteric array language that is dedicated to dominating 
 
 ## What's the Same as Version 2?
 
-Vyxal 3 is still a stack based programming language that uses a Single Byte Code Set (SBCS) for scoring well in code golf. It also retains some of the key features of. version 2, such as contexts, modifiers and many, many type overloads.
+Vyxal 3 is still a stack based programming language that uses a Single Byte Code Set (SBCS) for scoring well in code golf. It also retains some of the key features of version 2, such as contexts, modifiers and many, many type overloads.
 
 It also maintains the more prac-lang-centric features such as variables and comments that version 2 has.
 
