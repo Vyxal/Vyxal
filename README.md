@@ -24,19 +24,19 @@ Ever wanted to write vyxal without needing an on screen keyboard or editor short
 ```
 ## A collatz conjecture program
 stdin := n ## read the input into n
-(. scan-fix: {if even? then halve else increment endif}) := collatz
+(. scan-fix: {if even? then halve else triple increment end}) := collatz
 $n $collatz call
 ```
 
-([Try it Online!](https://vyxal.github.io/latest.html#WyJsIiwiIiwiIyMgQSBjb2xsYXR6IGNvbmplY3R1cmUgcHJvZ3JhbVxuc3RkaW4gOj0gbiAjIyByZWFkIHRoZSBpbnB1dCBpbnRvIG5cbiguIHNjYW4tZml4OiB7aWYgZXZlbj8gdGhlbiBoYWx2ZSBlbHNlIGluY3JlbWVudCBlbmRpZn0pIDo9IGNvbGxhdHpcbiRuICRjb2xsYXR6IGNhbGwiLCIiLCIiLCIzLjAuMCJd))
+[Try it Online!](https://vyxal.github.io/versions/v3.0.0/#WyJsIiwiIiwiIyMgQSBjb2xsYXR6IGNvbmplY3R1cmUgcHJvZ3JhbVxuc3RkaW4gOj0gbiAjIyByZWFkIHRoZSBpbnB1dCBpbnRvIG5cbiguIHNjYW4tZml4OiB7aWYgZXZlbj8gdGhlbiBoYWx2ZSBlbHNlIGluY3JlbWVudCBlbmRpZn0pIDo9IGNvbGxhdHpcbiRuICRjb2xsYXR6IGNhbGwiLCIiLCIiLCIzLjAuMCJd#WyJsIiwiIiwiIyMgQSBjb2xsYXR6IGNvbmplY3R1cmUgcHJvZ3JhbVxuc3RkaW4gOj0gbiAjIyByZWFkIHRoZSBpbnB1dCBpbnRvIG5cbiguIHNjYW4tZml4OiB7aWYgZXZlbj8gdGhlbiBoYWx2ZSBlbHNlIHRyaXBsZSBpbmNyZW1lbnQgZW5kfSkgOj0gY29sbGF0elxuJG4gJGNvbGxhdHogY2FsbCIsIiIsIjkiLCIzLjAuMCJd)
 
 turns into:
 
 ```
-?#=n⸠ᵡλ#{e|½|ꜝ}#{}#=collatz#$n#$collatzĖ
+?#=n⸠ᵡλ#{e|½|Tꜝ}}#=collatz#$n#$collatzĖ
 ```
 
-([Try it Online!](https://vyxal.github.io/latest.html#WyIiLCIiLCI/Iz1u4rig4bWhzrsje2V8wr186pydfSN7fSM9Y29sbGF0eiMkbiMkY29sbGF0esSWIiwiIiwiIiwiMy4wLjAiXQ==))
+([Try it Online!](https://vyxal.github.io/versions/v3.0.0/#WyJsIiwiIiwiIyMgQSBjb2xsYXR6IGNvbmplY3R1cmUgcHJvZ3JhbVxuc3RkaW4gOj0gbiAjIyByZWFkIHRoZSBpbnB1dCBpbnRvIG5cbiguIHNjYW4tZml4OiB7aWYgZXZlbj8gdGhlbiBoYWx2ZSBlbHNlIGluY3JlbWVudCBlbmRpZn0pIDo9IGNvbGxhdHpcbiRuICRjb2xsYXR6IGNhbGwiLCIiLCIiLCIzLjAuMCJd#WyIiLCIiLCI/Iz1u4rig4bWhzrsje2V8wr18VOqcnX19Iz1jb2xsYXR6IyRuIyRjb2xsYXR6xJYiLCIiLCI5IiwiMy4wLjAiXQ==))
 
 ---
 
