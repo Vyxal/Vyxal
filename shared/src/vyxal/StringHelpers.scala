@@ -3,6 +3,7 @@ package vyxal
 import vyxal.parsing.Lexer
 
 import java.util.regex.PatternSyntaxException
+import scala.annotation.tailrec
 import scala.collection.mutable.StringBuilder
 import scala.util.matching.Regex
 
@@ -110,7 +111,12 @@ object StringHelpers:
   end compressDictionary
 
   def countString(haystack: String, needle: String): Int =
-    haystack.split(needle, -1).length - 1
+    @tailrec
+    def helper(count: Int, start: Int): Int =
+      haystack.indexOf(needle, start) match
+        case -1 => count
+        case ind => helper(count + 1, ind + needle.length)
+    helper(0, 0)
 
   def decompress252Number(s: String)(using Context): VAny =
     NumberHelpers.fromBaseAlphabet(
