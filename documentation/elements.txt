@@ -103,7 +103,9 @@ Keywords: from-binary, bin->dec, bin->decimal
 ----------------------
 C (Count) (non-vectorising)
 Keywords: count
-- a: any, b: any -> count(b in a)
+- a: lst, b: any -> count occurrences of b in a
+- a: any, b: lst -> count occurrences of a in b
+- a: any, b: any -> count non-overlapping occurrences of b (stringified) in a (stringified)
 ----------------------
 D (Triplicate) (non-vectorising)
 Keywords: trip

@@ -148,6 +148,7 @@
   When given strings:
     - { in: ["lolollol lol asd", "lol"], out: 3 }
     - { in: ["lolollol lol asd", "asdf"], out: 0 }
+    - { in: ["single.regex.char.should.work", "."], out: 4 }
   When given mixed types:
     - { in: [12, 1], out: 1 }
     - { in: ["ab1111ab", 1], out: 4 }
