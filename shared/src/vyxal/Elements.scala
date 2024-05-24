@@ -435,7 +435,9 @@ object Elements:
       "Count",
       List("count"),
       false,
-      "a: any, b: any -> count(b in a)",
+      "a: lst, b: any -> count occurrences of b in a",
+      "a: any, b: lst -> count occurrences of a in b",
+      "a: any, b: any -> count non-overlapping occurrences of b (stringified) in a (stringified)",
     ) {
       case (a: VList, b) => a.count(_ === b)
       case (a, b: VList) => b.count(_ === a)
