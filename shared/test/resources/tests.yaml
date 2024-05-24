@@ -1746,6 +1746,22 @@
       - 5
       - 9
 
+"∆ṗW": # Complex parts
+  - in:
+      - !num 2ı9
+    out: [2, 9]
+
+"∆ṖW": # Polar parts
+  - in: # Real part only
+      - !num 5ı0
+    out: [5, 0]
+  - in: # Imaginary part only
+      - !num 0ı5
+    out: [5, 1.57079632679]
+  - in: # Quadrant 2
+      - !num 3_ı4
+    out: [5, 2.21429743559]
+
 "∆ṙ":
   - in:
     - - 180

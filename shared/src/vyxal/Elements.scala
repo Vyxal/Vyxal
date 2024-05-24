@@ -3956,6 +3956,31 @@ object Elements:
     ) {
       case a: VNum => VNum(a.imag)
     },
+    addDirect(
+      "∆ṗ",
+      "Complex Parts",
+      List("complex-parts"),
+      Some(1),
+      "a: num -> real part of a, imaginary part of a",
+    ) { ctx ?=>
+      ctx.pop() match
+        case a: VNum => ctx.push(a.real, a.imag)
+        case arg => throw UnimplementedOverloadException("∆ṗ", List(arg))
+    },
+    addDirect(
+      "∆Ṗ",
+      "Polar Parts",
+      List("polar-parts"),
+      Some(1),
+      "a: num -> push r, theta (polar coordinates of 'a', which is a complex number)",
+    ) { ctx ?=>
+      ctx.pop() match
+        case a: VNum =>
+          val r = a.vabs
+          val theta = spire.math.atan2(a.imag, a.real)
+          ctx.push(r, theta)
+        case arg => throw UnimplementedOverloadException("∆Ṗ", List(arg))
+    },
     addPart(
       Monad,
       "∆ṙ",
