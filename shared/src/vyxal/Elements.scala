@@ -3970,9 +3970,7 @@ object Elements:
       }
     }, {
       val rs = Monad.vectorise("∆Ṗ") { case a: VNum => a.vabs }
-      val thetas = Monad.vectorise("∆Ṗ") {
-        case a: VNum => spire.math.atan2[spire.math.Real](a.imag, a.real)
-      }
+      val thetas = Monad.vectorise("∆Ṗ") { case a: VNum => a.arg }
       addDirect(
         "∆Ṗ",
         "Polar Parts",
