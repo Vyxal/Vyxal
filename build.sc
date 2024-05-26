@@ -54,6 +54,14 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
       build.millSourcePath / "shared" / "resources",
     )
 
+  // To avoid linkage errors, see https://github.com/com-lihaoyi/mill/issues/2985
+  // Both Mill and Scala Toolkit use uPickle, which seems to mess stuff up somehow
+  override def unmanagedClasspath: T[Agg[PathRef]] = T { Agg() }
+  override def resolvedIvyDeps: T[Agg[PathRef]] =
+    T {
+      super.resolvedIvyDeps()
+    }
+
   trait VyxalTestModule
       extends JavaModuleTests
       with TestModule.ScalaTest
@@ -170,30 +178,6 @@ object jvm extends JvmCommon {
       }.toSeq
     }
 
-  /** Generate data file(s) for online interpreter */
-  def theseus =
-    T.sources {
-      val descriptions = runMethod[String](
-        jvm.runClasspath(),
-        "vyxal.gen.GenerateKeyboard",
-        "generateDescriptions",
-      )
-      val data = runMethod[String](
-        jvm.runClasspath(),
-        "vyxal.gen.GenerateTheseusData",
-        "generate",
-      )
-      val descriptionsFile = build.millSourcePath / "pages" / "parsed_yaml.js"
-      val dataFile = build.millSourcePath / "pages" / "theseus.json"
-      os.write.over(descriptionsFile, descriptions)
-      os.write.over(dataFile, data)
-
-      Seq(
-        PathRef(descriptionsFile),
-        PathRef(dataFile),
-      )
-    }
-
   def fuzz(min: Int, max: Int, timeout: Int) =
     T.command {
       jvm.runMain("vyxal.fuzz", min.toString, max.toString, timeout.toString)
@@ -296,4 +280,27 @@ object native extends VyxalModule with ScalaNativeModule {
   object test extends ScalaNativeTests with VyxalTestModule {
     override def nativeEmbedResources = true
   }
+}
+
+object theseus extends JvmCommon {
+  def mainClass: T[Option[String]] = Some("vyxal.gen.generateTheseus")
+
+  override def defaultCommandName() = "generate"
+
+  def generate =
+    T.sources {
+      val descriptionsFile = build.millSourcePath / "pages" / "parsed_yaml.js"
+      val dataFile = build.millSourcePath / "pages" / "theseus.json"
+
+      this.run(
+        T.task(
+          Args(
+            build.millSourcePath / "pages" / "parsed_yaml.js",
+            build.millSourcePath / "pages" / "theseus.json",
+          )
+        )
+      )()
+
+      Seq(PathRef(descriptionsFile), PathRef(dataFile))
+    }
 }
