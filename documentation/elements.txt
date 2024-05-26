@@ -1309,6 +1309,10 @@ Keywords: sin, sine
 Keywords: tan, tangent
 - a: num -> tan(a)
 ----------------------
+∆Ṗ (Polar Parts) (non-vectorising)
+Keywords: polar-parts
+- a: num -> push r, theta (polar coordinates of 'a', which is a complex number)
+----------------------
 ∆Ṫ (Dyadic Arctangent / Dyadic Inverse Tangent) (vectorising)
 Keywords: atan2, arctan2, arctangent2
 - y: num, x: num -> atan2(y, x)
@@ -1324,6 +1328,10 @@ Keywords: rad2deg, rad-to-deg
 ∆ḟ (All Prime Exponents) (vectorising)
 Keywords: all-prime-exponents, all-prime-exps
 - a: num -> for all primes less than or equal to a, push the power of that prime in the factorisation of a
+----------------------
+∆ṗ (Complex Parts) (non-vectorising)
+Keywords: complex-parts
+- a: num -> real part of a, imaginary part of a
 ----------------------
 ∆ṙ (Degrees to Radians) (vectorising)
 Keywords: deg2rad, deg-to-rad

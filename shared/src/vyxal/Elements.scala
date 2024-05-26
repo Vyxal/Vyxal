@@ -3955,6 +3955,32 @@ object Elements:
       "a: num -> Im(a)",
     ) {
       case a: VNum => VNum(a.imag)
+    }, {
+      val reals = Monad.vectorise("∆ṗ") { case a: VNum => VNum(a.real) }
+      val imags = Monad.vectorise("∆ṗ") { case a: VNum => VNum(a.imag) }
+      addDirect(
+        "∆ṗ",
+        "Complex Parts",
+        List("complex-parts"),
+        Some(1),
+        "a: num -> real part of a, imaginary part of a",
+      ) { ctx ?=>
+        val a = ctx.pop()
+        ctx.push(reals(a), imags(a))
+      }
+    }, {
+      val rs = Monad.vectorise("∆Ṗ") { case a: VNum => a.vabs }
+      val thetas = Monad.vectorise("∆Ṗ") { case a: VNum => a.arg }
+      addDirect(
+        "∆Ṗ",
+        "Polar Parts",
+        List("polar-parts"),
+        Some(1),
+        "a: num -> push r, theta (polar coordinates of 'a', which is a complex number)",
+      ) { ctx ?=>
+        val a = ctx.pop()
+        ctx.push(rs(a), thetas(a))
+      }
     },
     addPart(
       Monad,

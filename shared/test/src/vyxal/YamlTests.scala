@@ -82,7 +82,7 @@ class YamlTests extends AnyFunSpec:
               if codeOverride.isEmpty then s"Element: $code, Inputs: $inputStr"
               else s"Code: `$code, inputs: $inputStr"
 
-            Elements.elements(element).arity match
+            Elements.elements.get(element).flatMap(_.arity) match
               case Some(arity) => if arity > 0 && arity != inputs.size then
                   println(
                     s"[Element $element] Inputs (${inputs.mkString(",")}) don't match arity ($arity)"
