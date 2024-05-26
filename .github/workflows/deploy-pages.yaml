@@ -48,7 +48,7 @@ jobs:
       - name: Generate JS and files for web interpreter
         run: |
           ./mill js.fullLinkJS
-          ./mill theseus
+          ./mill jvm.theseus
 
       - name: Upload built HTML
         uses: actions/upload-pages-artifact@v1
