@@ -30,9 +30,7 @@ import upickle.default.*
 
 /** Generate keyboard data (parsed_yaml.js) */
 def generateDescriptions(): String =
-  val data: scala.collection.mutable.HashMap[Int, ListBuffer[
-    Map[String, String]
-  ]] = HashMap()
+  val data = HashMap[Int, ListBuffer[Map[String, String]]]()
   for
     (symbol, element) <- Elements.elements
     if Lexer.Codepage.contains(symbol.last) && !symbol.startsWith("#|")
@@ -40,7 +38,7 @@ def generateDescriptions(): String =
     val token = symbol
     val index = if token == " " then 32 else Lexer.Codepage.indexOf(token.last)
 
-    val thisElement = scala.collection.mutable.Map[String, String]()
+    val thisElement = HashMap[String, String]()
     thisElement("name") = element.name
     thisElement("description") = element.keywords.mkString(" ")
     thisElement("overloads") = element.overloads.mkString("\n")
@@ -56,7 +54,7 @@ def generateDescriptions(): String =
         val token = symbol
         val index =
           if token == " " then 32 else Lexer.Codepage.indexOf(token.last)
-        val thisElement = scala.collection.mutable.HashMap[String, String]()
+        val thisElement = HashMap[String, String]()
         thisElement("name") = name
         thisElement("description") = description
         thisElement("keywords") = keywords.mkString(" ")
@@ -74,7 +72,7 @@ def generateDescriptions(): String =
         val token = symbol
         val index =
           if token == " " then 32 else Lexer.Codepage.indexOf(token.last)
-        val thisElement = scala.collection.mutable.HashMap[String, String]()
+        val thisElement = HashMap[String, String]()
         thisElement("name") = name
         thisElement("description") = s"${literate.mkString(" ")}\n$description"
         thisElement("overloads") = usage
@@ -83,9 +81,7 @@ def generateDescriptions(): String =
         if data.contains(index) then data(index) += thisElement.toMap
         else data(index) = ListBuffer(thisElement.toMap)
 
-  val finalData =
-    scala.collection.mutable.HashMap[Int, List[Map[String, String]]]()
-  for (index, elements) <- data do finalData(index) = elements.toList
+  val finalData = data.map(_ -> _.toList).toMap
 
   val escapedCodepage = Lexer.Codepage
     .replace("\\", "\\\\")
@@ -93,7 +89,8 @@ def generateDescriptions(): String =
     .replace("\n", "\\n")
   val header =
     s"var codepage = \"$escapedCodepage\";\nvar codepage_descriptions ="
-  header + write(finalData.toMap)
+
+  header + write(finalData)
 end generateDescriptions
 
 /** Generate theseus data (theseus.json) */
