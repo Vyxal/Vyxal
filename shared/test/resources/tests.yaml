@@ -1746,6 +1746,27 @@
       - 5
       - 9
 
+"∆ṗW": # Complex parts
+  - in:
+      - !num 0ı0
+    out: [0, 0]
+  - in: # Should vectorise
+      - - !num 2ı9
+        - !num 4ı0
+    out: [[2, 4], [9, 0]]
+
+"∆ṖW": # Polar parts
+  - in: # Real part only
+      - !num 5ı0
+    out: [5, 0]
+  - in: # Imaginary part only
+      - !num 0ı5
+    out: [5, 1.57079632679]
+  - in: # Should vectorise
+      - - !num 3_ı4 # Quadrant 2
+        - !num 3_ı4_ # Quadrant 3
+    out: [[5, 5], [2.21429743559, -2.21429743559]]
+
 "∆ṙ":
   - in:
     - - 180
