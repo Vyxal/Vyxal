@@ -81,6 +81,6 @@ private object GenerateKeyboard:
       .replace("\n", "\\n")
     val header =
       s"var codepage = \"$escapedCodepage\";\nvar codepage_descriptions ="
-    header + upickle.default.write(finalData.toMap)
+    header + write(finalData.toMap)
   end generateDescriptions
 end GenerateKeyboard
