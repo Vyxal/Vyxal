@@ -54,14 +54,6 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
       build.millSourcePath / "shared" / "resources",
     )
 
-  // To avoid linkage errors, see https://github.com/com-lihaoyi/mill/issues/2985
-  // Both Mill and Scala Toolkit use uPickle, which seems to mess stuff up somehow
-  override def unmanagedClasspath: T[Agg[PathRef]] = T { Agg() }
-  override def resolvedIvyDeps: T[Agg[PathRef]] =
-    T {
-      super.resolvedIvyDeps()
-    }
-
   trait VyxalTestModule
       extends JavaModuleTests
       with TestModule.ScalaTest
