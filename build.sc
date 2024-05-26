@@ -165,7 +165,6 @@ object jvm extends JvmCommon {
       )
     }
 
-  /** Generate nanorc files for JLine highlighting */
   def nanorc =
     T.sources {
       val nanorcs: Map[String, String] =
@@ -282,25 +281,28 @@ object native extends VyxalModule with ScalaNativeModule {
   }
 }
 
+/** Generate parsed_yaml.js and theseus.json */
 object theseus extends JvmCommon {
   def mainClass: T[Option[String]] = Some("vyxal.gen.generateTheseus")
-
   override def defaultCommandName() = "generate"
-
+  def parsedYaml = T { build.millSourcePath / "pages" / "parsed_yaml.js" }
+  def theseusJson = T { build.millSourcePath / "pages" / "theseus.json" }
   def generate =
     T.sources {
-      val descriptionsFile = build.millSourcePath / "pages" / "parsed_yaml.js"
-      val dataFile = build.millSourcePath / "pages" / "theseus.json"
+      this.run(T.task(Args(parsedYaml(), theseusJson())))()
+      Seq(PathRef(parsedYaml()), PathRef(theseusJson()))
+    }
+}
 
-      this.run(
-        T.task(
-          Args(
-            build.millSourcePath / "pages" / "parsed_yaml.js",
-            build.millSourcePath / "pages" / "theseus.json",
-          )
-        )
-      )()
-
-      Seq(PathRef(descriptionsFile), PathRef(dataFile))
+/** Generate nanorc files for JLine highlighting */
+object nanorc extends JvmCommon {
+  def mainClass: T[Option[String]] = Some("vyxal.gen.generateNanorc")
+  override def defaultCommandName() = "generate"
+  def sbcsNanorc = T { build.millSourcePath / "jvm" / "resources" / "vyxal.nanorc" }
+  def litNanorc = T { build.millSourcePath / "jvm" / "resources" / "vyxal-lit.nanorc" }
+  def generate =
+    T.sources {
+      this.run(T.task(Args(sbcsNanorc(), litNanorc())))()
+      Seq(PathRef(sbcsNanorc()), PathRef(litNanorc()))
     }
 }

@@ -1,7 +1,5 @@
 package vyxal
 
-import vyxal.gen.GenerateNanorc
-
 import java.util.logging.Level
 import java.util.logging.Logger
 import scala.io.StdIn
@@ -19,6 +17,11 @@ import org.jline.terminal.TerminalBuilder
 import org.jline.widget.AutosuggestionWidgets
 
 object JvmRepl extends Repl:
+  /** The name of the nanorc file for Vyxal in SBCS mode */
+  val SBCSNanorc = "vyxal.nanorc"
+
+  /** The name of the nanorc file for Vyxal in literate mode */
+  val LitNanorc = "vyxal-lit.nanorc"
 
   override def startRepl(fancy: Boolean)(using ctx: Context): Unit =
     if fancy then fancyRepl() else plainRepl()
@@ -48,8 +51,7 @@ object JvmRepl extends Repl:
       getClass()
         .getClassLoader()
         .getResource(
-          if ctx.settings.literate then GenerateNanorc.LitNanorc
-          else GenerateNanorc.SBCSNanorc
+          if ctx.settings.literate then LitNanorc else SBCSNanorc
         )
         .toString
     )
