@@ -120,78 +120,34 @@ object jvm extends JvmCommon {
 
   def mainClass: T[Option[String]] = Some("vyxal.Main")
 
-  /** Run a method on a singleton object */
-  private def runMethod[T](
-      classpath: Seq[PathRef],
-      objectName: String,
-      methodName: String,
-  ): T = {
-    val urls = classpath.map(_.path.toIO.toURI.toURL).toArray
-    val cl = new URLClassLoader(urls, getClass.getClassLoader)
-    val clazz = Class.forName(objectName + "$", false, cl)
-    val method = clazz.getMethod(methodName)
-    val singleton = clazz.getField("MODULE$").get(null)
-    method.invoke(singleton).asInstanceOf[T]
-  }
-
   /** Generate elements.txt and trigraphs.txt */
   def docs =
-    T.sources {
-      val (elements, trigraphs, table) = runMethod[(String, String, String)](
-        jvm.runClasspath(),
-        "vyxal.gen.GenerateDocs",
-        "generate",
-      )
-      val elementsFile = build.millSourcePath / "documentation" / "elements.txt"
-      val trigraphsFile = build.millSourcePath / "documentation" /
-        "trigraphs.txt"
-      val tableFile = build.millSourcePath / "documentation" / "table.md"
-      os.write.over(elementsFile, elements)
-      os.write.over(trigraphsFile, trigraphs)
-      os.write.over(tableFile, table)
-
-      Seq(
-        PathRef(elementsFile),
-        PathRef(trigraphsFile),
-        PathRef(tableFile),
-      )
+    T {
+      jvm.runMain(
+        "vyxal.gen.generateDocs",
+        (build.millSourcePath / "documentation" / "elements.txt").toString,
+        (build.millSourcePath / "documentation" / "trigraphs.txt").toString,
+        (build.millSourcePath / "documentation" / "table.md").toString,
+      )()
     }
 
   /** Generate nanorc files for JLine highlighting */
   def nanorc =
-    T.sources {
-      val nanorcs: Map[String, String] =
-        runMethod(jvm.runClasspath(), "vyxal.gen.GenerateNanorc", "generate")
-      nanorcs.map {
-        case (fileName, contents) =>
-          val file = build.millSourcePath / "jvm" / "resources" / fileName
-          os.write.over(file, contents)
-          PathRef(file)
-      }.toSeq
+    T {
+      jvm.runMain(
+        "vyxal.gen.GenerateNanorc",
+        (build.millSourcePath / "jvm" / "resources").toString,
+      )()
     }
 
-  /** Generate data file(s) for online interpreter */
+  /** Generate parsed_yaml.js and theseus.json */
   def theseus =
-    T.sources {
-      val descriptions = runMethod[String](
-        jvm.runClasspath(),
-        "vyxal.gen.GenerateKeyboard",
-        "generateDescriptions",
-      )
-      val data = runMethod[String](
-        jvm.runClasspath(),
-        "vyxal.gen.GenerateTheseusData",
-        "generate",
-      )
-      val descriptionsFile = build.millSourcePath / "pages" / "parsed_yaml.js"
-      val dataFile = build.millSourcePath / "pages" / "theseus.json"
-      os.write.over(descriptionsFile, descriptions)
-      os.write.over(dataFile, data)
-
-      Seq(
-        PathRef(descriptionsFile),
-        PathRef(dataFile),
-      )
+    T {
+      jvm.runMain(
+        "vyxal.gen.generateTheseus",
+        (build.millSourcePath / "pages" / "parsed_yaml.js").toString,
+        (build.millSourcePath / "pages" / "theseus.json").toString,
+      )()
     }
 
   def fuzz(min: Int, max: Int, timeout: Int) =

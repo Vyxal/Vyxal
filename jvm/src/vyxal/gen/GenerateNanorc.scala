@@ -1,12 +1,14 @@
+/** To generate nanorc files for syntax highlighting in JLine. See build.sc */
 package vyxal.gen
 
 import vyxal.{Elements, Modifiers, VNum}
 import vyxal.parsing.Lexer
 
+import java.nio.charset.StandardCharsets
+import java.nio.file.{Files, Paths}
 import scala.util.matching.Regex
 
-/** To generate nanorc files for syntax highlighting in JLine. See build.sc */
-private[vyxal] object GenerateNanorc:
+object GenerateNanorc:
   /** The name of the nanorc file for Vyxal in SBCS mode */
   val SBCSNanorc = "vyxal.nanorc"
 
@@ -64,8 +66,16 @@ private[vyxal] object GenerateNanorc:
   /** Generates nanorc files for both SBCS and literate modes, returning a
     * mapping from each file's name to its contents
     */
-  def generate(): Map[String, String] =
+  def main(args: Array[String]): Unit =
+    val Array(outDir) = args
     val sbcs = commonHeader + commonFooter
     val lit = commonHeader + litSpecific + commonFooter
-    Map(SBCSNanorc -> sbcs, LitNanorc -> lit)
+    Files.write(
+      Paths.get(outDir, SBCSNanorc),
+      sbcs.getBytes(StandardCharsets.UTF_8),
+    )
+    Files.write(
+      Paths.get(outDir, LitNanorc),
+      lit.getBytes(StandardCharsets.UTF_8),
+    )
 end GenerateNanorc

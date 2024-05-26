@@ -19,7 +19,6 @@ import org.jline.terminal.TerminalBuilder
 import org.jline.widget.AutosuggestionWidgets
 
 object JvmRepl extends Repl:
-
   override def startRepl(fancy: Boolean)(using ctx: Context): Unit =
     if fancy then fancyRepl() else plainRepl()
 
