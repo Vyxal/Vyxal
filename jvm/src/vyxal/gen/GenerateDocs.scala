@@ -24,7 +24,7 @@ import java.nio.file.{Files, Paths}
     trigraphs().getBytes(StandardCharsets.UTF_8),
   )
   Files.write(
-    Paths.get(trigraphsFile),
+    Paths.get(tableFile),
     elementsMarkdown().getBytes(StandardCharsets.UTF_8),
   )
 
