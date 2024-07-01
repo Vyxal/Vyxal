@@ -247,5 +247,5 @@ dyadic 4mda ♶
 lambda to newline ⋊
 dip ⎇
 Loop While Unique ↻
-⊙ = fine grained stack access - 1 2 3 4 ⊙1100 + W -> [3, 3, 4]
+⊙ = Truthy indices of a list
 ⁙ = a,b,c -> c,a,b
