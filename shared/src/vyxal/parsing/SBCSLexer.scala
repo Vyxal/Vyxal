@@ -68,10 +68,10 @@ private[parsing] object SBCSLexer:
     }
 
   def structureOpen[$: P]: P[Token] =
-  parseToken(
-    StructureOpen,
-    StringIn("[", "{", "(", "#{", "Ḍ", "Ṇ", "#::").! | Common.lambdaOpen,
-  ) // StructureType.values.map(_.open.!).reduce(_ | _))
+    parseToken(
+      StructureOpen,
+      StringIn("[", "{", "(", "#{", "Ḍ", "Ṇ", "#::").! | Common.lambdaOpen,
+    ) // StructureType.values.map(_.open.!).reduce(_ | _))
   // TODO(user): figure out why the commented version doesn't work
 
   def structureSingleClose[$: P]: P[Token] = parseToken(StructureClose, "}".!)
