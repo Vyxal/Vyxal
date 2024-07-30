@@ -354,8 +354,7 @@ object StringHelpers:
               items.mkString(", ").length > 80
             if isNested then
               (
-                s"[\n${items.map("  ".repeat(indentation + 1) + _).mkString(",\n")}\n${"  "
-                    .repeat(indentation)}]",
+                s"[\n${items.map("  ".repeat(indentation + 1) + _).mkString(",\n")}\n${"  ".repeat(indentation)}]",
                 true,
               )
             else (s"[ ${items.mkString(", ")} ]", true)
@@ -374,9 +373,7 @@ object StringHelpers:
               entries.mkString(", ").length > 80
             if isNested then
               (
-                s"${o.className} {\n${entries
-                    .map("  ".repeat(indentation + 1) + _)
-                    .mkString(",\n")}${"  ".repeat(indentation)}\n}",
+                s"${o.className} {\n${entries.map("  ".repeat(indentation + 1) + _).mkString(",\n")}${"  ".repeat(indentation)}\n}",
                 true,
               )
             else (s"${o.className} { ${entries.mkString(", ")} }", true)
