@@ -443,16 +443,14 @@ class ParserTests extends AnyFunSuite:
   test("Do custom elements group properly?") {
     assert(
       parse("#::E temp|2|+} 3 4 #:@temp") ===
-        Group(
-          List(
-            Group(
-              List(
-                Number(3),
-                Number(4),
-                Command("temp"),
-              ),
-              Some(0),
-            )
+        List(
+          Group(
+            List(
+              Number(3),
+              Number(4),
+              Command("temp"),
+            ),
+            Some(0),
           ),
           Some(0),
         )
