@@ -7,7 +7,7 @@ number_decimal ::= [number_part] "." [number_part]
 number_real ::= 0 | number_part | number_decimal
 number ::= [number_real] "i" [number_real]
 keywordChar ::= anything in `a-z`, `A-Z`, `0-9`, `-`, `?`, `!`, `*`, `+`, `=`, `&`, `%`, `>`, `<`
-keyword ::= {'} (keywordChar - "0-9") {keywordChar} {"n't"}
+keyword ::= (keywordChar - "0-9") {keywordChar} {"n't"}
 raw_sbcs ::= "#" {codepage} "#}"
 
 variable_name ::= "a-Z" {"a-Z" | "0-9" | "_"}
