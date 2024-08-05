@@ -244,7 +244,6 @@ class ParserTests extends AnyFunSuite:
       parse("1 /+ 2") ===
         Group(
           List(
-            Number(2),
             Number(1),
             Group(
               List(
@@ -253,6 +252,7 @@ class ParserTests extends AnyFunSuite:
               ),
               None,
             ),
+            Number(2),
           ),
           None,
         )
@@ -452,17 +452,16 @@ class ParserTests extends AnyFunSuite:
                 Command("temp"),
               ),
               Some(0),
-            ),
-            Group(List(), None),
+            )
           ),
-          None,
+          Some(0),
         )
     )
 
     assert(
       parse("#::E temp|!|+} 3 4 #:@temp") ===
         Group(
-          List(Group(List(), None), Number(3), Number(4), Command("temp")),
+          List(Number(3), Number(4), Command("temp")),
           None,
         )
     )
@@ -473,7 +472,6 @@ class ParserTests extends AnyFunSuite:
       parse("#::M temp|f|2|+} #:=temp !") ===
         Group(
           List(
-            Group(List(), None),
             Group(
               List(
                 Lambda(
@@ -504,7 +502,7 @@ class ParserTests extends AnyFunSuite:
                 Command("Ė"),
               ),
               None,
-            ),
+            )
           ),
           None,
         )
