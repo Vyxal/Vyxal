@@ -24,7 +24,8 @@ class ParserTests extends AnyFunSuite:
 
   test("Does the parser recognise basic expressions?") {
     assert(
-      parse("1 1 +") === Group(List(Number(1), Number(1), Command("+")), None)
+      parse("1 1 +") ===
+        Group(List(Number(1), Number(1), Command("+")), Some(0))
     )
 
     assert(
@@ -35,7 +36,7 @@ class ParserTests extends AnyFunSuite:
             Number(2),
             Command("*"),
           ),
-          None,
+          Some(0),
         )
     )
 
@@ -76,7 +77,6 @@ class ParserTests extends AnyFunSuite:
     assert(
       parse("1 { 2 | { {3 | 4} | } } 6") ===
         AST.makeSingle(
-          Number(6),
           Number(1),
           AST.While(
             Some(Number(2)),
@@ -90,6 +90,7 @@ class ParserTests extends AnyFunSuite:
               AST.makeSingle(),
             ),
           ),
+          Number(6),
         )
     )
   }
@@ -140,7 +141,6 @@ class ParserTests extends AnyFunSuite:
     assert(
       parse("1 { 2 | { {3 | 4} | ] 6") ===
         AST.makeSingle(
-          Number(6),
           Number(1),
           AST.While(
             Some(Number(2)),
@@ -154,6 +154,7 @@ class ParserTests extends AnyFunSuite:
               AST.makeSingle(),
             ),
           ),
+          Number(6),
         )
     )
   }
@@ -434,14 +435,14 @@ class ParserTests extends AnyFunSuite:
   test("Does the parser remove define structures?") {
     assert(
       parse(
-        "#:: @+ | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}}"
+        "#::E+ | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}}"
       ) === Group(List(), None)
     )
   }
 
   test("Do custom elements group properly?") {
     assert(
-      parse("#::@temp|2|+} 3 4 #:@temp") ===
+      parse("#::E temp|2|+} 3 4 #:@temp") ===
         Group(
           List(
             Group(
@@ -459,7 +460,7 @@ class ParserTests extends AnyFunSuite:
     )
 
     assert(
-      parse("#::@temp|!|+} 3 4 #:@temp") ===
+      parse("#::E temp|!|+} 3 4 #:@temp") ===
         Group(
           List(Group(List(), None), Number(3), Number(4), Command("temp")),
           None,
@@ -469,7 +470,7 @@ class ParserTests extends AnyFunSuite:
 
   test("Do custom modifiers group elements?") {
     assert(
-      parse("#::*temp|f|2|+} #:`temp !") ===
+      parse("#::M temp|f|2|+} #:=temp !") ===
         Group(
           List(
             Group(List(), None),
