@@ -443,14 +443,11 @@ class ParserTests extends AnyFunSuite:
   test("Do custom elements group properly?") {
     assert(
       parse("#::E temp|2|+} 3 4 #:@temp") ===
-        List(
-          Group(
-            List(
-              Number(3),
-              Number(4),
-              Command("temp"),
-            ),
-            Some(0),
+        Group(
+          List(
+            Number(3),
+            Number(4),
+            Command("temp"),
           ),
           Some(0),
         )
@@ -470,37 +467,29 @@ class ParserTests extends AnyFunSuite:
       parse("#::M temp|f|2|+} #:=temp !") ===
         Group(
           List(
-            Group(
+            Lambda(
+              Some(-1),
+              List(),
               List(
                 Lambda(
-                  Some(-1),
+                  Some(1),
                   List(),
+                  List(Command("!")),
+                ),
+                Group(
                   List(
                     Lambda(
-                      Some(1),
-                      List(),
-                      List(Command("!")),
-                      true,
+                      Some(3),
+                      List("f", 2),
+                      List(Command("+")),
                     ),
-                    Group(
-                      List(
-                        Lambda(
-                          Some(3),
-                          List("f", 2),
-                          List(Command("+")),
-                          true,
-                        ),
-                        Command("Ė"),
-                      ),
-                      None,
-                    ),
+                    Command("Ė"),
                   ),
-                  true,
+                  None,
                 ),
-                Command("Ė"),
               ),
-              None,
-            )
+            ),
+            Command("Ė"),
           ),
           None,
         )
