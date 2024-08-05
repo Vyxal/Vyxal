@@ -34,7 +34,8 @@ class SBCSLexer extends LexerCommon:
       else if headIsWhitespace then pop(1)
       else if headEqual("\"") then stringToken
       else if headEqual("'") then oneCharStringToken
-      else if headEqual("῟") then twoCharStringToken
+      else if headEqual("ᶴ") then twoCharStringToken
+      else if headEqual("~") then twoCharNumberToken
       else if headIn("∆øÞk") || headLookaheadMatch("""#[^\[\]$!=#>@{:.,^]""")
       then digraphToken
       else if headLookaheadEqual("##") then
@@ -233,6 +234,20 @@ class SBCSLexer extends LexerCommon:
       Token(
         TokenType.Str,
         char,
+        Range(rangeStart, index),
+      )
+
+  private def twoCharNumberToken: Unit =
+    val rangeStart = index
+    pop() // Pop the tilde
+    val char = pop(2)
+    tokens +=
+      Token(
+        TokenType.Number,
+        char.zipWithIndex
+          .map((c, ind) => math.pow(Codepage.length, ind) * Codepage.indexOf(c))
+          .sum
+          .toString,
         Range(rangeStart, index),
       )
 

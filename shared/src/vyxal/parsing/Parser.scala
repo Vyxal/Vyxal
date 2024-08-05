@@ -309,10 +309,7 @@ private class Parser:
           if depth != -1 then names += ((name, depth))
           asts.push(AST.UnpackVar(names.toList))
         case TokenType.Param => asts.push(AST.Parameter(value))
-        case TokenType.Digraph =>
-          if !value.startsWith("k") then
-            throw NoSuchElementException(token.value)
-          else asts.push(AST.Command(value))
+        case TokenType.Digraph => asts.push(AST.Command(value))
       end match
     end while
     // Second stage parsing
