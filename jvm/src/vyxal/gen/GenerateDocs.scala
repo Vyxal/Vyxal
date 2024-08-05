@@ -2,7 +2,7 @@
 package vyxal.gen
 
 import vyxal.{Element, Elements, Modifiers, SugarMap}
-import vyxal.parsing.{Codepage, Lexer}
+import vyxal.parsing.Codepage
 import vyxal.Modifier
 import vyxal.Syntax
 import vyxal.SyntaxInfo
