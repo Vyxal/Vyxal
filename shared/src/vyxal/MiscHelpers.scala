@@ -138,7 +138,7 @@ object MiscHelpers:
 
   def isList(code: String): Boolean =
     val stack = Stack[Char]()
-    stack.pushAll(code)
+    stack.pushAll(code.reverse)
     isList(stack)
 
   private def isList(stack: Stack[Char]): Boolean =
@@ -180,7 +180,7 @@ object MiscHelpers:
           // matches a list-like structure.
       end while
     end if
-
+    // Not starting with a [, so it's not a list
     false
   end isList
 
