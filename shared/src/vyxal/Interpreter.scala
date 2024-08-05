@@ -14,7 +14,7 @@ object Interpreter:
     /** Attempt lexing */
     val tokens =
       try
-        val lexRes = Lexer(code)
+        val lexRes = Lexer.lexSBCS(code)
         scribe.debug(s"Lexed tokens: $lexRes")
         val sugarless = Lexer.removeSugar(
           if ctx.settings.literate then Lexer.sbcsify(lexRes) else code

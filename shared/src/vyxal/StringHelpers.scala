@@ -1,6 +1,6 @@
 package vyxal
 
-import vyxal.parsing.Lexer
+import vyxal.parsing.{Codepage, Lexer}
 
 import java.util.regex.PatternSyntaxException
 import scala.annotation.tailrec
@@ -26,7 +26,7 @@ object StringHelpers:
     s"\"${NumberHelpers
         .toBaseAlphabet(
           temp,
-          Lexer.Codepage.filterNot(Lexer.StringClosers.contains(_)),
+          Codepage.filterNot(Lexer.StringClosers.contains(_)),
         )
         .asInstanceOf[String]}„"
 
@@ -34,7 +34,7 @@ object StringHelpers:
     s"\"${NumberHelpers
         .toBaseAlphabet(
           n,
-          Lexer.Codepage.filterNot(Lexer.StringClosers.contains(_)),
+          Codepage.filterNot(Lexer.StringClosers.contains(_)),
         )
         .asInstanceOf[String]}“"
 
@@ -91,7 +91,7 @@ object StringHelpers:
       while z1 != 0 do
         val c = (z1 - 1) % 252
         z1 = (z1 - 1) / 252
-        compressed.append(Lexer.Codepage(c.toInt))
+        compressed.append(Codepage(c.toInt))
       compressed.toString
         .replace('"', '•')
         .replace('„', '≈')
@@ -121,14 +121,14 @@ object StringHelpers:
   def decompress252Number(s: String)(using Context): VAny =
     NumberHelpers.fromBaseAlphabet(
       s,
-      Lexer.Codepage.filterNot(Lexer.StringClosers.contains(_)),
+      Codepage.filterNot(Lexer.StringClosers.contains(_)),
     )
 
   def decompress252String(s: String)(using Context): VAny =
     val temp = NumberHelpers
       .fromBaseAlphabet(
         s,
-        Lexer.Codepage.filterNot(Lexer.StringClosers.contains(_)),
+        Codepage.filterNot(Lexer.StringClosers.contains(_)),
       )
       .asInstanceOf[VNum]
     NumberHelpers.toBaseAlphabet(temp, "ඞabcdefghijklmnopqrstuvwxyz ")
@@ -268,7 +268,7 @@ object StringHelpers:
       .replace('ꜝ', '“')
       .reverse
     var integer =
-      comp.map(Lexer.Codepage.indexOf(_) + 1).foldLeft(BigInt(0))(_ * 252 + _)
+      comp.map(Codepage.indexOf(_) + 1).foldLeft(BigInt(0))(_ * 252 + _)
 
     while integer > 0 do
       val mode = integer % 3
@@ -277,7 +277,7 @@ object StringHelpers:
       if mode == 0 then
         val code = integer % 96
         integer = integer / 96
-        decompressed.append(Lexer.Codepage(code.toInt + 32))
+        decompressed.append(Codepage(code.toInt + 32))
       else
         var flagSwap = false
         var flagSpace = decompressed.nonEmpty

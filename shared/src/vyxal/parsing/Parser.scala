@@ -19,9 +19,9 @@ case class ParserResult(
 
 object Parser:
   @throws[ParsingException]
-  def parse(tokens: List[Token]): ParserResult =
+  def parse(tokens: Seq[Token]): ParserResult =
     val parser = Parser()
-    val ast = parser.parse(tokens)
+    val ast = parser.parse(tokens.toList)
     ParserResult(
       ast,
       parser.customs.toMap,
@@ -316,7 +316,7 @@ private class Parser:
       end match
     end while
     // Second stage parsing
-    val finalAsts = parse(asts)
+    val finalAsts = parse(asts).filter(_ != AST.NotAnAST)
     AST.makeSingle(finalAsts.toList*)
   end parse
 
@@ -360,7 +360,7 @@ private class Parser:
               val modifierArgs = List.fill(arity)(finalAsts.pop())
               finalAsts.push(modifier.from(modifierArgs))
         case AST.SpecialModifier(name, _) => (name: @unchecked) match
-            case "ᵜ" =>
+            case "⋊" =>
               val lambdaAsts = Stack[AST]()
               while asts.nonEmpty && asts.top != AST.Newline do
                 lambdaAsts.push(asts.pop())
@@ -557,10 +557,10 @@ private class Parser:
         val nameString = name.toVyxal
         val actualName =
           if nameString.length() == 2 then nameString(1).toString()
-          else toValidName(nameString)
+          else toValidName(nameString.tail)
         val mode = nameString.headOption match
-          case Some('@') => CustomElementType.Element
-          case Some('*') => CustomElementType.Modifier
+          case Some('E') => CustomElementType.Element
+          case Some('M') => CustomElementType.Modifier
           case _ => throw BadRedefineMode(
               nameString.headOption.getOrElse("").toString()
             )
@@ -589,7 +589,7 @@ private class Parser:
           (functions(0) -> args(0)),
         )
 
-        AST.Group(List(), None)
+        AST.NotAnAST
 
       case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
           StructureType.LambdaFilter | StructureType.LambdaReduce |
@@ -706,7 +706,7 @@ private class Parser:
         throw UnmatchedCloserException(preprocessed.dequeue())
       // Some tokens were left at the end, which should never happen
       throw TokensFailedParsingException(preprocessed.toList)
-    else postprocess(parsed)
+    parsed
 
   private def preprocess(tokens: List[Token]): List[Token] =
     val doubleClose = ListBuffer[Token]()
@@ -743,21 +743,6 @@ private class Parser:
     end while
     processed.toList
   end preprocess
-
-  private def postprocess(asts: AST): AST =
-    val temp = asts match
-      case AST.Group(elems, _, _) =>
-        val nilads = elems.reverse.takeWhile(isNilad).reverse
-        val rest = elems.dropRight(nilads.length)
-        AST.Group(nilads ++ rest, None)
-      case _ => asts
-    temp
-
-  private def isNilad(ast: AST) =
-    ast match
-      case AST.GetVar(_, _) => false // you might want a variable at the end
-      // after doing stuff like augmented assignment
-      case _ => ast.arity.contains(0)
 end Parser
 
 enum ParsingException(msg: String) extends VyxalException(msg):
@@ -804,6 +789,6 @@ enum ParsingException(msg: String) extends VyxalException(msg):
 
   case BadRedefineMode(mode: String)
       extends ParsingException(
-        s"Invalid redefine mode: '$mode'. Should either be @ for element, or * for modifier"
+        s"Invalid redefine mode: '$mode'. Should either be E for element, or Ms for modifier"
       )
 end ParsingException

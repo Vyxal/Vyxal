@@ -1,14 +1,16 @@
 package vyxal.parsing
 
-import scala.language.strictEquality
-
-import vyxal.parsing.TokenType.*
 import vyxal.Context
 import vyxal.Elements
 
-import scala.collection.mutable.ListBuffer
+import scala.collection.mutable // For named imports
+import scala.collection.mutable.{
+  ArrayBuffer,
+  Stack,
+  StringBuilder,
+} // for things that don't shadow non-mut variants
 
-import fastparse.*
+import TokenType.*
 
 case class Token(
     tokenType: TokenType,
@@ -24,9 +26,17 @@ case class Token(
 
   override def toString: String = s"$tokenType(\"$value\")"
 
+case class CommonToken(
+    tokenType: TokenType,
+    value: String,
+    range: Range,
+)
+object Token:
+  def empty: Token = Token(TokenType.Empty, "", Range.fake)
+
 case class LitToken(
     tokenType: TokenType,
-    value: String | List[LitToken],
+    value: String | Seq[LitToken],
     range: Range,
 ) derives CanEqual:
   override def equals(obj: Any): Boolean =
@@ -36,13 +46,16 @@ case class LitToken(
           (other.value match
             case otherValue: String => otherValue ==
                 this.value.asInstanceOf[String]
-            case otherValue: List[LitToken] => otherValue ==
+            case otherValue: Seq[LitToken] => otherValue ==
                 this.value.asInstanceOf[List[LitToken]]
           ))
 
       case _ => false
 
   override def toString: String = s"$tokenType(\"$value\")"
+
+  def toNormal: Token = Token(tokenType, value.toString, range)
+end LitToken
 
 /** The range of a token or AST in the source code. The start offset is
   * inclusive, the end offset is exclusive.
@@ -109,6 +122,7 @@ enum TokenType(val canonicalSBCS: Option[String] = None) extends Enum[TokenType]
   case NegatedCommand
   case MoveRight
   case Group
+  case Empty
 
   /** Helper to help go from the old VyxalToken to the new Token(TokenType,
     * text, range) format
@@ -144,113 +158,24 @@ object StructureType:
   )
 
 object Lexer:
-  val structureOpenRegex: String = """[\[\(\{λƛΩ₳µḌṆ]|#@|#\{"""
-
-  val Codepage = "ᵃᵇᶜᵈᵉᶠᴳᴴᶤᶨ\nᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ⸠ϩэЧᵜ !" +
-    "\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFG" +
-    "HIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmn" +
-    "opqrstuvwxyz{|}~ȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊικȧḃċ" +
-    "ḋėḟġḣŀṁṅȯṗṙṡṫẋƒΘΦ§ẠḄḌḤỊḶṂṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«»" +
-    "⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λƛΩ₳µ∆øÞ½ʀɾ¯×÷£¥←↑→↓±¤†Π¬∧∨⁰" + "¹²⌈⌊Ɠɠ∥∦ı„”ð€“¶ᶿᶲ•≈¿ꜝ"
-
-  val UnicodeCommands = "🍪ඞ🌮"
-
   val StringClosers = "\"„”“"
 
-  def literateModeMappings: Map[String, String] =
-    LiterateLexer.literateModeMappings
+  def lexSBCS(program: String): Seq[Token] =
+    val lexer = SBCSLexer()
+    lexer.lex(program)
 
-  def apply(
-      code: String
-  )(using ctx: Context): List[Token] =
-    if ctx.settings.literate then lexLiterate(code) else lexSBCS(code)
+  def lexLiterate(program: String): Seq[Token] =
+    val lexer = LiterateLexer()
+    lexer.lex(program)
 
-  def lexSBCS(code: String): List[Token] = SBCSLexer.lex(code)
-
-  def performMoves(tkns: List[LitToken]): List[LitToken] =
-    val tokens = tkns.map {
-      case LitToken(TokenType.Group, tokens, range) => LitToken(
-          TokenType.Group,
-          performMoves(tokens.asInstanceOf[List[LitToken]]),
-          range,
-        )
-      case token => token
-    }
-    val merged = ListBuffer[LitToken]()
-    for token <- tokens do
-      if token.tokenType == TokenType.MoveRight then
-        if merged.nonEmpty && merged.last.tokenType == TokenType.MoveRight then
-          merged.last.copy(value =
-            merged.last.value.asInstanceOf[String] +
-              token.value.asInstanceOf[String]
-          )
-        else merged += token
-      else merged += token
-
-    // Now, bind the move right tokens to the next token
-
-    val bound = ListBuffer[LitToken | (LitToken, Int)]()
-    for token <- merged do
-      if bound.nonEmpty then
-        bound.last match
-          case _: (LitToken, Int) => bound += token
-          case last: LitToken =>
-            if last.tokenType == TokenType.MoveRight then
-              bound.dropRightInPlace(1)
-              bound += (token -> last.value.asInstanceOf[String].length)
-            else bound += token
-      else bound += token
-
-    // Move the tuple2's to the right, storing indices of where they were
-
-    while bound.exists(_.isInstanceOf[(LitToken, Int)]) do
-      val index = bound.indexWhere(_.isInstanceOf[(LitToken, Int)])
-      val (token, offset) = bound(index).asInstanceOf[(LitToken, Int)]
-      bound.remove(index)
-      if index + offset >= bound.length then bound += token
-      else bound.insert(index + offset, token)
-
-    // And flatten the list into just tokens
-    bound.map {
-      case (y, _) => y
-      case token: LitToken => token
-    }.toList
-
-  end performMoves
-
-  def lexLiterate(code: String): List[Token] =
-    val tokens = LiterateLexer.lex(code)
-    val moved = performMoves(tokens)
-
-    // Convert all tokens into SBCS tokens
-
-    moved
-      .map {
-        case LitToken(tokenType, value, range) => tokenType match
-            case Group => flattenGroup(LitToken(tokenType, value, range))
-            case _ => List(LitToken(tokenType, value, range))
-      }
-      .flatten
-      .map {
-        case LitToken(tokenType, value, range) => Token(
-            tokenType,
-            value.asInstanceOf[String],
-            range,
-          )
-      }
-  end lexLiterate
-
-  private def flattenGroup(token: LitToken): List[LitToken] =
-    token.tokenType match
-      case TokenType.Group =>
-        token.value.asInstanceOf[List[LitToken]].map(flattenGroup).flatten
-      case _ => List(token)
-
-  def isList(code: String): Boolean =
-    parse(code, LiterateLexer.list(_)).isSuccess
+  def lex(program: String)(using ctx: Context): Seq[Token] =
+    if ctx.settings.literate then lexLiterate(program)
+    else lexSBCS(program)
 
   def removeSugar(code: String): Option[String] =
-    if SBCSLexer.sugarUsed then Some(SBCSLexer.lex(code).map(_.value).mkString)
+    val lex = SBCSLexer()
+    lex.lex(code)
+    if lex.sugarUsed then Some(Lexer.lexSBCS(code).map(_.value).mkString)
     else None
 
   private def sbcsifySingle(token: Token): String =
@@ -279,7 +204,7 @@ object Lexer:
   end sbcsifySingle
 
   /** Convert literate mode code into SBCS mode code */
-  def sbcsify(tokens: List[Token]): String =
+  def sbcsify(tokens: Seq[Token]): String =
     val out = StringBuilder()
 
     for i <- tokens.indices do
@@ -302,12 +227,279 @@ object Lexer:
   end sbcsify
 end Lexer
 
-/** Lexing exceptions */
-enum LexingException(message: String)
-    extends vyxal.VyxalException(s"LexingException: $message"):
-  case LeftoverCodeException(leftover: String)
-      extends LexingException(
-        s"Lexing completed with leftover code: '$leftover'"
+abstract class LexerCommon:
+
+  private val stringTokenToQuote = Map(
+    TokenType.Str -> "\"",
+    TokenType.CompressedString -> "„",
+    TokenType.DictionaryString -> "”",
+    TokenType.CompressedNumber -> "“",
+  )
+
+  protected var index = 0
+  val symbolTable = mutable.Map[String, Option[Int]]()
+  protected val programStack = Stack[String]()
+  protected val tokens = ArrayBuffer[Token]()
+
+  // Abstract method for adding a token irregardles of lexer type
+
+  protected def addToken(
+      tokenType: TokenType,
+      value: String,
+      range: Range,
+  ): Unit
+
+  protected def dropLastToken(): Unit
+
+  private def addToken(tok: CommonToken): Unit =
+    addToken(tok.tokenType, tok.value, tok.range)
+
+  protected def pop(n: Int = 1): String =
+    val res = StringBuilder()
+    for _ <- 0 until n do res ++= programStack.pop()
+    index += n + 1
+    res.toString()
+  protected def safeCheck(pred: String => Boolean): Boolean =
+    programStack.nonEmpty && pred(programStack.head)
+  protected def headEqual(c: String): Boolean =
+    programStack.nonEmpty && programStack.head == c
+  protected def headLookaheadEqual(s: String): Boolean =
+    programStack.mkString.length >= s.length &&
+      programStack.mkString.startsWith(s)
+  protected def headLookaheadMatch(s: String): Boolean =
+    programStack.nonEmpty &&
+      ("^" + s).r.findFirstIn(programStack.mkString).isDefined
+  protected def headIsDigit: Boolean = safeCheck(c => c.head.isDigit)
+  protected def headIsWhitespace: Boolean = safeCheck(c => c.head.isWhitespace)
+  protected def headIn(s: String): Boolean = safeCheck(c => s.contains(c))
+  protected def headIsCloser: Boolean
+  protected def headIsBranch: Boolean
+  protected def headIsOpener: Boolean
+  protected def quickToken(tokenType: TokenType, value: String): Unit =
+    addToken(tokenType, value, Range(index, index + value.length))
+    index += value.length
+    pop(value.length)
+  protected def eat(s: String): Unit =
+    if headLookaheadEqual(s) then pop(s.length)
+    else
+      throw new Exception(
+        s"Expected $s, got ${programStack.mkString}" + s" at index $index"
       )
-  case Fastparse(msg: String)
-      extends LexingException(s"Lexing with FastParse failed: $msg")
+  protected def eatWhitespace(): Unit = while headIsWhitespace do pop()
+
+  // Some universal token types
+  /** String = '"' (\\.|[^„”“"])* [„”“"] */
+  protected def stringToken: String =
+    val rangeStart = index
+    val stringVal = StringBuilder()
+
+    pop() // Pop the opening quote
+
+    while programStack.nonEmpty && !headIn("\"„”“") do
+      if headEqual("\\") then stringVal ++= pop(2)
+      else stringVal ++= pop()
+
+    val text = stringVal
+      .toString()
+      .replace("\\\"", "\"")
+      .replace(raw"\n", "\n")
+      .replace(raw"\t", "\t")
+
+    val tokenType =
+      if programStack.nonEmpty then
+        pop() match
+          case "\"" => TokenType.Str
+          case "„" => TokenType.CompressedString
+          case "”" => TokenType.DictionaryString
+          case "“" => TokenType.CompressedNumber
+      else TokenType.Str
+
+    addToken(
+      tokenType,
+      text,
+      Range(rangeStart, index),
+    )
+    return text
+  end stringToken
+  protected def lambdaParameters: String =
+    var break = false
+    val popped = StringBuilder()
+    val start = index
+    var branchFound = false
+    var stringPopped = false
+
+    while !break && !branchFound && programStack.nonEmpty do
+      stringPopped = false
+      if headIsOpener then break = true
+      else if headEqual("\"") then
+        stringPopped = true
+        popped += '"'
+        popped ++= stringToken
+        popped ++= stringTokenToQuote(tokens.last.tokenType)
+        dropLastToken()
+      else if headIsBranch && !headEqual(",") then branchFound = true
+
+      if !break && !stringPopped && !branchFound then popped ++= pop()
+    val params = popped.toString()
+    if !branchFound then
+      for c <- params.reverse do programStack.push(c.toString())
+      index -= popped.length
+    else for tok <- extractParamters(popped.toString(), start) do addToken(tok)
+
+    return params
+  end lambdaParameters
+
+  protected def extractParamters(popped: String, start: Int): Seq[CommonToken] =
+    val params = popped.split(',')
+    val paramTokens = ArrayBuffer[CommonToken]()
+    for param <- params do
+      val paramStart = start + popped.indexOf(param)
+      val paramEnd = paramStart + param.length
+      paramTokens +=
+        CommonToken(
+          TokenType.Param,
+          toValidParam(param),
+          Range(paramStart, paramEnd),
+        )
+      paramTokens +=
+        CommonToken(
+          TokenType.Command,
+          ",",
+          Range(paramEnd, paramEnd + 1),
+        )
+
+    paramTokens.dropRightInPlace(1) // Remove the trailing comma
+
+    paramTokens.toSeq
+  end extractParamters
+
+  protected def toValidParam(param: String): String =
+    val filtered =
+      param.filter(c => c.isLetterOrDigit || c == '_' || c == '*' || c == '!')
+    if filtered.isEmpty then filtered
+    else if filtered.head.isDigit && !filtered.forall(c => c.isDigit) then
+      filtered.dropWhile(c => c.isDigit)
+    else if filtered == "*" then filtered
+    else if filtered == "!" then filtered
+    else filtered.replaceAll(raw"\*", "")
+
+  /** Returns how many arguments a parameter list expects. None represents an
+    * arity that can't be determined statically. Some(-1) represents a stack
+    * lambda Some(n) represents a lambda with a fixed arity of n
+    *
+    * @param params
+    * @return
+    */
+  protected def calcArity(params: String): Option[Int] =
+    var arity: Option[Int] = Some(0)
+    try
+      for param <- params.split(",") do
+        val actual = toValidParam(param)
+        if actual == "*" then
+          arity = None
+          throw Exception()
+        else if actual == "!" then
+          arity = Some(-1)
+          throw Exception()
+        else if param.forall(c => c.isDigit) then
+          val num = param.toInt
+          arity = arity.map(_ + num)
+        else arity = arity.map(_ + 1)
+    catch
+      case _: Exception =>
+        // Poor man's break
+        ()
+
+    return arity
+  end calcArity
+
+  protected def simpleName(): String =
+    val name = StringBuilder()
+    if headLookaheadEqual("_") then name ++= pop()
+    while safeCheck(c => c.head.isLetterOrDigit || c == "_") do
+      name ++= s"${pop()}"
+    name.toString()
+
+  protected def getVariableToken: Unit =
+    val rangeStart = index
+    val name = simpleName()
+    addToken(
+      TokenType.GetVar,
+      name,
+      Range(rangeStart, index),
+    )
+
+  protected def setVariableToken: Unit =
+    val rangeStart = index
+    val name = simpleName()
+    addToken(
+      TokenType.SetVar,
+      name,
+      Range(rangeStart, index),
+    )
+
+  protected def setConstantToken: Unit =
+    val rangeStart = index
+    val name = simpleName()
+    addToken(
+      TokenType.Constant,
+      name,
+      Range(rangeStart, index),
+    )
+
+  protected def augmentedAssignToken: Unit =
+    val rangeStart = index
+    val name = simpleName()
+    addToken(
+      TokenType.AugmentVar,
+      name,
+      Range(rangeStart, index),
+    )
+
+  protected def originalCommandToken: Unit =
+    val rangeStart = index
+    val command = pop()
+    addToken(
+      TokenType.OriginalSymbol,
+      command,
+      Range(rangeStart, index),
+    )
+
+  protected def commandSymbolToken: Unit =
+    val rangeStart = index
+    val name = simpleName()
+    addToken(
+      TokenType.ElementSymbol,
+      name,
+      Range(rangeStart, index),
+    )
+
+  protected def modifierSymbolToken: Unit =
+    val rangeStart = index
+    val name = simpleName()
+    addToken(
+      TokenType.ModifierSymbol,
+      name,
+      Range(rangeStart, index),
+    )
+
+  protected def defineRecordToken: Unit =
+    val rangeStart = index
+    eatWhitespace()
+    val name = simpleName()
+    addToken(
+      TokenType.DefineRecord,
+      name,
+      Range(rangeStart, index),
+    )
+
+  def literateModeMappings: Map[String, String] = LiterateLexer().mapping
+end LexerCommon
+
+def Codepage =
+  "ᵃᵇᶜᵈᵉᶠᴳᴴᶤᶨ\nᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ⸠ϩэЧᵜ !" +
+    "\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFG" +
+    "HIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmn" +
+    "opqrstuvwxyz{|}~ȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊικȧḃċ" +
+    "ḋėḟġḣŀṁṅȯṗṙṡṫẋƒΘΦ§ẠḄḌḤỊḶṂṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«»" +
+    "⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λƛΩ₳µ∆øÞ½ʀɾ¯×÷£¥←↑→↓±¤†Π¬∧∨⁰" + "¹²⌈⌊Ɠɠ∥∦ı„”ð€“¶ᶿᶲ•≈¿ꜝ"

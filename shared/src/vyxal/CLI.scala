@@ -1,7 +1,9 @@
 package vyxal
 
 import vyxal.debugger.DebugRepl
-import vyxal.parsing.{Lexer, Parser}
+import vyxal.parsing.Codepage
+import vyxal.parsing.Lexer
+import vyxal.parsing.Parser
 
 import scopt.OParser
 
@@ -39,6 +41,7 @@ object CLI:
       runFancyRepl: Boolean = false,
       debug: Boolean = false,
       readBytes: Boolean = false,
+      runLiterateParser: Boolean = false,
   )
 
   /** Run the CLI
@@ -80,15 +83,15 @@ object CLI:
           return
 
         if config.litInfoFor.nonEmpty then
-          val keywords = Lexer.literateModeMappings(config.litInfoFor.get)
-          println(keywords.mkString(", "))
+          // val keywords = Lexer.literateModeMappings(config.litInfoFor.get)
+          // println(keywords.mkString(", "))
           return
 
         if config.runLexer then
           while true do
             val line = io.StdIn.readLine(">")
             if line == null || line.isEmpty then return
-            println(Lexer(line))
+            println(Lexer.lexSBCS(line))
 
         if config.runLiterateLexer then
           while true do
@@ -100,7 +103,13 @@ object CLI:
           while true do
             val line = io.StdIn.readLine(">")
             if line.isEmpty then return
-            println(Parser.parse(Lexer(line)).ast)
+            println(Parser.parse(Lexer.lexSBCS(line)).ast)
+
+        if config.runLiterateParser then
+          while true do
+            val line = io.StdIn.readLine(">")
+            if line.isEmpty then return
+            println(Parser.parse(Lexer.lexLiterate(line)).ast)
 
         if config.debug then
           val code = config.filename match
@@ -118,11 +127,11 @@ object CLI:
           config.filename.foreach { filename =>
             val fileObj = java.io.File(filename)
             val source = java.io.FileInputStream(fileObj)
-            val sbcs = source.readAllBytes().map(c => Lexer.Codepage(c & 0xff))
+            val sbcs = source.readAllBytes().map(c => Codepage(c & 0xff))
             try runCode(sbcs.mkString)
             finally source.close()
-
           }
+          return
         else
           config.filename.foreach { filename =>
             val source = io.Source.fromFile(filename)
@@ -194,6 +203,12 @@ object CLI:
         opt[Unit]("parser")
           .action((_, cfg) => cfg.copy(runParser = true))
           .text("Run the parser on input. For internal use.")
+          .optional(),
+        opt[Unit]("literate-parser")
+          .action((_, cfg) => cfg.copy(runLiterateParser = true))
+          .text(
+            "Run the literate lexer and then parser on input. For internal use."
+          )
           .optional(),
         opt[Unit]("fancy-repl")
           .action((_, cfg) => cfg.copy(runFancyRepl = true))
