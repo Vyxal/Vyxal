@@ -84,7 +84,9 @@ class SBCSLexer extends LexerCommon:
       else if headLookaheadEqual("#=") then
         pop(2)
         setVariableToken
-      else if headLookaheadEqual("#!") then setConstantToken
+      else if headLookaheadEqual("#!") then
+        pop(2)
+        setConstantToken
       else if headLookaheadEqual("#>") then
         pop(2)
         augmentedAssignToken
