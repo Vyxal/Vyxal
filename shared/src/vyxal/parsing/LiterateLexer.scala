@@ -144,8 +144,7 @@ class LiterateLexer extends LexerCommon:
           c.length == 1 && (c.head.isLetter || "<>!*+-=&%@".contains(c))
         )
       then keywordToken
-      else if headEqual(""""""") then stringToken
-      else if headEqual("'") then moveRightToken
+      else if headEqual(""""""") then stringToken(true)
       else if headEqual("(") then
         eat("(")
         groups += ArrayBuffer[LitToken]()

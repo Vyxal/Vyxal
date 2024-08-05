@@ -32,8 +32,11 @@ class SBCSLexer extends LexerCommon:
       if headIsDigit || headEqual(".") then numberToken
       else if headEqual("\n") then quickToken(TokenType.Newline, "\n")
       else if headIsWhitespace then pop(1)
-      else if headEqual("\"") then stringToken
-      else if headEqual("'") then oneCharStringToken
+      else if headEqual("\"") then stringToken(false)
+      else if headEqual("'") then
+        pop()
+        if programStack.isEmpty then quickToken(TokenType.Command, "'")
+        else oneCharStringToken
       else if headEqual("ᶴ") then twoCharStringToken
       else if headEqual("~") then twoCharNumberToken
       else if headIn("∆øÞk") || headLookaheadMatch("""#[^\[\]$!=#>@{:.,^]""")
@@ -218,8 +221,7 @@ class SBCSLexer extends LexerCommon:
     numberVal.toString()
 
   private def oneCharStringToken: Unit =
-    val rangeStart = index
-    pop() // Pop the opening quote
+    val rangeStart = index - 1
     val char = pop()
     tokens +=
       Token(

@@ -289,7 +289,7 @@ abstract class LexerCommon:
 
   // Some universal token types
   /** String = '"' (\\.|[^„”“"])* [„”“"] */
-  protected def stringToken: String =
+  protected def stringToken(literate: Boolean = false): String =
     val rangeStart = index
     val stringVal = StringBuilder()
 
@@ -299,11 +299,10 @@ abstract class LexerCommon:
       if headEqual("\\") then stringVal ++= pop(2)
       else stringVal ++= pop()
 
-    val text = stringVal
-      .toString()
-      .replace("\\\"", "\"")
-      .replace(raw"\n", "\n")
-      .replace(raw"\t", "\t")
+    var text =
+      stringVal.toString().replace(raw"\n", "\n").replace(raw"\t", "\t")
+
+    if !literate then text = text.replace("\\\"", "\"")
 
     val tokenType =
       if programStack.nonEmpty then
@@ -334,7 +333,7 @@ abstract class LexerCommon:
       else if headEqual("\"") then
         stringPopped = true
         popped += '"'
-        popped ++= stringToken
+        popped ++= stringToken()
         popped ++= stringTokenToQuote(tokens.last.tokenType)
         dropLastToken()
       else if headIsBranch && !headEqual(",") then branchFound = true
