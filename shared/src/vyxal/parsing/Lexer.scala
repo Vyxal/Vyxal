@@ -299,11 +299,8 @@ abstract class LexerCommon:
       if headEqual("\\") then stringVal ++= pop(2)
       else stringVal ++= pop()
 
-    val text = stringVal
-      .toString()
-      .replace("\\\"", "\"")
-      .replace(raw"\n", "\n")
-      .replace(raw"\t", "\t")
+    val text =
+      stringVal.toString().replace(raw"\n", "\n").replace(raw"\t", "\t")
 
     val tokenType =
       if programStack.nonEmpty then

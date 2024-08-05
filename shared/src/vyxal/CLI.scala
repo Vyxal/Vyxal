@@ -98,6 +98,7 @@ object CLI:
             val line = io.StdIn.readLine(">")
             if line == null || line.isEmpty then return
             println(Lexer.lexLiterate(line))
+            println(Lexer.sbcsify(Lexer.lexLiterate(line)))
 
         if config.runParser then
           while true do
