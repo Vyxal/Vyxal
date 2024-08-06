@@ -2,6 +2,7 @@ package vyxal.parsing
 
 import vyxal.parsing.TokenType.*
 import vyxal.Elements
+import vyxal.MiscHelpers.add
 import vyxal.Modifier
 import vyxal.Modifiers
 import vyxal.UnopenedGroupException
@@ -200,6 +201,10 @@ class LiterateLexer extends LexerCommon:
         pop()
         defineRecordToken
       else if headLookaheadEqual("extension") then defineExtensionToken
+      else if headEqual("`") then
+        pop()
+        addToken(TokenType.FunctionCall, simpleName(), Range(index, index))
+        eat("`")
       else if headEqual("[") then
         pop()
         if unpackDepth > 0 then
@@ -413,7 +418,7 @@ class LiterateLexer extends LexerCommon:
     eatWhitespace()
     if !headLookaheadMatch("(element|modifier)") then
       throw VyxalException(
-        s"Invalid definition type. Expected \"element\" or \"modifier\""
+        "Invalid definition type. Expected \"element\" or \"modifier\""
       )
     val definitionType = pop().toUpperCase()
     while !headIsWhitespace do pop()
