@@ -177,7 +177,7 @@ class LiterateLexer extends LexerCommon:
         quickToken(TokenType.StructureDoubleClose, ")")
       else if closeAllKeywords.contains(programStack.head) then
         quickToken(TokenType.StructureAllClose, "]")
-      else if headLookaheadMatch("\\$([^@:]|$)") then
+      else if headLookaheadMatch("\\$([^@:.]|$)") then
         pop()
         getVariableToken
       else if headLookaheadEqual(":=[") then
@@ -195,6 +195,9 @@ class LiterateLexer extends LexerCommon:
       else if headLookaheadEqual("$@") then
         pop(2)
         commandSymbolToken
+      else if headLookaheadEqual("$.") then
+        pop(2)
+        originalCommandToken
       else if headLookaheadEqual("define") then customDefinitionToken
       else if headLookaheadEqual("record") then
         pop()
@@ -271,7 +274,7 @@ class LiterateLexer extends LexerCommon:
     then return
 
     while safeCheck(c =>
-        c.head.isLetterOrDigit || "_<>?!*+\\-=&%'@".contains(c)
+        c.head.isLetterOrDigit || "_<>?!*+\\-=&%'@:".contains(c)
       )
     do keyword ++= pop(1)
     val value = removeDoubleNt(keyword.toString())
@@ -408,12 +411,13 @@ class LiterateLexer extends LexerCommon:
   private def customDefinitionToken: Unit =
     val rangeStart = index
     pop()
-    tokens +=
-      Token(
+    addToken(
+      LitToken(
         TokenType.StructureOpen,
         "#::",
         Range(rangeStart, index),
       )
+    )
     eatWhitespace()
     if !headLookaheadMatch("(element|modifier)") then
       throw VyxalException(
@@ -425,12 +429,13 @@ class LiterateLexer extends LexerCommon:
     val nameRangeStart = index
     val name = simpleName()
 
-    tokens +=
-      Token(
+    addToken(
+      LitToken(
         TokenType.Param,
         s"$definitionType$name",
         Range(nameRangeStart, index),
       )
+    )
 
   end customDefinitionToken
 
@@ -439,14 +444,23 @@ class LiterateLexer extends LexerCommon:
     pop() // Pop the "extension"
     eatWhitespace()
     val name = if headLookaheadMatch(". ") then pop() else simpleName()
-    tokens +=
-      Token(
+    addToken(
+      LitToken(
         TokenType.DefineExtension,
+        "",
+        Range(rangeStart, index),
+      )
+    )
+    addToken(
+      LitToken(
+        TokenType.Param,
         name,
         Range(rangeStart, index),
       )
+    )
     eatWhitespace()
     if headIsBranch then
+      quickToken(TokenType.Branch, "|")
       while !headIsWhitespace do pop()
       // Get the arguments and put them into tokens
       var arity = 0
@@ -454,23 +468,25 @@ class LiterateLexer extends LexerCommon:
         eatWhitespace()
         val argNameStart = index
         val argName = simpleName()
-        tokens +=
-          Token(
+        addToken(
+          LitToken(
             TokenType.Param,
             argName,
             Range(argNameStart, index),
           )
+        )
         eatWhitespace()
         eat("as")
         eatWhitespace()
         val argTypeStart = index
         val argType = if headEqual("*") then pop() else simpleName()
-        tokens +=
-          Token(
+        addToken(
+          LitToken(
             TokenType.Param,
             argType,
             Range(argTypeStart, index),
           )
+        )
         arity += 1
         if headEqual(",") then pop()
         eatWhitespace()

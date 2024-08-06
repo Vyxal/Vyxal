@@ -1,6 +1,6 @@
 package vyxal
 
-import vyxal.parsing.Lexer
+import vyxal.parsing.{Lexer, Parser}
 
 import org.scalatest.tagobjects.Slow
 import spire.math.Real
@@ -8,9 +8,7 @@ import spire.math.Real
 class InterpreterTests extends VyxalTests:
   def testCodeAsLiterate(input: String, expected: VAny): Unit =
     val literate = Lexer.lexLiterate(input)
-    val sbcsified = Lexer.sbcsify(literate)
-    println(sbcsified)
-    testCode(sbcsified, expected)
+    testInterpreter(Parser.parse(literate), expected)
   describe("Literals") {
     it("should make lists") {
       testCode("#[1 | 2 3 + | 4#]", VList(1, 5, 4))
@@ -600,7 +598,7 @@ class InterpreterTests extends VyxalTests:
   [] :=keys
 end
 
-extension (set) given
+extension set given
   val as *,
   key as *,
   mp as Map
@@ -609,7 +607,7 @@ does
   "values" (peek: @<=) $val append @=>
 end
 
-extension (get) given
+extension get given
   key as *,
   mp as Map
 does
@@ -617,7 +615,7 @@ does
   $mp "values" @<= index
 end
 
-extension (print) given
+extension print given
   mp as Map
 does
   $mp ["keys", "values"] @<= dump zip print

@@ -297,12 +297,16 @@ class SBCSLexer extends LexerCommon:
     val rangeStart = index
     eatWhitespace()
     val name = if headLookaheadMatch(". ") then pop() else simpleName()
-    tokens +=
-      Token(
-        TokenType.DefineExtension,
-        name,
-        Range(rangeStart, index),
-      )
+    addToken(
+      TokenType.DefineExtension,
+      "",
+      Range(rangeStart, index),
+    )
+    addToken(
+      TokenType.Param,
+      name,
+      Range(rangeStart, index),
+    )
     eatWhitespace()
     if headEqual("|") then
       pop()
@@ -312,23 +316,21 @@ class SBCSLexer extends LexerCommon:
         eatWhitespace()
         val argNameStart = index
         val argName = simpleName()
-        tokens +=
-          Token(
-            TokenType.Param,
-            argName,
-            Range(argNameStart, index),
-          )
+        addToken(
+          TokenType.Param,
+          argName,
+          Range(argNameStart, index),
+        )
         eatWhitespace()
         eat(">")
         eatWhitespace()
         val argTypeStart = index
         val argType = if headEqual("*") then pop() else simpleName()
-        tokens +=
-          Token(
-            TokenType.Param,
-            argType,
-            Range(argTypeStart, index),
-          )
+        addToken(
+          TokenType.Param,
+          argType,
+          Range(argTypeStart, index),
+        )
         arity += 1
         if headEqual(",") then pop()
         eatWhitespace()
@@ -339,12 +341,11 @@ class SBCSLexer extends LexerCommon:
   private def customDefinitionToken: Unit =
     val rangeStart = index
     pop(3)
-    tokens +=
-      Token(
-        TokenType.StructureOpen,
-        "#::",
-        Range(rangeStart, index),
-      )
+    addToken(
+      TokenType.StructureOpen,
+      "#::",
+      Range(rangeStart, index),
+    )
     val definitionType = pop()
     if !"EM".contains(definitionType) then
       throw VyxalException(
@@ -360,12 +361,11 @@ class SBCSLexer extends LexerCommon:
 
     val name = if headIsLetter then simpleName() else pop()
 
-    tokens +=
-      Token(
-        TokenType.Param,
-        s"$definitionType$name",
-        Range(nameRangeStart, index),
-      )
+    addToken(
+      TokenType.Param,
+      s"$definitionType$name",
+      Range(nameRangeStart, index),
+    )
 
     if programStack.isEmpty then
       throw VyxalException("No parameters provided for custom definition")

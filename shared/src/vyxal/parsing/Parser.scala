@@ -226,11 +226,12 @@ private class Parser:
         case TokenType.DefineExtension =>
           val branches =
             parseBranches(program, false)(_ == TokenType.StructureClose)
-          if branches.size < 3 then throw BadStructureException("extension")
+
+          if branches.size != 3 then throw BadStructureException("extension")
           var symbol = branches.head.toVyxal
           if symbol.length() > 1 then symbol = toValidName(symbol)
 
-          val arguments = branches.tail.init
+          val arguments = branches(1).asInstanceOf[AST.Group].elems
           if arguments.size % 2 != 0 then
             throw BadStructureException("extension")
           val argPairs = arguments.grouped(2).toList.transpose

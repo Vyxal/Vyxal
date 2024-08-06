@@ -1,0 +1,29 @@
+record Map =>
+  [] :=values
+  [] :=keys
+end
+
+extension set given
+  val as *,
+  key as *,
+  mp as Map
+does
+  $mp "keys" (peek: @<=) $key append @=>
+  "values" (peek: @<=) $val append @=>
+end
+
+extension get given
+  key as *,
+  mp as Map
+does
+  $mp "keys" @<= $key find
+  $mp "values" @<= index
+end
+
+extension print given
+  mp as Map
+does
+  $mp ["keys", "values"] @<= dump zip print
+end
+
+`Map` 59 20 $@set 59 $@get
