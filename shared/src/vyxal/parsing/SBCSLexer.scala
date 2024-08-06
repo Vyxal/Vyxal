@@ -35,7 +35,8 @@ class SBCSLexer extends LexerCommon:
       else if headEqual("\"") then stringToken(false)
       else if headEqual("'") then
         pop()
-        if programStack.isEmpty then quickToken(TokenType.Command, "'")
+        if programStack.isEmpty then
+          addToken(TokenType.Command, "'", Range(index - 1, index))
         else oneCharStringToken
       else if headEqual("ᶴ") then twoCharStringToken
       else if headEqual("~") then twoCharNumberToken
