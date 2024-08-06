@@ -194,7 +194,9 @@ object Lexer:
       case ElementSymbol => s"#:@$value "
       case ModifierSymbol => s"#:=$value "
       case DefineRecord => s"#::R $value"
+      case DefineExtension => s"#::+ $value"
       case FunctionCall => "#$" + value + "Ė"
+      case Param => s"$value,"
       case OriginalSymbol => s"#:~$value"
       case Command if !Elements.elements.contains(value) =>
         Elements.symbolFor(value).getOrElse(value.stripSuffix("|"))
