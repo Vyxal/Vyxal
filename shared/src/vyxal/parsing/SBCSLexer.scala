@@ -295,7 +295,7 @@ class SBCSLexer extends LexerCommon:
     */
   private def defineExtensionToken: Unit =
     val rangeStart = index
-    eat("#::+")
+    eatWhitespace()
     val name = if headLookaheadMatch(". ") then pop() else simpleName()
     tokens +=
       Token(
@@ -303,11 +303,13 @@ class SBCSLexer extends LexerCommon:
         name,
         Range(rangeStart, index),
       )
+    eatWhitespace()
     if headEqual("|") then
       pop()
       // Get the arguments and put them into tokens
       var arity = 0
       while !headEqual("|") do
+        eatWhitespace()
         val argNameStart = index
         val argName = simpleName()
         tokens +=
@@ -320,7 +322,7 @@ class SBCSLexer extends LexerCommon:
         eat(">")
         eatWhitespace()
         val argTypeStart = index
-        val argType = simpleName()
+        val argType = if headEqual("*") then pop() else simpleName()
         tokens +=
           Token(
             TokenType.Param,
@@ -328,6 +330,8 @@ class SBCSLexer extends LexerCommon:
             Range(argTypeStart, index),
           )
         arity += 1
+        if headEqual(",") then pop()
+        eatWhitespace()
       end while
       symbolTable += name -> Some(arity)
     end if

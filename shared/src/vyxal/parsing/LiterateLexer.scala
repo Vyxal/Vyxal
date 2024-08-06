@@ -196,6 +196,10 @@ class LiterateLexer extends LexerCommon:
         pop(2)
         commandSymbolToken
       else if headLookaheadEqual("define") then customDefinitionToken
+      else if headLookaheadEqual("record") then
+        pop()
+        defineRecordToken
+      else if headLookaheadEqual("extension") then defineExtensionToken
       else if headEqual("[") then
         pop()
         if unpackDepth > 0 then
@@ -431,6 +435,51 @@ class LiterateLexer extends LexerCommon:
     symbolTable += s"$definitionType$name" -> arity
 
   end customDefinitionToken
+
+  private def defineExtensionToken: Unit =
+    val rangeStart = index
+    pop() // Pop the "extension"
+    eatWhitespace()
+    val name = if headLookaheadMatch(". ") then pop() else simpleName()
+    tokens +=
+      Token(
+        TokenType.DefineExtension,
+        name,
+        Range(rangeStart, index),
+      )
+    eatWhitespace()
+    if headIsBranch then
+      while !headIsWhitespace do pop()
+      // Get the arguments and put them into tokens
+      var arity = 0
+      while !headIsBranch && !headEqual(",") do
+        eatWhitespace()
+        val argNameStart = index
+        val argName = simpleName()
+        tokens +=
+          Token(
+            TokenType.Param,
+            argName,
+            Range(argNameStart, index),
+          )
+        eatWhitespace()
+        eat("as")
+        eatWhitespace()
+        val argTypeStart = index
+        val argType = if headEqual("*") then pop() else simpleName()
+        tokens +=
+          Token(
+            TokenType.Param,
+            argType,
+            Range(argTypeStart, index),
+          )
+        arity += 1
+        if headEqual(",") then pop()
+        eatWhitespace()
+      end while
+      symbolTable += name -> Some(arity)
+    end if
+  end defineExtensionToken
 
   lazy val mapping: Map[String, String] =
     Elements.elements.values.view.flatMap { elem =>
