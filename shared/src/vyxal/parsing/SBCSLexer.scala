@@ -351,7 +351,9 @@ class SBCSLexer extends LexerCommon:
       throw VyxalException(
         s"Invalid definition type: $definitionType. Expected E or M"
       )
+
     eatWhitespace()
+
     val nameRangeStart = index
 
     if programStack.isEmpty then
@@ -369,6 +371,9 @@ class SBCSLexer extends LexerCommon:
     if programStack.isEmpty then
       throw VyxalException("No parameters provided for custom definition")
 
+    eatWhitespace()
+    eat("|")
+    index -= 1
     quickToken(TokenType.Branch, "|")
     val params = lambdaParameters
     val arity = calcArity(params)

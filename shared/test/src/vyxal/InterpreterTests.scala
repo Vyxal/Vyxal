@@ -517,13 +517,13 @@ class InterpreterTests extends VyxalTests:
         testCode("#::E + | lhs, rhs | #$lhs #$rhs -} 1 1 +", VNum(0), Seq())
 
         testCode(
-          "#::M ReduceRange | f | 1 | ɾ #$f R } 5 #:`ReduceRange +",
+          "#::M ReduceRange | f | 1 | ɾ #$f R } 5 #:=ReduceRange +",
           VNum(15),
           Seq(),
         )
 
         testCode(
-          "#::M RevRow | f | arr | #$arr V #$f M V } 12ʀ4Ẇ #:`RevRow 1İ",
+          "#::M RevRow | f | arr | #$arr V #$f M V } 12ʀ4Ẇ #:=RevRow 1İ",
           VList(VList(0, 1, 2), VList(4, 5, 6), VList(8, 9, 10)),
           Seq(),
         )
