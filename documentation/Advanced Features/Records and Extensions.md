@@ -179,7 +179,7 @@ Lowest Priority
 ## Example
 
 ```
-#:R Map | 
+#::R Map | 
   #[#] #!keys
   #[#] #!values
 }

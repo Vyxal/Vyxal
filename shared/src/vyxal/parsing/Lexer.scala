@@ -192,8 +192,8 @@ object Lexer:
       case CompressedNumber => s""""$value“"""
       case UnpackTrigraph if value == ":=[" => "#:["
       case ElementSymbol => s"#:@$value "
-      case ModifierSymbol => s"#:`$value "
-      case DefineRecord => s"#:R $value"
+      case ModifierSymbol => s"#:=$value "
+      case DefineRecord => s"#::R $value"
       case FunctionCall => "#$" + value + "Ė"
       case OriginalSymbol => s"#:~$value"
       case Command if !Elements.elements.contains(value) =>
@@ -416,8 +416,8 @@ abstract class LexerCommon:
   protected def simpleName(): String =
     val name = StringBuilder()
     if headLookaheadEqual("_") then name ++= pop()
-    while safeCheck(c => c.head.isLetterOrDigit || c == "_") do
-      name ++= s"${pop()}"
+    while safeCheck(c => "[a-zA-Z0-9]".r.findFirstIn(c).isDefined || c == "_")
+    do name ++= s"${pop()}"
     name.toString()
 
   protected def getVariableToken: Unit =
