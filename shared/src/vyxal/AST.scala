@@ -176,7 +176,7 @@ enum AST(val arity: Option[Int]) derives CanEqual:
       case FnDef(name, lam, _) => ???
       case GetVar(name, _) => s"#$$$name"
       case SetVar(name, _) => s"#=$name"
-      case Parameter(name) => s"$name,"
+      case Parameter(name) => s"$name"
       case ast => ast.toString
 end AST
 

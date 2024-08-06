@@ -270,6 +270,7 @@ abstract class LexerCommon:
     programStack.nonEmpty &&
       ("^" + s).r.findFirstIn(programStack.mkString).isDefined
   protected def headIsDigit: Boolean = safeCheck(c => c.head.isDigit)
+  protected def headIsLetter: Boolean = safeCheck(c => c.head.isLetter)
   protected def headIsWhitespace: Boolean = safeCheck(c => c.head.isWhitespace)
   protected def headIn(s: String): Boolean = safeCheck(c => s.contains(c))
   protected def headIsCloser: Boolean

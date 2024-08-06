@@ -353,7 +353,7 @@ class SBCSLexer extends LexerCommon:
     if programStack.isEmpty then
       throw VyxalException("No name provided for custom definition")
 
-    val name = simpleName()
+    val name = if headIsLetter then simpleName() else pop()
 
     tokens +=
       Token(
