@@ -349,6 +349,10 @@ class SBCSLexer extends LexerCommon:
       )
     eatWhitespace()
     val nameRangeStart = index
+
+    if programStack.isEmpty then
+      throw VyxalException("No name provided for custom definition")
+
     val name = simpleName()
 
     tokens +=
@@ -357,6 +361,9 @@ class SBCSLexer extends LexerCommon:
         s"$definitionType$name",
         Range(nameRangeStart, index),
       )
+
+    if programStack.isEmpty then
+      throw VyxalException("No parameters provided for custom definition")
 
     quickToken(TokenType.Branch, "|")
     val params = lambdaParameters

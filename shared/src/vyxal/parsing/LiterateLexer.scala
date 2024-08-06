@@ -5,6 +5,7 @@ import vyxal.Elements
 import vyxal.Modifier
 import vyxal.Modifiers
 import vyxal.UnopenedGroupException
+import vyxal.VyxalException
 
 import scala.collection.mutable.ArrayBuffer
 import scala.util.matching.Regex
@@ -132,7 +133,6 @@ class LiterateLexer extends LexerCommon:
     "relation<" -> StructureType.GeneratorStructure,
     "generate-from<" -> StructureType.GeneratorStructure,
     "generate<" -> StructureType.GeneratorStructure,
-    "define" -> StructureType.DefineStructure,
   )
 
   def lex(program: String): Seq[Token] =
@@ -195,6 +195,7 @@ class LiterateLexer extends LexerCommon:
       else if headLookaheadEqual("$@") then
         pop(2)
         commandSymbolToken
+      else if headLookaheadEqual("define") then customDefinitionToken
       else if headEqual("[") then
         pop()
         if unpackDepth > 0 then
@@ -314,13 +315,6 @@ class LiterateLexer extends LexerCommon:
   private def getModifierFromKeyword(word: String): Modifier =
     Modifiers.modifiers.values.find(mod => mod._3.contains(word)).get
 
-  private def moveRightToken: Unit =
-    val start = index
-    val quotes = StringBuilder()
-    while headEqual("'") do quotes ++= pop(1)
-    val value = quotes.toString()
-    addToken(LitToken(MoveRight, value, Range(start, index)))
-
   /** Number = 0 | [1-9][0-9]*(\.[0-9]*)? | \.[0-9]* */
   private def numberToken: Unit =
     val rangeStart = index
@@ -402,6 +396,41 @@ class LiterateLexer extends LexerCommon:
       if headEqual("_") then pop()
       else numberVal ++= s"${pop()}"
     numberVal.toString()
+
+  private def customDefinitionToken: Unit =
+    val rangeStart = index
+    pop()
+    tokens +=
+      Token(
+        TokenType.StructureOpen,
+        "#::",
+        Range(rangeStart, index),
+      )
+    eatWhitespace()
+    if !headLookaheadMatch("(element|modifier)") then
+      throw VyxalException(
+        s"Invalid definition type. Expected \"element\" or \"modifier\""
+      )
+    val definitionType = pop().toUpperCase()
+    while !headIsWhitespace do pop()
+    eatWhitespace()
+    val nameRangeStart = index
+    val name = simpleName()
+
+    tokens +=
+      Token(
+        TokenType.Param,
+        s"$definitionType$name",
+        Range(nameRangeStart, index),
+      )
+
+    quickToken(TokenType.Branch, "|")
+    val params = lambdaParameters
+    val arity = calcArity(params)
+
+    symbolTable += s"$definitionType$name" -> arity
+
+  end customDefinitionToken
 
   lazy val mapping: Map[String, String] =
     Elements.elements.values.view.flatMap { elem =>
