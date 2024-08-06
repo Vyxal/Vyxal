@@ -274,7 +274,11 @@ class LiterateLexer extends LexerCommon:
     then return
 
     while safeCheck(c =>
-        c.head.isLetterOrDigit || "_<>?!*+\\-=&%'@:".contains(c)
+        c.head.isLetterOrDigit || "_<>?!*+\\-=&%'@".contains(c) ||
+          (c == ":" &&
+            keyword.lastOption
+              .flatMap(c => Some(c.isLetterOrDigit))
+              .getOrElse(false))
       )
     do keyword ++= pop(1)
     val value = removeDoubleNt(keyword.toString())
