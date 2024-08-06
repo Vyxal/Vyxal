@@ -541,6 +541,7 @@ private class Parser:
         // Implementation: The implementation of the element/modifier
         // Arity: How many arguments the element/modifier takes
         // Args: The names of the arguments given to the implementation
+        println(branches)
         val (name, functions, args, impl) = branches match
           case List() => throw EmptyRedefine()
           case List(name, impl) => (name, (List() -> 0), (List() -> 0), impl)

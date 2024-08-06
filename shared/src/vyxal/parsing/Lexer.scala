@@ -237,7 +237,6 @@ abstract class LexerCommon:
   )
 
   protected var index = 0
-  val symbolTable = mutable.Map[String, Option[Int]]()
   protected val programStack = Stack[String]()
   protected val tokens = ArrayBuffer[Token]()
 

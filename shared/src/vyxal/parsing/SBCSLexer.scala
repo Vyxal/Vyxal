@@ -333,7 +333,6 @@ class SBCSLexer extends LexerCommon:
         if headEqual(",") then pop()
         eatWhitespace()
       end while
-      symbolTable += name -> Some(arity)
     end if
   end defineExtensionToken
 
@@ -370,15 +369,6 @@ class SBCSLexer extends LexerCommon:
 
     if programStack.isEmpty then
       throw VyxalException("No parameters provided for custom definition")
-
-    eatWhitespace()
-    eat("|")
-    index -= 1
-    quickToken(TokenType.Branch, "|")
-    val params = lambdaParameters
-    val arity = calcArity(params)
-
-    symbolTable += s"$definitionType$name" -> arity
 
   end customDefinitionToken
 end SBCSLexer

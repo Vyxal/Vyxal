@@ -2,7 +2,6 @@ package vyxal.parsing
 
 import vyxal.parsing.TokenType.*
 import vyxal.Elements
-import vyxal.MiscHelpers.add
 import vyxal.Modifier
 import vyxal.Modifiers
 import vyxal.UnopenedGroupException
@@ -433,12 +432,6 @@ class LiterateLexer extends LexerCommon:
         Range(nameRangeStart, index),
       )
 
-    quickToken(TokenType.Branch, "|")
-    val params = lambdaParameters
-    val arity = calcArity(params)
-
-    symbolTable += s"$definitionType$name" -> arity
-
   end customDefinitionToken
 
   private def defineExtensionToken: Unit =
@@ -482,7 +475,6 @@ class LiterateLexer extends LexerCommon:
         if headEqual(",") then pop()
         eatWhitespace()
       end while
-      symbolTable += name -> Some(arity)
     end if
   end defineExtensionToken
 
