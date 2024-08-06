@@ -513,8 +513,8 @@ class InterpreterTests extends VyxalTests:
           Seq(),
         )
 
-        testCode("#:: @+ | lhs, rhs | #$lhs #$rhs -} 4 6 +", VNum(2), Seq())
-        testCode("#:: @+ | lhs, rhs | #$lhs #$rhs -} 1 1 +", VNum(0), Seq())
+        testCode("#::E + | lhs, rhs | #$lhs #$rhs -} 4 6 +", VNum(2), Seq())
+        testCode("#::E + | lhs, rhs | #$lhs #$rhs -} 1 1 +", VNum(0), Seq())
 
         testCode(
           "#::M ReduceRange | f | 1 | ɾ #$f R } 5 #:`ReduceRange +",
