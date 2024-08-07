@@ -236,10 +236,10 @@ To define an extension method:
 
 ```
 extension symbol given
-  argA > typeA,
-  argB > typeB,
+  argA as typeA,
+  argB as typeB,
   ...
-  argN > typeN
+  argN as typeN
 does
     implementation
 }
