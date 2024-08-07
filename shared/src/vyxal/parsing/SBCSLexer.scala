@@ -1,255 +1,374 @@
 package vyxal.parsing
 
-import scala.language.strictEquality
+import vyxal.SugarMap
+import vyxal.VyxalException
 
-import vyxal.{Elements, Modifiers, SugarMap, VyxalYikesException}
-import vyxal.parsing.Common.given // For custom whitespace
-import vyxal.parsing.Common.withRange
-import vyxal.parsing.TokenType.*
+class SBCSLexer extends LexerCommon:
 
-import fastparse.*
-
-private[parsing] object SBCSLexer:
-  /** Whether the code lexed so far has sugar trigraphs */
+  private var unpackDepth = 0
   var sugarUsed = false
 
-  def string[$: P]: P[Token] =
-    P(
-      withRange(
-        "\"" ~~/
-          (("\\" ~~/ AnyChar) | (!CharIn("\"„”“") ~~ AnyChar)).repX.! ~~
-          (CharIn("\"„”“").! | End)
-      )
-    ).map {
-      case ((value, last), range) =>
-        // If the last character of each token is ", then it's a normal string
-        // If the last character of each token is „, then it's a compressed string
-        // If the last character of each token is ”, then it's a dictionary string
-        // If the last character of each token is “, then it's a compressed number
+  def headIsOpener: Boolean =
+    headIn("[({ṆḌƛΩ₳µ⟨") || headLookaheadEqual("#[") ||
+      headLookaheadEqual("#{") || headLookaheadEqual("#::R") ||
+      headLookaheadEqual("#::+") || headLookaheadMatch("#::[EM]")
 
-        // So replace the non-normal string tokens with the appropriate token type
+  def headIsBranch: Boolean = headEqual("|")
 
-        // btw thanks to @pxeger and @mousetail for the regex
+  def headIsCloser: Boolean = headEqual("}")
 
-        val text = value
-          .replace("\\\"", "\"")
-          .replace(raw"\n", "\n")
-          .replace(raw"\t", "\t")
-
-        last match
-          case quote: String =>
-            val tokenType = quote match
-              case "\"" => Str
-              case "„" => CompressedString
-              case "”" => DictionaryString
-              case "“" => CompressedNumber
-
-            Token(tokenType, text, range)
-          case _ => Token(Str, text, range)
-    }
-
-  def singleCharString[$: P]: P[Token] = parseToken(Str, P("'" ~~ AnyChar.!))
-
-  def twoCharString[$: P]: P[Token] =
-    parseToken(Str, P("ᶴ" ~~/ (AnyChar ~~ AnyChar).!))
-
-  def twoCharNumber[$: P]: P[Token] =
-    withRange(P("~" ~~/ (AnyChar ~~ AnyChar).!)).map {
-      case (value, range) => Token(
-          Number,
-          value.zipWithIndex
-            .map((c, ind) =>
-              math.pow(Lexer.Codepage.length, ind) * Lexer.Codepage.indexOf(c)
-            )
-            .sum
-            .toString,
-          range,
-        )
-    }
-
-  def structureOpen[$: P]: P[Token] =
-    parseToken(
-      StructureOpen,
-      StringIn("[", "{", "(", "#{", "Ḍ", "Ṇ", "#::").! | Common.lambdaOpen,
-    ) // StructureType.values.map(_.open.!).reduce(_ | _))
-  // TODO(user): figure out why the commented version doesn't work
-
-  def structureSingleClose[$: P]: P[Token] = parseToken(StructureClose, "}".!)
-
-  def structureDoubleClose[$: P]: P[Token] =
-    parseToken(StructureDoubleClose, ")".!)
-
-  def structureAllClose[$: P]: P[Token] = parseToken(StructureAllClose, "]".!)
-
-  def listOpen[$: P]: P[Token] = parseToken(ListOpen, StringIn("#[", "⟨").!)
-
-  def listClose[$: P]: P[Token] = parseToken(ListClose, StringIn("#]", "⟩").!)
-
-  def digraph[$: P]: P[Token] =
-    withRange(
-      (StringIn("∆", "#.\\", "ø", "#,/", "Þ", "#.)", "k") ~~ !CharIn("|") ~~/
-        (trigraphStr | AnyChar)).! |
-        // Note: [.,^] must be included here to avoid matching sugar trigraphs
-        ("#" ~~ !CharIn("[]$!=#>@{:.,^") ~~ AnyChar).!
-    ).map {
-      case (rawDigraph, range) =>
-        // Desugar the "digraph" if the first character was a trigraph
-        val (rawFirst, rawSecond) =
-          if rawDigraph.length == 2 then
-            (rawDigraph.substring(0, 1), rawDigraph.substring(1))
-          else if rawDigraph.startsWith("#") then
-            (rawDigraph.substring(0, 3), rawDigraph.substring(3))
-          else (rawDigraph.substring(0, 1), rawDigraph.substring(1))
-        val digraph = SugarMap.trigraphs.getOrElse(rawFirst, rawFirst) +
-          SugarMap.trigraphs.getOrElse(rawSecond, rawSecond)
-        if Elements.elements.contains(digraph) then
-          Token(Command, digraph, range)
-        else if Modifiers.modifiers.contains(digraph) then
-          val modifier = Modifiers.modifiers(digraph)
-          val tokenType = modifier.arity match
-            case 1 => MonadicModifier
-            case 2 => DyadicModifier
-            case 3 => TriadicModifier
-            case 4 => TetradicModifier
-            case -1 => SpecialModifier
-            case arity =>
-              throw VyxalYikesException(s"Invalid modifier arity: $arity")
-          Token(tokenType, digraph, range)
-        else Token(Digraph, digraph, range)
-    }
-
-  def unpackTrigraph[$: P]: P[Token] = parseToken(UnpackTrigraph, "#:[".!)
-
-  def trigraphStr[$: P]: P[String] = P(("#" ~~ CharIn(".,^") ~~/ AnyChar).!)
-
-  def sugarTrigraph[$: P]: P[Token] =
-    withRange(trigraphStr).map {
-      case (value, range) =>
-        this.sugarUsed = true
-        SugarMap.trigraphs
-          .get(value)
-          .flatMap(char => Some(this.lex(char)).map(_.head))
-          .getOrElse(Token(Command, value, range))
-    }
-
-  private val allCommands =
-    (Lexer.Codepage.replaceAll(raw"[|\[\](){}\s]", "") +
-      Lexer.UnicodeCommands).toSet
-
-  def command[$: P]: P[Token] = parseToken(Command, CharPred(allCommands).!)
-
-  def monadicModifier[$: P]: P[Token] =
-    // parseToken(MonadicModifier, CharIn("ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/@").!)
-    parseToken(MonadicModifier, CharIn("ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/").!)
-
-  def dyadicModifier[$: P]: P[Token] =
-    parseToken(DyadicModifier, CharIn("ϩ∥∦ᵉ").!)
-
-  def triadicModifier[$: P]: P[Token] =
-    parseToken(TriadicModifier, CharIn("эᶠ").!)
-
-  def tetradicModifier[$: P]: P[Token] =
-    parseToken(TetradicModifier, CharIn("Чᴳ").!)
-
-  def specialModifier[$: P]: P[Token] =
-    parseToken(SpecialModifier, CharIn("ᵜ").!)
-
-  def branch[$: P]: P[Token] = parseToken(Branch, "|".!)
-
-  def sbcsDecimal[$: P]: P[String] =
-    P(
-      (((Common.int ~~/ ("." ~~ Common.digits.?).?) |
-        ("." ~~/ Common.digits.?)) ~~ "_".?).!
-    )
-  def sbcsNumber[$: P]: P[Token] =
-    parseToken(
-      Number,
-      ((sbcsDecimal ~~ ("ı".! ~~ (sbcsDecimal | "_".!).?).?) |
-        "ı".! ~~
-        (sbcsDecimal ~~ "_".?).?).!,
-    ).opaque("<number (SBCS)>")
-
-  def contextIndex[$: P]: P[Token] =
-    parseToken(ContextIndex, (Common.digits ~ "¤") | "¤".!)
-
-  def getVariable[$: P]: P[Token] = parseToken(GetVar, "#$" ~~/ Common.varName)
-
-  def setVariable[$: P]: P[Token] = parseToken(SetVar, "#=" ~~/ Common.varName)
-
-  def modifierSymbol[$: P]: P[Token] =
-    parseToken(ModifierSymbol, "#:`" ~~/ Common.varName)
-
-  def elementSymbol[$: P]: P[Token] =
-    parseToken(ElementSymbol, "#:@" ~~/ Common.varName)
-
-  def originalSymbol[$: P]: P[Token] =
-    parseToken(OriginalSymbol, "#:~" ~ CharPred(allCommands).!)
-
-  def defineObj[$: P]: P[Token] =
-    parseToken(DefineRecord, "#:R" ~/ Common.varName)
-
-  def defineExtension[$: P]: P[Token] =
-    parseToken(
-      DefineExtension,
-      "#:>>".!,
-    )
-
-  def setConstant[$: P]: P[Token] =
-    parseToken(Constant, "#!" ~~/ Common.varName)
-
-  def augVariable[$: P]: P[Token] =
-    parseToken(AugmentVar, "#>" ~~/ Common.varName)
-
-  def newlines[$: P]: P[Token] = parseToken(Newline, Common.eol.!)
-
-  def comment[$: P]: P[Token] =
-    parseToken(Comment, "##" ~~/ CharsWhile(c => c != '\n' && c != '\r').?.!)
-
-  def modifier[$: P]: P[Token] =
-    P(
-      monadicModifier | dyadicModifier | triadicModifier | tetradicModifier |
-        specialModifier
-    )
-
-  def structureToken[$: P]: P[Token] =
-    P(
-      structureOpen | structureSingleClose | structureAllClose | listOpen |
-        listClose
-    )
-
-  def varToken[$: P]: P[Token] =
-    P(augVariable | getVariable | setVariable | setConstant)
-
-  def literal[$: P]: P[Token] =
-    P(sbcsNumber | string | twoCharNumber | twoCharString | singleCharString)
-
-  def token[$: P]: P[Token] =
-    P(
-      comment | digraph | sugarTrigraph | unpackTrigraph | branch |
-        defineExtension | modifierSymbol | defineObj | elementSymbol |
-        originalSymbol | contextIndex | literal | varToken | modifier |
-        structureToken | newlines | command
-    )
-
-  def parseToken[$: P](
+  def addToken(
       tokenType: TokenType,
-      tokenParser: => P[String],
-  ): P[Token] =
-    withRange(tokenParser)
-      .map { (value, range) =>
-        Token(tokenType, value, range)
-      }
-      .opaque(tokenType.toString)
-  // structureDoubleClose (")") has to be here to avoid interfering with `normalGroup` in literate lexer
-  def parseAll[$: P]: P[Seq[Token]] =
-    P((token | structureDoubleClose).rep ~ End)
+      value: String,
+      range: Range,
+  ): Unit = tokens += Token(tokenType, value, range)
 
-  def lex(code: String): List[Token] =
-    parse(code, this.parseAll) match
-      case Parsed.Success(res, ind) =>
-        if ind == code.length then res.toList
-        else throw LexingException.LeftoverCodeException(code.substring(ind))
-      case f @ Parsed.Failure(label, index, extra) =>
-        val trace = f.trace()
-        throw LexingException.Fastparse(trace.longMsg)
+  def dropLastToken(): Unit = tokens.dropRightInPlace(1)
+
+  def lex(program: String): Seq[Token] =
+    programStack.pushAll(program.reverse.map(_.toString))
+
+    while programStack.nonEmpty do
+      if headIsDigit || headEqual(".") then numberToken
+      else if headEqual("\n") then quickToken(TokenType.Newline, "\n")
+      else if headIsWhitespace then pop(1)
+      else if headEqual("\"") then stringToken(false)
+      else if headEqual("'") then
+        pop()
+        if programStack.isEmpty then
+          addToken(TokenType.Command, "'", Range(index - 1, index))
+        else oneCharStringToken
+      else if headEqual("ᶴ") then twoCharStringToken
+      else if headEqual("~") then twoCharNumberToken
+      else if headIn("∆øÞk") || headLookaheadMatch("""#[^\[\]$!=#>@{:.,^]""")
+      then digraphToken
+      else if headLookaheadEqual("##") then
+        pop(2)
+        while safeCheck(c => c != "\n" && c != "\r") do pop()
+      else if headLookaheadMatch("#[.,^]") then sugarTrigraph
+      else if headLookaheadEqual("#[") then quickToken(TokenType.ListOpen, "#[")
+      else if headLookaheadEqual("⟨") then
+        pop()
+        addToken(TokenType.ListOpen, "#[", Range(index - 1, index))
+      else if headLookaheadEqual("#]") then
+        quickToken(TokenType.ListClose, "#]")
+      else if headLookaheadEqual("⟩") then
+        pop()
+        addToken(TokenType.ListClose, "#]", Range(index - 1, index))
+      else if unpackDepth > 1 && headEqual("[") then
+        addToken(TokenType.StructureOpen, "[", Range(index, index))
+        unpackDepth += 1
+      else if unpackDepth > 1 && headEqual("]") then
+        addToken(TokenType.StructureAllClose, "]", Range(index, index))
+        unpackDepth -= 1
+      else if headIn("[({ṆḌƛΩ₳µ") then
+        quickToken(TokenType.StructureOpen, s"${programStack.head}")
+      else if headEqual("λ") then
+        quickToken(TokenType.StructureOpen, "λ")
+        lambdaParameters
+      else if headLookaheadEqual("#{") then
+        quickToken(TokenType.StructureOpen, "#{")
+      else if headLookaheadEqual("#:[") then
+        quickToken(TokenType.UnpackTrigraph, "#:[")
+      else if headIn("ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/") then
+        quickToken(TokenType.MonadicModifier, s"${programStack.head}")
+      else if headIn("ϩ∥∦ᵉ") then
+        quickToken(TokenType.DyadicModifier, s"${programStack.head}")
+      else if headIn("эᶠ") then
+        quickToken(TokenType.TriadicModifier, s"${programStack.head}")
+      else if headIn("Чᴳ") then
+        quickToken(TokenType.TetradicModifier, s"${programStack.head}")
+      else if headIn("ᵜ") then
+        quickToken(TokenType.SpecialModifier, s"${programStack.head}")
+      else if headEqual("|") then quickToken(TokenType.Branch, "|")
+      else if headEqual("¤") then contextIndexToken
+      else if headLookaheadEqual("#$") then
+        pop(2)
+        getVariableToken
+      else if headLookaheadEqual("#=") then
+        pop(2)
+        setVariableToken
+      else if headLookaheadEqual("#!") then
+        pop(2)
+        setConstantToken
+      else if headLookaheadEqual("#>") then
+        pop(2)
+        augmentedAssignToken
+      else if headLookaheadEqual("#:[") then
+        pop(3)
+        addToken(TokenType.UnpackTrigraph, "#:[", Range(index - 3, index))
+        unpackDepth = 1
+      else if headLookaheadEqual("#:~") then
+        pop(3)
+        originalCommandToken
+      else if headLookaheadEqual("#:@") then
+        pop(3)
+        commandSymbolToken
+      else if headLookaheadEqual("#:=") then
+        pop(3)
+        modifierSymbolToken
+      else if headLookaheadEqual("#::R") then
+        pop(4)
+        defineRecordToken
+      else if headLookaheadEqual("#::+") then
+        pop(4)
+        defineExtensionToken
+      else if headLookaheadMatch("#::[EM]") then customDefinitionToken
+      else if headLookaheadEqual("#[") || headEqual("⟨") then
+        quickToken(TokenType.ListOpen, "#[")
+      else if headEqual("#]") || headEqual("⟩") then
+        quickToken(TokenType.ListClose, "#]")
+      else if headEqual("}") then quickToken(TokenType.StructureClose, "}")
+      else if headEqual(")") then
+        quickToken(TokenType.StructureDoubleClose, ")")
+      else if headEqual("]") then quickToken(TokenType.StructureAllClose, "]")
+      else
+        val rangeStart = index
+        val char = pop()
+        tokens +=
+          Token(
+            TokenType.Command,
+            char,
+            Range(rangeStart, index),
+          )
+    end while
+
+    tokens.toSeq
+  end lex
+
+  /** Number = 0 | [1-9][0-9]*(\.[0-9]*)? _? | \.[0-9]* _? */
+  private def numberToken: Unit =
+    val rangeStart = index
+    // Check the single zero case
+    if headLookaheadMatch("0[^.ı]") then
+      val zeroToken = Token(TokenType.Number, "0", Range(index, index))
+      pop(1)
+      tokens += zeroToken
+    // Then the headless decimal case
+    else if headEqual(".") then
+      pop(1)
+      if safeCheck(c => c.head.isDigit) then
+        val head = simpleNumber()
+        val numberToken = Token(
+          TokenType.Number,
+          s"0.$head",
+          Range(rangeStart, index),
+        )
+        tokens += numberToken
+      else
+        val zeroToken = Token(
+          TokenType.Number,
+          "0.5",
+          Range(rangeStart, index),
+        )
+        tokens += zeroToken
+    else
+      // Not a 0, and not a headless decimal, so it's a normal number
+      val head = simpleNumber()
+      // Test for a decimal tail
+      if headEqual(".") then
+        pop(1)
+        if safeCheck(c => c.head.isDigit) then
+          val tail = simpleNumber()
+          val isNegative = headEqual("_")
+          val numberToken = Token(
+            TokenType.Number,
+            s"${if isNegative then pop() else ""}$head.$tail",
+            Range(rangeStart, index),
+          )
+          tokens += numberToken
+        else
+          val numberToken = Token(
+            TokenType.Number,
+            s"$head.5",
+            Range(rangeStart, index),
+          )
+          tokens += numberToken
+      // No decimal tail, so normal number
+      else
+        val isNegative = headEqual("_")
+        val numberToken = Token(
+          TokenType.Number,
+          (if isNegative then pop() else "") + head,
+          Range(rangeStart, index),
+        )
+        tokens += numberToken
+    end if
+    if headEqual("ı") then
+      // Grab an imaginary part and merge with the previous number
+      pop()
+      val combinedTokenValue =
+        (tokens.lastOption match
+          case None => ""
+          case Some(token) => token.value
+        ) + "ı"
+      tokens.dropRightInPlace(1)
+      numberToken
+      val finalTokenValue = combinedTokenValue +
+        (tokens.lastOption match
+          case None => ""
+          case Some(token) => token.value
+        )
+      tokens.dropRightInPlace(1)
+      tokens +=
+        Token(TokenType.Number, finalTokenValue, Range(rangeStart, index))
+    end if
+
+  end numberToken
+
+  private def simpleNumber(): String =
+    val numberVal = StringBuilder()
+    while safeCheck(c => c.head.isDigit) do numberVal ++= s"${pop()}"
+    numberVal.toString()
+
+  private def oneCharStringToken: Unit =
+    val rangeStart = index - 1
+    val char = pop()
+    tokens +=
+      Token(
+        TokenType.Str,
+        char,
+        Range(rangeStart, index),
+      )
+
+  private def twoCharStringToken: Unit =
+    val rangeStart = index
+    pop() // Pop the opening quote
+    val char = pop(2)
+    tokens +=
+      Token(
+        TokenType.Str,
+        char,
+        Range(rangeStart, index),
+      )
+
+  private def twoCharNumberToken: Unit =
+    val rangeStart = index
+    pop() // Pop the tilde
+    val char = pop(2)
+    tokens +=
+      Token(
+        TokenType.Number,
+        char.zipWithIndex
+          .map((c, ind) => math.pow(Codepage.length, ind) * Codepage.indexOf(c))
+          .sum
+          .toString,
+        Range(rangeStart, index),
+      )
+
+  /** Digraph = [∆øÞ] . | # [^[]$!=#>@{:] */
+  private def digraphToken: Unit =
+    val rangeStart = index
+
+    val digraphType = pop(1)
+
+    if headEqual("#") then sugarTrigraph
+
+    val digraphChar = pop()
+
+    tokens +=
+      Token(
+        TokenType.Digraph,
+        s"$digraphType$digraphChar",
+        Range(rangeStart, index),
+      )
+
+  /** Convert a sugar trigraph to its normal form */
+  private def sugarTrigraph: Unit =
+    val trigraph = pop(3)
+    val normal = SugarMap.trigraphs.getOrElse(trigraph, trigraph)
+    programStack.pushAll(normal.reverse.map(_.toString))
+    sugarUsed = true
+
+  private def contextIndexToken: Unit =
+    val rangeStart = index
+    pop()
+    val value = simpleNumber()
+    tokens +=
+      Token(
+        TokenType.ContextIndex,
+        value,
+        Range(rangeStart, index),
+      )
+
+  /** Extension ::= "#::+" [a-zA-Z_][a-zA-Z0-9_] "|" (Name ">" Name)* "|" impl }
+    */
+  private def defineExtensionToken: Unit =
+    val rangeStart = index
+    eatWhitespace()
+    val name = if headLookaheadMatch(". ") then pop() else simpleName()
+    addToken(
+      TokenType.DefineExtension,
+      "",
+      Range(rangeStart, index),
+    )
+    addToken(
+      TokenType.Param,
+      name,
+      Range(rangeStart, index),
+    )
+    eatWhitespace()
+    if headEqual("|") then
+      pop()
+      // Get the arguments and put them into tokens
+      var arity = 0
+      while !headEqual("|") do
+        eatWhitespace()
+        val argNameStart = index
+        val argName = simpleName()
+        addToken(
+          TokenType.Param,
+          argName,
+          Range(argNameStart, index),
+        )
+        eatWhitespace()
+        eat(">")
+        eatWhitespace()
+        val argTypeStart = index
+        val argType = if headEqual("*") then pop() else simpleName()
+        addToken(
+          TokenType.Param,
+          argType,
+          Range(argTypeStart, index),
+        )
+        arity += 1
+        if headEqual(",") then pop()
+        eatWhitespace()
+      end while
+    end if
+  end defineExtensionToken
+
+  private def customDefinitionToken: Unit =
+    val rangeStart = index
+    pop(3)
+    addToken(
+      TokenType.StructureOpen,
+      "#::",
+      Range(rangeStart, index),
+    )
+    val definitionType = pop()
+    if !"EM".contains(definitionType) then
+      throw VyxalException(
+        s"Invalid definition type: $definitionType. Expected E or M"
+      )
+
+    eatWhitespace()
+
+    val nameRangeStart = index
+
+    if programStack.isEmpty then
+      throw VyxalException("No name provided for custom definition")
+
+    val name = if headIsLetter then simpleName() else pop()
+
+    addToken(
+      TokenType.Param,
+      s"$definitionType$name",
+      Range(nameRangeStart, index),
+    )
+
+    if programStack.isEmpty then
+      throw VyxalException("No parameters provided for custom definition")
+
+  end customDefinitionToken
 end SBCSLexer

@@ -142,24 +142,6 @@ stuff for modifiers (unless arity grouped).
 This suffix serves no practical purpose other than to provide a laugh and
 pontentially upvotes on your answer.
 
-### Keyword Moving
-
-Prepending a `'` in front of a keyword will move it right once when
-converting to sbcs. For example, `3 'times 4` will be converted to
-`3 4 times` and then `3 4×`.
-
-These can be stacked. `''times 3 4` will be converted to `3 4 times` and
-then `3 4×`.
-
-The purpose of this is to allow for more prac-lang looking literate programs.
-
-Using `'` does not increase the SBCS byte count.
-
-Using `'` inside a group will move the keyword within the group, and will
-not move it outside of the group. The same is true for inside functions.
-
-A `'` before a group or `{}` lambda will move the entire group/lambda right once.
-
 ## Usage for Golfing
 
 Literate mode is scored in UTF-8. That's because there is no codepage. If you want to use literate

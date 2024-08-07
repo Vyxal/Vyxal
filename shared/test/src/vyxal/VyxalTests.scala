@@ -1,5 +1,8 @@
 package vyxal
 
+import vyxal.parsing.Parser
+import vyxal.parsing.ParserResult
+
 import scala.compiletime.codeOf
 import scala.quoted.{Expr, Quotes}
 
@@ -34,6 +37,19 @@ trait VyxalTests extends AnyFunSpec:
       inputs: Seq[VAny] = Seq.empty,
   ) =
     val ctx = VyxalTests.testContext(inputs = inputs)
+    Interpreter.execute(ast)(using ctx)
+    assert(!ctx.isStackEmpty)
+    assertResult(expected)(ctx.peek)
+
+  /** Like [[testCode]], but using parser results */
+  def testInterpreter(input: ParserResult, expected: VAny) =
+    val ParserResult(ast, customDefns, classes, extensions) = input
+    val ctx = VyxalTests.testContext()
+    ctx.globals.originalProgram = ast
+    ctx.globals.symbols = customDefns
+    ctx.globals.classes = classes
+    ctx.globals.extensions = extensions
+
     Interpreter.execute(ast)(using ctx)
     assert(!ctx.isStackEmpty)
     assertResult(expected)(ctx.peek)

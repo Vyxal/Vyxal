@@ -19,9 +19,9 @@ case class ParserResult(
 
 object Parser:
   @throws[ParsingException]
-  def parse(tokens: List[Token]): ParserResult =
+  def parse(tokens: Seq[Token]): ParserResult =
     val parser = Parser()
-    val ast = parser.parse(tokens)
+    val ast = parser.parse(tokens.toList)
     ParserResult(
       ast,
       parser.customs.toMap,
@@ -226,11 +226,12 @@ private class Parser:
         case TokenType.DefineExtension =>
           val branches =
             parseBranches(program, false)(_ == TokenType.StructureClose)
-          if branches.size < 3 then throw BadStructureException("extension")
+
+          if branches.size != 3 then throw BadStructureException("extension")
           var symbol = branches.head.toVyxal
           if symbol.length() > 1 then symbol = toValidName(symbol)
 
-          val arguments = branches.tail.init
+          val arguments = branches(1).asInstanceOf[AST.Group].elems
           if arguments.size % 2 != 0 then
             throw BadStructureException("extension")
           val argPairs = arguments.grouped(2).toList.transpose
@@ -309,14 +310,11 @@ private class Parser:
           if depth != -1 then names += ((name, depth))
           asts.push(AST.UnpackVar(names.toList))
         case TokenType.Param => asts.push(AST.Parameter(value))
-        case TokenType.Digraph =>
-          if !value.startsWith("k") then
-            throw NoSuchElementException(token.value)
-          else asts.push(AST.Command(value))
+        case TokenType.Digraph => asts.push(AST.Command(value))
       end match
     end while
     // Second stage parsing
-    val finalAsts = parse(asts)
+    val finalAsts = parse(asts).filter(_ != AST.NotAnAST)
     AST.makeSingle(finalAsts.toList*)
   end parse
 
@@ -544,7 +542,7 @@ private class Parser:
         // Implementation: The implementation of the element/modifier
         // Arity: How many arguments the element/modifier takes
         // Args: The names of the arguments given to the implementation
-
+        println(branches)
         val (name, functions, args, impl) = branches match
           case List() => throw EmptyRedefine()
           case List(name, impl) => (name, (List() -> 0), (List() -> 0), impl)
@@ -557,10 +555,10 @@ private class Parser:
         val nameString = name.toVyxal
         val actualName =
           if nameString.length() == 2 then nameString(1).toString()
-          else toValidName(nameString)
+          else toValidName(nameString.tail)
         val mode = nameString.headOption match
-          case Some('@') => CustomElementType.Element
-          case Some('*') => CustomElementType.Modifier
+          case Some('E') => CustomElementType.Element
+          case Some('M') => CustomElementType.Modifier
           case _ => throw BadRedefineMode(
               nameString.headOption.getOrElse("").toString()
             )
@@ -589,7 +587,7 @@ private class Parser:
           (functions(0) -> args(0)),
         )
 
-        AST.Group(List(), None)
+        AST.NotAnAST
 
       case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
           StructureType.LambdaFilter | StructureType.LambdaReduce |
@@ -706,7 +704,7 @@ private class Parser:
         throw UnmatchedCloserException(preprocessed.dequeue())
       // Some tokens were left at the end, which should never happen
       throw TokensFailedParsingException(preprocessed.toList)
-    else postprocess(parsed)
+    parsed
 
   private def preprocess(tokens: List[Token]): List[Token] =
     val doubleClose = ListBuffer[Token]()
@@ -743,21 +741,6 @@ private class Parser:
     end while
     processed.toList
   end preprocess
-
-  private def postprocess(asts: AST): AST =
-    val temp = asts match
-      case AST.Group(elems, _, _) =>
-        val nilads = elems.reverse.takeWhile(isNilad).reverse
-        val rest = elems.dropRight(nilads.length)
-        AST.Group(nilads ++ rest, None)
-      case _ => asts
-    temp
-
-  private def isNilad(ast: AST) =
-    ast match
-      case AST.GetVar(_, _) => false // you might want a variable at the end
-      // after doing stuff like augmented assignment
-      case _ => ast.arity.contains(0)
 end Parser
 
 enum ParsingException(msg: String) extends VyxalException(msg):
@@ -804,6 +787,6 @@ enum ParsingException(msg: String) extends VyxalException(msg):
 
   case BadRedefineMode(mode: String)
       extends ParsingException(
-        s"Invalid redefine mode: '$mode'. Should either be @ for element, or * for modifier"
+        s"Invalid redefine mode: '$mode'. Should either be E for element, or Ms for modifier"
       )
 end ParsingException

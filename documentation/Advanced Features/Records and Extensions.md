@@ -131,7 +131,7 @@ control over the types involved in a function.
 To define an extension method:
 
 ```
-#:>> symbol | argA | typeA | argB | typeB | ... | argN | typeN | implementation }
+#::+ symbol | argA > typeA,  argB > typeB,  ...,  argN > typeN | implementation }
 ```
 
 * `symbol` is the symbol that will be used to call the extension method. This can
@@ -179,12 +179,12 @@ Lowest Priority
 ## Example
 
 ```
-#:R Map | 
+#::R Map | 
   #[#] #!keys
   #[#] #!values
 }
 
-#:>> put | value | * | key | * | mp | Map | 
+#::+ put | value > *, key > *, mp > Map | 
   #$mp "keys" ᵇi #$key & Ạ 
   #$mp "values" ᵇi #$value & Ạ
   #$mp

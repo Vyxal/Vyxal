@@ -5,8 +5,8 @@ Vyxal has a pretty extensive set of built-in elements and modifiers - over 200 o
 The general format of the define structure is as follows:
 
 ```
-#:: @<elementName> | <parameters> | <implementation> }
-#:: *<modifierName> | <element parameters> | <implemenation parameters> | <implementation> }
+#::E <elementName> | <parameters> | <implementation> }
+#::M <modifierName> | <element parameters> | <implemenation parameters> | <implementation> }
 ```
 
 ## The Name Branch
@@ -50,7 +50,7 @@ To use a custom modifier:
 ## Examples
 
 ```
-#:: @incrementAndHalf | x | #$x 1+ 2÷}
+#::E incrementAndHalf | x | #$x 1+ 2÷}
 5 #:@incrementAndHalf
 ```
 
@@ -58,19 +58,19 @@ prints `3`.
 
 ```
 ## Say for some obscure reason you want to redefine the `+` operator to be subtraction instead of addition.
-#:: @+ | lhs, rhs | #$lhs #$rhs -}
+#::E + | lhs, rhs | #$lhs #$rhs -}
 4 6 + ## -2
 1 1 + ## 0
 ```
 
 ```
-#:: *ReduceRange | f | 1 | ɾ #$f R }
+#::M ReduceRange | f | 1 | ɾ #$f R }
 5 #:`ReduceRange + ## 15
 
-#:: *RevRow | f | arr | #$arr V #$f M V } 
+#::M RevRow | f | arr | #$arr V #$f M V } 
 12ʀ4Ẇ #:`RevRow 1İ ## [[0,1,2], [4,5,6], [8,9,10]]
 
-#:: *p | f, g | ! | #$f Ḃ #=temp #$g Ė #$temp } ## Poor man's parallel apply
+#::M p | f, g | ! | #$f Ḃ #=temp #$g Ė #$temp } ## Poor man's parallel apply
 4 5 p+- ; ## [9, -1]
 ```
 
@@ -81,7 +81,7 @@ If you've overwritten a built-in element or modifier and want to get the origina
 E.g.
 
 ```
-#:: @+ | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}}
+#::E + | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}}
 ```
 
 
@@ -93,8 +93,8 @@ The literate mode syntax is roughly the same as SBCS, except instead of `#::`, `
 branch keywords:
 
 ```
-define @elementName | parameters | implementation }
-define *modifierName | element parameters | implementation parameters | implementation }
+define element elementName | parameters | implementation }
+define modifier modifierName | element parameters | implementation parameters | implementation }
 ```
 
 ```
@@ -105,13 +105,13 @@ $:modifierName <element(s)>
 For example:
 
 ```
-define @add given lhs, rhs as
+define element add given lhs, rhs as
   $lhs $rhs - 
 }
 3 4 $@add ## -1
 
 
-define @incrementAndHalf given x as
+define element incrementAndHalf given x as
   $x 1+ 2/
 }
 
@@ -121,10 +121,10 @@ define @incrementAndHalf given x as
 and modifiers:
 
 ```
-define *ReduceRange given (f | 1) | one->n $f reduce}
+define modifier ReduceRange given (f | 1) | one->n $f reduce}
 5 $:ReduceRange + ## 15
 
-define *RevRow given (f | arr) | $arr vec-reverse $f map vec-reverse}
+define modifier RevRow given (f | arr) | $arr vec-reverse $f map vec-reverse}
 12 zero-range 4 wrap-length $:RevRow (1 drop) ## [[0,1,2], [4,5,6], [8,9,10]]
 ```
 
@@ -132,7 +132,7 @@ One thing to note is that single character names will redefine for all keywords
 that turn into that character. E.g.
 
 ```
-define @+ given lhs, rhs as
+define element + given lhs, rhs as
   $lhs $rhs - 
 }
 3 4 add ## -1

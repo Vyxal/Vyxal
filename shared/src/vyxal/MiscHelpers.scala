@@ -86,7 +86,7 @@ object MiscHelpers:
     if VNum.NumRegex.matches(s) then VNum(s)
     else if s.matches("""("(?:[^"\\]|\\.)*["])""") then
       s.substring(1, s.length - 1)
-    else if Lexer.isList(s) then
+    else if isList(s) then
       val tokens = Lexer.lexLiterate(s)
       val tempContext = Context(globals = Globals(settings = ctx.settings))
       tempContext.settings = tempContext.settings.useMode(EndPrintMode.None)
@@ -135,6 +135,54 @@ object MiscHelpers:
     case (a: VObject, b: String) => MiscHelpers.getObjectMember(a, b)
     case (a: String, b: VObject) => MiscHelpers.getObjectMember(b, a)
   }
+
+  def isList(code: String): Boolean =
+    val stack = Stack[Char]()
+    stack.pushAll(code.reverse)
+    isList(stack)
+
+  private def isList(stack: Stack[Char]): Boolean =
+    if stack.isEmpty then return false
+    else if stack.head == '[' then
+      stack.pop()
+      while stack.nonEmpty do
+        // Skip whitespace
+        if stack.head.isWhitespace then stack.pop()
+        // Consume sublists
+        else if stack.head == '[' then
+          if !isList(stack) then return false
+          // and make sure there's a comma after it
+          if stack.head != ',' then return false
+        else if stack.head == ']' then
+          stack.pop()
+          if stack.isEmpty then return true
+          else return false
+        else if stack.head == '"' then
+          stack.pop()
+          var escaped = false
+          // Remove strings, making sure to skip escaped quotes
+          // and that lists inside strings are ignored
+          while stack.nonEmpty && (!escaped && stack.head != '"') do
+            if stack.head == '\\' then escaped = !escaped
+            else escaped = false
+            stack.pop()
+
+          // Make sure that the string is finished and that there's still
+          // stuff after it
+          if stack.isEmpty then return false
+          // and that there's a comma after it
+          if stack.head != ',' then return false
+          stack.pop()
+        else if stack.head == ',' then stack.pop()
+        else
+          stack.pop() // Sure there can be "invalid" list items here, but
+          // those'll be handled by the parser. We just want to see if something
+          // matches a list-like structure.
+      end while
+    end if
+    // Not starting with a [, so it's not a list
+    false
+  end isList
 
   val joinNothing: Monad = Monad.fill("joinNothing") {
     // ALTERNATIVE (No vectorisation):

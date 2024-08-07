@@ -1,6 +1,6 @@
 package vyxal
 
-import vyxal.parsing.Lexer
+import vyxal.parsing.{Lexer, Parser}
 
 import org.scalatest.tagobjects.Slow
 import spire.math.Real
@@ -8,9 +8,7 @@ import spire.math.Real
 class InterpreterTests extends VyxalTests:
   def testCodeAsLiterate(input: String, expected: VAny): Unit =
     val literate = Lexer.lexLiterate(input)
-    val sbcsified = Lexer.sbcsify(literate)
-    println(sbcsified)
-    testCode(sbcsified, expected)
+    testInterpreter(Parser.parse(literate), expected)
   describe("Literals") {
     it("should make lists") {
       testCode("#[1 | 2 3 + | 4#]", VList(1, 5, 4))
@@ -508,40 +506,40 @@ class InterpreterTests extends VyxalTests:
     it("does stuff") {
       group {
         testCode(
-          "#:: @incrementAndHalf | x | #$x 1+ 2÷} 5 #:@incrementAndHalf",
+          "#::E incrementAndHalf | x | #$x 1+ 2÷} 5 #:@incrementAndHalf",
           VNum(3),
           Seq(),
         )
 
-        testCode("#:: @+ | lhs, rhs | #$lhs #$rhs -} 4 6 +", VNum(2), Seq())
-        testCode("#:: @+ | lhs, rhs | #$lhs #$rhs -} 1 1 +", VNum(0), Seq())
+        testCode("#::E + | lhs, rhs | #$lhs #$rhs -} 4 6 +", VNum(2), Seq())
+        testCode("#::E + | lhs, rhs | #$lhs #$rhs -} 1 1 +", VNum(0), Seq())
 
         testCode(
-          "#:: *ReduceRange | f | 1 | ɾ #$f R } 5 #:`ReduceRange +",
+          "#::M ReduceRange | f | 1 | ɾ #$f R } 5 #:=ReduceRange +",
           VNum(15),
           Seq(),
         )
 
         testCode(
-          "#:: *RevRow | f | arr | #$arr V #$f M V } 12ʀ4Ẇ #:`RevRow 1İ",
+          "#::M RevRow | f | arr | #$arr V #$f M V } 12ʀ4Ẇ #:=RevRow 1İ",
           VList(VList(0, 1, 2), VList(4, 5, 6), VList(8, 9, 10)),
           Seq(),
         )
 
         testCode(
-          "#:: *p | f, g | ! | #$f Ḃ #=temp #$g Ė #$temp } 4 5 p+- ;",
+          "#::M p | f, g | ! | #$f Ḃ #=temp #$g Ė #$temp } 4 5 p+- ;",
           VList(9, -1),
           Seq(),
         )
 
         testCode(
-          "#:: @+ | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}} 2 2 +",
+          "#::E + | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}} 2 2 +",
           VNum(5),
           Seq(),
         )
 
         testCode(
-          "#:: @+ | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}} 6 9 +",
+          "#::E + | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}} 6 9 +",
           VNum(15),
           Seq(),
         )
@@ -600,7 +598,7 @@ class InterpreterTests extends VyxalTests:
   [] :=keys
 end
 
-extension (set) given
+extension set given
   val as *,
   key as *,
   mp as Map
@@ -609,7 +607,7 @@ does
   "values" (peek: @<=) $val append @=>
 end
 
-extension (get) given
+extension get given
   key as *,
   mp as Map
 does
@@ -617,7 +615,7 @@ does
   $mp "values" @<= index
 end
 
-extension (print) given
+extension print given
   mp as Map
 does
   $mp ["keys", "values"] @<= dump zip print

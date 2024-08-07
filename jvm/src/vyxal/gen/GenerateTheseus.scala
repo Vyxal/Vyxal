@@ -1,6 +1,6 @@
 package vyxal.gen
 
-import vyxal.parsing.Lexer
+import vyxal.parsing.Codepage
 import vyxal.Element
 import vyxal.Elements
 import vyxal.Flag
@@ -33,10 +33,10 @@ def generateDescriptions(): String =
   val data = HashMap[Int, ListBuffer[Map[String, String]]]()
   for
     (symbol, element) <- Elements.elements
-    if Lexer.Codepage.contains(symbol.last) && !symbol.startsWith("#|")
+    if Codepage.contains(symbol.last) && !symbol.startsWith("#|")
   do
     val token = symbol
-    val index = if token == " " then 32 else Lexer.Codepage.indexOf(token.last)
+    val index = if token == " " then 32 else Codepage.indexOf(token.last)
 
     val thisElement = HashMap[String, String]()
     thisElement("name") = element.name
@@ -52,8 +52,7 @@ def generateDescriptions(): String =
     info match
       case Modifier(name, description, keywords, _, overloads) =>
         val token = symbol
-        val index =
-          if token == " " then 32 else Lexer.Codepage.indexOf(token.last)
+        val index = if token == " " then 32 else Codepage.indexOf(token.last)
         val thisElement = HashMap[String, String]()
         thisElement("name") = name
         thisElement("description") = description
@@ -63,15 +62,13 @@ def generateDescriptions(): String =
 
         if data.contains(index) then data(index) += thisElement.toMap
         else data(index) = ListBuffer(thisElement.toMap)
-  end for
 
   for syntax <- SyntaxInfo.info do
     val (symbol, info) = syntax
     info match
       case Syntax(name, literate, description, usage) =>
         val token = symbol
-        val index =
-          if token == " " then 32 else Lexer.Codepage.indexOf(token.last)
+        val index = if token == " " then 32 else Codepage.indexOf(token.last)
         val thisElement = HashMap[String, String]()
         thisElement("name") = name
         thisElement("description") = s"${literate.mkString(" ")}\n$description"
@@ -83,10 +80,8 @@ def generateDescriptions(): String =
 
   val finalData = data.map(_ -> _.toList).toMap
 
-  val escapedCodepage = Lexer.Codepage
-    .replace("\\", "\\\\")
-    .replace("\"", "\\\"")
-    .replace("\n", "\\n")
+  val escapedCodepage =
+    Codepage.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n")
   val header =
     s"var codepage = \"$escapedCodepage\";\nvar codepage_descriptions ="
 
@@ -101,12 +96,12 @@ def generateData(): String =
     "syntax" -> ujson.Arr(),
     "flags" -> ujson.Arr(),
     "sugars" -> SugarMap.trigraphs,
-    "codepage" -> Lexer.Codepage,
+    "codepage" -> Codepage,
     "version" -> Interpreter.version,
   )
   for
     (symbol, element) <- Elements.elements
-    if Lexer.Codepage.contains(symbol.last) && !symbol.startsWith("#|")
+    if Codepage.contains(symbol.last) && !symbol.startsWith("#|")
   do
     val elementData = ujson.Obj()
     elementData("name") = element.name
