@@ -240,7 +240,7 @@ object js extends VyxalModule with ScalaJSModule {
 object native extends VyxalModule with ScalaNativeModule {
   val platform = "native"
 
-  def scalaNativeVersion = "0.5.3"
+  def scalaNativeVersion = "0.4.17"
 
   def ivyDeps =
     T {
