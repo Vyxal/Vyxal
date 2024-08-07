@@ -13,15 +13,13 @@ import mill.scalanativelib.api._
 trait VyxalModule extends ScalaModule with ScalafmtModule {
   override def scalaVersion = "3.3.1"
 
-  def vyxalVersion = "3.4.3"
+  def vyxalVersion = "3.4.2"
 
   def platform: String
 
   override def ivyDeps =
     Agg(
       ivy"org.typelevel::spire::0.18.0",
-      ivy"org.scala-lang.modules::scala-parser-combinators::2.3.0",
-      ivy"com.lihaoyi::fastparse::3.0.2",
       ivy"com.github.scopt::scopt::4.1.0",
       ivy"com.outr::scribe::3.13.2",
       ivy"org.scala-lang::toolkit:0.4.0",
@@ -240,7 +238,7 @@ object js extends VyxalModule with ScalaJSModule {
 object native extends VyxalModule with ScalaNativeModule {
   val platform = "native"
 
-  def scalaNativeVersion = "0.4.16"
+  def scalaNativeVersion = "0.5.3"
 
   def ivyDeps =
     T {
