@@ -23,9 +23,10 @@ jobs:
           - os: ubuntu-latest
             exe-name: vyxal-linux
             lto: thin
-          - os: macos-latest
-            exe-name: vyxal-macos
-            lto: full # Thin doesn't work on Apple silicon yet
+          # - os: macos-latest
+          #  exe-name: vyxal-macos
+          #  lto: full # Thin doesn't work on Apple silicon yet
+          # macos seems to be playing up
           - os: windows-latest
             exe-name: vyxal-windows
             lto: thin
