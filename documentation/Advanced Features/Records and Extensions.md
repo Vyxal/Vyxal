@@ -140,6 +140,7 @@ be any valid symbol allowed in a custom element.
 * `type` is the type of an argument to the extension method. This can be any valid type name, as well as `*`, which indicates an any type.
 * `implementation` is the implementation of the extension method. This will always
 be the last branch.
+* The types for numbers, strings, lists and functions are `num`, `str`, `lst` and `fun` respectively.
 
 To use an extension method, call it as you would any custom element:
 
@@ -246,7 +247,7 @@ does
 ```
 
 > [!note]
-> Any branch keyword can be used in place of `does`, `as`, `given` and `,`._
+> Any branch keyword can be used in place of `does` and `given`
 
 To use an extension method:
 
