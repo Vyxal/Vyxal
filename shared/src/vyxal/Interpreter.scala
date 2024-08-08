@@ -19,7 +19,7 @@ object Interpreter:
           else Lexer.lexSBCS(code)
         scribe.debug(s"Lexed tokens: $lexRes")
         val sugarless =
-          if ctx.settings.literate then Lexer.sbcsify(lexRes)
+          if ctx.settings.literate then None
           else
             Lexer.removeSugar(
               code
