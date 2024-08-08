@@ -22,7 +22,7 @@ simpler.
 To define a record:
 
 ```
-#:R RecordName |
+#::R RecordName |
   #$restrictedMember
   #=privateMember
   <data> #$restrictedMemberWithValue
@@ -96,7 +96,7 @@ restricted or private member, this will fail, unless inside an extension method.
 ## Example
 
 ```
-#:R Map | 
+#::R Map | 
   #[#] #!keys
   #[#] #!values
 }
