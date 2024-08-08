@@ -18,9 +18,12 @@ object Interpreter:
           if ctx.globals.settings.literate then Lexer.lexLiterate(code)
           else Lexer.lexSBCS(code)
         scribe.debug(s"Lexed tokens: $lexRes")
-        val sugarless = Lexer.removeSugar(
-          if ctx.settings.literate then Lexer.sbcsify(lexRes) else code
-        )
+        val sugarless =
+          if ctx.settings.literate then Lexer.sbcsify(lexRes)
+          else
+            Lexer.removeSugar(
+              code
+            )
         sugarless match
           case Some(code) => scribe.debug(s"Sugarless: $code")
 
