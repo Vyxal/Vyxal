@@ -309,7 +309,7 @@ class SBCSLexer extends LexerCommon:
     )
     eatWhitespace()
     if headEqual("|") then
-      pop()
+      quickToken(TokenType.Branch, "|")
       // Get the arguments and put them into tokens
       var arity = 0
       while !headEqual("|") do
