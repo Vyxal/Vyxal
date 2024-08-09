@@ -163,16 +163,16 @@ object MiscHelpers:
           // Remove strings, making sure to skip escaped quotes
           // and that lists inside strings are ignored
           while stack.nonEmpty && (!escaped && stack.head != '"') do
-            if stack.head == '\\' then escaped = !escaped
+            if !escaped && stack.head == '\\' then escaped = true
             else escaped = false
             stack.pop()
 
           // Make sure that the string is finished and that there's still
           // stuff after it
           if stack.isEmpty then return false
-          // and that there's a comma after it
-          if stack.head != ',' then return false
           stack.pop()
+          // and that there's a comma after it
+          if stack.head != ',' && stack.head != ']' then return false
         else if stack.head == ',' then stack.pop()
         else
           stack.pop() // Sure there can be "invalid" list items here, but
