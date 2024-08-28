@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Codepage Just Dropped</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .codepage-container {
+            display: grid;
+            grid-template-columns: repeat(16, 1fr);
+            gap: 1px;
+            background-color: #ccc;
+            padding: 1px;
+            border-radius: 4px;
+        }
+
+        .character {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .character:hover {
+            background-color: #e0e0e0;
+        }
+
+        #info-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="codepage-container" id="codepage"></div>
+    <div id="info-panel"></div>
+
+    <script>
+        // Simulated external data source
+        const characterInfo = {
+
+            "λ": { name: "Lambda", description: "Vyxal lambda syntax" },
+            "ƛ": { name: "Mapping Lambda", description: "Vyxal mapping lambda syntax" },
+            "Λ": { name: "Filtering Lambda", description: "Vyxal filtering lambda syntax" },
+            "ʎ": { name: "Reduce Lambda", description: "Vyxal reduce lambda syntax" },
+            "ỿ": { name: "Sort Lambda", description: "Vyxal sort lambda syntax" },
+            "0": { name: "0", description: "Digit zero" },
+            "1": { name: "1", description: "Digit one" },
+            "2": { name: "2", description: "Digit two" },
+            "3": { name: "3", description: "Digit three" },
+            "4": { name: "4", description: "Digit four" },
+            "5": { name: "5", description: "Digit five" },
+            "6": { name: "6", description: "Digit six" },
+            "7": { name: "7", description: "Digit seven" },
+            "8": { name: "8", description: "Digit eight" },
+            "9": { name: "9", description: "Digit nine" },
+
+            "+": { name: "Addition", description: "x + y" }
+        };
+
+        const codepage = document.getElementById('codepage');
+        const infoPanel = document.getElementById('info-panel');
+
+        const characters = `
+λƛΛʎỿ⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
+⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
+ !"#$%&'()*+,-./
+0123456789:;<=>?
+@ABCDEFGHIJKLMNO
+PQRSTUVWXYZ[\\]^_
+\`abcdefghijklmno
+pqrstuvwxyz{|}~⍰
+⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
+⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
+⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
+⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
+⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
+⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
+⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
+⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
+`.replaceAll("\n", '');
+
+        // Generate 16x16 grid of characters
+        for (let i = 0; i < 256; i++) {
+            const char = characters[i];
+            const charElement = document.createElement('div');
+            charElement.className = 'character';
+            charElement.textContent = char;
+            charElement.addEventListener('mouseover', () => showInfo(char, i));
+            charElement.addEventListener('mouseout', hideInfo);
+            codepage.appendChild(charElement);
+        }
+
+        function showInfo(char, index) {
+            const info = characterInfo[char] || { name: 'Unknown', description: 'N/A' };
+            infoPanel.innerHTML = `
+                <strong>Character:</strong> ${char}<br>
+                <strong>Name:</strong> ${info.name}<br>
+                <strong>Description:</strong> ${info.description}<br>
+                <strong>Codepoint:</strong> ${index.toString(16).padStart(2, '0')}
+            `;
+            infoPanel.style.display = 'block';
+        }
+
+        function hideInfo() {
+            infoPanel.style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>
