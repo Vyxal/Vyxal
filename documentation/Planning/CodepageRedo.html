@@ -62,12 +62,30 @@
     <script>
         // Simulated external data source
         const characterInfo = {
+            "␤": { name: "Newline", description: "Stand-in for literal newline" },
 
             "λ": { name: "Lambda", description: "Vyxal lambda syntax" },
             "ƛ": { name: "Mapping Lambda", description: "Vyxal mapping lambda syntax" },
             "Λ": { name: "Filtering Lambda", description: "Vyxal filtering lambda syntax" },
             "ʎ": { name: "Reduce Lambda", description: "Vyxal reduce lambda syntax" },
             "ỿ": { name: "Sort Lambda", description: "Vyxal sort lambda syntax" },
+
+            "⎂": { name: "Both modifier", description: "Apply function f to top of stack and second of stack. ⎂f = f$f$" },
+            "∥": { name: "Parallel Apply", description: "Run two functions in parallel" },
+            "∦": { name: "Parallel Apply and Wrap", description: "Run two functions in parallel and pair. Equivalent to ∥fg;" },
+            "∺": { name: "Correspond", description: "Like bracket in Uiua. ∺fg roughly equivalent to f$g$" },
+            "~": { name: "Filter By | Without Popping", description: "Filter the top of the stack by element, or perform element without popping" },
+            "/": { name: "Reduce | Invariant by", description: "Reduce the top of the stack by element" },
+            "\\": { name: "Scan", description: "Scan the top of the stack by element" },
+            "⁜": { name: "Group By", description: "Group the top of the stack by element" },
+            "‰": { name: "Reduce overlapping pairs", description: "2lvƒ in v2" },
+            "▦": { name: "Outer Product | Broadcast", description: "Everyone's favourite v modifier in v2" },
+
+            "①": { name: "Next element as lambda", description: "⁽ in v2" },
+            "②": { name: "Next two elements as lambda", description: "‡ in v2" },
+            "③": { name: "Next three elements as lambda", description: "≬ in v2" },
+            "④": { name: "Next four elements as lambda", description: "Doesn't exist in v2" },
+
             "0": { name: "0", description: "Digit zero" },
             "1": { name: "1", description: "Digit one" },
             "2": { name: "2", description: "Digit two" },
@@ -79,15 +97,16 @@
             "8": { name: "8", description: "Digit eight" },
             "9": { name: "9", description: "Digit nine" },
 
-            "+": { name: "Addition", description: "x + y" }
+            "+": { name: "Addition", description: "x + y" },
+            ";": { name: "Pair", description: "Pair x and y -> [x,y]" },
         };
 
         const codepage = document.getElementById('codepage');
         const infoPanel = document.getElementById('info-panel');
 
         const characters = `
-λƛΛʎỿ⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
-⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
+λƛΛʎỿ⎂∥∦∺⁜␤①②③④‰
+▦⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
  !"#$%&'()*+,-./
 0123456789:;<=>?
 @ABCDEFGHIJKLMNO
@@ -116,7 +135,7 @@ pqrstuvwxyz{|}~⍰
         }
 
         function showInfo(char, index) {
-            const info = characterInfo[char] || { name: 'Unknown', description: 'N/A' };
+            const info = characterInfo[char] ?? { name: 'Unknown', description: 'N/A' };
             infoPanel.innerHTML = `
                 <strong>Character:</strong> ${char}<br>
                 <strong>Name:</strong> ${info.name}<br>
