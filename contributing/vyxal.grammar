@@ -47,18 +47,18 @@ Variable {
 
 
 @tokens {
-    ModifierChar {[ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/ϩ∥∦ᵉэᶠЧᴳᵜ]}
+    ModifierChar {$[ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/ϩ∥∦ᵉэᶠЧᴳᵜ]}
     Element { _ }
-    Digraph { [∆øÞk] _ | "#" ![[]$!=#>@{] }
-    SugarTrigraph { "#" [.,^] _ }
+    Digraph { $[∆øÞk] _ | "#" ![[\]$!=#>@{] }
+    SugarTrigraph { "#" $[.,^] _ }
     SyntaxTrigraph { "#:" _ }
     Branch {"|"}
     StructureClose { "]" | "}" | ")" }
-    String {'"' (!["„”“\\] | "\\" _)* ["„”“]}
+    String {'"' (!["„”“\\] | "\\" _)* $["„”“]}
     SingleCharString { "'" _ }
     TwoCharString { "ᶴ" _ _ }
     TwoCharNumber { "~" _ _ }
-    VariableName { [a-zA-Z] [a-zA-Z0-9_]* }
+    VariableName { $[a-zA-Z] $[a-zA-Z0-9_]* }
     VariableAssign { "#=" VariableName }
     VariableGet { "#$" VariableName }
     VariableAugAssign { Element "#>" VariableName }
