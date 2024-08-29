@@ -1,0 +1,70 @@
+@top Program { Digraph | SugarTrigraph | SyntaxTrigraph | StructureOpen | StructureClose | ModifierChar | Variable | Number | AnyString | Branch | ContextIndex | Element }
+@skip /[\s\n]+/
+
+StructureOpen { 
+    "[" | "(" | "{" | "Ṇ" | "Ḍ" | "ƛ" | "Ω" | "₳" | "µ" | "⟨" |
+    "#[" |
+    "#{" |
+    "#::R" |
+    "#::+" |
+    "#::E" |
+    "#::M"
+}
+
+Number {
+    NumberReal? "ı" NumberReal? |
+    TwoCharNumber
+}
+
+NumberReal {
+    "0" | NumberPart | NumberDecimal
+}
+
+NumberPart {
+    "0" | PosDigit Digit*
+}
+
+NumberDecimal {
+    NumberPart? "." NumberPart?
+}
+
+PosDigit { "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" }
+
+Digit { "0" | PosDigit }
+
+AnyString {
+    String |
+    SingleCharString |
+    TwoCharString
+}
+
+Variable {
+    VariableAssign |
+    VariableGet |
+    VariableAugAssign |
+    VariableUnpack |
+    VariableName
+}
+
+
+@tokens {
+    ModifierChar {[ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/ϩ∥∦ᵉэᶠЧᴳᵜ]}
+    Element { _ }
+    Digraph { [∆øÞk] _ | "#" ![[]$!=#>@{] }
+    SugarTrigraph { "#" [.,^] _ }
+    SyntaxTrigraph { "#:" _ }
+    Branch {"|"}
+    StructureClose { "]" | "}" | ")" }
+    String {'"' (!["„”“\\] | "\\" _)* ["„”“]}
+    SingleCharString { "'" _ }
+    TwoCharString { "ᶴ" _ _ }
+    TwoCharNumber { "~" _ _ }
+    VariableName { [a-zA-Z] [a-zA-Z0-9_]* }
+    VariableAssign { "#=" VariableName }
+    VariableGet { "#$" VariableName }
+    VariableAugAssign { Element "#>" VariableName }
+    VariableUnpack { "#[" VariableUnpackExpr* "]" }
+    VariableUnpackExpr { VariableName | "[" VariableUnpackExpr "]" }
+    ContextIndex { "¤" NumberPart }
+
+}
