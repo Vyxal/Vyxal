@@ -48,7 +48,6 @@ Variable {
 
 @tokens {
     ModifierChar {$[ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/ϩ∥∦ᵉэᶠЧᴳᵜ]}
-    Element { _ }
     Digraph { $[∆øÞk] _ | "#" ![[\]$!=#>@{] }
     SugarTrigraph { "#" $[.,^] _ }
     SyntaxTrigraph { "#:" _ }
@@ -64,5 +63,5 @@ Variable {
     VariableAugAssign { "#>" VariableName }
     VariableUnpack { "#[" VariableName }
     ContextIndex { "¤" @digit }
-
+    Element { _ }
 }
