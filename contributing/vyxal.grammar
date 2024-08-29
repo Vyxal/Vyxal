@@ -63,6 +63,6 @@ Variable {
     VariableGet { "#$" VariableName }
     VariableAugAssign { "#>" VariableName }
     VariableUnpack { "#[" VariableName }
-    ContextIndex { "¤" NumberPart }
+    ContextIndex { "¤" @digit }
 
 }
