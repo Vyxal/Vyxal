@@ -64,5 +64,5 @@ Variable {
     VariableAugAssign { "#>" VariableName }
     VariableUnpack { "#:[" VariableName }
     ContextIndex { "¤" @digit }
-    Element { _ }
+    Element { ![ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/ϩ∥∦ᵉэᶠЧᴳᵜ∆øÞk"„”“0-9#ᶴ'~.] }
 }
