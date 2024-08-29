@@ -49,9 +49,9 @@ Variable {
 @tokens {
     ModifierChar {$[ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/ϩ∥∦ᵉэᶠЧᴳᵜ]}
     Comment {"##" (![\n])*}
-    Digraph { $[∆øÞk] _ | "#" ![[\]$!=#>@{] }
+    Digraph { $[∆øÞk] _ | "#" ![[\]$!=#>@{:] }
     SugarTrigraph { "#" $[.,^] _ }
-    SyntaxTrigraph { "#:" _ }
+    SyntaxTrigraph { "#:" ![[] }
     Branch {"|"}
     StructureClose { "]" | "}" | ")" }
     String {'"' (!["„”“\\] | "\\" _)* $["„”“]}
@@ -64,5 +64,5 @@ Variable {
     VariableAugAssign { "#>" VariableName }
     VariableUnpack { "#:[" VariableName }
     ContextIndex { "¤" @digit }
-    Element { ![ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/ϩ∥∦ᵉэᶠЧᴳᵜ∆øÞk"„”“0-9#ᶴ'~.] }
+    Element { ![ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/ϩ∥∦ᵉэᶠЧᴳᵜ∆øÞk"„”“0-9#ᶴ'~.[\](){}ṆḌƛΩ₳µ⟨|] }
 }
