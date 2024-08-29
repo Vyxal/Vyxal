@@ -1,5 +1,4 @@
 @top Program { Digraph | SugarTrigraph | SyntaxTrigraph | StructureOpen | StructureClose | ModifierChar | Variable | Number | AnyString | Branch | ContextIndex | Element }
-@skip /[\s\n]+/
 
 StructureOpen { 
     "[" | "(" | "{" | "Ṇ" | "Ḍ" | "ƛ" | "Ω" | "₳" | "µ" | "⟨" |
