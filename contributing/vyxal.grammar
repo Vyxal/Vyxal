@@ -1,4 +1,4 @@
-@top Program { Digraph | SugarTrigraph | SyntaxTrigraph | StructureOpen | StructureClose | ModifierChar | Variable | Number | AnyString | Branch | ContextIndex | Element }
+@top Program { Digraph | SugarTrigraph | SyntaxTrigraph | StructureOpen | StructureClose | ModifierChar | Variable | Number | AnyString | Branch | ContextIndex | Comment | Element }
 
 StructureOpen { 
     "[" | "(" | "{" | "Ṇ" | "Ḍ" | "ƛ" | "Ω" | "₳" | "µ" | "⟨" |
@@ -48,6 +48,7 @@ Variable {
 
 @tokens {
     ModifierChar {$[ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/ϩ∥∦ᵉэᶠЧᴳᵜ]}
+    Comment {"##" (![\n])*}
     Digraph { $[∆øÞk] _ | "#" ![[\]$!=#>@{] }
     SugarTrigraph { "#" $[.,^] _ }
     SyntaxTrigraph { "#:" _ }
@@ -64,4 +65,23 @@ Variable {
     VariableUnpack { "#[" VariableName }
     ContextIndex { "¤" @digit }
     Element { _ }
+    @precedence {
+        VariableAssign
+        VariableGet
+        VariableAugAssign
+        VariableUnpack
+        VariableName
+        Number
+        AnyString
+        ModifierChar
+        Comment
+        Digraph
+        SugarTrigraph
+        SyntaxTrigraph
+        Branch
+        StructureOpen
+        StructureClose
+        ContextIndex
+        Element
+    }
 }
