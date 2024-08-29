@@ -61,9 +61,8 @@ Variable {
     VariableName { $[a-zA-Z] $[a-zA-Z0-9_]* }
     VariableAssign { "#=" VariableName }
     VariableGet { "#$" VariableName }
-    VariableAugAssign { Element "#>" VariableName }
-    VariableUnpack { "#[" VariableUnpackExpr* "]" }
-    VariableUnpackExpr { VariableName | "[" VariableUnpackExpr "]" }
+    VariableAugAssign { "#>" VariableName }
+    VariableUnpack { "#[" VariableName }
     ContextIndex { "¤" NumberPart }
 
 }
