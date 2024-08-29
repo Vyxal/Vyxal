@@ -62,26 +62,7 @@ Variable {
     VariableAssign { "#=" VariableName }
     VariableGet { "#$" VariableName }
     VariableAugAssign { "#>" VariableName }
-    VariableUnpack { "#[" VariableName }
+    VariableUnpack { "#:[" VariableName }
     ContextIndex { "¤" @digit }
     Element { _ }
-    @precedence {
-        VariableAssign
-        VariableGet
-        VariableAugAssign
-        VariableUnpack
-        VariableName
-        Number
-        AnyString
-        ModifierChar
-        Comment
-        Digraph
-        SugarTrigraph
-        SyntaxTrigraph
-        Branch
-        StructureOpen
-        StructureClose
-        ContextIndex
-        Element
-    }
 }
