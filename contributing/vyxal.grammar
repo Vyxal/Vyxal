@@ -1,35 +1,16 @@
-@top Program { Digraph | SugarTrigraph | SyntaxTrigraph | StructureOpen | StructureClose | ModifierChar | VariableThing | Number | AnyString | Branch | ContextIndex | Comment | Element }
+@top Program { Statement+ }
+@skip { Space }
 
-StructureOpen { 
-    "[" | "(" | "{" | "Ṇ" | "Ḍ" | "ƛ" | "Ω" | "₳" | "µ" | "⟨" |
-    "#[" |
-    "#{" |
-    "#::R" |
-    "#::+" |
-    "#::E" |
-    "#::M"
-}
+Statement { Digraph | SugarTrigraph | SyntaxTrigraph | StructureOpen | StructureClose | ModifierChar | VariableThing | Number | AnyString | Branch | ContextIndex | Comment | Element }
 
 Number {
-    NumberReal? "ı" NumberReal? |
+    NumberDecimal ("ı" NumberDecimal?)? |
     TwoCharNumber
 }
 
-NumberReal {
- NumberPart | NumberDecimal
-}
-
-NumberPart {
-    "0" | PosDigit Digit*
-}
-
 NumberDecimal {
-    NumberPart? "." NumberPart?
+    NumberPart? ("." NumberPart?)?
 }
-
-PosDigit { "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" }
-
-Digit { "0" | PosDigit }
 
 AnyString {
     String |
@@ -40,12 +21,23 @@ AnyString {
 
 
 @tokens {
+    Space { @whitespace+ }
     ModifierChar {$[ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/ϩ∥∦ᵉэᶠЧᴳᵜ]}
     Comment {"##" (![\n])*}
     Digraph { $[∆øÞk] _ | "#" ![[\]$!=#>@{:] }
+    NumberPart { "0" | ($[1-9] $[0-9]*) }
     SugarTrigraph { "#" $[.,^] _ }
     SyntaxTrigraph { "#:" ![[] }
     Branch {"|"}
+    StructureOpen { 
+        "[" | "(" | "{" | "Ṇ" | "Ḍ" | "ƛ" | "Ω" | "₳" | "µ" | "⟨" |
+        "#[" |
+        "#{" |
+        "#::R" |
+        "#::+" |
+        "#::E" |
+        "#::M"
+    }
     StructureClose { "]" | "}" | ")" }
     String {'"' (!["„”“\\] | "\\" _)* $["„”“]}
     SingleCharString { "'" _ }
@@ -53,5 +45,6 @@ AnyString {
     TwoCharNumber { "~" _ _ }
     VariableThing { "#" ($[=$>]|":[") $[a-zA-Z] $[a-zA-Z0-9_]* }
     ContextIndex { "¤" @digit }
-    Element { ![ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/ϩ∥∦ᵉэᶠЧᴳᵜ∆øÞk"„”“0-9#ᶴ'~.[\](){}ṆḌƛΩ₳µ⟨|ı] }
+    Element { ![ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/ϩ∥∦ᵉэᶠЧᴳᵜ∆øÞk"„”“0123456789#ᶴ'~.[\](){}ṆḌƛΩ₳µ⟨|ı] }
+    @precedence { Space, Element }
 }
