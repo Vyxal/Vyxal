@@ -16,7 +16,7 @@ Number {
 }
 
 NumberReal {
-    "0" | NumberPart | NumberDecimal
+ NumberPart | NumberDecimal
 }
 
 NumberPart {
