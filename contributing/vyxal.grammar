@@ -4,12 +4,14 @@
 Statement { Digraph | SugarTrigraph | SyntaxTrigraph | StructureOpen | StructureClose | ModifierChar | VariableThing | Number | AnyString | Branch | ContextIndex | Comment | Element }
 
 Number {
-    NumberDecimal ("ı" NumberDecimal?)? |
+    NumberDecimal "ı" NumberDecimal? |
+    "ı" NumberDecimal? |
     TwoCharNumber
 }
 
 NumberDecimal {
-    NumberPart? ("." NumberPart?)?
+    NumberPart ("." NumberPart?)? |
+    "." NumberPart?
 }
 
 AnyString {
