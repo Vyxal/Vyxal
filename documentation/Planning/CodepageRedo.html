@@ -69,6 +69,10 @@
             "Λ": { name: "Filtering Lambda", description: "Vyxal filtering lambda syntax" },
             "ʎ": { name: "Reduce Lambda", description: "Vyxal reduce lambda syntax" },
             "ỿ": { name: "Sort Lambda", description: "Vyxal sort lambda syntax" },
+            "Þ": { name: "List Digraphs", description: "" },
+            "∆": { name: "Math Digraphs", description: "" },
+            "ø": { name: "String Digraphs", description: "" },
+            "#": { name: "Miscellaneous Digraphs", description: "" },
 
             "⎂": { name: "Both modifier", description: "Apply function f to top of stack and second of stack. ⎂f = f$f$" },
             "∥": { name: "Parallel Apply", description: "Run two functions in parallel" },
@@ -81,6 +85,7 @@
             "‰": { name: "Reduce overlapping n-windows", description: "2lvƒ in v2" },
             "▦": { name: "Outer Product", description: "Dyadic v behaviour in v2" },
             "¨": { name: "Map | Zip With", description: "Monadic v behaviour in v2 | Given a dyadic function, zip two lists and reduce each by f" },
+            "⊚": { name: "Quantum Mode", description: "Enable quantum mode for an element" },
 
             "①": { name: "Next element as lambda", description: "⁽ in v2" },
             "②": { name: "Next two elements as lambda", description: "‡ in v2" },
@@ -98,7 +103,12 @@
             "8": { name: "8", description: "Digit eight" },
             "9": { name: "9", description: "Digit nine" },
 
-            "+": { name: "Addition", description: "x + y" },
+            "÷": { name: "Division | Split String on Regex | Split String into chunks of size n", description: "x ÷ y" },
+            "×": { name: "Multiplication | String Repeat | Ring Translate", description: "x × y" },
+            "∧": { name: "Logical AND", description: "x ∧ y" },
+            "∨": { name: "Logical OR", description: "x ∨ y" },
+            "¬": { name: "Logical NOT", description: "¬x" },
+            "+": { name: "Addition | Concatenation", description: "x + y" },
             ";": { name: "Pair", description: "Pair x and y -> [x,y]" },
         };
 
@@ -107,7 +117,7 @@
 
         const characters = `
 λƛΛʎỿ⎂∥∦∺⁜␤①②③④‰
-▦¨⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
+▦¨⊚÷×∧∨¬⍰⍰⍰⍰⍰⍰⍰⍰
  !"#$%&'()*+,-./
 0123456789:;<=>?
 @ABCDEFGHIJKLMNO
@@ -121,7 +131,7 @@ pqrstuvwxyz{|}~⍰
 ⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
 ⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
 ⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
-⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
+⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰Þ∆ø
 `.replaceAll("\n", '');
 
         // Generate 16x16 grid of characters
