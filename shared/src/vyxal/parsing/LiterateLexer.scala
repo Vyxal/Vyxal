@@ -138,7 +138,8 @@ class LiterateLexer extends LexerCommon:
   def lex(program: String): Seq[Token] =
     programStack.pushAll(program.reverse.map(_.toString))
     while programStack.nonEmpty do
-      if headIsDigit || headLookaheadMatch("-[1-9]") || headEqual(".")
+      if headIsDigit || headLookaheadMatch("-[1-9]") || headEqual(".") ||
+        headLookaheadMatch("i(0|[1-9][0-9]*| )")
       then numberToken
       else if safeCheck(c =>
           c.length == 1 && (c.head.isLetter || "<>!*+-=&%@".contains(c))
@@ -330,78 +331,32 @@ class LiterateLexer extends LexerCommon:
   private def getModifierFromKeyword(word: String): Modifier =
     Modifiers.modifiers.values.find(mod => mod._3.contains(word)).get
 
-  /** Number = 0 | [1-9][0-9]*(\.[0-9]*)? | \.[0-9]* */
   private def numberToken: Unit =
     val rangeStart = index
     // Check the single zero case
-    if headLookaheadMatch("0[^.ı]") then
-      val zeroToken = Token(TokenType.Number, "0", Range(index, index))
+    if headLookaheadMatch("0[^.i]") then
+      val zeroToken = LitToken(TokenType.Number, "0", Range(index, index))
       pop(1)
-      tokens += zeroToken
-
-    // Then check for negative
-    val sign = if headEqual("-") then pop(1) else ""
-
-    // Then the headless decimal case
-    if headEqual(".") then
-      pop(1)
-      if safeCheck(c => c.head.isDigit) then
-        val head = simpleNumber()
-        val numberToken = LitToken(
-          TokenType.Number,
-          s"${sign}.$head",
-          Range(rangeStart, index),
-        )
-        addToken(numberToken)
-      else
-        val zeroToken = LitToken(
-          TokenType.Number,
-          ".",
-          Range(rangeStart, index),
-        )
-        addToken(zeroToken)
+      addToken(zeroToken)
     else
-      // Not a 0, and not a headless decimal, so it's a normal number
-      val head = simpleNumber()
-      // Test for a decimal tail
-      if headEqual(".") then
-        pop(1)
-        if safeCheck(c => c.head.isDigit) then
-          val tail = simpleNumber()
-          val numberToken = LitToken(
-            TokenType.Number,
-            s"$sign$head.$tail",
-            Range(rangeStart, index),
-          )
-          addToken(numberToken)
-        else
-          val numberToken = LitToken(
-            TokenType.Number,
-            s"${sign}$head.",
-            Range(rangeStart, index),
-          )
-          addToken(numberToken)
-      // No decimal tail, so normal number
-      else
-        val numberToken = LitToken(
+      val numberVal = StringBuilder()
+      if !headEqual("i") then numberVal ++= decimalNumber()
+      if headEqual("i") then
+        pop()
+        numberVal ++= "ı"
+        val number =
+          if safeCheck(c => c.head.isDigit || c == ".") then decimalNumber()
+          else ""
+        numberVal ++= number
+
+      addToken(
+        LitToken(
           TokenType.Number,
-          s"$sign$head",
+          numberVal.toString(),
           Range(rangeStart, index),
         )
-        addToken(numberToken)
-    end if
-    if headEqual("i") then
-      // Grab an imaginary part and merge with the previous number
-      pop()
-      val combinedTokenValue = lastToken.value.asInstanceOf[String] + "ı"
-      dropLastToken()
-      numberToken
-      val finalTokenValue = combinedTokenValue +
-        lastToken.value.asInstanceOf[String]
-      dropLastToken()
-      addToken(
-        LitToken(TokenType.Number, finalTokenValue, Range(rangeStart, index))
       )
+    end if
 
   end numberToken
 
@@ -412,6 +367,24 @@ class LiterateLexer extends LexerCommon:
       else numberVal ++= s"${pop()}"
     numberVal.toString()
 
+  private def decimalNumber(): String =
+    val negative = headEqual("-")
+    if negative then pop()
+    val tokenVal = StringBuilder()
+    // Handle headless decimal first
+    if headEqual(".") then
+      tokenVal ++= pop()
+      if safeCheck(c => c.head.isDigit) then tokenVal ++= simpleNumber()
+    // A normal number
+    else if safeCheck(c => c.head.isDigit) then
+      tokenVal ++= simpleNumber()
+      // Could also a decimal number
+      if headEqual(".") then
+        tokenVal ++= pop()
+        // If there's a digit after the decimal, add it
+        if safeCheck(c => c.head.isDigit) then tokenVal ++= simpleNumber()
+    s"${tokenVal.toString()}${if negative then "_" else ""}"
+  end decimalNumber
   private def customDefinitionToken: Unit =
     val rangeStart = index
     pop()
