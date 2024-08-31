@@ -4,8 +4,8 @@
 Statement { Digraph | SugarTrigraph | SyntaxTrigraph | StructureOpen | StructureClose | ModifierChar | VariableThing | Number | AnyString | Branch | ContextIndex | Comment | Element }
 
 Number {
-    NumberDecimal "ı" NumberDecimal? |
-    "ı" NumberDecimal? |
+    NumberDecimal|
+    "ı" |
     TwoCharNumber
 }
 
