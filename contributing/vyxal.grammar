@@ -10,8 +10,8 @@ Number {
 }
 
 NumberDecimal {
-    NumberPart ("." NumberPart?)? |
-    "." NumberPart?
+    NumberPart |
+    "."
 }
 
 AnyString {
