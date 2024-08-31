@@ -69,10 +69,14 @@
             "Λ": { name: "Filtering Lambda", description: "Vyxal filtering lambda syntax" },
             "ʎ": { name: "Reduce Lambda", description: "Vyxal reduce lambda syntax" },
             "ỿ": { name: "Sort Lambda", description: "Vyxal sort lambda syntax" },
+            "δ": { name: "Lambda that takes from stack", description: "Vyxal lambda syntax that takes from the stack" },
             "Þ": { name: "List Digraphs", description: "" },
             "∆": { name: "Math Digraphs", description: "" },
             "ø": { name: "String Digraphs", description: "" },
             "#": { name: "Miscellaneous Digraphs", description: "" },
+            " ": { name: "No-op", description: "Does nothing" },
+            '"': { name: "String Delimiter", description: "Start or end a string literal" },
+
 
             "⎂": { name: "Both modifier", description: "Apply function f to top of stack and second of stack. ⎂f = f$f$" },
             "∥": { name: "Parallel Apply", description: "Run two functions in parallel" },
@@ -86,6 +90,8 @@
             "▦": { name: "Outer Product", description: "Dyadic v behaviour in v2" },
             "¨": { name: "Map | Zip With", description: "Monadic v behaviour in v2 | Given a dyadic function, zip two lists and reduce each by f" },
             "⊚": { name: "Quantum Mode", description: "Enable quantum mode for an element" },
+            "⊧": { name: "Normal Mode", description: "Call an element without type/depth switching" },
+            "¿": { name: "Execute if true", description: "Pop the top of the stack, and, if it's truthy, apply a function" },
 
             "①": { name: "Next element as lambda", description: "⁽ in v2" },
             "②": { name: "Next two elements as lambda", description: "‡ in v2" },
@@ -108,6 +114,13 @@
             "∧": { name: "Logical AND", description: "x ∧ y" },
             "∨": { name: "Logical OR", description: "x ∨ y" },
             "¬": { name: "Logical NOT", description: "¬x" },
+            "ʀ": { name: "Range [0, x]", description: "Range from 0 to x" },
+            "ʁ": { name: "Range [0, x)", description: "Range from 0 to x-1" },
+            "ɾ": { name: "Range [1, x]", description: "Range from 1 to x" },
+            "‹": { name: "Decrement | Pad with 0s to nearest multiple of 8", description: "x - 1" },
+            "›": { name: "Increment | Replace spaces with 0s", description: "x + 1" },
+            "!": { name: "Factorial | Sentence Case", description: "x!" },
+            "$": { name: "Swap", description: "Swap the top two elements of the stack" },
             "+": { name: "Addition | Concatenation", description: "x + y" },
             ";": { name: "Pair", description: "Pair x and y -> [x,y]" },
         };
@@ -116,8 +129,8 @@
         const infoPanel = document.getElementById('info-panel');
 
         const characters = `
-λƛΛʎỿ⎂∥∦∺⁜␤①②③④‰
-▦¨⊚÷×∧∨¬⍰⍰⍰⍰⍰⍰⍰⍰
+λƛΛʎỿδ⎂∥∦∺⁜␤①②③④
+‰▦¨⊚⊧¿÷×∧∨¬ʀʁɾ‹›
  !"#$%&'()*+,-./
 0123456789:;<=>?
 @ABCDEFGHIJKLMNO
