@@ -1,7 +1,7 @@
 @top Program { Statement+ }
 @skip { Space }
 
-Statement { Digraph | SugarTrigraph | SyntaxTrigraph | StructureOpen | StructureClose | ModifierChar | VariableThing | Number | AnyString | Branch | ContextIndex | Comment | Element }
+Statement { Digraph | SugarTrigraph | SyntaxTrigraph | StructureOpen | StructureClose | ListStuff | ModifierChar | VariableThing | Number | AnyString | Branch | ContextIndex | Comment | Element }
 
 Number {
     NumberDecimal|
@@ -31,6 +31,7 @@ AnyString {
     SugarTrigraph { "#" $[.,^] _ }
     SyntaxTrigraph { "#:" ![[] }
     Branch {"|"}
+    ListStuff { "#[" | "#]"}
     StructureOpen { 
         "[" | "(" | "{" | "Ṇ" | "Ḍ" | "ƛ" | "Ω" | "₳" | "µ" | "⟨" |
         "#[" |
