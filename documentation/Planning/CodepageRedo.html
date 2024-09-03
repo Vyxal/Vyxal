@@ -74,6 +74,7 @@
             "∆": { name: "Math Digraphs", description: "" },
             "ø": { name: "String Digraphs", description: "" },
             "#": { name: "Miscellaneous Digraphs", description: "" },
+            "k": { name: "Constant Digraphs", description: "" },
             " ": { name: "No-op", description: "Does nothing" },
             '"': { name: "String Delimiter", description: "Start or end a string literal" },
             "(": { name: "For Loop", description: "For loop" },
@@ -83,7 +84,9 @@
             "]": { name: "Close all structures", description: "Equivalent to a variable amount of }s" },
             "'": { name: "Single character string", description: "Wrap a single character in a string" },
             "`": { name: "Two character string", description: "Wrap two characters in a string" },
-
+            "{": { name: "While loop", description: "While loop" },
+            "}": { name: "Close current structure", description: "Equivalent to }" },
+            "|": { name: "Branch", description: "Branch" },
 
             "⎂": { name: "Both modifier", description: "Apply function f to top of stack and second of stack. ⎂f = f$f$" },
             "∥": { name: "Parallel Apply", description: "Run two functions in parallel" },
@@ -129,6 +132,7 @@
             "›": { name: "Increment | Replace spaces with 0s", description: "x + 1" },
             "!": { name: "Factorial | Sentence Case", description: "x!" },
             "$": { name: "Swap", description: "Swap the top two elements of the stack" },
+            "%": { name: "Modulo | String formatting", description: "x % y" },
             "&": { name: "Append", description: "Append y to x" },
             "*": { name: "Exponentiation", description: "x ^ y" },
             "+": { name: "Addition | Concatenation", description: "x + y" },
@@ -175,7 +179,60 @@
             "d": { name: "Double", description: "Double x" },
             "e": { name: "Even? | Split on newlines", description: "Is x even? | Split x on newlines" },
             "f": { name: "Flatten", description: "Flatten x" },
-
+            "g": { name: "Monadic Minimum | Dyadic Minimum | Group By | Vectorised Minimum [lst, scalar]", description: "Minimum of x | Minimum of x and y | Group x by y | Vectorised minimum" },
+            "h": { name: "Head | First", description: "First element of x" },
+            "i": { name: "Index into", description: "x[y]" },
+            "j": { name: "Join on", description: "Join x on y" },
+            "l": { name: "Logarithm | Scan Fixpoint | Same Length? | Length Equals?", description: "Logarithm of x | Scan x by y | Are x and y the same length? | Are x and y the same length?" },
+            "m": { name: "Context Variable m", description: "Context variable m" },
+            "n": { name: "Context Variable n", description: "Context variable n" },
+            "o": { name: "Overlapping n-windows", description: "Current l behaviour" },
+            "p": { name: "Prepend", description: "Prepend y to x" },
+            "q": { name: "Quotify | Nth Prime", description: "Quotify x | Get the nth prime" },
+            "r": { name: "Replace", description: "Replace y with x in z" },
+            "s": { name: "Split", description: "Split x on y" },
+            "t": { name: "Tail | Last", description: "Last element of x" },
+            "u": { name: "Unique", description: "Unique elements of x" },
+            "v": { name: "Vectorised or", description: "Vectorised or" },
+            "w": { name: "Enwrap", description: "Enwrap x" },
+            "x": { name: "Recursion", description: "Recursion" },
+            "y": { name: "Quantum Collapse", description: "Convert a quantum object into a list of all values" },
+            "z": { name: "Transpose with filler", description: "Transpose x with filler y" },
+            "⨥": { name: "+2", description: "Add 2 to the top of the stack" },
+            "⨪": { name: "-2", description: "Subtract 2 from the top of the stack" },
+            "Σ": { name: "Sum", description: "Sum the top of the stack" },
+            "Π": { name: "Product", description: "Product the top of the stack" },
+            "σ": { name: "Cumulative Sum", description: "Cumulative sum the top of the stack" },
+            "⇧": { name: "Grade Up", description: "Grade up the top of the stack" },
+            "⇩": { name: "Grade Down", description: "Grade down the top of the stack" },
+            "∪": { name: "Set Union", description: "Set union" },
+            "∩": { name: "Set Intersection", description: "Set intersection" },
+            "⊍": { name: "Set XOR Difference", description: "Set xor difference" },
+            "⊖": { name: "Set Difference", description: "Set difference" },
+            "«": { name: "Left Shift", description: "Left shift" },
+            "»": { name: "Right Shift", description: "Right shift" },
+            "⌐": { name: "Bitwise NOT", description: "Bitwise NOT" },
+            "∴": { name: "Bitwise AND", description: "Bitwise AND" },
+            "∵": { name: "Bitwise OR", description: "Bitwise OR" },
+            "⊻": { name: "Bitwise XOR", description: "Bitwise XOR" },
+            "Ɠ": { name: "Max without popping", description: "Max without popping" },
+            "ɠ": { name: "Min without popping", description: "Min without popping" },
+            "Ġ": { name: "Vectorised maximum", description: "Vectorised maximum" },
+            "ġ": { name: "Vectorised minimum", description: "Vectorised minimum" },
+            "⌈": { name: "Ceiling", description: "Ceiling" },
+            "⌉": { name: "Floor", description: "Floor" },
+            "Θ": { name: "0-slice", description: "x[0:y]" },
+            "Φ": { name: "1-slice", description: "x[1:y]" },
+            "£": { name: "Set Register", description: "" },
+            "¥": { name: "Get Register", description: "" },
+            "▲": { name: "Vectorised and", description: "Vectorised and" },
+            "↜": { name: "Rotate stack left", description: "" },
+            "↝": { name: "Rotate stack right", description: "" },
+            "⬳": { name: "Rotate left", description: "" },
+            "⟿": { name: "Rotate right", description: "" },
+            "≜": { name: "Assign at index", description: "" },
+            "⎀": { name: "Insert at index", description: "" },
+            "◲": { name: "Sublists", description: "Get all sublists of x" },
         };
 
         const codepage = document.getElementById('codepage');
@@ -190,9 +247,9 @@
 PQRSTUVWXYZ[\\]^_
 \`abcdefghijklmno
 pqrstuvwxyz{|}~⟆
-⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
-⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
-⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
+⨥⨪ΣΠσ⇧⇩∪∩⊍⊖«»⌐∴∵
+⊻ƓɠĠġ⌈⌊ΘΦ£¥▲↜↝⬳⟿
+≜⎀◲⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
 ⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
 ⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
 ⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
