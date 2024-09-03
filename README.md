@@ -164,7 +164,7 @@ how the interpreter works, see the [`contributing`](/contributing/) folder.
 - [Tutorial](https://vyxapedia.hyper-neutrino.xyz/beginners)
 - [Main Chat Room (SE Chat)](https://chat.stackexchange.com/rooms/106764/vyxal)
 - [Vycord (Discord)](https://discord.gg/hER4Avd6fz)
-- [Elements](https://github.com/Vyxal/Vyxal/blob/main/documents/knowledge/elements.md)
+- [Elements](https://github.com/Vyxal/Vyxal/blob/version-3/documentation/table.md)
 - [Vyxapedia](https://vyxapedia.hyper-neutrino.xyz/)
 
 Enjoy the cookies.
