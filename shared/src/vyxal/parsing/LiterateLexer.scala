@@ -166,8 +166,17 @@ class LiterateLexer extends LexerCommon:
       else if headEqual("\n") then quickToken(Newline, "\n")
       else if headIsWhitespace then pop(1)
       else if headEqual("{") || lambdaOpeners.contains(programStack.head) then
-        addToken(LitToken(TokenType.StructureOpen, "λ", Range(index, index)))
-        pop()
+        val lambdaKeyword = pop()
+        val lambdaType =
+          lambdaOpeners.getOrElse(lambdaKeyword, StructureType.Lambda)
+
+        addToken(
+          LitToken(
+            TokenType.StructureOpen,
+            lambdaType.open,
+            Range(index, index),
+          )
+        )
         lambdaParameters
       else if structOpeners.contains(programStack.head) then
         val tempRange = Range(index, index)
