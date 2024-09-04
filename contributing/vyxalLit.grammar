@@ -1,12 +1,8 @@
-@top Program {(Word | Group) +}
+@top Program {(Word) +}
 
 structure<term> { @specialize[@name={term}]<WeirdKW, term> }
 branch<term> { @specialize[@name={term}]<WeirdKW, term> }
 lambda<term> { @specialize[@name={term}]<WeirdKW, term> }
-
-Group {
-    "(" ("." | ":" | ":." | "::" | "," | ";" | ";," | ";;")? (Word | Group)+ ")" 
-}
 
 Word {
     Structure |
@@ -17,20 +13,11 @@ Word {
     NormalKW |
     ModifierKW |
     VariableThing |
-    ListStuff
+    ListStuff |
+    GroupStuff
 }
 
 @precedence {ModifierKW, NormalKW, WeirdKW}
-
-Number {
-    NumberDecimal |
-    "i"
-}
-
-NumberDecimal {
-    NumberPart |
-    "."
-}
 
 Structure {
     structure<"yes?"> |
@@ -111,8 +98,9 @@ Lambda {
     ModifierKW { $[a-zA-Z]$[a-zA-Z0-9\-?!*+=<>&%]*":"}
     NormalKW { $[a-zA-Z]$[a-zA-Z0-9\-?!*+=<>&%]*"n't"*}
     VariableThing { ("$" | ":=" | ":>" | ":=[") $[a-zA-Z]$[a-zA-Z0-9_]* }
-    NumberPart { "0" | ($[1-9] $[0-9]*) }
+    Number { "." | "i" | "0" | ($[1-9] $[0-9]*) }
     ListStuff { "[" | "]" }
     String {'"' (!["„”“\\] | "\\" _)* $["„”“]}
-    @precedence {ModifierKW, NormalKW}
+    GroupStuff { "(" | ")" | "(." | "(:" | "(:." | "(::" | "(," | "(;" | "(;," | "(;;" }
+    @precedence {ModifierKW, NormalKW, GroupStuff, Number}
 }
