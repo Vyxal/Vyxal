@@ -23,7 +23,8 @@ class LiterateLexer extends LexerCommon:
   def headIsBranch: Boolean =
     branchKeywords.exists(kw =>
       headLookaheadMatch(s"${Regex.quote(kw)}([^$KeywordLetters]|$$)")
-    ) || headEqual("|") || headEqual(",") || headLookaheadMatch(":[^=$!>]")
+    ) || headEqual("|") || headEqual(",") ||
+      (headLookaheadMatch(":[^=$!>]") && lastPopped.isBlank())
   def headIsCloser: Boolean =
     closeAllKeywords.exists((kw, _) =>
       headLookaheadMatch(s"${Regex.quote(kw)}([^$KeywordLetters]|$$)")

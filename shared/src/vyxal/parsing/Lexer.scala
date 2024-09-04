@@ -231,6 +231,8 @@ end Lexer
 
 abstract class LexerCommon:
 
+  protected var lastPopped: String = ""
+
   private val stringTokenToQuote = Map(
     TokenType.Str -> "\"",
     TokenType.CompressedString -> "„",
@@ -259,6 +261,7 @@ abstract class LexerCommon:
     val res = StringBuilder()
     for _ <- 0 until n do res ++= programStack.pop()
     index += n + 1
+    lastPopped = res.toString()
     res.toString()
   protected def safeCheck(pred: String => Boolean): Boolean =
     programStack.nonEmpty && pred(programStack.head)
