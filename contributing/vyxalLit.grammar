@@ -1,8 +1,8 @@
 @top Program {(Word | Group) +}
 
-structure<term> { @specialize[@name={term}]<StupidKWThingIHaveToUseBecauseFrickYouLezerMoreLikeWeezerButNotWeezerBecauseWeezerIsBetterThanLezer, term> }
-branch<term> { @specialize[@name={term}]<StupidKWThingIHaveToUseBecauseFrickYouLezerMoreLikeWeezerButNotWeezerBecauseWeezerIsBetterThanLezer, term> }
-lambda<term> { @specialize[@name={term}]<StupidKWThingIHaveToUseBecauseFrickYouLezerMoreLikeWeezerButNotWeezerBecauseWeezerIsBetterThanLezer, term> }
+structure<term> { @specialize[@name={term}]<WeirdKW, term> }
+branch<term> { @specialize[@name={term}]<WeirdKW, term> }
+lambda<term> { @specialize[@name={term}]<WeirdKW, term> }
 
 Group {
     "(" ("." | ":" | ":." | "::" | "," | ";" | ";," | ";;")? (Word | Group)+ ")" 
@@ -16,8 +16,11 @@ Word {
     Number |
     NormalKW |
     ModifierKW |
-    VariableThing
+    VariableThing |
+    ListStuff
 }
+
+@precedence {ModifierKW, NormalKW, WeirdKW}
 
 Number {
     NumberDecimal |
@@ -78,7 +81,8 @@ Branch {
     branch<"has"> |
     branch<"does"> |
     branch<"using"> |
-    branch<"on">
+    branch<"on"> |
+    branch<","> |
 }
 
 Lambda {
@@ -103,7 +107,7 @@ Lambda {
 }
 
 @tokens {
-    StupidKWThingIHaveToUseBecauseFrickYouLezerMoreLikeWeezerButNotWeezerBecauseWeezerIsBetterThanLezer {$[a-zA-Z0-9\-?!*+=<>&%]*":"?}
+    WeirdKW {$[a-zA-Z\-?]$[a-zA-Z0-9\-?!*+=<>&%]*":"?}
     ModifierKW { $[a-zA-Z]$[a-zA-Z0-9\-?!*+=<>&%]*":"}
     NormalKW { $[a-zA-Z]$[a-zA-Z0-9\-?!*+=<>&%]*"n't"*}
     VariableThing { ("$" | ":=" | ":>" | ":=[") $[a-zA-Z]$[a-zA-Z0-9_]* }
