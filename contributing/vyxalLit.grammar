@@ -1,8 +1,8 @@
 @top Program {(Word | Group) +}
 
-structure<term> { @specialize[@name={term}]<Structure, term> }
-branch<term> { @specialize[@name={term}]<Branch, term> }
-lambda<term> { @specialize[@name={term}]<Lambda, term> }
+structure<term> { @specialize[@name={term}]<StupidKWThingIHaveToUseBecauseFrickyYouLezerMoreLikeWeezerButNotWeezerBecauseWeezerIsBetterThanLezer, term> }
+branch<term> { @specialize[@name={term}]<StupidKWThingIHaveToUseBecauseFrickyYouLezerMoreLikeWeezerButNotWeezerBecauseWeezerIsBetterThanLezer, term> }
+lambda<term> { @specialize[@name={term}]<StupidKWThingIHaveToUseBecauseFrickyYouLezerMoreLikeWeezerButNotWeezerBecauseWeezerIsBetterThanLezer, term> }
 
 Group {
     "(" ("." | ":" | ":." | "::" | "," | ";" | ";," | ";;")? Program+ ")" 
@@ -103,6 +103,7 @@ Lambda {
 }
 
 @tokens {
+    StupidKWThingIHaveToUseBecauseFrickyYouLezerMoreLikeWeezerButNotWeezerBecauseWeezerIsBetterThanLezer {$[a-zA-Z0-9\-?!*+=<>&%]*":"?}
     ModifierKW { $[a-zA-Z]$[a-zA-Z0-9\-?!*+=<>&%]*":"}
     NormalKW { $[a-zA-Z]$[a-zA-Z0-9\-?!*+=<>&%]*"n't"*}
     VariableThing { ("$" | ":=" | ":>" | ":=[") $[a-zA-Z]$[a-zA-Z0-9_]* }
