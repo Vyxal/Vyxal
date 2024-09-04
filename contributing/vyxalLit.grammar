@@ -1,16 +1,15 @@
 @top Program {(Word | Group) +}
 
-structure<term> { @specialize[@name={term}]<StructureKW, term> }
-branch<term> { @specialize[@name={term}]<BranchKW, term> }
-lambda<term> { @specialize[@name={term}]<LambdaKW, term> }
+structure<term> { @specialize[@name={term}]<Structure, term> }
+branch<term> { @specialize[@name={term}]<Branch, term> }
+lambda<term> { @specialize[@name={term}]<Lambda, term> }
 
 Group {
     "(" ("." | ":" | ":." | "::" | "," | ";" | ";," | ";;")? Program+ ")" 
 }
 
 Word {
-    StructureOpen |
-    StructureClose |
+    Structure |
     Branch |
     Lambda |
     String |
@@ -30,7 +29,7 @@ NumberDecimal {
     "."
 }
 
-StructureOpen {
+Structure {
     structure<"yes?"> |
     structure<"?"> |
     structure<"if"> |
@@ -43,10 +42,7 @@ StructureOpen {
     structure<"exists<"> |
     structure<"relation<"> |
     structure<"generate-from<">
-    structure<"generate<">
-}
-
-StructureClose {
+    structure<"generate<"> |
     structure<"endfor"> |
     structure<"end-for"> |
     structure<"endwhile"> |
