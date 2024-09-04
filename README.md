@@ -41,14 +41,14 @@ turns into:
 
 ```
 ## The classic fizzbuzz
-100 map{
+100 map<
   n [3, 5] divides?
   "FizzBuzz" halve
   dot-product maximum
 } join-on-newlines
 ```
 
-([Try it Online!](https://vyxal.github.io/latest.html#WyJsIiwiIiwiIyMgVGhlIGNsYXNzaWMgZml6emJ1enpcbjEwMCBtYXB7XG4gIG4gWzMsIDVdIGRpdmlkZXM/XG4gIFwiRml6ekJ1enpcIiBoYWx2ZVxuICBkb3QtcHJvZHVjdCBtYXhpbXVtXG59IGpvaW4tb24tbmV3bGluZXMiLCIiLCIiLCIzLjAuMCJd))
+([Try it Online!](https://vyxal.github.io/latest.html#WyJsIiwiIiwiMTAwIG1hcDxcbiAgbiBbMywgNV0gZGl2aWRlcz9cbiAgXCJGaXp6QnV6elwiIGhhbHZlXG4gIGRvdC1wcm9kdWN0IG1heGltdW1cbn0gam9pbi1vbi1uZXdsaW5lcyIsIiIsIiIsIjMuNC42Il0=))
 
 turns into:
 
