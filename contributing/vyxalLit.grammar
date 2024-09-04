@@ -1,0 +1,117 @@
+@top Program {(Word | Group) +}
+
+structure<term> { @specialize[@name={term}]<StructureKW, term> }
+branch<term> { @specialize[@name={term}]<BranchKW, term> }
+lambda<term> { @specialize[@name={term}]<LambdaKW, term> }
+
+Group {
+    "(" ("." | ":" | ":." | "::" | "," | ";" | ";," | ";;")? Program+ ")" 
+}
+
+Word {
+    StructureOpen |
+    StructureClose |
+    Branch |
+    Lambda |
+    String |
+    Number |
+    NormalKW |
+    ModifierKW |
+    VariableThing
+}
+
+Number {
+    NumberDecimal |
+    "i"
+}
+
+NumberDecimal {
+    NumberPart |
+    "."
+}
+
+StructureOpen {
+    structure<"yes?"> |
+    structure<"?"> |
+    structure<"if"> |
+    structure<"for"> |
+    structure<"for<"> |
+    structure<"do-to-each"> |
+    structure<"each-as"> |
+    structure<"while"> |
+    structure<"while<"> |
+    structure<"exists<"> |
+    structure<"relation<"> |
+    structure<"generate-from<">
+    structure<"generate<">
+}
+
+StructureClose {
+    structure<"endfor"> |
+    structure<"end-for"> |
+    structure<"endwhile"> |
+    structure<"end-while"> |
+    structure<"endlambda"> |
+    structure<"end-lambda"> |
+    structure<"end"> |
+    structure<"end-end"> |
+    structure<"end-all"> |
+    structure<"close-all"> |
+    structure<"}"> |
+}
+
+Branch {
+    branch<"->"> |
+    branch<"else:"> |
+    branch<"else"> |
+    branch<"elif"> |
+    branch<"else-if"> |
+    branch<"body"> |
+    branch<"do"> |
+    branch<"branch"> |
+    branch<"then"> |
+    branch<"in"> |
+    branch<"using"> |
+    branch<"no?"> |
+    branch<"=>"> |
+    branch<"from"> |
+    branch<"as"> |
+    branch<"with"> |
+    branch<"given"> |
+    branch<":and:"> |
+    branch<"has"> |
+    branch<"does"> |
+    branch<"using"> |
+    branch<"on">
+}
+
+Lambda {
+    lambda<"lambda"> |
+    lambda<"lam"> |
+    lambda<"map-lambda"> |
+    lambda<"map-lam"> |
+    lambda<"map<"> |
+    lambda<"filter-lambda"> |
+    lambda<"filter-lam"> |
+    lambda<"filter<"> |
+    lambda<"reduce-lambda"> |
+    lambda<"reduce-lam"> |
+    lambda<"reduce<"> |
+    lambda<"fold-lambda"> |
+    lambda<"fold-lam"> |
+    lambda<"fold<"> |
+    lambda<"sort-lambda"> |
+    lambda<"sort-lam"> |
+    lambda<"sort<"> |
+    lambda<"{">
+}
+
+@tokens {
+    ModifierKW { $[a-zA-Z]$[a-zA-Z0-9\-?!*+=<>&%]*":"}
+    NormalKW { $[a-zA-Z]$[a-zA-Z0-9\-?!*+=<>&%]*"n't"*}
+    VariableThing { ("$" | ":=" | ":>" | ":=[") [a-zA-Z][a-zA-Z0-9_]* }
+    NumberPart { "0" | ($[1-9] $[0-9]*) }
+    ListStuff { "[" | "]" }
+    String {'"' (!["„”“\\] | "\\" _)* $["„”“]}
+    @precedence {ModifierKW, NormalKW}
+}
