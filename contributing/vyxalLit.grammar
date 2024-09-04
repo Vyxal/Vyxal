@@ -14,7 +14,8 @@ Word {
     ModifierKW |
     VariableThing |
     ListStuff |
-    GroupStuff
+    GroupStuff |
+    Comment
 }
 
 @precedence {ModifierKW, NormalKW, WeirdKW}
@@ -101,6 +102,7 @@ Lambda {
     Number { "." | "i" | "0" | ($[1-9] $[0-9]*) }
     ListStuff { "[" | "]" }
     String {'"' (!["„”“\\] | "\\" _)* $["„”“]}
+    Comment {"##" (![\n])*}
     GroupStuff { "(" | ")" | "(." | "(:" | "(:." | "(::" | "(," | "(;" | "(;," | "(;;" }
     @precedence {ModifierKW, NormalKW, GroupStuff, Number, WeirdKW}
 }
