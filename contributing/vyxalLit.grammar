@@ -102,5 +102,5 @@ Lambda {
     ListStuff { "[" | "]" }
     String {'"' (!["„”“\\] | "\\" _)* $["„”“]}
     GroupStuff { "(" | ")" | "(." | "(:" | "(:." | "(::" | "(," | "(;" | "(;," | "(;;" }
-    @precedence {ModifierKW, NormalKW, GroupStuff, Number, WeirdKW,  }
+    @precedence {ModifierKW, NormalKW, GroupStuff, Number, WeirdKW}
 }
