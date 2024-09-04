@@ -82,7 +82,7 @@ Branch {
     branch<"does"> |
     branch<"using"> |
     branch<"on"> |
-    branch<","> |
+    branch<",">
 }
 
 Lambda {
