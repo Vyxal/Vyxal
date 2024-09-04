@@ -57,7 +57,7 @@ StructureClose {
     structure<"end-end"> |
     structure<"end-all"> |
     structure<"close-all"> |
-    structure<"}"> |
+    structure<"}">
 }
 
 Branch {
