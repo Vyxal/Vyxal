@@ -1,0 +1,108 @@
+@top Program {(Word) +}
+
+structure<term> { @specialize[@name={term}]<WeirdKW, term> }
+branch<term> { @specialize[@name={term}]<WeirdKW, term> }
+lambda<term> { @specialize[@name={term}]<WeirdKW, term> }
+
+Word {
+    Structure |
+    Branch |
+    Lambda |
+    String |
+    Number |
+    NormalKW |
+    ModifierKW |
+    VariableThing |
+    ListStuff |
+    GroupStuff |
+    Comment
+}
+
+@precedence {ModifierKW, NormalKW, WeirdKW}
+
+Structure {
+    structure<"yes?"> |
+    structure<"?"> |
+    structure<"if"> |
+    structure<"for"> |
+    structure<"for<"> |
+    structure<"do-to-each"> |
+    structure<"each-as"> |
+    structure<"while"> |
+    structure<"while<"> |
+    structure<"exists<"> |
+    structure<"relation<"> |
+    structure<"generate-from<">
+    structure<"generate<"> |
+    structure<"endfor"> |
+    structure<"end-for"> |
+    structure<"endwhile"> |
+    structure<"end-while"> |
+    structure<"endlambda"> |
+    structure<"end-lambda"> |
+    structure<"end"> |
+    structure<"end-end"> |
+    structure<"end-all"> |
+    structure<"close-all"> |
+    structure<"}">
+}
+
+Branch {
+    branch<"->"> |
+    branch<"else:"> |
+    branch<"else"> |
+    branch<"elif"> |
+    branch<"else-if"> |
+    branch<"body"> |
+    branch<"do"> |
+    branch<"branch"> |
+    branch<"then"> |
+    branch<"in"> |
+    branch<"using"> |
+    branch<"no?"> |
+    branch<"=>"> |
+    branch<"from"> |
+    branch<"as"> |
+    branch<"with"> |
+    branch<"given"> |
+    branch<":and:"> |
+    branch<"has"> |
+    branch<"does"> |
+    branch<"using"> |
+    branch<"on"> |
+    branch<",">
+}
+
+Lambda {
+    lambda<"lambda"> |
+    lambda<"lam"> |
+    lambda<"map-lambda"> |
+    lambda<"map-lam"> |
+    lambda<"map<"> |
+    lambda<"filter-lambda"> |
+    lambda<"filter-lam"> |
+    lambda<"filter<"> |
+    lambda<"reduce-lambda"> |
+    lambda<"reduce-lam"> |
+    lambda<"reduce<"> |
+    lambda<"fold-lambda"> |
+    lambda<"fold-lam"> |
+    lambda<"fold<"> |
+    lambda<"sort-lambda"> |
+    lambda<"sort-lam"> |
+    lambda<"sort<"> |
+    lambda<"{">
+}
+
+@tokens {
+    WeirdKW {$[a-zA-Z\-?]$[a-zA-Z0-9\-?!*+=<>&%]*":"?}
+    ModifierKW { $[a-zA-Z]$[a-zA-Z0-9\-?!*+=<>&%]*":"}
+    NormalKW { $[a-zA-Z]$[a-zA-Z0-9\-?!*+=<>&%]*"n't"*}
+    VariableThing { ("$" | ":=" | ":>" | ":=[") $[a-zA-Z]$[a-zA-Z0-9_]* }
+    Number { "." | "i" | "0" | ($[1-9] $[0-9]*) }
+    ListStuff { "[" | "]" }
+    String {'"' (!["„”“\\] | "\\" _)* $["„”“]}
+    Comment {"##" (![\n])*}
+    GroupStuff { "(" | ")" | "(." | "(:" | "(:." | "(::" | "(," | "(;" | "(;," | "(;;" }
+    @precedence {ModifierKW, NormalKW, GroupStuff, Number, WeirdKW}
+}

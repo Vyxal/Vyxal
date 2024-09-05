@@ -29,7 +29,7 @@ class SBCSLexer extends LexerCommon:
     programStack.pushAll(program.reverse.map(_.toString))
 
     while programStack.nonEmpty do
-      if headIsDigit || headEqual(".") then numberToken
+      if headIsDigit || headEqual(".") || headEqual("ı") then numberToken
       else if headEqual("\n") then quickToken(TokenType.Newline, "\n")
       else if headIsWhitespace then pop(1)
       else if headEqual("\"") then stringToken(false)
@@ -144,74 +144,26 @@ class SBCSLexer extends LexerCommon:
       val zeroToken = Token(TokenType.Number, "0", Range(index, index))
       pop(1)
       tokens += zeroToken
-    // Then the headless decimal case
-    else if headEqual(".") then
-      pop(1)
-      if safeCheck(c => c.head.isDigit) then
-        val head = simpleNumber()
-        val numberToken = Token(
-          TokenType.Number,
-          s"0.$head",
-          Range(rangeStart, index),
-        )
-        tokens += numberToken
-      else
-        val zeroToken = Token(
-          TokenType.Number,
-          "0.5",
-          Range(rangeStart, index),
-        )
-        tokens += zeroToken
     else
-      // Not a 0, and not a headless decimal, so it's a normal number
-      val head = simpleNumber()
-      // Test for a decimal tail
-      if headEqual(".") then
-        pop(1)
-        if safeCheck(c => c.head.isDigit) then
-          val tail = simpleNumber()
-          val isNegative = headEqual("_")
-          val numberToken = Token(
-            TokenType.Number,
-            s"${if isNegative then pop() else ""}$head.$tail",
-            Range(rangeStart, index),
-          )
-          tokens += numberToken
-        else
-          val numberToken = Token(
-            TokenType.Number,
-            s"$head.5",
-            Range(rangeStart, index),
-          )
-          tokens += numberToken
-      // No decimal tail, so normal number
-      else
-        val isNegative = headEqual("_")
-        val numberToken = Token(
+      val numberVal = StringBuilder()
+      if !headEqual("ı") then numberVal ++= decimalNumber()
+      if headEqual("ı") then
+        numberVal ++= pop()
+        val number =
+          if safeCheck(c => c.head.isDigit || c == ".") then decimalNumber()
+          else "1"
+        if headEqual("_") then numberVal ++= pop()
+        numberVal ++= number
+      var modified = numberVal.toString()
+      // Add the implicit values
+      if modified.startsWith("ı") then modified = "0" + modified
+
+      tokens +=
+        Token(
           TokenType.Number,
-          (if isNegative then pop() else "") + head,
+          modified,
           Range(rangeStart, index),
         )
-        tokens += numberToken
-    end if
-    if headEqual("ı") then
-      // Grab an imaginary part and merge with the previous number
-      pop()
-      val combinedTokenValue =
-        (tokens.lastOption match
-          case None => ""
-          case Some(token) => token.value
-        ) + "ı"
-      tokens.dropRightInPlace(1)
-      numberToken
-      val finalTokenValue = combinedTokenValue +
-        (tokens.lastOption match
-          case None => ""
-          case Some(token) => token.value
-        )
-      tokens.dropRightInPlace(1)
-      tokens +=
-        Token(TokenType.Number, finalTokenValue, Range(rangeStart, index))
     end if
 
   end numberToken
@@ -220,6 +172,34 @@ class SBCSLexer extends LexerCommon:
     val numberVal = StringBuilder()
     while safeCheck(c => c.head.isDigit) do numberVal ++= s"${pop()}"
     numberVal.toString()
+
+  private def decimalNumber(): String =
+    val tokenVal = StringBuilder()
+    var decimalUsed = false
+    // Handle headless decimal first
+    if headEqual(".") then
+      decimalUsed = true
+      tokenVal ++= pop()
+      if safeCheck(c => c.head.isDigit) then tokenVal ++= simpleNumber()
+    // A normal number
+    else if safeCheck(c => c.head.isDigit) then
+      tokenVal ++= simpleNumber()
+      // Could also a decimal number
+      if headEqual(".") then
+        tokenVal ++= pop()
+        decimalUsed = true
+        // If there's a digit after the decimal, add it
+        if safeCheck(c => c.head.isDigit) then tokenVal ++= simpleNumber()
+
+    if decimalUsed && tokenVal.last == '.' then tokenVal ++= "5"
+
+    val number = tokenVal.toString()
+    val padded = if number.startsWith(".") then s"0${number}" else number
+    if headEqual("_") then
+      pop()
+      s"_${padded}"
+    else padded
+  end decimalNumber
 
   private def oneCharStringToken: Unit =
     val rangeStart = index - 1
