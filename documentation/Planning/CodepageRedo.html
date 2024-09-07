@@ -99,7 +99,6 @@
             "‰": { name: "Reduce overlapping n-windows", description: "2lvƒ in v2" },
             "▦": { name: "Outer Product", description: "Dyadic v behaviour in v2" },
             "¨": { name: "Map | Zip With", description: "Monadic v behaviour in v2 | Given a dyadic function, zip two lists and reduce each by f" },
-            "⊚": { name: "Quantum Mode", description: "Enable quantum mode for an element" },
             "⊧": { name: "Normal Mode", description: "Call an element without type/depth switching" },
             "¿": { name: "Execute if true", description: "Pop the top of the stack, and, if it's truthy, apply a function" },
 
@@ -119,6 +118,10 @@
             "7": { name: "7", description: "Digit seven" },
             "8": { name: "8", description: "Digit eight" },
             "9": { name: "9", description: "Digit nine" },
+
+            "⊚": { name: "Entangle", description: "Turn a value into a quantum value" },
+            "⮾": { name: "Detangle", description: "Turn a quantum value into a list of all possible values" },
+            "⦷": { name: "Index into quantum value", description: "Get the nth value from a quantum value, defaults to 0 if top of stack isn't number" },
 
             "÷": { name: "Division | Split String on Regex | Split String into chunks of size n", description: "x ÷ y" },
             "×": { name: "Multiplication | String Repeat | Ring Translate", description: "x × y" },
@@ -196,7 +199,7 @@
             "v": { name: "Vectorised or", description: "Vectorised or" },
             "w": { name: "Enwrap", description: "Enwrap x" },
             "x": { name: "Recursion", description: "Recursion" },
-            "y": { name: "Quantum Collapse", description: "Convert a quantum object into a list of all values" },
+            "y": { name: "Transliterate", description: "Ŀ in v2" },
             "z": { name: "Transpose with filler", description: "Transpose x with filler y" },
             "⨥": { name: "+2", description: "Add 2 to the top of the stack" },
             "⨪": { name: "-2", description: "Subtract 2 from the top of the stack" },
@@ -208,7 +211,7 @@
             "∪": { name: "Set Union", description: "Set union" },
             "∩": { name: "Set Intersection", description: "Set intersection" },
             "⊍": { name: "Set XOR Difference", description: "Set xor difference" },
-            "⊖": { name: "Set Difference", description: "Set difference" },
+            "⦰": { name: "Set Difference", description: "Set difference" },
             "«": { name: "Left Shift", description: "Left shift" },
             "»": { name: "Right Shift", description: "Right shift" },
             "⌐": { name: "Bitwise NOT", description: "Bitwise NOT" },
@@ -242,16 +245,16 @@
 
         const characters = `
 λƛΛʎỿδ⎂∥∦∺⁜␤①②③④
-‰▦¨⊚⊧¿÷×∧∨¬ʀʁɾ‹›
+‰▦¨⊚⮾⦷⊧¿÷×∧∨¬ʀʁɾ
  !"#$%&'()*+,-./
 0123456789:;<=>?
 @ABCDEFGHIJKLMNO
 PQRSTUVWXYZ[\\]^_
 \`abcdefghijklmno
 pqrstuvwxyz{|}~⟆
-⨥⨪ΣΠσ⇧⇩∪∩⊍⊖«»⌐∴∵
+⨥⨪ΣΠσ⇧⇩∪∩⊍⦰«»⌐∴∵
 ⊻ƓɠĠġ⌈⌊ΘΦ£¥▲↜↝⬳⟿
-≜⎀◲⊢⊣⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
+≜⎀◲⊢⊣‹›⍰⍰⍰⍰⍰⍰⍰⍰⍰
 ⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
 ⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
 ⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
