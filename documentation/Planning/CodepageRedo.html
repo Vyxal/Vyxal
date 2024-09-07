@@ -87,6 +87,10 @@
             "{": { name: "While loop", description: "While loop" },
             "}": { name: "Close current structure", description: "Equivalent to }" },
             "|": { name: "Branch", description: "Branch" },
+            "ı": { name: "Imaginary unit", description: "Imaginary unit" },
+            "„": { name: "Base-252 Compressed String", description: "Base-252 compressed string" },
+            "”": { name: "Dictionary Compressed String", description: "Dictionary compressed string" },
+            "“": { name: "Base-252 Compressed Number", description: "Base-252 compressed number" },
 
             "⎂": { name: "Both modifier", description: "Apply function f to top of stack and second of stack. ⎂f = f$f$" },
             "∥": { name: "Parallel Apply", description: "Run two functions in parallel" },
@@ -96,7 +100,7 @@
             "/": { name: "Reduce | Invariant by", description: "Reduce the top of the stack by element" },
             "\\": { name: "Scan", description: "Scan the top of the stack by element" },
             "⁜": { name: "Group By", description: "Group the top of the stack by element" },
-            "‰": { name: "Reduce overlapping n-windows", description: "2lvƒ in v2" },
+            "⊞": { name: "Reduce overlapping n-windows", description: "2lvƒ in v2" },
             "▦": { name: "Outer Product", description: "Dyadic v behaviour in v2" },
             "¨": { name: "Map | Zip With", description: "Monadic v behaviour in v2 | Given a dyadic function, zip two lists and reduce each by f" },
             "⊧": { name: "Normal Mode", description: "Call an element without type/depth switching" },
@@ -118,6 +122,17 @@
             "7": { name: "7", description: "Digit seven" },
             "8": { name: "8", description: "Digit eight" },
             "9": { name: "9", description: "Digit nine" },
+
+            "①": { name: "Constant X", description: "A built-in 1 byte constant" },
+            "②": { name: "Constant X", description: "A built-in 1 byte constant" },
+            "③": { name: "Constant X", description: "A built-in 1 byte constant" },
+            "④": { name: "Constant X", description: "A built-in 1 byte constant" },
+            "⑤": { name: "Constant X", description: "A built-in 1 byte constant" },
+            "⑥": { name: "Constant X", description: "A built-in 1 byte constant" },
+            "⑦": { name: "Constant X", description: "A built-in 1 byte constant" },
+            "⑧": { name: "Constant X", description: "A built-in 1 byte constant" },
+            "⑨": { name: "Constant X", description: "A built-in 1 byte constant" },
+            "⑩": { name: "Constant X", description: "A built-in 1 byte constant" },
 
             "⊚": { name: "Entangle", description: "Turn a value into a quantum value" },
             "⮾": { name: "Detangle", description: "Turn a quantum value into a list of all possible values" },
@@ -214,10 +229,12 @@
             "⦰": { name: "Set Difference", description: "Set difference" },
             "«": { name: "Left Shift", description: "Left shift" },
             "»": { name: "Right Shift", description: "Right shift" },
+            /* These will be digraphs in v3
             "⌐": { name: "Bitwise NOT", description: "Bitwise NOT" },
             "∴": { name: "Bitwise AND", description: "Bitwise AND" },
             "∵": { name: "Bitwise OR", description: "Bitwise OR" },
             "⊻": { name: "Bitwise XOR", description: "Bitwise XOR" },
+            */
             "Ɠ": { name: "Max without popping", description: "Max without popping" },
             "ɠ": { name: "Min without popping", description: "Min without popping" },
             "Ġ": { name: "Vectorised maximum", description: "Vectorised maximum" },
@@ -238,6 +255,23 @@
             "◲": { name: "Sublists", description: "Get all sublists of x" },
             "⊢": { name: "Base 10 to custom base", description: "| = 10, the - indicates it's going away from ten" },
             "⊣": { name: "Custom base to base 10", description: "| = 10, the - indicates it's going to from ten" },
+            "ɦ": { name: "Head without popping", description: "" },
+            "ʈ": { name: "Tail withouth popping", description: "" },
+            "⏭": { name: "x[:-1]", description: "remove the last element of x" },
+            "⏮": { name: "x[1:]", description: "remove the first element of x" },
+            "½": { name: "1/2", description: "1/2" },
+            "ƶ": { name: "Range [0, len(x))", description: "Range from 0 to len(x)-1" },
+            "Ƶ": { name: "Range [1, len(x)]", description: "Range from 1 to len(x)" },
+            "⁰": { name: "First input", description: "inputs[0]" },
+            "¹": { name: "Second input", description: "inputs[1]" },
+            "²": { name: "Square", description: "x ** 2" },
+            "⅟": { name: "Reciprocal", description: "1 / x" },
+            "※": { name: "Group by", description: "Group the top of the stack by the function" },
+            "⇄": { name: "Reverse x", description: "Reverse x : x[::-1]" },
+            "⧖": { name: "Permutations", description: "Get all permutations of x" },
+            "‰": { name: "Divmod", description: "Divmod x and y" },
+            "≛": { name: "Divides?", description: "Does x divide y?" },
+            "⁞": { name: "Join on newlines", description: "Join x on newlines" },
         };
 
         const codepage = document.getElementById('codepage');
@@ -245,21 +279,21 @@
 
         const characters = `
 λƛΛʎỿδ⎂∥∦∺⁜␤①②③④
-‰▦¨⊚⮾⦷⊧¿÷×∧∨¬ʀʁɾ
+⊞▦¨⊚⮾⦷⊧¿÷×∧∨¬ʀʁɾ
  !"#$%&'()*+,-./
 0123456789:;<=>?
 @ABCDEFGHIJKLMNO
 PQRSTUVWXYZ[\\]^_
 \`abcdefghijklmno
-pqrstuvwxyz{|}~⟆
-⨥⨪ΣΠσ⇧⇩∪∩⊍⦰«»⌐∴∵
-⊻ƓɠĠġ⌈⌊ΘΦ£¥▲↜↝⬳⟿
-≜⎀◲⊢⊣‹›⍰⍰⍰⍰⍰⍰⍰⍰⍰
+pqrstuvwxyz{|}~ı
+⨥⨪ΣΠσ⇧⇩∪∩⊍⦰«»ɦʈ½
+⟆ƓɠĠġ⌈⌊ΘΦ£¥▲↜↝⬳⟿
+≜⎀◲⊢⊣‹›ƶƵ⁰¹²⅟※⇄⧖
+‰≛⁞⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
 ⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
+①②③④⑤⑥⑦⑧⑨⑩⍰⍰⍰⍰⍰⍰
 ⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
-⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
-⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
-⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰Þ∆ø
+⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰„”“Þ∆ø
 `.replaceAll("\n", '');
 
         // Generate 16x16 grid of characters
