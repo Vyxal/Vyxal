@@ -229,12 +229,6 @@
             "⦰": { name: "Set Difference", description: "Set difference" },
             "«": { name: "Left bit Shift", description: "Left shift" },
             "»": { name: "Right bit Shift", description: "Right shift" },
-            /* These will be digraphs in v3
-            "⌐": { name: "Bitwise NOT", description: "Bitwise NOT" },
-            "∴": { name: "Bitwise AND", description: "Bitwise AND" },
-            "∵": { name: "Bitwise OR", description: "Bitwise OR" },
-            "⊻": { name: "Bitwise XOR", description: "Bitwise XOR" },
-            */
             "Ɠ": { name: "Max without popping", description: "Max without popping" },
             "ɠ": { name: "Min without popping", description: "Min without popping" },
             "Ġ": { name: "Vectorised maximum", description: "Vectorised maximum" },
@@ -258,6 +252,7 @@
             "ɦ": { name: "Head without popping", description: "" },
             "ʈ": { name: "Tail withouth popping", description: "" },
             "⏭": { name: "x[:-1]", description: "remove the last element of x" },
+            "⏏": { name: "x[y:]", description: "remove the first y elements of x" },
             "⏮": { name: "x[1:]", description: "remove the first element of x" },
             "½": { name: "1/2", description: "1/2" },
             "ƶ": { name: "Range [0, len(x))", description: "Range from 0 to len(x)-1" },
@@ -272,7 +267,35 @@
             "‰": { name: "Divmod", description: "Divmod x and y" },
             "≛": { name: "Divides?", description: "Does x divide y?" },
             "⁞": { name: "Join on newlines", description: "Join x on newlines" },
+            "⦷": { name: "Absolute value", description: "abs(x)" },
+            "Ϣ": { name: "Wrap to length", description: "a wrapped in chunks of length b" },
+            "≤": { name: "Less than or equal to", description: "y ≤ x" },
+            "≥": { name: "Greater than or equal to", description: "y ≥ x" },
+            "≠": { name: "Not equal to", description: "y ≠ x" },
+            "≡": { name: "Exactly Equal to", description: "y ≡ x" },
+            "▞": { name: "Overlapping pairs", description: "2o" },
+            "•": { name: "Dot product", description: "Dot product of x and y" },
+            "±": { name: "Sign", description: "Sign of x" },
+            "†": { name: "Length of consecutive groups", description: "※¨L" },
+            "⎙": { name: "Print without popping", description: "Print without popping" },
+            "✒": { name: "Print without newline", description: "Print without a newline" },
+            "≓": { name: "Mirror", description: "Mirror the top of the stack" },
+            "Ͼ": { name: "Vectorised sums", description: "Vectorised sums: ¨Σ" },
+            "⋳": { name: "Index of", description: "Index of x in y" },
+            "⛭": { name: "Exec", description: "Exec" },
+            "㏒": { name: "Logarithm", description: "Logarithm" },
+            "⏟": { name: "Every nth element", description: "Every nth element" },
+            "⌭": { name: "Is prime?", description: "Is x prime?" },
+            "⏜": { name: "Over", description: "x y x" },
+            "⍢": { name: "Bit", description: "x % 2" },
+            "ℂ": { name: "N choose k", description: "N choose k" },
+            "⌹": { name: "Partitions of", description: "List Partitions of x" },
+            "⏚": { name: "Power set", description: "Power set of x" },
+            "↯": { name: "Sort by function", description: "Sort x by y" },
+            "☒": { name: "Cartesian power", description: "Cartesian power of x and y" },
         };
+
+
 
         const codepage = document.getElementById('codepage');
         const infoPanel = document.getElementById('info-panel');
@@ -289,8 +312,8 @@ pqrstuvwxyz{|}~ı
 ⨥⨪ΣΠσ⇧⇩∪∩⊍⦰«»ɦʈ½
 ⟆ƓɠĠġ⌈⌊ΘΦ£¥▲↜↝⬳⟿
 ≜⎀◲⊢⊣‹›ƶƵ⁰¹²⅟※⇄⧖
-‰≛⁞⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
-⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
+‰≛⁞⦷Ϣ≤≥≠≡▞•±†⎙✒≓
+Ͼ⋳⛭⏮⏏⏭㏒⏟⌭⏜⍢ℂ⌹⏚↯☒
 ①②③④⑤⑥⑦⑧⑨⑩⍰⍰⍰⍰⍰⍰
 ⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
 ⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰„”“Þ∆ø
