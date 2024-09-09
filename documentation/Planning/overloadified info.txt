@@ -1,0 +1,89 @@
+F, G, H = monadic functions
+f, g, h = dyadic functions
+ḟ, ġ, ḣ = any arity
+
+Modifiers
+
+⎂F = ...d c b a => d c F(b) F(a)
+⎂f = ...d c b a => f(d, c) f(a, b)
+∥ḟġ = ...d c b a => d c ḟ(a, b) ġ(a, b)
+∦ḟġ = ...d c b a => d c [ḟ(a, b), ġ(a, b)]
+∺FG = ...d c b a => d c G(b) F(a)
+~F = a.filter(F)
+~f = ...d c b a => d c b a f(a, b)
+/F = F(a) == a
+/f = a.reduce(f)
+\f = a.scan(f)
+⁜F = a.group_by(apply function F to each)
+⊞f = a.pairs.map(pair => pair.reduce(f))
+▦f = [f(x, b) for x in a]
+¨F = [F(x) for x in a]
+¨f = [f(x, y) for (x, y) in zip(a, b)]
+⊧f = Call f without depth or type switching
+¿ḟ = if a then b()
+⎇ḟ = ...d c b a => ...d ḟ(c, b) a
+
+Elements
+
+Types = num (number) str (string) lst (list) fun (function) any (any value) qnt (quantum value)
+* after a pair of types indicates type switching occurs
+A lack of a lst overload indicates auto-vectorisation.
+
+a = lhs
+b = rhs
+
+⎊ (any) = [a, b, c] => something that is a, b, and c, all at the same time
+⎋ (qnt) = create a list of all possible values the item can be
+⍟ (qnt, num) = get the nth possible value
+÷ (num, num) = a divided by b
+  (str, num)* = split string b into chunks of size a
+  (str, str) = split a on regex b
+× (num, num) = a times b
+  (str, num)* = repeat string a, b times
+  (str, str) = ring translate
+∧ (any, any) = b && a (first falsey)
+∨ (any, any) = b || a (first truthy)
+¬ (any) = not a (truthy => 0, falsey => 1)
+ʀ (num) = range [0, a]
+  (str) = uppercase
+ʁ (num) = range [0, a)
+  (str) = lowercase
+ɾ (num) = range [1, a]
+  (str) = is character a an alphabetical (a-zA-Z) letter?
+‹ (num) = a - 1
+  (str) = Pad string with 0s to length nearest multiple of 8
+› (num) = a + 1
+  (str) = Replace spaces with 0s
+! (num) = Factorial
+  (str) = Titlecase
+$ (any, any) = ...d c b a => d c a b
+% (num, num) = a modulo b
+  (str, any) = a.format(b) # format on %s
+& (any, any) = append b to a
+* (num, num) = a to the power of b
++ (num, num) = a + b
+  (str, num)* = str(a) + str(b)
+  (str, str) = a + b
+, (any) = Println
+- (num, num) = a - b
+  (str, num) = append b "-"s to a
+  (num, str) = prepnd a "-"s to b
+  (str, str) = remove all instance of regex b in a
+: (any) = ...d c b a => d c b a a
+; (any, any) = [a, b]
+< (num, num) = a < b
+  (str, num)* = str(a) < str(b)
+  (str, str) = a < b (lexiographically)
+= (num, num) = a == b
+  (str, num)* = str(a) == str(b)
+  (str, str) = a == b
+> (num, num) = a > b
+  (str, num)* = str(a) > str(b)
+  (str, str) = a > b (lexiographically)
+? = push input eval'd
+@ (num, num) = |a - b|
+  (str, str) = Levenshtein distance between a and b
+  (any, fun)* = Reduce overlaps in list a by function b
+A (num) = Are all digits of a truthy?
+  (str) = Is character a vowel?
+  (lst) = Are all items in a truthy?
