@@ -27,6 +27,7 @@ Elements
 
 Types = num (number) str (string) lst (list) fun (function) any (any value) qnt (quantum value)
 * after a pair of types indicates type switching occurs
+! after a pair of types inicates depth switching (deeper on left, shallower on right)
 A lack of a lst overload indicates auto-vectorisation.
 
 a = lhs
@@ -87,3 +88,85 @@ $ (any, any) = ...d c b a => d c a b
 A (num) = Are all digits of a truthy?
   (str) = Is character a vowel?
   (lst) = Are all items in a truthy?
+B (num) = Convert a to binary (list of digits)
+  (str) = each character in a to the binary representation of its character code
+C (any, any)! = count of a in b
+D (any) = ...d c b a => d c b a a a
+E (num) = a ** 2
+  (str) = Evaluate str (think python eval)
+F (any, fun) = a.filter(b)
+  (any, non-fun)! = a.find(b)
+G (lst) = max(a)
+  (scl, scl) = max(a, b)
+H (num) = to_hex(a) (base 10 -> base 16)
+  (str) = from_hex(a) (base 16 -> base 10)
+I (any, fun)* = a.filter(x => !b(x)) (reject by)
+  (any, non-fun) = Interleave
+J (lst, lst) = a.addAll(b) (merge)
+  (num, num) = int(s"$a$b")
+K (num) = factors of a
+  (str) = is string numeric
+L (any) = length
+M (any, fun)* = a.map(b)
+  (lst, lst) = mold a to shape of b
+  (num, num) = multiplicity
+  (lst, num)* = vectorised num,num
+N (num) = -a
+  (str) = swap case
+  (fun) = First non-negative integer x where a(x) is true
+O (num) = character with corresponding character code
+  (str) = number(s) that correspond to character codes
+P (any) = Prefixes
+Q (any, num) = remove bth item of a 
+  (str, str) = Get all groups in a regex match
+R (any, fun)* = a.reduce(b) (makes b have arity 2)
+  (num, num) = range(a, b) ([a, b))
+  (str, str) = Is there a regex match of pattern b in string a 
+S (any) = sort in ascending order
+T (str) = Titlecase
+  (lst) = Transpose
+  (num) = Triple
+U (any) = Uninterleave
+V (lst) = [x[::-1] for x in a]
+W (...) = ...d c b a => [...d c b a]
+X (any, any) = Cartesian product
+Y (any, num) = [a].repeat(b)
+Z (any, any) = zip(a, b)
+^ (...) = ...d c b a => a b c d ...
+_ (any) = pop / discard
+a (num) = any digit non-0?
+  (str) = is character uppercase?
+  (lst) = are any items truthy?
+b (any) = convert from binary
+c (any, any)! = a in b?
+d (any) = a + a 
+e (num) = even?
+  (str) = split on newlines
+f (any) = Flatten
+g (lst) = min(a)
+  (scl, scl) = min(a, b)
+h (any) = a[0]
+i (any, num)* (except num, num) = a[b]
+  (lst, lst) = [a[x] for x in b]
+  (str, str) -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])
+  (any, fun)* = Apply b on a and collect unique values. Does include the initial value.
+j (any, any) = join a on b
+l (num, num) = Logarithm
+  (str, str) = len(a) == len(b)
+  (str, num)* = len(a) == b
+  (any, fun)* = apply until a previous value is repeated, collecting intermediate results
+m () = context variable m
+n () = context variable n
+o (any, num) = Overlapping slices of a of length b
+  (any) = Overlapping slices of a of length 2
+p (any, any) = Prepend
+q (any) = Quotify
+r (any, any, any) = s/b/c
+s (any, any) = split a on b
+t (any) = a[-1]
+u (any) = uniquify
+v (any, any) = vectorised or (tbd what happens with scl, scl)
+w (any) = [a]
+x () = call the current function (or top level program)
+y (any, any, any) = Transliterate
+z (any, any) = Transpose with filler (the thing jelly has)
