@@ -137,51 +137,44 @@ object MiscHelpers:
   }
 
   def isList(code: String): Boolean =
-    val stack = Stack[Char]()
-    stack.pushAll(code.reverse)
-    isList(stack)
 
-  private def isList(stack: Stack[Char]): Boolean =
-    if stack.isEmpty then return false
-    else if stack.head == '[' then
-      stack.pop()
-      while stack.nonEmpty do
-        // Skip whitespace
-        if stack.head.isWhitespace then stack.pop()
-        // Consume sublists
-        else if stack.head == '[' then
-          if !isList(stack) then return false
-          // and make sure there's a comma after it
-          if stack.head != ',' then return false
-        else if stack.head == ']' then
-          stack.pop()
-          if stack.isEmpty then return true
-          else return false
-        else if stack.head == '"' then
-          stack.pop()
-          var escaped = false
-          // Remove strings, making sure to skip escaped quotes
-          // and that lists inside strings are ignored
-          while stack.nonEmpty && (!escaped && stack.head != '"') do
-            if !escaped && stack.head == '\\' then escaped = true
-            else escaped = false
-            stack.pop()
+    if code.isEmpty then return false
+    if code.head != '[' || code.last != ']' then return false
 
-          // Make sure that the string is finished and that there's still
-          // stuff after it
-          if stack.isEmpty then return false
-          stack.pop()
-          // and that there's a comma after it
-          if stack.head != ',' && stack.head != ']' then return false
-        else if stack.head == ',' then stack.pop()
-        else
-          stack.pop() // Sure there can be "invalid" list items here, but
-          // those'll be handled by the parser. We just want to see if something
-          // matches a list-like structure.
-      end while
-    end if
-    // Not starting with a [, so it's not a list
-    false
+    val characters = Stack(code*)
+    var depth = 0
+    var inString = false
+    var escaped = false
+    var expectingComma = false
+
+    while characters.nonEmpty do
+      val char = characters.pop()
+      // If in string, pop until we find the end of the string
+      if inString then
+        while characters.nonEmpty && (escaped || characters.head != '"') do
+          escaped = char == '\\' && !escaped
+          characters.pop()
+        inString = false
+        expectingComma = true
+      else if char == '"' then inString = true
+      else if expectingComma then
+        if char == ',' then expectingComma = false
+        else if char == ']' then
+          depth -= 1
+          expectingComma = depth > 0
+        else return false
+      else if char.isDigit || "+-.i".contains(char) then
+        while characters.nonEmpty &&
+          (characters.head.isDigit || "+-.i".contains(characters.head))
+        do characters.pop()
+        expectingComma = true
+      else if char == '[' then depth += 1
+      else if char == ']' then
+        depth -= 1
+        expectingComma = depth > 0
+      end if
+    end while
+    depth == 0
   end isList
 
   val joinNothing: Monad = Monad.fill("joinNothing") {
