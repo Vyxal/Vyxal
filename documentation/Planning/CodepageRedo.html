@@ -69,7 +69,7 @@
             "Λ": { name: "Filtering Lambda", description: "Vyxal filtering lambda syntax" },
             "ʎ": { name: "Reduce Lambda", description: "Vyxal reduce lambda syntax" },
             "ỿ": { name: "Sort Lambda", description: "Vyxal sort lambda syntax" },
-            "δ": { name: "Lambda that takes from stack", description: "Vyxal lambda syntax that takes from the stack" },
+            "ξ": { name: "Lambda that takes from stack", description: "Vyxal lambda syntax that takes from the stack" },
             "Þ": { name: "List Digraphs", description: "" },
             "∆": { name: "Math Digraphs", description: "" },
             "ø": { name: "String Digraphs", description: "" },
@@ -93,6 +93,7 @@
             "“": { name: "Base-252 Compressed Number", description: "Base-252 compressed number" },
             "∃": { name: "Decision problem structure", description: "Decision problem structure" },
             "⎄": { name: "Generator structure", description: "Generator structure" },
+            "⍾": { name: "Eager Map", description: "Eager map" },
 
             "⎂": { name: "Both modifier", description: "Apply function f to top of stack and second of stack. ⎂f = f$f$" },
             "∥": { name: "Parallel Apply", description: "Run two functions in parallel" },
@@ -296,11 +297,23 @@
             "⚅": { name: "Random from", description: "Random element from x" },
             "³": { name: "Cube", description: "x ** 3" },
             "æ": { name: "Bifurcate", description: "x, x[::-1]" },
-            "ð": { name: "Space constant", description: "Space constant" },
+            "ð": { name: "Join on spaces", description: "Join on spaces" },
+            "␣": { name: "Space constant", description: "Space constant" },
             "¶": { name: "Newline constant", description: "Newline constant" },
             "★": { name: "Asterisk constant", description: "Asterisk constant" },
             "ᑂ": { name: "Head under", description: "x[1:], x[0]" },
             "∻": { name: "Floor division", description: "x // y" },
+            "√": { name: "Square root", description: "√x" },
+            "↺": { name: "Roll left", description: "Roll the top 3 items => a b c -> c a b" },
+            "₿": { name: "Booleanify", description: "Booleanify x" },
+            "◌": { name: "All inputs in a list", description: "All inputs in a list" },
+            "δ": { name: "Deltas", description: "Deltas of x" },
+            "☷": { name: "Partition y after truthy indices of x.", description: "I stole this from Jelly" },
+            "✇": { name: "Join on nothing and evaluate", description: "Join on nothing and evaluate" },
+            "⎃": { name: "Join on nothing", description: "Join on nothing" },
+            "☋": { name: "Trim from both sides", description: "Trim from both sides" },
+            "⊆": { name: "Is subset", description: "Is y a subset of x?" },
+            "⍨": { name: "Dump", description: "Dump all items of x onto stack" },
         };
 
 
@@ -309,8 +322,8 @@
         const infoPanel = document.getElementById('info-panel');
 
         const characters = `
-λƛΛʎỿδ⎂∥∦∺⁜␤⑴⑵⑶⑷
-⊞▦¨⎊⎋⍟⊧¿÷×∧∨¬ʀʁɾ
+λƛΛʎỿξ⍾∥∦∺⁜␤⑴⑵⑶⑷
+⎂⊞▦¨⎊⎋⍟⊧¿÷×∧∨¬‹›
  !"#$%&'()*+,-./
 0123456789:;<=>?
 @ABCDEFGHIJKLMNO
@@ -319,12 +332,12 @@ PQRSTUVWXYZ[\\]^_
 pqrstuvwxyz{|}~ı
 ⎇⨥⨪ΣΠσ⇧⇩∪∩⊍⦰«»ɦʈ
 ⟆ƓɠĠġ⌈⌊⊖⌽£¥▲↜↝⬳⟿
-≜⎀◲⊢⊣‹›ƶƵ⁰¹²³⅟※⇄
-‰≛⁞⦷Ϣ≤≥≠≡⍰•±†⎙✒≓
-Ͼ⍰⛭ᐐᐵᐕ⍰⏟⌭⏜⍢ℂ⌹⏚↯⊠
-①②③④⑤⑥⑦⑧⑨⑩ð¶★⧖⚅æ
-ᑂ⍰½∻⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰⍰
-⍰⍰⍰⍰⍰⍰⍰⍰∃⎄„”“Þ∆ø
+≜⎀◲⊢⊣ƶƵ⁰¹²³⅟※⇄‰≛
+⁞⎃✇ðϢ≤≥≠≡√•±†⎙✒≓
+Ͼ↺⛭ᐐᐵᐕ₿⏟⌭⏜⍢ℂ⌹⏚↯⊠
+①②③④⑤⑥⑦⑧⑨⑩␣¶★⧖⚅æ
+ᑂ☷½∻◌δ☋⦷⊆⍨⍰⍰⍰⍰⍰⍰
+⍰⍰⍰⍰⍰ʀʁɾ∃⎄„”“Þ∆ø
 `.replaceAll("\n", '');
 
         // Generate 16x16 grid of characters
