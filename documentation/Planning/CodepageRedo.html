@@ -109,6 +109,8 @@
             "⊧": { name: "Normal Mode", description: "Call an element without type/depth switching" },
             "¿": { name: "Execute if true", description: "Pop the top of the stack, and, if it's truthy, apply a function" },
             "⎇": { name: "Dip", description: "Dip the top of the stack" },
+            "▤": { name: "Map over rows | Reduce over rows", description: "Map over rows | Reduce over rows" },
+            "▥": { name: "Map over columns | Reduce over columns", description: "Map over columns | Reduce over columns" },
 
             "⑴": { name: "Next element as lambda", description: "⁽ in v2" },
             "⑵": { name: "Next two elements as lambda", description: "‡ in v2" },
@@ -298,6 +300,7 @@
             "³": { name: "Cube", description: "x ** 3" },
             "æ": { name: "Bifurcate", description: "x, x[::-1]" },
             "ð": { name: "Join on spaces", description: "Join on spaces" },
+            "≬": { name: "Empty String", description: "Empty string" },
             "␣": { name: "Space constant", description: "Space constant" },
             "¶": { name: "Newline constant", description: "Newline constant" },
             "★": { name: "Asterisk constant", description: "Asterisk constant" },
@@ -314,6 +317,14 @@
             "☋": { name: "Trim from both sides", description: "Trim from both sides" },
             "⊆": { name: "Is subset", description: "Is y a subset of x?" },
             "⍨": { name: "Dump", description: "Dump all items of x onto stack" },
+            "¤": { name: "Pairs", description: "Pairs of x (2Ϣ)" },
+            "⧢": { name: "Into N chunks", description: "Into N chunks" },
+            "⎘": { name: "Flatten by depth", description: "Flatten by depth" },
+            "ꜝ": { name: "Keep only truthy", description: "Keep only truthy" },
+            "≈": { name: "All Equal", description: "Are all elements of x equal?" },
+            "≊": { name: "All Equal Something Else", description: "Do all elements of x equal y?" },
+            "κ": { name: "GCD", description: "GCD of x and y" },
+            "⇶": { name: "Extend", description: "Extend the top of the stack" },
         };
 
 
@@ -323,7 +334,7 @@
 
         const characters = `
 λƛΛʎỿξ⍾∥∦∺⁜␤⑴⑵⑶⑷
-⎂⊞▦¨⎊⎋⍟⊧¿÷×∧∨¬‹›
+⎂⊞▤▥▦¨⎊⎋⍟⊧¿÷×‹›κ
  !"#$%&'()*+,-./
 0123456789:;<=>?
 @ABCDEFGHIJKLMNO
@@ -335,9 +346,9 @@ pqrstuvwxyz{|}~ı
 ≜⎀◲⊢⊣ƶƵ⁰¹²³⅟※⇄‰≛
 ⁞⎃✇ðϢ≤≥≠≡√•±†⎙✒≓
 Ͼ↺⛭ᐐᐵᐕ₿⏟⌭⏜⍢ℂ⌹⏚↯⊠
-①②③④⑤⑥⑦⑧⑨⑩␣¶★⧖⚅æ
-ᑂ☷½∻◌δ☋⦷⊆⍨⍰⍰⍰⍰⍰⍰
-⍰⍰⍰⍰⍰ʀʁɾ∃⎄„”“Þ∆ø
+①②③④⑤⑥⑦⑧⑨⑩≬␣¶★⧖⚅
+ᑂ☷½∻◌δ☋⦷⊆⍨æ¤⧢⎘ꜝ≈
+≊⇶∧∨¬ʀʁɾ∃⎄„”“Þ∆ø
 `.replaceAll("\n", '');
 
         // Generate 16x16 grid of characters
