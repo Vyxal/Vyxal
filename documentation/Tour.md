@@ -333,7 +333,7 @@ The behaviour table is omitted for brevity.
 
 ## Control Flow
 
-Using the basic operations, you can now write simple programs! Execellent stuff.
+Using the basic operations, you can now write simple programs! Excellent stuff.
 But to do anything more useful than what you can accomplish with a calculator,
 you need to be able to control the flow of your program. That is to say, you
 need to be able to conditionally execute code, or execute code multiple times.
