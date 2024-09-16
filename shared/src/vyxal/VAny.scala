@@ -74,7 +74,8 @@ case class VFun(
   end executeResult
 
   def apply(args: VAny*)(using ctx: Context): VAny =
-    Interpreter.executeFn(this, args = args)
+    let contextN = if args.length == 1 then args(0) else args
+    Interpreter.executeFn(this, contextN, args = args)
 
   override def toString =
     originalAST match
