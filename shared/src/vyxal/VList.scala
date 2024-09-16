@@ -144,6 +144,12 @@ class VList private (val lst: Seq[VAny])
       pos -= Int.MaxValue
     return true
 
+  def lazyZipWithIndex: LazyList[(VAny, VNum)] =
+    LazyList.unfold((lst, VNum(0))) {
+      case (Nil, _) => None
+      case (h :: t, i) => Some(((h, i), (t, i + 1)))
+    }
+
   override def toString(): String =
     lst.map(_.toString).mkString("[ ", " | ", " ]")
 
