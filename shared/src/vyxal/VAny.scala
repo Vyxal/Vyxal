@@ -74,7 +74,7 @@ case class VFun(
   end executeResult
 
   def apply(args: VAny*)(using ctx: Context): VAny =
-    let contextN = if args.length == 1 then args(0) else args
+    val contextN = if args.length == 1 then args(0) else args
     Interpreter.executeFn(this, contextN, args = args)
 
   override def toString =
