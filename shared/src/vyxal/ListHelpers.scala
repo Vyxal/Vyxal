@@ -489,7 +489,7 @@ object ListHelpers:
         val params = f.originalAST match
           case Some(lam) => lam.params
           case None => List.empty
-        VList.from(to.lazyZipWithIndex.map { (item, index) =>
+        VList.from(to.zipWithIndex.map { (item, index) =>
           val sharedVars = mut.Map.empty[String, VAny]
           branches.foldLeft(item) { (out, branch) =>
             Interpreter.executeFn(
