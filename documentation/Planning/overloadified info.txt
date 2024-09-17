@@ -321,5 +321,6 @@ z (any, any) = Transpose with filler (the thing jelly has)
 ≊ (any, any) = are all items in a equal to b?
 κ (num, num) = gcd(a, b)
   (lst) = gcd(all items in a)
-⇶ (any, num > 0) = append a[0] until length b
+⬱ (num) = nth item from outer stack 
+Þ⬱ (any, num > 0) = append a[0] until length b
    (any, num < 0) = append a[-1] until length b
