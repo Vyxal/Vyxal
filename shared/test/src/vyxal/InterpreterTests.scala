@@ -17,6 +17,14 @@ class InterpreterTests extends VyxalTests:
     }
   }
 
+  describe("Infinite lists") {
+    it(
+      "Shouldn't hang when mapping over an infinite list and then performing a finite operation"
+    ) {
+      testCode("ÞPƛ}5Θ", VList(2, 3, 5, 7, 11))
+    }
+  }
+
   describe("Structures") {
     describe("Ternary statements") {
       testMulti(
