@@ -37,6 +37,8 @@ class VList private (val lst: Seq[VAny])
         .map(f(_, _))
     )
 
+  override def zipWithIndex: Seq[(VAny, Int)] = lst.zipWithIndex
+
   /** Zip two VLists together without a function. If one is longer than the
     * other, keep the longer one's elements as-is.
     */
