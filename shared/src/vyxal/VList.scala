@@ -39,6 +39,14 @@ class VList private (val lst: Seq[VAny])
 
   override def zipWithIndex: Seq[(VAny, Int)] = lst.zipWithIndex
 
+  def zipWithBigdex: Seq[(VAny, VNum)] =
+    VList.from(
+      LazyList.unfold((lst, VNum(0))) {
+        case (Nil, _) => None
+        case (head :: tail, ind) => Some((head, (tail, ind + 1)))
+      }
+    )
+
   /** Zip two VLists together without a function. If one is longer than the
     * other, keep the longer one's elements as-is.
     */
