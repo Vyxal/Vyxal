@@ -19,7 +19,6 @@ Modifiers
 ▦f = [f(x, b) for x in a]
 ¨F = [F(x) for x in a]
 ¨f = [f(x, y) for (x, y) in zip(a, b)]
-⊧f = Call f without depth or type switching
 ¿ḟ = if a then b()
 ⎇ḟ = ...d c b a => ...d ḟ(c, b) a
 
@@ -33,6 +32,8 @@ A lack of a lst overload indicates auto-vectorisation.
 a = lhs
 b = rhs
 
+ζ () = When entering a lambda, store the popped value in this
+γ () = When entering a lambda, retrieve top of outer stack
 ⎊ (any) = [a, b, c] => something that is a, b, and c, all at the same time
 ⎋ (qnt) = create a list of all possible values the item can be
 ⍟ (qnt, num) = get the nth possible value
