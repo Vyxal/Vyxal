@@ -322,5 +322,6 @@ z (any, any) = Transpose with filler (the thing jelly has)
 κ (num, num) = gcd(a, b)
   (lst) = gcd(all items in a)
 ⬱ (num) = nth item from outer stack 
+   (otherwise) = top item from outer stack...?
 Þ⬱ (any, num > 0) = append a[0] until length b
    (any, num < 0) = append a[-1] until length b
