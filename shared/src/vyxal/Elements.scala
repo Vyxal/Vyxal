@@ -1521,6 +1521,7 @@ object Elements:
           val next = ctx.pop()
           (top, next) match
             case (a: VFun, b: VList) => ctx.push(ListHelpers.generate(a, b))
+            case (a: VFun, b) => ctx.push(ListHelpers.generate(a, VList(b)))
             case (a: VVal, b: VList) =>
               ctx.push(ListHelpers.vectorisedMaximum(b, a))
             case (a: VVal, b: VVal) => ctx.push(MiscHelpers.dyadicMaximum(a, b))
