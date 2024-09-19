@@ -16,7 +16,6 @@ Modifiers
 \f = a.scan(f)
 ⁜F = a.group_by(apply function F to each)
 ⊞f = a.pairs.map(pair => pair.reduce(f))
-▦f = [f(x, b) for x in a]
 ¨F = [F(x) for x in a]
 ¨f = [f(x, y) for (x, y) in zip(a, b)]
 ¿ḟ = if a then b()
@@ -32,6 +31,7 @@ A lack of a lst overload indicates auto-vectorisation.
 a = lhs
 b = rhs
 
+▦ (any) = [a.count(_) for _ in a]
 ζ () = When entering a lambda, store the popped value in this
 γ () = When entering a lambda, retrieve top of outer stack
 ⎊ (any) = [a, b, c] => something that is a, b, and c, all at the same time
