@@ -362,7 +362,7 @@ object Interpreter:
         origCtx,
         ctx,
         Option(ctxVarPrimary).orElse(inputs.headOption),
-        if ctxVarSecondary == null then VList(inputs*) else ctxVarSecondary,
+        if ctxVarSecondary == null then VList.from(inputs) else ctxVarSecondary,
         if overrideCtxArgs.isEmpty then inputs else overrideCtxArgs,
         vars,
         inputs.reverse,
