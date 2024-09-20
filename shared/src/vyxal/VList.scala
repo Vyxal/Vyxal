@@ -54,7 +54,7 @@ class VList private (val lst: Seq[VAny])
     val temp = lst
       .zipAll(other.lst, ctx.settings.defaultValue, ctx.settings.defaultValue)
       .map(VList(_, _))
-    VList(temp*)
+    VList.from(temp)
 
   /** Get the element at index `ind` */
   override def apply(ind: Int): VAny = VList.index(lst, ind)
