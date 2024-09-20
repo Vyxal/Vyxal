@@ -7,8 +7,8 @@ import scala.collection.immutable.ArraySeq
 import scala.collection.immutable.SeqOps
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
-import scala.collection.SpecificIterableFactory
 import scala.collection.IterableOnceOps
+import scala.collection.SpecificIterableFactory
 
 /** A Vyxal list. It simply wraps around another list and could represent a
   * completely evaluated list, a finite lazy list that is in the process of
@@ -204,11 +204,18 @@ class VList private (val lst: Seq[VAny])
     )
 
   // sequence overrides to fix laziness
-  override def filter(pred: VAny => Boolean): VList = VList.from(lst.filter(pred))
-  override def zipAll[A1 >: VAny, B](that: Iterable[B], thisElem: A1, thatElem: B): Seq[(A1, B)] = lst.zipAll(that, thisElem, thatElem)
+  override def filter(pred: VAny => Boolean): VList =
+    VList.from(lst.filter(pred))
+  override def zipAll[A1 >: VAny, B](
+      that: Iterable[B],
+      thisElem: A1,
+      thatElem: B,
+  ): Seq[(A1, B)] = lst.zipAll(that, thisElem, thatElem)
   override def map[B](f: VAny => B): Seq[B] = lst.map(f)
-  override def sliding(size: Int): Iterator[VList] = lst.sliding(size).map(VList.from(_))
-  override def sliding(size: Int, step: Int): Iterator[VList] = lst.sliding(size, step).map(VList.from(_))
+  override def sliding(size: Int): Iterator[VList] =
+    lst.sliding(size).map(VList.from(_))
+  override def sliding(size: Int, step: Int): Iterator[VList] =
+    lst.sliding(size, step).map(VList.from(_))
   override def fold[A1 >: VAny](z: A1)(op: (A1, A1) => A1): A1 = lst.fold(z)(op)
 end VList
 
