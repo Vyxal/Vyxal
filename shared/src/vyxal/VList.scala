@@ -7,7 +7,6 @@ import scala.collection.immutable.ArraySeq
 import scala.collection.immutable.SeqOps
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
-import scala.collection.IterableOnceOps
 import scala.collection.SpecificIterableFactory
 
 /** A Vyxal list. It simply wraps around another list and could represent a

@@ -626,17 +626,17 @@ object ListHelpers:
       case _: VList => VList.from(value)
       case _: String => value.mkString
 
-  def overlaps(iterable: Seq[VAny], size: Int): Seq[VList] =
+  def overlaps(iterable: VList, size: Int): Seq[VList] =
     size compare 0 match
       case 0 => Seq.empty
-      case 1 => iterable.sliding(size).toSeq.map(VList.from)
+      case 1 => LazyList.from(iterable.sliding(size).map(VList.from))
       case -1 => iterable.sliding(-size).toSeq.reverse.map(VList.from)
 
   // Just for strings
   def overlaps(iterable: String, size: Int): Seq[String] =
     size compare 0 match
       case 0 => Seq.empty
-      case 1 => iterable.sliding(size).toSeq
+      case 1 => LazyList.from(iterable.sliding(size))
       case -1 => iterable.sliding(-size).toSeq.reverse
 
   def palindromise(lst: VList): VList =
@@ -698,7 +698,7 @@ object ListHelpers:
   def permutations(iterable: VList): Seq[VList] =
     val temp = iterable.toList
     val perms = temp.permutations
-    perms.map(VList.from).toSeq
+    LazyList.from(perms.map(VList.from))
 
   def product(iterable: VList)(using Context): VAny =
     if iterable.forall(

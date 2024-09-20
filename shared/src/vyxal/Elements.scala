@@ -1814,7 +1814,7 @@ object Elements:
             case (a: VNum, b: String) =>
               ctx.push(VList.from(ListHelpers.overlaps(b, a.toInt)))
             case (a: VNum, b: VList) =>
-              ctx.push(VList.from(ListHelpers.overlaps(b.lst, a.toInt)))
+              ctx.push(VList.from(ListHelpers.overlaps(b, a.toInt)))
             case (a, b) => throw UnimplementedOverloadException("o", List(a, b))
     },
     addDirect(
