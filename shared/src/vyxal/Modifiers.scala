@@ -619,8 +619,8 @@ object Modifiers:
         Seq(),
       ) {
         case List(ast1, ast2) => AST.makeSingle(
-            astToLambda(ast1, ast1.arity.getOrElse(-1)),
-            astToLambda(ast2, ast2.arity.getOrElse(-1)),
+            astToLambda(ast1, -1),
+            astToLambda(ast2, -1),
             AST.Command("#|para-apply"),
           )
       },
