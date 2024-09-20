@@ -268,22 +268,22 @@ object NumberHelpers:
     a match
       case n: VNum =>
         val binary = n.toBigInt.abs.toString(2)
-        val temp = VList(binary.map(_.asDigit: VNum)*)
+        val temp = VList.from(binary.map(_.asDigit: VNum))
         if n.toBigInt < 0 then temp.vmap(v => -v.asInstanceOf[VNum]) else temp
       case s: String =>
         // get binary representation of each character
         val result = ListBuffer.empty[VAny]
         for c <- s do
           val binary = c.toInt.toBinaryString
-          result += VList(binary.map(_.asDigit).map(VNum(_)).toList*)
-        VList(result.toList*)
+          result += VList.from(binary.map(_.asDigit).map(VNum(_)).toList)
+        VList.from(result.toList)
       case arg => throw UnimplementedOverloadException("toBinary", List(arg))
 
   def toBase(a: VAny, b: VAny)(using ctx: Context): VAny =
     (a, b) match
       case (a: VNum, b: VNum) => VList.from(toBaseDigits(a, b))
       case (n: VNum, b: (String | VList)) => toBaseAlphabet(n, b)
-      case (a: VList, _) => VList(a.map(toBase(_, b))*)
+      case (a: VList, _) => VList.from(a.map(toBase(_, b)))
       case (a, b) => throw UnimplementedOverloadException("toBase", List(a, b))
 
   /** Returns value in base len(alphabet) using base 10 [bijective base]. If the
@@ -358,7 +358,7 @@ object NumberHelpers:
       digits += digit
       current /= radix
       current = current.floor
-    VList(digits.reverse.toList*)
+    VList.from(digits.reverse.toList)
 
   def toBaseString(value: VNum, base: VNum)(using Context): VAny =
     val lst = NumberHelpers.toBaseDigits(value, base)

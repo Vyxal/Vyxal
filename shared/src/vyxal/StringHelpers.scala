@@ -12,9 +12,10 @@ object StringHelpers:
   def chrord(c: VAny): VAny =
     (c: @unchecked) match
       case a: String =>
-        if a.length == 1 then a.codePointAt(0) else VList(a.map(_.toInt: VNum)*)
+        if a.length == 1 then a.codePointAt(0)
+        else VList.from(a.map(_.toInt: VNum))
       case a: VNum => a.toInt.toChar.toString
-      case a: VList => VList(a.map(chrord)*)
+      case a: VList => VList.from(a.map(chrord))
 
   def compress252(s: String)(using Context): String =
     "[^a-z ]".r.findFirstIn(s) match

@@ -92,7 +92,7 @@ object Elements:
     ) {
       case a: VNum => ListHelpers.makeIterable(a).forall(_.toBool)
       case a: String if a.length == 1 => StringHelpers.isVowel(a.head)
-      case a: String => VList(a.map(StringHelpers.isVowel)*)
+      case a: String => VList.from(a.map(StringHelpers.isVowel))
       case a: VList => a.forall(_.toBool)
     },
     addPart(
@@ -118,7 +118,7 @@ object Elements:
     ) {
       case a: VNum => ListHelpers.makeIterable(a).exists(_.toBool)
       case a: String if a.length == 1 => a.head.isUpper
-      case a: String => VList(a.map(c => VNum(c.isUpper))*)
+      case a: String => VList.from(a.map(c => VNum(c.isUpper)))
       case a: VList => a.exists(_.toBool)
     },
     addPart(
@@ -1780,7 +1780,7 @@ object Elements:
       case a: VList =>
         val temp = a.map(StringHelpers.chrord)
         if temp.forall(_.isInstanceOf[String]) then temp.mkString
-        else VList(temp*)
+        else VList.from(temp)
     },
     addDirect(
       "Ȯ",

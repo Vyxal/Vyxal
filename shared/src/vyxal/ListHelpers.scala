@@ -394,7 +394,7 @@ object ListHelpers:
     out ++= leftIter
     out ++= rightIter
 
-    VList(out.toSeq*)
+    VList.from(out.toSeq)
 
   def intoNPieces(iterable: VList, pieces: VNum)(using Context): VList =
     if pieces == VNum(0) then return VList()
@@ -551,7 +551,7 @@ object ListHelpers:
           case item => output += mutContent(index)
         index += 1
 
-      VList(output.toSeq*)
+      VList.from(output.toSeq)
     end moldHelper
     moldHelper(content, shape, 0)
   end mold
@@ -613,7 +613,7 @@ object ListHelpers:
   def nthItems(iterable: VList | String, index: VNum): VAny =
     val temp = iterable match
       case iterable: VList => iterable
-      case iterable: String => VList(iterable.map(_.toString)*)
+      case iterable: String => VList.from(iterable.map(_.toString))
 
     val indInt = index.toInt
     val value =
@@ -783,7 +783,7 @@ object ListHelpers:
           }
           .map(_._1)
 
-        VList(out*)
+        VList.from(out)
       case None => VList(
           iterable.zipWithIndex
             .sorted { (a, b) =>
@@ -869,7 +869,7 @@ object ListHelpers:
     */
   def reverse(iterable: VAny): VAny =
     iterable match
-      case list: VList => VList(list.reverse*)
+      case list: VList => VList.from(list.reverse)
       case str: String => str.reverse
       case num: VNum => VNum(num.toString.reverse)
       case _ => iterable
@@ -901,7 +901,7 @@ object ListHelpers:
 
   def splitNormal(iterable: VList, sep: VAny)(using Context): VList =
     val out = split(iterable, Seq(sep))
-    VList(out.map(VList.from)*)
+    VList.from(out.map(VList.from))
 
   def take(iterable: VList, amount: VNum): VList =
     if amount < 0 then VList.from(iterable.lst.takeRight(amount.toInt.abs))
