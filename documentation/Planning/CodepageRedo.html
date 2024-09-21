@@ -88,9 +88,9 @@
             "}": { name: "Close current structure", description: "Equivalent to }" },
             "|": { name: "Branch", description: "Branch" },
             "ı": { name: "Imaginary unit", description: "Imaginary unit" },
-            "„": { name: "Base-252 Compressed String", description: "Base-252 compressed string" },
-            "”": { name: "Dictionary Compressed String", description: "Dictionary compressed string" },
-            "“": { name: "Base-252 Compressed Number", description: "Base-252 compressed number" },
+            "„": { name: "Base-252 Compressed String | Join on Newlines", description: "Base-252 compressed string" },
+            "”": { name: "Dictionary Compressed String | Join on Spaces", description: "Dictionary compressed string" },
+            "“": { name: "Base-252 Compressed Number | Join on Nothing", description: "Base-252 compressed number" },
             "∃": { name: "Decision problem structure", description: "Decision problem structure" },
             "⎄": { name: "Generator structure", description: "Generator structure" },
             "⍾": { name: "Eager Map", description: "Eager map" },
@@ -101,7 +101,7 @@
             "∺": { name: "Correspond", description: "Like bracket in Uiua. ∺fg roughly equivalent to f$g$" },
             "~": { name: "Filter By | Without Popping", description: "Filter the top of the stack by element, or perform element without popping" },
             "/": { name: "Reduce | Invariant by", description: "Reduce the top of the stack by element" },
-            "\\": { name: "Scan", description: "Scan the top of the stack by element" },
+            "\\": { name: "Filter Byn't | Scan", description: "Scan the top of the stack by element" },
             "⁜": { name: "Group By", description: "Group the top of the stack by element" },
             "⊞": { name: "Reduce overlapping n-windows", description: "2lvƒ in v2" },
             "¨": { name: "Map | Zip With", description: "Monadic v behaviour in v2 | Given a dyadic function, zip two lists and reduce each by f" },
@@ -110,6 +110,7 @@
             "▤": { name: "Map over rows | Reduce over rows", description: "Map over rows | Reduce over rows" },
             "▥": { name: "Map over columns | Reduce over columns", description: "Map over columns | Reduce over columns" },
             "▦": { name: "Outer Product", description: "Outer product" },
+            "ð": { name: "Logical not as a modifier", description: "https://chat.stackexchange.com/transcript/message/66310382#66310382" },
 
             "⑴": { name: "Next element as lambda", description: "⁽ in v2" },
             "⑵": { name: "Next two elements as lambda", description: "‡ in v2" },
@@ -272,7 +273,8 @@
             "⧖": { name: "Permutations", description: "Get all permutations of x" },
             "‰": { name: "Divmod", description: "Divmod x and y" },
             "≛": { name: "Divides?", description: "Does x divide y?" },
-            "⁞": { name: "Join on newlines", description: "Join x on newlines" },
+            "⁞": { name: "Counts", description: "[[_, x.count(_)] for _ in x]" },
+            "⎃": { name: "Some sort of outer stack mechanism", description: "Reserved for when a good idea comes" },
             "⦷": { name: "Absolute value", description: "abs(x)" },
             "Ϣ": { name: "Wrap to length", description: "" },
             "≤": { name: "Less than or equal to", description: "y ≤ x" },
@@ -299,7 +301,6 @@
             "⚅": { name: "Random from", description: "Random element from x" },
             "³": { name: "Cube", description: "x ** 3" },
             "æ": { name: "Bifurcate", description: "x, x[::-1]" },
-            "ð": { name: "Join on spaces", description: "Join on spaces" },
             "≬": { name: "Empty String", description: "Empty string" },
             "␣": { name: "Space constant", description: "Space constant" },
             "¶": { name: "Newline constant", description: "Newline constant" },
@@ -313,8 +314,7 @@
             "δ": { name: "Deltas", description: "Deltas of x" },
             "☷": { name: "Partition y after truthy indices of x.", description: "I stole this from Jelly" },
             "✇": { name: "Join on nothing and evaluate", description: "Join on nothing and evaluate" },
-            "⎃": { name: "Join on nothing", description: "Join on nothing" },
-            "☋": { name: "Trim from both sides", description: "Trim from both sides" },
+            "⎶": { name: "Trim from both sides", description: "Trim from both sides" },
             "⊆": { name: "Is subset", description: "Is y a subset of x?" },
             "⍨": { name: "Dump", description: "Dump all items of x onto stack" },
             "¤": { name: "Pairs", description: "Pairs of x (2Ϣ)" },
@@ -347,7 +347,7 @@ pqrstuvwxyz{|}~ı
 ⁞⎃✇ðϢ≤≥≠≡√•±†⎙✒≓
 Ͼ↺⛭ᐐᐵᐕ₿⏟⌭⏜⍢ℂ⌹⏚↯⊠
 ①②③④⑤⑥⑦⑧⑨γ≬␣¶★⧖⚅
-ᑂ☷½∻◌δ☋⦷⊆⍨æ¤⧢⎘ꜝ≈
+ᑂ☷½∻◌δ⎶⦷⊆⍨æ¤⧢⎘ꜝ≈
 ≊⬱∧∨¬ʀʁɾ∃⎄„”“Þ∆ø
 `.replaceAll("\n", '');
 

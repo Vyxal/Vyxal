@@ -14,6 +14,7 @@ Modifiers
 /F = F(a) == a
 /f = a.reduce(f)
 \f = a.scan(f)
+\F = filter_by(not F(x))
 ⁜F = a.group_by(apply function F to each)
 ⊞f = a.pairs.map(pair => pair.reduce(f))
 ¨F = [F(x) for x in a]
@@ -21,6 +22,8 @@ Modifiers
 ¿ḟ = if a then b()
 ⎇ḟ = ...d c b a => ...d ḟ(c, b) a
 ▦F = outer product
+ðḟ = logical not ḟ(x)
+
 
 Elements
 
@@ -256,7 +259,7 @@ z (any, any) = Transpose with filler (the thing jelly has)
   (str, num)* = a + ' ' * b
   (lst, fun)* = Remove duplicates from a by applying b to each element
   (str, str) = span of first regex match of b in a
-⁞ (any) = join on newlines
+⁞ (any) = [[temp, a.count(temp)] for temp in a]
 ⦷ (num) = Absolute value
    (str) = keep alphabet characters of a
 Ϣ (any, num) = a wrapped in chunks of length b
@@ -309,9 +312,8 @@ z (any, any) = Transpose with filler (the thing jelly has)
 δ (lst) = forward differences (⊞-)
 ☷ (lst, lst) = Partition y after truthy indices of x.
 ✇ (lst) = join on nothing and eval
-⎃ (lst) = join on nothing
-☋ (any, any) = trim b from both sides of a
-ð (any) = join on spaces
+⎃ = TO BE DETERMINED (Something outer stack related.)
+⎶ (any, any) = trim b from both sides of a
 ⊆ (lst, lst) = is b a subset of a?
 ⍨ (any) = dump items of a
 ¤ (any) = 2Ϣ
@@ -326,3 +328,4 @@ z (any, any) = Transpose with filler (the thing jelly has)
    (otherwise) = top item from outer stack...?
 Þ⬱ (any, num > 0) = append a[0] until length b
    (any, num < 0) = append a[-1] until length b
+„ (any) = join on newlines
