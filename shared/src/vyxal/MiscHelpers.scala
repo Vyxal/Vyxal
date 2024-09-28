@@ -154,6 +154,10 @@ object MiscHelpers:
         while characters.nonEmpty && (escaped || characters.head != '"') do
           escaped = char == '\\' && !escaped
           characters.pop()
+        if characters.isEmpty then return false
+        if characters.head != '"' then return false
+
+        characters.pop()
         inString = false
         expectingComma = true
       else if char == '"' then inString = true
