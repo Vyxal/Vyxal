@@ -5493,12 +5493,14 @@ def rand_bits(lhs, ctx):
 def random_choice(lhs, ctx):
     """Element ℅
     (lst) -> random element of a
-    (num) -> Random integer from 0 to a
+    (num) -> Random integer from 1 to a
     """
     if lhs == "":
         return ""
     elif vy_type(lhs, simple=True) is list and len(lhs) == 0:
         return 0
+    elif vy_type(lhs) == NUMBER_TYPE:
+        return random.randint(1, int(vy_floor(lhs))
     return random.choice(iterable(lhs, range, ctx=ctx))
 
 
