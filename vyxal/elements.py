@@ -6849,7 +6849,7 @@ def transliterate(lhs, rhs, other, ctx):
     if isinstance(lhs, str):
         ret, temp = "", lhs
         mapping = sorted(
-            list(vy_zip([str(_) for _ in rhs], [str(_) for _ in other], ctx)),
+            list(vy_zip([str(_) for _ in iterable(rhs, ctx)], [str(_) for _ in iterable(other, ctx)], ctx)),
             key=lambda x: len(x[0]),
         )
         while temp:
