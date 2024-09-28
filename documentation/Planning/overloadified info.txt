@@ -22,7 +22,7 @@ Modifiers
 ¿ḟ = if a then b()
 ⎇ḟ = ...d c b a => ...d ḟ(c, b) a
 ▦F = outer product
-ðḟ = logical not ḟ(x)
+ðFG = G(F(x, y), y)
 
 
 Elements

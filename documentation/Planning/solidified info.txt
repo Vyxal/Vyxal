@@ -1,0 +1,38 @@
+Needing new thing: ⊞ð
+top = stack[-1]
+under = stack[-2]
+kicker = stack[-3]
+top - <x> = stack[-1 - x]
+
+λ   NA  =   Lambda opener
+ƛ   NA  =   Mapping lambda opener
+Λ   NA  =   Filtering lambda opener
+ʎ   NA  =   Reduction lambda opener
+ỿ   NA  =   Sorting lambda opener
+ξ   NA  =   Lambda with arity -1
+⍾   NA  =   Eager map opener
+∥   F<any>, G<any>  =   Parallel apply. Execute F and G on two different stacks, pop the arguments G used, and push the result of F then G.
+∦   F<any>, G<any>  =   Parallel apply and wrap. Equivalent to ∥FG;
+∺   F<1>, G<1>  = Correspond. Given stack of ... x y, results in ... G(y) F(x)
+    F<2+>, G<2+>    =   Fork. Calculates G(F(x, y, ...), y, ...)
+⁜   F<1>    =   Group By Element. Group items in the top of stack by application of function F
+    F<2+>   = Window Reduce. Reduce overlapping (arity) windows by function F.
+⑴   NA  =   Next element as lambda
+⑵   NA  =   Next 2 elements as lambda
+⑶   NA  =   Next 3 elements as lambda
+⑷   NA  =   Next 4 elements as lambda
+⎂   F<any>  =   Both. Apply F to both the top of stack (or however many arguments), and under stack (or however many arguments under the arity). Effectively ... F(top - arity, top - arity * 2) F(top -> top - arity)
+⊞   ?   =   ?
+▤   F<1>    =   Map over rows. To each row of top, apply F
+    F<2+>   =   Reduce over rows. To each row of top, reduce by function F.
+▥   F<1>    =   Map over columns. To each column of top, apply F.
+    F<2+>   =   Reduce over columns. To each column of top, reduce by F.
+▦   F<2>    =   Outer Product. [F(under, x) for x in top]
+¨   F<1>    =   Map. Apply F to each item in top
+    F<2+>    =   Zip with. Apply F to each item in zip(top, under, ...[kicker, ...])
+⎊   x: List =   Entangle. Return a value that is every item in x all at the same time
+    x: Scalar   =   Entangle. Convert x to list before entangling.
+⎋   x: Quantum  =   Detangle. Convert a quantum value x into a list of all the values it could be.
+⍟   x: Quantum, y: number   =   Quantum Index. Get the yth possible value x could be. Shorthand for ⎋i
+¿   F<any>  =   Conditional Execution. Pop top. If it was truthy, execute F.
+
