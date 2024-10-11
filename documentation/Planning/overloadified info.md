@@ -1,0 +1,342 @@
+F, G, H = monadic functions
+f, g, h = dyadic functions
+ḟ, ġ, ḣ = any arity
+
+Syntax
+
+- [ ] λ   NA  =   Lambda opener
+- [ ] ƛ   NA  =   Mapping lambda opener
+- [ ] Λ   NA  =   Filtering lambda opener
+- [ ] ʎ   NA  =   Reduction lambda opener
+- [ ] ỿ   NA  =   Sorting lambda opener
+- [ ] ξ   NA  =   Lambda with arity -1
+- [ ] ⍾   NA  =   Eager map opener
+
+Modifiers
+
+- [ ] ∥   F<any>, G<any>  =   Parallel apply. Execute F and G on two different stacks, pop the arguments G used, and push the result of F then G.
+- [ ] ∦   F<any>, G<any>  =   Parallel apply and wrap. Equivalent to ∥FG;
+- [ ] ∺   F<1>, G<1>  = Correspond. Given stack of ... x y, results in ... G(y) F(x)
+- [ ]     F<2+>, G<2+>    =   Fork. Calculates G(F(x, y, ...), y, ...)
+- [ ] ⁜   F<1>    =   Group By Element. Group items in the top of stack by application of function F
+- [ ]     F<2+>   = Window Reduce. Reduce overlapping (arity) windows by function F.
+- [ ] ⑴   NA  =   Next element as lambda
+- [ ] ⑵   NA  =   Next 2 elements as lambda
+- [ ] ⑶   NA  =   Next 3 elements as lambda
+- [ ] ⑷   NA  =   Next 4 elements as lambda
+- [ ] ⎂   F<any>  =   Both. Apply F to both the top of stack (or however many arguments), and under stack (or however many arguments under the arity). Effectively ... F(top - arity, top - arity * 2) F(top -> top - arity)
+- [ ] ▤   F<1>    =   Map over rows. To each row of top, apply F
+- [ ]     F<2+>   =   Reduce over rows. To each row of top, reduce by function F.
+- [ ] ▥   F<1>    =   Map over columns. To each column of top, apply F.
+- [ ]     F<2+>   =   Reduce over columns. To each column of top, reduce by F.
+- [ ] ▦   F<2>    =   Outer Product. [F(under, x) for x in top]
+- [ ] ¨   F<1>    =   Map. Apply F to each item in top
+- [ ]     F<2+>    =   Zip with. Apply F to each item in zip(top, under, ...[kicker, ...])
+
+
+Elements
+
+Types = num (number) str (string) lst (list) fun (function) any (any value) qnt (quantum value)
+* after a pair of types indicates type switching occurs
+! after a pair of types inicates depth switching (deeper on left, shallower on right)
+A lack of a lst overload indicates auto-vectorisation.
+
+a = lhs
+b = rhs
+
+- [ ] ⊞ (any) = [a.count(_) for _ in a]
+- [ ] ζ () = When entering a lambda, store the popped value in this
+- [ ] γ () = When entering a lambda, retrieve top of outer stack
+- [ ] ⎊ (any) = [a, b, c] => something that is a, b, and c, all at the same time
+- [ ] ⎋ (qnt) = create a list of all possible values the item can be
+- [ ] ⍟ (qnt, num) = get the nth possible value
+- [ ] ÷ (num, num) = a divided by b
+- [ ]   (str, num)* = split string b into chunks of size a
+- [ ]   (str, str) = split a on regex b
+- [ ] × (num, num) = a times b
+- [ ]   (str, num)* = repeat string a, b times
+- [ ]   (str, str) = ring translate
+- [ ] ∧ (any, any) = b && a (first falsey)
+- [ ] ∨ (any, any) = b || a (first truthy)
+- [ ] ¬ (any) = not a (truthy => 0, falsey => 1)
+- [ ] ʀ (num) = range [0, a]
+- [ ]   (str) = uppercase
+- [ ] ʁ (num) = range [0, a)
+- [ ]   (str) = lowercase
+- [ ] ɾ (num) = range [1, a]
+- [ ]   (str) = is character a an alphabetical (a-zA-Z) letter?
+- [ ] ‹ (num) = a - 1
+- [ ]   (str) = Pad string with 0s to length nearest multiple of 8
+- [ ] › (num) = a + 1
+- [ ]   (str) = Replace spaces with 0s
+- [ ] ! (num) = Factorial
+- [ ]   (str) = Titlecase
+- [ ] $ (any, any) = ...d c b a => d c a b
+- [ ] % (num, num) = a modulo b
+- [ ]   (str, any) = a.format(b) # format on %s
+- [ ] & (any, any) = append b to a
+- [ ] * (num, num) = a to the power of b
+- [ ] + (num, num) = a + b
+- [ ]   (str, num)* = str(a) + str(b)
+- [ ]   (str, str) = a + b
+- [ ] , (any) = Println
+- [ ] - (num, num) = a - b
+- [ ]   (str, num) = append b "-"s to a
+- [ ]   (num, str) = prepend a "-"s to b
+- [ ]   (str, str) = remove all instance of regex b in a
+- [ ] : (any) = ...d c b a => d c b a a
+- [ ] ; (any, any) = [a, b]
+- [ ] < (num, num) = a < b
+- [ ]   (str, num)* = str(a) < str(b)
+- [ ]   (str, str) = a < b (lexiographically)
+- [ ] = (num, num) = a == b
+- [ ]   (str, num)* = str(a) == str(b)
+- [ ]   (str, str) = a == b
+- [ ] > (num, num) = a > b
+- [ ]   (str, num)* = str(a) > str(b)
+- [ ]   (str, str) = a > b (lexiographically)
+- [ ] ? = push input eval'd
+- [ ] @ (num, num) = |a - b|
+- [ ]   (str, str) = Levenshtein distance between a and b
+- [ ]   (any, fun)* = Reduce overlaps in list a by function b
+- [ ] A (num) = Are all digits of a truthy?
+- [ ]   (str) = Is character a vowel?
+- [ ]   (lst) = Are all items in a truthy?
+- [ ] B (num) = Convert a to binary (list of digits)
+- [ ]   (str) = each character in a to the binary representation of its character code
+- [ ] C (any, any)! = count of a in b
+- [ ] D (any) = ...d c b a => d c b a a a
+- [ ] E (num) = a ** 2
+- [ ]   (str) = Evaluate str (think python eval)
+- [ ] F (any, fun) = a.filter(b)
+- [ ]   (any, non-fun)! = a.find(b)
+- [ ] G (lst) = max(a)
+- [ ]   (scl, scl) = max(a, b)
+- [ ] H (num) = to_hex(a) (base 10 -> base 16)
+- [ ]   (str) = from_hex(a) (base 16 -> base 10)
+- [ ] I (any, fun)* = a.filter(x => !b(x)) (reject by)
+- [ ]   (any, non-fun) = Interleave
+- [ ] J (lst, lst) = a.addAll(b) (merge)
+- [ ]   (num, num) = int(s"$a$b")
+- [ ] K (num) = factors of a
+- [ ]   (str) = is string numeric
+- [ ] L (any) = length
+- [ ] M (any, fun)* = a.map(b)
+- [ ]   (lst, lst) = mold a to shape of b
+- [ ]   (num, num) = multiplicity
+- [ ]   (lst, num)* = vectorised num,num
+- [ ] N (num) = -a
+- [ ]   (str) = swap case
+- [ ]   (fun) = First non-negative integer x where a(x) is true
+- [ ] O (num) = character with corresponding character code
+- [ ]   (str) = number(s) that correspond to character codes
+- [ ] P (any) = Prefixes
+- [ ] Q (any, num) = remove bth item of a 
+- [ ]   (str, str) = Get all groups in a regex match
+- [ ] R (any, fun)* = a.reduce(b) (makes b have arity 2)
+- [ ]   (num, num) = range(a, b) ([a, b))
+- [ ]   (str, str) = Is there a regex match of pattern b in string a 
+- [ ] S (any) = sort in ascending order
+- [ ] T (str) = Titlecase
+- [ ]   (lst) = Transpose
+- [ ]   (num) = Triple
+- [ ] U (any) = Uninterleave
+- [ ] V (lst) = [x[::-1] for x in a]
+- [ ] W (...) = ...d c b a => [...d c b a]
+- [ ] X (any, any) = Cartesian product
+- [ ] Y (any, num) = [a].repeat(b)
+- [ ] Z (any, any) = zip(a, b)
+- [ ] ^ (...) = ...d c b a => a b c d ...
+- [ ] _ (any) = pop / discard
+- [ ] a (num) = any digit non-0?
+- [ ]   (str) = is character uppercase?
+- [ ]   (lst) = are any items truthy?
+- [ ] b (any) = convert from binary
+- [ ] c (any, any)! = a in b?
+- [ ] d (any) = a + a 
+- [ ] e (num) = even?
+- [ ]   (str) = split on newlines
+- [ ] f (any) = Flatten
+- [ ] g (lst) = min(a)
+- [ ]   (scl, scl) = min(a, b)
+- [ ] h (any) = a[0]
+- [ ] i (any, num)* (except num, num) = a[b]
+- [ ]   (lst, lst) = [a[x] for x in b]
+- [ ]   (str, str) -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])
+- [ ]   (any, fun)* = Apply b on a and collect unique values. Does include the initial value.
+- [ ] j (any, any) = join a on b
+- [ ] l (num, num) = Logarithm
+- [ ]   (str, str) = len(a) == len(b)
+- [ ]   (str, num)* = len(a) == b
+- [ ]   (any, fun)* = apply until a previous value is repeated, collecting intermediate results
+- [ ] m () = context variable m
+- [ ] n () = context variable n
+- [ ] o (any, num) = Overlapping slices of a of length b
+- [ ]   (any) = Overlapping slices of a of length 2
+- [ ] p (any, any) = Prepend
+- [ ] q (any) = Quotify
+- [ ] r (any, any, any) = s/b/c
+- [ ] s (any, any) = split a on b
+- [ ] t (any) = a[-1]
+- [ ] u (any) = uniquify
+- [ ] v (any, any) = vectorised or (tbd what happens with scl, scl)
+- [ ] w (any) = [a]
+- [ ] x () = call the current function (or top level program)
+- [ ] y (any, any, any) = Transliterate
+- [ ] z (any, any) = Transpose with filler (the thing jelly has)
+- [ ] ⨥ (num) = a + 2
+- [ ]   (str) = tbd
+- [ ] ⨪ (num) = a - 2
+- [ ]   (str) = tbd (not append two "-"s though that'd be silly even by my standards)
+- [ ] Σ (any) = sum of a 
+- [ ] Π (any) = product of a
+- [ ] σ (any) = Cumulative sums of a
+- [ ] ⇧ (any) = Grade up
+- [ ] ⇩ (any) = Grade down
+- [ ] ∪ (any, any) = Set union
+- [ ] ∩ (any, any) = Set intersection
+- [ ] ⊍ (any, any) = set xor
+- [ ] ⦰ (any, any) = set difference
+- [ ] « (num, num) = left bit Shift
+- [ ]   (str, num)* = a padded to length b with spaces prepended
+- [ ]   (str, str) = a padded to length of b with spaces prepended
+- [ ] » (num, num) = right bit shift
+- [ ]   (str, num) = a padded to length b with spaces appended
+- [ ]   (str, str) = a padded to length of b with spaces appended
+- [ ] Ɠ (any) = max(a), but don't pop
+- [ ] ɠ (any) = min(a), but don't pop
+- [ ] Ġ (lst, num)* = [max(x, b) for x in a]
+- [ ]   (lst, lst) = [max(x, y) for (x, y) in zip(a, b)]
+- [ ] ġ (lst, num)* = [min(x, b) for x in a]
+- [ ]   (lst, lst) = [min(x, y) for (x, y) in zip(a, b)]
+- [ ] ⌈ (num) = Ceiling
+- [ ]   (str) = split on spaces
+- [ ] ⌊ (num) = Floor
+- [ ]   (str) = cast to int, 0 if no numeric characters
+- [ ] ⊖ (any, num)* = a[0:b]
+- [ ] ⌽ (any, num)* = a[1:b]
+- [ ] £ (any) = set Register
+- [ ] ¥ () = push Register
+- [ ] ▲ (any, any) = vectorised and (tbd what happens with scl, scl)
+- [ ] ↜ (...) = rotate stack left
+- [ ] ↝ (...) = rotate stack right
+- [ ] ⬳ (non-num) = rotate item left
+- [ ]     (any, num) = rotate item left b times
+- [ ] ⟿ (non-num) = rotate item right
+- [ ]    (any, num) = rotate item right b times
+- [ ] ≜ (any, num, non-fun) = a[b] = c
+- [ ]    (any, num, fun) = a[b] = c(a[b])
+- [ ]    (lst, lst, lst) = [a[x] = y for (x, y) in zip(x, y)]
+- [ ]    (str, str, str) = replace regex matches of pattern b in string a with c
+- [ ]    (str, str, fun)* = replace regex matches of pattern b in string a with the result of applying c to each match
+- [ ]    (rec, str, str)* = a.b = c
+- [ ] ⎀ (any, num, any) = insert c at position b in a
+- [ ]    (any, lst, any) = insert c at positions b in a
+- [ ]    (any, lst[num], lst) = insert c[i] at position b[i] in a
+- [ ] ◲ (any) = sublists of a
+- [ ] ⊢ (num, num) = a (base 10) in base b
+- [ ]   (num, str|lst) = a in base with alphabet b
+- [ ]   (lst, num) = each x in a in base b
+- [ ]   (lst, lst) = each x in a in base with alphabet b
+- [ ]   (str, str) = All matches of b in a
+- [ ] ⊣ (num, num) = a (in base b) in base 10
+- [ ]   (num, str|lst) = a from base with alphabet b to base 10
+- [ ]   (lst, num) = this, but vectorised
+- [ ] ɦ (any) = a[0], but don't pop
+- [ ] ʈ (any) = a[-1], but don't pop
+- [ ] ᐐ (any) = a[:-1] (because the : is on the left)
+- [ ] ᐵ (any, num) = a[b:]
+- [ ] ᐕ (any) = a[1:] (because the : is on the right)
+- [ ] ½ (num) = a / 2
+- [ ]   (str) = a split into 2 parts with roughly equal length
+- [ ] ƶ (any) = [0, len(x))
+- [ ] Ƶ (any) = [1, len(x)]
+- [ ] ⁰ () = first input
+- [ ] ¹ () = second input
+- [ ] ² (num) = Square
+- [ ]   (str) = a split into pairs
+- [ ] ³ (num) = cube
+- [ ]   (str) = a split into chunks of length 3
+- [ ] ⅟ (num) = 1 / x
+- [ ]   (str) = a with all whitespace removed
+- [ ] ※ (any) = group by consecutive values
+- [ ]    (any, fun) = group by function (keep order)
+- [ ] ⇄ (any) = a[::-1] reverse
+- [ ] ⧖ (any) = permutations
+- [ ] ‰ (num, num) = [a // b, a % b]
+- [ ] ≛ (num, num) = does b divide a?
+- [ ]   (str, num)* = a + ' ' * b
+- [ ]   (lst, fun)* = Remove duplicates from a by applying b to each element
+- [ ]   (str, str) = span of first regex match of b in a
+- [ ] ⁞ (any) = [[temp, a.count(temp)] for temp in a]
+- [ ] ⦷ (num) = Absolute value
+- [ ]    (str) = keep alphabet characters of a
+- [ ] Ϣ (any, num) = a wrapped in chunks of length b
+- [ ] ≤ (num, num) = a <= b
+- [ ] ≥ (num, num) = a >= b
+- [ ] ≠ (scl, scl) = a != b
+- [ ] ≡ (any, any) = a == b (non-vec)
+- [ ] • (lst, lst) = dot product
+- [ ]   (num, num) = Convert a to bijective base b
+- [ ]   (lst, fun) = First index of a where b is truthy
+- [ ] ± (num) = sign of a
+- [ ]   (str) = tbd
+- [ ] † (any) = lengths of consecutive groups
+- [ ] ⎙ (any) = print without popping
+- [ ] ✒ (any) = print (not println)
+- [ ] ≓ (num) = a + reversed(a) (as number)
+- [ ]   (str) = a + reversed(a)
+- [ ]   (lst) = append reversed(a) to a
+- [ ] Ͼ (lst) = ¨Σ
+- [ ] ⛭ (num) = a ** 10
+- [ ]    (str) = Exec
+- [ ]    (fun) = call function
+- [ ] ⏟ (any, num) = every bth element of a
+- [ ] ⌭ (num) = is a prime?
+- [ ]    (str) = quote a and prepend to a
+- [ ] ⏜ () = ...d c b a => ...d c b a b
+- [ ] ⍢ (num) = a % 2
+- [ ]    (str) = last half of a
+- [ ] ℂ (num, num) = n choose K
+- [ ]   (str, str) = are the character sets of a and b equal?
+- [ ]   (str, num)* = all b-length combinations from a
+- [ ]   (fun, any)* = run a on b until the result no longer changes returning all intermediate results
+- [ ] ⌹ (lst) = List partitions of a
+- [ ]    (num) = Integer partitions of a (all possible ways to sum to a)
+- [ ] ⏚ (lst) = powerset
+- [ ] ↯ (lst, fun) = sort by function
+- [ ] ⊠ (lst, num) = Cartesian power
+- [ ] ⚅ (num) = randint(0, a)
+- [ ]    (str|lst) = random element from a
+- [ ] æ (any) = a, a[::-1]
+- [ ] ␣ () = " " (space)
+- [ ] ¶ () = "\n" (newline)
+- [ ] ★ () = "*" (Asterisk)
+- [ ] ᑂ (any) = a[1:], a[0]
+- [ ] ∻ (num, num) = floor division
+- [ ] √ (num) = sqrt(a)
+- [ ] ₿ (scl) = is a truthy?
+- [ ]   (lst) = vectorised
+- [ ] ◌ () = list of all inputs
+- [ ] δ (lst) = forward differences (⊞-)
+- [ ] ☷ (lst, lst) = Partition y after truthy indices of x.
+- [ ] ✇ (lst) = join on nothing and eval
+- [ ] ⎃ (any) = Flatten x and join on nothing
+- [ ] ⎶ (any, any) = trim b from both sides of a
+- [ ] ⊆ (lst, lst) = is b a subset of a?
+- [ ] ⍨ (any) = dump items of a
+- [ ] ¤ (any) = 2Ϣ
+- [ ] ⎘ (lst, num) = flatten by depth
+- [ ]    (lst) = flatten one layer
+- [ ] ꜝ (lst) = keep only truthy items
+- [ ] ≈ (any) = all items equal?
+- [ ] ≊ (any, any) = are all items in a equal to b?
+- [ ] κ (num, num) = gcd(a, b)
+- [ ]   (lst) = gcd(all items in a)
+- [ ] ⬱ (num) = nth item from outer stack 
+- [ ]    (otherwise) = top item from outer stack...?
+- [ ] Þ⬱ (any, num > 0) = append a[0] until length b
+- [ ]    (any, num < 0) = append a[-1] until length b
+- [ ] „ (any) = join on newlines
+- [ ] ” (any) = join on spaces
+- [ ] “ (any) = join on nothing
