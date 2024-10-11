@@ -22,7 +22,6 @@ literate mode, see the [Literate Mode help file](./Literate%20Mode.md)._
 14. [Arity Grouping](#arity-grouping)
 15. [Variables](#variables)
 16. [What is a SBCS?](#single-byte-character-set)
-17. [Nilad Moving](#nilad-moving)
 
 ## Introduction
 
