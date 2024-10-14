@@ -591,7 +591,7 @@ private class Parser:
 
       case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
           StructureType.LambdaFilter | StructureType.LambdaReduce |
-          StructureType.LambdaSort) =>
+          StructureType.LambdaSort | StructureType.LambdaStack) =>
         val lambda =
           if lambdaType == StructureType.Lambda then
             branches match
@@ -603,10 +603,13 @@ private class Parser:
               case _ =>
                 val (param, arity) = parseParameters(branches.head)
                 AST.Lambda(Some(arity), param, branches.drop(1))
+          else if lambdaType == StructureType.LambdaStack then
+            AST.Lambda(Some(-1), List.empty, branches)
           else AST.Lambda(None, List.empty, branches)
 
         lambdaType match
           case StructureType.Lambda => lambda
+          case StructureType.LambdaStack => lambda
           case StructureType.LambdaMap =>
             AST.makeSingle(lambda, AST.Command("M"))
           case StructureType.LambdaFilter =>

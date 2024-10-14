@@ -4,12 +4,12 @@ f, g, h = dyadic functions
 
 Syntax
 
-- [ ] λ   NA  =   Lambda opener
-- [ ] ƛ   NA  =   Mapping lambda opener
-- [ ] Λ   NA  =   Filtering lambda opener
-- [ ] ʎ   NA  =   Reduction lambda opener
-- [ ] ỿ   NA  =   Sorting lambda opener
-- [ ] ξ   NA  =   Lambda with arity -1
+- [x] λ   NA  =   Lambda opener
+- [x] ƛ   NA  =   Mapping lambda opener
+- [x] Λ   NA  =   Filtering lambda opener
+- [x] ʎ   NA  =   Reduction lambda opener
+- [x] ỿ   NA  =   Sorting lambda opener
+- [x] ξ   NA  =   Lambda with arity -1
 - [ ] ⍾   NA  =   Eager map opener
 
 Modifiers
