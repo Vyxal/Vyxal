@@ -46,8 +46,8 @@ class InterpreterTests extends VyxalTests:
 
     describe("Reduce lambda") {
       testMulti(
-        "10 ₳ + }" -> VNum(55),
-        "10 ₳ n m + }" -> VNum(55),
+        "10 ʎ + }" -> VNum(55),
+        "10 ʎ n m + }" -> VNum(55),
       )
     }
   }
@@ -151,11 +151,11 @@ class InterpreterTests extends VyxalTests:
       )
 
       testMulti(
-        """#["Hello"|"World"|"Gaming"|"Test String"#]Ω"o"C1=|m0=}""" ->
+        """#["Hello"|"World"|"Gaming"|"Test String"#]Λ"o"C1=|m0=}""" ->
           VList(
             "Hello"
           ),
-        """#["Hello"|"World"|"Goming"|"Test String"#]Ω"o"C1=|m2%0=}""" ->
+        """#["Hello"|"World"|"Goming"|"Test String"#]Λ"o"C1=|m2%0=}""" ->
           VList(
             "Hello",
             "Goming",
@@ -163,8 +163,8 @@ class InterpreterTests extends VyxalTests:
       )
 
       testMulti(
-        "#[4|3N|1|5|3|7|5N#]µ0<[N}|N" -> VList(1, 3, -3, 4, 5, -5, 7),
-        "#[4|3N|1|5|3|7|5N#]µ0<[N}N" -> VList(7, 5, -5, 4, -3, 3, 1),
+        "#[4|3N|1|5|3|7|5N#]ỿ0<[N}|N" -> VList(1, 3, -3, 4, 5, -5, 7),
+        "#[4|3N|1|5|3|7|5N#]ỿ0<[N}N" -> VList(7, 5, -5, 4, -3, 3, 1),
       )
     }
 

@@ -14,8 +14,8 @@ Syntax
 
 Modifiers
 
-- [ ] ∥   F<any>, G<any>  =   Parallel apply. Execute F and G on two different stacks, pop the arguments G used, and push the result of F then G.
-- [ ] ∦   F<any>, G<any>  =   Parallel apply and wrap. Equivalent to ∥FG;
+- [x] ∥   F<any>, G<any>  =   Parallel apply. Execute F and G on two different stacks, pop the arguments G used, and push the result of F then G.
+- [x] ∦   F<any>, G<any>  =   Parallel apply and wrap. Equivalent to ∥FG;
 - [ ] ∺   F<1>, G<1>  = Correspond. Given stack of ... x y, results in ... G(y) F(x)
 - [ ]     F<2+>, G<2+>    =   Fork. Calculates G(F(x, y, ...), y, ...)
 - [ ] ⁜   F<1>    =   Group By Element. Group items in the top of stack by application of function F
