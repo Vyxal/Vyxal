@@ -9,7 +9,7 @@ class SBCSLexer extends LexerCommon:
   var sugarUsed = false
 
   def headIsOpener: Boolean =
-    headIn("[({ṆḌƛΩ₳µ⟨") || headLookaheadEqual("#[") ||
+    headIn("[({ṆḌƛΛξ⍾ʎỿ⟨") || headLookaheadEqual("#[") ||
       headLookaheadEqual("#{") || headLookaheadEqual("#::R") ||
       headLookaheadEqual("#::+") || headLookaheadMatch("#::[EM]")
 
@@ -61,7 +61,7 @@ class SBCSLexer extends LexerCommon:
       else if unpackDepth > 1 && headEqual("]") then
         addToken(TokenType.StructureAllClose, "]", Range(index, index))
         unpackDepth -= 1
-      else if headIn("[({ṆḌƛΩ₳µ") then
+      else if headIn("[({ṆḌƛΛξ⍾ʎỿ⟨") then
         quickToken(TokenType.StructureOpen, s"${programStack.head}")
       else if headEqual("λ") then
         quickToken(TokenType.StructureOpen, "λ")
