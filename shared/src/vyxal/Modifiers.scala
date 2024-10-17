@@ -662,5 +662,18 @@ object Modifiers:
             )
           )
       },
+    "∺" ->
+      Modifier(
+        "Correspond | Fork",
+        """|Given two monadic functions, ∺FG applies F to under the top, and G to the top
+        |Given two dyadic functions, ∺FG Calculates G(F(x, y, ...), y, ...)""".stripMargin,
+        List("correspond:", "fork:"),
+        2,
+        Seq(),
+      ) {
+        case List(ast1, ast2) =>
+          if isExplicitMonad(ast1) && isExplicitMonad(ast2) then ???
+          else ???
+      },
   )
 end Modifiers
