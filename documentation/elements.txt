@@ -1603,6 +1603,11 @@ Keywords: if-top:, if:
 Description: Pop the top of the stack, and, if it's truthy, apply a function
 Trigraph: #.?
 -----------------------
+∺
+Keywords: correspond:, fork:
+Description: Given two monadic functions, ∺FG applies F to under the top, and G to the top
+Given two dyadic functions, ∺FG Calculates G(F(x, y, ...), y, ...)
+-----------------------
 ᵉ
 Keywords: **2:
 Description: Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda
