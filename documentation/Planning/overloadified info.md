@@ -185,7 +185,7 @@ b = rhs
 - [ ] y (any, any, any) = Transliterate
 - [ ] z (any, any) = Transpose with filler (the thing jelly has)
 - [ ] ⨥ (num) = a + 2
-- [ ]   (str) = tbd
+- [ ]   (str) = string length == 1
 - [ ] ⨪ (num) = a - 2
 - [ ]   (str) = tbd (not append two "-"s though that'd be silly even by my standards)
 - [ ] Σ (any) = sum of a 
@@ -227,6 +227,7 @@ b = rhs
 - [ ]    (any, num) = rotate item right b times
 - [ ] ≜ (any, num, non-fun) = a[b] = c
 - [ ]    (any, num, fun) = a[b] = c(a[b])
+- [ ]    (any, lst[num], fun) = essentially vectorised of (any, num, fyn)
 - [ ]    (lst, lst, lst) = [a[x] = y for (x, y) in zip(x, y)]
 - [ ]    (str, str, str) = replace regex matches of pattern b in string a with c
 - [ ]    (str, str, fun)* = replace regex matches of pattern b in string a with the result of applying c to each match
@@ -318,7 +319,8 @@ b = rhs
 - [ ] √ (num) = sqrt(a)
 - [ ] ₿ (scl) = is a truthy?
 - [ ]   (lst) = vectorised
-- [ ] ◌ () = list of all inputs
+- [ ] ◌ (num) = round(x) -> round half up 
+- [ ] #◌ () = list of all inputs
 - [ ] δ (lst) = forward differences (⊞-)
 - [ ] ☷ (lst, lst) = Partition y after truthy indices of x.
 - [ ] ✇ (lst|str) = Edges. [x[0], x[-1]]
