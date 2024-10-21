@@ -277,4 +277,14 @@ object Context:
     )
   end makeFnCtx
 
+  def push(items: VAny*)(using ctx: Context): Unit = ctx.push(items*)
+  def pop()(using ctx: Context): VAny = ctx.pop()
+  def peek()(using ctx: Context): VAny = ctx.peek
+  def peek(n: Int)(using ctx: Context): List[VAny] = ctx.peek(n)
+
+  def copyCtx(using ctx: Context): Context = ctx.copy
+
+  def ctxVarPrimary(using ctx: Context): VAny = ctx.ctxVarPrimary
+  def ctxVarSecondary(using ctx: Context): VAny = ctx.ctxVarSecondary
+
 end Context

@@ -3,14 +3,28 @@ package vyxal.elements
 import vyxal.{Dyad, ImplHelpers, Monad, Tetrad, Triad}
 import vyxal.Context
 import vyxal.DirectFn
+import vyxal.Interpreter
 import vyxal.VAny
+import vyxal.VFun
 
 object NewElements:
+
   val elements: Map[String, DirectFn] = Map(
   )
 
   // Subject to being added as overloads onto things in elements
   val internalUseElements: Map[String, DirectFn] = Map(
+    "#|fork" ->
+      direct {
+        val functionG = pop().asInstanceOf[VFun]
+        val functionF = pop().asInstanceOf[VFun]
+
+        functionF.ctx = copyCtx
+        val resultF = Interpreter.executeFn(functionF)(using copyCtx)
+        pop()
+        val resultG = Interpreter.executeFn(functionG)(using summon[Context])
+        push(resultG)
+      }
   )
 
   private def niladify(value: VAny): DirectFn =
@@ -57,5 +71,7 @@ object NewElements:
       symbol: String,
   )(impl: P): (String, DirectFn) =
     symbol -> arity.toDirectFn(arity.fill(symbol)(impl))
+
+  private def direct(impl: Context ?=> Unit): DirectFn = () => impl
 
 end NewElements
