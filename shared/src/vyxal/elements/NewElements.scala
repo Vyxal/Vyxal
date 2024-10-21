@@ -1,12 +1,13 @@
 package vyxal.elements
 
 import vyxal.{Dyad, ImplHelpers, Monad, Tetrad, Triad}
-import Vyxal.Context.{push, pop, copyCtx}
 import vyxal.Context
 import vyxal.DirectFn
 import vyxal.Interpreter
 import vyxal.VAny
 import vyxal.VFun
+
+import Vyxal.Context.{copyCtx, pop, push}
 
 object NewElements:
 
