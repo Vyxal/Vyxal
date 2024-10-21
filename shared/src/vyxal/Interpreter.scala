@@ -1,5 +1,6 @@
 package vyxal
 
+import vyxal.elements.NewElements
 import vyxal.parsing.{Lexer, Parser, ParserResult}
 import vyxal.MiscHelpers.vyPrintln
 import vyxal.StringHelpers.prettyPrint
@@ -133,9 +134,14 @@ object Interpreter:
               executed = true
             case None => ()
         if !executed then
-          Elements.elements.get(cmd) match
-            case Some(elem) => elem.impl()
-            case None => throw VyxalYikesException(s"No such element: '$cmd'")
+          NewElements.elements.get(cmd) match
+            case Some(impl) => impl()
+            case None => NewElements.internalUseElements.get(cmd) match
+                case Some(impl) => impl()
+                case None => Elements.elements.get(cmd) match
+                    case Some(elem) => elem.impl()
+                    case None =>
+                      throw VyxalYikesException(s"No such element: '$cmd'")
       case AST.Group(elems, _, _) => elems.foreach(Interpreter.execute)
       case AST.CompositeNilad(elems, _) => elems.foreach(Interpreter.execute)
       case AST.RedefineModifier(name, mode, args, implArity, impl, range) => ???
