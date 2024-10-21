@@ -672,8 +672,19 @@ object Modifiers:
         Seq(),
       ) {
         case List(ast1, ast2) =>
-          if isExplicitMonad(ast1) && isExplicitMonad(ast2) then ???
-          else ???
+          if isExplicitMonad(ast1) && isExplicitMonad(ast2) then
+            AST.makeSingle(
+              AST.Command("$"),
+              astToLambda(ast1, 1),
+              AST.Command("$"),
+              astToLambda(ast2, 1),
+            )
+          else
+            AST.makeSingle(
+              astToLambda(ast1, ast1.arity.getOrElse(2)),
+              astToLambda(ast2, ast2.arity.getOrElse(2)),
+              AST.Command("#|fork"),
+            )
       },
   )
 end Modifiers
