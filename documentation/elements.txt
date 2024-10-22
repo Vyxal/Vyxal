@@ -1606,7 +1606,7 @@ Trigraph: #.?
 ∺
 Keywords: correspond:, fork:
 Description: Given two monadic functions, ∺FG applies F to under the top, and G to the top
-Given two dyadic functions, ∺FG Calculates G(F(x, y, ...), y, ...)
+Given two dyadic functions, ∺FG calculates F(...) then G(...)
 -----------------------
 ᵉ
 Keywords: **2:
