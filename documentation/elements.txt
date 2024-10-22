@@ -601,7 +601,7 @@ Keywords: vectorised-sums, vec-sums, integer-division, int-div, int-rizz, sums
 ----------------------
 Ṫ (Init) (non-vectorising)
 Trigraph: #.T
-Keywords: init, remove-last
+Keywords: init, remove-last, tail-remove
 - a: lst -> a[:-1]
 - a: str -> a[:-1]
 ----------------------
