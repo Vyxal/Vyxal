@@ -15,16 +15,14 @@ object NewElements:
 
   // Subject to being added as overloads onto things in elements
   val internalUseElements: Map[String, DirectFn] = Map(
-    "#|fork" ->
+    "#|correspond" ->
       direct {
         val functionG = pop().asInstanceOf[VFun]
         val functionF = pop().asInstanceOf[VFun]
 
-        functionF.ctx = copyCtx
-        val resultF = Interpreter.executeFn(functionF)(using copyCtx)
-        pop()
-        val resultG = Interpreter.executeFn(functionG)(using summon[Context])
-        push(resultG)
+        val result = Interpreter.executeFn(functionF)
+        val otherResult = Interpreter.executeFn(functionG)
+        push(otherResult, result)
       }
   )
 

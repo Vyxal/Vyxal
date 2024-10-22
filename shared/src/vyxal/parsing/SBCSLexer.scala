@@ -72,7 +72,7 @@ class SBCSLexer extends LexerCommon:
         quickToken(TokenType.UnpackTrigraph, "#:[")
       else if headIn("ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/") then
         quickToken(TokenType.MonadicModifier, s"${programStack.head}")
-      else if headIn("ϩ∥∦ᵉ") then
+      else if headIn("ϩ∥∦ᵉ∺") then
         quickToken(TokenType.DyadicModifier, s"${programStack.head}")
       else if headIn("эᶠ") then
         quickToken(TokenType.TriadicModifier, s"${programStack.head}")

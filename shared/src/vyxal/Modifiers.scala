@@ -664,27 +664,18 @@ object Modifiers:
       },
     "∺" ->
       Modifier(
-        "Correspond | Fork",
+        "Correspond",
         """|Given two monadic functions, ∺FG applies F to under the top, and G to the top
-        |Given two dyadic functions, ∺FG Calculates G(F(x, y, ...), y, ...)""".stripMargin,
+        |Given two dyadic functions, ∺FG calculates F(...) then G(...)""".stripMargin,
         List("correspond:", "fork:"),
         2,
         Seq(),
       ) {
-        case List(ast1, ast2) =>
-          if isExplicitMonad(ast1) && isExplicitMonad(ast2) then
-            AST.makeSingle(
-              AST.Command("$"),
-              astToLambda(ast1, 1),
-              AST.Command("$"),
-              astToLambda(ast2, 1),
-            )
-          else
-            AST.makeSingle(
-              astToLambda(ast1, ast1.arity.getOrElse(2)),
-              astToLambda(ast2, ast2.arity.getOrElse(2)),
-              AST.Command("#|fork"),
-            )
+        case List(ast1, ast2) => AST.makeSingle(
+            astToLambda(ast1, ast1.arity.getOrElse(2)),
+            astToLambda(ast2, ast2.arity.getOrElse(2)),
+            AST.Command("#|correspond"),
+          )
       },
   )
 end Modifiers
