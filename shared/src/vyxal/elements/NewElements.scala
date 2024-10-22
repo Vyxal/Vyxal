@@ -20,8 +20,8 @@ object NewElements:
         val functionG = pop().asInstanceOf[VFun]
         val functionF = pop().asInstanceOf[VFun]
 
-        val result = Interpreter.executeFn(functionF)
-        val otherResult = Interpreter.executeFn(functionG)
+        val result = Interpreter.executeFn(functionG)
+        val otherResult = Interpreter.executeFn(functionF)
         push(otherResult, result)
       }
   )
