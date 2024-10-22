@@ -1129,7 +1129,7 @@ object Elements:
       Monad,
       "Ṫ",
       "Init",
-      List("init", "remove-last"),
+      List("init", "remove-last", "tail-remove"),
       false,
       "a: lst -> a[:-1]",
       "a: str -> a[:-1]",
