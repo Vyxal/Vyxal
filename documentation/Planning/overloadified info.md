@@ -16,8 +16,8 @@ Modifiers
 
 - [x] ∥   F<any>, G<any>  =   Parallel apply. Execute F and G on two different stacks, pop the arguments G used, and push the result of F then G.
 - [x] ∦   F<any>, G<any>  =   Parallel apply and wrap. Equivalent to ∥FG;
-- [ ] ∺   F<1>, G<1>  = Correspond. Given stack of ... x y, results in ... G(y) F(x)
-- [ ]     F<2+>, G<2+>    =   Given stack of ... a b c d, results in ... G(d, c) F(b, a)
+- [x] ∺   F<1>, G<1>  = Correspond. Given stack of ... x y, results in ... G(y) F(x)
+- [x]     F<2+>, G<2+>    =   Given stack of ... a b c d, results in ... G(d, c) F(b, a)
 - [ ] ⁜   F<1>    =   Group By Element. Group items in the top of stack by application of function F
 - [ ]     F<2+>   = Window Reduce. Reduce overlapping (arity) windows by function F.
 - [ ] ⑴   NA  =   Next element as lambda
