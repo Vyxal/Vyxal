@@ -49,9 +49,9 @@ b = rhs
 - [ ] ⎊ (any) = [a, b, c] => something that is a, b, and c, all at the same time
 - [ ] ⎋ (qnt) = create a list of all possible values the item can be
 - [ ] ⍟ (qnt, num) = get the nth possible value
-- [ ] ÷ (num, num) = a divided by b
-- [ ]   (str, num)* = split string b into chunks of size a
-- [ ]   (str, str) = split a on regex b
+- [x] ÷ (num, num) = a divided by b
+- [x]   (str, num)* = split string b into chunks of size a
+- [x]   (str, str) = split a on regex b
 - [ ] × (num, num) = a times b
 - [ ]   (str, num)* = repeat string a, b times
 - [ ]   (str, str) = ring translate

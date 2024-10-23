@@ -6,11 +6,14 @@ import vyxal.Context.{copyCtx, pop, push}
 import vyxal.DirectFn
 import vyxal.Interpreter
 import vyxal.ListHelpers
+import vyxal.StringHelpers
 import vyxal.VAny
 import vyxal.VFun
 import vyxal.VList
 import vyxal.VNum
 import vyxal.VNum.given
+
+import scala.util.matching.Regex
 
 object NewElements:
   case class Element(
@@ -25,7 +28,13 @@ object NewElements:
         val uniq = iterable.distinct
         val counts = uniq.map(item => VNum(iterable.count(_ == item)))
         push(VList.from(counts))
-      }
+      },
+    addPart("÷", Dyad, true) {
+      case (a: VNum, b: VNum) => a / b
+      case (a: String, b: VNum) => StringHelpers.intoNPieces(a, b)
+      case (a: VNum, b: String) => StringHelpers.intoNPieces(b, a)
+      case (a: String, b: String) => StringHelpers.split(a, Regex.quote(b))
+    },
   )
 
   // Subject to being added as overloads onto things in elements
