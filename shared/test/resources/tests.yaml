@@ -1840,3 +1840,9 @@
   - {in: ["vyxal"], out: [22, 25, 24, 1, 12]}
   - {in: [["xyz", 4294967293, "h"]], out: [[24, 25, 26], "s", 8]}
   - {in: [""], out: []}
+
+# Tests for 3.5 elements start here
+
+"⊞":
+  - {in: [[1,1,1,1,2,2,3,3,3]], out: [4, 2, 3]}
+  - {in: ["abracadbra skibidi rizz"], out: [4, 3, 3, 1, 2, 2, 1, 1, 4, 2] }
