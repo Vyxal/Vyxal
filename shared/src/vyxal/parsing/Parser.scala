@@ -3,6 +3,7 @@ package vyxal.parsing
 import scala.language.strictEquality
 
 import vyxal.*
+import vyxal.elements.NewElements
 
 import scala.collection.mutable
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
@@ -414,6 +415,10 @@ private class Parser:
       case None =>
         if checkCustoms then
           if typedCustoms.contains(cmd) then typedCustoms(cmd)._2
+          else if NewElements.elements.contains(cmd) then
+            NewElements.elements(cmd).arity
+          else if NewElements.internalUseElements.contains(cmd) then
+            NewElements.internalUseElements(cmd).arity
           else if !customs.contains(cmd) then
             if !cmd.startsWith("k") then
               throw NoSuchElementException(cmdTok.value)

@@ -2,11 +2,21 @@ package vyxal.elements
 
 case class Element(
     symbol: String,
-    name: String,
     keywords: Seq[String],
-    arity: Option[Int],
+    arity: Int,
+    options: Options,
+    overloads: Overload*
+)
+
+case class Overload(
+    name: String,
+    args: Seq[String],
+    description: String,
+)
+
+case class Options(
+    castToIterable: Boolean,
     vectorises: Boolean,
-    overloads: Seq[String],
 )
 
 object ElementInformation:
@@ -16,4 +26,20 @@ object ElementInformation:
       .map(_.symbol)
 
   val elements: Map[String, Element] = Map(
+    "⊞" ->
+      Element(
+        symbol = "⊞",
+        keywords = Seq("counts", "counts-of"),
+        arity = 1,
+        Options(
+          castToIterable = true,
+          vectorises = false,
+        ),
+        Overload(
+          name = "Counts of Items",
+          args = Seq("lst"),
+          description = "[lhs.count(x) for x in set(lhs)]",
+        ),
+      )
   )
+end ElementInformation

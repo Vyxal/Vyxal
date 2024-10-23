@@ -135,9 +135,9 @@ object Interpreter:
             case None => ()
         if !executed then
           NewElements.elements.get(cmd) match
-            case Some(impl) => impl()
+            case Some(elem) => elem.impl()
             case None => NewElements.internalUseElements.get(cmd) match
-                case Some(impl) => impl()
+                case Some(elem) => elem.impl()
                 case None => Elements.elements.get(cmd) match
                     case Some(elem) => elem.impl()
                     case None =>

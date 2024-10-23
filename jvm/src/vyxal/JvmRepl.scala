@@ -28,8 +28,9 @@ object JvmRepl extends Repl:
       val code = StdIn.readLine("> ")
       if code == null then return
       ctx.globals.printed = false
-      try Interpreter.execute(code)
-      catch case ex: VyxalException => scribe.error(ex.getMessage(using ctx))
+      // try Interpreter.execute(code)
+      // catch case ex: VyxalException => scribe.error(ex.getMessage(using ctx))
+      Interpreter.execute(code)
 
   private def fancyRepl()(using ctx: Context): Unit =
     // Enable debug logging

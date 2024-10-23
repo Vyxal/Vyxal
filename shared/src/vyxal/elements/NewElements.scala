@@ -5,18 +5,33 @@ import vyxal.Context
 import vyxal.Context.{copyCtx, pop, push}
 import vyxal.DirectFn
 import vyxal.Interpreter
+import vyxal.ListHelpers
 import vyxal.VAny
 import vyxal.VFun
+import vyxal.VList
+import vyxal.VNum
+import vyxal.VNum.given
 
 object NewElements:
+  case class Element(
+      arity: Int,
+      impl: DirectFn,
+  )
 
-  val elements: Map[String, DirectFn] = Map(
+  val elements: Map[String, Element] = Map(
+    "⊞" ->
+      direct(Monad) {
+        val iterable = ListHelpers.makeIterable(pop())
+        val uniq = iterable.distinct
+        val counts = uniq.map(item => VNum(iterable.count(_ == item)))
+        push(VList.from(counts))
+      }
   )
 
   // Subject to being added as overloads onto things in elements
-  val internalUseElements: Map[String, DirectFn] = Map(
+  val internalUseElements: Map[String, Element] = Map(
     "#|correspond" ->
-      direct {
+      direct(Dyad) {
         val functionG = pop().asInstanceOf[VFun]
         val functionF = pop().asInstanceOf[VFun]
 
@@ -26,14 +41,17 @@ object NewElements:
       }
   )
 
-  private def niladify(value: VAny): DirectFn =
-    () => (ctx: Context) ?=> ctx.push(value)
+  private def niladify(value: VAny): Element =
+    Element(0, () => (ctx: Context) ?=> ctx.push(value))
+
+  private def niladify(function: Context ?=> VAny): Element =
+    Element(0, () => (ctx: Context) ?=> ctx.push(function))
 
   /** Add an element that handles all `VAny`s (it doesn't take a
     * `PartialFunction`, hence "Full")
     */
-  private def fullToImpl[F](arity: ImplHelpers[?, F], impl: F): DirectFn =
-    arity.toDirectFn(impl)
+  private def fullToImpl[F](arity: ImplHelpers[?, F], impl: F): Element =
+    Element(arity.arity, arity.toDirectFn(impl))
 
   /** Define an element that doesn't necessarily work on all inputs
     *
@@ -46,11 +64,14 @@ object NewElements:
       symbol: String,
       arity: ImplHelpers[P, F],
       vectorises: Boolean,
-  )(impl: P): (String, DirectFn) =
+  )(impl: P): (String, Element) =
     symbol ->
-      arity.toDirectFn(
-        if vectorises then arity.vectorise(symbol)(impl)
-        else arity.fill(symbol)(impl)
+      Element(
+        arity.arity,
+        arity.toDirectFn(
+          if vectorises then arity.vectorise(symbol)(impl)
+          else arity.fill(symbol)(impl)
+        ),
       )
 
   /** Define an element that doesn't necessarily work on all inputs. It may
@@ -68,9 +89,13 @@ object NewElements:
   private def addPartialVect[P, F](
       arity: ImplHelpers[P, F],
       symbol: String,
-  )(impl: P): (String, DirectFn) =
-    symbol -> arity.toDirectFn(arity.fill(symbol)(impl))
+  )(impl: P): (String, Element) =
+    symbol -> Element(arity.arity, arity.toDirectFn(arity.fill(symbol)(impl)))
 
-  private def direct(impl: Context ?=> Unit): DirectFn = () => impl
+  private def direct[P, F](arity: ImplHelpers[P, F])(
+      impl: Context ?=> Unit
+  ): Element = Element(arity.arity, () => impl)
+
+  private def direct(impl: Context ?=> Unit): Element = Element(0, () => impl)
 
 end NewElements
