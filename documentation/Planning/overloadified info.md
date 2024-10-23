@@ -43,7 +43,7 @@ A lack of a lst overload indicates auto-vectorisation.
 a = lhs
 b = rhs
 
-- [ ] ⊞ (any) = [a.count(_) for _ in a]
+- [x] ⊞ (any) = [a.count(_) for _ in a]
 - [ ] ζ () = When entering a lambda, store the popped value in this
 - [ ] γ () = When entering a lambda, retrieve top of outer stack
 - [ ] ⎊ (any) = [a, b, c] => something that is a, b, and c, all at the same time
