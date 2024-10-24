@@ -52,9 +52,9 @@ b = rhs
 - [x] ÷ (num, num) = a divided by b
 - [x]   (str, num)* = split string b into chunks of size a
 - [x]   (str, str) = split a on regex b
-- [ ] × (num, num) = a times b
-- [ ]   (str, num)* = repeat string a, b times
-- [ ]   (str, str) = ring translate
+- [x] × (num, num) = a times b
+- [x]   (str, num)* = repeat string a, b times
+- [x]   (str, str) = ring translate
 - [ ] ∧ (any, any) = b && a (first falsey)
 - [ ] ∨ (any, any) = b || a (first truthy)
 - [ ] ¬ (any) = not a (truthy => 0, falsey => 1)
