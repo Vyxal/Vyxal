@@ -6,6 +6,7 @@ import vyxal.Context.{copyCtx, pop, push}
 import vyxal.DirectFn
 import vyxal.Interpreter
 import vyxal.ListHelpers
+import vyxal.MiscHelpers
 import vyxal.StringHelpers
 import vyxal.VAny
 import vyxal.VFun
@@ -35,6 +36,7 @@ object NewElements:
       case (a: VNum, b: String) => StringHelpers.intoNPieces(b, a)
       case (a: String, b: String) => StringHelpers.split(a, Regex.quote(b))
     },
+    "×" -> fullToImpl(Dyad, MiscHelpers.multiply),
   )
 
   // Subject to being added as overloads onto things in elements

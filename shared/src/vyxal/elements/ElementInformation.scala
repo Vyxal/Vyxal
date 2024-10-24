@@ -42,7 +42,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "÷",
-      keywords = Seq("divide", "string-pieces", "regex-split"),
+      keywords = Seq("divide", "string-pieces", "regex-split", "/"),
       arity = 2,
       Options(
         castToIterable = false,
@@ -57,13 +57,40 @@ object ElementInformation:
       Overload(
         name = "String into N Pieces",
         args = Seq("str", "num"),
-        description = "Split a string into n pieces",
+        description = "Split [str] string into [num] pieces",
         typeSwitchable = true,
       ),
       Overload(
         name = "Regex Split",
         args = Seq("str", "str"),
         description = "Split a string by a regex",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "×",
+      keywords = Seq("multiply", "string-repeat", "ring-translate", "*"),
+      arity = 2,
+      Options(
+        castToIterable = false,
+        vectorises = true,
+      ),
+      Overload(
+        name = "Multiplication",
+        args = Seq("num", "num"),
+        description = "lhs * rhs",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "String Repeat",
+        args = Seq("str", "num"),
+        description = "Repeat [str] string [num] times",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Ring Translate",
+        args = Seq("str", "str"),
+        description = "Ring translate [str] according to b",
         typeSwitchable = false,
       ),
     ),
