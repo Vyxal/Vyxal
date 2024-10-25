@@ -20,10 +20,10 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
   override def ivyDeps =
     Agg(
       ivy"org.typelevel::spire::0.18.0",
-      ivy"org.scala-lang.modules::scala-parser-combinators::2.3.0",
-      ivy"com.lihaoyi::fastparse::3.0.2",
+      ivy"org.scala-lang.modules::scala-parser-combinators::2.4.0",
+      ivy"com.lihaoyi::fastparse::3.1.1",
       ivy"com.github.scopt::scopt::4.1.0",
-      ivy"com.outr::scribe::3.13.2",
+      ivy"com.outr::scribe::3.15.2",
       ivy"org.scala-lang::toolkit:0.5.0",
     )
 
