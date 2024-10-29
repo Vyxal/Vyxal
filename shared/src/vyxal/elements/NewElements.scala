@@ -40,10 +40,10 @@ object NewElements:
     },
     "×" -> fullToImpl(Dyad, MiscHelpers.multiply),
     addPart("∧", Dyad, true) {
-      case (a: VVal, b: VVal) => if !a.toBool then a else b
+      case (b: VVal, a: VVal) => if !a.toBool then a else b
     },
     addPart("∨", Dyad, true) {
-      case (a: VVal, b: VVal) => if a.toBool then a else b
+      case (b: VVal, a: VVal) => if a.toBool then a else b
     },
     addPart("¬", Monad, false) { a =>
       VNum(!a.toBool)
