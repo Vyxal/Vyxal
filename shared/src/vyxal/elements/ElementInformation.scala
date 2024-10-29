@@ -94,5 +94,37 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "∧",
+      keywords = Seq("and", "&&"),
+      arity = 2,
+      Options(
+        castToIterable = false,
+        vectorises = false,
+      ),
+      Overload(
+        name = "Short Circuit And",
+        args = Seq("any", "any"),
+        description =
+          "Short circuit and - if {any1} is false, return {any1}, else return {any2}",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "∨",
+      keywords = Seq("or", "!!"),
+      arity = 2,
+      Options(
+        castToIterable = false,
+        vectorises = false,
+      ),
+      Overload(
+        name = "Short Circuit Or",
+        args = Seq("any", "any"),
+        description =
+          "Short circuit or - if {any1} is true, return {any1}, else return {any2}",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

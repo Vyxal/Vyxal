@@ -1,6 +1,7 @@
 package vyxal.elements
 
 import vyxal.{Dyad, ImplHelpers, Monad, Tetrad, Triad}
+import vyxal.toBool
 import vyxal.Context
 import vyxal.Context.{copyCtx, pop, push}
 import vyxal.DirectFn
@@ -13,6 +14,7 @@ import vyxal.VFun
 import vyxal.VList
 import vyxal.VNum
 import vyxal.VNum.given
+import vyxal.VVal
 
 import scala.util.matching.Regex
 
@@ -37,6 +39,12 @@ object NewElements:
       case (a: String, b: String) => StringHelpers.split(a, Regex.quote(b))
     },
     "×" -> fullToImpl(Dyad, MiscHelpers.multiply),
+    addPart("∧", Dyad, false) {
+      case (a: VVal, b: VVal) => if !a.toBool then a else b
+    },
+    addPart("∨", Dyad, false) {
+      case (a: VVal, b: VVal) => if a.toBool then a else b
+    },
   )
 
   // Subject to being added as overloads onto things in elements

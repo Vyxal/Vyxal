@@ -55,8 +55,8 @@ b = rhs
 - [x] × (num, num) = a times b
 - [x]   (str, num)* = repeat string a, b times
 - [x]   (str, str) = ring translate
-- [ ] ∧ (any, any) = b && a (first falsey)
-- [ ] ∨ (any, any) = b || a (first truthy)
+- [x] ∧ (any, any) = b && a (first falsey)
+- [x] ∨ (any, any) = b || a (first truthy)
 - [ ] ¬ (any) = not a (truthy => 0, falsey => 1)
 - [ ] ʀ (num) = range [0, a]
 - [ ]   (str) = uppercase
