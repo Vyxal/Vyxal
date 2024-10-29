@@ -39,10 +39,10 @@ object NewElements:
       case (a: String, b: String) => StringHelpers.split(a, Regex.quote(b))
     },
     "×" -> fullToImpl(Dyad, MiscHelpers.multiply),
-    addPart("∧", Dyad, false) {
+    addPart("∧", Dyad, true) {
       case (a: VVal, b: VVal) => if !a.toBool then a else b
     },
-    addPart("∨", Dyad, false) {
+    addPart("∨", Dyad, true) {
       case (a: VVal, b: VVal) => if a.toBool then a else b
     },
     addPart("¬", Monad, false) { a =>
