@@ -11,7 +11,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.util.matching.Regex
 
 class LiterateLexer extends LexerCommon:
-  private val KeywordLetters = raw"a-zA-Z0-9_<>?!*+\-=&%@"
+  private val KeywordLetters = raw"a-zA-Z0-9_<>?!*+\-=&%@~"
   def headIsOpener: Boolean =
     structOpeners.exists((kw, _) =>
       headLookaheadMatch(s"${Regex.quote(kw)}([^$KeywordLetters]|$$)")
@@ -143,7 +143,7 @@ class LiterateLexer extends LexerCommon:
         headLookaheadMatch("i(0|[1-9][0-9]*| )")
       then numberToken
       else if safeCheck(c =>
-          c.length == 1 && (c.head.isLetter || "<>!*+-=&%@".contains(c))
+          c.length == 1 && (c.head.isLetter || "<>!*+-=&%@~".contains(c))
         )
       then keywordToken
       else if headEqual(""""""") then stringToken(true)

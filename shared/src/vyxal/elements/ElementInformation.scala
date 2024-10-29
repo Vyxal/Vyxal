@@ -126,5 +126,20 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "¬",
+      keywords = Seq("not", "~"),
+      arity = 1,
+      Options(
+        castToIterable = false,
+        vectorises = false,
+      ),
+      Overload(
+        name = "Not",
+        args = Seq("any"),
+        description = "Not {any}",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

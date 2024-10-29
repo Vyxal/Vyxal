@@ -45,6 +45,9 @@ object NewElements:
     addPart("∨", Dyad, false) {
       case (a: VVal, b: VVal) => if a.toBool then a else b
     },
+    addPart("¬", Monad, false) { a =>
+      VNum(!a.toBool)
+    },
   )
 
   // Subject to being added as overloads onto things in elements
