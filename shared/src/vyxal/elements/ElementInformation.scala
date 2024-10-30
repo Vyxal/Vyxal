@@ -106,8 +106,7 @@ object ElementInformation:
         name = "Short Circuit And",
         args = Seq("any", "any"),
         description =
-          "Short circuit and - if {any2} is false, return {any2}, else return {any2
-1}",
+          "Short circuit and - if {any2} is false, return {any2}, else return {any2}",
         typeSwitchable = false,
       ),
     ),
