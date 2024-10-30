@@ -141,5 +141,110 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "ʀ",
+      keywords = Seq("0->n", "lowercase"),
+      arity = 1,
+      Options(
+        castToIterable = false,
+        vectorises = true,
+      ),
+      Overload(
+        name = "Range 0",
+        args = Seq("num"),
+        description = "Range from 0 to {num}, exclusive",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Lowercase",
+        args = Seq("str"),
+        description = "Lowercase {str}",
+        typeSwitchable = true,
+      ),
+    ),
+    Element(
+      symbol = "ʁ",
+      keywords = Seq("0->n++", "uppercase"),
+      arity = 1,
+      Options(
+        castToIterable = false,
+        vectorises = true,
+      ),
+      Overload(
+        name = "Range 0 Inclusive",
+        args = Seq("num"),
+        description = "Range from 0 to {num}, inclusive",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Uppercase",
+        args = Seq("str"),
+        description = "Uppercase {str}",
+        typeSwitchable = true,
+      ),
+    ),
+    Element(
+      symbol = "ɾ",
+      keywords = Seq("1->n++", "is-alpha?"),
+      arity = 1,
+      Options(
+        castToIterable = false,
+        vectorises = true,
+      ),
+      Overload(
+        name = "Range 1 Inclusive",
+        args = Seq("num"),
+        description = "Range from 1 to {num}, inclusive",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Is Character Alphabetical",
+        args = Seq("str"),
+        description = "Check if {str} is alphabetical (i.e. is a letter)",
+        typeSwitchable = true,
+      ),
+    ),
+    Element(
+      symbol = "‹",
+      keywords = Seq("decrement", "--", "pad-to-8"),
+      arity = 1,
+      Options(
+        castToIterable = false,
+        vectorises = true,
+      ),
+      Overload(
+        name = "Decrement",
+        args = Seq("num"),
+        description = "{num} - 1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Pad to 8",
+        args = Seq("str"),
+        description = "Pad {str} to a length that is a multiple of 8 with '0's",
+        typeSwitchable = true,
+      ),
+    ),
+    Element(
+      symbol = "›",
+      keywords = Seq("increment", "++", "space-to-0"),
+      arity = 1,
+      Options(
+        castToIterable = false,
+        vectorises = true,
+      ),
+      Overload(
+        name = "Increment",
+        args = Seq("num"),
+        description = "{num} + 1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Spaces to 0s",
+        args = Seq("str"),
+        description = "Replace spaces in {str} with '0's",
+        typeSwitchable = true,
+      ),
+    ),
   )
 end ElementInformation

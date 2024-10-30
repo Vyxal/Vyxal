@@ -1,5 +1,6 @@
 package vyxal.parsing
 
+import vyxal.elements.ElementInformation
 import vyxal.parsing.TokenType.*
 import vyxal.Elements
 import vyxal.Modifier
@@ -32,7 +33,8 @@ class LiterateLexer extends LexerCommon:
       endKeywords.exists(kw =>
         headLookaheadMatch(s"${Regex.quote(kw)}([^$KeywordLetters]|$$)")
       )
-  private val literateKeywords = Elements.elements.values.flatMap(_.keywords)
+  private val literateKeywords = Elements.elements.values.flatMap(_.keywords) ++
+    ElementInformation.elements.flatMap(_.keywords)
   private val _tokens = ArrayBuffer[LitToken]()
   private val groups = ArrayBuffer[ArrayBuffer[LitToken]]()
   private var unpackDepth = 0
@@ -139,11 +141,13 @@ class LiterateLexer extends LexerCommon:
   def lex(program: String): Seq[Token] =
     programStack.pushAll(program.reverse.map(_.toString))
     while programStack.nonEmpty do
-      if headIsDigit || headLookaheadMatch("-[1-9]") || headEqual(".") ||
+      if (headIsDigit && headLookaheadMatch("\\d([i. ]|\\d)")) ||
+        headLookaheadMatch("-[1-9]") || headEqual(".") ||
         headLookaheadMatch("i(0|[1-9][0-9]*| )")
       then numberToken
       else if safeCheck(c =>
-          c.length == 1 && (c.head.isLetter || "<>!*+-=&%@~".contains(c))
+          c.length == 1 &&
+            (c.head.isLetter || c.head.isDigit || "<>!*+-=&%@~".contains(c))
         )
       then keywordToken
       else if headEqual(""""""") then stringToken(true)
@@ -336,7 +340,12 @@ class LiterateLexer extends LexerCommon:
     Elements.elements.values
       .find(elem => elem.keywords.contains(word))
       .map(_.symbol)
-      .getOrElse(word)
+      .getOrElse(
+        ElementInformation.elements
+          .find(_.keywords.contains(word))
+          .map(_.symbol)
+          .getOrElse(word)
+      )
 
   private def getModifierFromKeyword(word: String): Modifier =
     Modifiers.modifiers.values.find(mod => mod._3.contains(word)).get

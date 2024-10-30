@@ -8,7 +8,9 @@ import vyxal.DirectFn
 import vyxal.Interpreter
 import vyxal.ListHelpers
 import vyxal.MiscHelpers
+import vyxal.NumberHelpers
 import vyxal.StringHelpers
+import vyxal.StringHelpers.padLeft
 import vyxal.VAny
 import vyxal.VFun
 import vyxal.VList
@@ -47,6 +49,32 @@ object NewElements:
     },
     addPart("¬", Monad, false) { a =>
       VNum(!a.toBool)
+    },
+    addPart("ʀ", Monad, true) {
+      case a: VNum => NumberHelpers.range(0, a - a.signum)
+      case a: String => a.toLowerCase()
+    },
+    addPart("ʁ", Monad, true) {
+      case a: VNum =>
+        val endpoint = a + 1
+        NumberHelpers.range(0, endpoint - endpoint.signum)
+      case a: String => a.toUpperCase()
+    },
+    addPart("ɾ", Monad, true) {
+      case a: VNum => NumberHelpers.range(1, a)
+      case a: String if a.length() == 1 => a.head.isLetter
+      case a: String => VList.from(a.map(char => VNum(char.isLetter)))
+    },
+    addPart("‹", Monad, true) {
+      case a: VNum => a - 1
+      case a: String =>
+        val length = a.length()
+        val padLength = (8 - length % 8)
+        "0".repeat(padLength) + a
+    },
+    addPart("›", Monad, true) {
+      case a: VNum => a + 1
+      case a: String => a.replace(" ", "0")
     },
   )
 
