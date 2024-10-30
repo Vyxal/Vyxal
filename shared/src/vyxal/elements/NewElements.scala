@@ -76,6 +76,12 @@ object NewElements:
       case a: VNum => a + 1
       case a: String => a.replace(" ", "0")
     },
+    addPart("!", Monad, true) {
+      case a @ VNum(r, i) =>
+        if r.isWhole then spire.math.fact(spire.math.abs(a.toLong))
+        else NumberHelpers.gamma(spire.math.abs(a.underlying.real) + 1)
+      case a: String => StringHelpers.titlecase(a)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

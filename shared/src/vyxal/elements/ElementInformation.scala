@@ -246,5 +246,26 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
+    Element(
+      symbol = "!",
+      keywords = Seq("factorial", "!", "titlecase"),
+      arity = 1,
+      Options(
+        castToIterable = false,
+        vectorises = true,
+      ),
+      Overload(
+        name = "Factorial",
+        args = Seq("num"),
+        description = "Factorial of {num}",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Titlecase",
+        args = Seq("str"),
+        description = "Titlecase {str}",
+        typeSwitchable = true,
+      ),
+    ),
   )
 end ElementInformation

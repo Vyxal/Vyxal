@@ -67,9 +67,9 @@ b = rhs
 - [x] ‹ (num) = a - 1
 - [x]   (str) = Pad string with 0s to length nearest multiple of 8
 - [x] › (num) = a + 1
-- [ ]   (str) = Replace spaces with 0s
-- [ ] ! (num) = Factorial
-- [ ]   (str) = Titlecase
+- [x]   (str) = Replace spaces with 0s
+- [x] ! (num) = Factorial
+- [x]   (str) = Titlecase
 - [ ] $ (any, any) = ...d c b a => d c a b
 - [ ] % (num, num) = a modulo b
 - [ ]   (str, any) = a.format(b) # format on %s
