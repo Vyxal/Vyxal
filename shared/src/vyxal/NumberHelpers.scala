@@ -195,13 +195,7 @@ object NumberHelpers:
     VList.from(result.toList)
 
   def probablePrimes: VList =
-    VList.from(
-      LazyList
-        .unfold(VNum(2)) { n =>
-          Some(n -> (n + 1))
-        }
-        .filter(isMostLikelyPrime(_))
-    )
+    VList.from(LazyList.iterate(VNum(2))(_ + 1).filter(isMostLikelyPrime(_)))
 
   def primeFactors(a: VNum): VList =
     val result = mutable.ListBuffer.empty[VNum]
