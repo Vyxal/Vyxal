@@ -99,7 +99,8 @@ object NewElements:
         val result = Interpreter.executeFn(functionG)
         val otherResult = Interpreter.executeFn(functionF)
         push(otherResult, result)
-      }
+      },
+    "#|this-is-a-bit-silly-innit" -> niladify(21),
   )
 
   private def niladify(value: VAny): Element =

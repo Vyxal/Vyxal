@@ -282,5 +282,20 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "#|this-is-a-bit-silly-innit",
+      keywords = Seq("9+10"),
+      arity = 0,
+      Options(
+        castToIterable = false,
+        vectorises = false,
+      ),
+      Overload(
+        name = "You Stupid",
+        args = Seq(),
+        description = "What is 9 + 10?",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
