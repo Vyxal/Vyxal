@@ -267,5 +267,20 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
+    Element(
+      symbol = "$",
+      keywords = Seq("swap"),
+      arity = 2,
+      Options(
+        castToIterable = false,
+        vectorises = false,
+      ),
+      Overload(
+        name = "Swap",
+        args = Seq("any", "any"),
+        description = "Swap {any1} and {any2}",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

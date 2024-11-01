@@ -82,6 +82,11 @@ object NewElements:
         else NumberHelpers.gamma(spire.math.abs(a.underlying.real) + 1)
       case a: String => StringHelpers.titlecase(a)
     },
+    "$" ->
+      direct(Dyad) {
+        val b, a = pop()
+        push(b, a)
+      },
   )
 
   // Subject to being added as overloads onto things in elements
