@@ -11,6 +11,9 @@ Syntax
 - [x] ỿ   NA  =   Sorting lambda opener
 - [x] ξ   NA  =   Lambda with arity -1
 - [ ] ⍾   NA  =   Eager map opener
+- [ ] ⎋  NA  =   Close structure and get first item
+- [ ] ⍟ NA  = Close structure and flatten
+
 
 Modifiers
 
@@ -46,9 +49,7 @@ b = rhs
 - [x] ⊞ (any) = [a.count(_) for _ in a]
 - [ ] ζ () = When entering a lambda, store the popped value in this
 - [ ] γ () = When entering a lambda, retrieve top of outer stack
-- [ ] ⎊ (any) = [a, b, c] => something that is a, b, and c, all at the same time
-- [ ] ⎋ (qnt) = create a list of all possible values the item can be
-- [ ] ⍟ (qnt, num) = get the nth possible value
+- [ ] ⎊ (any, fun) = map over permutations
 - [x] ÷ (num, num) = a divided by b
 - [x]   (str, num)* = split string b into chunks of size a
 - [x]   (str, str) = split a on regex b
