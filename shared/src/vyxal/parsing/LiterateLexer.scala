@@ -141,7 +141,8 @@ class LiterateLexer extends LexerCommon:
   def lex(program: String): Seq[Token] =
     programStack.pushAll(program.reverse.map(_.toString))
     while programStack.nonEmpty do
-      if (headIsDigit && headLookaheadMatch("\\d([i. _]|\\d)")) ||
+      if (headIsDigit &&
+          headLookaheadMatch("\\d([^<>!*+\\-=&%@~A-Za-hj-z]|\\d?)")) ||
         headLookaheadMatch("-[1-9]") || headEqual(".") ||
         headLookaheadMatch("i(0|[1-9][0-9]*| )")
       then numberToken
