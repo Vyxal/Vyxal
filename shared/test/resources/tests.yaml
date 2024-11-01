@@ -1844,7 +1844,7 @@
   - {in: [1], out: [0, 1]}
   - {in: [5], out: [0, 1, 2, 3, 4, 5]}
   - {in: ["sticking out my tests for the rizzler"], out: "STICKING OUT MY TESTS FOR THE RIZZLER"}
-  - {in: [[1, "yoU're sO skibIDI", 3, "you're so fanuM tAX"]], out: [[0,1], "YOU'RE SO SKIBIDI", [0,1,2,3], "YOURE SO FANUM TAX"]}
+  - {in: [[1, "yoU're sO skibIDI", 3, "you're so fanuM tAX"]], out: [[0,1], "YOU'RE SO SKIBIDI", [0,1,2,3], "YOU'RE SO FANUM TAX"]}
 "‹":
   - {in: [123], out: 122}
   - {in: [-1], out: -2}
