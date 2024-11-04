@@ -283,6 +283,27 @@ object ElementInformation:
       ),
     ),
     Element(
+      symbol = "%",
+      keywords = Seq("mod", "modulo", "%"),
+      arity = 2,
+      Options(
+        castToIterable = false,
+        vectorises = true,
+      ),
+      Overload(
+        name = "Modulo",
+        args = Seq("num", "num"),
+        description = "{num1} % {num2}",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "String Format",
+        args = Seq("str", "any"),
+        description = "Format {str} with {any}",
+        typeSwitchable = true,
+      ),
+    ),
+    Element(
       symbol = "#|this-is-a-bit-silly-innit",
       keywords = Seq("9+10"),
       arity = 0,

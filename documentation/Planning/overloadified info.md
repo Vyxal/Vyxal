@@ -71,9 +71,9 @@ b = rhs
 - [x]   (str) = Replace spaces with 0s
 - [x] ! (num) = Factorial
 - [x]   (str) = Titlecase
-- [ ] $ (any, any) = ...d c b a => d c a b
-- [ ] % (num, num) = a modulo b
-- [ ]   (str, any) = a.format(b) # format on %s
+- [x] $ (any, any) = ...d c b a => d c a b
+- [x] % (num, num) = a modulo b
+- [x]   (str, any) = a.format(b) # format on %s
 - [ ] & (any, any) = append b to a
 - [ ] * (num, num) = a to the power of b
 - [ ] + (num, num) = a + b

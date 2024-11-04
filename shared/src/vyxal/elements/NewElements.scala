@@ -87,6 +87,7 @@ object NewElements:
         val b, a = pop()
         push(b, a)
       },
+    "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
   )
 
   // Subject to being added as overloads onto things in elements
