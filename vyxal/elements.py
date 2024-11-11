@@ -5500,7 +5500,7 @@ def random_choice(lhs, ctx):
     elif vy_type(lhs, simple=True) is list and len(lhs) == 0:
         return 0
     elif vy_type(lhs) == NUMBER_TYPE:
-        return random.randint(1, int(vy_floor(lhs))
+        return random.randint(1, int(vy_floor(lhs)))
     return random.choice(iterable(lhs, range, ctx=ctx))
 
 
