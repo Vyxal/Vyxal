@@ -304,6 +304,21 @@ object ElementInformation:
       ),
     ),
     Element(
+      symbol = "&",
+      keywords = Seq("append"),
+      arity = 2,
+      Options(
+        castToIterable = true,
+        vectorises = false,
+      ),
+      Overload(
+        name = "Append",
+        args = Seq("any", "any"),
+        description = "Append {any2} to {any1}",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
       symbol = "#|this-is-a-bit-silly-innit",
       keywords = Seq("9+10"),
       arity = 0,

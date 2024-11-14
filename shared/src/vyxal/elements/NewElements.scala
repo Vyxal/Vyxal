@@ -88,6 +88,9 @@ object NewElements:
         push(b, a)
       },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
+    addPart("&", Dyad, false) {
+      case (a, b) => VList.from(ListHelpers.makeIterable(a) :+ b)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

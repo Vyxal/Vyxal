@@ -74,7 +74,7 @@ b = rhs
 - [x] $ (any, any) = ...d c b a => d c a b
 - [x] % (num, num) = a modulo b
 - [x]   (str, any) = a.format(b) # format on %s
-- [ ] & (any, any) = append b to a
+- [x] & (any, any) = append b to a
 - [ ] * (num, num) = a to the power of b
 - [ ] + (num, num) = a + b
 - [ ]   (str, num)* = str(a) + str(b)
