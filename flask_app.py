@@ -58,7 +58,6 @@ def execute():
     session = request.json["session"]
 
     use_old = request.json["use_old"]
-    
 
     if session not in sessions:
         return {
@@ -113,9 +112,10 @@ def execute():
                 ret[2] += "\n" + f"Code timed out after {time} seconds"
         y.write(ret[1])
         z.write(ret[2])
-    with open(f"sessions/{session}/.stdout", "r", encoding="utf-8") as x, open(
-        f"sessions/{session}/.stderr", "r", encoding="utf-8"
-    ) as y:
+    with (
+        open(f"sessions/{session}/.stdout", "r", encoding="utf-8") as x,
+        open(f"sessions/{session}/.stderr", "r", encoding="utf-8") as y,
+    ):
         val = {"stdout": x.read(), "stderr": y.read()}
     shutil.rmtree(f"sessions/{session}", ignore_errors=True)
     return val
@@ -139,7 +139,7 @@ def update():
     if compare_digest(sha256(key.encode()).hexdigest(), FUNKY_PASSWORD_HASH):
         if os.fork() == 0:
             os.system("/home/Vyxal/mysite/funky_upgrade.sh")
-            os._exit()
+            os._exit(0)
         return "updated successfully", 200
     else:
         return "incorrect or missing X-funky-password header", 403
