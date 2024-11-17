@@ -1524,11 +1524,9 @@ def chr_ord(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: chr(int(lhs)),
-        (str): lambda: list(map(ord, lhs))
-        if len(lhs) > 1
-        else ord(lhs)
-        if lhs
-        else [],
+        (str): lambda: (
+            list(map(ord, lhs)) if len(lhs) > 1 else ord(lhs) if lhs else []
+        ),
     }.get(ts, lambda: vectorise(chr_ord, lhs, ctx=ctx))()
 
 
@@ -1541,9 +1539,11 @@ def codepage_digraph(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: ctx.codepage[int(lhs)],
-        (str): lambda: ctx.codepage.find(lhs)
-        if len(lhs) <= 1
-        else vectorise(codepage_digraph, list(lhs), ctx=ctx),
+        (str): lambda: (
+            ctx.codepage.find(lhs)
+            if len(lhs) <= 1
+            else vectorise(codepage_digraph, list(lhs), ctx=ctx)
+        ),
     }.get(ts, lambda: vectorise(codepage_digraph, lhs, ctx=ctx))()
 
 
@@ -1685,9 +1685,11 @@ def coords_deepmap(lhs, rhs, ctx):
 
     def f(a, g, pos=()):
         return [
-            f(b, g, (*pos, i))
-            if vy_type(b, simple=True) == list
-            else safe_apply(g, [*pos, i], ctx=ctx)
+            (
+                f(b, g, (*pos, i))
+                if vy_type(b, simple=True) == list
+                else safe_apply(g, [*pos, i], ctx=ctx)
+            )
             for i, b in enumerate(a)
         ]
 
@@ -1764,9 +1766,11 @@ def count_n_from(lhs, rhs, other, ctx):
     func, count, start = (
         (lhs, rhs, other)
         if isinstance(lhs, types.FunctionType)
-        else (rhs, other, lhs)
-        if isinstance(rhs, types.FunctionType)
-        else (other, lhs, rhs)
+        else (
+            (rhs, other, lhs)
+            if isinstance(rhs, types.FunctionType)
+            else (other, lhs, rhs)
+        )
     )
 
     ret = []
@@ -1790,9 +1794,11 @@ def count_n_from_greater(lhs, rhs, other, ctx):
     func, count, start = (
         (lhs, rhs, other)
         if isinstance(lhs, types.FunctionType)
-        else (rhs, other, lhs)
-        if isinstance(rhs, types.FunctionType)
-        else (other, lhs, rhs)
+        else (
+            (rhs, other, lhs)
+            if isinstance(rhs, types.FunctionType)
+            else (other, lhs, rhs)
+        )
     )
 
     ret = []
@@ -2025,9 +2031,11 @@ def divide(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: 0
-        if rhs == 0
-        else vyxalify(sympy.nsimplify(lhs / rhs, rational=True)),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: (
+            0
+            if rhs == 0
+            else vyxalify(sympy.nsimplify(lhs / rhs, rational=True))
+        ),
         (NUMBER_TYPE, str): lambda: chop(rhs, lhs),
         (str, NUMBER_TYPE): lambda: chop(lhs, rhs),
         (str, str): lambda: lhs.split(rhs),
@@ -2358,9 +2366,9 @@ def exponent(lhs, rhs, ctx):
         + ((rhs[0] or " ") * (int(lhs) - len(rhs))),
         (str, NUMBER_TYPE): lambda: lhs
         + ((lhs[0] or " ") * (int(rhs) - len(lhs))),
-        (str, str): lambda: []
-        if (mobj := re.search(rhs, lhs)) is None
-        else list(mobj.span()),
+        (str, str): lambda: (
+            [] if (mobj := re.search(rhs, lhs)) is None else list(mobj.span())
+        ),
         (ts[0], types.FunctionType): lambda: list(vy_map(rhs, lhs, ctx)),
         (types.FunctionType, ts[1]): lambda: list(vy_map(lhs, rhs, ctx)),
     }.get(ts, lambda: vectorise(exponent, lhs, rhs, ctx=ctx))()
@@ -2508,9 +2516,11 @@ def first_integer(lhs, ctx):
     return {
         (NUMBER_TYPE): lambda: int(bool(abs(lhs) <= 1)),
         (str): lambda: lhs.zfill((len(lhs) + ((8 - len(lhs)) % 8)) or 8),
-        (list): lambda: join(lhs, "", ctx)
-        if all(vy_type(x, simple=True) is not list for x in lhs)
-        else vectorise(first_integer, lhs, ctx=ctx),
+        (list): lambda: (
+            join(lhs, "", ctx)
+            if all(vy_type(x, simple=True) is not list for x in lhs)
+            else vectorise(first_integer, lhs, ctx=ctx)
+        ),
     }.get(ts, lambda: vectorise(first_integer, lhs, ctx=ctx))()
 
 
@@ -2879,9 +2889,11 @@ def halve(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.nsimplify(lhs / 2, rational=True),
-        str: lambda: wrap(lhs, math.ceil(len(lhs) / 2), ctx=ctx)
-        if len(lhs) > 1
-        else [lhs, ""],
+        str: lambda: (
+            wrap(lhs, math.ceil(len(lhs) / 2), ctx=ctx)
+            if len(lhs) > 1
+            else [lhs, ""]
+        ),
     }.get(ts, lambda: vectorise(halve, lhs, ctx=ctx))()
 
 
@@ -3492,9 +3504,9 @@ def is_divisible(lhs, rhs, ctx):
     def helper(lhs, rhs):
         ts = vy_type(lhs, rhs)
         return {
-            (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs % rhs == 0)
-            if rhs != 0
-            else 0,
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: (
+                int(lhs % rhs == 0) if rhs != 0 else 0
+            ),
             (NUMBER_TYPE, str): lambda: [rhs] * lhs,
             (str, NUMBER_TYPE): lambda: [lhs] * rhs,
             (str, str): lambda: rhs + " " + lhs,
@@ -3752,15 +3764,15 @@ def left_bit_shift(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) << int(rhs)
-        if rhs > 0
-        else int(lhs) >> int(rhs),
-        (NUMBER_TYPE, str): lambda: rhs.ljust(lhs)
-        if lhs > 0
-        else rhs.rjust(int(lhs), " "),
-        (str, NUMBER_TYPE): lambda: lhs.ljust(rhs)
-        if rhs > 0
-        else lhs.rjust(int(rhs), " "),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: (
+            int(lhs) << int(rhs) if rhs > 0 else int(lhs) >> int(rhs)
+        ),
+        (NUMBER_TYPE, str): lambda: (
+            rhs.ljust(lhs) if lhs > 0 else rhs.rjust(int(lhs), " ")
+        ),
+        (str, NUMBER_TYPE): lambda: (
+            lhs.ljust(rhs) if rhs > 0 else lhs.rjust(int(rhs), " ")
+        ),
         (str, str): lambda: lhs.ljust(len(rhs)),
         (ts[0], types.FunctionType): lambda: gen(),
     }.get(ts, lambda: vectorise(left_bit_shift, lhs, rhs, ctx=ctx))()
@@ -3822,19 +3834,25 @@ def letter_to_number(lhs, ctx):
     return {
         NUMBER_TYPE: lambda: chr(lhs + 96),
         str: lambda: (
-            ord(lhs) - 96
-            if "a" <= lhs <= "z"
-            else (ord(lhs) - 64 if "A" <= lhs <= "Z" else 0)
-        )  # No, I'm not making this less cursed
-        if len(lhs) == 1
-        else LazyList(
-            ord(char) - 96
-            if "a" <= char <= "z"
-            else (ord(char) - 64 if "A" <= char <= "Z" else 0)
-            for char in lhs
-        )
-        if len(lhs)
-        else [],
+            (
+                ord(lhs) - 96
+                if "a" <= lhs <= "z"
+                else (ord(lhs) - 64 if "A" <= lhs <= "Z" else 0)
+            )  # No, I'm not making this less cursed
+            if len(lhs) == 1
+            else (
+                LazyList(
+                    (
+                        ord(char) - 96
+                        if "a" <= char <= "z"
+                        else (ord(char) - 64 if "A" <= char <= "Z" else 0)
+                    )
+                    for char in lhs
+                )
+                if len(lhs)
+                else []
+            )
+        ),
     }.get(ts, lambda: vectorise(letter_to_number, lhs, ctx=ctx))()
 
 
@@ -4138,9 +4156,7 @@ def merge(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs, simple=True)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
-            str(lhs) + str(rhs), ctx=ctx
-        ),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: [lhs, rhs],
         (NUMBER_TYPE, str): lambda: add(lhs, rhs, ctx),
         (str, NUMBER_TYPE): lambda: add(lhs, rhs, ctx),
         (str, str): lambda: lhs + rhs,
@@ -4958,12 +4974,12 @@ def orderless_range(lhs, rhs, ctx):
             # int(bool(...)) is needed because sympy decides to
             # return a special boolean class sometimes
         ),
-        (NUMBER_TYPE, str): lambda: rhs + (" " * abs(len(rhs) - lhs))
-        if len(rhs) < lhs
-        else rhs,
-        (str, NUMBER_TYPE): lambda: (" " * abs(len(lhs) - rhs)) + lhs
-        if len(lhs) < rhs
-        else lhs,
+        (NUMBER_TYPE, str): lambda: (
+            rhs + (" " * abs(len(rhs) - lhs)) if len(rhs) < lhs else rhs
+        ),
+        (str, NUMBER_TYPE): lambda: (
+            (" " * abs(len(lhs) - rhs)) + lhs if len(lhs) < rhs else lhs
+        ),
         (ts[0], types.FunctionType): lambda: scanl(
             multiply(rhs, 2, ctx), iterable(lhs, range, ctx=ctx), ctx=ctx
         ),
@@ -5220,9 +5236,11 @@ def permutations(lhs, ctx):
     lhs = iterable(lhs, ctx=ctx)
     return LazyList(
         map(
-            lambda x: "".join(x)
-            if all(isinstance(y, str) for y in x) and isinstance(lhs, str)
-            else x,
+            lambda x: (
+                "".join(x)
+                if all(isinstance(y, str) for y in x) and isinstance(lhs, str)
+                else x
+            ),
             itertools.permutations(
                 iterable(lhs, number_type=range, ctx=ctx), len(lhs)
             ),
@@ -5328,6 +5346,8 @@ def prepend(lhs, rhs, ctx):
     (any, any) -> a.prepend(b) (Prepend b to a)
     """
     ts = vy_type(lhs, rhs, simple=True)
+    if ts == (NUMBER_TYPE, NUMBER_TYPE):
+        return [rhs, lhs]
     if ts != (list, list):
         return merge(rhs, lhs, ctx)
     else:
@@ -5776,15 +5796,15 @@ def right_bit_shift(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) >> int(rhs)
-        if rhs > 0
-        else int(lhs) << int(rhs),
-        (str, NUMBER_TYPE): lambda: lhs.rjust(int(rhs), " ")
-        if rhs > 0
-        else lhs.ljust(int(rhs), " "),
-        (NUMBER_TYPE, str): lambda: rhs.rjust(int(lhs), " ")
-        if lhs > 0
-        else rhs.ljust(int(lhs), " "),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: (
+            int(lhs) >> int(rhs) if rhs > 0 else int(lhs) << int(rhs)
+        ),
+        (str, NUMBER_TYPE): lambda: (
+            lhs.rjust(int(rhs), " ") if rhs > 0 else lhs.ljust(int(rhs), " ")
+        ),
+        (NUMBER_TYPE, str): lambda: (
+            rhs.rjust(int(lhs), " ") if lhs > 0 else rhs.ljust(int(lhs), " ")
+        ),
         (str, str): lambda: lhs.rjust(len(rhs), " "),
         (ts[0], types.FunctionType): lambda: fixed_point(rhs, lhs, ctx=ctx)[1:],
         (types.FunctionType, ts[1]): lambda: fixed_point(lhs, rhs, ctx=ctx)[1:],
@@ -6127,9 +6147,11 @@ def sort_by(lhs, rhs, ctx):
         )
     else:
         return {
-            (NUMBER_TYPE, NUMBER_TYPE): lambda: LazyList(range(lhs, rhs + 1))
-            if lhs <= rhs
-            else LazyList(range(lhs, rhs - 1, -1)),
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: (
+                LazyList(range(lhs, rhs + 1))
+                if lhs <= rhs
+                else LazyList(range(lhs, rhs - 1, -1))
+            ),
             (str, str): lambda: re.split(rhs, lhs),
         }.get(ts, lambda: vectorise(sort_by, lhs, rhs, ctx=ctx))()
 
@@ -6699,9 +6721,7 @@ def tail(lhs, ctx):
     return (
         iterable(lhs, ctx)[-1]
         if len(iterable(lhs, ctx))
-        else ""
-        if type(lhs) is str
-        else 0
+        else "" if type(lhs) is str else 0
     )
 
 
@@ -6849,7 +6869,13 @@ def transliterate(lhs, rhs, other, ctx):
     if isinstance(lhs, str):
         ret, temp = "", lhs
         mapping = sorted(
-            list(vy_zip([str(_) for _ in iterable(rhs, ctx)], [str(_) for _ in iterable(other, ctx)], ctx)),
+            list(
+                vy_zip(
+                    [str(_) for _ in iterable(rhs, ctx)],
+                    [str(_) for _ in iterable(other, ctx)],
+                    ctx,
+                )
+            ),
             key=lambda x: len(x[0]),
         )
         while temp:
@@ -7015,8 +7041,8 @@ def untruth(lhs, ctx):
         lhs = [iterable(x, ctx=ctx) for x in lhs]
         dimensions = len(lhs[0])
         maxCoords = [max(x[i] for x in lhs) + 1 for i in range(dimensions)]
-        deep_listify = (
-            lambda a: [deep_listify(x) for x in a]
+        deep_listify = lambda a: (
+            [deep_listify(x) for x in a]
             if vy_type(a, simple=True) is list
             else a
         )
@@ -7153,9 +7179,11 @@ def vertical_join(lhs, rhs=" ", ctx=None):
     lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
     max_length = max(len(x) for x in lhs)
     temp = [
-        [rhs] * (len(x) < max_length and max_length - len(x)) + x
-        if vy_type(x, simple=True) is list
-        else rhs * (len(x) < max_length and max_length - len(x)) + x
+        (
+            [rhs] * (len(x) < max_length and max_length - len(x)) + x
+            if vy_type(x, simple=True) is list
+            else rhs * (len(x) < max_length and max_length - len(x)) + x
+        )
         for x in lhs
     ]
     temp = [join(x, "", ctx) for x in transpose(temp, rhs, ctx=ctx)]
@@ -7250,12 +7278,14 @@ def vy_ceil(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: lhs.imag
-        if type(lhs) == complex
-        else (
-            sympy.im(lhs)
-            if is_sympy(lhs) and not lhs.is_real
-            else math.ceil(lhs)
+        (NUMBER_TYPE): lambda: (
+            lhs.imag
+            if type(lhs) == complex
+            else (
+                sympy.im(lhs)
+                if is_sympy(lhs) and not lhs.is_real
+                else math.ceil(lhs)
+            )
         ),
         (str): lambda: lhs.split(" "),
     }.get(ts, lambda: vectorise(vy_ceil, lhs, ctx=ctx))()
@@ -7407,12 +7437,14 @@ def vy_floor(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: lhs.real
-        if type(lhs) == complex
-        else (
-            sympy.re(lhs)
-            if is_sympy(lhs) and not lhs.is_real
-            else sympy.floor(lhs)
+        (NUMBER_TYPE): lambda: (
+            lhs.real
+            if type(lhs) == complex
+            else (
+                sympy.re(lhs)
+                if is_sympy(lhs) and not lhs.is_real
+                else sympy.floor(lhs)
+            )
         ),
         (str): lambda: vy_floor_str_helper(lhs),
     }.get(ts, lambda: vectorise(vy_floor, lhs, ctx=ctx))()
@@ -7562,9 +7594,11 @@ def vy_repr(lhs, ctx):
     ts = vy_type(lhs)
     string_character = "`" if ctx.vyxal_lists else '"'
     return {
-        (NUMBER_TYPE): lambda: str(float(lhs))
-        if ctx.print_decimals and not lhs.is_Integer
-        else str(sympy.nsimplify(lhs.round(20), rational=True)),
+        (NUMBER_TYPE): lambda: (
+            str(float(lhs))
+            if ctx.print_decimals and not lhs.is_Integer
+            else str(sympy.nsimplify(lhs.round(20), rational=True))
+        ),
         (str): lambda: string_character
         + lhs.replace("\\", "\\\\").replace(
             string_character, "\\" + string_character
@@ -7572,7 +7606,7 @@ def vy_repr(lhs, ctx):
         + string_character,
         (types.FunctionType): lambda: vy_repr(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
-        )
+        ),
         # actually make the repr kinda make sense
     }.get(
         ts,
@@ -7596,12 +7630,14 @@ def vy_round(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: [lhs.real, lhs.imag]
-        if type(lhs) == complex
-        else (
-            list(lhs.as_real_imag())
-            if is_sympy(lhs) and not lhs.is_real
-            else round(lhs)
+        NUMBER_TYPE: lambda: (
+            [lhs.real, lhs.imag]
+            if type(lhs) == complex
+            else (
+                list(lhs.as_real_imag())
+                if is_sympy(lhs) and not lhs.is_real
+                else round(lhs)
+            )
         ),
         str: lambda: vertical_mirror(lhs, ctx=ctx)
         + "\n"
