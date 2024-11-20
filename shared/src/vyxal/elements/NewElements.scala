@@ -106,6 +106,12 @@ object NewElements:
         val a = pop()
         push(a, a)
       },
+    ";" ->
+      direct(Dyad) {
+        val b = pop()
+        val a = pop()
+        push(VList(a, b))
+      },
   )
 
   // Subject to being added as overloads onto things in elements

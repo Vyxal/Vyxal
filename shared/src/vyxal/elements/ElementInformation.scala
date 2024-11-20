@@ -417,5 +417,20 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = ";",
+      keywords = Seq("pair"),
+      arity = 2,
+      Options(
+        castToIterable = false,
+        vectorises = false,
+      ),
+      Overload(
+        name = "Pair",
+        args = Seq("any", "any"),
+        description = "Pair {any1} and {any2}",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

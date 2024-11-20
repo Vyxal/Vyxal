@@ -84,7 +84,7 @@ b = rhs
 - [x]   (str, num) = append b "-"s to a
 - [x]   (num, str) = prepend a "-"s to b
 - [x]   (str, str) = remove all instance of regex b in a
-- [ ] : (any) = ...d c b a => d c b a a
+- [x] : (any) = ...d c b a => d c b a a
 - [ ] ; (any, any) = [a, b]
 - [ ] < (num, num) = a < b
 - [ ]   (str, num)* = str(a) < str(b)
