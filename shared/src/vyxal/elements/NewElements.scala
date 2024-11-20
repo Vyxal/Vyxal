@@ -91,6 +91,21 @@ object NewElements:
     addPart("&", Dyad, false) {
       case (a, b) => VList.from(ListHelpers.makeIterable(a) :+ b)
     },
+    addPart("*", Dyad, false) {
+      case (a: VNum, b: VNum) => a ** b
+    },
+    "+" -> fullToImpl(Dyad, MiscHelpers.add),
+    "," ->
+      direct(Monad) {
+        MiscHelpers.vyPrintln(pop())
+        summon[Context].globals.printed = true
+      },
+    "-" -> fullToImpl(Dyad, MiscHelpers.subtract),
+    ":" ->
+      direct(Monad) {
+        val a = pop()
+        push(a, a)
+      },
   )
 
   // Subject to being added as overloads onto things in elements
@@ -103,8 +118,7 @@ object NewElements:
         val result = Interpreter.executeFn(functionG)
         val otherResult = Interpreter.executeFn(functionF)
         push(otherResult, result)
-      },
-    "#|this-is-a-bit-silly-innit" -> niladify(21),
+      }
   )
 
   private def niladify(value: VAny): Element =

@@ -338,7 +338,7 @@ object MiscHelpers:
       if b.toInt > 0 then a + "-" * b.toInt else "-" * b.toInt.abs + a
     case (a: VNum, b: String) =>
       if a.toInt > 0 then "-" * a.toInt + b else b + "-" * a.toInt.abs
-    case (a: String, b: String) => a.replace(b, "")
+    case (a: String, b: String) => a.replaceAll(b, "")
   }
 
   def untilNoChange(function: VFun, value: VAny)(using Context): VList =
