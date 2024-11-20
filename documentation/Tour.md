@@ -449,7 +449,7 @@ Which checks if the top of the stack is not equal to 1, while retaining the
 value on the stack. The code to execute might be:
 
 ```
-:2%0=[2/|3*1+}:,
+:2%0=[2÷|3×1+}:,
 ```
 
 Which halves the number if it is even, or triples it and increments it by 1.
@@ -458,7 +458,7 @@ It then prints the number without popping it.
 Putting this all together, you get:
 
 ```
-{:1≠|:2%0=[2/|3*1+}:,}
+{:1≠|:2%0=[2÷|3×1+}:,}
 ```
 
 ### The If/Else Structure
