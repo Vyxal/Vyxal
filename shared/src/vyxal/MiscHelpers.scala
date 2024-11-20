@@ -332,7 +332,7 @@ object MiscHelpers:
         iterable.tail.scanLeft(iterable.head)((lhs, rhs) => function(rhs, lhs))
       )
 
-  val subtract: Dyad = Dyad.fill("subtract") {
+  val subtract: Dyad = Dyad.vectorise("subtract") {
     case (a: VNum, b: VNum) => a - b
     case (a: String, b: VNum) =>
       if b.toInt > 0 then a + "-" * b.toInt else "-" * b.toInt.abs + a
