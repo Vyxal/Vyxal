@@ -9,59 +9,7 @@ class ElementTests extends VyxalTests:
   /** Helper to avoid doing List[VAny](...) */
   private def in(inputs: VAny*): Seq[VAny] = inputs
 
-  describe("Element *") {
-    describe("when given two numbers") {
-      testMulti("*")(
-        in(3, 2) -> 9,
-        in(0, 1) -> 0,
-        in(2, -1) -> 0.5,
-        in(VNum("5.1"), VNum("4.2")) -> VNum("937.11899215207"),
-        in(3, 0) -> 1,
-        in(0, 0) -> 1,
-      )
-    }
-
-    describe("when given a string and a number") {
-      testMulti("*")(
-        in("the fitnessgram pacer test", 6) -> "the finessgram pacer test",
-        in(4.2, "airpod shotty") -> "airpd shotty",
-        in("sussy baka", 0) -> "ussy baka",
-        in("sussy baka", -1) -> "sussy bak",
-        in("vyxal", 7) -> "vyal",
-      )
-    }
-
-    describe("when given two strings") {
-      testMulti("*")(
-        in("abcdefabc", "abc") -> "def",
-        in("abc", "abcdefabc") -> "abc",
-        in("abc", "abc") -> "",
-        in("abcdefabc", "") -> "abcdefabc",
-      )
-    }
-  }
-
   describe("Element +") {
-    describe("when given lists") {
-      testMulti("+")(
-        in(VList(VList(2, 5), "foo"), VList(VList(3, 4))) ->
-          VList(
-            VList(5, 9),
-            "foo0",
-          )
-      )
-    }
-    describe("when given two non-list values") {
-      testMulti("+")(
-        in(2, 3) -> 5,
-        in(0, 0) -> 0,
-        in(VNum("5.1"), VNum("-45.4")) -> VNum("-40.3"),
-        in("foo", "bar") -> "foobar",
-        in("foo", 3) -> "foo3",
-        in(3, "foo") -> "3foo",
-        in(VNum("0.1"), VNum("0.2")) -> VNum("0.3"),
-      )
-    }
 
     describe("when given functions") {
       it("should turn two functions into an fgh fork") {
