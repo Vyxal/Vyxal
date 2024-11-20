@@ -26,6 +26,7 @@
 #    - { in: ["abc", "abcdefabc"], out: "abc" }
 #    - { in: ["abc", "abc"], out: "" }
 #    - { in: ["abcdefabc", ""], out: "abcdefabc" }
+#    - { in: ["are these tests", "not commented"], out: "out? Do I need to yell at user about this?" }
 
 "+":
   - { in: ["1", 2], out: "12" }
