@@ -197,7 +197,7 @@ class SBCSLexer extends LexerCommon:
     val padded = if number.startsWith(".") then s"0${number}" else number
     if headEqual("_") then
       pop()
-      s"_${padded}"
+      s"${padded}_"
     else padded
   end decimalNumber
 
