@@ -149,11 +149,11 @@ class SBCSLexer extends LexerCommon:
       if !headEqual("ı") then numberVal ++= decimalNumber()
       if headEqual("ı") then
         numberVal ++= pop()
-        val number =
+        numberVal ++=
           if safeCheck(c => c.head.isDigit || c == ".") then decimalNumber()
           else "1"
         if headEqual("_") then numberVal ++= pop()
-        numberVal ++= number
+        
       var modified = numberVal.toString()
       // Add the implicit values
       if modified.startsWith("ı") then modified = "0" + modified
