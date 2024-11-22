@@ -5,6 +5,7 @@ on:
     tags:
       - "v2*"
   workflow_dispatch:
+
 env:
   LINUX_NAME: vyxal-linux
   WINDOWS_NAME: vyxal-windows
@@ -12,7 +13,7 @@ env:
 
 
 jobs:
-  executables:
+  make-the-stuff:
     name: Generate executable for ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
