@@ -33,23 +33,17 @@ object JSVyxal:
   @JSExport
   def execute(
       code: String,
-      inputs: String,
+      inputs: js.Array[String],
       flags: String,
       printFunc: js.Function1[String, Unit],
       errorFunc: js.Function1[String, Unit],
   ): Unit =
-    // todo take functions to print to custom stdout and stderr
-
-    // The help flag should be handled in the JS
-    if flags.contains('h') then return
-
     var printRequestCount = 0
 
     val settings =
       Flag.applyFlags(flags.map(Flag.from), Settings(online = true))
 
     val inputList = inputs
-      .split("\n")
       .map(x =>
         if settings.dontEvalInputs then x
         else MiscHelpers.eval(x)(using Context())
