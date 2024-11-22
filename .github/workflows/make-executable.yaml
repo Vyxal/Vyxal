@@ -2,6 +2,8 @@ name: Create Standalone Executable
 
 on:
   push:
+    branches:
+      - version-2
     tags:
       - "v2*"
   workflow_dispatch:
