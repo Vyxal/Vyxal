@@ -36,7 +36,7 @@ jobs:
       - name: Run cx freeze
         run: |
           cd vyxal
-          cxfreeze --script vyxal/__main__.py --target-name=vyxal
+          cxfreeze --script __main__.py --target-name=vyxal
       - name: debug where things are at
         run: |
           cd build
