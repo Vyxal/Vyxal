@@ -1,0 +1,33 @@
+name: Create Standalone Executable
+on:
+  push:
+    tags:
+      - "v2*"
+  workflow_dispatch:
+env:
+  LINUX_NAME: vyxal-linux
+  WINDOWS_NAME: vyxal-windows
+  MACOS_NAME: vyxal-macos
+
+
+jobs:
+  executables:
+    name: Generate executable for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        include:
+          - os: ubuntu-latest
+            exe-name: vyxal-linux
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install cx_freeze
+      - run: pip install --upgrade cx_Freeze
+      - name: Run cx freeze
+      - run: cxfreeze --script vyxal/__main__.py --target-name vyxal2
+      - name: debug where things are at
+      - run: ls .
