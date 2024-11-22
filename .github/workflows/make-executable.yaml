@@ -26,8 +26,8 @@ jobs:
         with:
           python-version: '3.9'
       - name: Install cx_freeze
-      - run: pip install --upgrade cx_Freeze
+        run: pip install --upgrade cx_Freeze
       - name: Run cx freeze
-      - run: cxfreeze --script vyxal/__main__.py --target-name vyxal2
+        run: cxfreeze --script vyxal/__main__.py --target-name vyxal2
       - name: debug where things are at
-      - run: ls .
+        run: ls .
