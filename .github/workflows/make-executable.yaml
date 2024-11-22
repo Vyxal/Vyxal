@@ -39,4 +39,4 @@ jobs:
       - name: debug where things are at
         run: |
           cd dist
-          ls .
+          vyxal2 '' 'h'
