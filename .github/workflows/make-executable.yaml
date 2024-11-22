@@ -2,8 +2,6 @@ name: Create Standalone Executable
 
 on:
   push:
-    branches:
-      - version-2
     tags:
       - "v2*"
   workflow_dispatch:
@@ -36,10 +34,10 @@ jobs:
       - name: Run pyinstaller
         run: |
           pyinstaller vyxal/__main__.py --onefile --name vyxal2
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
+      - name: Add vyxal2 to release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          name: vyxal2
-          path: dist/vyxal2
+          files: dist/vyxal2
       
           
