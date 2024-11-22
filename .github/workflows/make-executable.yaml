@@ -39,4 +39,5 @@ jobs:
       - name: debug where things are at
         run: |
           cd dist
+          chmod +x vyxal2
           vyxal2 '' 'h'
