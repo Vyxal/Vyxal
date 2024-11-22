@@ -72,6 +72,7 @@ FLAG_STRING = """ALL flags should be used as is (no '-' prefix)
     B    Make the interpreter timeout after 30 seconds (online interpreter only)
     T    Make the interpreter timeout after 60 seconds (online interpreter only)
     ⋎    Print the current Vyxal version (offline interpreter only)
+    □    When given a STDIN file, read all of it before execution as if it were argv (offline interpreter only)
 """
 
 
@@ -137,6 +138,8 @@ def execute_vyxal(
             )
         return
 
+    
+
     if "e" in flags:  # Program is file name
         code = file_name
     elif "!" in flags:  # Open file as bitstring
@@ -172,7 +175,11 @@ def execute_vyxal(
 
     if "f" in flags:  # Read inputs from file
         with open(inputs[0], "r", encoding="utf-8") as f:
-            inputs = [x.replace("\r", "") for x in f.readlines()]
+            inputs = [x.rstrip("\r\n") for x in f.readlines()]
+    else if "□" in flags: # If STDIN file, read it all and set the inputs to that
+        stdin = open(0)
+        if stdin:
+            inputs = [x.rstrip("\r\n") for x in stdin]
 
     ctx.original_args = inputs
     ctx.entire_program = code
