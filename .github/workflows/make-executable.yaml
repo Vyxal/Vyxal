@@ -35,7 +35,7 @@ jobs:
         run: pip install pyinstaller
       - name: Run pyinstaller
         run: |
-          pyinstaller vyxal/__main__.py
+          pyinstaller vyxal/__main__.py --onefile --name vyxal2
       - name: debug where things are at
         run: |
           cd dist
