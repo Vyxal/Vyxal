@@ -6,7 +6,7 @@ build_exe_options = {
 }
 
 setup(
-    name="vyxal2
+    name="vyxal2",
     version="0.1",
     description="Vyxal 2 executable",
     options={"build_exe": build_exe_options},
