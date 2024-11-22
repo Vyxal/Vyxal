@@ -10,5 +10,5 @@ setup(
     version="0.1",
     description="Vyxal 2 executable",
     options={"build_exe": build_exe_options},
-    executables=[Executable("vyxal/__main__.py", base=None, targetName="vyxal2")],
+    executables=[Executable("vyxal/__main__.py", base=None, target_name="vyxal2")],
 )
