@@ -38,4 +38,5 @@ jobs:
           pyinstaller vyxal/__main__.py
       - name: debug where things are at
         run: |
+          cd dist
           ls .
