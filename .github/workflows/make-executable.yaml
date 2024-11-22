@@ -39,5 +39,4 @@ jobs:
           cxfreeze --script __main__.py --target-name=vyxal
       - name: debug where things are at
         run: |
-          cd build
           ls .
