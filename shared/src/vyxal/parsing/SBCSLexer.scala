@@ -149,8 +149,7 @@ class SBCSLexer extends LexerCommon:
       if !headEqual("ı") then numberVal ++= decimalNumber()
       if headEqual("ı") then
         numberVal ++= pop()
-        numberVal ++=
-          if safeCheck(c => c.head.isDigit || c == ".") then decimalNumber()
+        numberVal ++= if safeCheck(c => c.head.isDigit || c == ".") then decimalNumber()
           else "1"
         if headEqual("_") then numberVal ++= pop()
         
