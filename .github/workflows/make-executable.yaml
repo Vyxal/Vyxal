@@ -31,13 +31,11 @@ jobs:
           python-version: '3.9'
       - name: Pip install requirements
         run: pip install .
-      - name: Install cx_freeze
-        run: pip install --upgrade cx_Freeze
-      - name: Run cx freeze
+      - name: Install pyinstaller
+        run: pip install pyinstaller
+      - name: Run pyinstaller
         run: |
-          ls .
-          python setup.py build
+          pyinstaller vyxal/__main__.py
       - name: debug where things are at
         run: |
-          cd build
           ls .
