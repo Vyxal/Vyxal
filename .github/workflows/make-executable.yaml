@@ -36,7 +36,10 @@ jobs:
       - name: Run pyinstaller
         run: |
           pyinstaller vyxal/__main__.py --onefile --name vyxal2
-      - name: debug where things are at
-        run: |
-          cd dist
-          ./vyxal2 '' 'h'
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: vyxal2
+          path: dist/vyxal2
+      
+          
