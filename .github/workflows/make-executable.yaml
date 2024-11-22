@@ -1,4 +1,5 @@
 name: Create Standalone Executable
+
 on:
   push:
     tags:
