@@ -35,9 +35,8 @@ jobs:
         run: pip install --upgrade cx_Freeze
       - name: Run cx freeze
         run: |
-          cd vyxal
-          cxfreeze --script __main__.py --target-name=vyxal
+          python setup.py build
       - name: debug where things are at
         run: |
-          cd vyxal/build
+          cd build
           ls .
