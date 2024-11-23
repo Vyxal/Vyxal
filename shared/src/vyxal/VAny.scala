@@ -153,3 +153,6 @@ case class VObject(
     s"$className { ${fs.mkString(", ")} }"
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
+
+object VAny:
+  ???

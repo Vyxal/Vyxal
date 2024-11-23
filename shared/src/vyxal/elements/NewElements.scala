@@ -2,25 +2,18 @@ package vyxal.elements
 
 import scala.language.implicitConversions
 
+import vyxal.*
 import vyxal.{Dyad, ImplHelpers, Monad, Tetrad, Triad}
 import vyxal.toBool
-import vyxal.Context
 import vyxal.Context.{copyCtx, pop, push}
-import vyxal.DirectFn
-import vyxal.Interpreter
-import vyxal.ListHelpers
-import vyxal.MiscHelpers
-import vyxal.NumberHelpers
-import vyxal.StringHelpers
+import vyxal.Context.given
 import vyxal.StringHelpers.padLeft
-import vyxal.VAny
-import vyxal.VFun
-import vyxal.VList
-import vyxal.VNum
 import vyxal.VNum.given
-import vyxal.VVal
 
 import scala.util.matching.Regex
+
+given (using Context): Ordering[VAny] with
+  override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
 
 object NewElements:
   case class Element(
