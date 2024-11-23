@@ -1,5 +1,7 @@
 package vyxal.elements
 
+import scala.language.implicitConversions
+
 import vyxal.{Dyad, ImplHelpers, Monad, Tetrad, Triad}
 import vyxal.toBool
 import vyxal.Context
@@ -112,6 +114,9 @@ object NewElements:
         val a = pop()
         push(VList(a, b))
       },
+    addPart("<", Dyad, true) {
+      case (a: VVal, b: VVal) => a < b
+    },
   )
 
   // Subject to being added as overloads onto things in elements
