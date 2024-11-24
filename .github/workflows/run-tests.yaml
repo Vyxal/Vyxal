@@ -5,7 +5,7 @@ name: Run tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [ version-2]
   pull_request:
     branches-ignore: [ production ]
 
