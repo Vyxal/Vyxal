@@ -237,7 +237,7 @@ else:
         "else:\n"
         "    stdin = open(0)\n"
         "    if stdin:\n"
-        "        a = [x.rstrip('\n') if ctx.inputs_as_strings else vy_eval(x.rstrip('\n'), ctx=ctx) for x in stdin]\n"
+        "        a = [x.rstrip('\\r\\n') if ctx.inputs_as_strings else vy_eval(x.rstrip('\\r\\n'), ctx=ctx) for x in stdin]\n"
         "        ctx.inputs[0][0] = deep_copy(a)\n"
         "        stack.append(a)\n"
         "    else:\n"
