@@ -185,24 +185,26 @@ object StringHelpers:
   def isVowel(c: Char): VNum = "aeiouAEIOU".contains(c)
 
   def levenshtein(s1: String, s2: String): VNum =
-    var longer, shorter = ""
-    if s1.length > s2.length then
-      longer = s1
-      shorter = s2
-    else
-      longer = s2
-      shorter = s1
 
-    var distances = Seq.from(0 to shorter.length() + 1)
-    for (char, ind) <- longer.zipWithIndex do
-      var newDistances = Seq(ind + 1)
-      for (shortInd, shortChar) <- shorter.zipWithIndex do
-        val insert = distances(shortInd + 1) + 1
-        val delete = newDistances.last + 1
-        val replace = distances(shortInd) + (if char == shortInd then 0 else 1)
-        newDistances = newDistances :+ Seq(insert, delete, replace).min
-      distances = newDistances
-    distances.last
+    val len1 = s1.length
+    val len2 = s2.length
+
+    val dp = Array.ofDim[Int](len1 + 1, len2 + 1)
+
+    for i <- 0 to len1 do dp(i)(0) = i
+    for j <- 0 to len2 do dp(0)(j) = j
+
+    for i <- 1 to len1 do
+      for j <- 1 to len2 do
+        val cost = if s1(i - 1) == s2(j - 1) then 0 else 1
+        dp(i)(j) = List(
+          dp(i - 1)(j) + 1,
+          dp(i)(j - 1) + 1,
+          dp(i - 1)(j - 1) + cost,
+        ).min
+
+    dp(len1)(len2)
+
   end levenshtein
 
   def padLeft(s: String, to: VNum): String =
