@@ -822,6 +822,9 @@
     str-lst: b.prepend(a) (prepend)
     num-lst: b.prepend(a) (prepend)
     lst-lst: merged(a,b) (merge)
+    num-num: [a, b]
+    num-str: [a, b]
+    str-num: [a, b]
     any-any: a + b (concatenate)
   vectorise: false
   tests:
