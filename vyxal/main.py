@@ -176,7 +176,7 @@ def execute_vyxal(
     if "f" in flags:  # Read inputs from file
         with open(inputs[0], "r", encoding="utf-8") as f:
             inputs = [x.rstrip("\r\n") for x in f.readlines()]
-    else if "□" in flags: # If STDIN file, read it all and set the inputs to that
+    elif "□" in flags: # If STDIN file, read it all and set the inputs to that
         stdin = open(0)
         if stdin:
             inputs = [x.rstrip("\r\n") for x in stdin]
