@@ -4336,7 +4336,7 @@ def test_Merge():
 
 
     stack = [vyxalify(item) for item in [123,456]]
-    expected = vyxalify(123456)
+    expected = vyxalify([123, 456])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -8004,7 +8004,7 @@ def test_Prepend():
 
 
     stack = [vyxalify(item) for item in [12,23]]
-    expected = vyxalify(2312)
+    expected = vyxalify([23,12])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -8025,7 +8025,7 @@ def test_Prepend():
 
 
     stack = [vyxalify(item) for item in [0,23]]
-    expected = vyxalify("230")
+    expected = vyxalify([23,0])
     ctx = Context()
 
     ctx.stacks.append(stack)

@@ -784,8 +784,8 @@ def test_collectors():
     stack = run_vyxal("yJ)↲", inputs=[[1, 2]])
     assert stack[-1] == [[1, 2]]
 
-    stack = run_vyxal("yJ)İ", inputs=[[1, 2]])
-    assert stack[-1] == []
+    stack = run_vyxal("Ṫ)İ", inputs=[[1, 2, 3, 4, 5]])
+    assert stack[-1] == [[1, 2, 3, 4], [1, 2, 3], [1, 2], [1], []]
 
     stack = run_vyxal("½⌊)↔", inputs=[9])
     assert stack[-1] == [9, 4, 2, 1, 0]

@@ -237,7 +237,7 @@ else:
         "else:\n"
         "    stdin = open(0)\n"
         "    if stdin:\n"
-        "        a = [x[:-1] if ctx.inputs_as_strings else vy_eval(x[:-1], ctx=ctx) for x in stdin]\n"
+        "        a = [x.rstrip('\\r\\n') if ctx.inputs_as_strings else vy_eval(x.rstrip('\\r\\n'), ctx=ctx) for x in stdin]\n"
         "        ctx.inputs[0][0] = deep_copy(a)\n"
         "        stack.append(a)\n"
         "    else:\n"
@@ -1345,7 +1345,9 @@ def carmichael_function(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: sympy.ntheory.reduced_totient(lhs),
+        NUMBER_TYPE: lambda: sympy.functions.combinatorial.numbers.reduced_totient(
+            lhs
+        ),
         str: lambda: local_maxima(lhs),
     }.get(ts, lambda: vectorise(carmichael_function, lhs, ctx=ctx))()
 
@@ -4039,6 +4041,8 @@ def matrix_determinant(lhs, ctx):
     """
     if lhs and (len(lhs) > 1 or len(lhs[0])):
         lhs = pad_to_square(iterable(lhs, ctx=ctx))
+    else:
+        return 1
     return sympy.det(sympy.Matrix(lhs))
 
 
