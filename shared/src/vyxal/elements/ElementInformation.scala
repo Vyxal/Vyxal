@@ -432,5 +432,20 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "<",
+      keywords = Seq("less-than", "<"),
+      arity = 2,
+      Options(
+        castToIterable = false,
+        vectorises = true,
+      ),
+      Overload(
+        name = "Less Than",
+        args = Seq("scl", "scl"),
+        description = "{scl1} < {scl2}",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
