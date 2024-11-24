@@ -85,19 +85,19 @@ b = rhs
 - [x]   (num, str) = prepend a "-"s to b
 - [x]   (str, str) = remove all instance of regex b in a
 - [x] : (any) = ...d c b a => d c b a a
-- [ ] ; (any, any) = [a, b]
-- [ ] < (num, num) = a < b
-- [ ]   (str, num)* = str(a) < str(b)
-- [ ]   (str, str) = a < b (lexiographically)
-- [ ] = (num, num) = a == b
-- [ ]   (str, num)* = str(a) == str(b)
-- [ ]   (str, str) = a == b
-- [ ] > (num, num) = a > b
-- [ ]   (str, num)* = str(a) > str(b)
-- [ ]   (str, str) = a > b (lexiographically)
-- [ ] ? = push input eval'd
-- [ ] @ (num, num) = |a - b|
-- [ ]   (str, str) = Levenshtein distance between a and b
+- [x] ; (any, any) = [a, b]
+- [x] < (num, num) = a < b
+- [x]   (str, num)* = str(a) < str(b)
+- [x]   (str, str) = a < b (lexiographically)
+- [x] = (num, num) = a == b
+- [x]   (str, num)* = str(a) == str(b)
+- [x]   (str, str) = a == b
+- [x] > (num, num) = a > b
+- [x]   (str, num)* = str(a) > str(b)
+- [x]   (str, str) = a > b (lexiographically)
+- [x] ? = push input eval'd
+- [x] @ (num, num) = |a - b|
+- [x]   (str, str) = Levenshtein distance between a and b
 - [ ]   (any, fun)* = Reduce overlaps in list a by function b
 - [ ] A (num) = Are all digits of a truthy?
 - [ ]   (str) = Is character a vowel?

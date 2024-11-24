@@ -447,5 +447,71 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "=",
+      keywords = Seq("equals", "==", "eq"),
+      arity = 2,
+      Options(
+        castToIterable = false,
+        vectorises = true,
+      ),
+      Overload(
+        name = "Equals",
+        args = Seq("scl", "scl"),
+        description = "{scl1} == {scl2}",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = ">",
+      keywords = Seq("greater-than", ">"),
+      arity = 2,
+      Options(
+        castToIterable = false,
+        vectorises = true,
+      ),
+      Overload(
+        name = "Greater Than",
+        args = Seq("scl", "scl"),
+        description = "{scl1} > {scl2}",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "?",
+      keywords = Seq("stdin", "input"),
+      arity = 0,
+      Options(
+        castToIterable = false,
+        vectorises = false,
+      ),
+      Overload(
+        name = "Input",
+        args = Seq(),
+        description = "Get the next input item, evaluated.",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "@",
+      keywords = Seq("absolute-difference", "abs-diff", "levenstein"),
+      arity = 2,
+      Options(
+        castToIterable = false,
+        vectorises = true,
+      ),
+      Overload(
+        name = "Absolute Difference",
+        args = Seq("num", "num"),
+        description = "Absolute difference between {num1} and {num2}",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Levenstein Distance",
+        args = Seq("str", "str"),
+        description = "Levenstein distance between {str1} and {str2}",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

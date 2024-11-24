@@ -10,6 +10,7 @@ import vyxal.Context.given
 import vyxal.StringHelpers.padLeft
 import vyxal.VNum.given
 
+import scala.io.StdIn
 import scala.util.matching.Regex
 
 given (using Context): Ordering[VAny] with
@@ -109,6 +110,28 @@ object NewElements:
       },
     addPart("<", Dyad, true) {
       case (a: VVal, b: VVal) => a < b
+    },
+    addPart("=", Dyad, true) {
+      case (a: VNum, b: VNum) => a == b
+      case (a: VNum, b: String) => a.toString == b
+      case (a: String, b: VNum) => a == b.toString
+      case (a: String, b: String) => a == b
+    },
+    addPart(">", Dyad, true) {
+      case (a: VVal, b: VVal) => a > b
+    },
+    "?" ->
+      niladify(ctx ?=>
+        if ctx.globals.inputs.nonEmpty then ctx.globals.inputs.next()
+        else if ctx.settings.online then ctx.settings.defaultValue
+        else
+          val temp = StdIn.readLine()
+          if temp.nonEmpty then MiscHelpers.eval(temp)
+          else ctx.settings.defaultValue
+      ),
+    addPart("@", Dyad, true) {
+      case (a: VNum, b: VNum) => (a - b).vabs
+      case (a: String, b: String) => StringHelpers.levenshtein(a, b)
     },
   )
 
