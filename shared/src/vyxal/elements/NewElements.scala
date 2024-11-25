@@ -132,6 +132,15 @@ object NewElements:
     addPart("@", Dyad, true) {
       case (a: VNum, b: VNum) => (a - b).vabs
       case (a: String, b: String) => StringHelpers.levenshtein(a, b)
+      case (a: VPhysical, b: VFun) =>
+        val iterable = ListHelpers.makeIterable(a)
+        val slices = ListHelpers.overlaps(iterable, 2)
+        val result = slices.map(slice =>
+          slice match
+            case VList(left: VAny, right: VAny) =>
+              Interpreter.executeFn(b, left, right, Seq(left, right))
+        )
+        VList.from(result)
     },
   )
 
