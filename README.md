@@ -161,10 +161,10 @@ how the interpreter works, see the [`contributing`](/contributing/) folder.
 
 - [Repository](https://github.com/Vyxal/Vyxal)
 - [Online Interpreter](http://vyxal.github.io)
-- [Tutorial](https://vyxapedia.hyper-neutrino.xyz/beginners)
+- [Tutorial](https://vyxapedia.hyperneutrino.xyz/beginners)
 - [Main Chat Room (SE Chat)](https://chat.stackexchange.com/rooms/106764/vyxal)
 - [Vycord (Discord)](https://discord.gg/hER4Avd6fz)
 - [Elements](https://github.com/Vyxal/Vyxal/blob/version-3/documentation/table.md)
-- [Vyxapedia](https://vyxapedia.hyper-neutrino.xyz/)
+- [Vyxapedia](https://vyxapedia.hyperneutrino.xyz/)
 
 Enjoy the cookies.

@@ -37,6 +37,14 @@ class VList private (val lst: Seq[VAny])
         .map(f(_, _))
     )
 
+  override def zipWithIndex: Seq[(VAny, Int)] = lst.zipWithIndex
+
+  def zipWithBigdex: LazyList[(VAny, VNum)] =
+    LazyList.unfold((lst, VNum(0))) {
+      case (Nil, _) => None
+      case (list, ind) => Some((list.head, ind) -> (list.tail, ind + 1))
+    }
+
   /** Zip two VLists together without a function. If one is longer than the
     * other, keep the longer one's elements as-is.
     */
@@ -45,7 +53,7 @@ class VList private (val lst: Seq[VAny])
     val temp = lst
       .zipAll(other.lst, ctx.settings.defaultValue, ctx.settings.defaultValue)
       .map(VList(_, _))
-    VList(temp*)
+    VList.from(temp)
 
   /** Get the element at index `ind` */
   override def apply(ind: Int): VAny = VList.index(lst, ind)
@@ -129,9 +137,6 @@ class VList private (val lst: Seq[VAny])
       case _: List[?] => lst.size
       case _ => lst.knownSize
 
-  /** Overridden to preserve laziness */
-  override def map[B](f: VAny => B): Seq[B] = lst.map(f)
-
   /** This isn't an overload of isDefinedAt because it needs to take a `BigInt`
     */
   def hasIndex(ind: BigInt): Boolean =
@@ -196,6 +201,21 @@ class VList private (val lst: Seq[VAny])
     VList.from(
       this.filterNot(other.contains(_)) ++ other.filterNot(this.contains(_))
     )
+
+  // sequence overrides to fix laziness
+  override def filter(pred: VAny => Boolean): VList =
+    VList.from(lst.filter(pred))
+  override def zipAll[A1 >: VAny, B](
+      that: Iterable[B],
+      thisElem: A1,
+      thatElem: B,
+  ): Seq[(A1, B)] = lst.zipAll(that, thisElem, thatElem)
+  override def map[B](f: VAny => B): Seq[B] = lst.map(f)
+  override def sliding(size: Int): Iterator[VList] =
+    lst.sliding(size).map(VList.from(_))
+  override def sliding(size: Int, step: Int): Iterator[VList] =
+    lst.sliding(size, step).map(VList.from(_))
+  override def fold[A1 >: VAny](z: A1)(op: (A1, A1) => A1): A1 = lst.fold(z)(op)
 end VList
 
 object VList extends SpecificIterableFactory[VAny, VList]:

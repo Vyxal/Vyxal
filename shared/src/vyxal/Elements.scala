@@ -92,7 +92,7 @@ object Elements:
     ) {
       case a: VNum => ListHelpers.makeIterable(a).forall(_.toBool)
       case a: String if a.length == 1 => StringHelpers.isVowel(a.head)
-      case a: String => VList(a.map(StringHelpers.isVowel)*)
+      case a: String => VList.from(a.map(StringHelpers.isVowel))
       case a: VList => a.forall(_.toBool)
     },
     addPart(
@@ -118,7 +118,7 @@ object Elements:
     ) {
       case a: VNum => ListHelpers.makeIterable(a).exists(_.toBool)
       case a: String if a.length == 1 => a.head.isUpper
-      case a: String => VList(a.map(c => VNum(c.isUpper))*)
+      case a: String => VList.from(a.map(c => VNum(c.isUpper)))
       case a: VList => a.exists(_.toBool)
     },
     addPart(
@@ -1129,7 +1129,7 @@ object Elements:
       Monad,
       "Ṫ",
       "Init",
-      List("init", "remove-last"),
+      List("init", "remove-last", "tail-remove"),
       false,
       "a: lst -> a[:-1]",
       "a: str -> a[:-1]",
@@ -1521,6 +1521,7 @@ object Elements:
           val next = ctx.pop()
           (top, next) match
             case (a: VFun, b: VList) => ctx.push(ListHelpers.generate(a, b))
+            case (a: VFun, b) => ctx.push(ListHelpers.generate(a, VList(b)))
             case (a: VVal, b: VList) =>
               ctx.push(ListHelpers.vectorisedMaximum(b, a))
             case (a: VVal, b: VVal) => ctx.push(MiscHelpers.dyadicMaximum(a, b))
@@ -1779,7 +1780,7 @@ object Elements:
       case a: VList =>
         val temp = a.map(StringHelpers.chrord)
         if temp.forall(_.isInstanceOf[String]) then temp.mkString
-        else VList(temp*)
+        else VList.from(temp)
     },
     addDirect(
       "Ȯ",
@@ -1813,7 +1814,7 @@ object Elements:
             case (a: VNum, b: String) =>
               ctx.push(VList.from(ListHelpers.overlaps(b, a.toInt)))
             case (a: VNum, b: VList) =>
-              ctx.push(VList.from(ListHelpers.overlaps(b.lst, a.toInt)))
+              ctx.push(VList.from(ListHelpers.overlaps(b, a.toInt)))
             case (a, b) => throw UnimplementedOverloadException("o", List(a, b))
     },
     addDirect(
@@ -3070,6 +3071,7 @@ object Elements:
 
       val firstRes = Interpreter.executeFn(first)(using ctx.copy)
       val secondRes = Interpreter.executeFn(second)(using ctx)
+      ctx.pop()
       ctx.push(firstRes, secondRes)
 
     },

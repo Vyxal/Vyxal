@@ -22,7 +22,6 @@ literate mode, see the [Literate Mode help file](./Literate%20Mode.md)._
 14. [Arity Grouping](#arity-grouping)
 15. [Variables](#variables)
 16. [What is a SBCS?](#single-byte-character-set)
-17. [Nilad Moving](#nilad-moving)
 
 ## Introduction
 
@@ -333,7 +332,7 @@ The behaviour table is omitted for brevity.
 
 ## Control Flow
 
-Using the basic operations, you can now write simple programs! Execellent stuff.
+Using the basic operations, you can now write simple programs! Excellent stuff.
 But to do anything more useful than what you can accomplish with a calculator,
 you need to be able to control the flow of your program. That is to say, you
 need to be able to conditionally execute code, or execute code multiple times.
@@ -450,7 +449,7 @@ Which checks if the top of the stack is not equal to 1, while retaining the
 value on the stack. The code to execute might be:
 
 ```
-:2%0=[2/|3*1+}:,
+:2%0=[2÷|3×1+}:,
 ```
 
 Which halves the number if it is even, or triples it and increments it by 1.
@@ -459,7 +458,7 @@ It then prints the number without popping it.
 Putting this all together, you get:
 
 ```
-{:1≠|:2%0=[2/|3*1+}:,}
+{:1≠|:2%0=[2÷|3×1+}:,}
 ```
 
 ### The If/Else Structure

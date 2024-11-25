@@ -45,9 +45,9 @@ context_index ::= "¤" number_part
 
 list ::= list_open [element {"|" element}] list_close
 
-custom_definition ::= "#::" ("@" | "*") (variable_name | elementChar) "|" lambda_args {element} [structure_single_close]
-record_definition ::= "#:R" variable_name "|" {[element] (variable_get | variable_assign | variable_set_const)} [structure_single_close]
-extension_method ::= "#:>>" (variable_name | elementChar) "|" variable_name "|" variable_name {"|" variable_name "|" variable_name}  "|" {element} [structure_single_close]
+custom_definition ::= "#::" ("E" | "M") (variable_name | elementChar) "|" lambda_args {element} [structure_single_close]
+record_definition ::= "#::R" variable_name "|" {[element] (variable_get | variable_assign | variable_set_const)} [structure_single_close]
+extension_method ::= "#::+" (variable_name | elementChar) "|" variable_name "|" variable_name {"|" variable_name "|" variable_name}  "|" {element} [structure_single_close]
 
 custom_element = "#:@" variable_name
 custom_modifier = "#:`" variable_name

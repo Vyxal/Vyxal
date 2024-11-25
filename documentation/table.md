@@ -123,7 +123,7 @@
  <code>Ṗ</code> | #.P | Permutations | `permutations`, `perms` | 1 | :x: | <code>a: lst </code> => <code> Permutations of a</code>
  <code>Ṙ</code> | #.R | Rotate Left | `abc->bca`, `rot-left`, `rotate-left` | 1 | :x: | <code>a: any </code> => <code> rotate left once</code>
  <code>Ṡ</code> | #.S | Vectorised Sums \| Integer Division | `vectorised-sums`, `vec-sums`, `integer-division`, `int-div`, `int-rizz`, `sums` | 1 | :x: | <code>a: lst </code> => <code> sum of each element of a</code><br><code>a: num, b: num </code> => <code> a // b</code>
- <code>Ṫ</code> | #.T | Init | `init`, `remove-last` | 1 | :x: | <code>a: lst </code> => <code> a[:-1]</code><br><code>a: str </code> => <code> a[:-1]</code>
+ <code>Ṫ</code> | #.T | Init | `init`, `remove-last`, `tail-remove` | 1 | :x: | <code>a: lst </code> => <code> a[:-1]</code><br><code>a: str </code> => <code> a[:-1]</code>
  <code>Ẇ</code> | #.W | Wrap to Length \| Predicate Slice From 0 | `wrap-length`, `pred-slice-0`, `size-chunk` | 2 | :x: | <code>a: lst, b: num </code> => <code> a wrapped in chunks of length b</code><br><code>a: fun, b: num </code> => <code> first b truthy integers where a is truthy</code>
  <code>Ẋ</code> | #.X | Cartesian Product | `cartesian-product`, `cartesian`, `cart-prod`, `cart` | 2 | :x: | <code>a: list, b: list </code> => <code> cartesian product of a and b</code>
  <code>ι</code> |  | Length 0-Range | `zero->len` | 1 | :x: | <code>a: any </code> => <code> `[0, 1, 2, ..., len(a)-1]`</code>

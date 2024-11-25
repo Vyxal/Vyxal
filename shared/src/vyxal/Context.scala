@@ -57,6 +57,7 @@ class Context private (
     if useStack && parent.isDefined then return parent.getOrElse(this).pop()
     val elem =
       if stack.nonEmpty then stack.remove(stack.size - 1)
+      else if isTopCtx && globals.inputs.nonEmpty then globals.inputs.next()
       else if inputs.nonEmpty then inputs.next()
       else
         val temp =
@@ -195,6 +196,8 @@ class Context private (
     parent match
       case Some(p) => p.getTopCtx()
       case None => this
+
+  def isTopCtx: Boolean = parent.isEmpty
 
   def rotateLeft: Unit =
     if isStackEmpty then push(pop())

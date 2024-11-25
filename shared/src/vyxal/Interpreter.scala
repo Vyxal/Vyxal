@@ -10,8 +10,9 @@ import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
 
 object Interpreter:
-  def version = "3.4.6"
+  def version = "3.4.10"
   def execute(code: String)(using ctx: Context): Unit =
+
     /** Attempt lexing */
     val tokens =
       try
@@ -367,7 +368,7 @@ object Interpreter:
         origCtx,
         ctx,
         Option(ctxVarPrimary).orElse(inputs.headOption),
-        if ctxVarSecondary == null then VList(inputs*) else ctxVarSecondary,
+        if ctxVarSecondary == null then VList.from(inputs) else ctxVarSecondary,
         if overrideCtxArgs.isEmpty then inputs else overrideCtxArgs,
         vars,
         inputs.reverse,
