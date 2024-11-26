@@ -7,6 +7,10 @@
   - {in: [69, 420], out: 351 }
   - {in: [420, 69], out: 351 }
   - {in: ["atoll", "bowl"], out: 3}
+  - in:
+    - !vany "λ+}"
+    - [1, 2, 3]
+    out: [3, 5]
 
 "*":
   when given two numbers:

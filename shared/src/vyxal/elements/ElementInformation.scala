@@ -512,6 +512,11 @@ object ElementInformation:
         description = "Levenstein distance between {str1} and {str2}",
         typeSwitchable = false,
       ),
+      Overload(
+        name = "Reduce Overlapping Pairs",
+        args = Seq("lst", "fun"),
+        description = "Reduce overlapping pairs in {lst} with {fun}",
+      ),
     ),
   )
 end ElementInformation
