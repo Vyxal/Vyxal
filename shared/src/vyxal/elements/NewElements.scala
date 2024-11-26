@@ -16,6 +16,9 @@ import scala.util.matching.Regex
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
 
+given (using Context): Conversion[VAny, VList] with
+  override def apply(value: VAny): VList = ListHelpers.makeIterable(value)
+
 object NewElements:
   case class Element(
       arity: Int,
@@ -58,8 +61,9 @@ object NewElements:
     },
     addPart("ɾ", Monad, true) {
       case a: VNum => NumberHelpers.range(1, a)
-      case a: String if a.length() == 1 => a.head.isLetter
-      case a: String => VList.from(a.map(char => VNum(char.isLetter)))
+      case a: String if a.length() == 1 => a.head.asInstanceOf[Char].isLetter
+      case a: String =>
+        VList.from(a.map(char => VNum(char.asInstanceOf[Char].isLetter)))
     },
     addPart("‹", Monad, true) {
       case a: VNum => a - 1
@@ -132,15 +136,8 @@ object NewElements:
     addPart("@", Dyad, true) {
       case (a: VNum, b: VNum) => (a - b).vabs
       case (a: String, b: String) => StringHelpers.levenshtein(a, b)
-      case (a: VPhysical, b: VFun) =>
-        val iterable = ListHelpers.makeIterable(a)
-        val slices = ListHelpers.overlaps(iterable, 2)
-        val result = slices.map(slice =>
-          slice match
-            case VList(left: VAny, right: VAny) =>
-              Interpreter.executeFn(b, left, right, Seq(left, right))
-        )
-        VList.from(result)
+      case (a: VPhysical, b: VFun) => FuncHelpers.reduceOverPairs(b, a)
+      case (a: VFun, b: VPhysical) => FuncHelpers.reduceOverPairs(a, b)
     },
   )
 

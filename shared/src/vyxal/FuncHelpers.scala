@@ -26,4 +26,13 @@ object FuncHelpers:
   def reduceByElement(fn: VFun)(using ctx: Context): Unit =
     val iter = ctx.pop()
     ctx.push(ListHelpers.reduce(iter, fn))
+
+  def reduceOverPairs(fn: VFun, iter: VList)(using ctx: Context): VList =
+    val slices = ListHelpers.overlaps(iter, 2)
+    val result = slices.map(slice =>
+      slice match
+        case VList(left: VAny, right: VAny) =>
+          Interpreter.executeFn(fn, left, right, Seq(left, right))
+    )
+    VList.from(result)
 end FuncHelpers
