@@ -7,6 +7,7 @@ import vyxal.{Dyad, ImplHelpers, Monad, Tetrad, Triad}
 import vyxal.toBool
 import vyxal.Context.{copyCtx, pop, push}
 import vyxal.Context.given
+import vyxal.ListHelpers.makeIterable
 import vyxal.StringHelpers.padLeft
 import vyxal.VNum.given
 
