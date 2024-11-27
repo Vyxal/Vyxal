@@ -62,7 +62,8 @@ class InterpreterTests extends VyxalTests:
 
   describe("Vectorisation") {
     describe("Simple monads") {
-      testMulti("#[100 | #[101 | 0#] #] ᵛB" -> VList(4, 202))
+      // TODO: Replace with ¨b when implemented
+      // testMulti("#[100 | #[101 | 0#] #] ᵛB" -> VList(4, 202))
     }
 
     describe("Simple dyads") {
