@@ -60,6 +60,10 @@ object ListHelpers:
         })
       case _ => VList.empty
 
+  def countDepth(left: VList, right: VList)(using Context): VNum =
+    val Seq(needle, haystack) = Seq(left, right).sortBy(maxDepth)
+    haystack.count(needle === _)
+
   /** Remove items that are duplicates after transforming by `fn` */
   def dedupBy(iterable: VList, fn: VFun)(using Context): VList =
     // Can't use a Set here because equal VNums don't hash to the same value
@@ -506,6 +510,16 @@ object ListHelpers:
           f.execute(item, index, List(item))
         }*)
   end map
+
+  def maxDepth(iter: VList)(using Context): VNum =
+    iter
+      .map {
+        case s: VList => 1 + maxDepth(s)
+        case _ => VNum(1)
+      }
+      .foldLeft(VNum(0))(
+        MiscHelpers.dyadicMaximum(_, _).asInstanceOf[VNum]
+      ) // Guaranteed to be a VNum
 
   /** Merge a possibly infinite list of possibly infinite lists diagonally */
   def mergeInfLists[T](lists: Seq[Seq[T]]): LazyList[T] =

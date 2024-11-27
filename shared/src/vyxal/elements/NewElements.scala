@@ -144,6 +144,18 @@ object NewElements:
       case a: String => VList.from(a.map(StringHelpers.isVowel))
       case a: VList => a.forall(_.toBool)
     },
+    addPart("B", Monad, true) {
+      case a: VNum => NumberHelpers.toBinary(a)
+      case a: String => VList(
+          a.map(x => NumberHelpers.toBinary(StringHelpers.chrord(x.toString)))*
+        )
+    },
+    addPart("C", Dyad, false) {
+      case (a: VList, b: VVal) => a.count(_ === b)
+      case (a: VVal, b: VList) => b.count(_ === a)
+      case (a: VList, b: VList) => ListHelpers.countDepth(a, b)
+      case (a, b) => StringHelpers.countString(a.toString, b.toString)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

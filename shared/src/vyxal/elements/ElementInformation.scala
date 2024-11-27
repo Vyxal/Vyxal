@@ -537,5 +537,48 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "B",
+      keywords = Seq("to-binary"),
+      arity = 1,
+      Options(
+        castToIterable = false,
+        vectorises = true,
+      ),
+      Overload(
+        name = "To Binary",
+        args = Seq("num"),
+        description = "Convert {num} to binary",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "String to Binary",
+        args = Seq("str"),
+        description =
+          "Convert each character in {str} to a binary representation of its unicode value",
+        typeSwitchable = true,
+      ),
+    ),
+    Element(
+      symbol = "C",
+      keywords = Seq("count"),
+      arity = 2,
+      Options(
+        castToIterable = false,
+        vectorises = false,
+      ),
+      Overload(
+        name = "Count",
+        args = Seq("lst", "scl"),
+        description = "Count occurrences of {scl} in {lst}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Count",
+        args = Seq("lst", "lst"),
+        description =
+          "Count occurrences of the list with shallower depth in the list with deeper depth",
+      ),
+    ),
   )
 end ElementInformation
