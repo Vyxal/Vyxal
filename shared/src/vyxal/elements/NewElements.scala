@@ -138,6 +138,12 @@ object NewElements:
       case (a: VFun, b: VPhysical) =>
         FuncHelpers.reduceOverPairs(a, makeIterable(b))
     },
+    addPart("A", Monad, false) {
+      case a: VNum => ListHelpers.makeIterable(a).forall(_.toBool)
+      case a: String if a.length == 1 => StringHelpers.isVowel(a.head)
+      case a: String => VList.from(a.map(StringHelpers.isVowel))
+      case a: VList => a.forall(_.toBool)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

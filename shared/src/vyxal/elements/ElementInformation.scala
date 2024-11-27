@@ -42,7 +42,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "÷",
-      keywords = Seq("divide", "string-pieces", "regex-split", "/"),
+      keywords = Seq("divide", "string-pieces", "regex-split", "/", "div"),
       arity = 2,
       Options(
         castToIterable = false,
@@ -69,7 +69,8 @@ object ElementInformation:
     ),
     Element(
       symbol = "×",
-      keywords = Seq("multiply", "string-repeat", "ring-translate", "*"),
+      keywords =
+        Seq("multiply", "string-repeat", "ring-translate", "*", "times"),
       arity = 2,
       Options(
         castToIterable = false,
@@ -96,7 +97,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "∧",
-      keywords = Seq("and", "&&"),
+      keywords = Seq("and", "&&", "logical-and"),
       arity = 2,
       Options(
         castToIterable = false,
@@ -112,7 +113,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "∨",
-      keywords = Seq("or", "!!"),
+      keywords = Seq("or", "!!", "logical-or"),
       arity = 2,
       Options(
         castToIterable = false,
@@ -128,7 +129,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "¬",
-      keywords = Seq("not", "~"),
+      keywords = Seq("not", "~", "logical-not"),
       arity = 1,
       Options(
         castToIterable = false,
@@ -143,7 +144,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "ʀ",
-      keywords = Seq("0->n", "lowercase"),
+      keywords = Seq("0->n", "lowercase", "range-0->n", "nrange-0"),
       arity = 1,
       Options(
         castToIterable = false,
@@ -164,7 +165,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "ʁ",
-      keywords = Seq("0->n++", "uppercase"),
+      keywords = Seq("0->n++", "uppercase", "range-0->n++", "n+range-0"),
       arity = 1,
       Options(
         castToIterable = false,
@@ -206,7 +207,8 @@ object ElementInformation:
     ),
     Element(
       symbol = "‹",
-      keywords = Seq("decrement", "--", "pad-to-8"),
+      keywords =
+        Seq("decrement", "--", "pad-to-8", "dec", "pad-8", "pad-to-byte"),
       arity = 1,
       Options(
         castToIterable = false,
@@ -227,7 +229,8 @@ object ElementInformation:
     ),
     Element(
       symbol = "›",
-      keywords = Seq("increment", "++", "space-to-0"),
+      keywords =
+        Seq("increment", "++", "space-to-0", "replace-spaces-with-0s", "inc"),
       arity = 1,
       Options(
         castToIterable = false,
@@ -248,7 +251,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "!",
-      keywords = Seq("factorial", "!", "titlecase"),
+      keywords = Seq("factorial", "!", "titlecase", "fact", "title", "fac"),
       arity = 1,
       Options(
         castToIterable = false,
@@ -284,7 +287,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "%",
-      keywords = Seq("mod", "modulo", "%"),
+      keywords = Seq("mod", "modulo", "%", "remainder"),
       arity = 2,
       Options(
         castToIterable = false,
@@ -320,7 +323,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "*",
-      keywords = Seq("exponentiate", "pow", "**"),
+      keywords = Seq("exponentiate", "pow", "**", "power"),
       arity = 2,
       Options(
         castToIterable = false,
@@ -335,7 +338,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "+",
-      keywords = Seq("add", "+"),
+      keywords = Seq("add", "+", "plus", "addition"),
       arity = 2,
       Options(
         castToIterable = false,
@@ -362,7 +365,7 @@ object ElementInformation:
     ),
     Element(
       symbol = ",",
-      keywords = Seq("println"),
+      keywords = Seq("println", "stdout", "output", "out"),
       arity = 1,
       Options(
         castToIterable = false,
@@ -377,7 +380,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "-",
-      keywords = Seq("subtract", "-"),
+      keywords = Seq("subtract", "-", "minus", "subtraction", "regex-remove"),
       arity = 2,
       Options(
         castToIterable = false,
@@ -396,9 +399,9 @@ object ElementInformation:
         typeSwitchable = true,
       ),
       Overload(
-        name = "Regex Replace",
+        name = "Regex Remove",
         args = Seq("str", "str"),
-        description = "Replace {str} with {str}",
+        description = "Remove matches of {str2} from {str1}",
         typeSwitchable = false,
       ),
     ),
@@ -419,7 +422,7 @@ object ElementInformation:
     ),
     Element(
       symbol = ";",
-      keywords = Seq("pair"),
+      keywords = Seq("pair", "cons"),
       arity = 2,
       Options(
         castToIterable = false,
@@ -434,7 +437,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "<",
-      keywords = Seq("less-than", "<"),
+      keywords = Seq("less-than", "<", "lt"),
       arity = 2,
       Options(
         castToIterable = false,
@@ -464,7 +467,7 @@ object ElementInformation:
     ),
     Element(
       symbol = ">",
-      keywords = Seq("greater-than", ">"),
+      keywords = Seq("greater-than", ">", "gt"),
       arity = 2,
       Options(
         castToIterable = false,
@@ -479,7 +482,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "?",
-      keywords = Seq("stdin", "input"),
+      keywords = Seq("stdin", "input", "in"),
       arity = 0,
       Options(
         castToIterable = false,
@@ -494,7 +497,8 @@ object ElementInformation:
     ),
     Element(
       symbol = "@",
-      keywords = Seq("absolute-difference", "abs-diff", "levenstein"),
+      keywords =
+        Seq("absolute-difference", "abs-diff", "levenstein", "to-overpairs"),
       arity = 2,
       Options(
         castToIterable = false,
@@ -516,6 +520,21 @@ object ElementInformation:
         name = "Reduce Overlapping Pairs",
         args = Seq("lst", "fun"),
         description = "Reduce overlapping pairs in {lst} with {fun}",
+      ),
+    ),
+    Element(
+      symbol = "A",
+      keywords = Seq("all", "all?", "vowel?", "is-vowel", "is-vowel?"),
+      arity = 1,
+      Options(
+        castToIterable = true,
+        vectorises = false,
+      ),
+      Overload(
+        name = "All",
+        args = Seq("any"),
+        description = "All elements of {any} are truthy",
+        typeSwitchable = false,
       ),
     ),
   )
