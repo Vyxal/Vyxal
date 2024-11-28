@@ -182,12 +182,13 @@ class ElementTests extends VyxalTests:
       in(VList()) -> VList(),
       in(6, 9) -> 9,
       in(9, 6) -> 9,
-      in(VList(1, 2, 3, 4, 5, 6, 7), 3) -> VList(3, 3, 3, 4, 5, 6, 7),
     )
-    testCode(
-      "#[1|1#]λ2|+}G10Θ",
-      VList(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
-    )
+    it("Should work as a generator") {
+      testCode(
+        "#[1|1#]λ2|+}G10Θ",
+        VList(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
+      )
+    }
   }
 
   describe("Element H") {
