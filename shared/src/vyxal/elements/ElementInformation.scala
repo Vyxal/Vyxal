@@ -659,5 +659,27 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "H",
+      keywords = Seq("to-hex", "from-hex"),
+      arity = 1,
+      Options(
+        castToIterable = false,
+        vectorises = true,
+      ),
+      Overload(
+        name = "To Hex",
+        args = Seq("num"),
+        description = "Convert lhs to hexadecimal",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "From Hex",
+        args = Seq("str"),
+        description =
+          "Convert lhs from hexadecimal to a number. Inverse of 'to-hex'",
+        typeSwitchable = true,
+      ),
+    ),
   )
 end ElementInformation

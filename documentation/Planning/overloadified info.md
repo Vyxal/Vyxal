@@ -112,8 +112,8 @@ b = rhs
 - [x]   (any, non-fun)! = a.find(b)
 - [x] G (lst) = max(a)
 - [x]   (scl, scl) = max(a, b)
-- [ ] H (num) = to_hex(a) (base 10 -> base 16)
-- [ ]   (str) = from_hex(a) (base 16 -> base 10)
+- [x] H (num) = to_hex(a) (base 10 -> base 16)
+- [x]   (str) = from_hex(a) (base 16 -> base 10)
 - [ ] I (any, fun)* = a.filter(x => !b(x)) (reject by)
 - [ ]   (any, non-fun) = Interleave
 - [ ] J (lst, lst) = a.addAll(b) (merge)

@@ -191,6 +191,10 @@ object NewElements:
             push(MiscHelpers.dyadicMaximum(under, top))
 
       },
+    addPart("H", Monad, true) {
+      case a: VNum => NumberHelpers.toBaseAlphabet(a, "0123456789ABCDEF")
+      case a: String => NumberHelpers.fromBaseAlphabet(a, "0123456789ABCDEF")
+    },
   )
 
   // Subject to being added as overloads onto things in elements
