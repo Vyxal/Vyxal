@@ -105,9 +105,9 @@ b = rhs
 - [x] B (num) = Convert a to binary (list of digits)
 - [x]   (str) = each character in a to the binary representation of its character code
 - [x] C (any, any)! = count of a in b
-- [ ] D (any) = ...d c b a => d c b a a a
-- [ ] E (num) = a ** 2
-- [ ]   (str) = Evaluate str (think python eval)
+- [x] D (any) = ...d c b a => d c b a a a
+- [x] E (num) = a ** 2
+- [x]   (str) = Evaluate str (think python eval)
 - [ ] F (any, fun) = a.filter(b)
 - [ ]   (any, non-fun)! = a.find(b)
 - [ ] G (lst) = max(a)

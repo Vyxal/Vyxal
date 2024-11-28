@@ -580,5 +580,41 @@ object ElementInformation:
           "Count occurrences of the list with shallower depth in the list with deeper depth",
       ),
     ),
+    Element(
+      symbol = "D",
+      keywords = Seq("triplicate"),
+      arity = 1,
+      Options(
+        castToIterable = false,
+        vectorises = false,
+      ),
+      Overload(
+        name = "Triplicate",
+        args = Seq("any"),
+        description = "{any} {any} {any}",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "E",
+      keywords = Seq("2**n", "2pow", "eval", "2**"),
+      arity = 1,
+      Options(
+        castToIterable = false,
+        vectorises = true,
+      ),
+      Overload(
+        name = "2 to the Power of N",
+        args = Seq("num"),
+        description = "2 ** {num}",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Eval",
+        args = Seq("str"),
+        description = "Evaluate {str}",
+        typeSwitchable = true,
+      ),
+    ),
   )
 end ElementInformation

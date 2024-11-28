@@ -156,6 +156,15 @@ object NewElements:
       case (a: VList, b: VList) => ListHelpers.countDepth(a, b)
       case (a, b) => StringHelpers.countString(a.toString, b.toString)
     },
+    "D" ->
+      direct(Monad) {
+        val a = pop()
+        push(a, a, a)
+      },
+    addPart("E", Monad, true) {
+      case a: VNum => VNum(2) ** a
+      case a: String => MiscHelpers.eval(a)
+    },
   )
 
   // Subject to being added as overloads onto things in elements
