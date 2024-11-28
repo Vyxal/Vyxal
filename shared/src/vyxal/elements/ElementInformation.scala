@@ -36,7 +36,7 @@ object ElementInformation:
       Overload(
         name = "Counts of Items",
         args = Seq("lst"),
-        description = "[{lst}.count(x) for x in set({lst})]",
+        description = "[lhs.count(x) for x in set(lhs)]",
         typeSwitchable = false,
       ),
     ),
@@ -51,19 +51,19 @@ object ElementInformation:
       Overload(
         name = "Division",
         args = Seq("num", "num"),
-        description = "{num} / {num}",
+        description = "lhs / rhs",
         typeSwitchable = false,
       ),
       Overload(
         name = "String into N Pieces",
         args = Seq("str", "num"),
-        description = "Split {str} string into {num} pieces",
+        description = "Split string {lhs|rhs} into {rhs|lhs} pieces",
         typeSwitchable = true,
       ),
       Overload(
         name = "Regex Split",
         args = Seq("str", "str"),
-        description = "Split {str} by regex {str}",
+        description = "Split lhs by regex rhs",
         typeSwitchable = false,
       ),
     ),
@@ -79,19 +79,19 @@ object ElementInformation:
       Overload(
         name = "Multiplication",
         args = Seq("num", "num"),
-        description = "{num} * {num}",
+        description = "lhs * rhs (lhs times rhs)",
         typeSwitchable = false,
       ),
       Overload(
         name = "String Repeat",
         args = Seq("str", "num"),
-        description = "Repeat {str} string {num} times",
+        description = "Repeat string {lhs|rhs} {rhs|lhs} times",
         typeSwitchable = true,
       ),
       Overload(
         name = "Ring Translate",
         args = Seq("str", "str"),
-        description = "Ring translate {str} according to {str}",
+        description = "Ring translate lhs according to rhs. ",
         typeSwitchable = false,
       ),
     ),
@@ -107,7 +107,7 @@ object ElementInformation:
         name = "Short Circuit And",
         args = Seq("any", "any"),
         description =
-          "Short circuit and - if {any2} is false, return {any2}, else return {any2}",
+          "Short circuit and - if rhs is false, return rhs, else return lhs",
         typeSwitchable = false,
       ),
     ),
@@ -123,7 +123,7 @@ object ElementInformation:
         name = "Short Circuit Or",
         args = Seq("any", "any"),
         description =
-          "Short circuit or - if {any2} is true, return {any2}, else return {any1}",
+          "Short circuit or - if rhs is true, return rhs, else return lhs",
         typeSwitchable = false,
       ),
     ),
@@ -138,7 +138,7 @@ object ElementInformation:
       Overload(
         name = "Not",
         args = Seq("any"),
-        description = "Not {any}",
+        description = "if lhs is truthy, return False, else return True",
         typeSwitchable = false,
       ),
     ),
@@ -153,13 +153,13 @@ object ElementInformation:
       Overload(
         name = "Range 0",
         args = Seq("num"),
-        description = "Range from 0 to {num}, exclusive",
+        description = "Range from 0 to lhs, exclusive",
         typeSwitchable = false,
       ),
       Overload(
         name = "Lowercase",
         args = Seq("str"),
-        description = "Lowercase {str}",
+        description = "Lowercase lhs",
         typeSwitchable = true,
       ),
     ),
@@ -174,13 +174,13 @@ object ElementInformation:
       Overload(
         name = "Range 0 Inclusive",
         args = Seq("num"),
-        description = "Range from 0 to {num}, inclusive",
+        description = "Range from 0 to lhs, inclusive",
         typeSwitchable = false,
       ),
       Overload(
         name = "Uppercase",
         args = Seq("str"),
-        description = "Uppercase {str}",
+        description = "Uppercase lhs",
         typeSwitchable = true,
       ),
     ),
@@ -195,13 +195,13 @@ object ElementInformation:
       Overload(
         name = "Range 1 Inclusive",
         args = Seq("num"),
-        description = "Range from 1 to {num}, inclusive",
+        description = "Range from 1 to lhs, inclusive",
         typeSwitchable = false,
       ),
       Overload(
         name = "Is Character Alphabetical",
         args = Seq("str"),
-        description = "Check if {str} is alphabetical (i.e. is a letter)",
+        description = "Check if lhs is alphabetical (i.e. is a letter)",
         typeSwitchable = true,
       ),
     ),
@@ -217,13 +217,13 @@ object ElementInformation:
       Overload(
         name = "Decrement",
         args = Seq("num"),
-        description = "{num} - 1",
+        description = "lhs - 1",
         typeSwitchable = false,
       ),
       Overload(
         name = "Pad to 8",
         args = Seq("str"),
-        description = "Pad {str} to a length that is a multiple of 8 with '0's",
+        description = "Pad lhs to a length that is a multiple of 8 with '0's",
         typeSwitchable = true,
       ),
     ),
@@ -239,13 +239,13 @@ object ElementInformation:
       Overload(
         name = "Increment",
         args = Seq("num"),
-        description = "{num} + 1",
+        description = "lhs + 1",
         typeSwitchable = false,
       ),
       Overload(
         name = "Spaces to 0s",
         args = Seq("str"),
-        description = "Replace spaces in {str} with '0's",
+        description = "Replace spaces in lhs with '0's",
         typeSwitchable = true,
       ),
     ),
@@ -260,13 +260,13 @@ object ElementInformation:
       Overload(
         name = "Factorial",
         args = Seq("num"),
-        description = "Factorial of {num}",
+        description = "Factorial of lhs",
         typeSwitchable = false,
       ),
       Overload(
         name = "Titlecase",
         args = Seq("str"),
-        description = "Titlecase {str}",
+        description = "Titlecase lhs",
         typeSwitchable = true,
       ),
     ),
@@ -281,7 +281,7 @@ object ElementInformation:
       Overload(
         name = "Swap",
         args = Seq("any", "any"),
-        description = "Swap {any1} and {any2}",
+        description = "Swap lhs and rhs on the stack: #1 #2 -> #2 #1",
         typeSwitchable = false,
       ),
     ),
@@ -296,13 +296,13 @@ object ElementInformation:
       Overload(
         name = "Modulo",
         args = Seq("num", "num"),
-        description = "{num1} % {num2}",
+        description = "lhs % rhs (remainder of lhs divided by rhs)",
         typeSwitchable = false,
       ),
       Overload(
         name = "String Format",
         args = Seq("str", "any"),
-        description = "Format {str} with {any}",
+        description = "Format {lhs|rhs} with {rhs|lhs}",
         typeSwitchable = true,
       ),
     ),
@@ -317,7 +317,7 @@ object ElementInformation:
       Overload(
         name = "Append",
         args = Seq("any", "any"),
-        description = "Append {any2} to {any1}",
+        description = "Append rhs to lhs",
         typeSwitchable = false,
       ),
     ),
@@ -332,7 +332,7 @@ object ElementInformation:
       Overload(
         name = "Exponentiation",
         args = Seq("num", "num"),
-        description = "{num1} ** {num2}",
+        description = "lhs ** rhs",
         typeSwitchable = false,
       ),
     ),
@@ -347,19 +347,19 @@ object ElementInformation:
       Overload(
         name = "Addition",
         args = Seq("num", "num"),
-        description = "{num1} + {num2}",
+        description = "lhs + rhs",
         typeSwitchable = false,
       ),
       Overload(
         name = "String and Number Concatenation",
         args = Seq("str", "num"),
-        description = "{str} + {num: str(num)}",
+        description = "{lhs|str(lhs)} + {str(rhs)|rhs}",
         typeSwitchable = true,
       ),
       Overload(
         name = "String Concatenation",
         args = Seq("str", "str"),
-        description = "{str1} + {str2}",
+        description = "lhs + rhs",
         typeSwitchable = false,
       ),
     ),
@@ -374,7 +374,7 @@ object ElementInformation:
       Overload(
         name = "Print",
         args = Seq("any"),
-        description = "Print {any}",
+        description = "Print lhs to stdout, followed by a newline",
         typeSwitchable = false,
       ),
     ),
@@ -389,19 +389,19 @@ object ElementInformation:
       Overload(
         name = "Subtraction",
         args = Seq("num", "num"),
-        description = "{num1} - {num2}",
+        description = "lhs - rhs",
         typeSwitchable = false,
       ),
       Overload(
         name = "Prepend/Append Hyphens",
         args = Seq("str", "num"),
-        description = "{str} + {num: '-' * num}",
+        description = "{lhs|'-' * lhs} + {rhs * '-'|rhs}",
         typeSwitchable = true,
       ),
       Overload(
         name = "Regex Remove",
         args = Seq("str", "str"),
-        description = "Remove matches of {str2} from {str1}",
+        description = "Remove matches of rhs from lhs",
         typeSwitchable = false,
       ),
     ),
@@ -416,7 +416,7 @@ object ElementInformation:
       Overload(
         name = "Duplicate",
         args = Seq("any"),
-        description = "{any} {any}",
+        description = "Push lhs twice to the stack: #1 -> #1 #1",
         typeSwitchable = false,
       ),
     ),
@@ -431,7 +431,7 @@ object ElementInformation:
       Overload(
         name = "Pair",
         args = Seq("any", "any"),
-        description = "Pair {any1} and {any2}",
+        description = "Push a list [lhs, rhs] to the stack: #1 #2 -> [#1, #2]",
         typeSwitchable = false,
       ),
     ),
@@ -446,7 +446,7 @@ object ElementInformation:
       Overload(
         name = "Less Than",
         args = Seq("scl", "scl"),
-        description = "{scl1} < {scl2}",
+        description = "lhs < rhs",
         typeSwitchable = false,
       ),
     ),
@@ -461,7 +461,7 @@ object ElementInformation:
       Overload(
         name = "Equals",
         args = Seq("scl", "scl"),
-        description = "{scl1} == {scl2}",
+        description = "lhs == rhs",
         typeSwitchable = false,
       ),
     ),
@@ -476,7 +476,7 @@ object ElementInformation:
       Overload(
         name = "Greater Than",
         args = Seq("scl", "scl"),
-        description = "{scl1} > {scl2}",
+        description = "lhs > rhs",
         typeSwitchable = false,
       ),
     ),
@@ -507,19 +507,20 @@ object ElementInformation:
       Overload(
         name = "Absolute Difference",
         args = Seq("num", "num"),
-        description = "Absolute difference between {num1} and {num2}",
+        description = "Absolute difference between lhs and rhs",
         typeSwitchable = false,
       ),
       Overload(
         name = "Levenstein Distance",
         args = Seq("str", "str"),
-        description = "Levenstein distance between {str1} and {str2}",
+        description = "Levenstein distance between lhs and rhs",
         typeSwitchable = false,
       ),
       Overload(
         name = "Reduce Overlapping Pairs",
         args = Seq("lst", "fun"),
-        description = "Reduce overlapping pairs in {lst} with {fun}",
+        description =
+          "Reduce overlapping pairs in {lhs|rhs} by function {rhs|lhs}",
       ),
     ),
     Element(
@@ -533,7 +534,7 @@ object ElementInformation:
       Overload(
         name = "All",
         args = Seq("any"),
-        description = "All elements of {any} are truthy",
+        description = "Are all elements of lhs are truthy",
         typeSwitchable = false,
       ),
     ),
@@ -548,14 +549,14 @@ object ElementInformation:
       Overload(
         name = "To Binary",
         args = Seq("num"),
-        description = "Convert {num} to binary",
+        description = "Convert lhs to binary",
         typeSwitchable = false,
       ),
       Overload(
         name = "String to Binary",
         args = Seq("str"),
         description =
-          "Convert each character in {str} to a binary representation of its unicode value",
+          "Convert each character in lhs to a binary representation of its unicode value",
         typeSwitchable = true,
       ),
     ),
@@ -570,7 +571,7 @@ object ElementInformation:
       Overload(
         name = "Count",
         args = Seq("lst", "scl"),
-        description = "Count occurrences of {scl} in {lst}",
+        description = "Count occurrences of {rhs|lhs} in {lhs|rhs}",
         typeSwitchable = true,
       ),
       Overload(
@@ -591,7 +592,7 @@ object ElementInformation:
       Overload(
         name = "Triplicate",
         args = Seq("any"),
-        description = "{any} {any} {any}",
+        description = "Push lhs thrice to the stack: #1 -> #1 #1 #1",
         typeSwitchable = false,
       ),
     ),
@@ -606,13 +607,13 @@ object ElementInformation:
       Overload(
         name = "2 to the Power of N",
         args = Seq("num"),
-        description = "2 ** {num}",
+        description = "2 ** lhs",
         typeSwitchable = false,
       ),
       Overload(
         name = "Eval",
         args = Seq("str"),
-        description = "Evaluate {str}",
+        description = "Evaluate lhs",
         typeSwitchable = true,
       ),
     ),
