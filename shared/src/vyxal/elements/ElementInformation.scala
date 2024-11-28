@@ -633,7 +633,7 @@ object ElementInformation:
       ),
       Overload(
         name = "Find",
-        args = Seq("dat", "dat"),
+        args = Seq("nls", "nls"),
         description =
           "Find the index of lhs in rhs. Switches lhs and rhs so that the haystack is the deeper list",
       ),
