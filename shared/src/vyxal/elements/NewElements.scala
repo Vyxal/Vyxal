@@ -172,6 +172,8 @@ object NewElements:
         ListHelpers.filter(ListHelpers.makeIterable(a, Some(true)), b)
       case (a: String, b: String) => a.indexOf(b)
       case (a: VNum, b: VNum) => a.toString.indexOf(b.toString)
+      case (a: VList, b: VVal) => a.indexOf(b)
+      case (a: VVal, b: VList) => b.indexOf(a)
       case (a, b) =>
         val aList = ListHelpers.makeIterable(a)
         val bList = ListHelpers.makeIterable(b)
