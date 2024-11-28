@@ -188,7 +188,10 @@ object NewElements:
           case a: VList => push(a.maxOption.getOrElse(VList()))
           case _ =>
             val under = pop()
-            push(MiscHelpers.dyadicMaximum(under, top))
+            (top, under) match
+              case (a: VFun, b: VList) => push(ListHelpers.generate(a, b))
+              case (a: VFun, b) => push(ListHelpers.generate(a, VList(b)))
+              case _ => push(MiscHelpers.dyadicMaximum(under, top))
 
       },
     addPart("H", Monad, true) {

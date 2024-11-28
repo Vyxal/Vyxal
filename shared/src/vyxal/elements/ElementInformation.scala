@@ -640,7 +640,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "G",
-      keywords = Seq("max", "maximum"),
+      keywords = Seq("max", "maximum", "gen"),
       arity = 2,
       Options(
         castToIterable = false,
@@ -656,6 +656,13 @@ object ElementInformation:
         name = "Monadic Maximum",
         args = Seq("lst"),
         description = "Maximum of lhs",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Generate Sequence",
+        args = Seq("nls", "fun"),
+        description =
+          "Call rhs on previous results of rhs, starting with lhs. If lhs is not a list, it is made iterable",
         typeSwitchable = false,
       ),
     ),
