@@ -108,10 +108,10 @@ b = rhs
 - [x] D (any) = ...d c b a => d c b a a a
 - [x] E (num) = a ** 2
 - [x]   (str) = Evaluate str (think python eval)
-- [ ] F (any, fun) = a.filter(b)
-- [ ]   (any, non-fun)! = a.find(b)
-- [ ] G (lst) = max(a)
-- [ ]   (scl, scl) = max(a, b)
+- [x] F (any, fun) = a.filter(b)
+- [x]   (any, non-fun)! = a.find(b)
+- [x] G (lst) = max(a)
+- [x]   (scl, scl) = max(a, b)
 - [ ] H (num) = to_hex(a) (base 10 -> base 16)
 - [ ]   (str) = from_hex(a) (base 16 -> base 10)
 - [ ] I (any, fun)* = a.filter(x => !b(x)) (reject by)

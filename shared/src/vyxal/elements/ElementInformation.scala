@@ -617,5 +617,47 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
+    Element(
+      symbol = "F",
+      keywords = Seq("filter", "find", "index-of"),
+      arity = 2,
+      Options(
+        castToIterable = false,
+        vectorises = false,
+      ),
+      Overload(
+        name = "Filter",
+        args = Seq("fun", "any"),
+        description = "Filter {lhs|rhs} by function {rhs|lhs}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Find",
+        args = Seq("dat", "dat"),
+        description =
+          "Find the index of lhs in rhs. Switches lhs and rhs so that the haystack is the deeper list",
+      ),
+    ),
+    Element(
+      symbol = "G",
+      keywords = Seq("max", "maximum"),
+      arity = 2,
+      Options(
+        castToIterable = false,
+        vectorises = false,
+      ),
+      Overload(
+        name = "Dyadic Maximum",
+        args = Seq("scl", "scl"),
+        description = "Maximum of lhs and rhs",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Monadic Maximum",
+        args = Seq("lst"),
+        description = "Maximum of lhs",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

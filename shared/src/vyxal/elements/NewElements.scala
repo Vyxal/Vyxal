@@ -165,6 +165,30 @@ object NewElements:
       case a: VNum => VNum(2) ** a
       case a: String => MiscHelpers.eval(a)
     },
+    addPart("F", Dyad, false) {
+      case (a: VFun, b) =>
+        ListHelpers.filter(ListHelpers.makeIterable(b, Some(true)), a)
+      case (a, b: VFun) =>
+        ListHelpers.filter(ListHelpers.makeIterable(a, Some(true)), b)
+      case (a: String, b: String) => a.indexOf(b)
+      case (a: VNum, b: VNum) => a.toString.indexOf(b.toString)
+      case (a, b) =>
+        val aList = ListHelpers.makeIterable(a)
+        val bList = ListHelpers.makeIterable(b)
+        val Seq(needle, haystack) =
+          Seq(aList, bList).sortBy(ListHelpers.maxDepth)
+        haystack.indexOf(needle)
+    },
+    "G" ->
+      direct(Dyad) {
+        val top = pop()
+        top match
+          case a: VList => push(a.maxOption.getOrElse(VList()))
+          case _ =>
+            val under = pop()
+            push(MiscHelpers.dyadicMaximum(under, top))
+
+      },
   )
 
   // Subject to being added as overloads onto things in elements
