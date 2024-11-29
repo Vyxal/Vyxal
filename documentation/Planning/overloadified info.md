@@ -116,10 +116,12 @@ b = rhs
 - [x]   (str) = from_hex(a) (base 16 -> base 10)
 - [x] I (any, fun)* = a.filter(x => !b(x)) (reject by)
 - [x]   (any, non-fun) = Interleave
-- [ ] J (lst, lst) = a.addAll(b) (merge)
-- [ ]   (num, num) = int(s"$a$b")
-- [ ] K (num) = factors of a
-- [ ]   (str) = is string numeric
+- [x] J (lst, lst) = a.addAll(b) (merge)
+- [x]   (num, num) = [a, b]
+- [x]   (num, str) = a.toString + b
+- [x]   (str, str) = a + b
+- [x] K (num) = factors of a
+- [x]   (str) = is string numeric
 - [ ] L (any) = length
 - [ ] M (any, fun)* = a.map(b)
 - [ ]   (lst, lst) = mold a to shape of b

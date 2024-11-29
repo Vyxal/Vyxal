@@ -710,5 +710,60 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
+    Element(
+      symbol = "J",
+      keywords = Seq("join", "concat"),
+      arity = 2,
+      Options(
+        castToIterable = false,
+        vectorises = false,
+      ),
+      Overload(
+        name = "Join",
+        args = Seq("lst", "scl"),
+        description = "{Add rhs to the end of lhs|Prepend lhs to rhs}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Join / Merge",
+        args = Seq("lst", "lst"),
+        description = "Add all elements of rhs to lhs",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Number Pair",
+        args = Seq("num", "num"),
+        description = "Create a list of lhs and rhs",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "String Concatenation",
+        args = Seq("str|num", "str|num"),
+        description =
+          "string(lhs) + string(rhs) (if either lhs or rhs is a string)",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "K",
+      keywords = Seq("factors", "is-numeric?", "is-numeric"),
+      arity = 1,
+      Options(
+        castToIterable = false,
+        vectorises = true,
+      ),
+      Overload(
+        name = "Factors",
+        args = Seq("num"),
+        description = "Get the factors of lhs",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Is Numeric",
+        args = Seq("str"),
+        description = "Check if lhs is numeric",
+        typeSwitchable = true,
+      ),
+    ),
   )
 end ElementInformation

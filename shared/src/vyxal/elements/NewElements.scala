@@ -206,6 +206,17 @@ object NewElements:
         if a.isInstanceOf[String] && b.isInstanceOf[String] then temp.mkString
         else temp
     },
+    addPart("J", Dyad, false) {
+      case (a: VList, b: VList) => VList.from(a ++ b)
+      case (a, b: VList) => VList.from(a +: b)
+      case (a: VList, b) => VList.from(a :+ b)
+      case (a: VNum, b: VNum) => VList(a, b)
+      case (a, b) => a.toString + b.toString
+    },
+    addPart("K", Monad, true) {
+      case a: VNum => NumberHelpers.factors(a)
+      case a: String => VNum(VNum.DecimalRegex.matches(a))
+    },
   )
 
   // Subject to being added as overloads onto things in elements
