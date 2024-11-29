@@ -114,8 +114,8 @@ b = rhs
 - [x]   (scl, scl) = max(a, b)
 - [x] H (num) = to_hex(a) (base 10 -> base 16)
 - [x]   (str) = from_hex(a) (base 16 -> base 10)
-- [ ] I (any, fun)* = a.filter(x => !b(x)) (reject by)
-- [ ]   (any, non-fun) = Interleave
+- [x] I (any, fun)* = a.filter(x => !b(x)) (reject by)
+- [x]   (any, non-fun) = Interleave
 - [ ] J (lst, lst) = a.addAll(b) (merge)
 - [ ]   (num, num) = int(s"$a$b")
 - [ ] K (num) = factors of a

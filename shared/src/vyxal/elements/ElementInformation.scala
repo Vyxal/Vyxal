@@ -688,5 +688,27 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
+    Element(
+      symbol = "I",
+      keywords = Seq("interleave", "reject"),
+      arity = 2,
+      Options(
+        castToIterable = false,
+        vectorises = false,
+      ),
+      Overload(
+        name = "Interleave",
+        args = Seq("any", "any"),
+        description = "Interleave lhs and rhs",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Reject",
+        args = Seq("any", "fun"),
+        description =
+          "Remove elements of {lhs|rhs} that satisfy function {rhs|lhs}",
+        typeSwitchable = true,
+      ),
+    ),
   )
 end ElementInformation

@@ -192,13 +192,12 @@ object NewElements:
               case (a: VFun, b: VList) => push(ListHelpers.generate(a, b))
               case (a: VFun, b) => push(ListHelpers.generate(a, VList(b)))
               case _ => push(MiscHelpers.dyadicMaximum(under, top))
-
       },
     addPart("H", Monad, true) {
       case a: VNum => NumberHelpers.toBaseAlphabet(a, "0123456789ABCDEF")
       case a: String => NumberHelpers.fromBaseAlphabet(a, "0123456789ABCDEF")
     },
-    addPart("I", Monad, false) {
+    addPart("I", Dyad, false) {
       case (a, b: VFun) =>
         VList.from(ListHelpers.makeIterable(a).filter(x => !b(x).toBool))
       case (a, b) =>
