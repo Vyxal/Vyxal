@@ -198,6 +198,15 @@ object NewElements:
       case a: VNum => NumberHelpers.toBaseAlphabet(a, "0123456789ABCDEF")
       case a: String => NumberHelpers.fromBaseAlphabet(a, "0123456789ABCDEF")
     },
+    addPart("I", Monad, false) {
+      case (a, b: VFun) =>
+        VList.from(ListHelpers.makeIterable(a).filter(x => !b(x).toBool))
+      case (a, b) =>
+        val temp = ListHelpers
+          .interleave(ListHelpers.makeIterable(a), ListHelpers.makeIterable(b))
+        if a.isInstanceOf[String] && b.isInstanceOf[String] then temp.mkString
+        else temp
+    },
   )
 
   // Subject to being added as overloads onto things in elements
