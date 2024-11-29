@@ -16,8 +16,7 @@ case class Overload(
 )
 
 case class Options(
-    castToIterable: Boolean,
-    vectorises: Boolean,
+    vectorises: Boolean
 )
 
 object ElementInformation:
@@ -30,8 +29,7 @@ object ElementInformation:
       keywords = Seq("counts", "counts-of"),
       arity = 1,
       Options(
-        castToIterable = true,
-        vectorises = false,
+        vectorises = false
       ),
       Overload(
         name = "Counts of Items",
@@ -45,8 +43,7 @@ object ElementInformation:
       keywords = Seq("divide", "string-pieces", "regex-split", "/", "div"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "Division",
@@ -73,8 +70,7 @@ object ElementInformation:
         Seq("multiply", "string-repeat", "ring-translate", "*", "times"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "Multiplication",
@@ -100,8 +96,7 @@ object ElementInformation:
       keywords = Seq("and", "&&", "logical-and"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = false,
+        vectorises = false
       ),
       Overload(
         name = "Short Circuit And",
@@ -116,8 +111,7 @@ object ElementInformation:
       keywords = Seq("or", "!!", "logical-or"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = false,
+        vectorises = false
       ),
       Overload(
         name = "Short Circuit Or",
@@ -132,8 +126,7 @@ object ElementInformation:
       keywords = Seq("not", "~", "logical-not"),
       arity = 1,
       Options(
-        castToIterable = false,
-        vectorises = false,
+        vectorises = false
       ),
       Overload(
         name = "Not",
@@ -147,8 +140,7 @@ object ElementInformation:
       keywords = Seq("0->n", "lowercase", "range-0->n", "nrange-0"),
       arity = 1,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "Range 0",
@@ -168,8 +160,7 @@ object ElementInformation:
       keywords = Seq("0->n++", "uppercase", "range-0->n++", "n+range-0"),
       arity = 1,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "Range 0 Inclusive",
@@ -189,8 +180,7 @@ object ElementInformation:
       keywords = Seq("1->n++", "is-alpha?"),
       arity = 1,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "Range 1 Inclusive",
@@ -211,8 +201,7 @@ object ElementInformation:
         Seq("decrement", "--", "pad-to-8", "dec", "pad-8", "pad-to-byte"),
       arity = 1,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "Decrement",
@@ -233,8 +222,7 @@ object ElementInformation:
         Seq("increment", "++", "space-to-0", "replace-spaces-with-0s", "inc"),
       arity = 1,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "Increment",
@@ -254,8 +242,7 @@ object ElementInformation:
       keywords = Seq("factorial", "!", "titlecase", "fact", "title", "fac"),
       arity = 1,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "Factorial",
@@ -275,8 +262,7 @@ object ElementInformation:
       keywords = Seq("swap"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = false,
+        vectorises = false
       ),
       Overload(
         name = "Swap",
@@ -290,8 +276,7 @@ object ElementInformation:
       keywords = Seq("mod", "modulo", "%", "remainder"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "Modulo",
@@ -311,8 +296,7 @@ object ElementInformation:
       keywords = Seq("append"),
       arity = 2,
       Options(
-        castToIterable = true,
-        vectorises = false,
+        vectorises = false
       ),
       Overload(
         name = "Append",
@@ -326,8 +310,7 @@ object ElementInformation:
       keywords = Seq("exponentiate", "pow", "**", "power"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "Exponentiation",
@@ -341,8 +324,7 @@ object ElementInformation:
       keywords = Seq("add", "+", "plus", "addition"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "Addition",
@@ -368,8 +350,7 @@ object ElementInformation:
       keywords = Seq("println", "stdout", "output", "out"),
       arity = 1,
       Options(
-        castToIterable = false,
-        vectorises = false,
+        vectorises = false
       ),
       Overload(
         name = "Print",
@@ -383,8 +364,7 @@ object ElementInformation:
       keywords = Seq("subtract", "-", "minus", "subtraction", "regex-remove"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "Subtraction",
@@ -410,8 +390,7 @@ object ElementInformation:
       Seq("dup", "duplicate"),
       1,
       Options(
-        castToIterable = false,
-        vectorises = false,
+        vectorises = false
       ),
       Overload(
         name = "Duplicate",
@@ -425,8 +404,7 @@ object ElementInformation:
       keywords = Seq("pair", "cons"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = false,
+        vectorises = false
       ),
       Overload(
         name = "Pair",
@@ -440,8 +418,7 @@ object ElementInformation:
       keywords = Seq("less-than", "<", "lt"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "Less Than",
@@ -455,8 +432,7 @@ object ElementInformation:
       keywords = Seq("equals", "==", "eq"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "Equals",
@@ -470,8 +446,7 @@ object ElementInformation:
       keywords = Seq("greater-than", ">", "gt"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "Greater Than",
@@ -485,8 +460,7 @@ object ElementInformation:
       keywords = Seq("stdin", "input", "in"),
       arity = 0,
       Options(
-        castToIterable = false,
-        vectorises = false,
+        vectorises = false
       ),
       Overload(
         name = "Input",
@@ -501,8 +475,7 @@ object ElementInformation:
         Seq("absolute-difference", "abs-diff", "levenstein", "to-overpairs"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "Absolute Difference",
@@ -528,8 +501,7 @@ object ElementInformation:
       keywords = Seq("all", "all?", "vowel?", "is-vowel", "is-vowel?"),
       arity = 1,
       Options(
-        castToIterable = true,
-        vectorises = false,
+        vectorises = false
       ),
       Overload(
         name = "All",
@@ -543,8 +515,7 @@ object ElementInformation:
       keywords = Seq("to-binary"),
       arity = 1,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "To Binary",
@@ -565,8 +536,7 @@ object ElementInformation:
       keywords = Seq("count"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = false,
+        vectorises = false
       ),
       Overload(
         name = "Count",
@@ -586,8 +556,7 @@ object ElementInformation:
       keywords = Seq("triplicate"),
       arity = 1,
       Options(
-        castToIterable = false,
-        vectorises = false,
+        vectorises = false
       ),
       Overload(
         name = "Triplicate",
@@ -601,8 +570,7 @@ object ElementInformation:
       keywords = Seq("2**n", "2pow", "eval", "2**"),
       arity = 1,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "2 to the Power of N",
@@ -622,8 +590,7 @@ object ElementInformation:
       keywords = Seq("filter", "find", "index-of"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = false,
+        vectorises = false
       ),
       Overload(
         name = "Filter",
@@ -643,8 +610,7 @@ object ElementInformation:
       keywords = Seq("max", "maximum", "gen"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = false,
+        vectorises = false
       ),
       Overload(
         name = "Dyadic Maximum",
@@ -671,8 +637,7 @@ object ElementInformation:
       keywords = Seq("to-hex", "from-hex"),
       arity = 1,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "To Hex",
@@ -693,8 +658,7 @@ object ElementInformation:
       keywords = Seq("interleave", "reject"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = false,
+        vectorises = false
       ),
       Overload(
         name = "Interleave",
@@ -715,8 +679,7 @@ object ElementInformation:
       keywords = Seq("join", "concat"),
       arity = 2,
       Options(
-        castToIterable = false,
-        vectorises = false,
+        vectorises = false
       ),
       Overload(
         name = "Join",
@@ -749,8 +712,7 @@ object ElementInformation:
       keywords = Seq("factors", "is-numeric?", "is-numeric"),
       arity = 1,
       Options(
-        castToIterable = false,
-        vectorises = true,
+        vectorises = true
       ),
       Overload(
         name = "Factors",
@@ -763,6 +725,20 @@ object ElementInformation:
         args = Seq("str"),
         description = "Check if lhs is numeric",
         typeSwitchable = true,
+      ),
+    ),
+    Element(
+      symbol = "L",
+      keywords = Seq("length", "len"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Length",
+        args = Seq("any"),
+        description = "Length of lhs",
+        typeSwitchable = false,
       ),
     ),
   )

@@ -217,6 +217,11 @@ object NewElements:
       case a: VNum => NumberHelpers.factors(a)
       case a: String => VNum(VNum.DecimalRegex.matches(a))
     },
+    "L" ->
+      direct(Monad) {
+        val a = pop()
+        push(makeIterable(a).length)
+      },
   )
 
   // Subject to being added as overloads onto things in elements
