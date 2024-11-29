@@ -219,7 +219,7 @@ class ElementTests extends VyxalTests:
       in("abc", "def") -> String("abcdef"),
       in(1, VList(2, 3, 4)) -> VList(1, 2, 3, 4),
       in(VList(1, 2), VList(3, 4)) -> VList(1, 2, 3, 4),
-      in(123, 456) -> 123456,
+      in(123, 456) -> VList(123, 456),
       in(123, "4567") -> String("1234567"),
       in("123", 4568) -> String("1234568"),
     )
