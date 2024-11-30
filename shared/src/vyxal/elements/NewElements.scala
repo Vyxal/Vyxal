@@ -17,6 +17,10 @@ import scala.util.matching.Regex
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
 
+extension (a: VAny)(using Context) def itr = ListHelpers.makeIterable(a)
+extension (a: VAny)(using Context)
+  def ritr = ListHelpers.makeIterable(a, Some(true))
+
 object NewElements:
   case class Element(
       arity: Int,
@@ -86,7 +90,7 @@ object NewElements:
       },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
     addPart("&", Dyad, false) {
-      case (a, b) => VList.from(ListHelpers.makeIterable(a) :+ b)
+      case (a, b) => VList.from(a.itr :+ b)
     },
     addPart("*", Dyad, false) {
       case (a: VNum, b: VNum) => a ** b
@@ -166,10 +170,8 @@ object NewElements:
       case a: String => MiscHelpers.eval(a)
     },
     addPart("F", Dyad, false) {
-      case (a: VFun, b) =>
-        ListHelpers.filter(ListHelpers.makeIterable(b, Some(true)), a)
-      case (a, b: VFun) =>
-        ListHelpers.filter(ListHelpers.makeIterable(a, Some(true)), b)
+      case (a: VFun, b) => ListHelpers.filter(b.ritr, a)
+      case (a, b: VFun) => ListHelpers.filter(a.ritr, b)
       case (a: String, b: String) => a.indexOf(b)
       case (a: VNum, b: VNum) => a.toString.indexOf(b.toString)
       case (a: VList, b: VVal) => a.indexOf(b)
@@ -198,11 +200,9 @@ object NewElements:
       case a: String => NumberHelpers.fromBaseAlphabet(a, "0123456789ABCDEF")
     },
     addPart("I", Dyad, false) {
-      case (a, b: VFun) =>
-        VList.from(ListHelpers.makeIterable(a).filter(x => !b(x).toBool))
+      case (a, b: VFun) => VList.from(a.ritr.filter(x => !b(x).toBool))
       case (a, b) =>
-        val temp = ListHelpers
-          .interleave(ListHelpers.makeIterable(a), ListHelpers.makeIterable(b))
+        val temp = ListHelpers.interleave(a.itr, b.itr)
         if a.isInstanceOf[String] && b.isInstanceOf[String] then temp.mkString
         else temp
     },
@@ -220,7 +220,7 @@ object NewElements:
     "L" ->
       direct(Monad) {
         val a = pop()
-        push(makeIterable(a).length)
+        push(a.itr.length)
       },
   )
 
