@@ -222,6 +222,25 @@ object NewElements:
         val a = pop()
         push(a.itr.length)
       },
+    addPart("M", Dyad, true) {
+      case (a: VFun, b) => ListHelpers.map(a, b.ritr)
+      case (a, b: VFun) => ListHelpers.map(b, a.ritr)
+      case (a: VList, b: VList) => ListHelpers.mold(a, b)
+      case (a: VNum, b: VNum) => NumberHelpers.multiplicity(a, b)
+    },
+    addPart("N", Monad, true) {
+      case a: VNum => -a
+      case a: String => StringHelpers.swapCase(a)
+      case a: VFun => MiscHelpers.firstNonNegative(a)
+    },
+    addPart("O", Monad, false) {
+      case a: VNum => StringHelpers.chrord(a)
+      case a: String => StringHelpers.chrord(a)
+      case a: VList =>
+        val temp = a.map(StringHelpers.chrord)
+        if temp.forall(_.isInstanceOf[String]) then temp.mkString
+        else VList.from(temp)
+    },
   )
 
   // Subject to being added as overloads onto things in elements
