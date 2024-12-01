@@ -4,6 +4,7 @@ import scala.language.implicitConversions
 
 import vyxal.*
 import vyxal.{Dyad, ImplHelpers, Monad, Tetrad, Triad}
+import vyxal.parsing.TokenType
 import vyxal.toBool
 import vyxal.Context.{copyCtx, pop, push}
 import vyxal.Context.given
@@ -260,6 +261,24 @@ object NewElements:
             .prefixes(ListHelpers.makeIterable(a.vabs))
             .map(n => MiscHelpers.eval(n.mkString))
         )
+    },
+    addPart("Q", Dyad, false) {
+      case (a: String, b: VNum) =>
+        val index = b.toInt
+        if index < 0 then
+          a.take(a.length + index) + a.drop(a.length + index + 1)
+        else a.take(index) + a.drop(index + 1)
+      case (a, b: VNum) =>
+        val lst = ListHelpers.makeIterable(a)
+        val index = b.toInt
+        if index < 0 then
+          VList.from(
+            lst.take(lst.length + index) ++ lst.drop(lst.length + index + 1)
+          )
+        else VList.from(lst.take(index) ++ lst.drop(index + 1))
+      case (a: String, b: String) =>
+        val res = StringHelpers.r(b).findFirstMatchIn(a)
+        if res.isDefined then VList.from(res.get.subgroups) else VList.empty
     },
   )
 

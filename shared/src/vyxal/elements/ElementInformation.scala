@@ -832,5 +832,25 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "Q",
+      keywords = Seq("remove-at", "regex-groups"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Remove At",
+        args = Seq("nsl", "num"),
+        description = "Remove the element at index #2 from #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Regex Groups",
+        args = Seq("str", "str"),
+        description = "Return the groups of the first match of #2 in #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
