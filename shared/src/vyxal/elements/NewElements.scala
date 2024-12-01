@@ -360,10 +360,10 @@ object NewElements:
         pop()
       },
     addPart("a", Monad, false) {
-      case a: VNum => !a.itr.exists(_ == VNum(0))
+      case a: VNum => a.itr.exists(_ == VNum(0))
       case a: String if a.length == 1 => a.head.isUpper
       case a: String => VList.from(a.map(c => VNum(c.isUpper)))
-      case a: VList => !a.itr.exists(_.toBool)
+      case a: VList => a.itr.exists(_.toBool)
     },
   )
 
