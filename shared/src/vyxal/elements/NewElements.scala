@@ -365,6 +365,7 @@ object NewElements:
       case a: String => VList.from(a.map(c => VNum(c.isUpper)))
       case a: VList => a.itr.exists(_.toBool)
     },
+    "b" -> fullToImpl(Monad, NumberHelpers.fromBinary),
   )
 
   // Subject to being added as overloads onto things in elements

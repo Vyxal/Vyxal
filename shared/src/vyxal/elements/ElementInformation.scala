@@ -1075,5 +1075,28 @@ object ElementInformation:
         description = "Are any elements of #1 truthy",
       ),
     ),
+    Element(
+      symbol = "b",
+      keywords = Seq("from-binary"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Binary Digits",
+        args = Seq("num"),
+        description = "Convert #1's list of digits from binary to base 10",
+      ),
+      Overload(
+        name = "From Binary",
+        args = Seq("str"),
+        description = "Convert #1 from binary to a number",
+      ),
+      Overload(
+        name = "From Binary",
+        args = Seq("lst"),
+        description = "Convert #1 from binary to a number",
+      ),
+    ),
   )
 end ElementInformation
