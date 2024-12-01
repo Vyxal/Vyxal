@@ -817,5 +817,20 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "P",
+      keywords = Seq("prefixes"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Prefixes",
+        args = Seq("lst"),
+        description =
+          "Get all prefixes of #1. Treats numbers as a list of digits",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

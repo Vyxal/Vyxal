@@ -250,6 +250,17 @@ object NewElements:
         if temp.forall(_.isInstanceOf[String]) then temp.mkString
         else VList.from(temp)
     },
+    addPart("P", Monad, false) {
+      case a: VList => VList.from(ListHelpers.prefixes(a))
+      case a: String => VList.from(
+          ListHelpers.prefixes(ListHelpers.makeIterable(a)).map(_.mkString)
+        )
+      case a: VNum => VList.from(
+          ListHelpers
+            .prefixes(ListHelpers.makeIterable(a.vabs))
+            .map(n => MiscHelpers.eval(n.mkString))
+        )
+    },
   )
 
   // Subject to being added as overloads onto things in elements
