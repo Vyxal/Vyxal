@@ -147,11 +147,11 @@ b = rhs
 - [x] X (any, any) = Cartesian product
 - [x] Y (any, num) = [a].repeat(b)
 - [x] Z (any, any) = zip(a, b)
-- [ ] ^ (...) = ...d c b a => a b c d ...
-- [ ] _ (any) = pop / discard
-- [ ] a (num) = any digit non-0?
-- [ ]   (str) = is character uppercase?
-- [ ]   (lst) = are any items truthy?
+- [x] ^ (...) = ...d c b a => a b c d ...
+- [x] _ (any) = pop / discard
+- [x] a (num) = any digit non-0?
+- [x]   (str) = is character uppercase?
+- [x]   (lst) = are any items truthy?
 - [ ] b (any) = convert from binary
 - [ ] c (any, any)! = a in b?
 - [ ] d (any) = a + a 

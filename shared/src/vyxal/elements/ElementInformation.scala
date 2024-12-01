@@ -1021,5 +1021,59 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "^",
+      keywords = Seq("reverse-stack"),
+      arity = -1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Reverse Stack",
+        args = Seq(),
+        description = "Reverse the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "_",
+      keywords = Seq("pop", "discard"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Pop",
+        args = Seq(),
+        description = "Pop the top of the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "a",
+      keywords = Seq("any", "any?", "uppercase?"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Any",
+        args = Seq("num"),
+        description = "Are any digits of #1 truthy",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Is Uppercase",
+        args = Seq("str"),
+        description =
+          "Check if #1 is uppercase. With string.len > 1, vectorises over each character",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Any",
+        args = Seq("lst"),
+        description = "Are any elements of #1 truthy",
+      ),
+    ),
   )
 end ElementInformation

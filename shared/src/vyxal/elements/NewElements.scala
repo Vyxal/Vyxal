@@ -351,6 +351,20 @@ object NewElements:
       case (a, b) =>
         ListHelpers.makeIterable(a).vzip(ListHelpers.makeIterable(b))
     },
+    "^" ->
+      direct(-1) {
+        summon[Context].reverse()
+      },
+    "_" ->
+      direct(Monad) {
+        pop()
+      },
+    addPart("a", Monad, false) {
+      case a: VNum => !a.itr.exists(_ == VNum(0))
+      case a: String if a.length == 1 => a.head.isUpper
+      case a: String => VList.from(a.map(c => VNum(c.isUpper)))
+      case a: VList => !a.itr.exists(_.toBool)
+    },
   )
 
   // Subject to being added as overloads onto things in elements
