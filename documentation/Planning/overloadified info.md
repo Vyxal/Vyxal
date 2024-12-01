@@ -145,8 +145,8 @@ b = rhs
 - [x] V (lst) = [x[::-1] for x in a]
 - [x] W (...) = ...d c b a => [...d c b a]
 - [x] X (any, any) = Cartesian product
-- [ ] Y (any, num) = [a].repeat(b)
-- [ ] Z (any, any) = zip(a, b)
+- [x] Y (any, num) = [a].repeat(b)
+- [x] Z (any, any) = zip(a, b)
 - [ ] ^ (...) = ...d c b a => a b c d ...
 - [ ] _ (any) = pop / discard
 - [ ] a (num) = any digit non-0?

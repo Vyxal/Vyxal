@@ -323,6 +323,34 @@ object NewElements:
         summon[Context].wrap()
       },
     "X" -> fullToImpl(Dyad, ListHelpers.cartesianProduct(_, _)),
+    addPart("Y", Dyad, false) {
+      case (a, b: VNum) => VList.fill(b.toInt)(a)
+      case (a: VNum, b) => VList.fill(a.toInt)(b)
+      case (a: (VList | String), b: VList) =>
+        val temp = b
+          .map {
+            case n: VNum => n.toInt
+            case l: (String | VList) => ListHelpers.makeIterable(l).length
+            case _ =>
+              // Function / Object, which doesn't have a reasonable
+              // way to convert to a number
+              throw InvalidListOverloadException("Y", b, "Number")
+          }
+          .lazyZip(ListHelpers.makeIterable(a))
+          .map((n, item) => VList.fill(n)(item))
+        if a.isInstanceOf[String] then temp.map(_.mkString).mkString
+        else VList.from(temp)
+    },
+    addPart("Z", Dyad, false) {
+      case (a, b: VFun) =>
+        val iter = ListHelpers.makeIterable(a)
+        VList.from(iter.vzip(ListHelpers.map(b, iter)))
+      case (a: VFun, b) =>
+        val iter = ListHelpers.makeIterable(b)
+        VList.from(ListHelpers.map(a, iter).vzip(iter))
+      case (a, b) =>
+        ListHelpers.makeIterable(a).vzip(ListHelpers.makeIterable(b))
+    },
   )
 
   // Subject to being added as overloads onto things in elements

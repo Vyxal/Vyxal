@@ -980,5 +980,46 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "Y",
+      keywords = Seq("list-repeat"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "List Repeat",
+        args = Seq("num", "num"),
+        description =
+          "A list of #1 repeated #2 times. E.g. 3 4 -> [3, 3, 3, 3]",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "List Repeat",
+        args = Seq("itr", "num"),
+        description = "A list of {#2|#1} instances of string {#1|#2}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Vectorised Repeat",
+        args = Seq("itr", "lst[nsl]"),
+        description = "Repeat each element of #2 (#1|#1.length) times",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "Z",
+      keywords = Seq("zip"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Zip",
+        args = Seq("lst", "lst"),
+        description = "Zip #1 and #2",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
