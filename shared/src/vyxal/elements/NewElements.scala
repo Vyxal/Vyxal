@@ -227,6 +227,15 @@ object NewElements:
       case (a, b: VFun) => ListHelpers.map(b, a.ritr)
       case (a: VList, b: VList) => ListHelpers.mold(a, b)
       case (a: VNum, b: VNum) => NumberHelpers.multiplicity(a, b)
+      case (a: String, b: String) =>
+        StringHelpers.r(b).findFirstIn(a).getOrElse("")
+      case (a: String, b: VList) =>
+        VList.from(b.lst.map(StringHelpers.r(_).findFirstIn(a).getOrElse("")))
+      case (a: VList, b: String) => VList.from(
+          a.lst.map(x =>
+            StringHelpers.r(b).findFirstIn(x.toString()).getOrElse("")
+          )
+        )
     },
     addPart("N", Monad, true) {
       case a: VNum => -a
