@@ -771,5 +771,51 @@ object ElementInformation:
         description = "Return the first match of #2 in #1",
       ),
     ),
+    Element(
+      symbol = "N",
+      keywords = Seq("negate", "swapcase", "first>-1"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Negate",
+        args = Seq("num"),
+        description = "-#1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Negate",
+        args = Seq("str"),
+        description = "Swap the case of each letter #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "First Non-Negative Integer Where Predicate is True",
+        args = Seq("fun"),
+        description = "First non-negative integer where #1 is true",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "O",
+      keywords = Seq("ord", "chr"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Character to Unicode",
+        args = Seq("str"),
+        description = "Unicode value of each letter in #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Unicode to Character",
+        args = Seq("num"),
+        description = "Character of each unicode value in #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
