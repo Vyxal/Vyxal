@@ -22,6 +22,8 @@ extension (a: VAny)(using Context) def itr = ListHelpers.makeIterable(a)
 extension (a: VAny)(using Context)
   def ritr = ListHelpers.makeIterable(a, Some(true))
 
+extension (a: String)(using Context) def toNum: VNum = VNum(a)
+
 object NewElements:
   case class Element(
       arity: Int,
@@ -302,10 +304,15 @@ object NewElements:
     },
     "U" ->
       direct(Monad) {
-        val itr = pop().itr
+        val top = pop()
+        val itr = top.itr
         val odds = itr.zipWithIndex.collect { case (x, i) if i % 2 == 0 => x }
         val evens = itr.zipWithIndex.collect { case (x, i) if i % 2 == 1 => x }
-        push(VList.from(odds), VList.from(evens))
+        top match
+          case _: String => push(odds.mkString, evens.mkString)
+          case _: VNum => push(odds.mkString.toNum, evens.mkString.toNum)
+          case _ => push(VList.from(odds), VList.from(evens))
+
       },
     addPart("V", Monad, false) {
       case a: VList => VList.from(a.map(ListHelpers.reverse))
