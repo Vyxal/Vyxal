@@ -852,5 +852,31 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "R",
+      keywords = Seq("range", "reduce", "regex-match?"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Range",
+        args = Seq("num", "num"),
+        description = "Range from #1 to #2, exclusive",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Reduce",
+        args = Seq("lst", "fun"),
+        description = "Reduce #1 by function #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Regex Match?",
+        args = Seq("str", "str"),
+        description = "Check if #2 matches #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

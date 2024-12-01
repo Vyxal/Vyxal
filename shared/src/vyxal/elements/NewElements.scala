@@ -280,6 +280,15 @@ object NewElements:
         val res = StringHelpers.r(b).findFirstMatchIn(a)
         if res.isDefined then VList.from(res.get.subgroups) else VList.empty
     },
+    addPart("R", Dyad, false) {
+      case (a: VNum, b: VNum) => NumberHelpers.range(a, b).dropRight(1)
+      case (a: String, b: String) => StringHelpers.r(b).findFirstIn(a).isDefined
+      case (a: String, b: VNum) => StringHelpers.r(b).findFirstIn(a).isDefined
+      case (a: VNum, b: String) =>
+        StringHelpers.r(b).findFirstIn(a.toString).isDefined
+      case (a: VFun, b) => ListHelpers.reduce(b, a)
+      case (a, b: VFun) => ListHelpers.reduce(a, b)
+    },
   )
 
   // Subject to being added as overloads onto things in elements
