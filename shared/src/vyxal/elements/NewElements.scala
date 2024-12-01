@@ -254,11 +254,11 @@ object NewElements:
     addPart("P", Monad, false) {
       case a: VList => VList.from(ListHelpers.prefixes(a))
       case a: String => VList.from(
-          ListHelpers.prefixes(ListHelpers.makeIterable(a)).map(_.mkString)
+          ListHelpers.prefixes(a.itr).map(_.mkString)
         )
       case a: VNum => VList.from(
           ListHelpers
-            .prefixes(ListHelpers.makeIterable(a.vabs))
+            .prefixes(a.vabs.itr)
             .map(n => MiscHelpers.eval(n.mkString))
         )
     },
@@ -269,7 +269,7 @@ object NewElements:
           a.take(a.length + index) + a.drop(a.length + index + 1)
         else a.take(index) + a.drop(index + 1)
       case (a, b: VNum) =>
-        val lst = ListHelpers.makeIterable(a)
+        val lst = a.itr
         val index = b.toInt
         if index < 0 then
           VList.from(
@@ -292,13 +292,24 @@ object NewElements:
     addPart("S", Monad, false) {
       case s: String => s.sorted
       case a => VList.from(
-          ListHelpers.makeIterable(a).sorted(MiscHelpers.compare(_, _))
+          a.itr.sorted(MiscHelpers.compare(_, _))
         )
     },
     addPart("T", Monad, false) {
       case a: VNum => a * 3
       case a: String => a.forall(_.isLetter)
       case a: VList => ListHelpers.transpose(a)
+    },
+    "U" ->
+      direct(Monad) {
+        val itr = pop().itr
+        val odds = itr.zipWithIndex.collect { case (x, i) if i % 2 == 0 => x }
+        val evens = itr.zipWithIndex.collect { case (x, i) if i % 2 == 1 => x }
+        push(VList.from(odds), VList.from(evens))
+      },
+    addPart("V", Monad, false) {
+      case a: VList => VList.from(a.map(ListHelpers.reverse))
+      case a: VNum => 1 - a
     },
   )
 

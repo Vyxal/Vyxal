@@ -918,5 +918,39 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "U",
+      keywords = Seq("uninterleave"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Uninterleave",
+        args = Seq("lst"),
+        description = "Uninterleave #1",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "V",
+      keywords = Seq("vectorse-reverse", "1-x"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Vectorise Reverse",
+        args = Seq("lst"),
+        description = "Reverse each item in #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "1 - X",
+        args = Seq("num"),
+        description = "1 - #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

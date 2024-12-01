@@ -141,8 +141,8 @@ b = rhs
 - [x] S (any) = sort in ascending order
 - [x] T (lst) = Transpose
 - [x]   (num) = Triple
-- [ ] U (any) = Uninterleave
-- [ ] V (lst) = [x[::-1] for x in a]
+- [x] U (any) = Uninterleave
+- [x] V (lst) = [x[::-1] for x in a]
 - [ ] W (...) = ...d c b a => [...d c b a]
 - [ ] X (any, any) = Cartesian product
 - [ ] Y (any, num) = [a].repeat(b)
