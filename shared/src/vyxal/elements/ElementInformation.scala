@@ -894,7 +894,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "T",
-      keywords = Seq("transpose", "triple"),
+      keywords = Seq("transpose", "triple", "alpha-only?"),
       arity = 1,
       Options(
         vectorises = false
@@ -909,6 +909,12 @@ object ElementInformation:
         name = "Triple",
         args = Seq("num"),
         description = "#1 * 3",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Does String Contain Only Alphabetic Characters",
+        args = Seq("str"),
+        description = "Check if #1 contains only alphabetic characters",
         typeSwitchable = false,
       ),
     ),
