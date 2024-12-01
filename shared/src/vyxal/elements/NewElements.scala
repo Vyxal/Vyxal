@@ -289,6 +289,17 @@ object NewElements:
       case (a: VFun, b) => ListHelpers.reduce(b, a)
       case (a, b: VFun) => ListHelpers.reduce(a, b)
     },
+    addPart("S", Monad, false) {
+      case s: String => s.sorted
+      case a => VList.from(
+          ListHelpers.makeIterable(a).sorted(MiscHelpers.compare(_, _))
+        )
+    },
+    addPart("T", Monad, false) {
+      case a: VNum => a * 3
+      case a: String => a.forall(_.isLetter)
+      case a: VList => ListHelpers.transpose(a)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

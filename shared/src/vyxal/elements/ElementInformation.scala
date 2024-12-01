@@ -878,5 +878,39 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "S",
+      keywords = Seq("sort"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Sort",
+        args = Seq("itr"),
+        description = "Sort #1",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "T",
+      keywords = Seq("transpose", "triple"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Transpose",
+        args = Seq("lst"),
+        description = "Transpose #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Triple",
+        args = Seq("num"),
+        description = "#1 * 3",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

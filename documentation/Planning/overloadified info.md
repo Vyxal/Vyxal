@@ -138,10 +138,9 @@ b = rhs
 - [x] R (any, fun)* = a.reduce(b) (makes b have arity 2)
 - [x]   (num, num) = range(a, b) ([a, b))
 - [x]   (str, str) = Is there a regex match of pattern b in string a 
-- [ ] S (any) = sort in ascending order
-- [ ] T (str) = Titlecase
-- [ ]   (lst) = Transpose
-- [ ]   (num) = Triple
+- [x] S (any) = sort in ascending order
+- [x] T (lst) = Transpose
+- [x]   (num) = Triple
 - [ ] U (any) = Uninterleave
 - [ ] V (lst) = [x[::-1] for x in a]
 - [ ] W (...) = ...d c b a => [...d c b a]
