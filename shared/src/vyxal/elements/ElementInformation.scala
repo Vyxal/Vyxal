@@ -952,5 +952,33 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "W",
+      keywords = Seq("wrap"),
+      arity = -1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Wrap",
+        args = Seq(),
+        description = "Wrap the entire stack into a list",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "X",
+      keywords = Seq("cartesian-product"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Cartesian Product",
+        args = Seq("lst", "lst"),
+        description = "Cartesian product of #1 and #2",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

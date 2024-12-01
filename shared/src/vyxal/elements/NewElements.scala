@@ -318,6 +318,11 @@ object NewElements:
       case a: VList => VList.from(a.map(ListHelpers.reverse))
       case a: VNum => 1 - a
     },
+    "W" ->
+      direct(-1) {
+        summon[Context].wrap()
+      },
+    "X" -> fullToImpl(Dyad, ListHelpers.cartesianProduct(_, _)),
   )
 
   // Subject to being added as overloads onto things in elements
@@ -389,5 +394,7 @@ object NewElements:
   ): Element = Element(arity.arity, () => impl)
 
   private def direct(impl: Context ?=> Unit): Element = Element(0, () => impl)
+  private def direct(arity: Int)(impl: Context ?=> Unit): Element =
+    Element(arity, () => impl)
 
 end NewElements
