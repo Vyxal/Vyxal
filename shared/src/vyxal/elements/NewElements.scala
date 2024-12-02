@@ -374,6 +374,15 @@ object NewElements:
         val Seq(needle, haystack) = Seq(a, b).sortBy(ListHelpers.maxDepth)
         haystack.contains(needle)
     },
+    addPart("d", Monad, true) {
+      case a: VNum => a + a
+      case a: String => s"$a$a"
+    },
+    addPart("e", Monad, true) {
+      case a: VNum => a % 2 == VNum(0)
+      case a: String => VList.from(a.split("\n").toIndexedSeq)
+    },
+    "f" -> fullToImpl(Monad, x => ListHelpers.flatten(x.itr)),
   )
 
   // Subject to being added as overloads onto things in elements

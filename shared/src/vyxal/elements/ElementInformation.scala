@@ -1125,5 +1125,71 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "d",
+      keywords = Seq("double"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Double",
+        args = Seq("num"),
+        description = "#1 * 2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Double",
+        args = Seq("str"),
+        description = "Append a copy of #1 to itself",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "e",
+      keywords = Seq("even?", "is-even", "split-newlines", "/newline"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Is Even",
+        args = Seq("num"),
+        description = "Is #1 even",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Split Newlines",
+        args = Seq("str"),
+        description = "Split #1 by newlines",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "f",
+      keywords = Seq("flatten"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "List of Digits",
+        args = Seq("num"),
+        description = "Push a list of the digits of #1 to the stack",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "List of Characters",
+        args = Seq("str"),
+        description = "Push a list of the characters of #1 to the stack",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Flatten",
+        args = Seq("lst"),
+        description = "Flatten #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
