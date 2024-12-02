@@ -396,6 +396,7 @@ object NewElements:
               case _ => push(MiscHelpers.dyadicMinimum(under, top))
       },
     "h" -> fullToImpl(Monad, x => x.itr.headOption.getOrElse(defaultEmpty(x))),
+    "i" -> fullToImpl(Dyad, MiscHelpers.index),
   )
 
   // Subject to being added as overloads onto things in elements

@@ -161,10 +161,10 @@ b = rhs
 - [x] g (lst) = min(a)
 - [x]   (scl, scl) = min(a, b)
 - [x] h (any) = a[0]
-- [ ] i (any, num)* (except num, num) = a[b]
-- [ ]   (lst, lst) = [a[x] for x in b]
-- [ ]   (str, str) -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])
-- [ ]   (any, fun)* = Apply b on a and collect unique values. Does include the initial value.
+- [x] i (any, num)* (except num, num) = a[b]
+- [x]   (lst, lst) = [a[x] for x in b]
+- [x]   (str, str) -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])
+- [x]   (any, fun)* = Apply b on a and collect unique values. Does include the initial value.
 - [ ] j (any, any) = join a on b
 - [ ] l (num, num) = Logarithm
 - [ ]   (str, str) = len(a) == len(b)

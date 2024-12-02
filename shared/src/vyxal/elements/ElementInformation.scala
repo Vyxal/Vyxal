@@ -1232,5 +1232,52 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "i",
+      keywords = Seq(
+        "index",
+        "at",
+        "item-at",
+        "nth-item",
+        "collect-unique",
+        "enclose",
+        "@<=",
+      ),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Nth Element",
+        args = Seq("itr", "num"),
+        description = "Get the {#2|#1}th element of {#1|#2}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Vectorised Index",
+        args = Seq("itr", "lst[num]"),
+        description = "[#1[_] for _ in #2]",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "String Enclose",
+        args = Seq("str", "str"),
+        description =
+          "enclose #2 in #1 (#1[0:len(#1)//2] + #2 + #1[len(#1)//2:])",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Object Member Retrieval",
+        args = Seq("obj", "str"),
+        description = "{#1|#2}.{#2|#1}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Collect Unique Values (+ Initial Value)",
+        args = Seq("any", "fun"),
+        description =
+          "Apply #2 on #1 and collect unique values. Does include the initial value.",
+      ),
+    ),
   )
 end ElementInformation
