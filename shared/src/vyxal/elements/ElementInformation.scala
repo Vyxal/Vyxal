@@ -1191,5 +1191,32 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "g",
+      keywords = Seq("min", "minimum", "2gen"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Dyadic Minimum",
+        args = Seq("scl", "scl"),
+        description = "Minimum of #1 and #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Monadic Minimum",
+        args = Seq("lst"),
+        description = "Minimum of #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Generate Sequence",
+        args = Seq("nls", "fun"),
+        description =
+          "Call #2 as a dyad infinitely with items of #1 as starting values",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

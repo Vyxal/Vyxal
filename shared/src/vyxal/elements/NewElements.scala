@@ -383,6 +383,17 @@ object NewElements:
       case a: String => VList.from(a.split("\n").toIndexedSeq)
     },
     "f" -> fullToImpl(Monad, x => ListHelpers.flatten(x.itr)),
+    "g" ->
+      direct(Dyad) {
+        val top = pop()
+        top match
+          case a: VList => push(a.minOption.getOrElse(VList()))
+          case _ =>
+            val under = pop()
+            (top, under) match
+              case (a: VFun, b: VList) => push(ListHelpers.generateDyadic(a, b))
+              case _ => push(MiscHelpers.dyadicMinimum(under, top))
+      },
   )
 
   // Subject to being added as overloads onto things in elements
