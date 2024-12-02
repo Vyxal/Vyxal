@@ -1098,5 +1098,32 @@ object ElementInformation:
         description = "Convert #1 from binary to a number",
       ),
     ),
+    Element(
+      symbol = "c",
+      keywords = Seq("contains", "contains?", "is-in"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Contains",
+        args = Seq("scl", "scl"),
+        description = "Is #2 in #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Contains",
+        args = Seq("lst", "scl"),
+        description = "Is {#2|#1} in {#1|#2}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Contains",
+        args = Seq("lst", "lst"),
+        description =
+          "Is the list with shallower depth in the list with deeper depth",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

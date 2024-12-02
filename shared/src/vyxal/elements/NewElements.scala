@@ -366,6 +366,14 @@ object NewElements:
       case a: VList => a.itr.exists(_.toBool)
     },
     "b" -> fullToImpl(Monad, NumberHelpers.fromBinary),
+    addPart("c", Dyad, false) {
+      case (a: VVal, b: VVal) => a.toString().contains(b.toString())
+      case (a: VList, b: VVal) => a.contains(b)
+      case (a: VVal, b: VList) => b.contains(a)
+      case (a: VList, b: VList) =>
+        val Seq(needle, haystack) = Seq(a, b).sortBy(ListHelpers.maxDepth)
+        haystack.contains(needle)
+    },
   )
 
   // Subject to being added as overloads onto things in elements
