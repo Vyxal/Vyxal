@@ -9,6 +9,7 @@ import vyxal.toBool
 import vyxal.Context.{copyCtx, pop, push}
 import vyxal.Context.given
 import vyxal.ListHelpers.makeIterable
+import vyxal.MiscHelpers.defaultEmpty
 import vyxal.StringHelpers.padLeft
 import vyxal.VNum.given
 
@@ -394,7 +395,7 @@ object NewElements:
               case (a: VFun, b: VList) => push(ListHelpers.generateDyadic(a, b))
               case _ => push(MiscHelpers.dyadicMinimum(under, top))
       },
-    "h" -> fullToImpl(Monad, x => x.itr.headOption.getOrElse(0)),
+    "h" -> fullToImpl(Monad, x => x.itr.headOption.getOrElse(defaultEmpty(x))),
   )
 
   // Subject to being added as overloads onto things in elements
