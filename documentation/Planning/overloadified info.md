@@ -160,7 +160,7 @@ b = rhs
 - [x] f (any) = Flatten
 - [x] g (lst) = min(a)
 - [x]   (scl, scl) = min(a, b)
-- [ ] h (any) = a[0]
+- [x] h (any) = a[0]
 - [ ] i (any, num)* (except num, num) = a[b]
 - [ ]   (lst, lst) = [a[x] for x in b]
 - [ ]   (str, str) -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])

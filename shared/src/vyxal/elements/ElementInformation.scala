@@ -1218,5 +1218,19 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "h",
+      keywords = Seq("head", "first"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Head",
+        args = Seq("any"),
+        description = "First element of #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

@@ -394,6 +394,7 @@ object NewElements:
               case (a: VFun, b: VList) => push(ListHelpers.generateDyadic(a, b))
               case _ => push(MiscHelpers.dyadicMinimum(under, top))
       },
+    "h" -> fullToImpl(Monad, x => x.itr.headOption.getOrElse(0)),
   )
 
   // Subject to being added as overloads onto things in elements
