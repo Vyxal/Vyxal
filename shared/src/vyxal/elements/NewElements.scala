@@ -397,6 +397,13 @@ object NewElements:
       },
     "h" -> fullToImpl(Monad, x => x.itr.headOption.getOrElse(defaultEmpty(x))),
     "i" -> fullToImpl(Dyad, MiscHelpers.index),
+    addPart("j", Dyad, false) {
+      case (a: VList, b) => ListHelpers.join(a, b)
+      case (a, b: VList) => ListHelpers.join(b, a)
+      case (a, b) => ListHelpers.join(ListHelpers.makeIterable(a), b) match
+          case l: VList => l.mkString
+          case res => res
+    },
   )
 
   // Subject to being added as overloads onto things in elements

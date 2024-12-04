@@ -1279,5 +1279,25 @@ object ElementInformation:
           "Apply #2 on #1 and collect unique values. Does include the initial value.",
       ),
     ),
+    Element(
+      symbol = "j",
+      keywords = Seq("join-on"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Join On",
+        args = Seq("lst", "scl"),
+        description = "Join {#1|#2} on {#2|#1}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Intersperse",
+        args = Seq("lst", "lst"),
+        description =
+          "Intersperse elements of #2 within #1 (e.g. [1, [2,3], 4] [5, 6] -> [1, 5, 6, [2, 3], 5, 6, 4])",
+      ),
+    ),
   )
 end ElementInformation
