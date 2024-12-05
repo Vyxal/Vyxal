@@ -1371,5 +1371,27 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "o",
+      keywords =
+        Seq("overlapping-pairs", "overlapping-sliding-window", "windows"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Overlapping Pairs",
+        args = Seq("lst|str"),
+        description = "Get overlapping pairs of #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Overlapping Pairs",
+        args = Seq("any", "num"),
+        description =
+          "Get overlapping pairs of iterable(#1) with a window of size #2",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

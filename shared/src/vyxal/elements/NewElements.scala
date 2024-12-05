@@ -400,7 +400,7 @@ object NewElements:
     addPart("j", Dyad, false) {
       case (a: VList, b) => ListHelpers.join(a, b)
       case (a, b: VList) => ListHelpers.join(b, a)
-      case (a, b) => ListHelpers.join(ListHelpers.makeIterable(a), b) match
+      case (a, b) => ListHelpers.join(a.itr, b) match
           case l: VList => l.mkString
           case res => res
     },
@@ -414,6 +414,22 @@ object NewElements:
     },
     "m" -> niladify(ctx ?=> ctx.ctxVarSecondary),
     "n" -> niladify(ctx ?=> ctx.ctxVarPrimary),
+    "o" ->
+      direct(Dyad) {
+        val top = pop()
+        top match
+          case a: VList => push(VList.from(ListHelpers.overlaps(a, 2)))
+          case a: String => push(VList.from(ListHelpers.overlaps(a, 2)))
+          case _ =>
+            val next = pop()
+            (top, next) match
+              case (a: VNum, b: String) =>
+                push(VList.from(ListHelpers.overlaps(b, a.toInt)))
+              case (a: VNum, b: VList) =>
+                push(VList.from(ListHelpers.overlaps(b, a.toInt)))
+              case (a, b) =>
+                throw UnimplementedOverloadException("o", List(a, b))
+      },
   )
 
   // Subject to being added as overloads onto things in elements
