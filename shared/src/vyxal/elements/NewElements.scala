@@ -430,10 +430,14 @@ object NewElements:
               case (a, b) =>
                 throw UnimplementedOverloadException("o", List(a, b))
       },
-    "p" -> fullToImpl(Dyad, (itr, other) => VList.from(other +: itr.itr)),
-    addPart("q", Monad, true) {
-      case a: String => StringHelpers.quotify(a)
+    addPart("p", Dyad, false) {
+      case (a: String, b: (String | VNum)) => b.toString + a
+      case (a: VNum, b: String) => b + a.toString
+      case (a: VNum, b: VNum) => MiscHelpers.eval(b.toString + a.toString)
+      case (a: VList, b) => VList.from(b +: a)
+      case (a, b) => VList(b, a)
     },
+    "q" -> fullToImpl(Monad, obj => StringHelpers.quotify(obj.toString)),
     addPart("r", Triad, false) {
       case (a: VFun, b, c) => MiscHelpers
           .zipWith(ListHelpers.makeIterable(b), ListHelpers.makeIterable(c), a)
