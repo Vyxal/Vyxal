@@ -606,7 +606,17 @@
   - { in: [[4, 5, 6, 7], 8], out: [4, 8, 5, 8, 6, 8, 7]}
 
 "l":
-  - {in: [["abc", 1234, [], [1, 2, [3]]]], out: [3, 4, 0, 3]}
+  Numbers:
+    - {in: [8, 2], out: 3}
+    - {in: [1000, 10], out: 3}
+  Numbers and strings:
+    - {in: ["abcde", 5], out: 1}
+    - {in: ["abcde", 10], out: 0}
+  Strings:
+    - {in: ["abcde", "fghij"], out: 1}
+    - {in: ["abcde", "abcdef"], out: 0}
+# Test for vectorised lengths
+#  - {in: [["abc", 1234, [], [1, 2, [3]]]], out: [3, 4, 0, 3]}
 
 "o":
   - {in: [[1, 2, 3, 4, 5, 6, 7], 2], out: [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]]}
@@ -817,16 +827,6 @@
   - {in: [[1, 2, 3, 4, 5], -2], out: [4, 5]}
   - {in: [[[1,2,3],[4,5,6],[7,8,9],[10,11,12]], [3, 2]], out: [[1, 2], [4, 5], [7, 8]]}
 
-"Ŀ":
-  Numbers:
-    - {in: [8, 2], out: 3}
-    - {in: [1000, 10], out: 3}
-  Numbers and strings:
-    - {in: ["abcde", 5], out: 1}
-    - {in: ["abcde", 10], out: 0}
-  Strings:
-    - {in: ["abcde", "fghij"], out: 1}
-    - {in: ["abcde", "abcdef"], out: 0}
 
 "Ṁ":
   Matrices:
