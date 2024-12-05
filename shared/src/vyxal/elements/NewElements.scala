@@ -430,6 +430,7 @@ object NewElements:
               case (a, b) =>
                 throw UnimplementedOverloadException("o", List(a, b))
       },
+    "p" -> fullToImpl(Dyad, (itr, other) => VList.from(other +: itr.itr)),
   )
 
   // Subject to being added as overloads onto things in elements

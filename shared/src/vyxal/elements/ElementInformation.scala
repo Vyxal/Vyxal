@@ -1393,5 +1393,19 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "p",
+      keywords = Seq("prepend"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Prepend",
+        args = Seq("any", "any"),
+        description = "Prepend #2 to #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
