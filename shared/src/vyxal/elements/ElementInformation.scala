@@ -1299,5 +1299,77 @@ object ElementInformation:
           "Intersperse elements of #2 within #1 (e.g. [1, [2,3], 4] [5, 6] -> [1, 5, 6, [2, 3], 5, 6, 4])",
       ),
     ),
+    Element(
+      symbol = "l",
+      keywords = Seq(
+        "log",
+        "logarithm",
+        "scan-fixpoint",
+        "scan-fix",
+        "same-length?",
+        "same-length",
+        "length-equals?",
+        "length-equals",
+        "len-eq?",
+      ),
+      arity = 2,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Logarithm",
+        args = Seq("num", "num"),
+        description = "Log base #2 of #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Scan Fixpoint",
+        args = Seq("fun", "any"),
+        description = "Repeatedly apply #1 to #2 until it doesn't change",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Same Length",
+        args = Seq("str", "str"),
+        description = "Are #1 and #2 the same length",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "String Length Equals",
+        args = Seq("str", "num"),
+        description = "Is the length of {#1|#2} equal to {#2|#1}",
+        typeSwitchable = true,
+      ),
+    ),
+    Element(
+      symbol = "m",
+      keywords =
+        Seq("ctx-secondary", "ctx2", "ctx-m", "context-m", "context-secondary"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Context Secondary",
+        args = Seq(),
+        description = "Push the secondary context variable to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "n",
+      keywords =
+        Seq("ctx-primary", "ctx", "ctx-n", "context-n", "context-primary"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Context Primary",
+        args = Seq(),
+        description = "Push the primary context variable to the stack",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

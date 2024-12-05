@@ -165,13 +165,13 @@ b = rhs
 - [x]   (lst, lst) = [a[x] for x in b]
 - [x]   (str, str) -> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])
 - [x]   (any, fun)* = Apply b on a and collect unique values. Does include the initial value.
-- [ ] j (any, any) = join a on b
-- [ ] l (num, num) = Logarithm
-- [ ]   (str, str) = len(a) == len(b)
-- [ ]   (str, num)* = len(a) == b
-- [ ]   (any, fun)* = apply until a previous value is repeated, collecting intermediate results
-- [ ] m () = context variable m
-- [ ] n () = context variable n
+- [x] j (any, any) = join a on b
+- [x] l (num, num) = Logarithm
+- [x]   (str, str) = len(a) == len(b)
+- [x]   (str, num)* = len(a) == b
+- [x]   (any, fun)* = apply until a previous value is repeated, collecting intermediate results
+- [x] m () = context variable m
+- [x] n () = context variable n
 - [ ] o (any, num) = Overlapping slices of a of length b
 - [ ]   (any) = Overlapping slices of a of length 2
 - [ ] p (any, any) = Prepend

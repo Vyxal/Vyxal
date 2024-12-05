@@ -404,6 +404,16 @@ object NewElements:
           case l: VList => l.mkString
           case res => res
     },
+    addPart("l", Dyad, true) {
+      case (a: VNum, b: VNum) => NumberHelpers.log(a, b)
+      case (a: String, b: VNum) => a.length == b.toInt
+      case (a: String, b: String) => a.length == b.length
+      case (a: VNum, b: String) => b.length == a.toInt
+      case (a: VPhysical, b: VFun) => MiscHelpers.collectUnique(b, a)
+      case (a: VFun, b) => MiscHelpers.collectUnique(a, b)
+    },
+    "m" -> niladify(ctx ?=> ctx.ctxVarSecondary),
+    "n" -> niladify(ctx ?=> ctx.ctxVarPrimary),
   )
 
   // Subject to being added as overloads onto things in elements
