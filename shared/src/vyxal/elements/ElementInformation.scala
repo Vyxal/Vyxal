@@ -1407,5 +1407,39 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "q",
+      keywords = Seq("quotify"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Quotify",
+        args = Seq("any"),
+        description = "Cast #1 to a string and wrap in quotes",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "r",
+      keywords = Seq("replace"),
+      arity = 3,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Replace",
+        args = Seq("nsl", "nsl", "nsl"),
+        description = "Replace all occurrences of #2 in #1 with #3",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Zip-With",
+        args = Seq("lst", "lst", "fun"),
+        description = "Zip #1 and #2 and apply #3 to each pair",
+        typeSwitchable = true,
+      ),
+    ),
   )
 end ElementInformation

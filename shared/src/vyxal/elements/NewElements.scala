@@ -433,7 +433,28 @@ object NewElements:
     "p" -> fullToImpl(Dyad, (itr, other) => VList.from(other +: itr.itr)),
     addPart("q", Monad, true) {
       case a: String => StringHelpers.quotify(a)
-      case a: VNum => NumberHelpers.probablePrimes.index(a)
+    },
+    addPart("r", Triad, false) {
+      case (a: VFun, b, c) => MiscHelpers
+          .zipWith(ListHelpers.makeIterable(b), ListHelpers.makeIterable(c), a)
+      case (a, b: VFun, c) => MiscHelpers
+          .zipWith(ListHelpers.makeIterable(a), ListHelpers.makeIterable(c), b)
+      case (a, b, c: VFun) => MiscHelpers.zipWith(
+          ListHelpers.makeIterable(a),
+          ListHelpers.makeIterable(b),
+          c,
+        )
+      case (a: VList, b, c) =>
+        VList.from(a.lst.map(x => if x == b then c else x))
+      case (a, b: VList, c: VList) =>
+        VList.from(b.lst.map(x => if x == a then c else x))
+      case (a, b, c: VList) =>
+        VList.from(c.lst.map(x => if x == a then b else x))
+      case (a, b: VList, c) =>
+        VList.from(b.lst.map(x => if x == a then c else x))
+      case (a: String, b: VVal, c: VVal) => a.replace(b.toString, c.toString)
+      case (a: VNum, b: VVal, c: VVal) =>
+        MiscHelpers.eval(a.toString().replace(b.toString, c.toString))
     },
   )
 
