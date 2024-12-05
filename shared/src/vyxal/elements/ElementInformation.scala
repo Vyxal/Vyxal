@@ -1469,5 +1469,19 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "u",
+      keywords = Seq("unique"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Unique",
+        args = Seq("lst"),
+        description = "Unique elements of #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

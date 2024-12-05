@@ -468,6 +468,12 @@ object NewElements:
         Monad,
         lst => lst.itr.lastOption.getOrElse(MiscHelpers.defaultEmpty(lst)),
       ),
+    addPart("u", Monad, false) {
+      case lst: VList => lst.distinct
+      case n: VNum =>
+        MiscHelpers.eval(ListHelpers.makeIterable(n).distinct.mkString)
+      case s: String => s.distinct.mkString
+    },
   )
 
   // Subject to being added as overloads onto things in elements
