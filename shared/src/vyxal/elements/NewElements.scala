@@ -431,6 +431,10 @@ object NewElements:
                 throw UnimplementedOverloadException("o", List(a, b))
       },
     "p" -> fullToImpl(Dyad, (itr, other) => VList.from(other +: itr.itr)),
+    addPart("q", Monad, true) {
+      case a: String => StringHelpers.quotify(a)
+      case a: VNum => NumberHelpers.probablePrimes.index(a)
+    },
   )
 
   // Subject to being added as overloads onto things in elements
