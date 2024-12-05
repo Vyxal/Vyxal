@@ -456,6 +456,18 @@ object NewElements:
       case (a: VNum, b: VVal, c: VVal) =>
         MiscHelpers.eval(a.toString().replace(b.toString, c.toString))
     },
+    addPart("s", Dyad, false) {
+      case (a: String, b) =>
+        if b.isInstanceOf[String] && b.toString.isEmpty then a.itr
+        else StringHelpers.split(a, b.toString())
+      case (a: VNum, b) => StringHelpers.split(a, b.toString())
+      case (a: VList, b) => ListHelpers.splitNormal(a, b)
+    },
+    "t" ->
+      fullToImpl(
+        Monad,
+        lst => lst.itr.lastOption.getOrElse(MiscHelpers.defaultEmpty(lst)),
+      ),
   )
 
   // Subject to being added as overloads onto things in elements

@@ -1441,5 +1441,33 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
+    Element(
+      symbol = "s",
+      keywords = Seq("split"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Split",
+        args = Seq("any", "any"),
+        description = "Split #1 by #2",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "t",
+      keywords = Seq("tail", "last"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Tail",
+        args = Seq("any"),
+        description = "Last element of #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

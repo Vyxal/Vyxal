@@ -177,8 +177,8 @@ b = rhs
 - [x] p (any, any) = Prepend
 - [x] q (any) = Quotify
 - [x] r (any, any, any) = s/b/c
-- [ ] s (any, any) = split a on b
-- [ ] t (any) = a[-1]
+- [x] s (any, any) = split a on b
+- [x] t (any) = a[-1]
 - [ ] u (any) = uniquify
 - [ ] v # TODO
 - [ ] w (any) = [a]
