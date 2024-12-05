@@ -179,9 +179,9 @@ b = rhs
 - [x] r (any, any, any) = s/b/c
 - [x] s (any, any) = split a on b
 - [x] t (any) = a[-1]
-- [ ] u (any) = uniquify
+- [x] u (any) = uniquify
 - [ ] v # TODO
-- [ ] w (any) = [a]
+- [x] w (any) = [a]
 - [ ] x () = call the current function (or top level program)
 - [ ] y (any, any, any) = Transliterate
 - [ ] z (any, any) = Transpose with filler (the thing jelly has)

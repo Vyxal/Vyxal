@@ -478,6 +478,10 @@ object NewElements:
         MiscHelpers.eval(ListHelpers.makeIterable(n).distinct.mkString)
       case s: String => s.distinct.mkString
     },
+    "w" ->
+      direct(Monad) {
+        push(VList(pop())) // Tacit!
+      },
   )
 
   // Subject to being added as overloads onto things in elements

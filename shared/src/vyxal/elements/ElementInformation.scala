@@ -1483,5 +1483,19 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "w",
+      keywords = Seq("wrap-in-list"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Wrap in List",
+        args = Seq("any"),
+        description = "Wrap #1 in a list",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
