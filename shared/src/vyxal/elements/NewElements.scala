@@ -518,6 +518,18 @@ object NewElements:
       case default => MiscHelpers.eval(default.itr.mkString)
     },
     "Π" -> fullToImpl(Monad, lhs => ListHelpers.product(lhs.itr)),
+    addPart("σ", Monad, false) {
+      case a =>
+        val list = ListHelpers.makeIterable(a)
+        if list.isEmpty then VList()
+        else if list.tail.isEmpty then VList(list.head)
+        else
+          VList.from(
+            list.tail.scanLeft(
+              list.head
+            )((x, y) => MiscHelpers.add(x, y))
+          )
+    },
   )
 
   // Subject to being added as overloads onto things in elements

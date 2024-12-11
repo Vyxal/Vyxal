@@ -1600,5 +1600,19 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "σ",
+      keywords = Seq("cumulative-sums", "cumsums", "cumsum", "cum-sum", "-_-"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Cumulative Sums",
+        args = Seq("lst"),
+        description = "Cumulative sums of #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
