@@ -185,9 +185,9 @@ b = rhs
 - [ ] x () = call the current function (or top level program)
 - [x] y (any, any, any) = Transliterate
 - [x] z (any, any) = Transpose with filler (the thing jelly has)
-- [ ] ⨥ (num) = a + 2
-- [ ]   (str) = string length == 1
-- [ ] ⨪ (num) = a - 2
+- [x] ⨥ (num) = a + 2
+- [x]   (str) = string length == 1
+- [x] ⨪ (num) = a - 2
 - [ ]   (str) = tbd (not append two "-"s though that'd be silly even by my standards)
 - [ ] Σ (any) = sum of a 
 - [ ]   (lst[at least one string]) = join on nothing and eval
