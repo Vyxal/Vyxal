@@ -1566,5 +1566,19 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "∑",
+      keywords = Seq("sum", "sum-of", "+/", "/+", "sigma", "sigma-in-ohio"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Sum",
+        args = Seq("lst"),
+        description = "Sum of #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

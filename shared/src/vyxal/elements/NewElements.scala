@@ -511,6 +511,7 @@ object NewElements:
     addPart("⨪", Monad, true) {
       case a: VNum => a - 2
     },
+    "∑" -> fullToImpl(Monad, x => ListHelpers.sum(x.itr)),
   )
 
   // Subject to being added as overloads onto things in elements
