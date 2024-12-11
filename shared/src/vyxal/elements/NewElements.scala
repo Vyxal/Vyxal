@@ -530,6 +530,7 @@ object NewElements:
             )((x, y) => MiscHelpers.add(x, y))
           )
     },
+    "⇧" -> fullToImpl(Monad, lhs => ListHelpers.gradeUp(lhs.itr)),
   )
 
   // Subject to being added as overloads onto things in elements

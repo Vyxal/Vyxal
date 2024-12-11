@@ -1614,5 +1614,19 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⇧",
+      keywords = Seq("grade-up"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Grade Up",
+        args = Seq("lst"),
+        description = "Indices that would sort #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
