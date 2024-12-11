@@ -1518,5 +1518,19 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "z",
+      keywords = Seq("zip-with-filler"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Zip With Filler",
+        args = Seq("lst", "any"),
+        description = "Transpose #1, filling empty spaces with #2",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
