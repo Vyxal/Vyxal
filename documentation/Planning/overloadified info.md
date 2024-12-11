@@ -184,7 +184,7 @@ b = rhs
 - [x] w (any) = [a]
 - [ ] x () = call the current function (or top level program)
 - [x] y (any, any, any) = Transliterate
-- [ ] z (any, any) = Transpose with filler (the thing jelly has)
+- [x] z (any, any) = Transpose with filler (the thing jelly has)
 - [ ] ⨥ (num) = a + 2
 - [ ]   (str) = string length == 1
 - [ ] ⨪ (num) = a - 2

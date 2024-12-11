@@ -502,6 +502,8 @@ object NewElements:
         if VNum.NumRegex.matches(temp) then VNum(temp) else temp
 
     },
+    "z" ->
+      fullToImpl(Dyad, (lhs, rhs) => ListHelpers.transpose(lhs.itr, Some(rhs))),
   )
 
   // Subject to being added as overloads onto things in elements
