@@ -1579,6 +1579,26 @@ object ElementInformation:
         description = "Sum of #1",
         typeSwitchable = false,
       ),
+      Overload(
+        name = "Join and Evaluate",
+        args = Seq("lst[at least 1 str]"),
+        description = "Join #1 and evaluate the result",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "∏",
+      keywords = Seq("product", "product-of", "*/", "*/"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Product",
+        args = Seq("lst"),
+        description = "Product of #1",
+        typeSwitchable = false,
+      ),
     ),
   )
 end ElementInformation

@@ -517,6 +517,7 @@ object NewElements:
         ListHelpers.sum(a)
       case default => MiscHelpers.eval(default.itr.mkString)
     },
+    "Π" -> fullToImpl(Monad, lhs => ListHelpers.product(lhs.itr)),
   )
 
   // Subject to being added as overloads onto things in elements
