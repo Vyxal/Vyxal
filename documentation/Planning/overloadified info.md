@@ -183,7 +183,7 @@ b = rhs
 - [ ] v # TODO
 - [x] w (any) = [a]
 - [ ] x () = call the current function (or top level program)
-- [ ] y (any, any, any) = Transliterate
+- [x] y (any, any, any) = Transliterate
 - [ ] z (any, any) = Transpose with filler (the thing jelly has)
 - [ ] ⨥ (num) = a + 2
 - [ ]   (str) = string length == 1

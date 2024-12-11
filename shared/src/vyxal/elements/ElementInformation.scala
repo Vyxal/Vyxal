@@ -1497,5 +1497,26 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "y",
+      keywords = Seq("transliterate", "call-while"),
+      arity = 3,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Transliterate",
+        args = Seq("nsl", "nsl", "nsl"),
+        description = "Replace all occurrences of #2 in #1 with #3",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Call While",
+        args = Seq("fun", "fun", "any"),
+        description =
+          "While #1(#3) is true, #3 = #2(#3). Return the result. Type switchable.",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

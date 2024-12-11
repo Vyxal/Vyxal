@@ -679,34 +679,52 @@
   - { in: [0], out: [0]}
 
 "y":
-  - {in: [1234567, "abc"], out: "cacccabbbbcab"}
-  - {in: [1234567, 5], out: [3, 0, 4, 0, 0, 1, 2, 3, 2]}
-  - {in: [8163, -10], out: [1, 2, 2, 4, 3]}
-  - {in: [928343, ["he", "ll", "o"]], out: ["ll", "o", "he", "o", "he", "ll", "ll", "ll", "ll", "he", "he", "he", "o"]}
-  - {in: [[10, 12, 6, 2, 8, 145], 2], out: [[1, 0, 1, 0], [1, 1, 0, 0], [1, 1, 0], [1, 0], [1, 0, 0, 0], [1, 0, 0, 1, 0, 0, 0, 1]]}
-  - {in: [0, 0], out: [0]}
-  - {in: [0, 1], out: [0]}
-  - {in: [0, []], out: 0}
-  - {in: [0, ["a"]], out: ["a"]}
-  - {in: [3, -2], out: [1, 1, 1]}
-  - in:
-      - !num 3ı-5
-      - !num 4ı0
-    out:
-      - !num 3ı-5
-  - in:
-      - !num 3ı-3
-      - !num -1ı-1
-    out: # todo(user): make a less verbose way to write this
-      - !num 0ı1
-      - !num 1ı0
-      - !num 0ı1
-      - !num 1ı0
-      - !num 0ı1
-      - !num 1ı0
-  - {in: ["123 + 456", "\d+"], out: ["123", "456"] }
-  - {in: ["123 + 456", "\d"], out: ["1", "2", "3", "4", "5", "6"] }
-  - {in: ["username@domain.com", "[^@]+"], out: ["username", "domain.com"] }
+  as transliterate:
+    - {in: [1300655506, 356, 879], out: 1800977709}
+    - {in: ["abcdefcba","abc","123"], out: "123def321"}
+    - {in: [[1,2,0], [2], [5]], out: [1,5,0]}
+    - {in: ["120", [2], "5"], out: "150"}
+    - {in: [-120, [2], [5]], out: -150}
+    - {in: ["abc","ab",["bb","cc"]], out: "bbccc"}
+    - {in: ["abcd", ["ab", "cd"], ["cd", "ab"]], out: "cdab"}
+    - {in: [431, 1234, 4321], out: 124}
+    - {in: [-234, 1234, 4321], out: -321}
+    - {in: ["Hello", "eHlo", "abcd"], out: "baccd" }
+  as call while:
+    - in:
+        - 0
+        - !vany "λ5<}" # Less than 5
+        - !vany "λ1+}" # Increment
+      out: [0, 1, 2, 3, 4, 5]
+
+#  - {in: [1234567, "abc"], out: "cacccabbbbcab"}
+#  - {in: [1234567, 5], out: [3, 0, 4, 0, 0, 1, 2, 3, 2]}
+#  - {in: [8163, -10], out: [1, 2, 2, 4, 3]}
+#  - {in: [928343, ["he", "ll", "o"]], out: ["ll", "o", "he", "o", "he", "ll", "ll", "ll", "ll", "he", "he", "he", "o"]}
+#  - {in: [[10, 12, 6, 2, 8, 145], 2], out: [[1, 0, 1, 0], [1, 1, 0, 0], [1, 1, 0], [1, 0], [1, 0, 0, 0], [1, 0, 0, 1, 0, 0, 0, 1]]}
+#  - {in: [0, 0], out: [0]}
+#  - {in: [0, 1], out: [0]}
+#  - {in: [0, []], out: 0}
+#  - {in: [0, ["a"]], out: ["a"]}
+#  - {in: [3, -2], out: [1, 1, 1]}
+#  - in:
+#      - !num 3ı-5
+#      - !num 4ı0
+#    out:
+#      - !num 3ı-5
+#  - in:
+#      - !num 3ı-3
+#      - !num -1ı-1
+#    out: # todo(user): make a less verbose way to write this
+#      - !num 0ı1
+#      - !num 1ı0
+#      - !num 0ı1
+#      - !num 1ı0
+#      - !num 0ı1
+#      - !num 1ı0
+#  - {in: ["123 + 456", "\d+"], out: ["123", "456"] }
+#  - {in: ["123 + 456", "\d"], out: ["1", "2", "3", "4", "5", "6"] }
+#  - {in: ["username@domain.com", "[^@]+"], out: ["username", "domain.com"] }
 
 "z":
   - {in: [4], out: [0, 1, 2, 3, 4]}
@@ -961,25 +979,6 @@
   - { in: ["asdf"], stack: ["sdf", "a"] }
   - { in: [[]], stack: [[], 0] }
   - { in: [""], stack: ["", ""] }
-
-"ŀ":
-  as transliterate:
-    - {in: [1300655506, 356, 879], out: 1800977709}
-    - {in: ["abcdefcba","abc","123"], out: "123def321"}
-    - {in: [[1,2,0], [2], [5]], out: [1,5,0]}
-    - {in: ["120", [2], "5"], out: "150"}
-    - {in: [-120, [2], [5]], out: -150}
-    - {in: ["abc","ab",["bb","cc"]], out: "bbccc"}
-    - {in: ["abcd", ["ab", "cd"], ["cd", "ab"]], out: "cdab"}
-    - {in: [431, 1234, 4321], out: 124}
-    - {in: [-234, 1234, 4321], out: -321}
-    - {in: ["Hello", "eHlo", "abcd"], out: "baccd" }
-  as call while:
-    - in:
-        - 0
-        - !vany "λ5<}" # Less than 5
-        - !vany "λ1+}" # Increment
-      out: [0, 1, 2, 3, 4, 5]
 
 
 "ṁ":

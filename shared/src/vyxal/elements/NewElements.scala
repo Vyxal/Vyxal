@@ -482,6 +482,26 @@ object NewElements:
       direct(Monad) {
         push(VList(pop())) // Tacit!
       },
+    addPart("y", Triad, false) {
+      case (
+            a: String,
+            b: (VList | VNum | String),
+            c: (VList | VNum | String),
+          ) => StringHelpers.transliterate(
+          a,
+          ListHelpers.makeIterable(b),
+          ListHelpers.makeIterable(c),
+        )
+      case (p: VFun, f: VFun, v) => MiscHelpers.callWhileAndCollect(p, f, v)
+      case (p: VFun, v, f: VFun) => MiscHelpers.callWhileAndCollect(p, f, v)
+      case (v, p: VFun, f: VFun) => MiscHelpers.callWhileAndCollect(p, f, v)
+      case (a: VList, b, c) => ListHelpers.transliterate(a, b, c)
+      case (a: VNum, b, c) =>
+        val temp =
+          ListHelpers.transliterate(ListHelpers.makeIterable(a), b, c).mkString
+        if VNum.NumRegex.matches(temp) then VNum(temp) else temp
+
+    },
   )
 
   // Subject to being added as overloads onto things in elements
