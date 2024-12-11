@@ -511,7 +511,12 @@ object NewElements:
     addPart("⨪", Monad, true) {
       case a: VNum => a - 2
     },
-    "∑" -> fullToImpl(Monad, x => ListHelpers.sum(x.itr)),
+    addPart("∑", Monad, false) {
+      case a: VVal => ListHelpers.sum(a.itr)
+      case a: VList if !a.lst.exists(_.isInstanceOf[String]) =>
+        ListHelpers.sum(a)
+      case default => MiscHelpers.eval(default.itr.mkString)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

@@ -189,8 +189,8 @@ b = rhs
 - [x]   (str) = string length == 1
 - [x] ⨪ (num) = a - 2
 - [ ]   (str) = tbd (not append two "-"s though that'd be silly even by my standards)
-- [ ] Σ (any) = sum of a 
-- [ ]   (lst[at least one string]) = join on nothing and eval
+- [x] Σ (any) = sum of a 
+- [x]   (lst[at least one string]) = join on nothing and eval
 - [ ] Π (any) = product of a
 - [ ] σ (any) = Cumulative sums of a
 - [ ] ⇧ (any) = Grade up
