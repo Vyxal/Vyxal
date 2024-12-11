@@ -1532,5 +1532,39 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⨥",
+      keywords = Seq("+2", "add-2", "++++", "inc-inc", "strlen==1"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Add 2",
+        args = Seq("num"),
+        description = "#1 + 2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "String Length Equals 1",
+        args = Seq("str"),
+        description = "Is the length of #1 equal to 1",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⨪",
+      keywords = Seq("-2", "subtract-2", "----", "dec-dec"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Subtract 2",
+        args = Seq("num"),
+        description = "#1 - 2",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

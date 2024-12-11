@@ -504,6 +504,13 @@ object NewElements:
     },
     "z" ->
       fullToImpl(Dyad, (lhs, rhs) => ListHelpers.transpose(lhs.itr, Some(rhs))),
+    addPart("⨥", Monad, true) {
+      case a: VNum => a + 2
+      case a: String => a.length() == 1
+    },
+    addPart("⨪", Monad, true) {
+      case a: VNum => a - 2
+    },
   )
 
   // Subject to being added as overloads onto things in elements
