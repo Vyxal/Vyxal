@@ -602,8 +602,9 @@ object NewElements:
     },
     addPart("⌊", Monad, false) {
       case a: VNum => a.floor
-      case a: String if !a.exists(_.isDigit) => 0
-      case a: String => MiscHelpers.eval(a.filter(_.isDigit))
+      case a: String =>
+        val temp = MiscHelpers.eval(a)
+        if temp.isInstanceOf[VNum] then temp else 0
     },
   )
 
