@@ -1975,5 +1975,56 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "≜",
+      keywords = Seq("assign"),
+      arity = 3,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "List Assign",
+        args = Seq("any", "num", "nsl"),
+        description = "#1[#2] = #3",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Augmented List Assignment",
+        args = Seq("any", "num", "fun"),
+        description = "#1[#2] = #3(#1[#2])",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Vectorised Augmented List Assignment",
+        args = Seq("lst", "lst[num]", "fun"),
+        description = "#1[_] = #3(#1[_]) for _ in #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Zipped Assignment",
+        args = Seq("lst", "lst", "lst"),
+        description = "#1[ind] = val for ind, val in zip(#2, #3)",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Regex String Replacement",
+        args = Seq("str", "str", "str"),
+        description = "Replace all occurrences of #2 in #1 with #3",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Regex Substitution",
+        args = Seq("str", "str", "fun"),
+        description =
+          "Replace all occurrences of #2 in #1 with the result of #3",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Object Member Assignment",
+        args = Seq("obj", "str", "any"),
+        description = "#1.#2 = #3",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

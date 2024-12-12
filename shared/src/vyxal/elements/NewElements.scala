@@ -678,6 +678,55 @@ object NewElements:
             push(ListHelpers.rotate(iterable, -times))
           case _ => throw UnsupportedOverloadException("⟿", "function | object")
       },
+    addPart("≜", Triad, false) {
+      case (a: VObject, b: String, c) => MiscHelpers.setObjectMember(a, b, c)
+      case (a: VObject, b: VList, c) =>
+        var obj = a
+        for i <- b do
+          obj = MiscHelpers.setObjectMember(
+            obj,
+            b.toString,
+            c,
+          )
+        obj
+      case (a, b: VNum, c: VPhysical) =>
+        val temp = ListHelpers.assign(ListHelpers.makeIterable(a), b, c)
+        if a.isInstanceOf[String] then temp.mkString
+        else temp
+      case (a, b: VVal, c: VNum) =>
+        val temp = ListHelpers.assign(ListHelpers.makeIterable(a), c, b)
+        if a.isInstanceOf[String] then temp.mkString
+        else temp
+      case (a, b: VNum, c: VFun) =>
+        val temp = ListHelpers.augmentAssign(ListHelpers.makeIterable(a), b, c)
+        if a.isInstanceOf[String] then temp.mkString
+        else temp
+      case (a, b: VList, c: VList) =>
+        var temp = ListHelpers.makeIterable(a)
+        for (i, j) <-
+            ListHelpers.makeIterable(b).zip(ListHelpers.makeIterable(c))
+        do
+          i match
+            case ind: VNum => j match
+                case value: VPhysical => temp = ListHelpers.assign(temp, ind, j)
+                case function: VFun =>
+                  temp = ListHelpers.augmentAssign(temp, ind, function)
+            case _ => throw InvalidListOverloadException("Ạ", b, "Number")
+        if a.isInstanceOf[String] then temp.mkString
+        else temp
+      case (a, b: VList, c) =>
+        val temp =
+          ListHelpers.makeIterable(b).foldLeft(ListHelpers.makeIterable(a)) {
+            case (temp, ind: VNum) => ListHelpers.assign(temp, ind, c)
+            case _ => throw InvalidListOverloadException("Ạ", b, "Number")
+          }
+        if a.isInstanceOf[String] then temp.mkString
+        else temp
+      case (a: String, b: String, c: String) => StringHelpers.regexSub(a, b, c)
+      case (a: String, b: String, c: VFun) => StringHelpers.regexSub(a, b, c)
+      case (a: String, b: VFun, c: String) => StringHelpers.regexSub(a, c, b)
+      case (a: VFun, b: String, c: String) => StringHelpers.regexSub(b, c, a)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

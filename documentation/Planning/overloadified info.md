@@ -224,15 +224,15 @@ b = rhs
 - [x] ↝ (...) = rotate stack right
 - [x] ⬳ (non-num) = rotate item left
 - [x]     (any, num) = rotate item left b times
-- [ ] ⟿ (non-num) = rotate item right
-- [ ]    (any, num) = rotate item right b times
-- [ ] ≜ (any, num, non-fun) = a[b] = c
-- [ ]    (any, num, fun) = a[b] = c(a[b])
-- [ ]    (any, lst[num], fun) = essentially vectorised of (any, num, fyn)
-- [ ]    (lst, lst, lst) = [a[x] = y for (x, y) in zip(x, y)]
-- [ ]    (str, str, str) = replace regex matches of pattern b in string a with c
-- [ ]    (str, str, fun)* = replace regex matches of pattern b in string a with the result of applying c to each match
-- [ ]    (rec, str, str)* = a.b = c
+- [x] ⟿ (non-num) = rotate item right
+- [x]    (any, num) = rotate item right b times
+- [x] ≜ (any, num, non-fun) = a[b] = c
+- [x]    (any, num, fun) = a[b] = c(a[b])
+- [x]    (any, lst[num], fun) = essentially vectorised of (any, num, fyn)
+- [x]    (lst, lst, lst) = [a[x] = y for (x, y) in zip(x, y)]
+- [x]    (str, str, str) = replace regex matches of pattern b in string a with c
+- [x]    (str, str, fun)* = replace regex matches of pattern b in string a with the result of applying c to each match
+- [x]    (rec, str, str)* = a.b = c
 - [ ] ⎀ (any, num, any) = insert c at position b in a
 - [ ]    (any, lst, any) = insert c at positions b in a
 - [ ]    (any, lst[num], lst) = insert c[i] at position b[i] in a
