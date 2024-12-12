@@ -8,7 +8,7 @@ on:
       - synchronize
       - reopened
     branches:
-      - "update/version-3/**"
+      - "scala-steward:update/version-3/**"
   workflow_dispatch:
 
 jobs:
