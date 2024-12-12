@@ -540,6 +540,19 @@ object NewElements:
       case (lhs: String, rhs: String) => lhs.filter(rhs.contains(_))
       case (lhs, rhs) => VList.from(lhs.itr.filter(rhs.itr.contains(_)))
     },
+    addPart("⊍", Dyad, false) {
+      case (lhs: String, rhs: String) => (lhs.itr ^ rhs.itr).mkString
+      case (lhs, rhs) => VList.from(lhs.itr ^ rhs.itr)
+    },
+    addPart("⦰", Dyad, false) {
+      case (a: String, b: String) => a.filterNot(b.contains(_))
+      case (a: VList, b: (VNum | String)) => a.filter(_ != b)
+      case (a: (VNum | String), b: VList) => b.filter(_ != a)
+      case (a, b) =>
+        val left = ListHelpers.makeIterable(a)
+        val right = ListHelpers.makeIterable(b)
+        VList.from(left.filterNot(right.contains(_)))
+    },
   )
 
   // Subject to being added as overloads onto things in elements

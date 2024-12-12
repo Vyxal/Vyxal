@@ -1670,5 +1670,33 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⊍",
+      keywords = Seq("set-xor"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Set XOR",
+        args = Seq("lst", "lst"),
+        description = "Set XOR of #1 and #2",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⦰",
+      keywords = Seq("set-difference", "set-diff"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Set Difference",
+        args = Seq("lst", "lst"),
+        description = "Set difference of #1 and #2",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
