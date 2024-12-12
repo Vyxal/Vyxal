@@ -1698,5 +1698,60 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "«",
+      keywords = Seq("left-shift", "<<"),
+      arity = 2,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Left Shift",
+        args = Seq("num", "num"),
+        description = "#1 << #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Prepend Spaces to Given Length",
+        args = Seq("str", "num"),
+        description =
+          "Prepend spaces to string {#1|#2} until it is {#2|#1} characters long",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Prepend Spaces to Length of Second String",
+        args = Seq("str", "str"),
+        description =
+          "Prepend spaces to string #1 until it is the length of #2",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "»",
+      keywords = Seq("right-shift", ">>"),
+      arity = 2,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Right Shift",
+        args = Seq("num", "num"),
+        description = "#1 >> #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Append Spaces to Given Length",
+        args = Seq("str", "num"),
+        description =
+          "Append spaces to string {#1|#2} until it is {#2|#1} characters long",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Append Spaces to Length of Second String",
+        args = Seq("str", "str"),
+        description = "Append spaces to string #1 until it is the length of #2",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

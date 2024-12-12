@@ -553,6 +553,18 @@ object NewElements:
         val right = ListHelpers.makeIterable(b)
         VList.from(left.filterNot(right.contains(_)))
     },
+    addPart("«", Dyad, true) {
+      case (a: VNum, b: VNum) => a.toBigInt << b.toInt
+      case (a: VNum, b: String) => StringHelpers.padLeft(b, a)
+      case (a: String, b: VNum) => StringHelpers.padLeft(a, b)
+      case (a: String, b: String) => StringHelpers.padLeft(a, b.length)
+    },
+    addPart("»", Dyad, true) {
+      case (a: VNum, b: VNum) => a.toBigInt >> b.toInt
+      case (a: VNum, b: String) => StringHelpers.padRight(b, a)
+      case (a: String, b: VNum) => StringHelpers.padRight(a, b)
+      case (a: String, b: String) => StringHelpers.padRight(a, b.length)
+    },
   )
 
   // Subject to being added as overloads onto things in elements
