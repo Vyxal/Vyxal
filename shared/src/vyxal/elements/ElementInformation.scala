@@ -1804,5 +1804,46 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
+    Element(
+      symbol = "⌈",
+      keywords = Seq("ceil", "ceiling", "split-on-spaces"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Ceiling",
+        args = Seq("num"),
+        description = "Ceiling of #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Split on Spaces",
+        args = Seq("str"),
+        description = "Split #1 by spaces",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⌊",
+      keywords = Seq("floor", "str-to-num"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Floor",
+        args = Seq("num"),
+        description = "Floor of #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "String to Number",
+        args = Seq("str"),
+        description =
+          "Convert #1 to a number, ignoring non-digit characters. Returns 0 if no digits are found",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
