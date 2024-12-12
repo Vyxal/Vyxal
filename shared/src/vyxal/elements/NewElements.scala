@@ -6,7 +6,7 @@ import vyxal.*
 import vyxal.{Dyad, ImplHelpers, Monad, Tetrad, Triad}
 import vyxal.parsing.TokenType
 import vyxal.toBool
-import vyxal.Context.{copyCtx, pop, push}
+import vyxal.Context.{copyCtx, peek, pop, push}
 import vyxal.Context.given
 import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.defaultEmpty
@@ -565,6 +565,16 @@ object NewElements:
       case (a: String, b: VNum) => StringHelpers.padRight(a, b)
       case (a: String, b: String) => StringHelpers.padRight(a, b.length)
     },
+    "Ɠ" ->
+      direct(1) {
+        val top = peek()
+        push(top.itr.maxOption.getOrElse(defaultEmpty(top)))
+      },
+    "ɠ" ->
+      direct(1) {
+        val top = peek()
+        push(top.itr.minOption.getOrElse(defaultEmpty(top)))
+      },
   )
 
   // Subject to being added as overloads onto things in elements

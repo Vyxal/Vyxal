@@ -95,7 +95,7 @@ trait VyxalTests extends AnyFunSpec:
     * @param tests
     *   A list of pairs with the inputs and expected stack for each case
     */
-  def testStackLike(code: String)(tests: (List[VAny], List[VAny])*) =
+  def testStackLike(code: String)(tests: (Seq[VAny], Seq[VAny])*) =
     for (inputs, stackEnd) <- tests do
       it(s"$inputs -> $stackEnd") {
         given ctx: Context = VyxalTests.testContext(inputs = inputs)

@@ -16,7 +16,8 @@ case class Overload(
 )
 
 case class Options(
-    vectorises: Boolean
+    vectorises: Boolean,
+    peeks: Boolean = false,
 )
 
 object ElementInformation:
@@ -1750,6 +1751,36 @@ object ElementInformation:
         name = "Append Spaces to Length of Second String",
         args = Seq("str", "str"),
         description = "Append spaces to string #1 until it is the length of #2",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "Ɠ",
+      keywords = Seq("max-peek"),
+      arity = 1,
+      Options(
+        vectorises = false,
+        peeks = true,
+      ),
+      Overload(
+        name = "Max Peek",
+        args = Seq("lst"),
+        description = "Maximum of #1 without popping",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "ɠ",
+      keywords = Seq("min-peek"),
+      arity = 1,
+      Options(
+        vectorises = false,
+        peeks = true,
+      ),
+      Overload(
+        name = "Min Peek",
+        args = Seq("lst"),
+        description = "Minimum of #1 without popping",
         typeSwitchable = false,
       ),
     ),
