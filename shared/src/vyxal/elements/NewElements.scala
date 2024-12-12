@@ -575,6 +575,10 @@ object NewElements:
         val top = peek()
         push(top.itr.minOption.getOrElse(defaultEmpty(top)))
       },
+    addPart("Ġ", Dyad, false) {
+      case (a: VList, b: VVal) =>
+        VList.from(a.map(MiscHelpers.dyadicMaximum(_, b)))
+    },
   )
 
   // Subject to being added as overloads onto things in elements
