@@ -656,6 +656,17 @@ object NewElements:
       direct(-1) {
         summon[Context].rotateRight
       },
+    "⬳" ->
+      direct(Monad) {
+        val top = pop()
+        top match
+          case a: VIter => push(ListHelpers.rotate(a, 1))
+          case a: VNum =>
+            val times = a
+            val iterable = pop()
+            push(ListHelpers.rotate(iterable, times))
+          case _ => throw UnsupportedOverloadException("⬳", "function | object")
+      },
   )
 
   // Subject to being added as overloads onto things in elements

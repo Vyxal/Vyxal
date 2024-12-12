@@ -1,5 +1,6 @@
 package vyxal
 
+import vyxal.StringHelpers.r
 import vyxal.VNum.given
 
 import scala.annotation.unchecked.uncheckedVariance
@@ -887,6 +888,40 @@ object ListHelpers:
       case str: String => str.reverse
       case num: VNum => VNum(num.toString.reverse)
       case _ => iterable
+
+  /** Rotate a list by a given amount. Positive amounts rotate left, negative
+    * amounts rotate right.
+    *
+    * @param iterable
+    *   The list to rotate
+    * @param amount
+    *   The amount to rotate by
+    * @return
+    *   The rotated list
+    */
+  def rotate(iterable: VAny, amount: VNum): VAny =
+    var counter = 0
+    val direction = if amount < 0 then -1 else 1
+    val amountInt = amount.toInt.abs
+    var temp = iterable
+
+    while counter < amountInt do
+      temp = temp match
+        case list: VList =>
+          if direction == 1 then VList.from(list.tail :+ list.head)
+          else VList.from(list.last +: list.init)
+        case str: String =>
+          if direction == 1 then str.tail + str.head
+          else s"${str.last}${str.init}"
+        case num: VNum =>
+          val str = num.toString
+          if direction == 1 then VNum(str.tail + str.head)
+          else VNum(s"${str.last}${str.init}")
+        case _ => throw BadArgumentException("rotate", iterable)
+      counter += 1
+
+    temp
+  end rotate
 
   /** Split a list on a sublist
     *

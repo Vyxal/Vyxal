@@ -222,8 +222,8 @@ b = rhs
 - [ ] ▲ # TODO
 - [x] ↜ (...) = rotate stack left
 - [x] ↝ (...) = rotate stack right
-- [ ] ⬳ (non-num) = rotate item left
-- [ ]     (any, num) = rotate item left b times
+- [x] ⬳ (non-num) = rotate item left
+- [x]     (any, num) = rotate item left b times
 - [ ] ⟿ (non-num) = rotate item right
 - [ ]    (any, num) = rotate item right b times
 - [ ] ≜ (any, num, non-fun) = a[b] = c
