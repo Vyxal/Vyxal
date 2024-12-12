@@ -310,14 +310,14 @@ class ElementTests extends VyxalTests:
   describe("Element ↜") {
     testStackLike("↜")(
       in(1, 2, 3) -> List[VAny](2, 3, 1),
-      in() -> List[VAny](),
+      in(1) -> List[VAny](1),
     )
   }
 
   describe("Element ↝") {
     testStackLike("↝")(
-      in(1, 2, 3) -> List[VAny](3, 1, 2),
-      in() -> List[VAny](),
+      in(1, 2, 3) -> List[VAny](2, 1, 3),
+      in(1) -> List[VAny](1),
     )
   }
 

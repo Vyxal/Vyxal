@@ -902,7 +902,7 @@ object ListHelpers:
   def rotate(iterable: VAny, amount: VNum): VAny =
     var counter = 0
     val direction = if amount < 0 then -1 else 1
-    val amountInt = amount.toInt.abs
+    val amountInt = amount.vabs
     var temp = iterable
 
     while counter <= amountInt do
