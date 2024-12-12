@@ -6,6 +6,7 @@ on:
     types:
       - opened
       - synchronize
+      - reopened
     branches:
       - "update/version-3/**"
   workflow_dispatch:
