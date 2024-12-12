@@ -638,6 +638,14 @@ object NewElements:
       case (a: VNum, b: VList) => b.tail.take(a.toInt)
       case (a: VNum, b: VNum) => MiscHelpers.eval((a.itr.tail.take(b)).mkString)
     },
+    "£" ->
+      direct(Monad) {
+        summon[Context].globals.register = pop()
+      },
+    "¥" ->
+      direct(0) {
+        push(summon[Context].globals.register)
+      },
   )
 
   // Subject to being added as overloads onto things in elements

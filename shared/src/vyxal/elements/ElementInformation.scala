@@ -1879,5 +1879,33 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
+    Element(
+      symbol = "£",
+      keywords = Seq("set-register"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Set Register",
+        args = Seq("any"),
+        description = "Set the register to #1",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "¥",
+      keywords = Seq("get-register"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Get Register",
+        args = Seq(),
+        description = "Push the register to the stack",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

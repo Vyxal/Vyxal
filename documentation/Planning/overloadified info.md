@@ -217,8 +217,8 @@ b = rhs
 - [x]   (str) = cast to int, 0 if no numeric characters
 - [x] ⊖ (any, num)* = a[0:b]
 - [x] ⌽ (any, num)* = a[1:b]
-- [ ] £ (any) = set Register
-- [ ] ¥ () = push Register
+- [x] £ (any) = set Register
+- [x] ¥ () = push Register
 - [ ] ▲ # TODO
 - [ ] ↜ (...) = rotate stack left
 - [ ] ↝ (...) = rotate stack right
