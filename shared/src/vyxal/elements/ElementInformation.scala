@@ -2026,5 +2026,30 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⎀",
+      keywords = Seq("insert"),
+      arity = 3,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Insert",
+        args = Seq("any", "num", "any"),
+        description = "Insert #3 into #1 at index #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Insert",
+        args = Seq("any", "lst[num]", "scl"),
+        description = "Insert #3 into #1 at indices #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Insert",
+        args = Seq("any", "lst[num]", "lst"),
+        description = "Insert items of #3 into #1 at indices #2",
+      ),
+    ),
   )
 end ElementInformation

@@ -233,9 +233,9 @@ b = rhs
 - [x]    (str, str, str) = replace regex matches of pattern b in string a with c
 - [x]    (str, str, fun)* = replace regex matches of pattern b in string a with the result of applying c to each match
 - [x]    (rec, str, str)* = a.b = c
-- [ ] ⎀ (any, num, any) = insert c at position b in a
-- [ ]    (any, lst, any) = insert c at positions b in a
-- [ ]    (any, lst[num], lst) = insert c[i] at position b[i] in a
+- [x] ⎀ (any, num, any) = insert c at position b in a
+- [x]    (any, lst, any) = insert c at positions b in a
+- [x]    (any, lst[num], lst) = insert c[i] at position b[i] in a
 - [ ] ◲ (any) = sublists of a
 - [ ] ⊢ (num, num) = a (base 10) in base b
 - [ ]   (num, str|lst) = a in base with alphabet b

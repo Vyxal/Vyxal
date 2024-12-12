@@ -727,6 +727,22 @@ object NewElements:
       case (a: String, b: VFun, c: String) => StringHelpers.regexSub(a, c, b)
       case (a: VFun, b: String, c: String) => StringHelpers.regexSub(b, c, a)
     },
+    addPart("⎀", Triad, false) {
+      case (a, b: VNum, c) =>
+        ListHelpers.insert(ListHelpers.makeIterable(a), b, c)
+      case (a, b: VList, c: VList) =>
+        var temp = ListHelpers.makeIterable(a)
+        for (i, j) <- b.reverse.zip(c.reverse) do
+          (i, j) match
+            case (index: VNum, elem) =>
+              temp = ListHelpers.insert(temp, index, elem)
+            case _ => throw InvalidListOverloadException("⎀", b, "Number")
+        temp
+      case (a, b: VList, c) => b.foldRight(ListHelpers.makeIterable(a)) {
+          case (index: VNum, acc) => ListHelpers.insert(acc, index, c)
+          case _ => throw InvalidListOverloadException("⎀", b, "Number")
+        }
+    },
   )
 
   // Subject to being added as overloads onto things in elements
