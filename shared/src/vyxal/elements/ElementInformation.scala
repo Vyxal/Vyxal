@@ -1784,5 +1784,25 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "Ġ",
+      keywords = Seq("zip-max"),
+      arity = 2,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Zipped Maximum",
+        args = Seq("lst", "lst"),
+        description = "Maximum of corresponding elements of #1 and #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Vectorised Maximum",
+        args = Seq("lst", "scl"),
+        description = "Maximum of {#2|#1} and {#1|#2}",
+        typeSwitchable = true,
+      ),
+    ),
   )
 end ElementInformation
