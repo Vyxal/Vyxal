@@ -1935,5 +1935,45 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⬳",
+      keywords = Seq("rot-left"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Rotate Left",
+        args = Seq("lst|str"),
+        description = "Rotate #1 left",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Rotate Left",
+        args = Seq("lst|str", "num"),
+        description = "Rotate #1 left #2 times. Right if #2 is negative",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⟿",
+      keywords = Seq("rot-right"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Rotate Right",
+        args = Seq("lst|str"),
+        description = "Rotate #1 right",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Rotate Right",
+        args = Seq("lst|str", "num"),
+        description = "Rotate #1 right #2 times. Left if #2 is negative",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
