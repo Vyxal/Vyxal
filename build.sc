@@ -95,7 +95,7 @@ trait JvmCommon extends VyxalModule {
         Seq(
           // For the REPL
           ivy"org.jline:jline:3.28.0",
-          ivy"org.jline:jline-terminal-jansi:3.27.1",
+          ivy"org.jline:jline-terminal-jansi:3.28.0",
           ivy"org.fusesource.jansi:jansi:2.4.1",
         )
     }
