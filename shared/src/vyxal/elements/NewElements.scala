@@ -578,6 +578,23 @@ object NewElements:
     addPart("Ġ", Dyad, false) {
       case (a: VList, b: VVal) =>
         VList.from(a.map(MiscHelpers.dyadicMaximum(_, b)))
+      case (a: VVal, b: VList) =>
+        VList.from(b.map(MiscHelpers.dyadicMaximum(a, _)))
+      case (a: VList, b: VList) =>
+        VList.from(a.zip(b).map((x, y) => MiscHelpers.dyadicMaximum(x, y)))
+    },
+    addPart("ġ", Dyad, false) {
+      case (a: VList, b: VVal) =>
+        VList.from(a.map(MiscHelpers.dyadicMinimum(_, b)))
+      case (a: VVal, b: VList) =>
+        VList.from(b.map(MiscHelpers.dyadicMinimum(a, _)))
+      case (a: VList, b: VList) =>
+        val zipped = a.vzip(b)
+        VList.from(zipped.map(pair =>
+          val items = pair.asInstanceOf[VList]
+          if items.length == 1 then items.head
+          else MiscHelpers.dyadicMinimum(items.head, items(1))
+        ))
     },
   )
 
