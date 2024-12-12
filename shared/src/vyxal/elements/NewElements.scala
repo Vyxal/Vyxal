@@ -531,6 +531,7 @@ object NewElements:
           )
     },
     "⇧" -> fullToImpl(Monad, lhs => ListHelpers.gradeUp(lhs.itr)),
+    "⇩" -> fullToImpl(Monad, lhs => ListHelpers.gradeDown(lhs.itr)),
   )
 
   // Subject to being added as overloads onto things in elements

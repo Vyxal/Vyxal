@@ -1628,5 +1628,19 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⇩",
+      keywords = Seq("grade-down"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Grade Down",
+        args = Seq("lst"),
+        description = "Indices that would sort #1 in reverse",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
