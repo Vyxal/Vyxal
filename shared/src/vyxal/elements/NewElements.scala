@@ -596,6 +596,15 @@ object NewElements:
           else MiscHelpers.dyadicMinimum(items.head, items(1))
         ))
     },
+    addPart("⌈", Monad, false) {
+      case a: VNum => a.ceil
+      case a: String => VList.from(a.split(" ").toIndexedSeq)
+    },
+    addPart("⌊", Monad, false) {
+      case a: VNum => a.floor
+      case a: String if !a.exists(_.isDigit) => 0
+      case a: String => MiscHelpers.eval(a.filter(_.isDigit))
+    },
   )
 
   // Subject to being added as overloads onto things in elements

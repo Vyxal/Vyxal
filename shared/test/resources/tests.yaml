@@ -1408,6 +1408,8 @@
   - {in: [123.6], out: 124}
   - {in: [9], out: 9}
   - {in: [-1.23], out: -1}
+  - {in: ["this is worse than that time I tried to write a test for this function"], out: ["this", "is", "worse", "than", "that", "time", "I", "tried", "to", "write", "a", "test", "for", "this", "function"]}
+  - {in: ["-123"], out: ["-123"]}
 
 "⌊":
   - {in: [123.6], out: 123}
