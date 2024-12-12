@@ -908,14 +908,14 @@ object ListHelpers:
     while counter <= amountInt do
       temp = temp match
         case list: VList =>
-          if direction == 1 then VList.from(list.tail :+ list.head)
+          if direction == -1 then VList.from(list.tail :+ list.head)
           else VList.from(list.last +: list.init)
         case str: String =>
-          if direction == 1 then str.tail + str.head
+          if direction == -1 then str.tail + str.head
           else s"${str.last}${str.init}"
         case num: VNum =>
           val str = num.toString
-          if direction == 1 then VNum(str.tail + str.head)
+          if direction == -1 then VNum(str.tail + str.head)
           else VNum(s"${str.last}${str.init}")
         case _ => throw BadArgumentException("rotate", iterable)
       counter += 1
