@@ -532,6 +532,14 @@ object NewElements:
     },
     "⇧" -> fullToImpl(Monad, lhs => ListHelpers.gradeUp(lhs.itr)),
     "⇩" -> fullToImpl(Monad, lhs => ListHelpers.gradeDown(lhs.itr)),
+    addPart("∪", Dyad, false) {
+      case (a: String, b: String) => a.filterNot(b.contains(_))
+      case (a, b) => VList.from(a.itr.filterNot(b.itr.contains(_)))
+    },
+    addPart("∩", Dyad, false) {
+      case (lhs: String, rhs: String) => lhs.filter(rhs.contains(_))
+      case (lhs, rhs) => VList.from(lhs.itr.filter(rhs.itr.contains(_)))
+    },
   )
 
   // Subject to being added as overloads onto things in elements

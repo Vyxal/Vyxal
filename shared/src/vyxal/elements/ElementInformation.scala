@@ -1642,5 +1642,33 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "∪",
+      keywords = Seq("union", "set-union"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Union",
+        args = Seq("lst", "lst"),
+        description = "Union of #1 and #2",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "∩",
+      keywords = Seq("intersection", "set-intersection"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Intersection",
+        args = Seq("lst", "lst"),
+        description = "Intersection of #1 and #2",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
