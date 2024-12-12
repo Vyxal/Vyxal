@@ -1845,5 +1845,39 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⊖",
+      keywords = Seq("0-slice", "take", "0-take"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "0 Slice",
+        args = Seq("itr", "num"),
+        description = "First {#2|#1} elements of {#1|#2}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "APL Style Take",
+        args = Seq("lst", "lst[num]"),
+        description = "APL style take",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⌽",
+      keywords = Seq("1-slice", "tail-take", "1-take"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "1 Slice",
+        args = Seq("itr", "num"),
+        description = "First {#2|#1} elements of {#1|#2}[1:]",
+        typeSwitchable = true,
+      ),
+    ),
   )
 end ElementInformation

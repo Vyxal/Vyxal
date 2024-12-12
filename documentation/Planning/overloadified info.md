@@ -215,8 +215,8 @@ b = rhs
 - [x]   (str) = split on spaces
 - [x] ⌊ (num) = Floor
 - [x]   (str) = cast to int, 0 if no numeric characters
-- [ ] ⊖ (any, num)* = a[0:b]
-- [ ] ⌽ (any, num)* = a[1:b]
+- [x] ⊖ (any, num)* = a[0:b]
+- [x] ⌽ (any, num)* = a[1:b]
 - [ ] £ (any) = set Register
 - [ ] ¥ () = push Register
 - [ ] ▲ # TODO

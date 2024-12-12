@@ -16,6 +16,8 @@ import vyxal.VNum.given
 import scala.io.StdIn
 import scala.util.matching.Regex
 
+import scribe.ANSI.bg
+
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
 
@@ -618,6 +620,23 @@ object NewElements:
             else decimaled.dropWhile(_ == '0')
           if zeroless.isEmpty then 0
           else MiscHelpers.eval(zeroless)
+    },
+    addPart("⊖", Dyad, false) {
+      case (a: String, b: VNum) => a.itr.take(b).mkString
+      case (a: VNum, b: String) => b.itr.take(a).mkString
+      case (a: VList, b: VNum) => a.take(b.toInt)
+      case (a: VNum, b: VList) => b.take(a.toInt)
+      case (a: VNum, b: VNum) => MiscHelpers.eval((a.itr.take(b)).mkString)
+      case (a: VList, b: VList) =>
+        if !b.lst.forall(_.isInstanceOf[VNum]) then ???
+        else ListHelpers.take(a, b.lst.map(_.asInstanceOf[VNum]))
+    },
+    addPart("⌽", Dyad, false) {
+      case (a: String, b: VNum) => a.itr.tail.take(b).mkString
+      case (a: VNum, b: String) => b.itr.tail.take(a).mkString
+      case (a: VList, b: VNum) => a.tail.take(b.toInt)
+      case (a: VNum, b: VList) => b.tail.take(a.toInt)
+      case (a: VNum, b: VNum) => MiscHelpers.eval((a.itr.tail.take(b)).mkString)
     },
   )
 
