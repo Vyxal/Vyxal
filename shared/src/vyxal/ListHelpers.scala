@@ -905,7 +905,7 @@ object ListHelpers:
     val amountInt = amount.toInt.abs
     var temp = iterable
 
-    while counter < amountInt do
+    while counter <= amountInt do
       temp = temp match
         case list: VList =>
           if direction == 1 then VList.from(list.tail :+ list.head)
