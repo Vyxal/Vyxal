@@ -743,6 +743,16 @@ object NewElements:
           case _ => throw InvalidListOverloadException("⎀", b, "Number")
         }
     },
+    "◲" ->
+      fullToImpl(
+        Monad,
+        x =>
+          VList.from(
+            ListHelpers.mergeInfLists(
+              ListHelpers.prefixes(x.itr).map(b => ListHelpers.suffixes(b.itr))
+            )
+          ),
+      ),
   )
 
   // Subject to being added as overloads onto things in elements

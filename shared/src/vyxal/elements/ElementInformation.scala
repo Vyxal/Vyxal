@@ -2051,5 +2051,19 @@ object ElementInformation:
         description = "Insert items of #3 into #1 at indices #2",
       ),
     ),
+    Element(
+      symbol = "◲",
+      keywords = Seq("sublists"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Sublists",
+        args = Seq("any"),
+        description = "All sublists of #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
