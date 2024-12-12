@@ -272,7 +272,7 @@ class ElementTests extends VyxalTests:
     testStackLike("ɠ")(
       in(VList(1, 2, 3)) -> List[VAny](1, VList(1, 2, 3)),
       in(VList(1, 2, 3), VList(4, 5, 6)) ->
-        List[VAny](1, VList(4, 5, 6), VList(1, 2, 3)),
+        List[VAny](4, VList(4, 5, 6), VList(1, 2, 3)),
     )
   }
 
