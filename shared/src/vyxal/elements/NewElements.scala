@@ -622,21 +622,23 @@ object NewElements:
           else MiscHelpers.eval(zeroless)
     },
     addPart("⊖", Dyad, false) {
-      case (a: String, b: VNum) => a.itr.take(b).mkString
-      case (a: VNum, b: String) => b.itr.take(a).mkString
-      case (a: VList, b: VNum) => a.take(b.toInt)
-      case (a: VNum, b: VList) => b.take(a.toInt)
-      case (a: VNum, b: VNum) => MiscHelpers.eval((a.itr.take(b)).mkString)
+      case (a, b: VNum) => ListHelpers.take(a.itr, b)
+      case (a: VNum, b: (VList | String)) => ListHelpers.take(b.itr, a)
       case (a: VList, b: VList) =>
         if !b.lst.forall(_.isInstanceOf[VNum]) then ???
         else ListHelpers.take(a, b.lst.map(_.asInstanceOf[VNum]))
     },
     addPart("⌽", Dyad, false) {
-      case (a: String, b: VNum) => a.itr.tail.take(b).mkString
-      case (a: VNum, b: String) => b.itr.tail.take(a).mkString
-      case (a: VList, b: VNum) => a.tail.take(b.toInt)
-      case (a: VNum, b: VList) => b.tail.take(a.toInt)
-      case (a: VNum, b: VNum) => MiscHelpers.eval((a.itr.tail.take(b)).mkString)
+      case (a, b: VNum) =>
+        val temp = ListHelpers.makeIterable(a).slice(1, b.toInt)
+        a match
+          case _: String => temp.mkString
+          case _ => temp
+      case (a: VNum, b) =>
+        val temp = ListHelpers.makeIterable(b).slice(1, a.toInt)
+        b match
+          case _: String => temp.mkString
+          case _ => temp
     },
     "£" ->
       direct(Monad) {
