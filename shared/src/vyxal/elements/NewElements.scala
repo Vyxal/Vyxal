@@ -603,8 +603,21 @@ object NewElements:
     addPart("⌊", Monad, false) {
       case a: VNum => a.floor
       case a: String =>
-        val temp = MiscHelpers.eval(a)
-        if temp.isInstanceOf[VNum] then temp else 0
+        if a.isEmpty then 0
+        else
+          val filtered = a.filter(c => c.isDigit || "-.".contains(c))
+          val negated =
+            s"${filtered.headOption.getOrElse(0)}${filtered.tail.replace("-", "")}"
+          val decimaled = negated.splitAt(negated.indexOf('.')) match
+            case ("", s) =>
+              if a.count('.' == _) > 1 then s.stripPrefix(".") else s
+            case (a, b) => a + "." + b.replace(".", "")
+          val zeroless =
+            if decimaled.startsWith("-") then
+              "-" + decimaled.drop(1).dropWhile(_ == '0')
+            else decimaled.dropWhile(_ == '0')
+          if zeroless.isEmpty then 0
+          else MiscHelpers.eval(zeroless)
     },
   )
 
