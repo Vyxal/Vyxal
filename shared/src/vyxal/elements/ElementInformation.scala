@@ -1907,5 +1907,33 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "↜",
+      keywords = Seq("rotate-stack-left"),
+      arity = -1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Rotate Stack Left",
+        args = Seq(),
+        description = "Rotate the stack left",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "↝",
+      keywords = Seq("rotate-stack-right"),
+      arity = -1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Rotate Stack Right",
+        args = Seq(),
+        description = "Rotate the stack right",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

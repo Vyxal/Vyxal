@@ -220,8 +220,8 @@ b = rhs
 - [x] £ (any) = set Register
 - [x] ¥ () = push Register
 - [ ] ▲ # TODO
-- [ ] ↜ (...) = rotate stack left
-- [ ] ↝ (...) = rotate stack right
+- [x] ↜ (...) = rotate stack left
+- [x] ↝ (...) = rotate stack right
 - [ ] ⬳ (non-num) = rotate item left
 - [ ]     (any, num) = rotate item left b times
 - [ ] ⟿ (non-num) = rotate item right

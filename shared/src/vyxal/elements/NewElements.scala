@@ -648,6 +648,14 @@ object NewElements:
       direct(0) {
         push(summon[Context].globals.register)
       },
+    "↜" ->
+      direct(-1) {
+        summon[Context].rotateLeft
+      },
+    "↝" ->
+      direct(-1) {
+        summon[Context].rotateRight
+      },
   )
 
   // Subject to being added as overloads onto things in elements
