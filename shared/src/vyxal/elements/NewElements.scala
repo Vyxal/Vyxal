@@ -789,8 +789,8 @@ object NewElements:
       case (iterable: VNum, slice: VNum) =>
         MiscHelpers.eval(iterable.itr.drop(slice).mkString)
       case (iterable: VList, slices: VList) =>
-        if !b.lst.forall(_.isInstanceOf[VNum]) then ???
-        else ListHelpers.drop(a, b.lst.map(_.asInstanceOf[VNum]))
+        if !slices.lst.forall(_.isInstanceOf[VNum]) then ???
+        else ListHelpers.drop(iterable, slices.lst.map(_.asInstanceOf[VNum]))
     },
     "ᐕ" -> fullToImpl(Monad, x => x.itr.tail),
   )
