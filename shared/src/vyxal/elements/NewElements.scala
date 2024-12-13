@@ -785,12 +785,13 @@ object NewElements:
     addPart("ᐐ", Monad, false) {
       case a: VNum => MiscHelpers.eval(a.toString.init)
       case a: String => a.init
-      case a: VList => a.init
+      case a: VList if a.lst.nonEmpty => a.init
+      case a: VList => VList()
     },
     addPart("ᐵ", Dyad, false) {
       case (iterable: VList, slice: VNum) => iterable.itr.drop(slice)
       case (iterable: String, slice: VNum) => iterable.itr.drop(slice).mkString
-      case (slice: VNum, iterable: VIter) => iterable.itr.drop(slice)
+      case (slice: VNum, iterable: VList) => iterable.itr.drop(slice)
       case (slice: VNum, iterable: String) => iterable.itr.drop(slice).mkString
       case (iterable: VNum, slice: VNum) =>
         MiscHelpers.eval(iterable.itr.drop(slice).mkString)
@@ -801,7 +802,8 @@ object NewElements:
     addPart("ᐕ", Monad, false) {
       case a: VNum => MiscHelpers.eval(a.toString.tail)
       case a: String => a.tail
-      case a: VList => a.tail
+      case a: VList if a.lst.nonEmpty => a.tail
+      case a: VList => VList()
     },
     addPart("½", Monad, true) {
       case a: VNum => a / 2
