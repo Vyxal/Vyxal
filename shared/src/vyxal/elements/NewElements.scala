@@ -835,6 +835,15 @@ object NewElements:
       case a: VNum => 1 / a
       case a: String => a.filterNot(_.isWhitespace)
     },
+    "※" ->
+      direct(Monad) {
+        pop() match
+          case it: VPhysical => push(ListHelpers.groupConsecutive(it))
+          case predicate: VFun =>
+            val it = pop()
+            push(ListHelpers.groupConsecutiveBy(it, predicate))
+          case _ => ???
+      },
   )
 
   // Subject to being added as overloads onto things in elements

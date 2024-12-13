@@ -934,16 +934,20 @@
 "ḟ":
   - {in: [[3831, 4949, "Am!!ong!::u5", "", 21930]], out: [[3, 1277], [7, 7, 101], "!!!::5", "", [2, 3, 5, 17, 43]]}
 
-
-# Group by consecutive elements
-#  basic functionality:
-#  - { in: [[1, "1", 2, 2, 2, 3]], out: [[1], ["1"], [2, 2, 2], [3]] }
-#  on empty lists:
-#    - { in: [[]], out: [] }
-#  on strings:
-#    - { in: ["fooo!!"], out: ["f", "ooo", "!!"] }
-#  on empty strings:
-#    - { in: [""], out: [] }
+"※":
+  basic functionality:
+  - { in: [[1, "1", 2, 2, 2, 3]], out: [[1], ["1"], [2, 2, 2], [3]] }
+  on empty lists:
+    - { in: [[]], out: [] }
+  on strings:
+    - { in: ["fooo!!"], out: ["f", "ooo", "!!"] }
+  on empty strings:
+    - { in: [""], out: [] }
+  with a function:
+    - in:
+        - [1, 3, 5, 2, 4, 1, 5, 6, 3]
+        - !vany "λe}"
+      out: [[1,3,5],[2,4],[1,5],[6],[3]]
 
 "ḣ":
   - { in: [[1, 2, 3]], stack: [[2, 3], 1] }
