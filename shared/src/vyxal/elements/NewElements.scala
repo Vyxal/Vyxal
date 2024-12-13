@@ -782,7 +782,11 @@ object NewElements:
       direct(Monad) {
         push(peek().itr.lastOption.getOrElse(defaultEmpty(peek())))
       },
-    "ᐐ" -> fullToImpl(Monad, x => x.itr.init),
+    addPart("ᐐ", Monad, false) {
+      case a: VNum => MiscHelpers.eval(a.toString.init)
+      case a: String => a.init
+      case a: VList => a.init
+    },
     addPart("ᐵ", Dyad, false) {
       case (iterable: VIter, slice: VNum) => iterable.itr.drop(slice)
       case (slice: VNum, iterable: VIter) => iterable.itr.drop(slice)
@@ -792,13 +796,19 @@ object NewElements:
         if !slices.lst.forall(_.isInstanceOf[VNum]) then ???
         else ListHelpers.drop(iterable, slices.lst.map(_.asInstanceOf[VNum]))
     },
-    "ᐕ" -> fullToImpl(Monad, x => x.itr.tail),
+    addPart("ᐕ", Monad, false) {
+      case a: VNum => MiscHelpers.eval(a.toString.tail)
+      case a: String => a.tail
+      case a: VList => a.tail
+    },
     addPart("½", Monad, true) {
       case a: VNum => a / 2
       case a: String =>
         val (fst, snd) = a.splitAt(a.length / 2)
         VList(fst, snd)
     },
+    "ƶ" -> fullToImpl(Monad, x => NumberHelpers.range(0, x.itr.length - 1)),
+    "Ƶ" -> fullToImpl(Monad, x => NumberHelpers.range(1, x.itr.length)),
   )
 
   // Subject to being added as overloads onto things in elements
