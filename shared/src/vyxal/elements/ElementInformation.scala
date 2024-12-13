@@ -2211,5 +2211,25 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "½",
+      keywords = Seq("half", "halve"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Halve",
+        args = Seq("num"),
+        description = "#1 / 2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Two String Halves",
+        args = Seq("str"),
+        description = "Split #1 in half",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

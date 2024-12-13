@@ -793,6 +793,12 @@ object NewElements:
         else ListHelpers.drop(iterable, slices.lst.map(_.asInstanceOf[VNum]))
     },
     "ᐕ" -> fullToImpl(Monad, x => x.itr.tail),
+    addPart("½", Monad, true) {
+      case a: VNum => a / 2
+      case a: String =>
+        val (fst, snd) = a.splitAt(a.length / 2)
+        VList(fst, snd)
+    },
   )
 
   // Subject to being added as overloads onto things in elements
