@@ -26,6 +26,8 @@ object NumberHelpers:
     val BASE_ALPHABET =
       "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     (a, b) match
+      case (a: VList, b: VNum) if ListHelpers.maxDepth(a) == VNum(1) =>
+        fromBaseDigits(a, b)
       case (a: VList, _) if ListHelpers.maxDepth(a) == VNum(1) =>
         fromBaseAlphabet(a, b)
       case (a: VNum, b: VNum) => toInt(a.toString(), b.toInt)
