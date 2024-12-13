@@ -275,7 +275,9 @@ object NumberHelpers:
 
   def toBase(a: VAny, b: VAny)(using ctx: Context): VAny =
     (a, b) match
-      case (a: VNum, b: VNum) => VList.from(toBaseDigits(a, b))
+      case (a: VNum, b: VNum) =>
+        if b == VNum(0) then 0
+        else VList.from(toBaseDigits(a, b))
       case (n: VNum, b: (String | VList)) => toBaseAlphabet(n, b)
       case (a: VList, _) => VList.from(a.map(toBase(_, b)))
       case (a, b) => throw UnimplementedOverloadException("toBase", List(a, b))

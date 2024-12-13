@@ -759,8 +759,11 @@ object NewElements:
         NumberHelpers.toBase(number, baseAlphabet)
       case (list: VList, base: VNum) =>
         VList.from(list.lst.map(NumberHelpers.toBase(_, base)))
-      case (list: VList, baseAlphabet: VIter) =>
+      case (list: VList, baseAlphabet: String) =>
         VList.from(list.lst.map(NumberHelpers.toBase(_, baseAlphabet)))
+      case (values: VList, bases: VList) => values
+          .vzip(bases)
+          .map((value, base) => NumberHelpers.toBase(value, base))
       case (haystack: String, needle: String) =>
         VList.from(needle.r.findAllIn(haystack).toList)
     },
