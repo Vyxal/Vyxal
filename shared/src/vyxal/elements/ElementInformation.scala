@@ -2231,5 +2231,33 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "ƶ",
+      keywords = Seq("range-to-length"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Range to Length",
+        args = Seq("lst"),
+        description = "Range from 0 to len(#1) - 1",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "Ƶ",
+      keywords = Seq("range-to-length-1"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Range to Length 1",
+        args = Seq("lst"),
+        description = "Range from 1 to len(#1)",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
