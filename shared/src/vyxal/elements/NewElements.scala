@@ -761,9 +761,14 @@ object NewElements:
         VList.from(list.lst.map(NumberHelpers.toBase(_, base)))
       case (list: VList, baseAlphabet: String) =>
         VList.from(list.lst.map(NumberHelpers.toBase(_, baseAlphabet)))
-      case (values: VList, bases: VList) => values
-          .vzip(bases)
-          .map((value, base) => NumberHelpers.toBase(value, base))
+      case (values: VList, bases: VList) => VList.from(
+          values
+            .vzip(bases)
+            .map(item =>
+              val Seq(value, base) = item.itr
+              NumberHelpers.toBase(value, base)
+            )
+        )
       case (haystack: String, needle: String) =>
         VList.from(needle.r.findAllIn(haystack).toList)
     },
