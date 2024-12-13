@@ -321,6 +321,18 @@ class ElementTests extends VyxalTests:
     )
   }
 
+  describe("Element ɦ") {
+    testStackLike("ɦ")(
+      in(VList(1, 2, 3, 4, 5)) -> List[VAny](1, VList(1, 2, 3, 4, 5))
+    )
+  }
+
+  describe("Element ʈ") {
+    testStackLike("ʈ")(
+      in(VList(1, 2, 3, 4, 5)) -> List[VAny](5, VList(1, 2, 3, 4, 5))
+    )
+  }
+
   describe("Element ċ") {
     testMulti(
       "9ϩ½⌊ċ" -> VList(9, 4, 2, 1, 0)

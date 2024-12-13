@@ -774,6 +774,14 @@ object NewElements:
     },
     "⊣" ->
       fullToImpl(Dyad, (number, base) => NumberHelpers.fromBase(number, base)),
+    "ɦ" ->
+      direct(Monad) {
+        push(peek().itr.headOption.getOrElse(defaultEmpty(peek())))
+      },
+    "ʈ" ->
+      direct(Monad) {
+        push(peek().itr.lastOption.getOrElse(defaultEmpty(peek())))
+      },
   )
 
   // Subject to being added as overloads onto things in elements

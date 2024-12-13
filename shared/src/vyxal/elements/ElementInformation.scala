@@ -2133,5 +2133,35 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "ɦ",
+      keywords = Seq("head-peek"),
+      arity = 1,
+      Options(
+        vectorises = false,
+        peeks = true,
+      ),
+      Overload(
+        name = "Head Peek",
+        args = Seq("lst"),
+        description = "First element of #1 without popping",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "ʈ",
+      keywords = Seq("tail-peek"),
+      arity = 1,
+      Options(
+        vectorises = false,
+        peeks = true,
+      ),
+      Overload(
+        name = "Tail Peek",
+        args = Seq("lst"),
+        description = "Last element of #1 without popping",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
