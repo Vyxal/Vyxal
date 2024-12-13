@@ -831,6 +831,10 @@ object NewElements:
       case a: VNum => a ** 3
       case a: String => VList.from(a.grouped(3).toSeq)
     },
+    addPart("⅟", Monad, true) {
+      case a: VNum => 1 / a
+      case a: String => a.filterNot(_.isWhitespace)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

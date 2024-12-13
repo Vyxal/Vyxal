@@ -2327,5 +2327,32 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⅟",
+      keywords = Seq(
+        "reciprocal",
+        "inverse",
+        "1/",
+        "without-whitespace",
+        "no-space",
+        "spaceless",
+      ),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Reciprocal",
+        args = Seq("num"),
+        description = "1 / #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Without Whitespace",
+        args = Seq("str"),
+        description = "Remove all whitespace from #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
