@@ -2065,5 +2065,44 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⊢",
+      keywords = Seq("10-to-base", "all-regex-matches"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "10 to Base",
+        args = Seq("num", "num"),
+        description = "Convert #1 to base #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "10 to Base",
+        args = Seq("num", "str|lst"),
+        description = "Convert #1 to base len(#2) using the items of #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "10 to Base",
+        args = Seq("lst", "num"),
+        description = "Convert each item in #1 to base #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "10 to Base",
+        args = Seq("lst", "lst"),
+        description =
+          "Convert each item in #1 to the base of the corresponding item in #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "All Regex Matches",
+        args = Seq("str", "str"),
+        description = "All matches of #2 in #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation
