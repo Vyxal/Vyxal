@@ -27,7 +27,7 @@ object NumberHelpers:
       "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     (a, b) match
       case (a: VList, _) if ListHelpers.maxDepth(a) == VNum(1) =>
-        fromBaseDigits(a, b)
+        fromBaseAlphabet(a, b)
       case (a: VNum, b: VNum) => toInt(a.toString(), b.toInt)
       case (a: VList, _) => VList.from(a.map(fromBase(_, b)))
       case (n: VNum, _) => fromBase(b, a)
@@ -40,6 +40,12 @@ object NumberHelpers:
   def fromBaseAlphabet(value: String, alphabet: String): VAny =
     value.foldLeft(VNum(0)) { (ret, digit) =>
       alphabet.length * ret + alphabet.indexOf(digit)
+    }
+
+  def fromBaseAlphabet(value: VList, alphabet: VAny)(using ctx: Context): VAny =
+    val alphaList = ListHelpers.makeIterable(alphabet)
+    value.foldLeft(VNum(0)) { (ret, digit) =>
+      alphaList.length * ret + alphaList.indexOf(digit)
     }
 
   /** Returns digits in base 10 using arbitrary base `base` */
