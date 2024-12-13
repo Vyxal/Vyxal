@@ -22,11 +22,17 @@ object NumberHelpers:
         .map(_ * a.toBigInt.signum)
     )
 
-  @tailrec
   def fromBase(a: VAny, b: VAny)(using ctx: Context): VAny =
+    val BASE_ALPHABET =
+      "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     (a, b) match
+      case (a: VList, b: VNum) if ListHelpers.maxDepth(a) == VNum(1) =>
+        fromBaseDigits(a, b)
       case (a: VNum, b: VNum) => toInt(a.toString(), b.toInt)
+      case (a: VList, _) => VList.from(a.map(fromBase(_, b)))
       case (n: VNum, _) => fromBase(b, a)
+      case (a: String, b: VNum) =>
+        fromBaseAlphabet(a, BASE_ALPHABET.take(b.toInt))
       case (a: String, b: String) => fromBaseAlphabet(a, b)
       case _ => fromBaseDigits(ListHelpers.makeIterable(a), b)
 

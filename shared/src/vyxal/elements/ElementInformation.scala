@@ -2104,5 +2104,34 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⊣",
+      keywords = Seq("base-to-10"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Base to 10",
+        args = Seq("scl", "num"),
+        description =
+          "Convert #1 from base #2 to base 10, assuming a base that is a prefix of [0-9A-Z] for strings",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Base to 10",
+        args = Seq("lst[num|str]", "num"),
+        description =
+          "Convert #1 from base #2 to base 10, using the items of #1 as digits",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Base to 10",
+        args = Seq("lst", "num"),
+        description =
+          "Convert each item in #1 from base #2 to base 10, assuming a base that is a prefix of [0-9A-Z] for strings",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

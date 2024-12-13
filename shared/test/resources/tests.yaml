@@ -1901,3 +1901,11 @@
   - {in: [[42, 54, 12, 69, 43], "shrek"], out: ["her", "rsk", "rr", "rek", "hee"]}
   - {in: [[42, 54, 12, 69, 43], [2, 4, [4, 2, 0], "rizZ", 8]], out: [[1, 0, 1, 0, 1, 0], [3, 1, 2], [2, 2, 4], "irii", [5, 3]]}
   - {in: ["It seems today that all you see is violence in movies, and sex on TV but where are those good old fashioned values on which we used to rely", ".(e|o){2}[^ ]*"], out: ["seems", "see", "good"]}
+
+"⊣":
+  - {in: [[1, 1, 0, 0, 1, 0], 2], out: 50}
+  - {in: ["rss", "shrek"], out: 50}
+  - {in: [[9, "nice", "nice", 9, 4, 0, 2], ["nice", 9, 4, 0, 2]], out: 92331}
+  - {in: [[[1, 0, 1, 0, 1, 0], [1, 1, 0, 1, 1, 0], [1, 1, 0, 0], [1, 0, 0, 0, 1, 0, 1], [1, 0, 1, 0, 1, 1]], 2], out: [42, 54, 12, 69, 43]}
+  - {in: ["3AE", 16], out: 942}
+  - {in: [[[1], [2], [1, 0]], 3], out: [1, 2, 3]}

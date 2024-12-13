@@ -772,6 +772,8 @@ object NewElements:
       case (haystack: String, needle: String) =>
         VList.from(needle.r.findAllIn(haystack).toList)
     },
+    "⊣" ->
+      fullToImpl(Dyad, (number, base) => NumberHelpers.fromBase(number, base)),
   )
 
   // Subject to being added as overloads onto things in elements
