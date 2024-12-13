@@ -2259,5 +2259,73 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⁰",
+      keywords = Seq("first-input", "input-0"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "First Input",
+        args = Seq(),
+        description = "Push the first input to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "¹",
+      keywords = Seq("second-input", "input-1"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Second Input",
+        args = Seq(),
+        description = "Push the second input to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "²",
+      keywords = Seq("square", "string-pairs"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Square",
+        args = Seq("num"),
+        description = "#1 ** 2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "String Pairs",
+        args = Seq("str"),
+        description = "Split #1 into pairs of characters",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "³",
+      keywords = Seq("cube", "string-triples"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Cube",
+        args = Seq("num"),
+        description = "#1 ** 3",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "String Triples",
+        args = Seq("str"),
+        description = "Split #1 into triples of characters",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

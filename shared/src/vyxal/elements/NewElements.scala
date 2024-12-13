@@ -813,6 +813,24 @@ object NewElements:
     },
     "ƶ" -> fullToImpl(Monad, x => NumberHelpers.range(0, x.itr.length - 1)),
     "Ƶ" -> fullToImpl(Monad, x => NumberHelpers.range(1, x.itr.length)),
+    "⁰" ->
+      niladify(ctx ?=>
+        if ctx.globals.inputs.nonEmpty then ctx.globals.inputs(0)
+        else "0"
+      ),
+    "¹" ->
+      niladify(ctx ?=>
+        if ctx.globals.inputs.length > 1 then ctx.globals.inputs(1)
+        else VList.from(Seq.empty)
+      ),
+    addPart("²", Monad, true) {
+      case a: VNum => a ** 2
+      case a: String => VList.from(a.grouped(2).toSeq)
+    },
+    addPart("³", Monad, true) {
+      case a: VNum => a ** 3
+      case a: String => VList.from(a.grouped(3).toSeq)
+    },
   )
 
   // Subject to being added as overloads onto things in elements
