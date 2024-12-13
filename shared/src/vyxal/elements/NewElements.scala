@@ -782,6 +782,17 @@ object NewElements:
       direct(Monad) {
         push(peek().itr.lastOption.getOrElse(defaultEmpty(peek())))
       },
+    "ᐐ" -> fullToImpl(Monad, x => x.itr.init),
+    addPart("ᐵ", Dyad, false) {
+      case (iterable: VIter, slice: VNum) => iterable.itr.drop(slice)
+      case (slice: VNum, iterable: VIter) => iterable.itr.drop(slice)
+      case (iterable: VNum, slice: VNum) =>
+        MiscHelpers.eval(iterable.itr.drop(slice).mkString)
+      case (a: VList, b: VList) =>
+        if !b.lst.forall(_.isInstanceOf[VNum]) then ???
+        else ListHelpers.drop(a, b.lst.map(_.asInstanceOf[VNum]))
+    },
+    "ᐕ" -> fullToImpl(Monad, x => x.itr.tail),
   )
 
   // Subject to being added as overloads onto things in elements

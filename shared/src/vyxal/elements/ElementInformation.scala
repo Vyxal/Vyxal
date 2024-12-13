@@ -2163,5 +2163,53 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "ᐐ",
+      keywords = Seq("init"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Init",
+        args = Seq("any"),
+        description = "All but the last element of #1",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "ᐵ",
+      keywords = Seq("drop"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Drop",
+        args = Seq("any", "num"),
+        description = "All but the first {#2|#1} elements of {#1|#2}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "APL Style Drop",
+        args = Seq("lst", "lst[num]"),
+        description = "APL style drop",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "ᐕ",
+      keywords = Seq("behead"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Behead",
+        args = Seq("any"),
+        description = "All but the first element of #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 end ElementInformation

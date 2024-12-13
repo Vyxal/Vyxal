@@ -247,9 +247,9 @@ b = rhs
 - [x]   (lst, num) = this, but vectorised
 - [x] ɦ (any) = a[0], but don't pop
 - [x] ʈ (any) = a[-1], but don't pop
-- [ ] ᐐ (any) = a[:-1] (because the : is on the left)
-- [ ] ᐵ (any, num) = a[b:]
-- [ ] ᐕ (any) = a[1:] (because the : is on the right)
+- [x] ᐐ (any) = a[:-1] (because the : is on the left)
+- [x] ᐵ (any, num) = a[b:]
+- [x] ᐕ (any) = a[1:] (because the : is on the right)
 - [ ] ½ (num) = a / 2
 - [ ]   (str) = a split into 2 parts with roughly equal length
 - [ ] ƶ (any) = [0, len(x))
@@ -347,3 +347,7 @@ b = rhs
 - [ ] „ (any) = join on newlines
 - [ ] ” (any) = join on spaces
 - [ ] “ (any) = join on nothing
+
+Things that need to be slotted in:
+
+- Collect while unique but doesn't include the initial value
