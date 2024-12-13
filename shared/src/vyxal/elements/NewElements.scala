@@ -753,6 +753,17 @@ object NewElements:
             )
           ),
       ),
+    addPart("⊢", Dyad, false) {
+      case (number: VNum, base: VNum) => NumberHelpers.toBase(number, base)
+      case (number: VNum, baseAlphabet: VIter) =>
+        NumberHelpers.toBase(number, baseAlphabet)
+      case (list: VList, base: VNum) =>
+        VList.from(list.lst.map(NumberHelpers.toBase(_, base)))
+      case (list: VList, baseAlphabet: VIter) =>
+        VList.from(list.lst.map(NumberHelpers.toBase(_, baseAlphabet)))
+      case (haystack: String, needle: String) =>
+        VList.from(needle.r.findAllIn(haystack).toList)
+    },
   )
 
   // Subject to being added as overloads onto things in elements
