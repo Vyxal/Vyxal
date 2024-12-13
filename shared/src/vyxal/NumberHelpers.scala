@@ -297,7 +297,7 @@ object NumberHelpers:
     val indexes = toBaseDigits(value, length)
     val alphaList = ListHelpers.makeIterable(alphabet)
 
-    val temp = indexes.map(alphaList.index(_).toString())
+    val temp = indexes.map(alphaList.index(_))
 
     if isStr then temp.mkString("") else VList.from(temp)
 
