@@ -788,8 +788,10 @@ object NewElements:
       case a: VList => a.init
     },
     addPart("ᐵ", Dyad, false) {
-      case (iterable: VIter, slice: VNum) => iterable.itr.drop(slice)
+      case (iterable: VList, slice: VNum) => iterable.itr.drop(slice)
+      case (iterable: String, slice: VNum) => iterable.itr.drop(slice).mkString
       case (slice: VNum, iterable: VIter) => iterable.itr.drop(slice)
+      case (slice: VNum, iterable: String) => iterable.itr.drop(slice).mkString
       case (iterable: VNum, slice: VNum) =>
         MiscHelpers.eval(iterable.itr.drop(slice).mkString)
       case (iterable: VList, slices: VList) =>
