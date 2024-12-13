@@ -788,7 +788,7 @@ object NewElements:
       case (slice: VNum, iterable: VIter) => iterable.itr.drop(slice)
       case (iterable: VNum, slice: VNum) =>
         MiscHelpers.eval(iterable.itr.drop(slice).mkString)
-      case (a: VList, b: VList) =>
+      case (iterable: VList, slices: VList) =>
         if !b.lst.forall(_.isInstanceOf[VNum]) then ???
         else ListHelpers.drop(a, b.lst.map(_.asInstanceOf[VNum]))
     },
