@@ -4,6 +4,7 @@ import scala.language.strictEquality
 
 import vyxal.*
 import vyxal.elements.NewElements
+import vyxal.elements.NewModifiers
 
 import scala.collection.mutable
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
@@ -351,6 +352,10 @@ private class Parser:
               // Finally, push the wrapped lambda to the stack
 
               finalAsts.push(AST.makeSingle(wrapped, AST.Command("Ė")))
+            else if NewModifiers.modifiers.contains(name) then
+              val modifier = NewModifiers.modifiers(name)
+              val modifierArgs = List.fill(arity)(finalAsts.pop())
+              finalAsts.push(modifier.from(modifierArgs))
             else
               val modifier = Modifiers.modifiers.getOrElse(
                 name,
@@ -358,6 +363,7 @@ private class Parser:
               )
               val modifierArgs = List.fill(arity)(finalAsts.pop())
               finalAsts.push(modifier.from(modifierArgs))
+            end if
         case AST.SpecialModifier(name, _) => (name: @unchecked) match
             case "ᵜ" =>
               val lambdaAsts = Stack[AST]()

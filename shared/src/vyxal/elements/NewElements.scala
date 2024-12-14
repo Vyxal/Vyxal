@@ -16,8 +16,6 @@ import vyxal.VNum.given
 import scala.io.StdIn
 import scala.util.matching.Regex
 
-import scribe.ANSI.bg
-
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
 

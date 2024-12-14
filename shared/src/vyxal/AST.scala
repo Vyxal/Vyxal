@@ -187,6 +187,9 @@ object AST:
   def makeSingle(elems: AST*): AST =
     if elems.size == 1 then elems.head else AST.Group(elems.toList, None)
 
+  def unapply(ast: AST): Option[(AST, Int)] =
+    Some((ast, ast.arity.getOrElse(-1)))
+
 enum CustomElementType derives CanEqual:
   case Element
   case Modifier
