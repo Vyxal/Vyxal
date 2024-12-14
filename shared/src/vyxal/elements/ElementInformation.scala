@@ -8,6 +8,13 @@ case class Element(
     overloads: Overload*
 )
 
+case class Modifier(
+    symbol: String,
+    keywords: Seq[String],
+    numberOfElements: Int,
+    overloads: Overload*
+)
+
 case class Overload(
     name: String,
     args: Seq[String],
@@ -2355,4 +2362,6 @@ object ElementInformation:
       ),
     ),
   )
+
+  val modifiers: Seq[Modifier] = List()
 end ElementInformation
