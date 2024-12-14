@@ -842,6 +842,17 @@ object NewElements:
             push(ListHelpers.groupConsecutiveBy(it, predicate))
           case _ => ???
       },
+    "⇄" -> fullToImpl(Monad, x => ListHelpers.reverse(x)),
+    addPart("⧖", Monad, false) {
+      case num: VNum => VList.from(ListHelpers.permutations(num.ritr))
+      case str: String =>
+        VList.from(ListHelpers.permutations(str.itr).map(_.mkString))
+      case lst: VList => VList.from(ListHelpers.permutations(lst))
+    },
+    addPart("‰", Dyad, true) {
+      case (a: VNum, b: VNum) =>
+        if b == VNum(0) then VList(0, 0) else VList((a / b).floor, a % b)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

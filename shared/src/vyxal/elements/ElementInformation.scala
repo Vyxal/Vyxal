@@ -2368,6 +2368,48 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⇄",
+      keywords = Seq("reverse"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Reverse",
+        args = Seq("any"),
+        description = "Reverse #1",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⧖",
+      keywords = Seq("permutations"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Permutations",
+        args = Seq("any"),
+        description = "All permutations of #1",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "‰",
+      keywords = Seq("divmod"),
+      arity = 2,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Divmod",
+        args = Seq("num", "num"),
+        description = "Divmod of #1 and #2 ([#1 // #2, #1 % #2])",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(
