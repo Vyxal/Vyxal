@@ -348,7 +348,15 @@ object StringHelpers:
 
   /** Split on "words" (sequences of letters) and capitalize each word. */
   def titlecase(s: String): String =
-    val splitOnWords = ListHelpers.groupConsecutiveBy(s.toSeq)(_.isLetter)
+    val delimiter = "[^a-zA-Z]".r
+    val splitOnWords = delimiter
+      .split(s)
+      .zipAll(delimiter.findAllIn(s).toSeq, "", "")
+      .flatMap {
+        case (part, delimiter) => Seq(part, delimiter)
+      }
+      .filter(_.nonEmpty) // Filter out any empty strings
+
     val words = splitOnWords.map(_.mkString)
     words.map { word =>
       s"${word.head.toUpper}${word.tail.toLowerCase}"
