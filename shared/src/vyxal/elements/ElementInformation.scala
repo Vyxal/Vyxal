@@ -12,7 +12,7 @@ case class Modifier(
     symbol: String,
     keywords: Seq[String],
     numberOfElements: Int,
-    overloads: Overload*
+    overloads: ModifierOverload*
 )
 
 case class Overload(
@@ -20,6 +20,13 @@ case class Overload(
     args: Seq[String],
     description: String,
     typeSwitchable: Boolean = false,
+)
+
+case class ModifierOverload(
+    name: String,
+    args: Seq[String],
+    description: String,
+    example: String,
 )
 
 case class Options(
@@ -2363,5 +2370,35 @@ object ElementInformation:
     ),
   )
 
-  val modifiers: Seq[Modifier] = List()
+  val modifiers: Seq[Modifier] = List(
+    Modifier(
+      symbol = "∺",
+      keywords = Seq("correspond:"),
+      numberOfElements = 2,
+      ModifierOverload(
+        name = "Correspond",
+        args = Seq("mon", "mon"),
+        description = "Apply #1 to <under> and #2 to <top>",
+        example = "3 4 ∺d½ -> 6 2",
+      ),
+      ModifierOverload(
+        name = "Dyadic Correspond",
+        args = Seq("dyd+", "dyd+"),
+        description =
+          "Apply #2 to #2.arity top items, and #1 to #1.arity items under that",
+        example = "3 4 5 6 ∺+- -> 7 1_",
+      ),
+    ),
+    Modifier(
+      symbol = "⁜",
+      keywords = Seq("group-by:", "window-reduce:"),
+      numberOfElements = 1,
+      ModifierOverload(
+        name = "Group By",
+        args = Seq("mon"),
+        description = "Group items of the top of the stack by results of #1",
+        example = "#[1|3|4|5|2|4#] ⁜e -> [[1,3],[4],[5],[2,4]]",
+      ),
+    ),
+  )
 end ElementInformation
