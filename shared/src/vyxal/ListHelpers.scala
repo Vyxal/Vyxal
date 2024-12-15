@@ -8,6 +8,8 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
 
+import spire.std.iterable
+
 object ListHelpers:
 
   def assign(iterable: VList, index: VNum, value: VAny): VList =
@@ -60,6 +62,38 @@ object ListHelpers:
           }
         })
       case _ => VList.empty
+
+  def combinations(
+      iterable: VList,
+      size: VNum,
+      withReplacement: Boolean = false,
+  ): VList =
+    if withReplacement then combinationsWithReplacement(iterable, size)
+    else combinationsWithoutReplacement(iterable, size)
+
+  def combinationsWithReplacement(list: VList, n: VNum): VList =
+    if n == VNum(0) then VList() // Base case: one combination of size 0
+    else
+      VList.from(for
+        (head, index) <- list.zipWithIndex
+        tail <- combinationsWithReplacement(VList.from(list.drop(index)), n - 1)
+      yield VList.from(head :: List(tail)))
+
+  def combinationsWithoutReplacement[A](
+      list: VList,
+      n: VNum,
+  ): VList =
+    if n == VNum(0) then VList() // Base case: one combination of size 0
+    else
+      VList.from(
+        for
+          (head, index) <- list.zipWithIndex
+          tail <- combinationsWithoutReplacement(
+            list.drop(index + 1),
+            n - 1,
+          ) // Exclude current and previous elements
+        yield VList.from(head :: List(tail))
+      )
 
   def countDepth(left: VList, right: VList)(using Context): VNum =
     val Seq(needle, haystack) = Seq(left, right).sortBy(maxDepth)
@@ -1065,18 +1099,6 @@ object ListHelpers:
     while temp.startsWith(pattern) do temp = temp.drop(pattern.length)
     while temp.endsWith(pattern) do temp = temp.dropRight(pattern.length)
     VList.from(temp)
-
-  def uniqueBy(iterable: VList, fn: VFun)(using Context): VList =
-    val seen = mut.ArrayBuffer.empty[VAny]
-    VList.from(
-      iterable.filter { elem =>
-        val res = fn.execute(elem, 0, List(elem))
-        if seen.contains(res) then false
-        else
-          seen += res
-          true
-      }
-    )
 
   /** Ensure that a VList is a matrix */
   def validateMatrix(lst: VList)(using

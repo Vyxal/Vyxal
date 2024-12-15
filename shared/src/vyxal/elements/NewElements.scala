@@ -483,7 +483,7 @@ object NewElements:
           case s: String => push(s.distinct.mkString)
           case predicate: VFun =>
             val lst = pop()
-            val unique = ListHelpers.uniqueBy(lst.itr, predicate)
+            val unique = ListHelpers.dedupBy(lst.itr, predicate)
             lst match
               case _: String => push(unique.mkString)
               case _ => push(unique)
@@ -873,6 +873,46 @@ object NewElements:
           .findFirstMatchIn(a)
           .map(mobj => VList(mobj.start, mobj.end))
           .getOrElse(VList())
+    },
+    addPart("ℭ", Dyad, false) {
+      case (itr: VNum, size: VNum) =>
+        ListHelpers.combinations(itr.ritr, size, withReplacement = true)
+      case (itr: String, size: VNum) => VList.from(
+          ListHelpers
+            .combinations(itr.itr, size.toInt, withReplacement = true)
+            .map(x => x.asInstanceOf[VList].mkString)
+        )
+      case (itr: VList, size: VNum) =>
+        ListHelpers.combinations(itr, size.toInt, withReplacement = true)
+
+      case (size: VNum, itr: String) => VList.from(
+          ListHelpers
+            .combinations(itr.itr, size.toInt, withReplacement = true)
+            .map(x => x.asInstanceOf[VList].mkString)
+        )
+      case (size: VNum, itr: VList) =>
+        ListHelpers.combinations(itr, size.toInt, withReplacement = true)
+
+    },
+    addPart("℈", Dyad, false) {
+      case (itr: VNum, size: VNum) =>
+        ListHelpers.combinations(itr.ritr, size, withReplacement = false)
+      case (itr: String, size: VNum) => VList.from(
+          ListHelpers
+            .combinations(itr.itr, size.toInt, withReplacement = false)
+            .map(x => x.asInstanceOf[VList].mkString)
+        )
+      case (itr: VList, size: VNum) => VList.from(
+          ListHelpers.combinations(itr, size.toInt, withReplacement = false)
+        )
+      case (size: VNum, itr: String) => VList.from(
+          ListHelpers
+            .combinations(itr.itr, size.toInt, withReplacement = false)
+            .map(x => x.asInstanceOf[VList].mkString)
+        )
+      case (size: VNum, itr: VList) => VList.from(
+          ListHelpers.combinations(itr, size.toInt, withReplacement = false)
+        )
     },
   )
 

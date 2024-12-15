@@ -2442,6 +2442,50 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "ℭ",
+      keywords = Seq("combinations-with-replacement"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Combinations with Replacement",
+        args = Seq("itr", "num"),
+        description =
+          "All combinations of {#1|#2} of length {#2|#1} with replacement",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Combinations of Range with Replacement",
+        args = Seq("num", "num"),
+        description =
+          "All combinations of range(#1) of length #2 with replacement",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "℈",
+      keywords = Seq("combinations-without-replacement"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Combinations without Replacement",
+        args = Seq("itr", "num"),
+        description =
+          "All combinations of {#1|#2} of length {#2|#1} without replacement",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Combinations of Range without Replacement",
+        args = Seq("num", "num"),
+        description =
+          "All combinations of range(#1) of length #2 without replacement",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(

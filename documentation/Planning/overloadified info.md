@@ -220,7 +220,6 @@ b = rhs
 - [x] ⌽ (any, num)* = a[1:b]
 - [x] £ (any) = set Register
 - [x] ¥ () = push Register
-- [ ] ▲ # TODO
 - [x] ↜ (...) = rotate stack left
 - [x] ↝ (...) = rotate stack right
 - [x] ⬳ (non-num) = rotate item left
@@ -271,7 +270,8 @@ b = rhs
 - [x] ≛ (num, num) = does b divide a?
 - [x]   (str, num)* = a + ' ' * b
 - [x]   (str, str) = span of first regex match of b in a
-- [ ] ⁞ (any, num) = Combinations of a with length b
+- [x] ℭ (any, num) = Combinations with replacement of a with length b
+- [x] ℈ (any, num) = Combinations without replacement of a with length b
 - [ ] ⦷ (num) = Absolute value
 - [ ]    (str) = keep alphabet characters of a
 - [ ] Ϣ (any, num) = a wrapped in chunks of length b
