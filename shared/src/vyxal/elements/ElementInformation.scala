@@ -1497,6 +1497,12 @@ object ElementInformation:
         description = "Unique elements of #1",
         typeSwitchable = false,
       ),
+      Overload(
+        name = "Unique By Function",
+        args = Seq("lst", "fun"),
+        description = "Unique elements of #1 by applying #2",
+        typeSwitchable = false,
+      ),
     ),
     Element(
       symbol = "w",
@@ -2407,6 +2413,32 @@ object ElementInformation:
         name = "Divmod",
         args = Seq("num", "num"),
         description = "Divmod of #1 and #2 ([#1 // #2, #1 % #2])",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "≛",
+      keywords = Seq("divides?", "append-spaces", "regex-span"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Divides?",
+        args = Seq("num", "num"),
+        description = "#2 % #1 == 0",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Append Spaces",
+        args = Seq("str", "num"),
+        description = "Append {#2|#1} spaces to {#1|#2}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Regex Span",
+        args = Seq("str", "str"),
+        description = "Span of regex match of pattern #2 in #1",
         typeSwitchable = false,
       ),
     ),
