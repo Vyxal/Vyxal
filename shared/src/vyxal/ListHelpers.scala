@@ -81,7 +81,7 @@ object ListHelpers:
       yield VList.from(head :: tail.lst.toList)
 
   def combinationsWithoutReplacement(list: VList, n: VNum): Seq[VList] =
-    if n == 0 then Seq(VList()) // Base case: one combination of size 0
+    if n == VNum(0) then Seq(VList()) // Base case: one combination of size 0
     else
       for
         (head, index) <- list.zipWithIndex
