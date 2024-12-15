@@ -68,32 +68,29 @@ object ListHelpers:
       size: VNum,
       withReplacement: Boolean = false,
   ): VList =
-    if withReplacement then combinationsWithReplacement(iterable, size)
+    if withReplacement then
+      VList.from(combinationsWithReplacement(iterable, size))
     else combinationsWithoutReplacement(iterable, size)
 
-  def combinationsWithReplacement(list: VList, n: VNum): VList =
-    if n == VNum(0) then VList() // Base case: one combination of size 0
+  def combinationsWithReplacement(list: VList, n: VNum): Seq[VList] =
+    if n == VNum(0) then Seq(VList()) // Base case: one combination of size 0
     else
-      VList.from(for
+      for
         (head, index) <- list.zipWithIndex
         tail <- combinationsWithReplacement(list.drop(index), n - 1)
-      yield VList(head, tail))
+      yield VList.from(head :: tail.lst.toList)
 
-  def combinationsWithoutReplacement(
-      list: VList,
-      n: VNum,
-  ): VList =
-    if n == VNum(0) then VList() // Base case: one combination of size 0
+  def combinationsWithoutReplacement(list: VList, n: VNum): Seq[VList] =
+    if n == 0 then Seq(VList()) // Base case: one combination of size 0
     else
-      VList.from(
-        for
-          (head, index) <- list.zipWithIndex
-          tail <- combinationsWithoutReplacement(
+      for
+        (head, index) <- list.zipWithIndex
+        tail <-
+          combinationsWithoutReplacement(
             list.drop(index + 1),
             n - 1,
           ) // Exclude current and previous elements
-        yield VList.from(head :: List(tail))
-      )
+      yield VList.from(head :: tail.lst.toList)
 
   def countDepth(left: VList, right: VList)(using Context): VNum =
     val Seq(needle, haystack) = Seq(left, right).sortBy(maxDepth)
