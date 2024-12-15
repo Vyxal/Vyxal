@@ -77,7 +77,7 @@ object ListHelpers:
     else
       for
         (head, index) <- list.zipWithIndex
-        tail <- combinationsWithReplacement(list.drop(index), n - 1)
+        tail <- combinationsWithReplacement(list, n - 1)
       yield VList.from(head :: tail.lst.toList)
 
   def combinationsWithoutReplacement(list: VList, n: VNum): Seq[VList] =
