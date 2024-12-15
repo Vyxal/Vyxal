@@ -85,11 +85,10 @@ object ListHelpers:
     else
       for
         (head, index) <- list.zipWithIndex
-        tail <-
-          combinationsWithoutReplacement(
-            list.drop(index + 1),
-            n - 1,
-          ) // Exclude current and previous elements
+        tail <- combinationsWithoutReplacement(
+          list.drop(index + 1),
+          n - 1,
+        ) // Exclude current and previous elements
       yield VList.from(head :: tail.lst.toList)
 
   def countDepth(left: VList, right: VList)(using Context): VNum =
