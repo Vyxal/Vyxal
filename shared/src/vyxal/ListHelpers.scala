@@ -70,7 +70,7 @@ object ListHelpers:
   ): VList =
     if withReplacement then
       VList.from(combinationsWithReplacement(iterable, size))
-    else combinationsWithoutReplacement(iterable, size)
+    else VList.from(combinationsWithoutReplacement(iterable, size))
 
   def combinationsWithReplacement(list: VList, n: VNum): Seq[VList] =
     if n == VNum(0) then Seq(VList()) // Base case: one combination of size 0
