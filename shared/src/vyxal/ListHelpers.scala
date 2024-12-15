@@ -76,10 +76,10 @@ object ListHelpers:
     else
       VList.from(for
         (head, index) <- list.zipWithIndex
-        tail <- combinationsWithReplacement(VList.from(list.drop(index)), n - 1)
-      yield VList.from(head :: List(tail)))
+        tail <- combinationsWithReplacement(list.drop(index), n - 1)
+      yield VList.from(head, tail))
 
-  def combinationsWithoutReplacement[A](
+  def combinationsWithoutReplacement(
       list: VList,
       n: VNum,
   ): VList =
