@@ -1067,7 +1067,7 @@ object ListHelpers:
     VList.from(temp)
 
   def uniqueBy(iterable: VList, fn: VFun)(using Context): VList =
-    val seen = mut.Set.empty[VAny]
+    val seen = mutable.ArrayBuffer.empty[VAny]
     VList.from(
       iterable.filter { elem =>
         val res = fn.execute(elem, 0, List(elem))
