@@ -1066,6 +1066,18 @@ object ListHelpers:
     while temp.endsWith(pattern) do temp = temp.dropRight(pattern.length)
     VList.from(temp)
 
+  def uniqueBy(iterable: VList, fn: VFun)(using Context): VList =
+    val seen = mut.Set.empty[VAny]
+    VList.from(
+      iterable.filter { elem =>
+        val res = fn.execute(elem, 0, List(elem))
+        if seen.contains(res) then false
+        else
+          seen += res
+          true
+      }
+    )
+
   /** Ensure that a VList is a matrix */
   def validateMatrix(lst: VList)(using
       Context

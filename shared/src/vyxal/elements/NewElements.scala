@@ -472,12 +472,24 @@ object NewElements:
         Monad,
         lst => lst.itr.lastOption.getOrElse(MiscHelpers.defaultEmpty(lst)),
       ),
-    addPart("u", Monad, false) {
-      case lst: VList => lst.distinct
-      case n: VNum =>
-        MiscHelpers.eval(ListHelpers.makeIterable(n).distinct.mkString)
-      case s: String => s.distinct.mkString
-    },
+    "u" ->
+      direct(Monad) {
+        val top = pop()
+        top match
+          case lst: VList => push(lst.distinct)
+          case n: VNum => push(
+              MiscHelpers.eval(ListHelpers.makeIterable(n).distinct.mkString)
+            )
+          case s: String => push(s.distinct.mkString)
+          case predicate: VFun =>
+            val lst = pop()
+            val unique = ListHelpers.uniqueBy(lst.itr, predicate)
+            lst match
+              case _: String => push(unique.mkString)
+              case _ => push(unique)
+          case _ => throw UnsupportedOverloadException("u", "object")
+
+      },
     "w" ->
       direct(Monad) {
         push(VList(pop())) // Tacit!
@@ -852,6 +864,15 @@ object NewElements:
     addPart("‰", Dyad, true) {
       case (a: VNum, b: VNum) =>
         if b == VNum(0) then VList(0, 0) else VList((a / b).floor, a % b)
+    },
+    addPart("≛", Dyad, true) {
+      case (a: VNum, b: VNum) => (a % b) == VNum(0)
+      case (a: String, b: VNum) => a + " " * b.toInt
+      case (a: VNum, b: String) => b + " " * a.toInt
+      case (a: String, b: String) => b.r
+          .findFirstMatchIn(a)
+          .map(mobj => VList(mobj.start, mobj.end))
+          .getOrElse(VList())
     },
   )
 
