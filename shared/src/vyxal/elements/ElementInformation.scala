@@ -2486,6 +2486,26 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⦷",
+      keywords = Seq("abs", "absolute-value", "keep-letters"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Absolute Value",
+        args = Seq("num"),
+        description = "Absolute value of #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Keep Letters",
+        args = Seq("str"),
+        description = "Keep only the letters of #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(

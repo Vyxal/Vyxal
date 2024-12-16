@@ -914,6 +914,10 @@ object NewElements:
           ListHelpers.combinations(itr, size.toInt, withReplacement = false)
         )
     },
+    addPart("⦷", Monad, true) {
+      case num: VNum => num.vabs
+      case str: String => str.filter(_.isLetter)
+    },
   )
 
   // Subject to being added as overloads onto things in elements
