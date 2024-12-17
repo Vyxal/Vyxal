@@ -2556,7 +2556,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "≠",
-      keywords = Seq("not-equal", "neq", "!="),
+      keywords = Seq("not-equal", "neq", "!=", "=n't", "eqn't", "equaln't"),
       arity = 2,
       Options(
         vectorises = true
