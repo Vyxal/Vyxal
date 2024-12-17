@@ -1018,6 +1018,12 @@ object NewElements:
       case lst: VList => VList.from(lst.map(item => ListHelpers.sum(item.itr)))
     },
     "⛭" -> fullToImpl(Monad, x => MiscHelpers.exec(x)),
+    addPart("⏟", Dyad, false) {
+      case (a: (VList | String), b: VNum) => ListHelpers.nthItems(a, b)
+      case (a: VNum, b: (VList | String)) => ListHelpers.nthItems(b, a)
+      case (a: VList, b: VList) => ListHelpers.matrixMultiply(a, b)
+      case (a: String, b: String) => StringHelpers.r(b).matches(a)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

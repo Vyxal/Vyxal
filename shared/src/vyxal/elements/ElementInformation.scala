@@ -2749,6 +2749,32 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⏟",
+      keywords = Seq("modular", "matrix-multiply", "regex-full-match?"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Every Nth Element",
+        args = Seq("itr", "num"),
+        description = "Every {#2|#1}th element of {#1|#2}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Matrix Multiply",
+        args = Seq("lst", "lst"),
+        description = "Matrix multiply #1 and #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Regex Full Match?",
+        args = Seq("str", "str"),
+        description = "Does pattern #2 fully match #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(

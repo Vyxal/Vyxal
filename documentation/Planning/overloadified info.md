@@ -295,7 +295,9 @@ b = rhs
 - [x] ⛭ (num) = a ** 10
 - [x]    (str) = Exec
 - [x]    (fun) = call function
-- [ ] ⏟ (any, num) = every bth element of a
+- [x] ⏟ (any, num) = every bth element of a
+- [x]   (lst, lst) = Matrix multiplication
+- [x]   (str, str) = does the entirety of a match b?
 - [ ] ⌭ (num) = is a prime?
 - [ ]    (str) = quote a and prepend to a
 - [ ] ⏜ () = ...d c b a => ...d c b a b
