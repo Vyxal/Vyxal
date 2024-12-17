@@ -2506,6 +2506,82 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "Ϣ",
+      keywords = Seq("chunk-to-length", "partition-to-length"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Chunk to Length",
+        args = Seq("any", "num"),
+        description = "Chunk {#1|#2} into parts of length {#2|#1}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Partition to Lengths",
+        args = Seq("itr", "lst[num]"),
+        description = "Partition #1 into parts of lengths #2",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "≤",
+      keywords = Seq("less-than-or-equal", "lte", "<="),
+      arity = 2,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Less Than or Equal",
+        args = Seq("scl", "scl"),
+        description = "#1 <= #2",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "≥",
+      keywords = Seq("greater-than-or-equal", "gte", ">="),
+      arity = 2,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Greater Than or Equal",
+        args = Seq("scl", "scl"),
+        description = "#1 >= #2",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "≠",
+      keywords = Seq("not-equal", "neq", "!="),
+      arity = 2,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Not Equal",
+        args = Seq("scl", "scl"),
+        description = "str(#1) != str(#2)",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "≡",
+      keywords = Seq("exact-equals", "eq+", "==="),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Equals",
+        args = Seq("any", "any"),
+        description = "Does #1 exactly equal #2",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(

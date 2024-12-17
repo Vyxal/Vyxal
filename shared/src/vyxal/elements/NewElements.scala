@@ -918,6 +918,30 @@ object NewElements:
       case num: VNum => num.vabs
       case str: String => str.filter(_.isLetter)
     },
+    addPart("Ϣ", Dyad, false) {
+      case (a: VList, b: VNum) => ListHelpers.wrapLength(a, b)
+      case (a: String, b: VNum) =>
+        if b <= 0 then VList.empty
+        else VList.from(a.grouped(b.toInt).toSeq)
+      case (a: VNum, b: String) =>
+        if a <= 0 then VList.empty
+        else VList.from(b.grouped(a.toInt).toSeq)
+      case (a: VNum, b: VList) => ListHelpers.wrapLength(b, a)
+      case (a: VList, b: VList) =>
+        if b.lst.forall(_.isInstanceOf[VNum]) then
+          ListHelpers.partitionBy(a, b.lst.map(_.asInstanceOf[VNum]))
+        else throw InvalidListOverloadException("Ϣ", b, "Number")
+    },
+    addPart("≤", Dyad, true) {
+      case (a: VVal, b: VVal) => a <= b
+    },
+    addPart("≥", Dyad, true) {
+      case (a: VVal, b: VVal) => a >= b
+    },
+    addPart("≠", Dyad, true) {
+      case (a: VVal, b: VVal) => a.toString != b.toString
+    },
+    "≡" -> fullToImpl(Dyad, (a, b) => a === b),
   )
 
   // Subject to being added as overloads onto things in elements

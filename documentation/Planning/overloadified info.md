@@ -272,13 +272,14 @@ b = rhs
 - [x]   (str, str) = span of first regex match of b in a
 - [x] ℭ (any, num) = Combinations with replacement of a with length b
 - [x] ℈ (any, num) = Combinations without replacement of a with length b
-- [ ] ⦷ (num) = Absolute value
-- [ ]    (str) = keep alphabet characters of a
-- [ ] Ϣ (any, num) = a wrapped in chunks of length b
-- [ ] ≤ (num, num) = a <= b
-- [ ] ≥ (num, num) = a >= b
-- [ ] ≠ (scl, scl) = a != b
-- [ ] ≡ (any, any) = a == b (non-vec)
+- [x] ⦷ (num) = Absolute value
+- [x]    (str) = keep alphabet characters of a
+- [x] Ϣ (any, num) = a wrapped in chunks of length b
+- [x]   (itr, lst[num]) = Partition a into chunks of lengths in b
+- [x] ≤ (num, num) = a <= b
+- [x] ≥ (num, num) = a >= b
+- [x] ≠ (scl, scl) = a != b
+- [x] ≡ (any, any) = a == b (non-vec)
 - [ ] • (lst, lst) = dot product
 - [ ]   (num, num) = Convert a to bijective base b
 - [ ]   (lst, fun) = First index of a where b is truthy
