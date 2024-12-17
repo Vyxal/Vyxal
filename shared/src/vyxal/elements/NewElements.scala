@@ -961,6 +961,9 @@ object NewElements:
         do pos += 1
         if list.hasIndex(pos.toBigInt) then pos else VNum(-1)
     },
+    addPart("±", Monad, true) {
+      case a: VNum => if a < 0 then -1 else if a > 0 then 1 else 0
+    },
   )
 
   // Subject to being added as overloads onto things in elements
