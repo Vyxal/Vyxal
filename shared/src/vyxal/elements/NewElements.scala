@@ -942,6 +942,25 @@ object NewElements:
       case (a: VVal, b: VVal) => a.toString != b.toString
     },
     "≡" -> fullToImpl(Dyad, (a, b) => a === b),
+    addPart("•", Dyad, false) {
+      case (a: VList, b: VList) => ListHelpers.dotProduct(a, b)
+      case (number: VNum, base: VNum) =>
+        NumberHelpers.toBijectiveBase(number, base)
+      case (itr, predicate: VFun) =>
+        var pos = VNum(0)
+        val list = itr.itr
+        while list.hasIndex(pos.toBigInt) &&
+          predicate(list.index(pos)) == VNum(0)
+        do pos += 1
+        if list.hasIndex(pos.toBigInt) then pos else VNum(-1)
+      case (predicate: VFun, itr) =>
+        var pos = VNum(0)
+        val list = itr.itr
+        while list.hasIndex(pos.toBigInt) &&
+          predicate(list.index(pos)) == VNum(0)
+        do pos += 1
+        if list.hasIndex(pos.toBigInt) then pos else VNum(-1)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

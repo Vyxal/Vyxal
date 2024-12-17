@@ -280,9 +280,9 @@ b = rhs
 - [x] ≥ (num, num) = a >= b
 - [x] ≠ (scl, scl) = a != b
 - [x] ≡ (any, any) = a == b (non-vec)
-- [ ] • (lst, lst) = dot product
-- [ ]   (num, num) = Convert a to bijective base b
-- [ ]   (lst, fun) = First index of a where b is truthy
+- [x] • (lst, lst) = dot product
+- [x]   (num, num) = Convert a to bijective base b
+- [x]   (lst, fun) = First index of a where b is truthy
 - [ ] ± (num) = sign of a
 - [ ]   (str) = tbd
 - [ ] † (any) = lengths of consecutive groups

@@ -2582,6 +2582,33 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "•",
+      keywords = Seq("dot-product", "bijective-base", "first-predicate-index"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Dot Product",
+        args = Seq("lst", "lst"),
+        description = "Dot product of #1 and #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Bijective Base Conversion",
+        args = Seq("num", "num"),
+        description = " Convert #1 to bijective base #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "First Index Where Predicate True",
+        args = Seq("nsl", "fun"),
+        description =
+          "Index of the first value in {#1|#2} where function {#2|#1} is true",
+        typeSwitchable = true,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(
