@@ -848,10 +848,14 @@ object NewElements:
     "※" ->
       direct(Monad) {
         pop() match
-          case it: VPhysical => push(ListHelpers.groupConsecutive(it))
+          case it: VPhysical =>
+            val res = ListHelpers.groupConsecutive(it.itr)
+            if it.isInstanceOf[String] then
+              push(VList.from(res.map(_.asInstanceOf[VList].mkString)))
+            else push(res)
           case predicate: VFun =>
             val it = pop()
-            push(ListHelpers.groupConsecutiveBy(it, predicate))
+            push(ListHelpers.groupBy(it.itr, predicate))
           case _ => ???
       },
     "⇄" -> fullToImpl(Monad, x => ListHelpers.reverse(x)),
@@ -962,8 +966,18 @@ object NewElements:
         if list.hasIndex(pos.toBigInt) then pos else VNum(-1)
     },
     addPart("±", Monad, true) {
-      case a: VNum => if a < 0 then -1 else if a > 0 then 1 else 0
+      case a: VNum => a.signum
     },
+    "†" ->
+      fullToImpl(
+        Monad,
+        x =>
+          VList.from(
+            ListHelpers
+              .groupConsecutive(x.itr)
+              .map(group => VNum(group.itr.bigLength))
+          ),
+      ),
   )
 
   // Subject to being added as overloads onto things in elements
