@@ -855,7 +855,7 @@ object NewElements:
             else push(res)
           case predicate: VFun =>
             val it = pop()
-            push(ListHelpers.groupBy(it.itr, predicate))
+            push(ListHelpers.groupByConsecutive(it.itr, predicate))
           case _ => ???
       },
     "⇄" -> fullToImpl(Monad, x => ListHelpers.reverse(x)),

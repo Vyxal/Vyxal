@@ -393,9 +393,9 @@ object ListHelpers:
   end groupBy
 
   def groupConsecutive(iterable: VList): VList =
-    VList.from(groupByCtxless(iterable, x => x))
+    VList.from(groupByConsecutive(iterable, x => x))
 
-  def groupByCtxless(iterable: VList, function: VAny => VAny): VList =
+  def groupByConsecutive(iterable: VList, function: VAny => VAny): VList =
     val it = iterable.iterator
     def gen(first: VAny): LazyList[VList] =
       val buf = ListBuffer(first)
@@ -407,6 +407,26 @@ object ListHelpers:
       LazyList(VList.from(buf.toList))
 
     VList.from(if it.hasNext then gen(it.next()) else Seq.empty)
+
+  def groupByConsecutive(iterable: VAny, function: VFun)(using Context): VList =
+    val it = makeIterable(iterable).iterator
+    def gen(first: VAny): LazyList[VList] =
+      val buf = ListBuffer(first)
+      val transformed = function.execute(first, 0, List(first))
+      while it.hasNext do
+        val next = it.next()
+        if function.execute(next, 0, List(next)) == transformed then
+          buf.append(
+            next
+          )
+        else return VList.from(buf.toList) #:: gen(next)
+      LazyList(VList.from(buf.toList))
+
+    val res = if it.hasNext then gen(it.next()) else Seq.empty
+    iterable match
+      case _: String => VList.from(res.map(_.asInstanceOf[VList].mkString))
+      case _ => VList.from(res)
+  end groupByConsecutive
 
   def insert(iterable: VList, index: VNum, value: VAny)(using
       Context
