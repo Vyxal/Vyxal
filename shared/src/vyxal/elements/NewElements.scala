@@ -4,10 +4,8 @@ import scala.language.implicitConversions
 
 import vyxal.*
 import vyxal.{Dyad, ImplHelpers, Monad, Tetrad, Triad}
-import vyxal.parsing.TokenType
 import vyxal.toBool
-import vyxal.Context.{copyCtx, peek, pop, push}
-import vyxal.Context.given
+import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.defaultEmpty
 import vyxal.StringHelpers.padLeft
@@ -499,18 +497,7 @@ object NewElements:
       },
     "x" ->
       direct(-1) {
-        val ctx = summon[Context]
-        if ctx.recursion >= ctx.settings.recursionLimit then
-          throw VyxalRecursionException()
-        ctx.recursion += 1
-        if ctx.globals.callStack.isEmpty then
-          Interpreter.execute(ctx.globals.originalProgram)(using ctx)
-        else
-          ctx.push(
-            Interpreter.executeFn(ctx.globals.callStack.top)(using
-              ctx.makeChild()
-            )
-          )
+        FuncHelpers.recursion()
       },
     addPart("y", Triad, false) {
       case (

@@ -27,6 +27,19 @@ object FuncHelpers:
     val iter = ctx.pop()
     ctx.push(ListHelpers.reduce(iter, fn))
 
+  def recursion()(using ctx: Context): Unit =
+    if ctx.recursion >= ctx.settings.recursionLimit then
+      throw VyxalRecursionException()
+    ctx.recursion += 1
+    if ctx.globals.callStack.isEmpty then
+      Interpreter.execute(ctx.globals.originalProgram)(using ctx)
+    else
+      ctx.push(
+        Interpreter.executeFn(ctx.globals.callStack.top)(using
+          ctx.makeChild()
+        )
+      )
+
   def reduceOverPairs(fn: VFun, iter: VList)(using ctx: Context): VList =
     val slices = ListHelpers.overlaps(iter, 2)
     val result = slices.map(slice =>
