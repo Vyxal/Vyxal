@@ -490,9 +490,27 @@ object NewElements:
           case _ => throw UnsupportedOverloadException("u", "object")
 
       },
+    addPart("v", Dyad, true) {
+      case (a: VNum, b: VNum) => (a / b).floor
+    },
     "w" ->
       direct(Monad) {
         push(VList(pop())) // Tacit!
+      },
+    "x" ->
+      direct(-1) {
+        val ctx = summon[Context]
+        if ctx.recursion >= ctx.settings.recursionLimit then
+          throw VyxalRecursionException()
+        ctx.recursion += 1
+        if ctx.globals.callStack.isEmpty then
+          Interpreter.execute(ctx.globals.originalProgram)(using ctx)
+        else
+          ctx.push(
+            Interpreter.executeFn(ctx.globals.callStack.top)(using
+              ctx.makeChild()
+            )
+          )
       },
     addPart("y", Triad, false) {
       case (
@@ -978,6 +996,27 @@ object NewElements:
               .map(group => VNum(group.itr.bigLength))
           ),
       ),
+    "⎙" ->
+      direct(Monad) {
+        MiscHelpers.vyPrintln(peek())
+      },
+    "✒" ->
+      direct(Monad) {
+        MiscHelpers.vyPrint(pop())
+      },
+    addPart("≓", Monad, false) {
+      case num: VNum =>
+        val temp = num.toString
+        val reversed =
+          if temp.startsWith("-") then temp + temp.reverse.tail
+          else temp.reverse
+        VNum(temp + reversed)
+      case str: String => str + str.reverse
+      case lst: VList => VList.from(lst ++ lst.reverse)
+    },
+    addPart("Ͼ", Monad, false) {
+      case lst: VList => VList.from(lst.map(item => ListHelpers.sum(item.itr)))
+    },
   )
 
   // Subject to being added as overloads onto things in elements

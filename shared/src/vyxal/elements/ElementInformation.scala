@@ -1505,6 +1505,20 @@ object ElementInformation:
       ),
     ),
     Element(
+      symbol = "v",
+      keywords = Seq("integer-divide", "int-div", "//"),
+      arity = 2,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Integer Divide",
+        args = Seq("num", "num"),
+        description = "#1 // #2",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
       symbol = "w",
       keywords = Seq("wrap-in-list"),
       arity = 1,
@@ -1515,6 +1529,21 @@ object ElementInformation:
         name = "Wrap in List",
         args = Seq("any"),
         description = "Wrap #1 in a list",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "x",
+      keywords = Seq("recurse"),
+      arity = -1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Recurse",
+        args = Seq(),
+        description =
+          "Recursively call the current function (or the top-level program if not in a function)",
         typeSwitchable = false,
       ),
     ),
@@ -2634,6 +2663,63 @@ object ElementInformation:
         name = "Lengths of Consecutives",
         args = Seq("lst"),
         description = "Lengths of consecutive runs of equal elements in #1",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⎙",
+      keywords = Seq("peek-print"),
+      arity = 1,
+      Options(
+        vectorises = false,
+        peeks = true,
+      ),
+      Overload(
+        name = "Peek Print",
+        args = Seq("any"),
+        description = "Print #1 without popping",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "✒",
+      keywords = Seq("print"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Print",
+        args = Seq("any"),
+        description = "Print #1 without a trailing newline",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "≓",
+      keywords = Seq("mirror"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Mirror",
+        args = Seq("any"),
+        description = "Mirror #1 (#1 + reverse(#1)), as the original type",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "Ͼ",
+      keywords = Seq("vectorised-sums", "v/+"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Vectorised Sums",
+        args = Seq("lst"),
+        description = "Sum of each item in #1. Functionally equivalent to `¨Σ`",
         typeSwitchable = false,
       ),
     ),
