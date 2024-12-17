@@ -2623,6 +2623,20 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "†",
+      keywords = Seq("lengths-of-consecutives"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Lengths of Consecutives",
+        args = Seq("lst"),
+        description = "Lengths of consecutive runs of equal elements in #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(
