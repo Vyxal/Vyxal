@@ -94,6 +94,26 @@ object MiscHelpers:
       tempContext.peek
     else s
 
+  def exec(value: VAny)(using ctx: Context): VAny =
+    value match
+      case code: String =>
+        val originalMode = ctx.settings.endPrintMode
+        ctx.settings = ctx.settings.useMode(EndPrintMode.None)
+        Interpreter.execute(code)(using ctx)
+        ctx.settings = ctx.settings.useMode(originalMode)
+        ctx.pop()
+      case n: VNum => 10 ** n
+      case list: VList => list.vmap(exec)
+      case fn: VFun =>
+        val res = Interpreter.executeFn(fn)
+        if fn.arity == -1 then
+          ctx.pop() // Handle the extra value pushed by lambdas that operate on the stack
+        res
+      case _: VObject => throw BadArgumentException("exec", "object")
+      case con: VConstructor => Interpreter.createObject(con)
+    end match
+  end exec
+
   /** A generalised "count up until the first positive integer is found that
     * satisfies a function". Helpful because you might want different hardcoded
     * offsets or even dynamic offsets.

@@ -2723,6 +2723,32 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⛭",
+      keywords = Seq("exec", "10**", "call", "@"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "10 to the Power of",
+        args = Seq("num"),
+        description = "10 ** #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Execute",
+        args = Seq("str"),
+        description = "Execute #1 as Vyxal code",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Call Function",
+        args = Seq("fun"),
+        description = "Call function #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(

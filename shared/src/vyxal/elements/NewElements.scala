@@ -1017,6 +1017,7 @@ object NewElements:
     addPart("Ͼ", Monad, false) {
       case lst: VList => VList.from(lst.map(item => ListHelpers.sum(item.itr)))
     },
+    "⛭" -> fullToImpl(Monad, x => MiscHelpers.exec(x)),
   )
 
   // Subject to being added as overloads onto things in elements
