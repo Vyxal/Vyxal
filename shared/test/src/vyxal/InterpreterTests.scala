@@ -451,7 +451,7 @@ class InterpreterTests extends VyxalTests:
   }
 
   describe("Global Recursion (Factorial)") {
-    testMulti(":1>[:vx×}")(
+    testMulti(":1>[:‹x×}")(
       VList(1) -> VNum(1),
       VList(2) -> VNum(2),
       VList(3) -> VNum(6),
@@ -465,7 +465,7 @@ class InterpreterTests extends VyxalTests:
 
   describe("Global Recursion (Fibonacci)") {
 
-    testMulti("#{:0=|_0|:1=|_1|:vx$2-x+")(
+    testMulti("#{:0=|_0|:1=|_1|:‹x$2-x+")(
       VList(0) -> VNum(0),
       VList(1) -> VNum(1),
       VList(2) -> VNum(1),
