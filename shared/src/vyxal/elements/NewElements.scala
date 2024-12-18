@@ -489,9 +489,6 @@ object NewElements:
           case _ => throw UnsupportedOverloadException("u", "object")
 
       },
-    addPart("v", Dyad, true) {
-      case (a: VNum, b: VNum) => (a / b).floor
-    },
     "w" ->
       direct(Monad) {
         push(VList(pop())) // Tacit!
@@ -1085,6 +1082,34 @@ object NewElements:
     "␣" -> niladify(" "),
     "¶" -> niladify("\n"),
     "★" -> niladify("*"),
+    "ᑂ" ->
+      direct(Monad) {
+        val ctx = summon[Context]
+        pop() match
+          case lst: VList => push(
+              lst.drop(1),
+              lst.headOption.getOrElse(ctx.settings.defaultValue),
+            )
+          case s: String =>
+            push(s.drop(1), if s.isEmpty then "" else s.charAt(0).toString)
+          case n: VNum =>
+            val iter = n.ritr
+            push(
+              iter.drop(1),
+              iter.headOption.getOrElse(ctx.settings.defaultValue),
+            )
+          case arg => throw UnimplementedOverloadException("ᑂ", List(arg))
+      },
+    addPart("∻", Dyad, true) {
+      case (a: VNum, b: VNum) => (a / b).floor
+    },
+    addPart("√", Monad, true) {
+      case a: VNum => a.sqrt
+    },
+    addPart("¿", Monad, true) {
+      case a: VNum => a != VNum(0)
+      case a: String => a.nonEmpty
+    },
   )
 
   // Subject to being added as overloads onto things in elements

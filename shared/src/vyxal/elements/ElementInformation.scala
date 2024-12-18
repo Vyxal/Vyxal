@@ -1505,20 +1505,6 @@ object ElementInformation:
       ),
     ),
     Element(
-      symbol = "v",
-      keywords = Seq("integer-divide", "int-div", "//"),
-      arity = 2,
-      Options(
-        vectorises = true
-      ),
-      Overload(
-        name = "Integer Divide",
-        args = Seq("num", "num"),
-        description = "#1 // #2",
-        typeSwitchable = false,
-      ),
-    ),
-    Element(
       symbol = "w",
       keywords = Seq("wrap-in-list"),
       arity = 1,
@@ -3029,6 +3015,61 @@ object ElementInformation:
         name = "Asterisk",
         args = Seq(),
         description = "Push an asterisk to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "ᑂ",
+      keywords = Seq("headless-top"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Head on Top, Rest on Bottom",
+        args = Seq("any"),
+        description = "Push #1[1:] and #1[0]",
+      ),
+    ),
+    Element(
+      symbol = "∻",
+      keywords = Seq("integer-divide", "int-div", "//"),
+      arity = 2,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Integer Divide",
+        args = Seq("num", "num"),
+        description = "#1 // #2",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "√",
+      keywords = Seq("square-root", "sqrt"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Square Root",
+        args = Seq("num"),
+        description = "Square root of #1",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "¿",
+      keywords = Seq("truthy?"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Truthy?",
+        args = Seq("scl"),
+        description = "Is #1 truthy? (Not 0, empty, or false)",
         typeSwitchable = false,
       ),
     ),
