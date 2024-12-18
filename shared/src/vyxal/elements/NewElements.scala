@@ -1074,6 +1074,17 @@ object NewElements:
         summon[Context].push(a)
         ListHelpers.cartesianProduct(b, b)
     },
+    addPart("⚅", Monad, false) {
+      case a: VNum => NumberHelpers.randrange(a)
+      case lst: VIter => lst.itr.index(NumberHelpers.randrange(lst.itr.length))
+    },
+    "æ" ->
+      direct(Monad) {
+        push(ListHelpers.reverse(peek()))
+      },
+    "␣" -> niladify(" "),
+    "¶" -> niladify("\n"),
+    "★" -> niladify("*"),
   )
 
   // Subject to being added as overloads onto things in elements

@@ -2947,6 +2947,91 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⚅",
+      keywords = Seq("random-choice", "random-element", "randint", "random"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Random Choice",
+        args = Seq("itr"),
+        description = "Random element of #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Random Integer",
+        args = Seq("num"),
+        description = "Random integer from 0 to #1",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "æ",
+      keywords = Seq(
+        "bifuricate",
+        "bifur",
+        "bif",
+        "furry",
+        "uwu",
+        "dup-rev",
+        "dup-reverse",
+        "owo",
+      ),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Bifurcate",
+        args = Seq("any"),
+        description = "Duplicate #1 and reverse the duplicate",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "␣",
+      keywords = Seq("space"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Space",
+        args = Seq(),
+        description = "Push a space to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "¶",
+      keywords = Seq("newline"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Newline",
+        args = Seq(),
+        description = "Push a newline to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "★",
+      keywords = Seq("asterisk"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Asterisk",
+        args = Seq(),
+        description = "Push an asterisk to the stack",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(
