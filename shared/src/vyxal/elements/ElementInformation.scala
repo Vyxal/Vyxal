@@ -2858,6 +2858,26 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
+    Element(
+      symbol = "⌹",
+      keywords = Seq("list-partitions", "integer-partitions"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Integers Partitions",
+        args = Seq("num"),
+        description = "All possible ways to sum positive integers to #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "List Partitions",
+        args = Seq("itr"),
+        description = "All possible ways to partition #1 into sublists",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(

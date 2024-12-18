@@ -1031,6 +1031,15 @@ object NewElements:
       case (a: VFun, b) => MiscHelpers.untilNoChange(a, b)
       case (a, b: VFun) => MiscHelpers.untilNoChange(b, a)
     },
+    addPart("⌹", Monad, false) {
+      case a: VList => ListHelpers.partitions(a)
+      case s: String => ListHelpers
+          .partitions(ListHelpers.makeIterable(s))
+          .vmap(
+            _.asInstanceOf[VList].vmap(_.asInstanceOf[VList].mkString)
+          )
+      case n: VNum => NumberHelpers.partitions(n)
+    },
   )
 
   // Subject to being added as overloads onto things in elements
