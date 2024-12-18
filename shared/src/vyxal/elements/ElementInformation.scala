@@ -2878,6 +2878,47 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⏚",
+      keywords = Seq("powerset"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Powerset",
+        args = Seq("any"),
+        description = "Powerset of #1",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "↯",
+      keywords =
+        Seq("inclusive-range", "sort-by", "regex-split-keep-delimiters"),
+      arity = 2,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Inclusive Range",
+        args = Seq("num", "num"),
+        description = "Inclusive range from #1 to #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Sort By",
+        args = Seq("nsl", "fun"),
+        description = "Sort list {#1|#2} (range if num) by function {#2|#1}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Regex Split Keep Delimiters",
+        args = Seq("str", "str"),
+        description = "Split #1 by regex #2, keeping the delimiters",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(

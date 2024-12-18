@@ -22,6 +22,7 @@ extension (a: VAny)(using Context)
   def ritr = ListHelpers.makeIterable(a, Some(true))
 
 extension (a: String)(using Context) def toNum: VNum = VNum(a)
+extension (s: Seq[VAny]) def vlst = VList.from(s)
 
 object NewElements:
   case class Element(
@@ -1039,6 +1040,21 @@ object NewElements:
             _.asInstanceOf[VList].vmap(_.asInstanceOf[VList].mkString)
           )
       case n: VNum => NumberHelpers.partitions(n)
+    },
+    addPart("⏚", Monad, false) {
+      case a: VNum => ListHelpers.powerset(a.ritr)
+      case a: String =>
+        ListHelpers.powerset(a.itr).map(_.asInstanceOf[VList].mkString).vlst
+      case a: VList => ListHelpers.powerset(a)
+    },
+    addPart("↯", Dyad, true) {
+      case (lst: VAny, predicate: VFun) =>
+        ListHelpers.sortBy(lst.ritr, predicate)
+      case (predicate: VFun, lst: VAny) =>
+        ListHelpers.sortBy(lst.ritr, predicate)
+      case (start: VNum, end: VNum) => NumberHelpers.range(start, end)
+      case (haystack: String, pattern: String) =>
+        StringHelpers.splitKeepDelimiters(haystack, pattern)
     },
   )
 

@@ -340,6 +340,19 @@ object StringHelpers:
           VList.from(num.toString.split(pattern).toSeq.map(MiscHelpers.eval))
     catch case _: PatternSyntaxException => throw BadRegexException(pattern)
 
+  def splitKeepDelimiters(s: String, pattern: String): VList =
+    VList.from(
+      pattern.r
+        .split(s)
+        .zipAll(pattern.r.findAllIn(s).toSeq, "", "")
+        .flatMap {
+          case (part, delimiter) => Seq(part, delimiter)
+        }
+        .filter(_.nonEmpty)
+        .map(_.mkString)
+        .toSeq
+    )
+
   /** Toggle case of each character in the string */
   def swapCase(s: String): String =
     s.map { c =>
