@@ -2919,6 +2919,34 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⊠",
+      keywords = Seq("cartesian-power", "regex-index"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Cartesian Power",
+        args = Seq("any", "num"),
+        description = "Cartesian power of {#1|#2} to the power of {#2|#1}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Regex Index",
+        args = Seq("str", "str"),
+        description =
+          "Return first index of pattern match #2 in target string #1, -1 if not found",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Self-Cartesian Power",
+        args = Seq("itr", "any"),
+        description =
+          "Push #1, and then push the cartesian product of #2 with itself",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(

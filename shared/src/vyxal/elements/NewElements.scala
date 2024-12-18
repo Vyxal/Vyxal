@@ -1056,6 +1056,24 @@ object NewElements:
       case (haystack: String, pattern: String) =>
         StringHelpers.splitKeepDelimiters(haystack, pattern)
     },
+    addPart("⊠", Dyad, false) {
+      case (a, n: VNum) => ListHelpers.cartesianPower(a, n)
+      case (n: VNum, a) => ListHelpers.cartesianPower(a, n)
+      case (a: String, b: String) =>
+        val res = StringHelpers.r(b).findFirstMatchIn(a)
+        if res.isDefined then res.get.start else -1
+      case (a: VList, b: String) => VList.from(
+          a.lst
+            .map(_.toString)
+            .map(x =>
+              val res = StringHelpers.r(b).findFirstMatchIn(x)
+              if res.isDefined then res.get.start else -1
+            )
+        )
+      case (a, b: VList) =>
+        summon[Context].push(a)
+        ListHelpers.cartesianProduct(b, b)
+    },
   )
 
   // Subject to being added as overloads onto things in elements
