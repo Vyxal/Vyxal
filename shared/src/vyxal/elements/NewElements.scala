@@ -1125,6 +1125,21 @@ object NewElements:
         else VList(iterable.head, iterable.last)
     },
     "⎃" -> fullToImpl(Monad, x => ListHelpers.flatten(x.itr).mkString),
+    addPart("⎶", Dyad, false) {
+      case (a: String, b: String) => a.stripPrefix(b).stripSuffix(b)
+      case (a: String, b: VNum) =>
+        a.stripPrefix(b.toString).stripSuffix(b.toString)
+      case (a: VNum, b: String) =>
+        VNum(a.toString.stripPrefix(b).stripSuffix(b))
+      case (a: VNum, b: VNum) =>
+        VNum(a.toString.stripPrefix(b.toString).stripSuffix(b.toString))
+      case (a: VFun, b) => MiscHelpers.scanl(ListHelpers.makeIterable(b), a)
+      case (a, b: VFun) => MiscHelpers.scanl(ListHelpers.makeIterable(a), b)
+      case (a: VList, b: VList) => ListHelpers.trimList(a, b)
+      case (a: VList, b) => ListHelpers.trim(a, b)
+      case (a, b: VList) => ListHelpers.trim(b, a)
+      case (a, b) => ListHelpers.trim(ListHelpers.makeIterable(a), b)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

@@ -3150,6 +3150,20 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⎶",
+      keywords = Seq("trim"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Trim",
+        args = Seq("any", "any"),
+        description = "Trim #1 of leading and trailing #2",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(
