@@ -1110,6 +1110,9 @@ object NewElements:
       case a: VNum => a != VNum(0)
       case a: String => a.nonEmpty
     },
+    addPart("◌", Monad, true) {
+      case a: VNum => NumberHelpers.round(a)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

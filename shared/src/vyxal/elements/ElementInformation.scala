@@ -3073,6 +3073,20 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "◌",
+      keywords = Seq("round"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Round",
+        args = Seq("num"),
+        description = "Round #1 to the nearest integer, half-up",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(

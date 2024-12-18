@@ -272,6 +272,14 @@ object NumberHelpers:
       .reshape(ListHelpers.cartesianProductMulti(ranges), ranges.map(_.length))
       .asInstanceOf[VList]
 
+  // Round half-up
+  def round(a: VNum): VNum =
+    val floor = a.floor
+    val ceil = a.ceil
+    if a - floor == VNum(0.5) then ceil
+    else if a - floor < ceil - a then floor
+    else ceil
+
   def toBinary(a: VAny)(using Context): VList =
     a match
       case n: VNum =>
