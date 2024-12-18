@@ -1011,6 +1011,16 @@ object NewElements:
       case (a: VList, b: VList) => ListHelpers.matrixMultiply(a, b)
       case (a: String, b: String) => StringHelpers.r(b).matches(a)
     },
+    addPart("⌭", Monad, true) {
+      case a: VNum => NumberHelpers.isMostLikelyPrime(a)
+      case a: String => StringHelpers.quotify(a) + a
+    },
+    "⏜" ->
+      direct(Monad) {
+        val top = pop()
+        val under = pop()
+        push(under, top, under)
+      },
   )
 
   // Subject to being added as overloads onto things in elements

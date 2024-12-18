@@ -2775,6 +2775,42 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⌭",
+      keywords = Seq("is-prime", "prime?", "quine-cheese"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Is Prime",
+        args = Seq("num"),
+        description = "Is #1 a prime number?",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Quine Cheese",
+        args = Seq("str"),
+        description =
+          "Quotify #1 and prepend it to #1. (Useful for quines like `\"⌭\"⌭`)",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⏜",
+      keywords = Seq("over"),
+      arity = -1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Over",
+        args = Seq(),
+        description =
+          "Duplicate the item below the top of the stack -> #2 #1 #2",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(

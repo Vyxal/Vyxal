@@ -298,9 +298,9 @@ b = rhs
 - [x] ⏟ (any, num) = every bth element of a
 - [x]   (lst, lst) = Matrix multiplication
 - [x]   (str, str) = does the entirety of a match b?
-- [ ] ⌭ (num) = is a prime?
-- [ ]    (str) = quote a and prepend to a
-- [ ] ⏜ () = ...d c b a => ...d c b a b
+- [x] ⌭ (num) = is a prime?
+- [x]    (str) = quote a and prepend to a
+- [x] ⏜ () = ...d c b a => ...d c b a b
 - [ ] ⍢ (num) = a % 2
 - [ ]    (str) = last half of a
 - [ ] ℂ (num, num) = n choose K
