@@ -3087,6 +3087,69 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "δ",
+      keywords = Seq("deltas", "differences"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Deltas",
+        args = Seq("lst"),
+        description =
+          "Deltas/forward differences of #1 - [a - b, b - c, c - d, ...]",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "☷",
+      keywords = Seq("partition-after-truthy"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Partition After Truthy",
+        args = Seq("lst", "lst"),
+        description = " Partition #1 after truthy indices of #2.",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "✇",
+      keywords = Seq("edges", "ends", "real-imaginary"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Edges",
+        args = Seq("itr"),
+        description = "First and last element of #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Real and Imaginary",
+        args = Seq("num"),
+        description = "Real and imaginary parts of #1",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⎃",
+      keywords = Seq("flatten-and-join-on-nothing"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Flatten and Join on Nothing",
+        args = Seq("lst"),
+        description = "Flatten #1 and join on nothing",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(

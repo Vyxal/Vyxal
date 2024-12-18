@@ -1113,6 +1113,18 @@ object NewElements:
     addPart("◌", Monad, true) {
       case a: VNum => NumberHelpers.round(a)
     },
+    "δ" -> fullToImpl(Monad, x => ListHelpers.deltas(x.itr)),
+    "☷" ->
+      fullToImpl(Dyad, (a, b) => ListHelpers.partitionAfterTruthyIndices(a, b)),
+    addPart("✇", Monad, false) {
+      case a: VNum => VList(a.real, a.imag)
+      case a =>
+        val iterable = a.itr
+        if iterable.isEmpty then VList.from(Seq.empty)
+        else if iterable.length == 1 then VList(iterable.head)
+        else VList(iterable.head, iterable.last)
+    },
+    "⎃" -> fullToImpl(Monad, x => ListHelpers.flatten(x.itr).mkString),
   )
 
   // Subject to being added as overloads onto things in elements
