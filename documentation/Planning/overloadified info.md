@@ -303,10 +303,9 @@ b = rhs
 - [x] ⏜ () = ...d c b a => ...d c b a b
 - [x] ⍢ (num) = a % 2
 - [x]    (str) = last half of a
-- [ ] ℂ (num, num) = n choose K
-- [ ]   (str, str) = are the character sets of a and b equal?
-- [ ]   (str, num)* = all b-length combinations from a
-- [ ]   (fun, any)* = run a on b until the result no longer changes returning all intermediate results
+- [x] ℂ (num, num) = n choose K
+- [x]   (str, str) = are the character sets of a and b equal?
+- [x]   (fun, any)* = run a on b until the result no longer changes returning all intermediate results
 - [ ] ⌹ (lst) = List partitions of a
 - [ ]    (num) = Integer partitions of a (all possible ways to sum to a)
 - [ ] ⏚ (lst) = powerset

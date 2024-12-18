@@ -2831,6 +2831,33 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "ℂ",
+      keywords = Seq("ncr", "choose", "characters-same?", "fixpoint-collect"),
+      arity = 2,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "NCR | N Choose R",
+        args = Seq("num", "num"),
+        description = "nCr of #1 and #2 (n choose r)",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Characters Same?",
+        args = Seq("str", "str"),
+        description = "Are all characters in #1 the same as #2?",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Fixpoint Collect",
+        args = Seq("fun", "any"),
+        description =
+          "Repeatedly apply {#1|#2} on {#2|#1} until a fixed point is reached, collecting intermediate results",
+        typeSwitchable = true,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(

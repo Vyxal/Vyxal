@@ -1025,6 +1025,12 @@ object NewElements:
       case a: VNum => a % 2
       case a: String => a.slice(a.length / 2, a.length)
     },
+    addPart("ℂ", Dyad, true) {
+      case (a: VNum, b: VNum) => NumberHelpers.nChooseK(a, b)
+      case (a: String, b: String) => a.toSet == b.toSet
+      case (a: VFun, b) => MiscHelpers.untilNoChange(a, b)
+      case (a, b: VFun) => MiscHelpers.untilNoChange(b, a)
+    },
   )
 
   // Subject to being added as overloads onto things in elements
