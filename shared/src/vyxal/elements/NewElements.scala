@@ -1021,6 +1021,10 @@ object NewElements:
         val under = pop()
         push(under, top, under)
       },
+    addPart("⍢", Monad, true) {
+      case a: VNum => a % 2
+      case a: String => a.slice(a.length / 2, a.length)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

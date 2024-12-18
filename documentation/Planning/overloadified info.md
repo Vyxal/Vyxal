@@ -301,8 +301,8 @@ b = rhs
 - [x] ⌭ (num) = is a prime?
 - [x]    (str) = quote a and prepend to a
 - [x] ⏜ () = ...d c b a => ...d c b a b
-- [ ] ⍢ (num) = a % 2
-- [ ]    (str) = last half of a
+- [x] ⍢ (num) = a % 2
+- [x]    (str) = last half of a
 - [ ] ℂ (num, num) = n choose K
 - [ ]   (str, str) = are the character sets of a and b equal?
 - [ ]   (str, num)* = all b-length combinations from a

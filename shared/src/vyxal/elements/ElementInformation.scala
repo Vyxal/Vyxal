@@ -2811,6 +2811,26 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⍢",
+      keywords = Seq("parity", "bit", "last-half"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Parity",
+        args = Seq("num"),
+        description = "Parity of #1 (1 if odd, 0 if even) --> #1 % 2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Last String Half",
+        args = Seq("str"),
+        description = "Last half of #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(
