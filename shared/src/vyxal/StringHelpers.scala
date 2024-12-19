@@ -24,12 +24,11 @@ object StringHelpers:
     val temp = NumberHelpers
       .fromBaseAlphabet(s, "ඞabcdefghijklmnopqrstuvwxyz ")
       .asInstanceOf[VNum]
-    s"\"${NumberHelpers
-        .toBaseAlphabet(
+    val res = NumberHelpers.toBaseAlphabet(
           temp,
           VStr(Codepage.filterNot(Lexer.StringClosers.contains(_))),
         )
-        .asInstanceOf[String]}„"
+    s"\"$res„"
 
   def compress252(n: VNum)(using Context): String =
     s"\"${NumberHelpers
@@ -119,7 +118,7 @@ object StringHelpers:
         case ind => helper(count + 1, ind + needle.length)
     helper(0, 0)
 
-  def decompress252Number(s: String)(using Context): VAny =
+  def decompress252Number(s: String)(using Context): VNum =
     NumberHelpers.fromBaseAlphabet(
       s,
       Codepage.filterNot(Lexer.StringClosers.contains(_)),

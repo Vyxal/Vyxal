@@ -255,7 +255,7 @@ class InterpreterTests extends VyxalTests:
         group {
           assertResult(VNum(1))(ctx.getVar("x"))
           assertResult(VNum(2))(ctx.getVar("y"))
-          assertResult(vSeq(3))(ctx.getVar("z"))
+          assertResult(VList(3))(ctx.getVar("z"))
         }
       }
       it("should handle simple nested patterns") {

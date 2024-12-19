@@ -35,7 +35,7 @@ object NewElements:
     "⊞" ->
       direct(Monad) {
         val iterable = ListHelpers.makeIterable(pop())
-        val uniq = iterable.distinct
+        val uniq = iterable.vDistinct
         val counts = uniq.map(item => VNum(iterable.count(_ == item)))
         push(VList.from(counts))
       },
@@ -326,11 +326,11 @@ object NewElements:
     addPart("Y", Dyad, false) {
       case (a, b: VNum) => Seq.fill(b.toInt)(a)
       case (a: VNum, b) => Seq.fill(a.toInt)(b)
-      case (a: (VList | String), b: VList) =>
+      case (a: (VList | VStr), b: VList) =>
         val temp = b
           .map {
             case n: VNum => n.toInt
-            case l: (String | VList) => ListHelpers.makeIterable(l).length
+            case l: (VStr | VList) => ListHelpers.makeIterable(l).length
             case _ =>
               // Function / Object, which doesn't have a reasonable
               // way to convert to a number
@@ -426,7 +426,7 @@ object NewElements:
         else ListHelpers.overlapsMd(a, b.lst.map(_.asInstanceOf[VNum]))
     },
     addPart("p", Dyad, false) {
-      case (VStr(a), b: (String | VNum)) => b.toString + a
+      case (VStr(a), b: (VStr | VNum)) => b.toString + a
       case (a: VNum, VStr(b)) => b + a.toString
       case (a: VNum, b: VNum) => MiscHelpers.eval(b.toString + a.toString)
       case (a: VList, b) => VList.from(b +: a)
@@ -471,9 +471,9 @@ object NewElements:
       direct(Monad) {
         val top = pop()
         top match
-          case lst: VList => push(lst.distinct)
+          case lst: VList => push(lst.vDistinct)
           case n: VNum => push(
-              MiscHelpers.eval(ListHelpers.makeIterable(n).distinct.mkString)
+              MiscHelpers.eval(ListHelpers.makeIterable(n).vDistinct.mkString)
             )
           case VStr(s) => push(s.distinct.mkString)
           case predicate: VFun =>
@@ -500,8 +500,8 @@ object NewElements:
     addPart("y", Triad, false) {
       case (
             VStr(a),
-            b: (VList | VNum | String),
-            c: (VList | VNum | String),
+            b: (VList | VNum | VStr),
+            c: (VList | VNum | VStr),
           ) => StringHelpers.transliterate(
           a,
           ListHelpers.makeIterable(b),
@@ -560,8 +560,8 @@ object NewElements:
     },
     addPart("⦰", Dyad, false) {
       case (VStr(a), VStr(b)) => a.filterNot(b.contains(_))
-      case (a: VList, b: (VNum | String)) => a.filter(_ != b)
-      case (a: (VNum | String), b: VList) => b.filter(_ != a)
+      case (a: VList, b: (VNum | VStr)) => a.filter(_ != b)
+      case (a: (VNum | VStr), b: VList) => b.filter(_ != a)
       case (a, b) =>
         val left = ListHelpers.makeIterable(a)
         val right = ListHelpers.makeIterable(b)
@@ -635,7 +635,7 @@ object NewElements:
     },
     addPart("⊖", Dyad, false) {
       case (a, b: VNum) => ListHelpers.take(a.itr, b)
-      case (a: VNum, b: (VList | String)) => ListHelpers.take(b.itr, a)
+      case (a: VNum, b: (VList | VStr)) => ListHelpers.take(b.itr, a)
       case (a: VList, b: VList) =>
         if !b.lst.forall(_.isInstanceOf[VNum]) then ???
         else ListHelpers.take(a, b.lst.map(_.asInstanceOf[VNum]))

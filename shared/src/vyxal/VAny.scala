@@ -16,7 +16,8 @@ import spire.implicits.*
 import spire.math.{Complex, Real}
 
 sealed trait VAny
-final case class VStr(s: String) extends VAny
+final case class VStr(s: String) extends VAny:
+  override def toString: String = s
 
 type VOptional = VAny | VNil
 type VVal = VNum | VStr
@@ -202,20 +203,19 @@ case class VObject(
     *   The wrapped list actually holdings this VList's elements.
     */
 final class VList private (val lst: Seq[VAny]) extends VAny:
-  /** This violates the method contract, since [[List]]s actually need a
-    * traversal to get their length, but it helps us check for lazy lists
-    */
-  def knownSize: Int =
-    lst match
-      case _: List[?] => lst.size
-      case _ => lst.knownSize
-
   override def toString(): String =
     lst.map(_.toString).mkString("[ ", " | ", " ]")
 
   def sliding(size: Int): Iterator[VList] = lst.sliding(size).map(VList.from(_))
   def sliding(size: Int, step: Int): Iterator[VList] =
     lst.sliding(size, step).map(VList.from(_))
+
+  override def equals(o: Any): Boolean =
+    o match
+      case l: VList => this.lst == l.lst
+      case _ => false
+
+  override def hashCode: Int = lst.hashCode
 
 object VList:
   def apply(elems: VAny*): VList = new VList(elems)

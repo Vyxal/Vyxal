@@ -49,7 +49,7 @@ object ListHelpers:
     val lhs = makeIterable(left, Some(true))
     val rhs = makeIterable(right, Some(true))
 
-    if unsafe || (lhs.knownSize != -1 && rhs.knownSize != -1) then
+    if unsafe || (lhs.isDefFinite && rhs.isDefFinite) then
       cartesianProductSeqs(lhs, rhs)
     else mergeInfLists(lhs.map(l => rhs.map(r => Seq(l, r))))
 
@@ -123,7 +123,7 @@ object ListHelpers:
 
   def dotProduct(left: Seq[VAny], right: Seq[VAny])(using Context): VAny =
     left *~ right match
-      case l: Seq[VAny] => ListHelpers.sum(l)
+      case l: VList => ListHelpers.sum(l.lst)
       case x => x
 
   def drop(iterable: Seq[VAny], index: VNum): Seq[VAny] =
@@ -173,20 +173,20 @@ object ListHelpers:
   end filter
 
   def flatten(xs: Seq[VAny]): Seq[VAny] =
-    VList.from(xs.flatMap {
-      case l: Seq[VAny] => flatten(l)
+    xs.flatMap {
+      case l: VList => flatten(l.lst)
       case x => Seq(x)
-    })
+    }
 
   def flattenByDepth(iterable: Seq[VAny], depth: VNum)(using
       Context
   ): Seq[VAny] =
     if depth == VNum(0) then iterable
     else
-      VList.from(iterable.flatMap {
-        case l: Seq[VAny] => flattenByDepth(l, depth - 1)
+      iterable.flatMap {
+        case l: VList => flattenByDepth(l.lst, depth - 1)
         case x => Seq(x)
-      })
+      }
 
   /** A wrapper call to the generator method in interpreter */
   def generate(function: VFun, initial: Seq[VAny])(using
@@ -569,9 +569,8 @@ object ListHelpers:
   end map
 
   def maxDepth(iter: Seq[VAny])(using Context): VNum =
-    iter
-      .map {
-        case s: Seq[VAny] => 1 + maxDepth(s)
+    iter.map {
+        case s: VList => 1 + maxDepth(s.lst)
         case _ => VNum(1)
       }
       .foldLeft(VNum(0))(
@@ -614,12 +613,12 @@ object ListHelpers:
       var index = ind
       for item <- mutShape do
         item match
-          case item: Seq[VAny] =>
-            output += moldHelper(mutContent, item, index)
+          case item: VList =>
+            output += moldHelper(mutContent, item.lst, index)
             output.last match
-              case list: Seq[VAny] => index += list.length - 1
+              case list: VList => index += list.length - 1
               case _ => index += 1
-          case item => output += mutContent(index)
+          case item => output += VList.index(mutContent, index)
         index += 1
 
       VList.from(output.toSeq)
@@ -632,7 +631,7 @@ object ListHelpers:
   ): Seq[VAny] =
     if !indices.forall(_.isInstanceOf[VNum]) then
       value match
-        case v: Seq[VAny] =>
+        case v: VList =>
           var out = iterable
           for (index, subvalue) <- indices.zip(v) do
             out = multiDimAssign(out, makeIterable(index), subvalue)
@@ -766,7 +765,7 @@ object ListHelpers:
     // Remove any nulls that were inserted by multiDimIndexNoWrap
     def removeNulls(lst: Seq[VAny]): Seq[VAny] =
       lst.filter(_ != null).map {
-        case l: Seq[VAny] => removeNulls(l)
+        case l: VList => removeNulls(l.lst)
         case x => x
       }
 
@@ -783,14 +782,13 @@ object ListHelpers:
 
   /** List partitions (like set partitions, but contiguous sublists) */
   def partitions(lst: Seq[VAny])(using Context): Seq[Seq[Seq[VAny]]] =
-    val size = lst.knownSize
-    if size == -1 then
+    if !lst.isDefFinite then
       // Possibly infinite
       partitionsLazy(lst)
     else
       // Forces evaluation of the list because we need to know the length
       val shapes = NumberHelpers
-        .partitions(size)
+        .partitions(lst.size)
         .map(partition =>
           partition.map(v => Seq.fill(v.asInstanceOf[VNum].toInt)(1))
         )
@@ -999,7 +997,7 @@ object ListHelpers:
     */
   def reverse(iterable: VAny): VAny =
     iterable match
-      case list: Seq[VAny] => VList.from(list.reverse)
+      case list: VList => VList.from(list.reverse)
       case VStr(str) => str.reverse
       case num: VNum => VNum(num.toString.reverse)
       case _ => iterable
@@ -1022,7 +1020,7 @@ object ListHelpers:
 
     while counter < amountInt do
       temp = temp match
-        case list: Seq[VAny] =>
+        case list: VList =>
           if direction == 1 then VList.from(list.tail :+ list.head)
           else VList.from(list.last +: list.init)
         case VStr(str) =>
@@ -1048,7 +1046,7 @@ object ListHelpers:
       shape += VNum(temp.length)
       val items = temp.map(x =>
         x match
-          case l: Seq[VAny] => (l.length, x)
+          case l: VList => (l.length, x)
           case _ => (0, VList())
       )
       temp = items.maxBy(_._1)._2.asInstanceOf[VList]
@@ -1136,7 +1134,7 @@ object ListHelpers:
       case Some(filler) => LazyList.unfold(matrix) { matrix =>
           Option.when(matrix.exists(_.nonEmpty)) {
             val col = VList.from(matrix.map(_.headOption.getOrElse(filler)))
-            (col, matrix.map(_.tail))
+            (col, matrix.map(_.vTail))
           }
         }
     VList.from(out)
@@ -1220,7 +1218,7 @@ object ListHelpers:
   ): Seq[VAny] =
     iterable.map { a =>
       (a: @unchecked) match
-        case a: Seq[VAny] => vectorisedMaximum(a, b)
+        case a: VList => vectorisedMaximum(a, b)
         case a: VVal => MiscHelpers.dyadicMaximum(a, b)
     }
 
@@ -1229,7 +1227,7 @@ object ListHelpers:
   ): Seq[VAny] =
     iterable.map { a =>
       (a: @unchecked) match
-        case a: Seq[VAny] => vectorisedMinimum(a, b)
+        case a: VList => vectorisedMinimum(a, b)
         case a: VVal => MiscHelpers.dyadicMinimum(a, b)
     }
 

@@ -38,14 +38,14 @@ object NumberHelpers:
       case _ => fromBaseDigits(ListHelpers.makeIterable(a), b)
 
   /** Returns value in base 10 using base len(alphabet) [bijective base] */
-  def fromBaseAlphabet(value: String, alphabet: String): VAny =
+  def fromBaseAlphabet(value: String, alphabet: String): VNum =
     value.foldLeft(VNum(0)) { (ret, digit) =>
       alphabet.length * ret + alphabet.indexOf(digit)
     }
 
   def fromBaseAlphabet(value: Seq[VAny], alphabet: VAny)(using
       ctx: Context
-  ): VAny =
+  ): VNum =
     val alphaList = ListHelpers.makeIterable(alphabet)
     value.foldLeft(VNum(0)) { (ret, digit) =>
       alphaList.length * ret + alphaList.indexOf(digit)

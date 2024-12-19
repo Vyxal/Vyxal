@@ -100,6 +100,12 @@ extension (self: Seq[VAny])
       pos -= Int.MaxValue
     return true
 
+  /** Whether this list is known to be finite. May be finite even if return value is false */
+  def isDefFinite: Boolean =
+    self match
+      case _: LazyList[?] => self.knownSize != -1
+      case _ => true
+
   def vTail: Seq[VAny] =
     if self.lst.isEmpty then Seq.empty
     else self.lst.tail
