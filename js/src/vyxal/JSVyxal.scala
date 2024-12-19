@@ -45,7 +45,7 @@ object JSVyxal:
 
     val inputList = inputs
       .map(x =>
-        if settings.dontEvalInputs then x
+        if settings.dontEvalInputs then VStr(x)
         else MiscHelpers.eval(x)(using Context())
       )
       .toSeq

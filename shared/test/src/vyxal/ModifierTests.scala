@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.*
+import vyxal.VNum.given
 
 import org.scalatest.funspec.AnyFunSpec
 

@@ -1,6 +1,8 @@
 package vyxal.debugger
 
 import vyxal.*
+import vyxal.given
+import vyxal.VNum.given
 import vyxal.parsing.Range
 
 import org.scalatest.featurespec.AnyFeatureSpec
@@ -105,7 +107,7 @@ class DebuggerTests extends AnyFeatureSpec with GivenWhenThen with Matchers:
 
       Then("it should finish")
       assert(dbg.finished)
-      assertResult("foo5")(ctx.pop())
+      assertResult(VStr("foo5"))(ctx.pop())
     }
 
     Scenario("Resuming") {
@@ -123,7 +125,7 @@ class DebuggerTests extends AnyFeatureSpec with GivenWhenThen with Matchers:
 
       Then("it should finish")
       assert(dbg.finished)
-      assertResult("foo5")(ctx.pop())
+      assertResult(VStr("foo5"))(ctx.pop())
     }
   }
 end DebuggerTests

@@ -1,6 +1,8 @@
 package vyxal
 
+import vyxal.given
 import vyxal.parsing.{Lexer, Parser}
+import vyxal.VNum.given
 
 import org.scalatest.tagobjects.Slow
 import spire.math.Real
@@ -9,11 +11,14 @@ class InterpreterTests extends VyxalTests:
   def testCodeAsLiterate(input: String, expected: VAny): Unit =
     val literate = Lexer.lexLiterate(input)
     testInterpreter(Parser.parse(literate), expected)
+
+  def vSeq(elems: VAny*): Seq[VAny] = elems
+
   describe("Literals") {
     it("should make lists") {
-      testCode("#[1 | 2 3 + | 4#]", VList(1, 5, 4))
-      testCode("#[ 1 2 | 3 ++ #]", VList(6))
-      testCode("#[1 2 | 3 4#]", VList(1, 2, 3, 4))
+      testCode("#[1 | 2 3 + | 4#]", vSeq(1, 5, 4))
+      testCode("#[ 1 2 | 3 ++ #]", vSeq(6))
+      testCode("#[1 2 | 3 4#]", vSeq(1, 2, 3, 4))
     }
   }
 
@@ -21,7 +26,7 @@ class InterpreterTests extends VyxalTests:
     it(
       "Shouldn't hang when mapping over an infinite list and then performing a finite operation"
     ) {
-      testCode("ÞPƛ}5Θ", VList(2, 3, 5, 7, 11))
+      testCode("ÞPƛ}5Θ", vSeq(2, 3, 5, 7, 11))
     }
   }
 
@@ -46,9 +51,9 @@ class InterpreterTests extends VyxalTests:
 
     describe("Map lambda") {
       testMulti(
-        "10 ƛ 5 + }" -> VList(6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
-        "10 ƛ n + }" -> VList(2, 4, 6, 8, 10, 12, 14, 16, 18, 20),
-        "10 ƛ m + }" -> VList(1, 3, 5, 7, 9, 11, 13, 15, 17, 19),
+        "10 ƛ 5 + }" -> vSeq(6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
+        "10 ƛ n + }" -> vSeq(2, 4, 6, 8, 10, 12, 14, 16, 18, 20),
+        "10 ƛ m + }" -> vSeq(1, 3, 5, 7, 9, 11, 13, 15, 17, 19),
       )
     }
 
@@ -63,20 +68,20 @@ class InterpreterTests extends VyxalTests:
   describe("Vectorisation") {
     describe("Simple monads") {
       // TODO: Replace with ¨b when implemented
-      // testMulti("#[100 | #[101 | 0#] #] ᵛB" -> VList(4, 202))
+      // testMulti("#[100 | #[101 | 0#] #] ᵛB" -> vSeq(4, 202))
     }
 
     describe("Simple dyads") {
       testMulti(
         "#[4 | #[5 | 6#] #] 3 ᵛ;" ->
-          VList(
-            VList(4, 3),
-            VList(VList(5, 6), 3),
+          vSeq(
+            vSeq(4, 3),
+            vSeq(vSeq(5, 6), 3),
           ),
         "#[4 | #[5 | 6#] #] #[4#] ᵛ;" ->
-          VList(
-            VList(4, VList(4)),
-            VList(VList(5, 6), VList(4)),
+          vSeq(
+            vSeq(4, vSeq(4)),
+            vSeq(vSeq(5, 6), vSeq(4)),
           ),
       )
     }
@@ -89,8 +94,8 @@ class InterpreterTests extends VyxalTests:
             .from(
               List(AST.Lambda(Some(1), List.empty, List(AST.Command("!"))))
             ),
-          VList(1, 6, VList(2, 1)),
-          inputs = Seq(VList(0, 3, VList(2, 1))),
+          vSeq(1, 6, vSeq(2, 1)),
+          inputs = Seq(vSeq(0, 3, vSeq(2, 1))),
         )
       }
     }
@@ -103,8 +108,8 @@ class InterpreterTests extends VyxalTests:
             .from(
               List(AST.Lambda(Some(2), List.empty, List(AST.Command("-"))))
             ),
-          VList(VList(-4, -2, -6), VList(-1, 1, -3), VList(-2, -1, -6)),
-          inputs = Seq(VList(0, 3, VList(2, 1)), VList(4, 2, 6)),
+          vSeq(vSeq(-4, -2, -6), vSeq(-1, 1, -3), vSeq(-2, -1, -6)),
+          inputs = Seq(vSeq(0, 3, vSeq(2, 1)), vSeq(4, 2, 6)),
         )
       }
     }
@@ -154,42 +159,42 @@ class InterpreterTests extends VyxalTests:
 
     describe("Multibranch lambdas") {
       testMulti(
-        "#[1|2|3|4#]ƛ5+|×}" -> VList(36, 49, 64, 81),
-        "#[1|2|3|4#]ƛ5+×}" -> VList(6, 14, 24, 36),
-        "#[1|2|3|4#]ƛ5+|×|÷}" -> VList(1, 1, 1, 1),
+        "#[1|2|3|4#]ƛ5+|×}" -> vSeq(36, 49, 64, 81),
+        "#[1|2|3|4#]ƛ5+×}" -> vSeq(6, 14, 24, 36),
+        "#[1|2|3|4#]ƛ5+|×|÷}" -> vSeq(1, 1, 1, 1),
       )
 
       testMulti(
         """#["Hello"|"World"|"Gaming"|"Test String"#]Λ"o"C1=|m0=}""" ->
-          VList(
+          vSeq(
             "Hello"
           ),
         """#["Hello"|"World"|"Goming"|"Test String"#]Λ"o"C1=|m2%0=}""" ->
-          VList(
+          vSeq(
             "Hello",
             "Goming",
           ),
       )
 
       testMulti(
-        "#[4|3N|1|5|3|7|5N#]ỿ0<[N}|N" -> VList(1, 3, -3, 4, 5, -5, 7),
-        "#[4|3N|1|5|3|7|5N#]ỿ0<[N}N" -> VList(7, 5, -5, 4, -3, 3, 1),
+        "#[4|3N|1|5|3|7|5N#]ỿ0<[N}|N" -> vSeq(1, 3, -3, 4, 5, -5, 7),
+        "#[4|3N|1|5|3|7|5N#]ỿ0<[N}N" -> vSeq(7, 5, -5, 4, -3, 3, 1),
       )
     }
 
     describe("Lambda arguments") {
       testMulti(
-        "#[1|2|3|4|5#]λx|#$x 5+}M" -> VList(6, 7, 8, 9, 10),
-        "#[1|2|3|4|5#]λ5+}M" -> VList(6, 7, 8, 9, 10),
-        "#[1|2|3|4|5#]λ1|5+}M" -> VList(6, 7, 8, 9, 10),
+        "#[1|2|3|4|5#]λx|#$x 5+}M" -> vSeq(6, 7, 8, 9, 10),
+        "#[1|2|3|4|5#]λ5+}M" -> vSeq(6, 7, 8, 9, 10),
+        "#[1|2|3|4|5#]λ1|5+}M" -> vSeq(6, 7, 8, 9, 10),
       )
     }
 
     describe("Operating on the stack") {
       testMulti(
-        "3 6 1λ!|+}ĖW" -> VList(3, 7),
-        "3 6 1λ!|++}ĖW" -> VList(10),
-        "3 6 1λ!|n}ĖW" -> VList(3, 6, 1, "abcdefghijklmnopqrstuvwxyz"),
+        "3 6 1λ!|+}ĖW" -> vSeq(3, 7),
+        "3 6 1λ!|++}ĖW" -> vSeq(10),
+        "3 6 1λ!|n}ĖW" -> vSeq(3, 6, 1, "abcdefghijklmnopqrstuvwxyz"),
       )
     }
 
@@ -250,7 +255,7 @@ class InterpreterTests extends VyxalTests:
         group {
           assertResult(VNum(1))(ctx.getVar("x"))
           assertResult(VNum(2))(ctx.getVar("y"))
-          assertResult(VList(3))(ctx.getVar("z"))
+          assertResult(vSeq(3))(ctx.getVar("z"))
         }
       }
       it("should handle simple nested patterns") {
@@ -366,16 +371,16 @@ class InterpreterTests extends VyxalTests:
 
   describe("Lambda types") {
     testMulti(
-      "#[1|2|3#] ƛ5R}" -> VList(VList(1, 2, 3, 4), VList(2, 3, 4), VList(3, 4)),
-      "#[1|2|3#] ƛ2+|+|-}" -> VList(0, 0, 0),
-      "#[1|2|3|4|5#]ƛ#=x+|#$x}" -> VList(1, 2, 3, 4, 5),
+      "#[1|2|3#] ƛ5R}" -> vSeq(vSeq(1, 2, 3, 4), vSeq(2, 3, 4), vSeq(3, 4)),
+      "#[1|2|3#] ƛ2+|+|-}" -> vSeq(0, 0, 0),
+      "#[1|2|3|4|5#]ƛ#=x+|#$x}" -> vSeq(1, 2, 3, 4, 5),
     )
 
     testMulti(
-      "10 Λ2%0=}" -> VList(2, 4, 6, 8, 10),
-      "10 Λ2%0=|5<}" -> VList(2, 4),
-      "1 20RΛ5+:#=x 20<|#$x 10>" -> VList(6, 7, 8, 9, 10, 11, 12, 13, 14),
-      "1 20RΛ5+:#=x 20<|5+10>" -> VList(6, 7, 8, 9, 10, 11, 12, 13, 14),
+      "10 Λ2%0=}" -> vSeq(2, 4, 6, 8, 10),
+      "10 Λ2%0=|5<}" -> vSeq(2, 4),
+      "1 20RΛ5+:#=x 20<|#$x 10>" -> vSeq(6, 7, 8, 9, 10, 11, 12, 13, 14),
+      "1 20RΛ5+:#=x 20<|5+10>" -> vSeq(6, 7, 8, 9, 10, 11, 12, 13, 14),
     )
   }
 
@@ -397,13 +402,13 @@ class InterpreterTests extends VyxalTests:
   }
 
   describe("Stack Lambdas") {
-    testMulti("λ0|3 4 5λ!|+}ĖW}Ė" -> VList(3, 9), "1 5λ!|4+}ĖW" -> VList(1, 9))
+    testMulti("λ0|3 4 5λ!|+}ĖW}Ė" -> vSeq(3, 9), "1 5λ!|4+}ĖW" -> vSeq(1, 9))
   }
 
   describe("Generator structure") {
     testMulti(
-      "#[1|1#]Ṇ+}10Θ" -> VList(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
-      "Ṇ+|#[1|1#]}10Θ" -> VList(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
+      "#[1|1#]Ṇ+}10Θ" -> vSeq(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
+      "Ṇ+|#[1|1#]}10Θ" -> vSeq(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
     )
 
     it("Should work with big numbers", Slow) {
@@ -441,7 +446,7 @@ class InterpreterTests extends VyxalTests:
       it("should not remove leading 'a' characters") {
         given Context = VyxalTests.testContext()
         val compressed = StringHelpers.compress252("aabbcc sussybaka")
-        assertResult("aabbcc sussybaka")(
+        assertResult(VStr("aabbcc sussybaka"))(
           StringHelpers.decompress252String(
             compressed.substring(1, compressed.length - 1)
           )
@@ -452,29 +457,29 @@ class InterpreterTests extends VyxalTests:
 
   describe("Global Recursion (Factorial)") {
     testMulti(":1>[:‹x×}")(
-      VList(1) -> VNum(1),
-      VList(2) -> VNum(2),
-      VList(3) -> VNum(6),
-      VList(4) -> VNum(24),
-      VList(5) -> VNum(120),
-      VList(6) -> VNum(720),
-      VList(7) -> VNum(5040),
-      VList(8) -> VNum(40320),
+      vSeq(1) -> VNum(1),
+      vSeq(2) -> VNum(2),
+      vSeq(3) -> VNum(6),
+      vSeq(4) -> VNum(24),
+      vSeq(5) -> VNum(120),
+      vSeq(6) -> VNum(720),
+      vSeq(7) -> VNum(5040),
+      vSeq(8) -> VNum(40320),
     )
   }
 
   describe("Global Recursion (Fibonacci)") {
 
     testMulti("#{:0=|_0|:1=|_1|:‹x$2-x+")(
-      VList(0) -> VNum(0),
-      VList(1) -> VNum(1),
-      VList(2) -> VNum(1),
-      VList(3) -> VNum(2),
-      VList(4) -> VNum(3),
-      VList(5) -> VNum(5),
-      VList(6) -> VNum(8),
-      VList(7) -> VNum(13),
-      VList(8) -> VNum(21),
+      vSeq(0) -> VNum(0),
+      vSeq(1) -> VNum(1),
+      vSeq(2) -> VNum(1),
+      vSeq(3) -> VNum(2),
+      vSeq(4) -> VNum(3),
+      vSeq(5) -> VNum(5),
+      vSeq(6) -> VNum(8),
+      vSeq(7) -> VNum(13),
+      vSeq(8) -> VNum(21),
     )
   }
 
@@ -505,9 +510,9 @@ class InterpreterTests extends VyxalTests:
 
   describe("Dumping things") {
     testStackLike("\\")(
-      List[VAny](VList(3, 4, 5)) -> List[VAny](5, 4, 3),
-      List[VAny](VList()) -> List[VAny](),
-      List[VAny](VList(1)) -> List[VAny](1),
+      List[VAny](vSeq(3, 4, 5)) -> List[VAny](5, 4, 3),
+      List[VAny](vSeq()) -> List[VAny](),
+      List[VAny](vSeq(1)) -> List[VAny](1),
     )
   }
 
@@ -531,13 +536,13 @@ class InterpreterTests extends VyxalTests:
 
         testCode(
           "#::M RevRow | f | arr | #$arr V #$f M V } 12ʀ4Ẇ #:=RevRow 1İ",
-          VList(VList(0, 1, 2), VList(4, 5, 6), VList(8, 9, 10)),
+          vSeq(vSeq(0, 1, 2), vSeq(4, 5, 6), vSeq(8, 9, 10)),
           Seq(),
         )
 
         testCode(
           "#::M p | f, g | ! | #$f Ḃ #=temp #$g Ė #$temp } 4 5 p+- ;",
-          VList(9, -1),
+          vSeq(9, -1),
           Seq(),
         )
 
@@ -662,7 +667,7 @@ end
       )
       testCodeAsLiterate(
         "extension + given a as num does $a 1 $.+ end [1,2,3] [4,5,6] +",
-        VList(VNum(5), VNum(7), VNum(9)),
+        vSeq(VNum(5), VNum(7), VNum(9)),
       )
       testCodeAsLiterate(
         "extension Test given a as * does $a $a === end 5 $@Test",
