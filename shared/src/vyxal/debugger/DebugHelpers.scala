@@ -1,6 +1,8 @@
 package vyxal.debugger
 
 import vyxal.*
+import vyxal.given
+import vyxal.VNum.given
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
@@ -33,7 +35,7 @@ object DebugHelpers:
     }
 
   /** A debuggable version of [[ListHelpers.dedupBy]] */
-  def dedupBy(lst: VList, fn: VFun): Step =
+  def dedupBy(lst: Seq[VAny], fn: VFun): Step =
     val seen = mutable.ArrayBuffer.empty[VAny]
     StepSeq(lst.flatMap { item =>
       List(
@@ -73,7 +75,7 @@ object DebugHelpers:
       case None => Step.hidden { ListHelpers.filter(iterable, predicate) }
 
   // TODO this doesn't map using all branches
-  def map(ast: AST, lst: VList, fn: VFun)(using Debugger, Context): Step =
+  def map(ast: AST, lst: Seq[VAny], fn: VFun)(using Debugger, Context): Step =
     fn.originalAST match
       case Some(lam) => Block(
           ast,

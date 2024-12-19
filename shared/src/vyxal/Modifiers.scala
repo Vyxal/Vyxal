@@ -261,7 +261,7 @@ object Modifiers:
                 AST.Generated(
                   () =>
                     ctx ?=>
-                      returnStr = ctx.peek.isInstanceOf[String]
+                      returnStr = ctx.peek.isInstanceOf[VStr]
                       val top = ListHelpers.makeIterable(ctx.pop())
                       ctx.push(top.tail)
                       if ast.arity == Some(1) then
@@ -291,7 +291,7 @@ object Modifiers:
                 AST.Generated(
                   () =>
                     ctx ?=>
-                      returnStr = ctx.peek.isInstanceOf[String]
+                      returnStr = ctx.peek.isInstanceOf[VStr]
                       val top = ListHelpers.makeIterable(ctx.pop())
                       ctx.push(top.tail)
                       ctx.push(

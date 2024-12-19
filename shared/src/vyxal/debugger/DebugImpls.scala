@@ -1,6 +1,7 @@
 package vyxal.debugger
 
 import vyxal.*
+import vyxal.given
 import vyxal.VNum.given
 
 import scala.collection.mutable.ListBuffer
@@ -19,7 +20,7 @@ object DebugImpls:
         if fn.arity == -1 then
           Some(StepSeq(List(execStep, Step.hidden { ctx ?=> ctx.pop() })))
         else Some(execStep)
-      case code: String => Some(Debugger.execCode(code))
+      case VStr(code) => Some(Debugger.execCode(code))
     },
     debugDyad("F") {
       case (a: VFun, b) =>

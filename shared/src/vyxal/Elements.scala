@@ -64,7 +64,7 @@ object Elements:
       "a: str -> keep alphabet characters of a",
     ) {
       case a: VNum => a.vabs
-      case a: String => a.filter(_.isLetter)
+      case VStr(a) => a.filter(_.isLetter)
     },
     addDirect(
       "#?",
@@ -91,8 +91,8 @@ object Elements:
       "a: list -> is (a) all truthy?",
     ) {
       case a: VNum => ListHelpers.makeIterable(a).forall(_.toBool)
-      case a: String if a.length == 1 => StringHelpers.isVowel(a.head)
-      case a: String => VList.from(a.map(StringHelpers.isVowel))
+      case VStr(a) if a.length == 1 => StringHelpers.isVowel(a.head)
+      case VStr(a) => VList.from(a.map(StringHelpers.isVowel))
       case a: VList => a.forall(_.toBool)
     },
     addPart(
@@ -117,8 +117,8 @@ object Elements:
       "a: list -> is (a) any truthy?",
     ) {
       case a: VNum => ListHelpers.makeIterable(a).exists(_.toBool)
-      case a: String if a.length == 1 => a.head.isUpper
-      case a: String => VList.from(a.map(c => VNum(c.isUpper)))
+      case VStr(a) if a.length == 1 => a.head.isUpper
+      case VStr(a) => VList.from(a.map(c => VNum(c.isUpper)))
       case a: VList => a.exists(_.toBool)
     },
     addPart(
@@ -157,7 +157,7 @@ object Elements:
       "a: fun, b: str, c: str -> replace regex matches of pattern c in string b with the result of applying a to each match",
       "a: rec, b: str, c: str -> a.b = c",
     ) {
-      case (a: VObject, b: String, c) => MiscHelpers.setObjectMember(a, b, c)
+      case (a: VObject, VStr(b), c) => MiscHelpers.setObjectMember(a, b, c)
       case (a: VObject, b: VList, c) =>
         var obj = a
         for i <- b do
@@ -169,15 +169,15 @@ object Elements:
         obj
       case (a, b: VNum, c: VPhysical) =>
         val temp = ListHelpers.assign(ListHelpers.makeIterable(a), b, c)
-        if a.isInstanceOf[String] then temp.mkString
+        if a.isInstanceOf[VStr] then temp.mkString
         else temp
       case (a, b: VVal, c: VNum) =>
         val temp = ListHelpers.assign(ListHelpers.makeIterable(a), c, b)
-        if a.isInstanceOf[String] then temp.mkString
+        if a.isInstanceOf[VStr] then temp.mkString
         else temp
       case (a, b: VNum, c: VFun) =>
         val temp = ListHelpers.augmentAssign(ListHelpers.makeIterable(a), b, c)
-        if a.isInstanceOf[String] then temp.mkString
+        if a.isInstanceOf[VStr] then temp.mkString
         else temp
       case (a, b: VList, c: VList) =>
         var temp = ListHelpers.makeIterable(a)
@@ -190,7 +190,7 @@ object Elements:
                 case function: VFun =>
                   temp = ListHelpers.augmentAssign(temp, ind, function)
             case _ => throw InvalidListOverloadException("Ạ", b, "Number")
-        if a.isInstanceOf[String] then temp.mkString
+        if a.isInstanceOf[VStr] then temp.mkString
         else temp
       case (a, b: VList, c) =>
         val temp =
@@ -198,12 +198,12 @@ object Elements:
             case (temp, ind: VNum) => ListHelpers.assign(temp, ind, c)
             case _ => throw InvalidListOverloadException("Ạ", b, "Number")
           }
-        if a.isInstanceOf[String] then temp.mkString
+        if a.isInstanceOf[VStr] then temp.mkString
         else temp
-      case (a: String, b: String, c: String) => StringHelpers.regexSub(a, b, c)
-      case (a: String, b: String, c: VFun) => StringHelpers.regexSub(a, b, c)
-      case (a: String, b: VFun, c: String) => StringHelpers.regexSub(a, c, b)
-      case (a: VFun, b: String, c: String) => StringHelpers.regexSub(b, c, a)
+      case (VStr(a), VStr(b), VStr(c)) => StringHelpers.regexSub(a, b, c)
+      case (VStr(a), VStr(b), c: VFun) => StringHelpers.regexSub(a, b, c)
+      case (VStr(a), b: VFun, VStr(c)) => StringHelpers.regexSub(a, c, b)
+      case (a: VFun, VStr(b), VStr(c)) => StringHelpers.regexSub(b, c, a)
     },
     addPart(
       Monad,
@@ -215,7 +215,7 @@ object Elements:
       "a: str -> last half of a",
     ) {
       case a: VNum => a % 2
-      case a: String => a.slice(a.length / 2, a.length)
+      case VStr(a) => a.slice(a.length / 2, a.length)
     },
     addPart(
       Monad,
@@ -290,7 +290,7 @@ object Elements:
       "a: str, b: str -> a + space + b",
     ) {
       case (a: VNum, b: VNum) => a.toBigInt ^ b.toBigInt
-      case (a: String, b: String) => a + " " + b
+      case (VStr(a), VStr(b)) => a + " " + b
     },
     addPart(
       Dyad,
@@ -304,9 +304,9 @@ object Elements:
       "a: str, b: str -> a padded to length of b with spaces prepended",
     ) {
       case (a: VNum, b: VNum) => a.toBigInt << b.toInt
-      case (a: VNum, b: String) => StringHelpers.padLeft(b, a)
-      case (a: String, b: VNum) => StringHelpers.padLeft(a, b)
-      case (a: String, b: String) => StringHelpers.padLeft(a, b.length)
+      case (a: VNum, VStr(b)) => StringHelpers.padLeft(b, a)
+      case (VStr(a), b: VNum) => StringHelpers.padLeft(a, b)
+      case (VStr(a), VStr(b)) => StringHelpers.padLeft(a, b.length)
 
     },
     addPart(
@@ -326,9 +326,9 @@ object Elements:
       "a: str, b: str -> a padded to length of b with spaces appended",
     ) {
       case (a: VNum, b: VNum) => a.toBigInt >> b.toInt
-      case (a: VNum, b: String) => StringHelpers.padRight(b, a)
-      case (a: String, b: VNum) => StringHelpers.padRight(a, b)
-      case (a: String, b: String) => StringHelpers.padRight(a, b.length)
+      case (a: VNum, VStr(b)) => StringHelpers.padRight(b, a)
+      case (VStr(a), b: VNum) => StringHelpers.padRight(a, b)
+      case (VStr(a), VStr(b)) => StringHelpers.padRight(a, b.length)
     },
     addFull(
       Monad,
@@ -379,7 +379,7 @@ object Elements:
       "a: str -> bin(ord(x) for x in a)",
     ) {
       case a: VNum => NumberHelpers.toBinary(a)
-      case a: String => VList(
+      case VStr(a) => VList(
           a.map(x => NumberHelpers.toBinary(StringHelpers.chrord(x.toString)))*
         )
     },
@@ -390,7 +390,7 @@ object Elements:
       List("compress-dict", "dict-comp", "compress"),
       false,
       "a: str -> compress a using the dictionary",
-    ) { case a: String => StringHelpers.compressDictionary(a) },
+    ) { case VStr(a) => StringHelpers.compressDictionary(a) },
     addPart(
       Monad,
       "#c",
@@ -400,7 +400,7 @@ object Elements:
       "a: str -> compress a using base 252",
       "a: num -> compress a using base 252",
     ) {
-      case a: String => StringHelpers.compress252(a)
+      case VStr(a) => StringHelpers.compress252(a)
       case a: VNum => StringHelpers.compress252(a)
     },
     addPart(
@@ -518,9 +518,9 @@ object Elements:
       "a: str, b: str -> Split a on the string b",
     ) {
       case (a: VNum, b: VNum) => a / b
-      case (a: String, b: VNum) => StringHelpers.intoNPieces(a, b)
-      case (a: VNum, b: String) => StringHelpers.intoNPieces(b, a)
-      case (a: String, b: String) => StringHelpers.split(a, Regex.quote(b))
+      case (VStr(a), b: VNum) => StringHelpers.intoNPieces(a, b)
+      case (a: VNum, VStr(b)) => StringHelpers.intoNPieces(b, a)
+      case (VStr(a), VStr(b)) => StringHelpers.split(a, Regex.quote(b))
     },
     addFull(
       Dyad,
@@ -574,7 +574,7 @@ object Elements:
       "a: str -> a + a",
     ) {
       case a: VNum => a * 2
-      case a: String => a + a
+      case VStr(a) => a + a
     },
     addDirect(":", "Duplicate", List("dup"), None, "a -> a, a") { ctx ?=>
       val a = ctx.pop()
@@ -592,9 +592,9 @@ object Elements:
       "a: any, b: any -> a == b",
     ) {
       case (a: VNum, b: VNum) => a == b
-      case (a: VNum, b: String) => a.toString == b
-      case (a: String, b: VNum) => a == b.toString
-      case (a: String, b: String) => a == b
+      case (a: VNum, VStr(b)) => a.toString == b
+      case (VStr(a), b: VNum) => a == b.toString
+      case (VStr(a), VStr(b)) => a == b
     },
     addFull(
       Dyad,
@@ -615,9 +615,9 @@ object Elements:
       "a: any, b: any -> a != b",
     ) {
       case (a: VNum, b: VNum) => a != b
-      case (a: VNum, b: String) => a.toString != b
-      case (a: String, b: VNum) => a != b.toString
-      case (a: String, b: String) => a != b
+      case (a: VNum, VStr(b)) => a.toString != b
+      case (VStr(a), b: VNum) => a != b.toString
+      case (VStr(a), VStr(b)) => a != b
     },
     addDirect(
       "Ė",
@@ -659,7 +659,7 @@ object Elements:
           ctx.push(Interpreter.executeFn(fn, popArgs = false))
           if fn.arity == -1 then
             ctx.pop() // Handle the extra value pushed by lambdas that operate on the stack
-        case code: String => Interpreter.execute(code)
+        case VStr(code) => Interpreter.execute(code)
         case a: VNum => ctx.push(a == VNum(1))
         case a: VList =>
           if a.isEmpty then ctx.push(VList())
@@ -688,9 +688,9 @@ object Elements:
       "a: str, b: str -> trim b from both sides of a",
     ) {
       case (a: VNum, b: VNum) => a ** b
-      case (a: String, b: VNum) => StringHelpers.remove(a, b.toInt)
-      case (a: VNum, b: String) => StringHelpers.remove(b, a.toInt)
-      case (a: String, b: String) =>
+      case (VStr(a), b: VNum) => StringHelpers.remove(a, b.toInt)
+      case (a: VNum, VStr(b)) => StringHelpers.remove(b, a.toInt)
+      case (VStr(a), VStr(b)) =>
         if b == "" then a
         else
           var res = a
@@ -719,7 +719,7 @@ object Elements:
       "a: str -> Is a numeric?",
     ) {
       case a: VNum => NumberHelpers.factors(a)
-      case a: String => VNum(VNum.DecimalRegex.matches(a))
+      case VStr(a) => VNum(VNum.DecimalRegex.matches(a))
     },
     addPart(
       Monad,
@@ -754,7 +754,7 @@ object Elements:
       case (a, b: VFun) =>
         ListHelpers.filter(ListHelpers.makeIterable(a, Some(true)), b)
       case (a: VNum, b) => NumberHelpers.fromBase(a, b)
-      case (a: String, b: VNum) =>
+      case (VStr(a), b: VNum) =>
         // Requires special casing
         val alphabet = "0123456789abcdefghijklmnopqrstuvwxyz".take(b.toInt)
         NumberHelpers.fromBase(a, alphabet)
@@ -878,14 +878,14 @@ object Elements:
       case (a: VList, b: VNum) => NumberHelpers.gcd(b +: a)
       case (a: VFun, b) => ListHelpers.groupBy(ListHelpers.makeIterable(b), a)
       case (a, b: VList) =>
-        if a.isInstanceOf[String] && b.lst.forall(_.isInstanceOf[String]) then
+        if a.isInstanceOf[VStr] && b.lst.forall(_.isInstanceOf[VStr]) then
           val pattern = b.map(StringHelpers.r).map(_.findAllMatchIn(a.toString))
           VList.from(pattern.map(x => VList.from(x.map(_.group(1)).toSeq)))
         else
           summon[Context].push(a)
           NumberHelpers.gcd(b)
       case (a, b: VFun) => ListHelpers.groupBy(ListHelpers.makeIterable(a), b)
-      case (a: String, b: String) =>
+      case (VStr(a), VStr(b)) =>
         val pattern = StringHelpers.r(s"(?=($b))")
         VList.from(pattern.findAllMatchIn(a).map(_.group(1)).toSeq)
 
@@ -916,7 +916,7 @@ object Elements:
       "a: str -> a split into two pieces",
     ) {
       case a: VNum => a / 2
-      case a: String =>
+      case VStr(a) =>
         val (fst, snd) = a.splitAt(a.length / 2)
         VList(fst, snd)
     },
@@ -942,7 +942,7 @@ object Elements:
       "a: str -> a[1:]",
       "a: any -> toList(a)[1:]",
     ) {
-      case s: String => if s.nonEmpty then s.substring(1) else ""
+      case VStr(s) => if s.nonEmpty then s.substring(1) else ""
       case a => ListHelpers.makeIterable(a, Some(true)).drop(1)
     },
     addPart(
@@ -954,8 +954,8 @@ object Elements:
       "a: num -> a in hexadecimal",
       "a: str -> a as a hexadecimal number to base 10",
     ) {
-      case a: VNum => NumberHelpers.toBaseAlphabet(a, "0123456789ABCDEF")
-      case a: String => NumberHelpers.fromBaseAlphabet(a, "0123456789ABCDEF")
+      case a: VNum => NumberHelpers.toBaseAlphabet(a, VStr("0123456789ABCDEF"))
+      case VStr(a) => NumberHelpers.fromBaseAlphabet(a, "0123456789ABCDEF")
     },
     addDirect(
       "ḣ",
@@ -969,7 +969,7 @@ object Elements:
             lst.headOption.getOrElse(ctx.settings.defaultValue),
             lst.drop(1),
           )
-        case s: String =>
+        case VStr(s) =>
           ctx.push(if s.isEmpty then "" else s.charAt(0).toString, s.drop(1))
         case n: VNum =>
           val iter = makeIterable(n, Some(true))
@@ -997,7 +997,7 @@ object Elements:
             lst.drop(1),
             lst.headOption.getOrElse(ctx.settings.defaultValue),
           )
-        case s: String =>
+        case VStr(s) =>
           ctx.push(s.drop(1), if s.isEmpty then "" else s.charAt(0).toString)
         case n: VNum =>
           val iter = makeIterable(n, Some(true))
@@ -1019,7 +1019,7 @@ object Elements:
             lst.dropRight(1),
             lst.lastOption.getOrElse(ctx.settings.defaultValue),
           )
-        case s: String =>
+        case VStr(s) =>
           ctx.push(s.dropRight(1), if s.isEmpty then "" else s.last.toString)
         case arg => throw UnimplementedOverloadException("ṫ", List(arg))
     },
@@ -1114,10 +1114,10 @@ object Elements:
     ) {
       case (a: VNum, b: VNum) => VNum.complex(a.real, b.real)
       case (a: VList, b: VNum) => ListHelpers.drop(a, b)
-      case (a: String, b: VNum) =>
+      case (VStr(a), b: VNum) =>
         ListHelpers.drop(ListHelpers.makeIterable(a), b).mkString
       case (a: VNum, b: VList) => ListHelpers.drop(b, a)
-      case (a: VNum, b: String) =>
+      case (a: VNum, VStr(b)) =>
         ListHelpers.drop(ListHelpers.makeIterable(b), a).mkString
       case (init, fn: VFun) => collectUnique(fn, init).tail
       case (fn: VFun, init) => collectUnique(fn, init).tail
@@ -1135,7 +1135,7 @@ object Elements:
       "a: str -> a[:-1]",
     ) {
       case lst: VList => lst.dropRight(1)
-      case s: String => s.dropRight(1)
+      case VStr(s) => s.dropRight(1)
     },
     addPart(
       Triad,
@@ -1176,7 +1176,7 @@ object Elements:
       case (a, b) =>
         val temp = ListHelpers
           .interleave(ListHelpers.makeIterable(a), ListHelpers.makeIterable(b))
-        if a.isInstanceOf[String] && b.isInstanceOf[String] then temp.mkString
+        if a.isInstanceOf[VStr] && b.isInstanceOf[VStr] then temp.mkString
         else temp
     },
     addPart(
@@ -1190,8 +1190,8 @@ object Elements:
     ) {
       case (a: VList, b: VNum) => ListHelpers.intoNPieces(a, b)
       case (a: VNum, b: VList) => ListHelpers.intoNPieces(b, a)
-      case (a: String, b: VNum) => StringHelpers.intoNPieces(a, b)
-      case (a: VNum, b: String) => StringHelpers.intoNPieces(b, a)
+      case (VStr(a), b: VNum) => StringHelpers.intoNPieces(a, b)
+      case (a: VNum, VStr(b)) => StringHelpers.intoNPieces(b, a)
     },
     addPart(
       Monad,
@@ -1210,7 +1210,7 @@ object Elements:
       "a: str -> a split on newlines",
     ) {
       case a: VNum => (a.underlying % 2) == VNum(0)
-      case a: String => StringHelpers.split(a, "\n")
+      case VStr(a) => StringHelpers.split(a, "\n")
     },
     addPart(
       Monad,
@@ -1222,7 +1222,7 @@ object Elements:
       "a: str -> quote a and prepend to a",
     ) {
       case a: VNum => NumberHelpers.isMostLikelyPrime(a)
-      case a: String => StringHelpers.quotify(a) + a
+      case VStr(a) => StringHelpers.quotify(a) + a
     },
     addDirect(
       "”",
@@ -1243,7 +1243,7 @@ object Elements:
     ) { ctx ?=>
       ctx.pop() match
         case a: VList => ctx.push(a.mkString("\n"))
-        case a: String =>
+        case VStr(a) =>
           val temp = a.length % 8
           ctx.push(if temp == 0 then a else ("0" * (8 - temp)) + a)
         case a: VNum => if a == VNum(1) then ctx.push(ctx.ctxVarPrimary)
@@ -1355,7 +1355,7 @@ object Elements:
       "a: str -> escape a for regex",
     ) {
       case a: VList => ListHelpers.sortByLength(a)
-      case a: String => StringHelpers.escapeRegex(a)
+      case VStr(a) => StringHelpers.escapeRegex(a)
     },
     addFull(
       Monad,
@@ -1405,8 +1405,8 @@ object Elements:
       "a: num, b: any -> b repeated a times, wrapped in a list",
       "a: lst|str, b: lst[num] -> a[_] repeated b[_] times, wrapped in a list",
     ) {
-      case (a, b: VNum) => VList.fill(b.toInt)(a)
-      case (a: VNum, b) => VList.fill(a.toInt)(b)
+      case (a, b: VNum) => Seq.fill(b.toInt)(a)
+      case (a: VNum, b) => Seq.fill(a.toInt)(b)
       case (a: (VList | String), b: VList) =>
         val temp = b
           .map {
@@ -1420,8 +1420,8 @@ object Elements:
               throw InvalidListOverloadException("Y", b, "Number")
           }
           .lazyZip(ListHelpers.makeIterable(a))
-          .map((n, item) => VList.fill(n)(item))
-        if a.isInstanceOf[String] then temp.map(_.mkString).mkString
+          .map((n, item) => Seq.fill(n)(item))
+        if a.isInstanceOf[VStr] then temp.map(_.mkString).mkString
         else VList.from(temp)
       case (a, b) => throw UnimplementedOverloadException("Y", List(a, b))
     },
@@ -1447,9 +1447,9 @@ object Elements:
       "a: str, b: num -> len(a) == b",
     ) {
       case (a: VNum, b: VNum) => NumberHelpers.log(a, b)
-      case (a: String, b: VNum) => a.length == b.toInt
-      case (a: String, b: String) => a.length == b.length
-      case (a: VNum, b: String) => b.length == a.toInt
+      case (VStr(a), b: VNum) => a.length == b.toInt
+      case (VStr(a), VStr(b)) => a.length == b.length
+      case (a: VNum, VStr(b)) => b.length == a.toInt
       case (a: VPhysical, b: VFun) => MiscHelpers.collectUnique(b, a)
       case (a: VFun, b) => MiscHelpers.collectUnique(a, b)
 
@@ -1495,11 +1495,10 @@ object Elements:
         ListHelpers.map(b, ListHelpers.makeIterable(a, Some(true)))
       case (a: VFun, b) =>
         ListHelpers.map(a, ListHelpers.makeIterable(b, Some(true)))
-      case (a: String, b: String) =>
-        StringHelpers.r(b).findFirstIn(a).getOrElse("")
-      case (a: String, b: VList) =>
+      case (VStr(a), VStr(b)) => StringHelpers.r(b).findFirstIn(a).getOrElse("")
+      case (VStr(a), b: VList) =>
         VList.from(b.lst.map(StringHelpers.r(_).findFirstIn(a).getOrElse("")))
-      case (a: VList, b: String) => VList.from(
+      case (a: VList, VStr(b)) => VList.from(
           a.lst.map(x =>
             StringHelpers.r(b).findFirstIn(x.toString()).getOrElse("")
           )
@@ -1579,7 +1578,7 @@ object Elements:
           if temp.startsWith("-") then temp + temp.reverse.tail
           else temp.reverse
         a + VNum(reversed)
-      case a: String => a + a.reverse
+      case VStr(a) => a + a.reverse
       case a: VList => VList.from(a ++ a.reverse)
     },
     addPart(
@@ -1601,10 +1600,10 @@ object Elements:
       "a: lst, b: lst -> a * b (matrix multiply)",
       "a: str, b: str -> does the entirety of a match b?",
     ) {
-      case (a: (VList | String), b: VNum) => ListHelpers.nthItems(a, b)
-      case (a: VNum, b: (VList | String)) => ListHelpers.nthItems(b, a)
+      case (a: (VList | VStr), b: VNum) => ListHelpers.nthItems(a, b)
+      case (a: VNum, b: (VList | VStr)) => ListHelpers.nthItems(b, a)
       case (a: VList, b: VList) => ListHelpers.matrixMultiply(a, b)
-      case (a: String, b: String) => StringHelpers.r(a).matches(b)
+      case (VStr(a), VStr(b)) => StringHelpers.r(a).matches(b)
     },
     addDirect(
       "g",
@@ -1690,7 +1689,7 @@ object Elements:
       "a: fun, b: any -> run a on b until the result no longer changes returning all intermediate results",
     ) {
       case (a: VNum, b: VNum) => NumberHelpers.nChooseK(a, b)
-      case (a: String, b: String) => a.toSet == b.toSet
+      case (VStr(a), VStr(b)) => a.toSet == b.toSet
       case (a: VFun, b) => MiscHelpers.untilNoChange(a, b)
       case (a, b: VFun) => MiscHelpers.untilNoChange(b, a)
     },
@@ -1713,7 +1712,7 @@ object Elements:
       "a: fun -> first non-negative integer where predicate a is true",
     ) {
       case a: VNum => -a
-      case a: String => a.map(c => if c.isUpper then c.toLower else c.toUpper)
+      case VStr(a) => a.map(c => if c.isUpper then c.toLower else c.toUpper)
       case a: VFun => MiscHelpers.firstNonNegative(a)
     },
     addPart(
@@ -1776,10 +1775,10 @@ object Elements:
       "a: num -> chr(a)",
     ) {
       case a: VNum => StringHelpers.chrord(a)
-      case a: String => StringHelpers.chrord(a)
+      case VStr(a) => StringHelpers.chrord(a)
       case a: VList =>
         val temp = a.map(StringHelpers.chrord)
-        if temp.forall(_.isInstanceOf[String]) then temp.mkString
+        if temp.forall(_.isInstanceOf[VStr]) then temp.mkString
         else VList.from(temp)
     },
     addDirect(
@@ -1807,11 +1806,11 @@ object Elements:
       val top = ctx.pop()
       top match
         case a: VList => ctx.push(VList.from(ListHelpers.overlaps(a, 2)))
-        case a: String => ctx.push(VList.from(ListHelpers.overlaps(a, 2)))
+        case VStr(a) => ctx.push(VList.from(ListHelpers.overlaps(a, 2)))
         case _ =>
           val next = ctx.pop()
           (top, next) match
-            case (a: VNum, b: String) =>
+            case (a: VNum, VStr(b)) =>
               ctx.push(VList.from(ListHelpers.overlaps(b, a.toInt)))
             case (a: VNum, b: VList) =>
               ctx.push(VList.from(ListHelpers.overlaps(b, a.toInt)))
@@ -1972,7 +1971,7 @@ object Elements:
             .map(n => MiscHelpers.eval(n.mkString))
         )
       case a: VList => VList.from(ListHelpers.permutations(a))
-      case a: String => VList.from(
+      case VStr(a) => VList.from(
           ListHelpers.permutations(ListHelpers.makeIterable(a)).map(_.mkString)
         )
     },
@@ -1985,7 +1984,7 @@ object Elements:
       "a: lst -> Prefixes of a",
     ) {
       case a: VList => VList.from(ListHelpers.prefixes(a))
-      case a: String => VList.from(
+      case VStr(a) => VList.from(
           ListHelpers.prefixes(ListHelpers.makeIterable(a)).map(_.mkString)
         )
       case a: VNum => VList.from(
@@ -2013,7 +2012,7 @@ object Elements:
       "a: str -> a split on spaces",
     ) {
       case a: VNum => (-1) ** a
-      case a: String => StringHelpers.split(a, " ")
+      case VStr(a) => StringHelpers.split(a, " ")
     },
     addPart(
       Dyad,
@@ -2023,8 +2022,8 @@ object Elements:
       false,
       "a: lst, b: any -> b prepended to a",
     ) {
-      case (a: String, b: (String | VNum)) => b.toString + a
-      case (a: VNum, b: String) => b + a.toString
+      case (VStr(a), b: (String | VNum)) => b.toString + a
+      case (a: VNum, VStr(b)) => b + a.toString
       case (a: VNum, b: VNum) => MiscHelpers.eval(b.toString + a.toString)
       case (a: VList, b) => VList.from(b +: a)
       case (a, b) => VList(b, a)
@@ -2057,7 +2056,7 @@ object Elements:
         if a < 2 then VList()
         else
           val primes = NumberHelpers.probablePrimes.takeWhile(
-            _ <= NumberHelpers.primeFactors(a).maxOption.getOrElse(2)
+            _ <= NumberHelpers.primeFactors(a).maxOption.getOrElse(VNum(2))
           )
           val exponents = primes.map(prime =>
             NumberHelpers.multiplicity(a, prime.asInstanceOf[VNum])
@@ -2074,7 +2073,7 @@ object Elements:
       "a: str -> a with all alphabet characters removed",
     ) {
       case a: VNum => NumberHelpers.primeFactors(a)
-      case a: String => a.filter(!_.isLetter)
+      case VStr(a) => a.filter(!_.isLetter)
     },
     addDirect(
       ",",
@@ -2115,7 +2114,7 @@ object Elements:
       "a: str -> enclose a in quotes, escape backslashes and quote marks",
       "a: num -> nth prime",
     ) {
-      case a: String => StringHelpers.quotify(a)
+      case VStr(a) => StringHelpers.quotify(a)
       case a: VNum => NumberHelpers.probablePrimes.index(a)
     },
     addPart(
@@ -2128,7 +2127,7 @@ object Elements:
       "a: str -> a with all whitespace removed",
     ) {
       case a: VNum => 1 / a
-      case a: String => a.replaceAll("\\s", "")
+      case VStr(a) => a.replaceAll("\\s", "")
     },
     addFull(
       Monad,
@@ -2149,7 +2148,7 @@ object Elements:
 
       val res = if it.hasNext then gen(it.next()) else Seq.empty
       lst match
-        case _: String => VList.from(res.map(_.mkString))
+        case VStr(_) => VList.from(res.map(_.mkString))
         case _ => VList.from(res)
     },
     addPart(
@@ -2169,11 +2168,9 @@ object Elements:
       "a: num -> Integer partitions of a (all possible ways to sum to a)",
     ) {
       case a: VList => ListHelpers.partitions(a)
-      case s: String => ListHelpers
+      case VStr(s) => ListHelpers
           .partitions(ListHelpers.makeIterable(s))
-          .vmap(
-            _.asInstanceOf[VList].vmap(_.asInstanceOf[VList].mkString)
-          )
+          .map(_.map(_.mkString))
       case n: VNum => NumberHelpers.partitions(n)
     },
     addFull(
@@ -2228,9 +2225,9 @@ object Elements:
       "a: lst, b: lst -> union of a and b",
     ) {
       case (a: VNum, b: VNum) => NumberHelpers.range(a, b).dropRight(1)
-      case (a: String, b: String) => StringHelpers.r(b).findFirstIn(a).isDefined
-      case (a: String, b: VNum) => StringHelpers.r(b).findFirstIn(a).isDefined
-      case (a: VNum, b: String) =>
+      case (VStr(a), VStr(b)) => StringHelpers.r(b).findFirstIn(a).isDefined
+      case (VStr(a), b: VNum) => StringHelpers.r(b).findFirstIn(a).isDefined
+      case (a: VNum, VStr(b)) =>
         StringHelpers.r(b).findFirstIn(a.toString).isDefined
       case (a: VFun, b) => ListHelpers.reduce(b, a)
       case (a, b: VFun) => ListHelpers.reduce(a, b)
@@ -2262,7 +2259,7 @@ object Elements:
         VList.from(c.lst.map(x => if x == a then b else x))
       case (a, b: VList, c) =>
         VList.from(b.lst.map(x => if x == a then c else x))
-      case (a: String, b: VVal, c: VVal) => a.replace(b.toString, c.toString)
+      case (VStr(a), b: VVal, c: VVal) => a.replace(b.toString, c.toString)
       case (a: VNum, b: VVal, c: VVal) =>
         MiscHelpers.eval(a.toString().replace(b.toString, c.toString))
 
@@ -2300,7 +2297,7 @@ object Elements:
       "a: any -> convert to list and sort ascending",
     ) {
       // should do something else for num overload later
-      case s: String => s.sorted
+      case VStr(s) => s.sorted
       case a => VList
           .from(ListHelpers.makeIterable(a).sorted(MiscHelpers.compare(_, _)))
     },
@@ -2317,7 +2314,7 @@ object Elements:
         if iterable.isEmpty then VList.from(Seq.empty)
         else VList.from(iterable.tail :+ iterable.head)
       a match
-        case _: String => temp.mkString
+        case VStr(_) => temp.mkString
         case _: VNum => VNum(temp.mkString)
         case _ => temp
     },
@@ -2334,7 +2331,7 @@ object Elements:
         if iterable.isEmpty then VList.from(Seq.empty)
         else VList.from(iterable.last +: iterable.init)
       a match
-        case _: String => temp.mkString
+        case VStr(_) => temp.mkString
         case _: VNum => VNum(temp.mkString)
         case _ => temp
 
@@ -2426,8 +2423,8 @@ object Elements:
       false,
       "a: any, b: any -> split a by b",
     ) {
-      case (a: String, b) =>
-        if b.isInstanceOf[String] && b.toString.isEmpty then
+      case (VStr(a), b) =>
+        if b.isInstanceOf[VStr] && b.toString.isEmpty then
           ListHelpers.makeIterable(a)
         else StringHelpers.split(a, b.toString())
       case (a: VNum, b) => StringHelpers.split(a, b.toString())
@@ -2458,7 +2455,7 @@ object Elements:
       "a: lst -> Suffixes of a",
     ) {
       case a: VList => VList.from(ListHelpers.suffixes(a))
-      case a: String => VList.from(
+      case VStr(a) => VList.from(
           ListHelpers.suffixes(ListHelpers.makeIterable(a)).map(_.mkString)
         )
       case a: VNum => VList.from(
@@ -2487,7 +2484,7 @@ object Elements:
       "a: str -> a split into pairs",
     ) {
       case a: VNum => a ** 2
-      case a: String => VList.from(a.grouped(2).toSeq)
+      case VStr(a) => VList.from(a.grouped(2).toSeq)
     },
     addPart(
       Monad,
@@ -2499,7 +2496,7 @@ object Elements:
       "a: str -> a split into chunks of length 3",
     ) {
       case a: VNum => a ** 3
-      case a: String => VList.from(a.grouped(3).toSeq)
+      case VStr(a) => VList.from(a.grouped(3).toSeq)
     },
     addPart(
       Monad,
@@ -2514,7 +2511,7 @@ object Elements:
       case a: VNum => NumberHelpers.range(1, a)
       case a: VList if a.forall(_.isInstanceOf[VNum]) =>
         NumberHelpers.range(1, a.map(_.asInstanceOf[VNum]))
-      case a: String => a.toUpperCase
+      case VStr(a) => a.toUpperCase
     },
     addPart(
       Monad,
@@ -2539,7 +2536,7 @@ object Elements:
           0,
           a.map(x => x.asInstanceOf[VNum] - x.asInstanceOf[VNum].signum),
         )
-      case a: String => a.toLowerCase
+      case VStr(a) => a.toLowerCase
     },
     addFull(
       Monad,
@@ -2611,7 +2608,7 @@ object Elements:
     ) {
       case (a: VNum, b) => NumberHelpers.toBase(a, b)
       case (a: VList, b) => a.vmap(NumberHelpers.toBase(_, b))
-      case (a: String, b: String) =>
+      case (VStr(a), VStr(b)) =>
         VList.from(StringHelpers.r(b).findAllIn(a).toSeq)
     },
     addPart(
@@ -2624,7 +2621,7 @@ object Elements:
       "a: fun, b: fun, c: any -> call b on c until a(c) is falsy",
     ) {
       case (
-            a: String,
+            VStr(a),
             b: (VList | VNum | String),
             c: (VList | VNum | String),
           ) => StringHelpers.transliterate(
@@ -2651,11 +2648,10 @@ object Elements:
       "a: any, b: any -> Trim all elements of b from both sides of a.",
       "a: fun, b: any -> cumulative reduce b by function a",
     ) {
-      case (a: String, b: String) => a.stripPrefix(b).stripSuffix(b)
-      case (a: String, b: VNum) =>
+      case (VStr(a), VStr(b)) => a.stripPrefix(b).stripSuffix(b)
+      case (VStr(a), b: VNum) =>
         a.stripPrefix(b.toString).stripSuffix(b.toString)
-      case (a: VNum, b: String) =>
-        VNum(a.toString.stripPrefix(b).stripSuffix(b))
+      case (a: VNum, VStr(b)) => VNum(a.toString.stripPrefix(b).stripSuffix(b))
       case (a: VNum, b: VNum) =>
         VNum(a.toString.stripPrefix(b.toString).stripSuffix(b.toString))
       case (a: VFun, b) => MiscHelpers.scanl(ListHelpers.makeIterable(b), a)
@@ -2679,10 +2675,10 @@ object Elements:
     ) {
       case (a, n: VNum) => ListHelpers.cartesianPower(a, n)
       case (n: VNum, a) => ListHelpers.cartesianPower(a, n)
-      case (a: String, b: String) =>
+      case (VStr(a), VStr(b)) =>
         val res = StringHelpers.r(b).findFirstMatchIn(a)
         if res.isDefined then res.get.start else -1
-      case (a: VList, b: String) => VList.from(
+      case (a: VList, VStr(b)) => VList.from(
           a.lst
             .map(_.toString)
             .map(x =>
@@ -2704,7 +2700,7 @@ object Elements:
       "a: any, b: any -> a prepended and appended to b",
     ) {
       case (a: VList, b) => VList.from((b +: a) :+ b)
-      case (a: String, b: String) => b + a + b
+      case (VStr(a), VStr(b)) => b + a + b
       case (a, b: VList) => VList.from((a +: b) :+ a)
     },
     addPart(
@@ -2719,10 +2715,10 @@ object Elements:
       "a: num, b: str -> each character in b repeated a times",
       "a: str, b: num -> each character in a repeated b times",
     ) {
-      case (a: VNum, b: String) => StringHelpers.characterMultiply(a, b)
-      case (a: String, b: VNum) => StringHelpers.characterMultiply(b, a)
+      case (a: VNum, VStr(b)) => StringHelpers.characterMultiply(a, b)
+      case (VStr(a), b: VNum) => StringHelpers.characterMultiply(b, a)
       case (a: VList, b: VList) => VList.from(a.filter(b.contains(_)))
-      case (a: String, b: String) => a.filter(b.contains(_))
+      case (VStr(a), VStr(b)) => a.filter(b.contains(_))
       case (a: VList, b: VNum) => ListHelpers.flattenByDepth(a, b)
     },
     addPart(
@@ -2769,7 +2765,7 @@ object Elements:
       "a: any -> transpose a",
     ) {
       case a: VNum => a * 3
-      case a: String => a.forall(_.isLetter)
+      case VStr(a) => a.forall(_.isLetter)
       case a: VList => ListHelpers.transpose(a)
     },
     addDirect("D", "Triplicate", List("trip"), None, "a -> [a, a, a]") { ctx ?=>
@@ -2786,7 +2782,7 @@ object Elements:
       "a: str -> evaluate (not execute) a",
     ) {
       case a: VNum => VNum(2) ** a
-      case a: String => MiscHelpers.eval(a)
+      case VStr(a) => MiscHelpers.eval(a)
     },
     addDirect(
       "U",
@@ -2804,7 +2800,8 @@ object Elements:
             VList.from(odds.map(_._1))
         case _: VNum => MiscHelpers.eval(evens.map(_._1).mkString) ->
             MiscHelpers.eval(odds.map(_._1).mkString)
-        case _: String => evens.map(_._1).mkString -> odds.map(_._1).mkString
+        case _: VStr => VStr(evens.map(_._1).mkString) ->
+            VStr(odds.map(_._1).mkString)
         case a => throw UnimplementedOverloadException("U", List(a))
 
       ctx.push(pushEven, pushOdd)
@@ -2819,7 +2816,7 @@ object Elements:
       "a: str -> case of each character of a (uppercase = 1, lowercase = 0)",
     ) {
       case a: VNum => NumberHelpers.primeFactors(a).distinct
-      case a: String => StringHelpers.caseof(a)
+      case VStr(a) => StringHelpers.caseof(a)
     },
     addPart(
       Dyad,
@@ -2833,12 +2830,12 @@ object Elements:
       case (a, b: VNum) =>
         val temp = ListHelpers.makeIterable(a).slice(1, b.toInt)
         a match
-          case _: String => temp.mkString
+          case VStr(_) => temp.mkString
           case _ => temp
       case (a: VNum, b) =>
         val temp = ListHelpers.makeIterable(b).slice(1, a.toInt)
         b match
-          case _: String => temp.mkString
+          case VStr(_) => temp.mkString
           case _ => temp
     },
     addPart(
@@ -2852,7 +2849,7 @@ object Elements:
       case lst: VList => lst.distinct
       case n: VNum =>
         MiscHelpers.eval(ListHelpers.makeIterable(n).distinct.mkString)
-      case s: String => s.distinct.mkString
+      case VStr(s) => s.distinct.mkString
     },
     addDirect(
       "#v",
@@ -2894,7 +2891,7 @@ object Elements:
             VList.from(
               suffixes.map(suffix =>
                 f(arg match
-                  case s: String => suffix.mkString
+                  case VStr(s) => suffix.mkString
                   case _ => suffix
                 )
               )
@@ -2919,7 +2916,7 @@ object Elements:
             VList.from(
               prefixes.map(prefix =>
                 f(arg match
-                  case s: String => prefix.mkString
+                  case VStr(s) => prefix.mkString
                   case _ => prefix
                 )
               )
@@ -3133,7 +3130,7 @@ object Elements:
     ) {
       case a: VList => VList.from(a.map(ListHelpers.reverse))
       case a: VNum => 1 - a
-      case a: String => StringHelpers.titlecase(a)
+      case VStr(a) => StringHelpers.titlecase(a)
     },
     addDirect(
       "Ṡ",
@@ -3195,11 +3192,11 @@ object Elements:
       "a: fun, b: num -> first b truthy integers where a is truthy",
     ) {
       case (a: VList, b: VNum) => ListHelpers.wrapLength(a, b)
-      case (a: String, b: VNum) =>
-        if b <= 0 then VList.empty
+      case (VStr(a), b: VNum) =>
+        if b <= 0 then Seq.empty
         else VList.from(a.grouped(b.toInt).toSeq)
-      case (a: VNum, b: String) =>
-        if a <= 0 then VList.empty
+      case (a: VNum, VStr(b)) =>
+        if a <= 0 then Seq.empty
         else VList.from(b.grouped(a.toInt).toSeq)
       case (a: VNum, b: VList) => ListHelpers.wrapLength(b, a)
       case (a: VList, b: VList) =>
@@ -3228,7 +3225,7 @@ object Elements:
       case a: VNum => NumberHelpers.range(0, a)
       case a: VList if a.forall(_.isInstanceOf[VNum]) =>
         NumberHelpers.range(0, a.map(_.asInstanceOf[VNum]))
-      case a: String =>
+      case VStr(a) =>
         if a.length == 1 then a.forall(_.isLower)
         else VList.from(a.map(x => VNum(x.isLower)))
     },
@@ -3354,7 +3351,7 @@ object Elements:
       "a: lst -> product of a",
     ) {
       case a: VList => ListHelpers.product(a)
-      case a: String => ListHelpers.product(ListHelpers.makeIterable(a))
+      case VStr(a) => ListHelpers.product(ListHelpers.makeIterable(a))
       case a: VNum => ListHelpers.product(ListHelpers.makeIterable(a))
     }
 
@@ -3389,7 +3386,7 @@ object Elements:
       "a: lst -> powerset of a",
     ) {
       case a: VList => ListHelpers.powerset(a)
-      case a: String =>
+      case VStr(a) =>
         val temp = ListHelpers.powerset(ListHelpers.makeIterable(a))
         VList.from(temp.map(_.asInstanceOf[VList].mkString))
       case a: VNum => ListHelpers.powerset(ListHelpers.makeIterable(a))
@@ -3414,7 +3411,7 @@ object Elements:
       "a: str -> cast a to num by ignoring non-numeric digits. Returns 0 if there's no valid number",
     ) {
       case a: VNum => a.floor
-      case a: String =>
+      case VStr(a) =>
         if a.isEmpty then 0
         else
           val filtered = a.filter(c => c.isDigit || "-.".contains(c))
@@ -3440,7 +3437,7 @@ object Elements:
       "a: any -> palindromise a",
     ) {
       case a: VList => ListHelpers.palindromise(a)
-      case a: String => ListHelpers.palindromise(a)
+      case VStr(a) => ListHelpers.palindromise(a)
       case a: VNum => ListHelpers.palindromise(a)
     },
     addPart(
@@ -3452,7 +3449,7 @@ object Elements:
       "a: lst, b: num -> a with bth element removed",
       "a: str, b: str -> regex groups of a with regex b",
     ) {
-      case (a: String, b: VNum) =>
+      case (VStr(a), b: VNum) =>
         val index = b.toInt
         if index < 0 then
           a.take(a.length + index) + a.drop(a.length + index + 1)
@@ -3465,9 +3462,9 @@ object Elements:
             lst.take(lst.length + index) ++ lst.drop(lst.length + index + 1)
           )
         else VList.from(lst.take(index) ++ lst.drop(index + 1))
-      case (a: String, b: String) =>
+      case (VStr(a), VStr(b)) =>
         val res = StringHelpers.r(b).findFirstMatchIn(a)
-        if res.isDefined then VList.from(res.get.subgroups) else VList.empty
+        if res.isDefined then VList.from(res.get.subgroups) else Seq.empty
     },
     addPart(
       Dyad,
@@ -3479,12 +3476,12 @@ object Elements:
       "a: lst|str, b: lst|str -> a padded with 0s to length of b. Positive b prepends 0s, negative b appends 0s",
     ) {
       case (a: VList, b: VNum) => ListHelpers.zeroPad(a, b)
-      case (a: String, b: VNum) => StringHelpers.zeroPad(a, b)
+      case (VStr(a), b: VNum) => StringHelpers.zeroPad(a, b)
       case (a: VNum, b: VNum) => StringHelpers.zeroPad(a.toString, b)
       case (a: VNum, b: VList) => ListHelpers.zeroPad(b, a)
-      case (a: VNum, b: String) => StringHelpers.zeroPad(b, a)
+      case (a: VNum, VStr(b)) => StringHelpers.zeroPad(b, a)
       case (a: VList, b) => ListHelpers.zeroPad(a, makeIterable(b).bigLength)
-      case (a: String, b) => StringHelpers.zeroPad(a, makeIterable(b).bigLength)
+      case (VStr(a), b) => StringHelpers.zeroPad(a, makeIterable(b).bigLength)
     },
     addPart(
       Monad,
@@ -4096,7 +4093,7 @@ object Elements:
     ) {
       case a: VNum =>
         "abcdefghijklmnopqrstuvwxyz".charAt(((a - 1) % 26).toInt).toString
-      case a: String =>
+      case VStr(a) =>
         val inds = a.map(char =>
           VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower) + 1)
         )
@@ -4106,7 +4103,7 @@ object Elements:
 
   private def execHelper(value: VAny)(using ctx: Context): VAny =
     value match
-      case code: String =>
+      case VStr(code) =>
         val originalMode = ctx.settings.endPrintMode
         ctx.settings = ctx.settings.useMode(EndPrintMode.None)
         Interpreter.execute(code)(using ctx)

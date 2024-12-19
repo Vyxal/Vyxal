@@ -8,13 +8,14 @@ import scala.annotation.tailrec
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Stack
+import scala.math.Ordering.Implicits.infixOrderingOps
 
 object MiscHelpers:
   val add = Dyad.vectorise("add")(forkify {
     case (a: VNum, b: VNum) => a + b
-    case (a: String, b: VNum) => s"$a$b"
-    case (a: VNum, b: String) => s"$a$b"
-    case (a: String, b: String) => s"$a$b"
+    case (VStr(a), b: VNum) => s"$a$b"
+    case (a: VNum, VStr(b)) => s"$a$b"
+    case (VStr(a), VStr(b)) => s"$a$b"
   })
 
   def callWhile(pred: VFun, transform: VFun, value: VAny)(using Context): VAny =
@@ -26,34 +27,35 @@ object MiscHelpers:
       pred: VFun,
       transform: VFun,
       value: VAny,
-  )(using ctx: Context): VList =
+  )(using ctx: Context): Seq[VAny] =
     val res = LazyList.unfold(value) { curr =>
       if pred(curr).toBool then
         val next = transform(curr)
         Some(next -> next)
       else None
     }
-    VList.from(value #:: res)
+    value #:: res
 
-  def collectUnique(function: VFun, initial: VAny)(using ctx: Context): VList =
+  def collectUnique(function: VFun, initial: VAny)(using
+      ctx: Context
+  ): Seq[VAny] =
     val prevVals = ArrayBuffer.empty[VAny]
-    VList.from(
-      initial +:
-        LazyList.unfold(initial: VAny) { prevVal =>
-          val next = function(prevVal)
-          if prevVals.contains(next) then None
-          else
-            prevVals += next
-            Some(next -> next)
-        }
-    )
+
+    initial +:
+      LazyList.unfold(initial: VAny) { prevVal =>
+        val next = function(prevVal)
+        if prevVals.contains(next) then None
+        else
+          prevVals += next
+          Some(next -> next)
+      }
 
   def compare(a: VAny, b: VAny)(using ctx: Context): Int =
     (a, b) match
       case (a: VNum, b: VNum) => a.compare(b)
-      case (a: String, b: VNum) => a.compareTo(b.toString)
-      case (a: VNum, b: String) => a.toString.compareTo(b)
-      case (a: String, b: String) => a.compareTo(b)
+      case (VStr(a), b: VNum) => a.compareTo(b.toString)
+      case (a: VNum, VStr(b)) => a.toString.compareTo(b)
+      case (VStr(a), VStr(b)) => a.compareTo(b)
       case (a, b) =>
         // Lexographically compare the two values after converting both to iterable
         val aIter = ListHelpers.makeIterable(a)
@@ -72,7 +74,7 @@ object MiscHelpers:
   def defaultEmpty(a: VAny): VAny =
     a match
       case _: VNum => VNum(0)
-      case _: String => ""
+      case VStr(_) => ""
       case _: VList => 0
       case _ => throw NoDefaultException(a)
 
@@ -96,7 +98,7 @@ object MiscHelpers:
 
   def exec(value: VAny)(using ctx: Context): VAny =
     value match
-      case code: String =>
+      case VStr(code) =>
         val originalMode = ctx.settings.endPrintMode
         ctx.settings = ctx.settings.useMode(EndPrintMode.None)
         Interpreter.execute(code)(using ctx)
@@ -137,11 +139,11 @@ object MiscHelpers:
 
   val index: Dyad = Dyad.fill("index") {
     case (a: VList, b: VList) => a.index(b)
-    case (a: String, b: VList) =>
+    case (VStr(a), b: VList) =>
       val temp = b.vmap(MiscHelpers.index(a, _))
       if b.lst.forall(_.isInstanceOf[VNum]) then temp.mkString
       else temp
-    case (a: VList, b: String) =>
+    case (a: VList, VStr(b)) =>
       val temp = a.vmap(MiscHelpers.index(_, b))
       if a.lst.forall(_.isInstanceOf[VNum]) then temp.mkString
       else temp
@@ -149,11 +151,11 @@ object MiscHelpers:
     case (a: VFun, b) => MiscHelpers.collectUnique(a, b)
     case (a: VNum, b) => ListHelpers.makeIterable(b).index(a)
     case (a, b: VNum) => ListHelpers.makeIterable(a).index(b)
-    case (a: String, b: String) =>
+    case (VStr(a), VStr(b)) =>
       val temp = a.length / 2
       a.slice(0, temp) + b + a.slice(temp, a.length)
-    case (a: VObject, b: String) => MiscHelpers.getObjectMember(a, b)
-    case (a: String, b: VObject) => MiscHelpers.getObjectMember(b, a)
+    case (a: VObject, VStr(b)) => MiscHelpers.getObjectMember(a, b)
+    case (VStr(a), b: VObject) => MiscHelpers.getObjectMember(b, a)
   }
 
   def isList(code: String): Boolean =
@@ -208,7 +210,7 @@ object MiscHelpers:
       if a.exists(_.isInstanceOf[VList]) then a.vmap(MiscHelpers.joinNothing)
       else a.mkString
     case n: VNum => n.vabs <= 1
-    case s: String => StringHelpers.isAlphaNumeric(s)
+    case VStr(s) => StringHelpers.isAlphaNumeric(s)
     case f: VFun => firstPositive(f)
   }
 
@@ -218,24 +220,24 @@ object MiscHelpers:
     case (a: VList, b: VNum) => a.vmap(MiscHelpers.modulo(_, b))
     case (a: VNum, b: VList) => b.vmap(MiscHelpers.modulo(a, _))
     case (a: VList, b: VList) => a.zipWith(b)(MiscHelpers.modulo)
-    case (a: String, b: VList) => StringHelpers.formatString(a, b*)
-    case (a: VList, b: String) => StringHelpers.formatString(b, a*)
-    case (a: String, b) => StringHelpers.formatString(a, b)
-    case (a, b: String) => StringHelpers.formatString(b, a)
+    case (VStr(a), b: VList) => StringHelpers.formatString(a, b*)
+    case (a: VList, VStr(b)) => StringHelpers.formatString(b, a*)
+    case (VStr(a), b) => StringHelpers.formatString(a, b)
+    case (a, VStr(b)) => StringHelpers.formatString(b, a)
   }
 
   val multiply = Dyad.vectorise("multiply") {
     case (a: VNum, b: VNum) => a * b
-    case (a: String, b: VNum) => a * b.toInt
-    case (a: VNum, b: String) => b * a.toInt
-    case (a: String, b: String) => StringHelpers.ringTranslate(a, b)
+    case (VStr(a), b: VNum) => a * b.toInt
+    case (a: VNum, VStr(b)) => b * a.toInt
+    case (VStr(a), VStr(b)) => StringHelpers.ringTranslate(a, b)
     case (a: VFun, b: VNum) => a.withArity(b.toInt)
     case (a: VNum, b: VFun) => b.withArity(a.toInt)
   }
 
   def predicateSlice(predicate: VFun, limit: VNum, startFrom: VNum)(using
       ctx: Context
-  ): VList =
+  ): Seq[VAny] =
     var i = startFrom
     var count = VNum(0)
     val result = List.newBuilder[VAny]
@@ -246,7 +248,7 @@ object MiscHelpers:
         result += i
         count += 1
       i += 1
-    VList.from(result.result())
+    result.result()
 
   def setObjectMember(obj: VObject, name: String, value: VAny)(using
       ctx: Context
@@ -271,7 +273,7 @@ object MiscHelpers:
   def typesOf(values: VAny*): List[String] =
     values.map {
       case _: VNum => "num"
-      case _: String => "str"
+      case VStr(_) => "str"
       case _: VList => "lst"
       case _: VFun => "fun"
       case _: VConstructor => "con"
@@ -309,7 +311,7 @@ object MiscHelpers:
 
   def unpackHelper(nameShape: VAny, value: VAny)(using ctx: Context): Unit =
     (nameShape: @unchecked) match
-      case n: String => ctx.setVar(n, value)
+      case VStr(n) => ctx.setVar(n, value)
       case l: VList => value match
           case v: VList =>
             // make sure v is the same length as l by repeating items
@@ -322,11 +324,11 @@ object MiscHelpers:
     x match
       case lst: VList =>
         ctx.globals.printFn("[")
-        var temp = if ctx.settings.limitPrint then lst.take(100) else lst
+        var temp = if ctx.settings.limitPrint then lst.take(100) else lst.lst
         while temp.nonEmpty do
           temp.head match
             case n: VNum => vyPrint(n)
-            case s: String => vyPrint(StringHelpers.quotify(s))
+            case VStr(s) => vyPrint(StringHelpers.quotify(s))
             case l: VList => vyPrint(l)
             case f: VFun => vyPrint(executeFn(f))
             case c: VConstructor => vyPrint(c.toString)
@@ -342,23 +344,24 @@ object MiscHelpers:
     vyPrint(x)
     vyPrint("\n")
 
-  def scanl(iterable: VList, function: VFun)(using ctx: Context): VList =
+  def scanl(iterable: Seq[VAny], function: VFun)(using
+      ctx: Context
+  ): Seq[VAny] =
     if iterable.isEmpty then iterable
     else
-      VList.from(
-        iterable.tail.scanLeft(iterable.head)((lhs, rhs) => function(rhs, lhs))
-      )
+
+      iterable.tail.scanLeft(iterable.head)((lhs, rhs) => function(rhs, lhs))
 
   val subtract: Dyad = Dyad.vectorise("subtract") {
     case (a: VNum, b: VNum) => a - b
-    case (a: String, b: VNum) =>
+    case (VStr(a), b: VNum) =>
       if b.toInt > 0 then a + "-" * b.toInt else "-" * b.toInt.abs + a
-    case (a: VNum, b: String) =>
+    case (a: VNum, VStr(b)) =>
       if a.toInt > 0 then "-" * a.toInt + b else b + "-" * a.toInt.abs
-    case (a: String, b: String) => a.replaceAll(b, "")
+    case (VStr(a), VStr(b)) => a.replaceAll(b, "")
   }
 
-  def untilNoChange(function: VFun, value: VAny)(using Context): VList =
+  def untilNoChange(function: VFun, value: VAny)(using Context): Seq[VAny] =
     var prev = value
     val res = LazyList.unfold(value) { curr =>
       val next = function(curr)
@@ -369,7 +372,8 @@ object MiscHelpers:
     }
     VList.from(value #:: res)
 
-  def zipWith(left: VList, right: VList, function: VFun)(using Context): VList =
-    left.zipWith(right) { (a, b) => function(a, b) }
+  def zipWith(left: Seq[VAny], right: Seq[VAny], function: VFun)(using
+      Context
+  ): Seq[VAny] = left.zipWith(right) { (a, b) => function(a, b) }
 
 end MiscHelpers

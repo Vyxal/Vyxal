@@ -42,10 +42,10 @@ object FuncHelpers:
 
   def reduceOverPairs(fn: VFun, iter: VList)(using ctx: Context): VList =
     val slices = ListHelpers.overlaps(iter, 2)
-    val result = slices.map(slice =>
+    val result = slices.map { slice =>
       slice match
-        case VList(left: VAny, right: VAny) =>
+        case Seq(left: VAny, right: VAny) =>
           Interpreter.executeFn(fn, left, right, Seq(left, right))
-    )
+    }
     VList.from(result)
 end FuncHelpers

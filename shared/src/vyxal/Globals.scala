@@ -2,6 +2,7 @@ package vyxal
 
 import vyxal.VNum.given
 
+import scala.collection.immutable.ArraySeq
 import scala.collection.mutable as mut
 
 /** Stuff that's shared across all contexts
@@ -90,7 +91,7 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
 
       // The number of extra elems needed at the end of wrapping
       val numEnd = n - numNonWrapping - numRepeats * currInputs.length
-      val end = currInputs.take(numEnd).toList
+      val end = ArraySeq.unsafeWrapArray(currInputs).take(numEnd).toList
 
       nonWrapping ::: repeats.flatten ::: end
   end peek
