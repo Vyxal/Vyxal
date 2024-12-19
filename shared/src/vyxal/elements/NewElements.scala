@@ -420,7 +420,7 @@ object NewElements:
       case (a: VNum, b) => ListHelpers.overlaps(b.itr, a.toInt).vlst
       case (a: VList, b: VList) =>
         if !b.lst.forall(_.isInstanceOf[VNum]) then ???
-        else ListHelpers.overlaps(a, b.lst.map(_.asInstanceOf[VNum]))
+        else ListHelpers.overlapsMd(a, b.lst.map(_.asInstanceOf[VNum]))
     },
     addPart("p", Dyad, false) {
       case (a: String, b: (String | VNum)) => b.toString + a
@@ -482,6 +482,10 @@ object NewElements:
           case _ => throw UnsupportedOverloadException("u", "object")
 
       },
+    addPart("v", Monad, false) {
+      case a: String => ListHelpers.overlaps(a, 2).vlst
+      case a => ListHelpers.overlaps(a.itr, 2).vlst
+    },
     "w" ->
       direct(Monad) {
         push(VList(pop())) // Tacit!
@@ -1140,7 +1144,7 @@ object NewElements:
         if haystackList.isEmpty || needleList.isEmpty then VList()
         else
           ListHelpers
-            .overlaps(
+            .overlapsMd(
               haystack,
               ListHelpers.shapeOf(needle).lst.map(_.asInstanceOf[VNum]),
             )

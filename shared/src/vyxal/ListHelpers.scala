@@ -729,7 +729,7 @@ object ListHelpers:
       case -1 => iterable.sliding(-size).toSeq.reverse
 
   // multi-dimensional overlaps
-  def overlaps(iterable: VList, shape: Seq[VNum]): VList =
+  def overlapsMd(iterable: VList, shape: Seq[VNum]): VList =
     if shape.isEmpty then iterable
     else if shape.length == 1 then
       VList.from(overlaps(iterable, shape.head.toInt))
