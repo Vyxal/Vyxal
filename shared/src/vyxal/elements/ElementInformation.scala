@@ -1395,17 +1395,17 @@ object ElementInformation:
         vectorises = false
       ),
       Overload(
-        name = "Overlapping Pairs",
-        args = Seq("lst|str"),
-        description = "Get overlapping pairs of #1",
+        name = "Windows",
+        args = Seq("lst", "lst[num]"),
+        description = "Get overlapping windows of #1 with a window of size #2",
         typeSwitchable = false,
       ),
       Overload(
-        name = "Overlapping Pairs",
+        name = "Overlapping Slices",
         args = Seq("any", "num"),
         description =
-          "Get overlapping pairs of iterable(#1) with a window of size #2",
-        typeSwitchable = false,
+          "Get overlapping pairs of iterable({#1|#2}) with a window of size {#2|#1}",
+        typeSwitchable = true,
       ),
     ),
     Element(
@@ -3161,6 +3161,21 @@ object ElementInformation:
         name = "Trim",
         args = Seq("any", "any"),
         description = "Trim #1 of leading and trailing #2",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⊆",
+      keywords = Seq("subset?"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Subset?",
+        args = Seq("lst", "lst"),
+        description =
+          "Is the shallower list a subset of the deeper list? Checks windows corresponding to the length of the shallower list",
         typeSwitchable = false,
       ),
     ),

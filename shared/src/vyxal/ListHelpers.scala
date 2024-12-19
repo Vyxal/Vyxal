@@ -1,14 +1,11 @@
 package vyxal
 
-import vyxal.StringHelpers.r
 import vyxal.VNum.given
 
 import scala.annotation.unchecked.uncheckedVariance
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
-
-import spire.std.iterable
 
 object ListHelpers:
 
@@ -40,6 +37,11 @@ object ListHelpers:
         VList.from(temp.map(_.asInstanceOf[VList].mkString))
       else temp
 
+  def cartesianProductSeqs[T <: VAny](
+      left: Seq[T],
+      right: Seq[T],
+  ): Seq[Seq[T]] = left.flatMap(l => right.map(r => Seq(l, r)))
+
   /** Cartesian product */
   def cartesianProduct(left: VAny, right: VAny, unsafe: Boolean = false)(using
       ctx: Context
@@ -48,8 +50,17 @@ object ListHelpers:
     val rhs = makeIterable(right, Some(true))
 
     if unsafe || (lhs.knownSize != -1 && rhs.knownSize != -1) then
-      VList.from(lhs.flatMap(l => rhs.map(r => VList(l, r))))
+      VList.seqToVList(cartesianProductSeqs(lhs.lst, rhs.lst))
     else VList.from(mergeInfLists(lhs.map(l => rhs.map(r => VList(l, r)))))
+
+  def cartesianProductMultiSeqs[T <: VAny](lists: Seq[Seq[T]]): Seq[Seq[T]] =
+    lists match
+      case head +: tail =>
+        val first = head
+        tail.foldLeft(Seq(first)) { (acc, next) =>
+          cartesianProductSeqs(acc.flatten, next)
+        }
+      case _ => Seq.empty
 
   def cartesianProductMulti(lists: Seq[VAny])(using Context): VList =
     lists.map(ListHelpers.makeIterable(_)) match
@@ -661,6 +672,22 @@ object ListHelpers:
         temp = makeIterable(makeIterable(temp).index(ind))
       temp.index(indices.last)
 
+  def multiDimIndexNoWrap(iterable: VList, indices: Seq[VNum])(using
+      Context
+  ): VAny =
+
+    var temp = iterable
+    var doesNotExist = false
+    for ind <- indices.init do
+      if !doesNotExist && temp.hasIndex(ind.toBigInt) then
+        temp = makeIterable(makeIterable(temp).index(ind))
+      else doesNotExist = true
+    if doesNotExist || !temp.hasIndex(indices.last.toBigInt) then
+      null // *gasp* null! In a 2024 codebase! The horror!
+    // I needed a way to signal that the index doesn't exist
+    // that also plays nice with typing
+    else temp.index(indices.last)
+
   def multiSetIntersection(left: VList, right: VList): VList =
     val out = ListBuffer.empty[VAny]
     var rightMut = right.lst
@@ -700,6 +727,48 @@ object ListHelpers:
       case 0 => Seq.empty
       case 1 => LazyList.from(iterable.sliding(size))
       case -1 => iterable.sliding(-size).toSeq.reverse
+
+  // multi-dimensional overlaps
+  def overlaps(iterable: VList, shape: Seq[VNum]): VList =
+    if shape.isEmpty then iterable
+    else if shape.length == 1 then
+      VList.from(overlaps(iterable, shape.head.toInt))
+    else windows(iterable, shape)
+
+  def windows(iter: VList, winSize: Seq[VNum]): VList =
+    val iterShape =
+      shapeOf(iter).take(winSize.length).lst.map(_.asInstanceOf[VNum])
+    val ends = iterShape
+      .zip(winSize)
+      .map((length, size) => if size > length then length else length - size)
+      .map(end => (0 to end).lst.map(_.asInstanceOf[VNum]))
+
+    val windowOrigins = cartesianProductMultiSeqs(ends)
+
+    VList.from(windowOrigins.map(start => windowAt(iter, start, winSize)))
+
+  def windowAt(iterable: VList, origin: Seq[VNum], size: Seq[VNum]): VList =
+    val includedDimensions = origin
+      .zip(size)
+      .map((start, length) =>
+        (start to start + length - 1).lst.map(_.asInstanceOf[VNum])
+      )
+    val inWindow = cartesianProductMultiSeqs(includedDimensions)
+    val ctx = Context()
+    val cells = VList.from(
+      inWindow.map(coords => multiDimIndexNoWrap(iterable, coords)(using ctx))
+    )
+
+    val reshaped = reshape(cells, size)
+    // Remove any nulls that were inserted by multiDimIndexNoWrap
+    def removeNulls(lst: VList): VList =
+      VList.from(lst.lst.filter(_ != null).map {
+        case l: VList => removeNulls(l)
+        case x => x
+      })
+
+    removeNulls(makeIterable(reshaped)(using ctx))
+  end windowAt
 
   def palindromise(lst: VList): VList =
     val temp = lst.lst
@@ -916,6 +985,7 @@ object ListHelpers:
       else
         iterator = iterable.iterator
         iterator.next()
+
     def go(shape: Seq[Int]): VAny =
       if shape.isEmpty then iterable(0)
       else if shape.length == 1 then VList.fill(shape.head)(nextElement())
@@ -969,6 +1039,23 @@ object ListHelpers:
 
     temp
   end rotate
+
+  /** Get the shape of a VList, assuming padding (even though it can be rugged)
+    * Requires a finite list of finite lists
+    */
+  def shapeOf(iterable: VList): VList =
+    val shape = ArrayBuffer.empty[VNum]
+    var temp = iterable
+    while temp.nonEmpty do
+      shape += VNum(temp.length)
+      val items = temp.map(x =>
+        x match
+          case l: VList => (l.length, x)
+          case _ => (0, VList())
+      )
+      temp = items.maxBy(_._1)._2.asInstanceOf[VList]
+
+    if shape.isEmpty then VList(0) else VList.from(shape.toSeq)
 
   /** Split a list on a sublist
     *

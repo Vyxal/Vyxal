@@ -413,22 +413,15 @@ object NewElements:
     },
     "m" -> niladify(ctx ?=> ctx.ctxVarSecondary),
     "n" -> niladify(ctx ?=> ctx.ctxVarPrimary),
-    "o" ->
-      direct(Dyad) {
-        val top = pop()
-        top match
-          case a: VList => push(VList.from(ListHelpers.overlaps(a, 2)))
-          case a: String => push(VList.from(ListHelpers.overlaps(a, 2)))
-          case _ =>
-            val next = pop()
-            (top, next) match
-              case (a: VNum, b: String) =>
-                push(VList.from(ListHelpers.overlaps(b, a.toInt)))
-              case (a: VNum, b: VList) =>
-                push(VList.from(ListHelpers.overlaps(b, a.toInt)))
-              case (a, b) =>
-                throw UnimplementedOverloadException("o", List(a, b))
-      },
+    addPart("o", Dyad, false) {
+      case (a: String, b: VNum) => ListHelpers.overlaps(a, b.toInt).vlst
+      case (a, b: VNum) => ListHelpers.overlaps(a.itr, b.toInt).vlst
+      case (a: VNum, b: String) => ListHelpers.overlaps(b, a.toInt).vlst
+      case (a: VNum, b) => ListHelpers.overlaps(b.itr, a.toInt).vlst
+      case (a: VList, b: VList) =>
+        if !b.lst.forall(_.isInstanceOf[VNum]) then ???
+        else ListHelpers.overlaps(a, b.lst.map(_.asInstanceOf[VNum]))
+    },
     addPart("p", Dyad, false) {
       case (a: String, b: (String | VNum)) => b.toString + a
       case (a: VNum, b: String) => b + a.toString
@@ -1139,6 +1132,28 @@ object NewElements:
       case (a: VList, b) => ListHelpers.trim(a, b)
       case (a, b: VList) => ListHelpers.trim(b, a)
       case (a, b) => ListHelpers.trim(ListHelpers.makeIterable(a), b)
+    },
+    addPart("⊆", Dyad, false) {
+      case (haystack: VList, needle: VList) =>
+        val Seq(haystackList, needleList) =
+          Seq(haystack, needle).sortBy(ListHelpers.maxDepth)
+        if haystackList.isEmpty || needleList.isEmpty then VList()
+        else
+          ListHelpers
+            .overlaps(
+              haystack,
+              ListHelpers.shapeOf(needle).lst.map(_.asInstanceOf[VNum]),
+            )
+            .contains(needle)
+      case (haystack: String, needle: String) => haystack.contains(needle)
+      case (haystack: VList, needle: VVal) =>
+        def contains(needle: VVal, haystack: VList): Boolean =
+          haystack.lst.exists {
+            case lst: VList => contains(needle, lst)
+            case value => value == needle
+          }
+        contains(needle, haystack)
+
     },
   )
 

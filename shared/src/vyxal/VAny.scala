@@ -7,10 +7,14 @@ import scala.collection.mutable as mut
 
 import spire.implicits.*
 
+type VOptional = VAny | VNil
 type VAny = VVal | VFun | VList | VConstructor | VObject
 type VVal = VNum | String
 type VPhysical = VNum | String | VList
 type VIter = VList | String
+
+case class VNil():
+  override def toString = "nil"
 
 /** A function object (not a function definition)
   *
