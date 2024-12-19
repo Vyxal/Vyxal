@@ -100,7 +100,9 @@ extension (self: Seq[VAny])
       pos -= Int.MaxValue
     return true
 
-  /** Whether this list is known to be finite. May be finite even if return value is false */
+  /** Whether this list is known to be finite. May be finite even if return
+    * value is false
+    */
   def isDefFinite: Boolean =
     self match
       case _: LazyList[?] => self.knownSize != -1

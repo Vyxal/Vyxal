@@ -569,7 +569,8 @@ object ListHelpers:
   end map
 
   def maxDepth(iter: Seq[VAny])(using Context): VNum =
-    iter.map {
+    iter
+      .map {
         case s: VList => 1 + maxDepth(s.lst)
         case _ => VNum(1)
       }

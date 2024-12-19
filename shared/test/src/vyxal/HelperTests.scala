@@ -11,8 +11,8 @@ class HelperTests extends VyxalTests:
   describe("Partitions") {
     it("should partition infinite lists", Slow) {
       given Context = VyxalTests.testContext()
-      val parts = ListHelpers
-        .partitions(VList.from(LazyList.iterate(VNum(1))(_ + 1)))
+      val parts =
+        ListHelpers.partitions(VList.from(LazyList.iterate(VNum(1))(_ + 1)))
 
       val cp = Checkpoint()
 

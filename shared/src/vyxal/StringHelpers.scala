@@ -25,9 +25,9 @@ object StringHelpers:
       .fromBaseAlphabet(s, "ඞabcdefghijklmnopqrstuvwxyz ")
       .asInstanceOf[VNum]
     val res = NumberHelpers.toBaseAlphabet(
-          temp,
-          VStr(Codepage.filterNot(Lexer.StringClosers.contains(_))),
-        )
+      temp,
+      VStr(Codepage.filterNot(Lexer.StringClosers.contains(_))),
+    )
     s"\"$res„"
 
   def compress252(n: VNum)(using Context): String =

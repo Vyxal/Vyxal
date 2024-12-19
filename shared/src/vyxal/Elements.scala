@@ -1495,8 +1495,7 @@ object Elements:
         ListHelpers.map(b, ListHelpers.makeIterable(a, Some(true)))
       case (a: VFun, b) =>
         ListHelpers.map(a, ListHelpers.makeIterable(b, Some(true)))
-      case (VStr(a), VStr(b)) =>
-        StringHelpers.r(b).findFirstIn(a).getOrElse("")
+      case (VStr(a), VStr(b)) => StringHelpers.r(b).findFirstIn(a).getOrElse("")
       case (VStr(a), b: VList) =>
         VList.from(b.lst.map(StringHelpers.r(_).findFirstIn(a).getOrElse("")))
       case (a: VList, VStr(b)) => VList.from(
@@ -2567,8 +2566,7 @@ object Elements:
       "a: num, b: str -> a '-'s + b (or b + '-'s if a < 0)",
       "a: str, b: str -> a with b removed",
     ) {
-      case (a: (VNum | VStr), b: (VNum | VStr)) =>
-        MiscHelpers.subtract(a, b)
+      case (a: (VNum | VStr), b: (VNum | VStr)) => MiscHelpers.subtract(a, b)
     },
     addPart(
       Monad,
@@ -2652,8 +2650,7 @@ object Elements:
       case (VStr(a), VStr(b)) => a.stripPrefix(b).stripSuffix(b)
       case (VStr(a), b: VNum) =>
         a.stripPrefix(b.toString).stripSuffix(b.toString)
-      case (a: VNum, VStr(b)) =>
-        VNum(a.toString.stripPrefix(b).stripSuffix(b))
+      case (a: VNum, VStr(b)) => VNum(a.toString.stripPrefix(b).stripSuffix(b))
       case (a: VNum, b: VNum) =>
         VNum(a.toString.stripPrefix(b.toString).stripSuffix(b.toString))
       case (a: VFun, b) => MiscHelpers.scanl(ListHelpers.makeIterable(b), a)
@@ -2802,7 +2799,8 @@ object Elements:
             VList.from(odds.map(_._1))
         case _: VNum => MiscHelpers.eval(evens.map(_._1).mkString) ->
             MiscHelpers.eval(odds.map(_._1).mkString)
-        case _: VStr => VStr(evens.map(_._1).mkString) -> VStr(odds.map(_._1).mkString)
+        case _: VStr => VStr(evens.map(_._1).mkString) ->
+            VStr(odds.map(_._1).mkString)
         case a => throw UnimplementedOverloadException("U", List(a))
 
       ctx.push(pushEven, pushOdd)
