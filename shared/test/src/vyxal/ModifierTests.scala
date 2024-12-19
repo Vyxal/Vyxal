@@ -149,10 +149,10 @@ class ModifierTests extends VyxalTests:
       Interpreter.execute("ᵒ-")
       val top = ctx.pop()
       assertResult(
-        VList(
-          VList(1, -2, -5),
-          VList(3, 0, -3),
-          VList(7, 4, 1),
+        Seq(
+          Seq[VNum](1, -2, -5),
+          Seq[VNum](3, 0, -3),
+          Seq[VNum](7, 4, 1),
         )
       )(top.asInstanceOf[VList].take(3).map(_.asInstanceOf[VList].take(3)))
     }

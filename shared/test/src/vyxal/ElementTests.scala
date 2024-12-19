@@ -1,5 +1,6 @@
 package vyxal
 
+import vyxal.given
 import vyxal.VNum.given
 import vyxal.VyxalTests.testContext
 
@@ -190,30 +191,30 @@ class ElementTests extends VyxalTests:
     given Context = testContext()
     it("should handle two finite lists properly") {
       assertResult(
-        VList(
-          VList(1, "A"),
-          VList(1, "B"),
-          VList(2, "A"),
-          VList(2, "B"),
-          VList(3, "A"),
-          VList(3, "B"),
+        Seq(
+          Seq[VAny](1, "A"),
+          Seq[VAny](1, "B"),
+          Seq[VAny](2, "A"),
+          Seq[VAny](2, "B"),
+          Seq[VAny](3, "A"),
+          Seq[VAny](3, "B"),
         )
       )(
         ListHelpers.cartesianProduct(
-          VList(1, 2, 3),
-          VList("A", "B"),
+          Seq[VAny](1, 2, 3),
+          Seq[VAny]("A", "B"),
         )
       )
     }
     it("should handle two infinite lists properly") {
       assertResult(
-        VList(
-          VList(1, "A"),
-          VList(1, "B"),
-          VList(2, "A"),
-          VList(1, "C"),
-          VList(2, "B"),
-          VList(3, "A"),
+        Seq(
+          Seq[VAny](1, "A"),
+          Seq[VAny](1, "B"),
+          Seq[VAny](2, "A"),
+          Seq[VAny](1, "C"),
+          Seq[VAny](2, "B"),
+          Seq[VAny](3, "A"),
         )
       )(
         ListHelpers
