@@ -183,8 +183,9 @@ object NewElements:
       case (a, b) =>
         val aList = ListHelpers.makeIterable(a)
         val bList = ListHelpers.makeIterable(b)
-        val Seq(needle, haystack) =
-          Seq(aList, bList).sortBy(ListHelpers.maxDepth)
+        val (needle, haystack) =
+          if ListHelpers.maxDepth(aList) <= ListHelpers.maxDepth(bList) then (a, bList)
+          else (b, aList)
         haystack.indexOf(needle)
     },
     "G" ->
