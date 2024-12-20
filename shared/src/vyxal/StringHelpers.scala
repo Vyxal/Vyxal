@@ -13,9 +13,9 @@ object StringHelpers:
     (c: @unchecked) match
       case VStr(a) =>
         if a.length == 1 then VNum(a.codePointAt(0))
-        else VList.from(a.map(_.toInt: VNum))
+        else VList(a.map(_.toInt: VNum))
       case a: VNum => a.toInt.toChar.toString
-      case a: VList => VList.from(a.map(chrord))
+      case a: VList => VList(a.map(chrord))
 
   def compress252(s: String)(using Context): String =
     "[^a-z ]".r.findFirstIn(s) match
@@ -276,8 +276,8 @@ object StringHelpers:
   def transliterate(source: String, from: String, to: String): String =
     transliterate(
       source,
-      VList.from(from.toList.map(_.toString)),
-      VList.from(to.toList.map(_.toString)),
+      VList(from.toList.map(_.toString)),
+      VList(to.toList.map(_.toString)),
     )
 
   // https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L1055

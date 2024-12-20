@@ -110,7 +110,7 @@ class Context private (
     else
       val temp = stack.toList
       stack.clear()
-      stack += VList.from(temp)
+      stack += VList(temp)
 
   /** Whether the stack is empty */
   def isStackEmpty: Boolean = stack.isEmpty

@@ -29,7 +29,7 @@ object NumberHelpers:
       case (a: VList, _) if ListHelpers.maxDepth(a) == VNum(1) =>
         fromBaseAlphabet(a, b)
       case (a: VNum, b: VNum) => toInt(a.toString(), b.toInt)
-      case (a: VList, _) => VList.from(a.map(fromBase(_, b)))
+      case (a: VList, _) => VList(a.map(fromBase(_, b)))
       case (n: VNum, _) => fromBase(b, a)
       case (VStr(a), b: VNum) =>
         fromBaseAlphabet(a, BASE_ALPHABET.take(b.toInt))
@@ -197,10 +197,10 @@ object NumberHelpers:
         .map(x => if x.startsWith("-") then x.tail + "_" else x)
         .mkString("ı")
 
-  def partitions(a: VNum): Seq[Seq[VAny]] =
+  def partitions(a: VNum): Seq[Seq[VNum]] =
     // Return all ways to sum to a number
-    val result = mutable.ListBuffer.empty[Seq[VAny]]
-    def helper(current: Seq[VAny], remaining: VNum, last: VNum): Unit =
+    val result = mutable.ListBuffer.empty[Seq[VNum]]
+    def helper(current: Seq[VNum], remaining: VNum, last: VNum): Unit =
       if remaining == VNum(0) then result += current
       else
         for i <- last.toBigInt to remaining.toBigInt do
@@ -263,11 +263,11 @@ object NumberHelpers:
 
   def range(start: VNum, end: VNum): VList =
     val step = (end - start).signum
-    VList.from(start.to(end, step = if step == VNum(0) then 1 else step))
+    VList(start.to(end, step = if step == VNum(0) then 1 else step))
 
   def range(start: VNum, ends: Seq[VNum])(using Context): VList =
     if ends.isEmpty then throw BadArgumentException("range", "empty list")
-    val ranges = ends.map(end => VList.from(start.to(end)))
+    val ranges = ends.map(end => VList(start.to(end)))
     ListHelpers
       .reshape(ListHelpers.cartesianProductMulti(ranges), ranges.map(_.length))
       .asInstanceOf[VList]
@@ -291,18 +291,18 @@ object NumberHelpers:
         val result = ListBuffer.empty[VAny]
         for c <- s do
           val binary = c.toInt.toBinaryString
-          result += VList.from(binary.map(_.asDigit).map(VNum(_)).toList)
-        VList.from(result.toList)
+          result += VList(binary.map(_.asDigit).map(VNum(_)).toList)
+        VList(result.toList)
       case arg => throw UnimplementedOverloadException("toBinary", List(arg))
 
   def toBase(a: VAny, b: VAny)(using ctx: Context): VAny =
     (a, b) match
       case (a: VNum, b: VNum) =>
         if b == VNum(0) then 0
-        else VList.from(toBaseDigits(a, b))
+        else VList(toBaseDigits(a, b))
       case (n: VNum, VStr(b)) => toBaseAlphabet(n, b)
       case (n: VNum, b: VList) => toBaseAlphabet(n, b)
-      case (a: VList, _) => VList.from(a.map(toBase(_, b)))
+      case (a: VList, _) => VList(a.map(toBase(_, b)))
       case (a, b) => throw UnimplementedOverloadException("toBase", List(a, b))
 
   /** Returns value in base len(alphabet) using base 10 [bijective base] */

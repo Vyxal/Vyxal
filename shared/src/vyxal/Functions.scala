@@ -96,7 +96,7 @@ object Triad extends ImplHelpers[PartialTriad, Triad](3):
     lazy val res: Triad = {
       case args if f.isDefinedAt(args) => f(args)
       case (lhs: VList, rhs: VList, third: VList) =>
-        VList.zipMulti(lhs, rhs, third) { case Seq(l, r, t) => res(l, r, t) }
+        ListHelpers.zipMulti(lhs, rhs, third) { case Seq(l, r, t) => res(l, r, t) }
       case (lhs, rhs: VList, third: VList) => rhs.zipWith(third)(res(lhs, _, _))
       case (lhs: VList, rhs, third: VList) => lhs.zipWith(third)(res(_, rhs, _))
       case (lhs: VList, rhs: VList, third) => lhs.zipWith(rhs)(res(_, _, third))
@@ -126,18 +126,18 @@ object Tetrad extends ImplHelpers[PartialTetrad, Tetrad](4):
     lazy val res: Tetrad = {
       case args if f.isDefinedAt(args) => f(args)
       case (as: VList, bs: VList, cs: VList, ds: VList) =>
-        VList.zipMulti(as, bs, cs, ds) {
+        ListHelpers.zipMulti(as, bs, cs, ds) {
           case Seq(a, b, c, d) => res(a, b, c, d)
         }
       case (a, bs: VList, cs: VList, ds: VList) =>
-        VList.zipMulti(bs, cs, ds) { case Seq(b, c, d) => res(a, b, c, d) }
+        ListHelpers.zipMulti(bs, cs, ds) { case Seq(b, c, d) => res(a, b, c, d) }
 
       case (as: VList, b, cs: VList, ds: VList) =>
-        VList.zipMulti(as, cs, ds) { case Seq(a, c, d) => res(a, b, c, d) }
+        ListHelpers.zipMulti(as, cs, ds) { case Seq(a, c, d) => res(a, b, c, d) }
       case (as: VList, bs: VList, c, ds: VList) =>
-        VList.zipMulti(as, bs, ds) { case Seq(a, b, d) => res(a, b, c, d) }
+        ListHelpers.zipMulti(as, bs, ds) { case Seq(a, b, d) => res(a, b, c, d) }
       case (as: VList, bs: VList, cs: VList, d) =>
-        VList.zipMulti(as, bs, cs) { case Seq(a, b, c) => res(a, b, c, d) }
+        ListHelpers.zipMulti(as, bs, cs) { case Seq(a, b, c) => res(a, b, c, d) }
       case (a, b, cs: VList, ds: VList) => cs.zipWith(ds) { (c, d) =>
           res(a, b, c, d)
         }

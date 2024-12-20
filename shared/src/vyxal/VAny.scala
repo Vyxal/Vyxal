@@ -25,9 +25,9 @@ type VIter = VList | VStr
 
 given Conversion[String, VAny] = VStr(_)
 given Conversion[VList, Seq[VAny]] = _.lst
-given Conversion[Seq[VAny], VList] = VList.from(_)
+given Conversion[Seq[VAny], VList] = VList(_)
 given [T](using c: Conversion[T, VAny]): Conversion[Seq[T], VList] =
-  seq => VList.from(seq.map(c))
+  seq => VList(seq.map(c))
 
 trait ToVyxal[T, V]:
   def apply(t: T): V
@@ -113,7 +113,7 @@ case class VFun(
   end executeResult
 
   def apply(args: VAny*)(using ctx: Context): VAny =
-    val contextN = if args.length == 1 then args(0) else VList.from(Seq(args))
+    val contextN = if args.length == 1 then args(0) else VList(Seq(args))
     Interpreter.executeFn(this, contextN, args = args)
 
   override def toString =
@@ -203,50 +203,6 @@ case class VObject(
 final case class VList(lst: Seq[VAny]) extends VAny:
   override def toString(): String =
     lst.map(_.toString).mkString("[ ", " | ", " ]")
-
-  def sliding(size: Int): Iterator[VList] = lst.sliding(size).map(VList.from(_))
-  def sliding(size: Int, step: Int): Iterator[VList] =
-    lst.sliding(size, step).map(VList.from(_))
-
-object VList:
-  def from(seq: Seq[VAny]): VList = new VList(seq)
-  def from[T](seq: Seq[T])(using c: Conversion[T, VAny]): VList =
-    new VList(seq.map(c))
-
-  /** Zip multiple VLists together with a function.
-    *
-    * The parameter is a `PartialFunction` instead of a function because it's
-    * going to match on a list and assume it's a specific length
-    */
-  def zipMulti(lists: Seq[VAny]*)(f: PartialFunction[Seq[VAny], VAny])(using
-      ctx: Context
-  ): Seq[VAny] =
-    val maxSize = lists.view.map(_.size).max
-    val padded = lists.map { list =>
-      if list.sizeIs == maxSize then list
-      else list ++ Seq.fill(maxSize - list.size)(null)
-    }
-    padded.transpose.map { lst => f(lst.filter(_ != null)) }
-
-  /** Turn some VAnys into iterables, then zip them together with a function. */
-  def zipValues(values: VAny*)(f: PartialFunction[Seq[VAny], VAny])(using
-      ctx: Context
-  ): Seq[VAny] =
-    val filteredLists = values.collect { case VList(l) => l }
-    val lists =
-      if values.size == filteredLists.size then filteredLists
-      else if filteredLists.isEmpty then values.map(ListHelpers.makeIterable(_))
-      else
-        val maxSize = filteredLists.view.map(_.size).max
-        values.map {
-          case VList(l) => l
-          case x =>
-            // If one of the other elements is a list but this isn't, repeat
-            // this one to be as long as that list
-            Seq.fill(maxSize)(x)
-        }
-    VList.zipMulti(lists*)(f)
-end VList
 
 class VNum private (val underlying: Complex[Real]) extends VAny, Ordered[VNum]:
   def real: Real = underlying.real

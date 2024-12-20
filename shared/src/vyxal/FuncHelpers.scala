@@ -16,7 +16,7 @@ object FuncHelpers:
         ListHelpers.makeIterable(a).vmap { a =>
           Interpreter.executeFn(fn, args = List(b, a))
         }
-      case n => VList.zipValues(ctx.pop(n)*) { args =>
+      case n => ListHelpers.zipValues(ctx.pop(n)*) { args =>
           Interpreter.executeFn(fn, args = args)
         }
 
@@ -47,5 +47,5 @@ object FuncHelpers:
         case Seq(left: VAny, right: VAny) =>
           Interpreter.executeFn(fn, left, right, Seq(left, right))
     }
-    VList.from(result)
+    VList(result)
 end FuncHelpers

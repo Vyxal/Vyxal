@@ -135,7 +135,7 @@ object Step:
     val inner = lst.elems.flatMap { (elem) =>
       List(stepsForAST(elem), Step.hidden { ctx ?=> buf += ctx.pop() })
     }
-    val last = Step.hidden { ctx ?=> ctx.push(VList.from(buf.toList)) }
+    val last = Step.hidden { ctx ?=> ctx.push(VList(buf.toList)) }
     Block(lst, StepSeq(inner :+ last))
 
   private def cmdStep(cmd: AST.Command): Step =

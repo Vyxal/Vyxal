@@ -9,7 +9,7 @@ import org.scalatest.funspec.AnyFunSpec
 class ModifierTests extends VyxalTests:
 
   // todo get rid of this and use Seq(...).v instead
-  def vSeq(elems: VAny*) = VList.from(elems)
+  def vSeq(elems: VAny*) = VList(elems)
 
   describe("Modifier ᵛ") {
     testMulti(
@@ -148,8 +148,8 @@ class ModifierTests extends VyxalTests:
     }
 
     it("should work on infinite lists") {
-      ctx.push(VList.from(LazyList.iterate(VNum(2))(_ * 2)))
-      ctx.push(VList.from(LazyList.iterate(VNum(1))(_ + 3)))
+      ctx.push(VList(LazyList.iterate(VNum(2))(_ * 2)))
+      ctx.push(VList(LazyList.iterate(VNum(1))(_ + 3)))
       Interpreter.execute("ᵒ-")
       val top = ctx.pop()
       assertResult(

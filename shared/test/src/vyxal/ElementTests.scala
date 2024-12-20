@@ -11,7 +11,7 @@ class ElementTests extends VyxalTests:
   /** Helper to avoid doing List[VAny](...) */
   private def in(inputs: VAny*): Seq[VAny] = inputs
 
-  private def vSeq(elems: VAny*) = VList.from(elems)
+  private def vSeq(elems: VAny*) = VList(elems)
 
   describe("Element +") {
 
@@ -221,8 +221,8 @@ class ElementTests extends VyxalTests:
       )(
         ListHelpers
           .cartesianProduct(
-            VList.from(LazyList.iterate(VNum(1))(_ + 1)),
-            VList.from(LazyList.from('A'.toInt).map(_.toChar.toString)),
+            VList(LazyList.iterate(VNum(1))(_ + 1)),
+            VList(LazyList.from('A'.toInt).map(_.toChar.toString)),
           )
           .take(6)
       )

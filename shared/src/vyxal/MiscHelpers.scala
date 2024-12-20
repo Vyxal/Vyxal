@@ -296,14 +296,14 @@ object MiscHelpers:
         nameStack.top += name
       else if varDepth < depth then
         for i <- 0 until depth - varDepth do
-          val temp = VList.from(nameStack.pop().toList)
+          val temp = VList(nameStack.pop().toList)
           nameStack.top += temp
         nameStack.top += name
       depth = varDepth
     for i <- 0 until depth do
-      val temp = VList.from(nameStack.pop().toList)
+      val temp = VList(nameStack.pop().toList)
       nameStack.top += temp
-    val unpackedNames = VList.from(nameStack.top.toList)
+    val unpackedNames = VList(nameStack.top.toList)
     val shapedValues = ListHelpers.makeIterable(ctx.pop())
 
     unpackHelper(unpackedNames, shapedValues)
@@ -370,7 +370,7 @@ object MiscHelpers:
         prev = next
         Some(next -> next)
     }
-    VList.from(value #:: res)
+    VList(value #:: res)
 
   def zipWith(left: Seq[VAny], right: Seq[VAny], function: VFun)(using
       Context

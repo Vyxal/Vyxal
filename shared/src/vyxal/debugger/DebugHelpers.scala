@@ -70,7 +70,7 @@ object DebugHelpers:
         }
         StepSeq(
           filterSteps :+
-            Step.hidden { ctx ?=> ctx.push(VList.from(filtered.toList)) }
+            Step.hidden { ctx ?=> ctx.push(VList(filtered.toList)) }
         )
       case None => Step.hidden { ListHelpers.filter(iterable, predicate) }
 

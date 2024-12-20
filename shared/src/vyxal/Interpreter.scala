@@ -109,7 +109,7 @@ object Interpreter:
         val context = ctx.copy
         context.clear()
         for elem <- elems do execute(elem)(using context)
-        ctx.push(VList.from(context.getStack))
+        ctx.push(VList(context.getStack))
       case AST.Command(cmd, _, overwriteable) =>
         var executed = false
         if overwriteable && ctx.globals.extensions.contains(cmd) then
@@ -261,10 +261,10 @@ object Interpreter:
 
         val temp = generator(relationFn, firstN, firstM, arity, list)
 
-        ctx.push(VList.from(list ++: temp))
+        ctx.push(VList(list ++: temp))
       case AST.ContextIndex(index, _) =>
         val args = ctx.ctxArgs.getOrElse(Seq.empty).reverse
-        if index == -1 then ctx.push(VList.from(args.reverse))
+        if index == -1 then ctx.push(VList(args.reverse))
         else if args.sizeIs < index then ctx.push(ctx.settings.defaultValue)
         else ctx.push(args(index))
       case AST.Generated(exec, _) => exec()
@@ -368,7 +368,7 @@ object Interpreter:
         origCtx,
         ctx,
         Option(ctxVarPrimary).orElse(inputs.headOption),
-        if ctxVarSecondary == null then VList.from(inputs) else ctxVarSecondary,
+        if ctxVarSecondary == null then VList(inputs) else ctxVarSecondary,
         if overrideCtxArgs.isEmpty then inputs else overrideCtxArgs,
         vars,
         inputs.reverse,

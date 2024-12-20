@@ -28,11 +28,11 @@ extension (self: Seq[VAny])
   def vzip(other: Seq[VAny])(using ctx: Context): Seq[VAny] =
     val temp = self
       .zipAll(other, ctx.settings.defaultValue, ctx.settings.defaultValue)
-      .map((l, r) => VList.from(Seq(l, r)))
+      .map((l, r) => VList(Seq(l, r)))
     temp
 
   def take(n: VNum): Seq[VAny] =
-    if n <= Int.MaxValue then return VList.from(self.take(n.toInt))
+    if n <= Int.MaxValue then return VList(self.take(n.toInt))
     val ret = collection.mutable.ListBuffer.empty[VAny]
     var i: VNum = 0
     while i < n do
