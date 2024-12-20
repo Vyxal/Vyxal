@@ -54,13 +54,9 @@ object ListHelpers:
     else mergeInfLists(lhs.map(l => rhs.map(r => Seq(l, r))))
 
   def cartesianProductMultiSeqs[T <: VAny](lists: Seq[Seq[T]]): Seq[Seq[T]] =
-    lists match
-      case head +: tail =>
-        val first = head
-        tail.foldLeft(Seq(first)) { (acc, next) =>
-          cartesianProductSeqs(acc.flatten, next)
-        }
-      case _ => Seq.empty
+    lists.foldRight(Seq(Seq.empty[T])) { (lst, acc) =>
+      for (l <- lst; r <- acc) yield l +: r
+    }
 
   def cartesianProductMulti(lists: Seq[VList]): Seq[VList] =
     cartesianProductMultiSeqs(lists.map(_.lst)).map(VList.from)
