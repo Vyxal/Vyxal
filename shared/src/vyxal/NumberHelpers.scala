@@ -301,28 +301,27 @@ object NumberHelpers:
       case (a: VNum, b: VNum) =>
         if b == VNum(0) then 0
         else VList.from(toBaseDigits(a, b))
-      case (n: VNum, b: (VStr | VList)) => toBaseAlphabet(n, b)
+      case (n: VNum, VStr(b)) => toBaseAlphabet(n, b)
+      case (n: VNum, b: VList) => toBaseAlphabet(n, b)
       case (a: VList, _) => VList.from(a.map(toBase(_, b)))
       case (a, b) => throw UnimplementedOverloadException("toBase", List(a, b))
 
-  /** Returns value in base len(alphabet) using base 10 [bijective base]. If the
-    * alphabet is a string, returns a string.
-    */
-  def toBaseAlphabet(value: VNum, alphabet: VStr | VList)(using
+  /** Returns value in base len(alphabet) using base 10 [bijective base] */
+  def toBaseAlphabet(value: VNum, alphabet: String)(using Context): VAny =
+    if alphabet.isEmpty then 0
+    else
+      toBaseAlphabet(value, ListHelpers.makeIterable(alphabet))
+        .asInstanceOf[VList]
+        .mkString
+
+  /** Returns value in base len(alphabet) using base 10 [bijective base] */
+  def toBaseAlphabet(value: VNum, alphabet: Seq[VAny])(using
       Context
   ): VAny =
-    val (isStr, length) = alphabet match
-      case VStr(a) => (true, a.length)
-      case l: VList => (false, l.lst.size)
-
-    if length == 0 then return 0
-
-    val indexes = toBaseDigits(value, length)
-    val alphaList = ListHelpers.makeIterable(alphabet)
-
-    val temp = indexes.map(alphaList.index(_))
-
-    if isStr then temp.mkString("") else VList.from(temp)
+    if alphabet.isEmpty then 0
+    else
+      val indices = toBaseDigits(value, alphabet.size)
+      indices.map(alphabet.index(_))
 
   def toBaseDigits(value: VNum, base: VNum): Seq[VNum] =
     /** Helper to get digits for single component of a VNum */

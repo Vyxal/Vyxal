@@ -26,17 +26,16 @@ object StringHelpers:
       .asInstanceOf[VNum]
     val res = NumberHelpers.toBaseAlphabet(
       temp,
-      VStr(Codepage.filterNot(Lexer.StringClosers.contains(_))),
+      Codepage.filterNot(Lexer.StringClosers.contains(_)),
     )
     s"\"$res„"
 
   def compress252(n: VNum)(using Context): String =
-    s"\"${NumberHelpers
-        .toBaseAlphabet(
-          n,
-          VStr(Codepage.filterNot(Lexer.StringClosers.contains(_))),
-        )
-        .asInstanceOf[String]}“"
+    val res = NumberHelpers.toBaseAlphabet(
+      n,
+      Codepage.filterNot(Lexer.StringClosers.contains(_)),
+    )
+    s"\"$res“"
 
   // https://codegolf.stackexchange.com/a/151721/78850
   def compressDictionary(s: String): String =
@@ -131,7 +130,7 @@ object StringHelpers:
         Codepage.filterNot(Lexer.StringClosers.contains(_)),
       )
       .asInstanceOf[VNum]
-    NumberHelpers.toBaseAlphabet(temp, VStr("ඞabcdefghijklmnopqrstuvwxyz "))
+    NumberHelpers.toBaseAlphabet(temp, "ඞabcdefghijklmnopqrstuvwxyz ")
 
   def escapeRegex(s: String): String =
     val specialChars = List(

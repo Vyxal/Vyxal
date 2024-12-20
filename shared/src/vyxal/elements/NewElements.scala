@@ -202,7 +202,7 @@ object NewElements:
               case _ => push(MiscHelpers.dyadicMaximum(under, top))
       },
     addPart("H", Monad, true) {
-      case a: VNum => NumberHelpers.toBaseAlphabet(a, VStr("0123456789ABCDEF"))
+      case a: VNum => NumberHelpers.toBaseAlphabet(a, "0123456789ABCDEF")
       case VStr(a) => NumberHelpers.fromBaseAlphabet(a, "0123456789ABCDEF")
     },
     addPart("I", Dyad, false) {

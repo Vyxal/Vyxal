@@ -954,7 +954,7 @@ object Elements:
       "a: num -> a in hexadecimal",
       "a: str -> a as a hexadecimal number to base 10",
     ) {
-      case a: VNum => NumberHelpers.toBaseAlphabet(a, VStr("0123456789ABCDEF"))
+      case a: VNum => NumberHelpers.toBaseAlphabet(a, "0123456789ABCDEF")
       case VStr(a) => NumberHelpers.fromBaseAlphabet(a, "0123456789ABCDEF")
     },
     addDirect(
