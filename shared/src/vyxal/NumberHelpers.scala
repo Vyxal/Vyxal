@@ -11,7 +11,6 @@ import scala.math
 
 import spire.*
 import spire.math.Real
-import spire.syntax.isReal.partialOrderOps // So we can compare Reals to stuff
 
 object NumberHelpers:
 
