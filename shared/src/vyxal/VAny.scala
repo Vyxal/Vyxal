@@ -32,7 +32,9 @@ given [T](using c: Conversion[T, VAny]): Conversion[Seq[T], VList] =
 
 trait ToVyxal[T, V]:
   def apply(t: T): V
-extension [T](t: T) def v[V](using conv: ToVyxal[T, V]): V = conv(t)
+extension [T](t: T)
+  def v[V](using conv: Conversion[T, V]): V = conv(t)
+  def vs[V](using conv: ToVyxal[T, V]): V = conv(t)
 given [T](using c: ToVyxal[T, VAny]): ToVyxal[Seq[T], Seq[VAny]] =
   seq => seq.map(c(_))
 given [T, V](using c: Conversion[T, V]): ToVyxal[T, V] = c(_)
@@ -115,7 +117,7 @@ case class VFun(
   end executeResult
 
   def apply(args: VAny*)(using ctx: Context): VAny =
-    val contextN = if args.length == 1 then args(0) else VList(args)
+    val contextN = if args.length == 1 then args(0) else VList.from(Seq(args))
     Interpreter.executeFn(this, contextN, args = args)
 
   override def toString =
@@ -218,7 +220,7 @@ final class VList private (val lst: Seq[VAny]) extends VAny:
   override def hashCode: Int = lst.hashCode
 
 object VList:
-  def apply(elems: VAny*): VList = new VList(elems)
+  // def apply(elems: VAny*): VList = new VList(elems)
 
   def from(seq: Seq[VAny]): VList = new VList(seq)
   def from[T](seq: Seq[T])(using c: Conversion[T, VAny]): VList =
@@ -257,11 +259,6 @@ object VList:
             Seq.fill(maxSize)(x)
         }
     VList.zipMulti(lists*)(f)
-
-  /** This lets us pattern match on `VList`s, silly as the implementation may
-    * be.
-    */
-  def unapplySeq(vlist: VList): Seq[VAny] = vlist.lst
 
   def seqToVList(seq: Seq[Seq[VAny]]): VList = new VList(seq.map(VList(_)))
 

@@ -75,11 +75,11 @@ object Interpreter:
           )
         else if ctx.settings.endPrintMode == EndPrintMode.Maximum then
           vyPrintln(
-            ListHelpers.makeIterable(ctx.pop()).maxOption.getOrElse(VList())
+            ListHelpers.makeIterable(ctx.pop()).maxOption.getOrElse(Seq())
           )
         else if ctx.settings.endPrintMode == EndPrintMode.Minimum then
           vyPrintln(
-            ListHelpers.makeIterable(ctx.pop()).minOption.getOrElse(VList())
+            ListHelpers.makeIterable(ctx.pop()).minOption.getOrElse(Seq())
           )
         else if ctx.settings.endPrintMode == EndPrintMode.JoinSpaces then
           vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString(" "))

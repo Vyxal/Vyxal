@@ -333,7 +333,7 @@ object StringHelpers:
   def split(s: String | VNum, pattern: String)(using Context): Seq[VAny] =
     try
       s match
-        case str: String => str.split(pattern, -1).toSeq.v
+        case str: String => str.split(pattern, -1).toSeq.vs
         case num: VNum =>
           num.toString.split(pattern).toSeq.map(MiscHelpers.eval)
     catch case _: PatternSyntaxException => throw BadRegexException(pattern)

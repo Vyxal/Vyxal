@@ -364,9 +364,9 @@ object NumberHelpers:
 
   def toBijectiveBase(value: VNum, radix: VNum)(using ctx: Context): Seq[VAny] =
     // It's okay that this doesn't work for complex numbers
-    if value == VNum(0) then return VList()
+    if value == VNum(0) then return Seq.empty
     val base = radix.toBigInt.abs
-    if base == 0 then return VList(value)
+    if base == 0 then return Seq(value)
     if base == 1 then return Seq.fill(value.toInt.abs)(1)
     val digits = ListBuffer.empty[VNum]
     var current = value
@@ -407,8 +407,8 @@ object NumberHelpers:
       case (VStr(a), VStr(b)) =>
         val mobj = b.r.findFirstMatchIn(a)
         mobj match
-          case None => VList()
-          case Some(value) => VList(value.start, value.end)
+          case None => Seq.empty
+          case Some(value) => Seq(value.start, value.end)
 
       case (a: VNum, VStr(b)) => b.toString + MiscHelpers.multiply(" ", a)
       case (a: VList, b: VFun) => ListHelpers.dedupBy(a, b)

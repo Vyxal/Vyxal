@@ -115,7 +115,7 @@ object NewElements:
       direct(Dyad) {
         val b = pop()
         val a = pop()
-        push(VList(a, b))
+        push(Seq(a, b))
       },
     addPart("<", Dyad, true) {
       case (a: VVal, b: VVal) => a < b
@@ -154,8 +154,8 @@ object NewElements:
     },
     addPart("B", Monad, true) {
       case a: VNum => NumberHelpers.toBinary(a)
-      case VStr(a) => VList(
-          a.map(x => NumberHelpers.toBinary(StringHelpers.chrord(x.toString)))*
+      case VStr(a) => VList.from(
+          a.map(x => NumberHelpers.toBinary(StringHelpers.chrord(x.toString)))
         )
     },
     addPart("C", Dyad, false) {
@@ -193,12 +193,12 @@ object NewElements:
       direct(Dyad) {
         val top = pop()
         top match
-          case a: VList => push(a.maxOption.getOrElse(VList()))
+          case a: VList => push(a.maxOption.getOrElse(Seq.empty))
           case _ =>
             val under = pop()
             (top, under) match
               case (a: VFun, b: VList) => push(ListHelpers.generate(a, b))
-              case (a: VFun, b) => push(ListHelpers.generate(a, VList(b)))
+              case (a: VFun, b) => push(ListHelpers.generate(a, Seq(b)))
               case _ => push(MiscHelpers.dyadicMaximum(under, top))
       },
     addPart("H", Monad, true) {
@@ -216,7 +216,7 @@ object NewElements:
       case (a: VList, b: VList) => VList.from(a ++ b)
       case (a, b: VList) => VList.from(a +: b)
       case (a: VList, b) => VList.from(a :+ b)
-      case (a: VNum, b: VNum) => VList(a, b)
+      case (a: VNum, b: VNum) => Seq(a, b)
       case (a, b) => a.toString + b.toString
     },
     addPart("K", Monad, true) {
@@ -392,7 +392,7 @@ object NewElements:
       direct(Dyad) {
         val top = pop()
         top match
-          case a: VList => push(a.minOption.getOrElse(VList()))
+          case a: VList => push(a.minOption.getOrElse(Seq.empty))
           case _ =>
             val under = pop()
             (top, under) match
@@ -432,7 +432,7 @@ object NewElements:
       case (a: VNum, VStr(b)) => b + a.toString
       case (a: VNum, b: VNum) => MiscHelpers.eval(b.toString + a.toString)
       case (a: VList, b) => VList.from(b +: a)
-      case (a, b) => VList(b, a)
+      case (a, b) => Seq(b, a)
     },
     "q" -> fullToImpl(Monad, obj => StringHelpers.quotify(obj.toString)),
     addPart("r", Triad, false) {
@@ -493,7 +493,7 @@ object NewElements:
     },
     "w" ->
       direct(Monad) {
-        push(VList(pop())) // Tacit!
+        push(Seq(pop())) // Tacit!
       },
     "x" ->
       direct(-1) {
@@ -537,8 +537,8 @@ object NewElements:
     addPart("σ", Monad, false) {
       case a =>
         val list = ListHelpers.makeIterable(a)
-        if list.isEmpty then VList()
-        else if list.tail.isEmpty then VList(list.head)
+        if list.isEmpty then Seq.empty
+        else if list.tail.isEmpty then Seq(list.head)
         else
           VList.from(
             list.tail.scanLeft(
@@ -800,7 +800,7 @@ object NewElements:
       case a: VNum => MiscHelpers.eval(a.toString.init)
       case VStr(a) => a.init
       case a: VList if a.lst.nonEmpty => a.init
-      case a: VList => VList()
+      case a: VList => Seq.empty
     },
     addPart("ᐵ", Dyad, false) {
       case (iterable: VList, slice: VNum) => iterable.itr.drop(slice)
@@ -817,13 +817,13 @@ object NewElements:
       case a: VNum => MiscHelpers.eval(a.toString.tail)
       case VStr(a) => a.tail
       case a: VList if a.lst.nonEmpty => a.tail
-      case a: VList => VList()
+      case a: VList => Seq.empty
     },
     addPart("½", Monad, true) {
       case a: VNum => a / 2
       case VStr(a) =>
         val (fst, snd) = a.splitAt(a.length / 2)
-        VList(fst, snd)
+        Seq(fst, snd)
     },
     "ƶ" -> fullToImpl(Monad, x => NumberHelpers.range(0, x.itr.length - 1)),
     "Ƶ" -> fullToImpl(Monad, x => NumberHelpers.range(1, x.itr.length)),
@@ -871,7 +871,7 @@ object NewElements:
     },
     addPart("‰", Dyad, true) {
       case (a: VNum, b: VNum) =>
-        if b == VNum(0) then VList(0, 0) else VList((a / b).floor, a % b)
+        if b == VNum(0) then Seq(0, 0) else Seq((a / b).floor, a % b)
     },
     addPart("≛", Dyad, true) {
       case (a: VNum, b: VNum) => (a % b) == VNum(0)
@@ -879,8 +879,8 @@ object NewElements:
       case (a: VNum, VStr(b)) => b + " " * a.toInt
       case (VStr(a), VStr(b)) => b.r
           .findFirstMatchIn(a)
-          .map(mobj => VList(mobj.start, mobj.end))
-          .getOrElse(VList())
+          .map(mobj => Seq(mobj.start, mobj.end))
+          .getOrElse(Seq.empty)
     },
     addPart("ℭ", Dyad, false) {
       case (itr: VNum, size: VNum) =>
@@ -1116,12 +1116,12 @@ object NewElements:
     "☷" ->
       fullToImpl(Dyad, (a, b) => ListHelpers.partitionAfterTruthyIndices(a, b)),
     addPart("✇", Monad, false) {
-      case a: VNum => VList(a.real, a.imag)
+      case a: VNum => Seq(a.real, a.imag)
       case a =>
         val iterable = a.itr
         if iterable.isEmpty then VList.from(Seq.empty)
-        else if iterable.length == 1 then VList(iterable.head)
-        else VList(iterable.head, iterable.last)
+        else if iterable.length == 1 then Seq(iterable.head)
+        else Seq(iterable.head, iterable.last)
     },
     "⎃" -> fullToImpl(Monad, x => ListHelpers.flatten(x.itr).mkString),
     addPart("⎶", Dyad, false) {
@@ -1144,7 +1144,7 @@ object NewElements:
           if ListHelpers.maxDepth(haystack) <= ListHelpers.maxDepth(needle) then
             (haystack, needle)
           else (needle, haystack)
-        if haystackList.isEmpty || needleList.isEmpty then VList()
+        if haystackList.isEmpty || needleList.isEmpty then Seq.empty
         else
           ListHelpers
             .overlapsMd(

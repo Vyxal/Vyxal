@@ -28,7 +28,7 @@ extension (self: Seq[VAny])
   def vzip(other: Seq[VAny])(using ctx: Context): Seq[VAny] =
     val temp = self.lst
       .zipAll(other, ctx.settings.defaultValue, ctx.settings.defaultValue)
-      .map(VList(_, _))
+      .map((l, r) => VList.from(Seq(l, r)))
     temp
 
   def take(n: VNum): Seq[VAny] =

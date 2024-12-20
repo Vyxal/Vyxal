@@ -379,8 +379,8 @@ object Elements:
       "a: str -> bin(ord(x) for x in a)",
     ) {
       case a: VNum => NumberHelpers.toBinary(a)
-      case VStr(a) => VList(
-          a.map(x => NumberHelpers.toBinary(StringHelpers.chrord(x.toString)))*
+      case VStr(a) => VList.from(
+          a.map(x => NumberHelpers.toBinary(StringHelpers.chrord(x.toString)))
         )
     },
     addPart(
@@ -453,8 +453,8 @@ object Elements:
     ) {
       case a =>
         val list = ListHelpers.makeIterable(a)
-        if list.isEmpty then VList()
-        else if list.tail.isEmpty then VList(list.head)
+        if list.isEmpty then Seq.empty
+        else if list.tail.isEmpty then Seq(list.head)
         else
           VList.from(
             list.tail.scanLeft(
@@ -472,7 +472,7 @@ object Elements:
       "a: num -> a > 0",
     ) {
       case a: VList =>
-        if a.isEmpty then VList()
+        if a.isEmpty then Seq.empty
         else
           lazy val temp: LazyList[VAny] = LazyList.from(a) #::: temp
           VList.from(temp)
@@ -662,15 +662,15 @@ object Elements:
         case VStr(code) => Interpreter.execute(code)
         case a: VNum => ctx.push(a == VNum(1))
         case a: VList =>
-          if a.isEmpty then ctx.push(VList())
+          if a.isEmpty then ctx.push(Seq.empty)
           else
             val indices = ListHelpers.makeIterable(a).map {
               case x: VNum => x.toInt
               case x => throw InvalidListOverloadException("Ḃ", a, "Number")
             }
             ctx.push(
-              VList(
-                (0 until indices.max + 1).map(x => VNum(indices.contains(x)))*
+              VList.from(
+                (0 until indices.max + 1).map(x => VNum(indices.contains(x)))
               )
             )
         case a => throw BadArgumentException("Ḃ", a)
@@ -918,7 +918,7 @@ object Elements:
       case a: VNum => a / 2
       case VStr(a) =>
         val (fst, snd) = a.splitAt(a.length / 2)
-        VList(fst, snd)
+        Seq(fst, snd)
     },
     addFull(
       Monad,
@@ -1034,12 +1034,12 @@ object Elements:
       "a: cmx -> [real, imaginary]",
       "a: num -> [digit[0], digit[-1]]",
     ) {
-      case a: VNum if (a.isComplex || a.isImaginary) => VList(a.real, a.imag)
+      case a: VNum if (a.isComplex || a.isImaginary) => Seq(a.real, a.imag)
       case a =>
         val iterable = ListHelpers.makeIterable(a)
-        if iterable.isEmpty then VList.from(Seq.empty)
-        else if iterable.length == 1 then VList(iterable.head)
-        else VList(iterable.head, iterable.last)
+        if iterable.isEmpty then Seq.empty
+        else if iterable.length == 1 then Seq(iterable.head)
+        else Seq(iterable.head, iterable.last)
     },
     addPart(
       Monad,
@@ -1515,12 +1515,12 @@ object Elements:
     ) { ctx ?=>
       val top = ctx.pop()
       top match
-        case a: VList => ctx.push(a.maxOption.getOrElse(VList()))
+        case a: VList => ctx.push(a.maxOption.getOrElse(Seq.empty))
         case _ =>
           val next = ctx.pop()
           (top, next) match
             case (a: VFun, b: VList) => ctx.push(ListHelpers.generate(a, b))
-            case (a: VFun, b) => ctx.push(ListHelpers.generate(a, VList(b)))
+            case (a: VFun, b) => ctx.push(ListHelpers.generate(a, Seq(b)))
             case (a: VVal, b: VList) =>
               ctx.push(ListHelpers.vectorisedMaximum(b, a))
             case (a: VVal, b: VVal) => ctx.push(MiscHelpers.dyadicMaximum(a, b))
@@ -1533,7 +1533,7 @@ object Elements:
       Some(1),
       "a: lst -> max(a) without popping a",
     ) { ctx ?=>
-      ctx.push(ListHelpers.makeIterable(ctx.peek).maxOption.getOrElse(VList()))
+      ctx.push(ListHelpers.makeIterable(ctx.peek).maxOption.getOrElse(Seq.empty))
     },
     addDirect(
       "ɠ",
@@ -1542,7 +1542,7 @@ object Elements:
       Some(1),
       "a: lst -> min(a) without popping a",
     ) { ctx ?=>
-      ctx.push(ListHelpers.makeIterable(ctx.peek).minOption.getOrElse(VList()))
+      ctx.push(ListHelpers.makeIterable(ctx.peek).minOption.getOrElse(Seq.empty))
     },
     addPart(
       Dyad,
@@ -1616,7 +1616,7 @@ object Elements:
     ) { ctx ?=>
       val top = ctx.pop()
       top match
-        case a: VList => ctx.push(a.minOption.getOrElse(VList()))
+        case a: VList => ctx.push(a.minOption.getOrElse(Seq.empty))
         case _ =>
           val next = ctx.pop()
           (top, next) match
@@ -1955,7 +1955,7 @@ object Elements:
       end match
     },
     addFull(Dyad, ";", "Pair", List("pair"), false, "a, b -> [a, b]") {
-      VList(_, _)
+      Seq(_, _)
     },
     addPart(
       Monad,
@@ -2026,7 +2026,7 @@ object Elements:
       case (a: VNum, VStr(b)) => b + a.toString
       case (a: VNum, b: VNum) => MiscHelpers.eval(b.toString + a.toString)
       case (a: VList, b) => VList.from(b +: a)
-      case (a, b) => VList(b, a)
+      case (a, b) => Seq(b, a)
     },
     addPart(
       Monad,
@@ -2053,7 +2053,7 @@ object Elements:
       "a: num -> for all primes less than or equal to a, push the power of that prime in the factorisation of a",
     ) {
       case a: VNum =>
-        if a < 2 then VList()
+        if a < 2 then Seq.empty
         else
           val primes = NumberHelpers.probablePrimes.takeWhile(
             _ <= NumberHelpers.primeFactors(a).maxOption.getOrElse(VNum(2))
@@ -3086,7 +3086,7 @@ object Elements:
       val firstRes = Interpreter.executeFn(first)(using ctx.copy)
       val secondRes = Interpreter.executeFn(second)(using ctx)
       ctx.pop()
-      ctx.push(VList(firstRes, secondRes))
+      ctx.push(Seq(firstRes, secondRes))
 
     },
     addDirect(
@@ -3180,7 +3180,7 @@ object Elements:
       List("wrap-singleton", "enlist"),
       false,
       "a -> [a]",
-    ) { a => VList(a) },
+    ) { Seq(_) },
     addPart(
       Dyad,
       "Ẇ",

@@ -44,7 +44,7 @@ class DebuggerTests extends AnyFeatureSpec with GivenWhenThen with Matchers:
       dbg.stepOver()
 
       Then("it should have pushed the list")
-      assert(ctx.pop() == VList(123, VList(9), "foo"))
+      assert(ctx.pop() == Seq[VAny](123, Seq(9).v, "foo").v)
 
       And("it should be finished")
       assert(dbg.finished)
