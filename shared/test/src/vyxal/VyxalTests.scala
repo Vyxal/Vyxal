@@ -1,6 +1,5 @@
 package vyxal
 
-import vyxal.parsing.Parser
 import vyxal.parsing.ParserResult
 
 import scala.compiletime.codeOf

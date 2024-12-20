@@ -55,7 +55,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
     )
 
   trait VyxalTestModule
-      extends JavaModuleTests
+      extends JavaTests
       with TestModule.ScalaTest
       with ScalafmtModule {
     override def defaultCommandName() = "test"

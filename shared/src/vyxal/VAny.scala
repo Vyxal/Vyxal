@@ -15,13 +15,19 @@ import scala.util.matching.Regex
 import spire.implicits.*
 import spire.math.{Complex, Real}
 
-sealed trait VAny
-final case class VStr(s: String) extends VAny:
-  override def toString: String = s
+/** A Vyxal value, represented as an ADT.
+  *
+  * Deriving [[CanEqual]] means that comparing `VAny`s to other types is a
+  * compilation error
+  */
+sealed trait VAny derives CanEqual
 
 type VVal = VNum | VStr
 type VPhysical = VNum | VStr | VList
 type VIter = VList | VStr
+
+final case class VStr(s: String) extends VAny:
+  override def toString: String = s
 
 given Conversion[String, VAny] = VStr(_)
 given Conversion[VList, Seq[VAny]] = _.lst
