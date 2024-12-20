@@ -19,7 +19,6 @@ sealed trait VAny
 final case class VStr(s: String) extends VAny:
   override def toString: String = s
 
-type VOptional = VAny | VNil
 type VVal = VNum | VStr
 type VPhysical = VNum | VStr | VList
 type VIter = VList | VStr
@@ -51,9 +50,6 @@ given unionLeftToVy[T](using c: ToVyxal[T, VAny]): ToVyxal[T | VAny, VAny] =
 
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
-
-case class VNil():
-  override def toString = "nil"
 
 /** A function object (not a function definition)
   *
@@ -250,19 +246,6 @@ object VList:
             Seq.fill(maxSize)(x)
         }
     VList.zipMulti(lists*)(f)
-
-  def seqToVList(seq: Seq[Seq[VAny]]): VList = new VList(seq.map(VList(_)))
-
-  def index(lst: Seq[VAny], ind: Int): VAny =
-    if lst.isEmpty then 0
-    else if ind < 0 then
-      // floorMod because % gives negative results with negative dividends
-      lst(math.floorMod(ind, lst.length))
-    else
-      try lst(ind)
-      catch
-        case e: (IndexOutOfBoundsException | ArrayIndexOutOfBoundsException) =>
-          lst(ind % lst.length)
 end VList
 
 class VNum private (val underlying: Complex[Real]) extends VAny, Ordered[VNum]:

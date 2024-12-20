@@ -10,7 +10,7 @@ import scala.collection.mutable.ListBuffer
 extension (self: Seq[VAny])
   /** Map the list using a Vyxal function */
   def vmap(f: VAny => Context ?=> VAny)(using Context): Seq[VAny] =
-    self.lst.map(f(_))
+    self.map(f(_))
 
   /** Zip two VLists together with a function. If one is longer than the other,
     * keep the longer one's elements as-is.
@@ -18,7 +18,7 @@ extension (self: Seq[VAny])
   def zipWith(
       other: Seq[VAny]
   )(f: (VAny, VAny) => Context ?=> VAny)(using ctx: Context): Seq[VAny] =
-    self.lst
+    self
       .zipAll(other, ctx.settings.defaultValue, ctx.settings.defaultValue)
       .map(f(_, _))
 
@@ -26,13 +26,13 @@ extension (self: Seq[VAny])
     * other, keep the longer one's elements as-is.
     */
   def vzip(other: Seq[VAny])(using ctx: Context): Seq[VAny] =
-    val temp = self.lst
+    val temp = self
       .zipAll(other, ctx.settings.defaultValue, ctx.settings.defaultValue)
       .map((l, r) => VList.from(Seq(l, r)))
     temp
 
   def take(n: VNum): Seq[VAny] =
-    if n <= Int.MaxValue then return VList.from(self.lst.take(n.toInt))
+    if n <= Int.MaxValue then return VList.from(self.take(n.toInt))
     val ret = collection.mutable.ListBuffer.empty[VAny]
     var i: VNum = 0
     while i < n do
@@ -41,7 +41,7 @@ extension (self: Seq[VAny])
     ret.toList
 
   def drop(n: VNum): Seq[VAny] =
-    var ret = self.lst
+    var ret = self
     var ind = n.toBigInt
     while ind >= Int.MaxValue do
       ret = ret.drop(Int.MaxValue)
@@ -52,48 +52,56 @@ extension (self: Seq[VAny])
     ind match
       case ind: VNum => self.indexBig(ind.real.toBigInt)
       case inds: VList => inds.vmap(self.index)
-      case _ => throw new Exception("Index must be a number")
+      case _ => throw new Exception("Index must be a number or list")
 
   private def indexBig(ind: BigInt): VAny =
-    var pos = if ind < 0 then ind % self.lst.length else ind
-    var temp = self.lst
+    if self.isEmpty then return 0
+
+    var pos = if ind < 0 then ind % self.length else ind
+    var temp = self
     while pos >= Int.MaxValue do
       // Instead of using modulo, reset the list if out of bounds
-      if temp.isEmpty then temp = self.lst
+      if temp.isEmpty then temp = self
       temp = temp.drop(Int.MaxValue)
       pos -= Int.MaxValue
-    VList.index(temp, pos.toInt)
+
+    val posInt = pos.toInt
+    if self.isDefFinite then self(math.floorMod(posInt, self.size))
+    else
+      try self(posInt)
+      catch
+        case e: (IndexOutOfBoundsException | ArrayIndexOutOfBoundsException) =>
+          self(posInt % self.size)
+  end indexBig
 
   def bigLength: BigInt =
-    self.lst match
+    self match
       case _: ArraySeq[?] =>
         // We know ArraySeqs can't be bigger than Int.MaxValue elements
-        self.lst.length
+        self.length
       case _ =>
-        val iter = self.lst.iterator
+        val iter = self.iterator
         var count = BigInt(0)
         while iter.nextOption().nonEmpty do count += 1
         count
 
   def extend(toSize: BigInt, elem: VAny): Seq[VAny] =
-    if toSize <= Int.MaxValue && self.lst.sizeIs >= toSize.toInt then
-      return self
-    var ret = self.lst
+    if toSize <= Int.MaxValue && self.sizeIs >= toSize.toInt then return self
+    var ret = self
     var currSize = BigInt(ret.size)
     while currSize < toSize do
       val rem = toSize - currSize
       val add = if rem <= Int.MaxValue then rem.toInt else Int.MaxValue
-      ret = ret.lst ++ Seq.fill(add)(elem)
+      ret = ret ++ Seq.fill(add)(elem)
       currSize += add
     ret
 
   /** self isn't an overload of isDefinedAt because it needs to take a `BigInt`
     */
   def hasIndex(ind: BigInt): Boolean =
-    if ind <= Int.MaxValue && ind >= 0 then
-      return self.lst.isDefinedAt(ind.toInt)
-    var pos = if ind < 0 then ind % self.lst.length else ind
-    var temp = self.lst
+    if ind <= Int.MaxValue && ind >= 0 then return self.isDefinedAt(ind.toInt)
+    var pos = if ind < 0 then ind % self.length else ind
+    var temp = self
     while pos >= Int.MaxValue do
       if temp.isEmpty then return false
       temp = temp.drop(Int.MaxValue)
@@ -109,15 +117,15 @@ extension (self: Seq[VAny])
       case _ => true
 
   def vTail: Seq[VAny] =
-    if self.lst.isEmpty then Seq.empty
-    else self.lst.tail
+    if self.isEmpty then Seq.empty
+    else self.tail
 
   /** The default implementation of distinct doesn't work with VNums, so we must
     * override it
     */
   def vDistinct: Seq[VAny] =
     val seen = mutable.ArrayBuffer.empty[VAny]
-    self.lst.filter { elem =>
+    self.filter { elem =>
       if seen.contains(elem) then false
       else
         seen += elem
@@ -126,7 +134,7 @@ extension (self: Seq[VAny])
 
   @targetName("multiSetDiff")
   def --(other: Seq[VAny]): Seq[VAny] =
-    var ret = self.lst
+    var ret = self
 
     for elem <- other do
       if ret.contains(elem) then
@@ -137,5 +145,5 @@ extension (self: Seq[VAny])
 
   @targetName("xor")
   def ^(other: Seq[VAny]): Seq[VAny] =
-    self.lst.filterNot(other.contains(_)) ++ other.filterNot(self.contains(_))
+    self.filterNot(other.contains(_)) ++ other.filterNot(self.contains(_))
 end extension

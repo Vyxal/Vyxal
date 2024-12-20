@@ -615,7 +615,7 @@ object ListHelpers:
             output.last match
               case list: VList => index += list.length - 1
               case _ => index += 1
-          case item => output += VList.index(mutContent, index)
+          case item => output += mutContent.index(index)
         index += 1
 
       VList.from(output.toSeq)
