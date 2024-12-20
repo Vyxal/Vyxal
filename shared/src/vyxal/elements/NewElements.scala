@@ -184,7 +184,8 @@ object NewElements:
         val aList = ListHelpers.makeIterable(a)
         val bList = ListHelpers.makeIterable(b)
         val (needle, haystack) =
-          if ListHelpers.maxDepth(aList) <= ListHelpers.maxDepth(bList) then (a, bList)
+          if ListHelpers.maxDepth(aList) <= ListHelpers.maxDepth(bList) then
+            (a, bList)
           else (b, aList)
         haystack.indexOf(needle)
     },
