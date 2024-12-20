@@ -2296,7 +2296,8 @@ object Elements:
     ) {
       // should do something else for num overload later
       case VStr(s) => s.sorted
-      case a => VList(ListHelpers.makeIterable(a).sorted(MiscHelpers.compare(_, _)))
+      case a =>
+        VList(ListHelpers.makeIterable(a).sorted(MiscHelpers.compare(_, _)))
     },
     addPart(
       Monad,
