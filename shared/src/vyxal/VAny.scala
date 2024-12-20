@@ -204,7 +204,7 @@ case class VObject(
     * @param lst
     *   The wrapped list actually holdings this VList's elements.
     */
-final class VList private (val lst: Seq[VAny]) extends VAny:
+final case class VList(lst: Seq[VAny]) extends VAny:
   override def toString(): String =
     lst.map(_.toString).mkString("[ ", " | ", " ]")
 
@@ -212,16 +212,7 @@ final class VList private (val lst: Seq[VAny]) extends VAny:
   def sliding(size: Int, step: Int): Iterator[VList] =
     lst.sliding(size, step).map(VList.from(_))
 
-  override def equals(o: Any): Boolean =
-    o match
-      case l: VList => this.lst == l.lst
-      case _ => false
-
-  override def hashCode: Int = lst.hashCode
-
 object VList:
-  // def apply(elems: VAny*): VList = new VList(elems)
-
   def from(seq: Seq[VAny]): VList = new VList(seq)
   def from[T](seq: Seq[T])(using c: Conversion[T, VAny]): VList =
     new VList(seq.map(c))
@@ -245,14 +236,14 @@ object VList:
   def zipValues(values: VAny*)(f: PartialFunction[Seq[VAny], VAny])(using
       ctx: Context
   ): Seq[VAny] =
-    val filteredLists = values.collect { case l: VList => l.lst }
+    val filteredLists = values.collect { case VList(l) => l }
     val lists =
       if values.size == filteredLists.size then filteredLists
       else if filteredLists.isEmpty then values.map(ListHelpers.makeIterable(_))
       else
         val maxSize = filteredLists.view.map(_.size).max
         values.map {
-          case l: VList => l.lst
+          case VList(l) => l
           case x =>
             // If one of the other elements is a list but this isn't, repeat
             // this one to be as long as that list

@@ -139,13 +139,13 @@ object MiscHelpers:
 
   val index: Dyad = Dyad.fill("index") {
     case (a: VList, b: VList) => a.index(b)
-    case (VStr(a), b: VList) =>
+    case (VStr(a), VList(b)) =>
       val temp = b.vmap(MiscHelpers.index(a, _))
-      if b.lst.forall(_.isInstanceOf[VNum]) then temp.mkString
+      if b.forall(_.isInstanceOf[VNum]) then temp.mkString
       else temp
-    case (a: VList, VStr(b)) =>
+    case (VList(a), VStr(b)) =>
       val temp = a.vmap(MiscHelpers.index(_, b))
-      if a.lst.forall(_.isInstanceOf[VNum]) then temp.mkString
+      if a.forall(_.isInstanceOf[VNum]) then temp.mkString
       else temp
     case (a, b: VFun) => MiscHelpers.collectUnique(b, a)
     case (a: VFun, b) => MiscHelpers.collectUnique(a, b)
@@ -322,9 +322,9 @@ object MiscHelpers:
 
   def vyPrint(x: VAny)(using ctx: Context): Unit =
     x match
-      case lst: VList =>
+      case VList(lst) =>
         ctx.globals.printFn("[")
-        var temp = if ctx.settings.limitPrint then lst.take(100) else lst.lst
+        var temp = if ctx.settings.limitPrint then lst.take(100) else lst
         while temp.nonEmpty do
           temp.head match
             case n: VNum => vyPrint(n)

@@ -234,12 +234,10 @@ object NewElements:
       case (a: VList, b: VList) => ListHelpers.mold(a, b)
       case (a: VNum, b: VNum) => NumberHelpers.multiplicity(a, b)
       case (VStr(a), VStr(b)) => StringHelpers.r(b).findFirstIn(a).getOrElse("")
-      case (VStr(a), b: VList) =>
-        VList.from(b.lst.map(StringHelpers.r(_).findFirstIn(a).getOrElse("")))
-      case (a: VList, VStr(b)) => VList.from(
-          a.lst.map(x =>
-            StringHelpers.r(b).findFirstIn(x.toString()).getOrElse("")
-          )
+      case (VStr(a), VList(b)) =>
+        VList.from(b.map(StringHelpers.r(_).findFirstIn(a).getOrElse("")))
+      case (VList(a), VStr(b)) => VList.from(
+          a.map(x => StringHelpers.r(b).findFirstIn(x.toString()).getOrElse(""))
         )
     },
     addPart("N", Monad, true) {
@@ -423,9 +421,9 @@ object NewElements:
       case (a, b: VNum) => ListHelpers.overlaps(a.itr, b.toInt)
       case (a: VNum, VStr(b)) => ListHelpers.overlaps(b, a.toInt)
       case (a: VNum, b) => ListHelpers.overlaps(b.itr, a.toInt)
-      case (a: VList, b: VList) =>
-        if !b.lst.forall(_.isInstanceOf[VNum]) then ???
-        else ListHelpers.overlapsMd(a, b.lst.map(_.asInstanceOf[VNum]))
+      case (a: VList, VList(b)) =>
+        if !b.forall(_.isInstanceOf[VNum]) then ???
+        else ListHelpers.overlapsMd(a, b.map(_.asInstanceOf[VNum]))
     },
     addPart("p", Dyad, false) {
       case (VStr(a), b: (VStr | VNum)) => b.toString + a
@@ -445,14 +443,11 @@ object NewElements:
           ListHelpers.makeIterable(b),
           c,
         )
-      case (a: VList, b, c) =>
-        VList.from(a.lst.map(x => if x == b then c else x))
-      case (a, b: VList, c: VList) =>
-        VList.from(b.lst.map(x => if x == a then c else x))
-      case (a, b, c: VList) =>
-        VList.from(c.lst.map(x => if x == a then b else x))
-      case (a, b: VList, c) =>
-        VList.from(b.lst.map(x => if x == a then c else x))
+      case (VList(a), b, c) => VList.from(a.map(x => if x == b then c else x))
+      case (a, VList(b), c: VList) =>
+        VList.from(b.map(x => if x == a then c else x))
+      case (a, b, VList(c)) => VList.from(c.map(x => if x == a then b else x))
+      case (a, VList(b), c) => VList.from(b.map(x => if x == a then c else x))
       case (VStr(a), b: VVal, c: VVal) => a.replace(b.toString, c.toString)
       case (a: VNum, b: VVal, c: VVal) =>
         MiscHelpers.eval(a.toString().replace(b.toString, c.toString))
@@ -530,7 +525,7 @@ object NewElements:
     },
     addPart("∑", Monad, false) {
       case a: VVal => ListHelpers.sum(a.itr)
-      case a: VList if !a.lst.exists(_.isInstanceOf[VStr]) => ListHelpers.sum(a)
+      case VList(a) if !a.exists(_.isInstanceOf[VStr]) => ListHelpers.sum(a)
       case default => MiscHelpers.eval(default.itr.mkString)
     },
     "Π" -> fullToImpl(Monad, lhs => ListHelpers.product(lhs.itr)),
@@ -638,9 +633,9 @@ object NewElements:
     addPart("⊖", Dyad, false) {
       case (a, b: VNum) => ListHelpers.take(a.itr, b)
       case (a: VNum, b: (VList | VStr)) => ListHelpers.take(b.itr, a)
-      case (a: VList, b: VList) =>
-        if !b.lst.forall(_.isInstanceOf[VNum]) then ???
-        else ListHelpers.take(a, b.lst.map(_.asInstanceOf[VNum]))
+      case (a: VList, VList(b)) =>
+        if !b.forall(_.isInstanceOf[VNum]) then ???
+        else ListHelpers.take(a, b.map(_.asInstanceOf[VNum]))
     },
     addPart("⌽", Dyad, false) {
       case (a, b: VNum) =>
@@ -771,10 +766,10 @@ object NewElements:
       case (number: VNum, base: VNum) => NumberHelpers.toBase(number, base)
       case (number: VNum, baseAlphabet: VIter) =>
         NumberHelpers.toBase(number, baseAlphabet)
-      case (list: VList, base: VNum) =>
-        VList.from(list.lst.map(NumberHelpers.toBase(_, base)))
-      case (list: VList, VStr(baseAlphabet)) =>
-        VList.from(list.lst.map(NumberHelpers.toBase(_, baseAlphabet)))
+      case (VList(list), base: VNum) =>
+        VList.from(list.map(NumberHelpers.toBase(_, base)))
+      case (VList(list), VStr(baseAlphabet)) =>
+        VList.from(list.map(NumberHelpers.toBase(_, baseAlphabet)))
       case (values: VList, bases: VList) => VList.from(
           values
             .vzip(bases)
@@ -799,8 +794,7 @@ object NewElements:
     addPart("ᐐ", Monad, false) {
       case a: VNum => MiscHelpers.eval(a.toString.init)
       case VStr(a) => a.init
-      case a: VList if a.lst.nonEmpty => a.init
-      case a: VList => Seq.empty
+      case VList(a) => if a.nonEmpty then a.init else Seq.empty
     },
     addPart("ᐵ", Dyad, false) {
       case (iterable: VList, slice: VNum) => iterable.itr.drop(slice)
@@ -809,15 +803,14 @@ object NewElements:
       case (slice: VNum, VStr(iterable)) => iterable.itr.drop(slice).mkString
       case (iterable: VNum, slice: VNum) =>
         MiscHelpers.eval(iterable.itr.drop(slice).mkString)
-      case (iterable: VList, slices: VList) =>
-        if !slices.lst.forall(_.isInstanceOf[VNum]) then ???
-        else ListHelpers.drop(iterable, slices.lst.map(_.asInstanceOf[VNum]))
+      case (iterable: VList, VList(slices)) =>
+        if !slices.forall(_.isInstanceOf[VNum]) then ???
+        else ListHelpers.drop(iterable, slices.map(_.asInstanceOf[VNum]))
     },
     addPart("ᐕ", Monad, false) {
       case a: VNum => MiscHelpers.eval(a.toString.tail)
       case VStr(a) => a.tail
-      case a: VList if a.lst.nonEmpty => a.tail
-      case a: VList => Seq.empty
+      case VList(a) => if a.nonEmpty then a.tail else Seq.empty
     },
     addPart("½", Monad, true) {
       case a: VNum => a / 2
@@ -936,8 +929,8 @@ object NewElements:
         else VList.from(b.grouped(a.toInt).toSeq)
       case (a: VNum, b: VList) => ListHelpers.wrapLength(b, a)
       case (a: VList, b: VList) =>
-        if b.lst.forall(_.isInstanceOf[VNum]) then
-          ListHelpers.partitionBy(a, b.lst.map(_.asInstanceOf[VNum]))
+        if b.forall(_.isInstanceOf[VNum]) then
+          ListHelpers.partitionBy(a, b.map(_.asInstanceOf[VNum]))
         else throw InvalidListOverloadException("Ϣ", b, "Number")
     },
     addPart("≤", Dyad, true) {
@@ -1058,13 +1051,11 @@ object NewElements:
       case (VStr(a), VStr(b)) =>
         val res = StringHelpers.r(b).findFirstMatchIn(a)
         if res.isDefined then res.get.start else -1
-      case (a: VList, VStr(b)) => VList.from(
-          a.lst
-            .map(_.toString)
-            .map(x =>
-              val res = StringHelpers.r(b).findFirstMatchIn(x)
-              if res.isDefined then res.get.start else -1
-            )
+      case (VList(a), VStr(b)) => VList.from(
+          a.map { x =>
+            val res = StringHelpers.r(b).findFirstMatchIn(x.toString)
+            if res.isDefined then res.get.start else -1
+          }
         )
       case (a, b: VList) =>
         summon[Context].push(a)

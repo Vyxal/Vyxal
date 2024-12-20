@@ -119,7 +119,7 @@ object ListHelpers:
 
   def dotProduct(left: Seq[VAny], right: Seq[VAny])(using Context): VAny =
     left *~ right match
-      case l: VList => ListHelpers.sum(l.lst)
+      case VList(l) => ListHelpers.sum(l)
       case x => x
 
   def drop(iterable: Seq[VAny], index: VNum): Seq[VAny] =
@@ -170,7 +170,7 @@ object ListHelpers:
 
   def flatten(xs: Seq[VAny]): Seq[VAny] =
     xs.flatMap {
-      case l: VList => flatten(l.lst)
+      case VList(l) => flatten(l)
       case x => Seq(x)
     }
 
@@ -180,7 +180,7 @@ object ListHelpers:
     if depth == VNum(0) then iterable
     else
       iterable.flatMap {
-        case l: VList => flattenByDepth(l.lst, depth - 1)
+        case VList(l) => flattenByDepth(l, depth - 1)
         case x => Seq(x)
       }
 
@@ -475,9 +475,9 @@ object ListHelpers:
     sep match
       case VStr(s) => lst.mkString(s)
       case sep: (VNum | VList) =>
-        val l =
-          if sep.isInstanceOf[VList] then sep.asInstanceOf[VList].lst
-          else Seq(sep)
+        val l = sep match
+          case VList(l) => l
+          case sep => Seq(sep)
         VList.from(
           lst.map(makeIterable(_)).reduce((ret, item) => ret ++ l ++ item)
         )
@@ -511,7 +511,7 @@ object ListHelpers:
       ctx: Context
   ): Seq[VAny] =
     value match
-      case list: VList => list.lst
+      case VList(list) => list
       case VStr(str) => str.map(c => VStr(c.toString))
       case fn: VFun => Seq(fn)
       case num: VNum =>
@@ -567,7 +567,7 @@ object ListHelpers:
   def maxDepth(iter: Seq[VAny])(using Context): VNum =
     iter
       .map {
-        case s: VList => 1 + maxDepth(s.lst)
+        case VList(s) => 1 + maxDepth(s)
         case _ => VNum(1)
       }
       .foldLeft(VNum(0))(
@@ -610,8 +610,8 @@ object ListHelpers:
       var index = ind
       for item <- mutShape do
         item match
-          case item: VList =>
-            output += moldHelper(mutContent, item.lst, index)
+          case VList(item) =>
+            output += moldHelper(mutContent, item, index)
             output.last match
               case list: VList => index += list.length - 1
               case _ => index += 1
@@ -698,7 +698,7 @@ object ListHelpers:
   def nthItems(iterable: VList | VStr, index: VNum): VAny =
     val temp = iterable match
       case VStr(s) => s.map(c => VStr(c.toString))
-      case l: VList => l.lst
+      case VList(l) => l
 
     val indInt = index.toInt
     val value =
@@ -762,7 +762,7 @@ object ListHelpers:
     // Remove any nulls that were inserted by multiDimIndexNoWrap
     def removeNulls(lst: Seq[VAny]): Seq[VAny] =
       lst.filter(_ != null).map {
-        case l: VList => removeNulls(l.lst)
+        case VList(l) => removeNulls(l)
         case x => x
       }
 
