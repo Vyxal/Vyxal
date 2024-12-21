@@ -31,11 +31,11 @@ object ListHelpers:
   def cartesianPower(lhs: VAny, pow: VNum)(using Context): Seq[VAny] =
     if pow == VNum(0) then Seq(Seq())
     else
-      val lst = VList(makeIterable(lhs))
-      val temp = cartesianProductMulti(Seq.fill(pow.toInt)(lst))
+      val lst = makeIterable(lhs)
+      val temp = cartesianProductMultiSeqs(Seq.fill(pow.toInt)(lst))
       lhs match
         case _: VStr => temp.map(_.mkString)
-        case _ => temp
+        case _ => temp.map(VList(_))
 
   def cartesianProductSeqs[T <: VAny](
       left: Seq[T],
@@ -58,35 +58,30 @@ object ListHelpers:
       for (l <- lst; r <- acc) yield l +: r
     }
 
-  def cartesianProductMulti(lists: Seq[VList]): Seq[VList] =
-    cartesianProductMultiSeqs(lists.map(_.lst)).map(VList(_))
-
   def combinations(
       iterable: Seq[VAny],
       size: VNum,
       withReplacement: Boolean = false,
   ): Seq[VAny] =
-    if withReplacement then VList(combinationsWithReplacement(iterable, size))
-    else VList(combinationsWithoutReplacement(iterable, size))
+    if withReplacement then combinationsWithReplacement(iterable, size).vs
+    else combinationsWithoutReplacement(iterable, size).vs
 
-  def combinationsWithReplacement(list: Seq[VAny], n: VNum): Seq[VList] =
+  def combinationsWithReplacement(list: Seq[VAny], n: VNum): Seq[Seq[VAny]] =
     if n == VNum(0) then Seq(Seq()) // Base case: one combination of size 0
     else
       for
         (head, index) <- list.zipWithIndex
         tail <- combinationsWithReplacement(list, n - 1)
-      yield VList(head :: tail.toList)
+      yield head +: tail
 
-  def combinationsWithoutReplacement(list: Seq[VAny], n: VNum): Seq[VList] =
+  def combinationsWithoutReplacement(list: Seq[VAny], n: VNum): Seq[Seq[VAny]] =
     if n == VNum(0) then Seq(Seq()) // Base case: one combination of size 0
     else
       for
         (head, index) <- list.zipWithIndex
-        tail <- combinationsWithoutReplacement(
-          list.drop(index + 1),
-          n - 1,
-        ) // Exclude current and previous elements
-      yield VList(head :: tail.toList)
+        // Exclude current and previous elements
+        tail <- combinationsWithoutReplacement(list.drop(index + 1), n - 1)
+      yield head +: tail
 
   def countDepth(left: Seq[VAny], right: Seq[VAny])(using Context): VNum =
     val Seq(needle, haystack) = Seq(left, right).sortBy(maxDepth)
@@ -123,15 +118,15 @@ object ListHelpers:
 
   def drop(iterable: Seq[VAny], index: VNum): Seq[VAny] =
     val ind = if index < 0 then iterable.bigLength + index else index
-    VList(iterable.drop(ind))
+    iterable.drop(ind)
 
   def drop(iterable: Seq[VAny], shape: Seq[VNum])(using Context): Seq[VAny] =
     if shape.isEmpty then iterable
     else if shape.length == 1 then drop(iterable, shape.head)
     else
-      VList(drop(iterable, shape.head).map { row =>
+      drop(iterable, shape.head).map { row =>
         drop(makeIterable(row), shape.tail)
-      })
+      }
 
   def filter(iterable: Seq[VAny], predicate: VFun)(using Context): Seq[VAny] =
     predicate.originalAST match
@@ -159,11 +154,11 @@ object ListHelpers:
           keep
         }
 
-        VList(filtered.map(_._1))
-      case None => VList(iterable.zipWithIndex.collect {
+        filtered.map(_._1)
+      case None => iterable.zipWithIndex.collect {
           case (item, index)
               if predicate.execute(item, index, List(item)).toBool => item
-        })
+        }
 
   end filter
 
@@ -196,10 +191,9 @@ object ListHelpers:
       case 0 => ctx.settings.defaultValue
       case 1 => initial.head
       case _ => initial.init.last
-    VList(
-      initial ++:
-        Interpreter.generator(function, firstN, firstM, function.arity, initial)
-    )
+
+    initial ++:
+      Interpreter.generator(function, firstN, firstM, function.arity, initial)
 
   /** A wrapper call to the generator method in interpreter, but forced to be
     * dyadic
@@ -222,9 +216,8 @@ object ListHelpers:
       case 0 => ctx.settings.defaultValue
       case 1 => initial.head
       case _ => initial.init.last
-    VList(
-      initial ++: Interpreter.generator(function, firstN, firstM, 2, initial)
-    )
+
+    initial ++: Interpreter.generator(function, firstN, firstM, 2, initial)
 
   private def neighbourDirections =
     Seq(
@@ -262,9 +255,7 @@ object ListHelpers:
       matrix: Seq[VAny],
       includeCell: Boolean = false,
       directionOffset: Int = 0,
-  )(using
-      Context
-  ): Seq[VAny] =
+  )(using Context): Seq[VAny] =
     val temp = matrix.zipWithIndex.map { (row, r) =>
       VList(makeIterable(row).zipWithIndex.map { (_, c) =>
         val neighbours = ArrayBuffer.empty[VAny]
@@ -284,7 +275,7 @@ object ListHelpers:
         VList(neighbours.toList)
       })
     }
-    VList(temp)
+    temp
   end gridNeighbours
 
   def gridNeighboursWrap(
@@ -310,16 +301,14 @@ object ListHelpers:
       })
     }
 
-    VList(temp)
+    temp
   end gridNeighboursWrap
 
   def gridNeighboursDiagonal(
       matrix: Seq[VAny],
       includeCell: Boolean = false,
       directionOffset: Int = 0,
-  )(using
-      Context
-  ): Seq[VAny] =
+  )(using Context): Seq[VAny] =
     val temp = matrix.zipWithIndex.map { (row, r) =>
       VList(makeIterable(row).zipWithIndex.map { (_, c) =>
         val neighbours = ArrayBuffer.empty[VAny]
@@ -337,16 +326,14 @@ object ListHelpers:
         VList(neighbours.toList)
       })
     }
-    VList(temp)
+    temp
   end gridNeighboursDiagonal
 
   def gridNeighboursDiagonalWrap(
       matrix: Seq[VAny],
       includeCell: Boolean = false,
       directionOffset: Int = 0,
-  )(using
-      Context
-  ): Seq[VAny] =
+  )(using Context): Seq[VAny] =
     val temp = matrix.zipWithIndex.map { (row, r) =>
       VList(makeIterable(row).zipWithIndex.map { (_, c) =>
         val neighbours = ArrayBuffer.empty[VAny]
@@ -363,7 +350,7 @@ object ListHelpers:
       })
     }
 
-    VList(temp)
+    temp
   end gridNeighboursDiagonalWrap
 
   /** Group elements according to the result of some function
@@ -384,15 +371,13 @@ object ListHelpers:
         case res =>
           if nonNumGroups.contains(res) then nonNumGroups(res) += elem
           else nonNumGroups(res) = ArrayBuffer(elem)
-    VList(
-      (nonNumGroups.view ++ numGroups.view)
-        .map((_, group) => VList(group.toSeq))
-        .toSeq
-    )
+    (nonNumGroups.view ++ numGroups.view)
+      .map((_, group) => VList(group.toSeq))
+      .toSeq
   end groupBy
 
   def groupConsecutive(iterable: Seq[VAny]): Seq[VAny] =
-    VList(groupByConsecutive(iterable, x => x))
+    groupByConsecutive(iterable, x => x)
 
   def groupByConsecutive(
       iterable: Seq[VAny],
@@ -408,7 +393,7 @@ object ListHelpers:
         else return VList(buf.toList) #:: gen(next)
       LazyList(VList(buf.toList))
 
-    VList(if it.hasNext then gen(it.next()) else Seq.empty)
+    if it.hasNext then gen(it.next()) else Seq.empty
 
   def groupByConsecutive(iterable: VAny, function: VFun)(using
       Context
@@ -428,8 +413,8 @@ object ListHelpers:
 
     val res = if it.hasNext then gen(it.next()) else Seq.empty
     iterable match
-      case VStr(_) => VList(res.map(_.asInstanceOf[VList].mkString))
-      case _ => VList(res)
+      case VStr(_) => res.map(_.asInstanceOf[VList].mkString)
+      case _ => res
   end groupByConsecutive
 
   def insert(iterable: Seq[VAny], index: VNum, value: VAny)(using
@@ -437,7 +422,7 @@ object ListHelpers:
   ): Seq[VAny] =
     val ind = if index < 0 then iterable.bigLength + index + 1 else index
     val temp = iterable.extend(ind.toBigInt, VNum(0))
-    VList(temp.take(ind) ++ (value +: temp.drop(ind)))
+    temp.take(ind) ++ (value +: temp.drop(ind))
 
   def interleave(left: Seq[VAny], right: Seq[VAny])(using Context): Seq[VAny] =
     val out = ArrayBuffer.empty[VAny]
@@ -450,7 +435,7 @@ object ListHelpers:
     out ++= leftIter
     out ++= rightIter
 
-    VList(out.toSeq)
+    out.toSeq
 
   def intoNPieces(iterable: Seq[VAny], pieces: VNum)(using
       Context
@@ -531,12 +516,12 @@ object ListHelpers:
 
   def matrixMultiply(lhs: Seq[VAny], rhs: Seq[VAny])(using Context): Seq[VAny] =
     val rhsTemp = transposeSafe(rhs)
-    VList(lhs.map { row =>
+    lhs.map { row =>
       val rowIt = ListHelpers.makeIterable(row)
       VList(
         rhsTemp.map(col => dotProduct(rowIt, ListHelpers.makeIterable(col)))
       )
-    })
+    }
 
   def map(f: VFun, to: Seq[VAny])(using Context): Seq[VAny] =
     f.originalAST match
@@ -545,7 +530,7 @@ object ListHelpers:
         val params = f.originalAST match
           case Some(lam) => lam.params
           case None => List.empty
-        VList(to.zipWithIndex.map { (item, index) =>
+        to.zipWithIndex.map { (item, index) =>
           val sharedVars = mut.Map.empty[String, VAny]
           branches.foldLeft(item) { (out, branch) =>
             Interpreter.executeFn(
@@ -556,11 +541,11 @@ object ListHelpers:
               vars = sharedVars,
             )
           }
-        })
+        }
 
-      case None => VList(to.zipWithIndex.map { (item, index) =>
+      case None => to.zipWithIndex.map { (item, index) =>
           f.execute(item, index, List(item))
-        })
+        }
   end map
 
   def maxDepth(iter: Seq[VAny])(using Context): VNum =
@@ -752,9 +737,8 @@ object ListHelpers:
       )
     val inWindow = cartesianProductMultiSeqs(includedDimensions)
     val ctx = Context()
-    val cells = VList(
+    val cells =
       inWindow.map(coords => multiDimIndexNoWrap(iterable, coords)(using ctx))
-    )
 
     val reshaped = reshape(cells, size)
     // Remove any nulls that were inserted by multiDimIndexNoWrap
@@ -826,8 +810,8 @@ object ListHelpers:
     then iterable.fold(VNum(1))(_.asInstanceOf[VNum] * _.asInstanceOf[VNum])
     else
       // Cartesian product over the list
-      val temp = iterable.map(l => VList(ListHelpers.makeIterable(l)))
-      VList(cartesianProductMulti(temp))
+      val temp = iterable.map(ListHelpers.makeIterable(_))
+      VList(cartesianProductMultiSeqs(temp).vs)
 
   def setIntersection(left: Seq[VAny], right: Seq[VAny]): Seq[VAny] =
     val result = LazyList
@@ -865,25 +849,24 @@ object ListHelpers:
             )
       }
       .flatten
-    VList(result)
+    result
   end setIntersection
+
   def sortBy(iterable: Seq[VAny], key: VFun)(using Context): Seq[VAny] =
     key.originalAST match
       case Some(lam) =>
         val branches = lam.body
         if branches.sizeIs < 2 then
-          return VList(
-            iterable.zipWithIndex
-              .sorted { (a, b) =>
-                MiscHelpers.compare(
-                  key.executeResult(a(0), a(1), List(a(0))),
-                  key.executeResult(b(0), b(1), List(b(0))),
-                )
-              }
-              .map(_._1)
-          )
+          return iterable.zipWithIndex
+            .sorted { (a, b) =>
+              MiscHelpers.compare(
+                key.executeResult(a(0), a(1), List(a(0))),
+                key.executeResult(b(0), b(1), List(b(0))),
+              )
+            }
+            .map(_._1)
 
-        val out = iterable.zipWithIndex
+        iterable.zipWithIndex
           .sortWith { (a, b) =>
             branches.view
               .map { branch =>
@@ -901,18 +884,14 @@ object ListHelpers:
               }
           }
           .map(_._1)
-
-        VList(out)
-      case None => VList(
-          iterable.zipWithIndex
-            .sorted { (a, b) =>
-              MiscHelpers.compare(
-                key.executeResult(a(0), a(1), List(a(0))),
-                key.executeResult(b(0), b(1), List(b(0))),
-              )
-            }
-            .map(_._1)
-        )
+      case None => iterable.zipWithIndex
+          .sorted { (a, b) =>
+            MiscHelpers.compare(
+              key.executeResult(a(0), a(1), List(a(0))),
+              key.executeResult(b(0), b(1), List(b(0))),
+            )
+          }
+          .map(_._1)
 
   end sortBy
 
@@ -1036,14 +1015,14 @@ object ListHelpers:
     var temp = iterable
     while temp.nonEmpty do
       shape += VNum(temp.length)
-      val items = temp.map(x =>
+      val items = temp.map { x =>
         x match
-          case l: VList => (l.length, x)
-          case _ => (0, Seq.empty)
-      )
-      temp = items.maxBy(_._1)._2.asInstanceOf[VList]
+          case l: VList => (l.length, l)
+          case _ => (0, VList(Seq.empty))
+      }
+      temp = items.maxBy(_._1)._2
 
-    if shape.isEmpty then Seq(0) else VList(shape.toSeq)
+    if shape.isEmpty then Seq(0) else shape.toSeq
 
   /** Split a list on a sublist
     *
@@ -1072,10 +1051,10 @@ object ListHelpers:
 
   def splitNormal(iterable: Seq[VAny], sep: VAny)(using Context): Seq[VAny] =
     val out = split(iterable, Seq(sep))
-    VList(out.map(VList(_)))
+    out.map(VList(_))
 
   def take(iterable: Seq[VAny], amount: VNum): Seq[VAny] =
-    if amount < 0 then VList(iterable.takeRight(amount.toInt.abs))
+    if amount < 0 then iterable.takeRight(amount.toInt.abs)
     else iterable.take(amount.toInt)
 
   def take(iterable: Seq[VAny], amount: VNum, fill: VAny): Seq[VAny] =
@@ -1089,20 +1068,18 @@ object ListHelpers:
     if shape.isEmpty then iterable
     else if shape.length == 1 then take(iterable, shape.head, 0)
     else
-      VList(take(iterable, shape.head, 0).map { row =>
+      take(iterable, shape.head, 0).map { row =>
         val temp = makeIterable(row)
         take(temp, shape.tail)
-      })
+      }
 
   def transliterate(source: Seq[VAny], from: VAny, to: VAny)(using
       ctx: Context
   ): Seq[VAny] =
     val fromList = ListHelpers.makeIterable(from)
     val toList = ListHelpers.makeIterable(to)
-
     val pairs = fromList.lazyZip(toList).toMap
-
-    VList(source.map(x => pairs.getOrElse(x, x)))
+    source.map(x => pairs.getOrElse(x, x))
 
   /** Transpose a matrix.
     *
@@ -1129,7 +1106,7 @@ object ListHelpers:
             (col, matrix.map(_.vTail))
           }
         }
-    VList(out)
+    out
   end transpose
 
   /** Transpose a matrix. Uses the length of the first row of the inputted
@@ -1161,14 +1138,14 @@ object ListHelpers:
               (col, matrix.map(_.tail))
             }
           }
-      VList(out)
+      out
     end if
   end transposeSafe
 
   def trim(iterable: Seq[VAny], value: VAny): Seq[VAny] =
     val temp = iterable.toList
     val trimmed = temp.dropWhile(_ == value).reverse.dropWhile(_ == value)
-    VList(trimmed.reverse)
+    trimmed.reverse
 
   def trimList(iterable: Seq[VAny], pattern: Seq[VAny])(using
       ctx: Context
@@ -1202,7 +1179,7 @@ object ListHelpers:
             chunk += mutRemaining.head
             mutRemaining = mutRemaining.tail
             count += 1
-          Some((VList(chunk.result()), mutRemaining))
+          Some((chunk.result(), mutRemaining))
       }
 
   def vectorisedMaximum(iterable: Seq[VAny], b: VVal)(using
@@ -1238,7 +1215,7 @@ object ListHelpers:
     for (i, j) <- makeIterable(lst).zip(makeIterable(part)) do
       res(res.length - 1) = VList(res(res.length - 1) :+ i)
       if j.toBool then res += Seq.empty
-    VList(res.toList)
+    res.toList
 
   def powerset(iterable: Seq[VAny])(using Context): Seq[VAny] =
     val temp: LazyList[Seq[VList]] =

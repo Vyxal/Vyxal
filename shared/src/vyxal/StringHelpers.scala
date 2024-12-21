@@ -277,8 +277,8 @@ object StringHelpers:
   def transliterate(source: String, from: String, to: String): String =
     transliterate(
       source,
-      VList(from.toList.map(_.toString)),
-      VList(to.toList.map(_.toString)),
+      from.toList.map(_.toString).vs,
+      to.toList.map(_.toString).vs,
     )
 
   // https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L1055

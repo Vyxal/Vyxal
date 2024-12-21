@@ -278,9 +278,9 @@ object Modifiers:
                     ctx ?=>
                       val head = ctx.pop()
                       val tail = ctx.peek match
-                        case _: VList => ctx.pop().asInstanceOf[VList]
-                        case _ => VList(ctx.pop(1))
-                      val list = VList(head +: tail)
+                        case _: VList => ctx.pop().asInstanceOf[VList].lst
+                        case _ => ctx.pop(1)
+                      val list = head +: tail
                       if returnStr then
                         ctx.push(ListHelpers.flatten(list).mkString)
                       else ctx.push(list)
@@ -306,8 +306,8 @@ object Modifiers:
                   () =>
                     ctx ?=>
                       val head = ctx.peek match
-                        case _: VList => ctx.pop().asInstanceOf[VList]
-                        case _ => VList(ctx.pop(1))
+                        case _: VList => ctx.pop().asInstanceOf[VList].lst
+                        case _ => ctx.pop(1)
                       if returnStr then
                         ctx.push(ListHelpers.flatten(head).mkString)
                       else ctx.push(head)

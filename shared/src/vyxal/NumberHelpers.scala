@@ -261,15 +261,18 @@ object NumberHelpers:
       2 * ret + digit
     }
 
-  def range(start: VNum, end: VNum): VList =
+  def range(start: VNum, end: VNum): Seq[VAny] =
     val step = (end - start).signum
-    VList(start.range(end, step = if step == VNum(0) then 1 else step))
+    start.range(end, step = if step == VNum(0) then 1 else step)
 
-  def range(start: VNum, ends: Seq[VNum])(using Context): VList =
+  def range(start: VNum, ends: Seq[VNum])(using Context): Seq[VAny] =
     if ends.isEmpty then throw BadArgumentException("range", "empty list")
-    val ranges = ends.map(end => VList(start.range(end)))
+    val ranges = ends.map(start.range(_))
     ListHelpers
-      .reshape(ListHelpers.cartesianProductMulti(ranges), ranges.map(_.length))
+      .reshape(
+        ListHelpers.cartesianProductMultiSeqs(ranges).map(VList(_)),
+        ranges.map(_.length),
+      )
       .asInstanceOf[VList]
 
   // Round half-up

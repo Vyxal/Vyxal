@@ -370,7 +370,7 @@ object MiscHelpers:
         prev = next
         Some(next -> next)
     }
-    VList(value #:: res)
+    value #:: res
 
   def zipWith(left: Seq[VAny], right: Seq[VAny], function: VFun)(using
       Context

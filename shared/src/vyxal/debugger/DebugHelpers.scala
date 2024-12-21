@@ -53,7 +53,10 @@ object DebugHelpers:
   end dedupBy
 
   // TODO this doesn't filter using all branches
-  def filter(iterable: VList, predicate: VFun)(using Debugger, Context): Step =
+  def filter(iterable: Seq[VAny], predicate: VFun)(using
+      Debugger,
+      Context,
+  ): Step =
     predicate.originalAST match
       case Some(lam) =>
         val filtered = ListBuffer.empty[VAny]

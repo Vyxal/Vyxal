@@ -42,12 +42,12 @@ object FuncHelpers:
         )
       )
 
-  def reduceOverPairs(fn: VFun, iter: VList)(using ctx: Context): VList =
-    val slices = ListHelpers.overlaps(iter, 2)
-    val result = slices.map { slice =>
+  def reduceOverPairs(fn: VFun, iter: Seq[VAny])(using
+      ctx: Context
+  ): Seq[VAny] =
+    ListHelpers.overlaps(iter, 2).map { slice =>
       slice match
         case Seq(left: VAny, right: VAny) =>
           Interpreter.executeFn(fn, left, right, Seq(left, right))
     }
-    VList(result)
 end FuncHelpers
