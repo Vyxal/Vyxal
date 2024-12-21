@@ -315,8 +315,6 @@ class VNum(val underlying: Complex[Real]) extends VAny, Ordered[VNum]:
     else
       s"${this.real.getString(Real.digits)}ı${this.imag.getString(Real.digits)}"
 
-  override def hashCode(): Int = this.toInt
-
   override def equals(obj: Any) =
     obj match
       case n: VNum => (underlying `eq` n.underlying) ||
