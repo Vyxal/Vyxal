@@ -1,6 +1,6 @@
 package vyxal
 
-import vyxal.VNum.given
+import vyxal.conversions.given
 
 import scala.collection.immutable.ArraySeq
 import scala.collection.mutable as mut

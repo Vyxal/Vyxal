@@ -1,8 +1,7 @@
 package vyxal
 
-import vyxal.given
+import vyxal.conversions.{given, *}
 import vyxal.parsing.{Lexer, Parser}
-import vyxal.VNum.given
 
 import org.scalatest.tagobjects.Slow
 import spire.math.Real

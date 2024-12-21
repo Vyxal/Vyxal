@@ -1,8 +1,9 @@
 package vyxal
 
 import vyxal.*
+import vyxal.conversions.{given, *}
 import vyxal.parsing.Codepage
-import vyxal.VNum.given
+
 
 import scala.annotation.tailrec
 import scala.collection.mutable
@@ -263,11 +264,11 @@ object NumberHelpers:
 
   def range(start: VNum, end: VNum): VList =
     val step = (end - start).signum
-    VList(start.to(end, step = if step == VNum(0) then 1 else step))
+    VList(start.range(end, step = if step == VNum(0) then 1 else step))
 
   def range(start: VNum, ends: Seq[VNum])(using Context): VList =
     if ends.isEmpty then throw BadArgumentException("range", "empty list")
-    val ranges = ends.map(end => VList(start.to(end)))
+    val ranges = ends.map(end => VList(start.range(end)))
     ListHelpers
       .reshape(ListHelpers.cartesianProductMulti(ranges), ranges.map(_.length))
       .asInstanceOf[VList]

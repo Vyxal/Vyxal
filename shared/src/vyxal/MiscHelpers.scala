@@ -1,8 +1,9 @@
 package vyxal
 
+import vyxal.conversions.{given, *}
 import vyxal.parsing.Lexer
 import vyxal.Interpreter.executeFn
-import vyxal.VNum.given
+
 
 import scala.annotation.tailrec
 import scala.collection.mutable.ArrayBuffer

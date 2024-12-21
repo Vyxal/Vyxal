@@ -1,7 +1,7 @@
 package vyxal
 
-import vyxal.given
-import vyxal.VNum.given
+import vyxal.conversions.given
+
 import vyxal.VyxalTests.testContext
 
 import org.scalatest.funspec.AnyFunSpec

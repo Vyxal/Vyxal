@@ -1,6 +1,6 @@
 package vyxal
 
-import vyxal.VNum.given
+import vyxal.conversions.given
 
 import scala.annotation.targetName
 import scala.collection.immutable.ArraySeq
@@ -32,7 +32,7 @@ extension (self: Seq[VAny])
     temp
 
   def take(n: VNum): Seq[VAny] =
-    if n <= Int.MaxValue then return VList(self.take(n.toInt))
+    if n <= Int.MaxValue then return self.take(n.toInt)
     val ret = collection.mutable.ListBuffer.empty[VAny]
     var i: VNum = 0
     while i < n do
@@ -51,7 +51,7 @@ extension (self: Seq[VAny])
   def index(ind: VAny)(using ctx: Context): VAny =
     ind match
       case ind: VNum => self.indexBig(ind.real.toBigInt)
-      case inds: VList => inds.vmap(self.index)
+      case inds: VList => VList(inds.vmap(self.index))
       case _ => throw new Exception("Index must be a number or list")
 
   private def indexBig(ind: BigInt): VAny =

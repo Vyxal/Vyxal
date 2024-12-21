@@ -4,13 +4,11 @@ import scala.language.implicitConversions
 
 import vyxal.*
 import vyxal.{Dyad, ImplHelpers, Monad, Tetrad, Triad}
-import vyxal.given
-import vyxal.toBool
+import vyxal.conversions.{given, *}
 import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.defaultEmpty
 import vyxal.StringHelpers.padLeft
-import vyxal.VNum.given
 
 import scala.io.StdIn
 import scala.util.matching.Regex

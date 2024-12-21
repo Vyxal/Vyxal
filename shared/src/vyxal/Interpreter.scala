@@ -1,10 +1,10 @@
 package vyxal
 
+import vyxal.conversions.given
 import vyxal.elements.NewElements
 import vyxal.parsing.{Lexer, Parser, ParserResult}
 import vyxal.MiscHelpers.vyPrintln
 import vyxal.StringHelpers.prettyPrint
-import vyxal.VNum.given
 
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut

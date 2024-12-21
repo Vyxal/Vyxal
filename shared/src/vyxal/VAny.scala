@@ -2,8 +2,8 @@ package vyxal
 
 import scala.language.implicitConversions
 
+import vyxal.conversions.given
 import vyxal.Interpreter.executeFn
-import vyxal.VNum.given
 
 import scala.annotation.targetName
 import scala.collection.immutable.NumericRange
@@ -12,50 +12,103 @@ import scala.collection.mutable as mut
 import scala.math.Ordered
 import scala.util.matching.Regex
 
-import spire.implicits.*
 import spire.math.{Complex, Real}
 
 /** A Vyxal value, represented as an ADT.
   *
-  * Deriving [[CanEqual]] means that comparing `VAny`s to other types is a
-  * compilation error
+  * Subclasses are:
+  *   - [[VStr]]
+  *   - [[VNum]]
+  *   - [[VList]]
+  *   - [[VFun]]
+  *   - [[VConstructor]]
+  *   - [[VObject]]
+  *
+  * We derive [[CanEqual]] so that if you compare a `VAny`s to another type, the
+  * compiler will complain
   */
-sealed trait VAny derives CanEqual
+sealed trait VAny derives CanEqual:
+  @targetName("vEquals")
+  def ===(that: VAny)(using Context): Boolean =
+    (this, that) match
+      case (a: VObject, b: VObject) => a.className == b.className &&
+        a.fields == b.fields
+      case (a: VList, b: VList) => a == b
+      case (_: VFun, _) =>
+        scribe.warn(s"Tried comparing function $this to $that")
+        false
+      case (_, _: VFun) =>
+        scribe.warn(s"Tried comparing $this to function $that")
+        false
+      case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) == 0
+      case _ => false
+
+  @targetName("vNotEquals")
+  def !==(that: VAny)(using Context): Boolean = !(this === that)
+
+  @targetName("plus")
+  def +~(that: VAny)(using Context): VAny = MiscHelpers.add(this, that)
+
+  @targetName("times")
+  def *~(that: VAny)(using Context): VAny = MiscHelpers.multiply(this, that)
+
+  def toBool =
+    this match
+      case n: VNum => n != VNum(0)
+      case VStr(s) => s.nonEmpty
+      case f: VFun => true
+      case l: VList => l.nonEmpty
+      case c: VConstructor => true
+      case o: VObject => true
+end VAny
+
+object VAny:
+  given (using Context): Ordering[VAny] with
+    override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
 
 type VVal = VNum | VStr
 type VPhysical = VNum | VStr | VList
 type VIter = VList | VStr
 
+object conversions:
+  given Conversion[String, VAny] = VStr(_)
+  given Conversion[VList, Seq[VAny]] = _.lst
+  given Conversion[Seq[VAny], VList] = VList(_)
+  given [T](using c: Conversion[T, VAny]): Conversion[Seq[T], VList] =
+    seq => VList(seq.map(c))
+
+  trait ToVyxal[T, V]:
+    def apply(t: T): V
+  extension [T](t: T)
+    def v[V](using conv: Conversion[T, V]): V = conv(t)
+    def vs[V](using conv: ToVyxal[T, V]): V = conv(t)
+
+  given [T](using c: ToVyxal[T, VAny]): ToVyxal[Seq[T], Seq[VAny]] =
+    seq => seq.map(c(_))
+  given [T, V](using c: Conversion[T, V]): ToVyxal[T, V] = c(_)
+  given unionRightToVy[T](using c: ToVyxal[T, VAny]): ToVyxal[VAny | T, VAny] =
+    x =>
+      x match
+        case v: VAny => v
+        case _ => c(x.asInstanceOf[T])
+  given unionLeftToVy[T](using c: ToVyxal[T, VAny]): ToVyxal[T | VAny, VAny] =
+    x =>
+      x match
+        case v: VAny => v
+        case _ => c(x.asInstanceOf[T])
+
+  given Conversion[Int, VNum] = n => VNum.complex(n, 0)
+  given Conversion[Double, VNum] = n => VNum.complex(n, 0)
+  given Conversion[Long, VNum] = n => VNum.complex(n, 0)
+  given Conversion[BigInt, VNum] = n => VNum.complex(n, 0)
+  given Conversion[BigDecimal, VNum] = n => VNum.complex(n, 0)
+  given Conversion[Real, VNum] = n => VNum.complex(n, 0)
+  given Conversion[Complex[Real], VNum] = new VNum(_)
+  given Conversion[Boolean, VNum] = b => if b then 1 else 0
+end conversions
+
 final case class VStr(s: String) extends VAny:
   override def toString: String = s
-
-given Conversion[String, VAny] = VStr(_)
-given Conversion[VList, Seq[VAny]] = _.lst
-given Conversion[Seq[VAny], VList] = VList(_)
-given [T](using c: Conversion[T, VAny]): Conversion[Seq[T], VList] =
-  seq => VList(seq.map(c))
-
-trait ToVyxal[T, V]:
-  def apply(t: T): V
-extension [T](t: T)
-  def v[V](using conv: Conversion[T, V]): V = conv(t)
-  def vs[V](using conv: ToVyxal[T, V]): V = conv(t)
-given [T](using c: ToVyxal[T, VAny]): ToVyxal[Seq[T], Seq[VAny]] =
-  seq => seq.map(c(_))
-given [T, V](using c: Conversion[T, V]): ToVyxal[T, V] = c(_)
-given unionRightToVy[T](using c: ToVyxal[T, VAny]): ToVyxal[VAny | T, VAny] =
-  x =>
-    x match
-      case v: VAny => v
-      case _ => c(x.asInstanceOf[T])
-given unionLeftToVy[T](using c: ToVyxal[T, VAny]): ToVyxal[T | VAny, VAny] =
-  x =>
-    x match
-      case v: VAny => v
-      case _ => c(x.asInstanceOf[T])
-
-given (using Context): Ordering[VAny] with
-  override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
 
 /** A function object (not a function definition)
   *
@@ -148,41 +201,6 @@ object VFun:
     )
 end VFun
 
-extension (self: VAny)
-  @targetName("vEquals")
-  def ===(that: VAny)(using Context): Boolean =
-    (self, that) match
-      case (a: VObject, b: VObject) => a.className == b.className &&
-        a.fields == b.fields
-      case (a: VList, b: VList) => a == b
-      case (_: VFun, _) =>
-        scribe.warn(s"Tried comparing function $self to $that")
-        false
-      case (_, _: VFun) =>
-        scribe.warn(s"Tried comparing $self to function $that")
-        false
-      case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) == 0
-      case _ => false
-
-  @targetName("vNotEquals")
-  def !==(that: VAny)(using Context): Boolean = !(self === that)
-
-  @targetName("plus")
-  def +~(that: VAny)(using Context): VAny = MiscHelpers.add(self, that)
-
-  @targetName("times")
-  def *~(that: VAny)(using Context): VAny = MiscHelpers.multiply(self, that)
-
-  def toBool =
-    self match
-      case n: VNum => n != VNum(0)
-      case VStr(s) => s.nonEmpty
-      case f: VFun => true
-      case l: VList => l.nonEmpty
-      case c: VConstructor => true
-      case o: VObject => true
-end extension
-
 case class VConstructor(
     name: String
 ) extends VAny:
@@ -210,7 +228,7 @@ final case class VList(lst: Seq[VAny]) extends VAny:
   override def toString(): String =
     lst.map(_.toString).mkString("[ ", " | ", " ]")
 
-class VNum private (val underlying: Complex[Real]) extends VAny, Ordered[VNum]:
+class VNum(val underlying: Complex[Real]) extends VAny, Ordered[VNum]:
   def real: Real = underlying.real
   def imag: Real = underlying.imag
 
@@ -263,7 +281,7 @@ class VNum private (val underlying: Complex[Real]) extends VAny, Ordered[VNum]:
   def arg: VNum = underlying.arg
 
   /** Inclusive range */
-  def to(end: VNum, step: VNum = 1): NumericRange[VNum] =
+  def range(end: VNum, step: VNum = 1): NumericRange[VNum] =
     Inclusive(this, end, step)
 
   def sin: VNum = underlying.sin
@@ -373,18 +391,6 @@ object VNum:
 
   /** Allow pattern matching like `VNum(r, i)` */
   def unapply(n: VNum): (Real, Real) = n.underlying.asTuple
-
-  /** Implicit conversion to a VNum. Note that this needs to be imported first,
-    * using `import vyxal.VNum.given`
-    */
-  given Conversion[Int, VNum] = n => complex(n, 0)
-  given Conversion[Double, VNum] = n => complex(n, 0)
-  given Conversion[Long, VNum] = n => complex(n, 0)
-  given Conversion[BigInt, VNum] = n => complex(n, 0)
-  given Conversion[BigDecimal, VNum] = n => complex(n, 0)
-  given Conversion[Real, VNum] = n => complex(n, 0)
-  given Conversion[Complex[Real], VNum] = new VNum(_)
-  given Conversion[Boolean, VNum] = b => if b then 1 else 0
 
   given Integral[VNum] with
     override def negate(x: VNum): VNum = -x

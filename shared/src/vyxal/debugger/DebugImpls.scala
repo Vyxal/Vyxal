@@ -1,8 +1,7 @@
 package vyxal.debugger
 
 import vyxal.*
-import vyxal.given
-import vyxal.VNum.given
+import vyxal.conversions.given
 
 import scala.collection.mutable.ListBuffer
 

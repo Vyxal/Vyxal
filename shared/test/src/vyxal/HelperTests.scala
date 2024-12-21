@@ -1,6 +1,6 @@
 package vyxal
 
-import vyxal.VNum.given
+import vyxal.conversions.given
 
 import org.scalatest.tagobjects.Slow
 import org.scalatest.Checkpoints.Checkpoint

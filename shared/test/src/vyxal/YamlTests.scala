@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.conversions.given
+
 import scala.io.Source
 
 import org.scalatest.funspec.AnyFunSpec

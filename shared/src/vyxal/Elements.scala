@@ -2,10 +2,11 @@ package vyxal
 
 import scala.language.implicitConversions
 
+import vyxal.conversions.{*, given}
 import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.collectUnique
 import vyxal.NumberHelpers.range
-import vyxal.VNum.given
+
 
 import scala.collection.mutable.ListBuffer
 import scala.io.StdIn

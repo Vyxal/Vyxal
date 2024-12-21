@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.conversions.given
+
 /** Helpers for function-related stuff */
 object FuncHelpers:
   /** Vectorise a function object */

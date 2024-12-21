@@ -1,5 +1,6 @@
 package vyxal
 
+import vyxal.conversions.given
 import vyxal.parsing.ParsingException
 
 import scala.collection.mutable.ListBuffer

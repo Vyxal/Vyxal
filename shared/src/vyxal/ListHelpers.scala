@@ -1,6 +1,7 @@
 package vyxal
 
-import vyxal.VNum.given
+import vyxal.conversions.{given, *}
+
 
 import scala.annotation.unchecked.uncheckedVariance
 import scala.collection.mutable.ArrayBuffer
@@ -517,7 +518,7 @@ object ListHelpers:
         if overrideRangify.getOrElse(ctx.settings.rangify) then
           val start = ctx.settings.rangeStart
           val offset = ctx.settings.rangeOffset
-          start.to(num - offset)
+          start.range(num - offset)
         else
           num.toString.map { x =>
             if x.isDigit then VNum(x - '0')
@@ -734,7 +735,7 @@ object ListHelpers:
     val ends = iterShape
       .zip(winSize)
       .map((length, size) => if size > length then length else length - size)
-      .map(end => (0 to end).map(_.asInstanceOf[VNum]))
+      .map(end => 0.range(end))
 
     val windowOrigins = cartesianProductMultiSeqs(ends)
 
@@ -748,7 +749,7 @@ object ListHelpers:
     val includedDimensions = origin
       .zip(size)
       .map((start, length) =>
-        (start to start + length - 1).map(_.asInstanceOf[VNum])
+        start.range(start + length - 1).map(_.asInstanceOf[VNum])
       )
     val inWindow = cartesianProductMultiSeqs(includedDimensions)
     val ctx = Context()

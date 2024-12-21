@@ -1,9 +1,8 @@
 package vyxal.debugger
 
 import vyxal.*
-import vyxal.given
+import vyxal.conversions.{given, *}
 import vyxal.parsing.Range
-import vyxal.VNum.given
 
 import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.matchers.should.Matchers

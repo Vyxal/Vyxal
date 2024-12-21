@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.conversions.given
+
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
 import scala.io.StdIn
