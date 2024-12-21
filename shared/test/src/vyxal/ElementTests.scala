@@ -1,7 +1,6 @@
 package vyxal
 
 import vyxal.conversions.given
-
 import vyxal.VyxalTests.testContext
 
 import org.scalatest.funspec.AnyFunSpec
