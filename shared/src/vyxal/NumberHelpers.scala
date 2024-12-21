@@ -1,9 +1,8 @@
 package vyxal
 
 import vyxal.*
-import vyxal.conversions.{given, *}
+import vyxal.conversions.{*, given}
 import vyxal.parsing.Codepage
-
 
 import scala.annotation.tailrec
 import scala.collection.mutable

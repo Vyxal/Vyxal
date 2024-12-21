@@ -1,7 +1,6 @@
 package vyxal
 
-import vyxal.conversions.{given, *}
-
+import vyxal.conversions.{*, given}
 
 import scala.annotation.unchecked.uncheckedVariance
 import scala.collection.mutable.ArrayBuffer

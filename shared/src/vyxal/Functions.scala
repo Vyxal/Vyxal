@@ -1,6 +1,6 @@
 package vyxal
 
-import vyxal.conversions.{given, *}
+import vyxal.conversions.{*, given}
 
 //These represent normal Scala functions, not functions operating on the stack
 type Monad = VAny => Context ?=> VAny

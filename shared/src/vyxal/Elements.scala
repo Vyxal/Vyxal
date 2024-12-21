@@ -7,7 +7,6 @@ import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.collectUnique
 import vyxal.NumberHelpers.range
 
-
 import scala.collection.mutable.ListBuffer
 import scala.io.StdIn
 import scala.util.matching.Regex
