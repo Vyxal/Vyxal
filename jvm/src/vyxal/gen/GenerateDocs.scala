@@ -4,6 +4,7 @@ package vyxal.gen
 import vyxal.{Modifiers, SugarMap}
 import vyxal.elements.Element
 import vyxal.elements.ElementInformation
+import vyxal.elements.ModifierOverload
 import vyxal.elements.Overload
 import vyxal.parsing.Codepage
 import vyxal.Modifier
@@ -24,12 +25,35 @@ import os.copy.over
 ) =
   Files.write(
     Paths.get(tableFile),
-    genTable().getBytes(StandardCharsets.UTF_8),
+    genMarkdown().getBytes(StandardCharsets.UTF_8),
   )
 
-def genTable(): String =
-  val HEADER_ROW = "| Symbol | Keywords | Arity | Vectorises | Overloads |" +
-    "\n|--------|-------|------------|-------|-----------|"
+def genMarkdown(): String =
+  s"""
+  Element, Modifier, and Syntax Reference
+
+  ## Elements
+
+  - `nsl` = Number/String/List
+  - `any` = Any type
+  - `num` = Number
+  - `str` = String
+  - `lst` = List
+  - `fun` = Function
+  - `obj` = User-defined object
+
+  ${genElementsTable()}
+
+  ## Modifiers
+
+  ${genModifiersTable()}
+
+  """
+
+def genElementsTable(): String =
+  val HEADER_ROW =
+    "| Symbol | Keywords | Arity | Vectorises | Peeks | Overloads |" +
+      "\n|--------|--|-------|------------|-------|-----------|"
 
   val elementMap = ElementInformation.elements
 
@@ -51,7 +75,7 @@ def genTable(): String =
   }
 
   (HEADER_ROW +: lines).mkString("\n")
-end genTable
+end genElementsTable
 
 private def overloadToString(overload: Overload): Seq[String] | String =
   val description = overload.description
@@ -79,3 +103,27 @@ private def overloadToString(overload: Overload): Seq[String] | String =
     s"**${overload.name}** (`${overload.args.map(_.replace("|", "\\|")).mkString(",")}`): $description"
   end if
 end overloadToString
+
+def overloadToString(overload: ModifierOverload): String =
+  val description = overload.description
+  val args = overload.args.map(_.replace("|", "\\|")).mkString(",")
+  val example = overload.example.replace("|", "\\|").replace("`", "\\`")
+  s"**${overload.name}** (`$args`): $description --> `$example`"
+
+def genModifiersTable(): String =
+  val HEADER_ROW = "| Symbol | Keywords | Number of Elements | Overloads |" +
+    "\n|--------|--|------------------|-----------|"
+
+  val modifiers = ElementInformation.modifiers
+
+  val lines = modifiers.map { mod =>
+    val symbol =
+      if "`|<>\\".contains(mod.symbol) then s"\\${mod.symbol}" else mod.symbol
+    val keywords = mod.keywords.map(kw => s"* `$kw`").mkString("</br>")
+    val numElements = mod.numberOfElements
+    val overloads = mod.overloads.map(overloadToString).mkString("</br>")
+    s"| `$symbol` | $keywords | $numElements | $overloads |"
+  }
+
+  (HEADER_ROW +: lines).mkString("\n")
+end genModifiersTable
