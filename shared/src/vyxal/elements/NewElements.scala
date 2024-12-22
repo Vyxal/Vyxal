@@ -46,9 +46,15 @@ object NewElements:
     "×" -> fullToImpl(Dyad, MiscHelpers.multiply),
     addPart("∧", Dyad, true) {
       case (b: VVal, a: VVal) => if !a.toBool then a else b
+      case (b: VFun, a: VFun) =>
+        val resA = Interpreter.executeFn(a)
+        if !resA.toBool then resA else Interpreter.executeFn(b)
     },
     addPart("∨", Dyad, true) {
       case (b: VVal, a: VVal) => if a.toBool then a else b
+      case (b: VFun, a: VFun) =>
+        val resA = Interpreter.executeFn(a)
+        if resA.toBool then resA else Interpreter.executeFn(b)
     },
     addPart("¬", Monad, false) { a =>
       VNum(!a.toBool)

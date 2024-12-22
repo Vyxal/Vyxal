@@ -114,11 +114,17 @@ object ElementInformation:
         vectorises = false
       ),
       Overload(
-        name = "Short Circuit And",
-        args = Seq("any", "any"),
+        name = "Logical And",
+        args = Seq("nsl", "nsl"),
         description =
-          "Short circuit and - if #2 is false, return #2, else return #1",
+          "Python-style and - if #2 is false, return #2, else return #1",
         typeSwitchable = false,
+      ),
+      Overload(
+        name = "Short Circuit And",
+        args = Seq("fun", "fun"),
+        description =
+          "Short circuit and - if #2() is false, return #2(), else return #1()",
       ),
     ),
     Element(
@@ -129,11 +135,17 @@ object ElementInformation:
         vectorises = false
       ),
       Overload(
-        name = "Short Circuit Or",
+        name = "Loigcal Or",
         args = Seq("any", "any"),
         description =
-          "Short circuit or - if #2 is true, return #2, else return #1",
+          "Python style or - if #2 is true, return #2, else return #1",
         typeSwitchable = false,
+      ),
+      Overload(
+        name = "Short Circuit Or",
+        args = Seq("fun", "fun"),
+        description =
+          "Short circuit or - if #2() is true, return #2(), else return #1()",
       ),
     ),
     Element(
