@@ -28,8 +28,9 @@ import os.copy.over
   )
 
 def genTable(): String =
-  val HEADER_ROW = "| Symbol | Arity | Vectorises | Peeks | Overloads |" +
-    "\n|--------|-------|------------|-------|-----------|"
+  val HEADER_ROW =
+    "| Symbol | Keywords | Arity | Vectorises | Peeks | Overloads |" +
+      "\n|--------|--|-------|------------|-------|-----------|"
 
   val elementMap = ElementInformation.elements
 
@@ -37,7 +38,8 @@ def genTable(): String =
     val symbol =
       if "`|<>\\".contains(elem.symbol) then s"\\${elem.symbol}"
       else elem.symbol
-    val arity = elem.arity
+    val keywords = elem.keywords.map(kw => s"* `$kw`").mkString("</br>")
+    val arity = if elem.arity == -1 then "STACK" else elem.arity
     val vectorises = if elem.options.vectorises then "🎶" else "🎵"
     val peeks = if elem.options.peeks then "👀" else "⛓️‍💥"
     val overloads = elem.overloads.map(overloadToString)
@@ -46,7 +48,7 @@ def genTable(): String =
       case (acc, s: Seq[String]) => acc ++ s
     }
 
-    s"| `$symbol` | $arity | $vectorises | $peeks | ${overloadsFlat.mkString("</br>")} |"
+    s"| `$symbol` | $keywords | $arity | $vectorises | $peeks | ${overloadsFlat.mkString("</br>")} |"
   }
 
   (HEADER_ROW +: lines).mkString("\n")
