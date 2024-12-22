@@ -29,8 +29,8 @@ import os.copy.over
 
 def genTable(): String =
   val HEADER_ROW =
-    "| Symbol | Keywords | Arity | Vectorises | Peeks | Overloads |" +
-      "\n|--------|--|-------|------------|-------|-----------|"
+    "| Symbol | Keywords | Arity | Vectorises | Overloads |" +
+      "\n|--------|-------|------------|-------|-----------|"
 
   val elementMap = ElementInformation.elements
 
@@ -40,15 +40,15 @@ def genTable(): String =
       else elem.symbol
     val keywords = elem.keywords.map(kw => s"* `$kw`").mkString("</br>")
     val arity = if elem.arity == -1 then "STACK" else elem.arity
-    val vectorises = if elem.options.vectorises then "🎶" else "🎵"
-    val peeks = if elem.options.peeks then "👀" else "⛓️‍💥"
+    val vectorises = if elem.options.vectorises then "vec" else ""
+    val peeks = if elem.options.peeks then "*" else ""
     val overloads = elem.overloads.map(overloadToString)
     val overloadsFlat = overloads.foldLeft(Seq.empty[String]) {
       case (acc, s: String) => acc :+ s
       case (acc, s: Seq[String]) => acc ++ s
     }
 
-    s"| `$symbol` | $keywords | $arity | $vectorises | $peeks | ${overloadsFlat.mkString("</br>")} |"
+    s"| `$symbol` | $keywords | $arity$peeks | $vectorises  | ${overloadsFlat.mkString("</br>")} |"
   }
 
   (HEADER_ROW +: lines).mkString("\n")
