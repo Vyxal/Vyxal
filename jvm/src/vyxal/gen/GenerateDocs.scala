@@ -34,7 +34,9 @@ def genTable(): String =
   val elementMap = ElementInformation.elements
 
   val lines = elementMap.map { elem =>
-    val symbol = elem.symbol
+    val symbol =
+      if "`|<>\\".contains(elem.symbol) then s"\\${elem.symbol}"
+      else elem.symbol
     val arity = elem.arity
     val vectorises = elem.options.vectorises
     val peeks = elem.options.peeks
@@ -44,7 +46,7 @@ def genTable(): String =
       case (acc, s: Seq[String]) => acc ++ s
     }
 
-    s"| $symbol | $arity | $vectorises | $peeks | ${overloadsFlat.mkString("</br>")} |"
+    s"| `$symbol` | $arity | $vectorises | $peeks | ${overloadsFlat.mkString("</br>")} |"
   }
 
   (HEADER_ROW +: lines).mkString("\n")
