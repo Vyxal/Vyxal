@@ -77,6 +77,6 @@ private def overloadToString(overload: Overload): Seq[String] | String =
     descriptions.toSeq
   else if overload.args.isEmpty then s"**${overload.name}**: $description"
   else
-    s"**${overload.name}** (`${overload.args.map(_.replaceAll("|", "\\|")).mkString(",")}`): $description"
+    s"**${overload.name}** (`${overload.args.map(_.replace("|", "\\|")).mkString(",")}`): $description"
   end if
 end overloadToString
