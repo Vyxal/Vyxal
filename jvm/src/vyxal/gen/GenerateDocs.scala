@@ -28,9 +28,8 @@ import os.copy.over
   )
 
 def genTable(): String =
-  val HEADER_ROW =
-    "| Symbol | Keywords | Arity | Vectorises | Overloads |" +
-      "\n|--------|-------|------------|-------|-----------|"
+  val HEADER_ROW = "| Symbol | Keywords | Arity | Vectorises | Overloads |" +
+    "\n|--------|-------|------------|-------|-----------|"
 
   val elementMap = ElementInformation.elements
 
