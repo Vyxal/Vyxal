@@ -67,7 +67,7 @@ private def overloadToString(overload: Overload): Seq[String] | String =
     val descriptions = ArrayBuffer[String]()
 
     for (args, index) <- overload.args.permutations.zipWithIndex do
-      val argsString = args.map(_.replaceAll("|", "\\|")).mkString(",")
+      val argsString = args.map(_.replaceAll("\\|", "\\\\|")).mkString(",")
       val descriptionString = fields.zip(fieldOptions).foldLeft(description) {
         case (acc, (field, options)) =>
           acc.replace(s"{$field}", options(index % options.length))
