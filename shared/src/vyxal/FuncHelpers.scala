@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.conversions.given
+
 /** Helpers for function-related stuff */
 object FuncHelpers:
   /** Vectorise a function object */
@@ -16,7 +18,7 @@ object FuncHelpers:
         ListHelpers.makeIterable(a).vmap { a =>
           Interpreter.executeFn(fn, args = List(b, a))
         }
-      case n => VList.zipValues(ctx.pop(n)*) { args =>
+      case n => ListHelpers.zipValues(ctx.pop(n)*) { args =>
           Interpreter.executeFn(fn, args = args)
         }
 
@@ -40,12 +42,12 @@ object FuncHelpers:
         )
       )
 
-  def reduceOverPairs(fn: VFun, iter: VList)(using ctx: Context): VList =
-    val slices = ListHelpers.overlaps(iter, 2)
-    val result = slices.map(slice =>
+  def reduceOverPairs(fn: VFun, iter: Seq[VAny])(using
+      ctx: Context
+  ): Seq[VAny] =
+    ListHelpers.overlaps(iter, 2).map { slice =>
       slice match
-        case VList(left: VAny, right: VAny) =>
+        case Seq(left: VAny, right: VAny) =>
           Interpreter.executeFn(fn, left, right, Seq(left, right))
-    )
-    VList.from(result)
+    }
 end FuncHelpers

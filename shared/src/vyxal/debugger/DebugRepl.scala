@@ -141,7 +141,7 @@ object DebugRepl:
 
   private case class Config(cmd: Cmd = null)
 
-  enum Cmd:
+  enum Cmd derives CanEqual:
     case StepInto
     case StepOver
     case StepOut

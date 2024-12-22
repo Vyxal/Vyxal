@@ -1,6 +1,7 @@
 package vyxal.debugger
 
 import vyxal.*
+import vyxal.conversions.{*, given}
 import vyxal.parsing.Range
 
 import org.scalatest.featurespec.AnyFeatureSpec
@@ -42,7 +43,7 @@ class DebuggerTests extends AnyFeatureSpec with GivenWhenThen with Matchers:
       dbg.stepOver()
 
       Then("it should have pushed the list")
-      assert(ctx.pop() == VList(123, VList(9), "foo"))
+      assert(ctx.pop() == Seq[VAny](123, Seq(9).v, "foo").v)
 
       And("it should be finished")
       assert(dbg.finished)
@@ -105,7 +106,7 @@ class DebuggerTests extends AnyFeatureSpec with GivenWhenThen with Matchers:
 
       Then("it should finish")
       assert(dbg.finished)
-      assertResult("foo5")(ctx.pop())
+      assertResult(VStr("foo5"))(ctx.pop())
     }
 
     Scenario("Resuming") {
@@ -123,7 +124,7 @@ class DebuggerTests extends AnyFeatureSpec with GivenWhenThen with Matchers:
 
       Then("it should finish")
       assert(dbg.finished)
-      assertResult("foo5")(ctx.pop())
+      assertResult(VStr("foo5"))(ctx.pop())
     }
   }
 end DebuggerTests

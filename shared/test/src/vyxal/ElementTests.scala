@@ -1,5 +1,6 @@
 package vyxal
 
+import vyxal.conversions.given
 import vyxal.VyxalTests.testContext
 
 import org.scalatest.funspec.AnyFunSpec
@@ -8,6 +9,8 @@ import org.scalatest.funspec.AnyFunSpec
 class ElementTests extends VyxalTests:
   /** Helper to avoid doing List[VAny](...) */
   private def in(inputs: VAny*): Seq[VAny] = inputs
+
+  private def vSeq(elems: VAny*) = VList(elems)
 
   describe("Element +") {
 
@@ -39,7 +42,7 @@ class ElementTests extends VyxalTests:
         given ctx: Context = Context(testMode = true)
         ctx.push(1, 2, 3)
         Interpreter.execute(AST.Command("D"))
-        assertResult(VList(3, 3, 3))(VList(ctx.pop(), ctx.pop(), ctx.pop()))
+        assertResult(Seq[VAny](3, 3, 3))(Seq(ctx.pop(), ctx.pop(), ctx.pop()))
       }
     }
   }
@@ -48,7 +51,7 @@ class ElementTests extends VyxalTests:
     it("Should work as a generator") {
       testCode(
         "#[1|1#]λ2|+}G10Θ",
-        VList(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
+        vSeq(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
       )
     }
   }
@@ -56,15 +59,15 @@ class ElementTests extends VyxalTests:
   describe("Element M") {
     describe("when given a function and any value") {
       it("should map the function over the value") {
-        testEquals(VList(2, 4, 6))(ctx ?=>
-          ctx.push(VList(1, 2, 3))
+        testEquals(vSeq(2, 4, 6))(ctx ?=>
+          ctx.push(vSeq(1, 2, 3))
           ctx.push(VFun(Elements.elements("+").impl, 2, List.empty, ctx))
           Interpreter.execute(AST.Command("M"))
           ctx.peek
         )
       }
       it("should work with strings") {
-        testEquals(VList("aa", "bb", "cc"))(ctx ?=>
+        testEquals(vSeq("aa", "bb", "cc"))(ctx ?=>
           ctx.push("abc")
           ctx.push(VFun(Elements.elements("+").impl, 2, List.empty, ctx))
           Interpreter.execute(AST.Command("M"))
@@ -88,7 +91,7 @@ class ElementTests extends VyxalTests:
     describe("when given function and iterable") {
       it("should work with singleton lists") {
         testEquals(1)(ctx ?=>
-          ctx.push(VList(1))
+          ctx.push(vSeq(1))
           ctx.push(VFun(Elements.elements("+").impl, 2, List.empty, ctx))
           Interpreter.execute(AST.Command("R"))
           ctx.peek
@@ -96,7 +99,7 @@ class ElementTests extends VyxalTests:
       }
       it("should calculate sum properly") {
         testEquals(15)(ctx ?=>
-          ctx.push(VList(1, 2, 3, 4, 5))
+          ctx.push(vSeq(1, 2, 3, 4, 5))
           ctx.push(VFun(Elements.elements("+").impl, 2, List.empty, ctx))
           Interpreter.execute(AST.Command("R"))
           ctx.peek
@@ -108,7 +111,7 @@ class ElementTests extends VyxalTests:
   describe("Element g") {
     testCode(
       "#[1|1#]λ+}g10Θ",
-      VList(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
+      vSeq(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
     )
   }
 
@@ -127,7 +130,7 @@ class ElementTests extends VyxalTests:
 
   describe("Element ÞĊ") {
     it("should work on lists") {
-      testCode("#[1|2|3#] ÞĊ 10 Θ", VList(1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
+      testCode("#[1|2|3#] ÞĊ 10 Θ", vSeq(1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
     }
   }
 
@@ -135,7 +138,7 @@ class ElementTests extends VyxalTests:
     it("simple test") {
       testCode(
         "#[1|2|3|4|5|6|7|8|9|10|1|4|5|1|3|6|4#] λ5%} Ḋ",
-        VList(1, 2, 3, 4, 5),
+        vSeq(1, 2, 3, 4, 5),
       )
     }
   }
@@ -172,7 +175,7 @@ class ElementTests extends VyxalTests:
     it(
       "Generates a list of all numbers in the collatz conjecture minus the first number"
     ) {
-      testCode("10 λe[2÷|3×1+}} Ŀ", VList(10, 5, 16, 8, 4, 2, 1))
+      testCode("10 λe[2÷|3×1+}} Ŀ", vSeq(10, 5, 16, 8, 4, 2, 1))
     }
   }
 
@@ -189,36 +192,36 @@ class ElementTests extends VyxalTests:
     given Context = testContext()
     it("should handle two finite lists properly") {
       assertResult(
-        VList(
-          VList(1, "A"),
-          VList(1, "B"),
-          VList(2, "A"),
-          VList(2, "B"),
-          VList(3, "A"),
-          VList(3, "B"),
+        Seq(
+          Seq[VAny](1, "A"),
+          Seq[VAny](1, "B"),
+          Seq[VAny](2, "A"),
+          Seq[VAny](2, "B"),
+          Seq[VAny](3, "A"),
+          Seq[VAny](3, "B"),
         )
       )(
         ListHelpers.cartesianProduct(
-          VList(1, 2, 3),
-          VList("A", "B"),
+          Seq[VAny](1, 2, 3),
+          Seq[VAny]("A", "B"),
         )
       )
     }
     it("should handle two infinite lists properly") {
       assertResult(
-        VList(
-          VList(1, "A"),
-          VList(1, "B"),
-          VList(2, "A"),
-          VList(1, "C"),
-          VList(2, "B"),
-          VList(3, "A"),
+        Seq(
+          Seq[VAny](1, "A"),
+          Seq[VAny](1, "B"),
+          Seq[VAny](2, "A"),
+          Seq[VAny](1, "C"),
+          Seq[VAny](2, "B"),
+          Seq[VAny](3, "A"),
         )
       )(
         ListHelpers
           .cartesianProduct(
-            VList.from(LazyList.iterate(VNum(1))(_ + 1)),
-            VList.from(LazyList.from('A'.toInt).map(_.toChar.toString)),
+            VList(LazyList.iterate(VNum(1))(_ + 1)),
+            VList(LazyList.from('A'.toInt).map(_.toChar.toString)),
           )
           .take(6)
       )
@@ -227,73 +230,73 @@ class ElementTests extends VyxalTests:
 
   describe("Element Ẇ") {
     testMulti(
-      "λ5%3=}5Ẇ" -> VList(3, 8, 13, 18, 23)
+      "λ5%3=}5Ẇ" -> vSeq(3, 8, 13, 18, 23)
     )
   }
 
   describe("Element ȧ") {
     testMulti(
-      "#[1|2|3|4|5|6#] λ+} ȧ" -> VList(3, 5, 7, 9, 11),
-      "#[1|2|3|4|5|6#] λ++} ȧ" -> VList(4, 7, 10, 13, 16),
+      "#[1|2|3|4|5|6#] λ+} ȧ" -> vSeq(3, 5, 7, 9, 11),
+      "#[1|2|3|4|5|6#] λ++} ȧ" -> vSeq(4, 7, 10, 13, 16),
     )
   }
 
   describe("Element form of ”") {
     testMulti(
-      "#[1|2|3|4|5|6#] ƛ0ne”}" -> VList(0, 2, 0, 4, 0, 6)
+      "#[1|2|3|4|5|6#] ƛ0ne”}" -> vSeq(0, 2, 0, 4, 0, 6)
     )
   }
 
   describe("Element Ạ") {
     testMulti(
-      "#[1|2|3|4#] 0 λ1+} Ạ" -> VList(2, 2, 3, 4),
-      "#[2|#[1|2|3|4#]|2|3|4#] 1 λṚ} Ạ" -> VList(2, VList(4, 3, 2, 1), 2, 3, 4),
+      "#[1|2|3|4#] 0 λ1+} Ạ" -> vSeq(2, 2, 3, 4),
+      "#[2|#[1|2|3|4#]|2|3|4#] 1 λṚ} Ạ" -> vSeq(2, vSeq(4, 3, 2, 1), 2, 3, 4),
     )
   }
 
   describe("Element Ɠ") {
     testStackLike("Ɠ")(
-      in(VList(1, 2, 3)) -> List[VAny](3, VList(1, 2, 3)),
-      in(VList(1, 2, 3), VList(4, 5, 6)) ->
-        List[VAny](6, VList(4, 5, 6), VList(1, 2, 3)),
+      in(vSeq(1, 2, 3)) -> List[VAny](3, vSeq(1, 2, 3)),
+      in(vSeq(1, 2, 3), vSeq(4, 5, 6)) ->
+        List[VAny](6, vSeq(4, 5, 6), vSeq(1, 2, 3)),
     )
   }
 
   describe("Element ɠ") {
     testStackLike("ɠ")(
-      in(VList(1, 2, 3)) -> List[VAny](1, VList(1, 2, 3)),
-      in(VList(1, 2, 3), VList(4, 5, 6)) ->
-        List[VAny](4, VList(4, 5, 6), VList(1, 2, 3)),
+      in(vSeq(1, 2, 3)) -> List[VAny](1, vSeq(1, 2, 3)),
+      in(vSeq(1, 2, 3), vSeq(4, 5, 6)) ->
+        List[VAny](4, vSeq(4, 5, 6), vSeq(1, 2, 3)),
     )
   }
 
   describe("Element Ṣ") {
     testMulti(
       "#[1|1#]Ṇ+}Ṣ10Θ" ->
-        VList(
-          VList(1),
-          VList(1, 1),
-          VList(1),
-          VList(1, 1, 2),
-          VList(1, 2),
-          VList(1, 1, 2, 3),
-          VList(2),
-          VList(1, 2, 3),
-          VList(1, 1, 2, 3, 5),
-          VList(2, 3),
+        vSeq(
+          vSeq(1),
+          vSeq(1, 1),
+          vSeq(1),
+          vSeq(1, 1, 2),
+          vSeq(1, 2),
+          vSeq(1, 1, 2, 3),
+          vSeq(2),
+          vSeq(1, 2, 3),
+          vSeq(1, 1, 2, 3, 5),
+          vSeq(2, 3),
         ),
       "#[1#]Ṇ1+}Ṣ10Θ" ->
-        VList(
-          VList(1),
-          VList(1, 2),
-          VList(2),
-          VList(1, 2, 3),
-          VList(2, 3),
-          VList(1, 2, 3, 4),
-          VList(3),
-          VList(2, 3, 4),
-          VList(1, 2, 3, 4, 5),
-          VList(3, 4),
+        vSeq(
+          vSeq(1),
+          vSeq(1, 2),
+          vSeq(2),
+          vSeq(1, 2, 3),
+          vSeq(2, 3),
+          vSeq(1, 2, 3, 4),
+          vSeq(3),
+          vSeq(2, 3, 4),
+          vSeq(1, 2, 3, 4, 5),
+          vSeq(3, 4),
         ),
     )
   }
@@ -314,36 +317,36 @@ class ElementTests extends VyxalTests:
 
   describe("Element ɦ") {
     testStackLike("ɦ")(
-      in(VList(1, 2, 3, 4, 5)) -> List[VAny](1, VList(1, 2, 3, 4, 5))
+      in(vSeq(1, 2, 3, 4, 5)) -> List[VAny](1, vSeq(1, 2, 3, 4, 5))
     )
   }
 
   describe("Element ʈ") {
     testStackLike("ʈ")(
-      in(VList(1, 2, 3, 4, 5)) -> List[VAny](5, VList(1, 2, 3, 4, 5))
+      in(vSeq(1, 2, 3, 4, 5)) -> List[VAny](5, vSeq(1, 2, 3, 4, 5))
     )
   }
 
   describe("Element ċ") {
     testMulti(
-      "9ϩ½⌊ℂ" -> VList(9, 4, 2, 1, 0)
+      "9ϩ½⌊ℂ" -> vSeq(9, 4, 2, 1, 0)
     )
   }
 
   describe("Element ÞṆ") {
     testMulti(
-      "ÞṆ10Θ" -> VList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
-      "ÞṆ5+10Θ" -> VList(6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
+      "ÞṆ10Θ" -> vSeq(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+      "ÞṆ5+10Θ" -> vSeq(6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
     )
   }
 
   describe("Element ÞṬ") {
     testMulti(
       "ÞṬ20Θ" ->
-        VList(0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9,
+        vSeq(0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9,
           10),
       "ÞṬ5+20Θ" ->
-        VList(5, 6, 4, 7, 3, 8, 2, 9, 1, 10, 0, 11, -1, 12, -2, 13, -3, 14, -4,
+        vSeq(5, 6, 4, 7, 3, 8, 2, 9, 1, 10, 0, 11, -1, 12, -2, 13, -3, 14, -4,
           15),
     )
   }
@@ -351,8 +354,8 @@ class ElementTests extends VyxalTests:
   describe("Element ÞP") {
     testMulti(
       "ÞP20Θ" ->
-        VList(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59,
-          61, 67, 71)
+        vSeq(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61,
+          67, 71)
     )
   }
 end ElementTests

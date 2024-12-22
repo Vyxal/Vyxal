@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.conversions.given
+
 enum FlagCategory(val description: String) extends Enum[FlagCategory]:
   case RangeBehavior extends FlagCategory("Range behavior")
   case DefaultArity extends FlagCategory("Default arity")

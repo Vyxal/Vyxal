@@ -1,5 +1,6 @@
 package vyxal
 
+import vyxal.conversions.given
 import vyxal.parsing.ParsingException
 
 import scala.collection.mutable.ListBuffer
@@ -261,7 +262,7 @@ object Modifiers:
                 AST.Generated(
                   () =>
                     ctx ?=>
-                      returnStr = ctx.peek.isInstanceOf[String]
+                      returnStr = ctx.peek.isInstanceOf[VStr]
                       val top = ListHelpers.makeIterable(ctx.pop())
                       ctx.push(top.tail)
                       if ast.arity == Some(1) then
@@ -277,9 +278,9 @@ object Modifiers:
                     ctx ?=>
                       val head = ctx.pop()
                       val tail = ctx.peek match
-                        case _: VList => ctx.pop().asInstanceOf[VList]
-                        case _ => VList.from(ctx.pop(1))
-                      val list = VList.from(head +: tail)
+                        case _: VList => ctx.pop().asInstanceOf[VList].lst
+                        case _ => ctx.pop(1)
+                      val list = head +: tail
                       if returnStr then
                         ctx.push(ListHelpers.flatten(list).mkString)
                       else ctx.push(list)
@@ -291,7 +292,7 @@ object Modifiers:
                 AST.Generated(
                   () =>
                     ctx ?=>
-                      returnStr = ctx.peek.isInstanceOf[String]
+                      returnStr = ctx.peek.isInstanceOf[VStr]
                       val top = ListHelpers.makeIterable(ctx.pop())
                       ctx.push(top.tail)
                       ctx.push(
@@ -305,8 +306,8 @@ object Modifiers:
                   () =>
                     ctx ?=>
                       val head = ctx.peek match
-                        case _: VList => ctx.pop().asInstanceOf[VList]
-                        case _ => VList.from(ctx.pop(1))
+                        case _: VList => ctx.pop().asInstanceOf[VList].lst
+                        case _ => ctx.pop(1)
                       if returnStr then
                         ctx.push(ListHelpers.flatten(head).mkString)
                       else ctx.push(head)
@@ -365,10 +366,10 @@ object Modifiers:
                     }
                     bin += elem
                   }
-                  ctx.push(VList.from(bins.map {
+                  ctx.push(VList(bins.map {
                     case (key, bin) =>
                       given elemCtx: Context = ctx.makeChild()
-                      elemCtx.push(VList.from(bin.toSeq))
+                      elemCtx.push(VList(bin.toSeq))
                       Interpreter.execute(ast)(using elemCtx)
                       elemCtx.pop()
                   }.toSeq))
@@ -432,8 +433,8 @@ object Modifiers:
               ctx ?=>
                 val rhs = ListHelpers.makeIterable(ctx.pop(), Some(true))
                 val lhs = ListHelpers.makeIterable(ctx.pop(), Some(true))
-                val matrix = VList.from(lhs.map { l =>
-                  VList.from(rhs.map { r =>
+                val matrix = VList(lhs.map { l =>
+                  VList(rhs.map { r =>
                     ctx.push(l)
                     ctx.push(r)
                     Interpreter.execute(ast)

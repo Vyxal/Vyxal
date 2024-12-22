@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.conversions.given
+
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
 import scala.io.StdIn
@@ -55,7 +57,7 @@ class Context private (
     */
   def pop(): VAny =
     if useStack && parent.isDefined then return parent.getOrElse(this).pop()
-    val elem =
+    val elem: VAny =
       if stack.nonEmpty then stack.remove(stack.size - 1)
       else if isTopCtx && globals.inputs.nonEmpty then globals.inputs.next()
       else if inputs.nonEmpty then inputs.next()
@@ -110,7 +112,7 @@ class Context private (
     else
       val temp = stack.toList
       stack.clear()
-      stack += VList.from(temp)
+      stack += VList(temp)
 
   /** Whether the stack is empty */
   def isStackEmpty: Boolean = stack.isEmpty

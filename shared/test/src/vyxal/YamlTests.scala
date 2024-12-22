@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.conversions.given
+
 import scala.io.Source
 
 import org.scalatest.funspec.AnyFunSpec
@@ -184,7 +186,7 @@ class YamlTests extends AnyFunSpec:
                 )
               )
           case Node.SequenceNode(lst, _) =>
-            combineEithers(lst.map(vanyDecoder.construct(_))).map(VList.from)
+            combineEithers(lst.map(vanyDecoder.construct(_))).map(VList(_))
           case _ => Left(
               ConstructError.from(
                 "Invalid Vyxal value (cannot be a map)",

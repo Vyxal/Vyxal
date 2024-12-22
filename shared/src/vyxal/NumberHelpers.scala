@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.*
+import vyxal.conversions.{*, given}
 import vyxal.parsing.Codepage
 
 import scala.annotation.tailrec
@@ -10,17 +11,14 @@ import scala.math
 
 import spire.*
 import spire.math.Real
-import spire.syntax.isReal.partialOrderOps // So we can compare Reals to stuff
 
 object NumberHelpers:
 
-  def factors(a: VNum): VList =
-    VList.from(
-      VNum(1).toBigInt
-        .to(a.toBigInt.abs)
-        .filter(a % _ == VNum(0))
-        .map(_ * a.toBigInt.signum)
-    )
+  def factors(a: VNum): Seq[VAny] =
+    VNum(1).toBigInt
+      .to(a.toBigInt.abs)
+      .filter(a % _ == VNum(0))
+      .map(_ * a.toBigInt.signum)
 
   def fromBase(a: VAny, b: VAny)(using ctx: Context): VAny =
     val BASE_ALPHABET =
@@ -31,27 +29,29 @@ object NumberHelpers:
       case (a: VList, _) if ListHelpers.maxDepth(a) == VNum(1) =>
         fromBaseAlphabet(a, b)
       case (a: VNum, b: VNum) => toInt(a.toString(), b.toInt)
-      case (a: VList, _) => VList.from(a.map(fromBase(_, b)))
+      case (a: VList, _) => VList(a.map(fromBase(_, b)))
       case (n: VNum, _) => fromBase(b, a)
-      case (a: String, b: VNum) =>
+      case (VStr(a), b: VNum) =>
         fromBaseAlphabet(a, BASE_ALPHABET.take(b.toInt))
-      case (a: String, b: String) => fromBaseAlphabet(a, b)
+      case (VStr(a), VStr(b)) => fromBaseAlphabet(a, b)
       case _ => fromBaseDigits(ListHelpers.makeIterable(a), b)
 
   /** Returns value in base 10 using base len(alphabet) [bijective base] */
-  def fromBaseAlphabet(value: String, alphabet: String): VAny =
+  def fromBaseAlphabet(value: String, alphabet: String): VNum =
     value.foldLeft(VNum(0)) { (ret, digit) =>
       alphabet.length * ret + alphabet.indexOf(digit)
     }
 
-  def fromBaseAlphabet(value: VList, alphabet: VAny)(using ctx: Context): VAny =
+  def fromBaseAlphabet(value: Seq[VAny], alphabet: VAny)(using
+      ctx: Context
+  ): VNum =
     val alphaList = ListHelpers.makeIterable(alphabet)
     value.foldLeft(VNum(0)) { (ret, digit) =>
       alphaList.length * ret + alphaList.indexOf(digit)
     }
 
   /** Returns digits in base 10 using arbitrary base `base` */
-  def fromBaseDigits(digits: VList, base: VAny)(using ctx: Context): VAny =
+  def fromBaseDigits(digits: Seq[VAny], base: VAny)(using ctx: Context): VAny =
     digits.foldLeft(0: VAny) { (ret, digit) => base *~ ret +~ digit }
 
   @tailrec
@@ -59,7 +59,7 @@ object NumberHelpers:
     a match
       case n: VNum => fromBinary(n.toString())
       case l: VList => toInt(l, 2)
-      case s: String => toInt(s, 2)
+      case VStr(s) => toInt(s, 2)
       case arg => throw UnimplementedOverloadException("fromBinary", List(arg))
 
   def gamma(a: VNum): VNum =
@@ -197,21 +197,21 @@ object NumberHelpers:
         .map(x => if x.startsWith("-") then x.tail + "_" else x)
         .mkString("ı")
 
-  def partitions(a: VNum): VList =
+  def partitions(a: VNum): Seq[Seq[VNum]] =
     // Return all ways to sum to a number
-    val result = mutable.ListBuffer.empty[VList]
-    def helper(current: VList, remaining: VNum, last: VNum): Unit =
+    val result = mutable.ListBuffer.empty[Seq[VNum]]
+    def helper(current: Seq[VNum], remaining: VNum, last: VNum): Unit =
       if remaining == VNum(0) then result += current
       else
         for i <- last.toBigInt to remaining.toBigInt do
-          helper(VList.from(current :+ VNum(i)), remaining - i, i)
-    helper(VList(), a, VNum(1))
-    VList.from(result.toList)
+          helper(Seq.from(current :+ VNum(i)), remaining - i, i)
+    helper(Seq(), a, VNum(1))
+    result.toList
 
-  def probablePrimes: VList =
-    VList.from(LazyList.iterate(VNum(2))(_ + 1).filter(isMostLikelyPrime(_)))
+  def probablePrimes: LazyList[VNum] =
+    LazyList.iterate(VNum(2))(_ + 1).filter(isMostLikelyPrime(_))
 
-  def primeFactors(a: VNum): VList =
+  def primeFactors(a: VNum): Seq[VNum] =
     val result = mutable.ListBuffer.empty[VNum]
     var current = a
     var i = VNum(2)
@@ -220,7 +220,7 @@ object NumberHelpers:
         result += i
         current /= i
       else i += 1
-    VList.from(result.toList)
+    result.toList
 
   // The exceptions for 'randrange' are very specific, so it just throws VyxalRuntimeExceptions
   def randrange(start: VNum, stop: Option[VNum] = None, step: VNum = 1): VNum =
@@ -261,15 +261,18 @@ object NumberHelpers:
       2 * ret + digit
     }
 
-  def range(start: VNum, end: VNum): VList =
+  def range(start: VNum, end: VNum): Seq[VAny] =
     val step = (end - start).signum
-    start.to(end, step = if step == VNum(0) then 1 else step)
+    start.range(end, step = if step == VNum(0) then 1 else step)
 
-  def range(start: VNum, ends: Seq[VNum])(using Context): VList =
+  def range(start: VNum, ends: Seq[VNum])(using Context): Seq[VAny] =
     if ends.isEmpty then throw BadArgumentException("range", "empty list")
-    val ranges = ends.map(start.to(_))
+    val ranges = ends.map(start.range(_))
     ListHelpers
-      .reshape(ListHelpers.cartesianProductMulti(ranges), ranges.map(_.length))
+      .reshape(
+        ListHelpers.cartesianProductMultiSeqs(ranges).map(VList(_)),
+        ranges.map(_.length),
+      )
       .asInstanceOf[VList]
 
   // Round half-up
@@ -284,44 +287,43 @@ object NumberHelpers:
     a match
       case n: VNum =>
         val binary = n.toBigInt.abs.toString(2)
-        val temp = VList.from(binary.map(_.asDigit: VNum))
-        if n.toBigInt < 0 then temp.vmap(v => -v.asInstanceOf[VNum]) else temp
-      case s: String =>
+        if n.toBigInt < 0 then binary.map(-_.asDigit: VNum)
+        else binary.map(_.asDigit: VNum)
+      case VStr(s) =>
         // get binary representation of each character
         val result = ListBuffer.empty[VAny]
         for c <- s do
           val binary = c.toInt.toBinaryString
-          result += VList.from(binary.map(_.asDigit).map(VNum(_)).toList)
-        VList.from(result.toList)
+          result += VList(binary.map(_.asDigit).map(VNum(_)).toList)
+        VList(result.toList)
       case arg => throw UnimplementedOverloadException("toBinary", List(arg))
 
   def toBase(a: VAny, b: VAny)(using ctx: Context): VAny =
     (a, b) match
       case (a: VNum, b: VNum) =>
         if b == VNum(0) then 0
-        else VList.from(toBaseDigits(a, b))
-      case (n: VNum, b: (String | VList)) => toBaseAlphabet(n, b)
-      case (a: VList, _) => VList.from(a.map(toBase(_, b)))
+        else VList(toBaseDigits(a, b))
+      case (n: VNum, VStr(b)) => toBaseAlphabet(n, b)
+      case (n: VNum, b: VList) => toBaseAlphabet(n, b)
+      case (a: VList, _) => VList(a.map(toBase(_, b)))
       case (a, b) => throw UnimplementedOverloadException("toBase", List(a, b))
 
-  /** Returns value in base len(alphabet) using base 10 [bijective base]. If the
-    * alphabet is a string, returns a string.
-    */
-  def toBaseAlphabet(value: VNum, alphabet: String | VList)(using
+  /** Returns value in base len(alphabet) using base 10 [bijective base] */
+  def toBaseAlphabet(value: VNum, alphabet: String)(using Context): VAny =
+    if alphabet.isEmpty then 0
+    else
+      toBaseAlphabet(value, ListHelpers.makeIterable(alphabet))
+        .asInstanceOf[VList]
+        .mkString
+
+  /** Returns value in base len(alphabet) using base 10 [bijective base] */
+  def toBaseAlphabet(value: VNum, alphabet: Seq[VAny])(using
       Context
   ): VAny =
-    val (isStr, length) = alphabet match
-      case a: String => (true, a.length)
-      case l: VList => (false, l.size)
-
-    if length == 0 then return 0
-
-    val indexes = toBaseDigits(value, length)
-    val alphaList = ListHelpers.makeIterable(alphabet)
-
-    val temp = indexes.map(alphaList.index(_))
-
-    if isStr then temp.mkString("") else VList.from(temp)
+    if alphabet.isEmpty then 0
+    else
+      val indices = toBaseDigits(value, alphabet.size)
+      indices.map(alphabet.index(_))
 
   def toBaseDigits(value: VNum, base: VNum): Seq[VNum] =
     /** Helper to get digits for single component of a VNum */
@@ -362,12 +364,12 @@ object NumberHelpers:
     realPadded.lazyZip(imagPadded).map(VNum.complex)
   end toBaseDigits
 
-  def toBijectiveBase(value: VNum, radix: VNum)(using ctx: Context): VList =
+  def toBijectiveBase(value: VNum, radix: VNum)(using ctx: Context): Seq[VAny] =
     // It's okay that this doesn't work for complex numbers
-    if value == VNum(0) then return VList()
+    if value == VNum(0) then return Seq.empty
     val base = radix.toBigInt.abs
-    if base == 0 then return VList(value)
-    if base == 1 then return VList.fill(value.toInt.abs)(1)
+    if base == 0 then return Seq(value)
+    if base == 1 then return Seq.fill(value.toInt.abs)(1)
     val digits = ListBuffer.empty[VNum]
     var current = value
     while current != VNum(0) do
@@ -376,7 +378,7 @@ object NumberHelpers:
       digits += digit
       current /= radix
       current = current.floor
-    VList.from(digits.reverse.toList)
+    digits.reverse.toList
 
   def toBaseString(value: VNum, base: VNum)(using Context): VAny =
     val lst = NumberHelpers.toBaseDigits(value, base)
@@ -396,21 +398,21 @@ object NumberHelpers:
           res = res +~ toInt(i, 10) *~ (VNum(radix) ** VNum(exponent))
           exponent += 1
         res
-      case s: String => VNum(s, radix).toIntegral
+      case VStr(s) => VNum(s, radix).toIntegral
       case _ =>
         throw UnimplementedOverloadException("toInt", List(value, radix))
 
   def divides(a: VAny, b: VAny)(using Context): VAny =
     (a, b) match
       case (a: VNum, b: VNum) => (a % b) == VNum(0)
-      case (a: String, b: VNum) => a.toString + MiscHelpers.multiply(" ", b)
-      case (a: String, b: String) =>
+      case (VStr(a), b: VNum) => a.toString + MiscHelpers.multiply(" ", b)
+      case (VStr(a), VStr(b)) =>
         val mobj = b.r.findFirstMatchIn(a)
         mobj match
-          case None => VList()
-          case Some(value) => VList(value.start, value.end)
+          case None => Seq.empty
+          case Some(value) => Seq(value.start, value.end)
 
-      case (a: VNum, b: String) => b.toString + MiscHelpers.multiply(" ", a)
+      case (a: VNum, VStr(b)) => b.toString + MiscHelpers.multiply(" ", a)
       case (a: VList, b: VFun) => ListHelpers.dedupBy(a, b)
       case (a: VFun, b: VList) => ListHelpers.dedupBy(b, a)
       case (a: VList, b) => a.vmap(divides(_, b))

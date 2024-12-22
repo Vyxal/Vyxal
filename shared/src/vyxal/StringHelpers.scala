@@ -1,5 +1,6 @@
 package vyxal
 
+import vyxal.conversions.{*, given}
 import vyxal.parsing.{Codepage, Lexer}
 
 import java.util.regex.PatternSyntaxException
@@ -11,11 +12,11 @@ object StringHelpers:
 
   def chrord(c: VAny): VAny =
     (c: @unchecked) match
-      case a: String =>
-        if a.length == 1 then a.codePointAt(0)
-        else VList.from(a.map(_.toInt: VNum))
+      case VStr(a) =>
+        if a.length == 1 then VNum(a.codePointAt(0))
+        else VList(a.map(_.toInt: VNum))
       case a: VNum => a.toInt.toChar.toString
-      case a: VList => VList.from(a.map(chrord))
+      case a: VList => VList(a.map(chrord))
 
   def compress252(s: String)(using Context): String =
     "[^a-z ]".r.findFirstIn(s) match
@@ -24,20 +25,18 @@ object StringHelpers:
     val temp = NumberHelpers
       .fromBaseAlphabet(s, "ඞabcdefghijklmnopqrstuvwxyz ")
       .asInstanceOf[VNum]
-    s"\"${NumberHelpers
-        .toBaseAlphabet(
-          temp,
-          Codepage.filterNot(Lexer.StringClosers.contains(_)),
-        )
-        .asInstanceOf[String]}„"
+    val res = NumberHelpers.toBaseAlphabet(
+      temp,
+      Codepage.filterNot(Lexer.StringClosers.contains(_)),
+    )
+    s"\"$res„"
 
   def compress252(n: VNum)(using Context): String =
-    s"\"${NumberHelpers
-        .toBaseAlphabet(
-          n,
-          Codepage.filterNot(Lexer.StringClosers.contains(_)),
-        )
-        .asInstanceOf[String]}“"
+    val res = NumberHelpers.toBaseAlphabet(
+      n,
+      Codepage.filterNot(Lexer.StringClosers.contains(_)),
+    )
+    s"\"$res“"
 
   // https://codegolf.stackexchange.com/a/151721/78850
   def compressDictionary(s: String): String =
@@ -119,7 +118,7 @@ object StringHelpers:
         case ind => helper(count + 1, ind + needle.length)
     helper(0, 0)
 
-  def decompress252Number(s: String)(using Context): VAny =
+  def decompress252Number(s: String)(using Context): VNum =
     NumberHelpers.fromBaseAlphabet(
       s,
       Codepage.filterNot(Lexer.StringClosers.contains(_)),
@@ -176,10 +175,10 @@ object StringHelpers:
     sb.toString
   end formatString
 
-  def intoNPieces(s: String, n: VNum)(using Context): VList =
+  def intoNPieces(s: String, n: VNum)(using Context): Seq[String] =
     val chars = ListHelpers.makeIterable(s)
     val pieces = ListHelpers.intoNPieces(chars, n)
-    VList.from(pieces.map(_.asInstanceOf[VList].mkString))
+    pieces.map(_.mkString)
 
   def isAlphaNumeric(s: String): Boolean = s.matches("^[0-9A-Za-z]*$")
 
@@ -242,7 +241,7 @@ object StringHelpers:
   def repr(v: VAny): String =
     v match
       case n: VNum => n.toString
-      case s: String => quotify(s)
+      case VStr(s) => quotify(s)
       case l: VList => l.map(repr).mkString("#[", ",", "#]")
       case f: VFun => "λ...}"
       case c: VConstructor => "#$" + c
@@ -260,7 +259,7 @@ object StringHelpers:
       if index == -1 then c else mapping((index + 1) % mapping.length)
     }.mkString
 
-  def transliterate(source: String, from: VList, to: VList): String =
+  def transliterate(source: String, from: Seq[VAny], to: Seq[VAny]): String =
     val out = StringBuilder()
     val mappings =
       from.map(_.toString()).zip(to.map(_.toString())).sortBy(_._1.length)
@@ -278,8 +277,8 @@ object StringHelpers:
   def transliterate(source: String, from: String, to: String): String =
     transliterate(
       source,
-      VList.from(from.toList.map(_.toString)),
-      VList.from(to.toList.map(_.toString)),
+      from.toList.map(_.toString).vs,
+      to.toList.map(_.toString).vs,
     )
 
   // https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L1055
@@ -332,26 +331,24 @@ object StringHelpers:
 
     s""""$temp""""
 
-  def split(s: String | VNum, pattern: String)(using Context): VList =
+  def split(s: String | VNum, pattern: String)(using Context): Seq[VAny] =
     try
       s match
-        case str: String => VList.from(str.split(pattern, -1).toSeq)
+        case str: String => str.split(pattern, -1).toSeq.vs
         case num: VNum =>
-          VList.from(num.toString.split(pattern).toSeq.map(MiscHelpers.eval))
+          num.toString.split(pattern).toSeq.map(MiscHelpers.eval)
     catch case _: PatternSyntaxException => throw BadRegexException(pattern)
 
-  def splitKeepDelimiters(s: String, pattern: String): VList =
-    VList.from(
-      pattern.r
-        .split(s)
-        .zipAll(pattern.r.findAllIn(s).toSeq, "", "")
-        .flatMap {
-          case (part, delimiter) => Seq(part, delimiter)
-        }
-        .filter(_.nonEmpty)
-        .map(_.mkString)
-        .toSeq
-    )
+  def splitKeepDelimiters(s: String, pattern: String): Seq[VAny] =
+    pattern.r
+      .split(s)
+      .zipAll(pattern.r.findAllIn(s).toSeq, "", "")
+      .flatMap {
+        case (part, delimiter) => Seq(part, delimiter)
+      }
+      .filter(_.nonEmpty)
+      .map(parts => VStr(parts.mkString))
+      .toSeq
 
   /** Toggle case of each character in the string */
   def swapCase(s: String): String =
@@ -378,7 +375,7 @@ object StringHelpers:
   def vyToString(item: VAny)(using Context): String =
     item match
       case n: VNum => NumberHelpers.numToString(n)
-      case s: String => s
+      case VStr(s) => s
       case l: VList => l.map(vyToString).mkString("[", "|", "]")
       case f: VFun => f.toString
       case c: VConstructor => s"$c()"
@@ -388,7 +385,7 @@ object StringHelpers:
     def go(item: VAny, indentation: Int)(using Context): (String, Boolean) =
       item match
         case n: VNum => (NumberHelpers.numToString(n), false)
-        case s: String => (s, false)
+        case VStr(s) => (s, false)
         case f: VFun => (vyToString(f), false)
         case c: VConstructor => (c.toString, false)
         case l: VList =>
@@ -428,13 +425,11 @@ object StringHelpers:
   def characterMultiply(n: VNum, s: String)(using Context): VAny =
     s.map(_.toString * n.toInt).mkString
 
-  def caseof(s: String)(using Context): VList =
-    VList.from(
-      s.map(c =>
-        if c.isUpper then VNum(1) // Uppercase
-        else if c.isLower then VNum(0) // Lowercase
-        else VNum(-1) // Non-alphabet
-      )
+  def caseof(s: String)(using Context): Seq[VAny] =
+    s.map(c =>
+      if c.isUpper then VNum(1) // Uppercase
+      else if c.isLower then VNum(0) // Lowercase
+      else VNum(-1) // Non-alphabet
     )
 
   def sentenceCase(str: String): String =
@@ -448,7 +443,10 @@ object StringHelpers:
 
   def zeroPad(s: String, n: VNum)(using Context): String =
     val zeros = "0".repeat(
-      MiscHelpers.dyadicMaximum(0, n.vabs - s.length()).asInstanceOf[VNum].toInt
+      MiscHelpers
+        .dyadicMaximum(VNum(0), n.vabs - s.length())
+        .asInstanceOf[VNum]
+        .toInt
     )
     if n > 0 then zeros + s else s + zeros
 
