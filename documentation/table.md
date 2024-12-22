@@ -1,380 +1,169 @@
-
-# Information Tables
-
-## Elements
-
-| Symbol | Trigraph |  Name | Keywords | Arity | Vectorises | Overloads |
- --- | --- | --- | --- | --- | --- | --- |
- <code>🌮</code> |  | Taco | `taco` | NA | :x: | <code>very funky</code>
- <code>🍪</code> |  | Cookie | `cookie` | NA | :x: | <code>cookie.</code>
- <code>ඞ</code> |  | ඞ | `sus` | NA | :x: | <code>ඞ</code>
- <code>!</code> |  | Factorial | `fact`, `factorial` | 1 | :white_check_mark: | <code>a: num </code> => <code> a!</code>
- <code>$</code> |  | Swap | `swap` | NA | :x: | <code>a, b </code> => <code> b, a</code>
- <code>%</code> |  | Modulo \| String Formatting | `mod`, `modulo`, `str-format`, `format`, `%`, `strfmt` | 2 | :x: | <code>a: num, b: num </code> => <code> a % b</code><br><code>a: str, b: any </code> => <code> a.format(b) (replace %s with b if scalar value or each item in b if vector)</code>
- <code>&</code> |  | Append | `append` | 2 | :x: | <code>a: any, b: any </code> => <code> list(a) ++ [b]</code>
- <code>'</code> |  | Join Sublists on Spaces then Newlines (Element Form of ') | `join-sublists`, `join-sublists-on-spaces-then-newlines`, `grid` | 1 | :x: | <code>a: lst </code> => <code> sublists of a joined on spaces then that joined on newlines</code>
- <code>*</code> |  | Exponentation \| Remove Nth Letter \| Trim | `exp`, `**`, `pow`, `exponent`, `remove-letter`, `str-trim` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a ^ b</code><br><code>a: str, b: num </code> => <code> a with the bth letter removed</code><br><code>a: num, b: str </code> => <code> b with the ath letter removed</code><br><code>a: str, b: str </code> => <code> trim b from both sides of a</code>
- <code>+</code> |  | Addition | `add`, `+`, `plus` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a + b</code><br><code>a: num, b: str </code> => <code> a + b</code><br><code>a: str, b: num </code> => <code> a + b</code><br><code>a: str, b: str </code> => <code> a + b</code>
- <code>,</code> |  | Print | `print`, `puts`, `out`, `println` | NA | :x: | <code>a </code> => <code> printed to stdout</code>
- <code>-</code> |  | Subtraction | `sub`, `subtract`, `minus`, `str-remove`, `str-remove-all`, `remove-all` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a - b</code><br><code>a: str, b: num </code> => <code> a + b '-'s (or '-'s + a if b < 0)</code><br><code>a: num, b: str </code> => <code> a '-'s + b (or b + '-'s if a < 0)</code><br><code>a: str, b: str </code> => <code> a with b removed</code>
- <code>:</code> |  | Duplicate | `dup` | NA | :x: | <code>a </code> => <code> a, a</code>
- <code>;</code> |  | Pair | `pair` | 2 | :x: | <code>a, b </code> => <code> [a, b]</code>
- <code><</code> |  | Less Than | `lt`, `less`, `less-than`, `<`, `less?`, `smaller?` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a < b</code><br><code>a: str, b: num </code> => <code> a < str(b)</code><br><code>a: num, b: str </code> => <code> str(a) < b</code><br><code>a: str, b: str </code> => <code> a < b</code>
- <code>=</code> |  | Equals | `eq`, `==`, `equal`, `same?`, `equals?`, `equal?` | 2 | :white_check_mark: | <code>a: any, b: any </code> => <code> a == b</code>
- <code>></code> |  | Greater Than | `gt`, `greater`, `greater-than`, `greater?`, `bigger?` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a > b</code><br><code>a: str, b: num </code> => <code> a > str(b)</code><br><code>a: num, b: str </code> => <code> str(a) > b</code><br><code>a: str, b: str </code> => <code> a > b</code>
- <code>?</code> |  | Get Input | `get-input`, `input`, `stdin`, `readline` | 0 | :x: | <code></code> => <code>  -> input</code>
- <code>@</code> |  | Cumulative Sums | `cumulative-sums`, `cumsums`, `cumsum`, `cum-sum`, `-_-` | 1 | :x: | <code>a: lst </code> => <code> cumulative sums of a</code>
- <code>A</code> |  | All Truthy \| All() \| Is Vowel? | `all`, `is-vowel?`, `vowel?` | 1 | :x: | <code>a: str </code> => <code> is (a) a vowel? vectorises for strings len > 1</code><br><code>a: list </code> => <code> is (a) all truthy?</code>
- <code>B</code> |  | Convert From Binary | `from-binary`, `bin->dec`, `bin->decimal` | 1 | :x: | <code>a: num </code> => <code> str(a) from binary</code><br><code>a: str </code> => <code> int(a, 2)</code><br><code>a: lst </code> => <code> int(a, 2), using list of digits</code>
- <code>C</code> |  | Count | `count` | 2 | :x: | <code>a: lst, b: any </code> => <code> count occurrences of b in a</code><br><code>a: any, b: lst </code> => <code> count occurrences of a in b</code><br><code>a: any, b: any </code> => <code> count non-overlapping occurrences of b (stringified) in a (stringified)</code>
- <code>D</code> |  | Triplicate | `trip` | NA | :x: | <code>a </code> => <code> [a, a, a]</code>
- <code>E</code> |  | 2 Power \| Evaluate | `two^`, `two**`, `eval` | 1 | :white_check_mark: | <code>a: num </code> => <code> 2^a</code><br><code>a: str </code> => <code> evaluate (not execute) a</code>
- <code>F</code> |  | Filter by Function \| From Base | `filter`, `keep-by`, `from-base`, `10->b` | 2 | :x: | <code>a: fun, b: lst </code> => <code> Filter b by truthy results of a</code><br><code>a: lst, b: fun </code> => <code> Filter a by truthy results of b</code><br><code>a: num, b: num </code> => <code> a from base b to base 10</code><br><code>a: num, b: str&#124;lst </code> => <code> a from base with alphabet b to base 10</code>
- <code>G</code> |  | Monadic Maximum \| Dyadic Maximum \| Generate From Function \| Vectorised Maximum | `max`, `maximum`, `generator` | 2 | :x: | <code>a: lst </code> => <code> Maximum of a</code><br><code>a: non-lst, b: non-lst </code> => <code> Maximum of a and b</code><br><code>a: lst, b: fun </code> => <code> Call b infinitely with items of a as starting values</code>
- <code>H</code> |  | Hexadecimal \| To Hexadecimal | `hex`, `hexadecimal`, `to-hex`, `to-hexadecimal` | 1 | :white_check_mark: | <code>a: num </code> => <code> a in hexadecimal</code><br><code>a: str </code> => <code> a as a hexadecimal number to base 10</code>
- <code>I</code> |  | Interleave / Reject By Function | `interleave`, `reject` | 2 | :x: | <code>a: lst, b: lst </code> => <code> Interleave a and b</code><br><code>a: any, b: fun </code> => <code> Reject elements of a by applying b</code>
- <code>J</code> |  | Merge | `merge` | 2 | :x: | <code>a: lst, b: lst </code> => <code> Merge a and b</code><br><code>a: any, b: lst </code> => <code> Prepend a to b</code><br><code>a: lst, b: any </code> => <code> Append b to a</code><br><code>a: num, b: num </code> => <code> num(str(a) + str(b))</code><br><code>a: any, b: any </code> => <code> str(a) + str(b)</code>
- <code>K</code> |  | Factors \| Is Numeric? | `factors`, `divisors`, `is-numeric`, `is-num`, `is-number`, `is-num?`, `is-number?` | 1 | :white_check_mark: | <code>a: num </code> => <code> Factors of a</code><br><code>a: str </code> => <code> Is a numeric?</code>
- <code>L</code> |  | Length \| Length of List | `length`, `len`, `length-of`, `len-of`, `size` | 1 | :x: | <code>a: any </code> => <code> Length of a</code>
- <code>M</code> |  | Map Function \| Mold Lists \| Multiplicity | `map`, `mold`, `multiplicity`, `times-divide`, `re-match`, `regex-match` | 2 | :x: | <code>a: any, b: fun </code> => <code> a.map(b)</code><br><code>a: fun, b: any </code> => <code> b.map(a)</code><br><code>a: lst, b: lst </code> => <code> a molded to the shape of b</code><br><code>a: num, b: num </code> => <code> how many times b divides a</code><br><code>a: str, b: str </code> => <code> regex match of b in a</code><br><code>a: list, b: str </code> => <code> regex match of b of each element of a</code><br><code>a: str, b: list </code> => <code> regex match of each element of b in a</code>
- <code>N</code> |  | Negation \| Swap Case \| First Non-Negative Integer Where Predicate is True | `neg`, `negate`, `swap-case`, `caseswap`, `first-non-negative`, `first-nonneg`, `first>-1` | 1 | :white_check_mark: | <code>a: num </code> => <code> -a</code><br><code>a: str </code> => <code> a.swapCase()</code><br><code>a: fun </code> => <code> first non-negative integer where predicate a is true</code>
- <code>O</code> |  | Ord/Chr | `ord`, `chr` | 1 | :x: | <code>a: str </code> => <code> ord(a)</code><br><code>a: num </code> => <code> chr(a)</code>
- <code>P</code> |  | Prefixes | `prefixes` | 1 | :x: | <code>a: lst </code> => <code> Prefixes of a</code>
- <code>Q</code> |  | Remove At \| Regex Groups | `remove-at`, `re-groups`, `regex-groups` | 2 | :x: | <code>a: lst, b: num </code> => <code> a with bth element removed</code><br><code>a: str, b: str </code> => <code> regex groups of a with regex b</code>
- <code>R</code> |  | Reduce by Function Object \| Dyadic Range \| Regex Match \| Set Union | `fun-reduce`, `reduce`, `fold-by`, `range`, `a->b`, `regex-match?`, `re-match?`, `has-regex-match?`, `fold`, `union`, `to` | 2 | :x: | <code>a: fun, b: any </code> => <code> reduce iterable b by function a</code><br><code>a: any, b: fun </code> => <code> reduce iterable a by function b</code><br><code>a: num, b: num </code> => <code> the range [a, b)</code><br><code>a: str, b: num&#124;str </code> => <code> does regex pattern b match haystack a?</code><br><code>a: lst, b: lst </code> => <code> union of a and b</code>
- <code>S</code> |  | Sort ascending | `sort`, `sortasc`, `sort-asc` | 1 | :x: | <code>a: any </code> => <code> convert to list and sort ascending</code>
- <code>T</code> |  | Triple \| Contains Only Alphabet \| Transpose | `triple`, `alphabet?`, `alphabetical?`, `contains-only-alphabet?`, `contains-only-alphabetical?`, `transpose`, `flip`, `reverse-axes`, `flip-axes`, `permute-axes` | 1 | :x: | <code>a: num </code> => <code> 3 * a</code><br><code>a: str </code> => <code> does a contain only alphabet characters?</code><br><code>a: any </code> => <code> transpose a</code>
- <code>U</code> |  | Uninterleave | `uninterleave` | NA | :x: | <code>a: any </code> => <code> uninterleave a</code>
- <code>V</code> |  | Vectorised Reverse \| Complement \| Title Case | `vectorised-reverse`, `vec-reverse`, `complement`, `titlecase`, `title-case` | 1 | :x: | <code>a: lst </code> => <code> each element of a reversed</code><br><code>a: num </code> => <code> 1 - a</code><br><code>a: str </code> => <code> a converted to title case</code>
- <code>W</code> |  | Wrap | `wrap` | NA | :x: | <code>a, b, c, ..., </code> => <code> [a, b, c, ...]</code>
- <code>X</code> |  | Return Statement | `return`, `ret` | NA | :x: | <code>a </code> => <code> return a</code>
- <code>Y</code> |  | List Repeat | `wrap-repeat` | 2 | :x: | <code>a: any, b: num </code> => <code> a repeated b times, wrapped in a list</code><br><code>a: num, b: any </code> => <code> b repeated a times, wrapped in a list</code><br><code>a: lst&#124;str, b: lst[num] </code> => <code> a[_] repeated b[_] times, wrapped in a list</code>
- <code>Z</code> |  | Zip | `zip`, `zip-map` | 2 | :x: | <code>a: lst, b: lst </code> => <code> zip a and b</code><br><code>a: lst, b: fun </code> => <code> [[x, b(x)] for x in a]</code><br><code>a: fun, b: lst </code> => <code> [[a(x), x] for x in b]</code>
- <code>\\</code> |  | Dump | `dump` | 1 | :x: | <code>a: any </code> => <code> dump all values on the stack</code>
- <code>^</code> |  | Reverse Stack | `reverse-stack`, `rev-stack` | NA | :x: | <code> </code> => <code> reverse the stack</code>
- <code>_</code> |  | Pop and Discard | `pop`, `discard` | NA | :x: | <code>a </code> => <code></code>
- <code>`</code> |  | Length of Stack | `length-of-stack`, `stack-length`, `stack-len` | NA | :x: | <code> </code> => <code> push the length of the stack</code>
- <code>a</code> |  | Any Truthy \| Any() \| Is Uppercase? | `any`, `is-uppercase?`, `is-upper?`, `upper?` | 1 | :x: | <code>a: str </code> => <code> is (a) uppercase? vectorises for strings len > 1</code><br><code>a: list </code> => <code> is (a) any truthy?</code>
- <code>b</code> |  | Convert To Binary | `to-binary`, `dec->bin`, `decimal->bin` | 1 | :white_check_mark: | <code>a: num </code> => <code> convert a to binary</code><br><code>a: str </code> => <code> bin(ord(x) for x in a)</code>
- <code>c</code> |  | Contains | `contains`, `in` | 2 | :x: | <code>a: any, b: lst </code> => <code> is element a in list b?</code><br><code>a: any, b: any </code> => <code> is str(b) in str(a)?</code>
- <code>d</code> |  | Double | `double` | 1 | :white_check_mark: | <code>a: num </code> => <code> a * 2</code><br><code>a: str </code> => <code> a + a</code>
- <code>e</code> |  | Is Even / Split on Newlines | `even?`, `even`, `is-even?`, `split-on-newlines`, `newline-split`, `split-newlines` | 1 | :white_check_mark: | <code>a: num </code> => <code> a % 2 == 0</code><br><code>a: str </code> => <code> a split on newlines</code>
- <code>f</code> |  | Flatten | `flatten`, `flat` | 1 | :x: | <code>a: lst </code> => <code> Flattened a</code>
- <code>g</code> |  | Monadic Minimum \| Dyadic Minimum \| Generate From Function (Dyadic) \| Vectorised Minimum | `min`, `minimum`, `generator-dyadic` | 2 | :x: | <code>a: lst </code> => <code> Minimum of a</code><br><code>a: non-lst, b: non-lst </code> => <code> Minimum of a and b</code><br><code>a: lst, b: fun </code> => <code> Call b infinitely with items of a as starting values (dyadic)</code>
- <code>h</code> |  | Head \| First Item | `head`, `first`, `first-item` | 1 | :x: | <code>a: lst </code> => <code> a[0]</code>
- <code>i</code> |  | Index \| Collect Unique Application Values \| Enclose \| Read Member | `index`, `at`, `item-at`, `nth-item`, `collect-unique`, `enclose`, `@<=` | 2 | :x: | <code>a: lst, b: num </code> => <code> a[b]</code><br><code>a: num, b: num </code> => <code> b[x] for x in a</code><br><code>a: lst, b: lst </code> => <code> a[_] for _ in b</code><br><code>a: str, b: lst[num] </code> => <code> ''.join(a[i] for i in b)</code><br><code>a: str, b: lst[any] </code> => <code> x[a] for x in b</code><br><code>a: lst, b: str </code> => <code> x[b] for x in a</code><br><code>a: any, b: fun </code> => <code> Apply b on a and collect unique values. Does include the initial value.</code><br><code>a: str, b: str </code> => <code> enclose b in a (a[0:len(a)//2] + b + a[len(a)//2:])</code><br><code>a: rec, b: str </code> => <code> get member b of a</code><br><code>a: str, b: rec </code> => <code> get member a of b</code>
- <code>j</code> |  | Join On | `join-on`, `join`, `join-with`, `join-by` | 2 | :x: | <code>a: lst, b: str&#124;num </code> => <code> a join on b</code><br><code>a: lst, b: lst </code> => <code> Intersperse elements of b within a</code>
- <code>k1</code> |  | 1000 | `one-thousand`, `l000`, `lk` | 0 | :x: | <code></code> => <code> 1000</code>
- <code>k2</code> |  | 10000 | `ten-thousand`, `l0000`, `l0k` | 0 | :x: | <code></code> => <code> 10000</code>
- <code>k3</code> |  | 100000 | `one-hundered-thousand`, `l00000`, `l00k` | 0 | :x: | <code></code> => <code> 100000</code>
- <code>k4</code> |  | 1000000 | `one-million`, `l000000`, `l000k`, `lm` | 0 | :x: | <code></code> => <code> 1000000</code>
- <code>k6</code> |  | Hex Digits (lowercase) | `hex-digits`, `hex-digs`, `hex-lowercase`, `hex-lower`, `hex-l`, `hex-lc` | 0 | :x: | <code></code> => <code> "0123456789abcdef"</code>
- <code>kA</code> |  | Uppercase Alphabet | `uppercase-alphabet`, `uppercase-alpha`, `A->Z`, `A-Z`, `amazon` | 0 | :x: | <code></code> => <code> "ABCDEFGHIJKLMNOPQRSTUVWXYZ"</code>
- <code>kB</code> |  | Uppercase and lowercase | `uppercase-and-lowercase`, `uppercase-and-lowercase-alpha`, `A->Za->z`, `A-Za-z` | 0 | :x: | <code></code> => <code> "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"</code>
- <code>kD</code> |  | Lines | `lines`, `dashes`, `bars` | 0 | :x: | <code></code> => <code> "&#124;/-\_"</code>
- <code>kF</code> |  | FizzBuzz | `fizzbuzz`, `FB` | 0 | :x: | <code></code> => <code> "FizzBuzz"</code>
- <code>kH</code> |  | Hello, World! | `hello-world!`, `HW!` | 0 | :x: | <code></code> => <code> "Hello, World!"</code>
- <code>kL</code> |  | Lowercase and Uppercase Alphabet | `lowercase-and-uppercase-alphabet`, `lowercase-and-uppercase-alpha`, `a->zA->Z`, `a-zA-Z` | 0 | :x: | <code></code> => <code> "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"</code>
- <code>kP</code> |  | Printable Ascii | `printable-ascii`, `all-ascii` | 0 | :x: | <code></code> => <code> All of printable ascci. That excludes newline</code>
- <code>kR</code> |  | Digits, Uppercase, Lowercase | `digits-uppercase-lowercase`, `digs-upper-lower`, `o9AZaz`, `o-9A-Za-z` | 0 | :x: | <code></code> => <code> "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"</code>
- <code>kZ</code> |  | Uppercase Alphabet Reversed | `uppercase-alphabet-reversed`, `uppercase-alpha-reversed`, `Z->A` | 0 | :x: | <code></code> => <code> "ZYXWVUTSRQPONMLKJIHGFEDCBA"</code>
- <code>k^</code> |  | Hex Digits (uppercase) | `hex-uppercase`, `hex-upper`, `hex-u`, `hex-uc` | 0 | :x: | <code></code> => <code> "0123456789ABCDEF"</code>
- <code>ka</code> |  | Lowercase Alphabet | `lowercase-alphabet`, `lowercase-alpha`, `a->z`, `a-z` | 0 | :x: | <code></code> => <code> "abcdefghijklmnopqrstuvwxyz"</code>
- <code>kb</code> |  | Buzz | `buzz`, `BUZZ` | 0 | :x: | <code></code> => <code> "Buzz"</code>
- <code>kd</code> |  | Digits | `digits`, `digs`, `o-9` | 0 | :x: | <code></code> => <code> "0123456789"</code>
- <code>ke</code> |  | Euler's Number | `euler's-number`, `euler`, `e-num` | 0 | :x: | <code></code> => <code> 2.718281828459045</code>
- <code>kf</code> |  | Fizz | `fizz`, `FIZZ` | 0 | :x: | <code></code> => <code> "Fizz"</code>
- <code>kg</code> |  | Phi | `phi`, `golden-ratio`, `golden`, `l-618033988749895` | 0 | :x: | <code></code> => <code> Literally just phi</code>
- <code>kh</code> |  | Hello World | `hello-world`, `HW` | 0 | :x: | <code></code> => <code> "Hello World"</code>
- <code>ki</code> |  | Pi | `pi`, `E-14`, `E-1415926535897` | 0 | :x: | <code></code> => <code> Literally just pi</code>
- <code>kl</code> |  | Upper and Lowercase Alphabet Reversed | `upper-and-lowercase-alphabet-reversed`, `upper-and-lowercase-alpha-reversed`, `Z->Az->a`, `Z-Az-a` | 0 | :x: | <code></code> => <code> "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"</code>
- <code>ko</code> |  | Octal Digits | `octal-digits`, `octal-digs`, `o-7` | 0 | :x: | <code></code> => <code> "01234567"</code>
- <code>kp</code> |  | Punctuation | `punctuation`, `punct` | 0 | :x: | <code></code> => <code> All punctuation characters</code>
- <code>kr</code> |  | Digits, Lowercase, Uppercase | `digits-lowercase-uppercase`, `digs-lower-upper`, `o9azAZ`, `o-9a-zA-Z` | 0 | :x: | <code></code> => <code> "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"</code>
- <code>kz</code> |  | Lowercase Alphabet Reversed | `lowercase-alphabet-reversed`, `lowercase-alpha-reversed`, `z->a`, `nozama` | 0 | :x: | <code></code> => <code> "zyxwvutsrqponmlkjihgfedcba"</code>
- <code>l</code> |  | Length of Each Item | `length-vectorised`, `length-vect`, `len-vect`, `len-vectorised`, `vec-len`, `vec-length`, `vlen` | 1 | :x: | <code>a: lst </code> => <code> Length of each item in a</code>
- <code>m</code> |  | Get Context Variable M | `get-context-m`, `context-m`, `c-var-m`, `ctx-m`, `ctx-secondary` | 0 | :x: | <code></code> => <code> context variable m - defaults to uppercase alphabet if outside context</code>
- <code>n</code> |  | Get Context Variable N | `get-context-n`, `context-n`, `c-var-n`, `ctx-n`, `ctx-primary` | 0 | :x: | <code></code> => <code> context variable n - defaults to lowercase alphabet if outside context</code>
- <code>o</code> |  | Overlap \| Overlapping Slices | `overlap`, `overlaps`, `overlapping`, `overlapping-slices` | 2 | :x: | <code>a: lst, b: num </code> => <code> Overlapping slices of a of length b</code><br><code>a: lst&#124;str </code> => <code> Overlapping slices of a of length 2</code>
- <code>p</code> |  | Prepend | `prepend` | 2 | :x: | <code>a: lst, b: any </code> => <code> b prepended to a</code>
- <code>q</code> |  | Quotify \| Nth Prime | `quotify`, `nth-prime`, `prime-n` | 1 | :white_check_mark: | <code>a: str </code> => <code> enclose a in quotes, escape backslashes and quote marks</code><br><code>a: num </code> => <code> nth prime</code>
- <code>r</code> |  | Replace | `replace`, `zip-with` | 3 | :x: | <code>a: str, b: str, c: str </code> => <code> replace all instances of b in a with c</code><br><code>a: fun, b: any, c: any </code> => <code> reduce items in zip(b, c) by a</code>
- <code>s</code> |  | Split | `split` | 2 | :x: | <code>a: any, b: any </code> => <code> split a by b</code>
- <code>t</code> |  | Tail \| Last Item | `tail`, `last`, `last-item` | 1 | :x: | <code>a: lst </code> => <code> a[-1]</code>
- <code>u</code> |  | Uniquify | `uniquify` | 1 | :x: | <code>a: lst&#124;str&#124;num </code> => <code> a with duplicates removed</code>
- <code>v</code> |  | Decrement | `decr`, `decrement` | 1 | :white_check_mark: | <code>a: num </code> => <code> a - 1</code>
- <code>w</code> |  | Wrap Singleton | `wrap-singleton`, `enlist` | 1 | :x: | <code>a </code> => <code> [a]</code>
- <code>x</code> |  | Recursion \| Recurse | `recurse` | NA | :x: | <code> </code> => <code> call the current function recursively</code>
- <code>y</code> |  | To Base \| Regex Find | `to-base`, `re-find`, `regex-find` | 2 | :x: | <code>a: num, b: num </code> => <code> a in base b</code><br><code>a: num, b: str&#124;lst </code> => <code> a in base with alphabet b</code><br><code>a: lst, b: num </code> => <code> each x in a in base b</code><br><code>a: lst, b: str&#124;lst </code> => <code> each x in a in base with alphabet b</code><br><code>a: str, b: str </code> => <code> All matches of b in a</code>
- <code>z</code> |  | Inclusive zero Range \| Is Lowercase | `inclusive-zero-range`, `zero->n`, `is-lowercase?`, `lowercase?`, `lower?` | 1 | :white_check_mark: | <code>a: num </code> => <code> [0, 1, ..., a]</code><br><code>a: lst[num] </code> => <code> apl-style iota from 0 to a</code><br><code>a: str </code> => <code> is a lowercase?</code>
- <code>Ȧ</code> | #.A | Absolute Value \| Keep Alphabet Characters | `abs`, `absolute-value`, `keep-alphabet` | 1 | :white_check_mark: | <code>a: num </code> => <code> &#124;a&#124;</code><br><code>a: str </code> => <code> keep alphabet characters of a</code>
- <code>Ḃ</code> | #.B | Execute lambda without popping \| Evaluate as Vyxal without popping \| Boolean Mask \| Is 1? | `peek-call`, `exec-peek`, `boolean-mask`, `bool-mask`, `strict-boolify`, `is-1?` | 1 | :x: | <code>a: fun </code> => <code> Execute a without popping</code><br><code>a: str </code> => <code> Evaluate a as Vyxal without popping</code><br><code>a: lst </code> => <code> Return a boolean array with 1s at the indices in a list.</code><br><code>a: num </code> => <code> Is a == 1?</code>
- <code>Ċ</code> | #.C | Set XOR | `set-xor` | 2 | :x: | <code>a: lst, b: lst </code> => <code> set xor of a and b</code>
- <code>Ḋ</code> | #.D | Divides? \| Append Spaces \| Remove Duplicates by Function | `divides?`, `+-spaces`, `dedup-by`, `re-span`, `regex-span` | 2 | :x: | <code>a: num, b: num </code> => <code> a % b == 0</code><br><code>a: str, b: num </code> => <code> a + ' ' * b</code><br><code>a: num, b: str </code> => <code> b + ' ' * a</code><br><code>a: lst, b: fun </code> => <code> Remove duplicates from a by applying b to each element</code><br><code>a: str, b: str </code> => <code> span of first regex match of b in a</code>
- <code>Ė</code> | #.E | Execute lambda \| Evaluate as Vyxal \| Power with base 10 | `execute-lambda`, `evaluate-as-vyxal`, `power-base-10`, `call`, `@` | 1 | :x: | <code>a: fun </code> => <code> Execute a</code><br><code>a: str </code> => <code> Evaluate a as Vyxal</code><br><code>a: num </code> => <code> 10 ** n</code>
- <code>Ḟ</code> | #.F | Find | `find` | 2 | :x: | <code>a: any, b: any </code> => <code> a.indexOf(b) (-1 if not found)</code><br><code>a: any, b: fun </code> => <code> truthy indices of mapping b over a</code>
- <code>Ġ</code> | #.G | Group by Function Result \| Greatest Common Divisor \| Find all overlapping regex matches | `group-by`, `gcd`, `re-find-overlapping`, `regex-find-overlapping`, `re-find-overlap`, `regex-find-overlap` | 2 | :x: | <code>a: any, b: fun </code> => <code> group a by the results of b</code><br><code>a: fun, b: any </code> => <code> group b by the results of a</code><br><code>a: num, b: num </code> => <code> gcd(a, b)</code><br><code>a: lst[num], b: num </code> => <code> gcd of b and all elements of a</code><br><code>a: lst[num] </code> => <code> gcd of all items in a.</code><br><code>a: str, b: str </code> => <code> all overlapping regex matches of b in a (similar to `y` but with overlaps) (JVM/JS Only)</code><br><code>a: str, b: lst[str] </code> => <code> vectorised string overload of the above</code><br><code>a: lst, b: str </code> => <code> vectorised pattern overload of the above</code>
- <code>Ḣ</code> | #.H | Head Remove \| Behead | `head-remove`, `behead` | 1 | :x: | <code>a: str </code> => <code> a[1:]</code><br><code>a: any </code> => <code> toList(a)[1:]</code>
- <code>İ</code> | #.I | Drop/Zero Slice From \| Collect While Unique \| Complex Number | `drop`, `zero-slice-from`, `slice-from`, `collect-while-unique`, `complex` | 2 | :x: | <code>a: num, b: num </code> => <code> a.real + b.real * i</code><br><code>a: str&#124;lst, b: num </code> => <code> a[b:]</code><br><code>a: lst, b: lst[num] </code> => <code> apl style drop</code><br><code>a: any, b: fun </code> => <code> Apply b on a and collect unique values (until fixpoint). Does not include the initial value.</code>
- <code>Ŀ</code> | #.L | Logarithm \| Scan Fixpoint \| Same Length? \| Length Equals? | `log`, `logarithm`, `scan-fixpoint`, `scan-fix`, `same-length?`, `same-length`, `length-equals?`, `length-equals`, `len-eq?` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> log_b(a)</code><br><code>a: fun, b: any </code> => <code> apply until a previous value is repeated, collecting intermediate results</code><br><code>a: str, b: str </code> => <code> a same length as b</code><br><code>a: str, b: num </code> => <code> len(a) == b</code>
- <code>Ṁ</code> | #.M | Modular \| Matrix Multiply \| Regex Full Match? | `nth-items`, `modular`, `maxtrix-multiply`, `mat-multiply`, `mat-mul`, `regex-full-match?`, `full-match?` | 2 | :x: | <code>a: str&#124;lst, b: num </code> => <code> return every b-th element of a. If b is zero, mirror: prepend a to its reverse.</code><br><code>a: num, b: str&#124;lst </code> => <code> return every a-th element of b. If a is zero, mirror: append b to its reverse.</code><br><code>a: lst, b: lst </code> => <code> a * b (matrix multiply)</code><br><code>a: str, b: str </code> => <code> does the entirety of a match b?</code>
- <code>Ṅ</code> | #.N | Is Prime? \| Quine Cheese | `prime?`, `quineify` | 1 | :white_check_mark: | <code>a: num </code> => <code> is a prime?</code><br><code>a: str </code> => <code> quote a and prepend to a</code>
- <code>Ȯ</code> | #.O | Over | `over` | 0 | :x: | <code>_ </code> => <code> push a copy of the second item on the stack over the first</code><br><code>a b </code> => <code> a b a</code>
- <code>Ṗ</code> | #.P | Permutations | `permutations`, `perms` | 1 | :x: | <code>a: lst </code> => <code> Permutations of a</code>
- <code>Ṙ</code> | #.R | Rotate Left | `abc->bca`, `rot-left`, `rotate-left` | 1 | :x: | <code>a: any </code> => <code> rotate left once</code>
- <code>Ṡ</code> | #.S | Vectorised Sums \| Integer Division | `vectorised-sums`, `vec-sums`, `integer-division`, `int-div`, `int-rizz`, `sums` | 1 | :x: | <code>a: lst </code> => <code> sum of each element of a</code><br><code>a: num, b: num </code> => <code> a // b</code>
- <code>Ṫ</code> | #.T | Init | `init`, `remove-last`, `tail-remove` | 1 | :x: | <code>a: lst </code> => <code> a[:-1]</code><br><code>a: str </code> => <code> a[:-1]</code>
- <code>Ẇ</code> | #.W | Wrap to Length \| Predicate Slice From 0 | `wrap-length`, `pred-slice-0`, `size-chunk` | 2 | :x: | <code>a: lst, b: num </code> => <code> a wrapped in chunks of length b</code><br><code>a: fun, b: num </code> => <code> first b truthy integers where a is truthy</code>
- <code>Ẋ</code> | #.X | Cartesian Product | `cartesian-product`, `cartesian`, `cart-prod`, `cart` | 2 | :x: | <code>a: list, b: list </code> => <code> cartesian product of a and b</code>
- <code>ι</code> |  | Length 0-Range | `zero->len` | 1 | :x: | <code>a: any </code> => <code> `[0, 1, 2, ..., len(a)-1]`</code>
- <code>κ</code> |  | Length 1-Range | `one->len` | 1 | :x: | <code>a: any </code> => <code> `[1, 2, 3, ..., len(a)]`</code>
- <code>ȧ</code> | #.a | Absolute Difference \| Apply to Neighbours | `abs-diff`, `apply-to-neighbours` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> &#124;a - b&#124;</code><br><code>a: lst, b: fun </code> => <code> apply b to each pair of neighbours in a [applies to windows of length 2]</code>
- <code>ḃ</code> |  | Bit \| Parity \| Last Half of String | `bit`, `parity`, `str-last-half` | 1 | :white_check_mark: | <code>a: num </code> => <code> parity of a (a % 2)</code><br><code>a: str </code> => <code> last half of a</code>
- <code>ċ</code> | #.c | N Choose K (Binomial Coefficient) \| Character Set Equal? \| Repeat Until No Change | `n-choose-k`, `ncr`, `nck`, `choose`, `binomial`, `char-set-equal?`, `char-set-eq?`, `until-stable` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a choose b</code><br><code>a: str, b: str </code> => <code> are the character sets of a and b equal?</code><br><code>a: fun, b: any </code> => <code> run a on b until the result no longer changes returning all intermediate results</code>
- <code>ḋ</code> | #.d | Dot Product \| To Bijective Base \| First Index Where Predicate Truthy | `dot-product`, `bijective-base`, `dot-prod`, `first-index-where`, `_*` | 2 | :x: | <code>a: lst, b: lst </code> => <code> Dot product of a and b</code><br><code>a: num, b: num </code> => <code> Convert a to bijective base b</code><br><code>a: lst, b: fun </code> => <code> First index of a where b is truthy</code>
- <code>ė</code> | #.e | Reciprocal \| Remove Whitespace | `reciprocal`, `recip`, `remove-whitespace`, `remove-space`, `1/` | 1 | :white_check_mark: | <code>a: num </code> => <code> 1/a</code><br><code>a: str </code> => <code> a with all whitespace removed</code>
- <code>ḟ</code> | #.f | Prime Factors \| Remove Alphabet | `prime-factors`, `remove-alphabet` | 1 | :white_check_mark: | <code>a: num </code> => <code> prime factors of a</code><br><code>a: str </code> => <code> a with all alphabet characters removed</code>
- <code>ġ</code> | #.g | Group By Consecutive Items | `group-by-consecutive` | 1 | :x: | <code>a: any </code> => <code> group consecutive identical items of lst(a)</code>
- <code>ḣ</code> | #.h | Head Extract | `head-extract`, `split-at-head` | 1 | :x: | <code>a: lst&#124;str </code> => <code> Push a[0], then a[1:] onto the stack</code>
- <code>ŀ</code> | #.l | Transliterate \| Call While | `transliterate`, `call-while` | 3 | :x: | <code>any a, any b, any c </code> => <code> transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)</code><br><code>a: fun, b: fun, c: any </code> => <code> call b on c until a(c) is falsy</code>
- <code>ṁ</code> | #.m | Mirror | `mirror`, `ab->abba` | 1 | :x: | <code>num a: a + reversed(a) (as number)</code><br><code>str a: a + reversed(a)</code><br><code>lst a: append reversed(a) to a</code>
- <code>ṅ</code> | #.n | Palindromise | `palindromise`, `palindrome`, `ab->aba` | 1 | :x: | <code>a: any </code> => <code> palindromise a</code>
- <code>ȯ</code> | #.o | Boolify | `boolify` | 1 | :x: | <code>a: any </code> => <code> bool(a)</code>
- <code>ṗ</code> | #.p | List Partitions \| Integer Partitions | `list-partitions`, `list-parts`, `integer-partitions`, `int-partitions`, `int-parts`, `partitions` | 1 | :x: | <code>a: lst </code> => <code> List partitions of a</code><br><code>a: num </code> => <code> Integer partitions of a (all possible ways to sum to a)</code>
- <code>ṙ</code> | #.r | Rotate Right | `abc->cab`, `rot-right`, `rotate-right` | 1 | :x: | <code>a: any </code> => <code> rotate right once</code>
- <code>ṡ</code> | #.s | Sort by Function Object \| Partition by Numbers \| Set Difference | `sort-by`, `sortby`, `sort-by-fun`, `sortbyfun`, `sort-fun`, `sortfun`, `partition-by`, `set-difference`, `set-diff` | 2 | :x: | <code>a: fun, b: any </code> => <code> sort iterable b by function a</code><br><code>a: any, b: fun </code> => <code> sort iterable a by function b</code><br><code>a: lst, b: lst </code> => <code> set difference of a and b</code><br><code>a: lst, b: num&#124;str </code> => <code> remove b from a</code><br><code>a: num&#124;str, b: lst </code> => <code> remove a from b</code>
- <code>ṫ</code> | #.t | Last Extract \| Tail Extract | `last-extract`, `split-at-last`, `tail-extract` | 1 | :x: | <code>a: lst&#124;str </code> => <code> Push a[:-1], a[-1] onto the stack</code>
- <code>ẋ</code> | #.x | Cartesian Power \| Regex Search for Match | `cartesian-power`, `re-search`, `regex-search` | 2 | :x: | <code>a: lst, b: num </code> => <code> cart_prod([a] * n)</code><br><code>a: num, b: lst </code> => <code> cart_prod([b] * n)</code><br><code>a: str, b: str </code> => <code> return first index of pattern match b in target string a, -1 if not found</code><br><code>a: lst, b: str </code> => <code> regex search vectorised</code><br><code>a: str&#124;lst, b: lst </code> => <code> push a, push cartesian product of b and b</code>
- <code>ƒ</code> |  | Partition After Truthy Indices | `partition-after-truthy` | 2 | :x: | <code>a: lst, b: lst </code> => <code> partition a after truthy indices in b</code>
- <code>Θ</code> | #.` | Zero Slice Until | `0>b`, `zero-slice`, `zero-slice-until`, `take`, `slice-to`, `lst-truncate`, `first-n-items`, `first-n` | 2 | :x: | <code>a: lst, b: num>=0 </code> => <code> [a[0], a[1], ..., a[b-1]]</code><br><code>a: lst, b: num<0 </code> => <code> [a[b + 1], a[b + 2], ..., a[-1]]</code><br><code>a: lst, b: lst[num] </code> => <code> apl style take</code>
- <code>Φ</code> | #.\| | Slice from 1 | `one->b`, `one-slice` | 2 | :x: | <code>a: lst, b: num </code> => <code> a[1:b]</code><br><code>a: num, b: lst </code> => <code> b[1:a]</code>
- <code>§</code> | #,o | Print without newline | `print-no-newline` | NA | :x: | <code>a </code> => <code> printed to stdout without newline</code>
- <code>Ạ</code> | #,A | Assign | `assign`, `assign-at`, `assign<>`, `assign<x>`, `a<x>=`, `a<x>=y`, `a<x>?=y`, `set-item`, `apply-at`, `re-sub`, `regex-sub`, `@=>` | 3 | :x: | <code>a: lst, b: num, c: non-fun </code> => <code> assign c to a at the index b / a[b] = c</code><br><code>a: lst, b: num, c: fun </code> => <code> a[b] c= <stack items> (augmented assignment to list)</code><br><code>a: lst, b: lst, c: lst </code> => <code> assign c to a at the indices in b</code><br><code>a: str, b: str, c: str </code> => <code> replace regex matches of pattern b in string a with c</code><br><code>a: str, b: str, c: fun </code> => <code> replace regex matches of pattern b in string a with the result of applying c to each match</code><br><code>a: str, b: fun, c: str </code> => <code> replace regex matches of pattern c in string a with the result of applying b to each match</code><br><code>a: fun, b: str, c: str </code> => <code> replace regex matches of pattern c in string b with the result of applying a to each match</code><br><code>a: rec, b: str, c: str </code> => <code> a.b = c</code>
- <code>Ḅ</code> | #,B | Unique Prime Factors \| Case Of | `unique-prime-factors`, `case-of` | 1 | :white_check_mark: | <code>a: num </code> => <code> unique prime factors of a</code><br><code>a: str </code> => <code> case of each character of a (uppercase = 1, lowercase = 0)</code>
- <code>Ḥ</code> | #,H | Head Extract Under | `head-extract-under`, `split-at-head-under`, `head-extract-swap`, `headless-swap`, `head-swap` | 1 | :x: | <code>a: lst&#124;str </code> => <code> Push a[1:], then a[0] onto the stack</code>
- <code>Ị</code> | #,I | Insert | `insert`, `insert-at` | 3 | :x: | <code>a: any, b: num, c: any </code> => <code> insert c at position b in a</code><br><code>a: any, b: lst, c: any </code> => <code> insert c at positions b in a</code><br><code>a: any, b: lst[num], c: lst </code> => <code> insert c[i] at position b[i] in a</code>
- <code>Ḷ</code> | #,L | Sort by Length \| Regex Escape | `sort-by-length`, `sort-by-len`, `order-by-length`, `order-by-len`, `length-sort`, `len-sort`, `re-escape`, `regex-escape` | 1 | :x: | <code>a: lst </code> => <code> sort a by length</code><br><code>a: str </code> => <code> escape a for regex</code>
- <code>Ṃ</code> | #,M | -1 Power Of \| Split on Spaces | `neg-one-power-of`, `neg1**`, `neg1^`, `neg1-power-of`, `neg1-power`, `split-on-spaces`, `split-spaces`, `space-split` | 1 | :white_check_mark: | <code>a: num </code> => <code> -1 ** a</code><br><code>a: str </code> => <code> a split on spaces</code>
- <code>Ọ</code> | #,O | Print without popping | `print-no-pop` | NA | :x: | <code>a </code> => <code> printed to stdout without popping</code>
- <code>Ṛ</code> | #,R | Reverse | `reverse`, `rev` | 1 | :x: | <code>a: any </code> => <code> reverse a</code>
- <code>Ṣ</code> | #,S | Sublists | `sublists` | 1 | :x: | <code>a: lst </code> => <code> sublists of a</code>
- <code>Ṭ</code> | #,T | Trim / Cumulative Reduce | `trim`, `scanl`, `cumulative-reduce` | 2 | :x: | <code>a: any, b: any </code> => <code> Trim all elements of b from both sides of a.</code><br><code>a: fun, b: any </code> => <code> cumulative reduce b by function a</code>
- <code>…</code> | #.. | Increment Twice \| Vectorised Head | `incr-twice`, `vec-head` | 1 | :x: | <code>a: num </code> => <code> a + 2</code><br><code>a: lst </code> => <code> [x[0] for x in a]</code>
- <code>≤</code> | #,< | Less Than Or Equal To | `le`, `less-than-or-equal-to` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a <= b</code><br><code>a: str, b: num </code> => <code> a <= str(b)</code><br><code>a: num, b: str </code> => <code> str(a) <= b</code><br><code>a: str, b: str </code> => <code> a <= b</code>
- <code>≥</code> | #,> | Greater Than Or Equal To | `ge`, `greater-than-or-equal-to` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a >= b</code><br><code>a: str, b: num </code> => <code> a >= str(b)</code><br><code>a: num, b: str </code> => <code> str(a) >= b</code><br><code>a: str, b: str </code> => <code> a >= b</code>
- <code>≠</code> | #.= | Not Equal | `not-equal`, `=n't` | 2 | :white_check_mark: | <code>a: any, b: any </code> => <code> a != b</code>
- <code>₌</code> | #,= | Exactly Equals | `===`, `exactly-equal`, `strictly-equal?` | 2 | :x: | <code>a: any, b: any </code> => <code> a === b (non-vectorising)</code>
- <code>⁺</code> | #^+ | Powerset | `powerset` | 1 | :x: | <code>a: lst </code> => <code> powerset of a</code>
- <code>⁻</code> | #^- | Cube \| Threes | `cube`, `threes` | 1 | :white_check_mark: | <code>a: num </code> => <code> a ** 3</code><br><code>a: str </code> => <code> a split into chunks of length 3</code>
- <code>⁾</code> | #^) | Set Intersection \| Flatten By Depth \| Character Multiply | `set-intersection`, `intersection`, `flatten-by-depth`, `intersect` | 2 | :x: | <code>a: lst, b: lst </code> => <code> set intersection of a and b</code><br><code>a: str, b: str </code> => <code> set intersection of a and b</code><br><code>a: lst, b: num </code> => <code> flatten a by depth b</code><br><code>a: num, b: str </code> => <code> each character in b repeated a times</code><br><code>a: str, b: num </code> => <code> each character in a repeated b times</code>
- <code>√</code> | #,* | Square Root | `sqrt`, `square-root` | 1 | :white_check_mark: | <code>a: num </code> => <code> sqrt(a)</code>
- <code>∑</code> |  | Sum | `sum`, `/+`, `+/` | 1 | :x: | <code>a: lst </code> => <code> sum of a</code>
- <code>«</code> | #.< | Bitshift Left | `bitwise-left-shift`, `left-shift`, `left-pad`, `pad-left` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a << b</code><br><code>a: num, b: str </code> => <code> b padded to length a with spaces prepended</code><br><code>a: str, b: num </code> => <code> a padded to length b with spaces prepended</code><br><code>a: str, b: str </code> => <code> a padded to length of b with spaces prepended</code>
- <code>»</code> | #.> | Bitshift Right | `bitwise-right-shift`, `right-shift`, `right-pad`, `pad-right` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a >> b</code><br><code>a: num, b: str </code> => <code> b padded to length a with spaces appended</code><br><code>a: str, b: num </code> => <code> a padded to length b with spaces appended</code><br><code>a: str, b: str </code> => <code> a padded to length of b with spaces appended</code>
- <code>⌐</code> | #.! | Bitwise Not | `bitwise-not` | 1 | :white_check_mark: | <code>a: num </code> => <code> ~a</code>
- <code>∴</code> | #.: | Bitwise And | `bitwise-and` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a & b</code>
- <code>∵</code> | #,: | Bitwise Or | `bitwise-or` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a &#124; b</code>
- <code>⊻</code> | #,v | Bitwise Xor | `bitwise-xor`, `insert-space` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a ^ b</code><br><code>a: str, b: str </code> => <code> a + space + b</code>
- <code>₀</code> | #,0 | Ten | `ten`, `l0` | 0 | :x: | <code></code> => <code> 10</code>
- <code>₁</code> | #,1 | Sixteen | `sixteen`, `l6` | 0 | :x: | <code></code> => <code> 16</code>
- <code>₂</code> | #,2 | Twenty-six | `twenty-six`, `Z6`, `z6` | 0 | :x: | <code></code> => <code> 26</code>
- <code>₃</code> | #,3 | Thirty-two | `thirty-two`, `E2` | 0 | :x: | <code></code> => <code> 32</code>
- <code>₄</code> | #,4 | Sixty-four | `sixty-four`, `b4` | 0 | :x: | <code></code> => <code> 64</code>
- <code>₅</code> | #,5 | One hundred | `one-hundred`, `l00` | 0 | :x: | <code></code> => <code> 100</code>
- <code>₆</code> | #,6 | One hundred twenty-eight | `one-hundred-twenty-eight`, `l28` | 0 | :x: | <code></code> => <code> 128</code>
- <code>₇</code> | #,7 | Two hundred fifty-six | `two-hundred-fifty-six`, `Z56`, `z56` | 0 | :x: | <code></code> => <code> 256</code>
- <code>₈</code> | #,8 | -1 | `negative-one`, `neg-1`, `-1` | 0 | :x: | <code></code> => <code> -1</code>
- <code>₉</code> | #,9 | Empty string | `empty-string`, `<>` | 0 | :x: | <code></code> => <code> ""</code>
- <code>½</code> | #.5 | Halve | `halve` | 1 | :white_check_mark: | <code>a: num </code> => <code> a / 2</code><br><code>a: str </code> => <code> a split into two pieces</code>
- <code>ʀ</code> | #.~ | Exclusive Zero Range \| Lowercase | `0->n`, `zero-range`, `lowered-range`, `to-lower`, `lower`, `lowercase` | 1 | :white_check_mark: | <code>a: num </code> => <code> [0..a)</code><br><code>a: lst[num] </code> => <code> apl-style iota from 0 until a</code><br><code>a: str </code> => <code> a.lower()</code>
- <code>ɾ</code> | #,~ | Inclusive One Range \| Uppercase | `one->n`, `one-range`, `to-upper`, `upper`, `uppercase` | 1 | :white_check_mark: | <code>a: num </code> => <code> [1..a]</code><br><code>a: lst[num] </code> => <code> apl-style iota from 1 to a</code><br><code>a: str </code> => <code> a.upper()</code>
- <code>¯</code> | #^_ | Deltas | `deltas`, `pairwise-differences`, `differences` | 1 | :x: | <code>a: lst </code> => <code> forward pairwise differences of a</code>
- <code>×</code> | #.* | Multiplication | `mul`, `multiply`, `times`, `str-repeat`, `*`, `ring-trans` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a * b</code><br><code>a: num, b: str </code> => <code> b repeated a times</code><br><code>a: str, b: num </code> => <code> a repeated b times</code><br><code>a: str, b: str </code> => <code> ring translate a according to b</code>
- <code>÷</code> | #./ | Divide \| Split | `divide`, `div`, `str-split`, `str-n-pieces`, `n-strings`, `str-pieces`, `string-pieces` | 2 | :white_check_mark: | <code>a: num, b: num </code> => <code> a / b</code><br><code>a: str, b: num </code> => <code> a split into b equal sized chunks, with the last chunk potentially smaller</code><br><code>a: num, b: str </code> => <code> b split into a equal sized chunks, with the last chunk potentially smaller</code><br><code>a: str, b: str </code> => <code> Split a on the string b</code>
- <code>£</code> | #^= | Set Register | `set-register`, `->register`, `set-reg`, `->reg` | 1 | :x: | <code>a: any </code> => <code> register = a</code>
- <code>¥</code> | #^$ | Get Register | `get-register`, `get-reg`, `register`, `<-register`, `<-reg` | NA | :x: | <code> </code> => <code> push the value of the register</code>
- <code>←</code> | #^< | Rotate Stack Left | `rotate-stack-left` | NA | :x: | <code> </code> => <code> rotate the entire stack left once</code>
- <code>↑</code> | #^^ | Grade Up | `grade-up` | 1 | :x: | <code>a: any </code> => <code> indices that will sort a</code>
- <code>→</code> | #^> | Rotate Stack Right | `rotate-stack-right` | NA | :x: | <code> </code> => <code> rotate the entire stack right once</code>
- <code>↓</code> | #^; | Grade Down | `grade-down` | 1 | :x: | <code>a: any </code> => <code> indices that will reverse-sort a</code>
- <code>±</code> | #,+ | Sign | `sign` | 1 | :white_check_mark: | <code>a: num </code> => <code> sign of a</code>
- <code>†</code> | #.& | Length of Consecutive Groups | `len-consecutive`, `gvl`, `gavel` | 1 | :x: | <code>a: any </code> => <code> lengths of consecutive groups of a</code>
- <code>Π</code> |  | Product | `product`, `prod` | 1 | :x: | <code>a: lst </code> => <code> product of a</code>
- <code>¬</code> | #,! | Logical Not | `non-vec-not`, `non-vec-logical-not` | 1 | :x: | <code>a: any </code> => <code> !a</code>
- <code>∧</code> | #,& | Logical And | `and`, `logical-and` | 2 | :white_check_mark: | <code>a: any, b: any </code> => <code> a && b</code>
- <code>∨</code> | #,\| | Logical Or | `or`, `logical-or` | 2 | :white_check_mark: | <code>a: any, b: any </code> => <code> a &#124;&#124; b</code>
- <code>⁰</code> | #^0 | First Input | `first-input`, `input-0` | 0 | :x: | <code>The first input to the program</code>
- <code>¹</code> | #^1 | Second Input | `second-input`, `input-1` | 0 | :x: | <code>The second input to the program</code>
- <code>²</code> | #^2 | Square \| Pairs | `square`, `pairs` | 1 | :white_check_mark: | <code>a: num </code> => <code> a ** 2</code><br><code>a: str </code> => <code> a split into pairs</code>
- <code>⌈</code> |  | Ceiling | `ceiling`, `ceil` | 1 | :white_check_mark: | <code>a: num </code> => <code> ceil(a)</code>
- <code>⌊</code> |  | Floor | `floor`, `str-num`, `str->num`, `str-to-num` | 1 | :white_check_mark: | <code>a: num </code> => <code> floor(a)</code><br><code>a: str </code> => <code> cast a to num by ignoring non-numeric digits. Returns 0 if there's no valid number</code>
- <code>Ɠ</code> | #.9 | Maximum without popping | `max-no-pop` | 1 | :x: | <code>a: lst </code> => <code> max(a) without popping a</code>
- <code>ɠ</code> | #.6 | Minimum without popping | `min-no-pop` | 1 | :x: | <code>a: lst </code> => <code> min(a) without popping a</code>
- <code>„</code> | #," | Join on Spaces \| Is Negative? (Used when not closing a string) | `space-join`, `join-on-spaces`, `is-negative?`, `negative?` | 1 | :x: | <code>a: lst </code> => <code> a join on spaces</code><br><code>a: num </code> => <code> a < 0</code>
- <code>”</code> | #^' | Join On Newlines \| Pad Binary to Mod 8 \| Context if 1 | `join-newlines`, `newline-join`, `join-on-newlines`, `binary-pad-8`, `bin-pad-8`, `one?->context`, `one?->n` | 1 | :x: | <code>a: lst </code> => <code> a join on newlines</code><br><code>a: str </code> => <code> a padded to a multiple of 8 with 0s</code><br><code>a: num </code> => <code> a if a == 1 push context variable n</code>
- <code>ð</code> | #.b | Space | `space` | 0 | :x: | <code></code> => <code> " "</code>
- <code>€</code> | #^( | Suffixes | `suffixes` | 1 | :x: | <code>a: lst </code> => <code> Suffixes of a</code>
- <code>“</code> | #^" | Join on Nothing \| First Positive Integer \| Is Alphanumeric \| Insignificant? | `nothing-join`, `concat-fold`, `join-on-nothing`, `empty-join`, `single-string`, `as-single-string`, `first-positive-integer`, `first-n>0`, `is-alphanumeric`, `is-alphanum`, `is-alnum`, `abs<=1`, `insignificant?`, `insignificant`, `insig?`, `insig` | 1 | :x: | <code>a: lst </code> => <code> a join on nothing</code><br><code>a: str </code> => <code> is a alphanumeric?</code><br><code>a: fun </code> => <code> First positive integer ([1, 2, 3, ...]) for which a returns true</code><br><code>a: num </code> => <code> abs(a) <= 1</code>
- <code>¶</code> | #,␤ | Newline | `newline` | 0 | :x: | <code></code> => <code> chr(10)</code>
- <code>ᶿ</code> | #^` | Bifuricate | `bifuricate`, `bifur`, `bif`, `furry`, `uwu`, `dup-rev`, `dup-reverse`, `owo` | 1 | :x: | <code>a: lst </code> => <code> Push a, then push a reversed</code>
- <code>ᶲ</code> | #^\| | Stringify | `to-string`, `stringify`, `str` | 1 | :x: | <code>a: any </code> => <code> str(a)</code>
- <code>•</code> | #,. | Asterisk | `asterisk` | 0 | :x: | <code></code> => <code> "*"</code>
- <code>≈</code> | #^~ | All Equal? | `all-equal`, `all-equal?` | 1 | :x: | <code>a: lst </code> => <code> are all elements of a equal?</code>
- <code>ꜝ</code> | #^! | Increment | `incr`, `increment` | 1 | :white_check_mark: | <code>a: num </code> => <code> a + 1</code>
- <code>#?</code> |  | All Inputs | `all-inputs`, `inputs`, `all-stdin`, `all-stdin?` | NA | :x: | <code>A list of all inputs to the program</code>
- <code>#C</code> |  | Compress String Using Dictionary | `compress-dict`, `dict-comp`, `compress` | 1 | :x: | <code>a: str </code> => <code> compress a using the dictionary</code>
- <code>#Q</code> |  | Exit \| Quit | `exit`, `quit` | NA | :x: | <code>a </code> => <code> Stop program execution</code>
- <code>#X</code> |  | Loop Break | `break` | 0 | :x: | <code> </code> => <code> break out of the current loop</code>
- <code>#c</code> |  | Base-252 Compress String or Number | `compress-252`, `compress-b` | 1 | :white_check_mark: | <code>a: str </code> => <code> compress a using base 252</code><br><code>a: num </code> => <code> compress a using base 252</code>
- <code>#v</code> |  | [Internal Use] Vectorise (Element Form) |  | NA | :x: | <code>*a, f </code> => <code> f vectorised over however many arguments in a. It is recommended to use the modifier instead</code>
- <code>#x</code> |  | Loop Continue | `continue` | 0 | :x: | <code> </code> => <code> continue the current loop</code>
- <code>#~</code> |  | [Internal Use] Apply Without Popping (Element Form) |  | NA | :x: | <code>*a, f </code> => <code> f applied to the stack without popping items. Use the modifier instead.</code>
- <code>#¤</code> |  | Number of Context Parameters | `number-of-context`, `context-number`, `context-count` | 0 | :x: | <code></code> => <code> number of context parameters</code>
- <code>#¿</code> |  | Number of Inputs | `number-of-inputs`, `count-inputs`, `count-stdin` | 0 | :x: | <code></code> => <code> The number of inputs to the program</code>
- <code>∆<</code> |  | Argument / Phase / Angle | `arg`, `phase`, `angle` | 1 | :white_check_mark: | <code>a: num </code> => <code> Arg(a)</code>
- <code>∆A</code> |  | Arithmetic Mean | `mean`, `arithmetic-mean` | 1 | :x: | <code>a: lst[num] => arithmetic mean of a (sum(a) / len(a))</code>
- <code>∆C</code> |  | Hyperbolic Cosine | `cosh`, `hyperbolic-cosine` | 1 | :white_check_mark: | <code>a: num </code> => <code> cosh(a)</code>
- <code>∆G</code> |  | Geometric Mean | `geometric-mean` | 1 | :x: | <code>a: lst[num] => geometric mean of a (prod(a) ** (1 / len(a)))</code>
- <code>∆H</code> |  | Harmonic Mean | `harmonic-mean` | 1 | :x: | <code>a: lst[num] => harmonic mean of a (len(a) / sum(1 / a))</code>
- <code>∆I</code> |  | Imaginary Part | `imag`, `imaginary`, `imaginary-part` | 1 | :white_check_mark: | <code>a: num </code> => <code> Im(a)</code>
- <code>∆L</code> |  | Least Common Multiple | `lcm` | 2 | :x: | <code>a: num, b: num </code> => <code> lcm(a, b)</code><br><code>a: lst[num], b: num </code> => <code> lcm of b and all elements of a</code><br><code>a: lst[num] </code> => <code> lcm of all items in a.</code>
- <code>∆R</code> |  | Real Part | `real`, `real-part` | 1 | :white_check_mark: | <code>a: num </code> => <code> Re(a)</code>
- <code>∆S</code> |  | Hyperbolic Sine | `sinh`, `hyperbolic-sine` | 1 | :white_check_mark: | <code>a: num </code> => <code> sinh(a)</code>
- <code>∆T</code> |  | Hyperbolic Tangent | `tanh`, `hyperbolic-tangent` | 1 | :white_check_mark: | <code>a: num </code> => <code> tanh(a)</code>
- <code>∆c</code> |  | Cosine | `cos`, `cosine` | 1 | :white_check_mark: | <code>a: num </code> => <code> cos(a)</code>
- <code>∆q</code> |  | Prime Exponents | `prime-exponents`, `prime-exps` | 1 | :white_check_mark: | <code>a: num </code> => <code> push a list of the power of each prime in the prime factors of a</code>
- <code>∆s</code> |  | Sine | `sin`, `sine` | 1 | :white_check_mark: | <code>a: num </code> => <code> sin(a)</code>
- <code>∆t</code> |  | Tangent | `tan`, `tangent` | 1 | :white_check_mark: | <code>a: num </code> => <code> tan(a)</code>
- <code>∆Ṗ</code> |  | Polar Parts | `polar-parts` | 1 | :x: | <code>a: num </code> => <code> push r, theta (polar coordinates of 'a', which is a complex number)</code>
- <code>∆Ṫ</code> |  | Dyadic Arctangent / Dyadic Inverse Tangent | `atan2`, `arctan2`, `arctangent2` | 2 | :white_check_mark: | <code>y: num, x: num </code> => <code> atan2(y, x)</code>
- <code>∆ċ</code> |  | Arccosine / Inverse Cosine | `acos`, `arccos`, `arccosine` | 1 | :white_check_mark: | <code>a: num </code> => <code> acos(a)</code>
- <code>∆ḋ</code> |  | Radians to Degrees | `rad2deg`, `rad-to-deg` | 1 | :white_check_mark: | <code>a: num </code> => <code> a from radians to degrees (a * 180 / pi)</code>
- <code>∆ḟ</code> |  | All Prime Exponents | `all-prime-exponents`, `all-prime-exps` | 1 | :white_check_mark: | <code>a: num </code> => <code> for all primes less than or equal to a, push the power of that prime in the factorisation of a</code>
- <code>∆ṗ</code> |  | Complex Parts | `complex-parts` | 1 | :x: | <code>a: num </code> => <code> real part of a, imaginary part of a</code>
- <code>∆ṙ</code> |  | Degrees to Radians | `deg2rad`, `deg-to-rad` | 1 | :white_check_mark: | <code>a: num </code> => <code> a from degrees to radians (a * pi / 180)</code>
- <code>∆ṡ</code> |  | Arcsine / Inverse Sine | `asin`, `arcsin`, `arcsine` | 1 | :white_check_mark: | <code>a: num </code> => <code> asin(a)</code>
- <code>∆ṫ</code> |  | Arctangent / Inverse Tangent | `atan`, `arctan`, `arctangent` | 1 | :white_check_mark: | <code>a: num </code> => <code> atan(a)</code>
- <code>∆Ṛ</code> |  | Principal Root Of Unity | `root-of-unity` | 1 | :white_check_mark: | <code>a: num => principal a-th root of unity (e^(2i * pi / a))</code>
- <code>øA</code> |  | Letter Number Swap | `letter-to-number`, `number-to-letter`, `letter-number-swap`, `number-letter-swap`, `a1-swap` | 1 | :white_check_mark: | <code>a: str </code> => <code> the index of a in the alphabet (one-indexed)</code><br><code>a: int </code> => <code> the a-th letter of the alphabet (one-indexed)</code>
- <code>ø⁾</code> |  | Surround | `surround` | 2 | :x: | <code>a: any, b: any </code> => <code> a prepended and appended to b</code>
- <code>Þ0</code> |  | Zero Pad | `zero-pad`, `pizza-tower` | 2 | :x: | <code>a: lst&#124;str, b: num </code> => <code> a padded with 0s to length b. Positive b prepends 0s, negative b appends 0s</code><br><code>a: lst&#124;str, b: lst&#124;str </code> => <code> a padded with 0s to length of b. Positive b prepends 0s, negative b appends 0s</code>
- <code>ÞO</code> |  | Grid Neighbours (Wrap Around) | `grid-neighbours-wrap`, `grid-neighbors-wrap`, `adjacent-cells-wrap`, `adj-cells-wrap`, `surrounding-cells-wrap` | 1 | :x: | <code>a: lst[lst] </code> => <code> Grid neighbours of a - up, down, left, right - wrapping around</code><br><code>a: lst[lst], b: num </code> => <code> Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b => 0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does</code>
- <code>ÞP</code> |  | Set of All Primes | `PP`, `primes` | 0 | :x: | <code></code> => <code> The set of all primes</code>
- <code>ÞR</code> |  | Reshape | `reshape` | 2 | :x: | <code>a: lst, b: lst[num] => a reshaped to shape b</code>
- <code>ÞT</code> |  | Transpose Safe | `transpose-safe` | 1 | :x: | <code>a: any </code> => <code> transpose a</code>
- <code>Þh</code> |  | Ends | `ends`, `sides`, `edges` | 1 | :x: | <code>a: lst </code> => <code> [a[0], a[-1]]</code><br><code>a: str </code> => <code> [a[0], a[-1]]</code><br><code>a: cmx </code> => <code> [real, imaginary]</code><br><code>a: num </code> => <code> [digit[0], digit[-1]]</code>
- <code>Þi</code> |  | Multidimensional Index | `md-index` | 2 | :x: | <code>a: lst, b: lst[num] </code> => <code> a[b[0]][b[1]]...[b[n]]</code>
- <code>Þo</code> |  | Grid Neighbours | `grid-neighbours`, `grid-neighbors`, `adjacent-cells`, `adj-cells`, `surrounding-cells` | 1 | :x: | <code>a: lst[lst] </code> => <code> Grid neighbours of a - right, down, left, up of a</code><br><code>a: lst[lst], b: num </code> => <code> Grid neighbours of a - right, down, left, up of a and start from direction b => 0: right, 1: down, 2: left, 3: up. Negative b does not include middle, positive b does</code>
- <code>ÞĊ</code> |  | Cycle \| Is Positive? | `cycle`, `is-positive?`, `positive?`, `>0?` | 1 | :x: | <code>a: lst </code> => <code> a ++ a ++ a ++ ...</code><br><code>a: num </code> => <code> a > 0</code>
- <code>ÞȮ</code> |  | Grid Neighbours (Diagonals, Wrap Around) | `grid-neighbours-diagonals-wrap`, `grid-neighbors-diagonals-wrap`, `adjacent-cells-diagonals-wrap`, `adj-cells-diagonals-wrap`, `surrounding-cells-diagonals-wrap`, `eight-cells-wrap` | 1 | :x: | <code>a: lst[lst] </code> => <code> Grid neighbours of a - up, down, left, right, diagonals - wrapping around</code><br><code>a: lst[lst], b: num </code> => <code> Grid neighbours of a - right, down, left, up of a, wrapping around and start from direction b => 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does</code>
- <code>ÞẊ</code> |  | Cartesian Product Unsafe | `cartesian-product-unsafe`, `cartesian-unsafe`, `cart-prod-unsafe`, `cart-unsafe` | 2 | :x: | <code>a: list, b: list </code> => <code> cartesian product of a and b in the standard order, but without accounting for infinite lists</code>
- <code>Þι</code> |  | 0-Lift | `zero-lift`, `lift-0`, `O-lift` | 1 | :x: | <code>a: lst </code> => <code> each item of a multiplied by its 0-based index</code>
- <code>Þκ</code> |  | 1-Lift | `one-lift`, `lift-1`, `l-lift` | 1 | :x: | <code>a: lst </code> => <code> each item of a multiplied by its 1-based index</code>
- <code>Þċ</code> |  | Multi-Set XOR | `multi-set-xor` | 2 | :x: | <code>a: lst, b: lst </code> => <code> multi-set xor of a and b</code>
- <code>Þṅ</code> |  | Multi-Set Difference | `multi-set-difference`, `multi-set-diff` | 2 | :x: | <code>a: lst, b: lst </code> => <code> multi-set difference of a and b</code>
- <code>Þȯ</code> |  | Grid Neighbours (Diagonals) | `grid-neighbours-diagonals`, `grid-neighbors-diagonals`, `adjacent-cells-diagonals`, `adj-cells-diagonals`, `surrounding-cells-diagonals`, `eight-cells` | 1 | :x: | <code>a: lst[lst] </code> => <code> Grid neighbours of a - up, down, left, right, diagonals</code><br><code>a: lst[lst], b: num </code> => <code> Grid neighbours of a - right, down, left, up of a and start from direction b => 0: right, 1: down, 2: left, 3: up, 4: down-right, 5: up-left, 6: down-left, 7: up-left. Negative b does not include middle, positive b does</code>
- <code>ÞẠ</code> |  | Multidimensional Assignment | `md-assign` | 3 | :x: | <code>a: lst, b: lst[num], c: any </code> => <code> a[b[0]][b[1]]...[b[n]] = c</code>
- <code>ÞỊ</code> |  | Indices Where Truthy | `where`, `where-truthy`, `indices-truthy`, `indices-where-truthy` | 1 | :x: | <code>a: lst => indices of truthy elements of a</code>
- <code>ÞṂ</code> |  | Matrix Inverse | `matrix-inverse` | 1 | :white_check_mark: | <code>a: lst[lst] </code> => <code> matrix inverse of a</code>
- <code>ÞṆ</code> |  | Set of Natural Numbers | `NN` | 0 | :x: | <code></code> => <code> The set of all natural numbers</code>
- <code>ÞṬ</code> |  | Set of Integers | `ZZ` | 0 | :x: | <code></code> => <code> The set of all integers</code>
- <code>Þ⁾</code> |  | Multi-Set Intersection | `multi-set-intersection`, `multi-set-intersect` | 2 | :x: | <code>a: lst, b: lst </code> => <code> multi-set intersection of a and b</code>
- <code>Þ÷</code> |  | Into N Pieces \| Split Into N Pieces | `into-n-pieces`, `split-into-n-pieces` | 2 | :x: | <code>a: lst, b: num </code> => <code> a split into b equal sized chunks, with the last chunk potentially smaller</code><br><code>a: str, b: num </code> => <code> a split into b equal sized chunks, with the last chunk potentially smaller</code>
-
-## Modifiers
-
-| Symbol | Trigraph | Name | Keywords | Arity | Description | Usage |
- --- | --- | --- | --- | --- | --- | --- |
- <code>∺</code> | <code></code> | Correspond | `correspond:`, `fork:` | 2 | Given two monadic functions, ∺FG applies F to under the top, and G to the top<br>Given two dyadic functions, ∺FG calculates F(...) then G(...) | 
- <code>ᵃ</code> | <code>#^a</code> | Apply to Neighbours \| Number of Truthy Elements | `apply-to-neighbours:`, `count-truthy:`, `apply-neighbours:`, `apply-to-neighbors:`, `apply-neighbors:`, `2lvf:`, `twolif:`, `to-pairs:`, `to-overlaps:`, `count:` | 1 | To each overlapping pair, reduce it by an element<br>Apply a dyadic element for all pairs of neighboring elements.<br>Count the number of truthy elements in a list under a mondaic element | <code>ȧf<monad>: Count how many items in a list are truthy after applying f to each</code><br><code>ᵃf<dyad>: equivalent to pushing the function, then calling ȧ</code>
- <code>ᵇ</code> | <code>#^b</code> | Apply Without Popping \| Remove Duplicates by | `without-popping:`, `peek:`, `dedup-by:`, `remove-duplicates-by:` | 1 | Apply a 2+ arity element to the stack without popping<br>Remove duplicates from a list by an element | <code>ᵇf<dyad&#124;triad&#124;tetrad>: apply f to the stack without popping</code><br><code>ᵇf<monad>: remove duplicates from a list by applying f to each pair of elements</code>
- <code>ᶜ</code> | <code>#^c</code> | Reduce Columns \| Map Over Suffixes | `reduce-columns:`, `map-over-suffixes:`, `fold-cols:`, `foldl-cols:`, `fold-columns-by:`, `reduce-columns-by:`, `over-suffixes:` | 1 | Reduce columns of a 2d list by a function<br>Map an element over suffixes | 
- <code>ᵈ</code> | <code>#^d</code> | Dyadic Single Element Lambda | `*2:` | 1 | Turn the next element (whether that be a structure/modifier/element) into a dyadic lambda | <code>ᵈf: Push the equivalent of λ2&#124;f} to the stack</code>
- <code>ᵉ</code> | <code>#^e</code> | Dyadic Double Element Lambda | `**2:` | 2 | Turn the next two elements (whether that be a structure/modifier/element) into a dyadic lambda | <code>ᵉfg: Push the equivalent of λ2&#124;fg} to the stack</code>
- <code>ᶠ</code> | <code>#^f</code> | Dyadic Triple Element Lambda | `***2:` | 3 | Turn the next three elements (whether that be a structure/modifier/element) into a dyadic lambda | <code>ᶠfgh: Push the equivalent of λ2&#124;fgh} to the stack</code>
- <code>ᴳ</code> | <code></code> | Dyadic Quadruple Element Lambda | `****2:` | 4 | Turn the next four elements (whether that be a structure/modifier/element) into a dyadic lambda | <code>ᵍfghi: Push the equivalent of λ2&#124;fghi} to the stack</code>
- <code>ᴴ</code> | <code>#^H</code> | Apply To Head | `apply-to-head:` | 1 | Apply element only to the head of list | <code>ᴴf: Apply f to the head of the top of the stack</code>
- <code>ᶤ</code> | <code>#^i</code> | First Index Where | `first-index-where:`, `first-index-of:`, `ind-of:`, `find-by:` | 1 | Find the first index where an element is truthy | <code>ᶤf: find the first index where f is truthy</code>
- <code>ᶨ</code> | <code>#^j</code> | Loop and Collect While Unique | `collect-while-unique:` | 1 | Loop and Collect While Unique | <code>ᶨf: Loop and collect while unique</code>
- <code>ᵏ</code> | <code>#^k</code> | Key | `key:` | 1 | Map an element over the groups formed by identical items. | <code>ᵏf: Map f over the groups formed by identical items</code>
- <code>ᶪ</code> | <code>#^l</code> | Loop While Unique | `loop-while-unique:` | 1 | Loop While Unique - similar to ᶨ, but doesn't collect | <code>ᶪf: Loop while unique</code>
- <code>ᵐ</code> | <code>#^m</code> | Maximum By | `max-by:`, `maximum-by:` | 1 | Maximum By Element | <code>ᵐf: Maximum of top of stack based on results of f</code>
- <code>ⁿ</code> | <code>#^n</code> | Minimum By | `min-by:`, `minimum-by:` | 1 | Minimum By Element | <code>ᵐf: Minimum of top of stack based on results of f</code>
- <code>ᵒ</code> | <code>#^o</code> | Outer Product \| Table | `outer-product:`, `table:` | 1 | Outer product | <code>ᵒf: Pop two lists, then make a matrix from them by applying f to each pair of elements</code>
- <code>ᵖ</code> | <code>#^p</code> | Map Over Prefixes | `map-over-prefixes:`, `over-prefixes:` | 1 | Map an element over the prefixes of a list | <code>ᵖf: Map f over prefixes</code>
- <code>ᴿ</code> | <code>#^R</code> | Apply to Register | `apply-to-register:`, `to-register:`, `to-reg:` | 1 | Apply a function to the register. Essentially, push<br>the register value to the stack, apply the function, and<br>then pop back into the register | <code>ᴿf: Apply f to the register</code>
- <code>ᶳ</code> | <code>#^s</code> | Sort By | `sort-by:`, `scanl:` | 1 | Sort By Element / Scanl | <code>ᶳf: Sort top of stack based on results of f</code><br><code>ᶳf: Cumulatively reduce a list of items</code>
- <code>ᵗ</code> | <code>#^t</code> | Map as Stacks | `vec-dump:`, `map-dump:` | 1 | Map a function over the top of the stack, treating each iteration<br>as if it were a stack of items. Essentially, dump before mapping | 
- <code>ᵘ</code> | <code>#^u</code> | Collect Until No Change / Neighbours All Equal? | `collect-until-no-change:`, `until-stable:`, `stablise:`, `neighbours-equals:` | 1 | Run func on the prev result until the result no longer changes<br>returning all intermediate results<br>Given a dyadic function, apply the function to all overlapping pairs of elements<br>and test if all results are equal | <code>ᵘf: Collect until no change</code>
- <code>ᵛ</code> | <code>#^v</code> | Vectorise | `vectorise:`, `vec:`, `v:` | 1 | Vectorises | <code>ᵛf: f but vectorised</code>
- <code>ᵂ</code> | <code>#^W</code> | Dip | `dip:` | 1 | Stash the top of the stack temporarily, and then apply<br>the function. Finally, push the stashed value | <code>ᵂf: pop M, apply f, push M</code>
- <code>ᵡ</code> | <code>#^X</code> | Scan Fixed Point | `scan-fix:` | 1 | Scan a function until it reaches a fixed point | <code>ᵡf: scan f until a fixed point is reached / apply until a previous value is repeated, collecting intermediate results</code>
- <code>ᵞ</code> | <code>#^y</code> | Invariant Under? / Vertical Scan | `invariant-under:`, `vertical-scan:`, `vscan:`, `v-scan:`, `invariant?:`, `same?:` | 1 | Check if a function is invariant under a transformation / vertical scan | <code>ᵞf: check if top of stack is invariant under a transformation</code><br><code>ᵞf: scanl columns by f</code>
- <code>ᶻ</code> | <code>#^z</code> | Zip With / Reject by | `zip-with:`, `zipwith:` | 1 | Given a dyadic function, zip two lists and reduce each by f<br>Given a monadic function, the inverse of monadic /.<br>Filters where the function is falsey | 
- <code>⸠</code> | <code>#^.</code> | Single Element Lambda | `*:` | 1 | Turn the next element (whether that be a structure/modifier/element) into a lambda | <code>⸠f: Push the equivalent of λf} to the stack</code>
- <code>ϩ</code> | <code>#^:</code> | Double Element Lambda | `**:` | 2 | Turn the next two elements (whether that be a structure/modifier/element) into a lambda | <code>ϩfg: Push the equivalent of λfg} to the stack</code>
- <code>э</code> | <code>#^%</code> | Triple Element Lambda | `***:` | 3 | Turn the next three elements (whether that be a structure/modifier/element) into a lambda | <code>эfgh: Push the equivalent of λfgh} to the stack</code>
- <code>Ч</code> | <code>#^4</code> | Quadruple Element Lambda | `****:` | 4 | Turn the next four elements (whether that be a structure/modifier/element) into a lambda | <code>Чfghi: Push the equivalent of λfghi} to the stack</code>
- <code>ᵜ</code> | <code>#^*</code> | Lambda to Newline | `<-}` | -1 | Scan elements to the left until a newline is found. Push a<br>lambda with all of the scanned elements | <code><elements>ᵜ: Push a lambda</code>
- <code>/</code> | <code></code> | Foldl \| Reduce By \| Filter by | `foldl:`, `reduce:`, `/:`, `fold:`, `reduceby:-` | 1 | Reduce a list by an element | <code>/f: reduce by element f</code>
- <code>∥</code> | <code></code> | Parallel Apply | `parallel-apply:`, `para-apply:`, `paraply:`, `!!:` | 2 | Parallel apply two elements to the top of the stack | 
- <code>∦</code> | <code></code> | Parallel Apply and Wrap | `parallel-apply-and-wrap:`, `para-apply-and-wrap:`, `<paraply>:`, `<!!>:` | 2 | Parallel apply two elements to the top of the stack<br>and wrap the result in a list | 
- <code>¿</code> | <code>#.?</code> | Conditional Execution | `if-top:`, `if:` | 1 | Pop the top of the stack, and, if it's truthy, apply a function | 
-
-## Syntax Features
-
-| Symbol | Trigraph | Name | Keywords (if applicable) | Description | Usage |
- --- | --- | --- | --- | --- | --- |
- `ᶴ` |  | Two Character String | <code></code> | Push the next two characters as a string | <pre>ᶴ&lt;character&gt;&lt;character&gt;</pre>
- `"` |  | Open/Close String | <code></code> | Open/close a string. If the string is closed, push it to the stack. Closes all string types | <pre>"string contents"</pre>
- `'` |  | One Character String | <code></code> | Push the next character as a string | <pre>'&lt;character&gt;</pre>
- `(` |  | For Loop | <code>for for< do-to-each each-as</code> | Open a for loop. For each item in the top of the stack, execute code, storing loop variable. | <pre>&lt;iterable&gt; (&lt;variable&gt;\|&lt;code&gt;}</pre>
- `)` |  | Close Two Structures | <code>end-end</code> | Match and close two open structures. | <pre>&lt;structure open&gt;&lt;structure open&gt; &lt;code&gt; ) &lt;code not in structure&gt;</pre>
- `.` |  | Decimal Separator | <code></code> | Used to separate the integer and fractional parts of a number | <pre>&lt;integer&gt;.&lt;fractional&gt;</pre>
- `0` |  | Numeric Literal | <code></code> | The number 0 | <pre>0</pre>
- `1` |  | Numeric Literal | <code></code> | The number 1 | <pre>1</pre>
- `2` |  | Numeric Literal | <code></code> | The number 2 | <pre>2</pre>
- `3` |  | Numeric Literal | <code></code> | The number 3 | <pre>3</pre>
- `4` |  | Numeric Literal | <code></code> | The number 4 | <pre>4</pre>
- `5` |  | Numeric Literal | <code></code> | The number 5 | <pre>5</pre>
- `6` |  | Numeric Literal | <code></code> | The number 6 | <pre>6</pre>
- `7` |  | Numeric Literal | <code></code> | The number 7 | <pre>7</pre>
- `8` |  | Numeric Literal | <code></code> | The number 8 | <pre>8</pre>
- `9` |  | Numeric Literal | <code></code> | The number 9 | <pre>9</pre>
- `[` |  | Ternary Statement | <code>? ?-></code> | Open a ternary statement. Pop condition, if truthy, run <ontrue>, else run <onfalse> | <pre>&lt;condition&gt; [&lt;ontrue&gt;\|&lt;onfalse&gt;}</pre>
- `]` |  | Close All Structures | <code>close-all end-all</code> | Match and close all open structures. | <pre>&lt;structure openers&gt;] &lt;code not in structure&gt;</pre>
- `k` |  | Constant Digraphs | <code></code> | Used for constant-related digraphs | <pre>k&lt;character&gt;</pre>
- `{` |  | While Loop | <code>while while<</code> | Open a while loop. While the top of the stack is truthy, execute code. | <pre>{&lt;condition&gt;\|&lt;code&gt;}</pre>
- `\|` |  | Structure Branch | <code>: -> else: else elif else-if body do branch then in using no? => from</code> | Delimit the next section in a structure. | <pre>&lt;structure open&gt; &lt;code&gt; \| &lt;code&gt; ...</pre>
- `}` |  | Close A Structure | <code>end endfor end-for endwhile end-while endlambda end-lambda end</code> | Match and close the nearest open structure. | <pre>&lt;structure open&gt; &lt;code&gt; } &lt;code not in structure&gt;</pre>
- `~` |  | Two Byte Number | <code></code> | Push the next two bytes as a number, converted from bijective base 255 using the codepage | <pre>~&lt;character&gt;&lt;character&gt;</pre>
- `Ḍ` | `#,D` | Open Decision Problem Structure | <code>exists<</code> | Open a decision problem structure. Returns whether an iterable has any items that match a predicate | <pre>Ḍ&lt;predicate&gt;\|&lt;container&gt; }</pre>
- `Ṇ` | `#,N` | Generator Structure | <code>relation< generate< generate-from<</code> | Open a generator structure. Allows for generator expressions | <pre>Ṇ&lt;code&gt;\|&lt;initial vector&gt;}</pre>
- `λ` | `#.{` | Open Lambda | <code>lam lambda {</code> | Open a lambda. | <pre>λ&lt;parameters&gt;\|&lt;code&gt;}</pre>
- `ƛ` | `#.[` | Open Map Lambda | <code>map-lam map< map-lambda</code> | Open a lambda that automatically maps its function to the top of the stack | <pre>ƛ&lt;code&gt;}</pre>
- `Ω` | `#.(` | Open Filter Lambda | <code>filter-lam filter< filter-lambda</code> | Open a lambda that automatically filters the top of the stack by its function | <pre>Ω&lt;code&gt;}</pre>
- `₳` | `#,{` | Open Reduce/Accumulate Lambda | <code>reduce-lam reduce< reduce-lambda fold< fold-lam fold-lambda</code> | Open a lambda that automatically reduces/accumulates the top of the stack by its function | <pre>₳&lt;code&gt;}</pre>
- `µ` | `#,(` | Open Sort Lambda | <code>sort-lam sort< sort-lambda</code> | Open a lambda that automatically sorts the top of the stack by its function | <pre>µ&lt;code&gt;}</pre>
- `¤` | `#.@` | Context Paramter Index | <code>`n`</code> | Index into the list of context parameters. | <pre>¤&lt;number&gt;</pre>
- `ı` | `#.i` | Imaginary Number | <code>i</code> | Used to represent the imaginary unit | <pre>&lt;real&gt;ı&lt;imaginary&gt;</pre>
- `„` | `#,"` | Base-252 Compressed String | <code></code> | Decompress and push a string, converted from a bijective base 252 number using the codepage | <pre>"&lt;compressed string&gt;„</pre>
- `”` | `#^'` | Dictionary Compressed String | <code></code> | Decompress and push a string using SSS compression, shamelessly stolen from Jelly | <pre>"&lt;compressed string&gt;”</pre>
- `“` | `#^"` | Base-252 Compressed Number | <code></code> | Decompress and push a number, converted from a bijective base 252 number using the codepage | <pre>"&lt;compressed number&gt;“</pre>
- `#:[` |  | Variable Unpacking | <code>:=[</code> | Unpack the top of the stack into a list of variables. | <pre>#:[&lt;var&gt;\|&lt;var&gt;\|&lt;var&gt;]</pre>
- `#:\\`` |  | Defined Modifier Call | <code>$:</code> | Call a defined modifier | <pre>#:`&lt;name&gt;</pre>
- `#:@` |  | Defined Element Call | <code>$@</code> | Call a defined element | <pre>#:@&lt;name&gt;</pre>
- `#:R` |  | Record Definition | <code>record</code> | Define a record with members | <pre>#:R&lt;name&gt;\|#$restricted #=private #!public}</pre>
- `#::` |  | Element/Modifier Definition | <code>define</code> | Define a custom element/modifier that can be used in programs | <pre>#::&lt;mode&gt;&lt;name&gt;\|&lt;arg&gt;\|&lt;arg&gt;...\|&lt;code&gt;}</pre>
- `#:~` |  | Retrieve Original Element | <code>$.</code> | Call the original, vyxal defined, meaning of an element. Useful for when you want to define a new element with the same name as a built-in one | <pre>#:~&lt;name&gt;</pre>
- `#:>>` |  | Extension Method | <code>extension</code> | Define an overload on a custom element based on types. Requires at least one type to be specified. | <pre>#:&gt;&gt;&lt;name&gt;\|&lt;arg1&gt;\|&lt;type1&gt;\|&lt;arg2&gt;\|&lt;type2&gt;...\|&lt;impl&gt;}</pre>
- `#` |  | Miscellaneous Digraphs | <code></code> | Used for miscellaneous digraphs | <pre>#&lt;character&gt;</pre>
- `##` |  | Comment | <code></code> | Comment out the rest of the line | <pre>##&lt;comment&gt;</pre>
- `#$` |  | Retrieve Variable | <code>$</code> | Push the value of a variable. | <pre>#$&lt;variable&gt;</pre>
- `#=` |  | Assign Variable | <code>:=</code> | Assign a variable to a value. | <pre>#=&lt;variable&gt;</pre>
- `#>` |  | Augmented Assignment | <code>:></code> | Apply a function to a variable value and store the result in the same variable. | <pre>&lt;function&gt; #&gt; &lt;variable&gt;</pre>
- `#[` |  | Open List | <code>[</code> | Open a list. Pushes the list to the stack when closed. | <pre>#[item\|item\|item#]</pre>
- `#]` |  | Close List | <code>]</code> | Close a list. Pushes the list to the stack when closed. | <pre>#[item\|item\|item#]</pre>
- `#{` |  | If/Elif/Else Statement | <code>if</code> | Open an if statement. Allows for if/elif/else statements | <pre>#{&lt;if condition&gt;\|&lt;code&gt;\|&lt;else if condition&gt;\|&lt;code&gt;\|&lt;else code&gt;}</pre>
- `∆` | `#.\` | Mathematical Digraphs | <code></code> | Used for math-related digraphs | <pre>∆&lt;character&gt;</pre>
- `ø` | `#,/` | String Digraphs | <code></code> | Used for string-related digraphs | <pre>ø&lt;character&gt;</pre>
- `Þ` | `#.)` | List Digraphs | <code></code> | Used for list-related digraphs | <pre>Þ&lt;character&gt;</pre>
+| Symbol | Arity | Vectorises | Peeks | Overloads |
+|--------|-------|------------|-------|-----------|
+| ⊞ | 1 | false | false | Counts of Items: [#1.count(x) for x in set(#1)] |
+| ÷ | 2 | true | false | Division: #1 / #2</br>String into N Pieces: Split string ArraySeq(#1, #2) into ArraySeq(#2, #1)</br>String into N Pieces: Split string ArraySeq(#2, #1) into ArraySeq(#1, #2)</br>Regex Split: Split #1 by regex #2 |
+| × | 2 | true | false | Multiplication: #1 * #2 (#1 times #2)</br>String Repeat: Repeat string ArraySeq(#1, #2) ArraySeq(#2, #1)</br>String Repeat: Repeat string ArraySeq(#2, #1) ArraySeq(#1, #2)</br>Ring Translate: Ring translate #1 according to #2.  |
+| ∧ | 2 | false | false | Short Circuit And: Short circuit and - if #2 is false, return #2, else return #1 |
+| ∨ | 2 | false | false | Short Circuit Or: Short circuit or - if #2 is true, return #2, else return #1 |
+| ¬ | 1 | false | false | Not: if #1 is truthy, return False, else return True |
+| ʀ | 1 | true | false | Range 0: Range from 0 to #1, exclusive |
+| ʁ | 1 | true | false | Range 0 Inclusive: Range from 0 to #1, inclusive |
+| ɾ | 1 | true | false | Range 1 Inclusive: Range from 1 to #1, inclusive |
+| ‹ | 1 | true | false | Decrement: #1 - 1 |
+| › | 1 | true | false | Increment: #1 + 1 |
+| ! | 1 | true | false | Factorial: Factorial of #1 |
+| $ | 2 | false | false | Swap: Swap #1 and #2 on the stack: #1 #2 -> #2 #1 |
+| % | 2 | true | false | Modulo: #1 % #2 (remainder of #1 divided by #2)</br>String Format: Format ArraySeq(#1, #2) with ArraySeq(#2, #1)</br>String Format: Format ArraySeq(#2, #1) with ArraySeq(#1, #2) |
+| & | 2 | false | false | Append: Append #2 to #1 |
+| * | 2 | true | false | Exponentiation: #1 ** #2 |
+| + | 2 | true | false | Addition: #1 + #2</br>String and Number Concatenation: ArraySeq(#1, str(#1)) + ArraySeq(str(#1), #1)</br>String and Number Concatenation: ArraySeq(str(#2), #2) + ArraySeq(#2, str(#2))</br>String Concatenation: #1 + #2 |
+| , | 1 | false | false | Print: Print #1 to stdout, followed by a newline |
+| - | 2 | true | false | Subtraction: #1 - #2</br>Prepend/Append Hyphens: ArraySeq(#1, '-' * #1) + ArraySeq('-' * #1, #1)</br>Prepend/Append Hyphens: ArraySeq(#2 * '-', #2) + ArraySeq(#2, #2 * '-')</br>Regex Remove: Remove matches of #2 from #1 |
+| : | 1 | false | false | Duplicate: Push #1 twice to the stack: #1 -> #1 #1 |
+| ; | 2 | false | false | Pair: Push a list [#1, #2] to the stack: #1 #2 -> [#1, #2] |
+| < | 2 | true | false | Less Than: #1 < #2 |
+| = | 2 | true | false | Equals: #1 == #2 |
+| > | 2 | true | false | Greater Than: #1 > #2 |
+| ? | 0 | false | false | Input: Get the next input item, evaluated. |
+| @ | 2 | true | false | Absolute Difference: Absolute difference between #1 and #2</br>Levenstein Distance: Levenstein distance between #1 and #2</br>Reduce Overlapping Pairs: Reduce overlapping pairs in {#1|#2} by function {#2|#1} |
+| A | 1 | false | false | All: Are all elements of #1 are truthy |
+| B | 1 | true | false | To Binary: Convert #1 to binary |
+| C | 2 | false | false | Count: Count occurrences of ArraySeq(#2, #1) in ArraySeq(#1, #2)</br>Count: Count occurrences of ArraySeq(#1, #2) in ArraySeq(#2, #1)</br>Count: Count occurrences of the list with shallower depth in the list with deeper depth |
+| D | 1 | false | false | Triplicate: Push #1 thrice to the stack: #1 -> #1 #1 #1 |
+| E | 1 | true | false | 2 to the Power of N: 2 ** #1 |
+| F | 2 | false | false | Filter: Filter ArraySeq(#1, #2) by function ArraySeq(#2, #1)</br>Filter: Filter ArraySeq(#2, #1) by function ArraySeq(#1, #2)</br>Find: Find the index of #1 in #2. Switches #1 and #2 so that the haystack is the deeper list |
+| G | 2 | false | false | Dyadic Maximum: Maximum of #1 and #2</br>Monadic Maximum: Maximum of #1</br>Generate Sequence: Call #2 on previous results of #2, starting with #1. If #1 is not a list, it is made iterable |
+| H | 1 | true | false | To Hex: Convert #1 to hexadecimal |
+| I | 2 | false | false | Interleave: Interleave #1 and #2</br>Reject: Remove elements of ArraySeq(#1, #2) that satisfy function ArraySeq(#2, #1)</br>Reject: Remove elements of ArraySeq(#2, #1) that satisfy function ArraySeq(#1, #2) |
+| J | 2 | false | false | Join: </br>Join / Merge: Add all elements of #2 to #1</br>Number Pair: Create a list of #1 and #2</br>String Concatenation: string(#1) + string(#2) (if either #1 or #2 is a string) |
+| K | 1 | true | false | Factors: Get the factors of #1 |
+| L | 1 | false | false | Length: Length of #1 |
+| M | 2 | true | false | Map: Map function ArraySeq(#1, #2) over ArraySeq(#2, #1)</br>Map: Map function ArraySeq(#2, #1) over ArraySeq(#1, #2)</br>Mold: Reshape #1 to the shape of #2</br>Multiplicity: How many times #1 divides #2</br>Regex Match: Return the first match of #2 in #1 |
+| N | 1 | true | false | Negate: -#1</br>Negate: Swap the case of each letter #1</br>First Non-Negative Integer Where Predicate is True: First non-negative integer where #1 is true |
+| O | 1 | true | false | Character to Unicode: Unicode value of each letter in #1</br>Unicode to Character: Character of each unicode value in #1 |
+| P | 1 | false | false | Prefixes: Get all prefixes of #1. Treats numbers as a list of digits |
+| Q | 2 | false | false | Remove At: Remove the element at index #2 from #1</br>Regex Groups: Return the groups of the first match of #2 in #1 |
+| R | 2 | false | false | Range: Range from #1 to #2, exclusive</br>Reduce: Reduce #1 by function #2</br>Regex Match?: Check if #2 matches #1 |
+| S | 1 | false | false | Sort: Sort #1 |
+| T | 1 | false | false | Transpose: Transpose #1</br>Triple: #1 * 3</br>Does String Contain Only Alphabetic Characters: Check if #1 contains only alphabetic characters |
+| U | 1 | false | false | Uninterleave: Uninterleave #1 |
+| V | 1 | false | false | Vectorise Reverse: Reverse each item in #1</br>1 - X: 1 - #1 |
+| W | -1 | false | false | Wrap: Wrap the entire stack into a list |
+| X | 2 | false | false | Cartesian Product: Cartesian product of #1 and #2 |
+| Y | 2 | false | false | List Repeat: A list of #1 repeated #2 times. E.g. 3 4 -> [3, 3, 3, 3]</br>List Repeat: A list of ArraySeq(#2, #1) instances of string ArraySeq(#1, #2)</br>List Repeat: A list of ArraySeq(#1, #2) instances of string ArraySeq(#2, #1)</br>Vectorised Repeat: Repeat each element of #2 (#1|#1.length) times |
+| Z | 2 | false | false | Zip: Zip #1 and #2 |
+| ^ | -1 | false | false | Reverse Stack: Reverse the stack |
+| _ | 0 | false | false | Pop: Pop the top of the stack |
+| a | 1 | false | false | Any: Are any digits of #1 truthy</br>Is Uppercase: Check if #1 is uppercase. With string.len > 1, vectorises over each character</br>Any: Are any elements of #1 truthy |
+| b | 1 | false | false | Binary Digits: Convert #1's list of digits from binary to base 10</br>From Binary: Convert #1 from binary to a number</br>From Binary: Convert #1 from binary to a number |
+| c | 2 | false | false | Contains: Is #2 in #1</br>Contains: Is ArraySeq(#2, #1) in ArraySeq(#1, #2)</br>Contains: Is ArraySeq(#1, #2) in ArraySeq(#2, #1)</br>Contains: Is the list with shallower depth in the list with deeper depth |
+| d | 1 | false | false | Double: #1 * 2</br>Double: Append a copy of #1 to itself |
+| e | 1 | true | false | Is Even: Is #1 even</br>Split Newlines: Split #1 by newlines |
+| f | 1 | false | false | List of Digits: Push a list of the digits of #1 to the stack</br>List of Characters: Push a list of the characters of #1 to the stack</br>Flatten: Flatten #1 |
+| g | 2 | false | false | Dyadic Minimum: Minimum of #1 and #2</br>Monadic Minimum: Minimum of #1</br>Generate Sequence: Call #2 as a dyad infinitely with items of #1 as starting values |
+| h | 1 | false | false | Head: First element of #1 |
+| i | 2 | false | false | Nth Element: Get the ArraySeq(#2, #1)th element of ArraySeq(#1, #2)</br>Nth Element: Get the ArraySeq(#1, #2)th element of ArraySeq(#2, #1)</br>Vectorised Index: [#1[_] for _ in #2]</br>String Enclose: enclose #2 in #1 (#1[0:len(#1)//2] + #2 + #1[len(#1)//2:])</br>Object Member Retrieval: ArraySeq(#1, #2).ArraySeq(#2, #1)</br>Object Member Retrieval: ArraySeq(#2, #1).ArraySeq(#1, #2)</br>Collect Unique Values (+ Initial Value): Apply #2 on #1 and collect unique values. Does include the initial value. |
+| j | 2 | false | false | Join On: Join ArraySeq(#1, #2) on ArraySeq(#2, #1)</br>Join On: Join ArraySeq(#2, #1) on ArraySeq(#1, #2)</br>Intersperse: Intersperse elements of #2 within #1 (e.g. [1, [2,3], 4] [5, 6] -> [1, 5, 6, [2, 3], 5, 6, 4]) |
+| l | 2 | true | false | Logarithm: Log base #2 of #1</br>Same Length: Are #1 and #2 the same length</br>String Length Equals: Is the length of ArraySeq(#1, #2) equal to ArraySeq(#2, #1)</br>String Length Equals: Is the length of ArraySeq(#2, #1) equal to ArraySeq(#1, #2) |
+| m | 0 | false | false | Context Secondary: Push the secondary context variable to the stack |
+| n | 0 | false | false | Context Primary: Push the primary context variable to the stack |
+| o | 2 | false | false | Windows: Get overlapping windows of #1 with a window of size #2</br>Overlapping Slices: Get overlapping pairs of iterable(ArraySeq(#1, #2)) with a window of size ArraySeq(#2, #1)</br>Overlapping Slices: Get overlapping pairs of iterable(ArraySeq(#2, #1)) with a window of size ArraySeq(#1, #2) |
+| p | 2 | false | false | Prepend: Prepend #2 to #1 |
+| q | 1 | false | false | Quotify: Cast #1 to a string and wrap in quotes |
+| r | 3 | false | false | Replace: Replace all occurrences of #2 in #1 with #3 |
+| s | 2 | false | false | Split: Split #1 by #2 |
+| t | 1 | false | false | Tail: Last element of #1 |
+| u | 1 | false | false | Unique: Unique elements of #1</br>Unique By Function: Unique elements of #1 by applying #2 |
+| w | 1 | false | false | Wrap in List: Wrap #1 in a list |
+| x | -1 | false | false | Recurse: Recursively call the current function (or the top-level program if not in a function) |
+| y | 3 | false | false | Transliterate: Replace all occurrences of #2 in #1 with #3</br>Call While: While #1(#3) is true, #3 = #2(#3). Return the result. Type switchable. |
+| z | 2 | false | false | Zip With Filler: Transpose #1, filling empty spaces with #2 |
+| ⨥ | 1 | true | false | Add 2: #1 + 2</br>String Length Equals 1: Is the length of #1 equal to 1 |
+| ⨪ | 1 | true | false | Subtract 2: #1 - 2 |
+| ∑ | 1 | false | false | Sum: Sum of #1</br>Join and Evaluate: Join #1 and evaluate the result |
+| ∏ | 1 | false | false | Product: Product of #1 |
+| σ | 1 | false | false | Cumulative Sums: Cumulative sums of #1 |
+| ⇧ | 1 | false | false | Grade Up: Indices that would sort #1 |
+| ⇩ | 1 | false | false | Grade Down: Indices that would sort #1 in reverse |
+| ∪ | 2 | false | false | Union: Union of #1 and #2 |
+| ∩ | 2 | false | false | Intersection: Intersection of #1 and #2 |
+| ⊍ | 2 | false | false | Set XOR: Set XOR of #1 and #2 |
+| ⦰ | 2 | false | false | Set Difference: Set difference of #1 and #2 |
+| « | 2 | true | false | Left Shift: #1 << #2</br>Prepend Spaces to Given Length: Prepend spaces to string ArraySeq(#1, #2) until it is ArraySeq(#2, #1)</br>Prepend Spaces to Given Length: Prepend spaces to string ArraySeq(#2, #1) until it is ArraySeq(#1, #2)</br>Prepend Spaces to Length of Second String: Prepend spaces to string #1 until it is the length of #2 |
+| » | 2 | true | false | Right Shift: #1 >> #2</br>Append Spaces to Given Length: Append spaces to string ArraySeq(#1, #2) until it is ArraySeq(#2, #1)</br>Append Spaces to Given Length: Append spaces to string ArraySeq(#2, #1) until it is ArraySeq(#1, #2)</br>Append Spaces to Length of Second String: Append spaces to string #1 until it is the length of #2 |
+| Ɠ | 1 | false | true | Max Peek: Maximum of #1 without popping |
+| ɠ | 1 | false | true | Min Peek: Minimum of #1 without popping |
+| Ġ | 2 | true | false | Zipped Maximum: Maximum of corresponding elements of #1 and #2</br>Vectorised Maximum: Maximum of ArraySeq(#2, #1) and ArraySeq(#1, #2)</br>Vectorised Maximum: Maximum of ArraySeq(#1, #2) and ArraySeq(#2, #1) |
+| ⌈ | 1 | true | false | Ceiling: Ceiling of #1</br>Split on Spaces: Split #1 by spaces |
+| ⌊ | 1 | true | false | Floor: Floor of #1</br>String to Number: Convert #1 to a number, ignoring non-digit characters. Returns 0 if no digits are found |
+| ⊖ | 2 | false | false | 0 Slice: First ArraySeq(#2, #1) elements of ArraySeq(#1, #2)</br>0 Slice: First ArraySeq(#1, #2) elements of ArraySeq(#2, #1)</br>APL Style Take: APL style take |
+| ⌽ | 2 | false | false | 1 Slice: First ArraySeq(#2, #1) elements of ArraySeq(#1, #2)</br>1 Slice: First ArraySeq(#1, #2) elements of ArraySeq(#2, #1) |
+| £ | 1 | false | false | Set Register: Set the register to #1 |
+| ¥ | 0 | false | false | Get Register: Push the register to the stack |
+| ↜ | -1 | false | false | Rotate Stack Left: Rotate the stack left |
+| ↝ | -1 | false | false | Rotate Stack Right: Rotate the stack right |
+| ⬳ | 1 | false | false | Rotate Left: Rotate #1 left</br>Rotate Left: Rotate #1 left #2 times. Right if #2 is negative |
+| ⟿ | 1 | false | false | Rotate Right: Rotate #1 right</br>Rotate Right: Rotate #1 right #2 times. Left if #2 is negative |
+| ≜ | 3 | false | false | List Assign: #1[#2] = #3</br>Augmented List Assignment: #1[#2] = #3(#1[#2])</br>Vectorised Augmented List Assignment: #1[_] = #3(#1[_]) for _ in #2</br>Zipped Assignment: #1[ind] = val for ind, val in zip(#2, #3)</br>Regex String Replacement: Replace all occurrences of #2 in #1 with #3</br>Regex Substitution: Replace all occurrences of #2 in #1 with the result of #3</br>Object Member Assignment: #1.#2 = #3 |
+| ⎀ | 3 | false | false | Insert: Insert #3 into #1 at index #2</br>Insert: Insert #3 into #1 at indices #2</br>Insert: Insert items of #3 into #1 at indices #2 |
+| ◲ | 1 | false | false | Sublists: All sublists of #1 |
+| ⊢ | 2 | false | false | 10 to Base: Convert #1 to base #2</br>10 to Base: Convert #1 to base len(#2) using the items of #2</br>10 to Base: Convert each item in #1 to base #2</br>10 to Base: Convert each item in #1 to the base of the corresponding item in #2</br>All Regex Matches: All matches of #2 in #1 |
+| ⊣ | 2 | false | false | Base to 10: Convert #1 from base #2 to base 10, assuming a base that is a prefix of [0-9A-Z] for strings</br>Base to 10: Convert #1 from base #2 to base 10, using the items of #1 as digits</br>Base to 10: Convert each item in #1 from base #2 to base 10, assuming a base that is a prefix of [0-9A-Z] for strings |
+| ɦ | 1 | false | true | Head Peek: First element of #1 without popping |
+| ʈ | 1 | false | true | Tail Peek: Last element of #1 without popping |
+| ᐐ | 1 | false | false | Init: All but the last element of #1 |
+| ᐵ | 2 | false | false | Drop: All but the first ArraySeq(#2, #1) elements of ArraySeq(#1, #2)</br>Drop: All but the first ArraySeq(#1, #2) elements of ArraySeq(#2, #1)</br>APL Style Drop: APL style drop |
+| ᐕ | 1 | false | false | Behead: All but the first element of #1 |
+| ½ | 1 | true | false | Halve: #1 / 2</br>Two String Halves: Split #1 in half |
+| ƶ | 1 | false | false | Range to Length: Range from 0 to len(#1) - 1 |
+| Ƶ | 1 | false | false | Range to Length 1: Range from 1 to len(#1) |
+| ⁰ | 0 | false | false | First Input: Push the first input to the stack |
+| ¹ | 0 | false | false | Second Input: Push the second input to the stack |
+| ² | 1 | true | false | Square: #1 ** 2</br>String Pairs: Split #1 into pairs of characters |
+| ³ | 1 | true | false | Cube: #1 ** 3</br>String Triples: Split #1 into triples of characters |
+| ⅟ | 1 | true | false | Reciprocal: 1 / #1</br>Without Whitespace: Remove all whitespace from #1 |
+| ⇄ | 1 | false | false | Reverse: Reverse #1 |
+| ⧖ | 1 | false | false | Permutations: All permutations of #1 |
+| ‰ | 2 | true | false | Divmod: Divmod of #1 and #2 ([#1 // #2, #1 % #2]) |
+| ≛ | 2 | false | false | Divides?: #2 % #1 == 0</br>Append Spaces: Append ArraySeq(#2, #1) spaces to ArraySeq(#1, #2)</br>Append Spaces: Append ArraySeq(#1, #2) spaces to ArraySeq(#2, #1)</br>Regex Span: Span of regex match of pattern #2 in #1 |
+| ℭ | 2 | false | false | Combinations with Replacement: All combinations of ArraySeq(#1, #2) of length ArraySeq(#2, #1)</br>Combinations with Replacement: All combinations of ArraySeq(#2, #1) of length ArraySeq(#1, #2)</br>Combinations of Range with Replacement: All combinations of range(#1) of length #2 with replacement |
+| ℈ | 2 | false | false | Combinations without Replacement: All combinations of ArraySeq(#1, #2) of length ArraySeq(#2, #1)</br>Combinations without Replacement: All combinations of ArraySeq(#2, #1) of length ArraySeq(#1, #2)</br>Combinations of Range without Replacement: All combinations of range(#1) of length #2 without replacement |
+| ⦷ | 1 | true | false | Absolute Value: Absolute value of #1</br>Keep Letters: Keep only the letters of #1 |
+| Ϣ | 2 | false | false | Chunk to Length: Chunk ArraySeq(#1, #2) into parts of length ArraySeq(#2, #1)</br>Chunk to Length: Chunk ArraySeq(#2, #1) into parts of length ArraySeq(#1, #2)</br>Partition to Lengths: Partition #1 into parts of lengths #2 |
+| ≤ | 2 | true | false | Less Than or Equal: #1 <= #2 |
+| ≥ | 2 | true | false | Greater Than or Equal: #1 >= #2 |
+| ≠ | 2 | true | false | Not Equal: str(#1) != str(#2) |
+| ≡ | 2 | false | false | Equals: Does #1 exactly equal #2 |
+| • | 2 | false | false | Dot Product: Dot product of #1 and #2</br>Bijective Base Conversion:  Convert #1 to bijective base #2</br>First Index Where Predicate True: Index of the first value in ArraySeq(#1, #2) where function ArraySeq(#2, #1)</br>First Index Where Predicate True: Index of the first value in ArraySeq(#2, #1) where function ArraySeq(#1, #2) |
+| ± | 1 | true | false | Signum: Sign of #1 |
+| † | 1 | false | false | Lengths of Consecutives: Lengths of consecutive runs of equal elements in #1 |
+| ⎙ | 1 | false | true | Peek Print: Print #1 without popping |
+| ✒ | 1 | false | false | Print: Print #1 without a trailing newline |
+| ≓ | 1 | false | false | Mirror: Mirror #1 (#1 + reverse(#1)), as the original type |
+| Ͼ | 1 | true | false | Vectorised Sums: Sum of each item in #1. Functionally equivalent to `¨Σ` |
+| ⛭ | 1 | true | false | 10 to the Power of: 10 ** #1</br>Execute: Execute #1 as Vyxal code</br>Call Function: Call function #1 |
+| ⏟ | 2 | false | false | Every Nth Element: Every ArraySeq(#2, #1)th element of ArraySeq(#1, #2)</br>Every Nth Element: Every ArraySeq(#1, #2)th element of ArraySeq(#2, #1)</br>Matrix Multiply: Matrix multiply #1 and #2</br>Regex Full Match?: Does pattern #2 fully match #1 |
+| ⌭ | 1 | true | false | Is Prime: Is #1 a prime number?</br>Quine Cheese: Quotify #1 and prepend it to #1. (Useful for quines like `"⌭"⌭`) |
+| ⏜ | -1 | false | false | Over: Duplicate the item below the top of the stack -> #2 #1 #2 |
+| ⍢ | 1 | true | false | Parity: Parity of #1 (1 if odd, 0 if even) --> #1 % 2</br>Last String Half: Last half of #1 |
+| ℂ | 2 | true | false | NCR | N Choose R: nCr of #1 and #2 (n choose r)</br>Characters Same?: Are all characters in #1 the same as #2?</br>Fixpoint Collect: Repeatedly apply ArraySeq(#1, #2) on ArraySeq(#2, #1)</br>Fixpoint Collect: Repeatedly apply ArraySeq(#2, #1) on ArraySeq(#1, #2) |
+| ⌹ | 1 | false | false | Integers Partitions: All possible ways to sum positive integers to #1</br>List Partitions: All possible ways to partition #1 into sublists |
+| ⏚ | 1 | false | false | Powerset: Powerset of #1 |
+| ↯ | 2 | true | false | Inclusive Range: Inclusive range from #1 to #2</br>Sort By: Sort list ArraySeq(#1, #2) (range if num) by function ArraySeq(#2, #1)</br>Sort By: Sort list ArraySeq(#2, #1) (range if num) by function ArraySeq(#1, #2)</br>Regex Split Keep Delimiters: Split #1 by regex #2, keeping the delimiters |
+| ⊠ | 2 | false | false | Cartesian Power: Cartesian power of ArraySeq(#1, #2) to the power of ArraySeq(#2, #1)</br>Cartesian Power: Cartesian power of ArraySeq(#2, #1) to the power of ArraySeq(#1, #2)</br>Regex Index: Return first index of pattern match #2 in target string #1, -1 if not found</br>Self-Cartesian Power: Push #1, and then push the cartesian product of #2 with itself |
+| ⚅ | 1 | false | false | Random Choice: Random element of #1</br>Random Integer: Random integer from 0 to #1 |
+| æ | 1 | false | false | Bifurcate: Duplicate #1 and reverse the duplicate |
+| ␣ | 0 | false | false | Space: Push a space to the stack |
+| ¶ | 0 | false | false | Newline: Push a newline to the stack |
+| ★ | 0 | false | false | Asterisk: Push an asterisk to the stack |
+| ᑂ | 1 | false | false | Head on Top, Rest on Bottom: Push #1[1:] and #1[0] |
+| ∻ | 2 | true | false | Integer Divide: #1 // #2 |
+| √ | 1 | true | false | Square Root: Square root of #1 |
+| ¿ | 1 | true | false | Truthy?: Is #1 truthy? (Not 0, empty, or false) |
+| ◌ | 1 | true | false | Round: Round #1 to the nearest integer, half-up |
+| δ | 1 | false | false | Deltas: Deltas/forward differences of #1 - [a - b, b - c, c - d, ...] |
+| ☷ | 1 | false | false | Partition After Truthy:  Partition #1 after truthy indices of #2. |
+| ✇ | 1 | false | false | Edges: First and last element of #1</br>Real and Imaginary: Real and imaginary parts of #1 |
+| ⎃ | 1 | false | false | Flatten and Join on Nothing: Flatten #1 and join on nothing |
+| ⎶ | 2 | false | false | Trim: Trim #1 of leading and trailing #2 |
+| ⊆ | 2 | false | false | Subset?: Is the shallower list a subset of the deeper list? Checks windows corresponding to the length of the shallower list |
