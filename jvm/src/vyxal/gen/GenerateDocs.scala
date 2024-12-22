@@ -60,7 +60,7 @@ def genElementsTable(): String =
     val symbol =
       if "`|<>\\".contains(elem.symbol) then s"\\${elem.symbol}"
       else elem.symbol
-    val keywords = elem.keywords.map(kw => s"* `$kw`").mkString("</br>")
+    val keywords = elem.keywords.map(kw => s"`$kw`").mkString("</br>")
     val arity = if elem.arity == -1 then "STACK" else elem.arity
     val vectorises = if elem.options.vectorises then "vec" else ""
     val peeks = if elem.options.peeks then "*" else ""
@@ -107,7 +107,7 @@ def overloadToString(overload: ModifierOverload): String =
   val description = overload.description
   val args = overload.args.map(_.replace("|", "\\|")).mkString(",")
   val example = overload.example.replace("|", "\\|").replace("`", "\\`")
-  s"**${overload.name}** (`$args`): $description --> `$example`"
+  s"<tr><td>**${overload.name}**</td><td>`$args`</td><td>$description</td><td>`$example`</td></tr>"
 
 def genModifiersTable(): String =
   val HEADER_ROW = "| Symbol | Keywords | Number of Elements | Overloads |" +
@@ -118,10 +118,10 @@ def genModifiersTable(): String =
   val lines = modifiers.map { mod =>
     val symbol =
       if "`|<>\\".contains(mod.symbol) then s"\\${mod.symbol}" else mod.symbol
-    val keywords = mod.keywords.map(kw => s"* `$kw`").mkString("</br>")
+    val keywords = mod.keywords.map(kw => s"`$kw`").mkString("</br>")
     val numElements = mod.numberOfElements
     val overloads = mod.overloads.map(overloadToString).mkString("</br>")
-    s"| `$symbol` | $keywords | $numElements | $overloads |"
+    s"| `$symbol` | $keywords | $numElements | <table>$overloads</table> |"
   }
 
   (HEADER_ROW +: lines).mkString("\n")
