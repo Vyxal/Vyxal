@@ -52,7 +52,7 @@ private def overloadToString(overload: Overload): Seq[String] | String =
   val description = overload.description
   if overload.typeSwitchable then
     // Extract all type switch templates
-    val FIELD_REGEX = """{((?:\\[{}|\\\\]|[^{}\\])*)}""".r
+    val FIELD_REGEX = """\{((?:\\[\{\}|\\\\]|[^\{\}\\])*)\}""".r
     val fields = FIELD_REGEX.findAllMatchIn(description).map(_.group(1)).toSeq
     val components = FIELD_REGEX.split(description).toSeq
     val overloads = fields.map { field =>
