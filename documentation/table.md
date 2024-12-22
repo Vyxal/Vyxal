@@ -1,5 +1,18 @@
-| Symbol | Keywords | Arity | Vectorises | Overloads |
-|--------|-------|------------|-------|-----------|
+
+  Element, Modifier, and Syntax Reference
+
+  ## Elements
+
+  - `nsl` = Number/String/List
+  - `any` = Any type
+  - `num` = Number
+  - `str` = String
+  - `lst` = List
+  - `fun` = Function
+  - `obj` = User-defined object
+
+  | Symbol | Keywords | Arity | Vectorises | Peeks | Overloads |
+|--------|--|-------|------------|-------|-----------|
 | `⊞` | * `counts`</br>* `counts-of` | 1 |   | **Counts of Items** (`lst`): [#1.count(x) for x in set(#1)] |
 | `÷` | * `divide`</br>* `string-pieces`</br>* `regex-split`</br>* `/`</br>* `div` | 2 | vec  | **Division** (`num,num`): #1 / #2</br>**String into N Pieces** (`str,num`): Split string #1 into #2 pieces</br>**String into N Pieces** (`num,str`): Split string #2 into #1 pieces</br>**Regex Split** (`str,str`): Split #1 by regex #2 |
 | `×` | * `multiply`</br>* `string-repeat`</br>* `ring-translate`</br>* `*`</br>* `times` | 2 | vec  | **Multiplication** (`num,num`): #1 * #2 (#1 times #2)</br>**String Repeat** (`str,num`): Repeat string #1 #2 times</br>**String Repeat** (`num,str`): Repeat string #2 #1 times</br>**Ring Translate** (`str,str`): Ring translate #1 according to #2.  |
@@ -167,3 +180,12 @@
 | `⎃` | * `flatten-and-join-on-nothing` | 1 |   | **Flatten and Join on Nothing** (`lst`): Flatten #1 and join on nothing |
 | `⎶` | * `trim` | 2 |   | **Trim** (`any,any`): Trim #1 of leading and trailing #2 |
 | `⊆` | * `subset?` | 2 |   | **Subset?** (`lst,lst`): Is the shallower list a subset of the deeper list? Checks windows corresponding to the length of the shallower list |
+
+  ## Modifiers
+
+  | Symbol | Keywords | Number of Elements | Overloads |
+|--------|--|------------------|-----------|
+| `∺` | * `correspond:` | 2 | **Correspond** (`mon,mon`): Apply #1 to <under> and #2 to <top> --> `3 4 ∺d½ -> 6 2`</br>**Dyadic Correspond** (`dyd+,dyd+`): Apply #2 to #2.arity top items, and #1 to #1.arity items under that --> `3 4 5 6 ∺+- -> 7 1_` |
+| `⁜` | * `group-by:`</br>* `window-reduce:` | 1 | **Group By** (`mon`): Group items of the top of the stack by results of #1 --> `#[1\|3\|4\|5\|2\|4#] ⁜e -> [[1,3],[4],[5],[2,4]]` |
+
+  
