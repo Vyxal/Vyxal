@@ -38,8 +38,8 @@ def genTable(): String =
       if "`|<>\\".contains(elem.symbol) then s"\\${elem.symbol}"
       else elem.symbol
     val arity = elem.arity
-    val vectorises = elem.options.vectorises
-    val peeks = elem.options.peeks
+    val vectorises = if elem.options.vectorises then "🎶" else "🎵"
+    val peeks = if elem.options.peeks then "👀" else "⛓️‍💥"
     val overloads = elem.overloads.map(overloadToString)
     val overloadsFlat = overloads.foldLeft(Seq.empty[String]) {
       case (acc, s: String) => acc :+ s
