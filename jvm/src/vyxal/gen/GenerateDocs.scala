@@ -56,7 +56,7 @@ private def overloadToString(overload: Overload): Seq[String] | String =
     val fields = FIELD_REGEX.findAllMatchIn(description).map(_.group(1)).toSeq
     val components = FIELD_REGEX.split(description).toSeq
     val overloads = fields.map { field =>
-      field.split("(?<!\\)\\|").toSeq.permutations.toSeq
+      field.split("(?<!\\\\)\\|").toSeq.permutations.toSeq
     }
     overloads.map { arg =>
       val description =
