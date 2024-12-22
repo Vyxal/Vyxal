@@ -11,8 +11,8 @@
   - `fun` = Function
   - `obj` = User-defined object
 
-  | Symbol | Keywords | Arity | Vectorises | Peeks | Overloads |
-|--------|--|-------|------------|-------|-----------|
+  | Symbol | Keywords | Arity | Vectorises | Overloads |
+|--------|--|------|-----------|-----------|
 | `⊞` | * `counts`</br>* `counts-of` | 1 |   | **Counts of Items** (`lst`): [#1.count(x) for x in set(#1)] |
 | `÷` | * `divide`</br>* `string-pieces`</br>* `regex-split`</br>* `/`</br>* `div` | 2 | vec  | **Division** (`num,num`): #1 / #2</br>**String into N Pieces** (`str,num`): Split string #1 into #2 pieces</br>**String into N Pieces** (`num,str`): Split string #2 into #1 pieces</br>**Regex Split** (`str,str`): Split #1 by regex #2 |
 | `×` | * `multiply`</br>* `string-repeat`</br>* `ring-translate`</br>* `*`</br>* `times` | 2 | vec  | **Multiplication** (`num,num`): #1 * #2 (#1 times #2)</br>**String Repeat** (`str,num`): Repeat string #1 #2 times</br>**String Repeat** (`num,str`): Repeat string #2 #1 times</br>**Ring Translate** (`str,str`): Ring translate #1 according to #2.  |
