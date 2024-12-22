@@ -51,9 +51,8 @@ def genMarkdown(): String =
   """
 
 def genElementsTable(): String =
-  val HEADER_ROW =
-    "| Symbol | Keywords | Arity | Vectorises | Peeks | Overloads |" +
-      "\n|--------|--|-------|------------|-------|-----------|"
+  val HEADER_ROW = "| Symbol | Keywords | Arity | Vectorises | Overloads |" +
+    "\n|--------|--|------|-----------|-----------|"
 
   val elementMap = ElementInformation.elements
 
