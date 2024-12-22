@@ -12,6 +12,8 @@ import vyxal.SyntaxInfo
 
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Paths}
+import scala.collection.mutable.ArrayBuffer
+import scala.compiletime.ops.double
 
 import os.copy.over
 
@@ -54,14 +56,21 @@ private def overloadToString(overload: Overload): Seq[String] | String =
     // Extract all type switch templates
     val FIELD_REGEX = """\{((?:\\[\{\}|\\\\]|[^\{\}\\])*)\}""".r
     val fields = FIELD_REGEX.findAllMatchIn(description).map(_.group(1)).toSeq
-    val components = FIELD_REGEX.split(description).toSeq
-    val overloads = fields.map { field =>
-      field.split("(?<!\\\\)\\|").toSeq.permutations.toSeq
-    }
-    overloads.map { arg =>
-      val description =
-        components.zip(arg).map { case (c, a) => c + a }.mkString
-      s"${overload.name}: $description"
-    }
-  else s"${overload.name}: ${overload.description}"
+    val fieldOptions = fields.map { field =>
+      field.split("(?<!\\\\)\\|").toSeq
+    } // A list of the options for each type switch field
+
+    val descriptions = ArrayBuffer[String]()
+
+    for (args, index) <- overload.args.permutations.zipWithIndex do
+      val argsString = args.mkString(",")
+      val descriptionString = fields.zip(fieldOptions).foldLeft(description) {
+        case (acc, (field, options)) =>
+          acc.replace(s"{$field}", options(index % options.length))
+      }
+      descriptions +=
+        s"**${overload.name}** (`$argsString`): $descriptionString"
+    descriptions.toSeq
+  else
+    s"**${overload.name}** (`${overload.args.mkString(",")}`): ${overload.description}"
 end overloadToString
