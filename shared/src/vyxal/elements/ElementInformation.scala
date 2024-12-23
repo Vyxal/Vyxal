@@ -3253,6 +3253,79 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "≈",
+      keywords = Seq("all-same"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "All Same",
+        args = Seq("any"),
+        description = "Are all elements of #1 the same?",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "≊",
+      keywords = Seq("all-equal-item"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "All Equal Item",
+        args = Seq("lst", "any"),
+        description = "Are all elements of #1 equal to #2?",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "κ",
+      keywords = Seq("gcd"),
+      arity = 2,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "GCD",
+        args = Seq("num", "num"),
+        description = "GCD of #1 and #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "GCD of List",
+        args = Seq("lst"),
+        description = "GCD of all elements of #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "GCD of List with Initial Value",
+        args = Seq("lst", "num"),
+        description = "GCD of all elements of #1.append(#2)",
+      ),
+    ),
+    Element(
+      symbol = "⬱",
+      keywords = Seq("retrieve-from-outer"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Retrieve Item at Index from Outer Stack",
+        args = Seq("num"),
+        description = "Retrieve the item at index #1 from the outer stack, current stack if at top level",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Retrieve Item at Index from Outer Stack N-Layers Up",
+        args = Seq("lst[num, num]"),
+        description = "Retrieve the item at index #2 from the stack #1 levels up",
+        typeSwitchable = false,
+      )
+    )
   )
 
   val modifiers: Seq[Modifier] = List(

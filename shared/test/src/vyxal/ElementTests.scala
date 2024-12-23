@@ -358,4 +358,11 @@ class ElementTests extends VyxalTests:
           67, 71)
     )
   }
+
+  describe("Element ⬱") {
+    testMulti(
+      "1 2 3 4 5 λ2⬱}⛭" -> vSeq(3),
+      "1 λλλ3 0⬱;}⛭}⛭}⛭" -> vSeq(1),
+    )
+  }
 end ElementTests

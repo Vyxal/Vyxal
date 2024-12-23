@@ -1173,6 +1173,36 @@ object NewElements:
       case VStr(a) => a // TODO: Better overload
       case VList(a) => a.itr.filter(elem => elem.toBool)
     },
+    "≈" ->
+      fullToImpl(
+        Monad,
+        item =>
+          (
+              (lst: Seq[VAny]) =>
+                if lst.isEmpty then VNum(1) else VNum(lst.forall(_ == lst(0)))
+          )(item.itr),
+      ),
+    "≊" ->
+      fullToImpl(
+        Dyad,
+        (lst, item) =>
+          (
+              (lst: Seq[VAny]) =>
+                if lst.isEmpty then VNum(0) else VNum(lst.forall(_ == lst(0)))
+          )(lst.itr),
+      ),
+    "κ" ->
+      direct(Dyad) {
+        pop() match
+          case VList(lst) => NumberHelpers.gcd(lst)
+          case rhs: VNum => pop() match
+              case lhs: VNum => NumberHelpers.gcd(lhs, rhs)
+              case VList(lst) => NumberHelpers.gcd(lst :+ rhs)
+              case _ =>
+                throw UnsupportedOverloadException("κ", "String | Function")
+          case _ => throw UnsupportedOverloadException("κ", "String | Function")
+      },
+    "⬱" -> direct(Monad) {},
   )
 
   // Subject to being added as overloads onto things in elements

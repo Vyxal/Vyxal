@@ -224,6 +224,7 @@ class Context private (
     )
 
   def getStack: Seq[VAny] = stack.toSeq
+  def getParentCtx: Option[Context] = parent
 end Context
 
 object Context:
