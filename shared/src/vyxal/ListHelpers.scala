@@ -710,7 +710,7 @@ object ListHelpers:
 
   // multi-dimensional overlaps
   def overlapsMd(iterable: Seq[VAny], shape: Seq[VNum]): Seq[VAny] =
-    if shape.isEmpty then VList(iterable)
+    if shape.isEmpty then iterable
     else if shape.length == 1 then overlaps(iterable, shape.head.toInt).vs
     else windows(iterable, shape)
 
