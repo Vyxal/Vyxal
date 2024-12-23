@@ -508,7 +508,7 @@ class InterpreterTests extends VyxalTests:
   }
 
   describe("Dumping things") {
-    testStackLike("\\")(
+    testStackLike("⍨")(
       List[VAny](vSeq(3, 4, 5)) -> List[VAny](5, 4, 3),
       List[VAny](vSeq()) -> List[VAny](),
       List[VAny](vSeq(1)) -> List[VAny](1),

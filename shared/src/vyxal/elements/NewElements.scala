@@ -1154,6 +1154,7 @@ object NewElements:
         contains(needle, haystack)
 
     },
+    "⍨" -> direct(Monad) { pop().itr.foreach(push(_)) },
   )
 
   // Subject to being added as overloads onto things in elements
