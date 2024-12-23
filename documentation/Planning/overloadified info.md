@@ -13,6 +13,8 @@ Syntax
 - [ ] ⍾   NA  =   Eager map opener
 - [ ] ⎋  NA  =   Close structure and get first item
 - [ ] ⍟ NA  = Close structure and flatten
+- [ ] ⎊ NA = map over permutations
+
 
 
 Modifiers
@@ -49,7 +51,6 @@ b = rhs
 - [x] ⊞ (any) = [a.count(_) for _ in a]
 - [ ] ζ () = When entering a lambda, store the popped value in this
 - [x] γ () = 2Ϣ
-- [ ] ⎊ (any, fun) = map over permutations
 - [x] ÷ (num, num) = a divided by b
 - [x]   (str, num)* = split string b into chunks of size a
 - [x]   (str, str) = split a on regex b
@@ -266,6 +267,7 @@ b = rhs
 - [x]    (any, fun) = group by function (keep order)
 - [x] ⇄ (any) = a[::-1] reverse
 - [x] ⧖ (any) = permutations
+- [x]   (any, fun) = map over permutations
 - [x] ‰ (num, num) = [a // b, a % b]
 - [x] ≛ (num, num) = does b divide a?
 - [x]   (str, num)* = a + ' ' * b
@@ -341,13 +343,13 @@ b = rhs
 - [x] ≊ (any, any) = are all items in a equal to b?
 - [x] κ (num, num) = gcd(a, b)
 - [x]   (lst) = gcd(all items in a)
-- [x] ⬱ (num) = nth item from outer stack 
+- [x] ↳ (num) = nth item from outer stack 
 - [x]    (otherwise) = top item from outer stack...?
-- [ ] Þ⬱ (any, num > 0) = append a[0] until length b
+- [ ] Þ↳ (any, num > 0) = append a[0] until length b
 - [ ]    (any, num < 0) = append a[-1] until length b
-- [ ] „ (any) = join on newlines
-- [ ] ” (any) = join on spaces
-- [ ] “ (any) = join on nothing
+- [x] „ (any) = join on newlines
+- [x] ” (any) = join on spaces
+- [x] “ (any) = join on nothing
 
 Things that need to be slotted in:
 

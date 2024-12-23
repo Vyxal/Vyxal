@@ -2417,7 +2417,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "⧖",
-      keywords = Seq("permutations"),
+      keywords = Seq("permutations", "map-over-permutations"),
       arity = 1,
       Options(
         vectorises = false
@@ -2426,6 +2426,12 @@ object ElementInformation:
         name = "Permutations",
         args = Seq("any"),
         description = "All permutations of #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Map Over Permutations",
+        args = Seq("any", "fun"),
+        description = "Map #2 over all permutations of #1",
         typeSwitchable = false,
       ),
     ),
@@ -3325,6 +3331,48 @@ object ElementInformation:
         args = Seq("lst[num, num]"),
         description =
           "Retrieve the item at index #2 from the stack #1 levels up",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "„",
+      keywords = Seq("join-on-newlines", "*newline"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Join on Newlines",
+        args = Seq("lst"),
+        description = "Join #1 on newlines",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "”",
+      keywords = Seq("join-on-spaces", "*space"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Join on Spaces",
+        args = Seq("lst"),
+        description = "Join #1 on spaces",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "“",
+      keywords = Seq("join-on-empty-string", "*empty"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Join on Empty String",
+        args = Seq("lst"),
+        description = "Join #1 on the empty string",
         typeSwitchable = false,
       ),
     ),

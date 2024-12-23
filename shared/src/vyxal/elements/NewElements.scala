@@ -38,8 +38,10 @@ object NewElements:
         push(VList(counts))
       },
     addPart("⎊", Dyad, false) {
-      case (VList(itr), fn: VFun) => ListHelpers.permutations(itr)
-      case (VStr(s), fn: VFun) => ListHelpers.permutations(s).map(_.mkString)
+      case (VList(itr), fn: VFun) =>
+        ListHelpers.map(fn, ListHelpers.permutations(itr))
+      case (VStr(s), fn: VFun) =>
+        ListHelpers.map(fn, ListHelpers.permutations(s.itr).map(_.mkString))
     },
     addPart("÷", Dyad, true) {
       case (a: VNum, b: VNum) => a / b
@@ -861,6 +863,11 @@ object NewElements:
       case num: VNum => VList(ListHelpers.permutations(num.ritr))
       case VStr(str) => VList(ListHelpers.permutations(str.itr).map(_.mkString))
       case lst: VList => VList(ListHelpers.permutations(lst))
+      case fn: VFun => pop() match
+          case VList(lst) => ListHelpers.map(fn, ListHelpers.permutations(lst))
+          case VStr(s) => ListHelpers.map(fn, ListHelpers.permutations(s.itr))
+          case n: VNum => ListHelpers.map(fn, ListHelpers.permutations(n.ritr))
+          case _ => ???
     },
     addPart("‰", Dyad, true) {
       case (a: VNum, b: VNum) =>
@@ -1231,6 +1238,9 @@ object NewElements:
           case _ => throw UnsupportedOverloadException("↳", "Non-number")
         end match
       },
+    "„" -> fullToImpl(Monad, x => ListHelpers.join(x.itr, "\n")),
+    "”" -> fullToImpl(Monad, x => ListHelpers.join(x.itr, " ")),
+    "“" -> fullToImpl(Monad, x => ListHelpers.join(x.itr, "")),
   )
 
   // Subject to being added as overloads onto things in elements
