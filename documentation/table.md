@@ -16,8 +16,8 @@
 | `⊞` | `counts`</br>`counts-of` | 1 |   | **Counts of Items** (`lst`): [#1.count(x) for x in set(#1)] |
 | `÷` | `divide`</br>`string-pieces`</br>`regex-split`</br>`/`</br>`div` | 2 | vec  | **Division** (`num,num`): #1 / #2</br>**String into N Pieces** (`str,num`): Split string #1 into #2 pieces</br>**String into N Pieces** (`num,str`): Split string #2 into #1 pieces</br>**Regex Split** (`str,str`): Split #1 by regex #2 |
 | `×` | `multiply`</br>`string-repeat`</br>`ring-translate`</br>`*`</br>`times` | 2 | vec  | **Multiplication** (`num,num`): #1 * #2 (#1 times #2)</br>**String Repeat** (`str,num`): Repeat string #1 #2 times</br>**String Repeat** (`num,str`): Repeat string #2 #1 times</br>**Ring Translate** (`str,str`): Ring translate #1 according to #2.  |
-| `∧` | `and`</br>`&&`</br>`logical-and` | 2 |   | **Short Circuit And** (`any,any`): Short circuit and - if #2 is false, return #2, else return #1 |
-| `∨` | `or`</br>`!!`</br>`logical-or` | 2 |   | **Short Circuit Or** (`any,any`): Short circuit or - if #2 is true, return #2, else return #1 |
+| `∧` | `and`</br>`&&`</br>`logical-and` | 2 |   | **Logical And** (`nsl,nsl`): Python-style and - if #2 is false, return #2, else return #1</br>**Short Circuit And** (`fun,fun`): Short circuit and - if #2() is false, return #2(), else return #1() |
+| `∨` | `or`</br>`!!`</br>`logical-or` | 2 |   | **Loigcal Or** (`any,any`): Python style or - if #2 is true, return #2, else return #1</br>**Short Circuit Or** (`fun,fun`): Short circuit or - if #2() is true, return #2(), else return #1() |
 | `¬` | `not`</br>`~`</br>`logical-not` | 1 |   | **Not** (`any`): if #1 is truthy, return False, else return True |
 | `ʀ` | `0->n`</br>`lowercase`</br>`range-0->n`</br>`nrange-0` | 1 | vec  | **Range 0** (`num`): Range from 0 to #1, exclusive</br>**Lowercase** (`str`): Lowercase #1 |
 | `ʁ` | `0->n++`</br>`uppercase`</br>`range-0->n++`</br>`n+range-0` | 1 | vec  | **Range 0 Inclusive** (`num`): Range from 0 to #1, inclusive</br>**Uppercase** (`str`): Uppercase #1 |
@@ -136,7 +136,7 @@
 | `³` | `cube`</br>`string-triples` | 1 | vec  | **Cube** (`num`): #1 ** 3</br>**String Triples** (`str`): Split #1 into triples of characters |
 | `⅟` | `reciprocal`</br>`inverse`</br>`1/`</br>`without-whitespace`</br>`no-space`</br>`spaceless` | 1 | vec  | **Reciprocal** (`num`): 1 / #1</br>**Without Whitespace** (`str`): Remove all whitespace from #1 |
 | `⇄` | `reverse` | 1 |   | **Reverse** (`any`): Reverse #1 |
-| `⧖` | `permutations` | 1 |   | **Permutations** (`any`): All permutations of #1 |
+| `⧖` | `permutations`</br>`map-over-permutations` | 1 |   | **Permutations** (`any`): All permutations of #1</br>**Map Over Permutations** (`any,fun`): Map #2 over all permutations of #1 |
 | `‰` | `divmod` | 2 | vec  | **Divmod** (`num,num`): Divmod of #1 and #2 ([#1 // #2, #1 % #2]) |
 | `≛` | `divides?`</br>`append-spaces`</br>`regex-span` | 2 |   | **Divides?** (`num,num`): #2 % #1 == 0</br>**Append Spaces** (`str,num`): Append #2 spaces to #1</br>**Append Spaces** (`num,str`): Append #1 spaces to #2</br>**Regex Span** (`str,str`): Span of regex match of pattern #2 in #1 |
 | `ℭ` | `combinations-with-replacement` | 2 |   | **Combinations with Replacement** (`itr,num`): All combinations of #1 of length #2 with replacement</br>**Combinations with Replacement** (`num,itr`): All combinations of #2 of length #1 with replacement</br>**Combinations of Range with Replacement** (`num,num`): All combinations of range(#1) of length #2 with replacement |
@@ -154,7 +154,7 @@
 | `✒` | `print` | 1 |   | **Print** (`any`): Print #1 without a trailing newline |
 | `≓` | `mirror` | 1 |   | **Mirror** (`any`): Mirror #1 (#1 + reverse(#1)), as the original type |
 | `Ͼ` | `vectorised-sums`</br>`v/+` | 1 | vec  | **Vectorised Sums** (`lst`): Sum of each item in #1. Functionally equivalent to `¨Σ` |
-| `⛭` | `exec`</br>`10**`</br>`call`</br>`@` | 1 | vec  | **10 to the Power of** (`num`): 10 ** #1</br>**Execute** (`str`): Execute #1 as Vyxal code</br>**Call Function** (`fun`): Call function #1 |
+| `ᴥ` | `exec`</br>`10**`</br>`call`</br>`@` | 1 | vec  | **10 to the Power of** (`num`): 10 ** #1</br>**Execute** (`str`): Execute #1 as Vyxal code</br>**Call Function** (`fun`): Call function #1 |
 | `⏟` | `modular`</br>`matrix-multiply`</br>`regex-full-match?` | 2 |   | **Every Nth Element** (`itr,num`): Every #2th element of #1</br>**Every Nth Element** (`num,itr`): Every #1th element of #2</br>**Matrix Multiply** (`lst,lst`): Matrix multiply #1 and #2</br>**Regex Full Match?** (`str,str`): Does pattern #2 fully match #1 |
 | `⌭` | `is-prime`</br>`prime?`</br>`quine-cheese` | 1 | vec  | **Is Prime** (`num`): Is #1 a prime number?</br>**Quine Cheese** (`str`): Quotify #1 and prepend it to #1. (Useful for quines like `"⌭"⌭`) |
 | `⏜` | `over` | STACK |   | **Over**: Duplicate the item below the top of the stack -> #2 #1 #2 |
@@ -180,6 +180,17 @@
 | `⎃` | `flatten-and-join-on-nothing` | 1 |   | **Flatten and Join on Nothing** (`lst`): Flatten #1 and join on nothing |
 | `⎶` | `trim` | 2 |   | **Trim** (`any,any`): Trim #1 of leading and trailing #2 |
 | `⊆` | `subset?` | 2 |   | **Subset?** (`lst,lst`): Is the shallower list a subset of the deeper list? Checks windows corresponding to the length of the shallower list |
+| `⍨` | `dump` | 1 |   | **Dump** (`any`): Push all items of #1 to the stack |
+| `γ` | `wrap-len-2` | 1 |   | **Wrap to Length 2** (`any`): Wrap #1 into chunks of length 2 |
+| `⎘` | `flatten-by-depth`</br>`flatten-depth` | 2 |   | **Flatten by Depth** (`lst,num`): Flatten #1 by #2 levels</br>**Flatten by Depth** (`lst`): Flatten #1 by 1 level |
+| `ꜝ` | `keep-truthy` | 1 |   | **Keep Truthy** (`lst`): Keep only the truthy elements of #1 |
+| `≈` | `all-same` | 1 |   | **All Same** (`any`): Are all elements of #1 the same? |
+| `≊` | `all-equal-item` | 2 |   | **All Equal Item** (`lst,any`): Are all elements of #1 equal to #2? |
+| `κ` | `gcd` | 2 | vec  | **GCD** (`num,num`): GCD of #1 and #2</br>**GCD of List** (`lst`): GCD of all elements of #1</br>**GCD of List with Initial Value** (`lst,num`): GCD of all elements of #1.append(#2) |
+| `↳` | `retrieve-from-outer` | 1 |   | **Retrieve Item at Index from Outer Stack** (`num`): Retrieve the item at index #1 from the outer stack, current stack if at top level</br>**Retrieve Item at Index from Outer Stack N-Layers Up** (`lst[num, num]`): Retrieve the item at index #2 from the stack #1 levels up |
+| `„` | `join-on-newlines`</br>`*newline` | 1 |   | **Join on Newlines** (`lst`): Join #1 on newlines |
+| `”` | `join-on-spaces`</br>`*space` | 1 |   | **Join on Spaces** (`lst`): Join #1 on spaces |
+| `“` | `join-on-empty-string`</br>`*empty` | 1 |   | **Join on Empty String** (`lst`): Join #1 on the empty string |
 
   ## Modifiers
 
