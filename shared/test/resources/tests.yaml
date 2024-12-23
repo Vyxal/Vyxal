@@ -1447,9 +1447,6 @@
 
 "”":
   - {in: [["Hello", "World"]], out: "Hello\nWorld"}
-  - {in: ["amon"], out: "0000amon"}
-  - {in: [""], out: ""}
-  - {in: ["abcdabcd"], out: "abcdabcd"}
 
 "∆q":
   - {in: [20], out: [2, 1]}
@@ -1822,10 +1819,14 @@
 "‹":
   - {in: [123], out: 122}
   - {in: [-1], out: -2}
+  - {in: ["amon"], out: "0000amon"}
+  - {in: [""], out: ""}
+  - {in: ["abcdabcd"], out: "abcdabcd"}
 
 "›":
   - {in: [123], out: 124}
   - {in: [-1], out: 0}
+  - {in: ["    11"], out: "000011"}
 
 "⨥":
   - {in: [123], out: 125}

@@ -3335,8 +3335,8 @@ object ElementInformation:
       ),
     ),
     Element(
-      symbol = "„",
-      keywords = Seq("join-on-newlines", "*newline"),
+      symbol = "”",
+      keywords = Seq("join-on-newlines", "*newline", "one?->n"),
       arity = 1,
       Options(
         vectorises = false
@@ -3347,10 +3347,16 @@ object ElementInformation:
         description = "Join #1 on newlines",
         typeSwitchable = false,
       ),
+      Overload(
+        name = "Push Context Variable N if 1",
+        args = Seq("num"),
+        description = "Push the context variable N if #1 is 1",
+        typeSwitchable = false,
+      ),
     ),
     Element(
-      symbol = "”",
-      keywords = Seq("join-on-spaces", "*space"),
+      symbol = "„",
+      keywords = Seq("join-on-spaces", "*space", "<0", "is-negative?"),
       arity = 1,
       Options(
         vectorises = false
@@ -3361,10 +3367,22 @@ object ElementInformation:
         description = "Join #1 on spaces",
         typeSwitchable = false,
       ),
+      Overload(
+        name = "Is negative?",
+        args = Seq("num"),
+        description = "Push 1 if #1 < 0, 0 otherwise",
+      ),
     ),
     Element(
       symbol = "“",
-      keywords = Seq("join-on-empty-string", "*empty"),
+      keywords = Seq(
+        "join-on-empty-string",
+        "*empty",
+        "is-alphanumeric?",
+        "insignificant?",
+        "first-positive-integer",
+        "first-n>0",
+      ),
       arity = 1,
       Options(
         vectorises = false
@@ -3373,6 +3391,24 @@ object ElementInformation:
         name = "Join on Empty String",
         args = Seq("lst"),
         description = "Join #1 on the empty string",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Is alphanumeric?",
+        args = Seq("str"),
+        description = "Push 1 if #1 is alphanumeric, 0 otherwise",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "First Positive Integer Where Function is Truthy",
+        args = Seq("fun"),
+        description = "Push the first positive integer where #1 is truthy",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Is Insignificant?",
+        args = Seq("num"),
+        description = "abs(#1) <= 1",
         typeSwitchable = false,
       ),
     ),

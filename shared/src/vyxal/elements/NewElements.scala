@@ -1238,9 +1238,20 @@ object NewElements:
           case _ => throw UnsupportedOverloadException("↳", "Non-number")
         end match
       },
-    "„" -> fullToImpl(Monad, x => ListHelpers.join(x.itr, "\n")),
-    "”" -> fullToImpl(Monad, x => ListHelpers.join(x.itr, " ")),
-    "“" -> fullToImpl(Monad, x => ListHelpers.join(x.itr, "")),
+    "”" ->
+      direct(Monad) {
+        pop() match
+          case VList(lst) => push(ListHelpers.join(lst, "\n"))
+          case VStr(str) => push(str)
+          case num: VNum =>
+            if num == VNum(1) then push(summon[Context].ctxVarPrimary)
+          case _ => throw UnsupportedOverloadException("”", "Function | Object")
+      },
+    addPart("„", Monad, false) {
+      case VList(lst) => ListHelpers.join(lst, " ")
+      case num: VNum => num < 0
+    },
+    "“" -> fullToImpl(Monad, x => MiscHelpers.joinNothing(x)),
   )
 
   // Subject to being added as overloads onto things in elements
