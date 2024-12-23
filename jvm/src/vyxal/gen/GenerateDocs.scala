@@ -1,7 +1,11 @@
 /** For generating elements.txt and trigraphs.txt. See build.sc */
 package vyxal.gen
 
-import vyxal.{Element, Elements, Modifiers, SugarMap}
+import vyxal.{Modifiers, SugarMap}
+import vyxal.elements.Element
+import vyxal.elements.ElementInformation
+import vyxal.elements.ModifierOverload
+import vyxal.elements.Overload
 import vyxal.parsing.Codepage
 import vyxal.Modifier
 import vyxal.Syntax
@@ -9,6 +13,10 @@ import vyxal.SyntaxInfo
 
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Paths}
+import scala.collection.mutable.ArrayBuffer
+import scala.compiletime.ops.double
+
+import os.copy.over
 
 @main def generateDocs(
     elementsFile: String,
@@ -16,256 +24,105 @@ import java.nio.file.{Files, Paths}
     tableFile: String,
 ) =
   Files.write(
-    Paths.get(elementsFile),
-    elementsTxt().getBytes(StandardCharsets.UTF_8),
-  )
-  Files.write(
-    Paths.get(trigraphsFile),
-    trigraphs().getBytes(StandardCharsets.UTF_8),
-  )
-  Files.write(
     Paths.get(tableFile),
-    elementsMarkdown().getBytes(StandardCharsets.UTF_8),
+    genMarkdown().getBytes(StandardCharsets.UTF_8),
   )
 
-/** Generate the text for elements.txt */
-def elementsTxt(): String =
-  val sb = StringBuilder()
-  Elements.elements.values.toSeq
-    .sortBy { elem =>
-      // Have to use tuple in case of digraphs
-      (
-        Codepage.indexOf(elem.symbol.charAt(0)) +
-          (if "#∆øÞ".contains(elem.symbol.charAt(0)) then 400 else 0),
-        Codepage.indexOf(elem.symbol.substring(1)),
-      )
+def genMarkdown(): String =
+  s"""
+  Element, Modifier, and Syntax Reference
+
+  ## Elements
+
+  - `nsl` = Number/String/List
+  - `any` = Any type
+  - `num` = Number
+  - `str` = String
+  - `lst` = List
+  - `fun` = Function
+  - `obj` = User-defined object
+
+  ${genElementsTable()}
+
+  ## Modifiers
+
+  ${genModifiersTable()}
+
+  """
+
+def genElementsTable(): String =
+  val HEADER_ROW = "| Symbol | Keywords | Arity | Vectorises | Overloads |" +
+    "\n|--------|--|------|-----------|-----------|"
+
+  val elementMap = ElementInformation.elements
+
+  val lines = elementMap.map { elem =>
+    val symbol =
+      if "`|<>\\".contains(elem.symbol) then s"\\${elem.symbol}"
+      else elem.symbol
+    val keywords = elem.keywords.map(kw => s"`$kw`").mkString("</br>")
+    val arity = if elem.arity == -1 then "STACK" else elem.arity
+    val vectorises = if elem.options.vectorises then "vec" else ""
+    val peeks = if elem.options.peeks then "*" else ""
+    val overloads = elem.overloads.map(overloadToString)
+    val overloadsFlat = overloads.foldLeft(Seq.empty[String]) {
+      case (acc, s: String) => acc :+ s
+      case (acc, s: Seq[String]) => acc ++ s
     }
-    .foreach {
-      case Element(
-            symbol,
-            name,
-            keywords,
-            arity,
-            vectorises,
-            overloads,
-            impl,
-          ) =>
-        sb ++=
-          s"$symbol ($name) (${if vectorises then "" else "non-"}vectorising)\n"
 
-        SugarMap.trigraphs
-          .collect { case (tri, s) if s == symbol => tri }
-          .foreach { tri => sb ++= s"Trigraph: $tri\n" }
-
-        sb ++= s"Keywords:${keywords.mkString(" ", ", ", "")}\n"
-        overloads.foreach { overload => sb ++= s"- $overload\n" }
-        sb ++= "----------------------\n"
-    }
-
-  Modifiers.modifiers.foreach {
-    case (name, info) =>
-      sb ++= s"$name\n"
-      sb ++= s"Keywords:${info.keywords.mkString(" ", ", ", "")}\n"
-      sb ++= s"Description: ${info.description}\n"
-      if info.overloads.nonEmpty then
-        sb ++= info.overloads.mkString("", "\n", "\n")
-      SugarMap.trigraphs.collect { case (tri, s) if s == name => tri }.foreach {
-        tri => sb ++= s"Trigraph: $tri\n"
-      }
-      sb ++= "-----------------------\n"
+    s"| `$symbol` | $keywords | $arity$peeks | $vectorises  | ${overloadsFlat.mkString("</br>")} |"
   }
 
-  sb.toString
-end elementsTxt
+  (HEADER_ROW +: lines).mkString("\n")
+end genElementsTable
 
-def trigraphs(): String =
-  SugarMap.trigraphs
-    .map { case (key, value) => s"$key -> $value" }
-    .mkString("", "\n", "\n")
+private def overloadToString(overload: Overload): Seq[String] | String =
+  val description = overload.description
+  if overload.typeSwitchable then
+    // Extract all type switch templates
+    val FIELD_REGEX = """\{((?:\\[\{\}|\\\\]|[^\{\}\\])*)\}""".r
+    val fields = FIELD_REGEX.findAllMatchIn(description).map(_.group(1)).toSeq
+    val fieldOptions = fields.map { field =>
+      field.split("(?<!\\\\)\\|").toSeq
+    } // A list of the options for each type switch field
 
-/** Prepare some text to be put into a Markdown table */
-def sanitizeTable(text: String): String =
-  text.replace("\\", "\\\\").replace("|", raw"\|")
+    val descriptions = ArrayBuffer[String]()
 
-def replacePipes(text: String): String = text.replace("|", "&#124;")
+    for (args, index) <- overload.args.permutations.zipWithIndex do
+      val argsString = args.map(_.replace("|", "\\|")).mkString(",")
+      val descriptionString = fields.zip(fieldOptions).foldLeft(description) {
+        case (acc, (field, options)) =>
+          acc.replace(s"{$field}", options(index % options.length))
+      }
+      descriptions +=
+        s"**${overload.name}** (`$argsString`): $descriptionString"
+    descriptions.toSeq
+  else if overload.args.isEmpty then s"**${overload.name}**: $description"
+  else
+    s"**${overload.name}** (`${overload.args.map(_.replace("|", "\\|")).mkString(",")}`): $description"
+  end if
+end overloadToString
 
-/** Generate the Markdown for table.md */
-def elementsMarkdown(): String =
-  val formatOverload = (overload: String) =>
-    overload.split("->", 2) match
-      case Array(description) => s"<code>${replacePipes(description)}</code>"
-      case Array(args, description) =>
-        s"<code>${replacePipes(args)}</code> => <code>${replacePipes(description)}</code>"
+def overloadToString(overload: ModifierOverload): String =
+  val description = overload.description
+  val args = overload.args.map(_.replace("|", "\\|")).mkString(",")
+  val example = overload.example.replace("|", "\\|").replace("`", "\\`")
+  s"<tr><td>**${overload.name}**</td><td>`$args`</td><td>$description</td><td>`$example`</td></tr>"
 
-  val elements = Elements.elements.values.toSeq
-    .filter(!_.symbol.startsWith("#|"))
-    .sortBy { elem =>
-      // Have to use tuple in case of digraphs
-      (
-        Codepage.indexOf(elem.symbol.charAt(0)) +
-          (if "#∆øÞ".contains(elem.symbol.charAt(0)) then 400 else 0),
-        Codepage.indexOf(elem.symbol.substring(1)),
-      )
-    }
-    .map { elem =>
-      val trigraph = SugarMap.trigraphs
-        .collectFirst {
-          case (tri, s) if s == elem.symbol =>
-            sanitizeTable(tri.replace("\n", "␤"))
-        }
-        .getOrElse("")
-      val overloads = elem.overloads
-      val name = sanitizeTable(elem.name)
-      val symbol = sanitizeTable(elem.symbol)
-      val keywords = elem.keywords.map("`" + _ + "`").mkString(", ")
-      val vectorises =
-        if elem.vectorises then ":white_check_mark:"
-        else ":x:"
+def genModifiersTable(): String =
+  val HEADER_ROW = "| Symbol | Keywords | Number of Elements | Overloads |" +
+    "\n|--------|--|------------------|-----------|"
 
-      Seq(
-        s"<code>$symbol</code>",
-        trigraph,
-        name,
-        keywords,
-        elem.arity.getOrElse("NA").toString,
-        vectorises,
-        overloads.map(formatOverload).mkString("\n"),
-      )
-    }
+  val modifiers = ElementInformation.modifiers
 
-  val elementsTable = createTable(
-    Seq(
-      "Symbol",
-      "Trigraph",
-      " Name",
-      "Keywords",
-      "Arity",
-      "Vectorises",
-      "Overloads",
-    ),
-    elements,
-  )
+  val lines = modifiers.map { mod =>
+    val symbol =
+      if "`|<>\\".contains(mod.symbol) then s"\\${mod.symbol}" else mod.symbol
+    val keywords = mod.keywords.map(kw => s"`$kw`").mkString("</br>")
+    val numElements = mod.numberOfElements
+    val overloads = mod.overloads.map(overloadToString).mkString("</br>")
+    s"| `$symbol` | $keywords | $numElements | <table>$overloads</table> |"
+  }
 
-  val modifiers = Modifiers.modifiers.keys
-    .zip(Modifiers.modifiers.values)
-    .toSeq
-    .sortBy((modi, _) =>
-      (
-        Codepage.indexOf(modi.charAt(0)) +
-          (if "#∆øÞ".contains(modi.charAt(0)) then 400 else 0),
-        Codepage.indexOf(modi.substring(1)),
-      )
-    )
-    .map {
-      case (
-            symbol,
-            Modifier(name, description, keywords, arity, overloads),
-          ) =>
-        val trigraph = SugarMap.trigraphs
-          .collectFirst { case (tri, s) if s == symbol => tri }
-          .getOrElse("")
-        val formatSymbol = symbol.replace("|", "\\|")
-        val formatKeywords = keywords.map("`" + _ + "`").mkString(", ")
-        Seq(
-          s"<code>$formatSymbol</code>",
-          s"<code>$trigraph</code>",
-          sanitizeTable(name),
-          formatKeywords,
-          arity.toString,
-          sanitizeTable(description),
-          overloads.map(formatOverload).mkString("\n"),
-        )
-    }
-
-  val modifiersTable = createTable(
-    Seq(
-      "Symbol",
-      "Trigraph",
-      "Name",
-      "Keywords",
-      "Arity",
-      "Description",
-      "Usage",
-    ),
-    modifiers,
-  )
-
-  val syntaxInfos = SyntaxInfo.info.keys
-    .zip(SyntaxInfo.info.values)
-    .toSeq
-    .sortBy((symbol, _) =>
-      (
-        Codepage.indexOf(symbol.charAt(0)) +
-          (if "#∆øÞ".contains(symbol.charAt(0)) then 400 else 0),
-        Codepage.indexOf(symbol.substring(1)),
-      )
-    )
-    .map {
-      case (symbol, Syntax(name, literate, description, usage)) =>
-        val trigraph = SugarMap.trigraphs
-          .collectFirst { case (tri, s) if s == symbol => s"`$tri`" }
-          .getOrElse("")
-        val formatUsage =
-          sanitizeTable(usage).replace("<", "&lt;").replace(">", "&gt;")
-        Seq(
-          s"`${sanitizeTable(symbol.replace("`", raw"\`"))}`",
-          trigraph,
-          name,
-          s"<code>${literate.mkString(" ")}</code>",
-          description,
-          s"<pre>$formatUsage</pre>",
-        )
-    }
-
-  val syntaxInformation = createTable(
-    Seq(
-      "Symbol",
-      "Trigraph",
-      "Name",
-      "Keywords (if applicable)",
-      "Description",
-      "Usage",
-    ),
-    syntaxInfos,
-  )
-
-  s"""
-      |# Information Tables
-      |
-      |## Elements
-      |
-      |$elementsTable
-      |
-      |## Modifiers
-      |
-      |$modifiersTable
-      |
-      |## Syntax Features
-      |
-      |$syntaxInformation
-      |""".stripMargin
-
-end elementsMarkdown
-
-def createTable(
-    columns: Seq[String],
-    rows: Seq[Seq[String]],
-): String =
-  val header = columns.mkString("| ", " | ", " |")
-  val divider = Seq.fill(columns.length)("---").mkString("| ", " | ", " |")
-  val rowsMarkdown = rows
-    .map { row =>
-      if row.length == columns.length then
-        row
-          .map(
-            _.strip().replace("\n", "<br>")
-          )
-          .mkString("| ", " | ", "")
-      else
-        throw Error(
-          s"Row length does not match column length (columns are $columns, row was $rows)"
-        )
-    }
-    .mkString("\n")
-  s"$header\n$divider\n$rowsMarkdown"
-end createTable
+  (HEADER_ROW +: lines).mkString("\n")
+end genModifiersTable
