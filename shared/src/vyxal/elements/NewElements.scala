@@ -1155,6 +1155,24 @@ object NewElements:
 
     },
     "⍨" -> direct(Monad) { pop().itr.foreach(push(_)) },
+    addPart("¤", Monad, false) {
+      case VStr(str) => str.grouped(2).toSeq
+      case VList(lst) => ListHelpers.wrapLength(lst, 2)
+    },
+    "⎘" ->
+      direct(Monad) {
+        pop() match
+          case layerCount: VNum =>
+            val iterable = pop().itr
+            push(ListHelpers.flattenByDepth(iterable, layerCount))
+          case VList(lst) => push(ListHelpers.flattenByDepth(lst, 1))
+          case _ => throw UnsupportedOverloadException("⎘", "String | Function")
+      },
+    addPart("ꜝ", Monad, false) {
+      case a: VNum => VNum(a.itr.filter(x => x != VNum(0)).mkString)
+      case VStr(a) => a // TODO: Better overload
+      case VList(a) => a.itr.filter(elem => elem.toBool)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

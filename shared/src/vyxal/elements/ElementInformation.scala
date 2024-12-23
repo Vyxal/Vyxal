@@ -3191,6 +3191,68 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "⍨",
+      keywords = Seq("dump"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Dump",
+        args = Seq("any"),
+        description = "Push all items of #1 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "¤",
+      keywords = Seq("wrap-len-2"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Wrap to Length 2",
+        args = Seq("any"),
+        description = "Wrap #1 into chunks of length 2",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⎘",
+      keywords = Seq("flatten-by-depth", "flatten-depth"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Flatten by Depth",
+        args = Seq("lst", "num"),
+        description = "Flatten #1 by #2 levels",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Flatten by Depth",
+        args = Seq("lst"),
+        description = "Flatten #1 by 1 level",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "ꜝ",
+      keywords = Seq("keep-truthy"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Keep Truthy",
+        args = Seq("lst"),
+        description = "Keep only the truthy elements of #1",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(
