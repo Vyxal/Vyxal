@@ -41,13 +41,13 @@ object NewElements:
       case (VList(itr), fn: VFun) => ListHelpers.permutations(itr).map(fn)
       case (VStr(s), fn: VFun) =>
         ListHelpers.permutations(s).map(_.mkString).map(fn)
-    } addPart
-      ("÷", Dyad, true) {
-        case (a: VNum, b: VNum) => a / b
-        case (VStr(a), b: VNum) => StringHelpers.intoNPieces(a, b)
-        case (a: VNum, VStr(b)) => StringHelpers.intoNPieces(b, a)
-        case (VStr(a), VStr(b)) => StringHelpers.split(a, Regex.quote(b))
-      },
+    },
+    addPart("÷", Dyad, true) {
+      case (a: VNum, b: VNum) => a / b
+      case (VStr(a), b: VNum) => StringHelpers.intoNPieces(a, b)
+      case (a: VNum, VStr(b)) => StringHelpers.intoNPieces(b, a)
+      case (VStr(a), VStr(b)) => StringHelpers.split(a, Regex.quote(b))
+    },
     "×" -> fullToImpl(Dyad, MiscHelpers.multiply),
     addPart("∧", Dyad, true) {
       case (b: VVal, a: VVal) => if !a.toBool then a else b
