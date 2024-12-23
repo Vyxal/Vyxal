@@ -1126,19 +1126,17 @@ object NewElements:
       case (a, b) => ListHelpers.trim(ListHelpers.makeIterable(a), b)
     },
     addPart("⊆", Dyad, false) {
-      case (haystack: VList, needle: VList) =>
+      case (VList(haystack), VList(needle)) =>
+        val hDepth = ListHelpers.maxDepth(haystack)
+        val nShape = ListHelpers.shapeOf(needle)
+        val nDepth = nShape.length
         val (haystackList, needleList) =
-          if ListHelpers.maxDepth(haystack) <= ListHelpers.maxDepth(needle) then
-            (haystack, needle)
+          if hDepth >= nDepth then (haystack, needle)
           else (needle, haystack)
         if haystackList.isEmpty || needleList.isEmpty then Seq.empty
         else
           ListHelpers
-            .overlapsMd(
-              haystack,
-              ListHelpers.shapeOf(needle).lst.map(_.asInstanceOf[VNum]),
-            )
-            .contains(needle)
+            .sublistExists((haystackList, hDepth), (needleList, nDepth, nShape))
       case (VStr(haystack), VStr(needle)) => haystack.contains(needle)
       case (haystack: VList, needle: VVal) =>
         def contains(needle: VVal, haystack: VList): Boolean =

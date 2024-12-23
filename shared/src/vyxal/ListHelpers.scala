@@ -710,7 +710,7 @@ object ListHelpers:
 
   // multi-dimensional overlaps
   def overlapsMd(iterable: Seq[VAny], shape: Seq[VNum]): Seq[VAny] =
-    if shape.isEmpty then iterable
+    if shape.isEmpty then VList(iterable)
     else if shape.length == 1 then overlaps(iterable, shape.head.toInt).vs
     else windows(iterable, shape)
 
@@ -1010,7 +1010,7 @@ object ListHelpers:
   /** Get the shape of a VList, assuming padding (even though it can be rugged)
     * Requires a finite list of finite lists
     */
-  def shapeOf(iterable: Seq[VAny]): Seq[VAny] =
+  def shapeOf(iterable: Seq[VAny]): Seq[VNum] =
     val shape = ArrayBuffer.empty[VNum]
     var temp = iterable
     while temp.nonEmpty do
@@ -1052,6 +1052,25 @@ object ListHelpers:
   def splitNormal(iterable: Seq[VAny], sep: VAny)(using Context): Seq[VAny] =
     val out = split(iterable, Seq(sep))
     out.map(VList(_))
+
+  // Assumes finite and non-empty lists
+  // Also assumes that the haystack depth >= needle depth
+  def sublistExists(
+      haystack: (Seq[VAny], VNum),
+      needle: (Seq[VAny], VNum, Seq[VNum]),
+  ): VNum =
+    val (hList, hDepth) = haystack
+    val (nList, nDepth, nShape) = needle
+    if hDepth > nDepth then
+      hList.map {
+        (_: @unchecked) match
+          case VList(elem) => sublistExists((elem, hDepth - 1), needle)
+      }.max
+    else // Depth of needle == depth of haystack
+      val overlaps = overlapsMd(hList, nShape)
+      overlaps
+        .map(sublist => sublist.asInstanceOf[VList].lst == nList)
+        .count(_ == true)
 
   def take(iterable: Seq[VAny], amount: VNum): Seq[VAny] =
     if amount < 0 then iterable.takeRight(amount.toInt.abs)
