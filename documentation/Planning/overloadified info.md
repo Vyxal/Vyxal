@@ -48,7 +48,7 @@ b = rhs
 
 - [x] ⊞ (any) = [a.count(_) for _ in a]
 - [ ] ζ () = When entering a lambda, store the popped value in this
-- [ ] γ () = When entering a lambda, retrieve top of outer stack
+- [x] γ () = 2Ϣ
 - [ ] ⎊ (any, fun) = map over permutations
 - [x] ÷ (num, num) = a divided by b
 - [x]   (str, num)* = split string b into chunks of size a
@@ -334,7 +334,6 @@ b = rhs
 - [x] ⎶ (any, any) = trim b from both sides of a
 - [x] ⊆ (lst, lst) = is b a subset of a?
 - [x] ⍨ (any) = dump items of a
-- [x] ¤ (any) = 2Ϣ
 - [x] ⎘ (lst, num) = flatten by depth
 - [x]    (lst) = flatten one layer
 - [x] ꜝ (lst) = keep only truthy items

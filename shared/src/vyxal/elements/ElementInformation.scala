@@ -3206,7 +3206,7 @@ object ElementInformation:
       ),
     ),
     Element(
-      symbol = "¤",
+      symbol = "γ",
       keywords = Seq("wrap-len-2"),
       arity = 1,
       Options(

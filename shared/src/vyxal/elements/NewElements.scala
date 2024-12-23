@@ -1155,7 +1155,7 @@ object NewElements:
 
     },
     "⍨" -> direct(Monad) { pop().itr.foreach(push(_)) },
-    addPart("¤", Monad, false) {
+    addPart("γ", Monad, false) {
       case VStr(str) => str.grouped(2).toSeq
       case VList(lst) => ListHelpers.wrapLength(lst, 2)
     },
