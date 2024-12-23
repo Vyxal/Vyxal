@@ -3316,16 +3316,18 @@ object ElementInformation:
       Overload(
         name = "Retrieve Item at Index from Outer Stack",
         args = Seq("num"),
-        description = "Retrieve the item at index #1 from the outer stack, current stack if at top level",
+        description =
+          "Retrieve the item at index #1 from the outer stack, current stack if at top level",
         typeSwitchable = false,
       ),
       Overload(
         name = "Retrieve Item at Index from Outer Stack N-Layers Up",
         args = Seq("lst[num, num]"),
-        description = "Retrieve the item at index #2 from the stack #1 levels up",
+        description =
+          "Retrieve the item at index #2 from the stack #1 levels up",
         typeSwitchable = false,
-      )
-    )
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(
