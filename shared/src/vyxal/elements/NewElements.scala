@@ -1145,6 +1145,13 @@ object NewElements:
             case value => value == needle
           }
         contains(needle, haystack)
+      case (needle: VVal, haystack: VList) =>
+        def contains(needle: VVal, haystack: VList): Boolean =
+          haystack.lst.exists {
+            case lst: VList => contains(needle, lst)
+            case value => value == needle
+          }
+        contains(needle, haystack)
 
     },
   )
