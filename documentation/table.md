@@ -188,9 +188,9 @@
 | `≊` | `all-equal-item` | 2 |   | **All Equal Item** (`lst,any`): Are all elements of #1 equal to #2? |
 | `κ` | `gcd` | 2 | vec  | **GCD** (`num,num`): GCD of #1 and #2</br>**GCD of List** (`lst`): GCD of all elements of #1</br>**GCD of List with Initial Value** (`lst,num`): GCD of all elements of #1.append(#2) |
 | `↳` | `retrieve-from-outer` | 1 |   | **Retrieve Item at Index from Outer Stack** (`num`): Retrieve the item at index #1 from the outer stack, current stack if at top level</br>**Retrieve Item at Index from Outer Stack N-Layers Up** (`lst[num, num]`): Retrieve the item at index #2 from the stack #1 levels up |
-| `„` | `join-on-newlines`</br>`*newline` | 1 |   | **Join on Newlines** (`lst`): Join #1 on newlines |
-| `”` | `join-on-spaces`</br>`*space` | 1 |   | **Join on Spaces** (`lst`): Join #1 on spaces |
-| `“` | `join-on-empty-string`</br>`*empty` | 1 |   | **Join on Empty String** (`lst`): Join #1 on the empty string |
+| `”` | `join-on-newlines`</br>`*newline`</br>`one?->n` | 1 |   | **Join on Newlines** (`lst`): Join #1 on newlines</br>**Push Context Variable N if 1** (`num`): Push the context variable N if #1 is 1 |
+| `„` | `join-on-spaces`</br>`*space`</br>`<0`</br>`is-negative?` | 1 |   | **Join on Spaces** (`lst`): Join #1 on spaces</br>**Is negative?** (`num`): Push 1 if #1 < 0, 0 otherwise |
+| `“` | `join-on-empty-string`</br>`*empty`</br>`is-alphanumeric?`</br>`insignificant?`</br>`first-positive-integer`</br>`first-n>0` | 1 |   | **Join on Empty String** (`lst`): Join #1 on the empty string</br>**Is alphanumeric?** (`str`): Push 1 if #1 is alphanumeric, 0 otherwise</br>**First Positive Integer Where Function is Truthy** (`fun`): Push the first positive integer where #1 is truthy</br>**Is Insignificant?** (`num`): abs(#1) <= 1 |
 
   ## Modifiers
 
