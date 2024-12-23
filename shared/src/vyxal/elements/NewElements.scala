@@ -38,9 +38,8 @@ object NewElements:
         push(VList(counts))
       },
     addPart("⎊", Dyad, false) {
-      case (VList(itr), fn: VFun) => ListHelpers.permutations(itr).map(fn)
-      case (VStr(s), fn: VFun) =>
-        ListHelpers.permutations(s).map(_.mkString).map(fn)
+      case (VList(itr), fn: VFun) => ListHelpers.permutations(itr)
+      case (VStr(s), fn: VFun) => ListHelpers.permutations(s).map(_.mkString)
     },
     addPart("÷", Dyad, true) {
       case (a: VNum, b: VNum) => a / b
