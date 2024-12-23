@@ -8,7 +8,6 @@ import vyxal.conversions.{*, given}
 import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.defaultEmpty
-import vyxal.StringHelpers.caseof
 import vyxal.StringHelpers.padLeft
 
 import scala.io.StdIn
@@ -38,12 +37,17 @@ object NewElements:
         val counts = uniq.map(item => VNum(iterable.count(_ == item)))
         push(VList(counts))
       },
-    addPart("÷", Dyad, true) {
-      case (a: VNum, b: VNum) => a / b
-      case (VStr(a), b: VNum) => StringHelpers.intoNPieces(a, b)
-      case (a: VNum, VStr(b)) => StringHelpers.intoNPieces(b, a)
-      case (VStr(a), VStr(b)) => StringHelpers.split(a, Regex.quote(b))
-    },
+    addPart("⎊", Dyad, false) {
+      case (VList(itr), fn: VFun) => ListHelpers.permutations(itr).map(fn)
+      case (VStr(s), fn: VFun) =>
+        ListHelpers.permutations(s).map(_.mkString).map(fn)
+    } addPart
+      ("÷", Dyad, true) {
+        case (a: VNum, b: VNum) => a / b
+        case (VStr(a), b: VNum) => StringHelpers.intoNPieces(a, b)
+        case (a: VNum, VStr(b)) => StringHelpers.intoNPieces(b, a)
+        case (VStr(a), VStr(b)) => StringHelpers.split(a, Regex.quote(b))
+      },
     "×" -> fullToImpl(Dyad, MiscHelpers.multiply),
     addPart("∧", Dyad, true) {
       case (b: VVal, a: VVal) => if !a.toBool then a else b
@@ -1195,10 +1199,10 @@ object NewElements:
     "κ" ->
       direct(Dyad) {
         pop() match
-          case VList(lst) => NumberHelpers.gcd(lst)
+          case VList(lst) => push(NumberHelpers.gcd(lst))
           case rhs: VNum => pop() match
-              case lhs: VNum => NumberHelpers.gcd(lhs, rhs)
-              case VList(lst) => NumberHelpers.gcd(lst :+ rhs)
+              case lhs: VNum => push(NumberHelpers.gcd(lhs, rhs))
+              case VList(lst) => push(NumberHelpers.gcd(lst :+ rhs))
               case _ =>
                 throw UnsupportedOverloadException("κ", "String | Function")
           case _ => throw UnsupportedOverloadException("κ", "String | Function")
