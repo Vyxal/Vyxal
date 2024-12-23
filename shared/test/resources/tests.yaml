@@ -775,7 +775,7 @@
   - {in: ["bkflweioauamrw", "[aeiou]+"], out: [5, 11]}
   - {in: ["bkflweioauamrw", "1+"], out: []}
 
-"⛭":
+"ᴥ":
   When given a number:
     - { in: [0], out: 1 }
     - { in: [1], out: 10 }

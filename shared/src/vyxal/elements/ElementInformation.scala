@@ -2722,7 +2722,7 @@ object ElementInformation:
       ),
     ),
     Element(
-      symbol = "⛭",
+      symbol = "ᴥ",
       keywords = Seq("exec", "10**", "call", "@"),
       arity = 1,
       Options(
@@ -3307,7 +3307,7 @@ object ElementInformation:
       ),
     ),
     Element(
-      symbol = "⬱",
+      symbol = "↳",
       keywords = Seq("retrieve-from-outer"),
       arity = 1,
       Options(

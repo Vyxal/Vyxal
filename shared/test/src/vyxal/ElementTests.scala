@@ -143,10 +143,10 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  describe("Element ⛭") {
+  describe("Element ᴥ") {
     describe("when given a string") {
       it("should properly execute code that uses the stack") {
-        testCode(""" "1 2 + D" ⛭ """, 3)
+        testCode(""" "1 2 + D" ᴥ """, 3)
       }
 
       it("should use the same context for executing the code") {
@@ -154,7 +154,7 @@ class ElementTests extends VyxalTests:
         given ctx: Context = Context(inputs = List(3, 4), testMode = true)
         ctx.push("+")
         ctx.settings = ctx.settings.useMode(EndPrintMode.None)
-        Interpreter.execute("⛭")
+        Interpreter.execute("ᴥ")
         assertResult(7: VNum)(ctx.peek)
       }
     }
@@ -164,7 +164,7 @@ class ElementTests extends VyxalTests:
         testEquals(3)(ctx ?=>
           ctx.push(1, 2)
           ctx.push(VFun.fromElement(Elements.elements("+")))
-          Interpreter.execute(AST.Command("⛭"))
+          Interpreter.execute(AST.Command("ᴥ"))
           ctx.peek
         )
       }
@@ -359,10 +359,10 @@ class ElementTests extends VyxalTests:
     )
   }
 
-  describe("Element ⬱") {
+  describe("Element ↳") {
     testMulti(
-      "1 2 3 4 5 λ2⬱}⛭" -> vSeq(3),
-      "1 λλλ3 0⬱;}⛭}⛭}⛭" -> vSeq(1),
+      "1 2 3 4 5 λ2↳}ᴥ" -> vSeq(3),
+      "1 1 λλλ3 0;↳}ᴥ}ᴥ}ᴥ" -> vSeq(1),
     )
   }
 end ElementTests

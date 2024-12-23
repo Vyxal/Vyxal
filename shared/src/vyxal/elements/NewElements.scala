@@ -8,6 +8,7 @@ import vyxal.conversions.{*, given}
 import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.defaultEmpty
+import vyxal.StringHelpers.caseof
 import vyxal.StringHelpers.padLeft
 
 import scala.io.StdIn
@@ -992,7 +993,7 @@ object NewElements:
     addPart("Ͼ", Monad, false) {
       case lst: VList => VList(lst.map(item => ListHelpers.sum(item.itr)))
     },
-    "⛭" -> fullToImpl(Monad, x => MiscHelpers.exec(x)),
+    "ᴥ" -> fullToImpl(Monad, x => MiscHelpers.exec(x)),
     addPart("⏟", Dyad, false) {
       case (a: (VList | VStr), b: VNum) => ListHelpers.nthItems(a, b)
       case (a: VNum, b: (VList | VStr)) => ListHelpers.nthItems(b, a)
@@ -1202,7 +1203,7 @@ object NewElements:
                 throw UnsupportedOverloadException("κ", "String | Function")
           case _ => throw UnsupportedOverloadException("κ", "String | Function")
       },
-    "⬱" ->
+    "↳" ->
       direct(Monad) {
         val index = pop()
         index match
@@ -1211,17 +1212,20 @@ object NewElements:
             val parentCtx = ctx.getParentCtx.getOrElse(ctx)
             val value = parentCtx.getStack.vlst.indexBig(simpleOuter.toBigInt)
             push(value)
-          case VListOf[VNum](coordinates) =>
+          case VList(coordinates) =>
             if coordinates.length != 2 then
-              throw InvalidListOverloadException("⬱", coordinates, "2")
+              throw InvalidListOverloadException("↳", coordinates, "2")
+            if !coordinates.forall(_.isInstanceOf[VNum]) then
+              throw InvalidListOverloadException("↳", coordinates, "numeric")
             val ctx = summon[Context]
             var parentCtx = ctx
-            for _ <- 0 until coordinates.head.toInt do
-              parentCtx = parentCtx.getParentCtx.getOrElse(parentCtx)
-            val value =
-              parentCtx.getStack.vlst.indexBig(coordinates(1).toBigInt)
+            for _ <-
+                NumberHelpers.range(0, coordinates.head.asInstanceOf[VNum] - 1)
+            do parentCtx = parentCtx.getParentCtx.getOrElse(parentCtx)
+            val value = parentCtx.getStack.vlst
+              .indexBig(coordinates(1).asInstanceOf[VNum].toBigInt)
             push(value)
-          case _ => throw UnsupportedOverloadException("⬱", "Non-number")
+          case _ => throw UnsupportedOverloadException("↳", "Non-number")
         end match
       },
   )
