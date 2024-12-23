@@ -10,6 +10,7 @@ import scala.collection.immutable.NumericRange
 import scala.collection.immutable.NumericRange.Inclusive
 import scala.collection.mutable as mut
 import scala.math.Ordered
+import scala.reflect.TypeTest
 import scala.util.matching.Regex
 
 import spire.math.{Complex, Real}
@@ -407,3 +408,11 @@ object VNum:
     override def toFloat(x: VNum): Float = x.toFloat
     override def toDouble(x: VNum): Double = x.toDouble
 end VNum
+
+object VListOf:
+  def unapply[T](seq: Seq[Any])(using tt: TypeTest[Any, T]): Option[Seq[T]] =
+    val matches = seq.forall {
+      case tt(_) => true
+      case _ => false
+    }
+    Option.when(matches)(seq.asInstanceOf[Seq[T]])

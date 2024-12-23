@@ -1209,16 +1209,17 @@ object NewElements:
           case simpleOuter: VNum =>
             val ctx = summon[Context]
             val parentCtx = ctx.getParentCtx.getOrElse(ctx)
-            val value = parentCtx.getStack(index)
+            val value = parentCtx.getStack.vlst.indexBig(simpleOuter.toBigInt)
             push(value)
-          case coordinates: Seq[VNum] =>
+          case VListOf[VNum](coordinates) =>
             if coordinates.length != 2 then
               throw InvalidListOverloadException("⬱", coordinates, "2")
             val ctx = summon[Context]
             var parentCtx = ctx
             for _ <- 0 until coordinates.head.toInt do
               parentCtx = parentCtx.getParentCtx.getOrElse(parentCtx)
-            val value = parentCtx.getStack(coordinates(1))
+            val value =
+              parentCtx.getStack.vlst.indexBig(coordinates(1).toBigInt)
             push(value)
           case _ => throw UnsupportedOverloadException("⬱", "Non-number")
         end match
