@@ -83,9 +83,8 @@ object NewElements:
     addPart("‹", Monad, true) {
       case a: VNum => a - 1
       case VStr(a) =>
-        val length = a.length()
-        val padLength = (8 - length % 8)
-        "0".repeat(padLength) + a
+        val temp = a.length % 8
+        if temp == 0 then a else ("0" * (8 - temp)) + a
     },
     addPart("›", Monad, true) {
       case a: VNum => a + 1
