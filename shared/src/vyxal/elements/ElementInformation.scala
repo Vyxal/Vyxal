@@ -2785,7 +2785,7 @@ object ElementInformation:
       ),
     ),
     Element(
-      symbol = "⏟",
+      symbol = "ℳ",
       keywords = Seq("modular", "matrix-multiply", "regex-full-match?"),
       arity = 2,
       Options(
@@ -2811,7 +2811,7 @@ object ElementInformation:
       ),
     ),
     Element(
-      symbol = "⌭",
+      symbol = "℗",
       keywords = Seq("is-prime", "prime?", "quine-cheese"),
       arity = 1,
       Options(
@@ -3536,6 +3536,41 @@ object ElementInformation:
         args = Seq("any", "any", "any"),
         description = "Wrap #1, #2, and #3 in a lambda and push it",
         example = "⑶+*~ = λ+*~}",
+      ),
+    ),
+    Modifier(
+      symbol = "⑷",
+      keywords = Seq("****:"),
+      numberOfElements = 4,
+      ModifierOverload(
+        name = "Next Four Elements as Lambda",
+        args = Seq("any", "any", "any", "any"),
+        description = "Wrap #1, #2, #3, and #4 in a lambda and push it",
+        example = "⑷+*~d = λ+*~d}",
+      ),
+    ),
+    Modifier(
+      symbol = "⎂",
+      keywords = Seq("both:"),
+      numberOfElements = 1,
+      ModifierOverload(
+        name = "Both",
+        args = Seq("any"),
+        description =
+          "Apply #1 to both the top of stack (or however many arguments), and under stack (or however many arguments under the arity). Effectively ... #1(top - arity, top - arity * 2) #1(top -> top - arity)",
+        example = "3 4 ⎂d -> 6 8 || 1 2 3 4 ⎂+ -> 3 7",
+      ),
+    ),
+    Modifier(
+      symbol = "⟒",
+      keywords = Seq("fork:"),
+      numberOfElements = 2,
+      ModifierOverload(
+        name = "Fork",
+        args = Seq("dyd+", "dyd+"),
+        description =
+          "Apply #1 but keep the under stack, and then apply #2. Effectively #2(#1(top, under), under)",
+        example = "3 4 ⟒+* -> 28",
       ),
     ),
   )

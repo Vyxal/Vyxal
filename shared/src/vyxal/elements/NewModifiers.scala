@@ -27,6 +27,12 @@ extension (ast: AST)
         case _ => true
       )
 
+object DyadOrMore:
+  def unapply(ast: AST): Option[(AST, Int)] =
+    ast match
+      case AST(ast, arity) if arity >= 2 => Some((ast, arity))
+      case _ => None
+
 type MonadicModifier = AST => Seq[AST]
 type DyadicModifier = (AST, AST) => Seq[AST]
 type TriadicModifier = (AST, AST, AST) => Seq[AST]
@@ -178,6 +184,15 @@ object NewModifiers:
         (first, second, third, fourth) =>
           Seq(AST.makeSingle(first.lam, second.lam, third.lam, fourth.lam)),
       ),
+    "⎂" ->
+      fullToImpl(
+        Monadic,
+        (first) => Seq(first.lam, AST.Command("#|both")),
+      ),
+    addPart("⟒", Dyadic) {
+      case (DyadOrMore(ast1, _), DyadOrMore(ast2, _)) =>
+        Seq(ast1.lam, ast2.lam, AST.Command("#|fork"))
+    },
   )
 
   def addPart[P, F](name: String, arity: ModifierHelpers[P, F])(impl: P) =

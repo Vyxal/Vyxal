@@ -1012,13 +1012,13 @@ object NewElements:
       case lst: VList => VList(lst.map(item => ListHelpers.sum(item.itr)))
     },
     "ᴥ" -> fullToImpl(Monad, x => MiscHelpers.exec(x)),
-    addPart("⏟", Dyad, false) {
+    addPart("ℳ", Dyad, false) {
       case (a: (VList | VStr), b: VNum) => ListHelpers.nthItems(a, b)
       case (a: VNum, b: (VList | VStr)) => ListHelpers.nthItems(b, a)
       case (a: VList, b: VList) => ListHelpers.matrixMultiply(a, b)
       case (VStr(a), VStr(b)) => StringHelpers.r(b).matches(a)
     },
-    addPart("⌭", Monad, true) {
+    addPart("℗", Monad, true) {
       case a: VNum => NumberHelpers.isMostLikelyPrime(a)
       case VStr(a) => StringHelpers.quotify(a) + a
     },
@@ -1276,15 +1276,38 @@ object NewElements:
     "#|paralell-apply" ->
       direct(Dyad) {
         val ctx = summon[Context]
-        val second = pop().asInstanceOf[VFun]
-        val first = pop().asInstanceOf[VFun]
+        val functionG = pop().asInstanceOf[VFun]
+        val functionF = pop().asInstanceOf[VFun]
 
-        first.ctx = ctx.copy
+        functionF.ctx = ctx.copy
 
-        val firstRes = Interpreter.executeFn(first)(using ctx.copy)
-        val secondRes = Interpreter.executeFn(second)(using ctx)
+        val resF = Interpreter.executeFn(functionF)(using ctx.copy)
+        val resG = Interpreter.executeFn(functionG)(using ctx)
         pop()
-        push(firstRes, secondRes)
+        push(resF, resG)
+      },
+    "#|both" ->
+      direct(Monad) {
+        val ctx = summon[Context]
+        val functionF = pop().asInstanceOf[VFun]
+
+        val args1 = ctx.pop(functionF.arity)
+        val args2 = ctx.pop(functionF.arity)
+
+        push(Interpreter.executeFn(functionF, args = args2))
+        push(Interpreter.executeFn(functionF, args = args1))
+      },
+    "#|fork" ->
+      direct(Dyad) {
+        val ctx = summon[Context]
+        val functionG = pop().asInstanceOf[VFun]
+        val functionF = pop().asInstanceOf[VFun]
+
+        val y = peek()
+        val resF = Interpreter.executeFn(functionF)
+        push(y)
+        val resG = Interpreter.executeFn(functionG)(using ctx.copy)
+        push(resG)
       },
   )
 

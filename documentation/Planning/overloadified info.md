@@ -29,8 +29,8 @@ Modifiers
 - [x] ⑵   NA  =   Next 2 elements as lambda
 - [x] ⑶   NA  =   Next 3 elements as lambda
 - [x] ⑷   NA  =   Next 4 elements as lambda
-- [ ] ⎂   F<any>  =   Both. Apply F to both the top of stack (or however many arguments), and under stack (or however many arguments under the arity). Effectively ... F(top - arity, top - arity * 2) F(top -> top - arity)
-- [ ] 🜳   F<2+>, G<2+> = G(F(x, y), y)
+- [x] ⎂   F<any>  =   Both. Apply F to both the top of stack (or however many arguments), and under stack (or however many arguments under the arity). Effectively ... F(top - arity, top - arity * 2) F(top -> top - arity)
+- [x] ⟒   F<2+>, G<2+> = G(F(x, y), y)
 - [ ] ▥   F<1>    =   Map over columns. To each column of top, apply F.
 - [ ]     F<2+>   =   Reduce over columns. To each column of top, reduce by F.
 - [ ] ▦   F<2>    =   Outer Product. [F(under, x) for x in top]
@@ -296,13 +296,13 @@ b = rhs
 - [x]   (str) = a + reversed(a)
 - [x]   (lst) = append reversed(a) to a
 - [x] Ͼ (lst) = ¨Σ
-- [x] ⛭ (num) = a ** 10
+- [x] ᴥ (num) = a ** 10
 - [x]    (str) = Exec
 - [x]    (fun) = call function
-- [x] ⏟ (any, num) = every bth element of a
+- [x] ℳ (any, num) = every bth element of a
 - [x]   (lst, lst) = Matrix multiplication
 - [x]   (str, str) = does the entirety of a match b?
-- [x] ⌭ (num) = is a prime?
+- [x] ℗ (num) = is a prime?
 - [x]    (str) = quote a and prepend to a
 - [x] ⏜ () = ...d c b a => ...d c b a b
 - [x] ⍢ (num) = a % 2
@@ -352,6 +352,9 @@ b = rhs
 - [x] „ (any) = join on newlines
 - [x] ” (any) = join on spaces
 - [x] “ (any) = join on nothing
+- [ ] ʀ (num) = range(0, a)
+- [ ] ʁ (num) = range(0, a + 1)
+- [ ] ɾ (num) = range(1, a)
 
 Things that need to be slotted in:
 
