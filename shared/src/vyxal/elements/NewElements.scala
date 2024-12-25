@@ -433,6 +433,12 @@ object NewElements:
       case (a: VList, VList(b)) =>
         if !b.forall(_.isInstanceOf[VNum]) then ???
         else ListHelpers.overlapsMd(a, b.map(_.asInstanceOf[VNum]))
+      case (a: VPhysical, b: VFun) => ListHelpers
+          .overlaps(a.ritr, b.arity)
+          .map(overlap => ListHelpers.reduce(overlap, b))
+      case (a: VFun, b: VPhysical) => ListHelpers
+          .overlaps(b.ritr, a.arity)
+          .map(overlap => ListHelpers.reduce(overlap, a))
     },
     addPart("p", Dyad, false) {
       case (VStr(a), b: (VStr | VNum)) => b.toString + a
@@ -492,6 +498,9 @@ object NewElements:
       },
     addPart("v", Monad, false) {
       case VStr(a) => ListHelpers.overlaps(a, 2)
+      case fn: VFun =>
+        val lst = pop()
+        FuncHelpers.reduceOverPairs(fn, lst.itr)
       case a => ListHelpers.overlaps(a.itr, 2)
     },
     "w" ->
@@ -1263,7 +1272,20 @@ object NewElements:
         val result = Interpreter.executeFn(functionG)
         val otherResult = Interpreter.executeFn(functionF)
         push(otherResult, result)
-      }
+      },
+    "#|paralell-apply" ->
+      direct(Dyad) {
+        val ctx = summon[Context]
+        val second = pop().asInstanceOf[VFun]
+        val first = pop().asInstanceOf[VFun]
+
+        first.ctx = ctx.copy
+
+        val firstRes = Interpreter.executeFn(first)(using ctx.copy)
+        val secondRes = Interpreter.executeFn(second)(using ctx)
+        pop()
+        push(firstRes, secondRes)
+      },
   )
 
   private def niladify(value: VAny): Element =

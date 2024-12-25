@@ -1,6 +1,8 @@
 package vyxal.elements
 
+import vyxal.conversions.{*, given}
 import vyxal.AST
+import vyxal.VNum
 
 extension (ast: AST)
   def lam(arity: Int): AST =
@@ -124,7 +126,58 @@ object NewModifiers:
       ),
     addPart("⁜", Monadic) {
       case AST(ast, 1) => Seq(ast.lam, AST.Command("※"))
+      case otherAST =>
+        val arity = otherAST.arity.getOrElse(-1)
+        if arity == -1 then
+          throw Exception(
+            "Monadic modifier ⁜ not defined for AST with unknown arity"
+          )
+        else
+          Seq(
+            otherAST.lam,
+            AST.Number(VNum(arity)),
+            AST.Command("o"),
+          )
     },
+    "∥" ->
+      fullToImpl(
+        Dyadic,
+        (first, second) =>
+          Seq(
+            first.lam,
+            second.lam,
+            AST.Command("#|parallel-apply"),
+          ),
+      ),
+    "∦" ->
+      fullToImpl(
+        Dyadic,
+        (first, second) =>
+          Seq(
+            first.lam,
+            second.lam,
+            AST.Command("#|parallel-apply"),
+            AST.Command(";"),
+          ),
+      ),
+    "⑴" -> fullToImpl(Monadic, (ast) => Seq(ast.lam)),
+    "⑵" ->
+      fullToImpl(
+        Dyadic,
+        (first, second) => Seq(AST.makeSingle(first.lam, second.lam)),
+      ),
+    "⑶" ->
+      fullToImpl(
+        Triadic,
+        (first, second, third) =>
+          Seq(AST.makeSingle(first.lam, second.lam, third.lam)),
+      ),
+    "⑷" ->
+      fullToImpl(
+        Tetradic,
+        (first, second, third, fourth) =>
+          Seq(AST.makeSingle(first.lam, second.lam, third.lam, fourth.lam)),
+      ),
   )
 
   def addPart[P, F](name: String, arity: ModifierHelpers[P, F])(impl: P) =

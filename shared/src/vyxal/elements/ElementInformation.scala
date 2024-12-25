@@ -1400,8 +1400,12 @@ object ElementInformation:
     ),
     Element(
       symbol = "o",
-      keywords =
-        Seq("overlapping-pairs", "overlapping-sliding-window", "windows"),
+      keywords = Seq(
+        "overlapping-pairs",
+        "overlapping-sliding-window",
+        "windows",
+        "reduce-overlaps-by",
+      ),
       arity = 2,
       Options(
         vectorises = false
@@ -1417,6 +1421,13 @@ object ElementInformation:
         args = Seq("any", "num"),
         description =
           "Get overlapping pairs of iterable({#1|#2}) with a window of size {#2|#1}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Reduce Overlapping Slices",
+        args = Seq("lst", "fun"),
+        description =
+          "Reduce overlapping slices of length #2.arity in #1 by function #2",
         typeSwitchable = true,
       ),
     ),
@@ -1513,6 +1524,26 @@ object ElementInformation:
         name = "Unique By Function",
         args = Seq("lst", "fun"),
         description = "Unique elements of #1 by applying #2",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "v",
+      keywords = Seq("overlapping-pairs", "reduce-pairs-by"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Overlapping Pairs",
+        args = Seq("lst"),
+        description = "Get overlapping pairs of #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Reduce Overlapping Pairs",
+        args = Seq("lst", "fun"),
+        description = "Reduce overlapping pairs in #1 by function #2",
         typeSwitchable = false,
       ),
     ),
@@ -3416,6 +3447,30 @@ object ElementInformation:
 
   val modifiers: Seq[Modifier] = List(
     Modifier(
+      symbol = "∥",
+      keywords = Seq("parallel-apply:", "para:"),
+      numberOfElements = 2,
+      ModifierOverload(
+        name = "Parallel Apply",
+        args = Seq("mon", "mon"),
+        description =
+          "Apply #1 and #2 on separate stacks and push both results",
+        example = "3 4 ∥d½ -> 8 2",
+      ),
+    ),
+    Modifier(
+      symbol = "∦",
+      keywords = Seq("parallel-apply-wrap:", "paraw:"),
+      numberOfElements = 2,
+      ModifierOverload(
+        name = "Parallel Apply Wrap",
+        args = Seq("mon", "mon"),
+        description =
+          "Apply #1 and #2 on separate stacks and push both results wrapped in a list. Equivalent to `∥#1#2;`",
+        example = "3 4 ∦d½ -> [8, 2]",
+      ),
+    ),
+    Modifier(
       symbol = "∺",
       keywords = Seq("correspond:"),
       numberOfElements = 2,
@@ -3442,6 +3497,45 @@ object ElementInformation:
         args = Seq("mon"),
         description = "Group items of the top of the stack by results of #1",
         example = "#[1|3|4|5|2|4#] ⁜e -> [[1,3],[4],[5],[2,4]]",
+      ),
+      ModifierOverload(
+        name = "Window Reduce",
+        args = Seq("dyd+"),
+        description = "Reduce each overlapping window of size #1.arity with #1",
+        example = "#[1|2|3|4|5|6#] ⁜λ3|+} -> [6, 9, 12, 15]",
+      ),
+    ),
+    Modifier(
+      symbol = "⑴",
+      keywords = Seq("*:"),
+      numberOfElements = 1,
+      ModifierOverload(
+        name = "Next Element as Lambda",
+        args = Seq("any"),
+        description = "Wrap #1 in a lambda and push it",
+        example = "⑴+ = λ+}",
+      ),
+    ),
+    Modifier(
+      symbol = "⑵",
+      keywords = Seq("**:"),
+      numberOfElements = 2,
+      ModifierOverload(
+        name = "Next Two Elements as Lambda",
+        args = Seq("any", "any"),
+        description = "Wrap #1 and #2 in a lambda and push it",
+        example = "⑵+* = λ+*}",
+      ),
+    ),
+    Modifier(
+      symbol = "⑶",
+      keywords = Seq("***:"),
+      numberOfElements = 3,
+      ModifierOverload(
+        name = "Next Three Elements as Lambda",
+        args = Seq("any", "any", "any"),
+        description = "Wrap #1, #2, and #3 in a lambda and push it",
+        example = "⑶+*~ = λ+*~}",
       ),
     ),
   )
