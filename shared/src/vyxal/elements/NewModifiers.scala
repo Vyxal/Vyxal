@@ -166,23 +166,25 @@ object NewModifiers:
             AST.Command(";"),
           ),
       ),
-    "⑴" -> fullToImpl(Monadic, (ast) => Seq(ast.lam)),
+    "⑴" -> fullToImpl(Monadic, (ast) => Seq(ast.lam(1))),
     "⑵" ->
       fullToImpl(
         Dyadic,
-        (first, second) => Seq(AST.makeSingle(first.lam, second.lam)),
+        (first, second) => Seq(AST.makeSingle(first.lam, second.lam).lam(1)),
       ),
     "⑶" ->
       fullToImpl(
         Triadic,
         (first, second, third) =>
-          Seq(AST.makeSingle(first.lam, second.lam, third.lam)),
+          Seq(AST.makeSingle(first.lam, second.lam, third.lam).lam(1)),
       ),
     "⑷" ->
       fullToImpl(
         Tetradic,
         (first, second, third, fourth) =>
-          Seq(AST.makeSingle(first.lam, second.lam, third.lam, fourth.lam)),
+          Seq(
+            AST.makeSingle(first.lam, second.lam, third.lam, fourth.lam).lam(1)
+          ),
       ),
     "⎂" ->
       fullToImpl(
