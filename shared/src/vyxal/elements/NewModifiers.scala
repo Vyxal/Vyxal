@@ -150,8 +150,8 @@ object NewModifiers:
         Dyadic,
         (first, second) =>
           Seq(
-            first.lam,
-            second.lam,
+            first.lam(-1),
+            second.lam(-1),
             AST.Command("#|parallel-apply"),
           ),
       ),
@@ -160,8 +160,8 @@ object NewModifiers:
         Dyadic,
         (first, second) =>
           Seq(
-            first.lam,
-            second.lam,
+            first.lam(-1),
+            second.lam(-1),
             AST.Command("#|parallel-apply"),
             AST.Command(";"),
           ),
