@@ -4,11 +4,13 @@ import vyxal.conversions.{*, given}
 import vyxal.AST
 import vyxal.VNum
 
+extension (ast: AST) def lam(arity: Int): AST = lam(arity, false)
+
 extension (ast: AST)
-  def lam(arity: Int): AST =
+  def lam(arity: Int, originallyFunction: Boolean): AST =
     ast match
       case lam: AST.Lambda => lam.copy(lambdaArity = Some(arity))
-      case _ => AST.Lambda(Some(arity), List(), List(ast), false)
+      case _ => AST.Lambda(Some(arity), List(), List(ast), originallyFunction)
 
 extension (ast: AST) def lam: AST = ast.lam(ast.arity.getOrElse(-1))
 
@@ -166,24 +168,24 @@ object NewModifiers:
             AST.Command(";"),
           ),
       ),
-    "⑴" -> fullToImpl(Monadic, (ast) => Seq(AST.makeSingle(ast).lam(1))),
+    "⑴" -> fullToImpl(Monadic, (ast) => Seq(AST.makeSingle(ast).lam(1, true))),
     "⑵" ->
       fullToImpl(
         Dyadic,
-        (first, second) => Seq(AST.makeSingle(first, second).lam(1)),
+        (first, second) => Seq(AST.makeSingle(first, second).lam(1, true)),
       ),
     "⑶" ->
       fullToImpl(
         Triadic,
         (first, second, third) =>
-          Seq(AST.makeSingle(first, second, third).lam(1)),
+          Seq(AST.makeSingle(first, second, third).lam(1, true)),
       ),
     "⑷" ->
       fullToImpl(
         Tetradic,
         (first, second, third, fourth) =>
           Seq(
-            AST.makeSingle(first, second, third, fourth).lam(1)
+            AST.makeSingle(first, second, third, fourth).lam(1, true)
           ),
       ),
     "⎂" ->

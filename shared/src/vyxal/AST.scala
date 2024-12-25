@@ -74,7 +74,11 @@ enum AST(val arity: Option[Int]) derives CanEqual:
       lambdaArity: Option[Int],
       params: List[String | Int],
       body: List[AST],
-      originallyFunction: Boolean = true,
+      originallyFunction: Boolean =
+        true, // Whether the lambda was constructed using λ or a grouping modifier
+      // useful for knowing if the lambda should be added to the call stack
+      // (e.g. a quick lambda AST made by a modifier shouldn't be, while something
+      // made by a λ should be)
       override val range: Range = Range.fake,
   ) extends AST(Some(lambdaArity.getOrElse(-2)))
 
