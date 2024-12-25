@@ -80,13 +80,14 @@
 | `l` | `log`</br>`logarithm`</br>`scan-fixpoint`</br>`scan-fix`</br>`same-length?`</br>`same-length`</br>`length-equals?`</br>`length-equals`</br>`len-eq?` | 2 | vec  | **Logarithm** (`num,num`): Log base #2 of #1</br>**Scan Fixpoint** (`fun,any`): Repeatedly apply #1 to #2 until it doesn't change</br>**Scan Fixpoint** (`any,fun`): Repeatedly apply #1 to #2 until it doesn't change</br>**Same Length** (`str,str`): Are #1 and #2 the same length</br>**String Length Equals** (`str,num`): Is the length of #1 equal to #2</br>**String Length Equals** (`num,str`): Is the length of #2 equal to #1 |
 | `m` | `ctx-secondary`</br>`ctx2`</br>`ctx-m`</br>`context-m`</br>`context-secondary` | 0 |   | **Context Secondary**: Push the secondary context variable to the stack |
 | `n` | `ctx-primary`</br>`ctx`</br>`ctx-n`</br>`context-n`</br>`context-primary` | 0 |   | **Context Primary**: Push the primary context variable to the stack |
-| `o` | `overlapping-pairs`</br>`overlapping-sliding-window`</br>`windows` | 2 |   | **Windows** (`lst,lst[num]`): Get overlapping windows of #1 with a window of size #2</br>**Overlapping Slices** (`any,num`): Get overlapping pairs of iterable(#1) with a window of size #2</br>**Overlapping Slices** (`num,any`): Get overlapping pairs of iterable(#2) with a window of size #1 |
+| `o` | `overlapping-pairs`</br>`overlapping-sliding-window`</br>`windows`</br>`reduce-overlaps-by` | 2 |   | **Windows** (`lst,lst[num]`): Get overlapping windows of #1 with a window of size #2</br>**Overlapping Slices** (`any,num`): Get overlapping pairs of iterable(#1) with a window of size #2</br>**Overlapping Slices** (`num,any`): Get overlapping pairs of iterable(#2) with a window of size #1</br>**Reduce Overlapping Slices** (`lst,fun`): Reduce overlapping slices of length #2.arity in #1 by function #2</br>**Reduce Overlapping Slices** (`fun,lst`): Reduce overlapping slices of length #2.arity in #1 by function #2 |
 | `p` | `prepend` | 2 |   | **Prepend** (`any,any`): Prepend #2 to #1 |
 | `q` | `quotify` | 1 |   | **Quotify** (`any`): Cast #1 to a string and wrap in quotes |
 | `r` | `replace` | 3 |   | **Replace** (`nsl,nsl,nsl`): Replace all occurrences of #2 in #1 with #3</br>**Zip-With** (`lst,lst,fun`): Zip #1 and #2 and apply #3 to each pair</br>**Zip-With** (`lst,fun,lst`): Zip #1 and #2 and apply #3 to each pair</br>**Zip-With** (`fun,lst,lst`): Zip #1 and #2 and apply #3 to each pair |
 | `s` | `split` | 2 |   | **Split** (`any,any`): Split #1 by #2 |
 | `t` | `tail`</br>`last` | 1 |   | **Tail** (`any`): Last element of #1 |
 | `u` | `unique` | 1 |   | **Unique** (`lst`): Unique elements of #1</br>**Unique By Function** (`lst,fun`): Unique elements of #1 by applying #2 |
+| `v` | `overlapping-pairs`</br>`reduce-pairs-by` | 1 |   | **Overlapping Pairs** (`lst`): Get overlapping pairs of #1</br>**Reduce Overlapping Pairs** (`lst,fun`): Reduce overlapping pairs in #1 by function #2 |
 | `w` | `wrap-in-list` | 1 |   | **Wrap in List** (`any`): Wrap #1 in a list |
 | `x` | `recurse` | STACK |   | **Recurse**: Recursively call the current function (or the top-level program if not in a function) |
 | `y` | `transliterate`</br>`call-while` | 3 |   | **Transliterate** (`nsl,nsl,nsl`): Replace all occurrences of #2 in #1 with #3</br>**Call While** (`fun,fun,any`): While #1(#3) is true, #3 = #2(#3). Return the result. Type switchable. |
@@ -155,8 +156,8 @@
 | `≓` | `mirror` | 1 |   | **Mirror** (`any`): Mirror #1 (#1 + reverse(#1)), as the original type |
 | `Ͼ` | `vectorised-sums`</br>`v/+` | 1 | vec  | **Vectorised Sums** (`lst`): Sum of each item in #1. Functionally equivalent to `¨Σ` |
 | `ᴥ` | `exec`</br>`10**`</br>`call`</br>`@` | 1 | vec  | **10 to the Power of** (`num`): 10 ** #1</br>**Execute** (`str`): Execute #1 as Vyxal code</br>**Call Function** (`fun`): Call function #1 |
-| `⏟` | `modular`</br>`matrix-multiply`</br>`regex-full-match?` | 2 |   | **Every Nth Element** (`itr,num`): Every #2th element of #1</br>**Every Nth Element** (`num,itr`): Every #1th element of #2</br>**Matrix Multiply** (`lst,lst`): Matrix multiply #1 and #2</br>**Regex Full Match?** (`str,str`): Does pattern #2 fully match #1 |
-| `⌭` | `is-prime`</br>`prime?`</br>`quine-cheese` | 1 | vec  | **Is Prime** (`num`): Is #1 a prime number?</br>**Quine Cheese** (`str`): Quotify #1 and prepend it to #1. (Useful for quines like `"⌭"⌭`) |
+| `ℳ` | `modular`</br>`matrix-multiply`</br>`regex-full-match?` | 2 |   | **Every Nth Element** (`itr,num`): Every #2th element of #1</br>**Every Nth Element** (`num,itr`): Every #1th element of #2</br>**Matrix Multiply** (`lst,lst`): Matrix multiply #1 and #2</br>**Regex Full Match?** (`str,str`): Does pattern #2 fully match #1 |
+| `℗` | `is-prime`</br>`prime?`</br>`quine-cheese` | 1 | vec  | **Is Prime** (`num`): Is #1 a prime number?</br>**Quine Cheese** (`str`): Quotify #1 and prepend it to #1. (Useful for quines like `"⌭"⌭`) |
 | `⏜` | `over` | STACK |   | **Over**: Duplicate the item below the top of the stack -> #2 #1 #2 |
 | `⍢` | `parity`</br>`bit`</br>`last-half` | 1 | vec  | **Parity** (`num`): Parity of #1 (1 if odd, 0 if even) --> #1 % 2</br>**Last String Half** (`str`): Last half of #1 |
 | `ℂ` | `ncr`</br>`choose`</br>`characters-same?`</br>`fixpoint-collect` | 2 | vec  | **NCR | N Choose R** (`num,num`): nCr of #1 and #2 (n choose r)</br>**Characters Same?** (`str,str`): Are all characters in #1 the same as #2?</br>**Fixpoint Collect** (`fun,any`): Repeatedly apply #1 on #2 until a fixed point is reached, collecting intermediate results</br>**Fixpoint Collect** (`any,fun`): Repeatedly apply #2 on #1 until a fixed point is reached, collecting intermediate results |
@@ -196,7 +197,15 @@
 
   | Symbol | Keywords | Number of Elements | Overloads |
 |--------|--|------------------|-----------|
+| `∥` | `parallel-apply:`</br>`para:` | 2 | <table><tr><td>**Parallel Apply**</td><td>`mon,mon`</td><td>Apply #1 and #2 on separate stacks and push both results</td><td>`3 4 ∥d½ -> 8 2`</td></tr></table> |
+| `∦` | `parallel-apply-wrap:`</br>`paraw:` | 2 | <table><tr><td>**Parallel Apply Wrap**</td><td>`mon,mon`</td><td>Apply #1 and #2 on separate stacks and push both results wrapped in a list. Equivalent to `∥#1#2;`</td><td>`3 4 ∦d½ -> [8, 2]`</td></tr></table> |
 | `∺` | `correspond:` | 2 | <table><tr><td>**Correspond**</td><td>`mon,mon`</td><td>Apply #1 to <under> and #2 to <top></td><td>`3 4 ∺d½ -> 6 2`</td></tr></br><tr><td>**Dyadic Correspond**</td><td>`dyd+,dyd+`</td><td>Apply #2 to #2.arity top items, and #1 to #1.arity items under that</td><td>`3 4 5 6 ∺+- -> 7 1_`</td></tr></table> |
-| `⁜` | `group-by:`</br>`window-reduce:` | 1 | <table><tr><td>**Group By**</td><td>`mon`</td><td>Group items of the top of the stack by results of #1</td><td>`#[1\|3\|4\|5\|2\|4#] ⁜e -> [[1,3],[4],[5],[2,4]]`</td></tr></table> |
+| `⁜` | `group-by:`</br>`window-reduce:` | 1 | <table><tr><td>**Group By**</td><td>`mon`</td><td>Group items of the top of the stack by results of #1</td><td>`#[1\|3\|4\|5\|2\|4#] ⁜e -> [[1,3],[4],[5],[2,4]]`</td></tr></br><tr><td>**Window Reduce**</td><td>`dyd+`</td><td>Reduce each overlapping window of size #1.arity with #1</td><td>`#[1\|2\|3\|4\|5\|6#] ⁜λ3\|+} -> [6, 9, 12, 15]`</td></tr></table> |
+| `⑴` | `*:` | 1 | <table><tr><td>**Next Element as Lambda**</td><td>`any`</td><td>Wrap #1 in a lambda and push it</td><td>`⑴+ = λ+}`</td></tr></table> |
+| `⑵` | `**:` | 2 | <table><tr><td>**Next Two Elements as Lambda**</td><td>`any,any`</td><td>Wrap #1 and #2 in a lambda and push it</td><td>`⑵+* = λ+*}`</td></tr></table> |
+| `⑶` | `***:` | 3 | <table><tr><td>**Next Three Elements as Lambda**</td><td>`any,any,any`</td><td>Wrap #1, #2, and #3 in a lambda and push it</td><td>`⑶+*~ = λ+*~}`</td></tr></table> |
+| `⑷` | `****:` | 4 | <table><tr><td>**Next Four Elements as Lambda**</td><td>`any,any,any,any`</td><td>Wrap #1, #2, #3, and #4 in a lambda and push it</td><td>`⑷+*~d = λ+*~d}`</td></tr></table> |
+| `⎂` | `both:` | 1 | <table><tr><td>**Both**</td><td>`any`</td><td>Apply #1 to both the top of stack (or however many arguments), and under stack (or however many arguments under the arity). Effectively ... #1(top - arity, top - arity * 2) #1(top -> top - arity)</td><td>`3 4 ⎂d -> 6 8 \|\| 1 2 3 4 ⎂+ -> 3 7`</td></tr></table> |
+| `⟒` | `fork:` | 2 | <table><tr><td>**Fork**</td><td>`dyd+,dyd+`</td><td>Apply #1 but keep the under stack, and then apply #2. Effectively #2(#1(top, under), under)</td><td>`3 4 ⟒+* -> 28`</td></tr></table> |
 
   
