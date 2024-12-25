@@ -25,18 +25,14 @@ class ModifierTests extends VyxalTests:
 
   describe("Function grouping modifiers") {
     testMulti(
-      "#[1|2|3#] ⸠× M" -> vSeq(1, 4, 9),
-      "#[1|2|3#] ⸠2× M" -> vSeq(2, 4, 6),
-      "#[1|2|3#] ϩ×+ M" -> vSeq(2, 6, 12),
-      "#[1|2|3#] ϩ2×+ M" -> vSeq(3, 6, 9),
-      "#[1|2|3#] э×++ M" -> vSeq(3, 8, 15),
-      "#[1|2|3#] э2×++ M" -> vSeq(4, 8, 12),
-      "#[1|2|3#] Ч×++× M" -> vSeq(3, 16, 45),
-      "#[1|2|3#] Ч2×++× M" -> vSeq(4, 16, 36),
-      "#[1|2|3#] ᵈ+ R" -> VNum(6),
-      "#[1|2|3#] ᵉ+× R" -> VNum(27),
-      "#[1|2|3#] ᶠ+×+ R" -> VNum(37),
-      "#[1|2|3#] ᴳ+×+× R" -> VNum(195),
+      "#[1|2|3#] ⑴× M" -> vSeq(1, 4, 9),
+      "#[1|2|3#] ⑴2× M" -> vSeq(2, 4, 6),
+      "#[1|2|3#] ⑵×+ M" -> vSeq(2, 6, 12),
+      "#[1|2|3#] ⑵2×+ M" -> vSeq(3, 6, 9),
+      "#[1|2|3#] ⑶×++ M" -> vSeq(3, 8, 15),
+      "#[1|2|3#] ⑶2×++ M" -> vSeq(4, 8, 12),
+      "#[1|2|3#] ⑷×++× M" -> vSeq(3, 16, 45),
+      "#[1|2|3#] ⑷2×++× M" -> vSeq(4, 16, 36),
     )
   }
 
@@ -74,7 +70,7 @@ class ModifierTests extends VyxalTests:
   describe("Modifier ᶜ (Monadic)") {
     testMulti(
       "#[1|1|1|1|1#] ᶜL" -> vSeq(5, 4, 3, 2, 1),
-      "#[1|2|3|4|5#] ᶜ⸠/+" -> vSeq(15, 14, 12, 9, 5),
+      "#[1|2|3|4|5#] ᶜ⑴/+" -> vSeq(15, 14, 12, 9, 5),
     )
   }
 
@@ -164,7 +160,7 @@ class ModifierTests extends VyxalTests:
   describe("Modifier ᵖ") {
     testMulti(
       "#[1|1|1|1|1#] ᵖL" -> vSeq(1, 2, 3, 4, 5),
-      "#[1|2|3|4|5#] ᵖ⸠/+" -> vSeq(1, 3, 6, 10, 15),
+      "#[1|2|3|4|5#] ᵖ⑴/+" -> vSeq(1, 3, 6, 10, 15),
     )
   }
 
@@ -176,7 +172,7 @@ class ModifierTests extends VyxalTests:
 
   describe("Modifier ᵘ (Monadic)") {
     testMulti(
-      "9ᵘϩ½⌊" -> vSeq(9, 4, 2, 1, 0)
+      "9ᵘ⑵½⌊" -> vSeq(9, 4, 2, 1, 0)
     )
   }
 
@@ -202,14 +198,14 @@ class ModifierTests extends VyxalTests:
 
   describe("Modifier ᵡ") {
     testMulti(
-      "10 ᵡϩe[2÷|3×1+}" -> vSeq(10, 5, 16, 8, 4, 2, 1)
+      "10 ᵡ⑵e[2÷|3×1+}" -> vSeq(10, 5, 16, 8, 4, 2, 1)
     )
   }
 
   describe("Modifier ᵞ (Monadic)") {
     testMulti(
-      "\"abc\" ᵞϩṚṚ" -> VNum(1),
-      "6 ᵞϩṚe" -> VNum(0),
+      "\"abc\" ᵞ⑵ṚṚ" -> VNum(1),
+      "6 ᵞ⑵Ṛe" -> VNum(0),
     )
   }
 
@@ -260,7 +256,7 @@ class ModifierTests extends VyxalTests:
 
   describe("Modifier ᵗ") {
     testMulti(
-      "#[#[1|2|3#]|#[4|5|6#]#] ᵗϩ++" -> vSeq(6, 15)
+      "#[#[1|2|3#]|#[4|5|6#]#] ᵗ⑵++" -> vSeq(6, 15)
     )
   }
 

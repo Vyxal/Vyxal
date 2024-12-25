@@ -1273,7 +1273,7 @@ object NewElements:
         val otherResult = Interpreter.executeFn(functionF)
         push(otherResult, result)
       },
-    "#|paralell-apply" ->
+    "#|parallel-apply" ->
       direct(Dyad) {
         val ctx = summon[Context]
         val functionG = pop().asInstanceOf[VFun]
@@ -1305,6 +1305,7 @@ object NewElements:
 
         val y = peek()
         val resF = Interpreter.executeFn(functionF)
+        push(resF)
         push(y)
         val resG = Interpreter.executeFn(functionG)(using ctx.copy)
         push(resG)
