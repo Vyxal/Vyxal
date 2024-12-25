@@ -307,7 +307,7 @@ class ParserTests extends AnyFunSuite:
         )
     )
     assert(
-      parse("ϩϩ*O+OO") ===
+      parse("⑵⑵*O+OO") ===
         Group(
           List(
             Lambda(
