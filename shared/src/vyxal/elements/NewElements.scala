@@ -545,7 +545,10 @@ object NewElements:
       case VList(a) if !a.exists(_.isInstanceOf[VStr]) => ListHelpers.sum(a)
       case default => MiscHelpers.eval(default.itr.mkString)
     },
-    "Π" -> fullToImpl(Monad, lhs => ListHelpers.product(lhs.itr)),
+    addPart("Π", Monad, false) {
+      case VList(itr) => ListHelpers.product(itr)
+      case num: VNum => NumberHelpers.toBinary(num).mkString
+    },
     addPart("σ", Monad, false) {
       case a =>
         val list = ListHelpers.makeIterable(a)

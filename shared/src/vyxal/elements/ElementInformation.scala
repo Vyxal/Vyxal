@@ -1666,8 +1666,8 @@ object ElementInformation:
       ),
     ),
     Element(
-      symbol = "∏",
-      keywords = Seq("product", "product-of", "*/", "*/"),
+      symbol = "Π",
+      keywords = Seq("product", "product-of", "*/"),
       arity = 1,
       Options(
         vectorises = false
@@ -1676,6 +1676,12 @@ object ElementInformation:
         name = "Product",
         args = Seq("lst"),
         description = "Product of #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Number to Binary as String",
+        args = Seq("num"),
+        description = "Convert #1 to binary as a string",
         typeSwitchable = false,
       ),
     ),
