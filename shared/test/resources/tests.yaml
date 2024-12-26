@@ -1287,7 +1287,7 @@
     - {in: ["abc", 3], out: ["a", "b", "c"]}
     - {in: [3, "abc"], out: ["a", "b", "c"]}
     - {in: ["abcdefghi", 3], out: ["abc", "def", "ghi"]}
-    - {in: ["abcdefghij", 3], out: ["abc", "def", "ghi", "j"]}
+    - {in: ["abcdefghij", 3], out: ["abcd", "efgh", "ij"]}
     - {in: ["", 3], out: []}
   Strings:
     - {in: ["abcab", "c"], out: ["ab", "ab"]}

@@ -1295,16 +1295,13 @@ object NewElements:
           iterable.itr.zip(mask.itr).filter(_._2.toBool).map(_._1),
       ),
     "Ṭ" -> fullToImpl(Monad, x => ListHelpers.truthyIndices(x.itr)),
-    "Ṫ" ->
-      fullToImpl(
-        Monad,
-        x =>
-          val temp = ListHelpers.truthyIndices(x.itr)
-          val greatestIndex = if temp.isEmpty then VNum(-1) else temp.max
-          var res = Seq.fill(greatestIndex.toInt + 1)(VNum(0))
-          for index <- temp do res = res.updated(index.toInt, VNum(1))
-          res,
-      ),
+    addPart("Ṫ", Monad, false) {
+      case VListOf[VNum](indices) =>
+        val greatestIndex = indices.max
+        val result = Array.fill(greatestIndex.toInt + 1)(VNum(0))
+        indices.foreach(index => result(index.toInt) = VNum(1))
+        VList(result)
+    },
   )
 
   // Subject to being added as overloads onto things in elements
