@@ -678,7 +678,7 @@ object NewElements:
       direct(-1) {
         summon[Context].rotateRight
       },
-    "⬳" ->
+    "↺" ->
       direct(Monad) {
         val top = pop()
         top match
@@ -687,9 +687,9 @@ object NewElements:
             val times = a
             val iterable = pop()
             push(ListHelpers.rotate(iterable, times))
-          case _ => throw UnsupportedOverloadException("⬳", "function | object")
+          case _ => throw UnsupportedOverloadException("↺", "function | object")
       },
-    "⟿" ->
+    "↻" ->
       direct(Monad) {
         val top = pop()
         top match
@@ -698,7 +698,7 @@ object NewElements:
             val times = a
             val iterable = pop()
             push(ListHelpers.rotate(iterable, -times))
-          case _ => throw UnsupportedOverloadException("⟿", "function | object")
+          case _ => throw UnsupportedOverloadException("↻", "function | object")
       },
     addPart("≜", Triad, false) {
       case (a: VObject, VStr(b), c) => MiscHelpers.setObjectMember(a, b, c)
@@ -1022,11 +1022,17 @@ object NewElements:
       case a: VNum => NumberHelpers.isMostLikelyPrime(a)
       case VStr(a) => StringHelpers.quotify(a) + a
     },
-    "⏜" ->
+    "⤻" ->
       direct(Monad) {
         val top = pop()
         val under = pop()
         push(under, top, under)
+      },
+    "⤺" ->
+      direct(Monad) {
+        val top = pop()
+        val under = pop()
+        push(top, under, top)
       },
     addPart("⍢", Monad, true) {
       case a: VNum => a % 2
@@ -1260,6 +1266,25 @@ object NewElements:
       case num: VNum => num < 0
     },
     "“" -> fullToImpl(Monad, x => MiscHelpers.joinNothing(x)),
+    "↸" ->
+      direct(Triad) {
+        val top = pop()
+        val under = pop()
+        val kicker = pop()
+        push(top, kicker, under)
+      },
+    addPart("⧢", Dyad, false) {
+      case (VList(lst), numberOfChunks: VNum) =>
+        ListHelpers.intoNPieces(lst, numberOfChunks)
+      case (VStr(str), numberOfChunks: VNum) =>
+        ListHelpers.intoNPieces(str.itr, numberOfChunks)
+      case (numberOfChunks: VNum, VList(lst)) =>
+        ListHelpers.intoNPieces(lst, numberOfChunks)
+      case (numberOfChunks: VNum, VStr(str)) =>
+        ListHelpers.intoNPieces(str.itr, numberOfChunks)
+      case (iterable: VNum, numberOfChunks: VNum) =>
+        ListHelpers.intoNPieces(iterable.itr, numberOfChunks)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

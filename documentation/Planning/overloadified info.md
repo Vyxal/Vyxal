@@ -47,6 +47,7 @@ Modifiers
 - [ ]    F<1>    = Invariant under
 - [ ] \  F<2>    = Scan by
 - [ ]    F<1>    = Reject by
+- [ ] ⊐ NA       = Lambda to Newline
 
 
 Elements
@@ -316,7 +317,7 @@ b = rhs
 - [x] ℗ (num) = is a prime?
 - [x]    (str) = quote a and prepend to a
 - [x] ⤻ () = ...d c b a => ...d c b a b
-- [ ] ⤺ () = ...d c b a => ...d c a b a
+- [x] ⤺ () = ...d c b a => ...d c a b a
 - [x] ⍢ (num) = a % 2
 - [x]    (str) = last half of a
 - [x] ℂ (num, num) = n choose K
@@ -364,11 +365,11 @@ b = rhs
 - [x] „ (any) = join on newlines
 - [x] ” (any) = join on spaces
 - [x] “ (any) = join on nothing
-- [ ] ʀ (num) = range(0, a)
-- [ ] ʁ (num) = range(0, a + 1)
-- [ ] ɾ (num) = range(1, a)
-- [ ] ⧢ (lst, num) = Split a into b equal length chunks
-- [ ] ↸ = a b c d -> a d b c
+- [x] ʀ (num) = range(0, a)
+- [x] ʁ (num) = range(0, a + 1)
+- [x] ɾ (num) = range(1, a)
+- [x] ⧢ (lst, num) = Split a into b equal length chunks
+- [x] ↸ = a b c d -> a d b c
 - [ ] ÞĠ (lst) = Return all indices of a that correspond to maximal elements.
 - [ ] Þġ (lst) = Return all indices of a that correspond to minimal elements.
 - [ ] ⥨ (lst) = Vectorised reverse

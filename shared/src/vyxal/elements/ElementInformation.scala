@@ -2832,21 +2832,6 @@ object ElementInformation:
       ),
     ),
     Element(
-      symbol = "⤻",
-      keywords = Seq("over"),
-      arity = -1,
-      Options(
-        vectorises = false
-      ),
-      Overload(
-        name = "Over",
-        args = Seq(),
-        description =
-          "Duplicate the item below the top of the stack -> #2 #1 #2",
-        typeSwitchable = false,
-      ),
-    ),
-    Element(
       symbol = "⍢",
       keywords = Seq("parity", "bit", "last-half"),
       arity = 1,
@@ -3362,6 +3347,50 @@ object ElementInformation:
         args = Seq("lst[num, num]"),
         description =
           "Retrieve the item at index #2 from the stack #1 levels up",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⤻",
+      keywords = Seq("over"),
+      arity = -1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Over",
+        args = Seq(),
+        description =
+          "Duplicate the item below the top of the stack -> #2 #1 #2",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⤺",
+      keywords = Seq("around"),
+      arity = -1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Around",
+        args = Seq(),
+        description =
+          "Duplicate the top of the stack around the item below the top of the stack -> #1 #2 #1",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "↸",
+      keywords = Seq("roll"),
+      arity = 3,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Roll",
+        args = Seq("any", "any", "any"),
+        description = "#1 #2 #3 -> #3 #1 #2",
         typeSwitchable = false,
       ),
     ),
