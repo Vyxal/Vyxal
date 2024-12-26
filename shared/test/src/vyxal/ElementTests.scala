@@ -365,4 +365,10 @@ class ElementTests extends VyxalTests:
       "1 1 λλλ3 0;↳}ᴥ}ᴥ}ᴥ" -> VNum(1),
     )
   }
+
+  describe("Element ↸") {
+    testStackLike("↸")(
+      in(5, 1, 2, 3) -> List[VAny](2, 1, 3, 5)
+    )
+  }
 end ElementTests

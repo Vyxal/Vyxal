@@ -1285,6 +1285,10 @@ object NewElements:
       case (iterable: VNum, numberOfChunks: VNum) =>
         ListHelpers.intoNPieces(iterable.itr, numberOfChunks)
     },
+    addPart("▲", Dyad, false) {
+      case (iterable, mask) =>
+        iterable.itr.zip(mask.itr).filter(_._2.toBool).map(_._1)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

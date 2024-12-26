@@ -3472,6 +3472,21 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "▲",
+      keywords = Seq("mask"),
+      arity = 2,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Mask",
+        args = Seq("any", "any"),
+        description =
+          "Keep elements of #1 where the corresponding element of #2 is truthy",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(
