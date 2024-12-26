@@ -443,7 +443,7 @@ object ListHelpers:
     if pieces == VNum(0) then return Seq.empty
     if iterable.isEmpty then return Seq.empty
     val size = iterable.length
-    val pieceSize = (size / pieces).floor
+    val pieceSize = (size / pieces).ceil
     var remaining = iterable
     val out = ListBuffer.empty[Seq[VAny]]
     while remaining.length >= pieceSize do

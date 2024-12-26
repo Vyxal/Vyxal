@@ -1301,7 +1301,7 @@ object NewElements:
         x =>
           val temp = ListHelpers.truthyIndices(x.itr)
           val greatestIndex = if temp.isEmpty then VNum(-1) else temp.max
-          var res = Seq.fill(greatestIndex.toInt)(VNum(0))
+          var res = Seq.fill(greatestIndex.toInt + 1)(VNum(0))
           for index <- temp do res = res.updated(index.toInt, VNum(1))
           res,
       ),
