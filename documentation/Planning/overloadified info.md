@@ -36,7 +36,7 @@ Modifiers
 - [ ]     F<2+>   =   Reduce over columns. To each column of top, reduce by F.
 - [ ] ▦   F<2>    =   Outer Product. [F(under, x) for x in top]
 - [ ] ¨   F<1>    =   Map. Apply F to each item in top
-- [ ]     F<2+>    =   Zip with. Apply F to each item in zip(top, under, ...[kicker, ...])
+- [ ]     F<2+>    =   Zip with. Reduce each item in zip(top, under, ...[kicker, ...]) by F
 - [ ] ¿  F<any>    =  Pop top of stack. If truthy, apply F to the rest of the stack.
 - [ ] ᖶ  F<any>,G<any> =  Pop top of stack. If truthy, apply F to the rest of the stack. Otherwise, apply G.
 - [ ] ⎇  F<any> = Dip
@@ -371,6 +371,9 @@ b = rhs
 - [ ] ÞĠ (lst) = Return all indices of a that correspond to maximal elements.
 - [ ] Þġ (lst) = Return all indices of a that correspond to minimal elements.
 - [ ] ⥨ (lst) = Vectorised reverse
+- [ ] ▲ (lst, lst) = Mask, keep elements of a where b is truthy
+- [ ] Ṭ (lst) = Truthy indices of a
+- [ ] Ṫ (lst) = Return a Boolean array with 1s at the indices in a
 
 Things that need to be slotted in:
 
