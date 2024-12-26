@@ -180,6 +180,20 @@ object StringHelpers:
     val pieces = ListHelpers.intoNPieces(chars, n)
     pieces.map(_.mkString)
 
+  def invertBrackets(s: String): String =
+    s.map { c =>
+      c match
+        case '(' => ')'
+        case ')' => '('
+        case '[' => ']'
+        case ']' => '['
+        case '{' => '}'
+        case '}' => '{'
+        case '<' => '>'
+        case '>' => '<'
+        case _ => c
+    }.mkString
+
   def isAlphaNumeric(s: String): Boolean = s.matches("^[0-9A-Za-z]*$")
 
   def isVowel(c: Char): VNum = "aeiouAEIOU".contains(c)

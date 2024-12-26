@@ -1633,7 +1633,8 @@ object ElementInformation:
     ),
     Element(
       symbol = "⨪",
-      keywords = Seq("-2", "subtract-2", "----", "dec-dec"),
+      keywords =
+        Seq("-2", "subtract-2", "----", "dec-dec", "flip-bracket-palindrome"),
       arity = 1,
       Options(
         vectorises = true
@@ -1642,6 +1643,13 @@ object ElementInformation:
         name = "Subtract 2",
         args = Seq("num"),
         description = "#1 - 2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Flip Bracket Palindrome",
+        args = Seq("str"),
+        description =
+          "Palindromise #1 by appending the reverse with brackets and slashes flipped",
         typeSwitchable = false,
       ),
     ),

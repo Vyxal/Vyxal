@@ -539,6 +539,14 @@ object NewElements:
     },
     addPart("⨪", Monad, true) {
       case a: VNum => a - 2
+      case VStr(s) => s
+          .split("\n")
+          .map { line =>
+            val reversedFlipped =
+              StringHelpers.invertBrackets(s).reverse.drop(1)
+            s"$s${reversedFlipped.replace("/", "\\")}"
+          }
+          .mkString("\n")
     },
     addPart("∑", Monad, false) {
       case a: VVal => ListHelpers.sum(a.itr)
