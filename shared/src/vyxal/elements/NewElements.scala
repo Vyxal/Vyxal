@@ -1301,7 +1301,8 @@ object NewElements:
           throw InvalidListOverloadException("Ṫ", indices, "Number")
         val greatestIndex = indices.max.asInstanceOf[VNum]
         var result = Seq.fill(greatestIndex.toInt + 1)(VNum(0))
-        for index <- indices do result = result.updated(index.toInt, VNum(1))
+        for index <- indices do
+          result = result.updated(index.asInstanceOf[VNum].toInt, VNum(1))
         result
     },
   )
