@@ -36,7 +36,7 @@ Modifiers
 - [ ]     F<2+>   =   Reduce over columns. To each column of top, reduce by F.
 - [ ] ▦   F<2>    =   Outer Product. [F(under, x) for x in top]
 - [ ] ¨   F<1>    =   Map. Apply F to each item in top
-- [ ]     F<2+>    =   Zip Reduce. Reduce each item in zip(top, under, ...[kicker, ...]) by F
+- [ ]     F<2+>    =   Zip with. Reduce each item in zip(top, under, ...[kicker, ...]) by F
 - [ ] ¿  F<any>    =  Pop top of stack. If truthy, apply F to the rest of the stack.
 - [ ] ᖶ  F<any>,G<any> =  Pop top of stack. If truthy, apply F to the rest of the stack. Otherwise, apply G.
 - [ ] ⎇  F<any> = Dip
