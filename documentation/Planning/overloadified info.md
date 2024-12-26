@@ -315,7 +315,8 @@ b = rhs
 - [x]   (str, str) = does the entirety of a match b?
 - [x] ℗ (num) = is a prime?
 - [x]    (str) = quote a and prepend to a
-- [x] ⏜ () = ...d c b a => ...d c b a b
+- [x] ⤻ () = ...d c b a => ...d c b a b
+- [ ] ⤺ () = ...d c b a => ...d c a b a
 - [x] ⍢ (num) = a % 2
 - [x]    (str) = last half of a
 - [x] ℂ (num, num) = n choose K
@@ -367,7 +368,7 @@ b = rhs
 - [ ] ʁ (num) = range(0, a + 1)
 - [ ] ɾ (num) = range(1, a)
 - [ ] ⧢ (lst, num) = Split a into b equal length chunks
-- [ ] ↺ = a b c d -> a d b c
+- [ ] ↸ = a b c d -> a d b c
 - [ ] ÞĠ (lst) = Return all indices of a that correspond to maximal elements.
 - [ ] Þġ (lst) = Return all indices of a that correspond to minimal elements.
 - [ ] ⥨ (lst) = Vectorised reverse

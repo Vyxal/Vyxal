@@ -2832,7 +2832,7 @@ object ElementInformation:
       ),
     ),
     Element(
-      symbol = "⏜",
+      symbol = "⤻",
       keywords = Seq("over"),
       arity = -1,
       Options(
