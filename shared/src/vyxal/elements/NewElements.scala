@@ -1285,10 +1285,23 @@ object NewElements:
       case (iterable: VNum, numberOfChunks: VNum) =>
         ListHelpers.intoNPieces(iterable.itr, numberOfChunks)
     },
-    addPart("▲", Dyad, false) {
-      case (iterable, mask) =>
-        iterable.itr.zip(mask.itr).filter(_._2.toBool).map(_._1)
-    },
+    "▲" ->
+      fullToImpl(
+        Dyad,
+        (iterable, mask) =>
+          iterable.itr.zip(mask.itr).filter(_._2.toBool).map(_._1),
+      ),
+    "Ṭ" -> fullToImpl(Monad, x => ListHelpers.truthyIndices(x.itr)),
+    "Ṫ" ->
+      fullToImpl(
+        Monad,
+        x =>
+          val temp = ListHelpers.truthyIndices(x.itr)
+          val greatestIndex = if temp.isEmpty then VNum(-1) else temp.max
+          var res = Seq.fill(greatestIndex.toInt)(VNum(0))
+          for index <- temp do res = res.updated(index.toInt, VNum(1))
+          res,
+      ),
   )
 
   // Subject to being added as overloads onto things in elements

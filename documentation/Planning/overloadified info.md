@@ -373,8 +373,8 @@ b = rhs
 - [ ] ÞĠ (lst) = Return all indices of a that correspond to maximal elements.
 - [ ] Þġ (lst) = Return all indices of a that correspond to minimal elements.
 - [x] ▲ (lst, lst) = Mask, keep elements of a where b is truthy
-- [ ] Ṭ (lst) = Truthy indices of a
-- [ ] Ṫ (lst) = Return a Boolean array with 1s at the indices in a
+- [x] Ṭ (lst) = Truthy indices of a
+- [x] Ṫ (lst) = Return a Boolean array with 1s at the indices in a
 
 Things that need to be slotted in:
 

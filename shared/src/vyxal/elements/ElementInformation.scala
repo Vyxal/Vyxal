@@ -3487,6 +3487,34 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "Ṭ",
+      keywords = Seq("truthy-indexes"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Truthy Indexes",
+        args = Seq("lst"),
+        description = "Indexes of truthy elements in #1",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "Ṫ",
+      keywords = Seq("untruth"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Untruth",
+        args = Seq("lst"),
+        description = "Create a list of 1s at indices in #1, 0s elsewhere",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(
