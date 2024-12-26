@@ -173,7 +173,7 @@
 | `ᑂ` | `headless-top` | 1 |   | **Head on Top, Rest on Bottom** (`any`): Push #1[1:] and #1[0] |
 | `∻` | `integer-divide`</br>`int-div`</br>`//` | 2 | vec  | **Integer Divide** (`num,num`): #1 // #2 |
 | `√` | `square-root`</br>`sqrt` | 1 | vec  | **Square Root** (`num`): Square root of #1 |
-| `¿` | `truthy?` | 1 | vec  | **Truthy?** (`scl`): Is #1 truthy? (Not 0, empty, or false) |
+| `⍰` | `truthy?` | 1 | vec  | **Truthy?** (`scl`): Is #1 truthy? (Not 0, empty, or false) |
 | `◌` | `round` | 1 | vec  | **Round** (`num`): Round #1 to the nearest integer, half-up |
 | `δ` | `deltas`</br>`differences` | 1 |   | **Deltas** (`lst`): Deltas/forward differences of #1 - [a - b, b - c, c - d, ...] |
 | `☷` | `partition-after-truthy` | 1 |   | **Partition After Truthy** (`lst,lst`):  Partition #1 after truthy indices of #2. |
