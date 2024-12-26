@@ -1296,11 +1296,13 @@ object NewElements:
       ),
     "Ṭ" -> fullToImpl(Monad, x => ListHelpers.truthyIndices(x.itr)),
     addPart("Ṫ", Monad, false) {
-      case VListOf[VNum](indices) =>
-        val greatestIndex = indices.max
-        val result = Array.fill(greatestIndex.toInt + 1)(VNum(0))
-        indices.foreach(index => result(index.toInt) = VNum(1))
-        VList(result)
+      case VList(indices) =>
+        if !indices.forall(_.isInstanceOf[VNum]) then
+          throw InvalidListOverloadException("Ṫ", indices, "Number")
+        val greatestIndex = indices.max.asInstanceOf[VNum]
+        var result = Seq.fill(greatestIndex.toInt + 1)(VNum(0))
+        for index <- indices do result = result.updated(index.toInt, VNum(1))
+        result
     },
   )
 
