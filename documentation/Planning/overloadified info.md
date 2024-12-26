@@ -203,11 +203,11 @@ b = rhs
 - [x] ⨥ (num) = a + 2
 - [x]   (str) = string length == 1
 - [x] ⨪ (num) = a - 2
-- [ ]   (str) = tbd (not append two "-"s though that'd be silly even by my standards)
+- [x]   (str) = palindromise flip brackets/slashes
 - [x] Σ (any) = sum of a 
 - [x]   (lst[at least one string]) = join on nothing and eval
 - [x] Π (any) = product of a
-- [ ]   (num) = a to binary string
+- [x]   (num) = a to binary string
 - [x] σ (any) = Cumulative sums of a
 - [x] ⇧ (any) = Grade up
 - [x] ⇩ (any) = Grade down
