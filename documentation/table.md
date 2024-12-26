@@ -95,7 +95,7 @@
 | `⨥` | `+2`</br>`add-2`</br>`++++`</br>`inc-inc`</br>`strlen==1` | 1 | vec  | **Add 2** (`num`): #1 + 2</br>**String Length Equals 1** (`str`): Is the length of #1 equal to 1 |
 | `⨪` | `-2`</br>`subtract-2`</br>`----`</br>`dec-dec` | 1 | vec  | **Subtract 2** (`num`): #1 - 2 |
 | `∑` | `sum`</br>`sum-of`</br>`+/`</br>`/+`</br>`sigma`</br>`sigma-in-ohio` | 1 |   | **Sum** (`lst`): Sum of #1</br>**Join and Evaluate** (`lst[at least 1 str]`): Join #1 and evaluate the result |
-| `∏` | `product`</br>`product-of`</br>`*/`</br>`*/` | 1 |   | **Product** (`lst`): Product of #1 |
+| `Π` | `product`</br>`product-of`</br>`*/` | 1 |   | **Product** (`lst`): Product of #1</br>**Number to Binary as String** (`num`): Convert #1 to binary as a string |
 | `σ` | `cumulative-sums`</br>`cumsums`</br>`cumsum`</br>`cum-sum`</br>`-_-` | 1 |   | **Cumulative Sums** (`lst`): Cumulative sums of #1 |
 | `⇧` | `grade-up` | 1 |   | **Grade Up** (`lst`): Indices that would sort #1 |
 | `⇩` | `grade-down` | 1 |   | **Grade Down** (`lst`): Indices that would sort #1 in reverse |
