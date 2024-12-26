@@ -14,6 +14,7 @@ Syntax
 - [ ] ⎋  NA  =   Close structure and get first item
 - [ ] ⍟ NA  = Close structure and flatten
 - [ ] ⎊ NA = map over permutations
+- [ ] ⎄ NA = generator structure
 
 
 
@@ -36,6 +37,16 @@ Modifiers
 - [ ] ▦   F<2>    =   Outer Product. [F(under, x) for x in top]
 - [ ] ¨   F<1>    =   Map. Apply F to each item in top
 - [ ]     F<2+>    =   Zip with. Apply F to each item in zip(top, under, ...[kicker, ...])
+- [ ] ¿  F<any>    =  Pop top of stack. If truthy, apply F to the rest of the stack.
+- [ ] ᖶ  F<any>,G<any> =  Pop top of stack. If truthy, apply F to the rest of the stack. Otherwise, apply G.
+- [ ] ⎇  F<any> = Dip
+- [ ] ⟆          = Lambda until first function overload
+- [ ] ~  F<1>    =   Filter by
+- [ ]    F<2+>   = Without Popping
+- [ ] /  F<2>    =   Reduce by
+- [ ]    F<1>    = Invariant under
+- [ ] \  F<2>    = Scan by
+- [ ]    F<1>    = Reject by
 
 
 Elements
@@ -174,8 +185,8 @@ b = rhs
 - [x] m () = context variable m
 - [x] n () = context variable n
 - [x] o (any, num) = Overlapping slices of a of length b
-- [x]   (any, lst[num]) = Overlapping windows of a of size b
-- [x]   (any, fun) = Reduce overlapping slices of a of length arity(b) by b 
+- [ ]   (any, fun) = Reduce overlapping pairs by function
+- [x]   (lst) = Overlapping slices of a of length 2
 - [x] p (any, any) = Prepend
 - [x] q (any) = Quotify
 - [x] r (any, any, any) = s/b/c
@@ -183,8 +194,7 @@ b = rhs
 - [x] t (any) = a[-1]
 - [x] u (any) = uniquify
 - [x]   (any, fun) = Remove duplicates from a by applying b to each element
-- [x] v (any) = Overlapping slices of a of length 2
-- [x]   (fun) = Reduce overlapping pairs by function
+- [x] v (any, lst[num] = Times; repeat the elements of x y times.
 - [x] w (any) = [a]
 - [x] x () = call the current function (or top level program)
 - [x] y (any, any, any) = Transliterate
@@ -196,6 +206,7 @@ b = rhs
 - [x] Σ (any) = sum of a 
 - [x]   (lst[at least one string]) = join on nothing and eval
 - [x] Π (any) = product of a
+- [ ]   (num) = a to binary string
 - [x] σ (any) = Cumulative sums of a
 - [x] ⇧ (any) = Grade up
 - [x] ⇩ (any) = Grade down
@@ -326,7 +337,7 @@ b = rhs
 - [x] ᑂ (any) = a[1:], a[0]
 - [x] ∻ (num, num) = floor division
 - [x] √ (num) = sqrt(a)
-- [x] ¿ (scl) = is a truthy?
+- [x] ⍰ (scl) = is a truthy?
 - [x]   (lst) = vectorised
 - [x] ◌ (num) = round(x) -> round half up 
 - [ ] #◌ () = list of all inputs
@@ -355,6 +366,11 @@ b = rhs
 - [ ] ʀ (num) = range(0, a)
 - [ ] ʁ (num) = range(0, a + 1)
 - [ ] ɾ (num) = range(1, a)
+- [ ] ⧢ (lst, num) = Split a into b equal length chunks
+- [ ] ↺ = a b c d -> a d b c
+- [ ] ÞĠ (lst) = Return all indices of a that correspond to maximal elements.
+- [ ] Þġ (lst) = Return all indices of a that correspond to minimal elements.
+- [ ] ⥨ (lst) = Vectorised reverse
 
 Things that need to be slotted in:
 

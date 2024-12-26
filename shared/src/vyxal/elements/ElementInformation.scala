@@ -3109,7 +3109,7 @@ object ElementInformation:
       ),
     ),
     Element(
-      symbol = "¿",
+      symbol = "⍰",
       keywords = Seq("truthy?"),
       arity = 1,
       Options(

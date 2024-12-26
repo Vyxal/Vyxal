@@ -1111,7 +1111,7 @@ object NewElements:
     addPart("√", Monad, true) {
       case a: VNum => a.sqrt
     },
-    addPart("¿", Monad, true) {
+    addPart("⍰", Monad, true) {
       case a: VNum => a != VNum(0)
       case VStr(a) => a.nonEmpty
     },
