@@ -158,7 +158,6 @@
 | `ᴥ` | `exec`</br>`10**`</br>`call`</br>`@` | 1 | vec  | **10 to the Power of** (`num`): 10 ** #1</br>**Execute** (`str`): Execute #1 as Vyxal code</br>**Call Function** (`fun`): Call function #1 |
 | `ℳ` | `modular`</br>`matrix-multiply`</br>`regex-full-match?` | 2 |   | **Every Nth Element** (`itr,num`): Every #2th element of #1</br>**Every Nth Element** (`num,itr`): Every #1th element of #2</br>**Matrix Multiply** (`lst,lst`): Matrix multiply #1 and #2</br>**Regex Full Match?** (`str,str`): Does pattern #2 fully match #1 |
 | `℗` | `is-prime`</br>`prime?`</br>`quine-cheese` | 1 | vec  | **Is Prime** (`num`): Is #1 a prime number?</br>**Quine Cheese** (`str`): Quotify #1 and prepend it to #1. (Useful for quines like `"⌭"⌭`) |
-| `⤻` | `over` | STACK |   | **Over**: Duplicate the item below the top of the stack -> #2 #1 #2 |
 | `⍢` | `parity`</br>`bit`</br>`last-half` | 1 | vec  | **Parity** (`num`): Parity of #1 (1 if odd, 0 if even) --> #1 % 2</br>**Last String Half** (`str`): Last half of #1 |
 | `ℂ` | `ncr`</br>`choose`</br>`characters-same?`</br>`fixpoint-collect` | 2 | vec  | **NCR | N Choose R** (`num,num`): nCr of #1 and #2 (n choose r)</br>**Characters Same?** (`str,str`): Are all characters in #1 the same as #2?</br>**Fixpoint Collect** (`fun,any`): Repeatedly apply #1 on #2 until a fixed point is reached, collecting intermediate results</br>**Fixpoint Collect** (`any,fun`): Repeatedly apply #2 on #1 until a fixed point is reached, collecting intermediate results |
 | `⌹` | `list-partitions`</br>`integer-partitions` | 1 |   | **Integers Partitions** (`num`): All possible ways to sum positive integers to #1</br>**List Partitions** (`itr`): All possible ways to partition #1 into sublists |
@@ -189,6 +188,9 @@
 | `≊` | `all-equal-item` | 2 |   | **All Equal Item** (`lst,any`): Are all elements of #1 equal to #2? |
 | `κ` | `gcd` | 2 | vec  | **GCD** (`num,num`): GCD of #1 and #2</br>**GCD of List** (`lst`): GCD of all elements of #1</br>**GCD of List with Initial Value** (`lst,num`): GCD of all elements of #1.append(#2) |
 | `↳` | `retrieve-from-outer` | 1 |   | **Retrieve Item at Index from Outer Stack** (`num`): Retrieve the item at index #1 from the outer stack, current stack if at top level</br>**Retrieve Item at Index from Outer Stack N-Layers Up** (`lst[num, num]`): Retrieve the item at index #2 from the stack #1 levels up |
+| `⤻` | `over` | STACK |   | **Over**: Duplicate the item below the top of the stack -> #2 #1 #2 |
+| `⤺` | `around` | STACK |   | **Around**: Duplicate the top of the stack around the item below the top of the stack -> #1 #2 #1 |
+| `↸` | `roll` | 3 |   | **Roll** (`any,any,any`): #1 #2 #3 -> #3 #1 #2 |
 | `”` | `join-on-newlines`</br>`*newline`</br>`one?->n` | 1 |   | **Join on Newlines** (`lst`): Join #1 on newlines</br>**Push Context Variable N if 1** (`num`): Push the context variable N if #1 is 1 |
 | `„` | `join-on-spaces`</br>`*space`</br>`<0`</br>`is-negative?` | 1 |   | **Join on Spaces** (`lst`): Join #1 on spaces</br>**Is negative?** (`num`): Push 1 if #1 < 0, 0 otherwise |
 | `“` | `join-on-empty-string`</br>`*empty`</br>`is-alphanumeric?`</br>`insignificant?`</br>`first-positive-integer`</br>`first-n>0` | 1 |   | **Join on Empty String** (`lst`): Join #1 on the empty string</br>**Is alphanumeric?** (`str`): Push 1 if #1 is alphanumeric, 0 otherwise</br>**First Positive Integer Where Function is Truthy** (`fun`): Push the first positive integer where #1 is truthy</br>**Is Insignificant?** (`num`): abs(#1) <= 1 |
