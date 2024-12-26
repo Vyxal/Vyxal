@@ -93,7 +93,7 @@
 | `y` | `transliterate`</br>`call-while` | 3 |   | **Transliterate** (`nsl,nsl,nsl`): Replace all occurrences of #2 in #1 with #3</br>**Call While** (`fun,fun,any`): While #1(#3) is true, #3 = #2(#3). Return the result. Type switchable. |
 | `z` | `zip-with-filler` | 2 |   | **Zip With Filler** (`lst,any`): Transpose #1, filling empty spaces with #2 |
 | `⨥` | `+2`</br>`add-2`</br>`++++`</br>`inc-inc`</br>`strlen==1` | 1 | vec  | **Add 2** (`num`): #1 + 2</br>**String Length Equals 1** (`str`): Is the length of #1 equal to 1 |
-| `⨪` | `-2`</br>`subtract-2`</br>`----`</br>`dec-dec` | 1 | vec  | **Subtract 2** (`num`): #1 - 2 |
+| `⨪` | `-2`</br>`subtract-2`</br>`----`</br>`dec-dec`</br>`flip-bracket-palindrome` | 1 | vec  | **Subtract 2** (`num`): #1 - 2</br>**Flip Bracket Palindrome** (`str`): Palindromise #1 by appending the reverse with brackets and slashes flipped |
 | `∑` | `sum`</br>`sum-of`</br>`+/`</br>`/+`</br>`sigma`</br>`sigma-in-ohio` | 1 |   | **Sum** (`lst`): Sum of #1</br>**Join and Evaluate** (`lst[at least 1 str]`): Join #1 and evaluate the result |
 | `Π` | `product`</br>`product-of`</br>`*/` | 1 |   | **Product** (`lst`): Product of #1</br>**Number to Binary as String** (`num`): Convert #1 to binary as a string |
 | `σ` | `cumulative-sums`</br>`cumsums`</br>`cumsum`</br>`cum-sum`</br>`-_-` | 1 |   | **Cumulative Sums** (`lst`): Cumulative sums of #1 |
