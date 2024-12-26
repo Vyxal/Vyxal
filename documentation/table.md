@@ -194,6 +194,9 @@
 | `”` | `join-on-newlines`</br>`*newline`</br>`one?->n` | 1 |   | **Join on Newlines** (`lst`): Join #1 on newlines</br>**Push Context Variable N if 1** (`num`): Push the context variable N if #1 is 1 |
 | `„` | `join-on-spaces`</br>`*space`</br>`<0`</br>`is-negative?` | 1 |   | **Join on Spaces** (`lst`): Join #1 on spaces</br>**Is negative?** (`num`): Push 1 if #1 < 0, 0 otherwise |
 | `“` | `join-on-empty-string`</br>`*empty`</br>`is-alphanumeric?`</br>`insignificant?`</br>`first-positive-integer`</br>`first-n>0` | 1 |   | **Join on Empty String** (`lst`): Join #1 on the empty string</br>**Is alphanumeric?** (`str`): Push 1 if #1 is alphanumeric, 0 otherwise</br>**First Positive Integer Where Function is Truthy** (`fun`): Push the first positive integer where #1 is truthy</br>**Is Insignificant?** (`num`): abs(#1) <= 1 |
+| `▲` | `mask` | 2 |   | **Mask** (`any,any`): Keep elements of #1 where the corresponding element of #2 is truthy |
+| `Ṭ` | `truthy-indexes` | 1 |   | **Truthy Indexes** (`lst`): Indexes of truthy elements in #1 |
+| `Ṫ` | `untruth` | 1 |   | **Untruth** (`lst`): Create a list of 1s at indices in #1, 0s elsewhere |
 
   ## Modifiers
 
