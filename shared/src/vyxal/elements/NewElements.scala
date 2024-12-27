@@ -1375,7 +1375,6 @@ object NewElements:
       },
     "#|inner-product" ->
       direct(Dyad) {
-        val ctx = summon[Context]
         val functionG = pop().asInstanceOf[VFun]
         val functionF = pop().asInstanceOf[VFun]
 
@@ -1391,6 +1390,18 @@ object NewElements:
             Interpreter.executeFn(functionG, args = Seq(a, b))
           )
         )
+      },
+    "#|outer-product" ->
+      direct(Monad) {
+        val function = pop().asInstanceOf[VFun]
+        val rightList = pop().ritr
+        val leftList = pop().ritr
+
+        push(leftList.map { elem =>
+          rightList.map { otherElem =>
+            Interpreter.executeFn(function, args = Seq(otherElem, elem))
+          }
+        })
       },
   )
 

@@ -3665,9 +3665,21 @@ object ElementInformation:
       numberOfElements = 2,
       ModifierOverload(
         name = "Inner Product",
-        args = Seq("lst", "lst"),
+        args = Seq("dyd", "dyd"),
         description = "Inner product of #1 and #2",
         example = "#[1|2|3#] #[4|5|6#] ᛞ×+ -> 32",
+      ),
+    ),
+    Modifier(
+      symbol = "▦",
+      keywords = Seq("outer-product:"),
+      numberOfElements = 1,
+      ModifierOverload(
+        name = "Outer Product",
+        args = Seq("dyd"),
+        description = "Outer product of #1 and #2",
+        example =
+          "#[1|2|3#] #[4|5|6#] ▦; -> [[[1,4],[1,5],[1,6]],[[2,4],[2,5],[2,6],[3,4],[3,5],[3,6]]]",
       ),
     ),
   )

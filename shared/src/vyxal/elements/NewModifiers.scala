@@ -201,6 +201,9 @@ object NewModifiers:
       case (AST(left, 2), AST(right, 2)) =>
         Seq(left.lam, right.lam, AST.Command("#|inner-product"))
     },
+    addPart("▦", Monadic) {
+      case AST(ast, 2) => Seq(ast.lam, AST.Command("#|outer-product"))
+    },
   )
 
   def addPart[P, F](name: String, arity: ModifierHelpers[P, F])(impl: P) =
