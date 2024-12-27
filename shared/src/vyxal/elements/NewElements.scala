@@ -1373,6 +1373,25 @@ object NewElements:
         val resG = Interpreter.executeFn(functionG)(using ctx.copy)
         push(resG)
       },
+    "#|inner-product" ->
+      direct(Dyad) {
+        val ctx = summon[Context]
+        val functionG = pop().asInstanceOf[VFun]
+        val functionF = pop().asInstanceOf[VFun]
+
+        val rightList = pop().ritr
+        val leftList = pop().ritr
+
+        val result = leftList.zip(rightList).map {
+          case (left, right) =>
+            Interpreter.executeFn(functionF, args = Seq(left, right))
+        }
+        push(
+          result.reduceLeft((a, b) =>
+            Interpreter.executeFn(functionG, args = Seq(a, b))
+          )
+        )
+      },
   )
 
   private def niladify(value: VAny): Element =

@@ -197,6 +197,10 @@ object NewModifiers:
       case (DyadOrMore(ast1, _), DyadOrMore(ast2, _)) =>
         Seq(ast1.lam, ast2.lam, AST.Command("#|fork"))
     },
+    addPart("ᛞ", Dyadic) {
+      case (AST(left, 2), AST(right, 2)) =>
+        Seq(left.lam, right.lam, AST.Command("#|inner-product"))
+    },
   )
 
   def addPart[P, F](name: String, arity: ModifierHelpers[P, F])(impl: P) =

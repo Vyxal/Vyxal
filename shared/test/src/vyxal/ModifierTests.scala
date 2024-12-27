@@ -94,4 +94,10 @@ class ModifierTests extends VyxalTests:
     )
   }
 
+  describe("Modifier ᛞ") {
+    testMulti(
+      "#[1|2|3#] #[4|5|6#] ᛞ×+" -> VNum(32)
+    )
+  }
+
 end ModifierTests

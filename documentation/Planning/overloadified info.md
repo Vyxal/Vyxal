@@ -32,8 +32,7 @@ Modifiers
 - [x] ⑷   NA  =   Next 4 elements as lambda
 - [x] ⎂   F<any>  =   Both. Apply F to both the top of stack (or however many arguments), and under stack (or however many arguments under the arity). Effectively ... F(top - arity, top - arity * 2) F(top -> top - arity)
 - [x] ⟒   F<2+>, G<2+> = G(F(x, y), y)
-- [ ] ▥   F<1>    =   Map over columns. To each column of top, apply F.
-- [ ]     F<2+>   =   Reduce over columns. To each column of top, reduce by F.
+- [x] ᛞ   F<2>,G<2>   =   Inner Product. [F(x, y) for x, y in zip(top, under)].reduce(G)
 - [ ] ▦   F<2>    =   Outer Product. [F(under, x) for x in top]
 - [ ] ¨   F<1>    =   Map. Apply F to each item in top
 - [ ]     F<2+>    =   Zip with. Reduce each item in zip(top, under, ...[kicker, ...]) by F

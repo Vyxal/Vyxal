@@ -3659,5 +3659,16 @@ object ElementInformation:
         example = "3 4 ⟒+× -> 28",
       ),
     ),
+    Modifier(
+      symbol = "ᛞ",
+      keywords = Seq("inner-product:"),
+      numberOfElements = 2,
+      ModifierOverload(
+        name = "Inner Product",
+        args = Seq("lst", "lst"),
+        description = "Inner product of #1 and #2",
+        example = "#[1|2|3#] #[4|5|6#] ᛞ×+ -> 32",
+      ),
+    ),
   )
 end ElementInformation
