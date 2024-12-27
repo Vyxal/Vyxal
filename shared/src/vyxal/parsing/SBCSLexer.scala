@@ -70,15 +70,15 @@ class SBCSLexer extends LexerCommon:
         quickToken(TokenType.StructureOpen, "#{")
       else if headLookaheadEqual("#:[") then
         quickToken(TokenType.UnpackTrigraph, "#:[")
-      else if headIn("ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⑴/⁜") then
+      else if headIn("⎂▥▦¨⎇¿⑴/⁜~\\") then
         quickToken(TokenType.MonadicModifier, s"${programStack.head}")
-      else if headIn("⑵∥∦ᵉ∺⟒") then
+      else if headIn("⑵∥∦∺⟒ᖶ") then
         quickToken(TokenType.DyadicModifier, s"${programStack.head}")
-      else if headIn("⑶ᶠ") then
+      else if headIn("⑶") then
         quickToken(TokenType.TriadicModifier, s"${programStack.head}")
-      else if headIn("⑷ᴳ") then
+      else if headIn("⑷") then
         quickToken(TokenType.TetradicModifier, s"${programStack.head}")
-      else if headIn("ᵜ") then
+      else if headIn("⊐⟆") then
         quickToken(TokenType.SpecialModifier, s"${programStack.head}")
       else if headEqual("|") then quickToken(TokenType.Branch, "|")
       else if headEqual("¤") then contextIndexToken
