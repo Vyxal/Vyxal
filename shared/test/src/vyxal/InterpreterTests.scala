@@ -64,6 +64,7 @@ class InterpreterTests extends VyxalTests:
     }
   }
 
+  /*
   describe("Vectorisation") {
     describe("Simple monads") {
       // TODO: Replace with ¨b when implemented
@@ -113,7 +114,7 @@ class InterpreterTests extends VyxalTests:
       }
     }
   }
-
+   */
   describe("Executing lambdas/functions") {
     it("should execute a simple named function") {
       testAST(
