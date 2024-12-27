@@ -12,7 +12,7 @@ extension (ast: AST)
       case lam: AST.Lambda => lam.copy(lambdaArity = Some(arity))
       case _ => AST.Lambda(Some(arity), List(), List(ast), originallyFunction)
 
-extension (ast: AST) def lam: AST = ast.lam(ast.arity.getOrElse(-1))
+extension (ast: AST) def lam: AST = ast.lam(ast.arity.getOrElse(1))
 
 extension (ast: AST)
   def lamLeast(arity: Int): AST =
