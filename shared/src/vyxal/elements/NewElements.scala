@@ -427,18 +427,28 @@ object NewElements:
     "n" -> niladify(ctx ?=> ctx.ctxVarPrimary),
     addPart("o", Dyad, false) {
       case (VStr(a), b: VNum) => ListHelpers.overlaps(a, b.toInt)
-      case (a, b: VNum) => ListHelpers.overlaps(a.itr, b.toInt)
+      case (a: VPhysical, b: VNum) => ListHelpers.overlaps(a.itr, b.toInt)
       case (a: VNum, VStr(b)) => ListHelpers.overlaps(b, a.toInt)
-      case (a: VNum, b) => ListHelpers.overlaps(b.itr, a.toInt)
+      case (a: VNum, b: VPhysical) => ListHelpers.overlaps(b.itr, a.toInt)
       case (a: VList, VList(b)) =>
         if !b.forall(_.isInstanceOf[VNum]) then ???
         else ListHelpers.overlapsMd(a, b.map(_.asInstanceOf[VNum]))
-      case (a: VPhysical, b: VFun) => ListHelpers
+      case (a: VIter, b: VFun) => ListHelpers
           .overlaps(a.ritr, b.arity)
           .map(overlap => ListHelpers.reduce(overlap, b))
-      case (a: VFun, b: VPhysical) => ListHelpers
+      case (a: VFun, b: VIter) => ListHelpers
           .overlaps(b.ritr, a.arity)
           .map(overlap => ListHelpers.reduce(overlap, a))
+      case (a: VFun, b: VNum) =>
+        val lst = pop()
+        ListHelpers
+          .overlaps(lst.itr, b.toInt)
+          .map(overlap => ListHelpers.reduce(overlap, a))
+      case (a: VNum, b: VFun) =>
+        val lst = pop()
+        ListHelpers
+          .overlaps(lst.itr, a.toInt)
+          .map(overlap => ListHelpers.reduce(overlap, b))
     },
     addPart("p", Dyad, false) {
       case (VStr(a), b: (VStr | VNum)) => b.toString + a
