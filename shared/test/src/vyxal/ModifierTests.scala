@@ -75,7 +75,7 @@ class ModifierTests extends VyxalTests:
   describe("Modifier ⁜") {
     testMulti(
       "#[1|3|4|5|2|4#] ⁜e" -> vSeq(vSeq(1, 3), vSeq(4), vSeq(5), vSeq(2, 4)),
-      "#[1|2|3|4|5|6#] ⁜λ3|+}" -> vSeq(6, 9, 12, 15),
+      "#[1|2|3|4|5|6#] ⁜λ3|++}" -> vSeq(6, 9, 12, 15),
     )
   }
 
@@ -90,7 +90,7 @@ class ModifierTests extends VyxalTests:
 
   describe("Modifier ⟒") {
     testMulti(
-      "3 4 ⟒+*" -> VNum(28)
+      "3 4 ⟒+×" -> VNum(28)
     )
   }
 
