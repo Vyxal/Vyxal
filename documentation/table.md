@@ -212,5 +212,6 @@
 | `⑷` | `****:` | 4 | <table><tr><td>**Next Four Elements as Lambda**</td><td>`any,any,any,any`</td><td>Wrap #1, #2, #3, and #4 in a lambda and push it</td><td>`⑷+*~d = λ+*~d}`</td></tr></table> |
 | `⎂` | `both:` | 1 | <table><tr><td>**Both**</td><td>`any`</td><td>Apply #1 to both the top of stack (or however many arguments), and under stack (or however many arguments under the arity). Effectively ... #1(top - arity, top - arity * 2) #1(top -> top - arity)</td><td>`3 4 ⎂d -> 6 8 \|\| 1 2 3 4 ⎂+ -> 3 7`</td></tr></table> |
 | `⟒` | `left-fork:` | 2 | <table><tr><td>**Left Fork**</td><td>`dyd+,dyd+`</td><td>Apply #1 but keep the under stack, and then apply #2. Effectively #2(#1(top, under), under)</td><td>`3 4 ⟒+× -> 28`</td></tr></table> |
+| `ᛞ` | `inner-product:` | 2 | <table><tr><td>**Inner Product**</td><td>`lst,lst`</td><td>Inner product of #1 and #2</td><td>`#[1\|2\|3#] #[4\|5\|6#] ᛞ×+ -> 32`</td></tr></table> |
 
   
