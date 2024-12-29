@@ -100,7 +100,7 @@ class ModifierTests extends VyxalTests:
     )
   }
 
-  describe("Modifier") {
+  describe("Modifier ▦") {
     testMulti(
       "#[1|2|3#] #[4|5|6#] ▦;" ->
         vSeq(
@@ -108,6 +108,13 @@ class ModifierTests extends VyxalTests:
           vSeq(vSeq(2, 4), vSeq(2, 5), vSeq(2, 6)),
           vSeq(vSeq(3, 4), vSeq(3, 5), vSeq(3, 6)),
         )
+    )
+  }
+
+  describe("Modifier ¨") {
+    testMulti(
+      "#[#[1|2|3#]|#[4|2|3#]|#[1|5|3#]#] ¨G " -> vSeq(3, 4, 5),
+      "#[1|2|3#] #[4|5|6#] ¨;" -> vSeq(vSeq(1, 4), vSeq(2, 5), vSeq(3, 6)),
     )
   }
 

@@ -3682,5 +3682,22 @@ object ElementInformation:
           "#[1|2|3#] #[4|5|6#] ▦; -> [[[1,4],[1,5],[1,6]],[[2,4],[2,5],[2,6],[3,4],[3,5],[3,6]]]",
       ),
     ),
+    Modifier(
+      symbol = "¨",
+      keywords = Seq("map:", "each:", "zip-with:"),
+      numberOfElements = 1,
+      ModifierOverload(
+        name = "Map",
+        args = Seq("mon"),
+        description = "Map #1 over the top of the stack",
+        example = "#[#[1|2|3#]|#[4|2|3#]|#[1|5|3#]#] ¨G -> [3, 4, 5]",
+      ),
+      ModifierOverload(
+        name = "Zip With",
+        args = Seq("dyd"),
+        description = "Pop two lists and zip them, reducing each pair with #1",
+        example = "#[1|2|3#] #[4|5|6#] ¨; -> [[1, 4], [2, 5], [3, 6]]",
+      ),
+    ),
   )
 end ElementInformation

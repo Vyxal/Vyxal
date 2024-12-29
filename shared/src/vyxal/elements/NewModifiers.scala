@@ -204,6 +204,10 @@ object NewModifiers:
     addPart("▦", Monadic) {
       case AST(ast, 2) => Seq(ast.lam, AST.Command("#|outer-product"))
     },
+    addPart("¨", Monadic) {
+      case AST(monad, 1) => Seq(monad.lam, AST.Command("#|map"))
+      case AST(dyad, 2) => Seq(dyad.lam, AST.Command("#|zip-with"))
+    },
   )
 
   def addPart[P, F](name: String, arity: ModifierHelpers[P, F])(impl: P) =

@@ -1403,6 +1403,27 @@ object NewElements:
           }
         })
       },
+    "#|map" ->
+      direct(Monad) {
+        val function = pop().asInstanceOf[VFun]
+        val list = pop().itr
+        push(
+          list.map(elem => Interpreter.executeFn(function, args = Seq(elem)))
+        )
+      },
+    "#|zip-with" ->
+      direct(Dyad) {
+        val function = pop().asInstanceOf[VFun]
+        val rightList = pop().itr
+        val leftList = pop().itr
+
+        push(
+          leftList.zip(rightList).map {
+            case (left, right) =>
+              Interpreter.executeFn(function, args = Seq(left, right))
+          }
+        )
+      },
   )
 
   private def niladify(value: VAny): Element =
