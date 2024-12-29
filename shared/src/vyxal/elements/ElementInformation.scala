@@ -3699,5 +3699,28 @@ object ElementInformation:
         example = "#[1|2|3#] #[4|5|6#] ¨; -> [[1, 4], [2, 5], [3, 6]]",
       ),
     ),
+    Modifier(
+      symbol = "¿",
+      keywords = Seq("if:"),
+      numberOfElements = 1,
+      ModifierOverload(
+        name = "If",
+        args = Seq("any"),
+        description = "If the top of the stack is truthy, apply #1",
+        example = "3 1 ¿d -> 6",
+      ),
+    ),
+    Modifier(
+      symbol = "ᖶ",
+      keywords = Seq("if-else:"),
+      numberOfElements = 2,
+      ModifierOverload(
+        name = "If Else",
+        args = Seq("any", "any"),
+        description =
+          "If the top of the stack is truthy, apply #1, else apply #2",
+        example = "3 1 ᖶd½ -> 6",
+      ),
+    ),
   )
 end ElementInformation

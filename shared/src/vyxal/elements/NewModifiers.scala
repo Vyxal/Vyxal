@@ -208,6 +208,13 @@ object NewModifiers:
       case AST(monad, 1) => Seq(monad.lam, AST.Command("#|map"))
       case AST(dyad, 2) => Seq(dyad.lam, AST.Command("#|zip-with"))
     },
+    "¿" -> fullToImpl(Monadic, (ast) => Seq(ast.lam, AST.Command("#|if"))),
+    "ᖶ" ->
+      fullToImpl(
+        Dyadic,
+        (truthy, falsey) =>
+          Seq(truthy.lam, falsey.lam, AST.Command("#|if-else")),
+      ),
   )
 
   def addPart[P, F](name: String, arity: ModifierHelpers[P, F])(impl: P) =

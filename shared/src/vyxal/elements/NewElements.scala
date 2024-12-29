@@ -1424,6 +1424,22 @@ object NewElements:
           }
         )
       },
+    "#|if" ->
+      direct(Monad) {
+        val function = pop().asInstanceOf[VFun]
+        val condition = pop().toBool
+
+        if condition then push(Interpreter.executeFn(function))
+      },
+    "#|if-else" ->
+      direct(Dyad) {
+        val elseFunction = pop().asInstanceOf[VFun]
+        val ifFunction = pop().asInstanceOf[VFun]
+        val condition = pop().toBool
+
+        if condition then push(Interpreter.executeFn(ifFunction))
+        else push(Interpreter.executeFn(elseFunction))
+      },
   )
 
   private def niladify(value: VAny): Element =
