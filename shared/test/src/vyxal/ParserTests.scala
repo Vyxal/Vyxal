@@ -117,7 +117,7 @@ class ParserTests extends AnyFunSuite:
                   Group(List(Command("n"), Number(2), Command("*")), Some(0)),
                   Command(","),
                 ),
-                None,
+                Some(0),
               ),
             ),
           ),
