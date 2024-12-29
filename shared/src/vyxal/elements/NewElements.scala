@@ -1317,6 +1317,14 @@ object NewElements:
         result
     },
     "Ŀ" -> fullToImpl(Monad, x => x.itr.map(_.itr.bigLength)),
+    "#~" ->
+      direct(Monad) {
+        pop() match
+          case f: VFun =>
+            val args = peek(f.arity)
+            push(f(args*))
+          case arg => throw UnimplementedOverloadException("#~", List(arg))
+      },
   )
 
   // Subject to being added as overloads onto things in elements

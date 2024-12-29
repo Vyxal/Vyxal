@@ -10,14 +10,6 @@ class ModifierTests extends VyxalTests:
   // todo get rid of this and use Seq(...).v instead
   def vSeq(elems: VAny*) = VList(elems)
 
-  /*
-  describe("Modifier ¨") {
-    testMulti(
-      "#[1 10 R|1 5 R|6 8 R#] λ+} ¨ R" -> vSeq(45, 10, 13),
-      "#[1 10 R|1 5 R|6 8 R#] ¨A" -> vSeq(1, 1, 1),
-    )
-  }*/
-
   describe("Modifier /") {
     testMulti(
       "1 10 R /+" -> 45,
@@ -115,6 +107,8 @@ class ModifierTests extends VyxalTests:
     testMulti(
       "#[#[1|2|3#]|#[4|2|3#]|#[1|5|3#]#] ¨G" -> vSeq(3, 4, 5),
       "#[1|2|3#] #[4|5|6#] ¨;" -> vSeq(vSeq(1, 4), vSeq(2, 5), vSeq(3, 6)),
+      "#[1 10 R|1 5 R|6 8 R#] λ+} ¨ R" -> vSeq(45, 10, 13),
+      "#[1 10 R|1 5 R|6 8 R#] ¨A" -> vSeq(1, 1, 1),
     )
   }
 
@@ -133,6 +127,20 @@ class ModifierTests extends VyxalTests:
 
     testStackLike("⎇⎇+") {
       List[VAny](3, 4, 5, 6) -> List[VAny](6, 5, 7)
+    }
+  }
+
+  describe("Modifier ~") {
+    describe("With a monad, performs filter") {
+      testMulti(
+        "#[1|2|3|4|5|6#] ~e" -> vSeq(2, 4, 6)
+      )
+    }
+
+    describe("With a dyad+, performs without popping") {
+      testStackLike("~+")(
+        List[VAny](3, 4, 5) -> List[VAny](7, 5, 4, 3)
+      )
     }
   }
 

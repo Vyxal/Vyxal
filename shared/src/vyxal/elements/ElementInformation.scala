@@ -3782,5 +3782,22 @@ object ElementInformation:
         example = "3 4 5 2 ⎇+ -> 3 9 2",
       ),
     ),
+    Modifier(
+      symbol = "~",
+      keywords = Seq("filter:", "without-popping:", "peek:"),
+      numberOfElements = 1,
+      ModifierOverload(
+        name = "Filter",
+        args = Seq("mon"),
+        description = "Filter the top of the stack with #1",
+        example = "#[1|2|3|4|5#] ~2% -> [2, 4]",
+      ),
+      ModifierOverload(
+        name = "Peek",
+        args = Seq("dyd+"),
+        description = "Apply #1 without popping",
+        example = "3 4 5 ~+ -> 3 4 9",
+      ),
+    ),
   )
 end ElementInformation

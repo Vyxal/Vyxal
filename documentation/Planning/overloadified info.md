@@ -40,8 +40,8 @@ Modifiers
 - [x] ᖶ  F<any>,G<any> =  Pop top of stack. If truthy, apply F to the rest of the stack. Otherwise, apply G.
 - [x] ⎇  F<any> = Dip
 - [ ] ⟆          = Lambda until first function overload
-- [ ] ~  F<1>    =   Filter by
-- [ ]    F<2+>   = Without Popping
+- [x] ~  F<1>    =   Filter by
+- [x]    F<2+>   = Without Popping
 - [ ] /  F<2>    =   Reduce by
 - [ ]    F<1>    = Invariant under
 - [ ] \  F<2>    = Scan by

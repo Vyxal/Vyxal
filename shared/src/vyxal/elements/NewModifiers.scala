@@ -216,6 +216,10 @@ object NewModifiers:
           Seq(truthy.lam, falsey.lam, AST.Command("#|if-else")),
       ),
     "⎇" -> fullToImpl(Monadic, (ast) => Seq(ast.lam(-1), AST.Command("#|dip"))),
+    addPart("~", Monadic) {
+      case AST(predicate, 1) => Seq(predicate.lam, AST.Command("F"))
+      case command => Seq(command.lam, AST.Command("#~"))
+    },
   )
 
   def addPart[P, F](name: String, arity: ModifierHelpers[P, F])(impl: P) =
