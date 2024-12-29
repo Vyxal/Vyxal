@@ -247,7 +247,6 @@ class ModifierTests extends VyxalTests:
     )
   }
 
-
   describe("Modifier ᵗ") {
     testMulti(
       "#[#[1|2|3#]|#[4|5|6#]#] ᵗϩ++" -> VList(6, 15)
