@@ -124,7 +124,7 @@ object NewElements:
       direct(Dyad) {
         val b = pop()
         val a = pop()
-        push(Seq(a, b))
+        push(Seq(b, a))
       },
     addPart("<", Dyad, true) {
       case (a: VVal, b: VVal) => a < b
@@ -609,6 +609,10 @@ object NewElements:
       case (a: VList, b: VList) =>
         VList(a.zip(b).map((x, y) => MiscHelpers.dyadicMaximum(x, y)))
       case (a: VVal, b: VVal) => MiscHelpers.dyadicMaximum(a, b)
+      case (initial: VList, function: VFun) =>
+        ListHelpers.generate(function, initial)
+      case (function: VFun, initial: VList) =>
+        ListHelpers.generate(function, initial)
       case (initial, function: VFun) =>
         ListHelpers.generate(function, Seq(initial))
       case (function: VFun, initial) =>

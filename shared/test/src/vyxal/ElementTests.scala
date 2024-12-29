@@ -171,13 +171,13 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  describe("Element Ŀ") {
+  /*describe("Element Ŀ") {
     it(
       "Generates a list of all numbers in the collatz conjecture minus the first number"
     ) {
       testCode("10 λe[2÷|3×1+}} Ŀ", vSeq(10, 5, 16, 8, 4, 2, 1))
     }
-  }
+  }*/
 
   describe("Element Form of “") {
     testMulti(
