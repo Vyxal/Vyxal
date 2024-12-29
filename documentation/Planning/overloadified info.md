@@ -36,8 +36,8 @@ Modifiers
 - [x]  ▦   F<2>    =   Outer Product. [F(under, x) for x in top]
 - [x] ¨   F<1>    =   Map. Apply F to each item in top
 - [x]     F<2+>    =   Zip with. Reduce each item in zip(top, under, ...[kicker, ...]) by F
-- [ ] ¿  F<any>    =  Pop top of stack. If truthy, apply F to the rest of the stack.
-- [ ] ᖶ  F<any>,G<any> =  Pop top of stack. If truthy, apply F to the rest of the stack. Otherwise, apply G.
+- [x] ¿  F<any>    =  Pop top of stack. If truthy, apply F to the rest of the stack.
+- [x] ᖶ  F<any>,G<any> =  Pop top of stack. If truthy, apply F to the rest of the stack. Otherwise, apply G.
 - [ ] ⎇  F<any> = Dip
 - [ ] ⟆          = Lambda until first function overload
 - [ ] ~  F<1>    =   Filter by
