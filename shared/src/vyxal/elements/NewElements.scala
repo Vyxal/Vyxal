@@ -124,7 +124,7 @@ object NewElements:
       direct(Dyad) {
         val b = pop()
         val a = pop()
-        push(Seq(b, a))
+        push(Seq(a, b))
       },
     addPart("<", Dyad, true) {
       case (a: VVal, b: VVal) => a < b
@@ -1417,7 +1417,7 @@ object NewElements:
         push(
           leftList.zip(rightList).map {
             case (left, right) =>
-              Interpreter.executeFn(function, args = Seq(left, right))
+              Interpreter.executeFn(function, args = Seq(right, left))
           }
         )
       },
