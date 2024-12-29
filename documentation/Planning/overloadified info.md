@@ -223,8 +223,10 @@ b = rhs
 - [x] ɠ (any) = min(a), but don't pop
 - [x] Ġ (lst, num)* = [max(x, b) for x in a]
 - [x]   (lst, lst) = [max(x, y) for (x, y) in zip(a, b)]
+- [ ]   (num, num) = max(a, b)
 - [x] ġ (lst, num)* = [min(x, b) for x in a]
 - [x]   (lst, lst) = [min(x, y) for (x, y) in zip(a, b)]
+- [ ]   (num, num) = min(a, b)
 - [x] ⌈ (num) = Ceiling
 - [x]   (str) = split on spaces
 - [x] ⌊ (num) = Floor
@@ -373,7 +375,7 @@ b = rhs
 - [x] ▲ (lst, lst) = Mask, keep elements of a where b is truthy
 - [x] Ṭ (lst) = Truthy indices of a
 - [x] Ṫ (lst) = Return a Boolean array with 1s at the indices in a
-- [ ] Ŀ (lst) = Lengths of items in a
+- [x] Ŀ (lst) = Lengths of items in a
 
 Things that need to be slotted in:
 

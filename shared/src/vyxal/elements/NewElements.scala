@@ -198,18 +198,7 @@ object NewElements:
           else (b, aList)
         haystack.indexOf(needle)
     },
-    "G" ->
-      direct(Monad) {
-        val top = pop()
-        top match
-          case a: VList => push(a.maxOption.getOrElse(Seq.empty))
-          case _ =>
-            val under = pop()
-            (top, under) match
-              case (a: VFun, b: VList) => push(ListHelpers.generate(a, b))
-              case (a: VFun, b) => push(ListHelpers.generate(a, Seq(b)))
-              case _ => push(MiscHelpers.dyadicMaximum(under, top))
-      },
+    "G" -> fullToImpl(Monad, a => a.itr.maxOption.getOrElse(Seq.empty)),
     addPart("H", Monad, true) {
       case a: VNum => NumberHelpers.toBaseAlphabet(a, "0123456789ABCDEF")
       case VStr(a) => NumberHelpers.fromBaseAlphabet(a, "0123456789ABCDEF")
@@ -395,17 +384,7 @@ object NewElements:
       case VStr(a) => a.split("\n").toIndexedSeq
     },
     "f" -> fullToImpl(Monad, x => ListHelpers.flatten(x.itr)),
-    "g" ->
-      direct(Monad) {
-        val top = pop()
-        top match
-          case a: VList => push(a.minOption.getOrElse(Seq.empty))
-          case _ =>
-            val under = pop()
-            (top, under) match
-              case (a: VFun, b: VList) => push(ListHelpers.generateDyadic(a, b))
-              case _ => push(MiscHelpers.dyadicMinimum(under, top))
-      },
+    "g" -> fullToImpl(Monad, a => a.itr.minOption.getOrElse(Seq.empty)),
     "h" -> fullToImpl(Monad, x => x.itr.headOption.getOrElse(defaultEmpty(x))),
     "i" -> fullToImpl(Dyad, MiscHelpers.index),
     addPart("j", Dyad, false) {
@@ -629,6 +608,11 @@ object NewElements:
       case (a: VVal, b: VList) => VList(b.map(MiscHelpers.dyadicMaximum(a, _)))
       case (a: VList, b: VList) =>
         VList(a.zip(b).map((x, y) => MiscHelpers.dyadicMaximum(x, y)))
+      case (a: VVal, b: VVal) => MiscHelpers.dyadicMaximum(a, b)
+      case (initial, function: VFun) =>
+        ListHelpers.generate(function, Seq(initial))
+      case (function: VFun, initial) =>
+        ListHelpers.generate(function, Seq(initial))
     },
     addPart("ġ", Dyad, false) {
       case (a: VList, b: VVal) => VList(a.map(MiscHelpers.dyadicMinimum(_, b)))
@@ -640,6 +624,11 @@ object NewElements:
           if items.length == 1 then items.head
           else MiscHelpers.dyadicMinimum(items.head, items(1))
         ))
+      case (a: VVal, b: VVal) => MiscHelpers.dyadicMinimum(a, b)
+      case (initial, function: VFun) =>
+        ListHelpers.generateDyadic(function, initial.itr)
+      case (function: VFun, initial) =>
+        ListHelpers.generateDyadic(function, initial.itr)
     },
     addPart("⌈", Monad, false) {
       case a: VNum => a.ceil

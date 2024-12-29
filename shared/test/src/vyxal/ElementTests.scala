@@ -47,10 +47,10 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  describe("Element G") {
+  describe("Element Ġ") {
     it("Should work as a generator") {
       testCode(
-        "#[1|1#]λ2|+}G10Θ",
+        "#[1|1#]λ2|+}Ġ10Θ",
         vSeq(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
       )
     }
@@ -108,9 +108,9 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  describe("Element g") {
+  describe("Element ġ") {
     testCode(
-      "#[1|1#]λ+}g10Θ",
+      "#[1|1#]λ+}ġ10Θ",
       vSeq(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
     )
   }

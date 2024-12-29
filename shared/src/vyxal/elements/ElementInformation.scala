@@ -633,28 +633,15 @@ object ElementInformation:
     ),
     Element(
       symbol = "G",
-      keywords = Seq("max", "maximum", "gen"),
-      arity = 2,
+      keywords = Seq("max-of", "maximum-of"),
+      arity = 1,
       Options(
         vectorises = false
-      ),
-      Overload(
-        name = "Dyadic Maximum",
-        args = Seq("scl", "scl"),
-        description = "Maximum of #1 and #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Monadic Maximum",
         args = Seq("lst"),
         description = "Maximum of #1",
-        typeSwitchable = false,
-      ),
-      Overload(
-        name = "Generate Sequence",
-        args = Seq("nls", "fun"),
-        description =
-          "Call #2 on previous results of #2, starting with #1. If #1 is not a list, it is made iterable",
         typeSwitchable = false,
       ),
     ),
@@ -1220,28 +1207,15 @@ object ElementInformation:
     ),
     Element(
       symbol = "g",
-      keywords = Seq("min", "minimum", "2gen"),
-      arity = 2,
+      keywords = Seq("min-of", "minimum-of"),
+      arity = 1,
       Options(
         vectorises = false
-      ),
-      Overload(
-        name = "Dyadic Minimum",
-        args = Seq("scl", "scl"),
-        description = "Minimum of #1 and #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Monadic Minimum",
         args = Seq("lst"),
         description = "Minimum of #1",
-        typeSwitchable = false,
-      ),
-      Overload(
-        name = "Generate Sequence",
-        args = Seq("nls", "fun"),
-        description =
-          "Call #2 as a dyad infinitely with items of #1 as starting values",
         typeSwitchable = false,
       ),
     ),
@@ -1892,7 +1866,7 @@ object ElementInformation:
     ),
     Element(
       symbol = "Ġ",
-      keywords = Seq("zip-max"),
+      keywords = Seq("zip-max", "max-dyad", "max-ab", "gen"),
       arity = 2,
       Options(
         vectorises = true
@@ -1908,6 +1882,52 @@ object ElementInformation:
         args = Seq("lst", "scl"),
         description = "Maximum of {#2|#1} and {#1|#2}",
         typeSwitchable = true,
+      ),
+      Overload(
+        name = "Dyadic Maximum",
+        args = Seq("scl", "scl"),
+        description = "Maximum of #1 and #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Generate Sequence",
+        args = Seq("nls", "fun"),
+        description =
+          "Call {#2|#1} on previous results of {#2|#1}, starting with {#1|#2}.",
+        typeSwitchable = true,
+      ),
+    ),
+    Element(
+      symbol = "ġ",
+      keywords = Seq("zip-min", "min-dyad", "min-ab", "2gen"),
+      arity = 2,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Zipped Minimum",
+        args = Seq("lst", "lst"),
+        description = "Minimum of corresponding elements of #1 and #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Vectorised Minimum",
+        args = Seq("lst", "scl"),
+        description = "Minimum of {#2|#1} and {#1|#2}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Dyadic Minimum",
+        args = Seq("scl", "scl"),
+        description = "Minimum of #1 and #2",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Generate Sequence",
+        args = Seq("nls", "fun"),
+        description =
+          "Call #2 as a dyad infinitely with items of #1 as starting values",
+        typeSwitchable = false,
       ),
     ),
     Element(
@@ -2042,7 +2062,7 @@ object ElementInformation:
       ),
     ),
     Element(
-      symbol = "⬳",
+      symbol = "↺",
       keywords = Seq("rot-left"),
       arity = 1,
       Options(
@@ -2062,7 +2082,7 @@ object ElementInformation:
       ),
     ),
     Element(
-      symbol = "⟿",
+      symbol = "↻",
       keywords = Seq("rot-right"),
       arity = 1,
       Options(
