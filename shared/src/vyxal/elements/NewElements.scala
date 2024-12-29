@@ -1437,6 +1437,16 @@ object NewElements:
         if condition then push(Interpreter.executeFn(ifFunction))
         else push(Interpreter.executeFn(elseFunction))
       },
+    "#|dip" ->
+      direct(Monad) {
+        val f = pop()
+        val top = pop()
+        f match
+          case fun: VFun =>
+            Interpreter.executeFn(fun)
+            push(top)
+          case arg => throw UnimplementedOverloadException("#|dip", List(arg))
+      },
   )
 
   private def niladify(value: VAny): Element =

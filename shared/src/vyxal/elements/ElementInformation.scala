@@ -3770,5 +3770,17 @@ object ElementInformation:
         example = "3 1 ᖶd½ -> 6",
       ),
     ),
+    Modifier(
+      symbol = "⎇",
+      keywords = Seq("dip:"),
+      numberOfElements = 1,
+      ModifierOverload(
+        name = "Dip",
+        args = Seq("mon"),
+        description =
+          "Save the top stack item, apply #1, then push the saved item",
+        example = "3 4 5 2 ⎇+ -> 3 9 2",
+      ),
+    ),
   )
 end ElementInformation

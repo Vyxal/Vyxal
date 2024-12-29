@@ -125,4 +125,15 @@ class ModifierTests extends VyxalTests:
     )
   }
 
+  describe("Modifier ⎇") {
+    testStackLike("⎇+") {
+      List[VAny](3, 4, 5) -> List[VAny](5, 7)
+      List[VAny](1, 1, 1) -> List[VAny](1, 2)
+    }
+
+    testStackLike("⎇⎇+") {
+      List[VAny](3, 4, 5, 6) -> List[VAny](6, 5, 7)
+    }
+  }
+
 end ModifierTests

@@ -38,7 +38,7 @@ Modifiers
 - [x]     F<2+>    =   Zip with. Reduce each item in zip(top, under, ...[kicker, ...]) by F
 - [x] ¿  F<any>    =  Pop top of stack. If truthy, apply F to the rest of the stack.
 - [x] ᖶ  F<any>,G<any> =  Pop top of stack. If truthy, apply F to the rest of the stack. Otherwise, apply G.
-- [ ] ⎇  F<any> = Dip
+- [x] ⎇  F<any> = Dip
 - [ ] ⟆          = Lambda until first function overload
 - [ ] ~  F<1>    =   Filter by
 - [ ]    F<2+>   = Without Popping
