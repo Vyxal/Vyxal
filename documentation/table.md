@@ -219,5 +219,6 @@
 | `¨` | `map:`</br>`each:`</br>`zip-with:` | 1 | <table><tr><td>**Map**</td><td>`mon`</td><td>Map #1 over the top of the stack</td><td>`#[#[1\|2\|3#]\|#[4\|2\|3#]\|#[1\|5\|3#]#] ¨G -> [3, 4, 5]`</td></tr></br><tr><td>**Zip With**</td><td>`dyd`</td><td>Pop two lists and zip them, reducing each pair with #1</td><td>`#[1\|2\|3#] #[4\|5\|6#] ¨; -> [[1, 4], [2, 5], [3, 6]]`</td></tr></table> |
 | `¿` | `if:` | 1 | <table><tr><td>**If**</td><td>`any`</td><td>If the top of the stack is truthy, apply #1</td><td>`3 1 ¿d -> 6`</td></tr></table> |
 | `ᖶ` | `if-else:` | 2 | <table><tr><td>**If Else**</td><td>`any,any`</td><td>If the top of the stack is truthy, apply #1, else apply #2</td><td>`3 1 ᖶd½ -> 6`</td></tr></table> |
+| `⎇` | `dip:` | 1 | <table><tr><td>**Dip**</td><td>`mon`</td><td>Save the top stack item, apply #1, then push the saved item</td><td>`3 4 5 2 ⎇+ -> 3 9 2`</td></tr></table> |
 
   
