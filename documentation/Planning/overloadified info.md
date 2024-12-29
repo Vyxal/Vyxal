@@ -186,8 +186,6 @@ b = rhs
 - [x] m () = context variable m
 - [x] n () = context variable n
 - [x] o (any, num) = Overlapping slices of a of length b
-- [ ]   (any, fun) = Reduce overlapping pairs by function
-- [x]   (lst) = Overlapping slices of a of length 2
 - [x] p (any, any) = Prepend
 - [x] q (any) = Quotify
 - [x] r (any, any, any) = s/b/c
@@ -375,6 +373,7 @@ b = rhs
 - [x] ▲ (lst, lst) = Mask, keep elements of a where b is truthy
 - [x] Ṭ (lst) = Truthy indices of a
 - [x] Ṫ (lst) = Return a Boolean array with 1s at the indices in a
+- [ ] Ŀ (lst) = Lengths of items in a
 
 Things that need to be slotted in:
 

@@ -1430,6 +1430,20 @@ object ElementInformation:
           "Reduce overlapping slices of length #2.arity in #1 by function #2",
         typeSwitchable = true,
       ),
+      Overload(
+        name = "Reduce Set-Sized Overlapping Slices",
+        args = Seq("lst", "num", "fun"),
+        description =
+          "Reduce overlapping slices of length #2 in #1 by function #3",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Reduce Set-Sized Overlapping Slices",
+        args = Seq("lst", "fun", "num"),
+        description =
+          "Reduce overlapping slices of length #3 in #1 by function #2",
+        typeSwitchable = false,
+      ),
     ),
     Element(
       symbol = "p",
@@ -3526,6 +3540,20 @@ object ElementInformation:
         name = "Untruth",
         args = Seq("lst"),
         description = "Create a list of 1s at indices in #1, 0s elsewhere",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "Ŀ",
+      keywords = Seq("vlen", "lengths"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Vectorised Lengths",
+        args = Seq("lst"),
+        description = "Length of each element in #1",
         typeSwitchable = false,
       ),
     ),

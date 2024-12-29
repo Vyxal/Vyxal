@@ -1323,6 +1323,7 @@ object NewElements:
           result = result.updated(index.asInstanceOf[VNum].toInt, VNum(1))
         result
     },
+    "Ŀ" -> fullToImpl(Monad, x => x.itr.map(_.itr.bigLength)),
   )
 
   // Subject to being added as overloads onto things in elements
