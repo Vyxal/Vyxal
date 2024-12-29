@@ -1407,8 +1407,11 @@ object NewElements:
       direct(Monad) {
         val function = pop().asInstanceOf[VFun]
         val list = pop().itr
+        println(list)
         push(
-          list.map(elem => Interpreter.executeFn(function, args = Seq(elem)))
+          list.vmap { a =>
+            Interpreter.executeFn(function, args = List(a))
+          }
         )
       },
     "#|zip-with" ->

@@ -417,12 +417,12 @@ private class Parser:
         Elements.symbolFor(cmdTok.value).getOrElse(cmdTok.value)
       else cmdTok.value
 
-    val arity = Elements.elements.get(cmd) match
+    val arity = NewElements.elements.get(cmd) match
       case None =>
         if checkCustoms then
           if typedCustoms.contains(cmd) then typedCustoms(cmd)._2
-          else if NewElements.elements.contains(cmd) then
-            NewElements.elements(cmd).arity
+          else if Elements.elements.contains(cmd) then
+            Elements.elements(cmd).arity.getOrElse(0)
           else if NewElements.internalUseElements.contains(cmd) then
             NewElements.internalUseElements(cmd).arity
           else if !customs.contains(cmd) then
@@ -436,7 +436,8 @@ private class Parser:
         else throw NoSuchElementException(cmdTok.value)
       case Some(element) =>
         if asts.isEmpty then return AST.Command(cmd, cmdTok.range, checkCustoms)
-        else element.arity.getOrElse(0)
+        else element.arity
+
     val nilads = ListBuffer[AST]()
 
     while asts.nonEmpty && nilads.sizeIs < arity &&
