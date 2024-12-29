@@ -220,5 +220,6 @@
 | `¿` | `if:` | 1 | <table><tr><td>**If**</td><td>`any`</td><td>If the top of the stack is truthy, apply #1</td><td>`3 1 ¿d -> 6`</td></tr></table> |
 | `ᖶ` | `if-else:` | 2 | <table><tr><td>**If Else**</td><td>`any,any`</td><td>If the top of the stack is truthy, apply #1, else apply #2</td><td>`3 1 ᖶd½ -> 6`</td></tr></table> |
 | `⎇` | `dip:` | 1 | <table><tr><td>**Dip**</td><td>`mon`</td><td>Save the top stack item, apply #1, then push the saved item</td><td>`3 4 5 2 ⎇+ -> 3 9 2`</td></tr></table> |
+| `~` | `filter:`</br>`without-popping:`</br>`peek:` | 1 | <table><tr><td>**Filter**</td><td>`mon`</td><td>Filter the top of the stack with #1</td><td>`#[1\|2\|3\|4\|5#] ~2≛ -> [2, 4]`</td></tr></br><tr><td>**Peek**</td><td>`dyd+`</td><td>Apply #1 without popping</td><td>`3 4 5 ~+ -> 3 4 9`</td></tr></table> |
 
   
