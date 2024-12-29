@@ -118,7 +118,6 @@ class ModifierTests extends VyxalTests:
     )
   }
 
-
   describe("Modifier ᖶ") {
     testMulti(
       "3 0 ᖶd½" -> VNum(1.5),
