@@ -215,7 +215,7 @@ object NewModifiers:
         (truthy, falsey) =>
           Seq(truthy.lam, falsey.lam, AST.Command("#|if-else")),
       ),
-    "⎇" -> fullToImpl(Monadic, (ast) => Seq(ast.lam, AST.Command("#|dip"))),
+    "⎇" -> fullToImpl(Monadic, (ast) => Seq(ast.lam(-1), AST.Command("#|dip"))),
   )
 
   def addPart[P, F](name: String, arity: ModifierHelpers[P, F])(impl: P) =
