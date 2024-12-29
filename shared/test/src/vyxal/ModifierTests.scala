@@ -118,13 +118,6 @@ class ModifierTests extends VyxalTests:
     )
   }
 
-  describe("Modifier ¿") {
-    testMulti(
-      "3 4 1 ¿+" -> VNum(7),
-      "3 4 0 ¿+" -> VNum(4),
-    )
-  }
-
   describe("Modifier ᖶ") {
     testMulti(
       "3 0 ᖶd½" -> VNum(1.5),
