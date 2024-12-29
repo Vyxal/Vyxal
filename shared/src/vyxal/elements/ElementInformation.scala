@@ -3790,7 +3790,7 @@ object ElementInformation:
         name = "Filter",
         args = Seq("mon"),
         description = "Filter the top of the stack with #1",
-        example = "#[1|2|3|4|5#] ~2% -> [2, 4]",
+        example = "#[1|2|3|4|5#] ~2≛ -> [2, 4]",
       ),
       ModifierOverload(
         name = "Peek",
