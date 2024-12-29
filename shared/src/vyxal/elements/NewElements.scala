@@ -199,7 +199,7 @@ object NewElements:
         haystack.indexOf(needle)
     },
     "G" ->
-      direct(Dyad) {
+      direct(Monad) {
         val top = pop()
         top match
           case a: VList => push(a.maxOption.getOrElse(Seq.empty))
@@ -396,7 +396,7 @@ object NewElements:
     },
     "f" -> fullToImpl(Monad, x => ListHelpers.flatten(x.itr)),
     "g" ->
-      direct(Dyad) {
+      direct(Monad) {
         val top = pop()
         top match
           case a: VList => push(a.minOption.getOrElse(Seq.empty))
