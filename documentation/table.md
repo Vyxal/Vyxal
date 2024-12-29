@@ -45,7 +45,7 @@
 | `D` | `triplicate` | 1 |   | **Triplicate** (`any`): Push #1 thrice to the stack: #1 -> #1 #1 #1 |
 | `E` | `2**n`</br>`2pow`</br>`eval`</br>`2**` | 1 | vec  | **2 to the Power of N** (`num`): 2 ** #1</br>**Eval** (`str`): Evaluate #1 |
 | `F` | `filter`</br>`find`</br>`index-of` | 2 |   | **Filter** (`fun,any`): Filter #1 by function #2</br>**Filter** (`any,fun`): Filter #2 by function #1</br>**Find** (`nls,nls`): Find the index of #1 in #2. Switches #1 and #2 so that the haystack is the deeper list |
-| `G` | `max`</br>`maximum`</br>`gen` | 2 |   | **Dyadic Maximum** (`scl,scl`): Maximum of #1 and #2</br>**Monadic Maximum** (`lst`): Maximum of #1</br>**Generate Sequence** (`nls,fun`): Call #2 on previous results of #2, starting with #1. If #1 is not a list, it is made iterable |
+| `G` | `max-of`</br>`maximum-of` | 1 |   | **Monadic Maximum** (`lst`): Maximum of #1 |
 | `H` | `to-hex`</br>`from-hex` | 1 | vec  | **To Hex** (`num`): Convert #1 to hexadecimal</br>**From Hex** (`str`): Convert #1 from hexadecimal to a number. Inverse of 'to-hex' |
 | `I` | `interleave`</br>`reject` | 2 |   | **Interleave** (`any,any`): Interleave #1 and #2</br>**Reject** (`any,fun`): Remove elements of #1 that satisfy function #2</br>**Reject** (`fun,any`): Remove elements of #2 that satisfy function #1 |
 | `J` | `join`</br>`concat` | 2 |   | **Join** (`lst,scl`): Add #2 to the end of #1</br>**Join** (`scl,lst`): Prepend #1 to #2</br>**Join / Merge** (`lst,lst`): Add all elements of #2 to #1</br>**Number Pair** (`num,num`): Create a list of #1 and #2</br>**String Concatenation** (`str\|num,str\|num`): string(#1) + string(#2) (if either #1 or #2 is a string) |
@@ -73,7 +73,7 @@
 | `d` | `double` | 1 |   | **Double** (`num`): #1 * 2</br>**Double** (`str`): Append a copy of #1 to itself |
 | `e` | `even?`</br>`is-even`</br>`split-newlines`</br>`/newline` | 1 | vec  | **Is Even** (`num`): Is #1 even</br>**Split Newlines** (`str`): Split #1 by newlines |
 | `f` | `flatten` | 1 |   | **List of Digits** (`num`): Push a list of the digits of #1 to the stack</br>**List of Characters** (`str`): Push a list of the characters of #1 to the stack</br>**Flatten** (`lst`): Flatten #1 |
-| `g` | `min`</br>`minimum`</br>`2gen` | 2 |   | **Dyadic Minimum** (`scl,scl`): Minimum of #1 and #2</br>**Monadic Minimum** (`lst`): Minimum of #1</br>**Generate Sequence** (`nls,fun`): Call #2 as a dyad infinitely with items of #1 as starting values |
+| `g` | `min-of`</br>`minimum-of` | 1 |   | **Monadic Minimum** (`lst`): Minimum of #1 |
 | `h` | `head`</br>`first` | 1 |   | **Head** (`any`): First element of #1 |
 | `i` | `index`</br>`at`</br>`item-at`</br>`nth-item`</br>`collect-unique`</br>`enclose`</br>`@<=` | 2 |   | **Nth Element** (`itr,num`): Get the #2th element of #1</br>**Nth Element** (`num,itr`): Get the #1th element of #2</br>**Vectorised Index** (`itr,lst[num]`): [#1[_] for _ in #2]</br>**String Enclose** (`str,str`): enclose #2 in #1 (#1[0:len(#1)//2] + #2 + #1[len(#1)//2:])</br>**Object Member Retrieval** (`obj,str`): #1.#2</br>**Object Member Retrieval** (`str,obj`): #2.#1</br>**Collect Unique Values (+ Initial Value)** (`any,fun`): Apply #2 on #1 and collect unique values. Does include the initial value. |
 | `j` | `join-on` | 2 |   | **Join On** (`lst,scl`): Join #1 on #2</br>**Join On** (`scl,lst`): Join #2 on #1</br>**Intersperse** (`lst,lst`): Intersperse elements of #2 within #1 (e.g. [1, [2,3], 4] [5, 6] -> [1, 5, 6, [2, 3], 5, 6, 4]) |
@@ -107,7 +107,8 @@
 | `»` | `right-shift`</br>`>>` | 2 | vec  | **Right Shift** (`num,num`): #1 >> #2</br>**Append Spaces to Given Length** (`str,num`): Append spaces to string #1 until it is #2 characters long</br>**Append Spaces to Given Length** (`num,str`): Append spaces to string #2 until it is #1 characters long</br>**Append Spaces to Length of Second String** (`str,str`): Append spaces to string #1 until it is the length of #2 |
 | `Ɠ` | `max-peek` | 1* |   | **Max Peek** (`lst`): Maximum of #1 without popping |
 | `ɠ` | `min-peek` | 1* |   | **Min Peek** (`lst`): Minimum of #1 without popping |
-| `Ġ` | `zip-max` | 2 | vec  | **Zipped Maximum** (`lst,lst`): Maximum of corresponding elements of #1 and #2</br>**Vectorised Maximum** (`lst,scl`): Maximum of #2 and #1</br>**Vectorised Maximum** (`scl,lst`): Maximum of #1 and #2 |
+| `Ġ` | `zip-max`</br>`max-dyad`</br>`max-ab`</br>`gen` | 2 | vec  | **Zipped Maximum** (`lst,lst`): Maximum of corresponding elements of #1 and #2</br>**Vectorised Maximum** (`lst,scl`): Maximum of #2 and #1</br>**Vectorised Maximum** (`scl,lst`): Maximum of #1 and #2</br>**Dyadic Maximum** (`scl,scl`): Maximum of #1 and #2</br>**Generate Sequence** (`nls,fun`): Call #2 on previous results of #2, starting with #1.</br>**Generate Sequence** (`fun,nls`): Call #1 on previous results of #1, starting with #2. |
+| `ġ` | `zip-min`</br>`min-dyad`</br>`min-ab`</br>`2gen` | 2 | vec  | **Zipped Minimum** (`lst,lst`): Minimum of corresponding elements of #1 and #2</br>**Vectorised Minimum** (`lst,scl`): Minimum of #2 and #1</br>**Vectorised Minimum** (`scl,lst`): Minimum of #1 and #2</br>**Dyadic Minimum** (`scl,scl`): Minimum of #1 and #2</br>**Generate Sequence** (`nls,fun`): Call #2 as a dyad infinitely with items of #1 as starting values |
 | `⌈` | `ceil`</br>`ceiling`</br>`split-on-spaces` | 1 | vec  | **Ceiling** (`num`): Ceiling of #1</br>**Split on Spaces** (`str`): Split #1 by spaces |
 | `⌊` | `floor`</br>`str-to-num` | 1 | vec  | **Floor** (`num`): Floor of #1</br>**String to Number** (`str`): Convert #1 to a number, ignoring non-digit characters. Returns 0 if no digits are found |
 | `⊖` | `0-slice`</br>`take`</br>`0-take` | 2 |   | **0 Slice** (`itr,num`): First #2 elements of #1</br>**0 Slice** (`num,itr`): First #1 elements of #2</br>**APL Style Take** (`lst,lst[num]`): APL style take |
@@ -116,8 +117,8 @@
 | `¥` | `get-register` | 0 |   | **Get Register**: Push the register to the stack |
 | `↜` | `rotate-stack-left` | STACK |   | **Rotate Stack Left**: Rotate the stack left |
 | `↝` | `rotate-stack-right` | STACK |   | **Rotate Stack Right**: Rotate the stack right |
-| `⬳` | `rot-left` | 1 |   | **Rotate Left** (`lst\|str`): Rotate #1 left</br>**Rotate Left** (`lst\|str,num`): Rotate #1 left #2 times. Right if #2 is negative |
-| `⟿` | `rot-right` | 1 |   | **Rotate Right** (`lst\|str`): Rotate #1 right</br>**Rotate Right** (`lst\|str,num`): Rotate #1 right #2 times. Left if #2 is negative |
+| `↺` | `rot-left` | 1 |   | **Rotate Left** (`lst\|str`): Rotate #1 left</br>**Rotate Left** (`lst\|str,num`): Rotate #1 left #2 times. Right if #2 is negative |
+| `↻` | `rot-right` | 1 |   | **Rotate Right** (`lst\|str`): Rotate #1 right</br>**Rotate Right** (`lst\|str,num`): Rotate #1 right #2 times. Left if #2 is negative |
 | `≜` | `assign` | 3 |   | **List Assign** (`any,num,nsl`): #1[#2] = #3</br>**Augmented List Assignment** (`any,num,fun`): #1[#2] = #3(#1[#2])</br>**Vectorised Augmented List Assignment** (`lst,lst[num],fun`): #1[_] = #3(#1[_]) for _ in #2</br>**Zipped Assignment** (`lst,lst,lst`): #1[ind] = val for ind, val in zip(#2, #3)</br>**Regex String Replacement** (`str,str,str`): Replace all occurrences of #2 in #1 with #3</br>**Regex Substitution** (`str,str,fun`): Replace all occurrences of #2 in #1 with the result of #3</br>**Object Member Assignment** (`obj,str,any`): #1.#2 = #3 |
 | `⎀` | `insert` | 3 |   | **Insert** (`any,num,any`): Insert #3 into #1 at index #2</br>**Insert** (`any,lst[num],scl`): Insert #3 into #1 at indices #2</br>**Insert** (`any,lst[num],lst`): Insert items of #3 into #1 at indices #2 |
 | `◲` | `sublists` | 1 |   | **Sublists** (`any`): All sublists of #1 |
