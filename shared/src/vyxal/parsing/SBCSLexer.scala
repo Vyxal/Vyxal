@@ -38,8 +38,8 @@ class SBCSLexer extends LexerCommon:
         if programStack.isEmpty then
           addToken(TokenType.Command, "'", Range(index - 1, index))
         else oneCharStringToken
-      else if headEqual("ᶴ") then twoCharStringToken
-      else if headEqual("~") then twoCharNumberToken
+      else if headEqual("Ꮬ") then twoCharStringToken
+      else if headEqual("Ꮠ") then twoCharNumberToken
       else if headIn("∆øÞk") || headLookaheadMatch("""#[^\[\]$!=#>@{:.,^]""")
       then digraphToken
       else if headLookaheadEqual("##") then
