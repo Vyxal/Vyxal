@@ -143,9 +143,9 @@ class ModifierTests extends VyxalTests:
     }
   }
 
-  describe("Modifier ") {
+  describe("Modifier Ẅ") {
     testMulti(
-      "#[1|2|3#] #[4|5|6#] ¨;" -> vSeq(vSeq(1, 4), vSeq(2, 5), vSeq(3, 6))
+      "#[1|2|3#] #[4|5|6#] Ẅ;" -> vSeq(vSeq(1, 4), vSeq(2, 5), vSeq(3, 6))
     )
   }
 

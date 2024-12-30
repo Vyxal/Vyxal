@@ -1,21 +1,70 @@
 package vyxal.parsing
 
+import vyxal.elements.NewModifiers
 import vyxal.SugarMap
 import vyxal.VyxalException
 
 class SBCSLexer extends LexerCommon:
 
+  private val NEWLINE = "\n"
+  private val DECIMAL_SEPARATOR = "."
+  private val SINGLE_QUOTE = "'"
+  private val DOUBLE_QUOTES = "\""
+  private val TWO_CHAR_STRING = "Ꮬ"
+  private val TWO_CHAR_NUMBER = "Ꮠ"
+  private val DIGRAPH_CHARS = "∆øÞk"
+  private val HASH_DIGRAPH_REGEX =
+    """#[^\[\]$!=#>@{:.,^]""" // Matches # followed by any character that doesn't start a trigraph
+  private val COMMENT = "##"
+  private val LIST_OPEN = "#["
+  private val LIST_CLOSE = "#]"
+  private val STRUCTURE_OPENERS = "[({ṆḌƛΛξ⍾ʎỿ⟨"
+  private val IF_ELSE_OPENER = "#{"
+  private val RECORD_OPENER = "#::R"
+  private val EXTENSION_OPENER = "#::+"
+  private val CUSTOM_OPENER_REGEX = "#::[EM]"
+  private val BRANCH = "|"
+  private val STRUCTURE_CLOSE = "}"
+  private val STRUCTURE_DOUBLE_CLOSE = ")"
+  private val STRUCTURE_ALL_CLOSE = "]"
+  private val STRUCTURE_FIRST_ITEM_CLOSE = "⎋"
+  private val SUGAR_TRIGRAPH_REGEX = "#[.,^]"
+  private val LAMBDA = "λ"
+  private val VARIABLE_UNPACK_OPENER = "#:["
+  private val TERNARY_OPENER = "["
+  private val VARIABLE_GET_SIGIL = "#$"
+  private val VARIABLE_SET_SIGIL = "#="
+  private val VARIABLE_SET_CONSTANT_SIGIL = "#!"
+  private val VARIABLE_AUGMENTED_ASSIGN_SIGIL = "#>"
+  private val CUSTOM_COMMAND_SYMBOL_SIGIL = "#:@"
+  private val CUSTOM_MODIFIER_SYMBOL_SIGIL = "#:="
+  private val ORIGINAL_COMMAND_SIGIL = "#:~"
+
+  private val modifiersOfArity = (arity: Int) =>
+    NewModifiers.modifiers
+      .filter((_, modifierObj) => modifierObj.arity == arity)
+      .map((symbol, _) => symbol)
+      .mkString
+
+  private val MONADIC_MODIFIERS = modifiersOfArity(1)
+  private val DYADIC_MODIFIERS = modifiersOfArity(2)
+  private val TRIADIC_MODIFIERS = modifiersOfArity(3)
+  private val TETRADIC_MODIFIERS = modifiersOfArity(4)
+  private val SPECIAL_MODIFIERS = "⊐⟆"
+  private val CONTEXT_INDEX = "¤"
+
   private var unpackDepth = 0
   var sugarUsed = false
 
   def headIsOpener: Boolean =
-    headIn("[({ṆḌƛΛξ⍾ʎỿ⟨") || headLookaheadEqual("#[") ||
-      headLookaheadEqual("#{") || headLookaheadEqual("#::R") ||
-      headLookaheadEqual("#::+") || headLookaheadMatch("#::[EM]")
+    headIn(STRUCTURE_OPENERS) || headLookaheadEqual(LIST_OPEN) ||
+      headLookaheadEqual(IF_ELSE_OPENER) || headLookaheadEqual(RECORD_OPENER) ||
+      headLookaheadEqual(EXTENSION_OPENER) ||
+      headLookaheadMatch(CUSTOM_OPENER_REGEX)
 
-  def headIsBranch: Boolean = headEqual("|")
+  def headIsBranch: Boolean = headEqual(BRANCH)
 
-  def headIsCloser: Boolean = headEqual("}")
+  def headIsCloser: Boolean = headEqual(STRUCTURE_CLOSE)
 
   def addToken(
       tokenType: TokenType,
@@ -29,99 +78,102 @@ class SBCSLexer extends LexerCommon:
     programStack.pushAll(program.reverse.map(_.toString))
 
     while programStack.nonEmpty do
-      if headIsDigit || headEqual(".") || headEqual("ı") then numberToken
-      else if headEqual("\n") then quickToken(TokenType.Newline, "\n")
+      if headIsDigit || headEqual(DECIMAL_SEPARATOR) then numberToken
+      else if headEqual(NEWLINE) then quickToken(TokenType.Newline, NEWLINE)
       else if headIsWhitespace then pop(1)
-      else if headEqual("\"") then stringToken(false)
-      else if headEqual("'") then
+      else if headEqual(DOUBLE_QUOTES) then stringToken(false)
+      else if headEqual(SINGLE_QUOTE) then
         pop()
         if programStack.isEmpty then
-          addToken(TokenType.Command, "'", Range(index - 1, index))
+          addToken(TokenType.Command, SINGLE_QUOTE, Range(index - 1, index))
         else oneCharStringToken
-      else if headEqual("Ꮬ") then twoCharStringToken
-      else if headEqual("Ꮠ") then twoCharNumberToken
-      else if headIn("∆øÞk") || headLookaheadMatch("""#[^\[\]$!=#>@{:.,^]""")
+      else if headEqual(TWO_CHAR_STRING) then twoCharStringToken
+      else if headEqual(TWO_CHAR_NUMBER) then twoCharNumberToken
+      else if headIn(DIGRAPH_CHARS) || headLookaheadMatch(HASH_DIGRAPH_REGEX)
       then digraphToken
-      else if headLookaheadEqual("##") then
+      else if headLookaheadEqual(COMMENT) then
         pop(2)
         while safeCheck(c => c != "\n" && c != "\r") do pop()
-      else if headLookaheadMatch("#[.,^]") then sugarTrigraph
-      else if headLookaheadEqual("#[") then quickToken(TokenType.ListOpen, "#[")
+      else if headLookaheadMatch(SUGAR_TRIGRAPH_REGEX) then sugarTrigraph
+      else if headLookaheadEqual(LIST_OPEN) then
+        quickToken(TokenType.ListOpen, LIST_OPEN)
       else if headLookaheadEqual("⟨") then
         pop()
-        addToken(TokenType.ListOpen, "#[", Range(index - 1, index))
-      else if headLookaheadEqual("#]") then
-        quickToken(TokenType.ListClose, "#]")
+        addToken(TokenType.ListOpen, LIST_OPEN, Range(index - 1, index))
+      else if headLookaheadEqual(LIST_CLOSE) then
+        quickToken(TokenType.ListClose, LIST_CLOSE)
       else if headLookaheadEqual("⟩") then
         pop()
-        addToken(TokenType.ListClose, "#]", Range(index - 1, index))
-      else if unpackDepth > 1 && headEqual("[") then
-        addToken(TokenType.StructureOpen, "[", Range(index, index))
+        addToken(TokenType.ListClose, LIST_CLOSE, Range(index - 1, index))
+      else if unpackDepth > 1 && headEqual(TERNARY_OPENER) then
+        addToken(TokenType.StructureOpen, TERNARY_OPENER, Range(index, index))
         unpackDepth += 1
-      else if unpackDepth > 1 && headEqual("]") then
-        addToken(TokenType.StructureAllClose, "]", Range(index, index))
+      else if headEqual(STRUCTURE_CLOSE) then
+        quickToken(TokenType.StructureClose, STRUCTURE_CLOSE)
+      else if headEqual(STRUCTURE_DOUBLE_CLOSE) then
+        quickToken(TokenType.StructureDoubleClose, STRUCTURE_DOUBLE_CLOSE)
+      else if unpackDepth > 1 && headEqual(STRUCTURE_ALL_CLOSE) then
+        addToken(
+          TokenType.StructureAllClose,
+          STRUCTURE_ALL_CLOSE,
+          Range(index, index),
+        )
         unpackDepth -= 1
-      else if headIn("[({ṆḌƛΛξ⍾ʎỿ⟨") then
+      else if headIn(STRUCTURE_OPENERS) then
         quickToken(TokenType.StructureOpen, s"${programStack.head}")
-      else if headEqual("λ") then
-        quickToken(TokenType.StructureOpen, "λ")
+      else if headEqual(LAMBDA) then
+        quickToken(TokenType.StructureOpen, LAMBDA)
         lambdaParameters
-      else if headLookaheadEqual("#{") then
-        quickToken(TokenType.StructureOpen, "#{")
-      else if headLookaheadEqual("#:[") then
-        quickToken(TokenType.UnpackTrigraph, "#:[")
-      else if headIn("⎂▦¨⎇¿⑴/⁜~\\") then
+      else if headLookaheadEqual(IF_ELSE_OPENER) then
+        quickToken(TokenType.StructureOpen, IF_ELSE_OPENER)
+      else if headIn(MONADIC_MODIFIERS) then
         quickToken(TokenType.MonadicModifier, s"${programStack.head}")
-      else if headIn("⑵∥∦∺⟒ᖶᛞ") then
+      else if headIn(DYADIC_MODIFIERS) then
         quickToken(TokenType.DyadicModifier, s"${programStack.head}")
-      else if headIn("⑶") then
+      else if headIn(TRIADIC_MODIFIERS) then
         quickToken(TokenType.TriadicModifier, s"${programStack.head}")
-      else if headIn("⑷") then
+      else if headIn(TETRADIC_MODIFIERS) then
         quickToken(TokenType.TetradicModifier, s"${programStack.head}")
-      else if headIn("⊐⟆") then
+      else if headIn(SPECIAL_MODIFIERS) then
         quickToken(TokenType.SpecialModifier, s"${programStack.head}")
-      else if headEqual("|") then quickToken(TokenType.Branch, "|")
-      else if headEqual("¤") then contextIndexToken
-      else if headLookaheadEqual("#$") then
+      else if headEqual(BRANCH) then quickToken(TokenType.Branch, BRANCH)
+      else if headEqual(CONTEXT_INDEX) then contextIndexToken
+      else if headLookaheadEqual(VARIABLE_GET_SIGIL) then
         pop(2)
         getVariableToken
-      else if headLookaheadEqual("#=") then
+      else if headLookaheadEqual(VARIABLE_SET_SIGIL) then
         pop(2)
         setVariableToken
-      else if headLookaheadEqual("#!") then
+      else if headLookaheadEqual(VARIABLE_SET_CONSTANT_SIGIL) then
         pop(2)
         setConstantToken
-      else if headLookaheadEqual("#>") then
+      else if headLookaheadEqual(VARIABLE_AUGMENTED_ASSIGN_SIGIL) then
         pop(2)
         augmentedAssignToken
-      else if headLookaheadEqual("#:[") then
+      else if headLookaheadEqual(VARIABLE_UNPACK_OPENER) then
         pop(3)
-        addToken(TokenType.UnpackTrigraph, "#:[", Range(index - 3, index))
+        addToken(
+          TokenType.UnpackTrigraph,
+          VARIABLE_UNPACK_OPENER,
+          Range(index - 3, index),
+        )
         unpackDepth = 1
-      else if headLookaheadEqual("#:~") then
+      else if headLookaheadEqual(ORIGINAL_COMMAND_SIGIL) then
         pop(3)
         originalCommandToken
-      else if headLookaheadEqual("#:@") then
+      else if headLookaheadEqual(CUSTOM_COMMAND_SYMBOL_SIGIL) then
         pop(3)
         commandSymbolToken
-      else if headLookaheadEqual("#:=") then
+      else if headLookaheadEqual(CUSTOM_MODIFIER_SYMBOL_SIGIL) then
         pop(3)
         modifierSymbolToken
-      else if headLookaheadEqual("#::R") then
+      else if headLookaheadEqual(RECORD_OPENER) then
         pop(4)
         defineRecordToken
-      else if headLookaheadEqual("#::+") then
+      else if headLookaheadEqual(EXTENSION_OPENER) then
         pop(4)
         defineExtensionToken
-      else if headLookaheadMatch("#::[EM]") then customDefinitionToken
-      else if headLookaheadEqual("#[") || headEqual("⟨") then
-        quickToken(TokenType.ListOpen, "#[")
-      else if headEqual("#]") || headEqual("⟩") then
-        quickToken(TokenType.ListClose, "#]")
-      else if headEqual("}") then quickToken(TokenType.StructureClose, "}")
-      else if headEqual(")") then
-        quickToken(TokenType.StructureDoubleClose, ")")
-      else if headEqual("]") then quickToken(TokenType.StructureAllClose, "]")
+      else if headLookaheadMatch(CUSTOM_OPENER_REGEX) then customDefinitionToken
       else
         val rangeStart = index
         val char = pop()
@@ -140,31 +192,19 @@ class SBCSLexer extends LexerCommon:
   private def numberToken: Unit =
     val rangeStart = index
     // Check the single zero case
-    if headLookaheadMatch("0[^.ı]") then
+    if headLookaheadMatch("0[^.]") then
       val zeroToken = Token(TokenType.Number, "0", Range(index, index))
       pop(1)
       tokens += zeroToken
     else
       val numberVal = StringBuilder()
-      if !headEqual("ı") then numberVal ++= decimalNumber()
-      if headEqual("ı") then
-        numberVal ++= pop()
-        if safeCheck(c => c.head.isDigit || c == ".") then
-          numberVal ++= decimalNumber()
-        else numberVal ++= "1"
-        if headEqual("_") then numberVal ++= pop()
-
-      var modified = numberVal.toString()
-      // Add the implicit values
-      if modified.startsWith("ı") then modified = "0" + modified
-
+      numberVal ++= decimalNumber()
       tokens +=
         Token(
           TokenType.Number,
-          modified,
+          numberVal.toString(),
           Range(rangeStart, index),
         )
-    end if
 
   end numberToken
 
@@ -177,7 +217,7 @@ class SBCSLexer extends LexerCommon:
     val tokenVal = StringBuilder()
     var decimalUsed = false
     // Handle headless decimal first
-    if headEqual(".") then
+    if headEqual(DECIMAL_SEPARATOR) then
       decimalUsed = true
       tokenVal ++= pop()
       if safeCheck(c => c.head.isDigit) then tokenVal ++= simpleNumber()
@@ -194,7 +234,8 @@ class SBCSLexer extends LexerCommon:
     if decimalUsed && tokenVal.last == '.' then tokenVal ++= "5"
 
     val number = tokenVal.toString()
-    val padded = if number.startsWith(".") then s"0${number}" else number
+    val padded =
+      if number.startsWith(DECIMAL_SEPARATOR) then s"0${number}" else number
     if headEqual("_") then
       pop()
       s"${padded}_"
@@ -224,7 +265,7 @@ class SBCSLexer extends LexerCommon:
 
   private def twoCharNumberToken: Unit =
     val rangeStart = index
-    pop() // Pop the tilde
+    pop() // Pop the token
     val char = pop(2)
     tokens +=
       Token(
@@ -288,8 +329,8 @@ class SBCSLexer extends LexerCommon:
       Range(rangeStart, index),
     )
     eatWhitespace()
-    if headEqual("|") then
-      quickToken(TokenType.Branch, "|")
+    if headEqual(BRANCH) then
+      quickToken(TokenType.Branch, BRANCH)
       // Get the arguments and put them into tokens
       var arity = 0
       while !headEqual("|") do
