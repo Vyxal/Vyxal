@@ -3732,14 +3732,19 @@ object ElementInformation:
     ),
     Modifier(
       symbol = "¨",
-      keywords = Seq("map:", "each:", "zip-with:"),
+      keywords = Seq("each:"),
       numberOfElements = 1,
       ModifierOverload(
-        name = "Map",
-        args = Seq("mon"),
+        name = "Each",
+        args = Seq("any"),
         description = "Map #1 over the top of the stack",
         example = "#[#[1|2|3#]|#[4|2|3#]|#[1|5|3#]#] ¨G -> [3, 4, 5]",
       ),
+    ),
+    Modifier(
+      symbol = "Ẅ",
+      keywords = Seq("zip-with:"),
+      numberOfElements = 1,
       ModifierOverload(
         name = "Zip With",
         args = Seq("dyd"),

@@ -35,7 +35,7 @@ Modifiers
 - [x] ᛞ   F<2>,G<2>   =   Inner Product. [F(x, y) for x, y in zip(top, under)].reduce(G)
 - [x]  ▦   F<2>    =   Outer Product. [F(under, x) for x in top]
 - [x] ¨   F<1>    =   Map. Apply F to each item in top
-- [x]     F<2+>    =   Zip with. Reduce each item in zip(top, under, ...[kicker, ...]) by F
+- []     F<2+>   = Varaidic each
 - [x] ¿  F<any>    =  Pop top of stack. If truthy, apply F to the rest of the stack.
 - [x] ᖶ  F<any>,G<any> =  Pop top of stack. If truthy, apply F to the rest of the stack. Otherwise, apply G.
 - [x] ⎇  F<any> = Dip
@@ -47,8 +47,8 @@ Modifiers
 - [ ] \  F<2>    = Scan by
 - [ ]    F<1>    = Reject by
 - [ ] ⊐ NA       = Lambda to Newline
-- [ ] ▟ F<2+>    = vyxal 2 behaviour of v
 - [ ] ⍣ F<any>   = Apply F at primitives level (recurse down list until no more lists)
+- [x] Ẅ F<2+>    =   Zip with. Reduce each item in zip(top, under, ...[kicker, ...]) by F
 
 
 Elements

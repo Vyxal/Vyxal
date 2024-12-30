@@ -1405,16 +1405,10 @@ object NewElements:
           }
         })
       },
-    "#|map" ->
+    "#|each" ->
       direct(Monad) {
         val function = pop().asInstanceOf[VFun]
-        val list = pop().itr
-        println(list)
-        push(
-          list.vmap { a =>
-            Interpreter.executeFn(function, args = List(a))
-          }
-        )
+        FuncHelpers.each(function)
       },
     "#|zip-with" ->
       direct(Dyad) {

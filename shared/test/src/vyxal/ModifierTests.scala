@@ -106,8 +106,7 @@ class ModifierTests extends VyxalTests:
   describe("Modifier ¨") {
     testMulti(
       "#[#[1|2|3#]|#[4|2|3#]|#[1|5|3#]#] ¨G" -> vSeq(3, 4, 5),
-      "#[1|2|3#] #[4|5|6#] ¨;" -> vSeq(vSeq(1, 4), vSeq(2, 5), vSeq(3, 6)),
-      //  "#[1 10 R|1 5 R|6 8 R#] λ+} ¨ R" -> vSeq(45, 10, 13),
+      "#[1 10 R|1 5 R|6 8 R#] λ+} ¨ R" -> vSeq(45, 10, 13),
       "#[1 10 R|1 5 R|6 8 R#] ¨A" -> vSeq(1, 1, 1),
     )
   }
@@ -142,6 +141,12 @@ class ModifierTests extends VyxalTests:
         List[VAny](3, 4, 5) -> List[VAny](9, 5, 4, 3)
       )
     }
+  }
+
+  describe("Modifier ") {
+    testMulti(
+      "#[1|2|3#] #[4|5|6#] ¨;" -> vSeq(vSeq(1, 4), vSeq(2, 5), vSeq(3, 6))
+    )
   }
 
 end ModifierTests

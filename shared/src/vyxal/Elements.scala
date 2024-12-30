@@ -2851,7 +2851,7 @@ object Elements:
     ) { ctx ?=>
       // For sake of simplicity, error if not a function
       ctx.pop() match
-        case f: VFun => FuncHelpers.vectorise(f)
+        case f: VFun => FuncHelpers.each(f)
         case arg => UnimplementedOverloadException("#v", List(arg))
     },
     addDirect(

@@ -204,8 +204,8 @@ object NewModifiers:
     addPart("▦", Monadic) {
       case AST(ast, 2) => Seq(ast.lam, AST.Command("#|outer-product"))
     },
-    addPart("¨", Monadic) {
-      case AST(monad, 1) => Seq(monad.lam, AST.Command("#|map"))
+    "¨" -> fullToImpl(Monadic, ast => Seq(ast.lam, AST.Command("#|each"))),
+    addPart("Ẅ", Monadic) {
       case AST(dyad, 2) => Seq(dyad.lam, AST.Command("#|zip-with"))
     },
     "¿" -> fullToImpl(Monadic, (ast) => Seq(ast.lam, AST.Command("#|if"))),

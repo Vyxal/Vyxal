@@ -5,7 +5,7 @@ import vyxal.conversions.given
 /** Helpers for function-related stuff */
 object FuncHelpers:
   /** Vectorise a function object */
-  def vectorise(fn: VFun)(using ctx: Context): Unit =
+  def each(fn: VFun)(using ctx: Context): Unit =
     val res = fn.arity match
       case 0 => ListHelpers.makeIterable(ctx.pop()).vmap { _ =>
           Interpreter.executeFn(fn)
@@ -23,7 +23,7 @@ object FuncHelpers:
         }
 
     ctx.push(res)
-  end vectorise
+  end each
 
   def reduceByElement(fn: VFun)(using ctx: Context): Unit =
     val iter = ctx.pop()
