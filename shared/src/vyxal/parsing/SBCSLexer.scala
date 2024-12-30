@@ -153,7 +153,6 @@ class SBCSLexer extends LexerCommon:
         augmentedAssignToken
       else if headLookaheadEqual(VARIABLE_UNPACK_OPENER) then
         quickToken(TokenType.UnpackTrigraph, "#:[")
-        unpackDepth = 1
       else if headLookaheadEqual(ORIGINAL_COMMAND_SIGIL) then
         pop(3)
         originalCommandToken
