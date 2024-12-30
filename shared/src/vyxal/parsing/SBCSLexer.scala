@@ -18,7 +18,7 @@ class SBCSLexer extends LexerCommon:
   private val COMMENT = "##"
   private val LIST_OPEN = "#["
   private val LIST_CLOSE = "#]"
-  private val STRUCTURE_OPENERS = "[({ṆḌƛΛξ⍾ʎỿ⟨"
+  private val STRUCTURE_OPENERS = "[({ṆḌƛΛξ⍾ʎỿ⟨⎊⎄"
   private val IF_ELSE_OPENER = "#{"
   private val RECORD_OPENER = "#::R"
   private val EXTENSION_OPENER = "#::+"
@@ -28,6 +28,7 @@ class SBCSLexer extends LexerCommon:
   private val STRUCTURE_DOUBLE_CLOSE = ")"
   private val STRUCTURE_ALL_CLOSE = "]"
   private val STRUCTURE_FIRST_ITEM_CLOSE = "⎋"
+  private val STRUCTURE_FLATTEN_CLOSE = "⍟"
   private val SUGAR_TRIGRAPH_REGEX = "#[.,^]"
   private val LAMBDA = "λ"
   private val VARIABLE_UNPACK_OPENER = "#:["
@@ -151,12 +152,7 @@ class SBCSLexer extends LexerCommon:
         pop(2)
         augmentedAssignToken
       else if headLookaheadEqual(VARIABLE_UNPACK_OPENER) then
-        pop(3)
-        addToken(
-          TokenType.UnpackTrigraph,
-          VARIABLE_UNPACK_OPENER,
-          Range(index - 3, index),
-        )
+        quickToken(TokenType.UnpackTrigraph, "#:[")
         unpackDepth = 1
       else if headLookaheadEqual(ORIGINAL_COMMAND_SIGIL) then
         pop(3)
