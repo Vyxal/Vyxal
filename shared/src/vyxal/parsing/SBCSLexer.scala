@@ -107,7 +107,7 @@ class SBCSLexer extends LexerCommon:
         pop()
         addToken(TokenType.ListClose, LIST_CLOSE, Range(index - 1, index))
       else if headEqual(TERNARY_OPENER) then
-        addToken(TokenType.StructureOpen, TERNARY_OPENER, Range(index, index))
+        quickToken(TokenType.StructureOpen, TERNARY_OPENER)
         if unpackDepth > 1 then unpackDepth += 1
       else if headEqual(STRUCTURE_CLOSE) then
         quickToken(TokenType.StructureClose, STRUCTURE_CLOSE)
