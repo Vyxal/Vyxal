@@ -224,6 +224,10 @@ object NewModifiers:
       case AST(monad, 1) => Seq(monad.lam, AST.Command("#|invariant"))
       case ast => Seq(ast.lam, AST.Command("R"))
     },
+    addPart("\\", Monadic) {
+      case AST(monad, 1) => Seq(monad.lam, AST.Command("I"))
+      case ast => Seq(ast.lam, AST.Command("Y"))
+    },
   )
 
   def addPart[P, F](name: String, arity: ModifierHelpers[P, F])(impl: P) =

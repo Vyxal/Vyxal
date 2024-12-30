@@ -44,9 +44,9 @@ Modifiers
 - [x]    F<2+>   = Without Popping
 - [x] /  F<2>    =   Reduce by
 - [x]    F<1>    = Invariant under
-- [ ] \  F<2>    = Scan by
-- [ ]    F<1>    = Reject by
-- [ ] ⊐ NA       = Lambda to Newline
+- [x] \  F<2>    = Scan by
+- [x]    F<1>    = Reject by
+- [x] ⊐ NA       = Lambda to Newline
 - [ ] ⍣ F<any>   = Apply F at primitives level (recurse down list until no more lists)
 - [x] Ẅ F<2+>    =   Zip with. Reduce each item in zip(top, under, ...[kicker, ...]) by F
 
@@ -160,6 +160,7 @@ b = rhs
 - [x] W (...) = ...d c b a => [...d c b a]
 - [x] X (any, any) = Cartesian product
 - [x] Y (any, num) = [a].repeat(b)
+- [x]   (any, fun) = Scan
 - [x] Z (any, any) = zip(a, b)
 - [x] ^ (...) = ...d c b a => a b c d ...
 - [x] _ (any) = pop / discard

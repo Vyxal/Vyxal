@@ -322,6 +322,8 @@ object NewElements:
       },
     "X" -> fullToImpl(Dyad, ListHelpers.cartesianProduct(_, _)),
     addPart("Y", Dyad, false) {
+      case (a: VFun, b) => MiscHelpers.scanl(b.ritr, a)
+      case (a, b: VFun) => MiscHelpers.scanl(a.ritr, b)
       case (a, b: VNum) => Seq.fill(b.toInt)(a)
       case (a: VNum, b) => Seq.fill(a.toInt)(b)
       case (a: (VList | VStr), b: VList) =>

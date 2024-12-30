@@ -25,6 +25,19 @@ class ModifierTests extends VyxalTests:
     }
   }
 
+  describe("Modifier \\") {
+    describe("With a monad, performs reject-by") {
+      testMulti(
+        "#[1|2|3|4|5|6#] \\e" -> vSeq(1, 3, 5)
+      )
+    }
+    describe("With a dyad, performs scan") {
+      testMulti(
+        "#[1|2|3|4|5|6#] \\+" -> vSeq(1, 3, 6, 10, 15, 21)
+      )
+    }
+  }
+
   describe("Function grouping modifiers") {
     testMulti(
       "#[1|2|3#] ⑴× M" -> vSeq(1, 4, 9),
