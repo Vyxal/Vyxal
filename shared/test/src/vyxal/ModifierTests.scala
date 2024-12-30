@@ -139,7 +139,7 @@ class ModifierTests extends VyxalTests:
 
     describe("With a dyad+, performs without popping") {
       testStackLike("~+")(
-        List[VAny](3, 4, 5) -> List[VAny](7, 5, 4, 3)
+        List[VAny](3, 4, 5) -> List[VAny](9, 5, 4, 3)
       )
     }
   }
