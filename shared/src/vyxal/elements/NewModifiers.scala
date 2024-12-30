@@ -220,6 +220,10 @@ object NewModifiers:
       case AST(predicate, 1) => Seq(predicate.lam, AST.Command("F"))
       case command => Seq(command.lam, AST.Command("#~"))
     },
+    addPart("/", Monadic) {
+      case AST(monad, 1) => Seq(monad.lam, AST.Command("#|invariant"))
+      case ast => Seq(ast.lam, AST.Command("R"))
+    },
   )
 
   def addPart[P, F](name: String, arity: ModifierHelpers[P, F])(impl: P) =
