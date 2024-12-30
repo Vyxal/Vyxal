@@ -112,13 +112,13 @@ class SBCSLexer extends LexerCommon:
         quickToken(TokenType.StructureClose, STRUCTURE_CLOSE)
       else if headEqual(STRUCTURE_DOUBLE_CLOSE) then
         quickToken(TokenType.StructureDoubleClose, STRUCTURE_DOUBLE_CLOSE)
-      else if unpackDepth > 1 && headEqual(STRUCTURE_ALL_CLOSE) then
+      else if headEqual(STRUCTURE_ALL_CLOSE) then
         addToken(
           TokenType.StructureAllClose,
           STRUCTURE_ALL_CLOSE,
           Range(index, index),
         )
-        unpackDepth -= 1
+        if unpackDepth > 1 then unpackDepth -= 1
       else if headIn(STRUCTURE_OPENERS) then
         quickToken(TokenType.StructureOpen, s"${programStack.head}")
       else if headEqual(LAMBDA) then
