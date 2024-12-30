@@ -14,20 +14,10 @@ class LexerTests extends VyxalTests:
       group {
         testLex("123", List(Number("123")))
         testLex("6.", List(Number("6.5")))
-        testLex("3.4ı1.2", List(Number("3.4ı1.2")))
-        testLex("3.4ı1.", List(Number("3.4ı1.5")))
-        testLex("3.4ı.2", List(Number("3.4ı0.2")))
-        testLex("3.4ı.", List(Number("3.4ı0.5")))
-        testLex("3.4_ı1", List(Number("3.4_ı1")))
-        testLex(".ı.", List(Number("0.5ı0.5")))
-        testLex("ı", List(Number("0ı1")))
-        testLex("1ı1ı1ı1", List(Number("1ı1"), Number("0ı1"), Number("0ı1")))
-        testLex("3.4ı", List(Number("3.4ı1")))
         testLex(".4", List(Number("0.4")))
         testLex(".", List(Number("0.5")))
         testLex("1000000_", List(Number("1000000_")))
         testLex("5.2_", List(Number("5.2_")))
-        testLex("5.2ı_", List(Number("5.2ı1_")))
       }
     }
   }

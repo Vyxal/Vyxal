@@ -114,6 +114,7 @@ class SBCSLexer extends LexerCommon:
       else if headEqual(STRUCTURE_DOUBLE_CLOSE) then
         quickToken(TokenType.StructureDoubleClose, STRUCTURE_DOUBLE_CLOSE)
       else if headEqual(STRUCTURE_ALL_CLOSE) then
+        pop()
         addToken(
           TokenType.StructureAllClose,
           STRUCTURE_ALL_CLOSE,
@@ -178,6 +179,7 @@ class SBCSLexer extends LexerCommon:
             char,
             Range(rangeStart, index),
           )
+      end if
     end while
 
     tokens.toSeq
