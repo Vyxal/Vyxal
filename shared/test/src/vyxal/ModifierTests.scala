@@ -11,10 +11,18 @@ class ModifierTests extends VyxalTests:
   def vSeq(elems: VAny*) = VList(elems)
 
   describe("Modifier /") {
-    testMulti(
-      "1 10 R /+" -> 45,
-      """#["abc"|"def"|"ghi"#] /+""" -> "abcdefghi",
-    )
+    describe("With a dyad performs reduce") {
+      testMulti(
+        "1 10 R /+" -> 45,
+        """#["abc"|"def"|"ghi"#] /+""" -> "abcdefghi",
+      )
+    }
+    describe("With a monad peforms invariant under") {
+      testMulti(
+        "\"abc\" /⑵⇄⇄" -> VNum(1),
+        "6 /⑵⇄e" -> VNum(0),
+      )
+    }
   }
 
   describe("Function grouping modifiers") {

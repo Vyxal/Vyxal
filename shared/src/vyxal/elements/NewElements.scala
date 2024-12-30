@@ -1449,6 +1449,13 @@ object NewElements:
             push(top)
           case arg => throw UnimplementedOverloadException("#|dip", List(arg))
       },
+    "#|invariant" ->
+      direct(Monad) {
+        val function = pop().asInstanceOf[VFun]
+        val argument = pop()
+        val result = Interpreter.executeFn(function, args = Seq(argument))
+        push(result == argument)
+      },
   )
 
   private def niladify(value: VAny): Element =

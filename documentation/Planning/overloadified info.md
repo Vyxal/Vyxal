@@ -42,8 +42,8 @@ Modifiers
 - [ ] ⟆          = Lambda until first function overload
 - [x] ~  F<1>    =   Filter by
 - [x]    F<2+>   = Without Popping
-- [ ] /  F<2>    =   Reduce by
-- [ ]    F<1>    = Invariant under
+- [x] /  F<2>    =   Reduce by
+- [x]    F<1>    = Invariant under
 - [ ] \  F<2>    = Scan by
 - [ ]    F<1>    = Reject by
 - [ ] ⊐ NA       = Lambda to Newline
