@@ -2948,17 +2948,23 @@ object ElementInformation:
     ),
     Element(
       symbol = "⏚",
-      keywords = Seq("powerset"),
+      keywords = Seq("powerset", "vectorise"),
       arity = 1,
       Options(
         vectorises = false
       ),
       Overload(
         name = "Powerset",
-        args = Seq("any"),
+        args = Seq("nsl"),
         description = "Powerset of #1",
         typeSwitchable = false,
       ),
+      Overload(
+        name = "Vectorise",
+        args = Seq("fun"),
+        description = "Apply #1 as if it were a pervasive element",
+        typeSwitchable = false
+      )
     ),
     Element(
       symbol = "↯",
