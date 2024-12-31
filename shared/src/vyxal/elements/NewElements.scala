@@ -10,6 +10,7 @@ import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.defaultEmpty
 import vyxal.StringHelpers.padLeft
 
+import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
 import scala.util.matching.Regex
 
@@ -1072,6 +1073,7 @@ object NewElements:
       case VStr(a) =>
         ListHelpers.powerset(a.itr).map(_.asInstanceOf[VList].mkString)
       case a: VList => ListHelpers.powerset(a)
+      case a: VFun => FuncHelpers.deepVectorise(a)
     },
     addPart("↯", Dyad, true) {
       case (lst: VAny, predicate: VFun) =>
@@ -1457,6 +1459,20 @@ object NewElements:
         val argument = pop()
         val result = Interpreter.executeFn(function, args = Seq(argument))
         push(result == argument)
+      },
+    "#|vectorise" ->
+      direct(Monad) {
+        val function = pop().asInstanceOf[VFun]
+        FuncHelpers.deepVectorise(function)
+      },
+    "#|eager-map" ->
+      direct(Monad) {
+        val function = pop().asInstanceOf[VFun]
+        val list = pop().ritr
+        val res = ArrayBuffer[VAny]()
+        for elem <- list do
+          res += Interpreter.executeFn(function, args = Seq(elem))
+        push(res.toSeq)
       },
   )
 

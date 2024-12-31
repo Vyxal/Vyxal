@@ -171,6 +171,15 @@ class ElementTests extends VyxalTests:
     }
   }
 
+  describe("Element ⏚") {
+    describe("As the vectorise overload") {
+      testMulti(
+        "#[#[1|2|3#]|#[4|5|6#]#] #[#[7|8|9#]|#[1|2|3#]#] λ2|+2÷} ⏚" ->
+          vSeq(vSeq(4, 5, 6), vSeq(2.5, 3.5, 4.5))
+      )
+    }
+  }
+
   /*describe("Element Ŀ") {
     it(
       "Generates a list of all numbers in the collatz conjecture minus the first number"

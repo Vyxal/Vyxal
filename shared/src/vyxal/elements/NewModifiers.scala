@@ -228,6 +228,8 @@ object NewModifiers:
       case AST(monad, 1) => Seq(monad.lam, AST.Command("I"))
       case ast => Seq(ast.lam, AST.Command("Y"))
     },
+    "⩔" ->
+      fullToImpl(Monadic, (ast) => Seq(ast.lam, AST.Command("#|vectorise"))),
   )
 
   def addPart[P, F](name: String, arity: ModifierHelpers[P, F])(impl: P) =

@@ -1,6 +1,8 @@
 package vyxal
 
 import vyxal.conversions.given
+import vyxal.debugger.DebugHelpers.foreach
+import vyxal.elements.NewElements
 
 /** Helpers for function-related stuff */
 object FuncHelpers:
@@ -24,6 +26,38 @@ object FuncHelpers:
 
     ctx.push(res)
   end each
+
+  def deepVectorise(fn: VFun)(using ctx: Context): VAny =
+    def vecHelper(fn: VFun, iters: VAny*): VAny =
+      if iters.length == 1 then
+        ListHelpers.makeIterable(iters.head, Some(true)).map {
+          case VList(lst) => vecHelper(fn, lst)
+          case x => Interpreter.executeFn(fn, x)
+        }
+      else if iters.forall(_.isInstanceOf[VVal]) then
+        val res = iters.map(_.asInstanceOf[VVal])
+        Interpreter.executeFn(fn, args = res)
+      else
+        val zipped = iters.map(_.asInstanceOf[VList]).reduceLeft(_.vzip(_))
+        zipped.map {
+          case VList(elem) =>
+            if elem.forall(_.isInstanceOf[VVal]) then
+              Interpreter.executeFn(fn, args = elem.map(_.asInstanceOf[VVal]))
+            else vecHelper(fn, elem*)
+          case _ => ???
+        }
+
+    val res = fn.arity match
+      case 0 => VList(ListHelpers.makeIterable(ctx.pop()).vmap { _ =>
+          Interpreter.executeFn(fn)
+        })
+      case n => vecHelper(
+          fn,
+          ctx.pop(n).map(elem => ListHelpers.makeIterable(elem, Some(true)))*
+        )
+
+    res
+  end deepVectorise
 
   def reduceByElement(fn: VFun)(using ctx: Context): Unit =
     val iter = ctx.pop()
