@@ -3,7 +3,7 @@ package vyxal.elements
 import scala.language.implicitConversions
 
 import vyxal.*
-import vyxal.{Dyad, ImplHelpers, Monad, Tetrad, Triad}
+import vyxal.{Dyad, ImplHelpers, Monad, Triad}
 import vyxal.conversions.{*, given}
 import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
@@ -748,9 +748,11 @@ object NewElements:
           i match
             case ind: VNum => j match
                 case value: VPhysical => temp = ListHelpers.assign(temp, ind, j)
+                case obj: VObject => temp = ListHelpers.assign(temp, ind, obj)
                 case function: VFun =>
                   temp = ListHelpers.augmentAssign(temp, ind, function)
-            case _ => throw InvalidListOverloadException("Ạ", b, "Number")
+                case _ => throw UnsupportedOverloadException("≜", "Constructor")
+            case _ => throw InvalidListOverloadException("≜", b, "Number")
         if a.isInstanceOf[VStr] then temp.mkString
         else temp
       case (a, b: VList, c) =>
@@ -1474,6 +1476,11 @@ object NewElements:
           res += Interpreter.executeFn(function, args = Seq(elem))
         push(res.toSeq)
       },
+    "#|at-simple-levels" ->
+      direct(Monad) {
+        val function = pop().asInstanceOf[VFun]
+        push(FuncHelpers.atSimpleLevels(function))
+      },
   )
 
   private def niladify(value: VAny): Element =
@@ -1508,24 +1515,6 @@ object NewElements:
           else arity.fill(symbol)(impl)
         ),
       )
-
-  /** Define an element that doesn't necessarily work on all inputs. It may
-    * vectorise on some inputs but not others.
-    *
-    * Note that this helper assumes you've already done the work of vectorising
-    * the element, i.e., unlike [[addPart]], vectorisation will not be done for
-    * you.
-    *
-    * If using this method, make sure to use `case` to define the function,
-    * since it needs a `PartialFunction`. If it is possible to define it using a
-    * normal function literal or it covers every single case, then try
-    * [[addFull]] instead.
-    */
-  private def addPartialVect[P, F](
-      arity: ImplHelpers[P, F],
-      symbol: String,
-  )(impl: P): (String, Element) =
-    symbol -> Element(arity.arity, arity.toDirectFn(arity.fill(symbol)(impl)))
 
   private def direct[P, F](arity: ImplHelpers[P, F])(
       impl: Context ?=> Unit

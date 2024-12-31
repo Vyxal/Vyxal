@@ -1,11 +1,46 @@
 package vyxal
 
 import vyxal.conversions.given
-import vyxal.debugger.DebugHelpers.foreach
-import vyxal.elements.NewElements
 
 /** Helpers for function-related stuff */
 object FuncHelpers:
+
+  def atSimpleLevels(fn: VFun)(using ctx: Context): VAny =
+    def vecHelper(fn: VFun, iters: VAny*): VAny =
+      if iters.length == 1 then
+        val lst = ListHelpers.makeIterable(iters.head)
+        if lst.forall(_.isInstanceOf[VList]) then
+          lst.map(elem => vecHelper(fn, elem))
+        else if lst.forall(_.isInstanceOf[VVal]) then
+          Interpreter.executeFn(fn, args = Seq(lst))
+        else
+          lst.map { elem =>
+            if elem.isInstanceOf[VList] then vecHelper(fn, elem)
+            else Interpreter.executeFn(fn, args = Seq(elem))
+          }
+      else
+        val zipped = iters.map(_.asInstanceOf[VList]).reduceLeft(_.vzip(_))
+        zipped.map {
+          case VList(items) => items.map {
+              case VList(lst) =>
+                if lst.forall(_.isInstanceOf[VVal]) then
+                  Interpreter.executeFn(fn, args = Seq(lst))
+                else VList(lst.map(elem => vecHelper(fn, elem)))
+              case x => Interpreter.executeFn(fn, args = Seq(x))
+            }
+          case _ => ???
+        }
+    end vecHelper
+    fn.arity match
+      case 0 => ListHelpers.makeIterable(ctx.pop()).vmap { _ =>
+          Interpreter.executeFn(fn)
+        }
+      case n => vecHelper(
+          fn,
+          ctx.pop(n).map(elem => ListHelpers.makeIterable(elem))*
+        )
+  end atSimpleLevels
+
   /** Vectorise a function object */
   def each(fn: VFun)(using ctx: Context): Unit =
     val res = fn.arity match
