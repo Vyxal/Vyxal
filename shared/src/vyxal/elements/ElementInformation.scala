@@ -2963,8 +2963,8 @@ object ElementInformation:
         name = "Vectorise",
         args = Seq("fun"),
         description = "Apply #1 as if it were a pervasive element",
-        typeSwitchable = false
-      )
+        typeSwitchable = false,
+      ),
     ),
     Element(
       symbol = "↯",
