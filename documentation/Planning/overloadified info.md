@@ -39,7 +39,6 @@ Modifiers
 - [x] ¿  F<any>    =  Pop top of stack. If truthy, apply F to the rest of the stack.
 - [x] ᖶ  F<any>,G<any> =  Pop top of stack. If truthy, apply F to the rest of the stack. Otherwise, apply G.
 - [x] ⎇  F<any> = Dip
-- [ ] ⟆          = Lambda until first function overload
 - [x] ~  F<1>    =   Filter by
 - [x]    F<2+>   = Without Popping
 - [x] /  F<2>    =   Reduce by
