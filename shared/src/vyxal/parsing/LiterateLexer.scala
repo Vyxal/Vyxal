@@ -115,6 +115,13 @@ class LiterateLexer extends LexerCommon:
     "fold-lambda" -> StructureType.LambdaReduce,
     "fold-lam" -> StructureType.LambdaReduce,
     "fold<" -> StructureType.LambdaReduce,
+    "map-permutations" -> StructureType.LambdaMapPermutations,
+    "map-perms" -> StructureType.LambdaMapPermutations,
+    "map-permutations<" -> StructureType.LambdaMapPermutations,
+    "permutations<" -> StructureType.LambdaMapPermutations,
+    "eager-map-lambda" -> StructureType.LambdaMapEager,
+    "eager-map-lam" -> StructureType.LambdaMapEager,
+    "eager-map<" -> StructureType.LambdaMapEager,
   )
 
   /** Keywords for opening structures. Has to be a separate map because while
@@ -132,7 +139,6 @@ class LiterateLexer extends LexerCommon:
     "each-as" -> StructureType.For,
     "while" -> StructureType.While,
     "while<" -> StructureType.While,
-    "exists<" -> StructureType.DecisionStructure,
     "relation<" -> StructureType.GeneratorStructure,
     "generate-from<" -> StructureType.GeneratorStructure,
     "generate<" -> StructureType.GeneratorStructure,

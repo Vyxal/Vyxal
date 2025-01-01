@@ -5,6 +5,7 @@ import scala.language.strictEquality
 import vyxal.*
 import vyxal.elements.NewElements
 import vyxal.elements.NewModifiers
+import vyxal.NumberHelpers.range
 
 import scala.collection.mutable
 import scala.collection.mutable.{ListBuffer, Queue, Stack}
@@ -517,7 +518,8 @@ private class Parser:
   ): AST =
     val branches = parseBranches(program, false) {
       case TokenType.StructureAllClose | TokenType.StructureClose |
-          TokenType.StructureDoubleClose => true
+          TokenType.StructureDoubleClose | TokenType.StructureCloseAndFlatten |
+          TokenType.StructureCloseAndHead => true
       case _ => false
     }
     // Now, we can create the appropriate AST for the structure
@@ -554,7 +556,6 @@ private class Parser:
         // Implementation: The implementation of the element/modifier
         // Arity: How many arguments the element/modifier takes
         // Args: The names of the arguments given to the implementation
-        println(branches)
         val (name, functions, args, impl) = branches match
           case List() => throw EmptyRedefine()
           case List(name, impl) => (name, (List() -> 0), (List() -> 0), impl)
@@ -603,7 +604,8 @@ private class Parser:
 
       case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
           StructureType.LambdaFilter | StructureType.LambdaReduce |
-          StructureType.LambdaSort | StructureType.LambdaStack) =>
+          StructureType.LambdaSort | StructureType.LambdaStack |
+          StructureType.LambdaMapEager | StructureType.LambdaMapPermutations) =>
         val lambda =
           if lambdaType == StructureType.Lambda then
             branches match
@@ -630,11 +632,10 @@ private class Parser:
             AST.makeSingle(lambda, AST.Command("R"))
           case StructureType.LambdaSort =>
             AST.makeSingle(lambda, AST.Command("ṡ"))
-      case StructureType.DecisionStructure => branches match
-          case List(pred, container) =>
-            AST.DecisionStructure(pred, Some(container))
-          case List(pred) => AST.DecisionStructure(pred, None)
-          case _ => throw BadStructureException("decision")
+          case StructureType.LambdaMapEager =>
+            AST.makeSingle(lambda, AST.Command("#|eager-map"))
+          case StructureType.LambdaMapPermutations =>
+            AST.makeSingle(lambda, AST.Command("#|permutations-map"))
       case StructureType.GeneratorStructure =>
         if branches.sizeIs > 2 then throw BadStructureException("generator")
         else
@@ -709,6 +710,8 @@ private class Parser:
       case TokenType.StructureClose => true
       case TokenType.StructureDoubleClose => true
       case TokenType.StructureAllClose => true
+      case TokenType.StructureCloseAndFlatten => true
+      case TokenType.StructureCloseAndHead => true
       case _ => false
 
   def parse(tokens: List[Token]): AST =
@@ -727,6 +730,12 @@ private class Parser:
       case Token(TokenType.StructureDoubleClose, _, range) =>
         doubleClose += Token(TokenType.StructureClose, "}", range)
         doubleClose += Token(TokenType.StructureClose, "}", range)
+      case Token(TokenType.StructureCloseAndFlatten, _, range) =>
+        doubleClose += Token(TokenType.StructureClose, "}", range)
+        doubleClose += Token(TokenType.Command, "f", range)
+      case Token(TokenType.StructureCloseAndHead, _, range) =>
+        doubleClose += Token(TokenType.StructureClose, "}", range)
+        doubleClose += Token(TokenType.Command, "h", range)
       case x => doubleClose += x
     }
     val lineup = Queue(doubleClose.toList*)

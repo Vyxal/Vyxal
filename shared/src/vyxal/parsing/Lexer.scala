@@ -88,6 +88,8 @@ enum TokenType(val canonicalSBCS: Option[String] = None) extends Enum[TokenType]
   case StructureClose extends TokenType(Some("}"))
   case StructureDoubleClose extends TokenType(Some(")"))
   case StructureAllClose extends TokenType(Some("]"))
+  case StructureCloseAndFlatten extends TokenType(Some("⍟"))
+  case StructureCloseAndHead extends TokenType(Some("⎋"))
   case ListOpen extends TokenType(Some("#["))
   case ListClose extends TokenType(Some("#]"))
   case Command
@@ -146,9 +148,9 @@ enum StructureType(val open: String) derives CanEqual:
   case LambdaStack extends StructureType("ξ")
   case LambdaMapEager extends StructureType("⍾")
   case IfStatement extends StructureType("#{")
-  case DecisionStructure extends StructureType("Ḍ")
-  case GeneratorStructure extends StructureType("Ṇ")
+  case GeneratorStructure extends StructureType("⎄")
   case DefineStructure extends StructureType("#::")
+  case LambdaMapPermutations extends StructureType("⎊")
 
 object StructureType:
   val lambdaStructures: List[StructureType] = List(
@@ -157,6 +159,8 @@ object StructureType:
     StructureType.LambdaFilter,
     StructureType.LambdaReduce,
     StructureType.LambdaSort,
+    StructureType.LambdaStack,
+    StructureType.LambdaMapEager,
   )
 
 object Lexer:

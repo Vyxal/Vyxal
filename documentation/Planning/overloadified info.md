@@ -10,11 +10,11 @@ Syntax
 - [x] ʎ   NA  =   Reduction lambda opener
 - [x] ỿ   NA  =   Sorting lambda opener
 - [x] ξ   NA  =   Lambda with arity -1
-- [ ] ⍾   NA  =   Eager map opener
-- [ ] ⎋  NA  =   Close structure and get first item
-- [ ] ⍟ NA  = Close structure and flatten
-- [ ] ⎊ NA = map over permutations
-- [ ] ⎄ NA = generator structure
+- [x] ⍾   NA  =   Eager map opener
+- [x] ⎋  NA  =   Close structure and get first item
+- [x] ⍟ NA  = Close structure and flatten
+- [x] ⎊ NA = map over permutations
+- [x] ⎄ NA = generator structure
 
 
 

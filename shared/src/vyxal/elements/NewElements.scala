@@ -1490,6 +1490,14 @@ object NewElements:
         val function = pop().asInstanceOf[VFun]
         push(FuncHelpers.atSimpleLevels(function))
       },
+    "#|permutations-map" ->
+      direct(Monad) {
+        val function = pop().asInstanceOf[VFun]
+        val list = pop().ritr
+        push(ListHelpers.permutations(list).map { perm =>
+          Interpreter.executeFn(function, args = Seq(perm))
+        })
+      },
   )
 
   private def niladify(value: VAny): Element =
