@@ -3583,6 +3583,132 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    Element(
+      symbol = "①",
+      keywords = Seq("10"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "10",
+        args = Seq(),
+        description = "Push 10 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "②",
+      keywords = Seq("16"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "16",
+        args = Seq(),
+        description = "Push 16 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "③",
+      keywords = Seq("32"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "32",
+        args = Seq(),
+        description = "Push 32 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "④",
+      keywords = Seq("64"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "64",
+        args = Seq(),
+        description = "Push 64 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⑤",
+      keywords = Seq("100"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "100",
+        args = Seq(),
+        description = "Push 100 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⑥",
+      keywords = Seq("128"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "128",
+        args = Seq(),
+        description = "Push 128 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⑦",
+      keywords = Seq("256"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "256",
+        args = Seq(),
+        description = "Push 256 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⑧",
+      keywords = Seq("-1"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "-1",
+        args = Seq(),
+        description = "Push -1 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "⑨",
+      keywords = Seq("empty-string"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Empty string",
+        args = Seq(),
+        description = "Push \"\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Seq[Modifier] = List(

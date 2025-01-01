@@ -1331,6 +1331,15 @@ object NewElements:
             push(f(args*))
           case arg => throw UnimplementedOverloadException("#~", List(arg))
       },
+    "①" -> niladify(10),
+    "②" -> niladify(16),
+    "③" -> niladify(32),
+    "④" -> niladify(64),
+    "⑤" -> niladify(100),
+    "⑥" -> niladify(128),
+    "⑦" -> niladify(256),
+    "⑧" -> niladify(-1),
+    "⑨" -> niladify(""),
   )
 
   // Subject to being added as overloads onto things in elements
