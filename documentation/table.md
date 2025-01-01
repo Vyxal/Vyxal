@@ -199,6 +199,15 @@
 | `Ṭ` | `truthy-indexes` | 1 |   | **Truthy Indexes** (`lst`): Indexes of truthy elements in #1 |
 | `Ṫ` | `untruth` | 1 |   | **Untruth** (`lst`): Create a list of 1s at indices in #1, 0s elsewhere |
 | `Ŀ` | `vlen`</br>`lengths` | 1 |   | **Vectorised Lengths** (`lst`): Length of each element in #1 |
+| `①` | `10` | 0 |   | **10**: Push 10 to the stack |
+| `②` | `16` | 0 |   | **16**: Push 16 to the stack |
+| `③` | `32` | 0 |   | **32**: Push 32 to the stack |
+| `④` | `64` | 0 |   | **64**: Push 64 to the stack |
+| `⑤` | `100` | 0 |   | **100**: Push 100 to the stack |
+| `⑥` | `128` | 0 |   | **128**: Push 128 to the stack |
+| `⑦` | `256` | 0 |   | **256**: Push 256 to the stack |
+| `⑧` | `-1` | 0 |   | **-1**: Push -1 to the stack |
+| `⑨` | `empty-string` | 0 |   | **Empty string**: Push "" to the stack |
 
   ## Modifiers
 
