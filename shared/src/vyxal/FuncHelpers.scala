@@ -6,38 +6,53 @@ import vyxal.conversions.given
 object FuncHelpers:
 
   def atSimpleLevels(fn: VFun)(using ctx: Context): VAny =
-    def vecHelper(fn: VFun, iters: VAny*): VAny =
-      if iters.length == 1 then
-        val lst = ListHelpers.makeIterable(iters.head)
-        if lst.forall(_.isInstanceOf[VList]) then
-          lst.map(elem => vecHelper(fn, elem))
-        else if lst.forall(_.isInstanceOf[VVal]) then
-          Interpreter.executeFn(fn, args = Seq(lst))
-        else
-          lst.map { elem =>
-            if elem.isInstanceOf[VList] then vecHelper(fn, elem)
-            else Interpreter.executeFn(fn, args = Seq(elem))
-          }
+    def monadHelper(iter: Seq[VAny]): VAny =
+      if iter.forall(_.isInstanceOf[VVal]) then
+        Interpreter.executeFn(fn, args = Seq(iter))
       else
-        val zipped = iters.map(_.asInstanceOf[VList]).reduceLeft(_.vzip(_))
-        zipped.map {
-          case VList(items) => items.map {
-              case VList(lst) =>
-                if lst.forall(_.isInstanceOf[VVal]) then
-                  Interpreter.executeFn(fn, args = Seq(lst))
-                else VList(lst.map(elem => vecHelper(fn, elem)))
-              case x => Interpreter.executeFn(fn, args = Seq(x))
-            }
-          case _ => ???
-        }
-    end vecHelper
+        VList(iter.map {
+          case VList(lst) => monadHelper(lst)
+          case x => Interpreter.executeFn(fn, args = Seq(x))
+        })
+
+    def dyadHelper(left: VAny, right: VAny): VAny =
+      (left, right) match
+        case (VList(leftLst), VList(rightLst)) =>
+          if leftLst.forall(_.isInstanceOf[VVal]) &&
+            rightLst.forall(_.isInstanceOf[VVal])
+          then Interpreter.executeFn(fn, args = Seq(leftLst, rightLst))
+          else
+            leftLst
+              .zip(rightLst)
+              .map((leftElem, rightElem) => dyadHelper(leftElem, rightElem))
+        case (VList(leftLst), right) =>
+          if leftLst.forall(_.isInstanceOf[VVal]) then
+            Interpreter.executeFn(fn, args = Seq(leftLst, right))
+          else
+            VList(leftLst.map {
+              case VList(lst) => dyadHelper(lst, right)
+              case x => Interpreter.executeFn(fn, args = Seq(x, right))
+            })
+        case (left, VList(rightLst)) =>
+          if rightLst.forall(_.isInstanceOf[VVal]) then
+            Interpreter.executeFn(fn, args = Seq(left, rightLst))
+          else
+            VList(rightLst.map {
+              case VList(lst) => dyadHelper(left, lst)
+              case x => Interpreter.executeFn(fn, args = Seq(left, x))
+            })
+        case (left, right) => Interpreter.executeFn(fn, args = Seq(left, right))
+
     fn.arity match
-      case 0 => ListHelpers.makeIterable(ctx.pop()).vmap { _ =>
-          Interpreter.executeFn(fn)
-        }
-      case n => vecHelper(
-          fn,
-          ctx.pop(n).map(elem => ListHelpers.makeIterable(elem))*
+      case 1 =>
+        val iter = ListHelpers.makeIterable(ctx.pop())
+        monadHelper(iter)
+      case 2 =>
+        val right = ctx.pop()
+        val left = ctx.pop()
+        dyadHelper(left, right)
+      case _ => throw VyxalRuntimeException(
+          "Only functions with arity 1 or 2 can be vectorised at simple levels"
         )
   end atSimpleLevels
 
