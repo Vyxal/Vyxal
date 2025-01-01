@@ -170,4 +170,13 @@ class ModifierTests extends VyxalTests:
     )
   }
 
+  describe("Modifier ⩔") {
+    testMulti(
+      "#[#[#[1|2|3#]|#[#[4|5|#[6|7|8#]#]#]#]#] ⩔L" ->
+        vSeq(vSeq(3, vSeq(vSeq(1, 1, 3)))),
+      "#[#[#[1|2|3#]|#[4|5|6#]#]|#[#[7|8|9#]|#[10|11|12#]#]#] #[1#] ⩔i" ->
+        vSeq(vSeq(vSeq(2), vSeq(5)), vSeq(vSeq(8), vSeq(11))),
+    )
+  }
+
 end ModifierTests

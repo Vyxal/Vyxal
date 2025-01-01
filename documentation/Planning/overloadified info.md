@@ -47,7 +47,7 @@ Modifiers
 - [x] \  F<2>    = Scan by
 - [x]    F<1>    = Reject by
 - [x] ⊐ NA       = Lambda to Newline
-- [ ] ⩔ F<any>   = Apply F at simple lists (one level above primitives)
+- [x] ⩔ F<1/2>   = Apply F at simple lists (one level above primitives)
 - [x] Ẅ F<2+>    =   Zip with. Reduce each item in zip(top, under, ...[kicker, ...]) by F
 
 

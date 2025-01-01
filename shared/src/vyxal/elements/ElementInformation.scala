@@ -3810,5 +3810,17 @@ object ElementInformation:
         example = "3 4 5 ~+ -> 3 4 9",
       ),
     ),
+    Modifier(
+      symbol = "⩔",
+      keywords = Seq("at-simple-levels:", "@simple:"),
+      numberOfElements = 1,
+      ModifierOverload(
+        name = "At Simple Levels",
+        args = Seq("mon"),
+        description = "Apply #1 at the simple levels of the top of the stack",
+        example =
+          "#[#[#[1|2|3#]|#[#[4|5|#[6|7|8#]#]#]#]#] ⩔L -> [[3, [[1, 1, 3]]]]",
+      ),
+    ),
   )
 end ElementInformation

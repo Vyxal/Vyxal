@@ -16,32 +16,43 @@ object FuncHelpers:
         })
 
     def dyadHelper(left: VAny, right: VAny): VAny =
+      println(s"left: $left, right: $right")
       (left, right) match
         case (VList(leftLst), VList(rightLst)) =>
           if leftLst.forall(_.isInstanceOf[VVal]) &&
             rightLst.forall(_.isInstanceOf[VVal])
-          then Interpreter.executeFn(fn, args = Seq(leftLst, rightLst))
+          then Interpreter.executeFn(fn, args = Seq(rightLst, leftLst))
+          else if leftLst.forall(_.isInstanceOf[VVal]) then
+            VList(rightLst.map { rightElem =>
+              dyadHelper(leftLst, rightElem)
+            })
+          else if rightLst.forall(_.isInstanceOf[VVal]) then
+            VList(leftLst.map { leftElem =>
+              dyadHelper(leftElem, rightLst)
+            })
           else
             leftLst
               .zip(rightLst)
               .map((leftElem, rightElem) => dyadHelper(leftElem, rightElem))
         case (VList(leftLst), right) =>
           if leftLst.forall(_.isInstanceOf[VVal]) then
-            Interpreter.executeFn(fn, args = Seq(leftLst, right))
+            Interpreter.executeFn(fn, args = Seq(right, leftLst))
           else
             VList(leftLst.map {
               case VList(lst) => dyadHelper(lst, right)
-              case x => Interpreter.executeFn(fn, args = Seq(x, right))
+              case x => Interpreter.executeFn(fn, args = Seq(right, x))
             })
         case (left, VList(rightLst)) =>
           if rightLst.forall(_.isInstanceOf[VVal]) then
-            Interpreter.executeFn(fn, args = Seq(left, rightLst))
+            Interpreter.executeFn(fn, args = Seq(rightLst, left))
           else
             VList(rightLst.map {
               case VList(lst) => dyadHelper(left, lst)
-              case x => Interpreter.executeFn(fn, args = Seq(left, x))
+              case x => Interpreter.executeFn(fn, args = Seq(x, left))
             })
-        case (left, right) => Interpreter.executeFn(fn, args = Seq(left, right))
+        case (left, right) => Interpreter.executeFn(fn, args = Seq(right, left))
+      end match
+    end dyadHelper
 
     fn.arity match
       case 1 =>
