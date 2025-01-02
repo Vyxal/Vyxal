@@ -166,7 +166,7 @@
 | `↯` | `inclusive-range`</br>`sort-by`</br>`regex-split-keep-delimiters` | 2 | vec  | **Inclusive Range** (`num,num`): Inclusive range from #1 to #2</br>**Sort By** (`nsl,fun`): Sort list #1 (range if num) by function #2</br>**Sort By** (`fun,nsl`): Sort list #2 (range if num) by function #1</br>**Regex Split Keep Delimiters** (`str,str`): Split #1 by regex #2, keeping the delimiters |
 | `⊠` | `cartesian-power`</br>`regex-index` | 2 |   | **Cartesian Power** (`any,num`): Cartesian power of #1 to the power of #2</br>**Cartesian Power** (`num,any`): Cartesian power of #2 to the power of #1</br>**Regex Index** (`str,str`): Return first index of pattern match #2 in target string #1, -1 if not found</br>**Self-Cartesian Power** (`itr,any`): Push #1, and then push the cartesian product of #2 with itself |
 | `⚅` | `random-choice`</br>`random-element`</br>`randint`</br>`random` | 1 |   | **Random Choice** (`itr`): Random element of #1</br>**Random Integer** (`num`): Random integer from 0 to #1 |
-| `æ` | `bifuricate`</br>`bifur`</br>`bif`</br>`furry`</br>`uwu`</br>`dup-rev`</br>`dup-reverse`</br>`owo` | 1 |   | **Bifurcate** (`any`): Duplicate #1 and reverse the duplicate |
+| `æ` | `bifuricate`</br>`bifur`</br>`bif`</br>`furry`</br>`uwu`</br>`dup-rev`</br>`dup-reverse`</br>`owo`</br>`peek-function`</br>`peek-call`</br>`@@` | 1 |   | **Bifurcate** (`any`): Duplicate #1 and reverse the duplicate</br>**Call Function Without Popping** (`fun`): Call #1 without popping its arguments |
 | `␣` | `space` | 0 |   | **Space**: Push a space to the stack |
 | `¶` | `newline` | 0 |   | **Newline**: Push a newline to the stack |
 | `★` | `asterisk` | 0 |   | **Asterisk**: Push an asterisk to the stack |
@@ -199,6 +199,7 @@
 | `Ṭ` | `truthy-indexes` | 1 |   | **Truthy Indexes** (`lst`): Indexes of truthy elements in #1 |
 | `Ṫ` | `untruth` | 1 |   | **Untruth** (`lst`): Create a list of 1s at indices in #1, 0s elsewhere |
 | `Ŀ` | `vlen`</br>`lengths` | 1 |   | **Vectorised Lengths** (`lst`): Length of each element in #1 |
+| `¤` | `stringify`</br>`to-str`</br>`str` | 1 |   | **Stringify** (`any`): Stringify #1 |
 | `①` | `10` | 0 |   | **10**: Push 10 to the stack |
 | `②` | `16` | 0 |   | **16**: Push 16 to the stack |
 | `③` | `32` | 0 |   | **32**: Push 32 to the stack |
