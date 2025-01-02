@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.conversions.{*, given}
+import vyxal.elements.NewModifiers
 import vyxal.parsing.{Lexer, Parser}
 
 import org.scalatest.tagobjects.Slow
