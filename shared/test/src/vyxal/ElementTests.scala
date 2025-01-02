@@ -279,9 +279,9 @@ class ElementTests extends VyxalTests:
     )
   }
 
-  describe("Element Ṣ") {
+  describe("Element ◲") {
     testMulti(
-      "#[1|1#]Ṇ+}Ṣ10Θ" ->
+      "#[1|1#]⎄+}◲10⊖" ->
         vSeq(
           vSeq(1),
           vSeq(1, 1),
@@ -294,7 +294,7 @@ class ElementTests extends VyxalTests:
           vSeq(1, 1, 2, 3, 5),
           vSeq(2, 3),
         ),
-      "#[1#]Ṇ1+}Ṣ10Θ" ->
+      "#[1#]⎄1+}◲10⊖" ->
         vSeq(
           vSeq(1),
           vSeq(1, 2),
