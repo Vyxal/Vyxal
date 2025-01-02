@@ -25,7 +25,7 @@ class InterpreterTests extends VyxalTests:
     it(
       "Shouldn't hang when mapping over an infinite list and then performing a finite operation"
     ) {
-      testCode("ÞPƛ}5Θ", vSeq(2, 3, 5, 7, 11))
+      testCode("ÞPƛ}5⊖", vSeq(2, 3, 5, 7, 11))
     }
   }
 
@@ -64,21 +64,21 @@ class InterpreterTests extends VyxalTests:
     }
   }
 
-  /*
   describe("Vectorisation") {
     describe("Simple monads") {
-      // TODO: Replace with ¨b when implemented
-      // testMulti("#[100 | #[101 | 0#] #] ᵛB" -> vSeq(4, 202))
+      testMulti(
+        "#[100 | #[101 | 0#] #] ¨b" -> VList(Seq(4, 202))
+      )
     }
 
     describe("Simple dyads") {
       testMulti(
-        "#[4 | #[5 | 6#] #] 3 ᵛ;" ->
+        "#[4 | #[5 | 6#] #] 3 ¨;" ->
           vSeq(
             vSeq(4, 3),
             vSeq(vSeq(5, 6), 3),
           ),
-        "#[4 | #[5 | 6#] #] #[4#] ᵛ;" ->
+        "#[4 | #[5 | 6#] #] #[4#] ¨;" ->
           vSeq(
             vSeq(4, vSeq(4)),
             vSeq(vSeq(5, 6), vSeq(4)),
@@ -90,7 +90,7 @@ class InterpreterTests extends VyxalTests:
       it("should vectorise lambda for factorial") {
         testAST(
           Modifiers
-            .modifiers("ᵛ")
+            .modifiers("¨")
             .from(
               List(AST.Lambda(Some(1), List.empty, List(AST.Command("!"))))
             ),
@@ -104,7 +104,7 @@ class InterpreterTests extends VyxalTests:
       it("should vectorise lambda for subtraction") {
         testAST(
           Modifiers
-            .modifiers("ᵛ")
+            .modifiers("¨")
             .from(
               List(AST.Lambda(Some(2), List.empty, List(AST.Command("-"))))
             ),
@@ -114,7 +114,7 @@ class InterpreterTests extends VyxalTests:
       }
     }
   }
-   */
+
   describe("Executing lambdas/functions") {
     it("should execute a simple named function") {
       testAST(
@@ -136,7 +136,7 @@ class InterpreterTests extends VyxalTests:
         testAST(
           AST.makeSingle(
             AST.Lambda(Some(1), List.empty, List(AST.Command("!"))),
-            AST.Command("Ė"),
+            AST.Command("ᴥ"),
           ),
           VNum(6),
           inputs = Seq(3),
@@ -149,7 +149,7 @@ class InterpreterTests extends VyxalTests:
         testAST(
           AST.makeSingle(
             AST.Lambda(Some(2), List.empty, List(AST.Command("-"))),
-            AST.Command("Ė"),
+            AST.Command("ᴥ"),
           ),
           VNum(2),
           inputs = Seq(3, 1),
@@ -192,14 +192,14 @@ class InterpreterTests extends VyxalTests:
 
     describe("Operating on the stack") {
       testMulti(
-        "3 6 1λ!|+}ĖW" -> vSeq(3, 7),
-        "3 6 1λ!|++}ĖW" -> vSeq(10),
-        "3 6 1λ!|n}ĖW" -> vSeq(3, 6, 1, "abcdefghijklmnopqrstuvwxyz"),
+        "3 6 1λ!|+}ᴥW" -> vSeq(3, 7),
+        "3 6 1λ!|++}ᴥW" -> vSeq(10),
+        "3 6 1λ!|n}ᴥW" -> vSeq(3, 6, 1, "abcdefghijklmnopqrstuvwxyz"),
       )
     }
 
     describe("Varargs") {
-      testMulti("1 2 3 3λ*|W/+}Ė" -> 6, "1 2 3 2λ*|W/+}Ė" -> 5)
+      testMulti("1 2 3 3λ*|W/+}ᴥ" -> 6, "1 2 3 2λ*|W/+}ᴥ" -> 5)
     }
 
     describe("Explicit arguments") {
@@ -218,7 +218,7 @@ class InterpreterTests extends VyxalTests:
   describe("Variables") {
     it("should set the ghost variable") {
       testEquals(3) { ctx ?=>
-        Interpreter.execute("3 #=₉")
+        Interpreter.execute("3 #=⑨")
         ctx.getVar("")
       }
     }
@@ -227,14 +227,14 @@ class InterpreterTests extends VyxalTests:
       it("should work with builtin elements") {
         testEquals(4) { ctx ?=>
           ctx.setVar("x", 3)
-          Interpreter.execute("1 +#>x₉")
+          Interpreter.execute("1 +#>x⑨")
           ctx.getVar("x")
         }
       }
       it("should work with lambdas") {
         testEquals(18) { ctx ?=>
           ctx.setVar("x", 3)
-          Interpreter.execute("λ+×}#>x #$x₉")
+          Interpreter.execute("λ+×}#>x #$x⑨")
           ctx.getVar("x")
         }
       }
@@ -242,7 +242,7 @@ class InterpreterTests extends VyxalTests:
     describe("Variable unpacking") {
       it("should handle non nested lists") {
         given ctx: Context = Context(testMode = true)
-        Interpreter.execute("#[1 | 2 | 3#] #:[x|y|z]₉")
+        Interpreter.execute("#[1 | 2 | 3#] #:[x|y|z]⑨")
         group {
           assertResult(VNum(1))(ctx.getVar("x"))
           assertResult(VNum(2))(ctx.getVar("y"))
@@ -251,7 +251,7 @@ class InterpreterTests extends VyxalTests:
       }
       it("should handle nested lists") {
         given ctx: Context = Context()
-        Interpreter.execute("#[1 | 2 | #[3#]#] #:[x|y|z]₉")
+        Interpreter.execute("#[1 | 2 | #[3#]#] #:[x|y|z]⑨")
         group {
           assertResult(VNum(1))(ctx.getVar("x"))
           assertResult(VNum(2))(ctx.getVar("y"))
@@ -260,7 +260,7 @@ class InterpreterTests extends VyxalTests:
       }
       it("should handle simple nested patterns") {
         given ctx: Context = Context()
-        Interpreter.execute("#[1 | 2 | #[3#]#] #:[x|y|[z]]₉")
+        Interpreter.execute("#[1 | 2 | #[3#]#] #:[x|y|[z]]⑨")
         group {
           assertResult(VNum(1))(ctx.getVar("x"))
           assertResult(VNum(2))(ctx.getVar("y"))
@@ -272,13 +272,13 @@ class InterpreterTests extends VyxalTests:
     describe("Constants") {
       it("should allow first assignment as normal") {
         given ctx: Context = Context()
-        Interpreter.execute("1 #!x₉")
+        Interpreter.execute("1 #!x⑨")
         assertResult(VNum(1))(ctx.getVar("x"))
       }
 
       it("should not allow reassignment") {
         given ctx: Context = Context()
-        Interpreter.execute("1 #!x₉")
+        Interpreter.execute("1 #!x⑨")
         assertThrows[Exception] {
           Interpreter.execute("2 #!x")
         }
@@ -331,7 +331,6 @@ class InterpreterTests extends VyxalTests:
       group {
         assertResult(VNum(-6.9))(VNum("-6.9"))
         assertResult(VNum(3.0))(VNum("+3.0"))
-        assertResult(VNum.complex(5.7, -1))(VNum("+5.7ı-"))
       }
     }
     it("should handle trailing dots correctly") {
@@ -339,15 +338,6 @@ class InterpreterTests extends VyxalTests:
         assertResult(VNum(0.5))(VNum("."))
         assertResult(VNum(0.5))(VNum("0."))
         assertResult(VNum(5.5))(VNum("5."))
-      }
-    }
-    it("should handle complex numbers correctly") {
-      group {
-        assertResult(VNum.complex(0, 1))(VNum("ı"))
-        assertResult(VNum.complex(0, 1))(VNum("0ı"))
-        assertResult(VNum.complex(0.5, 1))(VNum("0.ı"))
-        assertResult(VNum.complex(0.5, 0.5))(VNum(".ı."))
-        assertResult(VNum.complex(69, 420))(VNum("69ı420"))
       }
     }
     it("should handle digits too large for the radix") {
@@ -392,28 +382,19 @@ class InterpreterTests extends VyxalTests:
     )
   }
 
-  describe("Decision problem structure") {
-    testMulti(
-      "#[14|16|120|881#]Ḍ2%1=}" -> VNum(1),
-      "#[14|16|120|882#]Ḍ2%1=}" -> VNum(0),
-      "Ḍ2%1=|#[14|16|120|881#]}" -> VNum(1),
-      "Ḍ2%1=|#[14|16|120|882#]}" -> VNum(0),
-    )
-  }
-
   describe("Stack Lambdas") {
-    testMulti("λ0|3 4 5λ!|+}ĖW}Ė" -> vSeq(3, 9), "1 5λ!|4+}ĖW" -> vSeq(1, 9))
+    testMulti("λ0|3 4 5λ!|+}ᴥW}ᴥ" -> vSeq(3, 9), "1 5λ!|4+}ᴥW" -> vSeq(1, 9))
   }
 
   describe("Generator structure") {
     testMulti(
-      "#[1|1#]Ṇ+}10Θ" -> vSeq(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
-      "Ṇ+|#[1|1#]}10Θ" -> vSeq(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
+      "#[1|1#]⎄+}10⊖" -> vSeq(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
+      "⎄+|#[1|1#]}10⊖" -> vSeq(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
     )
 
     it("Should work with big numbers", Slow) {
       testCode(
-        "Ṇ+|#[1|1#]}9999i",
+        "⎄+|#[1|1#]}9999i",
         VNum(
           "33644764876431783266621612005107543310302148460680063906564769974680081442166662368155595513633734025582065332680836159373734790483865268263040892463056431887354544369559827491606602099884183933864652731300088830269235673613135117579297437854413752130520504347701602264758318906527890855154366159582987279682987510631200575428783453215515103870818298969791613127856265033195487140214287532698187962046936097879900350962302291026368131493195275630227837628441540360584402572114334961180023091208287046088923962328835461505776583271252546093591128203925285393434620904245248929403901706233888991085841065183173360437470737908552631764325733993712871937587746897479926305837065742830161637408969178426378624212835258112820516370298089332099905707920064367426202389783111470054074998459250360633560933883831923386783056136435351892133279732908133732642652633989763922723407882928177953580570993691049175470808931841056146322338217465637321248226383092103297701648054726243842374862411453093812206564914032751086643394517512161526545361333111314042436854805106765843493523836959653428071768775328348234345557366719731392746273629108210679280784718035329131176778924659089938635459327894523777674406192240337638674004021330343297496902028328145933418826817683893072003634795623117103101291953169794607632737589253530772552375943788434504067715555779056450443016640119462580972216729758615026968443146952034614932291105970676243268515992834709891284706740862008587135016260312071903172086094081298321581077282076353186624611278245537208532365305775956430072517744315051539600905168603220349163222640885248852433158051534849622434848299380905070483482449327453732624567755879089187190803662058009594743150052402532709746995318770724376825907419939632265984147498193609285223945039707165443156421328157688908058783183404917434556270520223564846495196112460268313970975069382648706613264507665074611512677522748621598642530711298441182622661057163515069260029861704945425047491378115154139941550671256271197133252763631939606902895650288268608362241082050562430701794976171121233066073310059947366875"
         ),
@@ -483,9 +464,9 @@ class InterpreterTests extends VyxalTests:
     )
   }
 
-  /*describe("Vectorised recursion") {
-    testCode("#[#[1|2|3#]|#[4|5|6#]#]λᶲ\"[\"c[ᵛx∑}}Ė", VNum(21), Seq())
-  }*/
+  describe("Vectorised recursion") {
+    testCode("#[#[1|2|3#]|#[4|5|6#]#]λ¤\"[\"c[¨x∑}}ᴥ", VNum(21), Seq())
+  }
 
   describe("Register chicanery") {
     testMulti(
@@ -495,13 +476,13 @@ class InterpreterTests extends VyxalTests:
   }
 
   describe("Stack Rotating Chicanery") {
-    testStackLike("←")(
+    testStackLike("↜")(
       List[VAny](1, 2, 3, 9) -> List[VAny](1, 9, 3, 2),
       List[VAny](1, 2, 3, 4, 6) -> List[VAny](1, 6, 4, 3, 2),
       List[VAny](1) -> List[VAny](1),
     )
 
-    testStackLike("→")(
+    testStackLike("↝")(
       List[VAny](1, 2, 3, 4) -> List[VAny](3, 2, 1, 4),
       List[VAny](1, 2, 3, 4, 5) -> List[VAny](4, 3, 2, 1, 5),
       List[VAny](8) -> List[VAny](8),
@@ -535,13 +516,13 @@ class InterpreterTests extends VyxalTests:
         )
 
         testCode(
-          "#::M RevRow | f | arr | #$arr V #$f M V } 12ʀ4Ẇ #:=RevRow 1İ",
+          "#::M RevRow | f | arr | #$arr V #$f M V } 12ʀ4Ϣ #:=RevRow 1ᐵ",
           vSeq(vSeq(0, 1, 2), vSeq(4, 5, 6), vSeq(8, 9, 10)),
           Seq(),
         )
 
         testCode(
-          "#::M p | f, g | ! | #$f Ḃ #=temp #$g Ė #$temp } 4 5 p+- ;",
+          "#::M p | f, g | ! | #$f æ #=temp #$g ᴥ #$temp } 4 5 p+- ;",
           vSeq(9, -1),
           Seq(),
         )

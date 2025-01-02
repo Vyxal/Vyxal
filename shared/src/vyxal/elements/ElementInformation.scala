@@ -3052,6 +3052,9 @@ object ElementInformation:
         "dup-rev",
         "dup-reverse",
         "owo",
+        "peek-function",
+        "peek-call",
+        "@@",
       ),
       arity = 1,
       Options(
@@ -3061,6 +3064,12 @@ object ElementInformation:
         name = "Bifurcate",
         args = Seq("any"),
         description = "Duplicate #1 and reverse the duplicate",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Call Function Without Popping",
+        args = Seq("fun"),
+        description = "Call #1 without popping its arguments",
         typeSwitchable = false,
       ),
     ),
@@ -3580,6 +3589,20 @@ object ElementInformation:
         name = "Vectorised Lengths",
         args = Seq("lst"),
         description = "Length of each element in #1",
+        typeSwitchable = false,
+      ),
+    ),
+    Element(
+      symbol = "¤",
+      keywords = Seq("stringify", "to-str", "str"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Stringify",
+        args = Seq("any"),
+        description = "Stringify #1",
         typeSwitchable = false,
       ),
     ),

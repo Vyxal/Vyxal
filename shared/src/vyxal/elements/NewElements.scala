@@ -1108,7 +1108,14 @@ object NewElements:
     },
     "æ" ->
       direct(Monad) {
-        push(ListHelpers.reverse(peek()))
+        pop() match
+          case function: VFun =>
+            push(Interpreter.executeFn(function, popArgs = false))
+            if function.arity == -1 then
+              pop() // Handle the extra value pushed by lambdas that operate on the stack
+          case value =>
+            push(value)
+            push(ListHelpers.reverse(value))
       },
     "␣" -> niladify(" "),
     "¶" -> niladify("\n"),
@@ -1323,6 +1330,7 @@ object NewElements:
         result
     },
     "Ŀ" -> fullToImpl(Monad, x => x.itr.map(_.itr.bigLength)),
+    "¤" -> fullToImpl(Monad, x => x.toString),
     "#~" ->
       direct(Monad) {
         pop() match

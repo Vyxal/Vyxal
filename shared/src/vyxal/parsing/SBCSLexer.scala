@@ -52,7 +52,7 @@ class SBCSLexer extends LexerCommon:
   private val TRIADIC_MODIFIERS = modifiersOfArity(3)
   private val TETRADIC_MODIFIERS = modifiersOfArity(4)
   private val SPECIAL_MODIFIERS = "⊐⟆"
-  private val CONTEXT_INDEX = "¤"
+  private val CONTEXT_INDEX = "#¤"
 
   private var unpackDepth = 0
   var sugarUsed = false
@@ -146,7 +146,7 @@ class SBCSLexer extends LexerCommon:
       else if headIn(SPECIAL_MODIFIERS) then
         quickToken(TokenType.SpecialModifier, s"${programStack.head}")
       else if headEqual(BRANCH) then quickToken(TokenType.Branch, BRANCH)
-      else if headEqual(CONTEXT_INDEX) then contextIndexToken
+      else if headLookaheadEqual(CONTEXT_INDEX) then contextIndexToken
       else if headLookaheadEqual(VARIABLE_GET_SIGIL) then
         pop(2)
         getVariableToken
@@ -307,7 +307,7 @@ class SBCSLexer extends LexerCommon:
 
   private def contextIndexToken: Unit =
     val rangeStart = index
-    pop()
+    pop(2)
     val value = simpleNumber()
     tokens +=
       Token(
