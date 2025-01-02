@@ -500,7 +500,7 @@ object NewElements:
         push(Seq(pop())) // Tacit!
       },
     "x" ->
-      direct(-1) {
+      direct(1) {
         FuncHelpers.recursion()
       },
     addPart("y", Triad, false) {
