@@ -89,7 +89,7 @@ class InterpreterTests extends VyxalTests:
     describe("Monadic lambdas") {
       it("should vectorise lambda for factorial") {
         testAST(
-          Modifiers
+          NewModifiers
             .modifiers("¨")
             .from(
               List(AST.Lambda(Some(1), List.empty, List(AST.Command("!"))))
@@ -103,7 +103,7 @@ class InterpreterTests extends VyxalTests:
     describe("Dyadic lambdas") {
       it("should vectorise lambda for subtraction") {
         testAST(
-          Modifiers
+          NewModifiers
             .modifiers("¨")
             .from(
               List(AST.Lambda(Some(2), List.empty, List(AST.Command("-"))))
