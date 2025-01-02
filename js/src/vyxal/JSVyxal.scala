@@ -1,5 +1,8 @@
 package vyxal
 
+import vyxal.elements.Element
+import vyxal.elements.ElementInformation
+import vyxal.gen.DocsUtils
 import vyxal.parsing.{Codepage, Lexer, Token}
 
 import scala.scalajs.js
@@ -93,31 +96,32 @@ object JSVyxal:
 
   @JSExport
   def getElements() =
-    Elements.elements.values.map {
-      case Element(
-            symbol,
-            name,
-            keywords,
-            _,
-            vectorises,
-            overloads,
-            _,
-          ) => js.Dynamic.literal(
+    ElementInformation.elements.values.map {
+      case Element(symbol, keywords, arity, options, overloads*) =>
+        js.Dynamic.literal(
           "symbol" -> symbol,
-          "name" -> name,
+          "name" -> overloads.map(_.name).mkString(" / "),
           "keywords" -> keywords.toJSArray,
-          "vectorises" -> vectorises,
-          "overloads" -> overloads.toJSArray,
+          "vectorises" -> options.vectorises,
+          "overloads" ->
+            overloads
+              .map(DocsUtils.overloadToString)
+              .foldLeft(Seq.empty[String]) {
+                case (acc, s: String) => acc :+ s
+                case (acc, s: Seq[String]) => acc ++ s
+              }
+              .toJSArray,
         )
     }.toJSArray
 
   @JSExport
   def getModifiers() =
-    Modifiers.modifiers.map {
+    ElementInformation.modifiers.map {
       case (symbol, info) => js.Dynamic.literal(
           "symbol" -> symbol,
-          "name" -> info.name,
-          "description" -> info.description,
+          "name" -> info.overloads.map(_.name).mkString(" / "),
+          "description" ->
+            info.overloads.map(DocsUtils.overloadToString).toJSArray,
           "keywords" -> info.keywords.toJSArray,
         )
     }.toJSArray
