@@ -118,7 +118,7 @@ object Tetradic
         )
 end Tetradic
 
-object NewModifiers:
+object Modifiers:
   case class Modifier(arity: Int, from: DirectFn)
 
   val modifiers: Map[String, Modifier] = Map(
@@ -242,4 +242,4 @@ object NewModifiers:
   def fullToImpl[F](arity: ModifierHelpers[?, F], impl: F): Modifier =
     val numericArity = arity.arity
     Modifier(numericArity, arity.toDirectFn(impl))
-end NewModifiers
+end Modifiers

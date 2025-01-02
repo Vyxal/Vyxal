@@ -1,7 +1,7 @@
 package vyxal
 
 import vyxal.conversions.{*, given}
-import vyxal.elements.NewModifiers
+import vyxal.elements.Modifiers
 import vyxal.parsing.{Lexer, Parser}
 
 import org.scalatest.tagobjects.Slow
@@ -90,7 +90,7 @@ class InterpreterTests extends VyxalTests:
     describe("Monadic lambdas") {
       it("should vectorise lambda for factorial") {
         testAST(
-          NewModifiers
+          Modifiers
             .modifiers("¨")
             .from(
               List(AST.Lambda(Some(1), List.empty, List(AST.Command("!"))))
@@ -104,7 +104,7 @@ class InterpreterTests extends VyxalTests:
     describe("Dyadic lambdas") {
       it("should vectorise lambda for subtraction") {
         testAST(
-          NewModifiers
+          Modifiers
             .modifiers("¨")
             .from(
               List(AST.Lambda(Some(2), List.empty, List(AST.Command("-"))))
@@ -208,7 +208,7 @@ class InterpreterTests extends VyxalTests:
         given Context = VyxalTests.testContext()
         assertResult(VNum(3))(
           Interpreter.executeFn(
-            VFun.fromElement(Elements.elements("+")),
+            VFun.fromElement("+"),
             args = Seq(1, 2),
           )
         )

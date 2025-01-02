@@ -57,7 +57,7 @@ object DebugImpls:
         val arg = ctx.pop()
         if impl.isDefinedAt(arg) then impl(arg)
         else
-          Elements.elements(symbol).impl()
+          elements.Elements.elements(symbol).impl()
           None
     symbol -> processed
 
@@ -69,7 +69,7 @@ object DebugImpls:
         val args = (ctx.pop(), ctx.pop())
         if impl.isDefinedAt(args) then impl(args)
         else
-          Elements.elements(symbol).impl()
+          elements.Elements.elements(symbol).impl()
           None
     symbol -> processed
 
@@ -84,7 +84,7 @@ object DebugImpls:
         val args = (ctx.pop(), ctx.pop(), ctx.pop())
         if impl.isDefinedAt(args) then impl(args)
         else
-          Elements.elements(symbol).impl()
+          elements.Elements.elements(symbol).impl()
           None
     symbol -> processed
 
@@ -99,7 +99,7 @@ object DebugImpls:
         val args = (ctx.pop(), ctx.pop(), ctx.pop(), ctx.pop())
         if impl.isDefinedAt(args) then impl(args)
         else
-          Elements.elements(symbol).impl()
+          elements.Elements.elements(symbol).impl()
           None
     symbol -> processed
 end DebugImpls

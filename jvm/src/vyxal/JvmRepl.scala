@@ -1,5 +1,6 @@
 package vyxal
 
+import vyxal.elements.ElementInformation
 import vyxal.gen.GenerateNanorc
 
 import java.util.logging.Level
@@ -65,7 +66,7 @@ object JvmRepl extends Repl:
     if ctx.settings.literate then
       lineReaderBuilder.completer(
         StringsCompleter(
-          Elements.elements.values.flatMap(_.keywords).toArray*
+          ElementInformation.elements.values.flatMap(_.keywords).toArray*
         )
       )
 

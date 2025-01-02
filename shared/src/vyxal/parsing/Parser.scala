@@ -3,8 +3,9 @@ package vyxal.parsing
 import scala.language.strictEquality
 
 import vyxal.*
-import vyxal.elements.NewElements
-import vyxal.elements.NewModifiers
+import vyxal.elements.ElementInformation
+import vyxal.elements.Elements
+import vyxal.elements.Modifiers
 import vyxal.NumberHelpers.range
 
 import scala.collection.mutable
@@ -353,17 +354,11 @@ private class Parser:
               // Finally, push the wrapped lambda to the stack
 
               finalAsts.push(AST.makeSingle(wrapped, AST.Command("Ė")))
-            else if NewModifiers.modifiers.contains(name) then
-              val modifier = NewModifiers.modifiers(name)
+            else if Modifiers.modifiers.contains(name) then
+              val modifier = Modifiers.modifiers(name)
               val modifierArgs = List.fill(arity)(finalAsts.pop())
               finalAsts.push(modifier.from(modifierArgs))
-            else
-              val modifier = Modifiers.modifiers.getOrElse(
-                name,
-                throw UndefinedCustomModifierException(name),
-              )
-              val modifierArgs = List.fill(arity)(finalAsts.pop())
-              finalAsts.push(modifier.from(modifierArgs))
+            else throw UndefinedCustomModifierException(name)
             end if
         case AST.SpecialModifier(name, _) => (name: @unchecked) match
             case "⊐" =>
@@ -415,17 +410,19 @@ private class Parser:
       if checkCustoms && cmdTok.value.startsWith("##")
       then cmdTok.value.stripPrefix("##")
       else if !Elements.elements.contains(cmdTok.value) then
-        Elements.symbolFor(cmdTok.value).getOrElse(cmdTok.value)
+        ElementInformation
+          .symbolForElement(cmdTok.value)
+          .getOrElse(cmdTok.value)
       else cmdTok.value
 
-    val arity = NewElements.elements.get(cmd) match
+    val arity = Elements.elements.get(cmd) match
       case None =>
         if checkCustoms then
           if typedCustoms.contains(cmd) then typedCustoms(cmd)._2
           else if Elements.elements.contains(cmd) then
-            Elements.elements(cmd).arity.getOrElse(0)
-          else if NewElements.internalUseElements.contains(cmd) then
-            NewElements.internalUseElements(cmd).arity
+            ElementInformation.elements(cmd).arity
+          else if Elements.internalUseElements.contains(cmd) then
+            Elements.internalUseElements(cmd).arity
           else if !customs.contains(cmd) then
             if !cmd.startsWith("k") then
               throw NoSuchElementException(cmdTok.value)

@@ -1,7 +1,6 @@
 package vyxal.parsing
 
-import vyxal.elements.NewModifiers
-import vyxal.SugarMap
+import vyxal.elements.Modifiers
 import vyxal.VyxalException
 
 class SBCSLexer extends LexerCommon:
@@ -14,7 +13,7 @@ class SBCSLexer extends LexerCommon:
   private val TWO_CHAR_NUMBER = "Ꮠ"
   private val DIGRAPH_CHARS = "∆øÞk"
   private val HASH_DIGRAPH_REGEX =
-    """#[^\[\]$!=#>@{:.,^]""" // Matches # followed by any character that doesn't start a trigraph
+    """#[^\[\]$!=#>@{:]""" // Matches # followed by any character that doesn't start a trigraph
   private val COMMENT = "##"
   private val LIST_OPEN = "#["
   private val LIST_CLOSE = "#]"
@@ -42,7 +41,7 @@ class SBCSLexer extends LexerCommon:
   private val ORIGINAL_COMMAND_SIGIL = "#:~"
 
   private val modifiersOfArity = (arity: Int) =>
-    NewModifiers.modifiers
+    Modifiers.modifiers
       .filter((_, modifierObj) => modifierObj.arity == arity)
       .map((symbol, _) => symbol)
       .mkString
@@ -95,7 +94,6 @@ class SBCSLexer extends LexerCommon:
       else if headLookaheadEqual(COMMENT) then
         pop(2)
         while safeCheck(c => c != "\n" && c != "\r") do pop()
-      else if headLookaheadMatch(SUGAR_TRIGRAPH_REGEX) then sugarTrigraph
       else if headLookaheadEqual(LIST_OPEN) then
         quickToken(TokenType.ListOpen, LIST_OPEN)
       else if headLookaheadEqual("⟨") then
@@ -284,11 +282,7 @@ class SBCSLexer extends LexerCommon:
   /** Digraph = [∆øÞ] . | # [^[]$!=#>@{:] */
   private def digraphToken: Unit =
     val rangeStart = index
-
     val digraphType = pop(1)
-
-    if headEqual("#") then sugarTrigraph
-
     val digraphChar = pop()
 
     tokens +=
@@ -297,13 +291,6 @@ class SBCSLexer extends LexerCommon:
         s"$digraphType$digraphChar",
         Range(rangeStart, index),
       )
-
-  /** Convert a sugar trigraph to its normal form */
-  private def sugarTrigraph: Unit =
-    val trigraph = pop(3)
-    val normal = SugarMap.trigraphs.getOrElse(trigraph, trigraph)
-    programStack.pushAll(normal.reverse.map(_.toString))
-    sugarUsed = true
 
   private def contextIndexToken: Unit =
     val rangeStart = index

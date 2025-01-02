@@ -24,7 +24,7 @@ extension (a: VAny)(using Context)
 extension (a: String)(using Context) def toNum: VNum = VNum(a)
 extension (s: Seq[VAny]) def vlst = VList(s)
 
-object NewElements:
+object Elements:
   case class Element(
       arity: Int,
       impl: DirectFn,
@@ -1549,4 +1549,4 @@ object NewElements:
   private def direct(arity: Int)(impl: Context ?=> Unit): Element =
     Element(arity, () => impl)
 
-end NewElements
+end Elements

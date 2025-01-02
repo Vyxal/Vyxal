@@ -3,6 +3,8 @@ package vyxal
 import scala.language.implicitConversions
 
 import vyxal.conversions.given
+import vyxal.elements.ElementInformation
+import vyxal.elements.Elements
 import vyxal.Interpreter.executeFn
 
 import scala.annotation.targetName
@@ -193,10 +195,12 @@ object VFun:
       Some(lam),
     )
 
-  def fromElement(elem: Element)(using origCtx: Context): VFun =
+  def fromElement(elem: String)(using origCtx: Context): VFun =
+    val correspondingInfo = ElementInformation.elements(elem)
     VFun(
-      elem.impl,
-      elem.arity.getOrElse(origCtx.settings.defaultArity),
+      Elements.elements(elem).impl,
+      if correspondingInfo.arity == -1 then origCtx.settings.defaultArity
+      else correspondingInfo.arity,
       List.empty,
       origCtx,
     )

@@ -2,7 +2,8 @@ package vyxal
 
 import scala.language.strictEquality
 
-import vyxal.elements.NewElements
+import vyxal.elements.ElementInformation
+import vyxal.elements.Elements
 import vyxal.parsing.Range
 
 import scala.collection.mutable.ListBuffer
@@ -21,10 +22,10 @@ enum AST(val arity: Option[Int]) derives CanEqual:
       override val range: Range = Range.fake,
       overwriteable: Boolean = true,
   ) extends AST(
-        NewElements.elements
+        Elements.elements
           .get(value)
           .map(_.arity)
-          .orElse(Elements.elements.get(value).flatMap(_.arity))
+          .orElse(ElementInformation.elements.get(value).map(_.arity))
       )
 
   /** Multiple ASTs grouped into one list */

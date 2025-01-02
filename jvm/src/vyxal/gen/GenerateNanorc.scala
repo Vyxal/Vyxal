@@ -1,8 +1,10 @@
 /** To generate nanorc files for syntax highlighting in JLine. See build.sc */
 package vyxal.gen
 
-import vyxal.{Elements, Modifiers, VNum}
+import vyxal.elements.{Elements, Modifiers}
+import vyxal.elements.ElementInformation
 import vyxal.parsing.Codepage
+import vyxal.VNum
 
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Paths}
@@ -39,7 +41,7 @@ object GenerateNanorc:
     |color yellow,red "[^$codepage]*"
     |
     |## Modifiers
-    |color brightmagenta "${Modifiers.modifiers.keys.map(Regex.quote).mkString("|")}"
+    |color brightmagenta "${ElementInformation.modifiers.keys.map(Regex.quote).mkString("|")}"
     |""".stripMargin
 
   val commonFooter = """|
@@ -54,7 +56,7 @@ object GenerateNanorc:
     |""".stripMargin
 
   val litDecimalRegex = raw"(-?((0|[1-9][0-9_]*)?\.[0-9]*|0|[1-9][0-9_]*))"
-  val elementKeywords = Elements.elements.values.flatMap(_.keywords)
+  val elementKeywords = ElementInformation.elements.values.flatMap(_.keywords)
   val litSpecific = raw"""|
     |## Numbers (literate)
     |color cyan "\<((${litDecimalRegex}i($litDecimalRegex)?)|(i$litDecimalRegex)|$litDecimalRegex|(i\b))\>"

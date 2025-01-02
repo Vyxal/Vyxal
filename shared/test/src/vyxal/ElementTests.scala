@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.conversions.given
+import vyxal.elements.Elements
 import vyxal.VyxalTests.testContext
 
 import org.scalatest.funspec.AnyFunSpec
@@ -18,7 +19,7 @@ class ElementTests extends VyxalTests:
       it("should turn two functions into an fgh fork") {
         given ctx: Context = Context(testMode = true)
         // Factorial
-        val f = VFun.fromElement(Elements.elements("!"))
+        val f = VFun.fromElement("!")
         // Function to subtract 8
         val g = VFun.fromLambda(
           AST.Lambda(
@@ -163,7 +164,7 @@ class ElementTests extends VyxalTests:
       it("should execute the function") {
         testEquals(3)(ctx ?=>
           ctx.push(1, 2)
-          ctx.push(VFun.fromElement(Elements.elements("+")))
+          ctx.push(VFun.fromElement("+"))
           Interpreter.execute(AST.Command("ᴥ"))
           ctx.peek
         )

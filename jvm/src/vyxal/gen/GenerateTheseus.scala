@@ -1,14 +1,10 @@
 package vyxal.gen
 
+import vyxal.elements.{Element, ElementInformation, Modifier}
 import vyxal.parsing.Codepage
-import vyxal.Element
-import vyxal.Elements
 import vyxal.Flag
 import vyxal.FlagCategory
 import vyxal.Interpreter
-import vyxal.Modifier
-import vyxal.Modifiers
-import vyxal.SugarMap
 import vyxal.Syntax
 import vyxal.SyntaxInfo
 
@@ -32,36 +28,49 @@ import upickle.default.*
 def generateDescriptions(): String =
   val data = HashMap[Int, ListBuffer[Map[String, String]]]()
   for
-    (symbol, element) <- Elements.elements
-    if Codepage.contains(symbol.last) && !symbol.startsWith("#|")
+    (symbol, element) <- ElementInformation.elements
+    if Codepage.contains(symbol.last)
   do
     val token = symbol
     val index = if token == " " then 32 else Codepage.indexOf(token.last)
 
     val thisElement = HashMap[String, String]()
-    thisElement("name") = element.name
+    thisElement("name") = element.overloads.map(_.name).mkString(" / ")
     thisElement("description") = element.keywords.mkString(" ")
-    thisElement("overloads") = element.overloads.mkString("\n")
+    thisElement("overloads") = element.overloads
+      .map(overload => DocsUtils.overloadToString(overload))
+      .foldLeft(Seq.empty[String]) {
+        case (acc, s: String) => acc :+ s
+        case (acc, s: Seq[String]) => acc ++ s
+      }
+      .mkString("\n")
     thisElement("token") = token
 
     if data.contains(index) then data(index) += thisElement.toMap
     else data(index) = ListBuffer(thisElement.toMap)
+  end for
 
-  for modifier <- Modifiers.modifiers do
+  for modifier <- ElementInformation.modifiers do
     val (symbol, info) = modifier
     info match
-      case Modifier(name, description, keywords, _, overloads) =>
+      case Modifier(symbol, keywords, numberOfElements, overloads*) =>
         val token = symbol
         val index = if token == " " then 32 else Codepage.indexOf(token.last)
         val thisElement = HashMap[String, String]()
-        thisElement("name") = name
-        thisElement("description") = description
+        val overloadsSeq = Seq(overloads*)
+        thisElement("name") = overloadsSeq.map(_.name).mkString(" / ")
+        thisElement("description") =
+          overloadsSeq.map(_.description).mkString(" / ")
         thisElement("keywords") = keywords.mkString(" ")
-        thisElement("overloads") = overloads.mkString("\n")
+        thisElement("overloads") = overloadsSeq
+          .map(overload => DocsUtils.overloadToString(overload))
+          .mkString("\n")
         thisElement("token") = symbol
 
         if data.contains(index) then data(index) += thisElement.toMap
         else data(index) = ListBuffer(thisElement.toMap)
+    end match
+  end for
 
   for syntax <- SyntaxInfo.info do
     val (symbol, info) = syntax
@@ -95,29 +104,35 @@ def generateData(): String =
     "modifiers" -> ujson.Arr(),
     "syntax" -> ujson.Arr(),
     "flags" -> ujson.Arr(),
-    "sugars" -> SugarMap.trigraphs,
     "codepage" -> Codepage,
     "version" -> Interpreter.version,
   )
   for
-    (symbol, element) <- Elements.elements
-    if Codepage.contains(symbol.last) && !symbol.startsWith("#|")
+    (symbol, element) <- ElementInformation.elements
+    if Codepage.contains(symbol.last)
   do
     val elementData = ujson.Obj()
-    elementData("name") = element.name
+    elementData("name") = element.overloads.map(_.name).mkString(" / ")
     elementData("symbol") = element.symbol
     elementData("keywords") = element.keywords.toList
-    elementData("overloads") = element.overloads.toList
-    elementData("vectorises") = element.vectorises
+    elementData("overloads") = element.overloads
+      .map(overload => DocsUtils.overloadToString(overload))
+      .foldLeft(Seq.empty[String]) {
+        case (acc, s: String) => acc :+ s
+        case (acc, s: Seq[String]) => acc ++ s
+      }
+    elementData("vectorises") = element.options.vectorises
     data("elements").arr.addOne(elementData)
 
-  for (symbol, modifier) <- Modifiers.modifiers do
+  for (symbol, modifier) <- ElementInformation.modifiers do
     val modifierData = ujson.Obj()
-    modifierData("name") = modifier.name
+    modifierData("name") = modifier.overloads.map(_.name).mkString(" / ")
     modifierData("symbol") = symbol
-    modifierData("description") = modifier.description
+    modifierData("description") =
+      modifier.overloads.map(_.description).mkString(" / ")
     modifierData("keywords") = modifier.keywords.toList
-    modifierData("overloads") = modifier.overloads
+    modifierData("overloads") =
+      modifier.overloads.map(DocsUtils.overloadToString(_))
     data("modifiers").arr.addOne(modifierData)
 
   for (symbol, syntax) <- SyntaxInfo.info do

@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.conversions.given
+import vyxal.elements.ElementInformation
 
 import scala.io.Source
 
@@ -84,12 +85,12 @@ class YamlTests extends AnyFunSpec:
               if codeOverride.isEmpty then s"Element: $code, Inputs: $inputStr"
               else s"Code: `$code, inputs: $inputStr"
 
-            Elements.elements.get(element).flatMap(_.arity) match
-              case Some(arity) => if arity > 0 && arity != inputs.size then
-                  println(
-                    s"[Element $element] Inputs (${inputs.mkString(",")}) don't match arity ($arity)"
-                  )
-              case _ => ()
+            val arity = ElementInformation.elements(element).arity
+            if arity > 0 && arity != inputs.size then
+              println(
+                s"[Element $element] Inputs (${inputs.mkString(",")}) don't match arity ($arity)"
+              )
+
             it(msg) {
               given ctx: Context =
                 VyxalTests.testContext(inputs = inputs, flags = flags)

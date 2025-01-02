@@ -1,7 +1,8 @@
 package vyxal.parsing
 
+import vyxal.elements.ElementInformation
+import vyxal.elements.Elements
 import vyxal.Context
-import vyxal.Elements
 
 import scala.collection.mutable // For named imports
 import scala.collection.mutable.{
@@ -205,7 +206,9 @@ object Lexer:
       case Param => s"$value"
       case OriginalSymbol => s"#:~$value"
       case Command if !Elements.elements.contains(value) =>
-        Elements.symbolFor(value).getOrElse(value.stripSuffix("|"))
+        ElementInformation
+          .symbolForElement(value)
+          .getOrElse(value.stripSuffix("|"))
       case Comment => ""
       case _ => tokenType.canonicalSBCS.getOrElse(value)
     end match

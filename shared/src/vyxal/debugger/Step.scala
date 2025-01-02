@@ -141,7 +141,7 @@ object Step:
     val symbol = cmd.value
     DebugImpls.impls.get(symbol) match
       case Some(debugImpl) => Exec(cmd, debugImpl)
-      case None => Elements.elements.get(symbol) match
+      case None => elements.Elements.elements.get(symbol) match
           case Some(element) => Step.hidden { element.impl() }
           case None => throw VyxalYikesException(s"No such element: $symbol")
 

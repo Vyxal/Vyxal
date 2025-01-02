@@ -1,10 +1,10 @@
 package vyxal.parsing
 
 import vyxal.elements.ElementInformation
+import vyxal.elements.Elements
+import vyxal.elements.Modifier
+import vyxal.elements.Modifiers
 import vyxal.parsing.TokenType.*
-import vyxal.Elements
-import vyxal.Modifier
-import vyxal.Modifiers
 import vyxal.UnopenedGroupException
 import vyxal.VyxalException
 
@@ -33,21 +33,17 @@ class LiterateLexer extends LexerCommon:
       endKeywords.exists(kw =>
         headLookaheadMatch(s"${Regex.quote(kw)}([^$KeywordLetters]|$$)")
       )
-  private val literateKeywords = Elements.elements.values.flatMap(_.keywords) ++
-    ElementInformation.elements.flatMap(_.keywords)
+  private val literateKeywords =
+    ElementInformation.elements.values.flatMap(_.keywords)
   private val _tokens = ArrayBuffer[LitToken]()
   private val groups = ArrayBuffer[ArrayBuffer[LitToken]]()
   private var unpackDepth = 0
 
   private val groupModifierToToken = Map(
-    "." -> ((range) => LitToken(MonadicModifier, "⸠", range)),
-    ":" -> ((range) => LitToken(DyadicModifier, "ϩ", range)),
-    ":." -> ((range) => LitToken(TriadicModifier, "э", range)),
-    "::" -> ((range) => LitToken(TetradicModifier, "Ч", range)),
-    "," -> ((range) => LitToken(MonadicModifier, "♳", range)),
-    ";" -> ((range) => LitToken(DyadicModifier, "♴", range)),
-    ";," -> ((range) => LitToken(TriadicModifier, "♵", range)),
-    ";;" -> ((range) => LitToken(TetradicModifier, "♶", range)),
+    "." -> ((range) => LitToken(MonadicModifier, "⑴", range)),
+    ":" -> ((range) => LitToken(DyadicModifier, "⑵", range)),
+    ":." -> ((range) => LitToken(TriadicModifier, "⑶", range)),
+    "::" -> ((range) => LitToken(TetradicModifier, "⑷", range)),
   )
 
   private val keywords = Map(
@@ -319,8 +315,8 @@ class LiterateLexer extends LexerCommon:
       )
     else if isModifier(value) then
       val mod = getModifierFromKeyword(value)
-      val name = Modifiers.modifiers.find(_._2._3.contains(value)).get._1
-      val tokenType = mod.arity match
+      val name = mod.symbol
+      val tokenType = mod.numberOfElements match
         case 1 => TokenType.MonadicModifier
         case 2 => TokenType.DyadicModifier
         case 3 => TokenType.TriadicModifier
@@ -340,21 +336,15 @@ class LiterateLexer extends LexerCommon:
     literateKeywords.toSet.contains(word)
 
   private def isModifier(word: String): Boolean =
-    Modifiers.modifiers.values.exists(_.keywords.contains(word))
+    ElementInformation.modifiers.exists((_, mod) => mod.keywords.contains(word))
 
   private def getSymbolFromKeyword(word: String): String =
-    Elements.elements.values
-      .find(elem => elem.keywords.contains(word))
-      .map(_.symbol)
-      .getOrElse(
-        ElementInformation.elements
-          .find(_.keywords.contains(word))
-          .map(_.symbol)
-          .getOrElse(word)
-      )
+    ElementInformation.symbolForElement(word).getOrElse(word)
 
   private def getModifierFromKeyword(word: String): Modifier =
-    Modifiers.modifiers.values.find(mod => mod._3.contains(word)).get
+    ElementInformation.modifiers
+      .get(word)
+      .getOrElse(throw VyxalException(s"Modifier $word not found"))
 
   private def numberToken: Unit =
     val rangeStart = index
@@ -497,11 +487,11 @@ class LiterateLexer extends LexerCommon:
   end defineExtensionToken
 
   lazy val mapping: Map[String, String] =
-    Elements.elements.values.view.flatMap { elem =>
+    ElementInformation.elements.values.view.flatMap { elem =>
       elem.keywords.map(_ -> elem.symbol)
     }.toMap ++
-      Modifiers.modifiers.view.flatMap { (symbol, mod) =>
-        mod.keywords.map(_ -> symbol)
+      ElementInformation.modifiers.values.view.flatMap { mod =>
+        mod.keywords.map(_ -> mod.symbol)
       }.toMap ++
       keywords.map { (kw, typ) => kw -> typ.canonicalSBCS.get }.toMap ++
       endKeywords.map(_ -> TokenType.StructureClose.canonicalSBCS.get).toMap ++

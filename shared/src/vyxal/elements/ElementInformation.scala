@@ -35,11 +35,36 @@ case class Options(
 )
 
 object ElementInformation:
-  def symbolFor(keyword: String): Option[String] =
-    ElementInformation.elements.find(_.keywords.contains(keyword)).map(_.symbol)
 
-  val elements: Seq[Element] = List(
-    Element(
+  def AddElement(
+      symbol: String,
+      keywords: Seq[String],
+      arity: Int,
+      options: Options,
+      overloads: Overload*
+  ): (String, Element) =
+    symbol -> Element(symbol, keywords, arity, options, overloads*)
+
+  def AddModifier(
+      symbol: String,
+      keywords: Seq[String],
+      numberOfElements: Int,
+      overloads: ModifierOverload*
+  ): (String, Modifier) =
+    symbol -> Modifier(symbol, keywords, numberOfElements, overloads*)
+
+  def symbolForElement(keyword: String): Option[String] =
+    ElementInformation.elements
+      .find((_, elem) => elem.keywords.contains(keyword))
+      .map((_, elem) => elem.symbol)
+
+  def symbolForModifier(keyword: String): Option[String] =
+    ElementInformation.modifiers
+      .find((_, mod) => mod.keywords.contains(keyword))
+      .map((_, mod) => mod.symbol)
+
+  val elements: Map[String, Element] = Map(
+    AddElement(
       symbol = "⊞",
       keywords = Seq("counts", "counts-of"),
       arity = 1,
@@ -53,7 +78,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "÷",
       keywords = Seq("divide", "string-pieces", "regex-split", "/", "div"),
       arity = 2,
@@ -79,7 +104,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "×",
       keywords =
         Seq("multiply", "string-repeat", "ring-translate", "*", "times"),
@@ -106,7 +131,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "∧",
       keywords = Seq("and", "&&", "logical-and"),
       arity = 2,
@@ -127,7 +152,7 @@ object ElementInformation:
           "Short circuit and - if #2() is false, return #2(), else return #1()",
       ),
     ),
-    Element(
+    AddElement(
       symbol = "∨",
       keywords = Seq("or", "!!", "logical-or"),
       arity = 2,
@@ -148,7 +173,7 @@ object ElementInformation:
           "Short circuit or - if #2() is true, return #2(), else return #1()",
       ),
     ),
-    Element(
+    AddElement(
       symbol = "¬",
       keywords = Seq("not", "~", "logical-not"),
       arity = 1,
@@ -162,7 +187,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "ʀ",
       keywords = Seq("0->n", "lowercase", "range-0->n", "nrange-0"),
       arity = 1,
@@ -182,7 +207,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "ʁ",
       keywords = Seq("0->n++", "uppercase", "range-0->n++", "n+range-0"),
       arity = 1,
@@ -202,7 +227,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "ɾ",
       keywords = Seq("1->n++", "is-alpha?"),
       arity = 1,
@@ -222,7 +247,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "‹",
       keywords =
         Seq("decrement", "--", "pad-to-8", "dec", "pad-8", "pad-to-byte"),
@@ -243,7 +268,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "›",
       keywords =
         Seq("increment", "++", "space-to-0", "replace-spaces-with-0s", "inc"),
@@ -264,7 +289,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "!",
       keywords = Seq("factorial", "!", "titlecase", "fact", "title", "fac"),
       arity = 1,
@@ -284,7 +309,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "$",
       keywords = Seq("swap"),
       arity = 2,
@@ -298,7 +323,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "%",
       keywords = Seq("mod", "modulo", "%", "remainder"),
       arity = 2,
@@ -318,7 +343,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "&",
       keywords = Seq("append"),
       arity = 2,
@@ -332,7 +357,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "*",
       keywords = Seq("exponentiate", "pow", "**", "power"),
       arity = 2,
@@ -346,7 +371,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "+",
       keywords = Seq("add", "+", "plus", "addition"),
       arity = 2,
@@ -372,7 +397,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = ",",
       keywords = Seq("println", "stdout", "output", "out"),
       arity = 1,
@@ -386,7 +411,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "-",
       keywords = Seq("subtract", "-", "minus", "subtraction", "regex-remove"),
       arity = 2,
@@ -412,7 +437,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       ":",
       Seq("dup", "duplicate"),
       1,
@@ -426,7 +451,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = ";",
       keywords = Seq("pair", "cons"),
       arity = 2,
@@ -440,7 +465,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "<",
       keywords = Seq("less-than", "<", "lt"),
       arity = 2,
@@ -454,7 +479,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "=",
       keywords = Seq("equals", "==", "eq"),
       arity = 2,
@@ -468,7 +493,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = ">",
       keywords = Seq("greater-than", ">", "gt"),
       arity = 2,
@@ -482,7 +507,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "?",
       keywords = Seq("stdin", "input", "in"),
       arity = 0,
@@ -496,7 +521,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "@",
       keywords =
         Seq("absolute-difference", "abs-diff", "levenstein", "to-overpairs"),
@@ -522,7 +547,7 @@ object ElementInformation:
         description = "Reduce overlapping pairs in {#1|#2} by function {#2|#1}",
       ),
     ),
-    Element(
+    AddElement(
       symbol = "A",
       keywords = Seq("all", "all?", "vowel?", "is-vowel", "is-vowel?"),
       arity = 1,
@@ -536,7 +561,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "B",
       keywords = Seq("to-binary"),
       arity = 1,
@@ -557,7 +582,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "C",
       keywords = Seq("count"),
       arity = 2,
@@ -577,7 +602,7 @@ object ElementInformation:
           "Count occurrences of the list with shallower depth in the list with deeper depth",
       ),
     ),
-    Element(
+    AddElement(
       symbol = "D",
       keywords = Seq("triplicate"),
       arity = 1,
@@ -591,7 +616,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "E",
       keywords = Seq("2**n", "2pow", "eval", "2**"),
       arity = 1,
@@ -611,7 +636,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "F",
       keywords = Seq("filter", "find", "index-of"),
       arity = 2,
@@ -631,7 +656,7 @@ object ElementInformation:
           "Find the index of #1 in #2. Switches #1 and #2 so that the haystack is the deeper list",
       ),
     ),
-    Element(
+    AddElement(
       symbol = "G",
       keywords = Seq("max-of", "maximum-of"),
       arity = 1,
@@ -645,7 +670,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "H",
       keywords = Seq("to-hex", "from-hex"),
       arity = 1,
@@ -666,7 +691,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "I",
       keywords = Seq("interleave", "reject"),
       arity = 2,
@@ -687,7 +712,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "J",
       keywords = Seq("join", "concat"),
       arity = 2,
@@ -720,7 +745,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "K",
       keywords = Seq("factors", "is-numeric?", "is-numeric"),
       arity = 1,
@@ -740,7 +765,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "L",
       keywords = Seq("length", "len"),
       arity = 1,
@@ -754,7 +779,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "M",
       keywords = Seq("map", "mold", "multiplicity", "regex-match"),
       arity = 2,
@@ -785,7 +810,7 @@ object ElementInformation:
         description = "Return the first match of #2 in #1",
       ),
     ),
-    Element(
+    AddElement(
       symbol = "N",
       keywords = Seq("negate", "swapcase", "first>-1"),
       arity = 1,
@@ -811,7 +836,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "O",
       keywords = Seq("ord", "chr"),
       arity = 1,
@@ -831,7 +856,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "P",
       keywords = Seq("prefixes"),
       arity = 1,
@@ -846,7 +871,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "Q",
       keywords = Seq("remove-at", "regex-groups"),
       arity = 2,
@@ -866,7 +891,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "R",
       keywords = Seq("range", "reduce", "regex-match?"),
       arity = 2,
@@ -892,7 +917,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "S",
       keywords = Seq("sort"),
       arity = 1,
@@ -906,7 +931,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "T",
       keywords = Seq("transpose", "triple", "alpha-only?"),
       arity = 1,
@@ -932,7 +957,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "U",
       keywords = Seq("uninterleave"),
       arity = 1,
@@ -946,7 +971,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "V",
       keywords = Seq("vectorse-reverse", "1-x"),
       arity = 1,
@@ -966,7 +991,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "W",
       keywords = Seq("wrap"),
       arity = -1,
@@ -980,7 +1005,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "X",
       keywords = Seq("cartesian-product"),
       arity = 2,
@@ -994,7 +1019,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "Y",
       keywords = Seq("list-repeat"),
       arity = 2,
@@ -1021,7 +1046,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "Z",
       keywords = Seq("zip"),
       arity = 2,
@@ -1035,7 +1060,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "^",
       keywords = Seq("reverse-stack"),
       arity = -1,
@@ -1049,7 +1074,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "_",
       keywords = Seq("pop", "discard"),
       arity = 0,
@@ -1063,7 +1088,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "a",
       keywords = Seq("any", "any?", "uppercase?"),
       arity = 1,
@@ -1089,7 +1114,7 @@ object ElementInformation:
         description = "Are any elements of #1 truthy",
       ),
     ),
-    Element(
+    AddElement(
       symbol = "b",
       keywords = Seq("from-binary"),
       arity = 1,
@@ -1112,7 +1137,7 @@ object ElementInformation:
         description = "Convert #1 from binary to a number",
       ),
     ),
-    Element(
+    AddElement(
       symbol = "c",
       keywords = Seq("contains", "contains?", "is-in"),
       arity = 2,
@@ -1139,7 +1164,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "d",
       keywords = Seq("double"),
       arity = 1,
@@ -1159,7 +1184,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "e",
       keywords = Seq("even?", "is-even", "split-newlines", "/newline"),
       arity = 1,
@@ -1179,7 +1204,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "f",
       keywords = Seq("flatten"),
       arity = 1,
@@ -1205,7 +1230,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "g",
       keywords = Seq("min-of", "minimum-of"),
       arity = 1,
@@ -1219,7 +1244,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "h",
       keywords = Seq("head", "first"),
       arity = 1,
@@ -1233,7 +1258,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "i",
       keywords = Seq(
         "index",
@@ -1249,7 +1274,7 @@ object ElementInformation:
         vectorises = false
       ),
       Overload(
-        name = "Nth Element",
+        name = "Nth AddElement",
         args = Seq("itr", "num"),
         description = "Get the {#2|#1}th element of {#1|#2}",
         typeSwitchable = true,
@@ -1280,7 +1305,7 @@ object ElementInformation:
           "Apply #2 on #1 and collect unique values. Does include the initial value.",
       ),
     ),
-    Element(
+    AddElement(
       symbol = "j",
       keywords = Seq("join-on"),
       arity = 2,
@@ -1300,7 +1325,7 @@ object ElementInformation:
           "Intersperse elements of #2 within #1 (e.g. [1, [2,3], 4] [5, 6] -> [1, 5, 6, [2, 3], 5, 6, 4])",
       ),
     ),
-    Element(
+    AddElement(
       symbol = "l",
       keywords = Seq(
         "log",
@@ -1342,7 +1367,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "m",
       keywords =
         Seq("ctx-secondary", "ctx2", "ctx-m", "context-m", "context-secondary"),
@@ -1357,7 +1382,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "n",
       keywords =
         Seq("ctx-primary", "ctx", "ctx-n", "context-n", "context-primary"),
@@ -1372,7 +1397,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "o",
       keywords = Seq(
         "overlapping-pairs",
@@ -1419,7 +1444,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "p",
       keywords = Seq("prepend"),
       arity = 2,
@@ -1433,7 +1458,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "q",
       keywords = Seq("quotify"),
       arity = 1,
@@ -1447,7 +1472,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "r",
       keywords = Seq("replace"),
       arity = 3,
@@ -1467,7 +1492,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "s",
       keywords = Seq("split"),
       arity = 2,
@@ -1481,7 +1506,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "t",
       keywords = Seq("tail", "last"),
       arity = 1,
@@ -1495,7 +1520,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "u",
       keywords = Seq("unique"),
       arity = 1,
@@ -1515,7 +1540,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "v",
       keywords = Seq("overlapping-pairs", "reduce-pairs-by"),
       arity = 1,
@@ -1535,7 +1560,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "w",
       keywords = Seq("wrap-in-list"),
       arity = 1,
@@ -1549,7 +1574,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "x",
       keywords = Seq("recurse"),
       arity = -1,
@@ -1564,7 +1589,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "y",
       keywords = Seq("transliterate", "call-while"),
       arity = 3,
@@ -1585,7 +1610,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "z",
       keywords = Seq("zip-with-filler"),
       arity = 2,
@@ -1599,7 +1624,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⨥",
       keywords = Seq("+2", "add-2", "++++", "inc-inc", "strlen==1"),
       arity = 1,
@@ -1619,7 +1644,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⨪",
       keywords =
         Seq("-2", "subtract-2", "----", "dec-dec", "flip-bracket-palindrome"),
@@ -1641,7 +1666,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "∑",
       keywords = Seq("sum", "sum-of", "+/", "/+", "sigma", "sigma-in-ohio"),
       arity = 1,
@@ -1661,7 +1686,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "Π",
       keywords = Seq("product", "product-of", "*/"),
       arity = 1,
@@ -1681,7 +1706,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "σ",
       keywords = Seq("cumulative-sums", "cumsums", "cumsum", "cum-sum", "-_-"),
       arity = 1,
@@ -1695,7 +1720,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⇧",
       keywords = Seq("grade-up"),
       arity = 1,
@@ -1709,7 +1734,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⇩",
       keywords = Seq("grade-down"),
       arity = 1,
@@ -1723,7 +1748,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "∪",
       keywords = Seq("union", "set-union"),
       arity = 2,
@@ -1737,7 +1762,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "∩",
       keywords = Seq("intersection", "set-intersection"),
       arity = 2,
@@ -1751,7 +1776,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⊍",
       keywords = Seq("set-xor"),
       arity = 2,
@@ -1765,7 +1790,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⦰",
       keywords = Seq("set-difference", "set-diff"),
       arity = 2,
@@ -1779,7 +1804,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "«",
       keywords = Seq("left-shift", "<<"),
       arity = 2,
@@ -1807,7 +1832,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "»",
       keywords = Seq("right-shift", ">>"),
       arity = 2,
@@ -1834,7 +1859,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "Ɠ",
       keywords = Seq("max-peek"),
       arity = 1,
@@ -1849,7 +1874,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "ɠ",
       keywords = Seq("min-peek"),
       arity = 1,
@@ -1864,7 +1889,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "Ġ",
       keywords = Seq("zip-max", "max-dyad", "max-ab", "gen"),
       arity = 2,
@@ -1897,7 +1922,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "ġ",
       keywords = Seq("zip-min", "min-dyad", "min-ab", "2gen"),
       arity = 2,
@@ -1930,7 +1955,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⌈",
       keywords = Seq("ceil", "ceiling", "split-on-spaces"),
       arity = 1,
@@ -1950,7 +1975,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⌊",
       keywords = Seq("floor", "str-to-num"),
       arity = 1,
@@ -1971,7 +1996,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⊖",
       keywords = Seq("0-slice", "take", "0-take"),
       arity = 2,
@@ -1991,7 +2016,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⌽",
       keywords = Seq("1-slice", "tail-take", "1-take"),
       arity = 2,
@@ -2005,7 +2030,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "£",
       keywords = Seq("set-register"),
       arity = 1,
@@ -2019,7 +2044,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "¥",
       keywords = Seq("get-register"),
       arity = 0,
@@ -2033,7 +2058,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "↜",
       keywords = Seq("rotate-stack-left"),
       arity = -1,
@@ -2047,7 +2072,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "↝",
       keywords = Seq("rotate-stack-right"),
       arity = -1,
@@ -2061,7 +2086,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "↺",
       keywords = Seq("rot-left"),
       arity = 1,
@@ -2081,7 +2106,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "↻",
       keywords = Seq("rot-right"),
       arity = 1,
@@ -2101,7 +2126,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "≜",
       keywords = Seq("assign"),
       arity = 3,
@@ -2152,7 +2177,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⎀",
       keywords = Seq("insert"),
       arity = 3,
@@ -2177,7 +2202,7 @@ object ElementInformation:
         description = "Insert items of #3 into #1 at indices #2",
       ),
     ),
-    Element(
+    AddElement(
       symbol = "◲",
       keywords = Seq("sublists"),
       arity = 1,
@@ -2191,7 +2216,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⊢",
       keywords = Seq("10-to-base", "all-regex-matches"),
       arity = 2,
@@ -2230,7 +2255,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⊣",
       keywords = Seq("base-to-10"),
       arity = 2,
@@ -2259,7 +2284,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "ɦ",
       keywords = Seq("head-peek"),
       arity = 1,
@@ -2274,7 +2299,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "ʈ",
       keywords = Seq("tail-peek"),
       arity = 1,
@@ -2289,7 +2314,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "ᐐ",
       keywords = Seq("init"),
       arity = 1,
@@ -2303,7 +2328,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "ᐵ",
       keywords = Seq("drop"),
       arity = 2,
@@ -2323,7 +2348,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "ᐕ",
       keywords = Seq("behead"),
       arity = 1,
@@ -2337,7 +2362,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "½",
       keywords = Seq("half", "halve"),
       arity = 1,
@@ -2357,7 +2382,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "ƶ",
       keywords = Seq("range-to-length"),
       arity = 1,
@@ -2371,7 +2396,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "Ƶ",
       keywords = Seq("range-to-length-1"),
       arity = 1,
@@ -2385,7 +2410,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⁰",
       keywords = Seq("first-input", "input-0"),
       arity = 0,
@@ -2399,7 +2424,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "¹",
       keywords = Seq("second-input", "input-1"),
       arity = 0,
@@ -2413,7 +2438,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "²",
       keywords = Seq("square", "string-pairs"),
       arity = 1,
@@ -2433,7 +2458,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "³",
       keywords = Seq("cube", "string-triples"),
       arity = 1,
@@ -2453,7 +2478,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⅟",
       keywords = Seq(
         "reciprocal",
@@ -2480,7 +2505,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⇄",
       keywords = Seq("reverse"),
       arity = 1,
@@ -2494,7 +2519,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⧖",
       keywords = Seq("permutations", "map-over-permutations"),
       arity = 1,
@@ -2514,7 +2539,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "‰",
       keywords = Seq("divmod"),
       arity = 2,
@@ -2528,7 +2553,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "≛",
       keywords = Seq("divides?", "append-spaces", "regex-span"),
       arity = 2,
@@ -2554,7 +2579,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "ℭ",
       keywords = Seq("combinations-with-replacement"),
       arity = 2,
@@ -2576,7 +2601,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "℈",
       keywords = Seq("combinations-without-replacement"),
       arity = 2,
@@ -2598,7 +2623,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⦷",
       keywords = Seq("abs", "absolute-value", "keep-letters"),
       arity = 1,
@@ -2618,7 +2643,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "Ϣ",
       keywords = Seq("chunk-to-length", "partition-to-length"),
       arity = 2,
@@ -2638,7 +2663,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "≤",
       keywords = Seq("less-than-or-equal", "lte", "<="),
       arity = 2,
@@ -2652,7 +2677,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "≥",
       keywords = Seq("greater-than-or-equal", "gte", ">="),
       arity = 2,
@@ -2666,7 +2691,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "≠",
       keywords = Seq("not-equal", "neq", "!=", "=n't", "eqn't", "equaln't"),
       arity = 2,
@@ -2680,7 +2705,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "≡",
       keywords = Seq("exact-equals", "eq+", "==="),
       arity = 2,
@@ -2694,7 +2719,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "•",
       keywords = Seq("dot-product", "bijective-base", "first-predicate-index"),
       arity = 2,
@@ -2721,7 +2746,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "±",
       keywords = Seq("signum"),
       arity = 1,
@@ -2735,7 +2760,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "†",
       keywords = Seq("lengths-of-consecutives"),
       arity = 1,
@@ -2749,7 +2774,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⎙",
       keywords = Seq("peek-print"),
       arity = 1,
@@ -2764,7 +2789,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "✒",
       keywords = Seq("print"),
       arity = 1,
@@ -2778,7 +2803,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "≓",
       keywords = Seq("mirror"),
       arity = 1,
@@ -2792,7 +2817,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "Ͼ",
       keywords = Seq("vectorised-sums", "v/+"),
       arity = 1,
@@ -2806,7 +2831,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "ᴥ",
       keywords = Seq("exec", "10**", "call", "@"),
       arity = 1,
@@ -2832,7 +2857,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "ℳ",
       keywords = Seq("modular", "matrix-multiply", "regex-full-match?"),
       arity = 2,
@@ -2840,7 +2865,7 @@ object ElementInformation:
         vectorises = false
       ),
       Overload(
-        name = "Every Nth Element",
+        name = "Every Nth AddElement",
         args = Seq("itr", "num"),
         description = "Every {#2|#1}th element of {#1|#2}",
         typeSwitchable = true,
@@ -2858,7 +2883,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "℗",
       keywords = Seq("is-prime", "prime?", "quine-cheese"),
       arity = 1,
@@ -2879,7 +2904,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⍢",
       keywords = Seq("parity", "bit", "last-half"),
       arity = 1,
@@ -2899,7 +2924,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "ℂ",
       keywords = Seq("ncr", "choose", "characters-same?", "fixpoint-collect"),
       arity = 2,
@@ -2926,7 +2951,7 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⌹",
       keywords = Seq("list-partitions", "integer-partitions"),
       arity = 1,
@@ -2946,7 +2971,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⏚",
       keywords = Seq("powerset", "vectorise"),
       arity = 1,
@@ -2966,7 +2991,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "↯",
       keywords =
         Seq("inclusive-range", "sort-by", "regex-split-keep-delimiters"),
@@ -2993,7 +3018,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⊠",
       keywords = Seq("cartesian-power", "regex-index"),
       arity = 2,
@@ -3021,7 +3046,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⚅",
       keywords = Seq("random-choice", "random-element", "randint", "random"),
       arity = 1,
@@ -3041,7 +3066,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "æ",
       keywords = Seq(
         "bifuricate",
@@ -3073,7 +3098,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "␣",
       keywords = Seq("space"),
       arity = 0,
@@ -3087,7 +3112,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "¶",
       keywords = Seq("newline"),
       arity = 0,
@@ -3101,7 +3126,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "★",
       keywords = Seq("asterisk"),
       arity = 0,
@@ -3115,7 +3140,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "ᑂ",
       keywords = Seq("headless-top"),
       arity = 1,
@@ -3128,7 +3153,7 @@ object ElementInformation:
         description = "Push #1[1:] and #1[0]",
       ),
     ),
-    Element(
+    AddElement(
       symbol = "∻",
       keywords = Seq("integer-divide", "int-div", "//"),
       arity = 2,
@@ -3142,7 +3167,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "√",
       keywords = Seq("square-root", "sqrt"),
       arity = 1,
@@ -3156,7 +3181,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⍰",
       keywords = Seq("truthy?"),
       arity = 1,
@@ -3170,7 +3195,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "◌",
       keywords = Seq("round"),
       arity = 1,
@@ -3184,7 +3209,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "δ",
       keywords = Seq("deltas", "differences"),
       arity = 1,
@@ -3199,7 +3224,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "☷",
       keywords = Seq("partition-after-truthy"),
       arity = 1,
@@ -3213,7 +3238,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "✇",
       keywords = Seq("edges", "ends", "real-imaginary"),
       arity = 1,
@@ -3233,7 +3258,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⎃",
       keywords = Seq("flatten-and-join-on-nothing"),
       arity = 1,
@@ -3247,7 +3272,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⎶",
       keywords = Seq("trim"),
       arity = 2,
@@ -3261,7 +3286,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⊆",
       keywords = Seq("subset?"),
       arity = 2,
@@ -3276,7 +3301,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⍨",
       keywords = Seq("dump"),
       arity = 1,
@@ -3290,7 +3315,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "γ",
       keywords = Seq("wrap-len-2"),
       arity = 1,
@@ -3304,7 +3329,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⎘",
       keywords = Seq("flatten-by-depth", "flatten-depth"),
       arity = 2,
@@ -3324,7 +3349,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "ꜝ",
       keywords = Seq("keep-truthy"),
       arity = 1,
@@ -3338,7 +3363,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "≈",
       keywords = Seq("all-same"),
       arity = 1,
@@ -3352,7 +3377,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "≊",
       keywords = Seq("all-equal-item"),
       arity = 2,
@@ -3366,7 +3391,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "κ",
       keywords = Seq("gcd"),
       arity = 2,
@@ -3391,7 +3416,7 @@ object ElementInformation:
         description = "GCD of all elements of #1.append(#2)",
       ),
     ),
-    Element(
+    AddElement(
       symbol = "↳",
       keywords = Seq("retrieve-from-outer"),
       arity = 1,
@@ -3413,7 +3438,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⤻",
       keywords = Seq("over"),
       arity = -1,
@@ -3428,7 +3453,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⤺",
       keywords = Seq("around"),
       arity = -1,
@@ -3443,7 +3468,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "↸",
       keywords = Seq("roll"),
       arity = 3,
@@ -3457,7 +3482,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "”",
       keywords = Seq("join-on-newlines", "*newline", "one?->n"),
       arity = 1,
@@ -3477,7 +3502,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "„",
       keywords = Seq("join-on-spaces", "*space", "<0", "is-negative?"),
       arity = 1,
@@ -3496,7 +3521,7 @@ object ElementInformation:
         description = "Push 1 if #1 < 0, 0 otherwise",
       ),
     ),
-    Element(
+    AddElement(
       symbol = "“",
       keywords = Seq(
         "join-on-empty-string",
@@ -3535,7 +3560,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "▲",
       keywords = Seq("mask"),
       arity = 2,
@@ -3550,7 +3575,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "Ṭ",
       keywords = Seq("truthy-indexes"),
       arity = 1,
@@ -3564,7 +3589,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "Ṫ",
       keywords = Seq("untruth"),
       arity = 1,
@@ -3578,7 +3603,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "Ŀ",
       keywords = Seq("vlen", "lengths"),
       arity = 1,
@@ -3592,7 +3617,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "¤",
       keywords = Seq("stringify", "to-str", "str"),
       arity = 1,
@@ -3606,7 +3631,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "①",
       keywords = Seq("10"),
       arity = 0,
@@ -3620,7 +3645,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "②",
       keywords = Seq("16"),
       arity = 0,
@@ -3634,7 +3659,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "③",
       keywords = Seq("32"),
       arity = 0,
@@ -3648,7 +3673,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "④",
       keywords = Seq("64"),
       arity = 0,
@@ -3662,7 +3687,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⑤",
       keywords = Seq("100"),
       arity = 0,
@@ -3676,7 +3701,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⑥",
       keywords = Seq("128"),
       arity = 0,
@@ -3690,7 +3715,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⑦",
       keywords = Seq("256"),
       arity = 0,
@@ -3704,7 +3729,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⑧",
       keywords = Seq("-1"),
       arity = 0,
@@ -3718,7 +3743,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-    Element(
+    AddElement(
       symbol = "⑨",
       keywords = Seq("empty-string"),
       arity = 0,
@@ -3734,8 +3759,8 @@ object ElementInformation:
     ),
   )
 
-  val modifiers: Seq[Modifier] = List(
-    Modifier(
+  val modifiers: Map[String, Modifier] = Map(
+    AddModifier(
       symbol = "∥",
       keywords = Seq("parallel-apply:", "para:"),
       numberOfElements = 2,
@@ -3747,7 +3772,7 @@ object ElementInformation:
         example = "3 4 ∥d½ -> 8 2",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "∦",
       keywords = Seq("parallel-apply-wrap:", "paraw:"),
       numberOfElements = 2,
@@ -3759,7 +3784,7 @@ object ElementInformation:
         example = "3 4 ∦d½ -> [8, 2]",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "∺",
       keywords = Seq("correspond:"),
       numberOfElements = 2,
@@ -3777,7 +3802,7 @@ object ElementInformation:
         example = "3 4 5 6 ∺+- -> 7 1_",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "⁜",
       keywords = Seq("group-by:", "window-reduce:"),
       numberOfElements = 1,
@@ -3794,18 +3819,18 @@ object ElementInformation:
         example = "#[1|2|3|4|5|6#] ⁜λ3|+} -> [6, 9, 12, 15]",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "⑴",
       keywords = Seq("*:"),
       numberOfElements = 1,
       ModifierOverload(
-        name = "Next Element as Lambda",
+        name = "Next AddElement as Lambda",
         args = Seq("any"),
         description = "Wrap #1 in a lambda and push it",
         example = "⑴+ = λ+}",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "⑵",
       keywords = Seq("**:"),
       numberOfElements = 2,
@@ -3816,7 +3841,7 @@ object ElementInformation:
         example = "⑵+* = λ+*}",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "⑶",
       keywords = Seq("***:"),
       numberOfElements = 3,
@@ -3827,7 +3852,7 @@ object ElementInformation:
         example = "⑶+*~ = λ+*~}",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "⑷",
       keywords = Seq("****:"),
       numberOfElements = 4,
@@ -3838,7 +3863,7 @@ object ElementInformation:
         example = "⑷+*~d = λ+*~d}",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "⎂",
       keywords = Seq("both:"),
       numberOfElements = 1,
@@ -3850,7 +3875,7 @@ object ElementInformation:
         example = "3 4 ⎂d -> 6 8 || 1 2 3 4 ⎂+ -> 3 7",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "⟒",
       keywords = Seq("left-fork:"),
       numberOfElements = 2,
@@ -3862,7 +3887,7 @@ object ElementInformation:
         example = "3 4 ⟒+× -> 28",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "ᛞ",
       keywords = Seq("inner-product:"),
       numberOfElements = 2,
@@ -3873,7 +3898,7 @@ object ElementInformation:
         example = "#[1|2|3#] #[4|5|6#] ᛞ×+ -> 32",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "▦",
       keywords = Seq("outer-product:"),
       numberOfElements = 1,
@@ -3885,7 +3910,7 @@ object ElementInformation:
           "#[1|2|3#] #[4|5|6#] ▦; -> [[[1,4],[1,5],[1,6]],[[2,4],[2,5],[2,6],[3,4],[3,5],[3,6]]]",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "¨",
       keywords = Seq("each:"),
       numberOfElements = 1,
@@ -3896,7 +3921,7 @@ object ElementInformation:
         example = "#[#[1|2|3#]|#[4|2|3#]|#[1|5|3#]#] ¨G -> [3, 4, 5]",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "Ẅ",
       keywords = Seq("zip-with:"),
       numberOfElements = 1,
@@ -3907,7 +3932,7 @@ object ElementInformation:
         example = "#[1|2|3#] #[4|5|6#] ¨; -> [[1, 4], [2, 5], [3, 6]]",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "¿",
       keywords = Seq("if:"),
       numberOfElements = 1,
@@ -3918,7 +3943,7 @@ object ElementInformation:
         example = "3 1 ¿d -> 6",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "ᖶ",
       keywords = Seq("if-else:"),
       numberOfElements = 2,
@@ -3930,7 +3955,7 @@ object ElementInformation:
         example = "3 1 ᖶd½ -> 6",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "⎇",
       keywords = Seq("dip:"),
       numberOfElements = 1,
@@ -3942,7 +3967,7 @@ object ElementInformation:
         example = "3 4 5 2 ⎇+ -> 3 9 2",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "~",
       keywords = Seq("filter:", "without-popping:", "peek:"),
       numberOfElements = 1,
@@ -3959,7 +3984,7 @@ object ElementInformation:
         example = "3 4 5 ~+ -> 3 4 9",
       ),
     ),
-    Modifier(
+    AddModifier(
       symbol = "⩔",
       keywords = Seq("at-simple-levels:", "@simple:"),
       numberOfElements = 1,
