@@ -1400,7 +1400,6 @@ object ElementInformation:
     AddElement(
       symbol = "o",
       keywords = Seq(
-        "overlapping-pairs",
         "overlapping-sliding-window",
         "windows",
         "reduce-overlaps-by",

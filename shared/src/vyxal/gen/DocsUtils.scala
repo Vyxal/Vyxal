@@ -33,7 +33,7 @@ ${genElementsTable()}
 
 ${genModifiersTable()}
 
-    """
+""".stripMargin(' ')
 
   def genElementsTable(): String =
     val HEADER_ROW = "| Symbol | Keywords | Arity | Vectorises | Overloads |" +
