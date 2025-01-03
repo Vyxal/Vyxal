@@ -19,6 +19,13 @@ jobs:
         run: ./mill jvm.sortYAML
       - name: Test
         run: ./mill jvm.test
+      - name: Stage changes
+        run: git add .
+      - name: Commit and push
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Refresh element and/or trigraph docs from recent commit"
+
 
   js:
     name: Compile JS

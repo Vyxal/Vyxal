@@ -132,7 +132,7 @@ object jvm extends JvmCommon {
     }
 
   def sortYAML =
-    T.command {
+    T {
       jvm.runMain(
         "vyxal.gen.sortYAML",
         (build.millSourcePath / "shared" / "src" / "test" /
