@@ -46,8 +46,10 @@ import java.nio.file.Paths
   Files.write(
     Paths.get(yamlLocation),
     (s"$header\n" +
-      sortedBlocks.map { (symbol, tests) =>
-        s"\"$symbol\"" + tests.mkString("\n")
-      }).getBytes(StandardCharsets.UTF_8),
+      sortedBlocks
+        .map { (symbol, tests) =>
+          s"\"$symbol\"" + tests.mkString("\n")
+        }
+        .mkString("\n")).getBytes(StandardCharsets.UTF_8),
   )
 end sortYAML

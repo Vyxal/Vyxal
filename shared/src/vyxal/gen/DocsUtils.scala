@@ -15,23 +15,23 @@ object DocsUtils:
 
   def genMarkdown(): String =
     s"""
-    Element, Modifier, and Syntax Reference
+Element, Modifier, and Syntax Reference
 
-    ## Elements
+## Elements
 
-    - `nsl` = Number/String/List
-    - `any` = Any type
-    - `num` = Number
-    - `str` = String
-    - `lst` = List
-    - `fun` = Function
-    - `obj` = User-defined object
+- `nsl` = Number/String/List
+- `any` = Any type
+- `num` = Number
+- `str` = String
+- `lst` = List
+- `fun` = Function
+- `obj` = User-defined object
 
-    ${genElementsTable()}
+${genElementsTable()}
 
-    ## Modifiers
+## Modifiers
 
-    ${genModifiersTable()}
+${genModifiersTable()}
 
     """
 
