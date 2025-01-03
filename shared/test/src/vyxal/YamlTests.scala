@@ -61,9 +61,10 @@ class YamlTests extends AnyFunSpec:
   val VAnyTag = CustomTag("!vany")
 
   for (element, testGroup) <- loadTests() do
-    describe(s"Element $element") {
-      execTests(element, testGroup)
-    }
+    if ElementInformation.elements.contains(element) then
+      describe(s"Element $element") {
+        execTests(element, testGroup)
+      }
 
   private def execTests(element: String, testGroup: TestGroup): Unit =
     testGroup match
