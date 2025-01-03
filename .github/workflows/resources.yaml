@@ -2,6 +2,9 @@
 name: Lint, format, and update resources
 
 on:
+  workflow_dispatch:
+  push:
+    # TODO: Delete the push event once this is on main
   workflow_run:
     workflows: [Sort Tests]
     types:
