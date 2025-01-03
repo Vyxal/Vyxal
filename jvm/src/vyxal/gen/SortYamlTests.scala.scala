@@ -48,7 +48,7 @@ import java.nio.file.Paths
     (s"$header\n" +
       sortedBlocks
         .map { (symbol, tests) =>
-          s"\"$symbol\"" + tests.mkString("\n")
+          s"\"$symbol\":\n" + tests
         }
         .mkString("\n")).getBytes(StandardCharsets.UTF_8),
   )
