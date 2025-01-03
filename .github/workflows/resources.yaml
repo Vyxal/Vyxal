@@ -3,7 +3,7 @@ name: Lint, format, and update resources
 
 on:
   workflow_run:
-    workflows: ["Sort Tests"]
+    workflows: [Sort Tests]
     types:
       - completed
 
