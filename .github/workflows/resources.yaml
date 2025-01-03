@@ -6,11 +6,6 @@ on:
     workflows: ["Sort Tests"]
     types:
       - completed
-  push:
-    paths-ignore:
-      - "documentation/**"
-      - "contributing/**"
-      - "pages/**"
 
 jobs:
   lint:
