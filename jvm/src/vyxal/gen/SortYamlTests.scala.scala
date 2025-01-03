@@ -26,7 +26,7 @@ import java.nio.file.Paths
     if line.startsWith("\"") then
       if currentBlockName.nonEmpty then
         blocks += currentBlockName -> currentBlock.mkString("\n")
-      currentBlockName = line.drop(1).dropRight(2)
+      currentBlockName = line.drop(1).takeWhile(_ != '"')
       currentBlock = Seq()
     else currentBlock = currentBlock :+ line
 
