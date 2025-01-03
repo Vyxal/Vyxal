@@ -92,11 +92,7 @@ object StringHelpers:
         val c = (z1 - 1) % 252
         z1 = (z1 - 1) / 252
         compressed.append(Codepage(c.toInt))
-      compressed.toString
-        .replace('"', '•')
-        .replace('„', '≈')
-        .replace('”', '¿')
-        .replace('“', 'ꜝ')
+      compressed
 
     val dp = Array.fill(s.length + 1)(BigInt(0))
     // scala equivalent of for i in range(len(str) -1,-1,-1)
@@ -298,12 +294,7 @@ object StringHelpers:
   // https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L1055
   def decompress(compressed: String): String =
     val decompressed = StringBuilder()
-    val comp = compressed
-      .replace('•', '"')
-      .replace('≈', '„')
-      .replace('¿', '”')
-      .replace('ꜝ', '“')
-      .reverse
+    val comp = compressed.reverse
     var integer =
       comp.map(Codepage.indexOf(_) + 1).foldLeft(BigInt(0))(_ * 252 + _)
 

@@ -1348,6 +1348,10 @@ object Elements:
     "⑦" -> niladify(256),
     "⑧" -> niladify(-1),
     "⑨" -> niladify(""),
+    "kæ" -> niladify(NumberHelpers.probablePrimes),
+    addPart("#C", Monad, true) {
+      case VStr(a) => StringHelpers.compressDictionary(a)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

@@ -26,7 +26,7 @@ class InterpreterTests extends VyxalTests:
     it(
       "Shouldn't hang when mapping over an infinite list and then performing a finite operation"
     ) {
-      testCode("ÞPƛ}5⊖", vSeq(2, 3, 5, 7, 11))
+      testCode("kæƛ}5⊖", vSeq(2, 3, 5, 7, 11))
     }
   }
 

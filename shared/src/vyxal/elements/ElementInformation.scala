@@ -3757,6 +3757,32 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    AddElement(
+      symbol = "kæ",
+      keywords = Seq("all-primes", "primes"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "All Primes",
+        args = Seq(),
+        description = "Push a list of every prime number to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "#C",
+      keywords = Seq("compress"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Compress",
+        args = Seq("str"),
+        description = "Compress #1 using the Vyxal compression algorithm",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Map[String, Modifier] = Map(

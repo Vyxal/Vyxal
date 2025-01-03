@@ -436,7 +436,7 @@ class ParserTests extends AnyFunSuite:
   test("Does the parser remove define structures?") {
     assert(
       parse(
-        "#::E+ | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}}"
+        "#::E+ | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ≡ [5|#$lhs #$rhs #:~+}}"
       ) === Group(List(), None)
     )
   }
