@@ -1,17 +1,17 @@
 
-    Element, Modifier, and Syntax Reference
+Element, Modifier, and Syntax Reference
 
-    ## Elements
+## Elements
 
-    - `nsl` = Number/String/List
-    - `any` = Any type
-    - `num` = Number
-    - `str` = String
-    - `lst` = List
-    - `fun` = Function
-    - `obj` = User-defined object
+- `nsl` = Number/String/List
+- `any` = Any type
+- `num` = Number
+- `str` = String
+- `lst` = List
+- `fun` = Function
+- `obj` = User-defined object
 
-    | Symbol | Keywords | Arity | Vectorises | Overloads |
+| Symbol | Keywords | Arity | Vectorises | Overloads |
 |--------|--|------|-----------|-----------|
 | `E` | `2**n`</br>`2pow`</br>`eval`</br>`2**` | 1 | vec  | **2 to the Power of N** (`num`): 2 ** #1</br>**Eval** (`str`): Evaluate #1 |
 | `e` | `even?`</br>`is-even`</br>`split-newlines`</br>`/newline` | 1 | vec  | **Is Even** (`num`): Is #1 even</br>**Split Newlines** (`str`): Split #1 by newlines |
@@ -109,6 +109,7 @@
 | `⍰` | `truthy?` | 1 | vec  | **Truthy?** (`scl`): Is #1 truthy? (Not 0, empty, or false) |
 | `⌽` | `1-slice`</br>`tail-take`</br>`1-take` | 2 |   | **1 Slice** (`itr,num`): First #2 elements of #1[1:]</br>**1 Slice** (`num,itr`): First #1 elements of #2[1:] |
 | `-` | `subtract`</br>`-`</br>`minus`</br>`subtraction`</br>`regex-remove` | 2 | vec  | **Subtraction** (`num,num`): #1 - #2</br>**Prepend/Append Hyphens** (`str,num`): #1 + #2 * '-'</br>**Prepend/Append Hyphens** (`num,str`): '-' * #1 + #2</br>**Regex Remove** (`str,str`): Remove matches of #2 from #1 |
+| `kæ` | `all-primes`</br>`primes` | 0 |   | **All Primes**: Push a list of every prime number to the stack |
 | `⎶` | `trim` | 2 |   | **Trim** (`any,any`): Trim #1 of leading and trailing #2 |
 | `,` | `println`</br>`stdout`</br>`output`</br>`out` | 1 |   | **Print** (`any`): Print #1 to stdout, followed by a newline |
 | `★` | `asterisk` | 0 |   | **Asterisk**: Push an asterisk to the stack |
@@ -195,6 +196,7 @@
 | `^` | `reverse-stack` | STACK |   | **Reverse Stack**: Reverse the stack |
 | `Π` | `product`</br>`product-of`</br>`*/` | 1 |   | **Product** (`lst`): Product of #1</br>**Number to Binary as String** (`num`): Convert #1 to binary as a string |
 | `⤺` | `around` | STACK |   | **Around**: Duplicate the top of the stack around the item below the top of the stack -> #1 #2 #1 |
+| `#C` | `compress` | 1 | vec  | **Compress** (`str`): Compress #1 using the Vyxal compression algorithm |
 | `③` | `32` | 0 |   | **32**: Push 32 to the stack |
 | `√` | `square-root`</br>`sqrt` | 1 | vec  | **Square Root** (`num`): Square root of #1 |
 | `£` | `set-register` | 1 |   | **Set Register** (`any`): Set the register to #1 |
@@ -208,11 +210,11 @@
 | `✒` | `print` | 1 |   | **Print** (`any`): Print #1 without a trailing newline |
 | `d` | `double` | 1 |   | **Double** (`num`): #1 * 2</br>**Double** (`str`): Append a copy of #1 to itself |
 | `Z` | `zip` | 2 |   | **Zip** (`lst,lst`): Zip #1 and #2 |
-| `o` | `overlapping-pairs`</br>`overlapping-sliding-window`</br>`windows`</br>`reduce-overlaps-by` | 2 |   | **Windows** (`lst,lst[num]`): Get overlapping windows of #1 with a window of size #2</br>**Overlapping Slices** (`any,num`): Get overlapping pairs of iterable(#1) with a window of size #2</br>**Overlapping Slices** (`num,any`): Get overlapping pairs of iterable(#2) with a window of size #1</br>**Reduce Overlapping Slices** (`lst,fun`): Reduce overlapping slices of length #2.arity in #1 by function #2</br>**Reduce Overlapping Slices** (`fun,lst`): Reduce overlapping slices of length #2.arity in #1 by function #2</br>**Reduce Set-Sized Overlapping Slices** (`lst,num,fun`): Reduce overlapping slices of length #2 in #1 by function #3</br>**Reduce Set-Sized Overlapping Slices** (`lst,fun,num`): Reduce overlapping slices of length #3 in #1 by function #2 |
+| `o` | `overlapping-sliding-window`</br>`windows`</br>`reduce-overlaps-by` | 2 |   | **Windows** (`lst,lst[num]`): Get overlapping windows of #1 with a window of size #2</br>**Overlapping Slices** (`any,num`): Get overlapping pairs of iterable(#1) with a window of size #2</br>**Overlapping Slices** (`num,any`): Get overlapping pairs of iterable(#2) with a window of size #1</br>**Reduce Overlapping Slices** (`lst,fun`): Reduce overlapping slices of length #2.arity in #1 by function #2</br>**Reduce Overlapping Slices** (`fun,lst`): Reduce overlapping slices of length #2.arity in #1 by function #2</br>**Reduce Set-Sized Overlapping Slices** (`lst,num,fun`): Reduce overlapping slices of length #2 in #1 by function #3</br>**Reduce Set-Sized Overlapping Slices** (`lst,fun,num`): Reduce overlapping slices of length #3 in #1 by function #2 |
 
-    ## Modifiers
+## Modifiers
 
-    | Symbol | Keywords | Number of Elements | Overloads |
+| Symbol | Keywords | Number of Elements | Overloads |
 |--------|--|------------------|-----------|
 | `⑴` | `*:` | 1 | <table><tr><td>**Next AddElement as Lambda**</td><td>`any`</td><td>Wrap #1 in a lambda and push it</td><td>`⑴+ = λ+}`</td></tr></table> |
 | `∦` | `parallel-apply-wrap:`</br>`paraw:` | 2 | <table><tr><td>**Parallel Apply Wrap**</td><td>`mon,mon`</td><td>Apply #1 and #2 on separate stacks and push both results wrapped in a list. Equivalent to `∥#1#2;`</td><td>`3 4 ∦d½ -> [8, 2]`</td></tr></table> |
@@ -234,4 +236,3 @@
 | `Ẅ` | `zip-with:` | 1 | <table><tr><td>**Zip With**</td><td>`dyd`</td><td>Pop two lists and zip them, reducing each pair with #1</td><td>`#[1\|2\|3#] #[4\|5\|6#] ¨; -> [[1, 4], [2, 5], [3, 6]]`</td></tr></table> |
 | `∥` | `parallel-apply:`</br>`para:` | 2 | <table><tr><td>**Parallel Apply**</td><td>`mon,mon`</td><td>Apply #1 and #2 on separate stacks and push both results</td><td>`3 4 ∥d½ -> 8 2`</td></tr></table> |
 
-    
