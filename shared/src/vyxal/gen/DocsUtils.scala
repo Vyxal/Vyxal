@@ -41,22 +41,24 @@ ${genModifiersTable()}
 
     val elementMap = ElementInformation.elements
 
-    val lines = elementMap.values.toSeq.map { elem =>
-      val symbol =
-        if "`|<>\\".contains(elem.symbol) then s"\\${elem.symbol}"
-        else elem.symbol
-      val keywords = elem.keywords.map(kw => s"`$kw`").mkString("</br>")
-      val arity = if elem.arity == -1 then "STACK" else elem.arity
-      val vectorises = if elem.options.vectorises then "vec" else ""
-      val peeks = if elem.options.peeks then "*" else ""
-      val overloads = elem.overloads.map(overloadToString)
-      val overloadsFlat = overloads.foldLeft(Seq.empty[String]) {
-        case (acc, s: String) => acc :+ s
-        case (acc, s: Seq[String]) => acc ++ s
-      }
+    val lines = elementMap.values.toSeq
+      .sortBy(elem => Codepage.indexOf(elem.symbol.last))
+      .map { elem =>
+        val symbol =
+          if "`|<>\\".contains(elem.symbol) then s"\\${elem.symbol}"
+          else elem.symbol
+        val keywords = elem.keywords.map(kw => s"`$kw`").mkString("</br>")
+        val arity = if elem.arity == -1 then "STACK" else elem.arity
+        val vectorises = if elem.options.vectorises then "vec" else ""
+        val peeks = if elem.options.peeks then "*" else ""
+        val overloads = elem.overloads.map(overloadToString)
+        val overloadsFlat = overloads.foldLeft(Seq.empty[String]) {
+          case (acc, s: String) => acc :+ s
+          case (acc, s: Seq[String]) => acc ++ s
+        }
 
-      s"| `$symbol` | $keywords | $arity$peeks | $vectorises  | ${overloadsFlat.mkString("</br>")} |"
-    }
+        s"| `$symbol` | $keywords | $arity$peeks | $vectorises  | ${overloadsFlat.mkString("</br>")} |"
+      }
 
     (HEADER_ROW +: lines).mkString("\n")
   end genElementsTable
