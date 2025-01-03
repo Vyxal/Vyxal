@@ -135,7 +135,7 @@ object jvm extends JvmCommon {
     T {
       jvm.runMain(
         "vyxal.gen.sortYAML",
-        (build.millSourcePath / "shared" / "src" / "test" / "resources" /
+        (build.millSourcePath / "shared" / "test" / "resources" /
           "tests.yaml").toString,
       )()
     }
