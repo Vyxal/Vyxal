@@ -131,6 +131,15 @@ object jvm extends JvmCommon {
       )()
     }
 
+  def sortYAML =
+    T.command {
+      jvm.runMain(
+        "vyxal.gen.sortYAML",
+        (build.millSourcePath / "shared" / "src" / "test" /
+          "tests.yaml").toString,
+      )()
+    }
+
   /** Generate nanorc files for JLine highlighting */
   def nanorc =
     T {

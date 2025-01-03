@@ -22,17 +22,17 @@
     - { in: [5.1, 4.2], out: 937.11899215207 }
     - { in: [3, 0], out: 1 }
     - { in: [0, 0], out: 1 }
-#  when given a string and a number:
-#    - { in: ["the fitnessgram pacer test", 6], out: "the finessgram pacer test" }
-#    - { in: [4.2, "airpod shotty"], out: "airpd shotty" }
-#    - { in: ["sussy baka", 0], out: "ussy baka" }
-#    - { in: ["sussy baka", -1], out: "sussy bak" }
-#    - { in: ["vyxal", 7], out: "vyal" }
-#  when given two strings:
-#    - { in: ["abcdefabc", "abc"], out: "def" }
-#    - { in: ["abc", "abcdefabc"], out: "abc" }
-#    - { in: ["abc", "abc"], out: "" }
-#    - { in: ["abcdefabc", ""], out: "abcdefabc" }
+    #  when given a string and a number:
+    #    - { in: ["the fitnessgram pacer test", 6], out: "the finessgram pacer test" }
+    #    - { in: [4.2, "airpod shotty"], out: "airpd shotty" }
+    #    - { in: ["sussy baka", 0], out: "ussy baka" }
+    #    - { in: ["sussy baka", -1], out: "sussy bak" }
+    #    - { in: ["vyxal", 7], out: "vyal" }
+    #  when given two strings:
+    #    - { in: ["abcdefabc", "abc"], out: "def" }
+    #    - { in: ["abc", "abcdefabc"], out: "abc" }
+    #    - { in: ["abc", "abc"], out: "" }
+    #    - { in: ["abcdefabc", ""], out: "abcdefabc" }
 
 "+":
   - { in: ["1", 2], out: "12" }
@@ -1803,8 +1803,6 @@
   - {in: ["vyxal"], out: [22, 25, 24, 1, 12]}
   - {in: [["xyz", 4294967293, "h"]], out: [[24, 25, 26], "s", 8]}
   - {in: [""], out: []}
-
-# Tests for 3.5 elements start here
 
 "⊞":
   - {in: [[1,1,1,1,2,2,3,3,3]], out: [4, 2, 3]}
