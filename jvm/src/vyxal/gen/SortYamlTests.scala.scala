@@ -30,6 +30,9 @@ import java.nio.file.Paths
       currentBlock = Seq()
     else currentBlock = currentBlock :+ line
 
+  if !blocks.contains(currentBlockName) then
+    blocks += currentBlockName -> currentBlock.mkString("\n")
+
   // Sort the blocks by their position in the Vyxal codepage
   val sortedBlocks = blocks.toSeq
     .filter { (symbol, _) =>
