@@ -96,16 +96,15 @@ class YamlTests extends AnyFunSpec:
               given ctx: Context =
                 VyxalTests.testContext(inputs = inputs, flags = flags)
               Interpreter.execute(code)
-              println(s"Ran $code with inputs $inputs")
-              println(s"Stack is now ${ctx.getStack}")
               val output = ctx.peek
               val checkpoint = Checkpoint()
 
               criteria.foreach {
                 case Criterion.Equals(expected) =>
                   checkpoint { assertResult(expected)(output) }
-                case Criterion.Stack(elems) =>
-                  checkpoint { assertResult(elems)(ctx.peek(elems.length)) }
+                case Criterion.Stack(elems) => checkpoint {
+                    assertResult(elems)(ctx.peekInTest(elems.length))
+                  }
                 case crit => checkpoint {
                     output match
                       case lst: VList => (crit: @unchecked) match

@@ -98,6 +98,12 @@ class Context private (
       stack.slice(stack.length - n, stack.length).toList.reverse
     else stack.toList.reverse ::: inputs.peek(n - stack.length)
 
+  def peekInTest(n: Int): List[VAny] =
+    if useStack && parent.isDefined then parent.getOrElse(this).peekInTest(n)
+    else if n <= stack.length then
+      stack.slice(stack.length - n, stack.length).toList.reverse
+    else stack.toList.reverse ::: globals.inputs.peek(n - stack.length)
+
   /** Push items onto the stack. The first argument will be pushed first. */
   def push(items: VAny*): Unit =
     if useStack && parent.isDefined then parent.getOrElse(this).push(items*)
