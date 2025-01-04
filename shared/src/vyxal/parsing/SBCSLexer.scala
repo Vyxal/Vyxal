@@ -295,6 +295,59 @@ class SBCSLexer extends LexerCommon:
         Range(rangeStart, index),
       )
 
+  protected def defineExtensionToken: Unit =
+    val rangeStart = index
+    eatWhitespace()
+    val name =
+      if headEqual(".") then
+        pop()
+        s".${simpleName()}"
+      else simpleName()
+    addToken(
+      TokenType.DefineExtension,
+      "",
+      Range(rangeStart, index),
+    )
+    addToken(
+      TokenType.Param,
+      name,
+      Range(rangeStart, index),
+    )
+    eatWhitespace()
+    if headIsBranch then
+      quickToken(TokenType.Branch, BRANCH)
+      // Get the arguments and put them into tokens
+      var arity = 0
+      while !headIsBranch do // Loop until the implementation
+        eatWhitespace()
+        // Read the name of the argument to the extension
+        val argNameStart = index
+        val argName = simpleName()
+        addToken(
+          TokenType.Param,
+          argName,
+          Range(argNameStart, index),
+        )
+        eatWhitespace()
+        // Read the type of the argument to the extension
+        eat(EXTENSION_TYPE_SEPARATOR)
+        eatWhitespace()
+        val argTypeStart = index
+        val argType =
+          if headEqual(EXTENSION_ANY_TYPE) then pop() else simpleName()
+        addToken(
+          TokenType.Param,
+          argType,
+          Range(argTypeStart, index),
+        )
+        arity += 1
+        // Consume any optional comma
+        if headEqual(",") then pop()
+        eatWhitespace()
+      end while
+    end if
+  end defineExtensionToken
+
   private def customDefinitionToken: Unit =
     val rangeStart = index
     pop(3)

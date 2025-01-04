@@ -717,7 +717,9 @@ private class Parser:
       case _ => false
 
   def parse(tokens: List[Token], literate: Boolean): AST =
-    val preprocessed = preprocess(tokens).to(Queue)
+    val withoutExtensionTypeSeparator =
+      tokens.filterNot(_.tokenType == TokenType.ExtensionTypeSeparator)
+    val preprocessed = preprocess(withoutExtensionTypeSeparator).to(Queue)
     val parsed = parse(preprocessed, true, literate)
     if preprocessed.nonEmpty then
       if isCloser(preprocessed.front) then

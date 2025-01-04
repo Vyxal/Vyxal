@@ -183,8 +183,7 @@ class LiterateLexer extends LexerCommon:
   private val SBCS_NEGATIVE_SIGN = "_"
   private val NEGATIVE_SIGN = "-"
   private val ALLOWED_KEYWORD_SYMBOLS = "_<>?!*+\\-=&%@"
-  private val LIST_ITEM_SEPARATOR = ","
-  private val EXTENSION_TYPE_SEPARATOR = "as"
+  private val EXTENSION_GIVEN_KEYWORD = "given"
 
   def lex(program: String): Seq[Token] =
     programStack.pushAll(program.reverse.map(_.toString))
@@ -450,6 +449,63 @@ class LiterateLexer extends LexerCommon:
         if safeCheck(c => c.head.isDigit) then tokenVal ++= simpleNumber()
     s"${tokenVal.toString()}${if negative then SBCS_NEGATIVE_SIGN else ""}"
   end decimalNumber
+
+  protected def defineExtensionToken: Unit =
+    val rangeStart = index
+    eatWhitespace()
+    val name =
+      if headEqual(".") then
+        pop()
+        s".${simpleName()}"
+      else simpleName()
+    addToken(
+      TokenType.DefineExtension,
+      "",
+      Range(rangeStart, index),
+    )
+    addToken(
+      TokenType.Param,
+      name,
+      Range(rangeStart, index),
+    )
+    eatWhitespace()
+    if headLookaheadEqual(EXTENSION_GIVEN_KEYWORD) then
+      val givenStart = index
+      eat(EXTENSION_GIVEN_KEYWORD)
+      addToken(TokenType.Branch, BRANCH_CHARACTER, Range(givenStart, index))
+
+      // Get the arguments and put them into tokens
+      var arity = 0
+      while !headIsBranch && !headEqual(",") do // Loop until the implementation
+        eatWhitespace()
+        // Read the name of the argument to the extension
+        val argNameStart = index
+        val argName = simpleName()
+        addToken(
+          TokenType.Param,
+          argName,
+          Range(argNameStart, index),
+        )
+        eatWhitespace()
+        // Read the type of the argument to the extension
+        quickToken(TokenType.ExtensionTypeSeparator, EXTENSION_TYPE_SEPARATOR)
+        eatWhitespace()
+        val argTypeStart = index
+        val argType =
+          if headEqual(EXTENSION_ANY_TYPE) then pop() else simpleName()
+        addToken(
+          TokenType.Param,
+          argType,
+          Range(argTypeStart, index),
+        )
+        arity += 1
+        // Consume any optional comma
+        if headEqual(",") then pop()
+        eatWhitespace()
+      end while
+    end if
+  end defineExtensionToken
+
   private def customDefinitionToken: Unit =
     val rangeStart = index
     pop()
