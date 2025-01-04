@@ -554,28 +554,43 @@ class InterpreterTests extends VyxalTests:
       try
         testCodeAsLiterate(s"""$boilerplate `TestObj` "private" <**""", VNum(2))
         fail("Should have thrown an exception on read private")
-      catch case _: Exception => ()
+      catch
+        case _: Exception =>
+          println("Caught exception as expected on read private")
+          ()
     }
 
     it("should have the correct write access modifiers") {
+      println("Starting write access tests")
       val boilerplate =
         "record TestObj => 1 :!=public 2 :=private 3 $restricted end"
+      println("Starting public write")
       testCodeAsLiterate(
         s"""$boilerplate `TestObj` "public" 69 **> "public" <**""",
         VNum(69),
       )
+      println("Finished public write")
       try
+        println("Starting private write")
         testCodeAsLiterate(
-          s"""$boilerplate `TestObj` "private" **>""",
+          s"""$boilerplate `TestObj` "private" 45 **>""",
           VNum(2),
         )
         fail("Should have thrown an exception on write private")
+      catch
+        case _: Exception =>
+          println("Caught exception as expected for write private")
+          ()
+      try
         testCodeAsLiterate(
           s"""$boilerplate `TestObj` "restricted" 69 **>""",
           VNum(3),
         )
         fail("Should have thrown an exception on write restricted")
-      catch case _: Exception => ()
+      catch
+        case _: Exception =>
+          println("Caught exception as expected for write restricted")
+          ()
     }
 
     it("should update record attributes upon writing") {
