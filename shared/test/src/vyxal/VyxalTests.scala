@@ -142,7 +142,7 @@ object VyxalTests:
         Settings(endPrintMode = EndPrintMode.None),
       )
     )
-    globals.inputs = Inputs(inputs.reverse)
+    // globals.inputs = Inputs(inputs)
     Context(
       inputs = inputs,
       testMode = true,
