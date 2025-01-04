@@ -531,7 +531,7 @@ object ElementInformation:
         args = Seq(),
         description = "Get all the global inputs as a list",
         typeSwitchable = false,
-      )
+      ),
     ),
     AddElement(
       symbol = "@",
