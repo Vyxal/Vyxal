@@ -352,7 +352,7 @@ private class Parser:
 
               // Finally, push the wrapped lambda to the stack
 
-              finalAsts.push(AST.makeSingle(wrapped, AST.Command("Ė")))
+              finalAsts.push(AST.makeSingle(wrapped, AST.Command("ᴥ")))
             else if Modifiers.modifiers.contains(name) then
               val modifier = Modifiers.modifiers(name)
               val modifierArgs = List.fill(arity)(finalAsts.pop())
@@ -585,7 +585,7 @@ private class Parser:
           case CustomElementType.Modifier => AST.makeSingle(
               if impl.isInstanceOf[AST.Lambda] then impl
               else AST.Lambda(Some(arity), functions(0) ++ args(0), List(impl)),
-              AST.Command("Ė"),
+              AST.Command("ᴥ"),
             )
 
         customs(actualName) = CustomDefinition(
