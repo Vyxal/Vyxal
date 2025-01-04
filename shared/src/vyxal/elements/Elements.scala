@@ -148,6 +148,7 @@ object Elements:
           if temp.nonEmpty then MiscHelpers.eval(temp)
           else ctx.settings.defaultValue
       ),
+    "#◌" -> niladify(ctx ?=> VList(ctx.globals.inputs.getAll)),
     addPart("@", Dyad, true) {
       case (a: VNum, b: VNum) => (a - b).vabs
       case (VStr(a), VStr(b)) => StringHelpers.levenshtein(a, b)

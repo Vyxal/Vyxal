@@ -522,6 +522,18 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "#◌",
+      keywords = Seq("inputs", "all-inputs", "all-stdin"),
+      arity = 0,
+      Options(vectorises = false),
+      Overload(
+        name = "Inputs",
+        args = Seq(),
+        description = "Get all the global inputs as a list",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
       symbol = "@",
       keywords =
         Seq("absolute-difference", "abs-diff", "levenstein", "to-overpairs"),

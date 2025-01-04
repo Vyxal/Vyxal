@@ -392,4 +392,12 @@ class ElementTests extends VyxalTests:
       in(5, 1, 2, 3) -> List[VAny](2, 1, 3, 5)
     )
   }
+
+  describe("Element #◌") {
+    describe("should get all inputs even after reading inputs individually") {
+      testMulti("??#◌")(
+        in(1, 2, 3) -> vSeq(3, 2, 1)
+      )
+    }
+  }
 end ElementTests
