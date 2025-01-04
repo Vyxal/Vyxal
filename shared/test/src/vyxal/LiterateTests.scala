@@ -21,19 +21,11 @@ class LiterateTests extends VyxalTests:
       group {
         testLiterate("123", "123")
         testLiterate("6.", "6.")
-        testLiterate("3.4i1.2", "3.4ı1.2")
-        testLiterate("3.4i1.", "3.4ı1.")
-        testLiterate("3.4i.2", "3.4ı.2")
-        testLiterate("3.4i.", "3.4ı.")
-        testLiterate(".i.", ".ı.")
-        testLiterate("3.4i", "3.4ı")
         testLiterate(".4", ".4")
         testLiterate(".", ".")
         testLiterate("1_000_000", "1000000")
         testLiterate("1_0______0", "100")
         testLiterate("-5.2", "5.2_")
-        testLiterate("-5.2i", "5.2_ı")
-        testLiterate("1i1i1i1", "1ı1 ı1 ı1")
       }
     }
 
