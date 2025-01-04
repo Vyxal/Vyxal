@@ -96,6 +96,8 @@ class YamlTests extends AnyFunSpec:
               given ctx: Context =
                 VyxalTests.testContext(inputs = inputs, flags = flags)
               Interpreter.execute(code)
+              println(s"Ran $code with inputs $inputs")
+              println(s"Stack is now ${ctx.getStack}")
               val output = ctx.peek
               val checkpoint = Checkpoint()
 
