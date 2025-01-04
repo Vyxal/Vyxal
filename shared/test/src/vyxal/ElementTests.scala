@@ -387,9 +387,9 @@ class ElementTests extends VyxalTests:
     )
   }
 
-  describe("Element #◌") {
+  describe("Element #?") {
     describe("should get all inputs even after reading inputs individually") {
-      testMulti("??#◌")(
+      testMulti("??#?")(
         in(1, 2, 3) -> vSeq(3, 2, 1)
       )
     }
