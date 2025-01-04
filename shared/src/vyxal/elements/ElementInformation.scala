@@ -523,13 +523,13 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "#◌",
-      keywords = Seq("inputs"),
+      keywords = Seq("inputs", "all-inputs", "all-stdin"),
       arity = 0,
       Options(vectorises = false),
       Overload(
         name = "Inputs",
         args = Seq(),
-        description = "Get all the inputs as a list",
+        description = "Get all the global inputs as a list",
         typeSwitchable = false,
       )
     ),
