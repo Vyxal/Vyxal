@@ -554,7 +554,10 @@ class InterpreterTests extends VyxalTests:
       try
         testCodeAsLiterate(s"""$boilerplate `TestObj` "private" <**""", VNum(2))
         fail("Should have thrown an exception on read private")
-      catch case _: Exception => ()
+      catch
+        case _: Exception =>
+          println("Caught exception as expected on read private")
+          ()
     }
 
     it("should have the correct write access modifiers") {
@@ -569,13 +572,17 @@ class InterpreterTests extends VyxalTests:
           s"""$boilerplate `TestObj` "private" **>""",
           VNum(2),
         )
+        println("Should not be printing this")
         fail("Should have thrown an exception on write private")
         testCodeAsLiterate(
           s"""$boilerplate `TestObj` "restricted" 69 **>""",
           VNum(3),
         )
         fail("Should have thrown an exception on write restricted")
-      catch case _: Exception => ()
+      catch
+        case _: Exception =>
+          println("Caught exception as expected")
+          ()
     }
 
     it("should update record attributes upon writing") {
