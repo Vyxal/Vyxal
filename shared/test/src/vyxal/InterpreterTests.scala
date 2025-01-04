@@ -573,7 +573,7 @@ class InterpreterTests extends VyxalTests:
       try
         println("Starting private write")
         testCodeAsLiterate(
-          s"""$boilerplate `TestObj` "private" **>""",
+          s"""$boilerplate `TestObj` "private" 45 **>""",
           VNum(2),
         )
         fail("Should have thrown an exception on write private")
