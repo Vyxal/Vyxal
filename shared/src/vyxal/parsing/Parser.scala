@@ -6,7 +6,6 @@ import vyxal.*
 import vyxal.elements.ElementInformation
 import vyxal.elements.Elements
 import vyxal.elements.Modifiers
-import vyxal.NumberHelpers.range
 
 import scala.collection.mutable
 import scala.collection.mutable.{ListBuffer, Queue, Stack}

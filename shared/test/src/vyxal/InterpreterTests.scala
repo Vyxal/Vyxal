@@ -5,7 +5,6 @@ import vyxal.elements.Modifiers
 import vyxal.parsing.{Lexer, Parser}
 
 import org.scalatest.tagobjects.Slow
-import spire.math.Real
 
 class InterpreterTests extends VyxalTests:
   def testCodeAsLiterate(input: String, expected: VAny): Unit =

@@ -1,12 +1,10 @@
 package vyxal.parsing
 
-import vyxal.elements.ElementInformation
-import vyxal.elements.Elements
-import vyxal.elements.Modifier
-import vyxal.elements.Modifiers
-import vyxal.parsing.TokenType.*
 import vyxal.UnopenedGroupException
 import vyxal.VyxalException
+import vyxal.elements.ElementInformation
+import vyxal.elements.Modifier
+import vyxal.parsing.TokenType.*
 
 import scala.collection.mutable.ArrayBuffer
 import scala.util.matching.Regex

@@ -2,7 +2,7 @@ package vyxal
 
 import scala.language.strictEquality
 
-import vyxal.parsing.{Lexer, Range, StructureType, Token}
+import vyxal.parsing.{Lexer, Range, Token}
 import vyxal.parsing.TokenType.*
 
 class LexerTests extends VyxalTests:

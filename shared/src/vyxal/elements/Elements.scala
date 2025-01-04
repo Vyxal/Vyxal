@@ -1549,7 +1549,6 @@ object Elements:
       impl: Context ?=> Unit
   ): Element = Element(arity.arity, () => impl)
 
-  private def direct(impl: Context ?=> Unit): Element = Element(0, () => impl)
   private def direct(arity: Int)(impl: Context ?=> Unit): Element =
     Element(arity, () => impl)
 
