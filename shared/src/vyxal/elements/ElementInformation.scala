@@ -522,7 +522,7 @@ object ElementInformation:
       ),
     ),
     AddElement(
-      symbol = "#◌",
+      symbol = "#?",
       keywords = Seq("inputs", "all-inputs", "all-stdin"),
       arity = 0,
       Options(vectorises = false),
