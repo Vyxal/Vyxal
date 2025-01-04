@@ -176,6 +176,7 @@ Element, Modifier, and Syntax Reference
 | `√` | `square-root`</br>`sqrt` | 1 | vec  | **Square Root** (`num`): Square root of #1 |
 | `⍰` | `truthy?` | 1 | vec  | **Truthy?** (`scl`): Is #1 truthy? (Not 0, empty, or false) |
 | `◌` | `round` | 1 | vec  | **Round** (`num`): Round #1 to the nearest integer, half-up |
+| `#◌` | `inputs`</br>`all-inputs`</br>`all-stdin` | 0 |   | **Inputs**: Get all the global inputs as a list |
 | `δ` | `deltas`</br>`differences` | 1 |   | **Deltas** (`lst`): Deltas/forward differences of #1 - [a - b, b - c, c - d, ...] |
 | `☷` | `partition-after-truthy` | 1 |   | **Partition After Truthy** (`lst,lst`):  Partition #1 after truthy indices of #2. |
 | `✇` | `edges`</br>`ends`</br>`real-imaginary` | 1 |   | **Edges** (`itr`): First and last element of #1</br>**Real and Imaginary** (`num`): Real and imaginary parts of #1 |
