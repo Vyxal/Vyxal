@@ -670,7 +670,7 @@ end
         VNum(1),
       )
       testCodeAsLiterate(
-        "record T => 5 $mem end extension F given a as T does $a \"mem\" @<= end `T` $@F",
+        "record T => 5 $mem end extension F given a as T does $a \"mem\" <** end `T` $@F",
         VNum(5),
       )
     }
