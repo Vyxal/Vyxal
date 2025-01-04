@@ -136,15 +136,17 @@ object VyxalTests:
       inputs: Seq[VAny] = Seq.empty,
       flags: List[Char] = List.empty,
   ) =
+    val globals = Globals(settings =
+      Flag.applyFlags(
+        flags.map(Flag.from),
+        Settings(endPrintMode = EndPrintMode.None),
+      )
+    )
+    globals.inputs = Inputs(inputs)
     Context(
       inputs = inputs,
       testMode = true,
-      globals = Globals(settings =
-        Flag.applyFlags(
-          flags.map(Flag.from),
-          Settings(endPrintMode = EndPrintMode.None),
-        )
-      ),
+      globals = globals,
     )
 
   private inline def group(inline asserts: Unit): Unit =
