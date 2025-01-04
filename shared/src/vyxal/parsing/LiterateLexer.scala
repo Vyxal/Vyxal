@@ -91,6 +91,16 @@ class LiterateLexer extends LexerCommon:
     "end-all" -> TokenType.StructureAllClose,
   )
 
+  private val closeAndFlattenKeywords = List(
+    "end-and-flatten",
+    "end-flatten",
+  )
+
+  private val closeAndHeadKeywords = List(
+    "end-and-head",
+    "end-head",
+  )
+
   private val lambdaOpeners = Map(
     "lambda" -> StructureType.Lambda,
     "lam" -> StructureType.Lambda,
@@ -138,37 +148,79 @@ class LiterateLexer extends LexerCommon:
     "generate<" -> StructureType.GeneratorStructure,
   )
 
+  private val NUMBER_START_REGEX = "\\d[^<>!*+\\-=&%@~A-Za-z]"
+  private val NEGATIVE_NUMBER_START_REGEX = "-[1-9]"
+  private val DECIMAL_SEPARATOR = "."
+  private val KEYWORD_START_SYMBOLS = "<>!*+-=&%@~"
+  private val DOUBLE_QUOTES = "\""
+  private val GROUP_OPEN = "("
+  private val GROUP_CLOSE = ")"
+  private val GROUP_MODIFIER_REGEX = ":[.:]"
+  private val GROUP_MODIFIER_SYMBOLS = ".:"
+  private val NEWLINE = "\n"
+  private val SYMBOLIC_LAMBDA_OPEN = "{"
+  private val SYMBOLIC_STRUCTURE_CLOSE = "}"
+  private val SPECIAL_CLOSER_REGEX = "\\}#[fh]"
+  private val SYMBOLIC_STRUCTURE_CLOSE_AND_FLATTEN = "}#f"
+  private val SYMBOLIC_STRUCTURE_CLOSE_AND_HEAD = "}#h"
+  private val BRANCH_CHARACTER = "|"
+  private val DOUBLE_CLOSE_KEYWORD = "end-end"
+  private val GET_VARIABLE_REGEX = "\\$([^@:.]|$)"
+  private val VARIABLE_UNPACK_SIGIL = ":=["
+  private val VARIABLE_SET_SIGIL = ":="
+  private val CONSTANT_SET_SIGIL = ":!="
+  private val AUGMENTED_ASSIGN_SIGIL = ":>"
+  private val COMMAND_SYMBOL_SIGIL = "$@"
+  private val ORIGINAL_COMMAND_SIGIL = "$."
+  private val DEFINE_KEYWORD = "define"
+  private val DEFINE_ELEMENT_KEYWORD = "element"
+  private val DEFINE_MODIFIER_KEYWORD = "modifier"
+  private val RECORD_KEYWORD = "record"
+  private val EXTENSION_KEYWORD = "extension"
+  private val FUNCTION_CALL_SUGAR_CHAR = "`"
+  private val LIT_LIST_OPEN = "["
+  private val LIT_LIST_CLOSE = "]"
+  private val SBCS_NEGATIVE_SIGN = "_"
+  private val NEGATIVE_SIGN = "-"
+  private val ALLOWED_KEYWORD_SYMBOLS = "_<>?!*+\\-=&%@"
+  private val LIST_ITEM_SEPARATOR = ","
+  private val EXTENSION_TYPE_SEPARATOR = "as"
+
   def lex(program: String): Seq[Token] =
     programStack.pushAll(program.reverse.map(_.toString))
     while programStack.nonEmpty do
-      if (headIsDigit && headLookaheadMatch("\\d[^<>!*+\\-=&%@~A-Za-z]")) ||
-        headLookaheadMatch("-[1-9]") || headEqual(".")
+      if (headIsDigit && headLookaheadMatch(NUMBER_START_REGEX)) ||
+        headLookaheadMatch(NEGATIVE_NUMBER_START_REGEX) ||
+        headEqual(DECIMAL_SEPARATOR)
       then numberToken
       else if safeCheck(c =>
           c.length == 1 &&
-            (c.head.isLetter || c.head.isDigit || "<>!*+-=&%@~".contains(c))
+            (c.head.isLetter || c.head.isDigit ||
+              KEYWORD_START_SYMBOLS.contains(c))
         )
       then keywordToken
-      else if headEqual(""""""") then stringToken(true)
-      else if headEqual("(") then
-        eat("(")
+      else if headEqual(DOUBLE_QUOTES) then stringToken(true)
+      else if headEqual(GROUP_OPEN) then
+        eat(GROUP_OPEN)
         groups += ArrayBuffer[LitToken]()
-        if headLookaheadMatch(":[.:]") then
+        if headLookaheadMatch(GROUP_MODIFIER_REGEX) then
           addToken(groupModifierToToken(pop(2))(Range(index, index)))
-        else if headIn(".:") then
+        else if headIn(GROUP_MODIFIER_SYMBOLS) then
           addToken(groupModifierToToken(pop(1))(Range(index, index)))
-      else if headEqual(")") then
+      else if headEqual(GROUP_CLOSE) then
         if groups.nonEmpty then
           val group = groups.last
           groups.dropRightInPlace(1)
           addToken(
             LitToken(Group, group.toSeq, Range(index, index))
           )
-          eat(")")
+          eat(GROUP_CLOSE)
         else throw new UnopenedGroupException(index)
-      else if headEqual("\n") then quickToken(Newline, "\n")
+      else if headEqual(NEWLINE) then quickToken(Newline, NEWLINE)
       else if headIsWhitespace then pop(1)
-      else if headEqual("{") || lambdaOpeners.contains(programStack.head) then
+      else if headEqual(SYMBOLIC_LAMBDA_OPEN) ||
+        lambdaOpeners.contains(programStack.head)
+      then
         val lambdaKeyword = pop()
         val lambdaType =
           lambdaOpeners.getOrElse(lambdaKeyword, StructureType.Lambda)
@@ -184,63 +236,77 @@ class LiterateLexer extends LexerCommon:
       else if structOpeners.contains(programStack.head) then
         val tempRange = Range(index, index)
         addToken(TokenType.StructureOpen, structOpeners(pop()).open, tempRange)
-      else if headIsBranch then quickToken(TokenType.Branch, "|")
-      else if endKeywords.contains(programStack.head) || headEqual("}") then
-        quickToken(TokenType.StructureClose, "}")
-      else if headEqual("end-end") then
-        quickToken(TokenType.StructureDoubleClose, ")")
+      else if headIsBranch then quickToken(TokenType.Branch, BRANCH_CHARACTER)
+      else if endKeywords.contains(programStack.head) ||
+        (headEqual(SYMBOLIC_STRUCTURE_CLOSE) &&
+          !headLookaheadMatch(SPECIAL_CLOSER_REGEX))
+      then quickToken(TokenType.StructureClose, SYMBOLIC_STRUCTURE_CLOSE)
+      else if headEqual(DOUBLE_CLOSE_KEYWORD) then
+        quickToken(TokenType.StructureDoubleClose, STRUCTURE_DOUBLE_CLOSE)
+      else if closeAndFlattenKeywords.contains(programStack.head) ||
+        headLookaheadEqual(SYMBOLIC_STRUCTURE_CLOSE_AND_FLATTEN)
+      then
+        quickToken(TokenType.StructureCloseAndFlatten, STRUCTURE_FLATTEN_CLOSE)
+      else if closeAndHeadKeywords.contains(programStack.head) ||
+        headLookaheadEqual(SYMBOLIC_STRUCTURE_CLOSE_AND_HEAD)
+      then
+        quickToken(TokenType.StructureCloseAndHead, STRUCTURE_FIRST_ITEM_CLOSE)
       else if closeAllKeywords.contains(programStack.head) then
-        quickToken(TokenType.StructureAllClose, "]")
-      else if headLookaheadMatch("\\$([^@:.]|$)") then
+        quickToken(TokenType.StructureAllClose, STRUCTURE_ALL_CLOSE)
+      else if headLookaheadMatch(GET_VARIABLE_REGEX) then
         pop()
         getVariableToken
-      else if headLookaheadEqual(":=[") then
-        quickToken(TokenType.UnpackTrigraph, "#:[")
+      else if headLookaheadEqual(VARIABLE_UNPACK_SIGIL) then
+        quickToken(TokenType.UnpackTrigraph, VARIABLE_UNPACK_SIGIL)
         unpackDepth = 1
-      else if headLookaheadEqual(":=") then
+      else if headLookaheadEqual(VARIABLE_SET_SIGIL) then
         pop(2)
         setVariableToken
-      else if headLookaheadEqual(":!=") then
+      else if headLookaheadEqual(CONSTANT_SET_SIGIL) then
         pop(3)
         setConstantToken
-      else if headLookaheadEqual(":>") then
+      else if headLookaheadEqual(AUGMENTED_ASSIGN_SIGIL) then
         pop(2)
         augmentedAssignToken
-      else if headLookaheadEqual("$@") then
+      else if headLookaheadEqual(COMMAND_SYMBOL_SIGIL) then
         pop(2)
         commandSymbolToken
-      else if headLookaheadEqual("$.") then
+      else if headLookaheadEqual(ORIGINAL_COMMAND_SIGIL) then
         pop(2)
         originalCommandToken
-      else if headLookaheadEqual("define") then customDefinitionToken
-      else if headLookaheadEqual("record") then
+      else if headLookaheadEqual(DEFINE_KEYWORD) then customDefinitionToken
+      else if headLookaheadEqual(RECORD_KEYWORD) then
         pop()
         defineRecordToken
-      else if headLookaheadEqual("extension") then defineExtensionToken
-      else if headEqual("`") then
+      else if headLookaheadEqual(EXTENSION_KEYWORD) then
+        pop()
+        defineExtensionToken
+      else if headEqual(FUNCTION_CALL_SUGAR_CHAR) then
         pop()
         addToken(TokenType.FunctionCall, simpleName(), Range(index, index))
-        eat("`")
-      else if headEqual("[") then
+        eat(FUNCTION_CALL_SUGAR_CHAR)
+      else if headEqual(LIT_LIST_OPEN) then
         pop()
         if unpackDepth > 0 then
           unpackDepth += 1
-          addToken(LitToken(TokenType.ListOpen, "[", Range(index, index)))
-        else addToken(TokenType.ListOpen, "#[", Range(index, index))
-      else if headEqual("]") then
+          addToken(
+            LitToken(TokenType.ListOpen, LIT_LIST_OPEN, Range(index, index))
+          )
+        else addToken(TokenType.ListOpen, LIST_OPEN, Range(index, index))
+      else if headEqual(LIT_LIST_CLOSE) then
         pop()
         if unpackDepth > 0 then
           unpackDepth -= 1
           addToken(
-            LitToken(TokenType.StructureAllClose, "]", Range(index, index))
+            LitToken(
+              TokenType.StructureAllClose,
+              LIT_LIST_CLOSE,
+              Range(index, index),
+            )
           )
-        else addToken(TokenType.ListClose, "#]", Range(index, index))
-      else if headIsWhitespace then
-        if headEqual("\n") then
-          addToken(LitToken(Newline, "\n", Range(index, index)))
-        pop()
-      else if headLookaheadEqual("##") then
-        while safeCheck(c => c != "\n" && c != "\r") do pop()
+        else addToken(TokenType.ListClose, LIST_CLOSE, Range(index, index))
+      else if headLookaheadEqual(COMMENT) then
+        while safeCheck(c => c != NEWLINE && c != "\r") do pop()
       else
         for c <- pop() do
           addToken(
@@ -284,11 +350,13 @@ class LiterateLexer extends LexerCommon:
   private def keywordToken: Unit =
     val start = index
     val keyword = StringBuilder()
-    if !safeCheck(c => c.head.isLetterOrDigit || "_<>?!*+\\-=&%@".contains(c))
+    if !safeCheck(c =>
+        c.head.isLetterOrDigit || ALLOWED_KEYWORD_SYMBOLS.contains(c)
+      )
     then return
 
     while safeCheck(c =>
-        c.head.isLetterOrDigit || "_<>?!*+\\-=&%'@".contains(c) ||
+        c.head.isLetterOrDigit || ALLOWED_KEYWORD_SYMBOLS.contains(c) ||
           (c == ":" &&
             keyword.lastOption
               .flatMap(c => Some(c.isLetterOrDigit))
@@ -296,16 +364,14 @@ class LiterateLexer extends LexerCommon:
       )
     do keyword ++= pop(1)
     val value = removeDoubleNt(keyword.toString())
-    if isKeyword(value) || value.length() == 1 then
-      if value == "i" then addToken(LitToken(Number, "ı", Range(start, index)))
-      else
-        addToken(
-          LitToken(
-            Command,
-            getSymbolFromKeyword(value),
-            Range(start, index),
-          )
+    if isKeyword(value) then
+      addToken(
+        LitToken(
+          Command,
+          getSymbolFromKeyword(value),
+          Range(start, index),
         )
+      )
     else if isKeyword(value.stripSuffix("n't")) then
       addToken(
         LitToken(NegatedCommand, value, Range(start, index))
@@ -346,56 +412,43 @@ class LiterateLexer extends LexerCommon:
   private def numberToken: Unit =
     val rangeStart = index
     // Check the single zero case
-    if headLookaheadMatch("0[^.i]") then
+    if headLookaheadMatch("0[^.]") then
       val zeroToken = LitToken(TokenType.Number, "0", Range(index, index))
       pop(1)
       addToken(zeroToken)
     else
-      val numberVal = StringBuilder()
-      if !headEqual("i") then numberVal ++= decimalNumber()
-      if headEqual("i") then
-        pop()
-        numberVal ++= "ı"
-        val number =
-          if safeCheck(c => c.head.isDigit || c == ".") then decimalNumber()
-          else ""
-        numberVal ++= number
-
       addToken(
         LitToken(
           TokenType.Number,
-          numberVal.toString(),
+          decimalNumber(),
           Range(rangeStart, index),
         )
       )
-    end if
-
-  end numberToken
 
   private def simpleNumber(): String =
     val numberVal = StringBuilder()
-    while safeCheck(c => c.head.isDigit || c == "_") do
-      if headEqual("_") then pop()
+    while safeCheck(c => c.head.isDigit || c == SBCS_NEGATIVE_SIGN) do
+      if headEqual(SBCS_NEGATIVE_SIGN) then pop()
       else numberVal ++= s"${pop()}"
     numberVal.toString()
 
   private def decimalNumber(): String =
-    val negative = headEqual("-")
+    val negative = headEqual(NEGATIVE_SIGN)
     if negative then pop()
     val tokenVal = StringBuilder()
     // Handle headless decimal first
-    if headEqual(".") then
+    if headEqual(DECIMAL_SEPARATOR) then
       tokenVal ++= pop()
       if safeCheck(c => c.head.isDigit) then tokenVal ++= simpleNumber()
     // A normal number
     else if safeCheck(c => c.head.isDigit) then
       tokenVal ++= simpleNumber()
       // Could also a decimal number
-      if headEqual(".") then
+      if headEqual(DECIMAL_SEPARATOR) then
         tokenVal ++= pop()
         // If there's a digit after the decimal, add it
         if safeCheck(c => c.head.isDigit) then tokenVal ++= simpleNumber()
-    s"${tokenVal.toString()}${if negative then "_" else ""}"
+    s"${tokenVal.toString()}${if negative then SBCS_NEGATIVE_SIGN else ""}"
   end decimalNumber
   private def customDefinitionToken: Unit =
     val rangeStart = index
@@ -408,9 +461,12 @@ class LiterateLexer extends LexerCommon:
       )
     )
     eatWhitespace()
-    if !headLookaheadMatch("(element|modifier)") then
+    if !headLookaheadMatch(
+        s"($DEFINE_ELEMENT_KEYWORD|$DEFINE_MODIFIER_KEYWORD)"
+      )
+    then
       throw VyxalException(
-        "Invalid definition type. Expected \"element\" or \"modifier\""
+        s"Invalid definition type. Expected \"$DEFINE_ELEMENT_KEYWORD\" or \"$DEFINE_MODIFIER_KEYWORD\""
       )
     val definitionType = pop().toUpperCase()
     while !headIsWhitespace do pop()
@@ -427,61 +483,6 @@ class LiterateLexer extends LexerCommon:
     )
 
   end customDefinitionToken
-
-  private def defineExtensionToken: Unit =
-    val rangeStart = index
-    pop() // Pop the "extension"
-    eatWhitespace()
-    val name = if headLookaheadMatch(". ") then pop() else simpleName()
-    addToken(
-      LitToken(
-        TokenType.DefineExtension,
-        "",
-        Range(rangeStart, index),
-      )
-    )
-    addToken(
-      LitToken(
-        TokenType.Param,
-        name,
-        Range(rangeStart, index),
-      )
-    )
-    eatWhitespace()
-    if headIsBranch then
-      quickToken(TokenType.Branch, "|")
-      while !headIsWhitespace do pop()
-      // Get the arguments and put them into tokens
-      var arity = 0
-      while !headIsBranch && !headEqual(",") do
-        eatWhitespace()
-        val argNameStart = index
-        val argName = simpleName()
-        addToken(
-          LitToken(
-            TokenType.Param,
-            argName,
-            Range(argNameStart, index),
-          )
-        )
-        eatWhitespace()
-        eat("as")
-        eatWhitespace()
-        val argTypeStart = index
-        val argType = if headEqual("*") then pop() else simpleName()
-        addToken(
-          LitToken(
-            TokenType.Param,
-            argType,
-            Range(argTypeStart, index),
-          )
-        )
-        arity += 1
-        if headEqual(",") then pop()
-        eatWhitespace()
-      end while
-    end if
-  end defineExtensionToken
 
   lazy val mapping: Map[String, String] =
     ElementInformation.elements.values.view.flatMap { elem =>

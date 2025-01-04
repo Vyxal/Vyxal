@@ -14,9 +14,6 @@ class SBCSLexer extends LexerCommon:
   private val DIGRAPH_CHARS = "∆øÞk"
   private val HASH_DIGRAPH_REGEX =
     """#[^\[\]$!=#>@{:]""" // Matches # followed by any character that doesn't start a trigraph
-  private val COMMENT = "##"
-  private val LIST_OPEN = "#["
-  private val LIST_CLOSE = "#]"
   private val STRUCTURE_OPENERS = "[({ṆḌƛΛξ⍾ʎµ⟨⎊⎄"
   private val IF_ELSE_OPENER = "#{"
   private val RECORD_OPENER = "#::R"
@@ -24,10 +21,6 @@ class SBCSLexer extends LexerCommon:
   private val CUSTOM_OPENER_REGEX = "#::[EM]"
   private val BRANCH = "|"
   private val STRUCTURE_CLOSE = "}"
-  private val STRUCTURE_DOUBLE_CLOSE = ")"
-  private val STRUCTURE_ALL_CLOSE = "]"
-  private val STRUCTURE_FIRST_ITEM_CLOSE = "⎋"
-  private val STRUCTURE_FLATTEN_CLOSE = "⍟"
   private val LAMBDA = "λ"
   private val VARIABLE_UNPACK_OPENER = "#:["
   private val TERNARY_OPENER = "["
@@ -301,53 +294,6 @@ class SBCSLexer extends LexerCommon:
         value,
         Range(rangeStart, index),
       )
-
-  /** Extension ::= "#::+" [a-zA-Z_][a-zA-Z0-9_] "|" (Name ">" Name)* "|" impl }
-    */
-  private def defineExtensionToken: Unit =
-    val rangeStart = index
-    eatWhitespace()
-    val name = if headLookaheadMatch(". ") then pop() else simpleName()
-    addToken(
-      TokenType.DefineExtension,
-      "",
-      Range(rangeStart, index),
-    )
-    addToken(
-      TokenType.Param,
-      name,
-      Range(rangeStart, index),
-    )
-    eatWhitespace()
-    if headEqual(BRANCH) then
-      quickToken(TokenType.Branch, BRANCH)
-      // Get the arguments and put them into tokens
-      var arity = 0
-      while !headEqual("|") do
-        eatWhitespace()
-        val argNameStart = index
-        val argName = simpleName()
-        addToken(
-          TokenType.Param,
-          argName,
-          Range(argNameStart, index),
-        )
-        eatWhitespace()
-        eat(">")
-        eatWhitespace()
-        val argTypeStart = index
-        val argType = if headEqual("*") then pop() else simpleName()
-        addToken(
-          TokenType.Param,
-          argType,
-          Range(argTypeStart, index),
-        )
-        arity += 1
-        if headEqual(",") then pop()
-        eatWhitespace()
-      end while
-    end if
-  end defineExtensionToken
 
   private def customDefinitionToken: Unit =
     val rangeStart = index

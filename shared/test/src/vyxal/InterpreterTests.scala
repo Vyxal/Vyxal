@@ -609,24 +609,24 @@ class InterpreterTests extends VyxalTests:
 end
 
 extension set given
-  val as *,
-  key as *,
-  mp as Map
+  val : *,
+  key : *,
+  mp : Map
 does
   $mp "keys" (peek: <**) $key append **>
   "values" (peek: <**) $val append **>
 end
 
 extension get given
-  key as *,
-  mp as Map
+  key : *,
+  mp : Map
 does
   $mp "keys" <** $key find
   $mp "values" <** index
 end
 
 extension print given
-  mp as Map
+  mp : Map
 does
   $mp ["keys", "values"] <** dump zip print
 end
@@ -654,23 +654,23 @@ end
     }
     it("Should allow an extension with a single item") {
       testCodeAsLiterate(
-        "extension inc given a as num does $a 1 $.+ end 5 $@inc",
+        "extension inc given a : num does $a 1 $.+ end 5 $@inc",
         VNum(6),
       )
       testCodeAsLiterate(
-        "extension + given a as num does $a 1 $.+ end 5 +",
+        "extension + given a : num does $a 1 $.+ end 5 +",
         VNum(6),
       )
       testCodeAsLiterate(
-        "extension + given a as num does $a 1 $.+ end [1,2,3] [4,5,6] +",
+        "extension + given a : num does $a 1 $.+ end [1,2,3] [4,5,6] +",
         vSeq(VNum(5), VNum(7), VNum(9)),
       )
       testCodeAsLiterate(
-        "extension Test given a as * does $a $a === end 5 $@Test",
+        "extension Test given a : * does $a $a === end 5 $@Test",
         VNum(1),
       )
       testCodeAsLiterate(
-        "record T => 5 $mem end extension F given a as T does $a \"mem\" <** end `T` $@F",
+        "record T => 5 $mem end extension F given a : T does $a \"mem\" <** end `T` $@F",
         VNum(5),
       )
     }

@@ -97,14 +97,14 @@ object SyntaxInfo:
         "Push the next character as a string",
         "'<character>",
       ),
-    "ᶴ" ->
+    "Ꮬ" ->
       Syntax(
         "Two Character String",
         Seq(),
         "Push the next two characters as a string",
         "ᶴ<character><character>",
       ),
-    "~" ->
+    "Ꮠ" ->
       Syntax(
         "Two Byte Number",
         Seq(),
@@ -174,19 +174,24 @@ object SyntaxInfo:
         "Open an if statement. Allows for if/elif/else statements",
         "#{<if condition>|<code>|<else if condition>|<code>|<else code>}",
       ),
-    "Ṇ" ->
+    "⎄" ->
       Syntax(
         "Generator Structure",
         Seq("relation<", "generate<", "generate-from<"),
         "Open a generator structure. Allows for generator expressions",
         "Ṇ<code>|<initial vector>}",
       ),
-    "Ḍ" ->
+    "⎊" ->
       Syntax(
-        "Open Decision Problem Structure",
-        Seq("exists<"),
-        "Open a decision problem structure. Returns whether an iterable has any items that match a predicate",
-        "Ḍ<predicate>|<container> }",
+        "Open Map Over Permutations Lambda",
+        Seq(
+          "map-permutations",
+          "map-perms",
+          "map-permutations<",
+          "permutations<",
+        ),
+        "Open a lambda that automatically maps over the permutations of the top of the stack",
+        "⎊<code>}",
       ),
     "∆" ->
       Syntax(
@@ -236,13 +241,6 @@ object SyntaxInfo:
         Seq(),
         "Used to separate the integer and fractional parts of a number",
         "<integer>.<fractional>",
-      ),
-    "ı" ->
-      Syntax(
-        "Imaginary Number",
-        Seq("i"),
-        "Used to represent the imaginary unit",
-        "<real>ı<imaginary>",
       ),
     "0" -> Syntax("Numeric Literal", Seq(), "The number 0", "0"),
     "1" -> Syntax("Numeric Literal", Seq(), "The number 1", "1"),
@@ -303,7 +301,7 @@ object SyntaxInfo:
         "Unpack the top of the stack into a list of variables.",
         "#:[<var>|<var>|<var>]",
       ),
-    "¤" ->
+    "#¤" ->
       Syntax(
         "Context Paramter Index",
         Seq("`n`"),
@@ -338,19 +336,19 @@ object SyntaxInfo:
         "Call the original, vyxal defined, meaning of an element. Useful for when you want to define a new element with the same name as a built-in one",
         "#:~<name>",
       ),
-    "#:R" ->
+    "#::R" ->
       Syntax(
         "Record Definition",
         Seq("record"),
         "Define a record with members",
         "#:R<name>|#$restricted #=private #!public}",
       ),
-    "#:>>" ->
+    "#::+" ->
       Syntax(
         "Extension Method",
         Seq("extension"),
         "Define an overload on a custom element based on types. Requires at least one type to be specified.",
-        "#:>><name>|<arg1>|<type1>|<arg2>|<type2>...|<impl>}",
+        "#::+<name>|<arg1>|<type1>|<arg2>|<type2>...|<impl>}",
       ),
   )
 end SyntaxInfo
