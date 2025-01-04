@@ -561,19 +561,27 @@ class InterpreterTests extends VyxalTests:
     }
 
     it("should have the correct write access modifiers") {
+      println("Starting write access tests")
       val boilerplate =
         "record TestObj => 1 :!=public 2 :=private 3 $restricted end"
+      println("Starting public write")
       testCodeAsLiterate(
         s"""$boilerplate `TestObj` "public" 69 **> "public" <**""",
         VNum(69),
       )
+      println("Finished public write")
       try
+        println("Starting private write")
         testCodeAsLiterate(
           s"""$boilerplate `TestObj` "private" **>""",
           VNum(2),
         )
-        println("Should not be printing this")
         fail("Should have thrown an exception on write private")
+      catch
+        case _: Exception =>
+          println("Caught exception as expected for write private")
+          ()
+      try
         testCodeAsLiterate(
           s"""$boilerplate `TestObj` "restricted" 69 **>""",
           VNum(3),
@@ -581,7 +589,7 @@ class InterpreterTests extends VyxalTests:
         fail("Should have thrown an exception on write restricted")
       catch
         case _: Exception =>
-          println("Caught exception as expected")
+          println("Caught exception as expected for write restricted")
           ()
     }
 
