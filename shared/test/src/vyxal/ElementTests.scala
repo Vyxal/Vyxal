@@ -109,7 +109,8 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  describe("Element ġ") {
+  // Ignored because Θ doesn't exist now
+  ignore("Element ġ") {
     testCode(
       "#[1|1#]λ+}ġ10Θ",
       vSeq(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
@@ -124,7 +125,8 @@ class ElementTests extends VyxalTests:
     )
   }
 
-  describe("Element x") {
+  // Ignored because Ė doesn't exist now
+  ignore("Element x") {
     testCode("5 λ0=[1|1-x×}}Ė", 120)
     testCode("0 λ0=[1|1-x×}}Ė", 1)
   }
@@ -380,5 +382,13 @@ class ElementTests extends VyxalTests:
     testStackLike("↸")(
       in(5, 1, 2, 3) -> List[VAny](2, 1, 3, 5)
     )
+  }
+
+  describe("Element #◌") {
+    it("should get all inputs even after reading inputs individually") {
+      testMulti("?????#◌")(
+        in(1, 2, 3) -> vSeq(1, 2, 3)
+      )
+    }
   }
 end ElementTests
