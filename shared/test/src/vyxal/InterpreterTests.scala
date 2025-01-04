@@ -546,13 +546,13 @@ class InterpreterTests extends VyxalTests:
     it("should have correct read access modifiers") {
       val boilerplate =
         "record TestObj => 1 :!=public 2 :=private 3 $restricted end"
-      testCodeAsLiterate(s"""$boilerplate `TestObj` "public" <::""", VNum(1))
+      testCodeAsLiterate(s"""$boilerplate `TestObj` "public" <**""", VNum(1))
       testCodeAsLiterate(
-        s"""$boilerplate `TestObj` "restricted" <::""",
+        s"""$boilerplate `TestObj` "restricted" <**""",
         VNum(3),
       )
       try
-        testCodeAsLiterate(s"""$boilerplate `TestObj` "private" <::""", VNum(2))
+        testCodeAsLiterate(s"""$boilerplate `TestObj` "private" <**""", VNum(2))
         fail("Should have thrown an exception on read private")
       catch case _: Exception => ()
     }
@@ -561,17 +561,17 @@ class InterpreterTests extends VyxalTests:
       val boilerplate =
         "record TestObj => 1 :!=public 2 :=private 3 $restricted end"
       testCodeAsLiterate(
-        s"""$boilerplate `TestObj` "public" 69 ::> "public" <::""",
+        s"""$boilerplate `TestObj` "public" 69 **> "public" <**""",
         VNum(69),
       )
       try
         testCodeAsLiterate(
-          s"""$boilerplate `TestObj` "private" ::>""",
+          s"""$boilerplate `TestObj` "private" **>""",
           VNum(2),
         )
         fail("Should have thrown an exception on write private")
         testCodeAsLiterate(
-          s"""$boilerplate `TestObj` "restricted" 69 ::>""",
+          s"""$boilerplate `TestObj` "restricted" 69 **>""",
           VNum(3),
         )
         fail("Should have thrown an exception on write restricted")
@@ -582,7 +582,7 @@ class InterpreterTests extends VyxalTests:
       testCodeAsLiterate(
         """
           record TestObj => 1 :!=public 2 :=private 3 $restricted end
-          `TestObj` "public" 69 ::> "public" <::""",
+          `TestObj` "public" 69 **> "public" <**""",
         VNum(69),
       )
     }
@@ -598,22 +598,22 @@ extension set given
   key as *,
   mp as Map
 does
-  $mp "keys" (peek: <::) $key append ::>
-  "values" (peek: <::) $val append ::>
+  $mp "keys" (peek: <**) $key append **>
+  "values" (peek: <**) $val append **>
 end
 
 extension get given
   key as *,
   mp as Map
 does
-  $mp "keys" <:: $key find
-  $mp "values" <:: index
+  $mp "keys" <** $key find
+  $mp "values" <** index
 end
 
 extension print given
   mp as Map
 does
-  $mp ["keys", "values"] <:: dump zip print
+  $mp ["keys", "values"] <** dump zip print
 end
 """
       testCodeAsLiterate(

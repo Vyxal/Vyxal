@@ -1267,7 +1267,7 @@ object ElementInformation:
         "nth-item",
         "collect-unique",
         "enclose",
-        "<::",
+        "<**",
       ),
       arity = 2,
       Options(
@@ -2127,7 +2127,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "≜",
-      keywords = Seq("assign", "::>"),
+      keywords = Seq("assign", "**>"),
       arity = 3,
       Options(
         vectorises = false
