@@ -1,39 +1,33 @@
 package vyxal.gen
 
-import vyxal.elements.Element
 import vyxal.elements.ElementInformation
-import vyxal.elements.Modifier
 import vyxal.elements.ModifierOverload
 import vyxal.elements.Overload
 import vyxal.parsing.Codepage
-import vyxal.Syntax
-import vyxal.SyntaxInfo
 
 import scala.collection.mutable.ArrayBuffer
 
 object DocsUtils:
 
   def genMarkdown(): String =
-    s"""
-Element, Modifier, and Syntax Reference
+    s"""%Element, Modifier, and Syntax Reference
+        %
+        %## Elements
+        %
+        %- `nsl` = Number/String/List
+        %- `any` = Any type
+        %- `num` = Number
+        %- `str` = String
+        %- `lst` = List
+        %- `fun` = Function
+        %- `obj` = User-defined object
 
-## Elements
+        %${genElementsTable()}
 
-- `nsl` = Number/String/List
-- `any` = Any type
-- `num` = Number
-- `str` = String
-- `lst` = List
-- `fun` = Function
-- `obj` = User-defined object
+        %## Modifiers
 
-${genElementsTable()}
-
-## Modifiers
-
-${genModifiersTable()}
-
-""".stripMargin(' ')
+        %${genModifiersTable()}
+        %""".stripMargin('%')
 
   def genElementsTable(): String =
     val HEADER_ROW = "| Symbol | Keywords | Arity | Vectorises | Overloads |" +
@@ -70,7 +64,7 @@ ${genModifiersTable()}
       val FIELD_REGEX = """\{((?:\\[\{\}|\\\\]|[^\{\}\\])*)\}""".r
       val fields = FIELD_REGEX.findAllMatchIn(description).map(_.group(1)).toSeq
       val fieldOptions = fields.map { field =>
-        field.split("(?<!\\\\)\\|").toSeq
+        field.split(raw"(?<!\\)\|").toSeq
       } // A list of the options for each type switch field
 
       val descriptions = ArrayBuffer[String]()
