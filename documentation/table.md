@@ -37,6 +37,7 @@ Element, Modifier, and Syntax Reference
 | `=` | `equals`</br>`==`</br>`eq` | 2 | vec  | **Equals** (`scl,scl`): #1 == #2 |
 | `\>` | `greater-than`</br>`>`</br>`gt` | 2 | vec  | **Greater Than** (`scl,scl`): #1 > #2 |
 | `?` | `stdin`</br>`input`</br>`in` | 0 |   | **Input**: Get the next input item, evaluated. |
+| `#?` | `inputs`</br>`all-inputs`</br>`all-stdin` | 0 |   | **Inputs**: Get all the global inputs as a list |
 | `@` | `absolute-difference`</br>`abs-diff`</br>`levenstein`</br>`to-overpairs` | 2 | vec  | **Absolute Difference** (`num,num`): Absolute difference between #1 and #2</br>**Levenstein Distance** (`str,str`): Levenstein distance between #1 and #2</br>**Reduce Overlapping Pairs** (`lst,fun`): Reduce overlapping pairs in {#1|#2} by function {#2|#1} |
 | `A` | `all`</br>`all?`</br>`vowel?`</br>`is-vowel`</br>`is-vowel?` | 1 |   | **All** (`any`): Are all elements of #1 are truthy |
 | `B` | `to-binary` | 1 | vec  | **To Binary** (`num`): Convert #1 to binary</br>**String to Binary** (`str`): Convert each character in #1 to a binary representation of its unicode value |
@@ -176,7 +177,6 @@ Element, Modifier, and Syntax Reference
 | `√` | `square-root`</br>`sqrt` | 1 | vec  | **Square Root** (`num`): Square root of #1 |
 | `⍰` | `truthy?` | 1 | vec  | **Truthy?** (`scl`): Is #1 truthy? (Not 0, empty, or false) |
 | `◌` | `round` | 1 | vec  | **Round** (`num`): Round #1 to the nearest integer, half-up |
-| `#◌` | `inputs`</br>`all-inputs`</br>`all-stdin` | 0 |   | **Inputs**: Get all the global inputs as a list |
 | `δ` | `deltas`</br>`differences` | 1 |   | **Deltas** (`lst`): Deltas/forward differences of #1 - [a - b, b - c, c - d, ...] |
 | `☷` | `partition-after-truthy` | 1 |   | **Partition After Truthy** (`lst,lst`):  Partition #1 after truthy indices of #2. |
 | `✇` | `edges`</br>`ends`</br>`real-imaginary` | 1 |   | **Edges** (`itr`): First and last element of #1</br>**Real and Imaginary** (`num`): Real and imaginary parts of #1 |
