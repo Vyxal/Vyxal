@@ -37,7 +37,7 @@ object Interpreter:
 
     /** Attempt parsing */
     val ParserResult(ast, customDefns, classes, extensions) =
-      try Parser.parse(tokens)
+      try Parser.parse(tokens, ctx.globals.settings.literate)
       catch
         case ex: VyxalException => throw ex
         case ex: Throwable => throw UnknownParsingException(ex)

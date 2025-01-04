@@ -22,9 +22,9 @@ case class ParserResult(
 
 object Parser:
   @throws[ParsingException]
-  def parse(tokens: Seq[Token]): ParserResult =
+  def parse(tokens: Seq[Token], literate: Boolean = false): ParserResult =
     val parser = Parser()
-    val ast = parser.parse(tokens.toList)
+    val ast = parser.parse(tokens.toList, literate = literate)
     ParserResult(
       ast,
       parser.customs.toMap,
@@ -67,6 +67,7 @@ private class Parser:
   private def parse(
       program: Queue[Token],
       topLevel: Boolean = false,
+      literate: Boolean = false,
   ): AST =
     val asts = Stack[AST]()
     // Convert the list of tokens to a queue so that ASTs like Structures can
@@ -232,7 +233,12 @@ private class Parser:
 
           if branches.size != 3 then throw BadStructureException("extension")
           var symbol = branches.head.toVyxal
-          if symbol.length() > 1 then symbol = toValidName(symbol)
+          if symbol.startsWith(".") then
+            symbol = symbol.drop(1)
+            if literate then
+              symbol =
+                ElementInformation.symbolForElement(symbol).getOrElse(symbol)
+          else symbol = toValidName(symbol)
 
           val arguments = branches(1).asInstanceOf[AST.Group].elems
           if arguments.size % 2 != 0 then
@@ -710,9 +716,9 @@ private class Parser:
       case TokenType.StructureCloseAndHead => true
       case _ => false
 
-  def parse(tokens: List[Token]): AST =
+  def parse(tokens: List[Token], literate: Boolean): AST =
     val preprocessed = preprocess(tokens).to(Queue)
-    val parsed = parse(preprocessed, true)
+    val parsed = parse(preprocessed, true, literate)
     if preprocessed.nonEmpty then
       if isCloser(preprocessed.front) then
         throw UnmatchedCloserException(preprocessed.dequeue())
