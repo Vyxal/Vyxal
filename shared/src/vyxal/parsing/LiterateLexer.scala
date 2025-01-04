@@ -141,9 +141,8 @@ class LiterateLexer extends LexerCommon:
   def lex(program: String): Seq[Token] =
     programStack.pushAll(program.reverse.map(_.toString))
     while programStack.nonEmpty do
-      if (headIsDigit && headLookaheadMatch("\\d[^<>!*+\\-=&%@~A-Za-hj-z]")) ||
-        headLookaheadMatch("-[1-9]") || headEqual(".") ||
-        headLookaheadMatch("i(0|[1-9][0-9]*| )")
+      if (headIsDigit && headLookaheadMatch("\\d[^<>!*+\\-=&%@~A-Za-z]")) ||
+        headLookaheadMatch("-[1-9]") || headEqual(".")
       then numberToken
       else if safeCheck(c =>
           c.length == 1 &&
@@ -154,9 +153,9 @@ class LiterateLexer extends LexerCommon:
       else if headEqual("(") then
         eat("(")
         groups += ArrayBuffer[LitToken]()
-        if headLookaheadMatch(":[.:]|;[,;]") then
+        if headLookaheadMatch(":[.:]") then
           addToken(groupModifierToToken(pop(2))(Range(index, index)))
-        else if headIn(".:,;") then
+        else if headIn(".:") then
           addToken(groupModifierToToken(pop(1))(Range(index, index)))
       else if headEqual(")") then
         if groups.nonEmpty then
@@ -340,8 +339,8 @@ class LiterateLexer extends LexerCommon:
     ElementInformation.symbolForElement(word).getOrElse(word)
 
   private def getModifierFromKeyword(word: String): Modifier =
-    ElementInformation.modifiers
-      .get(word)
+    ElementInformation.modifiers.values
+      .find(_.keywords.contains(word))
       .getOrElse(throw VyxalException(s"Modifier $word not found"))
 
   private def numberToken: Unit =
