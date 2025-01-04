@@ -286,7 +286,7 @@ private class Parser:
         case TokenType.FunctionCall =>
           val funcName = value
           asts.push(AST.GetVar(funcName, range))
-          asts.push(AST.Command("Ė"))
+          asts.push(AST.Command("ᴥ"))
         case TokenType.GetVar => asts.push(AST.GetVar(value, range))
         case TokenType.SetVar => asts.push(AST.SetVar(value, range))
         case TokenType.Constant => asts.push(AST.SetConstant(value, range))
@@ -628,7 +628,7 @@ private class Parser:
           case StructureType.LambdaReduce =>
             AST.makeSingle(lambda, AST.Command("R"))
           case StructureType.LambdaSort =>
-            AST.makeSingle(lambda, AST.Command("ṡ"))
+            AST.makeSingle(lambda, AST.Command("↯"))
           case StructureType.LambdaMapEager =>
             AST.makeSingle(lambda, AST.Command("#|eager-map"))
           case StructureType.LambdaMapPermutations =>

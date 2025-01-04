@@ -145,7 +145,7 @@ enum StructureType(val open: String) derives CanEqual:
   case LambdaMap extends StructureType("ƛ")
   case LambdaFilter extends StructureType("Λ")
   case LambdaReduce extends StructureType("ʎ")
-  case LambdaSort extends StructureType("ỿ")
+  case LambdaSort extends StructureType("µ")
   case LambdaStack extends StructureType("ξ")
   case LambdaMapEager extends StructureType("⍾")
   case IfStatement extends StructureType("#{")
@@ -510,7 +510,7 @@ abstract class LexerCommon:
 end LexerCommon
 
 def Codepage =
-  """λƛΛʎỿξ⍾⎋⍟⎊␤⎄⟆⩔Ẅ⊐
+  """λƛΛʎµξ⍾⎋⍟⎊␤⎄⟆⩔Ẅ⊐
 ⎇ᖶ¿∥∦∺⁜⑴⑵⑶⑷⎂⟒ᛞ▦¨
  !"#$%&'()*+,-./
 0123456789:;<=>?

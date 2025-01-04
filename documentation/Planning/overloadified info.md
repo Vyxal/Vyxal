@@ -8,7 +8,7 @@ Syntax
 - [x] ƛ   NA  =   Mapping lambda opener
 - [x] Λ   NA  =   Filtering lambda opener
 - [x] ʎ   NA  =   Reduction lambda opener
-- [x] ỿ   NA  =   Sorting lambda opener
+- [x] µ   NA  =   Sorting lambda opener
 - [x] ξ   NA  =   Lambda with arity -1
 - [x] ⍾   NA  =   Eager map opener
 - [x] ⎋  NA  =   Close structure and get first item

@@ -125,7 +125,7 @@ class InterpreterTests extends VyxalTests:
             AST.Lambda(Some(2), List.empty, List(AST.Command("-"))),
           ),
           AST.GetVar("f"),
-          AST.Command("Ė"),
+          AST.Command("ᴥ"),
         ),
         VNum(-1),
         inputs = Seq(3, 4),
@@ -178,8 +178,8 @@ class InterpreterTests extends VyxalTests:
       )
 
       testMulti(
-        "#[4|3N|1|5|3|7|5N#]ỿ0<[N}|N" -> vSeq(1, 3, -3, 4, 5, -5, 7),
-        "#[4|3N|1|5|3|7|5N#]ỿ0<[N}N" -> vSeq(7, 5, -5, 4, -3, 3, 1),
+        "#[4|3N|1|5|3|7|5N#]µ0<[N}|N" -> vSeq(1, 3, -3, 4, 5, -5, 7),
+        "#[4|3N|1|5|3|7|5N#]µ0<[N}N" -> vSeq(7, 5, -5, 4, -3, 3, 1),
       )
     }
 
@@ -529,13 +529,13 @@ class InterpreterTests extends VyxalTests:
         )
 
         testCode(
-          "#::E + | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}} 2 2 +",
+          "#::E + | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ≡ [5|#$lhs #$rhs #:~+}} 2 2 +",
           VNum(5),
           Seq(),
         )
 
         testCode(
-          "#::E + | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ₌ [5|#$lhs #$rhs #:~+}} 6 9 +",
+          "#::E + | lhs, rhs | #[#$lhs|#$rhs#] #[2|2#] ≡ [5|#$lhs #$rhs #:~+}} 6 9 +",
           VNum(15),
           Seq(),
         )
