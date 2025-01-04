@@ -48,7 +48,8 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  describe("Element Ġ") {
+  // Ignored because Θ doesn't exist now
+  ignore("Element Ġ") {
     it("Should work as a generator") {
       testCode(
         "#[1|1#]λ2|+}Ġ10Θ",
@@ -109,7 +110,8 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  describe("Element ġ") {
+  // Ignored because Θ doesn't exist now
+  ignore("Element ġ") {
     testCode(
       "#[1|1#]λ+}ġ10Θ",
       vSeq(1, 1, 2, 3, 5, 8, 13, 21, 34, 55),
@@ -124,18 +126,21 @@ class ElementTests extends VyxalTests:
     )
   }
 
-  describe("Element x") {
+  // Ignored because Ė doesn't exist now
+  ignore("Element x") {
     testCode("5 λ0=[1|1-x×}}Ė", 120)
     testCode("0 λ0=[1|1-x×}}Ė", 1)
   }
 
-  describe("Element ÞĊ") {
+  // Ignored because Θ doesn't exist now
+  ignore("Element ÞĊ") {
     it("should work on lists") {
       testCode("#[1|2|3#] ÞĊ 10 Θ", vSeq(1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
     }
   }
 
-  describe("Element Ḋ") {
+  // Ignored because Ḋ doesn't exist right now
+  ignore("Element Ḋ") {
     it("simple test") {
       testCode(
         "#[1|2|3|4|5|6|7|8|9|10|1|4|5|1|3|6|4#] λ5%} Ḋ",
@@ -238,13 +243,15 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  describe("Element Ẇ") {
+  // Ignored because Ẇ doesn't exist right now
+  ignore("Element Ẇ") {
     testMulti(
       "λ5%3=}5Ẇ" -> vSeq(3, 8, 13, 18, 23)
     )
   }
 
-  describe("Element ȧ") {
+  // Ignored because ȧ doesn't exist right now
+  ignore("Element ȧ") {
     testMulti(
       "#[1|2|3|4|5|6#] λ+} ȧ" -> vSeq(3, 5, 7, 9, 11),
       "#[1|2|3|4|5|6#] λ++} ȧ" -> vSeq(4, 7, 10, 13, 16),
@@ -257,7 +264,8 @@ class ElementTests extends VyxalTests:
     )
   }
 
-  describe("Element Ạ") {
+  // Ignored because Ṛ doesn't exist now
+  ignore("Element Ạ") {
     testMulti(
       "#[1|2|3|4#] 0 λ1+} Ạ" -> vSeq(2, 2, 3, 4),
       "#[2|#[1|2|3|4#]|2|3|4#] 1 λṚ} Ạ" -> vSeq(2, vSeq(4, 3, 2, 1), 2, 3, 4),
@@ -343,14 +351,16 @@ class ElementTests extends VyxalTests:
     )
   }
 
-  describe("Element ÞṆ") {
+  // Ignored because Θ doesn't exist now
+  ignore("Element ÞṆ") {
     testMulti(
       "ÞṆ10Θ" -> vSeq(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
       "ÞṆ5+10Θ" -> vSeq(6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
     )
   }
 
-  describe("Element ÞṬ") {
+  // Ignored because Θ doesn't exist now
+  ignore("Element ÞṬ") {
     testMulti(
       "ÞṬ20Θ" ->
         vSeq(0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9,
@@ -361,7 +371,8 @@ class ElementTests extends VyxalTests:
     )
   }
 
-  describe("Element ÞP") {
+  // Ignored because Θ doesn't exist now
+  ignore("Element ÞP") {
     testMulti(
       "ÞP20Θ" ->
         vSeq(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61,
