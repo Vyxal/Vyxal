@@ -357,6 +357,8 @@ class LiterateLexer extends LexerCommon:
       )
     then return
 
+    // Get characters for the keyword while they are either allowed by default,
+    // or a colon after a letter or digit
     while safeCheck(c =>
         c.head.isLetterOrDigit || ALLOWED_KEYWORD_SYMBOLS.contains(c) ||
           (c == ":" &&
@@ -388,6 +390,8 @@ class LiterateLexer extends LexerCommon:
         case 4 => TokenType.TetradicModifier
         case _ => TokenType.SpecialModifier
       addToken(LitToken(tokenType, name, Range(start, index)))
+    else if value.length == 1 then
+      addToken(LitToken(Command, value, Range(start, index)))
     else programStack.push(value)
     end if
   end keywordToken

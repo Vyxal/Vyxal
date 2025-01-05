@@ -128,8 +128,8 @@ class LiterateTests extends VyxalTests:
   describe("Misc") {
     it("should not treat words with i as complex") {
       testLiterate("is-vowel?", "A")
-      testLiterate("is-vowel? i", "Aı")
-      testLiterate("i is-vowel?", "ıA")
+      testLiterate("is-vowel? i", "Ai")
+      testLiterate("i is-vowel?", "iA")
     }
   }
 
