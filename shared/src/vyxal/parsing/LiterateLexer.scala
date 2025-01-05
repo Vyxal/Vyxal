@@ -185,6 +185,14 @@ class LiterateLexer extends LexerCommon:
   private val ALLOWED_KEYWORD_SYMBOLS = "_<>?!*+\\-=&%@"
   private val EXTENSION_GIVEN_KEYWORD = "given"
 
+  private def simpleKeyword(): String =
+    val keyword = StringBuilder()
+    while safeCheck(c =>
+        c.head.isLetterOrDigit || ALLOWED_KEYWORD_SYMBOLS.contains(c)
+      )
+    do keyword ++= pop(1)
+    keyword.toString()
+
   def lex(program: String): Seq[Token] =
     programStack.pushAll(program.reverse.map(_.toString))
     while programStack.nonEmpty do
@@ -463,7 +471,7 @@ class LiterateLexer extends LexerCommon:
     val name =
       if headEqual(".") then
         pop()
-        s".${simpleName()}"
+        s".${simpleKeyword()}"
       else simpleName()
     addToken(
       TokenType.DefineExtension,
