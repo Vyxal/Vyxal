@@ -658,11 +658,11 @@ end
         VNum(6),
       )
       testCodeAsLiterate(
-        "extension + given a : num does $a 1 $.+ end 5 +",
+        "extension .+ given a : num does $a 1 $.+ end 5 +",
         VNum(6),
       )
       testCodeAsLiterate(
-        "extension + given a : num does $a 1 $.+ end [1,2,3] [4,5,6] +",
+        "extension .+ given a : num does $a 1 $.+ end [1,2,3] [4,5,6] +",
         vSeq(VNum(5), VNum(7), VNum(9)),
       )
       testCodeAsLiterate(
