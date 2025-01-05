@@ -4,6 +4,7 @@ import vyxal.elements.ElementInformation
 import vyxal.elements.ModifierOverload
 import vyxal.elements.Overload
 import vyxal.parsing.Codepage
+import vyxal.SyntaxInfo
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -27,6 +28,10 @@ object DocsUtils:
         %## Modifiers
 
         %${genModifiersTable()}
+
+        %## Syntax
+        
+        %${genSyntaxTable()}
         %""".stripMargin('%')
 
   def genElementsTable(): String =
@@ -107,4 +112,26 @@ object DocsUtils:
 
     (HEADER_ROW +: lines).mkString("\n")
   end genModifiersTable
+
+  def genSyntaxTable(): String =
+    val HEADER_ROW = "| Symbol | Keywords | Description | Usage |" +
+      "\n|--------|--|-----------|------|"
+
+    val syntaxMap = SyntaxInfo.info
+
+    val lines = syntaxMap.values.toSeq
+      .sortBy(syntax => Codepage.indexOf(syntax.name))
+      .map { syntax =>
+        val symbol =
+          if "`|<>\\".contains(syntax.name) then s"\\${syntax.name}"
+          else syntax.name
+        val keywords =
+          syntax.literateKeywords.map(kw => s"`$kw`").mkString("</br>")
+        val description = syntax.description
+        val usage = syntax.usage
+        s"| `$symbol` | $keywords | $description | $usage |"
+      }
+
+    (HEADER_ROW +: lines).mkString("\n")
+  end genSyntaxTable
 end DocsUtils
