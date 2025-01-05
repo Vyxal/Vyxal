@@ -20,8 +20,6 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
   override def ivyDeps =
     Agg(
       ivy"org.typelevel::spire::0.18.0",
-      ivy"org.scala-lang.modules::scala-parser-combinators::2.3.0",
-      ivy"com.lihaoyi::fastparse::3.0.2",
       ivy"com.github.scopt::scopt::4.1.0",
       ivy"com.outr::scribe::3.13.2",
       ivy"org.scala-lang::toolkit:0.6.0",
@@ -243,22 +241,4 @@ object js extends VyxalModule with ScalaJSModule {
     }
 
   object test extends ScalaJSTests with VyxalTestModule
-}
-
-/** Shared and native-specific code */
-object native extends VyxalModule with ScalaNativeModule {
-  val platform = "native"
-
-  def scalaNativeVersion = "0.4.16"
-
-  def ivyDeps =
-    T {
-      super.ivyDeps() ++ Seq(ivy"com.github.scopt::scopt:4.1.0")
-    }
-
-  override def nativeEmbedResources = true
-
-  object test extends ScalaNativeTests with VyxalTestModule {
-    override def nativeEmbedResources = true
-  }
 }
