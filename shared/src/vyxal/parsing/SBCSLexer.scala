@@ -150,7 +150,10 @@ class SBCSLexer extends LexerCommon:
         pop(2)
         augmentedAssignToken
       else if headLookaheadEqual(VARIABLE_UNPACK_OPENER) then
-        quickToken(TokenType.UnpackTrigraph, "#:[")
+        if unpackDepth > 0 then
+          throw VyxalException("Nested unpacking is not allowed")
+        quickToken(TokenType.UnpackTrigraph, VARIABLE_UNPACK_OPENER)
+        unpackDepth = 1
       else if headLookaheadEqual(ORIGINAL_COMMAND_SIGIL) then
         pop(3)
         originalCommandToken

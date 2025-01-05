@@ -188,7 +188,24 @@ class LiterateLexer extends LexerCommon:
   def lex(program: String): Seq[Token] =
     programStack.pushAll(program.reverse.map(_.toString))
     while programStack.nonEmpty do
-      if (headIsDigit && headLookaheadMatch(NUMBER_START_REGEX)) ||
+      if unpackDepth > 0 then
+        if headIsLetter then
+          val nameIndex = index
+          val name = simpleName()
+          addToken(TokenType.Param, name, Range(nameIndex, index))
+        else if headEqual(LIT_LIST_OPEN) then
+          pop()
+          addToken(TokenType.StructureOpen, LIST_OPEN, Range(index, index))
+          unpackDepth += 1
+        else if headEqual(LIT_LIST_CLOSE) then
+          pop()
+          addToken(TokenType.StructureAllClose, LIST_CLOSE, Range(index, index))
+          unpackDepth -= 1
+        else if headEqual(BRANCH_CHARACTER) || headEqual(",") then
+          pop()
+          addToken(TokenType.Branch, BRANCH_CHARACTER, Range(index, index))
+        else pop()
+      else if (headIsDigit && headLookaheadMatch(NUMBER_START_REGEX)) ||
         headLookaheadMatch(NEGATIVE_NUMBER_START_REGEX) ||
         headEqual(DECIMAL_SEPARATOR)
       then numberToken
@@ -256,7 +273,7 @@ class LiterateLexer extends LexerCommon:
         pop()
         getVariableToken
       else if headLookaheadEqual(VARIABLE_UNPACK_SIGIL) then
-        quickToken(TokenType.UnpackTrigraph, VARIABLE_UNPACK_SIGIL)
+        quickToken(TokenType.UnpackTrigraph, "#:[")
         unpackDepth = 1
       else if headLookaheadEqual(VARIABLE_SET_SIGIL) then
         pop(2)
@@ -286,24 +303,10 @@ class LiterateLexer extends LexerCommon:
         eat(FUNCTION_CALL_SUGAR_CHAR)
       else if headEqual(LIT_LIST_OPEN) then
         pop()
-        if unpackDepth > 0 then
-          unpackDepth += 1
-          addToken(
-            LitToken(TokenType.ListOpen, LIT_LIST_OPEN, Range(index, index))
-          )
-        else addToken(TokenType.ListOpen, LIST_OPEN, Range(index, index))
+        addToken(TokenType.ListOpen, LIST_OPEN, Range(index, index))
       else if headEqual(LIT_LIST_CLOSE) then
         pop()
-        if unpackDepth > 0 then
-          unpackDepth -= 1
-          addToken(
-            LitToken(
-              TokenType.StructureAllClose,
-              LIT_LIST_CLOSE,
-              Range(index, index),
-            )
-          )
-        else addToken(TokenType.ListClose, LIST_CLOSE, Range(index, index))
+        addToken(TokenType.ListClose, LIST_CLOSE, Range(index, index))
       else if headLookaheadEqual(COMMENT) then
         while safeCheck(c => c != NEWLINE && c != "\r") do pop()
       else
