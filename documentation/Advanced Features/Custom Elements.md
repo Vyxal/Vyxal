@@ -11,7 +11,7 @@ The general format of the define structure is as follows:
 
 ## The Name Branch
 
-The first branch of the define structure is the name branch. The name provided in the branch will be the name of the element or modifier that is being redefined. A `@` before the name indicates that an element is being defined, and a `*` before the name indicates that a modifier is being defined. Any valid variable name is valid.
+The first branch of the define structure is the name branch. The name provided in the branch will be the name of the element or modifier that is being redefined.
 
 ### Single Character Names
 

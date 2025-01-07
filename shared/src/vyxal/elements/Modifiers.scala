@@ -20,7 +20,7 @@ def calculateArityOfAST(ast: AST): Int =
         elems.foreach { elem =>
           val elemArity = calculateArityOfAST(elem)
           if elemArity > arity then arity = elemArity
-          else if elemArity == arity then arity += 1
+          else if elemArity == arity then arity += arity - 1
         }
       arity
     case otherAST => otherAST.arity.getOrElse(1)
