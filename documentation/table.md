@@ -217,25 +217,25 @@ Element, Modifier, and Syntax Reference
 
 | Symbol | Keywords | Number of Elements | Overloads |
 |--------|--|------------------|-----------|
-| `⑴` | `*:` | 1 | <table><tr><td>**Next AddElement as Lambda**</td><td>`any`</td><td>Wrap #1 in a lambda and push it</td><td>`⑴+ = λ+}`</td></tr></table> |
-| `∦` | `parallel-apply-wrap:`</br>`paraw:` | 2 | <table><tr><td>**Parallel Apply Wrap**</td><td>`mon,mon`</td><td>Apply #1 and #2 on separate stacks and push both results wrapped in a list. Equivalent to `∥#1#2;`</td><td>`3 4 ∦d½ -> [8, 2]`</td></tr></table> |
-| `⎂` | `both:` | 1 | <table><tr><td>**Both**</td><td>`any`</td><td>Apply #1 to both the top of stack (or however many arguments), and under stack (or however many arguments under the arity). Effectively ... #1(top - arity, top - arity * 2) #1(top -> top - arity)</td><td>`3 4 ⎂d -> 6 8 \|\| 1 2 3 4 ⎂+ -> 3 7`</td></tr></table> |
-| `⎇` | `dip:` | 1 | <table><tr><td>**Dip**</td><td>`mon`</td><td>Save the top stack item, apply #1, then push the saved item</td><td>`3 4 5 2 ⎇+ -> 3 9 2`</td></tr></table> |
-| `▦` | `outer-product:` | 1 | <table><tr><td>**Outer Product**</td><td>`dyd`</td><td>Outer product of #1 and #2</td><td>`#[1\|2\|3#] #[4\|5\|6#] ▦; -> [[[1,4],[1,5],[1,6]],[[2,4],[2,5],[2,6],[3,4],[3,5],[3,6]]]`</td></tr></table> |
-| `⑶` | `***:` | 3 | <table><tr><td>**Next Three Elements as Lambda**</td><td>`any,any,any`</td><td>Wrap #1, #2, and #3 in a lambda and push it</td><td>`⑶+*~ = λ+*~}`</td></tr></table> |
-| `¨` | `each:` | 1 | <table><tr><td>**Each**</td><td>`any`</td><td>Map #1 over the top of the stack</td><td>`#[#[1\|2\|3#]\|#[4\|2\|3#]\|#[1\|5\|3#]#] ¨G -> [3, 4, 5]`</td></tr></table> |
 | `~` | `filter:`</br>`without-popping:`</br>`peek:` | 1 | <table><tr><td>**Filter**</td><td>`mon`</td><td>Filter the top of the stack with #1</td><td>`#[1\|2\|3\|4\|5#] ~2≛ -> [2, 4]`</td></tr></br><tr><td>**Peek**</td><td>`dyd+`</td><td>Apply #1 without popping</td><td>`3 4 5 ~+ -> 3 4 9`</td></tr></table> |
-| `⁜` | `group-by:`</br>`window-reduce:` | 1 | <table><tr><td>**Group By**</td><td>`mon`</td><td>Group items of the top of the stack by results of #1</td><td>`#[1\|3\|4\|5\|2\|4#] ⁜e -> [[1,3],[4],[5],[2,4]]`</td></tr></br><tr><td>**Window Reduce**</td><td>`dyd+`</td><td>Reduce each overlapping window of size #1.arity with #1</td><td>`#[1\|2\|3\|4\|5\|6#] ⁜λ3\|+} -> [6, 9, 12, 15]`</td></tr></table> |
-| `ᖶ` | `if-else:` | 2 | <table><tr><td>**If Else**</td><td>`any,any`</td><td>If the top of the stack is truthy, apply #1, else apply #2</td><td>`3 1 ᖶd½ -> 6`</td></tr></table> |
-| `ᛞ` | `inner-product:` | 2 | <table><tr><td>**Inner Product**</td><td>`dyd,dyd`</td><td>Inner product of #1 and #2</td><td>`#[1\|2\|3#] #[4\|5\|6#] ᛞ×+ -> 32`</td></tr></table> |
-| `⑵` | `**:` | 2 | <table><tr><td>**Next Two Elements as Lambda**</td><td>`any,any`</td><td>Wrap #1 and #2 in a lambda and push it</td><td>`⑵+* = λ+*}`</td></tr></table> |
-| `⟒` | `left-fork:` | 2 | <table><tr><td>**Left Fork**</td><td>`dyd+,dyd+`</td><td>Apply #1 but keep the under stack, and then apply #2. Effectively #2(#1(top, under), under)</td><td>`3 4 ⟒+× -> 28`</td></tr></table> |
-| `¿` | `if:` | 1 | <table><tr><td>**If**</td><td>`any`</td><td>If the top of the stack is truthy, apply #1</td><td>`3 1 ¿d -> 6`</td></tr></table> |
-| `∺` | `correspond:` | 2 | <table><tr><td>**Correspond**</td><td>`mon,mon`</td><td>Apply #1 to <under> and #2 to <top></td><td>`3 4 ∺d½ -> 6 2`</td></tr></br><tr><td>**Dyadic Correspond**</td><td>`dyd+,dyd+`</td><td>Apply #2 to #2.arity top items, and #1 to #1.arity items under that</td><td>`3 4 5 6 ∺+- -> 7 1_`</td></tr></table> |
 | `⩔` | `at-simple-levels:`</br>`@simple:` | 1 | <table><tr><td>**At Simple Levels**</td><td>`mon`</td><td>Apply #1 at the simple levels of the top of the stack</td><td>`#[#[#[1\|2\|3#]\|#[#[4\|5\|#[6\|7\|8#]#]#]#]#] ⩔L -> [[3, [[1, 1, 3]]]]`</td></tr></table> |
-| `⑷` | `****:` | 4 | <table><tr><td>**Next Four Elements as Lambda**</td><td>`any,any,any,any`</td><td>Wrap #1, #2, #3, and #4 in a lambda and push it</td><td>`⑷+*~d = λ+*~d}`</td></tr></table> |
 | `Ẅ` | `zip-with:` | 1 | <table><tr><td>**Zip With**</td><td>`dyd`</td><td>Pop two lists and zip them, reducing each pair with #1</td><td>`#[1\|2\|3#] #[4\|5\|6#] ¨; -> [[1, 4], [2, 5], [3, 6]]`</td></tr></table> |
+| `⎇` | `dip:` | 1 | <table><tr><td>**Dip**</td><td>`mon`</td><td>Save the top stack item, apply #1, then push the saved item</td><td>`3 4 5 2 ⎇+ -> 3 9 2`</td></tr></table> |
+| `ᖶ` | `if-else:` | 2 | <table><tr><td>**If Else**</td><td>`any,any`</td><td>If the top of the stack is truthy, apply #1, else apply #2</td><td>`3 1 ᖶd½ -> 6`</td></tr></table> |
+| `¿` | `if:` | 1 | <table><tr><td>**If**</td><td>`any`</td><td>If the top of the stack is truthy, apply #1</td><td>`3 1 ¿d -> 6`</td></tr></table> |
 | `∥` | `parallel-apply:`</br>`para:` | 2 | <table><tr><td>**Parallel Apply**</td><td>`mon,mon`</td><td>Apply #1 and #2 on separate stacks and push both results</td><td>`3 4 ∥d½ -> 8 2`</td></tr></table> |
+| `∦` | `parallel-apply-wrap:`</br>`paraw:` | 2 | <table><tr><td>**Parallel Apply Wrap**</td><td>`mon,mon`</td><td>Apply #1 and #2 on separate stacks and push both results wrapped in a list. Equivalent to `∥#1#2;`</td><td>`3 4 ∦d½ -> [8, 2]`</td></tr></table> |
+| `∺` | `correspond:` | 2 | <table><tr><td>**Correspond**</td><td>`mon,mon`</td><td>Apply #1 to <under> and #2 to <top></td><td>`3 4 ∺d½ -> 6 2`</td></tr></br><tr><td>**Dyadic Correspond**</td><td>`dyd+,dyd+`</td><td>Apply #2 to #2.arity top items, and #1 to #1.arity items under that</td><td>`3 4 5 6 ∺+- -> 7 1_`</td></tr></table> |
+| `⁜` | `group-by:`</br>`window-reduce:` | 1 | <table><tr><td>**Group By**</td><td>`mon`</td><td>Group items of the top of the stack by results of #1</td><td>`#[1\|3\|4\|5\|2\|4#] ⁜e -> [[1,3],[4],[5],[2,4]]`</td></tr></br><tr><td>**Window Reduce**</td><td>`dyd+`</td><td>Reduce each overlapping window of size #1.arity with #1</td><td>`#[1\|2\|3\|4\|5\|6#] ⁜λ3\|+} -> [6, 9, 12, 15]`</td></tr></table> |
+| `⑴` | `*:` | 1 | <table><tr><td>**Next AddElement as Lambda**</td><td>`any`</td><td>Wrap #1 in a lambda and push it</td><td>`⑴+ = λ+}`</td></tr></table> |
+| `⑵` | `**:` | 2 | <table><tr><td>**Next Two Elements as Lambda**</td><td>`any,any`</td><td>Wrap #1 and #2 in a lambda and push it</td><td>`⑵+* = λ+*}`</td></tr></table> |
+| `⑶` | `***:` | 3 | <table><tr><td>**Next Three Elements as Lambda**</td><td>`any,any,any`</td><td>Wrap #1, #2, and #3 in a lambda and push it</td><td>`⑶+*~ = λ+*~}`</td></tr></table> |
+| `⑷` | `****:` | 4 | <table><tr><td>**Next Four Elements as Lambda**</td><td>`any,any,any,any`</td><td>Wrap #1, #2, #3, and #4 in a lambda and push it</td><td>`⑷+*~d = λ+*~d}`</td></tr></table> |
+| `⎂` | `both:` | 1 | <table><tr><td>**Both**</td><td>`any`</td><td>Apply #1 to both the top of stack (or however many arguments), and under stack (or however many arguments under the arity). Effectively ... #1(top - arity, top - arity * 2) #1(top -> top - arity)</td><td>`3 4 ⎂d -> 6 8 \|\| 1 2 3 4 ⎂+ -> 3 7`</td></tr></table> |
+| `⟒` | `left-fork:` | 2 | <table><tr><td>**Left Fork**</td><td>`dyd+,dyd+`</td><td>Apply #1 but keep the under stack, and then apply #2. Effectively #2(#1(top, under), under)</td><td>`3 4 ⟒+× -> 28`</td></tr></table> |
+| `ᛞ` | `inner-product:` | 2 | <table><tr><td>**Inner Product**</td><td>`dyd,dyd`</td><td>Inner product of #1 and #2</td><td>`#[1\|2\|3#] #[4\|5\|6#] ᛞ×+ -> 32`</td></tr></table> |
+| `▦` | `outer-product:` | 1 | <table><tr><td>**Outer Product**</td><td>`dyd`</td><td>Outer product of #1 and #2</td><td>`#[1\|2\|3#] #[4\|5\|6#] ▦; -> [[[1,4],[1,5],[1,6]],[[2,4],[2,5],[2,6],[3,4],[3,5],[3,6]]]`</td></tr></table> |
+| `¨` | `each:` | 1 | <table><tr><td>**Each**</td><td>`any`</td><td>Map #1 over the top of the stack</td><td>`#[#[1\|2\|3#]\|#[4\|2\|3#]\|#[1\|5\|3#]#] ¨G -> [3, 4, 5]`</td></tr></table> |
 
 ## Syntax
         
