@@ -114,23 +114,22 @@ object DocsUtils:
   end genModifiersTable
 
   def genSyntaxTable(): String =
-    val HEADER_ROW = "| Symbol | Keywords | Description | Usage |" +
-      "\n|--------|--|-----------|------|"
+    val HEADER_ROW = "| Symbol | Name | Keywords | Description | Usage |" +
+      "\n|--------|----|--|-----------|------|"
 
     val syntaxMap = SyntaxInfo.info
 
-    val lines = syntaxMap.values.toSeq
-      .sortBy(syntax => Codepage.indexOf(syntax.name))
-      .map { syntax =>
+    val lines = syntaxMap.toSeq.sortBy((key, _) => Codepage.indexOf(key)).map {
+      (char, syntax) =>
         val symbol =
-          if "`|<>\\".contains(syntax.name) then s"\\${syntax.name}"
-          else syntax.name
+          if "`|<>\\".contains(char) then s"\\${char}"
+          else char
         val keywords =
           syntax.literateKeywords.map(kw => s"`$kw`").mkString("</br>")
         val description = syntax.description
         val usage = syntax.usage
-        s"| `$symbol` | $keywords | $description | $usage |"
-      }
+        s"| `$symbol` | ${syntax.name} | $keywords | $description | $usage |"
+    }
 
     (HEADER_ROW +: lines).mkString("\n")
   end genSyntaxTable

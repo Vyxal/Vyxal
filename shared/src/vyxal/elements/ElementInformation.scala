@@ -1101,6 +1101,20 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "`",
+      keywords = Seq("len-stack"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Length of Stack",
+        args = Seq(),
+        description = "Push the length of the stack to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
       symbol = "a",
       keywords = Seq("any", "any?", "uppercase?"),
       arity = 1,
