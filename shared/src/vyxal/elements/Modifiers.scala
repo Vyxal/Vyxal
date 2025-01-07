@@ -37,8 +37,7 @@ extension (ast: AST)
   def lamAsFunction: AST =
     ast.lam(ast.arity.getOrElse(calculateArityOfAST(ast)), true)
 
-extension (ast: AST)
-  def lam: AST = ast.lam(ast.arity.getOrElse(calculateArityOfAST(ast)))
+extension (ast: AST) def lam: AST = ast.lam(ast.arity.getOrElse(1))
 
 extension (ast: AST)
   def lamLeast(arity: Int): AST =
