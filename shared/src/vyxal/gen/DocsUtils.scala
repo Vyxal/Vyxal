@@ -101,14 +101,17 @@ object DocsUtils:
 
     val modifiers = ElementInformation.modifiers
 
-    val lines = modifiers.values.toSeq.map { mod =>
-      val symbol =
-        if "`|<>\\".contains(mod.symbol) then s"\\${mod.symbol}" else mod.symbol
-      val keywords = mod.keywords.map(kw => s"`$kw`").mkString("</br>")
-      val numElements = mod.numberOfElements
-      val overloads = mod.overloads.map(overloadToString).mkString("</br>")
-      s"| `$symbol` | $keywords | $numElements | <table>$overloads</table> |"
-    }
+    val lines = modifiers.values.toSeq
+      .sortBy { char => Codepage.indexOf(char.symbol.last) }
+      .map { mod =>
+        val symbol =
+          if "`|<>\\".contains(mod.symbol) then s"\\${mod.symbol}"
+          else mod.symbol
+        val keywords = mod.keywords.map(kw => s"`$kw`").mkString("</br>")
+        val numElements = mod.numberOfElements
+        val overloads = mod.overloads.map(overloadToString).mkString("</br>")
+        s"| `$symbol` | $keywords | $numElements | <table>$overloads</table> |"
+      }
 
     (HEADER_ROW +: lines).mkString("\n")
   end genModifiersTable
