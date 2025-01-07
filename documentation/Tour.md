@@ -41,7 +41,7 @@ on top of the stack, and push their result(s) back on top of the stack.
 
 The stack can contain any type of value supported by Vyxal, those being:
 
-- Numbers (integers, floats, complex numbers, etc)
+- Numbers (integers and floats)
 - Strings
 - Lists (of any type, including nested lists)
 - Functions
@@ -93,25 +93,6 @@ part of a decimal is omitted, it is assumed to be `0.5`. For example:
 .212 => 0.212
 1. => 1.5
 . => 0.5
-```
-
-Complex numbers can be pushed by using the `ı` character. `ı` is used in much the
-same way you would use a `.` in a float. The left side of the `ı` is the real
-part of the complex number, and the right side is the imaginary part. For example:
-
-```
-1ı2 => 1+2j
-69ı420 => 69+420j
-```
-
-are both examples of complex number literals.
-
-Much like floats, complex numbers can have the real and/or imaginary part omitted. If the real part is omitted, it is assumed to be `0`. If the imaginary part is omitted, it is assumed to be `1j`. For example:
-
-```
-ı2 => 0+2j
-1ı => 1+1j
-ı => 0+1j
 ```
 
 Consecutive numeric literals require a space or other non-numeric separator:
@@ -509,8 +490,8 @@ elements include:
 $ -- Swap the top two values on the stack
 _ -- Pop the top of the stack (unless following a number)
 ^ -- Reverse the stack
-← -- Rotate the stack left
-→ -- Rotate the stack right
+↜ -- Rotate the stack left
+↝ -- Rotate the stack right
 W -- Wrap the entire stack in a list
 ` -- Length of the stack
 ```
@@ -673,7 +654,8 @@ common lambda-element combinations. These are:
 ƛ...} # Mapping lambda. Equivalent to λ...}M
 Ω...} # Filter lambda. Equivalent to λ...}F
 ₳...} # Accumulation lambda. Equivalent to λ...}R
-µ...} # Sorting lambda. Equivalent to λ...}ṡ
+µ...} # Sorting lambda. Equivalent to λ...}↯
+⎊...} # Map Over Permutations lambda. Equivalent to λ...}⧖ or ⧖λ...}M
 ```
 
 Mapping lambdas, filter lambdas, and sorting lambdas also have another special
@@ -694,6 +676,19 @@ and so on.
 
 Normal lambdas and accumulation lambdas do not perform any special actions
 with multiple code sections.
+
+
+### Specialised Structure Closer Characters
+
+Where structures are usually closed with `}`, there are other characters that
+can close structures. These are:
+
+```
+) -- Close two structures at once
+] -- Close all open structures
+⎋ -- Close the current structure and push the first item of the result to the stack
+⍟ -- Close the current structure and then flatten the result of executing the structure
+```
 
 ### Printing Functions 
 
@@ -758,35 +753,9 @@ Sorted functions are called using the `ṡ` element, or through a sorting lambda
 `n` is set to the current value being sorted, as is `m`. This may be changed
 in the future.
 
-## Specialised Structures
+## The Generator Structure
 
-There exist two structures within the Vyxal language that don't fit in
-the category of "control flow" or "function". These are the "specialised
-structures". These structures are the decision problem structure, and the
-generator structure.
-
-### The Decision Problem Structure
-
-A common problem in code golf is to determine whether an input contains
-an item that satisfies a certain condition. It can be seen as a shortcut
-for `ƛ...}a` or `Ω...}ȯ`.
-
-The structure is:
-
-```
-Ḍpredicate|iterable}
-```
-
-The `predicate` part is the predicate to check. The `iterable` part is the
-iterable to check. If `iterable` is omitted, it is assumed to be the top of
-the stack.
-
-The decision problem structure will push `1` if the predicate is satisfied
-by any item in the iterable, and `0` otherwise.
-
-### The Generator Structure
-
-The generator structure is used to generate a list of values. It maintains a
+While not a function lambda, the generator structure is used to generate a list of values. It maintains a
 list of all values generated, and allows those values to be used to generate
 new values. Basically, a state-mainaining generator like python's `yield`.
 
@@ -812,9 +781,9 @@ and push their result back onto the stack. However, some elements modify the
 behaviour of other elements - instead of popping values from the stack, they
 modify the behaviour of the next element. These are called "modifiers".
 
-For example, the most commonly used modifier is the `ᵛ` modifier. This modifier
-`ᵛ`ectorises (vectorises) the next element over the top of the stack. For
-elements that do not vectorise by default, this allows them to be vectorised.
+For example, the most commonly used modifier is the `¨` modifier. This modifier
+maps the next element over the top of the stack. For
+elements that do not vectorise by default, this allows them to be "vectorised".
 
 Another common modifier is the `/` modifier. This modifier is used to reduce
 a list of values by a function. It's as if you wrapped the element in a lambda
@@ -858,16 +827,17 @@ Some modifiers are shorthand for wrapping a number of elements in a lambda.
 These modifiers will take the next _n_ elements, wrap them in a lambda, and
 then push the lambda to the stack. These modifiers are:
 
-| Modifier | Number of Elements | Arity of Lambda |
-| -------- | ------------------ | --------------- |
-| `⸠`      | 1                  | 1               |
-| `ϩ`      | 2                  | 1               |
-| `э`      | 3                  | 1               |
-| `Ч`      | 4                  | 1               |
-| `ᵈ`      | 1                  | 2               |
-| `ᵉ`      | 2                  | 2               |
-| `ᶠ`      | 3                  | 2               |
-| `ᴳ`      | 4                  | 2               |
+| Modifier | Number of Elements |
+| -------- | ------------------ |
+| `⑴`      | 1                  |
+| `⑵`      | 2                  |
+| `⑶`      | 3                  |
+| `⑷`      | 4                  |
+
+The arity of the lambda is determined by how many total arguments would be used
+from the outer stack. For example, `⑴+` would have an arity of 2, because `+` uses
+two values from the outer stack. `⑵+:` would also have an arity of 2, because although
+`:` pops a value, it isn't taking any extra arguments from the outer stack.
 
 ## Arity Grouping
 
@@ -892,11 +862,11 @@ The following arity sequences are grouped together:
 This can best be seen with the lambda shorthand modifiers. For example:
 
 ```
-⸠5+ # Pushes a monadic lambda that adds 5 to its argument
-ϩ5+8× # Pushes a dyadic lambda that adds 5 to its first argument and multiplies it by 8
+⑴5+ # Pushes a monadic lambda that adds 5 to its argument
+⑵5+8× # Pushes a dyadic lambda that adds 5 to its first argument and multiplies it by 8
 ```
 
-While it looks like `⸠5+` should be `⸠5` then `+`, it is grouped as a monad.
+While it looks like `⑴5+` should be `⑴5` then `+`, it is grouped as a monad.
 
 Arity grouping stacks too. For example, `5 4++` is grouped as a monad, as
 `5 4+` is first grouped as a nilad. That leaves a nilad-dyad pattern,
