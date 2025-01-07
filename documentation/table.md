@@ -243,7 +243,6 @@ Element, Modifier, and Syntax Reference
 |--------|----|--|-----------|------|
 | `#:~` | Retrieve Original Element | `$.` | Call the original, vyxal defined, meaning of an element. Useful for when you want to define a new element with the same name as a built-in one | <code>#:~<name></code> |
 | `#:@` | Defined Element Call | `$@` | Call a defined element | <code>#:@<name></code> |
-| `##` | Comment |  | Comment out the rest of the line | <code>##<comment></code> |
 | `#>` | Augmented Assignment | `:>` | Apply a function to a variable value and store the result in the same variable. | <code><function> #> <variable></code> |
 | `Ω` | Open Filter Lambda | `filter-lam`</br>`filter<`</br>`filter-lambda` | Open a lambda that automatically filters the top of the stack by its function | <code>Ω<code>}</code> |
 | `₳` | Open Reduce/Accumulate Lambda | `reduce-lam`</br>`reduce<`</br>`reduce-lambda`</br>`fold<`</br>`fold-lam`</br>`fold-lambda` | Open a lambda that automatically reduces/accumulates the top of the stack by its function | <code>₳<code>}</code> |
@@ -257,11 +256,14 @@ Element, Modifier, and Syntax Reference
 | `#::` | Element/Modifier Definition | `define` | Define a custom element/modifier that can be used in programs | <code>#::<mode><name>|<arg>|<arg>...|<code>}</code> |
 | `#{` | If/Elif/Else Statement | `if` | Open an if statement. Allows for if/elif/else statements | <code>#{<if condition>|<code>|<else if condition>|<code>|<else code>}</code> |
 | `#:[` | Variable Unpacking | `:=[` | Unpack the top of the stack into a list of variables. | <code>#:[<var>|<var>|<var>]</code> |
+| `##` | Comment |  | Comment out the rest of the line | <code>##<comment></code> |
 | `λ` | Open Lambda | `lam`</br>`lambda`</br>`{` | Open a lambda. | <code>λ<parameters>|<code>}</code> |
 | `ƛ` | Open Map Lambda | `map-lam`</br>`map<`</br>`map-lambda` | Open a lambda that automatically maps its function to the top of the stack | <code>ƛ<code>}</code> |
 | `µ` | Open Sort Lambda | `sort-lam`</br>`sort<`</br>`sort-lambda` | Open a lambda that automatically sorts the top of the stack by its function | <code>µ<code>}</code> |
+| `⎋` | Close a Structure and Get the First Item | `end-and-head`</br>`end-head` | Match and close the nearest open structure, then push the first item of the result to the stack | <code><structure open> <code> ⎋ <code not in structure></code> |
+| `⍟` | Close a Structure and Flatten | `end-and-flatten`</br>`end-flatten` | Match and close the nearest open structure, then flatten the result | <code><structure open> <code> ⍟ <code not in structure></code> |
 | `⎊` | Open Map Over Permutations Lambda | `map-permutations`</br>`map-perms`</br>`map-permutations<`</br>`permutations<` | Open a lambda that automatically maps over the permutations of the top of the stack | <code>⎊<code>}</code> |
-| `⎄` | Generator Structure | `relation<`</br>`generate<`</br>`generate-from<` | Open a generator structure. Allows for generator expressions | <code>Ṇ<code>|<initial vector>}</code> |
+| `⎄` | Generator Structure | `relation<`</br>`generate<`</br>`generate-from<` | Open a generator structure. Allows for generator expressions | <code>⎄<code>|<initial vector>}</code> |
 | `"` | Open/Close String |  | Open/close a string. If the string is closed, push it to the stack. Closes all string types | <code>"string contents"</code> |
 | `#$` | Retrieve Variable | `$` | Push the value of a variable. | <code>#$<variable></code> |
 | `#` | Miscellaneous Digraphs |  | Used for miscellaneous digraphs | <code>#<character></code> |
@@ -285,8 +287,8 @@ Element, Modifier, and Syntax Reference
 | `{` | While Loop | `while`</br>`while<` | Open a while loop. While the top of the stack is truthy, execute code. | <code>{<condition>|<code>}</code> |
 | `\|` | Structure Branch | `:`</br>`->`</br>`else:`</br>`else`</br>`elif`</br>`else-if`</br>`body`</br>`do`</br>`branch`</br>`then`</br>`in`</br>`using`</br>`no?`</br>`=>`</br>`from` | Delimit the next section in a structure. | <code><structure open> <code> | <code> ...</code> |
 | `}` | Close A Structure | `end`</br>`endfor`</br>`end-for`</br>`endwhile`</br>`end-while`</br>`endlambda`</br>`end-lambda`</br>`end` | Match and close the nearest open structure. | <code><structure open> <code> } <code not in structure></code> |
-| `Ꮬ` | Two Character String |  | Push the next two characters as a string | <code>ᶴ<character><character></code> |
-| `Ꮠ` | Two Byte Number |  | Push the next two bytes as a number, converted from bijective base 255 using the codepage | <code>~<character><character></code> |
+| `Ꮬ` | Two Character String |  | Push the next two characters as a string | <code>Ꮬ<character><character></code> |
+| `Ꮠ` | Two Byte Number |  | Push the next two bytes as a number, converted from bijective base 255 using the codepage | <code>Ꮠ<character><character></code> |
 | `Þ` | List Digraphs |  | Used for list-related digraphs | <code>Þ<character></code> |
 | `∆` | Mathematical Digraphs |  | Used for math-related digraphs | <code>∆<character></code> |
 | `ø` | String Digraphs |  | Used for string-related digraphs | <code>ø<character></code> |
