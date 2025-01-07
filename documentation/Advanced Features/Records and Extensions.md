@@ -64,7 +64,7 @@ created.
 To create a new record:
 
 ```
-#$RecordName Ė
+#$RecordName ᴥ
 ```
 
 Defining a record creates a variable with the same name as the record. This
@@ -87,7 +87,7 @@ To set a member of a record:
 
 ```
 ## Assuming the record is on the stack  
-"memberName" <value> Ạ
+"memberName" <value> ≜
 ```
 
 This sets the value of the member to the value on the stack. If the member is a
@@ -102,13 +102,13 @@ restricted or private member, this will fail, unless inside an extension method.
 }
 
 λ value, key, mp | 
-  #$mp "keys" ᵇi #$key Ạ 
-  #$mp "values" ᵇi #$value Ạ
+  #$mp "keys" ~i #$key ≜
+  #$mp "values" ~i #$value ≜
   #$mp
 } #=put
 
-#$Map Ė
-"key1" "value1" #$put Ė
+#$Map ᴥ
+"key1" "value1" #$put ᴥ
 ```
 
 This example creates a record that acts like a map. It has two public members,
@@ -131,7 +131,7 @@ control over the types involved in a function.
 To define an extension method:
 
 ```
-#::+ symbol | argA > typeA,  argB > typeB,  ...,  argN > typeN | implementation }
+#::+ symbol | argA: typeA,  argB: typeB,  ...,  argN: typeN | implementation }
 ```
 
 * `symbol` is the symbol that will be used to call the extension method. This can
@@ -185,13 +185,13 @@ Lowest Priority
   #[#] #!values
 }
 
-#::+ put | value > *, key > *, mp > Map | 
-  #$mp "keys" ᵇi #$key & Ạ 
-  #$mp "values" ᵇi #$value & Ạ
+#::+ put | value: *, key: *, mp: Map | 
+  #$mp "keys" ~i #$key & ≜ 
+  #$mp "values" ~i #$value & ≜
   #$mp
 }
 
-#$Map Ė
+#$Map ᴥ
 "key1" "value1" #:@put
 ```
 
@@ -224,23 +224,23 @@ $RecordName call
 To access a member of a record:
 
 ```
-"memberName" @<=
+"memberName" <**
 ```
 
 To set a member of a record:
 
 ```
-"memberName" value @=>
+"memberName" value **>
 ```
 
 To define an extension method:
 
 ```
 extension symbol given
-  argA as typeA,
-  argB as typeB,
+  argA: typeA,
+  argB: typeB,
   ...
-  argN as typeN
+  argN: typeN
 does
     implementation
 }
@@ -264,12 +264,12 @@ record Map =>
 }
 
 extension put given
-  value as *,
-  key as *,
-  mp as Map
+  value: *,
+  key: *,
+  mp: Map
 does
-  $mp "keys" peek: (@<=) $key append @=>
-  $mp "values" peek: (@<=) $value append @=>
+  $mp "keys" peek: (<**) $key append **>
+  $mp "values" peek: (<**) $value append **>
   $mp
 }
 
