@@ -336,7 +336,7 @@ object SyntaxInfo:
         "Call a defined element",
         "#:@<name>",
       ),
-    "#:\\`" ->
+    "#:`" ->
       Syntax(
         "Defined Modifier Call",
         Seq("$:"),

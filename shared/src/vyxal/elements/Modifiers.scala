@@ -4,6 +4,27 @@ import vyxal.conversions.{*, given}
 import vyxal.AST
 import vyxal.VNum
 
+/** Calculate the effective arity of a group. The effective arity is the number
+  * of total arguments popped from the outer stack.
+  *
+  * @param group
+  * @return
+  */
+def calculateArityOfAST(ast: AST): Int =
+  var arity = 0
+  ast match
+    case AST.Lambda(arity, _, _, _, _) => arity.getOrElse(1)
+    case AST.Group(elems, astArity, _) =>
+      if astArity.isDefined then astArity.get
+      else
+        elems.foreach { elem =>
+          val elemArity = calculateArityOfAST(elem)
+          if elemArity > arity then arity = elemArity
+          else if elemArity == arity then arity += 1
+        }
+      arity
+    case otherAST => otherAST.arity.getOrElse(1)
+
 extension (ast: AST) def lam(arity: Int): AST = lam(arity, false)
 
 extension (ast: AST)
@@ -12,7 +33,12 @@ extension (ast: AST)
       case lam: AST.Lambda => lam.copy(lambdaArity = Some(arity))
       case _ => AST.Lambda(Some(arity), List(), List(ast), originallyFunction)
 
-extension (ast: AST) def lam: AST = ast.lam(ast.arity.getOrElse(1))
+extension (ast: AST)
+  def lamAsFunction: AST =
+    ast.lam(ast.arity.getOrElse(calculateArityOfAST(ast)), true)
+
+extension (ast: AST)
+  def lam: AST = ast.lam(ast.arity.getOrElse(calculateArityOfAST(ast)))
 
 extension (ast: AST)
   def lamLeast(arity: Int): AST =
@@ -168,24 +194,24 @@ object Modifiers:
             AST.Command(";"),
           ),
       ),
-    "⑴" -> fullToImpl(Monadic, (ast) => Seq(AST.makeSingle(ast).lam(1, true))),
+    "⑴" -> fullToImpl(Monadic, (ast) => Seq(AST.makeSingle(ast).lamAsFunction)),
     "⑵" ->
       fullToImpl(
         Dyadic,
-        (first, second) => Seq(AST.makeSingle(first, second).lam(1, true)),
+        (first, second) => Seq(AST.makeSingle(first, second).lamAsFunction),
       ),
     "⑶" ->
       fullToImpl(
         Triadic,
         (first, second, third) =>
-          Seq(AST.makeSingle(first, second, third).lam(1, true)),
+          Seq(AST.makeSingle(first, second, third).lamAsFunction),
       ),
     "⑷" ->
       fullToImpl(
         Tetradic,
         (first, second, third, fourth) =>
           Seq(
-            AST.makeSingle(first, second, third, fourth).lam(1, true)
+            AST.makeSingle(first, second, third, fourth).lamAsFunction
           ),
       ),
     "⎂" ->
