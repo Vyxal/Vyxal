@@ -60,6 +60,20 @@ object SyntaxInfo:
         "Match and close the nearest open structure.",
         "<structure open> <code> } <code not in structure>",
       ),
+    "⎋" ->
+      Syntax(
+        "Close a Structure and Get the First Item",
+        Seq("end-and-head", "end-head"),
+        "Match and close the nearest open structure, then push the first item of the result to the stack",
+        "<structure open> <code> ⎋ <code not in structure>",
+      ),
+    "⍟" ->
+      Syntax(
+        "Close a Structure and Flatten",
+        Seq("end-and-flatten", "end-flatten"),
+        "Match and close the nearest open structure, then flatten the result",
+        "<structure open> <code> ⍟ <code not in structure>",
+      ),
     "|" ->
       Syntax(
         "Structure Branch",
@@ -102,14 +116,14 @@ object SyntaxInfo:
         "Two Character String",
         Seq(),
         "Push the next two characters as a string",
-        "ᶴ<character><character>",
+        "Ꮬ<character><character>",
       ),
     "Ꮠ" ->
       Syntax(
         "Two Byte Number",
         Seq(),
         "Push the next two bytes as a number, converted from bijective base 255 using the codepage",
-        "~<character><character>",
+        "Ꮠ<character><character>",
       ),
     "#[" ->
       Syntax(
@@ -179,7 +193,7 @@ object SyntaxInfo:
         "Generator Structure",
         Seq("relation<", "generate<", "generate-from<"),
         "Open a generator structure. Allows for generator expressions",
-        "Ṇ<code>|<initial vector>}",
+        "⎄<code>|<initial vector>}",
       ),
     "⎊" ->
       Syntax(
