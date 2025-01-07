@@ -311,13 +311,13 @@ class ParserTests extends AnyFunSuite:
         Group(
           List(
             Lambda(
-              Some(1),
+              Some(2),
               List(),
               List(
                 Group(
                   List(
                     Lambda(
-                      Some(1),
+                      Some(2),
                       List(),
                       List(Group(List(Command("*"), Command("O")), None)),
                     ),
