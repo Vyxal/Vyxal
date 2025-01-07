@@ -3643,6 +3643,20 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "ḧ",
+      keywords = Seq("heads", "head-each"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Heads",
+        args = Seq("lst"),
+        description = "First element of each element in #1",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
       symbol = "¤",
       keywords = Seq("stringify", "to-str", "str"),
       arity = 1,

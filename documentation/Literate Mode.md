@@ -71,7 +71,7 @@ groups, `()` are purely aesthetic.
 
 #### Modifier Groups
 
-In addition to having keywords for each of `⸠ϩэЧᵈᵉᶠᴳ`, there's a special group
+In addition to having keywords for each of `⑴⑵⑶⑷`, there's a special group
 syntax to indicate how many elements to group, and the arity of the modifier.
 
 ```
@@ -79,13 +79,8 @@ syntax to indicate how many elements to group, and the arity of the modifier.
 (: * *) -> 2 elements, arity 1
 (:. * * *) -> 3 elements, arity 1
 (:: * * * *) -> 4 elements, arity 1
-(, *) -> 1 element, arity 2
-(; * *) -> 2 elements, arity 2
-(;, * * *) -> 3 elements, arity 2
-(;; * * * *) -> 4 elements, arity 2
 ```
 
-A helpful way to remember this is that the number of dots/commas is the number of elements, and the shape of the bottom dots is the arity. `.` is arity 1, `,` is arity 2.
 
 ### Lists
 
@@ -108,25 +103,11 @@ The ghost variable still works.
 
 ### Numbers
 
-Numeric literals are also the same as SBCS form, except instead of `ı`, you use `i`.
+Numeric literals are also the same as SBCS form.
 
 ### Strings
 
 Strings are no different to SBCS form.
-
-### Raw SBCS
-
-If you want to use SBCS form in literate mode, you can use `# ... #}`. For example:
-
-```
-100 { # 3× #} 5 add } map
-```
-
-is the same as
-
-```
-100 λ 3× 5+} M
-```
 
 ### `n't` suffix
 

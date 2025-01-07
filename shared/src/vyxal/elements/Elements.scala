@@ -1333,6 +1333,8 @@ object Elements:
     },
     "Ŀ" -> fullToImpl(Monad, x => x.itr.map(_.itr.bigLength)),
     "¤" -> fullToImpl(Monad, x => x.toString),
+    "ḧ" ->
+      fullToImpl(Monad, x => x.itr.map(_.itr.headOption.getOrElse(VNum(0)))),
     "#~" ->
       direct(Monad) {
         pop() match
