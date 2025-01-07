@@ -241,57 +241,57 @@ Element, Modifier, and Syntax Reference
         
 | Symbol | Name | Keywords | Description | Usage |
 |--------|----|--|-----------|------|
-| `#:~` | Retrieve Original Element | `$.` | Call the original, vyxal defined, meaning of an element. Useful for when you want to define a new element with the same name as a built-in one | <code>#:~<name></code> |
-| `#:@` | Defined Element Call | `$@` | Call a defined element | <code>#:@<name></code> |
-| `#>` | Augmented Assignment | `:>` | Apply a function to a variable value and store the result in the same variable. | <code><function> #> <variable></code> |
-| `Ω` | Open Filter Lambda | `filter-lam`</br>`filter<`</br>`filter-lambda` | Open a lambda that automatically filters the top of the stack by its function | <code>Ω<code>}</code> |
-| `₳` | Open Reduce/Accumulate Lambda | `reduce-lam`</br>`reduce<`</br>`reduce-lambda`</br>`fold<`</br>`fold-lam`</br>`fold-lambda` | Open a lambda that automatically reduces/accumulates the top of the stack by its function | <code>₳<code>}</code> |
-| `#]` | Close List | `]` | Close a list. Pushes the list to the stack when closed. | <code>#[item|item|item#]</code> |
-| `#:\`` | Defined Modifier Call | `$:` | Call a defined modifier | <code>#:`<name></code> |
-| `#¤` | Context Paramter Index | ``n`` | Index into the list of context parameters. | <code>¤<number></code> |
-| `#=` | Assign Variable | `:=` | Assign a variable to a value. | <code>#=<variable></code> |
-| `#::R` | Record Definition | `record` | Define a record with members | <code>#:R<name>|#$restricted #=private #!public}</code> |
-| `#::+` | Extension Method | `extension` | Define an overload on a custom element based on types. Requires at least one type to be specified. | <code>#::+<name>|<arg1>|<type1>|<arg2>|<type2>...|<impl>}</code> |
-| `#[` | Open List | `[` | Open a list. Pushes the list to the stack when closed. | <code>#[item|item|item#]</code> |
-| `#::` | Element/Modifier Definition | `define` | Define a custom element/modifier that can be used in programs | <code>#::<mode><name>|<arg>|<arg>...|<code>}</code> |
-| `#{` | If/Elif/Else Statement | `if` | Open an if statement. Allows for if/elif/else statements | <code>#{<if condition>|<code>|<else if condition>|<code>|<else code>}</code> |
-| `#:[` | Variable Unpacking | `:=[` | Unpack the top of the stack into a list of variables. | <code>#:[<var>|<var>|<var>]</code> |
-| `##` | Comment |  | Comment out the rest of the line | <code>##<comment></code> |
-| `λ` | Open Lambda | `lam`</br>`lambda`</br>`{` | Open a lambda. | <code>λ<parameters>|<code>}</code> |
-| `ƛ` | Open Map Lambda | `map-lam`</br>`map<`</br>`map-lambda` | Open a lambda that automatically maps its function to the top of the stack | <code>ƛ<code>}</code> |
-| `µ` | Open Sort Lambda | `sort-lam`</br>`sort<`</br>`sort-lambda` | Open a lambda that automatically sorts the top of the stack by its function | <code>µ<code>}</code> |
-| `⎋` | Close a Structure and Get the First Item | `end-and-head`</br>`end-head` | Match and close the nearest open structure, then push the first item of the result to the stack | <code><structure open> <code> ⎋ <code not in structure></code> |
-| `⍟` | Close a Structure and Flatten | `end-and-flatten`</br>`end-flatten` | Match and close the nearest open structure, then flatten the result | <code><structure open> <code> ⍟ <code not in structure></code> |
-| `⎊` | Open Map Over Permutations Lambda | `map-permutations`</br>`map-perms`</br>`map-permutations<`</br>`permutations<` | Open a lambda that automatically maps over the permutations of the top of the stack | <code>⎊<code>}</code> |
-| `⎄` | Generator Structure | `relation<`</br>`generate<`</br>`generate-from<` | Open a generator structure. Allows for generator expressions | <code>⎄<code>|<initial vector>}</code> |
-| `"` | Open/Close String |  | Open/close a string. If the string is closed, push it to the stack. Closes all string types | <code>"string contents"</code> |
-| `#$` | Retrieve Variable | `$` | Push the value of a variable. | <code>#$<variable></code> |
-| `#` | Miscellaneous Digraphs |  | Used for miscellaneous digraphs | <code>#<character></code> |
-| `'` | One Character String |  | Push the next character as a string | <code>'<character></code> |
-| `(` | For Loop | `for`</br>`for<`</br>`do-to-each`</br>`each-as` | Open a for loop. For each item in the top of the stack, execute code, storing loop variable. | <code><iterable> (<variable>|<code>}</code> |
-| `)` | Close Two Structures | `end-end` | Match and close two open structures. | <code><structure open><structure open> <code> ) <code not in structure></code> |
-| `.` | Decimal Separator |  | Used to separate the integer and fractional parts of a number | <code><integer>.<fractional></code> |
-| `0` | Numeric Literal |  | The number 0 | <code>0</code> |
-| `1` | Numeric Literal |  | The number 1 | <code>1</code> |
-| `2` | Numeric Literal |  | The number 2 | <code>2</code> |
-| `3` | Numeric Literal |  | The number 3 | <code>3</code> |
-| `4` | Numeric Literal |  | The number 4 | <code>4</code> |
-| `5` | Numeric Literal |  | The number 5 | <code>5</code> |
-| `6` | Numeric Literal |  | The number 6 | <code>6</code> |
-| `7` | Numeric Literal |  | The number 7 | <code>7</code> |
-| `8` | Numeric Literal |  | The number 8 | <code>8</code> |
-| `9` | Numeric Literal |  | The number 9 | <code>9</code> |
-| `[` | Ternary Statement | `?`</br>`?->` | Open a ternary statement. Pop condition, if truthy, run <ontrue>, else run <onfalse> | <code><condition> [<ontrue>|<onfalse>}</code> |
-| `]` | Close All Structures | `close-all`</br>`end-all` | Match and close all open structures. | <code><structure openers>] <code not in structure></code> |
-| `k` | Constant Digraphs |  | Used for constant-related digraphs | <code>k<character></code> |
-| `{` | While Loop | `while`</br>`while<` | Open a while loop. While the top of the stack is truthy, execute code. | <code>{<condition>|<code>}</code> |
-| `\|` | Structure Branch | `:`</br>`->`</br>`else:`</br>`else`</br>`elif`</br>`else-if`</br>`body`</br>`do`</br>`branch`</br>`then`</br>`in`</br>`using`</br>`no?`</br>`=>`</br>`from` | Delimit the next section in a structure. | <code><structure open> <code> | <code> ...</code> |
-| `}` | Close A Structure | `end`</br>`endfor`</br>`end-for`</br>`endwhile`</br>`end-while`</br>`endlambda`</br>`end-lambda`</br>`end` | Match and close the nearest open structure. | <code><structure open> <code> } <code not in structure></code> |
-| `Ꮬ` | Two Character String |  | Push the next two characters as a string | <code>Ꮬ<character><character></code> |
-| `Ꮠ` | Two Byte Number |  | Push the next two bytes as a number, converted from bijective base 255 using the codepage | <code>Ꮠ<character><character></code> |
-| `Þ` | List Digraphs |  | Used for list-related digraphs | <code>Þ<character></code> |
-| `∆` | Mathematical Digraphs |  | Used for math-related digraphs | <code>∆<character></code> |
-| `ø` | String Digraphs |  | Used for string-related digraphs | <code>ø<character></code> |
-| `„` | Base-252 Compressed String |  | Decompress and push a string, converted from a bijective base 252 number using the codepage | <code>"<compressed string>„</code> |
-| `”` | Dictionary Compressed String |  | Decompress and push a string using SSS compression, shamelessly stolen from Jelly | <code>"<compressed string>”</code> |
-| `“` | Base-252 Compressed Number |  | Decompress and push a number, converted from a bijective base 252 number using the codepage | <code>"<compressed number>“</code> |
+| <code>#:~</code> | Retrieve Original Element | `$.` | Call the original, vyxal defined, meaning of an element. Useful for when you want to define a new element with the same name as a built-in one | <code>#:~<name></code> |
+| <code>#:@</code> | Defined Element Call | `$@` | Call a defined element | <code>#:@<name></code> |
+| <code>#></code> | Augmented Assignment | `:>` | Apply a function to a variable value and store the result in the same variable. | <code><function> #> <variable></code> |
+| <code>Ω</code> | Open Filter Lambda | `filter-lam`</br>`filter<`</br>`filter-lambda` | Open a lambda that automatically filters the top of the stack by its function | <code>Ω<code>}</code> |
+| <code>₳</code> | Open Reduce/Accumulate Lambda | `reduce-lam`</br>`reduce<`</br>`reduce-lambda`</br>`fold<`</br>`fold-lam`</br>`fold-lambda` | Open a lambda that automatically reduces/accumulates the top of the stack by its function | <code>₳<code>}</code> |
+| <code>#]</code> | Close List | `]` | Close a list. Pushes the list to the stack when closed. | <code>#[item|item|item#]</code> |
+| <code>#¤</code> | Context Paramter Index | ``n`` | Index into the list of context parameters. | <code>¤<number></code> |
+| <code>#=</code> | Assign Variable | `:=` | Assign a variable to a value. | <code>#=<variable></code> |
+| <code>#::R</code> | Record Definition | `record` | Define a record with members | <code>#:R<name>|#$restricted #=private #!public}</code> |
+| <code>#::+</code> | Extension Method | `extension` | Define an overload on a custom element based on types. Requires at least one type to be specified. | <code>#::+<name>|<arg1>|<type1>|<arg2>|<type2>...|<impl>}</code> |
+| <code>#[</code> | Open List | `[` | Open a list. Pushes the list to the stack when closed. | <code>#[item|item|item#]</code> |
+| <code>#::</code> | Element/Modifier Definition | `define` | Define a custom element/modifier that can be used in programs | <code>#::<mode><name>|<arg>|<arg>...|<code>}</code> |
+| <code>#{</code> | If/Elif/Else Statement | `if` | Open an if statement. Allows for if/elif/else statements | <code>#{<if condition>|<code>|<else if condition>|<code>|<else code>}</code> |
+| <code>#:[</code> | Variable Unpacking | `:=[` | Unpack the top of the stack into a list of variables. | <code>#:[<var>|<var>|<var>]</code> |
+| <code>#:`</code> | Defined Modifier Call | `$:` | Call a defined modifier | <code>#:`<name></code> |
+| <code>##</code> | Comment |  | Comment out the rest of the line | <code>##<comment></code> |
+| <code>λ</code> | Open Lambda | `lam`</br>`lambda`</br>`{` | Open a lambda. | <code>λ<parameters>|<code>}</code> |
+| <code>ƛ</code> | Open Map Lambda | `map-lam`</br>`map<`</br>`map-lambda` | Open a lambda that automatically maps its function to the top of the stack | <code>ƛ<code>}</code> |
+| <code>µ</code> | Open Sort Lambda | `sort-lam`</br>`sort<`</br>`sort-lambda` | Open a lambda that automatically sorts the top of the stack by its function | <code>µ<code>}</code> |
+| <code>⎋</code> | Close a Structure and Get the First Item | `end-and-head`</br>`end-head` | Match and close the nearest open structure, then push the first item of the result to the stack | <code><structure open> <code> ⎋ <code not in structure></code> |
+| <code>⍟</code> | Close a Structure and Flatten | `end-and-flatten`</br>`end-flatten` | Match and close the nearest open structure, then flatten the result | <code><structure open> <code> ⍟ <code not in structure></code> |
+| <code>⎊</code> | Open Map Over Permutations Lambda | `map-permutations`</br>`map-perms`</br>`map-permutations<`</br>`permutations<` | Open a lambda that automatically maps over the permutations of the top of the stack | <code>⎊<code>}</code> |
+| <code>⎄</code> | Generator Structure | `relation<`</br>`generate<`</br>`generate-from<` | Open a generator structure. Allows for generator expressions | <code>⎄<code>|<initial vector>}</code> |
+| <code>"</code> | Open/Close String |  | Open/close a string. If the string is closed, push it to the stack. Closes all string types | <code>"string contents"</code> |
+| <code>#$</code> | Retrieve Variable | `$` | Push the value of a variable. | <code>#$<variable></code> |
+| <code>#</code> | Miscellaneous Digraphs |  | Used for miscellaneous digraphs | <code>#<character></code> |
+| <code>'</code> | One Character String |  | Push the next character as a string | <code>'<character></code> |
+| <code>(</code> | For Loop | `for`</br>`for<`</br>`do-to-each`</br>`each-as` | Open a for loop. For each item in the top of the stack, execute code, storing loop variable. | <code><iterable> (<variable>|<code>}</code> |
+| <code>)</code> | Close Two Structures | `end-end` | Match and close two open structures. | <code><structure open><structure open> <code> ) <code not in structure></code> |
+| <code>.</code> | Decimal Separator |  | Used to separate the integer and fractional parts of a number | <code><integer>.<fractional></code> |
+| <code>0</code> | Numeric Literal |  | The number 0 | <code>0</code> |
+| <code>1</code> | Numeric Literal |  | The number 1 | <code>1</code> |
+| <code>2</code> | Numeric Literal |  | The number 2 | <code>2</code> |
+| <code>3</code> | Numeric Literal |  | The number 3 | <code>3</code> |
+| <code>4</code> | Numeric Literal |  | The number 4 | <code>4</code> |
+| <code>5</code> | Numeric Literal |  | The number 5 | <code>5</code> |
+| <code>6</code> | Numeric Literal |  | The number 6 | <code>6</code> |
+| <code>7</code> | Numeric Literal |  | The number 7 | <code>7</code> |
+| <code>8</code> | Numeric Literal |  | The number 8 | <code>8</code> |
+| <code>9</code> | Numeric Literal |  | The number 9 | <code>9</code> |
+| <code>[</code> | Ternary Statement | `?`</br>`?->` | Open a ternary statement. Pop condition, if truthy, run <ontrue>, else run <onfalse> | <code><condition> [<ontrue>|<onfalse>}</code> |
+| <code>]</code> | Close All Structures | `close-all`</br>`end-all` | Match and close all open structures. | <code><structure openers>] <code not in structure></code> |
+| <code>k</code> | Constant Digraphs |  | Used for constant-related digraphs | <code>k<character></code> |
+| <code>{</code> | While Loop | `while`</br>`while<` | Open a while loop. While the top of the stack is truthy, execute code. | <code>{<condition>|<code>}</code> |
+| <code>\|</code> | Structure Branch | `:`</br>`->`</br>`else:`</br>`else`</br>`elif`</br>`else-if`</br>`body`</br>`do`</br>`branch`</br>`then`</br>`in`</br>`using`</br>`no?`</br>`=>`</br>`from` | Delimit the next section in a structure. | <code><structure open> <code> | <code> ...</code> |
+| <code>}</code> | Close A Structure | `end`</br>`endfor`</br>`end-for`</br>`endwhile`</br>`end-while`</br>`endlambda`</br>`end-lambda`</br>`end` | Match and close the nearest open structure. | <code><structure open> <code> } <code not in structure></code> |
+| <code>Ꮬ</code> | Two Character String |  | Push the next two characters as a string | <code>Ꮬ<character><character></code> |
+| <code>Ꮠ</code> | Two Byte Number |  | Push the next two bytes as a number, converted from bijective base 255 using the codepage | <code>Ꮠ<character><character></code> |
+| <code>Þ</code> | List Digraphs |  | Used for list-related digraphs | <code>Þ<character></code> |
+| <code>∆</code> | Mathematical Digraphs |  | Used for math-related digraphs | <code>∆<character></code> |
+| <code>ø</code> | String Digraphs |  | Used for string-related digraphs | <code>ø<character></code> |
+| <code>„</code> | Base-252 Compressed String |  | Decompress and push a string, converted from a bijective base 252 number using the codepage | <code>"<compressed string>„</code> |
+| <code>”</code> | Dictionary Compressed String |  | Decompress and push a string using SSS compression, shamelessly stolen from Jelly | <code>"<compressed string>”</code> |
+| <code>“</code> | Base-252 Compressed Number |  | Decompress and push a number, converted from a bijective base 252 number using the codepage | <code>"<compressed number>“</code> |
