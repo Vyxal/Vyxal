@@ -128,7 +128,7 @@ object DocsUtils:
           syntax.literateKeywords.map(kw => s"`$kw`").mkString("</br>")
         val description = syntax.description
         val usage = syntax.usage
-        s"| `$symbol` | ${syntax.name} | $keywords | $description | $usage |"
+        s"| `$symbol` | ${syntax.name} | $keywords | $description | <code>$usage</code> |"
     }
 
     (HEADER_ROW +: lines).mkString("\n")
