@@ -89,6 +89,20 @@ Element, Modifier, and Syntax Reference
 | `kH` | `Hello-World` | 0 |   | **Hello, World!**: Push "Hello, World!" to the stack |
 | `kL` | `lowercase-uppercase` | 0 |   | **Lowercase and Uppercase**: Push "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
 | `kP` | `printable-ascii` | 0 |   | **Printable ASCII**: Push "!" to "~" to the stack |
+| `kR` | `digits-uppercase-lowercase` | 0 |   | **Digits, Uppercase, Lowercase**: Push "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" to the stack |
+| `kZ` | `reverse-uppercase` | 0 |   | **Reverse Uppercase**: Push "ZYXWVUTSRQPONMLKJIHGFEDCBA" to the stack |
+| `k^` | `uppercase-hex-digits` | 0 |   | **Uppercase Hex Digits**: Push "0123456789ABCDEF" to the stack |
+| `ka` | `lowercase-letters` | 0 |   | **Lowercase Letters**: Push "abcdefghijklmnopqrstuvwxyz" to the stack |
+| `kb` | `digits` | 0 |   | **Digits**: Push "0123456789" to the stack |
+| `ke` | `e-constant` | 0 |   | **E Constant**: Push 2.718281828459045 to the stack |
+| `kg` | `golden-ratio`</br>`phi-constant` | 0 |   | **Golden Ratio**: Push 1.618033988749895 to the stack |
+| `kh` | `helloworld` | 0 |   | **Hello World!**: Push "Hello World" to the stack, no punctuation |
+| `ki` | `pi-constant` | 0 |   | **Pi Constant**: Push 3.141592653589793 to the stack |
+| `kl` | `reverse-uppercase-lowercase` | 0 |   | **Reverse Uppercase and Lowercase**: Push "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba" to the stack |
+| `ko` | `octal-digits` | 0 |   | **Octal Digits**: Push "01234567" to the stack |
+| `kp` | `punctuation` | 0 |   | **Punctuation**: Push "!" to "~" to the stack |
+| `kr` | `digits-lowercase-uppercase` | 0 |   | **Digits, Lowercase, Uppercase**: Push "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
+| `kz` | `reverse-lowercase` | 0 |   | **Reverse Lowercase**: Push "zyxwvutsrqponmlkjihgfedcba" to the stack |
 | `kæ` | `all-primes`</br>`primes` | 0 |   | **All Primes**: Push a list of every prime number to the stack |
 | `l` | `log`</br>`logarithm`</br>`scan-fixpoint`</br>`scan-fix`</br>`same-length?`</br>`same-length`</br>`length-equals?`</br>`length-equals`</br>`len-eq?` | 2 | vec  | **Logarithm** (`num,num`): Log base #2 of #1</br>**Scan Fixpoint** (`fun,any`): Repeatedly apply #1 to #2 until it doesn't change</br>**Scan Fixpoint** (`any,fun`): Repeatedly apply #1 to #2 until it doesn't change</br>**Same Length** (`str,str`): Are #1 and #2 the same length</br>**String Length Equals** (`str,num`): Is the length of #1 equal to #2</br>**String Length Equals** (`num,str`): Is the length of #2 equal to #1 |
 | `m` | `ctx-secondary`</br>`ctx2`</br>`ctx-m`</br>`context-m`</br>`context-secondary` | 0 |   | **Context Secondary**: Push the secondary context variable to the stack |
