@@ -136,4 +136,54 @@ object DocsUtils:
 
     (HEADER_ROW +: lines).mkString("\n")
   end genSyntaxTable
+
+  def genGrammar(): String =
+    val modifierCharacters = ElementInformation.modifiers.values
+      .map(_.symbol)
+      .filterNot(_.length == 1)
+      .map(_.last)
+      .toSet
+      .mkString("")
+    val structureOpeners =
+      SyntaxInfo.info.filter((_, info) => info.structureOpener).keys
+    val structureClosers =
+      SyntaxInfo.info.filter((_, info) => info.structureCloser).keys
+    val nonElementChars =
+      s"$modifierCharacters${SyntaxInfo.info.keys.filter(_.length == 1).mkString("")}"
+    s"""
+      |@top Program { Statement+ }
+      |@skip { Space }
+      |Statement { Digraph | SyntaxTrigraph | StructureOpen | StructureClose | ListStuff | ModifierChar | VariableThing | Number | AnyString | Branch | ContextIndex | Comment | Element }
+      |Number { NumberDecimal | TwoCharNumber }
+      |NumberDecimal {
+      |    NumberPart |
+      |    "."
+      |} 
+      |AnyString {
+      |    String |
+      |    SingleCharString |
+      |    TwoCharString
+      |}
+      |@tokens {
+      |  Space { @whitespace+ }
+      |  ModifierChar {$$[$modifierCharacters]}
+      |  Comment {"##" (![\n])*}
+      |  Digraph { $$[∆øÞk] _ | "#" ![[\\]$$!=#>@{:] }
+      |  NumberPart { "0" | ($$[1-9] $$[0-9]*) }
+      |  SyntaxTrigraph { "#:" ![[] }
+      |  Branch {"|"}
+      |  ListStuff { "#[" | "#]"}
+      |  StructureOpen {${structureOpeners.map(char => s"\"$char\"").mkString(" | ")}}
+      |  StructureClose {${structureClosers.map(char => s"\"$char\"").mkString(" | ")}}
+      |  String {'"' (!["„”“\\\\] | "\\\\" _)* $$["„”“]}
+      |  SingleCharString { "'" _ }
+      |  TwoCharString { "Ꮬ" _ _ }
+      |  TwoCharNumber { "Ꮠ" _ _ }
+      |  VariableThing { "#" ($$[=$$>]|":[") $$A-Z] $$[a-zA-Z0-9_]* }
+      |  ContextIndex { "#¤" @digit }
+      |  Element { ![$nonElementChars] }
+      |  @precedence { Space, Element }
+      |}  
+    """.stripMargin('|')
+  end genGrammar
 end DocsUtils

@@ -5,6 +5,8 @@ case class Syntax(
     literateKeywords: Seq[String],
     description: String,
     usage: String,
+    structureOpener: Boolean = false,
+    structureCloser: Boolean = false,
 )
 
 object SyntaxInfo:
@@ -15,6 +17,8 @@ object SyntaxInfo:
         Seq("?", "?->"),
         "Open a ternary statement. Pop condition, if truthy, run <ontrue>, else run <onfalse>",
         "<condition> [<ontrue>|<onfalse>}",
+        structureOpener = true,
+        structureCloser = false,
       ),
     "]" ->
       Syntax(
@@ -22,6 +26,8 @@ object SyntaxInfo:
         Seq("close-all", "end-all"),
         "Match and close all open structures.",
         "<structure openers>] <code not in structure>",
+        structureOpener = false,
+        structureCloser = true,
       ),
     "(" ->
       Syntax(
@@ -29,6 +35,8 @@ object SyntaxInfo:
         Seq("for", "for<", "do-to-each", "each-as"),
         "Open a for loop. For each item in the top of the stack, execute code, storing loop variable.",
         "<iterable> (<variable>|<code>}",
+        structureOpener = true,
+        structureCloser = false,
       ),
     ")" ->
       Syntax(
@@ -36,6 +44,8 @@ object SyntaxInfo:
         Seq("end-end"),
         "Match and close two open structures.",
         "<structure open><structure open> <code> ) <code not in structure>",
+        structureOpener = false,
+        structureCloser = true,
       ),
     "{" ->
       Syntax(
@@ -43,6 +53,8 @@ object SyntaxInfo:
         Seq("while", "while<"),
         "Open a while loop. While the top of the stack is truthy, execute code.",
         "{<condition>|<code>}",
+        structureOpener = true,
+        structureCloser = false,
       ),
     "}" ->
       Syntax(
@@ -59,6 +71,8 @@ object SyntaxInfo:
         ),
         "Match and close the nearest open structure.",
         "<structure open> <code> } <code not in structure>",
+        structureOpener = false,
+        structureCloser = true,
       ),
     "⎋" ->
       Syntax(
@@ -66,6 +80,8 @@ object SyntaxInfo:
         Seq("end-and-head", "end-head"),
         "Match and close the nearest open structure, then push the first item of the result to the stack",
         "<structure open> <code> ⎋ <code not in structure>",
+        structureOpener = false,
+        structureCloser = true,
       ),
     "⍟" ->
       Syntax(
@@ -73,6 +89,8 @@ object SyntaxInfo:
         Seq("end-and-flatten", "end-flatten"),
         "Match and close the nearest open structure, then flatten the result",
         "<structure open> <code> ⍟ <code not in structure>",
+        structureOpener = false,
+        structureCloser = true,
       ),
     "|" ->
       Syntax(
@@ -131,6 +149,8 @@ object SyntaxInfo:
         Seq("["),
         "Open a list. Pushes the list to the stack when closed.",
         "#[item|item|item#]",
+        structureOpener = true,
+        structureCloser = false,
       ),
     "#]" ->
       Syntax(
@@ -138,6 +158,8 @@ object SyntaxInfo:
         Seq("]"),
         "Close a list. Pushes the list to the stack when closed.",
         "#[item|item|item#]",
+        structureOpener = false,
+        structureCloser = true,
       ),
     "λ" ->
       Syntax(
@@ -145,6 +167,8 @@ object SyntaxInfo:
         Seq("lam", "lambda", "{"),
         "Open a lambda.",
         "λ<parameters>|<code>}",
+        structureOpener = true,
+        structureCloser = false,
       ),
     "ƛ" ->
       Syntax(
@@ -152,6 +176,8 @@ object SyntaxInfo:
         Seq("map-lam", "map<", "map-lambda"),
         "Open a lambda that automatically maps its function to the top of the stack",
         "ƛ<code>}",
+        structureOpener = true,
+        structureCloser = false,
       ),
     "Ω" ->
       Syntax(
@@ -159,6 +185,8 @@ object SyntaxInfo:
         Seq("filter-lam", "filter<", "filter-lambda"),
         "Open a lambda that automatically filters the top of the stack by its function",
         "Ω<code>}",
+        structureOpener = true,
+        structureCloser = false,
       ),
     "₳" ->
       Syntax(
@@ -173,6 +201,8 @@ object SyntaxInfo:
         ),
         "Open a lambda that automatically reduces/accumulates the top of the stack by its function",
         "₳<code>}",
+        structureOpener = true,
+        structureCloser = false,
       ),
     "µ" ->
       Syntax(
@@ -180,6 +210,8 @@ object SyntaxInfo:
         Seq("sort-lam", "sort<", "sort-lambda"),
         "Open a lambda that automatically sorts the top of the stack by its function",
         "µ<code>}",
+        structureOpener = true,
+        structureCloser = false,
       ),
     "#{" ->
       Syntax(
@@ -187,6 +219,8 @@ object SyntaxInfo:
         Seq("if"),
         "Open an if statement. Allows for if/elif/else statements",
         "#{<if condition>|<code>|<else if condition>|<code>|<else code>}",
+        structureOpener = true,
+        structureCloser = false,
       ),
     "⎄" ->
       Syntax(
@@ -194,6 +228,8 @@ object SyntaxInfo:
         Seq("relation<", "generate<", "generate-from<"),
         "Open a generator structure. Allows for generator expressions",
         "⎄<code>|<initial vector>}",
+        structureOpener = true,
+        structureCloser = false,
       ),
     "⎊" ->
       Syntax(
@@ -206,6 +242,8 @@ object SyntaxInfo:
         ),
         "Open a lambda that automatically maps over the permutations of the top of the stack",
         "⎊<code>}",
+        structureOpener = true,
+        structureCloser = false,
       ),
     "∆" ->
       Syntax(

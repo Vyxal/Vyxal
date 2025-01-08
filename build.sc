@@ -123,9 +123,8 @@ object jvm extends JvmCommon {
     T {
       jvm.runMain(
         "vyxal.gen.generateDocs",
-        (build.millSourcePath / "documentation" / "elements.txt").toString,
-        (build.millSourcePath / "documentation" / "trigraphs.txt").toString,
         (build.millSourcePath / "documentation" / "table.md").toString,
+        (build.millSourcePath / "contributing" / "vyxal.grammar").toString,
       )()
     }
 
