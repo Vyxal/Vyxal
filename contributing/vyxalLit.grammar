@@ -22,18 +22,18 @@ Word {
 @precedence {ModifierKW, NormalKW, WeirdKW}
 
 Structure {
- structure<"(for,For)">
-structure<"(if,IfStatement)">
-structure<"(do-to-each,For)">
-structure<"(for<,For)">
-structure<"(relation<,GeneratorStructure)">
-structure<"(yes?,Ternary)">
-structure<"(generate<,GeneratorStructure)">
-structure<"(while,While)">
-structure<"(?,Ternary)">
-structure<"(while<,While)">
-structure<"(generate-from<,GeneratorStructure)">
-structure<"(each-as,For)">
+ structure<"for">
+structure<"if">
+structure<"do-to-each">
+structure<"for<">
+structure<"relation<">
+structure<"yes?">
+structure<"generate<">
+structure<"while">
+structure<"?">
+structure<"while<">
+structure<"generate-from<">
+structure<"each-as">
 }
 
 Branch {
@@ -62,30 +62,30 @@ branch<"on">
 }
 
 Lambda {
-lambda<"(map-permutations<,LambdaMapPermutations)">
-lambda<"(map-perms,LambdaMapPermutations)">
-lambda<"(map-lam,LambdaMap)">
-lambda<"(reduce-lam,LambdaReduce)">
-lambda<"(eager-map-lambda,LambdaMapEager)">
-lambda<"(sort<,LambdaSort)">
-lambda<"(map-permutations,LambdaMapPermutations)">
-lambda<"(fold-lam,LambdaReduce)">
-lambda<"(fold-lambda,LambdaReduce)">
-lambda<"(eager-map-lam,LambdaMapEager)">
-lambda<"(fold<,LambdaReduce)">
-lambda<"(sort-lambda,LambdaSort)">
-lambda<"(filter-lambda,LambdaFilter)">
-lambda<"(map<,LambdaMap)">
-lambda<"(lam,Lambda)">
-lambda<"(filter-lam,LambdaFilter)">
-lambda<"(permutations<,LambdaMapPermutations)">
-lambda<"(sort-lam,LambdaSort)">
-lambda<"(lambda,Lambda)">
-lambda<"(map-lambda,LambdaMap)">
-lambda<"(eager-map<,LambdaMapEager)">
-lambda<"(filter<,LambdaFilter)">
-lambda<"(reduce-lambda,LambdaReduce)">
-lambda<"(reduce<,LambdaReduce)">
+lambda<"map-permutations<">
+lambda<"map-perms">
+lambda<"map-lam">
+lambda<"reduce-lam">
+lambda<"eager-map-lambda">
+lambda<"sort<">
+lambda<"map-permutations">
+lambda<"fold-lam">
+lambda<"fold-lambda">
+lambda<"eager-map-lam">
+lambda<"fold<">
+lambda<"sort-lambda">
+lambda<"filter-lambda">
+lambda<"map<">
+lambda<"lam">
+lambda<"filter-lam">
+lambda<"permutations<">
+lambda<"sort-lam">
+lambda<"lambda">
+lambda<"map-lambda">
+lambda<"eager-map<">
+lambda<"filter<">
+lambda<"reduce-lambda">
+lambda<"reduce<">
 }
 
 @tokens {
