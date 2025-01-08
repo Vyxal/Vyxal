@@ -37,12 +37,10 @@ Element, Modifier, and Syntax Reference
 | `=` | `equals`</br>`==`</br>`eq` | 2 | vec  | **Equals** (`scl,scl`): #1 == #2 |
 | `\>` | `greater-than`</br>`>`</br>`gt` | 2 | vec  | **Greater Than** (`scl,scl`): #1 > #2 |
 | `?` | `stdin`</br>`input`</br>`in` | 0 |   | **Input**: Get the next input item, evaluated. |
-| `#?` | `inputs`</br>`all-inputs`</br>`all-stdin` | 0 |   | **Inputs**: Get all the global inputs as a list |
 | `@` | `absolute-difference`</br>`abs-diff`</br>`levenstein`</br>`to-overpairs` | 2 | vec  | **Absolute Difference** (`num,num`): Absolute difference between #1 and #2</br>**Levenstein Distance** (`str,str`): Levenstein distance between #1 and #2</br>**Reduce Overlapping Pairs** (`lst,fun`): Reduce overlapping pairs in {#1|#2} by function {#2|#1} |
 | `A` | `all`</br>`all?`</br>`vowel?`</br>`is-vowel`</br>`is-vowel?` | 1 |   | **All** (`any`): Are all elements of #1 are truthy |
 | `B` | `to-binary` | 1 | vec  | **To Binary** (`num`): Convert #1 to binary</br>**String to Binary** (`str`): Convert each character in #1 to a binary representation of its unicode value |
 | `C` | `count` | 2 |   | **Count** (`lst,scl`): Count occurrences of #2 in #1</br>**Count** (`scl,lst`): Count occurrences of #1 in #2</br>**Count** (`lst,lst`): Count occurrences of the list with shallower depth in the list with deeper depth |
-| `#C` | `compress` | 1 | vec  | **Compress** (`str`): Compress #1 using the Vyxal compression algorithm |
 | `D` | `triplicate` | 1 |   | **Triplicate** (`any`): Push #1 thrice to the stack: #1 -> #1 #1 #1 |
 | `E` | `2**n`</br>`2pow`</br>`eval`</br>`2**` | 1 | vec  | **2 to the Power of N** (`num`): 2 ** #1</br>**Eval** (`str`): Evaluate #1 |
 | `F` | `filter`</br>`find`</br>`index-of` | 2 |   | **Filter** (`fun,any`): Filter #1 by function #2</br>**Filter** (`any,fun`): Filter #2 by function #1</br>**Find** (`nls,nls`): Find the index of #1 in #2. Switches #1 and #2 so that the haystack is the deeper list |
@@ -79,6 +77,7 @@ Element, Modifier, and Syntax Reference
 | `h` | `head`</br>`first` | 1 |   | **Head** (`any`): First element of #1 |
 | `i` | `index`</br>`at`</br>`item-at`</br>`nth-item`</br>`collect-unique`</br>`enclose`</br>`<**` | 2 |   | **Nth AddElement** (`itr,num`): Get the #2th element of #1</br>**Nth AddElement** (`num,itr`): Get the #1th element of #2</br>**Vectorised Index** (`itr,lst[num]`): [#1[_] for _ in #2]</br>**String Enclose** (`str,str`): enclose #2 in #1 (#1[0:len(#1)//2] + #2 + #1[len(#1)//2:])</br>**Object Member Retrieval** (`obj,str`): #1.#2</br>**Object Member Retrieval** (`str,obj`): #2.#1</br>**Collect Unique Values (+ Initial Value)** (`any,fun`): Apply #2 on #1 and collect unique values. Does include the initial value. |
 | `j` | `join-on` | 2 |   | **Join On** (`lst,scl`): Join #1 on #2</br>**Join On** (`scl,lst`): Join #2 on #1</br>**Intersperse** (`lst,lst`): Intersperse elements of #2 within #1 (e.g. [1, [2,3], 4] [5, 6] -> [1, 5, 6, [2, 3], 5, 6, 4]) |
+| `kæ` | `all-primes`</br>`primes` | 0 |   | **All Primes**: Push a list of every prime number to the stack |
 | `l` | `log`</br>`logarithm`</br>`scan-fixpoint`</br>`scan-fix`</br>`same-length?`</br>`same-length`</br>`length-equals?`</br>`length-equals`</br>`len-eq?` | 2 | vec  | **Logarithm** (`num,num`): Log base #2 of #1</br>**Scan Fixpoint** (`fun,any`): Repeatedly apply #1 to #2 until it doesn't change</br>**Scan Fixpoint** (`any,fun`): Repeatedly apply #1 to #2 until it doesn't change</br>**Same Length** (`str,str`): Are #1 and #2 the same length</br>**String Length Equals** (`str,num`): Is the length of #1 equal to #2</br>**String Length Equals** (`num,str`): Is the length of #2 equal to #1 |
 | `m` | `ctx-secondary`</br>`ctx2`</br>`ctx-m`</br>`context-m`</br>`context-secondary` | 0 |   | **Context Secondary**: Push the secondary context variable to the stack |
 | `n` | `ctx-primary`</br>`ctx`</br>`ctx-n`</br>`context-n`</br>`context-primary` | 0 |   | **Context Primary**: Push the primary context variable to the stack |
@@ -168,7 +167,6 @@ Element, Modifier, and Syntax Reference
 | `↯` | `inclusive-range`</br>`sort-by`</br>`regex-split-keep-delimiters` | 2 | vec  | **Inclusive Range** (`num,num`): Inclusive range from #1 to #2</br>**Sort By** (`nsl,fun`): Sort list #1 (range if num) by function #2</br>**Sort By** (`fun,nsl`): Sort list #2 (range if num) by function #1</br>**Regex Split Keep Delimiters** (`str,str`): Split #1 by regex #2, keeping the delimiters |
 | `⊠` | `cartesian-power`</br>`regex-index` | 2 |   | **Cartesian Power** (`any,num`): Cartesian power of #1 to the power of #2</br>**Cartesian Power** (`num,any`): Cartesian power of #2 to the power of #1</br>**Regex Index** (`str,str`): Return first index of pattern match #2 in target string #1, -1 if not found</br>**Self-Cartesian Power** (`itr,any`): Push #1, and then push the cartesian product of #2 with itself |
 | `⚅` | `random-choice`</br>`random-element`</br>`randint`</br>`random` | 1 |   | **Random Choice** (`itr`): Random element of #1</br>**Random Integer** (`num`): Random integer from 0 to #1 |
-| `kæ` | `all-primes`</br>`primes` | 0 |   | **All Primes**: Push a list of every prime number to the stack |
 | `æ` | `bifuricate`</br>`bifur`</br>`bif`</br>`furry`</br>`uwu`</br>`dup-rev`</br>`dup-reverse`</br>`owo`</br>`peek-function`</br>`peek-call`</br>`@@` | 1 |   | **Bifurcate** (`any`): Duplicate #1 and reverse the duplicate</br>**Call Function Without Popping** (`fun`): Call #1 without popping its arguments |
 | `␣` | `space` | 0 |   | **Space**: Push a space to the stack |
 | `¶` | `newline` | 0 |   | **Newline**: Push a newline to the stack |
@@ -214,6 +212,13 @@ Element, Modifier, and Syntax Reference
 | `„` | `join-on-spaces`</br>`*space`</br>`<0`</br>`is-negative?` | 1 |   | **Join on Spaces** (`lst`): Join #1 on spaces</br>**Is negative?** (`num`): Push 1 if #1 < 0, 0 otherwise |
 | `”` | `join-on-newlines`</br>`*newline`</br>`one?->n` | 1 |   | **Join on Newlines** (`lst`): Join #1 on newlines</br>**Push Context Variable N if 1** (`num`): Push the context variable N if #1 is 1 |
 | `“` | `join-on-empty-string`</br>`*empty`</br>`is-alphanumeric?`</br>`insignificant?`</br>`first-positive-integer`</br>`first-n>0` | 1 |   | **Join on Empty String** (`lst`): Join #1 on the empty string</br>**Is alphanumeric?** (`str`): Push 1 if #1 is alphanumeric, 0 otherwise</br>**First Positive Integer Where Function is Truthy** (`fun`): Push the first positive integer where #1 is truthy</br>**Is Insignificant?** (`num`): abs(#1) <= 1 |
+| `#¿` | `input-count` | 0 |   | **Input Count**: Push the number of inputs to the stack |
+| `#?` | `inputs`</br>`all-inputs`</br>`all-stdin` | 0 |   | **Inputs**: Get all the global inputs as a list |
+| `#C` | `compress` | 1 | vec  | **Compress** (`str`): Compress #1 using the Vyxal compression algorithm |
+| `#Q` | `quit` | 0 |   | **Quit**: Quit the program |
+| `#X` | `break` | 0 |   | **Break**: Break out of the current loop |
+| `#c` | `b252compress` | 1 | vec  | **Base 252 Compress String** (`str`): Compress #1 using simple base 252 compression. Requires all characters to be lowercase letters, or spaces.</br>**Base 252 Compress Number** (`num`): Convert #1 to base 252, using the codepage as the digits |
+| `#x` | `continue` | 0 |   | **Continue**: Continue to the next iteration of the current loop |
 
 ## Modifiers
 
