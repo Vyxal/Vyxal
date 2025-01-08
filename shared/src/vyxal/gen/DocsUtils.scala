@@ -191,7 +191,7 @@ object DocsUtils:
 
   def genLiterateGrammar(): String =
     val openers = LiterateLexer().structOpeners
-      .map(keyword => s"structure<\"$keyword\">")
+      .map((keyword, _) => s"structure<\"$keyword\">")
       .mkString("\n")
 
     val branches = LiterateLexer().branchKeywords
@@ -199,7 +199,7 @@ object DocsUtils:
       .mkString("\n")
 
     val lambdas = LiterateLexer().lambdaOpeners
-      .map(keyword => s"lambda<\"$keyword\">")
+      .map((keyword, _) => s"lambda<\"$keyword\">")
       .mkString("\n")
     s"""
       |top Program {(Word) +}
