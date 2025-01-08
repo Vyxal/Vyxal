@@ -140,7 +140,7 @@ object DocsUtils:
   def genGrammar(): String =
     val modifierCharacters = ElementInformation.modifiers.values
       .map(_.symbol)
-      .filterNot(_.length == 1)
+      .filter(_.length == 1)
       .map(_.last)
       .toSet
       .mkString("")
@@ -150,6 +150,8 @@ object DocsUtils:
       SyntaxInfo.info.filter((_, info) => info.structureCloser).keys
     val nonElementChars =
       s"$modifierCharacters${SyntaxInfo.info.keys.filter(_.length == 1).mkString("")}"
+        .sortBy(Codepage.indexOf(_))
+        .replace("]", "\\]")
     s"""
       |@top Program { Statement+ }
       |@skip { Space }
