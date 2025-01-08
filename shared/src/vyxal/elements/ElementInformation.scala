@@ -3643,6 +3643,21 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "Ł",
+      keywords = Seq("length-peek"),
+      arity = 1,
+      Options(
+        vectorises = false,
+        peeks = true,
+      ),
+      Overload(
+        name = "Length Peek",
+        args = Seq("any"),
+        description = "Push the length of #1 without popping",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
       symbol = "ḧ",
       keywords = Seq("heads", "head-each"),
       arity = 1,

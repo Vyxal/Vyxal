@@ -394,4 +394,12 @@ class ElementTests extends VyxalTests:
       )
     }
   }
+
+  describe("Element Ł") {
+    describe("Should leave its argument on the stack") {
+      testStackLike("Ł")(
+        in(VList(Seq(1, 2, 3, 4))) -> List[VAny](4, vSeq(1, 2, 3, 4))
+      )
+    }
+  }
 end ElementTests
