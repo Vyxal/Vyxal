@@ -4001,6 +4001,205 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "kR",
+      keywords = Seq("digits-uppercase-lowercase"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Digits, Uppercase, Lowercase",
+        args = Seq(),
+        description =
+          "Push \"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "kZ",
+      keywords = Seq("reverse-uppercase"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Reverse Uppercase",
+        args = Seq(),
+        description = "Push \"ZYXWVUTSRQPONMLKJIHGFEDCBA\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k^",
+      keywords = Seq("uppercase-hex-digits"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Uppercase Hex Digits",
+        args = Seq(),
+        description = "Push \"0123456789ABCDEF\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "ka",
+      keywords = Seq("lowercase-letters"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Lowercase Letters",
+        args = Seq(),
+        description = "Push \"abcdefghijklmnopqrstuvwxyz\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "kb",
+      keywords = Seq("digits"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Digits",
+        args = Seq(),
+        description = "Push \"0123456789\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "ke",
+      keywords = Seq("e-constant"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "E Constant",
+        args = Seq(),
+        description = "Push 2.718281828459045 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "kg",
+      keywords = Seq("golden-ratio", "phi-constant"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Golden Ratio",
+        args = Seq(),
+        description = "Push 1.618033988749895 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "kh",
+      keywords = Seq("helloworld"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Hello World!",
+        args = Seq(),
+        description = "Push \"Hello World\" to the stack, no punctuation",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "ki",
+      keywords = Seq("pi-constant"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Pi Constant",
+        args = Seq(),
+        description = "Push 3.141592653589793 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "kl",
+      keywords = Seq("reverse-uppercase-lowercase"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Reverse Uppercase and Lowercase",
+        args = Seq(),
+        description =
+          "Push \"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "ko",
+      keywords = Seq("octal-digits"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Octal Digits",
+        args = Seq(),
+        description = "Push \"01234567\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "kp",
+      keywords = Seq("punctuation"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Punctuation",
+        args = Seq(),
+        description = "Push \"!\" to \"~\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "kr",
+      keywords = Seq("digits-lowercase-uppercase"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Digits, Lowercase, Uppercase",
+        args = Seq(),
+        description =
+          "Push \"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "kz",
+      keywords = Seq("reverse-lowercase"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Reverse Lowercase",
+        args = Seq(),
+        description = "Push \"zyxwvutsrqponmlkjihgfedcba\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
       symbol = "#C",
       keywords = Seq("compress"),
       arity = 1,
