@@ -1,52 +1,36 @@
+
 @top Program { Statement+ }
 @skip { Space }
-
-Statement { Digraph | SugarTrigraph | SyntaxTrigraph | StructureOpen | StructureClose | ListStuff | ModifierChar | VariableThing | Number | AnyString | Branch | ContextIndex | Comment | Element }
-
-Number {
-    NumberDecimal|
-    "ı" |
-    TwoCharNumber
-}
-
+Statement { Digraph | SyntaxTrigraph | StructureOpen | StructureClose | ListStuff | ModifierChar | VariableThing | Number | AnyString | Branch | ContextIndex | Comment | Element }
+Number { NumberDecimal | TwoCharNumber }
 NumberDecimal {
     NumberPart |
     "."
-}
-
+} 
 AnyString {
     String |
     SingleCharString |
     TwoCharString
 }
-
-
-
 @tokens {
-    Space { @whitespace+ }
-    ModifierChar {$[ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/ϩ∥∦ᵉэᶠЧᴳᵜ]}
-    Comment {"##" (![\n])*}
-    Digraph { $[∆øÞk] _ | "#" ![[\]$!=#>@{:] }
-    NumberPart { "0" | ($[1-9] $[0-9]*) }
-    SugarTrigraph { "#" $[.,^] _ }
-    SyntaxTrigraph { "#:" ![[] }
-    Branch {"|"}
-    ListStuff { "#[" | "#]"}
-    StructureOpen { 
-        "[" | "(" | "{" | "Ṇ" | "Ḍ" | "ƛ" | "Ω" | "₳" | "µ" | "⟨" |
-        "#{" |
-        "#::R" |
-        "#::+" |
-        "#::E" |
-        "#::M"
-    }
-    StructureClose { "]" | "}" | ")" }
-    String {'"' (!["„”“\\] | "\\" _)* $["„”“]}
-    SingleCharString { "'" _ }
-    TwoCharString { "ᶴ" _ _ }
-    TwoCharNumber { "~" _ _ }
-    VariableThing { "#" ($[=$>]|":[") $[a-zA-Z] $[a-zA-Z0-9_]* }
-    ContextIndex { "¤" @digit }
-    Element { ![ᵃᵇᶜᵈᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻ¿⸠/ϩ∥∦ᵉэᶠЧᴳᵜ∆øÞk"„”“0123456789#ᶴ'~.[\](){}ṆḌƛΩ₳µ⟨|ı] }
-    @precedence { Space, Element }
-}
+  Space { @whitespace+ }
+  ModifierChar {$[]}
+  Comment {"##" (![
+])*}
+  Digraph { $[∆øÞk] _ | "#" ![[\]$!=#>@{:] }
+  NumberPart { "0" | ($[1-9] $[0-9]*) }
+  SyntaxTrigraph { "#:" ![[] }
+  Branch {"|"}
+  ListStuff { "#[" | "#]"}
+  StructureOpen {"₳" | "#[" | "{" | "⎄" | "(" | "ƛ" | "#{" | "λ" | "Ω" | "⎊" | "µ" | "["}
+  StructureClose {"}" | "]" | "⎋" | "⍟" | ")" | "#]"}
+  String {'"' (!["„”“\\] | "\\" _)* $["„”“]}
+  SingleCharString { "'" _ }
+  TwoCharString { "Ꮬ" _ _ }
+  TwoCharNumber { "Ꮠ" _ _ }
+  VariableThing { "#" ($[=$>]|":[") $A-Z] $[a-zA-Z0-9_]* }
+  ContextIndex { "#¤" @digit }
+  Element { ![8ƛø₳5|)"„'[#{02⎄3⍟4⎋}.]“9ᏜΩ61µ”(7Ꮠ∆kλ⎊Þ] }
+  @precedence { Space, Element }
+}  
+    
