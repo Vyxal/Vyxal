@@ -125,6 +125,7 @@ object jvm extends JvmCommon {
         "vyxal.gen.generateDocs",
         (build.millSourcePath / "documentation" / "table.md").toString,
         (build.millSourcePath / "contributing" / "vyxal.grammar").toString,
+        (build.millSourcePath / "contributing" / "vyxalLit.grammar").toString,
       )()
     }
 

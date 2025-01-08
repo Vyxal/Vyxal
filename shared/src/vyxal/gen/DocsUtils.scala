@@ -3,7 +3,7 @@ package vyxal.gen
 import vyxal.elements.ElementInformation
 import vyxal.elements.ModifierOverload
 import vyxal.elements.Overload
-import vyxal.parsing.Codepage
+import vyxal.parsing.{Codepage, LiterateLexer}
 import vyxal.SyntaxInfo
 
 import scala.collection.mutable.ArrayBuffer
@@ -137,7 +137,7 @@ object DocsUtils:
     (HEADER_ROW +: lines).mkString("\n")
   end genSyntaxTable
 
-  def genGrammar(): String =
+  def genSBCSGrammar(): String =
     val modifierCharacters = ElementInformation.modifiers.values
       .map(_.symbol)
       .filter(_.length == 1)
@@ -187,5 +187,67 @@ object DocsUtils:
       |  @precedence { Space, Element }
       |}  
     """.stripMargin('|')
-  end genGrammar
+  end genSBCSGrammar
+
+  def genLiterateGrammar(): String =
+    val openers = LiterateLexer().structOpeners
+      .map(keyword => s"structure<\"$keyword\">")
+      .mkString("\n")
+
+    val branches = LiterateLexer().branchKeywords
+      .map(keyword => s"branch<\"$keyword\">")
+      .mkString("\n")
+
+    val lambdas = LiterateLexer().lambdaOpeners
+      .map(keyword => s"lambda<\"$keyword\">")
+      .mkString("\n")
+    s"""
+      |top Program {(Word) +}
+      |
+      |structure<term> { @specialize[@name={term}]<WeirdKW, term> }
+      |branch<term> { @specialize[@name={term}]<WeirdKW, term> }
+      |lambda<term> { @specialize[@name={term}]<WeirdKW, term> }
+      |
+      |Word {
+      |    Structure |
+      |    Branch |
+      |    Lambda |
+      |    String |
+      |    Number |
+      |    NormalKW |
+      |    ModifierKW |
+      |    VariableThing |
+      |    ListStuff |
+      |    GroupStuff |
+      |    Comment
+      |}
+      |
+      |@precedence {ModifierKW, NormalKW, WeirdKW}
+      |
+      |Structure {
+      | $openers
+      |}
+      |
+      |Branch {
+      |$branches
+      |}
+      |
+      |Lambda {
+      |$lambdas
+      |}
+      |
+      |@tokens {
+      |    WeirdKW {$$[a-zA-Z\\-?]$$[a-zA-Z0-9\\-?!*+=<>&%]*":"?}
+      |    ModifierKW { $$[a-zA-Z]$$[a-zA-Z0-9\\-?!*+=<>&%]*":"}
+      |    NormalKW { $$[a-zA-Z]$$[a-zA-Z0-9\\-?!*+=<>&%]*"n't"*}
+      |    VariableThing { ("$" | ":=" | ":>" | ":=[") $$[a-zA-Z]$$[a-zA-Z0-9_]* }
+      |    Number { "." | "0" | ($$[1-9] $$[0-9]*) }
+      |    ListStuff { "[" | "]" }
+      |    String {'"' (!["„”“\\\\] | "\\\\" _)* $$["„”“]}
+      |    Comment {"##" (![\\n])*}
+      |    GroupStuff { "(" | ")" | "(." | "(:" | "(:." | "(::" }
+      |    @precedence {ModifierKW, NormalKW, GroupStuff, Number, WeirdKW}
+      |}
+    """.stripMargin('|')
+  end genLiterateGrammar
 end DocsUtils

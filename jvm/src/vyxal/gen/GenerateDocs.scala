@@ -6,7 +6,8 @@ import java.nio.file.{Files, Paths}
 
 @main def generateDocs(
     tableFile: String,
-    grammarFile: String,
+    SBCSGrammarFile: String,
+    literateGrammarFile: String,
 ) =
   Files.write(
     Paths.get(tableFile),
@@ -14,6 +15,11 @@ import java.nio.file.{Files, Paths}
   )
 
   Files.write(
-    Paths.get(grammarFile),
-    DocsUtils.genGrammar().getBytes(StandardCharsets.UTF_8),
+    Paths.get(SBCSGrammarFile),
+    DocsUtils.genSBCSGrammar().getBytes(StandardCharsets.UTF_8),
+  )
+
+  Files.write(
+    Paths.get(literateGrammarFile),
+    DocsUtils.genLiterateGrammar().getBytes(StandardCharsets.UTF_8),
   )

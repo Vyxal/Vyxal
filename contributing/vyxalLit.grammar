@@ -99,10 +99,10 @@ Lambda {
     ModifierKW { $[a-zA-Z]$[a-zA-Z0-9\-?!*+=<>&%]*":"}
     NormalKW { $[a-zA-Z]$[a-zA-Z0-9\-?!*+=<>&%]*"n't"*}
     VariableThing { ("$" | ":=" | ":>" | ":=[") $[a-zA-Z]$[a-zA-Z0-9_]* }
-    Number { "." | "i" | "0" | ($[1-9] $[0-9]*) }
+    Number { "." | "0" | ($[1-9] $[0-9]*) }
     ListStuff { "[" | "]" }
     String {'"' (!["„”“\\] | "\\" _)* $["„”“]}
     Comment {"##" (![\n])*}
-    GroupStuff { "(" | ")" | "(." | "(:" | "(:." | "(::" | "(," | "(;" | "(;," | "(;;" }
+    GroupStuff { "(" | ")" | "(." | "(:" | "(:." | "(::" }
     @precedence {ModifierKW, NormalKW, GroupStuff, Number, WeirdKW}
 }
