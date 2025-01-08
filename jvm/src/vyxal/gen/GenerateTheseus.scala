@@ -75,7 +75,7 @@ def generateDescriptions(): String =
   for syntax <- SyntaxInfo.info do
     val (symbol, info) = syntax
     info match
-      case Syntax(name, literate, description, usage) =>
+      case Syntax(name, literate, description, usage, _, _) =>
         val token = symbol
         val index = if token == " " then 32 else Codepage.indexOf(token.last)
         val thisElement = HashMap[String, String]()
