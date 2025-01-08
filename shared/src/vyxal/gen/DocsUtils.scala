@@ -41,7 +41,14 @@ object DocsUtils:
     val elementMap = ElementInformation.elements
 
     val lines = elementMap.values.toSeq
-      .sortBy(elem => Codepage.indexOf(elem.symbol.last))
+      .sortBy { elem =>
+        // Have to use tuple in case of digraphs
+        (
+          Codepage.indexOf(elem.symbol.charAt(0)) +
+            (if "#∆øÞ".contains(elem.symbol.charAt(0)) then 400 else 0),
+          Codepage.indexOf(elem.symbol.substring(1)),
+        )
+      }
       .map { elem =>
         val symbol =
           if "`|<>\\".contains(elem.symbol) then s"\\${elem.symbol}"

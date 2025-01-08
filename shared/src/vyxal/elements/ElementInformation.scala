@@ -3837,6 +3837,72 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    AddElement(
+      symbol = "#c",
+      keywords = Seq("b252compress"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Base 252 Compress String",
+        args = Seq("str"),
+        description =
+          "Compress #1 using simple base 252 compression. Requires all characters to be lowercase letters, or spaces.",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Base 252 Compress Number",
+        args = Seq("num"),
+        description = "Convert #1 to base 252, using the codepage as the digits",
+      ),
+    ),
+    AddElement(
+      symbol = "#Q",
+      keywords = Seq("quit"),
+      arity = 0,
+      Options(vectorises = false),
+      Overload(
+        name = "Quit",
+        args = Seq(),
+        description = "Quit the program",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "#X",
+      keywords = Seq("break"),
+      arity = 0,
+      Options(vectorises = false),
+      Overload(
+        name = "Break",
+        args = Seq(),
+        description = "Break out of the current loop",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "#x",
+      keywords = Seq("continue"),
+      arity = 0,
+      Options(vectorises = false),
+      Overload(
+        name = "Continue",
+        args = Seq(),
+        description = "Continue to the next iteration of the current loop",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "#¿",
+      keywords = Seq("input-count"),
+      arity = 0,
+      Options(vectorises = false),
+      Overload(
+        name = "Input Count",
+        args = Seq(),
+        description = "Push the number of inputs to the stack",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Map[String, Modifier] = Map(

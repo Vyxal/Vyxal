@@ -1360,6 +1360,26 @@ object Elements:
     addPart("#C", Monad, true) {
       case VStr(a) => StringHelpers.compressDictionary(a)
     },
+    "#Q" ->
+      direct(0) {
+        throw QuitException()
+      },
+    "#X" ->
+      direct(0) {
+        throw BreakLoopException()
+      },
+    "#x" ->
+      direct(0) {
+        throw ContinueLoopException()
+      },
+    addPart("#c", Monad, true) {
+      case VStr(a) => StringHelpers.compress252(a)
+      case a: VNum => StringHelpers.compress252(a)
+    },
+    "#¿" ->
+      direct(0) {
+        summon[Context].globals.inputs.length
+      },
   )
 
   // Subject to being added as overloads onto things in elements
