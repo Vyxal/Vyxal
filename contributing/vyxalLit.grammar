@@ -1,4 +1,5 @@
-@top Program {(Word) +}
+
+top Program {(Word) +}
 
 structure<term> { @specialize[@name={term}]<WeirdKW, term> }
 branch<term> { @specialize[@name={term}]<WeirdKW, term> }
@@ -21,84 +22,77 @@ Word {
 @precedence {ModifierKW, NormalKW, WeirdKW}
 
 Structure {
-    structure<"yes?"> |
-    structure<"?"> |
-    structure<"if"> |
-    structure<"for"> |
-    structure<"for<"> |
-    structure<"do-to-each"> |
-    structure<"each-as"> |
-    structure<"while"> |
-    structure<"while<"> |
-    structure<"exists<"> |
-    structure<"relation<"> |
-    structure<"generate-from<">
-    structure<"generate<"> |
-    structure<"endfor"> |
-    structure<"end-for"> |
-    structure<"endwhile"> |
-    structure<"end-while"> |
-    structure<"endlambda"> |
-    structure<"end-lambda"> |
-    structure<"end"> |
-    structure<"end-end"> |
-    structure<"end-all"> |
-    structure<"close-all"> |
-    structure<"}">
+ structure<"(for,For)">
+structure<"(if,IfStatement)">
+structure<"(do-to-each,For)">
+structure<"(for<,For)">
+structure<"(relation<,GeneratorStructure)">
+structure<"(yes?,Ternary)">
+structure<"(generate<,GeneratorStructure)">
+structure<"(while,While)">
+structure<"(?,Ternary)">
+structure<"(while<,While)">
+structure<"(generate-from<,GeneratorStructure)">
+structure<"(each-as,For)">
 }
 
 Branch {
-    branch<"->"> |
-    branch<"else:"> |
-    branch<"else"> |
-    branch<"elif"> |
-    branch<"else-if"> |
-    branch<"body"> |
-    branch<"do"> |
-    branch<"branch"> |
-    branch<"then"> |
-    branch<"in"> |
-    branch<"using"> |
-    branch<"no?"> |
-    branch<"=>"> |
-    branch<"from"> |
-    branch<"as"> |
-    branch<"with"> |
-    branch<"given"> |
-    branch<":and:"> |
-    branch<"has"> |
-    branch<"does"> |
-    branch<"using"> |
-    branch<"on"> |
-    branch<",">
+branch<"->">
+branch<"else:">
+branch<"else">
+branch<"elif">
+branch<"else-if">
+branch<"body">
+branch<"do">
+branch<"branch">
+branch<"then">
+branch<"in">
+branch<"using">
+branch<"no?">
+branch<"=>">
+branch<"from">
+branch<"as">
+branch<"with">
+branch<"given">
+branch<":and:">
+branch<"has">
+branch<"does">
+branch<"using">
+branch<"on">
 }
 
 Lambda {
-    lambda<"lambda"> |
-    lambda<"lam"> |
-    lambda<"map-lambda"> |
-    lambda<"map-lam"> |
-    lambda<"map<"> |
-    lambda<"filter-lambda"> |
-    lambda<"filter-lam"> |
-    lambda<"filter<"> |
-    lambda<"reduce-lambda"> |
-    lambda<"reduce-lam"> |
-    lambda<"reduce<"> |
-    lambda<"fold-lambda"> |
-    lambda<"fold-lam"> |
-    lambda<"fold<"> |
-    lambda<"sort-lambda"> |
-    lambda<"sort-lam"> |
-    lambda<"sort<"> |
-    lambda<"{">
+lambda<"(map-permutations<,LambdaMapPermutations)">
+lambda<"(map-perms,LambdaMapPermutations)">
+lambda<"(map-lam,LambdaMap)">
+lambda<"(reduce-lam,LambdaReduce)">
+lambda<"(eager-map-lambda,LambdaMapEager)">
+lambda<"(sort<,LambdaSort)">
+lambda<"(map-permutations,LambdaMapPermutations)">
+lambda<"(fold-lam,LambdaReduce)">
+lambda<"(fold-lambda,LambdaReduce)">
+lambda<"(eager-map-lam,LambdaMapEager)">
+lambda<"(fold<,LambdaReduce)">
+lambda<"(sort-lambda,LambdaSort)">
+lambda<"(filter-lambda,LambdaFilter)">
+lambda<"(map<,LambdaMap)">
+lambda<"(lam,Lambda)">
+lambda<"(filter-lam,LambdaFilter)">
+lambda<"(permutations<,LambdaMapPermutations)">
+lambda<"(sort-lam,LambdaSort)">
+lambda<"(lambda,Lambda)">
+lambda<"(map-lambda,LambdaMap)">
+lambda<"(eager-map<,LambdaMapEager)">
+lambda<"(filter<,LambdaFilter)">
+lambda<"(reduce-lambda,LambdaReduce)">
+lambda<"(reduce<,LambdaReduce)">
 }
 
 @tokens {
     WeirdKW {$[a-zA-Z\-?]$[a-zA-Z0-9\-?!*+=<>&%]*":"?}
     ModifierKW { $[a-zA-Z]$[a-zA-Z0-9\-?!*+=<>&%]*":"}
     NormalKW { $[a-zA-Z]$[a-zA-Z0-9\-?!*+=<>&%]*"n't"*}
-    VariableThing { ("$" | ":=" | ":>" | ":=[") $[a-zA-Z]$[a-zA-Z0-9_]* }
+    VariableThing { ("" | ":=" | ":>" | ":=[") $[a-zA-Z]$[a-zA-Z0-9_]* }
     Number { "." | "0" | ($[1-9] $[0-9]*) }
     ListStuff { "[" | "]" }
     String {'"' (!["„”“\\] | "\\" _)* $["„”“]}
@@ -106,3 +100,4 @@ Lambda {
     GroupStuff { "(" | ")" | "(." | "(:" | "(:." | "(::" }
     @precedence {ModifierKW, NormalKW, GroupStuff, Number, WeirdKW}
 }
+    
