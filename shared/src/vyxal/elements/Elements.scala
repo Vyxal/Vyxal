@@ -1357,6 +1357,44 @@ object Elements:
     "⑧" -> niladify(-1),
     "⑨" -> niladify(""),
     "kæ" -> niladify(NumberHelpers.probablePrimes),
+    "k1" -> niladify(1000),
+    "k2" -> niladify(10000),
+    "k3" -> niladify(100000),
+    "k4" -> niladify(1000000),
+    "k6" -> niladify("0123456789abcdef"),
+    "kA" -> niladify("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
+    "kB" -> niladify("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
+    "kD" -> niladify("|/-_"),
+    "kF" -> niladify("FizzBuzz"),
+    "kH" -> niladify("Hello, World!"),
+    "kL" -> niladify("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"),
+    "kP" -> niladify(((' ' to '~').toList).mkString),
+    "kR" ->
+      niladify(
+        "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+      ),
+    "kZ" -> niladify("ZYXWVUTSRQPONMLKJIHGFEDCBA"),
+    "k^" -> niladify("0123456789ABCDEF"),
+    "ka" -> niladify("abcdefghijklmnopqrstuvwxyz"),
+    "kd" -> niladify("0123456789"),
+    "ke" -> niladify(spire.math.Real.e),
+    "kg" -> niladify(spire.math.Real.phi),
+    "kh" -> niladify("Hello World"),
+    "ki" -> niladify(spire.math.Real.pi),
+    "kl" -> niladify("ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"),
+    "ko" -> niladify("01234567"),
+    "kp" ->
+      niladify(
+        ((' ' to '/').toList ++:
+          (':' to '@').toList ++:
+          ('[' to '`').toList ++:
+          ('{' to '~').toList).mkString
+      ),
+    "kr" ->
+      niladify(
+        "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      ),
+    "kz" -> niladify("zyxwvutsrqponmlkjihgfedcba"),
     addPart("#C", Monad, true) {
       case VStr(a) => StringHelpers.compressDictionary(a)
     },
