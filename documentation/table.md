@@ -199,6 +199,7 @@ Element, Modifier, and Syntax Reference
 | `⤻` | `over` | STACK |   | **Over**: Duplicate the item below the top of the stack -> #2 #1 #2 |
 | `⤺` | `around` | STACK |   | **Around**: Duplicate the top of the stack around the item below the top of the stack -> #1 #2 #1 |
 | `Ŀ` | `vlen`</br>`lengths` | 1 |   | **Vectorised Lengths** (`lst`): Length of each element in #1 |
+| `Ł` | `length-peek` | 1* |   | **Length Peek** (`any`): Push the length of #1 without popping |
 | `ḧ` | `heads`</br>`head-each` | 1 |   | **Heads** (`lst`): First element of each element in #1 |
 | `¤` | `stringify`</br>`to-str`</br>`str` | 1 |   | **Stringify** (`any`): Stringify #1 |
 | `①` | `10` | 0 |   | **10**: Push 10 to the stack |
