@@ -1619,6 +1619,128 @@ object Elements:
           else if iterable.length == 1 then VList(Seq(iterable.head))
           else VList(Seq(iterable.head, iterable.last)),
       ),
+    addPart("Þi", Dyad, true) {
+      case (a, b: VList) => ListHelpers.multiDimIndex(makeIterable(a), b)
+    },
+    "Þo" ->
+      direct(Monad) {
+        val top = pop()
+        top match
+          case a: VList => push(
+              ListHelpers.gridNeighbours(a)
+            )
+          case _ =>
+            val next = pop()
+            (top, next) match
+              case (a: VNum, b: VList) => push(
+                  ListHelpers.gridNeighbours(
+                    b,
+                    a >= 0,
+                    (a.vabs % 4).toInt,
+                  )
+                )
+              case (a, b) =>
+                throw UnimplementedOverloadException("Þo", List(a, b))
+        end match
+      },
+    addPart("Þ↻", Monad, false) {
+      case a: VList =>
+        if a.isEmpty then VList(Seq.empty)
+        else
+          lazy val temp: LazyList[VAny] = LazyList.from(a) #::: temp
+          VList(temp)
+      case other => LazyList.continually(other)
+    },
+    "Þ¤" ->
+      direct(Monad) {
+        val top = pop()
+        top match
+          case a: VList => push(
+              ListHelpers.gridNeighboursDiagonalWrap(a)
+            )
+          case _ =>
+            val next = pop()
+            (top, next) match
+              case (a: VNum, b: VList) => push(
+                  ListHelpers.gridNeighboursDiagonalWrap(
+                    b,
+                    a >= 0,
+                    (a.vabs % 8).toInt,
+                  )
+                )
+              case (a, b) =>
+                throw UnimplementedOverloadException("Þ¤", List(a, b))
+        end match
+      },
+    "ÞX" ->
+      fullToImpl(
+        Dyad,
+        (left, right) =>
+          ListHelpers.cartesianProduct(left, right, unsafe = true),
+      ),
+    "Þ⁰" ->
+      fullToImpl(
+        Monad,
+        x =>
+          x.itr.zipWithIndex.map((value, index) =>
+            MiscHelpers.multiply(value, index)
+          ),
+      ),
+    "Þ¹" ->
+      fullToImpl(
+        Monad,
+        x =>
+          x.itr.zipWithIndex.map((value, index) =>
+            MiscHelpers.multiply(value, index + 1)
+          ),
+      ),
+    "Þ⊍" ->
+      fullToImpl(
+        Dyad,
+        (left, right) => (left.itr -- right.itr) ++ (right.itr -- left.itr),
+      ),
+    "Þ⦰" -> fullToImpl(Dyad, (left, right) => left.itr -- right.itr),
+    "Þ∩" ->
+      fullToImpl(
+        Dyad,
+        (left, right) => ListHelpers.multiSetIntersection(left.itr, right.itr),
+      ),
+    addPart("Þ⎀", Triad, false) {
+      case (a, b: VList, c) => ListHelpers.multiDimAssign(a.itr, b, c)
+    },
+    "Þ◌" ->
+      direct(Monad) {
+        val top = pop()
+        top match
+          case a: VList => push(
+              ListHelpers.gridNeighboursDiagonal(a)
+            )
+          case _ =>
+            val next = pop()
+            (top, next) match
+              case (a: VNum, b: VList) => push(
+                  ListHelpers.gridNeighboursDiagonal(
+                    b,
+                    a >= 0,
+                    (a.vabs % 8).toInt,
+                  )
+                )
+              case (a, b) =>
+                throw UnimplementedOverloadException("Þ◌", List(a, b))
+        end match
+      },
+    addPart("Þ⅟", Monad, false) {
+      case VListOf[VList](lst) => ListHelpers.matrixInverse(lst).getOrElse {
+          scribe.warn(s"Could not invert matrix $lst")
+          lst
+        }
+    },
+    addPart("Þ÷", Dyad, false) {
+      case (a: VList, b: VNum) => ListHelpers.intoNPieces(a, b)
+      case (a: VNum, b: VList) => ListHelpers.intoNPieces(b, a)
+      case (VStr(a), b: VNum) => StringHelpers.intoNPieces(a, b)
+      case (a: VNum, VStr(b)) => StringHelpers.intoNPieces(b, a)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

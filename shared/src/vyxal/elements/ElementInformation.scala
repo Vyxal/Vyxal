@@ -4658,7 +4658,7 @@ object ElementInformation:
       Overload(
         name = "Zero Pad",
         args = Seq("itr", "num"),
-        description = "#1 zero-padded to length #2",
+        description = "{#1|#2} zero-padded to length {#2|#1}",
         typeSwitchable = true,
       ),
       Overload(
@@ -4720,6 +4720,24 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "ÞX",
+      keywords = Seq(
+        "cartesian-product-unsafe",
+        "cartesian-unsafe",
+        "cart-prod-unsafe",
+        "cart-unsafe",
+      ),
+      arity = 2,
+      Options(vectorises = false),
+      Overload(
+        name = "Cartesian Product Unsafe",
+        args = Seq("lst", "lst"),
+        description =
+          "Cartesian product of #1 and #2 in the standard order, but without accounting for infinite lists",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
       symbol = "Þh",
       keywords = Seq("ends", "edges", "head-tail"),
       arity = 1,
@@ -4729,6 +4747,214 @@ object ElementInformation:
         args = Seq("lst"),
         description = "Head and tail of #1",
         typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "Þi",
+      keywords = Seq("md-index"),
+      arity = 2,
+      Options(vectorises = false),
+      Overload(
+        name = "Multi-Dimensional Index",
+        args = Seq("lst", "lst[num]"),
+        description =
+          "Index #1 at the multi-dimensional index #2 - #1[#2[0]][#2[1]]...[#2[n]]",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "Þo",
+      keywords = Seq(
+        "grid-neighbours",
+        "grid-neighbors",
+        "adjacent-cells",
+        "adj-cells",
+        "surrounding-cells",
+      ),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Grid Neighbours",
+        args = Seq("lst"),
+        description = "Grid neighbours of #1 - up, down, left, right",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Grid Neighbours With Starting Direction",
+        args = Seq("lst", "num"),
+        description =
+          "Grid neighbours of cells in #1 - right, down, left, up - start from direction #2 => 0: right, 1: down, 2: left, 3: up",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "Þ↻",
+      keywords = Seq("cycle"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Cycle",
+        args = Seq("lst"),
+        description =
+          "Cycle #1 - Append all items of #1 to itself infinite times",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "List-Repeat Infinitely",
+        args = Seq("num|str"),
+        description = "Repeat #1 infinitely - [#1, #1, #1, ...]",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "Þ¤",
+      keywords = Seq(
+        "grid-neighbours-diagonals-wrap",
+        "grid-neighbors-diagonals-wrap",
+        "adjacent-cells-diagonals-wrap",
+        "adj-cells-diagonals-wrap",
+        "surrounding-cells-diagonals-wrap",
+        "eight-cells-wrap",
+      ),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Grid Neighbours Diagonals Wrap",
+        args = Seq("lst"),
+        description =
+          "Grid neighbours of #1 - up, down, left, right, and diagonals - wrapping around",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Grid Neighbours Diagonals Wrap With Starting Direction",
+        args = Seq("lst", "num"),
+        description =
+          "Grid neighbours of cells in #1 - right, down, left, up, and diagonals - wrapping around and start from direction #2 => 0: right, 1: down, 2: left, 3: up. Negative #2 does not include middle, positive #2 does",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "Þ⁰",
+      keywords = Seq("zero-lift"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Zero Lift",
+        args = Seq("lst"),
+        description = "Multiply each element of #1 by its 0-based index",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "Þ¹",
+      keywords = Seq("one-lift"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "One Lift",
+        args = Seq("lst"),
+        description = "Multiply each element of #1 by its 1-based index",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "Þ⊍",
+      keywords = Seq("multiset-xor", "mset-xor"),
+      arity = 2,
+      Options(vectorises = false),
+      Overload(
+        name = "Multiset XOR",
+        args = Seq("lst", "lst"),
+        description = "Multiset XOR of #1 and #2",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "Þ⦰",
+      keywords = Seq("multiset-difference", "mset-diff"),
+      arity = 2,
+      Options(vectorises = false),
+      Overload(
+        name = "Multiset Difference",
+        args = Seq("lst", "lst"),
+        description = "Multiset difference of #1 and #2",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "Þ∩",
+      keywords = Seq("multiset-intersection", "mset-isect"),
+      arity = 2,
+      Options(vectorises = false),
+      Overload(
+        name = "Multiset Intersection",
+        args = Seq("lst", "lst"),
+        description = "Multiset intersection of #1 and #2",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "Þ⎀",
+      keywords = Seq("md-assign"),
+      arity = 3,
+      Options(vectorises = false),
+      Overload(
+        name = "Multi-Dimensional Assign",
+        args = Seq("lst", "lst[num]", "any"),
+        description =
+          "Assign #3 to the multi-dimensional index #2 in #1 - #1[#2[0]][#2[1]]...[#2[n]] = #3",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "Þ◌",
+      keywords = Seq(
+        "grid-neighbours-diagonals",
+        "grid-neighbors-diagonals",
+        "adjacent-cells-diagonals",
+        "adj-cells-diagonals",
+        "surrounding-cells-diagonals",
+        "eight-cells",
+      ),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Grid Neighbours Diagonals",
+        args = Seq("lst"),
+        description =
+          "Grid neighbours of #1 - up, down, left, right, and diagonals",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Grid Neighbours Diagonals With Starting Direction",
+        args = Seq("lst", "num"),
+        description =
+          "Grid neighbours of cells in #1 - right, down, left, up, and diagonals - start from direction #2 => 0: right, 1: down, 2: left, 3: up",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "Þ⅟",
+      keywords = Seq("matrix-inverse", "m**-1"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Matrix Inverse",
+        args = Seq("lst[lst]"),
+        description = "Inverse of #1",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "Þ÷",
+      keywords = Seq("into-n-pieces", "split-into-n-pieces"),
+      arity = 2,
+      Options(vectorises = false),
+      Overload(
+        name = "Split Into N Pieces",
+        args = Seq("itr", "num"),
+        description = "Split {#1|#2} into {#2|#1} pieces",
+        typeSwitchable = true,
       ),
     ),
   )
