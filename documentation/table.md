@@ -57,7 +57,7 @@ Element, Modifier, and Syntax Reference
 | `Q` | <code>remove-at</code></br><code>regex-groups</code> | 2 |   | **Remove At** (`nsl,num`): Remove the element at index #2 from #1</br>**Regex Groups** (`str,str`): Return the groups of the first match of #2 in #1 |
 | `R` | <code>range</code></br><code>reduce</code></br><code>regex-match?</code> | 2 |   | **Range** (`num,num`): Range from #1 to #2, exclusive</br>**Reduce** (`lst,fun`): Reduce #1 by function #2</br>**Regex Match?** (`str,str`): Check if #2 matches #1 |
 | `S` | <code>sort</code> | 1 |   | **Sort** (`itr`): Sort #1 |
-| `T` | <code>transpose</code></br><code>triple</code></br><code>alpha-only?</code> | 1 |   | **Transpose** (`lst`): Transpose #1</br>**Triple** (`num`): #1 * 3</br>**Does String Contain Only Alphabetic Characters** (`str`): Check if #1 contains only alphabetic characters |
+| `T` | <code>transpose</code></br><code>triple</code></br><code>alpha-only?</code> | 1 |   | **Transpose** (`lst`): Transpose #1. Will not terminate on an infinite list of finite lists. Use ÞT if you need that.</br>**Triple** (`num`): #1 * 3</br>**Does String Contain Only Alphabetic Characters** (`str`): Check if #1 contains only alphabetic characters |
 | `U` | <code>uninterleave</code> | 1 |   | **Uninterleave** (`lst`): Uninterleave #1 |
 | `V` | <code>vectorse-reverse</code></br><code>1-x</code> | 1 |   | **Vectorise Reverse** (`lst`): Reverse each item in #1</br>**1 - X** (`num`): 1 - #1 |
 | `W` | <code>wrap</code> | STACK |   | **Wrap**: Wrap the entire stack into a list |
@@ -248,6 +248,10 @@ Element, Modifier, and Syntax Reference
 | `kæ` | <code>all-primes</code></br><code>primes</code> | 0 |   | **All Primes**: Push a list of every prime number to the stack |
 | `kṬ` | <code>ZZ</code></br><code>integers</code> | 0 |   | **Integers**: Push a list of every integer to the stack |
 | `Þ0` | <code>zero-pad</code> | 2 |   | **Zero Pad** (`itr,num`): #1 zero-padded to length #2</br>**Zero Pad** (`num,itr`): #1 zero-padded to length #2</br>**Zero Pad** (`itr,itr`): #1 zero-padded to length of #2 |
+| `ÞO` | <code>grid-neighbours-wrap</code></br><code>grid-neighbors-wrap</code></br><code>adjacent-cells-wrap</code></br><code>adj-cells-wrap</code></br><code>surrounding-cells-wrap</code> | 1 |   | **Grid Neighbours Wrap** (`lst`): Grid neighbours of #1 - up, down, left, right - wrapping around</br>**Grid Neighbours Wrap With Starting Direction** (`lst,num`): Grid neighbours of cells in #1 - right, down, left, up - wrapping around and start from direction #2 => 0: right, 1: down, 2: left, 3: up. Negative #2 does not include middle, positive #2 does |
+| `ÞR` | <code>reshape</code> | 2 |   | **Reshape** (`lst,lst[num]`): Reshape #1 to the shape #2 |
+| `ÞT` | <code>transpose-safe</code> | 1 |   | **Transpose Safe** (`lst`): Transpose #1, does not hang on an infinite list of finite lists |
+| `Þh` | <code>ends</code></br><code>edges</code></br><code>head-tail</code> | 1 |   | **Ends** (`lst`): Head and tail of #1 |
 | `∆⟆` | <code>arcsin</code></br><code>arcsine</code> | 1 | vec  | **Arcsine** (`num`): Arcsine of #1 |
 | `∆<` | <code>arg</code></br><code>phase</code></br><code>angle</code> | 1 | vec  | **Argument** (`num`): The angle (argument) between the positive real axis and the line joining the origin to #1 in the complex plane. |
 | `∆A` | <code>arithmetic-mean</code> | 1 |   | **Arithmetic Mean** (`lst`): Arithmetic mean of #1 (sum(#1) / len(#1)) |
