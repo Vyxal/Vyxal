@@ -5,7 +5,6 @@ import scala.language.implicitConversions
 import vyxal.*
 import vyxal.{Dyad, ImplHelpers, Monad, Triad}
 import vyxal.conversions.{*, given}
-import vyxal.elements.Modifiers.addPart
 import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.defaultEmpty
