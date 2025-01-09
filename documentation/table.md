@@ -242,7 +242,7 @@ Element, Modifier, and Syntax Reference
 | `ki` | <code>pi-constant</code> | 0 |   | **Pi Constant**: Push 3.141592653589793 to the stack |
 | `kl` | <code>reverse-uppercase-lowercase</code> | 0 |   | **Reverse Uppercase and Lowercase**: Push "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba" to the stack |
 | `ko` | <code>octal-digits</code> | 0 |   | **Octal Digits**: Push "01234567" to the stack |
-| `kp` | <code>punctuation</code> | 0 |   | **Punctuation**: Push "!" to "~" to the stack |
+| `kp` | <code>punctuation</code> | 0 |   | **Punctuation**: Push all punctuation characters to the stack |
 | `kr` | <code>digits-lowercase-uppercase</code> | 0 |   | **Digits, Lowercase, Uppercase**: Push "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
 | `kz` | <code>reverse-lowercase</code> | 0 |   | **Reverse Lowercase**: Push "zyxwvutsrqponmlkjihgfedcba" to the stack |
 | `kæ` | <code>all-primes</code></br><code>primes</code> | 0 |   | **All Primes**: Push a list of every prime number to the stack |
