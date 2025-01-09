@@ -253,7 +253,6 @@ Element, Modifier, and Syntax Reference
 | `ÞR` | <code>reshape</code> | 2 |   | **Reshape** (`lst,lst[num]`): Reshape #1 to the shape #2 |
 | `ÞT` | <code>transpose-safe</code> | 1 |   | **Transpose Safe** (`lst`): Transpose #1, does not hang on an infinite list of finite lists |
 | `ÞX` | <code>cartesian-product-unsafe</code></br><code>cartesian-unsafe</code></br><code>cart-prod-unsafe</code></br><code>cart-unsafe</code> | 2 |   | **Cartesian Product Unsafe** (`lst,lst`): Cartesian product of #1 and #2 in the standard order, but without accounting for infinite lists |
-| `Þh` | <code>ends</code></br><code>edges</code></br><code>head-tail</code> | 1 |   | **Ends** (`lst`): Head and tail of #1 |
 | `Þi` | <code>md-index</code> | 2 |   | **Multi-Dimensional Index** (`lst,lst[num]`): Index #1 at the multi-dimensional index #2 - #1[#2[0]][#2[1]]...[#2[n]] |
 | `Þo` | <code>grid-neighbours</code></br><code>grid-neighbors</code></br><code>adjacent-cells</code></br><code>adj-cells</code></br><code>surrounding-cells</code> | 1 |   | **Grid Neighbours** (`lst`): Grid neighbours of #1 - up, down, left, right</br>**Grid Neighbours With Starting Direction** (`lst,num`): Grid neighbours of cells in #1 - right, down, left, up - start from direction #2 => 0: right, 1: down, 2: left, 3: up |
 | `Þ∩` | <code>multiset-intersection</code></br><code>mset-isect</code> | 2 |   | **Multiset Intersection** (`lst,lst`): Multiset intersection of #1 and #2 |
