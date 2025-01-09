@@ -1523,12 +1523,24 @@ object Elements:
     ) {
       case a: VNum => VNum(a.real)
     },
-    addPart(
-      "∆I",
-      Monad,
-      true,
-    ) {
+    addPart("∆I", Monad, true) {
       case a: VNum => VNum(a.imag)
+    },
+    addPart("∆q", Monad, true) {
+      case a: VNum =>
+        val factors = NumberHelpers.primeFactors(a)
+        val primes = factors.distinct
+        val exponents = primes.map(prime =>
+          NumberHelpers.multiplicity(a, prime.asInstanceOf[VNum])
+        )
+        VList(exponents)
+    },
+    addPart("∆L", Dyad, false) {
+      case (a: VNum, b: VNum) => NumberHelpers.lcm(a, b)
+      case (a: VList, b: VNum) => NumberHelpers.lcm(b +: a)
+      case (a, b: VList) =>
+        summon[Context].push(a)
+        NumberHelpers.lcm(b)
     },
     addPart("∆⌹", Monad, true) {
       case a: VNum => VList(Seq(a.real, a.imag))
