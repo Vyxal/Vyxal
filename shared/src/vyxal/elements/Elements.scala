@@ -1439,88 +1439,40 @@ object Elements:
           }
         )
       ),
-    addPart(
-      "∆s",
-      Monad,
-      true,
-    ) {
+    addPart("∆s", Monad, true) {
       case a: VNum => a.sin
     },
-    addPart(
-      "∆c",
-      Monad,
-      true,
-    ) {
+    addPart("∆c", Monad, true) {
       case a: VNum => a.cos
     },
-    addPart(
-      "∆t",
-      Monad,
-      true,
-    ) {
+    addPart("∆t", Monad, true) {
       case a: VNum => a.tan
     },
-    addPart(
-      "∆⟆",
-      Monad,
-      true,
-    ) {
+    addPart("∆⟆", Monad, true) {
       case a: VNum => a.asin
     },
-    addPart(
-      "∆ℭ",
-      Monad,
-      true,
-    ) {
+    addPart("∆ℭ", Monad, true) {
       case a: VNum => a.acos
     },
-    addPart(
-      "∆ʈ",
-      Monad,
-      true,
-    ) {
+    addPart("∆ʈ", Monad, true) {
       case a: VNum => a.atan
     },
-    addPart(
-      "∆Ṭ",
-      Dyad,
-      true,
-    ) {
+    addPart("∆Ṭ", Dyad, true) {
       case (y: VNum, x: VNum) => y.atan2(x)
     },
-    addPart(
-      "∆S",
-      Monad,
-      true,
-    ) {
+    addPart("∆S", Monad, true) {
       case a: VNum => a.sinh
     },
-    addPart(
-      "∆C",
-      Monad,
-      true,
-    ) {
+    addPart("∆C", Monad, true) {
       case a: VNum => a.cosh
     },
-    addPart(
-      "∆T",
-      Monad,
-      true,
-    ) {
+    addPart("∆T", Monad, true) {
       case a: VNum => a.tanh
     },
-    addPart(
-      "∆<",
-      Monad,
-      true,
-    ) {
+    addPart("∆<", Monad, true) {
       case a: VNum => a.arg
     },
-    addPart(
-      "∆R",
-      Monad,
-      true,
-    ) {
+    addPart("∆R", Monad, true) {
       case a: VNum => VNum(a.real)
     },
     addPart("∆I", Monad, true) {
@@ -1548,25 +1500,13 @@ object Elements:
     addPart("∆⎀", Monad, true) {
       case a: VNum => VList(Seq(a.vabs, a.arg))
     },
-    addPart(
-      "∆r",
-      Monad,
-      true,
-    ) {
+    addPart("∆r", Monad, true) {
       case a: VNum => a * VNum(spire.math.Real.pi) / VNum(180)
     },
-    addPart(
-      "∆d",
-      Monad,
-      true,
-    ) {
+    addPart("∆d", Monad, true) {
       case a: VNum => a / VNum(spire.math.Real.pi) * VNum(180)
     },
-    addPart(
-      "ÞR",
-      Dyad,
-      false,
-    ) {
+    addPart("ÞR", Dyad, false) {
       case (a, b: VList) =>
         val shape = b.map {
           case n: VNum => n
@@ -1579,37 +1519,21 @@ object Elements:
       case (a, b: VNum) =>
         ListHelpers.reshape(ListHelpers.makeIterable(a), Seq(b))
     },
-    addPart(
-      "∆⧢",
-      Monad,
-      true,
-    ) {
+    addPart("∆⧢", Monad, true) {
       case a: VNum => VNum(spire.math.Real.e) **
           (VNum.complex(0, 2) * VNum(spire.math.Real.pi) / a)
     },
-    addPart(
-      "∆A",
-      Monad,
-      false,
-    ) {
+    addPart("∆A", Monad, false) {
       case a: VList if a.forall(_.isInstanceOf[VNum]) =>
         a.map(_.asInstanceOf[VNum]).sum / a.length
       case a: VNum => a
     },
-    addPart(
-      "∆G",
-      Monad,
-      false,
-    ) {
+    addPart("∆G", Monad, false) {
       case a: VList if a.forall(_.isInstanceOf[VNum]) =>
         a.map(_.asInstanceOf[VNum]).product ** (1 / VNum(a.length))
       case a: VNum => a
     },
-    addPart(
-      "∆H",
-      Monad,
-      false,
-    ) {
+    addPart("∆H", Monad, false) {
       case a: VList if a.forall(_.isInstanceOf[VNum]) =>
         a.length / a.map(_.asInstanceOf[VNum]).map(1 / _).sum
       case a: VNum => a
@@ -1631,11 +1555,7 @@ object Elements:
         Monad,
         a => ListHelpers.truthyIndices(ListHelpers.makeIterable(a)),
       ),
-    addPart(
-      "øA",
-      Monad,
-      true,
-    ) {
+    addPart("øA", Monad, true) {
       case a: VNum =>
         "abcdefghijklmnopqrstuvwxyz".charAt(((a - 1) % 26).toInt).toString
       case VStr(a) =>
@@ -1643,6 +1563,11 @@ object Elements:
           VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower) + 1)
         )
         if inds.length == 1 then inds.head else VList(inds)
+    },
+    addPart("ø◲", Dyad, false) {
+      case (VList(a), b) => VList((b +: a) :+ b)
+      case (VStr(a), VStr(b)) => b + a + b
+      case (a, VList(b)) => VList((a +: b) :+ a)
     },
   )
 

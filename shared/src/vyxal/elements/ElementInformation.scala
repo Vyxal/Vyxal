@@ -4613,6 +4613,42 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    AddElement(
+      symbol = "øA",
+      keywords = Seq(
+        "letter-to-number",
+        "number-to-letter",
+        "letter-number-swap",
+        "number-letter-swap",
+        "a1-swap",
+      ),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Letter to Number",
+        args = Seq("str"),
+        description = "the index of #1 in the alphabet (one-indexed)",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Number to Letter",
+        args = Seq("num"),
+        description = "the letter at index #1 in the alphabet (one-indexed)",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "ø◲",
+      keywords = Seq("surround"),
+      arity = 2,
+      Options(vectorises = false),
+      Overload(
+        name = "Surround",
+        args = Seq("any", "any"),
+        description = "#1 prepended and appended to #2",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Map[String, Modifier] = Map(
