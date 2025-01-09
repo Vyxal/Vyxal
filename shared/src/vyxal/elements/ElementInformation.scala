@@ -953,7 +953,8 @@ object ElementInformation:
       Overload(
         name = "Transpose",
         args = Seq("lst"),
-        description = "Transpose #1",
+        description =
+          "Transpose #1. Will not terminate on an infinite list of finite lists. Use ÞT if you need that.",
         typeSwitchable = false,
       ),
       Overload(
@@ -4664,6 +4665,69 @@ object ElementInformation:
         name = "Zero Pad",
         args = Seq("itr", "itr"),
         description = "#1 zero-padded to length of #2",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "ÞO",
+      keywords = Seq(
+        "grid-neighbours-wrap",
+        "grid-neighbors-wrap",
+        "adjacent-cells-wrap",
+        "adj-cells-wrap",
+        "surrounding-cells-wrap",
+      ),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Grid Neighbours Wrap",
+        args = Seq("lst"),
+        description =
+          "Grid neighbours of #1 - up, down, left, right - wrapping around",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Grid Neighbours Wrap With Starting Direction",
+        args = Seq("lst", "num"),
+        description =
+          "Grid neighbours of cells in #1 - right, down, left, up - wrapping around and start from direction #2 => 0: right, 1: down, 2: left, 3: up. Negative #2 does not include middle, positive #2 does",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "ÞR",
+      keywords = Seq("reshape"),
+      arity = 2,
+      Options(vectorises = false),
+      Overload(
+        name = "Reshape",
+        args = Seq("lst", "lst[num]"),
+        description = "Reshape #1 to the shape #2",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "ÞT",
+      keywords = Seq("transpose-safe"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Transpose Safe",
+        args = Seq("lst"),
+        description =
+          "Transpose #1, does not hang on an infinite list of finite lists",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "Þh",
+      keywords = Seq("ends", "edges", "head-tail"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Ends",
+        args = Seq("lst"),
+        description = "Head and tail of #1",
         typeSwitchable = false,
       ),
     ),

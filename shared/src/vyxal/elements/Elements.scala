@@ -1578,6 +1578,47 @@ object Elements:
       case (a: VList, b) => ListHelpers.zeroPad(a, makeIterable(b).bigLength)
       case (VStr(a), b) => StringHelpers.zeroPad(a, makeIterable(b).bigLength)
     },
+    "ÞO" ->
+      direct(Monad) {
+        val top = pop()
+        top match
+          case a: VList => push(
+              ListHelpers.gridNeighboursWrap(ListHelpers.makeIterable(a))
+            )
+          case _ =>
+            val next = pop()
+            (top, next) match
+              case (a: VNum, b: VList) => push(
+                  ListHelpers.gridNeighboursWrap(
+                    ListHelpers.makeIterable(b),
+                    a >= 0,
+                    (a.vabs % 4).toInt,
+                  )
+                )
+              case (a, b) =>
+                throw UnimplementedOverloadException("ÞO", List(a, b))
+        end match
+      },
+    addPart("ÞR", Dyad, false) {
+      case (a, VListOf[VNum](b)) =>
+        val shape = b
+        ListHelpers.reshape(ListHelpers.makeIterable(a), shape)
+      case (a, b: VNum) =>
+        ListHelpers.reshape(ListHelpers.makeIterable(a), Seq(b))
+    },
+    addPart("ÞT", Monad, false) {
+      case a: VFun => throw UnimplementedOverloadException("ÞT", List(a))
+      case a => ListHelpers.transposeSafe(ListHelpers.makeIterable(a))
+    },
+    "Þh" ->
+      fullToImpl(
+        Monad,
+        iter =>
+          val iterable = iter.itr
+          if iterable.isEmpty then VList(Seq.empty)
+          else if iterable.length == 1 then VList(Seq(iterable.head))
+          else VList(Seq(iterable.head, iterable.last)),
+      ),
   )
 
   // Subject to being added as overloads onto things in elements
