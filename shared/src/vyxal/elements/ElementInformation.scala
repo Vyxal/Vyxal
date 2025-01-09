@@ -4186,7 +4186,7 @@ object ElementInformation:
       Overload(
         name = "Punctuation",
         args = Seq(),
-        description = "Push \"!\" to \"~\" to the stack",
+        description = "Push all punctuation characters to the stack",
         typeSwitchable = false,
       ),
     ),
