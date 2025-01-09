@@ -354,7 +354,7 @@ object VNum:
   /** Parse a number from a string in the given base */
   def apply(s: String, radix: Int): VNum =
     s.replaceAll("[^-0-9a-zA-Z._]", "") match
-      case s"$realj$imag" => complex(
+      case s"${real}j$imag" => complex(
           parseDecimal(real, radix, 0),
           if imag.isEmpty then 1 else parseDecimal(imag, radix, 1),
         )
