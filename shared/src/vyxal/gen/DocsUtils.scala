@@ -45,7 +45,7 @@ object DocsUtils:
         // Have to use tuple in case of digraphs
         (
           Codepage.indexOf(elem.symbol.charAt(0)) +
-            (if "#∆øÞ".contains(elem.symbol.charAt(0)) then 400 else 0),
+            (if "#∆øÞk".contains(elem.symbol.charAt(0)) then 400 else 0),
           Codepage.indexOf(elem.symbol.substring(1)),
         )
       }
@@ -53,7 +53,8 @@ object DocsUtils:
         val symbol =
           if "`|<>\\".contains(elem.symbol) then s"\\${elem.symbol}"
           else elem.symbol
-        val keywords = elem.keywords.map(kw => s"`$kw`").mkString("</br>")
+        val keywords =
+          elem.keywords.map(kw => s"<code>$kw</code>").mkString("</br>")
         val arity = if elem.arity == -1 then "STACK" else elem.arity
         val vectorises = if elem.options.vectorises then "vec" else ""
         val peeks = if elem.options.peeks then "*" else ""

@@ -395,6 +395,8 @@ object Elements:
     addPart("j", Dyad, false) {
       case (a: VList, b) => ListHelpers.join(a, b)
       case (a, b: VList) => ListHelpers.join(b, a)
+      case (a: VNum, b: VNum) =>
+        VNum.complex(a.underlying.real, b.underlying.real)
       case (a, b) => ListHelpers.join(a.itr, b) match
           case l: VList => l.mkString
           case res => res

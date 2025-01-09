@@ -1350,6 +1350,11 @@ object ElementInformation:
         description =
           "Intersperse elements of #2 within #1 (e.g. [1, [2,3], 4] [5, 6] -> [1, 5, 6, [2, 3], 5, 6, 4])",
       ),
+      Overload(
+        name = "Make Complex Number",
+        args = Seq("num", "num"),
+        description = "Create a complex number from #1 and #2 - #1 + #2i",
+      ),
     ),
     AddElement(
       symbol = "l",
@@ -2957,7 +2962,7 @@ object ElementInformation:
         vectorises = true
       ),
       Overload(
-        name = "NCR | N Choose R",
+        name = "NCR / N Choose R",
         args = Seq("num", "num"),
         description = "nCr of #1 and #2 (n choose r)",
         typeSwitchable = false,
