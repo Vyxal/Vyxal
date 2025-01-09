@@ -160,7 +160,7 @@ object ElementInformation:
         vectorises = false
       ),
       Overload(
-        name = "Loigcal Or",
+        name = "Logical Or",
         args = Seq("any", "any"),
         description =
           "Python style or - if #2 is true, return #2, else return #1",
@@ -440,7 +440,7 @@ object ElementInformation:
     AddElement(
       ":",
       Seq("dup", "duplicate"),
-      1,
+      arity = 1,
       Options(
         vectorises = false
       ),
