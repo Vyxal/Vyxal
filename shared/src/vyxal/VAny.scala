@@ -414,9 +414,14 @@ object VNum:
 end VNum
 
 object VListOf:
-  def unapply[T](seq: Seq[Any])(using tt: TypeTest[Any, T]): Option[Seq[T]] =
-    val matches = seq.forall {
+  def unapply[T](seq: Seq[Any] | VList)(using
+      tt: TypeTest[Any, T]
+  ): Option[Seq[T]] =
+    val seq_ = seq match
+      case VList(l) => l
+      case s: Seq[Any] => s
+    val matches = seq_.forall {
       case tt(_) => true
       case _ => false
     }
-    Option.when(matches)(seq.asInstanceOf[Seq[T]])
+    Option.when(matches)(seq_.asInstanceOf[Seq[T]])

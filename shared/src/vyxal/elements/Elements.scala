@@ -1508,13 +1508,7 @@ object Elements:
     },
     addPart("ÞR", Dyad, false) {
       case (a, VListOf[VNum](b)) =>
-        val shape = b.map {
-          case n: VNum => n
-          case other => throw BadRHSException(
-              "ÞR",
-              s"$b (expected a list of natural numbers)",
-            )
-        }
+        val shape = b
         ListHelpers.reshape(ListHelpers.makeIterable(a), shape)
       case (a, b: VNum) =>
         ListHelpers.reshape(ListHelpers.makeIterable(a), Seq(b))
@@ -1524,18 +1518,16 @@ object Elements:
           (VNum.complex(0, 2) * VNum(spire.math.Real.pi) / a)
     },
     addPart("∆A", Monad, false) {
-      case VList(numbers) => numbers.map(_.asInstanceOf[VNum]).sum /
-          numbers.length
+      case VListOf[VNum](numbers) => numbers.sum / numbers.length
       case a: VNum => a
     },
     addPart("∆G", Monad, false) {
-      case VList(numbers) => numbers.map(_.asInstanceOf[VNum]).sum **
+      case VListOf[VNum](numbers) => numbers.product **
           (1 / VNum(numbers.length))
       case a: VNum => a
     },
     addPart("∆H", Monad, false) {
-      case VList(numbers) => numbers.length /
-          numbers.map(_.asInstanceOf[VNum]).map(1 / _).sum
+      case VListOf[VNum](numbers) => numbers.length / numbers.map(1 / _).sum
       case a: VNum => a
     },
     addPart("∆æ", Monad, true) {
