@@ -135,11 +135,10 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  // Ignored because Ḋ doesn't exist right now
-  ignore("Element Ḋ") {
+  describe("Element u") {
     it("simple test") {
       testCode(
-        "#[1|2|3|4|5|6|7|8|9|10|1|4|5|1|3|6|4#] λ5%} Ḋ",
+        "#[1|2|3|4|5|6|7|8|9|10|1|4|5|1|3|6|4#] λ5%} u",
         vSeq(1, 2, 3, 4, 5),
       )
     }
