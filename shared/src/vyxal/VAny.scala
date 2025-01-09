@@ -318,7 +318,7 @@ class VNum(val underlying: Complex[Real]) extends VAny, Ordered[VNum]:
   override def toString =
     if this.imag == 0 then this.real.getString(Real.digits)
     else
-      s"${this.real.getString(Real.digits)}ı${this.imag.getString(Real.digits)}"
+      s"${this.real.getString(Real.digits)}j${this.imag.getString(Real.digits)}"
 
   override def equals(obj: Any) =
     obj match
@@ -341,7 +341,7 @@ object VNum:
   val DecimalRegex: Regex = DecimalRegexStr.r
 
   val NumRegex: Regex =
-    raw"-?($DecimalRegexStr?ı$DecimalRegexStr?)|-?$DecimalRegexStr".r
+    raw"-?($DecimalRegexStr?j$DecimalRegexStr?)|-?$DecimalRegexStr".r
 
   /** To force an implicit conversion */
   def apply[T](n: T)(using Conversion[T, VNum]): VNum = n
@@ -353,8 +353,8 @@ object VNum:
 
   /** Parse a number from a string in the given base */
   def apply(s: String, radix: Int): VNum =
-    s.replaceAll("[^-0-9a-zA-Z.ı_]", "") match
-      case s"${real}ı$imag" => complex(
+    s.replaceAll("[^-0-9a-zA-Z._]", "") match
+      case s"$realj$imag" => complex(
           parseDecimal(real, radix, 0),
           if imag.isEmpty then 1 else parseDecimal(imag, radix, 1),
         )
