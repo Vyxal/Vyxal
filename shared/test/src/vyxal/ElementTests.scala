@@ -260,11 +260,10 @@ class ElementTests extends VyxalTests:
     )
   }
 
-  // Ignored because Ṛ doesn't exist now
-  ignore("Element Ạ") {
+  describe("Element ≜") {
     testMulti(
-      "#[1|2|3|4#] 0 λ1+} Ạ" -> vSeq(2, 2, 3, 4),
-      "#[2|#[1|2|3|4#]|2|3|4#] 1 λṚ} Ạ" -> vSeq(2, vSeq(4, 3, 2, 1), 2, 3, 4),
+      "#[1|2|3|4#] 0 λ1+} ≜" -> vSeq(2, 2, 3, 4),
+      "#[2|#[1|2|3|4#]|2|3|4#] 1 λ⇄} ≜" -> vSeq(2, vSeq(4, 3, 2, 1), 2, 3, 4),
     )
   }
 
