@@ -1524,16 +1524,15 @@ object Elements:
           (VNum.complex(0, 2) * VNum(spire.math.Real.pi) / a)
     },
     addPart("∆A", Monad, false) {
-      case VListOf[VNum](numbers) => numbers.sum / numbers.length
+      case VList(numbers) => numbers.sum / numbers.length
       case a: VNum => a
     },
     addPart("∆G", Monad, false) {
-      case VListOf[VNum](numbers) => numbers.product **
-          (1 / VNum(numbers.length))
+      case VList(numbers) => numbers.product ** (1 / VNum(numbers.length))
       case a: VNum => a
     },
     addPart("∆H", Monad, false) {
-      case VListOf[VNum](numbers) => numbers.length / numbers.map(1 / _).sum
+      case VList(numbers) => numbers.length / numbers.map(1 / _).sum
       case a: VNum => a
     },
     addPart("∆æ", Monad, true) {
@@ -1598,11 +1597,13 @@ object Elements:
         end match
       },
     addPart("ÞR", Dyad, false) {
-      case (a, VListOf[VNum](b)) =>
-        val shape = b
-        ListHelpers.reshape(ListHelpers.makeIterable(a), shape)
-      case (a, b: VNum) =>
-        ListHelpers.reshape(ListHelpers.makeIterable(a), Seq(b))
+      case (a, VList(b)) =>
+        if !b.forall(_.isInstanceOf[VNum]) then
+          // I'd use VListOf[VNum] here, but that seems to make
+          // the tests break
+          throw InvalidListOverloadException("ÞR", b, "Number")
+        ListHelpers.reshape(a.itr, b)
+      case (a, b: VNum) => ListHelpers.reshape(a.itr, Seq(b))
     },
     addPart("ÞT", Monad, false) {
       case a: VFun => throw UnimplementedOverloadException("ÞT", List(a))
