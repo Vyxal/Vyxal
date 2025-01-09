@@ -247,6 +247,7 @@ Element, Modifier, and Syntax Reference
 | `kz` | <code>reverse-lowercase</code> | 0 |   | **Reverse Lowercase**: Push "zyxwvutsrqponmlkjihgfedcba" to the stack |
 | `kæ` | <code>all-primes</code></br><code>primes</code> | 0 |   | **All Primes**: Push a list of every prime number to the stack |
 | `kṬ` | <code>ZZ</code></br><code>integers</code> | 0 |   | **Integers**: Push a list of every integer to the stack |
+| `Þ0` | <code>zero-pad</code> | 2 |   | **Zero Pad** (`itr,num`): #1 zero-padded to length #2</br>**Zero Pad** (`num,itr`): #1 zero-padded to length #2</br>**Zero Pad** (`itr,itr`): #1 zero-padded to length of #2 |
 | `∆⟆` | <code>arcsin</code></br><code>arcsine</code> | 1 | vec  | **Arcsine** (`num`): Arcsine of #1 |
 | `∆<` | <code>arg</code></br><code>phase</code></br><code>angle</code> | 1 | vec  | **Argument** (`num`): The angle (argument) between the positive real axis and the line joining the origin to #1 in the complex plane. |
 | `∆A` | <code>arithmetic-mean</code> | 1 |   | **Arithmetic Mean** (`lst`): Arithmetic mean of #1 (sum(#1) / len(#1)) |
