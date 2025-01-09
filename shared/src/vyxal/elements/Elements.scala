@@ -5,6 +5,7 @@ import scala.language.implicitConversions
 import vyxal.*
 import vyxal.{Dyad, ImplHelpers, Monad, Triad}
 import vyxal.conversions.{*, given}
+import vyxal.elements.Modifiers.addPart
 import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.defaultEmpty
@@ -1420,6 +1421,217 @@ object Elements:
       direct(0) {
         summon[Context].globals.inputs.length
       },
+    addPart("∆<", Monad, true) {
+      case a: VNum => a.arg
+    },
+    "kN" ->
+      niladify(VList(LazyList.unfold(VNum(1)) {
+        case VNum(n, _) => Some((VNum(n), VNum(n + 1)))
+      })),
+    "kṬ" ->
+      niladify(
+        VList(
+          LazyList.unfold(VNum(0) -> true) {
+            case (num, negate) =>
+              val now = if negate then -num else num
+              val next = if negate then num + 1 else num
+              Some((now, next -> !negate))
+          }
+        )
+      ),
+    addPart(
+      "∆s",
+      Monad,
+      true,
+    ) {
+      case a: VNum => a.sin
+    },
+    addPart(
+      "∆c",
+      Monad,
+      true,
+    ) {
+      case a: VNum => a.cos
+    },
+    addPart(
+      "∆t",
+      Monad,
+      true,
+    ) {
+      case a: VNum => a.tan
+    },
+    addPart(
+      "∆⟆",
+      Monad,
+      true,
+    ) {
+      case a: VNum => a.asin
+    },
+    addPart(
+      "∆ℭ",
+      Monad,
+      true,
+    ) {
+      case a: VNum => a.acos
+    },
+    addPart(
+      "∆ʈ",
+      Monad,
+      true,
+    ) {
+      case a: VNum => a.atan
+    },
+    addPart(
+      "∆Ṭ",
+      Dyad,
+      true,
+    ) {
+      case (y: VNum, x: VNum) => y.atan2(x)
+    },
+    addPart(
+      "∆S",
+      Monad,
+      true,
+    ) {
+      case a: VNum => a.sinh
+    },
+    addPart(
+      "∆C",
+      Monad,
+      true,
+    ) {
+      case a: VNum => a.cosh
+    },
+    addPart(
+      "∆T",
+      Monad,
+      true,
+    ) {
+      case a: VNum => a.tanh
+    },
+    addPart(
+      "∆<",
+      Monad,
+      true,
+    ) {
+      case a: VNum => a.arg
+    },
+    addPart(
+      "∆R",
+      Monad,
+      true,
+    ) {
+      case a: VNum => VNum(a.real)
+    },
+    addPart(
+      "∆I",
+      Monad,
+      true,
+    ) {
+      case a: VNum => VNum(a.imag)
+    },
+    addPart("∆⌹", Monad, true) {
+      case a: VNum => VList(Seq(a.real, a.imag))
+    },
+    addPart("∆⎀", Monad, true) {
+      case a: VNum => VList(Seq(a.vabs, a.arg))
+    },
+    addPart(
+      "∆r",
+      Monad,
+      true,
+    ) {
+      case a: VNum => a * VNum(spire.math.Real.pi) / VNum(180)
+    },
+    addPart(
+      "∆d",
+      Monad,
+      true,
+    ) {
+      case a: VNum => a / VNum(spire.math.Real.pi) * VNum(180)
+    },
+    addPart(
+      "ÞR",
+      Dyad,
+      false,
+    ) {
+      case (a, b: VList) =>
+        val shape = b.map {
+          case n: VNum => n
+          case other => throw BadRHSException(
+              "ÞR",
+              s"$b (expected a list of natural numbers)",
+            )
+        }
+        ListHelpers.reshape(ListHelpers.makeIterable(a), shape)
+      case (a, b: VNum) =>
+        ListHelpers.reshape(ListHelpers.makeIterable(a), Seq(b))
+    },
+    addPart(
+      "∆⧢",
+      Monad,
+      true,
+    ) {
+      case a: VNum => VNum(spire.math.Real.e) **
+          (VNum.complex(0, 2) * VNum(spire.math.Real.pi) / a)
+    },
+    addPart(
+      "∆A",
+      Monad,
+      false,
+    ) {
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        a.map(_.asInstanceOf[VNum]).sum / a.length
+      case a: VNum => a
+    },
+    addPart(
+      "∆G",
+      Monad,
+      false,
+    ) {
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        a.map(_.asInstanceOf[VNum]).product ** (1 / VNum(a.length))
+      case a: VNum => a
+    },
+    addPart(
+      "∆H",
+      Monad,
+      false,
+    ) {
+      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
+        a.length / a.map(_.asInstanceOf[VNum]).map(1 / _).sum
+      case a: VNum => a
+    },
+    addPart("∆æ", Monad, true) {
+      case a: VNum =>
+        if a < 2 then VList(Seq.empty)
+        else
+          val primes = NumberHelpers.probablePrimes.takeWhile(
+            _ <= NumberHelpers.primeFactors(a).maxOption.getOrElse(2)
+          )
+          val exponents = primes.map(prime =>
+            NumberHelpers.multiplicity(a, prime.asInstanceOf[VNum])
+          )
+          VList(exponents)
+    },
+    "ÞỊ" ->
+      fullToImpl(
+        Monad,
+        a => ListHelpers.truthyIndices(ListHelpers.makeIterable(a)),
+      ),
+    addPart(
+      "øA",
+      Monad,
+      true,
+    ) {
+      case a: VNum =>
+        "abcdefghijklmnopqrstuvwxyz".charAt(((a - 1) % 26).toInt).toString
+      case VStr(a) =>
+        val inds = a.map(char =>
+          VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower) + 1)
+        )
+        if inds.length == 1 then inds.head else VList(inds)
+    },
   )
 
   // Subject to being added as overloads onto things in elements
