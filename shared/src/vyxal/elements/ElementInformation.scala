@@ -4738,18 +4738,6 @@ object ElementInformation:
       ),
     ),
     AddElement(
-      symbol = "Þh",
-      keywords = Seq("ends", "edges", "head-tail"),
-      arity = 1,
-      Options(vectorises = false),
-      Overload(
-        name = "Ends",
-        args = Seq("lst"),
-        description = "Head and tail of #1",
-        typeSwitchable = false,
-      ),
-    ),
-    AddElement(
       symbol = "Þi",
       keywords = Seq("md-index"),
       arity = 2,

@@ -1507,7 +1507,7 @@ object Elements:
       case a: VNum => a / VNum(spire.math.Real.pi) * VNum(180)
     },
     addPart("ÞR", Dyad, false) {
-      case (a, b: VList) =>
+      case (a, VListOf[VNum](b)) =>
         val shape = b.map {
           case n: VNum => n
           case other => throw BadRHSException(
@@ -1524,18 +1524,16 @@ object Elements:
           (VNum.complex(0, 2) * VNum(spire.math.Real.pi) / a)
     },
     addPart("∆A", Monad, false) {
-      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
-        a.map(_.asInstanceOf[VNum]).sum / a.length
+      case VListOf[VNum](numbers) => numbers.sum / numbers.length
       case a: VNum => a
     },
     addPart("∆G", Monad, false) {
-      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
-        a.map(_.asInstanceOf[VNum]).product ** (1 / VNum(a.length))
+      case VListOf[VNum](numbers) => numbers.product **
+          (1 / VNum(numbers.length))
       case a: VNum => a
     },
     addPart("∆H", Monad, false) {
-      case a: VList if a.forall(_.isInstanceOf[VNum]) =>
-        a.length / a.map(_.asInstanceOf[VNum]).map(1 / _).sum
+      case VListOf[VNum](numbers) => numbers.length / numbers.map(1 / _).sum
       case a: VNum => a
     },
     addPart("∆æ", Monad, true) {
@@ -1582,8 +1580,8 @@ object Elements:
       direct(Monad) {
         val top = pop()
         top match
-          case a: VList => push(
-              ListHelpers.gridNeighboursWrap(ListHelpers.makeIterable(a))
+          case VList(a) => push(
+              ListHelpers.gridNeighboursWrap(a)
             )
           case _ =>
             val next = pop()
@@ -1610,23 +1608,14 @@ object Elements:
       case a: VFun => throw UnimplementedOverloadException("ÞT", List(a))
       case a => ListHelpers.transposeSafe(ListHelpers.makeIterable(a))
     },
-    "Þh" ->
-      fullToImpl(
-        Monad,
-        iter =>
-          val iterable = iter.itr
-          if iterable.isEmpty then VList(Seq.empty)
-          else if iterable.length == 1 then VList(Seq(iterable.head))
-          else VList(Seq(iterable.head, iterable.last)),
-      ),
     addPart("Þi", Dyad, true) {
-      case (a, b: VList) => ListHelpers.multiDimIndex(makeIterable(a), b)
+      case (a, VList(b)) => ListHelpers.multiDimIndex(makeIterable(a), b)
     },
     "Þo" ->
       direct(Monad) {
         val top = pop()
         top match
-          case a: VList => push(
+          case VList(a) => push(
               ListHelpers.gridNeighbours(a)
             )
           case _ =>
@@ -1644,7 +1633,7 @@ object Elements:
         end match
       },
     addPart("Þ↻", Monad, false) {
-      case a: VList =>
+      case VList(a) =>
         if a.isEmpty then VList(Seq.empty)
         else
           lazy val temp: LazyList[VAny] = LazyList.from(a) #::: temp
@@ -1655,13 +1644,13 @@ object Elements:
       direct(Monad) {
         val top = pop()
         top match
-          case a: VList => push(
+          case VList(a) => push(
               ListHelpers.gridNeighboursDiagonalWrap(a)
             )
           case _ =>
             val next = pop()
             (top, next) match
-              case (a: VNum, b: VList) => push(
+              case (a: VNum, VList(b)) => push(
                   ListHelpers.gridNeighboursDiagonalWrap(
                     b,
                     a >= 0,
@@ -1706,13 +1695,13 @@ object Elements:
         (left, right) => ListHelpers.multiSetIntersection(left.itr, right.itr),
       ),
     addPart("Þ⎀", Triad, false) {
-      case (a, b: VList, c) => ListHelpers.multiDimAssign(a.itr, b, c)
+      case (a, VList(b), c) => ListHelpers.multiDimAssign(a.itr, b, c)
     },
     "Þ◌" ->
       direct(Monad) {
         val top = pop()
         top match
-          case a: VList => push(
+          case VList(a) => push(
               ListHelpers.gridNeighboursDiagonal(a)
             )
           case _ =>
@@ -1736,8 +1725,8 @@ object Elements:
         }
     },
     addPart("Þ÷", Dyad, false) {
-      case (a: VList, b: VNum) => ListHelpers.intoNPieces(a, b)
-      case (a: VNum, b: VList) => ListHelpers.intoNPieces(b, a)
+      case (VList(a), b: VNum) => ListHelpers.intoNPieces(a, b)
+      case (a: VNum, VList(b)) => ListHelpers.intoNPieces(b, a)
       case (VStr(a), b: VNum) => StringHelpers.intoNPieces(a, b)
       case (a: VNum, VStr(b)) => StringHelpers.intoNPieces(b, a)
     },
