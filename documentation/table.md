@@ -271,6 +271,8 @@ Element, Modifier, and Syntax Reference
 | `∆æ` | <code>all-prime-exponents</code></br><code>all-prime-exps</code> | 1 | vec  | **All Prime Exponents** (`num`): For all primes less than or equal to #1, push the power of that prime in the factorisation of #1 |
 | `∆Ṭ` | <code>atan2</code></br><code>arctan2</code></br><code>arctangent2</code> | 2 | vec  | **Arctangent 2** (`num,num`): atan2(#1, #2) |
 | `∆⧢` | <code>root-of-unity</code> | 1 | vec  | **Principal Root of Unity** (`num`): Principal #1-th root of unity (e^(2i * pi / #1)) |
+| `øA` | <code>letter-to-number</code></br><code>number-to-letter</code></br><code>letter-number-swap</code></br><code>number-letter-swap</code></br><code>a1-swap</code> | 1 | vec  | **Letter to Number** (`str`): the index of #1 in the alphabet (one-indexed)</br>**Number to Letter** (`num`): the letter at index #1 in the alphabet (one-indexed) |
+| `ø◲` | <code>surround</code> | 2 |   | **Surround** (`any,any`): #1 prepended and appended to #2 |
 
 ## Modifiers
 
