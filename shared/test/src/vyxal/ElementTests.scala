@@ -124,10 +124,9 @@ class ElementTests extends VyxalTests:
     )
   }
 
-  // Ignored because Ė doesn't exist now
-  ignore("Element x") {
-    testCode("5 λ0=[1|1-x×}}Ė", 120)
-    testCode("0 λ0=[1|1-x×}}Ė", 1)
+  describe("Element x") {
+    testCode("5 λ0=[1|1-x×}}ᴥ", 120)
+    testCode("0 λ0=[1|1-x×}}ᴥ", 1)
   }
 
   ignore("Element ÞĊ") {
