@@ -229,6 +229,7 @@ Element, Modifier, and Syntax Reference
 | `kF` | <code>fizzbuzz-constant</code></br><code>maybe-if-I-make-the-literate-mode-keyword-long-enough-people-will-stop-complaining-that-there-is-a-fizzbuzz-constant-because-they-will-be-too-busy-reading-the-keyword-to-write-an-angry-comment-or-to-go-to-TNB-or-whatever-chatroom-they-would-go-to-and-write-a-message-saying-how-they-disapprove-of-my-idea-to-have-a-fizzbuzz-constant</code></br><code>of-course-that-probably-would-not-stop-anyone-because-the-kind-of-people-who-would-disagree-with-a-fizzbuzz-constant-are-the-kind-to-not-be-fooled-by-really-and-extremely-long-literate-mode-keywords-because-lets-face-it-who-is-going-to-use-these-mega-long-meta-and-self-aware-literate-mode-keywords-outside-of-maybe-fizzbuzz-but-even-then-people-will-say-but-thats-still-a-fizzbuzz-constant-just-because-it-has-a-long-name-doesnt-mean-it-is-not-one-even-though-such-comments-and-sayings-miss-the-point-of-being-enticed-by-the-craftsmanship-of-this-keyword-and-the-other-one-that-I-wrote-a-bit-earlier-and-by-a-bit-earlier-I-mean-literally-one-line-above-because-it-is-in-the-same-Seq-as-the-other-keyword</code></br><code>they-might-even-say-well-if-you-dont-want-people-complaining-about-your-fizzbuzz-constant-then-dont-include-one-in-the-first-place-but-to-them-I-say-two-things-firstly-that-even-though-it-may-be-super-optimised-for-one-family-of-challenges-the-technical-brilliance-so-to-speak-of-the-fizzbuzz-being-as-short-as-it-is-shouldnt-be-undermined-just-because-theres-two-characters-you-find-so-anti-code-golf-and-second-of-all-why-are-you-even-commenting-on-a-joke-in-a-very-obscure-place-like-come-on-this-isnt-even-in-an-answer-well-I-hope-it-isnt-but-like-this-is-the-vyxal-documentation-stop-complaining-and-continuing-doing-whatever-it-is-youre-doing</code> | 0 |   | **Fizzbuzz Constant**: Push "FizzBuzz" to the stack |
 | `kH` | <code>Hello-World</code> | 0 |   | **Hello, World!**: Push "Hello, World!" to the stack |
 | `kL` | <code>lowercase-uppercase</code> | 0 |   | **Lowercase and Uppercase**: Push "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
+| `kN` | <code>NN</code></br><code>natural-numbers</code> | 0 |   | **Natural Numbers**: Push a list of every natural number to the stack |
 | `kP` | <code>printable-ascii</code> | 0 |   | **Printable ASCII**: Push "!" to "~" to the stack |
 | `kR` | <code>digits-uppercase-lowercase</code> | 0 |   | **Digits, Uppercase, Lowercase**: Push "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" to the stack |
 | `kZ` | <code>reverse-uppercase</code> | 0 |   | **Reverse Uppercase**: Push "ZYXWVUTSRQPONMLKJIHGFEDCBA" to the stack |
@@ -245,6 +246,31 @@ Element, Modifier, and Syntax Reference
 | `kr` | <code>digits-lowercase-uppercase</code> | 0 |   | **Digits, Lowercase, Uppercase**: Push "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
 | `kz` | <code>reverse-lowercase</code> | 0 |   | **Reverse Lowercase**: Push "zyxwvutsrqponmlkjihgfedcba" to the stack |
 | `kæ` | <code>all-primes</code></br><code>primes</code> | 0 |   | **All Primes**: Push a list of every prime number to the stack |
+| `kṬ` | <code>ZZ</code></br><code>integers</code> | 0 |   | **Integers**: Push a list of every integer to the stack |
+| `∆⟆` | <code>arcsin</code></br><code>arcsine</code> | 1 | vec  | **Arcsine** (`num`): Arcsine of #1 |
+| `∆<` | <code>arg</code></br><code>phase</code></br><code>angle</code> | 1 | vec  | **Argument** (`num`): The angle (argument) between the positive real axis and the line joining the origin to #1 in the complex plane. |
+| `∆A` | <code>arithmetic-mean</code> | 1 |   | **Arithmetic Mean** (`lst`): Arithmetic mean of #1 (sum(#1) / len(#1)) |
+| `∆C` | <code>cosh</code></br><code>hyperbolic-cosine</code> | 1 | vec  | **Hyperbolic Cosine** (`num`): Hyperbolic cosine of #1 |
+| `∆G` | <code>geometric-mean</code> | 1 |   | **Geometric Mean** (`lst`): Geometric mean of #1 (product(#1) ^ (1 / len(#1))) |
+| `∆H` | <code>harmonic-mean</code> | 1 |   | **Harmonic Mean** (`lst`): Harmonic mean of #1 (len(#1) / sum(1 / #1)) |
+| `∆I` | <code>imaginary-part</code> | 1 | vec  | **Imaginary Part** (`num`): Imaginary part of #1 |
+| `∆L` | <code>least-common-multiple</code> | 2 | vec  | **Least Common Multiple** (`num,num`): Least common multiple of #1 and #2</br>**Least Common Multiple of List** (`lst`): Least common multiple of all elements of #1</br>**Least Common Multiple** (`lst,num`): Least common multiple of #1.append(#2) |
+| `∆R` | <code>real-part</code> | 1 | vec  | **Real Part** (`num`): Real part of #1 |
+| `∆S` | <code>sinh</code></br><code>hyperbolic-sine</code> | 1 | vec  | **Hyperbolic Sine** (`num`): Hyperbolic sine of #1 |
+| `∆T` | <code>tanh</code></br><code>hyperbolic-tangent</code> | 1 | vec  | **Hyperbolic Tangent** (`num`): Hyperbolic tangent of #1 |
+| `∆c` | <code>cos</code></br><code>cosine</code> | 1 | vec  | **Cosine** (`num`): Cosine of #1 |
+| `∆d` | <code>rad2deg</code></br><code>rad-to-deg</code> | 1 | vec  | **Radians to Degrees** (`num`): Convert #1 from radians to degrees |
+| `∆q` | <code>prime-exponents</code> | 1 | vec  | **Prime Exponents** (`num`): push a list of the power of each prime in the prime factors of #1 |
+| `∆r` | <code>deg2rad</code></br><code>deg-to-rad</code> | 1 | vec  | **Degrees to Radians** (`num`): Convert #1 from degrees to radians |
+| `∆s` | <code>sin</code></br><code>sine</code> | 1 | vec  | **Sine** (`num`): Sine of #1 |
+| `∆t` | <code>tan</code></br><code>tangent</code> | 1 | vec  | **Tangent** (`num`): Tangent of #1 |
+| `∆⎀` | <code>polar-parts</code> | 1 | vec  | **Polar Parts** (`num`): Push the magnitude and argument of #1 |
+| `∆ʈ` | <code>arctan</code></br><code>arctangent</code> | 1 | vec  | **Arctangent** (`num`): Arctangent of #1 |
+| `∆ℭ` | <code>arccos</code></br><code>arccosine</code> | 1 | vec  | **Arccosine** (`num`): Arccosine of #1 |
+| `∆⌹` | <code>complex-parts</code> | 1 | vec  | **Complex Parts** (`num`): Push the real and imaginary parts of #1 |
+| `∆æ` | <code>all-prime-exponents</code></br><code>all-prime-exps</code> | 1 | vec  | **All Prime Exponents** (`num`): For all primes less than or equal to #1, push the power of that prime in the factorisation of #1 |
+| `∆Ṭ` | <code>atan2</code></br><code>arctan2</code></br><code>arctangent2</code> | 2 | vec  | **Arctangent 2** (`num,num`): atan2(#1, #2) |
+| `∆⧢` | <code>root-of-unity</code> | 1 | vec  | **Principal Root of Unity** (`num`): Principal #1-th root of unity (e^(2i * pi / #1)) |
 
 ## Modifiers
 
