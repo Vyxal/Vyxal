@@ -1524,15 +1524,18 @@ object Elements:
           (VNum.complex(0, 2) * VNum(spire.math.Real.pi) / a)
     },
     addPart("∆A", Monad, false) {
-      case VList(numbers) => numbers.sum / numbers.length
+      case VList(numbers) => numbers.map(_.asInstanceOf[VNum]).sum /
+          numbers.length
       case a: VNum => a
     },
     addPart("∆G", Monad, false) {
-      case VList(numbers) => numbers.product ** (1 / VNum(numbers.length))
+      case VList(numbers) => numbers.map(_.asInstanceOf[VNum]).sum **
+          (1 / VNum(numbers.length))
       case a: VNum => a
     },
     addPart("∆H", Monad, false) {
-      case VList(numbers) => numbers.length / numbers.map(1 / _).sum
+      case VList(numbers) => numbers.length /
+          numbers.map(_.asInstanceOf[VNum]).map(1 / _).sum
       case a: VNum => a
     },
     addPart("∆æ", Monad, true) {
@@ -1602,7 +1605,7 @@ object Elements:
           // I'd use VListOf[VNum] here, but that seems to make
           // the tests break
           throw InvalidListOverloadException("ÞR", b, "Number")
-        ListHelpers.reshape(a.itr, b)
+        ListHelpers.reshape(a.itr, b.map(_.asInstanceOf[VNum]))
       case (a, b: VNum) => ListHelpers.reshape(a.itr, Seq(b))
     },
     addPart("ÞT", Monad, false) {
