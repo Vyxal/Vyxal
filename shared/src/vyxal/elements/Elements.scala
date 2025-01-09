@@ -1569,6 +1569,15 @@ object Elements:
       case (VStr(a), VStr(b)) => b + a + b
       case (a, VList(b)) => VList((a +: b) :+ a)
     },
+    addPart("Þ0", Dyad, false) {
+      case (a: VList, b: VNum) => ListHelpers.zeroPad(a, b)
+      case (VStr(a), b: VNum) => StringHelpers.zeroPad(a, b)
+      case (a: VNum, b: VNum) => StringHelpers.zeroPad(a.toString, b)
+      case (a: VNum, b: VList) => ListHelpers.zeroPad(b, a)
+      case (a: VNum, VStr(b)) => StringHelpers.zeroPad(b, a)
+      case (a: VList, b) => ListHelpers.zeroPad(a, makeIterable(b).bigLength)
+      case (VStr(a), b) => StringHelpers.zeroPad(a, makeIterable(b).bigLength)
+    },
   )
 
   // Subject to being added as overloads onto things in elements

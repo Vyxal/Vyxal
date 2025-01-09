@@ -4649,6 +4649,24 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+    AddElement(
+      symbol = "Þ0",
+      keywords = Seq("zero-pad"),
+      arity = 2,
+      Options(vectorises = false),
+      Overload(
+        name = "Zero Pad",
+        args = Seq("itr", "num"),
+        description = "#1 zero-padded to length #2",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Zero Pad",
+        args = Seq("itr", "itr"),
+        description = "#1 zero-padded to length of #2",
+        typeSwitchable = false,
+      ),
+    ),
   )
 
   val modifiers: Map[String, Modifier] = Map(
