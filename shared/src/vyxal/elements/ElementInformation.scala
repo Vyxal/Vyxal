@@ -3264,7 +3264,7 @@ object ElementInformation:
     AddElement(
       symbol = "☷",
       keywords = Seq("partition-after-truthy"),
-      arity = 1,
+      arity = 2,
       Options(
         vectorises = false
       ),
@@ -3273,6 +3273,18 @@ object ElementInformation:
         args = Seq("lst", "lst"),
         description = " Partition #1 after truthy indices of #2.",
         typeSwitchable = false,
+      ),
+      Overload(
+        name = "First Index Where Function is True",
+        args = Seq("itr", "fun"),
+        description =
+          "Index of the first value in {#1|#2} where function {#2|#1} is true",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "First Number <= n Where Function is True",
+        args = Seq("num", "fun"),
+        description = "First number <= {#1|#2} where function {#2|#1} is true",
       ),
     ),
     AddElement(
