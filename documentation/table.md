@@ -65,7 +65,7 @@ Element, Modifier, and Syntax Reference
 | `Y` | <code>list-repeat</code> | 2 |   | **List Repeat** (`num,num`): A list of #1 repeated #2 times. E.g. 3 4 -> [3, 3, 3, 3]</br>**List Repeat** (`itr,num`): A list of #2 instances of string #1</br>**List Repeat** (`num,itr`): A list of #1 instances of string #2</br>**Vectorised Repeat** (`itr,lst[nsl]`): Repeat each element of #2 (#1|#1.length) times |
 | `Z` | <code>zip</code> | 2 |   | **Zip** (`lst,lst`): Zip #1 and #2 |
 | `^` | <code>reverse-stack</code> | STACK |   | **Reverse Stack**: Reverse the stack |
-| `_` | <code>pop</code></br><code>discard</code> | 0 |   | **Pop**: Pop the top of the stack |
+| `_` | <code>pop</code></br><code>discard</code> | 1 |   | **Pop**: Pop the top of the stack |
 | `\`` | <code>len-stack</code> | 0 |   | **Length of Stack**: Push the length of the stack to the stack |
 | `a` | <code>any</code></br><code>any?</code></br><code>uppercase?</code> | 1 |   | **Any** (`num`): Are any digits of #1 truthy</br>**Is Uppercase** (`str`): Check if #1 is uppercase. With string.len > 1, vectorises over each character</br>**Any** (`lst`): Are any elements of #1 truthy |
 | `b` | <code>from-binary</code> | 1 |   | **Binary Digits** (`num`): Convert #1's list of digits from binary to base 10</br>**From Binary** (`str`): Convert #1 from binary to a number</br>**From Binary** (`lst`): Convert #1 from binary to a number |
