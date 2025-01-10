@@ -129,9 +129,9 @@ class ElementTests extends VyxalTests:
     testCode("0 λ0=[1|1-x×}}ᴥ", 1)
   }
 
-  ignore("Element ÞĊ") {
+  describe("Element Þ↻") {
     it("should work on lists") {
-      testCode("#[1|2|3#] ÞĊ 10 ⊖", vSeq(1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
+      testCode("#[1|2|3#] Þ↻ 10 ⊖", vSeq(1, 2, 3, 1, 2, 3, 1, 2, 3, 1))
     }
   }
 
@@ -198,7 +198,7 @@ class ElementTests extends VyxalTests:
     )
   }
 
-  describe("Element Ẋ") {
+  describe("Element X") {
     given Context = testContext()
     it("should handle two finite lists properly") {
       assertResult(
@@ -238,18 +238,16 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  // Ignored because Ẇ doesn't exist right now
-  ignore("Element Ẇ") {
+  describe("Element Ϣ") {
     testMulti(
-      "λ5%3=}5Ẇ" -> vSeq(3, 8, 13, 18, 23)
+      "λ5%3=}5Ϣ" -> vSeq(3, 8, 13, 18, 23)
     )
   }
 
-  // Ignored because ȧ doesn't exist right now
-  ignore("Element ȧ") {
+  describe("Element @") {
     testMulti(
-      "#[1|2|3|4|5|6#] λ+} ȧ" -> vSeq(3, 5, 7, 9, 11),
-      "#[1|2|3|4|5|6#] λ++} ȧ" -> vSeq(4, 7, 10, 13, 16),
+      "#[1|2|3|4|5|6#] λ+} @" -> vSeq(3, 5, 7, 9, 11),
+      "#[1|2|3|4|5|6#] λ++} @" -> vSeq(4, 7, 10, 13, 16),
     )
   }
 
@@ -339,33 +337,33 @@ class ElementTests extends VyxalTests:
     )
   }
 
-  describe("Element ċ") {
+  describe("Element ℂ") {
     testMulti(
       "9⑵½⌊ℂ" -> vSeq(9, 4, 2, 1, 0)
     )
   }
 
-  ignore("Element ÞṆ") {
+  describe("Element kN") {
     testMulti(
-      "ÞṆ10⊖" -> vSeq(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
-      "ÞṆ5+10⊖" -> vSeq(6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
+      "kN10⊖" -> vSeq(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+      "kN5+10⊖" -> vSeq(6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
     )
   }
 
-  ignore("Element ÞṬ") {
+  describe("Element kṬ") {
     testMulti(
-      "ÞṬ20⊖" ->
+      "kṬ20⊖" ->
         vSeq(0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9,
           10),
-      "ÞṬ5+20⊖" ->
+      "kṬ5+20⊖" ->
         vSeq(5, 6, 4, 7, 3, 8, 2, 9, 1, 10, 0, 11, -1, 12, -2, 13, -3, 14, -4,
           15),
     )
   }
 
-  ignore("Element ÞP") {
+  describe("Element kæ") {
     testMulti(
-      "ÞP20⊖" ->
+      "kæ20⊖" ->
         vSeq(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61,
           67, 71)
     )

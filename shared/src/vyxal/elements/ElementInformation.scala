@@ -2676,7 +2676,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "Ϣ",
-      keywords = Seq("chunk-to-length", "partition-to-length"),
+      keywords = Seq("chunk-to-length", "partition-to-length", "first-n-true"),
       arity = 2,
       Options(
         vectorises = false
@@ -2692,6 +2692,12 @@ object ElementInformation:
         args = Seq("itr", "lst[num]"),
         description = "Partition #1 into parts of lengths #2",
         typeSwitchable = false,
+      ),
+      Overload(
+        name = "First N Integers Where Function is True",
+        args = Seq("num", "fun"),
+        description = "First {#1|#2} integers where function {#2|#1} is true",
+        typeSwitchable = true,
       ),
     ),
     AddElement(

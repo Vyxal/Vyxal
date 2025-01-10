@@ -970,6 +970,8 @@ object Elements:
         if b.forall(_.isInstanceOf[VNum]) then
           ListHelpers.partitionBy(a, b.map(_.asInstanceOf[VNum]))
         else throw InvalidListOverloadException("Ϣ", b, "Number")
+      case (a: VFun, b: VNum) => MiscHelpers.predicateSlice(a, b, 0)
+      case (a: VNum, b: VFun) => MiscHelpers.predicateSlice(b, a, 0)
     },
     addPart("≤", Dyad, true) {
       case (a: VVal, b: VVal) => a <= b
