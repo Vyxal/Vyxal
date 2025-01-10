@@ -1090,7 +1090,7 @@ object ElementInformation:
     AddElement(
       symbol = "_",
       keywords = Seq("pop", "discard"),
-      arity = 0,
+      arity = 1,
       Options(
         vectorises = false
       ),
