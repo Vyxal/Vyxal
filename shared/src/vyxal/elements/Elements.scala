@@ -1158,11 +1158,8 @@ object Elements:
       case a: VNum => NumberHelpers.round(a)
     },
     "δ" -> fullToImpl(Monad, x => ListHelpers.deltas(x.itr)),
-    addPart("☷", Dyad, false) {
-      case (a: VFun, b) => FuncHelpers.firstIndexWhereTrue(a, b.ritr)
-      case (a, b: VFun) => FuncHelpers.firstIndexWhereTrue(b, a.ritr)
-      case (a, b) => ListHelpers.partitionAfterTruthyIndices(a, b)
-    },
+    "☷" ->
+      fullToImpl(Dyad, (a, b) => ListHelpers.partitionAfterTruthyIndices(a, b)),
     addPart("✇", Monad, false) {
       case a: VNum => Seq(a.real, a.imag)
       case a =>

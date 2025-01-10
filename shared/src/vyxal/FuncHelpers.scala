@@ -120,19 +120,6 @@ object FuncHelpers:
     res
   end deepVectorise
 
-  def firstIndexWhereTrue(fn: VFun, iter: Seq[VAny])(using
-      ctx: Context
-  ): VAny =
-    // Any other day of the week I'd have used a filter or a functional
-    // programming thing, but because JVM can't do indices bigger than
-    // the int limit and you might plausibly want to hypothetically
-    // use this on a list with more than 2^31 elements, I'm using a
-    // while loop instead.
-    var pos = VNum(0)
-    while iter.hasIndex(pos.toBigInt) && fn(iter.index(pos)) == VNum(0) do
-      pos += 1
-    if iter.hasIndex(pos.toBigInt) then pos else VNum(-1)
-
   def reduceByElement(fn: VFun)(using ctx: Context): Unit =
     val iter = ctx.pop()
     ctx.push(ListHelpers.reduce(iter, fn))
