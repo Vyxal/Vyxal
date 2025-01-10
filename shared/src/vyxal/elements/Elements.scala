@@ -129,6 +129,10 @@ object Elements:
       },
     addPart("<", Dyad, true) {
       case (a: VVal, b: VVal) => a < b
+      case (a: VFun, b: VNum) =>
+        var res = b
+        while !a(res).toBool do res -= 1
+        res
     },
     addPart("=", Dyad, true) {
       case (a: VNum, b: VNum) => a == b
@@ -138,6 +142,10 @@ object Elements:
     },
     addPart(">", Dyad, true) {
       case (a: VVal, b: VVal) => a > b
+      case (a: VFun, b: VNum) =>
+        var res = b
+        while a(res).toBool do res += 1
+        res
     },
     "?" ->
       niladify(ctx ?=>
@@ -406,8 +414,8 @@ object Elements:
       case (VStr(a), b: VNum) => a.length == b.toInt
       case (VStr(a), VStr(b)) => a.length == b.length
       case (a: VNum, VStr(b)) => b.length == a.toInt
-      case (a: VPhysical, b: VFun) => MiscHelpers.collectUnique(b, a)
-      case (a: VFun, b) => MiscHelpers.collectUnique(a, b)
+      case (a: VPhysical, b: VFun) => MiscHelpers.untilNoChange(b, a)
+      case (a: VFun, b) => MiscHelpers.untilNoChange(a, b)
     },
     "m" -> niladify(ctx ?=> ctx.ctxVarSecondary),
     "n" -> niladify(ctx ?=> ctx.ctxVarPrimary),
@@ -552,6 +560,11 @@ object Elements:
     addPart("Π", Monad, false) {
       case VList(itr) => ListHelpers.product(itr)
       case num: VNum => NumberHelpers.toBinary(num).mkString
+      case predicate: VFun =>
+        // Amusingly, copilot originally tried to put a `getOrElse` here
+        // despite the fact that the function will never terminate if
+        // there is no such integer that fulfills the predicate.
+        NumberHelpers.allIntegers.find(predicate(_).toBool).get
     },
     addPart("σ", Monad, false) {
       case a =>
@@ -667,6 +680,10 @@ object Elements:
     addPart("⊖", Dyad, false) {
       case (a, b: VNum) => ListHelpers.take(a.itr, b)
       case (a: VNum, b: (VList | VStr)) => ListHelpers.take(b.itr, a)
+      case (iterable, predicate: VFun) =>
+        iterable.itr.takeWhile(predicate(_).toBool)
+      case (predicate: VFun, iterable) =>
+        iterable.itr.takeWhile(predicate(_).toBool)
       case (a: VList, VList(b)) =>
         if !b.forall(_.isInstanceOf[VNum]) then ???
         else ListHelpers.take(a, b.map(_.asInstanceOf[VNum]))
@@ -704,6 +721,9 @@ object Elements:
         val top = pop()
         top match
           case a: VIter => push(ListHelpers.rotate(a, 1))
+          case predicate: VFun =>
+            val item = pop()
+            MiscHelpers.collectUnique(predicate, item).last
           case a: VNum =>
             val times = a
             val iterable = pop()
@@ -837,6 +857,8 @@ object Elements:
       case (slice: VNum, VStr(iterable)) => iterable.itr.drop(slice).mkString
       case (iterable: VNum, slice: VNum) =>
         MiscHelpers.eval(iterable.itr.drop(slice).mkString)
+      case (a: VFun, b) => MiscHelpers.collectUnique(a, b).tail
+      case (a, b: VFun) => MiscHelpers.collectUnique(b, a).tail
       case (iterable: VList, VList(slices)) =>
         if !slices.forall(_.isInstanceOf[VNum]) then ???
         else ListHelpers.drop(iterable, slices.map(_.asInstanceOf[VNum]))
@@ -956,6 +978,10 @@ object Elements:
     addPart("⦷", Monad, true) {
       case num: VNum => num.vabs
       case VStr(str) => str.filter(_.isLetter)
+      case predicate: VFun =>
+        var res = 1
+        while !predicate(VNum(res)).toBool do res += 1
+        res
     },
     addPart("Ϣ", Dyad, false) {
       case (a: VList, b: VNum) => ListHelpers.wrapLength(a, b)
@@ -1158,8 +1184,13 @@ object Elements:
       case a: VNum => NumberHelpers.round(a)
     },
     "δ" -> fullToImpl(Monad, x => ListHelpers.deltas(x.itr)),
-    "☷" ->
-      fullToImpl(Dyad, (a, b) => ListHelpers.partitionAfterTruthyIndices(a, b)),
+    addPart("☷", Dyad, false) {
+      case (iterable, predicate: VFun) =>
+        ListHelpers.groupBy(iterable.itr, predicate)
+      case (predicate: VFun, iterable) =>
+        ListHelpers.groupBy(iterable.itr, predicate)
+      case (a, b) => ListHelpers.partitionAfterTruthyIndices(a, b)
+    },
     addPart("✇", Monad, false) {
       case a: VNum => Seq(a.real, a.imag)
       case a =>
@@ -1317,6 +1348,8 @@ object Elements:
         ListHelpers.intoNPieces(str.itr, numberOfChunks)
       case (iterable: VNum, numberOfChunks: VNum) =>
         ListHelpers.intoNPieces(iterable.itr, numberOfChunks)
+      case (predicate: VFun, initial) =>
+        MiscHelpers.untilNoChange(predicate, initial).tail
     },
     "▲" ->
       fullToImpl(

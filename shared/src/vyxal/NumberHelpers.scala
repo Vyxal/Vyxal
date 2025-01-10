@@ -14,6 +14,16 @@ import spire.math.Real
 
 object NumberHelpers:
 
+  def allIntegers =
+    VList(
+      LazyList.unfold(VNum(0) -> true) {
+        case (num, negate) =>
+          val now = if negate then -num else num
+          val next = if negate then num + 1 else num
+          Some((now, next -> !negate))
+      }
+    )
+
   def factors(a: VNum): Seq[VAny] =
     VNum(1).toBigInt
       .to(a.toBigInt.abs)
@@ -30,11 +40,23 @@ object NumberHelpers:
         fromBaseAlphabet(a, b)
       case (a: VNum, b: VNum) => toInt(a.toString(), b.toInt)
       case (a: VList, _) => VList(a.map(fromBase(_, b)))
-      case (n: VNum, _) => fromBase(b, a)
+      case (n: VNum, b: VPhysical) => fromBase(b, a)
       case (VStr(a), b: VNum) =>
         fromBaseAlphabet(a, BASE_ALPHABET.take(b.toInt))
       case (VStr(a), VStr(b)) => fromBaseAlphabet(a, b)
+      case (num: VNum, predicate: VFun) =>
+        var current = num + 1
+        while !Interpreter.executeFn(predicate, args = Seq(current)).toBool do
+          current += 1
+        current
+      case (predicate: VFun, num: VNum) =>
+        var current = num + 1
+        while !Interpreter.executeFn(predicate, args = Seq(current)).toBool do
+          current += 1
+        current
       case _ => fromBaseDigits(ListHelpers.makeIterable(a), b)
+    end match
+  end fromBase
 
   /** Returns value in base 10 using base len(alphabet) [bijective base] */
   def fromBaseAlphabet(value: String, alphabet: String): VNum =

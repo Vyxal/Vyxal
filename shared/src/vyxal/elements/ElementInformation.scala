@@ -467,7 +467,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "<",
-      keywords = Seq("less-than", "<", "lt"),
+      keywords = Seq("less-than", "<", "lt", "---until-false"),
       arity = 2,
       Options(
         vectorises = true
@@ -477,6 +477,12 @@ object ElementInformation:
         args = Seq("scl", "scl"),
         description = "#1 < #2",
         typeSwitchable = false,
+      ),
+      Overload(
+        name = "Decrement Until False",
+        args = Seq("fun", "num"),
+        description = "Decrement {#2|#1} until {#1|#2} is false",
+        typeSwitchable = true,
       ),
     ),
     AddElement(
@@ -495,7 +501,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = ">",
-      keywords = Seq("greater-than", ">", "gt"),
+      keywords = Seq("greater-than", ">", "gt", "++-until-false"),
       arity = 2,
       Options(
         vectorises = true
@@ -505,6 +511,12 @@ object ElementInformation:
         args = Seq("scl", "scl"),
         description = "#1 > #2",
         typeSwitchable = false,
+      ),
+      Overload(
+        name = "Increment Until False",
+        args = Seq("fun", "num"),
+        description = "Increment {#2|#1} until {#1|#2} is false",
+        typeSwitchable = true,
       ),
     ),
     AddElement(
@@ -1383,7 +1395,8 @@ object ElementInformation:
       Overload(
         name = "Scan Fixpoint",
         args = Seq("fun", "any"),
-        description = "Repeatedly apply #1 to #2 until it doesn't change",
+        description =
+          "Repeatedly apply #1 to #2 until it doesn't change. Do include the initial value.",
         typeSwitchable = true,
       ),
       Overload(
@@ -1719,7 +1732,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "Π",
-      keywords = Seq("product", "product-of", "*/"),
+      keywords = Seq("product", "product-of", "*/", "first-int"),
       arity = 1,
       Options(
         vectorises = false
@@ -1734,6 +1747,12 @@ object ElementInformation:
         name = "Number to Binary as String",
         args = Seq("num"),
         description = "Convert #1 to binary as a string",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "First Integer Where Predicate is True",
+        args = Seq("fun"),
+        description = "First integer where #1 is true (positive or negative)",
         typeSwitchable = false,
       ),
     ),
@@ -2046,6 +2065,12 @@ object ElementInformation:
         description = "APL style take",
         typeSwitchable = false,
       ),
+      Overload(
+        name = "Take While True",
+        args = Seq("lst", "fun"),
+        description = "Take elements from {#1|#2} while {#2|#1} is true",
+        typeSwitchable = true,
+      ),
     ),
     AddElement(
       symbol = "⌽",
@@ -2119,7 +2144,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "↺",
-      keywords = Seq("rot-left"),
+      keywords = Seq("rot-left", "iterate-while-unique"),
       arity = 1,
       Options(
         vectorises = false
@@ -2134,6 +2159,13 @@ object ElementInformation:
         name = "Rotate Left",
         args = Seq("lst|str", "num"),
         description = "Rotate #1 left #2 times. Right if #2 is negative",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Iterate While Unique",
+        args = Seq("any", "fun"),
+        description =
+          "Repeatedly apply #2 to #1 until a result is repeated. Return all results",
         typeSwitchable = false,
       ),
     ),
@@ -2288,7 +2320,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⊣",
-      keywords = Seq("base-to-10"),
+      keywords = Seq("base-to-10", "first>n"),
       arity = 2,
       Options(
         vectorises = false
@@ -2313,6 +2345,13 @@ object ElementInformation:
         description =
           "Convert each item in #1 from base #2 to base 10, assuming a base that is a prefix of [0-9A-Z] for strings",
         typeSwitchable = false,
+      ),
+      Overload(
+        name = "First Number Greater Than Where Function is True",
+        args = Seq("fun", "num"),
+        description =
+          "The first number greater than {#2|#1} where {#1|#2} returns true",
+        typeSwitchable = true,
       ),
     ),
     AddElement(
@@ -2361,7 +2400,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ᐵ",
-      keywords = Seq("drop"),
+      keywords = Seq("drop", "fixed-point-headless"),
       arity = 2,
       Options(
         vectorises = false
@@ -2377,6 +2416,13 @@ object ElementInformation:
         args = Seq("lst", "lst[num]"),
         description = "APL style drop",
         typeSwitchable = false,
+      ),
+      Overload(
+        name = "Fixed Point Headless",
+        args = Seq("fun", "any"),
+        description =
+          "Repeatedly apply #1 to #2 until it doesn't change. Do not include the initial value",
+        typeSwitchable = true,
       ),
     ),
     AddElement(
@@ -2537,6 +2583,26 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "※",
+      keywords = Seq("group-by-consecutive"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Group by Consecutive",
+        args = Seq("lst"),
+        description = "Group consecutive equal elements of #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Group Consecutive by Function",
+        args = Seq("lst", "fun"),
+        description = "Group elements of #1 by function #2",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
       symbol = "⇄",
       keywords = Seq("reverse"),
       arity = 1,
@@ -2656,7 +2722,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⦷",
-      keywords = Seq("abs", "absolute-value", "keep-letters"),
+      keywords = Seq("abs", "absolute-value", "keep-letters", "first>0"),
       arity = 1,
       Options(
         vectorises = true
@@ -2671,6 +2737,12 @@ object ElementInformation:
         name = "Keep Letters",
         args = Seq("str"),
         description = "Keep only the letters of #1",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "First Positive Integer Where Function is True",
+        args = Seq("fun"),
+        description = "First positive integer where #1 is true (>= 1)",
         typeSwitchable = false,
       ),
     ),
@@ -3263,8 +3335,8 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "☷",
-      keywords = Seq("partition-after-truthy"),
-      arity = 1,
+      keywords = Seq("partition-after-truthy", "group-by"),
+      arity = 2,
       Options(
         vectorises = false
       ),
@@ -3272,6 +3344,12 @@ object ElementInformation:
         name = "Partition After Truthy",
         args = Seq("lst", "lst"),
         description = " Partition #1 after truthy indices of #2.",
+        typeSwitchable = false,
+      ),
+      Overload(
+        name = "Group By",
+        args = Seq("lst", "fun"),
+        description = "Group elements of #1 by function #2",
         typeSwitchable = false,
       ),
     ),

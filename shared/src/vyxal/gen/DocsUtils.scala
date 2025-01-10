@@ -64,7 +64,7 @@ object DocsUtils:
           case (acc, s: Seq[String]) => acc ++ s
         }
 
-        s"| `$symbol` | $keywords | $arity$peeks | $vectorises  | ${overloadsFlat.mkString("</br>")} |"
+        s"| <code>$symbol</code> | $keywords | $arity$peeks | $vectorises  | ${overloadsFlat.mkString("</br>")} |"
       }
 
     (HEADER_ROW +: lines).mkString("\n")
