@@ -46,7 +46,7 @@ do the best at code golf, so it made sense to stick with that paradigm.
 
 However, the real real reason for Vyxal being stack-based is that the stack-based
 paradigm was my first interaction with esoteric programming languages (esolangs).
-><> (fish) was the first esolang I learned, and its stack operations are what
+\><> (fish) was the first esolang I learned, and its stack operations are what
 were so enticing. Pushing items onto the stack, popping them when needed, 
 ordering arguments in a way that makes sense to the algorithm. Something about
 stack languages just really feels good.
