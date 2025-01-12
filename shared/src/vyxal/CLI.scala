@@ -42,6 +42,7 @@ object CLI:
       debug: Boolean = false,
       readBytes: Boolean = false,
       runLiterateParser: Boolean = false,
+      inputFromSTDIN: Boolean = false,
   )
 
   /** Run the CLI
@@ -112,6 +113,13 @@ object CLI:
             if line.isEmpty then return
             println(Parser.parse(Lexer.lexLiterate(line)).ast)
 
+        if config.inputFromSTDIN then
+          val inputs = scala.io.Source.stdin
+            .getLines()
+            .map(_.replaceAll("\r\n|\n", ""))
+            .toList
+          config.copy(inputs = inputs)
+
         if config.debug then
           val code = config.filename match
             case Some(file) =>
@@ -178,6 +186,10 @@ object CLI:
         opt[String]("file")
           .action((file, cfg) => cfg.copy(filename = Some(file)))
           .text("The file to read the program from")
+          .optional(),
+        opt[String]("stdin")
+          .action((_, cfg) => cfg.copy(inputFromSTDIN = true))
+          .text("Read the program's input from STDIN as if it were argv")
           .optional(),
         opt[String]("code")
           .action((code, cfg) => cfg.copy(code = Some(code)))
