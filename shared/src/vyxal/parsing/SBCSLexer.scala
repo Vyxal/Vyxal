@@ -42,7 +42,7 @@ class SBCSLexer extends LexerCommon:
   private val DYADIC_MODIFIERS = modifiersOfArity(2)
   private val TRIADIC_MODIFIERS = modifiersOfArity(3)
   private val TETRADIC_MODIFIERS = modifiersOfArity(4)
-  private val SPECIAL_MODIFIERS = "⊐⟆"
+  private val SPECIAL_MODIFIERS = "⊐"
   private val CONTEXT_INDEX = "#¤"
 
   private var unpackDepth = 0

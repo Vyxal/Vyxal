@@ -183,13 +183,13 @@ object DocsUtils:
       |  SyntaxTrigraph { "#:" ![[] }
       |  Branch {"|"}
       |  ListStuff { "#[" | "#]"}
-      |  StructureOpen {${structureOpeners.map(char => s"\"$char\"").mkString(" | ")}}
-      |  StructureClose {${structureClosers.map(char => s"\"$char\"").mkString(" | ")}}
+      |  StructureOpen {${structureOpeners.filterNot(_ == "#[").map(char => s"\"$char\"").mkString(" | ")}}
+      |  StructureClose {${structureClosers.filterNot(_ == "#]").map(char => s"\"$char\"").mkString(" | ")}}
       |  String {'"' (!["„”“\\\\] | "\\\\" _)* $$["„”“]}
       |  SingleCharString { "'" _ }
       |  TwoCharString { "Ꮬ" _ _ }
       |  TwoCharNumber { "Ꮠ" _ _ }
-      |  VariableThing { "#" ($$[=$$>]|":[") $$A-Z] $$[a-zA-Z0-9_]* }
+      |  VariableThing { "#" ($$[=$$>]|":[") $$[A-Z] $$[a-zA-Z0-9_]* }
       |  ContextIndex { "#¤" @digit }
       |  Element { ![$nonElementChars] }
       |  @precedence { Space, Element }
@@ -210,7 +210,7 @@ object DocsUtils:
       .map((keyword, _) => s"lambda<\"$keyword\">")
       .mkString("\n")
     s"""
-      |top Program {(Word) +}
+      |@top Program {(Word) +}
       |
       |structure<term> { @specialize[@name={term}]<WeirdKW, term> }
       |branch<term> { @specialize[@name={term}]<WeirdKW, term> }
@@ -248,7 +248,7 @@ object DocsUtils:
       |    WeirdKW {$$[a-zA-Z\\-?]$$[a-zA-Z0-9\\-?!*+=<>&%]*":"?}
       |    ModifierKW { $$[a-zA-Z]$$[a-zA-Z0-9\\-?!*+=<>&%]*":"}
       |    NormalKW { $$[a-zA-Z]$$[a-zA-Z0-9\\-?!*+=<>&%]*"n't"*}
-      |    VariableThing { ("$" | ":=" | ":>" | ":=[") $$[a-zA-Z]$$[a-zA-Z0-9_]* }
+      |    VariableThing { ("$$" | ":=" | ":>" | ":=[") $$[a-zA-Z]$$[a-zA-Z0-9_]* }
       |    Number { "." | "0" | ($$[1-9] $$[0-9]*) }
       |    ListStuff { "[" | "]" }
       |    String {'"' (!["„”“\\\\] | "\\\\" _)* $$["„”“]}
