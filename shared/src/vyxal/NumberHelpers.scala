@@ -211,13 +211,13 @@ object NumberHelpers:
     * mode
     */
   def numToString(a: VNum)(using ctx: Context): String =
-    if ctx.settings.literate then a.toString.replace("ı", "i")
+    if ctx.settings.literate then a.toString
     else
       a.toString
-        .split("ı")
+        .split("j")
         .toSeq
-        .map(x => if x.startsWith("-") then x.tail + "_" else x)
-        .mkString("ı")
+        .map(x => if x.endsWith("_") then "-" + x.dropRight(1) else x)
+        .mkString("j")
 
   def partitions(a: VNum): Seq[Seq[VNum]] =
     // Return all ways to sum to a number
