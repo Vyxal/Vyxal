@@ -4031,10 +4031,7 @@ object ElementInformation:
     AddElement(
       symbol = "kF",
       keywords = Seq(
-        "fizzbuzz-constant",
-        "maybe-if-I-make-the-literate-mode-keyword-long-enough-people-will-stop-complaining-that-there-is-a-fizzbuzz-constant-because-they-will-be-too-busy-reading-the-keyword-to-write-an-angry-comment-or-to-go-to-TNB-or-whatever-chatroom-they-would-go-to-and-write-a-message-saying-how-they-disapprove-of-my-idea-to-have-a-fizzbuzz-constant",
-        "of-course-that-probably-would-not-stop-anyone-because-the-kind-of-people-who-would-disagree-with-a-fizzbuzz-constant-are-the-kind-to-not-be-fooled-by-really-and-extremely-long-literate-mode-keywords-because-lets-face-it-who-is-going-to-use-these-mega-long-meta-and-self-aware-literate-mode-keywords-outside-of-maybe-fizzbuzz-but-even-then-people-will-say-but-thats-still-a-fizzbuzz-constant-just-because-it-has-a-long-name-doesnt-mean-it-is-not-one-even-though-such-comments-and-sayings-miss-the-point-of-being-enticed-by-the-craftsmanship-of-this-keyword-and-the-other-one-that-I-wrote-a-bit-earlier-and-by-a-bit-earlier-I-mean-literally-one-line-above-because-it-is-in-the-same-Seq-as-the-other-keyword",
-        "they-might-even-say-well-if-you-dont-want-people-complaining-about-your-fizzbuzz-constant-then-dont-include-one-in-the-first-place-but-to-them-I-say-two-things-firstly-that-even-though-it-may-be-super-optimised-for-one-family-of-challenges-the-technical-brilliance-so-to-speak-of-the-fizzbuzz-being-as-short-as-it-is-shouldnt-be-undermined-just-because-theres-two-characters-you-find-so-anti-code-golf-and-second-of-all-why-are-you-even-commenting-on-a-joke-in-a-very-obscure-place-like-come-on-this-isnt-even-in-an-answer-well-I-hope-it-isnt-but-like-this-is-the-vyxal-documentation-stop-complaining-and-continuing-doing-whatever-it-is-youre-doing",
+        "fizzbuzz-constant"
       ),
       arity = 0,
       Options(
