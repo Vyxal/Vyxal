@@ -1,9 +1,8 @@
 # Vyxal 3
 
-Vyxal is a programming language that is:
+Vyxal is an array programming language that is:
 
 - Stack-based
-- Array inspired
 - Inherently terse
 - and Convenient
 
