@@ -14,12 +14,12 @@
 | **b** | `ℭ`            | `℈`   | `⦷`   | `Ϣ`   | `≤`   | `≥`   | `≠`   | `≡`   | `•`   | `±`   | `†`   | `⎙`   | `✒`   | `≓`   | `Ͼ`   | `ᴥ`   |
 | **c** | `ℳ`            | `℗`   | `↸`   | `⍢`   | `ℂ`   | `⌹`   | `⏚`   | `↯`   | `⊠`   | `⚅`   | `æ`   | `␣`   | `¶`   | `★`   | `ᑂ`   | `∻`   |
 | **d** | `√`            | `⍰`   | `◌`   | `δ`   | `☷`   | `✇`   | `⎃`   | `⎶`   | `⊆`   | `⍨`   | `⎘`   | `ꜝ`   | `≈`   | `≊`   | `κ`   | `↳`   |
-| **e** | `ʀ`            | `ʁ`   | `ɾ`   | `▲`   | `Ṭ`   | `⤻`   | `⤺`   | `Ŀ`   | `♳`   | `♴`   | `♵`   | `Ł`   | `ḧ`   | `¤`   | `Ꮬ`   | `Ꮠ`   |
+| **e** | `ʀ`            | `ʁ`   | `ɾ`   | `▲`   | `Ṭ`   | `⤻`   | `⤺`   | `Ŀ`   | `♳`   | `∧`   | `∨`   | `Ł`   | `ḧ`   | `¤`   | `Ꮬ`   | `Ꮠ`   |
 | **f** | `⧢`            | `①`   | `②`   | `③`   | `④`   | `⑤`   | `⑥`   | `⑦`   | `⑧`   | `⑨`   | `Þ`   | `∆`   | `ø`   | `„`   | `"`   | `"`   |
 
 Notes:
 
 - `𝘕𝘓` is an actual literal newline
 - `𝘚𝘗` is an actual literal space
-- `♳`, `♴`, `♵` are placeholders for cells not yet assigned. They do not have any commands attached, and will be replaced sometime in the future. They exist so that string compression can be used.
+- `♳` is a placeholder for a cell not yet assigned. It does not have any commands attached, and will be replaced sometime in the future. They exist so that string compression can be used.
 - `⟆` is also current unassigned.
