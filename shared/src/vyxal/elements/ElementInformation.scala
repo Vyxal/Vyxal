@@ -5193,7 +5193,7 @@ object ElementInformation:
         args = Seq("any", "any"),
         description =
           "If the top of the stack is truthy, apply #1, else apply #2",
-        example = "3 1 ᖶd½ -> 6",
+        example = "3 1 #⍰d½ -> 6",
       ),
     ),
     AddModifier(

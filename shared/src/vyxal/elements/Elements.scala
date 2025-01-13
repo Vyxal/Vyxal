@@ -1301,9 +1301,9 @@ object Elements:
             push(value)
           case VList(coordinates) =>
             if coordinates.length != 2 then
-              throw InvalidListOverloadException("↳", coordinates, "2")
+              throw InvalidListOverloadException("#↸", coordinates, "2")
             if !coordinates.forall(_.isInstanceOf[VNum]) then
-              throw InvalidListOverloadException("↳", coordinates, "numeric")
+              throw InvalidListOverloadException("#↸", coordinates, "numeric")
             val ctx = summon[Context]
             var parentCtx = ctx
             for _ <-
@@ -1312,7 +1312,7 @@ object Elements:
             val value = parentCtx.getStack.vlst
               .indexBig(coordinates(1).asInstanceOf[VNum].toBigInt)
             push(value)
-          case _ => throw UnsupportedOverloadException("↳", "Non-number")
+          case _ => throw UnsupportedOverloadException("#↸", "Non-number")
         end match
       },
     "”" ->
