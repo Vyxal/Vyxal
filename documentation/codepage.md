@@ -1,25 +1,18 @@
-|       | **0**          | **1** | **2** | **3** | **4** | **5** | **6** | **7** | **8** | **9** | **a** | **b** | **c** | **d** | **e** | **f** |
-| ----- | -------------- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
-| **0** | `λ`            | `ƛ`   | `Λ`   | `ʎ`   | `µ`   | `ξ`   | `⍾`   | `⎋`   | `⍟`   | `⎊`   | `𝘕𝘓`  | `⎄`   | `⟆`   | `⩔`   | `Ẅ`   | `⊐`   |
-| **1** | `⎇`            | `ᖶ`   | `¿`   | `∥`   | `∦`   | `∺`   | `⁜`   | `⑴`   | `⑵`   | `⑶`   | `⑷`   | `⎂`   | `⟒`   | `ᛞ`   | `▦`   | `¨`   |
-| **2** | `𝘚𝘗`           | `!`   | `"`   | `#`   | `$`   | `%`   | `&`   | `'`   | `(`   | `)`   | `*`   | `+`   | `,`   | `-`   | `.`   | `/`   |
-| **3** | `0`            | `1`   | `2`   | `3`   | `4`   | `5`   | `6`   | `7`   | `8`   | `9`   | `:`   | `;`   | `<`   | `=`   | `>`   | `?`   |
-| **4** | `@`            | `A`   | `B`   | `C`   | `D`   | `E`   | `F`   | `G`   | `H`   | `I`   | `J`   | `K`   | `L`   | `M`   | `N`   | `O`   |
-| **5** | `P`            | `Q`   | `R`   | `S`   | `T`   | `U`   | `V`   | `W`   | `X`   | `Y`   | `Z`   | `[`   | `\`   | `]`   | `^`   | `_`   |
-| **6** | <code>`</code> | `a`   | `b`   | `c`   | `d`   | `e`   | `f`   | `g`   | `h`   | `i`   | `j`   | `k`   | `l`   | `m`   | `n`   | `o`   |
-| **7** | `p`            | `q`   | `r`   | `s`   | `t`   | `u`   | `v`   | `w`   | `x`   | `y`   | `z`   | `{`   | `\|`  | `}`   | `⨥`   | `⨪`   |
-| **8** | `Σ`            | `Π`   | `σ`   | `⇧`   | `⇩`   | `∪`   | `∩`   | `⊍`   | `⦰`   | `«`   | `»`   | `Ɠ`   | `ɠ`   | `Ġ`   | `ġ`   | `◲`   |
-| **9** | `⌈`            | `⌊`   | `⊖`   | `⌽`   | `£`   | `¥`   | `↜`   | `↝`   | `↺`   | `↻`   | `≜`   | `⎀`   | `⊢`   | `⊣`   | `ɦ`   | `ʈ`   |
-| **a** | `ᐐ`            | `ᐵ`   | `ᐕ`   | `½`   | `ƶ`   | `Ƶ`   | `⁰`   | `¹`   | `²`   | `³`   | `⅟`   | `※`   | `⇄`   | `⧖`   | `‰`   | `≛`   |
-| **b** | `ℭ`            | `℈`   | `⦷`   | `Ϣ`   | `≤`   | `≥`   | `≠`   | `≡`   | `•`   | `±`   | `†`   | `⎙`   | `✒`   | `≓`   | `Ͼ`   | `ᴥ`   |
-| **c** | `ℳ`            | `℗`   | `↸`   | `⍢`   | `ℂ`   | `⌹`   | `⏚`   | `↯`   | `⊠`   | `⚅`   | `æ`   | `␣`   | `¶`   | `★`   | `ᑂ`   | `∻`   |
-| **d** | `√`            | `⍰`   | `◌`   | `δ`   | `☷`   | `✇`   | `⎃`   | `⎶`   | `⊆`   | `⍨`   | `⎘`   | `ꜝ`   | `≈`   | `≊`   | `κ`   | `↳`   |
-| **e** | `ʀ`            | `ʁ`   | `ɾ`   | `▲`   | `Ṭ`   | `⤻`   | `⤺`   | `Ŀ`   | `¬`   | `∧`   | `∨`   | `Ł`   | `ḧ`   | `¤`   | `Ꮬ`   | `Ꮠ`   |
-| **f** | `⧢`            | `①`   | `②`   | `③`   | `④`   | `⑤`   | `⑥`   | `⑦`   | `⑧`   | `⑨`   | `Þ`   | `∆`   | `ø`   | `„`   | `"`   | `"`   |
-
-Notes:
-
-- `𝘕𝘓` is an actual literal newline
-- `𝘚𝘗` is an actual literal space
-- `♳` is a placeholder for a cell not yet assigned. It does not have any commands attached, and will be replaced sometime in the future. They exist so that string compression can be used.
-- `⟆` is also current unassigned.
+|       | **0**          | **1**          | **2**          | **3**          | **4**          | **5**          | **6**          | **7**          | **8**          | **9**          | **a**          | **b**          | **c**          | **d**          | **e**          | **f**          |
+| ----- | -------------- | -------------- | -------------- | -------------- | -------------- | -------------- | -------------- | -------------- | -------------- | -------------- | -------------- | -------------- | -------------- | -------------- | -------------- |
+| **0** | <code>λ</code> | <code>ƛ</code> | <code>Λ</code> | <code>µ</code> | <code>ξ</code> | <code>⍾</code> | <code>⎋</code> | <code>⍟</code> | <code>⎊</code> | <code>⎄</code> | <code>␤</code> | <code>⩔</code> | <code>Ẅ</code> | <code>⊐</code> | <code>⎇</code> | <code>ᖶ</code> |
+| **1** | <code>¿</code> | <code>∥</code> | <code>∦</code> | <code>∺</code> | <code>⁜</code> | <code>⑴</code> | <code>⑵</code> | <code>⑶</code> | <code>⑷</code> | <code>⎂</code> | <code>⟒</code> | <code>ᛞ</code> | <code>▦</code> | <code>¨</code> | <code>×</code> | <code>÷</code> |
+| **2** | <code> </code> | <code>!</code> | <code>"</code> | <code>#</code> | <code>$</code> | <code>%</code> | <code>&</code> | <code>'</code> | <code>(</code> | <code>)</code> | <code>*</code> | <code>+</code> | <code>,</code> | <code>-</code> | <code>.</code> | <code>/</code> |
+| **3** | <code>0</code> | <code>1</code> | <code>2</code> | <code>3</code> | <code>4</code> | <code>5</code> | <code>6</code> | <code>7</code> | <code>8</code> | <code>9</code> | <code>:</code> | <code>;</code> | <code><</code> | <code>=</code> | <code>></code> | <code>?</code> |
+| **4** | <code>@</code> | <code>A</code> | <code>B</code> | <code>C</code> | <code>D</code> | <code>E</code> | <code>F</code> | <code>G</code> | <code>H</code> | <code>I</code> | <code>J</code> | <code>K</code> | <code>L</code> | <code>M</code> | <code>N</code> | <code>O</code> |
+| **5** | <code>P</code> | <code>Q</code> | <code>R</code> | <code>S</code> | <code>T</code> | <code>U</code> | <code>V</code> | <code>W</code> | <code>X</code> | <code>Y</code> | <code>Z</code> | <code>[</code> | <code>\</code> | <code>]</code> | <code>^</code> | <code>_</code> |
+| **6** | <code>`</code> | <code>a</code> | <code>b</code> | <code>c</code> | <code>d</code> | <code>e</code> | <code>f</code> | <code>g</code> | <code>h</code> | <code>i</code> | <code>j</code> | <code>k</code> | <code>l</code> | <code>m</code> | <code>n</code> | <code>o</code> |
+| **7** | <code>p</code> | <code>q</code> | <code>r</code> | <code>s</code> | <code>t</code> | <code>u</code> | <code>v</code> | <code>w</code> | <code>x</code> | <code>y</code> | <code>z</code> | <code>{</code> | <code>         | </code>        | <code>}</code> | <code>~</code> | <code>◲</code> |
+| **8** | <code>⨥</code> | <code>⨪</code> | <code>Σ</code> | <code>Π</code> | <code>⇧</code> | <code>⇩</code> | <code>∪</code> | <code>∩</code> | <code>⊍</code> | <code>⦰</code> | <code>«</code> | <code>»</code> | <code>Ɠ</code> | <code>ɠ</code> | <code>Ġ</code> | <code>ġ</code> |
+| **9** | <code>⌈</code> | <code>⌊</code> | <code>⊖</code> | <code>⌽</code> | <code>£</code> | <code>¥</code> | <code>↜</code> | <code>↝</code> | <code>↺</code> | <code>↻</code> | <code>≜</code> | <code>⎀</code> | <code>⊢</code> | <code>⊣</code> | <code>ɦ</code> | <code>ʈ</code> |
+| **a** | <code>ᐐ</code> | <code>ᐵ</code> | <code>ᐕ</code> | <code>½</code> | <code>ƶ</code> | <code>Ƶ</code> | <code>⁰</code> | <code>¹</code> | <code>²</code> | <code>³</code> | <code>⅟</code> | <code>※</code> | <code>⇄</code> | <code>⧖</code> | <code>‰</code> | <code>≛</code> |
+| **b** | <code>ℭ</code> | <code>℈</code> | <code>⦷</code> | <code>Ϣ</code> | <code>≤</code> | <code>≥</code> | <code>≠</code> | <code>≡</code> | <code>•</code> | <code>±</code> | <code>†</code> | <code>⎙</code> | <code>✒</code> | <code>≓</code> | <code>Ͼ</code> | <code>ᴥ</code> |
+| **c** | <code>ℳ</code> | <code>℗</code> | <code>↸</code> | <code>⍢</code> | <code>ℂ</code> | <code>⌹</code> | <code>⏚</code> | <code>↯</code> | <code>⊠</code> | <code>⚅</code> | <code>æ</code> | <code>␣</code> | <code>¶</code> | <code>★</code> | <code>ᑂ</code> | <code>∻</code> |
+| **d** | <code>√</code> | <code>⍰</code> | <code>◌</code> | <code>δ</code> | <code>☷</code> | <code>σ</code> | <code>⎃</code> | <code>⎶</code> | <code>⊆</code> | <code>⍨</code> | <code>⎘</code> | <code>ꜝ</code> | <code>≈</code> | <code>≊</code> | <code>κ</code> | <code>↳</code> |
+| **e** | <code>ʀ</code> | <code>ʁ</code> | <code>ɾ</code> | <code>▲</code> | <code>Ṭ</code> | <code>⤻</code> | <code>⤺</code> | <code>Ŀ</code> | <code>¬</code> | <code>∧</code> | <code>∨</code> | <code>Ł</code> | <code>ḧ</code> | <code>¤</code> | <code>Ꮬ</code> | <code>Ꮠ</code> |
+| **f** | <code>⧢</code> | <code>①</code> | <code>②</code> | <code>③</code> | <code>④</code> | <code>⑤</code> | <code>⑥</code> | <code>⑦</code> | <code>⑧</code> | <code>⑨</code> | <code>Þ</code> | <code>∆</code> | <code>ø</code> | <code>„</code> | <code>”</code> | <code>“</code> |

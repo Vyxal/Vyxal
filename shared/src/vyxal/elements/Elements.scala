@@ -1191,7 +1191,7 @@ object Elements:
         ListHelpers.groupBy(iterable.itr, predicate)
       case (a, b) => ListHelpers.partitionAfterTruthyIndices(a, b)
     },
-    addPart("✇", Monad, false) {
+    addPart("Þ⎶", Monad, false) {
       case a: VNum => Seq(a.real, a.imag)
       case a =>
         val iterable = a.itr

@@ -178,28 +178,12 @@ object SyntaxInfo:
         structureOpener = true,
         structureCloser = false,
       ),
-    "Ω" ->
+    "ʎ" ->
       Syntax(
         "Open Filter Lambda",
         Seq("filter-lam", "filter<", "filter-lambda"),
         "Open a lambda that automatically filters the top of the stack by its function",
         "Ω<code>}",
-        structureOpener = true,
-        structureCloser = false,
-      ),
-    "₳" ->
-      Syntax(
-        "Open Reduce/Accumulate Lambda",
-        Seq(
-          "reduce-lam",
-          "reduce<",
-          "reduce-lambda",
-          "fold<",
-          "fold-lam",
-          "fold-lambda",
-        ),
-        "Open a lambda that automatically reduces/accumulates the top of the stack by its function",
-        "₳<code>}",
         structureOpener = true,
         structureCloser = false,
       ),

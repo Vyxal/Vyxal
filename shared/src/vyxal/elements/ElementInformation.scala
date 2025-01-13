@@ -3354,7 +3354,7 @@ object ElementInformation:
       ),
     ),
     AddElement(
-      symbol = "✇",
+      symbol = "Þ⎶",
       keywords = Seq("edges", "ends", "real-imaginary"),
       arity = 1,
       Options(
