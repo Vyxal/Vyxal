@@ -45,7 +45,12 @@ object CLI:
   )
 
   def readAllLinesOfSTDIN: List[String] =
-    Iterator.continually(io.StdIn.readLine()).takeWhile(_ != null).toList
+    // Read all lines, and strip BOM if present in the first line
+    Iterator.continually(io.StdIn.readLine()).takeWhile(_ != null).toList match
+      case Nil => Nil
+      case head :: tail =>
+        if head.startsWith("\uFEFF") then head.substring(1) :: tail
+        else head :: tail
 
   /** Run the CLI
     *
