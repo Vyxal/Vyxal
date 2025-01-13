@@ -44,6 +44,9 @@ object CLI:
       runLiterateParser: Boolean = false,
   )
 
+  def readAllLinesOfSTDIN: List[String] =
+    Iterator.continually(io.StdIn.readLine()).takeWhile(_ != null).toList
+
   /** Run the CLI
     *
     * @param args
@@ -69,6 +72,7 @@ object CLI:
           if config.settings.dontEvalInputs then VStr(x)
           else MiscHelpers.eval(x)(using Context())
         )
+
         given ctx: Context =
           Context(
             inputs = inputList,
@@ -179,15 +183,8 @@ object CLI:
           .action((file, cfg) => cfg.copy(filename = Some(file)))
           .text("The file to read the program from")
           .optional(),
-        opt[String]("stdin")
-          .action((_, cfg) =>
-            cfg.copy(inputs =
-              scala.io.Source.stdin
-                .getLines()
-                .map(_.replaceAll("\r\n|\n", ""))
-                .toList
-            )
-          )
+        opt[Unit]("stdin")
+          .action((_, cfg) => cfg.copy(inputs = readAllLinesOfSTDIN))
           .text("Read the program's input from STDIN as if it were argv")
           .optional(),
         opt[String]("code")
