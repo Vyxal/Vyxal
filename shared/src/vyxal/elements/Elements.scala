@@ -1045,7 +1045,7 @@ object Elements:
       direct(Monad) {
         MiscHelpers.vyPrintln(peek())
       },
-    "✒" ->
+    "#," ->
       direct(Monad) {
         MiscHelpers.vyPrint(pop())
       },
@@ -1199,7 +1199,6 @@ object Elements:
         else if iterable.length == 1 then Seq(iterable.head)
         else Seq(iterable.head, iterable.last)
     },
-    "⎃" -> fullToImpl(Monad, x => ListHelpers.flatten(x.itr).mkString),
     addPart("⎶", Dyad, false) {
       case (VStr(a), VStr(b)) => a.stripPrefix(b).stripSuffix(b)
       case (VStr(a), b: VNum) =>
@@ -1291,7 +1290,7 @@ object Elements:
                 throw UnsupportedOverloadException("κ", "String | Function")
           case _ => throw UnsupportedOverloadException("κ", "String | Function")
       },
-    "↳" ->
+    "#↸" ->
       direct(Monad) {
         val index = pop()
         index match
@@ -1392,7 +1391,6 @@ object Elements:
     "⑥" -> niladify(128),
     "⑦" -> niladify(256),
     "⑧" -> niladify(-1),
-    "⑨" -> niladify(""),
     "kæ" -> niladify(NumberHelpers.probablePrimes),
     "k1" -> niladify(1000),
     "k2" -> niladify(10000),
