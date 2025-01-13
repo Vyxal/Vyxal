@@ -226,7 +226,7 @@ Element, Modifier, and Syntax Reference
 | <code>k6</code> | <code>hex-digits</code> | 0 |   | **Hex Digits**: Push "0123456789abcdef" to the stack |
 | <code>kA</code> | <code>uppercase-letters</code> | 0 |   | **Uppercase Letters**: Push "ABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
 | <code>kB</code> | <code>uppercase-lowercase</code> | 0 |   | **Uppercase and Lowercase**: Push "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" to the stack |
-| <code>kD</code> | <code>line-chars</code> | 0 |   | **Line Chars**: Push "|/-_" to the stack - useful for drawing lines |
+| <code>kD</code> | <code>line-chars</code> | 0 |   | **Line Chars**: Push "\|/-_" to the stack - useful for drawing lines |
 | <code>kF</code> | <code>fizzbuzz-constant</code> | 0 |   | **Fizzbuzz Constant**: Push "FizzBuzz" to the stack |
 | <code>kH</code> | <code>Hello-World</code> | 0 |   | **Hello, World!**: Push "Hello, World!" to the stack |
 | <code>kL</code> | <code>lowercase-uppercase</code> | 0 |   | **Lowercase and Uppercase**: Push "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
