@@ -4024,7 +4024,7 @@ object ElementInformation:
       Overload(
         name = "Line Chars",
         args = Seq(),
-        description = "Push \"|/-_\" to the stack - useful for drawing lines",
+        description = "Push \"\\|/-_\" to the stack - useful for drawing lines",
         typeSwitchable = false,
       ),
     ),
