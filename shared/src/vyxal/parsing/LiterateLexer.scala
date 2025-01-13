@@ -104,6 +104,7 @@ class LiterateLexer extends LexerCommon:
   val lambdaOpeners = Map(
     "lambda" -> StructureType.Lambda,
     "lam" -> StructureType.Lambda,
+    "lambda-stack" -> StructureType.LambdaStack,
     "map-lambda" -> StructureType.LambdaMap,
     "map-lam" -> StructureType.LambdaMap,
     "map<" -> StructureType.LambdaMap,

@@ -214,6 +214,24 @@ object SyntaxInfo:
         structureOpener = true,
         structureCloser = false,
       ),
+    "ξ" ->
+      Syntax(
+        "Stack Lambda",
+        Seq("lambda-stack"),
+        "Open a lambda that automatically takes arguments from the stack",
+        "ξ<code>}",
+        structureOpener = true,
+        structureCloser = false,
+      ),
+    "⍾" ->
+      Syntax(
+        "Eager Map",
+        Seq("eager-map-lambda", "eager-map-lam", "eager-map<"),
+        "Open a lambda that maps its function to the top of the stack, but evaluates eagerly",
+        "⍾<code>}",
+        structureOpener = true,
+        structureCloser = false,
+      ),
     "⎊" ->
       Syntax(
         "Open Map Over Permutations Lambda",
