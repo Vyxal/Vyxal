@@ -67,7 +67,6 @@ object SyntaxInfo:
           "end-while",
           "endlambda",
           "end-lambda",
-          "end",
         ),
         "Match and close the nearest open structure.",
         "<structure open> <code> } <code not in structure>",
