@@ -49,7 +49,7 @@ class LiterateTests extends VyxalTests:
       testLiterate("10 { context-n add } map", "10λn+}M")
       testLiterate("{{{}}{}}", "λλλ}}λ}}")
       testLiterate("{}{}", "λ}λ}")
-      testLiterate("map< filter-lam sort-lambda", "ƛΛµ")
+      testLiterate("map< filter-lam sort-lambda", "ƛʎµ")
     }
 
     it("should do arguments correctly") {

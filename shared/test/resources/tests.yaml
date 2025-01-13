@@ -415,6 +415,19 @@
   when given a multi-character string:
     - { in: ["asdEy"], out: [1, 0, 0, 1, 0] }
 
+"Þ⎶":
+  - {in: [[1,2,3,4]], out: [1, 4]}
+  - {in: [[[1,2], 3, 4]], out: [[1, 2], 4]}
+  - {in: ["hello"], out: ["h", "o"]}
+  - {in: [12431], out: [12431, 0]}
+  - {in: [[1]], out: [1]}
+  - in: 
+      - !num 12j15
+    out: [12, 15]
+  - in:
+    - !num 0j10
+    out: [0, 10]
+
 "øA":
   - {in: [7], out: "g"}
   - {in: [-69], out: "i"}

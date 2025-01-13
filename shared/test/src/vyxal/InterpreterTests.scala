@@ -55,13 +55,6 @@ class InterpreterTests extends VyxalTests:
         "10 ƛ m + }" -> vSeq(1, 3, 5, 7, 9, 11, 13, 15, 17, 19),
       )
     }
-
-    describe("Reduce lambda") {
-      testMulti(
-        "10 ʎ + }" -> VNum(55),
-        "10 ʎ n m + }" -> VNum(55),
-      )
-    }
   }
 
   describe("Vectorisation") {
@@ -165,11 +158,11 @@ class InterpreterTests extends VyxalTests:
       )
 
       testMulti(
-        """#["Hello"|"World"|"Gaming"|"Test String"#]Λ"o"C1=|m0=}""" ->
+        """#["Hello"|"World"|"Gaming"|"Test String"#]ʎ"o"C1=|m0=}""" ->
           vSeq(
             "Hello"
           ),
-        """#["Hello"|"World"|"Goming"|"Test String"#]Λ"o"C1=|m2%0=}""" ->
+        """#["Hello"|"World"|"Goming"|"Test String"#]ʎ"o"C1=|m2%0=}""" ->
           vSeq(
             "Hello",
             "Goming",
@@ -367,10 +360,10 @@ class InterpreterTests extends VyxalTests:
     )
 
     testMulti(
-      "10 Λ2%0=}" -> vSeq(2, 4, 6, 8, 10),
-      "10 Λ2%0=|5<}" -> vSeq(2, 4),
-      "1 20RΛ5+:#=x 20<|#$x 10>" -> vSeq(6, 7, 8, 9, 10, 11, 12, 13, 14),
-      "1 20RΛ5+:#=x 20<|5+10>" -> vSeq(6, 7, 8, 9, 10, 11, 12, 13, 14),
+      "10 ʎ2%0=}" -> vSeq(2, 4, 6, 8, 10),
+      "10 ʎ2%0=|5<}" -> vSeq(2, 4),
+      "1 20Rʎ5+:#=x 20<|#$x 10>" -> vSeq(6, 7, 8, 9, 10, 11, 12, 13, 14),
+      "1 20Rʎ5+:#=x 20<|5+10>" -> vSeq(6, 7, 8, 9, 10, 11, 12, 13, 14),
     )
   }
 
