@@ -144,8 +144,7 @@ enum StructureType(val open: String) derives CanEqual:
   case For extends StructureType("(")
   case Lambda extends StructureType("λ")
   case LambdaMap extends StructureType("ƛ")
-  case LambdaFilter extends StructureType("Λ")
-  case LambdaReduce extends StructureType("ʎ")
+  case LambdaFilter extends StructureType("ʎ")
   case LambdaSort extends StructureType("µ")
   case LambdaStack extends StructureType("ξ")
   case LambdaMapEager extends StructureType("⍾")
@@ -159,7 +158,6 @@ object StructureType:
     StructureType.Lambda,
     StructureType.LambdaMap,
     StructureType.LambdaFilter,
-    StructureType.LambdaReduce,
     StructureType.LambdaSort,
     StructureType.LambdaStack,
     StructureType.LambdaMapEager,
@@ -522,19 +520,19 @@ abstract class LexerCommon:
 end LexerCommon
 
 def Codepage =
-  """λƛΛʎµξ⍾⎋⍟⎊␤⎄⟆⩔Ẅ⊐
-⎇ᖶ¿∥∦∺⁜⑴⑵⑶⑷⎂⟒ᛞ▦¨
+  """λƛΛµξ⍾⎋⍟⎊⎄␤⩔Ẅ⊐⎇ᖶ
+¿∥∦∺⁜⑴⑵⑶⑷⎂⟒ᛞ▦¨×÷
  !"#$%&'()*+,-./
 0123456789:;<=>?
 @ABCDEFGHIJKLMNO
 PQRSTUVWXYZ[\]^_
 `abcdefghijklmno
-pqrstuvwxyz{|}⨥⨪
-ΣΠσ⇧⇩∪∩⊍⦰«»ƓɠĠġ◲
+pqrstuvwxyz{|}~◲
+⨥⨪ΣΠ⇧⇩∪∩⊍⦰«»ƓɠĠġ
 ⌈⌊⊖⌽£¥↜↝↺↻≜⎀⊢⊣ɦʈ
 ᐐᐵᐕ½ƶƵ⁰¹²³⅟※⇄⧖‰≛
 ℭ℈⦷Ϣ≤≥≠≡•±†⎙✒≓Ͼᴥ
 ℳ℗↸⍢ℂ⌹⏚↯⊠⚅æ␣¶★ᑂ∻
-√⍰◌δ☷✇⎃⎶⊆⍨⎘ꜝ≈≊κ↳
+√⍰◌δ☷σ⎃⎶⊆⍨⎘ꜝ≈≊κ↳
 ʀʁɾ▲Ṭ⤻⤺Ŀ¬∧∨Łḧ¤ᏜᏐ
 ⧢①②③④⑤⑥⑦⑧⑨Þ∆ø„”“""".replace("\n", "").replace("␤", "\n")
