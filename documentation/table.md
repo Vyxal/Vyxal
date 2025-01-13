@@ -366,7 +366,7 @@ Element, Modifier, and Syntax Reference
 | <code>k</code> | Constant Digraphs |  | Used for constant-related digraphs | <code>k<character></code> |
 | <code>{</code> | While Loop | `while`</br>`while<` | Open a while loop. While the top of the stack is truthy, execute code. | <code>{<condition>|<code>}</code> |
 | <code>\|</code> | Structure Branch | `:`</br>`->`</br>`else:`</br>`else`</br>`elif`</br>`else-if`</br>`body`</br>`do`</br>`branch`</br>`then`</br>`in`</br>`using`</br>`no?`</br>`=>`</br>`from` | Delimit the next section in a structure. | <code><structure open> <code> | <code> ...</code> |
-| <code>}</code> | Close A Structure | `end`</br>`endfor`</br>`end-for`</br>`endwhile`</br>`end-while`</br>`endlambda`</br>`end-lambda`</br>`end` | Match and close the nearest open structure. | <code><structure open> <code> } <code not in structure></code> |
+| <code>}</code> | Close A Structure | `end`</br>`endfor`</br>`end-for`</br>`endwhile`</br>`end-while`</br>`endlambda`</br>`end-lambda` | Match and close the nearest open structure. | <code><structure open> <code> } <code not in structure></code> |
 | <code>Ꮬ</code> | Two Character String |  | Push the next two characters as a string | <code>Ꮬ<character><character></code> |
 | <code>Ꮠ</code> | Two Byte Number |  | Push the next two bytes as a number, converted from bijective base 255 using the codepage | <code>Ꮠ<character><character></code> |
 | <code>Þ</code> | List Digraphs |  | Used for list-related digraphs | <code>Þ<character></code> |
