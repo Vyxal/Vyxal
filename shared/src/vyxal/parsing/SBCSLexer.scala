@@ -14,7 +14,7 @@ class SBCSLexer extends LexerCommon:
   private val DIGRAPH_CHARS = "∆øÞk"
   private val HASH_DIGRAPH_REGEX =
     """#[^\[\]$!=#>@{:]""" // Matches # followed by any character that doesn't start a trigraph
-  private val STRUCTURE_OPENERS = "[({ṆḌƛΛξ⍾ʎµ⟨⎊⎄"
+  private val STRUCTURE_OPENERS = "[({ṆḌƛξ⍾ʎµ⟨⎊⎄"
   private val IF_ELSE_OPENER = "#{"
   private val RECORD_OPENER = "#::R"
   private val EXTENSION_OPENER = "#::+"
