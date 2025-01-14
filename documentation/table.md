@@ -215,6 +215,7 @@ Element, Modifier, and Syntax Reference
 | <code>#X</code> | <code>break</code> | 0 |   | **Break**: Break out of the current loop |
 | <code>#c</code> | <code>b252compress</code> | 1 | vec  | **Base 252 Compress String** (`str`): Compress #1 using simple base 252 compression. Requires all characters to be lowercase letters, or spaces.</br>**Base 252 Compress Number** (`num`): Convert #1 to base 252, using the codepage as the digits |
 | <code>#x</code> | <code>continue</code> | 0 |   | **Continue**: Continue to the next iteration of the current loop |
+| <code>#~</code> | <code>call-peek</code></br><code>call-no-pop</code> | 1 |   | **Call Without Popping** (`fun`): Call #1 with arguments that are peeked, not popped, from the stack |
 | <code>#↸</code> | <code>retrieve-from-outer</code> | 1 |   | **Retrieve Item at Index from Outer Stack** (`num`): Retrieve the item at index #1 from the outer stack, current stack if at top level</br>**Retrieve Item at Index from Outer Stack N-Layers Up** (`lst[num, num]`): Retrieve the item at index #2 from the stack #1 levels up |
 | <code>k1</code> | <code>1000</code> | 0 |   | **1000**: Push 1000 to the stack |
 | <code>k2</code> | <code>10000</code> | 0 |   | **10000**: Push 10000 to the stack |

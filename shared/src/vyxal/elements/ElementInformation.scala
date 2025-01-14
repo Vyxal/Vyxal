@@ -3762,6 +3762,19 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "#~",
+      keywords = Seq("call-peek", "call-no-pop"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Call Without Popping",
+        args = Seq("fun"),
+        description =
+          "Call #1 with arguments that are peeked, not popped, from the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
       symbol = "①",
       keywords = Seq("10"),
       arity = 0,
