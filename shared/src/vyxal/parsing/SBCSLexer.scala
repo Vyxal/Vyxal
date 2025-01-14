@@ -80,7 +80,7 @@ class SBCSLexer extends LexerCommon:
         else oneCharStringToken
       else if headEqual(TWO_CHAR_STRING) then twoCharStringToken
       else if headEqual(TWO_CHAR_NUMBER) then twoCharNumberToken
-      else if headIn(DIGRAPH_CHARS) || headLookaheadMatch(HASH_DIGRAPH_REGEX)
+      else if headIn(DIGRAPH_CHARS)
       then digraphToken
       else if headLookaheadEqual(COMMENT) then
         pop(2)
@@ -146,6 +146,7 @@ class SBCSLexer extends LexerCommon:
         else quickToken(TokenType.TetradicModifier, s"${programStack.head}")
       else if headIn(SPECIAL_MODIFIERS) then
         quickToken(TokenType.SpecialModifier, s"${programStack.head}")
+      else if headLookaheadMatch(HASH_DIGRAPH_REGEX) then digraphToken
       else if headEqual(BRANCH) then quickToken(TokenType.Branch, BRANCH)
       else if headLookaheadEqual(CONTEXT_INDEX) then contextIndexToken
       else if headLookaheadEqual(VARIABLE_GET_SIGIL) then
