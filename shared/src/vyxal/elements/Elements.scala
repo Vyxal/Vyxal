@@ -1480,7 +1480,7 @@ object Elements:
     addPart("∆t", Monad, true) {
       case a: VNum => a.tan
     },
-    addPart("∆⟆", Monad, true) {
+    addPart("∆↯", Monad, true) {
       case a: VNum => a.asin
     },
     addPart("∆ℭ", Monad, true) {

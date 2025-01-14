@@ -4583,7 +4583,7 @@ object ElementInformation:
       ),
     ),
     AddElement(
-      symbol = "∆⟆",
+      symbol = "∆↯",
       keywords = Seq("arcsin", "arcsine"),
       arity = 1,
       Options(vectorises = true),
