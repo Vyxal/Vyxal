@@ -38,20 +38,6 @@ object Elements:
         val counts = uniq.map(item => VNum(iterable.count(_ == item)))
         push(VList(counts))
       },
-    addPart("⎊", Dyad, false) {
-      case (VList(itr), fn: VFun) =>
-        ListHelpers.map(fn, ListHelpers.permutations(itr))
-      case (fn: VFun, VList(itr)) =>
-        ListHelpers.map(fn, ListHelpers.permutations(itr))
-      case (VStr(s), fn: VFun) =>
-        ListHelpers.map(fn, ListHelpers.permutations(s.itr).map(_.mkString))
-      case (fn: VFun, VStr(s)) =>
-        ListHelpers.map(fn, ListHelpers.permutations(s.itr).map(_.mkString))
-      case (n: VNum, fn: VFun) =>
-        ListHelpers.map(fn, ListHelpers.permutations(n.ritr))
-      case (fn: VFun, n: VNum) =>
-        ListHelpers.map(fn, ListHelpers.permutations(n.ritr))
-    },
     addPart("÷", Dyad, true) {
       case (a: VNum, b: VNum) => a / b
       case (VStr(a), b: VNum) => StringHelpers.intoNPieces(a, b)
@@ -924,6 +910,12 @@ object Elements:
       case num: VNum => VList(ListHelpers.permutations(num.ritr))
       case VStr(str) => VList(ListHelpers.permutations(str.itr).map(_.mkString))
       case lst: VList => VList(ListHelpers.permutations(lst))
+      case fn: VFun => pop() match
+          case VList(itr) => ListHelpers.map(fn, ListHelpers.permutations(itr))
+          case VStr(s) =>
+            ListHelpers.map(fn, ListHelpers.permutations(s.itr).map(_.mkString))
+          case n: VNum => ListHelpers.map(fn, ListHelpers.permutations(n.ritr))
+          case x => throw new UnimplementedOverloadException("⧖", Seq(x))
     },
     addPart("‰", Dyad, true) {
       case (a: VNum, b: VNum) =>
