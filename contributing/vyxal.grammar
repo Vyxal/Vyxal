@@ -1,7 +1,7 @@
 
 @top Program { Statement+ }
 @skip { Space }
-Statement { Digraph | SyntaxTrigraph | StructureOpen | StructureClose | ListStuff | ModifierChar | VariableThing | Number | AnyString | Branch | ContextIndex | Comment | Element }
+Statement { Digraph | SyntaxTrigraph | StructureOpen | StructureClose | ListStuff | Modifier | VariableThing | Number | AnyString | Branch | ContextIndex | Comment | Element }
 Number { NumberDecimal | TwoCharNumber }
 NumberDecimal {
     NumberPart |
@@ -14,7 +14,7 @@ AnyString {
 }
 @tokens {
   Space { @whitespace+ }
-  ModifierChar {$[⑴⁜∦⎂⎇▦⑶¨~ᛞ⑵⟒¿∺⩔⑷Ẅ∥]}
+  Modifier {$[⑴⁜∦⎂⎇▦⑶¨~ᛞ⑵⟒¿∺⩔⑷Ẅ∥]}
   Comment {"##" (![
 ])*}
   Digraph { $[∆øÞk] _ | "#" ![[\]$!=#>@{:] }
