@@ -36,8 +36,7 @@ class SBCSLexer extends LexerCommon:
     Modifiers.modifiers
       .filter((_, modifierObj) => modifierObj.arity == arity)
       .map((symbol, _) => symbol)
-      .mkString
-
+      .toSeq
   private val MONADIC_MODIFIERS = modifiersOfArity(1)
   private val DYADIC_MODIFIERS = modifiersOfArity(2)
   private val TRIADIC_MODIFIERS = modifiersOfArity(3)

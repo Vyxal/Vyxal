@@ -211,7 +211,7 @@ class InterpreterTests extends VyxalTests:
   describe("Variables") {
     it("should set the ghost variable") {
       testEquals(3) { ctx ?=>
-        Interpreter.execute("3 #=⑨")
+        Interpreter.execute("3 #= \"\"")
         ctx.getVar("")
       }
     }
@@ -220,14 +220,14 @@ class InterpreterTests extends VyxalTests:
       it("should work with builtin elements") {
         testEquals(4) { ctx ?=>
           ctx.setVar("x", 3)
-          Interpreter.execute("1 +#>x⑨")
+          Interpreter.execute("1 +#>x \"\"")
           ctx.getVar("x")
         }
       }
       it("should work with lambdas") {
         testEquals(18) { ctx ?=>
           ctx.setVar("x", 3)
-          Interpreter.execute("λ+×}#>x #$x⑨")
+          Interpreter.execute("λ+×}#>x #$x \"\"")
           ctx.getVar("x")
         }
       }
@@ -235,7 +235,7 @@ class InterpreterTests extends VyxalTests:
     describe("Variable unpacking") {
       it("should handle non nested lists") {
         given ctx: Context = Context(testMode = true)
-        Interpreter.execute("#[1 | 2 | 3#] #:[x|y|z]⑨")
+        Interpreter.execute("#[1 | 2 | 3#] #:[x|y|z] \"\"")
         group {
           assertResult(VNum(1))(ctx.getVar("x"))
           assertResult(VNum(2))(ctx.getVar("y"))
@@ -244,7 +244,7 @@ class InterpreterTests extends VyxalTests:
       }
       it("should handle nested lists") {
         given ctx: Context = Context()
-        Interpreter.execute("#[1 | 2 | #[3#]#] #:[x|y|z]⑨")
+        Interpreter.execute("#[1 | 2 | #[3#]#] #:[x|y|z] \"\"")
         group {
           assertResult(VNum(1))(ctx.getVar("x"))
           assertResult(VNum(2))(ctx.getVar("y"))
@@ -253,7 +253,7 @@ class InterpreterTests extends VyxalTests:
       }
       it("should handle simple nested patterns") {
         given ctx: Context = Context()
-        Interpreter.execute("#[1 | 2 | #[3#]#] #:[x|y|[z]]⑨")
+        Interpreter.execute("#[1 | 2 | #[3#]#] #:[x|y|[z]] \"\"")
         group {
           assertResult(VNum(1))(ctx.getVar("x"))
           assertResult(VNum(2))(ctx.getVar("y"))
@@ -265,13 +265,13 @@ class InterpreterTests extends VyxalTests:
     describe("Constants") {
       it("should allow first assignment as normal") {
         given ctx: Context = Context()
-        Interpreter.execute("1 #!x⑨")
+        Interpreter.execute("1 #!x \"\"")
         assertResult(VNum(1))(ctx.getVar("x"))
       }
 
       it("should not allow reassignment") {
         given ctx: Context = Context()
-        Interpreter.execute("1 #!x⑨")
+        Interpreter.execute("1 #!x \"\"")
         assertThrows[Exception] {
           Interpreter.execute("2 #!x")
         }

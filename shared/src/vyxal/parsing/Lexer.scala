@@ -296,6 +296,8 @@ abstract class LexerCommon:
   protected def headIsLetter: Boolean = safeCheck(c => c.head.isLetter)
   protected def headIsWhitespace: Boolean = safeCheck(c => c.head.isWhitespace)
   protected def headIn(s: String): Boolean = safeCheck(c => s.contains(c))
+  protected def headIn(s: Seq[String]): Boolean =
+    s.exists(c => headLookaheadEqual(c))
   protected def headIsCloser: Boolean
   protected def headIsBranch: Boolean
   protected def headIsOpener: Boolean
