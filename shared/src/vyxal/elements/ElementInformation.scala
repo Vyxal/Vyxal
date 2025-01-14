@@ -3064,7 +3064,7 @@ object ElementInformation:
         name = "Fixpoint Collect",
         args = Seq("fun", "any"),
         description =
-          "Repeatedly apply {#1|#2} on {#2|#1} until a fixed point is reached, collecting intermediate results",
+          "Repeatedly apply {#1|#2} on {#2|#1} until a fixed point is reached",
         typeSwitchable = true,
       ),
     ),

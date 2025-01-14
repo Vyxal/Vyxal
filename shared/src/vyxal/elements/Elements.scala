@@ -1095,8 +1095,8 @@ object Elements:
     addPart("ℂ", Dyad, true) {
       case (a: VNum, b: VNum) => NumberHelpers.nChooseK(a, b)
       case (VStr(a), VStr(b)) => a.toSet == b.toSet
-      case (a: VFun, b) => MiscHelpers.untilNoChange(a, b)
-      case (a, b: VFun) => MiscHelpers.untilNoChange(b, a)
+      case (a: VFun, b) => MiscHelpers.untilNoChange(a, b).last
+      case (a, b: VFun) => MiscHelpers.untilNoChange(b, a).last
     },
     addPart("⌹", Monad, false) {
       case a: VList => ListHelpers.partitions(a)
