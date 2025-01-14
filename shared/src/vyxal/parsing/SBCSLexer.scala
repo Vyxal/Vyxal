@@ -125,24 +125,16 @@ class SBCSLexer extends LexerCommon:
       else if headLookaheadEqual(IF_ELSE_OPENER) then
         quickToken(TokenType.StructureOpen, IF_ELSE_OPENER)
       else if headIn(MONADIC_MODIFIERS) then
-        if headEqual("#") then
-          pop()
-          quickToken(TokenType.MonadicModifier, s"#${programStack.head}")
+        if headEqual("#") then quickToken(TokenType.MonadicModifier, peek(2))
         else quickToken(TokenType.MonadicModifier, s"${programStack.head}")
       else if headIn(DYADIC_MODIFIERS) then
-        if headEqual("#") then
-          pop()
-          quickToken(TokenType.DyadicModifier, s"#${programStack.head}")
+        if headEqual("#") then quickToken(TokenType.DyadicModifier, peek(2))
         else quickToken(TokenType.DyadicModifier, s"${programStack.head}")
       else if headIn(TRIADIC_MODIFIERS) then
-        if headEqual("#") then
-          pop()
-          quickToken(TokenType.TriadicModifier, s"#${programStack.head}")
+        if headEqual("#") then quickToken(TokenType.TriadicModifier, peek(2))
         else quickToken(TokenType.TriadicModifier, s"${programStack.head}")
       else if headIn(TETRADIC_MODIFIERS) then
-        if headEqual("#") then
-          pop()
-          quickToken(TokenType.TetradicModifier, s"#${programStack.head}")
+        if headEqual("#") then quickToken(TokenType.TetradicModifier, peek(2))
         else quickToken(TokenType.TetradicModifier, s"${programStack.head}")
       else if headIn(SPECIAL_MODIFIERS) then
         quickToken(TokenType.SpecialModifier, s"${programStack.head}")

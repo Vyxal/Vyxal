@@ -282,6 +282,10 @@ abstract class LexerCommon:
     index += n + 1
     lastPopped = res.toString()
     res.toString()
+  protected def peek(n: Int = 1): String =
+    val res = StringBuilder()
+    for i <- 0 until n do res ++= programStack(i)
+    res.toString()
   protected def safeCheck(pred: String => Boolean): Boolean =
     programStack.nonEmpty && pred(programStack.head)
   protected def headEqual(c: String): Boolean =
