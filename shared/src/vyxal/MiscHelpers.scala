@@ -361,16 +361,16 @@ object MiscHelpers:
     case (VStr(a), VStr(b)) => a.replaceAll(b, "")
   }
 
-  def untilNoChange(function: VFun, value: VAny)(using Context): Seq[VAny] =
-    var prev = value
-    val res = LazyList.unfold(value) { curr =>
+  /** Generate a LazyList by repeatedly applying the given function to the given
+    * initial value until there is no change, i.e., the last element is the
+    * fixpoint. Includes the initial value.
+    */
+  def untilNoChange(function: VFun, initial: VAny)(using Context): Seq[VAny] =
+    val res = LazyList.unfold(initial) { curr =>
       val next = function(curr)
-      if next == prev then None
-      else
-        prev = next
-        Some(next -> next)
+      Option.when(next != curr)(next -> next)
     }
-    value #:: res
+    initial #:: res
 
   def zipWith(left: Seq[VAny], right: Seq[VAny], function: VFun)(using
       Context
