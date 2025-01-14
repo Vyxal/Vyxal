@@ -12,6 +12,7 @@ Element, Modifier, and Syntax Reference
 
 | Symbol | Keywords | Arity | Vectorises | Overloads |
 |--------|--|------|-----------|-----------|
+| <code>⎊</code> | <code>map-permutations</code></br><code>map-perms</code> | 1 |   | **Map Over Permutations** (`any,fun`): Map #2 over all permutations of #1</br>**Map Over Permutations** (`fun,any`): Map #1 over all permutations of #2 |
 | <code>⊞</code> | <code>counts</code></br><code>counts-of</code> | 1 |   | **Counts of Items** (`lst`): [#1.count(x) for x in set(#1)] |
 | <code>×</code> | <code>multiply</code></br><code>string-repeat</code></br><code>ring-translate</code></br><code>*</code></br><code>times</code> | 2 | vec  | **Multiplication** (`num,num`): #1 * #2 (#1 times #2)</br>**String Repeat** (`str,num`): Repeat string #1 #2 times</br>**String Repeat** (`num,str`): Repeat string #2 #1 times</br>**Ring Translate** (`str,str`): Ring translate #1 according to #2.  |
 | <code>÷</code> | <code>divide</code></br><code>string-pieces</code></br><code>regex-split</code></br><code>/</code></br><code>div</code> | 2 | vec  | **Division** (`num,num`): #1 / #2</br>**String into N Pieces** (`str,num`): Split string #1 into #2 pieces</br>**String into N Pieces** (`num,str`): Split string #2 into #1 pieces</br>**Regex Split** (`str,str`): Split #1 by regex #2 |
@@ -130,7 +131,7 @@ Element, Modifier, and Syntax Reference
 | <code>⅟</code> | <code>reciprocal</code></br><code>inverse</code></br><code>1/</code></br><code>without-whitespace</code></br><code>no-space</code></br><code>spaceless</code> | 1 | vec  | **Reciprocal** (`num`): 1 / #1</br>**Without Whitespace** (`str`): Remove all whitespace from #1 |
 | <code>※</code> | <code>group-by-consecutive</code> | 1 |   | **Group by Consecutive** (`lst`): Group consecutive equal elements of #1</br>**Group Consecutive by Function** (`lst,fun`): Group elements of #1 by function #2 |
 | <code>⇄</code> | <code>reverse</code> | 1 |   | **Reverse** (`any`): Reverse #1 |
-| <code>⧖</code> | <code>permutations</code></br><code>map-over-permutations</code> | 1 |   | **Permutations** (`any`): All permutations of #1</br>**Map Over Permutations** (`any,fun`): Map #2 over all permutations of #1 |
+| <code>⧖</code> | <code>permutations</code> | 1 |   | **Permutations** (`any`): All permutations of #1 |
 | <code>‰</code> | <code>divmod</code> | 2 | vec  | **Divmod** (`num,num`): Divmod of #1 and #2 ([#1 // #2, #1 % #2]) |
 | <code>≛</code> | <code>divides?</code></br><code>append-spaces</code></br><code>regex-span</code> | 2 |   | **Divides?** (`num,num`): #2 % #1 == 0</br>**Append Spaces** (`str,num`): Append #2 spaces to #1</br>**Append Spaces** (`num,str`): Append #1 spaces to #2</br>**Regex Span** (`str,str`): Span of regex match of pattern #2 in #1 |
 | <code>ℭ</code> | <code>combinations-with-replacement</code> | 2 |   | **Combinations with Replacement** (`itr,num`): All combinations of #1 of length #2 with replacement</br>**Combinations with Replacement** (`num,itr`): All combinations of #2 of length #1 with replacement</br>**Combinations of Range with Replacement** (`num,num`): All combinations of range(#1) of length #2 with replacement |
