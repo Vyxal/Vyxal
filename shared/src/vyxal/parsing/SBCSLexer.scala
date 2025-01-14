@@ -14,7 +14,7 @@ class SBCSLexer extends LexerCommon:
   private val DIGRAPH_CHARS = "∆øÞk"
   private val HASH_DIGRAPH_REGEX =
     """#[^\[\]$!=#>@{:]""" // Matches # followed by any character that doesn't start a trigraph
-  private val STRUCTURE_OPENERS = "[({ṆḌƛΛξ⍾ʎµ⟨⎊⎄"
+  private val STRUCTURE_OPENERS = "[({ṆḌƛξ⍾ʎµ⟨⎊⎄"
   private val IF_ELSE_OPENER = "#{"
   private val RECORD_OPENER = "#::R"
   private val EXTENSION_OPENER = "#::+"
@@ -36,8 +36,7 @@ class SBCSLexer extends LexerCommon:
     Modifiers.modifiers
       .filter((_, modifierObj) => modifierObj.arity == arity)
       .map((symbol, _) => symbol)
-      .mkString
-
+      .toSeq
   private val MONADIC_MODIFIERS = modifiersOfArity(1)
   private val DYADIC_MODIFIERS = modifiersOfArity(2)
   private val TRIADIC_MODIFIERS = modifiersOfArity(3)
@@ -81,7 +80,7 @@ class SBCSLexer extends LexerCommon:
         else oneCharStringToken
       else if headEqual(TWO_CHAR_STRING) then twoCharStringToken
       else if headEqual(TWO_CHAR_NUMBER) then twoCharNumberToken
-      else if headIn(DIGRAPH_CHARS) || headLookaheadMatch(HASH_DIGRAPH_REGEX)
+      else if headIn(DIGRAPH_CHARS)
       then digraphToken
       else if headLookaheadEqual(COMMENT) then
         pop(2)
@@ -126,15 +125,20 @@ class SBCSLexer extends LexerCommon:
       else if headLookaheadEqual(IF_ELSE_OPENER) then
         quickToken(TokenType.StructureOpen, IF_ELSE_OPENER)
       else if headIn(MONADIC_MODIFIERS) then
-        quickToken(TokenType.MonadicModifier, s"${programStack.head}")
+        if headEqual("#") then quickToken(TokenType.MonadicModifier, peek(2))
+        else quickToken(TokenType.MonadicModifier, s"${programStack.head}")
       else if headIn(DYADIC_MODIFIERS) then
-        quickToken(TokenType.DyadicModifier, s"${programStack.head}")
+        if headEqual("#") then quickToken(TokenType.DyadicModifier, peek(2))
+        else quickToken(TokenType.DyadicModifier, s"${programStack.head}")
       else if headIn(TRIADIC_MODIFIERS) then
-        quickToken(TokenType.TriadicModifier, s"${programStack.head}")
+        if headEqual("#") then quickToken(TokenType.TriadicModifier, peek(2))
+        else quickToken(TokenType.TriadicModifier, s"${programStack.head}")
       else if headIn(TETRADIC_MODIFIERS) then
-        quickToken(TokenType.TetradicModifier, s"${programStack.head}")
+        if headEqual("#") then quickToken(TokenType.TetradicModifier, peek(2))
+        else quickToken(TokenType.TetradicModifier, s"${programStack.head}")
       else if headIn(SPECIAL_MODIFIERS) then
         quickToken(TokenType.SpecialModifier, s"${programStack.head}")
+      else if headLookaheadMatch(HASH_DIGRAPH_REGEX) then digraphToken
       else if headEqual(BRANCH) then quickToken(TokenType.Branch, BRANCH)
       else if headLookaheadEqual(CONTEXT_INDEX) then contextIndexToken
       else if headLookaheadEqual(VARIABLE_GET_SIGIL) then

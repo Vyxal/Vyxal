@@ -178,28 +178,12 @@ object SyntaxInfo:
         structureOpener = true,
         structureCloser = false,
       ),
-    "Ω" ->
+    "ʎ" ->
       Syntax(
         "Open Filter Lambda",
         Seq("filter-lam", "filter<", "filter-lambda"),
         "Open a lambda that automatically filters the top of the stack by its function",
         "Ω<code>}",
-        structureOpener = true,
-        structureCloser = false,
-      ),
-    "₳" ->
-      Syntax(
-        "Open Reduce/Accumulate Lambda",
-        Seq(
-          "reduce-lam",
-          "reduce<",
-          "reduce-lambda",
-          "fold<",
-          "fold-lam",
-          "fold-lambda",
-        ),
-        "Open a lambda that automatically reduces/accumulates the top of the stack by its function",
-        "₳<code>}",
         structureOpener = true,
         structureCloser = false,
       ),
@@ -227,6 +211,24 @@ object SyntaxInfo:
         Seq("relation<", "generate<", "generate-from<"),
         "Open a generator structure. Allows for generator expressions",
         "⎄<code>|<initial vector>}",
+        structureOpener = true,
+        structureCloser = false,
+      ),
+    "ξ" ->
+      Syntax(
+        "Stack Lambda",
+        Seq("lambda-stack"),
+        "Open a lambda that automatically takes arguments from the stack",
+        "ξ<code>}",
+        structureOpener = true,
+        structureCloser = false,
+      ),
+    "⍾" ->
+      Syntax(
+        "Eager Map",
+        Seq("eager-map-lambda", "eager-map-lam", "eager-map<"),
+        "Open a lambda that maps its function to the top of the stack, but evaluates eagerly",
+        "⍾<code>}",
         structureOpener = true,
         structureCloser = false,
       ),

@@ -3,6 +3,7 @@ package vyxal.parsing
 import scala.language.strictEquality
 
 import vyxal.*
+import vyxal.elements.lam
 import vyxal.elements.ElementInformation
 import vyxal.elements.Elements
 import vyxal.elements.Modifiers
@@ -605,9 +606,9 @@ private class Parser:
         AST.NotAnAST
 
       case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
-          StructureType.LambdaFilter | StructureType.LambdaReduce |
-          StructureType.LambdaSort | StructureType.LambdaStack |
-          StructureType.LambdaMapEager | StructureType.LambdaMapPermutations) =>
+          StructureType.LambdaFilter | StructureType.LambdaSort |
+          StructureType.LambdaStack | StructureType.LambdaMapEager |
+          StructureType.LambdaMapPermutations) =>
         val lambda =
           if lambdaType == StructureType.Lambda then
             branches match
@@ -625,13 +626,11 @@ private class Parser:
 
         lambdaType match
           case StructureType.Lambda => lambda
-          case StructureType.LambdaStack => lambda
+          case StructureType.LambdaStack => lambda.lam(-1)
           case StructureType.LambdaMap =>
             AST.makeSingle(lambda, AST.Command("M"))
           case StructureType.LambdaFilter =>
             AST.makeSingle(lambda, AST.Command("F"))
-          case StructureType.LambdaReduce =>
-            AST.makeSingle(lambda, AST.Command("R"))
           case StructureType.LambdaSort =>
             AST.makeSingle(lambda, AST.Command("↯"))
           case StructureType.LambdaMapEager =>

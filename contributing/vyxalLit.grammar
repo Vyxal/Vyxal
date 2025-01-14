@@ -65,14 +65,12 @@ Lambda {
 lambda<"map-permutations<">
 lambda<"map-perms">
 lambda<"map-lam">
-lambda<"reduce-lam">
+lambda<"lambda-stack">
 lambda<"eager-map-lambda">
 lambda<"sort<">
 lambda<"map-permutations">
-lambda<"fold-lam">
-lambda<"fold-lambda">
+lambda<"filter<">
 lambda<"eager-map-lam">
-lambda<"fold<">
 lambda<"sort-lambda">
 lambda<"filter-lambda">
 lambda<"map<">
@@ -83,9 +81,6 @@ lambda<"sort-lam">
 lambda<"lambda">
 lambda<"map-lambda">
 lambda<"eager-map<">
-lambda<"filter<">
-lambda<"reduce-lambda">
-lambda<"reduce<">
 }
 
 @tokens {

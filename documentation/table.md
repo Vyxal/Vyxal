@@ -12,14 +12,9 @@ Element, Modifier, and Syntax Reference
 
 | Symbol | Keywords | Arity | Vectorises | Overloads |
 |--------|--|------|-----------|-----------|
-| <code>÷</code> | <code>divide</code></br><code>string-pieces</code></br><code>regex-split</code></br><code>/</code></br><code>div</code> | 2 | vec  | **Division** (`num,num`): #1 / #2</br>**String into N Pieces** (`str,num`): Split string #1 into #2 pieces</br>**String into N Pieces** (`num,str`): Split string #2 into #1 pieces</br>**Regex Split** (`str,str`): Split #1 by regex #2 |
-| <code>Ṫ</code> | <code>untruth</code> | 1 |   | **Untruth** (`lst`): Create a list of 1s at indices in #1, 0s elsewhere |
-| <code>›</code> | <code>increment</code></br><code>++</code></br><code>space-to-0</code></br><code>replace-spaces-with-0s</code></br><code>inc</code> | 1 | vec  | **Increment** (`num`): #1 + 1</br>**Spaces to 0s** (`str`): Replace spaces in #1 with '0's |
-| <code>γ</code> | <code>wrap-len-2</code> | 1 |   | **Wrap to Length 2** (`any`): Wrap #1 into chunks of length 2 |
-| <code>‹</code> | <code>decrement</code></br><code>--</code></br><code>pad-to-8</code></br><code>dec</code></br><code>pad-8</code></br><code>pad-to-byte</code> | 1 | vec  | **Decrement** (`num`): #1 - 1</br>**Pad to 8** (`str`): Pad #1 to a length that is a multiple of 8 with '0's |
 | <code>⊞</code> | <code>counts</code></br><code>counts-of</code> | 1 |   | **Counts of Items** (`lst`): [#1.count(x) for x in set(#1)] |
-| <code>∑</code> | <code>sum</code></br><code>sum-of</code></br><code>+/</code></br><code>/+</code></br><code>sigma</code></br><code>sigma-in-ohio</code> | 1 |   | **Sum** (`lst`): Sum of #1</br>**Join and Evaluate** (`lst[at least 1 str]`): Join #1 and evaluate the result |
 | <code>×</code> | <code>multiply</code></br><code>string-repeat</code></br><code>ring-translate</code></br><code>*</code></br><code>times</code> | 2 | vec  | **Multiplication** (`num,num`): #1 * #2 (#1 times #2)</br>**String Repeat** (`str,num`): Repeat string #1 #2 times</br>**String Repeat** (`num,str`): Repeat string #2 #1 times</br>**Ring Translate** (`str,str`): Ring translate #1 according to #2.  |
+| <code>÷</code> | <code>divide</code></br><code>string-pieces</code></br><code>regex-split</code></br><code>/</code></br><code>div</code> | 2 | vec  | **Division** (`num,num`): #1 / #2</br>**String into N Pieces** (`str,num`): Split string #1 into #2 pieces</br>**String into N Pieces** (`num,str`): Split string #2 into #1 pieces</br>**Regex Split** (`str,str`): Split #1 by regex #2 |
 | <code>!</code> | <code>factorial</code></br><code>!</code></br><code>titlecase</code></br><code>fact</code></br><code>title</code></br><code>fac</code> | 1 | vec  | **Factorial** (`num`): Factorial of #1</br>**Titlecase** (`str`): Titlecase #1 |
 | <code>$</code> | <code>swap</code> | 2 |   | **Swap** (`any,any`): Swap #1 and #2 on the stack: #1 #2 -> #2 #1 |
 | <code>%</code> | <code>mod</code></br><code>modulo</code></br><code>%</code></br><code>remainder</code> | 2 | vec  | **Modulo** (`num,num`): #1 % #2 (remainder of #1 divided by #2)</br>**String Format** (`str,any`): Format #1 with #2</br>**String Format** (`any,str`): Format #2 with #1 |
@@ -89,10 +84,11 @@ Element, Modifier, and Syntax Reference
 | <code>x</code> | <code>recurse</code> | STACK |   | **Recurse**: Recursively call the current function (or the top-level program if not in a function) |
 | <code>y</code> | <code>transliterate</code></br><code>call-while</code> | 3 |   | **Transliterate** (`nsl,nsl,nsl`): Replace all occurrences of #2 in #1 with #3</br>**Call While** (`fun,fun,any`): While #1(#3) is true, #3 = #2(#3). Return the result. Type switchable. |
 | <code>z</code> | <code>zip-with-filler</code> | 2 |   | **Zip With Filler** (`lst,any`): Transpose #1, filling empty spaces with #2 |
+| <code>◲</code> | <code>sublists</code> | 1 |   | **Sublists** (`any`): All sublists of #1 |
 | <code>⨥</code> | <code>+2</code></br><code>add-2</code></br><code>++++</code></br><code>inc-inc</code></br><code>strlen==1</code> | 1 | vec  | **Add 2** (`num`): #1 + 2</br>**String Length Equals 1** (`str`): Is the length of #1 equal to 1 |
 | <code>⨪</code> | <code>-2</code></br><code>subtract-2</code></br><code>----</code></br><code>dec-dec</code></br><code>flip-bracket-palindrome</code> | 1 | vec  | **Subtract 2** (`num`): #1 - 2</br>**Flip Bracket Palindrome** (`str`): Palindromise #1 by appending the reverse with brackets and slashes flipped |
+| <code>Σ</code> | <code>sum</code></br><code>sum-of</code></br><code>+/</code></br><code>/+</code></br><code>sigma</code></br><code>sigma-in-ohio</code> | 1 |   | **Sum** (`lst`): Sum of #1</br>**Join and Evaluate** (`lst[at least 1 str]`): Join #1 and evaluate the result |
 | <code>Π</code> | <code>product</code></br><code>product-of</code></br><code>*/</code></br><code>first-int</code> | 1 |   | **Product** (`lst`): Product of #1</br>**Number to Binary as String** (`num`): Convert #1 to binary as a string</br>**First Integer Where Predicate is True** (`fun`): First integer where #1 is true (positive or negative) |
-| <code>σ</code> | <code>cumulative-sums</code></br><code>cumsums</code></br><code>cumsum</code></br><code>cum-sum</code></br><code>-_-</code> | 1 |   | **Cumulative Sums** (`lst`): Cumulative sums of #1 |
 | <code>⇧</code> | <code>grade-up</code> | 1 |   | **Grade Up** (`lst`): Indices that would sort #1 |
 | <code>⇩</code> | <code>grade-down</code> | 1 |   | **Grade Down** (`lst`): Indices that would sort #1 in reverse |
 | <code>∪</code> | <code>union</code></br><code>set-union</code> | 2 |   | **Union** (`lst,lst`): Union of #1 and #2 |
@@ -105,7 +101,6 @@ Element, Modifier, and Syntax Reference
 | <code>ɠ</code> | <code>min-peek</code> | 1* |   | **Min Peek** (`lst`): Minimum of #1 without popping |
 | <code>Ġ</code> | <code>zip-max</code></br><code>max-dyad</code></br><code>max-ab</code></br><code>gen</code> | 2 | vec  | **Zipped Maximum** (`lst,lst`): Maximum of corresponding elements of #1 and #2</br>**Vectorised Maximum** (`lst,scl`): Maximum of #2 and #1</br>**Vectorised Maximum** (`scl,lst`): Maximum of #1 and #2</br>**Dyadic Maximum** (`scl,scl`): Maximum of #1 and #2</br>**Generate Sequence** (`nls,fun`): Call #2 on previous results of #2, starting with #1.</br>**Generate Sequence** (`fun,nls`): Call #1 on previous results of #1, starting with #2. |
 | <code>ġ</code> | <code>zip-min</code></br><code>min-dyad</code></br><code>min-ab</code></br><code>2gen</code> | 2 | vec  | **Zipped Minimum** (`lst,lst`): Minimum of corresponding elements of #1 and #2</br>**Vectorised Minimum** (`lst,scl`): Minimum of #2 and #1</br>**Vectorised Minimum** (`scl,lst`): Minimum of #1 and #2</br>**Dyadic Minimum** (`scl,scl`): Minimum of #1 and #2</br>**Generate Sequence** (`nls,fun`): Call #2 as a dyad infinitely with items of #1 as starting values |
-| <code>◲</code> | <code>sublists</code> | 1 |   | **Sublists** (`any`): All sublists of #1 |
 | <code>⌈</code> | <code>ceil</code></br><code>ceiling</code></br><code>split-on-spaces</code> | 1 | vec  | **Ceiling** (`num`): Ceiling of #1</br>**Split on Spaces** (`str`): Split #1 by spaces |
 | <code>⌊</code> | <code>floor</code></br><code>str-to-num</code> | 1 | vec  | **Floor** (`num`): Floor of #1</br>**String to Number** (`str`): Convert #1 to a number, ignoring non-digit characters. Returns 0 if no digits are found |
 | <code>⊖</code> | <code>0-slice</code></br><code>take</code></br><code>0-take</code> | 2 |   | **0 Slice** (`itr,num`): First #2 elements of #1</br>**0 Slice** (`num,itr`): First #1 elements of #2</br>**APL Style Take** (`lst,lst[num]`): APL style take</br>**Take While True** (`lst,fun`): Take elements from #1 while #2 is true</br>**Take While True** (`fun,lst`): Take elements from #2 while #1 is true |
@@ -150,12 +145,12 @@ Element, Modifier, and Syntax Reference
 | <code>±</code> | <code>signum</code> | 1 | vec  | **Signum** (`num`): Sign of #1 |
 | <code>†</code> | <code>lengths-of-consecutives</code> | 1 |   | **Lengths of Consecutives** (`lst`): Lengths of consecutive runs of equal elements in #1 |
 | <code>⎙</code> | <code>peek-print</code> | 1* |   | **Peek Print** (`any`): Print #1 without popping |
-| <code>✒</code> | <code>print</code> | 1 |   | **Print** (`any`): Print #1 without a trailing newline |
+| <code>γ</code> | <code>wrap-len-2</code> | 1 |   | **Wrap to Length 2** (`any`): Wrap #1 into chunks of length 2 |
 | <code>≓</code> | <code>mirror</code> | 1 |   | **Mirror** (`any`): Mirror #1 (#1 + reverse(#1)), as the original type |
 | <code>Ͼ</code> | <code>vectorised-sums</code></br><code>v/+</code> | 1 | vec  | **Vectorised Sums** (`lst`): Sum of each item in #1. Functionally equivalent to `¨Σ` |
 | <code>ᴥ</code> | <code>exec</code></br><code>10**</code></br><code>call</code></br><code>@</code> | 1 | vec  | **10 to the Power of** (`num`): 10 ** #1</br>**Execute** (`str`): Execute #1 as Vyxal code</br>**Call Function** (`fun`): Call function #1 |
 | <code>ℳ</code> | <code>modular</code></br><code>matrix-multiply</code></br><code>regex-full-match?</code> | 2 |   | **Every Nth AddElement** (`itr,num`): Every #2th element of #1</br>**Every Nth AddElement** (`num,itr`): Every #1th element of #2</br>**Matrix Multiply** (`lst,lst`): Matrix multiply #1 and #2</br>**Regex Full Match?** (`str,str`): Does pattern #2 fully match #1 |
-| <code>℗</code> | <code>is-prime</code></br><code>prime?</code></br><code>quine-cheese</code> | 1 | vec  | **Is Prime** (`num`): Is #1 a prime number?</br>**Quine Cheese** (`str`): Quotify #1 and prepend it to #1. (Useful for quines like `"⌭"⌭`) |
+| <code>℗</code> | <code>is-prime</code></br><code>prime?</code></br><code>quine-cheese</code> | 1 | vec  | **Is Prime** (`num`): Is #1 a prime number?</br>**Quine Cheese** (`str`): Quotify #1 and prepend it to #1. (Useful for quines like `"℗"℗`) |
 | <code>↸</code> | <code>roll</code> | 3 |   | **Roll** (`any,any,any`): #1 #2 #3 -> #3 #1 #2 |
 | <code>⍢</code> | <code>parity</code></br><code>bit</code></br><code>last-half</code> | 1 | vec  | **Parity** (`num`): Parity of #1 (1 if odd, 0 if even) --> #1 % 2</br>**Last String Half** (`str`): Last half of #1 |
 | <code>ℂ</code> | <code>ncr</code></br><code>choose</code></br><code>characters-same?</code></br><code>fixpoint-collect</code> | 2 | vec  | **NCR / N Choose R** (`num,num`): nCr of #1 and #2 (n choose r)</br>**Characters Same?** (`str,str`): Are all characters in #1 the same as #2?</br>**Fixpoint Collect** (`fun,any`): Repeatedly apply #1 on #2 until a fixed point is reached, collecting intermediate results</br>**Fixpoint Collect** (`any,fun`): Repeatedly apply #2 on #1 until a fixed point is reached, collecting intermediate results |
@@ -175,8 +170,7 @@ Element, Modifier, and Syntax Reference
 | <code>◌</code> | <code>round</code> | 1 | vec  | **Round** (`num`): Round #1 to the nearest integer, half-up |
 | <code>δ</code> | <code>deltas</code></br><code>differences</code> | 1 |   | **Deltas** (`lst`): Deltas/forward differences of #1 - [a - b, b - c, c - d, ...] |
 | <code>☷</code> | <code>partition-after-truthy</code></br><code>group-by</code> | 2 |   | **Partition After Truthy** (`lst,lst`):  Partition #1 after truthy indices of #2.</br>**Group By** (`lst,fun`): Group elements of #1 by function #2 |
-| <code>✇</code> | <code>edges</code></br><code>ends</code></br><code>real-imaginary</code> | 1 |   | **Edges** (`itr`): First and last element of #1</br>**Real and Imaginary** (`num`): Real and imaginary parts of #1 |
-| <code>⎃</code> | <code>flatten-and-join-on-nothing</code> | 1 |   | **Flatten and Join on Nothing** (`lst`): Flatten #1 and join on nothing |
+| <code>σ</code> | <code>cumulative-sums</code></br><code>cumsums</code></br><code>cumsum</code></br><code>cum-sum</code></br><code>-_-</code> | 1 |   | **Cumulative Sums** (`lst`): Cumulative sums of #1 |
 | <code>⎶</code> | <code>trim</code> | 2 |   | **Trim** (`any,any`): Trim #1 of leading and trailing #2 |
 | <code>⊆</code> | <code>subset?</code> | 2 |   | **Subset?** (`lst,lst`): Is the shallower list a subset of the deeper list? Checks windows corresponding to the length of the shallower list |
 | <code>⍨</code> | <code>dump</code> | 1 |   | **Dump** (`any`): Push all items of #1 to the stack |
@@ -185,12 +179,14 @@ Element, Modifier, and Syntax Reference
 | <code>≈</code> | <code>all-same</code> | 1 |   | **All Same** (`any`): Are all elements of #1 the same? |
 | <code>≊</code> | <code>all-equal-item</code> | 2 |   | **All Equal Item** (`lst,any`): Are all elements of #1 equal to #2? |
 | <code>κ</code> | <code>gcd</code> | 2 | vec  | **GCD** (`num,num`): GCD of #1 and #2</br>**GCD of List** (`lst`): GCD of all elements of #1</br>**GCD of List with Initial Value** (`lst,num`): GCD of all elements of #1.append(#2) |
-| <code>↳</code> | <code>retrieve-from-outer</code> | 1 |   | **Retrieve Item at Index from Outer Stack** (`num`): Retrieve the item at index #1 from the outer stack, current stack if at top level</br>**Retrieve Item at Index from Outer Stack N-Layers Up** (`lst[num, num]`): Retrieve the item at index #2 from the stack #1 levels up |
+| <code>‹</code> | <code>decrement</code></br><code>--</code></br><code>pad-to-8</code></br><code>dec</code></br><code>pad-8</code></br><code>pad-to-byte</code> | 1 | vec  | **Decrement** (`num`): #1 - 1</br>**Pad to 8** (`str`): Pad #1 to a length that is a multiple of 8 with '0's |
+| <code>›</code> | <code>increment</code></br><code>++</code></br><code>space-to-0</code></br><code>replace-spaces-with-0s</code></br><code>inc</code> | 1 | vec  | **Increment** (`num`): #1 + 1</br>**Spaces to 0s** (`str`): Replace spaces in #1 with '0's |
 | <code>ʀ</code> | <code>0->n</code></br><code>lowercase</code></br><code>range-0->n</code></br><code>nrange-0</code> | 1 | vec  | **Range 0** (`num`): Range from 0 to #1, exclusive</br>**Lowercase** (`str`): Lowercase #1 |
 | <code>ʁ</code> | <code>0->n++</code></br><code>uppercase</code></br><code>range-0->n++</code></br><code>n+range-0</code> | 1 | vec  | **Range 0 Inclusive** (`num`): Range from 0 to #1, inclusive</br>**Uppercase** (`str`): Uppercase #1 |
 | <code>ɾ</code> | <code>1->n++</code></br><code>is-alpha?</code> | 1 | vec  | **Range 1 Inclusive** (`num`): Range from 1 to #1, inclusive</br>**Is Character Alphabetical** (`str`): Check if #1 is alphabetical (i.e. is a letter) |
 | <code>▲</code> | <code>mask</code> | 2 |   | **Mask** (`any,any`): Keep elements of #1 where the corresponding element of #2 is truthy |
 | <code>Ṭ</code> | <code>truthy-indexes</code> | 1 |   | **Truthy Indexes** (`lst`): Indexes of truthy elements in #1 |
+| <code>Ṫ</code> | <code>untruth</code> | 1 |   | **Untruth** (`lst`): Create a list of 1s at indices in #1, 0s elsewhere |
 | <code>⤻</code> | <code>over</code> | STACK |   | **Over**: Duplicate the item below the top of the stack -> #2 #1 #2 |
 | <code>⤺</code> | <code>around</code> | STACK |   | **Around**: Duplicate the top of the stack around the item below the top of the stack -> #1 #2 #1 |
 | <code>Ŀ</code> | <code>vlen</code></br><code>lengths</code> | 1 |   | **Vectorised Lengths** (`lst`): Length of each element in #1 |
@@ -208,17 +204,18 @@ Element, Modifier, and Syntax Reference
 | <code>⑥</code> | <code>128</code> | 0 |   | **128**: Push 128 to the stack |
 | <code>⑦</code> | <code>256</code> | 0 |   | **256**: Push 256 to the stack |
 | <code>⑧</code> | <code>-1</code> | 0 |   | **-1**: Push -1 to the stack |
-| <code>⑨</code> | <code>empty-string</code> | 0 |   | **Empty string**: Push "" to the stack |
 | <code>„</code> | <code>join-on-spaces</code></br><code>*space</code></br><code><0</code></br><code>is-negative?</code> | 1 |   | **Join on Spaces** (`lst`): Join #1 on spaces</br>**Is negative?** (`num`): Push 1 if #1 < 0, 0 otherwise |
 | <code>”</code> | <code>join-on-newlines</code></br><code>*newline</code></br><code>one?->n</code> | 1 |   | **Join on Newlines** (`lst`): Join #1 on newlines</br>**Push Context Variable N if 1** (`num`): Push the context variable N if #1 is 1 |
 | <code>“</code> | <code>join-on-empty-string</code></br><code>*empty</code></br><code>is-alphanumeric?</code></br><code>insignificant?</code></br><code>first-positive-integer</code></br><code>first-n>0</code> | 1 |   | **Join on Empty String** (`lst`): Join #1 on the empty string</br>**Is alphanumeric?** (`str`): Push 1 if #1 is alphanumeric, 0 otherwise</br>**First Positive Integer Where Function is Truthy** (`fun`): Push the first positive integer where #1 is truthy</br>**Is Insignificant?** (`num`): abs(#1) <= 1 |
 | <code>#¿</code> | <code>input-count</code> | 0 |   | **Input Count**: Push the number of inputs to the stack |
+| <code>#,</code> | <code>print</code> | 1 |   | **Print** (`any`): Print #1 without a trailing newline |
 | <code>#?</code> | <code>inputs</code></br><code>all-inputs</code></br><code>all-stdin</code> | 0 |   | **Inputs**: Get all the global inputs as a list |
 | <code>#C</code> | <code>compress</code> | 1 | vec  | **Compress** (`str`): Compress #1 using the Vyxal compression algorithm |
 | <code>#Q</code> | <code>quit</code> | 0 |   | **Quit**: Quit the program |
 | <code>#X</code> | <code>break</code> | 0 |   | **Break**: Break out of the current loop |
 | <code>#c</code> | <code>b252compress</code> | 1 | vec  | **Base 252 Compress String** (`str`): Compress #1 using simple base 252 compression. Requires all characters to be lowercase letters, or spaces.</br>**Base 252 Compress Number** (`num`): Convert #1 to base 252, using the codepage as the digits |
 | <code>#x</code> | <code>continue</code> | 0 |   | **Continue**: Continue to the next iteration of the current loop |
+| <code>#↸</code> | <code>retrieve-from-outer</code> | 1 |   | **Retrieve Item at Index from Outer Stack** (`num`): Retrieve the item at index #1 from the outer stack, current stack if at top level</br>**Retrieve Item at Index from Outer Stack N-Layers Up** (`lst[num, num]`): Retrieve the item at index #2 from the stack #1 levels up |
 | <code>k1</code> | <code>1000</code> | 0 |   | **1000**: Push 1000 to the stack |
 | <code>k2</code> | <code>10000</code> | 0 |   | **10000**: Push 10000 to the stack |
 | <code>k3</code> | <code>100000</code> | 0 |   | **100000**: Push 100000 to the stack |
@@ -265,6 +262,7 @@ Element, Modifier, and Syntax Reference
 | <code>Þ¹</code> | <code>one-lift</code> | 1 |   | **One Lift** (`lst`): Multiply each element of #1 by its 1-based index |
 | <code>Þ⅟</code> | <code>matrix-inverse</code></br><code>m**-1</code> | 1 |   | **Matrix Inverse** (`lst[lst]`): Inverse of #1 |
 | <code>Þ◌</code> | <code>grid-neighbours-diagonals</code></br><code>grid-neighbors-diagonals</code></br><code>adjacent-cells-diagonals</code></br><code>adj-cells-diagonals</code></br><code>surrounding-cells-diagonals</code></br><code>eight-cells</code> | 1 |   | **Grid Neighbours Diagonals** (`lst`): Grid neighbours of #1 - up, down, left, right, and diagonals</br>**Grid Neighbours Diagonals With Starting Direction** (`lst,num`): Grid neighbours of cells in #1 - right, down, left, up, and diagonals - start from direction #2 => 0: right, 1: down, 2: left, 3: up |
+| <code>Þ⎶</code> | <code>edges</code></br><code>ends</code></br><code>real-imaginary</code> | 1 |   | **Edges** (`itr`): First and last element of #1</br>**Real and Imaginary** (`num`): Real and imaginary parts of #1 |
 | <code>Þ¤</code> | <code>grid-neighbours-diagonals-wrap</code></br><code>grid-neighbors-diagonals-wrap</code></br><code>adjacent-cells-diagonals-wrap</code></br><code>adj-cells-diagonals-wrap</code></br><code>surrounding-cells-diagonals-wrap</code></br><code>eight-cells-wrap</code> | 1 |   | **Grid Neighbours Diagonals Wrap** (`lst`): Grid neighbours of #1 - up, down, left, right, and diagonals - wrapping around</br>**Grid Neighbours Diagonals Wrap With Starting Direction** (`lst,num`): Grid neighbours of cells in #1 - right, down, left, up, and diagonals - wrapping around and start from direction #2 => 0: right, 1: down, 2: left, 3: up. Negative #2 does not include middle, positive #2 does |
 | <code>∆⟆</code> | <code>arcsin</code></br><code>arcsine</code> | 1 | vec  | **Arcsine** (`num`): Arcsine of #1 |
 | <code>∆<</code> | <code>arg</code></br><code>phase</code></br><code>angle</code> | 1 | vec  | **Argument** (`num`): The angle (argument) between the positive real axis and the line joining the origin to #1 in the complex plane. |
@@ -297,11 +295,9 @@ Element, Modifier, and Syntax Reference
 
 | Symbol | Keywords | Number of Elements | Overloads |
 |--------|--|------------------|-----------|
-| `~` | `filter:`</br>`without-popping:`</br>`peek:` | 1 | <table><tr><td>**Filter**</td><td>`mon`</td><td>Filter the top of the stack with #1</td><td>`#[1\|2\|3\|4\|5#] ~2≛ -> [2, 4]`</td></tr></br><tr><td>**Peek**</td><td>`dyd+`</td><td>Apply #1 without popping</td><td>`3 4 5 ~+ -> 3 4 9`</td></tr></table> |
 | `⩔` | `at-simple-levels:`</br>`@simple:` | 1 | <table><tr><td>**At Simple Levels**</td><td>`mon`</td><td>Apply #1 at the simple levels of the top of the stack</td><td>`#[#[#[1\|2\|3#]\|#[#[4\|5\|#[6\|7\|8#]#]#]#]#] ⩔L -> [[3, [[1, 1, 3]]]]`</td></tr></table> |
 | `Ẅ` | `zip-with:` | 1 | <table><tr><td>**Zip With**</td><td>`dyd`</td><td>Pop two lists and zip them, reducing each pair with #1</td><td>`#[1\|2\|3#] #[4\|5\|6#] ¨; -> [[1, 4], [2, 5], [3, 6]]`</td></tr></table> |
 | `⎇` | `dip:` | 1 | <table><tr><td>**Dip**</td><td>`mon`</td><td>Save the top stack item, apply #1, then push the saved item</td><td>`3 4 5 2 ⎇+ -> 3 9 2`</td></tr></table> |
-| `ᖶ` | `if-else:` | 2 | <table><tr><td>**If Else**</td><td>`any,any`</td><td>If the top of the stack is truthy, apply #1, else apply #2</td><td>`3 1 ᖶd½ -> 6`</td></tr></table> |
 | `¿` | `if:` | 1 | <table><tr><td>**If**</td><td>`any`</td><td>If the top of the stack is truthy, apply #1</td><td>`3 1 ¿d -> 6`</td></tr></table> |
 | `∥` | `parallel-apply:`</br>`para:` | 2 | <table><tr><td>**Parallel Apply**</td><td>`mon,mon`</td><td>Apply #1 and #2 on separate stacks and push both results</td><td>`3 4 ∥d½ -> 8 2`</td></tr></table> |
 | `∦` | `parallel-apply-wrap:`</br>`paraw:` | 2 | <table><tr><td>**Parallel Apply Wrap**</td><td>`mon,mon`</td><td>Apply #1 and #2 on separate stacks and push both results wrapped in a list. Equivalent to `∥#1#2;`</td><td>`3 4 ∦d½ -> [8, 2]`</td></tr></table> |
@@ -316,18 +312,19 @@ Element, Modifier, and Syntax Reference
 | `ᛞ` | `inner-product:` | 2 | <table><tr><td>**Inner Product**</td><td>`dyd,dyd`</td><td>Inner product of #1 and #2</td><td>`#[1\|2\|3#] #[4\|5\|6#] ᛞ×+ -> 32`</td></tr></table> |
 | `▦` | `outer-product:` | 1 | <table><tr><td>**Outer Product**</td><td>`dyd`</td><td>Outer product of #1 and #2</td><td>`#[1\|2\|3#] #[4\|5\|6#] ▦; -> [[[1,4],[1,5],[1,6]],[[2,4],[2,5],[2,6],[3,4],[3,5],[3,6]]]`</td></tr></table> |
 | `¨` | `each:` | 1 | <table><tr><td>**Each**</td><td>`any`</td><td>Map #1 over the top of the stack</td><td>`#[#[1\|2\|3#]\|#[4\|2\|3#]\|#[1\|5\|3#]#] ¨G -> [3, 4, 5]`</td></tr></table> |
+| `~` | `filter:`</br>`without-popping:`</br>`peek:` | 1 | <table><tr><td>**Filter**</td><td>`mon`</td><td>Filter the top of the stack with #1</td><td>`#[1\|2\|3\|4\|5#] ~2≛ -> [2, 4]`</td></tr></br><tr><td>**Peek**</td><td>`dyd+`</td><td>Apply #1 without popping</td><td>`3 4 5 ~+ -> 3 4 9`</td></tr></table> |
+| `#⍰` | `if-else:` | 2 | <table><tr><td>**If Else**</td><td>`any,any`</td><td>If the top of the stack is truthy, apply #1, else apply #2</td><td>`3 1 #⍰d½ -> 6`</td></tr></table> |
 
 ## Syntax
         
 | Symbol | Name | Keywords | Description | Usage |
 |--------|----|--|-----------|------|
 | <code>#:~</code> | Retrieve Original Element | `$.` | Call the original, vyxal defined, meaning of an element. Useful for when you want to define a new element with the same name as a built-in one | <code>#:~<name></code> |
+| <code>#]</code> | Close List | `]` | Close a list. Pushes the list to the stack when closed. | <code>#[item|item|item#]</code> |
 | <code>#:@</code> | Defined Element Call | `$@` | Call a defined element | <code>#:@<name></code> |
 | <code>#></code> | Augmented Assignment | `:>` | Apply a function to a variable value and store the result in the same variable. | <code><function> #> <variable></code> |
-| <code>Ω</code> | Open Filter Lambda | `filter-lam`</br>`filter<`</br>`filter-lambda` | Open a lambda that automatically filters the top of the stack by its function | <code>Ω<code>}</code> |
-| <code>₳</code> | Open Reduce/Accumulate Lambda | `reduce-lam`</br>`reduce<`</br>`reduce-lambda`</br>`fold<`</br>`fold-lam`</br>`fold-lambda` | Open a lambda that automatically reduces/accumulates the top of the stack by its function | <code>₳<code>}</code> |
-| <code>#]</code> | Close List | `]` | Close a list. Pushes the list to the stack when closed. | <code>#[item|item|item#]</code> |
 | <code>#¤</code> | Context Paramter Index | ``n`` | Index into the list of context parameters. | <code>¤<number></code> |
+| <code>ʎ</code> | Open Filter Lambda | `filter-lam`</br>`filter<`</br>`filter-lambda` | Open a lambda that automatically filters the top of the stack by its function | <code>Ω<code>}</code> |
 | <code>#=</code> | Assign Variable | `:=` | Assign a variable to a value. | <code>#=<variable></code> |
 | <code>#::R</code> | Record Definition | `record` | Define a record with members | <code>#:R<name>|#$restricted #=private #!public}</code> |
 | <code>#::+</code> | Extension Method | `extension` | Define an overload on a custom element based on types. Requires at least one type to be specified. | <code>#::+<name>|<arg1>|<type1>|<arg2>|<type2>...|<impl>}</code> |
@@ -340,6 +337,8 @@ Element, Modifier, and Syntax Reference
 | <code>λ</code> | Open Lambda | `lam`</br>`lambda`</br>`{` | Open a lambda. | <code>λ<parameters>|<code>}</code> |
 | <code>ƛ</code> | Open Map Lambda | `map-lam`</br>`map<`</br>`map-lambda` | Open a lambda that automatically maps its function to the top of the stack | <code>ƛ<code>}</code> |
 | <code>µ</code> | Open Sort Lambda | `sort-lam`</br>`sort<`</br>`sort-lambda` | Open a lambda that automatically sorts the top of the stack by its function | <code>µ<code>}</code> |
+| <code>ξ</code> | Stack Lambda | `lambda-stack` | Open a lambda that automatically takes arguments from the stack | <code>ξ<code>}</code> |
+| <code>⍾</code> | Eager Map | `eager-map-lambda`</br>`eager-map-lam`</br>`eager-map<` | Open a lambda that maps its function to the top of the stack, but evaluates eagerly | <code>⍾<code>}</code> |
 | <code>⎋</code> | Close a Structure and Get the First Item | `end-and-head`</br>`end-head` | Match and close the nearest open structure, then push the first item of the result to the stack | <code><structure open> <code> ⎋ <code not in structure></code> |
 | <code>⍟</code> | Close a Structure and Flatten | `end-and-flatten`</br>`end-flatten` | Match and close the nearest open structure, then flatten the result | <code><structure open> <code> ⍟ <code not in structure></code> |
 | <code>⎊</code> | Open Map Over Permutations Lambda | `map-permutations`</br>`map-perms`</br>`map-permutations<`</br>`permutations<` | Open a lambda that automatically maps over the permutations of the top of the stack | <code>⎊<code>}</code> |

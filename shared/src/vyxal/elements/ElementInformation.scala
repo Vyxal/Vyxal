@@ -1711,7 +1711,7 @@ object ElementInformation:
       ),
     ),
     AddElement(
-      symbol = "∑",
+      symbol = "Σ",
       keywords = Seq("sum", "sum-of", "+/", "/+", "sigma", "sigma-in-ohio"),
       arity = 1,
       Options(
@@ -2899,7 +2899,7 @@ object ElementInformation:
       ),
     ),
     AddElement(
-      symbol = "✒",
+      symbol = "#,",
       keywords = Seq("print"),
       arity = 1,
       Options(
@@ -3009,7 +3009,7 @@ object ElementInformation:
         name = "Quine Cheese",
         args = Seq("str"),
         description =
-          "Quotify #1 and prepend it to #1. (Useful for quines like `\"⌭\"⌭`)",
+          "Quotify #1 and prepend it to #1. (Useful for quines like `\"℗\"℗`)",
         typeSwitchable = false,
       ),
     ),
@@ -3354,7 +3354,7 @@ object ElementInformation:
       ),
     ),
     AddElement(
-      symbol = "✇",
+      symbol = "Þ⎶",
       keywords = Seq("edges", "ends", "real-imaginary"),
       arity = 1,
       Options(
@@ -3370,20 +3370,6 @@ object ElementInformation:
         name = "Real and Imaginary",
         args = Seq("num"),
         description = "Real and imaginary parts of #1",
-        typeSwitchable = false,
-      ),
-    ),
-    AddElement(
-      symbol = "⎃",
-      keywords = Seq("flatten-and-join-on-nothing"),
-      arity = 1,
-      Options(
-        vectorises = false
-      ),
-      Overload(
-        name = "Flatten and Join on Nothing",
-        args = Seq("lst"),
-        description = "Flatten #1 and join on nothing",
         typeSwitchable = false,
       ),
     ),
@@ -3532,7 +3518,7 @@ object ElementInformation:
       ),
     ),
     AddElement(
-      symbol = "↳",
+      symbol = "#↸",
       keywords = Seq("retrieve-from-outer"),
       arity = 1,
       Options(
@@ -3884,20 +3870,6 @@ object ElementInformation:
         name = "-1",
         args = Seq(),
         description = "Push -1 to the stack",
-        typeSwitchable = false,
-      ),
-    ),
-    AddElement(
-      symbol = "⑨",
-      keywords = Seq("empty-string"),
-      arity = 0,
-      Options(
-        vectorises = false
-      ),
-      Overload(
-        name = "Empty string",
-        args = Seq(),
-        description = "Push \"\" to the stack",
         typeSwitchable = false,
       ),
     ),
@@ -5213,7 +5185,7 @@ object ElementInformation:
       ),
     ),
     AddModifier(
-      symbol = "ᖶ",
+      symbol = "#⍰",
       keywords = Seq("if-else:"),
       numberOfElements = 2,
       ModifierOverload(
@@ -5221,7 +5193,7 @@ object ElementInformation:
         args = Seq("any", "any"),
         description =
           "If the top of the stack is truthy, apply #1, else apply #2",
-        example = "3 1 ᖶd½ -> 6",
+        example = "3 1 #⍰d½ -> 6",
       ),
     ),
     AddModifier(

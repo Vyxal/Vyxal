@@ -144,8 +144,7 @@ enum StructureType(val open: String) derives CanEqual:
   case For extends StructureType("(")
   case Lambda extends StructureType("λ")
   case LambdaMap extends StructureType("ƛ")
-  case LambdaFilter extends StructureType("Λ")
-  case LambdaReduce extends StructureType("ʎ")
+  case LambdaFilter extends StructureType("ʎ")
   case LambdaSort extends StructureType("µ")
   case LambdaStack extends StructureType("ξ")
   case LambdaMapEager extends StructureType("⍾")
@@ -159,7 +158,6 @@ object StructureType:
     StructureType.Lambda,
     StructureType.LambdaMap,
     StructureType.LambdaFilter,
-    StructureType.LambdaReduce,
     StructureType.LambdaSort,
     StructureType.LambdaStack,
     StructureType.LambdaMapEager,
@@ -284,6 +282,10 @@ abstract class LexerCommon:
     index += n + 1
     lastPopped = res.toString()
     res.toString()
+  protected def peek(n: Int = 1): String =
+    val res = StringBuilder()
+    for i <- 0 until n do res ++= programStack(i)
+    res.toString()
   protected def safeCheck(pred: String => Boolean): Boolean =
     programStack.nonEmpty && pred(programStack.head)
   protected def headEqual(c: String): Boolean =
@@ -298,6 +300,8 @@ abstract class LexerCommon:
   protected def headIsLetter: Boolean = safeCheck(c => c.head.isLetter)
   protected def headIsWhitespace: Boolean = safeCheck(c => c.head.isWhitespace)
   protected def headIn(s: String): Boolean = safeCheck(c => s.contains(c))
+  protected def headIn(s: Seq[String]): Boolean =
+    s.exists(c => headLookaheadEqual(c))
   protected def headIsCloser: Boolean
   protected def headIsBranch: Boolean
   protected def headIsOpener: Boolean
@@ -522,19 +526,19 @@ abstract class LexerCommon:
 end LexerCommon
 
 def Codepage =
-  """λƛΛʎµξ⍾⎋⍟⎊␤⎄⟆⩔Ẅ⊐
-⎇ᖶ¿∥∦∺⁜⑴⑵⑶⑷⎂⟒ᛞ▦¨
+  """λƛΛµξ⍾⎋⍟⎊⎄␤⩔Ẅ⊐⎇¿
+∥∦∺⁜⑴⑵⑶⑷⎂⟒ᛞ▦¨⊞×÷
  !"#$%&'()*+,-./
 0123456789:;<=>?
 @ABCDEFGHIJKLMNO
 PQRSTUVWXYZ[\]^_
 `abcdefghijklmno
-pqrstuvwxyz{|}⨥⨪
-ΣΠσ⇧⇩∪∩⊍⦰«»ƓɠĠġ◲
+pqrstuvwxyz{|}~◲
+⨥⨪ΣΠ⇧⇩∪∩⊍⦰«»ƓɠĠġ
 ⌈⌊⊖⌽£¥↜↝↺↻≜⎀⊢⊣ɦʈ
 ᐐᐵᐕ½ƶƵ⁰¹²³⅟※⇄⧖‰≛
-ℭ℈⦷Ϣ≤≥≠≡•±†⎙✒≓Ͼᴥ
+ℭ℈⦷Ϣ≤≥≠≡•±†⎙γ≓Ͼᴥ
 ℳ℗↸⍢ℂ⌹⏚↯⊠⚅æ␣¶★ᑂ∻
-√⍰◌δ☷✇⎃⎶⊆⍨⎘ꜝ≈≊κ↳
-ʀʁɾ▲Ṭ⤻⤺Ŀ¬∧∨Łḧ¤ᏜᏐ
-⧢①②③④⑤⑥⑦⑧⑨Þ∆ø„”“""".replace("\n", "").replace("␤", "\n")
+√⍰◌δ☷σ⎶⊆⍨⎘ꜝ≈≊κ‹›
+ʀʁɾ▲ṬṪ⤻⤺Ŀ¬∧∨ŁḧᏜᏐ
+¤⧢①②③④⑤⑥⑦⑧Þ∆ø„”“""".replace("\n", "").replace("␤", "\n")
