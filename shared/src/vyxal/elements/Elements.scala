@@ -1574,11 +1574,6 @@ object Elements:
           )
           VList(exponents)
     },
-    "ÞỊ" ->
-      fullToImpl(
-        Monad,
-        a => ListHelpers.truthyIndices(ListHelpers.makeIterable(a)),
-      ),
     addPart("øA", Monad, true) {
       case a: VNum =>
         "abcdefghijklmnopqrstuvwxyz".charAt(((a - 1) % 26).toInt).toString
