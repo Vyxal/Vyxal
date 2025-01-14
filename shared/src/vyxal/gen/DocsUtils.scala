@@ -163,7 +163,7 @@ object DocsUtils:
     s"""
       |@top Program { Statement+ }
       |@skip { Space }
-      |Statement { Digraph | SyntaxTrigraph | StructureOpen | StructureClose | ListStuff | ModifierChar | VariableThing | Number | AnyString | Branch | ContextIndex | Comment | Element }
+      |Statement { Digraph | SyntaxTrigraph | StructureOpen | StructureClose | ListStuff | Modifier | VariableThing | Number | AnyString | Branch | ContextIndex | Comment | Element }
       |Number { NumberDecimal | TwoCharNumber }
       |NumberDecimal {
       |    NumberPart |
@@ -176,7 +176,7 @@ object DocsUtils:
       |}
       |@tokens {
       |  Space { @whitespace+ }
-      |  ModifierChar {$$[$modifierCharacters]}
+      |  Modifier {$$[$modifierCharacters]}
       |  Comment {"##" (![\n])*}
       |  Digraph { $$[∆øÞk] _ | "#" ![[\\]$$!=#>@{:] }
       |  NumberPart { "0" | ($$[1-9] $$[0-9]*) }
