@@ -281,6 +281,7 @@ Element, Modifier, and Syntax Reference
 | <code>∆r</code> | <code>deg2rad</code></br><code>deg-to-rad</code> | 1 | vec  | **Degrees to Radians** (`num`): Convert #1 from degrees to radians |
 | <code>∆s</code> | <code>sin</code></br><code>sine</code> | 1 | vec  | **Sine** (`num`): Sine of #1 |
 | <code>∆t</code> | <code>tan</code></br><code>tangent</code> | 1 | vec  | **Tangent** (`num`): Tangent of #1 |
+| <code>∆⊍</code> | <code>bitwise-xor</code> | 2 | vec  | **Bitwise Xor** (`num,num`): #1 ^ #2 |
 | <code>∆⎀</code> | <code>polar-parts</code> | 1 | vec  | **Polar Parts** (`num`): Push the magnitude and argument of #1 |
 | <code>∆ʈ</code> | <code>arctan</code></br><code>arctangent</code> | 1 | vec  | **Arctangent** (`num`): Arctangent of #1 |
 | <code>∆ℭ</code> | <code>arccos</code></br><code>arccosine</code> | 1 | vec  | **Arccosine** (`num`): Arccosine of #1 |
@@ -288,6 +289,9 @@ Element, Modifier, and Syntax Reference
 | <code>∆↯</code> | <code>arcsin</code></br><code>arcsine</code> | 1 | vec  | **Arcsine** (`num`): Arcsine of #1 |
 | <code>∆æ</code> | <code>all-prime-exponents</code></br><code>all-prime-exps</code> | 1 | vec  | **All Prime Exponents** (`num`): For all primes less than or equal to #1, push the power of that prime in the factorisation of #1 |
 | <code>∆Ṭ</code> | <code>atan2</code></br><code>arctan2</code></br><code>arctangent2</code> | 2 | vec  | **Arctangent 2** (`num,num`): atan2(#1, #2) |
+| <code>∆¬</code> | <code>bitwise-not</code> | 1 | vec  | **Bitwise Not** (`num`): ~#1 |
+| <code>∆∧</code> | <code>bitwise-and</code> | 2 | vec  | **Bitwise And** (`num,num`): #1 & #2 |
+| <code>∆∨</code> | <code>bitwise-or</code> | 2 | vec  | **Bitwise Or** (`num,num`): #1 | #2 |
 | <code>∆⧢</code> | <code>root-of-unity</code> | 1 | vec  | **Principal Root of Unity** (`num`): Principal #1-th root of unity (e^(2i * pi / #1)) |
 | <code>øA</code> | <code>letter-to-number</code></br><code>number-to-letter</code></br><code>letter-number-swap</code></br><code>number-letter-swap</code></br><code>a1-swap</code> | 1 | vec  | **Letter to Number** (`str`): the index of #1 in the alphabet (one-indexed)</br>**Number to Letter** (`num`): the letter at index #1 in the alphabet (one-indexed) |
 | <code>ø◲</code> | <code>surround</code> | 2 |   | **Surround** (`any,any`): #1 prepended and appended to #2 |
