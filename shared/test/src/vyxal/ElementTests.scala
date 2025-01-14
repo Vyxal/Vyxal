@@ -339,7 +339,7 @@ class ElementTests extends VyxalTests:
 
   describe("Element ℂ") {
     testMulti(
-      "9⑵½⌊ℂ" -> VNum(0),
+      "9⑵½⌊ℂ" -> VNum(0)
     )
   }
 
