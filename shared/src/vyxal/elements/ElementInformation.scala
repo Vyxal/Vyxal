@@ -1711,7 +1711,7 @@ object ElementInformation:
       ),
     ),
     AddElement(
-      symbol = "Σ",
+      symbol = "∑",
       keywords = Seq("sum", "sum-of", "+/", "/+", "sigma", "sigma-in-ohio"),
       arity = 1,
       Options(
@@ -2936,7 +2936,7 @@ object ElementInformation:
       Overload(
         name = "Vectorised Sums",
         args = Seq("lst"),
-        description = "Sum of each item in #1. Functionally equivalent to `¨Σ`",
+        description = "Sum of each item in #1. Functionally equivalent to `¨∑`",
         typeSwitchable = false,
       ),
     ),

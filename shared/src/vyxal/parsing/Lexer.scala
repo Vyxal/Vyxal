@@ -534,7 +534,7 @@ def Codepage =
 PQRSTUVWXYZ[\]^_
 `abcdefghijklmno
 pqrstuvwxyz{|}~◲
-⨥⨪ΣΠ⇧⇩∪∩⊍⦰«»ƓɠĠġ
+⨥⨪∑Π⇧⇩∪∩⊍⦰«»ƓɠĠġ
 ⌈⌊⊖⌽£¥↜↝↺↻≜⎀⊢⊣ɦʈ
 ᐐᐵᐕ½ƶƵ⁰¹²³⅟※⇄⧖‰≛
 ℭ℈⦷Ϣ≤≥≠≡•±†⎙γ≓Ͼᴥ
