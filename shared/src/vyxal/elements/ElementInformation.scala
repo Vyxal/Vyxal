@@ -1396,7 +1396,7 @@ object ElementInformation:
         name = "Scan Fixpoint",
         args = Seq("fun", "any"),
         description =
-          "Repeatedly apply #1 to #2 until it doesn't change. Do include the initial value.",
+          "Repeatedly apply {#1|#2} to {#2|#1} until it doesn't change, collecting intermediate values, including initial value.",
         typeSwitchable = true,
       ),
       Overload(
@@ -3035,7 +3035,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ℂ",
-      keywords = Seq("ncr", "choose", "characters-same?", "fixpoint-collect"),
+      keywords = Seq("ncr", "choose", "characters-same?", "fixpoint"),
       arity = 2,
       Options(
         vectorises = true
@@ -3053,7 +3053,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
       Overload(
-        name = "Fixpoint Collect",
+        name = "Fixpoint",
         args = Seq("fun", "any"),
         description =
           "Repeatedly apply {#1|#2} on {#2|#1} until a fixed point is reached",
@@ -3663,7 +3663,8 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⧢",
-      keywords = Seq("into-n-pieces", "split-into-n-pieces"),
+      keywords =
+        Seq("into-n-pieces", "split-into-n-pieces", "fixpoint-collect-tail"),
       arity = 2,
       Options(vectorises = false),
       Overload(
@@ -3677,6 +3678,13 @@ object ElementInformation:
         args = Seq("itr", "num"),
         description = "Listify {#1|#2} and split it into {#2|#1} pieces",
         typeSwitchable = false,
+      ),
+      Overload(
+        name = "Fixpoint Unfold Without Initial Value",
+        args = Seq("fun", "any"),
+        description =
+          "Repeatedly apply {#1|#2} to {#2|#1}, collecting results (not including initial value)",
+        typeSwitchable = true,
       ),
     ),
     AddElement(

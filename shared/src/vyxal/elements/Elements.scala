@@ -1344,6 +1344,8 @@ object Elements:
         ListHelpers.intoNPieces(iterable.itr, numberOfChunks)
       case (predicate: VFun, initial) =>
         MiscHelpers.untilNoChange(predicate, initial).tail
+      case (initial, predicate: VFun) =>
+        MiscHelpers.untilNoChange(predicate, initial).tail
     },
     "▲" ->
       fullToImpl(
