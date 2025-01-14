@@ -233,7 +233,7 @@ Element, Modifier, and Syntax Reference
 | <code>kZ</code> | <code>reverse-uppercase</code> | 0 |   | **Reverse Uppercase**: Push "ZYXWVUTSRQPONMLKJIHGFEDCBA" to the stack |
 | <code>k^</code> | <code>uppercase-hex-digits</code> | 0 |   | **Uppercase Hex Digits**: Push "0123456789ABCDEF" to the stack |
 | <code>ka</code> | <code>lowercase-letters</code> | 0 |   | **Lowercase Letters**: Push "abcdefghijklmnopqrstuvwxyz" to the stack |
-| <code>kb</code> | <code>digits</code> | 0 |   | **Digits**: Push "0123456789" to the stack |
+| <code>kd</code> | <code>digits</code> | 0 |   | **Digits**: Push "0123456789" to the stack |
 | <code>ke</code> | <code>e-constant</code> | 0 |   | **E Constant**: Push 2.718281828459045 to the stack |
 | <code>kg</code> | <code>golden-ratio</code></br><code>phi-constant</code> | 0 |   | **Golden Ratio**: Push 1.618033988749895 to the stack |
 | <code>kh</code> | <code>helloworld</code> | 0 |   | **Hello World!**: Push "Hello World" to the stack, no punctuation |
