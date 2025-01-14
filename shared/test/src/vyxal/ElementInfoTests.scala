@@ -25,4 +25,13 @@ class ElementInfoTests extends AnyFunSuite:
         .filterNot(_.forall(Codepage.contains))
     if missing.nonEmpty then fail(s"Missing: $missing")
   }
+
+  test("No keywords are duplicated") {
+    val bad = ElementInformation.elements.filter { (sym, info) =>
+      ElementInformation.elements
+        .filter(_._1 != sym)
+        .exists(_._2.keywords.exists(info.keywords.contains))
+    }.keySet
+    if bad.nonEmpty then fail(s"Duplicated: $bad")
+  }
 end ElementInfoTests
