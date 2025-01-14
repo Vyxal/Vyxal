@@ -79,6 +79,20 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "⎊",
+      keywords = Seq("map-permutations", "map-perms"),
+      arity = 1,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Map Over Permutations",
+        args = Seq("any", "fun"),
+        description = "Map {#2|#1} over all permutations of {#1|#2}",
+        typeSwitchable = true,
+      ),
+    ),
+    AddElement(
       symbol = "÷",
       keywords = Seq("divide", "string-pieces", "regex-split", "/", "div"),
       arity = 2,
@@ -2618,7 +2632,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⧖",
-      keywords = Seq("permutations", "map-over-permutations"),
+      keywords = Seq("permutations"),
       arity = 1,
       Options(
         vectorises = false
@@ -2627,12 +2641,6 @@ object ElementInformation:
         name = "Permutations",
         args = Seq("any"),
         description = "All permutations of #1",
-        typeSwitchable = false,
-      ),
-      Overload(
-        name = "Map Over Permutations",
-        args = Seq("any", "fun"),
-        description = "Map #2 over all permutations of #1",
         typeSwitchable = false,
       ),
     ),
