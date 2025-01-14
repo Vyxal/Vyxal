@@ -12,10 +12,6 @@ Element, Modifier, and Syntax Reference
 
 | Symbol | Keywords | Arity | Vectorises | Overloads |
 |--------|--|------|-----------|-----------|
-| <code>Ṫ</code> | <code>untruth</code> | 1 |   | **Untruth** (`lst`): Create a list of 1s at indices in #1, 0s elsewhere |
-| <code>›</code> | <code>increment</code></br><code>++</code></br><code>space-to-0</code></br><code>replace-spaces-with-0s</code></br><code>inc</code> | 1 | vec  | **Increment** (`num`): #1 + 1</br>**Spaces to 0s** (`str`): Replace spaces in #1 with '0's |
-| <code>γ</code> | <code>wrap-len-2</code> | 1 |   | **Wrap to Length 2** (`any`): Wrap #1 into chunks of length 2 |
-| <code>‹</code> | <code>decrement</code></br><code>--</code></br><code>pad-to-8</code></br><code>dec</code></br><code>pad-8</code></br><code>pad-to-byte</code> | 1 | vec  | **Decrement** (`num`): #1 - 1</br>**Pad to 8** (`str`): Pad #1 to a length that is a multiple of 8 with '0's |
 | <code>⊞</code> | <code>counts</code></br><code>counts-of</code> | 1 |   | **Counts of Items** (`lst`): [#1.count(x) for x in set(#1)] |
 | <code>×</code> | <code>multiply</code></br><code>string-repeat</code></br><code>ring-translate</code></br><code>*</code></br><code>times</code> | 2 | vec  | **Multiplication** (`num,num`): #1 * #2 (#1 times #2)</br>**String Repeat** (`str,num`): Repeat string #1 #2 times</br>**String Repeat** (`num,str`): Repeat string #2 #1 times</br>**Ring Translate** (`str,str`): Ring translate #1 according to #2.  |
 | <code>÷</code> | <code>divide</code></br><code>string-pieces</code></br><code>regex-split</code></br><code>/</code></br><code>div</code> | 2 | vec  | **Division** (`num,num`): #1 / #2</br>**String into N Pieces** (`str,num`): Split string #1 into #2 pieces</br>**String into N Pieces** (`num,str`): Split string #2 into #1 pieces</br>**Regex Split** (`str,str`): Split #1 by regex #2 |
@@ -149,6 +145,7 @@ Element, Modifier, and Syntax Reference
 | <code>±</code> | <code>signum</code> | 1 | vec  | **Signum** (`num`): Sign of #1 |
 | <code>†</code> | <code>lengths-of-consecutives</code> | 1 |   | **Lengths of Consecutives** (`lst`): Lengths of consecutive runs of equal elements in #1 |
 | <code>⎙</code> | <code>peek-print</code> | 1* |   | **Peek Print** (`any`): Print #1 without popping |
+| <code>γ</code> | <code>wrap-len-2</code> | 1 |   | **Wrap to Length 2** (`any`): Wrap #1 into chunks of length 2 |
 | <code>≓</code> | <code>mirror</code> | 1 |   | **Mirror** (`any`): Mirror #1 (#1 + reverse(#1)), as the original type |
 | <code>Ͼ</code> | <code>vectorised-sums</code></br><code>v/+</code> | 1 | vec  | **Vectorised Sums** (`lst`): Sum of each item in #1. Functionally equivalent to `¨Σ` |
 | <code>ᴥ</code> | <code>exec</code></br><code>10**</code></br><code>call</code></br><code>@</code> | 1 | vec  | **10 to the Power of** (`num`): 10 ** #1</br>**Execute** (`str`): Execute #1 as Vyxal code</br>**Call Function** (`fun`): Call function #1 |
@@ -182,11 +179,14 @@ Element, Modifier, and Syntax Reference
 | <code>≈</code> | <code>all-same</code> | 1 |   | **All Same** (`any`): Are all elements of #1 the same? |
 | <code>≊</code> | <code>all-equal-item</code> | 2 |   | **All Equal Item** (`lst,any`): Are all elements of #1 equal to #2? |
 | <code>κ</code> | <code>gcd</code> | 2 | vec  | **GCD** (`num,num`): GCD of #1 and #2</br>**GCD of List** (`lst`): GCD of all elements of #1</br>**GCD of List with Initial Value** (`lst,num`): GCD of all elements of #1.append(#2) |
+| <code>‹</code> | <code>decrement</code></br><code>--</code></br><code>pad-to-8</code></br><code>dec</code></br><code>pad-8</code></br><code>pad-to-byte</code> | 1 | vec  | **Decrement** (`num`): #1 - 1</br>**Pad to 8** (`str`): Pad #1 to a length that is a multiple of 8 with '0's |
+| <code>›</code> | <code>increment</code></br><code>++</code></br><code>space-to-0</code></br><code>replace-spaces-with-0s</code></br><code>inc</code> | 1 | vec  | **Increment** (`num`): #1 + 1</br>**Spaces to 0s** (`str`): Replace spaces in #1 with '0's |
 | <code>ʀ</code> | <code>0->n</code></br><code>lowercase</code></br><code>range-0->n</code></br><code>nrange-0</code> | 1 | vec  | **Range 0** (`num`): Range from 0 to #1, exclusive</br>**Lowercase** (`str`): Lowercase #1 |
 | <code>ʁ</code> | <code>0->n++</code></br><code>uppercase</code></br><code>range-0->n++</code></br><code>n+range-0</code> | 1 | vec  | **Range 0 Inclusive** (`num`): Range from 0 to #1, inclusive</br>**Uppercase** (`str`): Uppercase #1 |
 | <code>ɾ</code> | <code>1->n++</code></br><code>is-alpha?</code> | 1 | vec  | **Range 1 Inclusive** (`num`): Range from 1 to #1, inclusive</br>**Is Character Alphabetical** (`str`): Check if #1 is alphabetical (i.e. is a letter) |
 | <code>▲</code> | <code>mask</code> | 2 |   | **Mask** (`any,any`): Keep elements of #1 where the corresponding element of #2 is truthy |
 | <code>Ṭ</code> | <code>truthy-indexes</code> | 1 |   | **Truthy Indexes** (`lst`): Indexes of truthy elements in #1 |
+| <code>Ṫ</code> | <code>untruth</code> | 1 |   | **Untruth** (`lst`): Create a list of 1s at indices in #1, 0s elsewhere |
 | <code>⤻</code> | <code>over</code> | STACK |   | **Over**: Duplicate the item below the top of the stack -> #2 #1 #2 |
 | <code>⤺</code> | <code>around</code> | STACK |   | **Around**: Duplicate the top of the stack around the item below the top of the stack -> #1 #2 #1 |
 | <code>Ŀ</code> | <code>vlen</code></br><code>lengths</code> | 1 |   | **Vectorised Lengths** (`lst`): Length of each element in #1 |
@@ -313,7 +313,7 @@ Element, Modifier, and Syntax Reference
 | `▦` | `outer-product:` | 1 | <table><tr><td>**Outer Product**</td><td>`dyd`</td><td>Outer product of #1 and #2</td><td>`#[1\|2\|3#] #[4\|5\|6#] ▦; -> [[[1,4],[1,5],[1,6]],[[2,4],[2,5],[2,6],[3,4],[3,5],[3,6]]]`</td></tr></table> |
 | `¨` | `each:` | 1 | <table><tr><td>**Each**</td><td>`any`</td><td>Map #1 over the top of the stack</td><td>`#[#[1\|2\|3#]\|#[4\|2\|3#]\|#[1\|5\|3#]#] ¨G -> [3, 4, 5]`</td></tr></table> |
 | `~` | `filter:`</br>`without-popping:`</br>`peek:` | 1 | <table><tr><td>**Filter**</td><td>`mon`</td><td>Filter the top of the stack with #1</td><td>`#[1\|2\|3\|4\|5#] ~2≛ -> [2, 4]`</td></tr></br><tr><td>**Peek**</td><td>`dyd+`</td><td>Apply #1 without popping</td><td>`3 4 5 ~+ -> 3 4 9`</td></tr></table> |
-| `#⍰` | `if-else:` | 2 | <table><tr><td>**If Else**</td><td>`any,any`</td><td>If the top of the stack is truthy, apply #1, else apply #2</td><td>`3 1 ᖶd½ -> 6`</td></tr></table> |
+| `#⍰` | `if-else:` | 2 | <table><tr><td>**If Else**</td><td>`any,any`</td><td>If the top of the stack is truthy, apply #1, else apply #2</td><td>`3 1 #⍰d½ -> 6`</td></tr></table> |
 
 ## Syntax
         
