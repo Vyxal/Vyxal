@@ -4131,7 +4131,7 @@ object ElementInformation:
       ),
     ),
     AddElement(
-      symbol = "kb",
+      symbol = "kd",
       keywords = Seq("digits"),
       arity = 0,
       Options(
