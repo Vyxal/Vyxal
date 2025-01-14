@@ -197,6 +197,7 @@ Element, Modifier, and Syntax Reference
 | <code>Ł</code> | <code>length-peek</code> | 1* |   | **Length Peek** (`any`): Push the length of #1 without popping |
 | <code>ḧ</code> | <code>heads</code></br><code>head-each</code> | 1 |   | **Heads** (`lst`): First element of each element in #1 |
 | <code>¤</code> | <code>stringify</code></br><code>to-str</code></br><code>str</code> | 1 |   | **Stringify** (`any`): Stringify #1 |
+| <code>⧢</code> | <code>into-n-pieces</code></br><code>split-into-n-pieces</code> | 2 |   | **Split Into N Pieces** (`itr,num`): Split #1 into #2 pieces</br>**Split Into N Pieces** (`num,itr`): Split #2 into #1 pieces</br>**Split Number Into N Pieces** (`itr,num`): Listify {#1|#2} and split it into {#2|#1} pieces |
 | <code>①</code> | <code>10</code> | 0 |   | **10**: Push 10 to the stack |
 | <code>②</code> | <code>16</code> | 0 |   | **16**: Push 16 to the stack |
 | <code>③</code> | <code>32</code> | 0 |   | **32**: Push 32 to the stack |
@@ -247,7 +248,6 @@ Element, Modifier, and Syntax Reference
 | <code>kz</code> | <code>reverse-lowercase</code> | 0 |   | **Reverse Lowercase**: Push "zyxwvutsrqponmlkjihgfedcba" to the stack |
 | <code>kæ</code> | <code>all-primes</code></br><code>primes</code> | 0 |   | **All Primes**: Push a list of every prime number to the stack |
 | <code>kṬ</code> | <code>ZZ</code></br><code>integers</code> | 0 |   | **Integers**: Push a list of every integer to the stack |
-| <code>Þ÷</code> | <code>into-n-pieces</code></br><code>split-into-n-pieces</code> | 2 |   | **Split Into N Pieces** (`itr,num`): Split #1 into #2 pieces</br>**Split Into N Pieces** (`num,itr`): Split #2 into #1 pieces |
 | <code>Þ0</code> | <code>zero-pad</code> | 2 |   | **Zero Pad** (`itr,num`): #1 zero-padded to length #2</br>**Zero Pad** (`num,itr`): #2 zero-padded to length #1</br>**Zero Pad** (`itr,itr`): #1 zero-padded to length of #2 |
 | <code>ÞO</code> | <code>grid-neighbours-wrap</code></br><code>grid-neighbors-wrap</code></br><code>adjacent-cells-wrap</code></br><code>adj-cells-wrap</code></br><code>surrounding-cells-wrap</code> | 1 |   | **Grid Neighbours Wrap** (`lst`): Grid neighbours of #1 - up, down, left, right - wrapping around</br>**Grid Neighbours Wrap With Starting Direction** (`lst,num`): Grid neighbours of cells in #1 - right, down, left, up - wrapping around and start from direction #2 => 0: right, 1: down, 2: left, 3: up. Negative #2 does not include middle, positive #2 does |
 | <code>ÞR</code> | <code>reshape</code> | 2 |   | **Reshape** (`lst,lst[num]`): Reshape #1 to the shape #2 |
