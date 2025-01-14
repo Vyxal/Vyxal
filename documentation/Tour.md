@@ -652,8 +652,9 @@ common lambda-element combinations. These are:
 
 ```
 ƛ...} # Mapping lambda. Equivalent to λ...}M
-Ω...} # Filter lambda. Equivalent to λ...}F
-₳...} # Accumulation lambda. Equivalent to λ...}R
+ʎ...} # Filter lambda. Equivalent to λ...}F
+ξ...} # Stack lambda. Sets arity to -1.
+⍾...} # Eager map. Does not compute the result lazily.
 µ...} # Sorting lambda. Equivalent to λ...}↯
 ⎊...} # Map Over Permutations lambda. Equivalent to λ...}⧖ or ⧖λ...}M
 ```

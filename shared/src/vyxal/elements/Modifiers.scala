@@ -234,7 +234,7 @@ object Modifiers:
       case AST(dyad, 2) => Seq(dyad.lam, AST.Command("#|zip-with"))
     },
     "¿" -> fullToImpl(Monadic, (ast) => Seq(ast.lam, AST.Command("#|if"))),
-    "ᖶ" ->
+    "#⍰" ->
       fullToImpl(
         Dyadic,
         (truthy, falsey) =>

@@ -1045,7 +1045,7 @@ object Elements:
       direct(Monad) {
         MiscHelpers.vyPrintln(peek())
       },
-    "✒" ->
+    "#," ->
       direct(Monad) {
         MiscHelpers.vyPrint(pop())
       },
@@ -1191,7 +1191,7 @@ object Elements:
         ListHelpers.groupBy(iterable.itr, predicate)
       case (a, b) => ListHelpers.partitionAfterTruthyIndices(a, b)
     },
-    addPart("✇", Monad, false) {
+    addPart("Þ⎶", Monad, false) {
       case a: VNum => Seq(a.real, a.imag)
       case a =>
         val iterable = a.itr
@@ -1199,7 +1199,6 @@ object Elements:
         else if iterable.length == 1 then Seq(iterable.head)
         else Seq(iterable.head, iterable.last)
     },
-    "⎃" -> fullToImpl(Monad, x => ListHelpers.flatten(x.itr).mkString),
     addPart("⎶", Dyad, false) {
       case (VStr(a), VStr(b)) => a.stripPrefix(b).stripSuffix(b)
       case (VStr(a), b: VNum) =>
@@ -1291,7 +1290,7 @@ object Elements:
                 throw UnsupportedOverloadException("κ", "String | Function")
           case _ => throw UnsupportedOverloadException("κ", "String | Function")
       },
-    "↳" ->
+    "#↸" ->
       direct(Monad) {
         val index = pop()
         index match
@@ -1302,9 +1301,9 @@ object Elements:
             push(value)
           case VList(coordinates) =>
             if coordinates.length != 2 then
-              throw InvalidListOverloadException("↳", coordinates, "2")
+              throw InvalidListOverloadException("#↸", coordinates, "2")
             if !coordinates.forall(_.isInstanceOf[VNum]) then
-              throw InvalidListOverloadException("↳", coordinates, "numeric")
+              throw InvalidListOverloadException("#↸", coordinates, "numeric")
             val ctx = summon[Context]
             var parentCtx = ctx
             for _ <-
@@ -1313,7 +1312,7 @@ object Elements:
             val value = parentCtx.getStack.vlst
               .indexBig(coordinates(1).asInstanceOf[VNum].toBigInt)
             push(value)
-          case _ => throw UnsupportedOverloadException("↳", "Non-number")
+          case _ => throw UnsupportedOverloadException("#↸", "Non-number")
         end match
       },
     "”" ->
@@ -1392,7 +1391,6 @@ object Elements:
     "⑥" -> niladify(128),
     "⑦" -> niladify(256),
     "⑧" -> niladify(-1),
-    "⑨" -> niladify(""),
     "kæ" -> niladify(NumberHelpers.probablePrimes),
     "k1" -> niladify(1000),
     "k2" -> niladify(10000),
