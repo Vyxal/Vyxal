@@ -5065,7 +5065,7 @@ object ElementInformation:
       keywords = Seq("*:"),
       numberOfElements = 1,
       ModifierOverload(
-        name = "Next AddElement as Lambda",
+        name = "Next Element as Lambda",
         args = Seq("any"),
         description = "Wrap #1 in a lambda and push it",
         example = "⑴+ = λ+}",
