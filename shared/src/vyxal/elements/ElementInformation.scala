@@ -4326,6 +4326,62 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "∆∧",
+      keywords = Seq("bitwise-and"),
+      arity = 2,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Bitwise And",
+        args = Seq("num", "num"),
+        description = "#1 & #2",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "∆∨",
+      keywords = Seq("bitwise-or"),
+      arity = 2,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Bitwise Or",
+        args = Seq("num", "num"),
+        description = "#1 | #2",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "∆¬",
+      keywords = Seq("bitwise-not"),
+      arity = 1,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Bitwise Not",
+        args = Seq("num"),
+        description = "~#1",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "∆⊍",
+      keywords = Seq("bitwise-xor"),
+      arity = 2,
+      Options(
+        vectorises = true
+      ),
+      Overload(
+        name = "Bitwise Xor",
+        args = Seq("num", "num"),
+        description = "#1 ^ #2",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
       symbol = "#C",
       keywords = Seq("compress"),
       arity = 1,

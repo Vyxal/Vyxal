@@ -1565,6 +1565,18 @@ object Elements:
           )
           VList(exponents)
     },
+    addPart("∆∧", Dyad, true) {
+      case (a: VNum, b: VNum) => a.toBigInt & b.toBigInt
+    },
+    addPart("∆∨", Dyad, true) {
+      case (a: VNum, b: VNum) => a.toBigInt | b.toBigInt
+    },
+    addPart("∆¬", Monad, true) {
+      case a: VNum => ~a.toBigInt
+    },
+    addPart("∆⊍", Dyad, true) {
+      case (a: VNum, b: VNum) => a.toBigInt ^ b.toBigInt
+    },
     addPart("øA", Monad, true) {
       case a: VNum =>
         "abcdefghijklmnopqrstuvwxyz".charAt(((a - 1) % 26).toInt).toString
