@@ -17,8 +17,11 @@ import scala.util.matching.Regex
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
 
-extension (a: VAny)(using Context) def itr = ListHelpers.makeIterable(a)
 extension (a: VAny)(using Context)
+  /** Convert to an iterable */
+  def itr = ListHelpers.makeIterable(a)
+
+  /** Convert to an iterable. Forcibly rangifies numbers, unlike `.itr` */
   def ritr = ListHelpers.makeIterable(a, Some(true))
 
 extension (a: String)(using Context) def toNum: VNum = VNum(a)
@@ -1256,24 +1259,15 @@ object Elements:
       case VStr(a) => a // TODO: Better overload
       case VList(a) => a.itr.filter(elem => elem.toBool)
     },
-    "≈" ->
-      fullToImpl(
-        Monad,
-        item =>
-          (
-              (lst: Seq[VAny]) =>
-                if lst.isEmpty then VNum(1) else VNum(lst.forall(_ == lst(0)))
-          )(item.itr),
-      ),
-    "≊" ->
-      fullToImpl(
-        Dyad,
-        (lst, item) =>
-          (
-              (lst: Seq[VAny]) =>
-                if lst.isEmpty then VNum(0) else VNum(lst.forall(_ == lst(0)))
-          )(lst.itr),
-      ),
+    addPart("≈", Monad, false) {
+      case iter: (VList | VStr | VNum) =>
+        val lst = iter.itr
+        if lst.isEmpty then VNum(1) else lst.forall(_ === lst(0))
+    },
+    addPart("≊", Dyad, false) {
+      case (iter: (VList | VStr | VNum), item) => iter.itr.forall(_ === item)
+      case (item, iter: (VList | VStr | VNum)) => iter.itr.forall(_ === item)
+    },
     "κ" ->
       direct(Dyad) {
         pop() match
