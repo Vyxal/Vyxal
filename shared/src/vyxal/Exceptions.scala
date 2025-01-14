@@ -54,6 +54,11 @@ class UnimplementedOverloadException(element: String, args: Seq[VAny])
       s"$element not supported for input(s) ${args.mkString("[", ", ", "]")}"
     )
 
+class UnimplementedModifierOverloadException(modifier: String, args: Seq[AST])
+    extends VyxalRuntimeException(
+      s"$modifier not defined for input(s) ${args.mkString("[", ", ", "]")}"
+    )
+
 class UnsupportedOverloadException(element: String, message: String)
     extends VyxalRuntimeException(
       s"$element not supported for type $message"

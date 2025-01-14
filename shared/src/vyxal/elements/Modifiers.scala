@@ -2,6 +2,7 @@ package vyxal.elements
 
 import vyxal.conversions.{*, given}
 import vyxal.AST
+import vyxal.UnimplementedModifierOverloadException
 import vyxal.VNum
 
 /** Calculate the effective arity of a group. The effective arity is the number
@@ -85,7 +86,7 @@ object Monadic
   override def fill(symbol: String)(fn: PartialMonadicModifier) =
     arg =>
       if fn.isDefinedAt(arg) then fn(arg)
-      else throw Exception(s"Monadic modifier $symbol not defined for $arg")
+      else throw UnimplementedModifierOverloadException(symbol, arg)
 
 object Dyadic extends ModifierHelpers[PartialDyadicModifier, DyadicModifier](2):
   override def toDirectFn(impl: DyadicModifier) =
@@ -98,10 +99,7 @@ object Dyadic extends ModifierHelpers[PartialDyadicModifier, DyadicModifier](2):
     (ast1, ast2) =>
       val args = (ast1, ast2)
       if fn.isDefinedAt(args) then fn(args)
-      else
-        throw Exception(
-          s"Dyadic modifier $symbol not defined for ${args.toList}"
-        )
+      else throw UnimplementedModifierOverloadException(symbol, arg)
 
 object Triadic
     extends ModifierHelpers[PartialTriadicModifier, TriadicModifier](3):
@@ -117,11 +115,7 @@ object Triadic
     (ast1, ast2, ast3) =>
       val args = (ast1, ast2, ast3)
       if fn.isDefinedAt(args) then fn(args)
-      else
-        throw Exception(
-          s"Triadic modifier $symbol not defined for ${args.toList}"
-        )
-end Triadic
+      else throw UnimplementedModifierOverloadException(symbol, arg)
 
 object Tetradic
     extends ModifierHelpers[PartialTetradicModifier, TetradicModifier](4):
@@ -137,11 +131,7 @@ object Tetradic
     (ast1, ast2, ast3, ast4) =>
       val args = (ast1, ast2, ast3, ast4)
       if fn.isDefinedAt(args) then fn(args)
-      else
-        throw Exception(
-          s"Tetradic modifier $symbol not defined for ${args.toList}"
-        )
-end Tetradic
+      else throw UnimplementedModifierOverloadException(symbol, arg)
 
 object Modifiers:
   case class Modifier(arity: Int, from: DirectFn)
