@@ -87,7 +87,7 @@ Element, Modifier, and Syntax Reference
 | <code>◲</code> | <code>sublists</code> | 1 |   | **Sublists** (`any`): All sublists of #1 |
 | <code>⨥</code> | <code>+2</code></br><code>add-2</code></br><code>++++</code></br><code>inc-inc</code></br><code>strlen==1</code> | 1 | vec  | **Add 2** (`num`): #1 + 2</br>**String Length Equals 1** (`str`): Is the length of #1 equal to 1 |
 | <code>⨪</code> | <code>-2</code></br><code>subtract-2</code></br><code>----</code></br><code>dec-dec</code></br><code>flip-bracket-palindrome</code> | 1 | vec  | **Subtract 2** (`num`): #1 - 2</br>**Flip Bracket Palindrome** (`str`): Palindromise #1 by appending the reverse with brackets and slashes flipped |
-| <code>Σ</code> | <code>sum</code></br><code>sum-of</code></br><code>+/</code></br><code>/+</code></br><code>sigma</code></br><code>sigma-in-ohio</code> | 1 |   | **Sum** (`lst`): Sum of #1</br>**Join and Evaluate** (`lst[at least 1 str]`): Join #1 and evaluate the result |
+| <code>∑</code> | <code>sum</code></br><code>sum-of</code></br><code>+/</code></br><code>/+</code></br><code>sigma</code></br><code>sigma-in-ohio</code> | 1 |   | **Sum** (`lst`): Sum of #1</br>**Join and Evaluate** (`lst[at least 1 str]`): Join #1 and evaluate the result |
 | <code>Π</code> | <code>product</code></br><code>product-of</code></br><code>*/</code></br><code>first-int</code> | 1 |   | **Product** (`lst`): Product of #1</br>**Number to Binary as String** (`num`): Convert #1 to binary as a string</br>**First Integer Where Predicate is True** (`fun`): First integer where #1 is true (positive or negative) |
 | <code>⇧</code> | <code>grade-up</code> | 1 |   | **Grade Up** (`lst`): Indices that would sort #1 |
 | <code>⇩</code> | <code>grade-down</code> | 1 |   | **Grade Down** (`lst`): Indices that would sort #1 in reverse |
@@ -147,7 +147,7 @@ Element, Modifier, and Syntax Reference
 | <code>⎙</code> | <code>peek-print</code> | 1* |   | **Peek Print** (`any`): Print #1 without popping |
 | <code>γ</code> | <code>wrap-len-2</code> | 1 |   | **Wrap to Length 2** (`any`): Wrap #1 into chunks of length 2 |
 | <code>≓</code> | <code>mirror</code> | 1 |   | **Mirror** (`any`): Mirror #1 (#1 + reverse(#1)), as the original type |
-| <code>Ͼ</code> | <code>vectorised-sums</code></br><code>v/+</code> | 1 | vec  | **Vectorised Sums** (`lst`): Sum of each item in #1. Functionally equivalent to `¨Σ` |
+| <code>Ͼ</code> | <code>vectorised-sums</code></br><code>v/+</code> | 1 | vec  | **Vectorised Sums** (`lst`): Sum of each item in #1. Functionally equivalent to `¨∑` |
 | <code>ᴥ</code> | <code>exec</code></br><code>10**</code></br><code>call</code></br><code>@</code> | 1 | vec  | **10 to the Power of** (`num`): 10 ** #1</br>**Execute** (`str`): Execute #1 as Vyxal code</br>**Call Function** (`fun`): Call function #1 |
 | <code>ℳ</code> | <code>modular</code></br><code>matrix-multiply</code></br><code>regex-full-match?</code> | 2 |   | **Every Nth AddElement** (`itr,num`): Every #2th element of #1</br>**Every Nth AddElement** (`num,itr`): Every #1th element of #2</br>**Matrix Multiply** (`lst,lst`): Matrix multiply #1 and #2</br>**Regex Full Match?** (`str,str`): Does pattern #2 fully match #1 |
 | <code>℗</code> | <code>is-prime</code></br><code>prime?</code></br><code>quine-cheese</code> | 1 | vec  | **Is Prime** (`num`): Is #1 a prime number?</br>**Quine Cheese** (`str`): Quotify #1 and prepend it to #1. (Useful for quines like `"℗"℗`) |
