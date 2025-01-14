@@ -3670,6 +3670,24 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "⧢",
+      keywords = Seq("into-n-pieces", "split-into-n-pieces"),
+      arity = 2,
+      Options(vectorises = false),
+      Overload(
+        name = "Split Into N Pieces",
+        args = Seq("itr", "num"),
+        description = "Split {#1|#2} into {#2|#1} pieces",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Split Number Into N Pieces",
+        args = Seq("itr", "num"),
+        description = "Listify {#1|#2} and split it into {#2|#1} pieces",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
       symbol = "▲",
       keywords = Seq("mask"),
       arity = 2,
@@ -5005,18 +5023,6 @@ object ElementInformation:
         args = Seq("lst[lst]"),
         description = "Inverse of #1",
         typeSwitchable = false,
-      ),
-    ),
-    AddElement(
-      symbol = "Þ÷",
-      keywords = Seq("into-n-pieces", "split-into-n-pieces"),
-      arity = 2,
-      Options(vectorises = false),
-      Overload(
-        name = "Split Into N Pieces",
-        args = Seq("itr", "num"),
-        description = "Split {#1|#2} into {#2|#1} pieces",
-        typeSwitchable = true,
       ),
     ),
   )

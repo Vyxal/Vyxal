@@ -1750,12 +1750,6 @@ object Elements:
           lst
         }
     },
-    addPart("Þ÷", Dyad, false) {
-      case (VList(a), b: VNum) => ListHelpers.intoNPieces(a, b)
-      case (a: VNum, VList(b)) => ListHelpers.intoNPieces(b, a)
-      case (VStr(a), b: VNum) => StringHelpers.intoNPieces(a, b)
-      case (a: VNum, VStr(b)) => StringHelpers.intoNPieces(b, a)
-    },
   )
 
   // Subject to being added as overloads onto things in elements
