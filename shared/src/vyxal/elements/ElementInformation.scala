@@ -3927,6 +3927,68 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "k+",
+      keywords = Seq("-1~1"),
+      arity = 0,
+      Options(vectorises = false),
+      Overload(
+        name = "[-1, 1]",
+        args = Seq(),
+        description = "Push the list [-1, 1] to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k-",
+      keywords = Seq("1~-1"),
+      arity = 0,
+      Options(vectorises = false),
+      Overload(
+        name = "[1, -1]",
+        args = Seq(),
+        description = "Push the list [1, -1] to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k≈",
+      keywords = Seq("0~1"),
+      arity = 0,
+      Options(vectorises = false),
+      Overload(
+        name = "[0, 1]",
+        args = Seq(),
+        description = "Push the list [0, 1] to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k±",
+      keywords = Seq("1~1", "f11"),
+      arity = 0,
+      Options(vectorises = false),
+      Overload(
+        name = "[1, 1]",
+        args = Seq(),
+        description = "Push the list [1, 1] to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k0",
+      keywords = Seq("360"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "360",
+        args = Seq(),
+        description = "Push 360 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
       symbol = "k1",
       keywords = Seq("1000"),
       arity = 0,
@@ -3979,6 +4041,20 @@ object ElementInformation:
         name = "1000000",
         args = Seq(),
         description = "Push 1000000 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k5",
+      keywords = Seq("4294967296"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "4294967296",
+        args = Seq(),
+        description = "Push 4294967296 to the stack",
         typeSwitchable = false,
       ),
     ),
@@ -4128,6 +4204,34 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "kV",
+      keywords = Seq("uppercase-vowels"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Uppercase Vowels",
+        args = Seq(),
+        description = "Push \"AEIOU\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "kY",
+      keywords = Seq("uppercase-vowelsy"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Uppercase Vowels and Y",
+        args = Seq(),
+        description = "Push \"AEIOUY\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
       symbol = "kZ",
       keywords = Seq("reverse-uppercase"),
       arity = 0,
@@ -4240,6 +4344,21 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "kk",
+      keywords = Seq("rhhw-cheese"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Radiation Hardening Hello World cheese",
+        args = Seq(),
+        description =
+          "Push \"Hello, World!\" to the stack. Useful for radiation hardening hello worlds, because you can submit kkH as your answer.",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
       symbol = "kl",
       keywords = Seq("reverse-uppercase-lowercase"),
       arity = 0,
@@ -4298,6 +4417,34 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "kv",
+      keywords = Seq("lowercase-vowels"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Lowercase Vowels",
+        args = Seq(),
+        description = "Push \"aeiou\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "ky",
+      keywords = Seq("lowercase-vowelsy"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Lowercase Vowels and Y",
+        args = Seq(),
+        description = "Push \"aeiouy\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
       symbol = "kz",
       keywords = Seq("reverse-lowercase"),
       arity = 0,
@@ -4308,6 +4455,48 @@ object ElementInformation:
         name = "Reverse Lowercase",
         args = Seq(),
         description = "Push \"zyxwvutsrqponmlkjihgfedcba\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k⎶",
+      keywords = Seq("all-brackets"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "All Brackets",
+        args = Seq(),
+        description = "Push \"{}[]<>()\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k☷",
+      keywords = Seq("brackets-without-<>"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Brackets Without <>",
+        args = Seq(),
+        description = "Push \"{}[]()\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k◲",
+      keywords = Seq("parens-squares"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Parens and Squares",
+        args = Seq(),
+        description = "Push \"()[]\" to the stack",
         typeSwitchable = false,
       ),
     ),
