@@ -227,6 +227,8 @@ Element, Modifier, and Syntax Reference
 | <code>k4</code> | <code>1000000</code> | 0 |   | **1000000**: Push 1000000 to the stack |
 | <code>k5</code> | <code>4294967296</code> | 0 |   | **4294967296**: Push 4294967296 to the stack |
 | <code>k6</code> | <code>hex-digits</code> | 0 |   | **Hex Digits**: Push "0123456789abcdef" to the stack |
+| <code>k<</code> | <code>open-fish-brackets</code> | 0 |   | **Open Brackets**: Push "([{<" to the stack |
+| <code>k></code> | <code>close-fish-brackets</code> | 0 |   | **Close Brackets**: Push ")]}>" |
 | <code>kA</code> | <code>uppercase-letters</code> | 0 |   | **Uppercase Letters**: Push "ABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
 | <code>kB</code> | <code>uppercase-lowercase</code> | 0 |   | **Uppercase and Lowercase**: Push "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" to the stack |
 | <code>kD</code> | <code>line-chars</code> | 0 |   | **Line Chars**: Push "\|/-_" to the stack - useful for drawing lines |
@@ -255,6 +257,8 @@ Element, Modifier, and Syntax Reference
 | <code>ky</code> | <code>lowercase-vowelsy</code> | 0 |   | **Lowercase Vowels and Y**: Push "aeiouy" to the stack |
 | <code>kz</code> | <code>reverse-lowercase</code> | 0 |   | **Reverse Lowercase**: Push "zyxwvutsrqponmlkjihgfedcba" to the stack |
 | <code>k◲</code> | <code>parens-squares</code> | 0 |   | **Parens and Squares**: Push "()[]" to the stack |
+| <code>k∪</code> | <code>open-brackets</code> | 0 |   | **Open Brackets**: Push "([{" to the stack |
+| <code>k∩</code> | <code>close-brackets</code> | 0 |   | **Close Brackets**: Push ")]}" |
 | <code>k±</code> | <code>1~1</code></br><code>f11</code> | 0 |   | **[1, 1]**: Push the list [1, 1] to the stack |
 | <code>kæ</code> | <code>all-primes</code></br><code>primes</code> | 0 |   | **All Primes**: Push a list of every prime number to the stack |
 | <code>k☷</code> | <code>brackets-without-<></code> | 0 |   | **Brackets Without <>**: Push "{}[]()" to the stack |
