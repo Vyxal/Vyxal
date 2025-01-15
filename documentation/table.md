@@ -218,6 +218,7 @@ Element, Modifier, and Syntax Reference
 | <code>#x</code> | <code>continue</code> | 0 |   | **Continue**: Continue to the next iteration of the current loop |
 | <code>#~</code> | <code>call-peek</code></br><code>call-no-pop</code> | 1 |   | **Call Without Popping** (`fun`): Call #1 with arguments that are peeked, not popped, from the stack |
 | <code>#↸</code> | <code>retrieve-from-outer</code> | 1 |   | **Retrieve Item at Index from Outer Stack** (`num`): Retrieve the item at index #1 from the outer stack, current stack if at top level</br>**Retrieve Item at Index from Outer Stack N-Layers Up** (`lst[num, num]`): Retrieve the item at index #2 from the stack #1 levels up |
+| <code>k⩔</code> | <code>codepage</code> | 0 |   | **Codepage**: Push the Vyxal codepage to the stack |
 | <code>k+</code> | <code>-1~1</code> | 0 |   | **[-1, 1]**: Push the list [-1, 1] to the stack |
 | <code>k-</code> | <code>1~-1</code> | 0 |   | **[1, -1]**: Push the list [1, -1] to the stack |
 | <code>k0</code> | <code>360</code> | 0 |   | **360**: Push 360 to the stack |
@@ -259,12 +260,36 @@ Element, Modifier, and Syntax Reference
 | <code>k◲</code> | <code>parens-squares</code> | 0 |   | **Parens and Squares**: Push "()[]" to the stack |
 | <code>k∪</code> | <code>open-brackets</code> | 0 |   | **Open Brackets**: Push "([{" to the stack |
 | <code>k∩</code> | <code>close-brackets</code> | 0 |   | **Close Brackets**: Push ")]}" |
+| <code>kƓ</code> | <code>uppercase-consonants-without-y</code> | 0 |   | **Uppercase Consonants Without Y**: Push "BCDFGHJKLMNPQRSTVWXZ" to the stack |
+| <code>kɠ</code> | <code>lowercase-consonants-without-y</code> | 0 |   | **Lowercase Consonants Without Y**: Push "bcdfghjklmnpqrstvwxz" to the stack |
+| <code>kĠ</code> | <code>uppercase-consonants</code> | 0 |   | **Uppercase Consonants**: Push "BCDFGHJKLMNPQRSTVWXYZ" to the stack |
+| <code>kġ</code> | <code>lowercase-consonants</code> | 0 |   | **Lowercase Consonants**: Push "bcdfghjklmnpqrstvwxyz" to the stack |
+| <code>k⎀</code> | <code>lower-upper-vowels</code> | 0 |   | **Lowercase and Uppercase Vowels**: Push "aeiouAEIOU" to the stack |
+| <code>k½</code> | <code>1~2</code> | 0 |   | **[1, 2]**: Push the list [1, 2] to the stack |
+| <code>k⁰</code> | <code>2147483648</code> | 0 |   | **2147483648**: Push 2147483648 to the stack |
+| <code>k²</code> | <code>1048576</code></br><code>2**20</code></br><code>2^20</code> | 0 |   | **1048576 (2^20)**: Push 1048576 to the stack |
+| <code>k³</code> | <code>1073741824</code></br><code>2**30</code></br><code>2^30</code> | 0 |   | **1073741824 (2^30)**: Push 1073741824 to the stack |
+| <code>k•</code> | <code>qwerty-rows</code> | 0 |   | **QWERTY Rows**: Push ["qwertyuiop", "asdfghjkl", "zxcvbnm"] to the stack |
 | <code>k±</code> | <code>1~1</code></br><code>f11</code> | 0 |   | **[1, 1]**: Push the list [1, 1] to the stack |
+| <code>kγ</code> | <code>lower-upper-vowelsy</code> | 0 |   | **Lowercase and Uppercase Vowels and Y**: Push "aeiouyAEIOUY" to the stack |
+| <code>kℂ</code> | <code>roman-numerals</code> | 0 |   | **Roman Numerals**: Push "IVXLCDM" to the stack |
+| <code>k⌹</code> | <code>paired-brackets</code> | 0 |   | **Paired Brackets**: Push ["()", "[]", "{}", "<>" to the stack |
 | <code>kæ</code> | <code>all-primes</code></br><code>primes</code> | 0 |   | **All Primes**: Push a list of every prime number to the stack |
+| <code>k◌</code> | <code>directions-list</code> | 0 |   | **Directions List**: Push [[0, 1], [0, -1], [1, 0], [-1, 0]] to the stack (up, down, right, left in a 2D grid) |
 | <code>k☷</code> | <code>brackets-without-<></code> | 0 |   | **Brackets Without <>**: Push "{}[]()" to the stack |
 | <code>k⎶</code> | <code>all-brackets</code> | 0 |   | **All Brackets**: Push "{}[]<>()" to the stack |
+| <code>k⎘</code> | <code>brainf*ck-commands</code> | 0 |   | **Brainf*ck Commands**: Push "[]<>-+.," to the stack |
 | <code>k≈</code> | <code>0~1</code> | 0 |   | **[0, 1]**: Push the list [0, 1] to the stack |
 | <code>kṬ</code> | <code>ZZ</code></br><code>integers</code> | 0 |   | **Integers**: Push a list of every integer to the stack |
+| <code>k¤</code> | <code>nested-brackets</code> | 0 |   | **Nested Brackets**: Push "([{<>}])" to the stack |
+| <code>k①</code> | <code>512</code> | 0 |   | **512**: Push 512 to the stack |
+| <code>k②</code> | <code>1024</code> | 0 |   | **1024**: Push 1024 to the stack |
+| <code>k③</code> | <code>2048</code> | 0 |   | **2048**: Push 2048 to the stack |
+| <code>k④</code> | <code>4096</code> | 0 |   | **4096**: Push 4096 to the stack |
+| <code>k⑤</code> | <code>8192</code> | 0 |   | **8192**: Push 8192 to the stack |
+| <code>k⑥</code> | <code>16384</code> | 0 |   | **16384**: Push 16384 to the stack |
+| <code>k⑦</code> | <code>32768</code> | 0 |   | **32768**: Push 32768 to the stack |
+| <code>k⑧</code> | <code>65536</code> | 0 |   | **65536**: Push 65536 to the stack |
 | <code>Þ0</code> | <code>zero-pad</code> | 2 |   | **Zero Pad** (`itr,num`): #1 zero-padded to length #2</br>**Zero Pad** (`num,itr`): #2 zero-padded to length #1</br>**Zero Pad** (`itr,itr`): #1 zero-padded to length of #2 |
 | <code>ÞO</code> | <code>grid-neighbours-wrap</code></br><code>grid-neighbors-wrap</code></br><code>adjacent-cells-wrap</code></br><code>adj-cells-wrap</code></br><code>surrounding-cells-wrap</code> | 1 |   | **Grid Neighbours Wrap** (`lst`): Grid neighbours of #1 - up, down, left, right - wrapping around</br>**Grid Neighbours Wrap With Starting Direction** (`lst,num`): Grid neighbours of cells in #1 - right, down, left, up - wrapping around and start from direction #2 => 0: right, 1: down, 2: left, 3: up. Negative #2 does not include middle, positive #2 does |
 | <code>ÞR</code> | <code>reshape</code> | 2 |   | **Reshape** (`lst,lst[num]`): Reshape #1 to the shape #2 |
