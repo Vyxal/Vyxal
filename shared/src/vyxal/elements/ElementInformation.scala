@@ -4500,6 +4500,62 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
+   AddElement(
+      symbol = "k∪",
+      keywords = Seq("open-brackets"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Open Brackets",
+        args = Seq(),
+        description = "Push \"([{\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+   AddElement(
+      symbol = "k∩",
+      keywords = Seq("close-brackets"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Close Brackets",
+        args = Seq(),
+        description = "Push \")]}\"",
+        typeSwitchable = false,
+      ),
+    ),
+AddElement(
+      symbol = "k<",
+      keywords = Seq("open-fish-brackets"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Open Brackets",
+        args = Seq(),
+        description = "Push \"([{<\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+   AddElement(
+      symbol = "k>",
+      keywords = Seq("close-fish-brackets"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Close Brackets",
+        args = Seq(),
+        description = "Push \")]}>\"",
+        typeSwitchable = false,
+      ),
+    ),
     AddElement(
       symbol = "kṬ",
       keywords = Seq("ZZ", "integers"),
