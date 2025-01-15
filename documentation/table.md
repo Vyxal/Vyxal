@@ -372,7 +372,6 @@ Element, Modifier, and Syntax Reference
 | <code>#:@</code> | Defined Element Call | `$@` | Call a defined element | <code>#:@<name></code> |
 | <code>#></code> | Augmented Assignment | `:>` | Apply a function to a variable value and store the result in the same variable. | <code><function> #> <variable></code> |
 | <code>#¤</code> | Context Paramter Index | ``n`` | Index into the list of context parameters. | <code>¤<number></code> |
-| <code>ʎ</code> | Open Filter Lambda | `filter-lam`</br>`filter<`</br>`filter-lambda` | Open a lambda that automatically filters the top of the stack by its function | <code>Ω<code>}</code> |
 | <code>#=</code> | Assign Variable | `:=` | Assign a variable to a value. | <code>#=<variable></code> |
 | <code>#::R</code> | Record Definition | `record` | Define a record with members | <code>#:R<name>|#$restricted #=private #!public}</code> |
 | <code>#::+</code> | Extension Method | `extension` | Define an overload on a custom element based on types. Requires at least one type to be specified. | <code>#::+<name>|<arg1>|<type1>|<arg2>|<type2>...|<impl>}</code> |
@@ -384,6 +383,7 @@ Element, Modifier, and Syntax Reference
 | <code>##</code> | Comment |  | Comment out the rest of the line | <code>##<comment></code> |
 | <code>λ</code> | Open Lambda | `lam`</br>`lambda`</br>`{` | Open a lambda. | <code>λ<parameters>|<code>}</code> |
 | <code>ƛ</code> | Open Map Lambda | `map-lam`</br>`map<`</br>`map-lambda` | Open a lambda that automatically maps its function to the top of the stack | <code>ƛ<code>}</code> |
+| <code>ʎ</code> | Open Filter Lambda | `filter-lam`</br>`filter<`</br>`filter-lambda` | Open a lambda that automatically filters the top of the stack by its function | <code>Ω<code>}</code> |
 | <code>µ</code> | Open Sort Lambda | `sort-lam`</br>`sort<`</br>`sort-lambda` | Open a lambda that automatically sorts the top of the stack by its function | <code>µ<code>}</code> |
 | <code>ξ</code> | Stack Lambda | `lambda-stack` | Open a lambda that automatically takes arguments from the stack | <code>ξ<code>}</code> |
 | <code>⍾</code> | Eager Map | `eager-map-lambda`</br>`eager-map-lam`</br>`eager-map<` | Open a lambda that maps its function to the top of the stack, but evaluates eagerly | <code>⍾<code>}</code> |
