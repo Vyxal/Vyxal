@@ -5,6 +5,7 @@ import scala.language.implicitConversions
 import vyxal.*
 import vyxal.{Dyad, ImplHelpers, Monad, Triad}
 import vyxal.conversions.{*, given}
+import vyxal.parsing.Codepage
 import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.defaultEmpty
@@ -1385,10 +1386,16 @@ object Elements:
     "⑦" -> niladify(256),
     "⑧" -> niladify(-1),
     "kæ" -> niladify(NumberHelpers.probablePrimes),
+    "k+" -> niladify(Seq(-1, 1)),
+    "k-" -> niladify(Seq(1, -1)),
+    "k≈" -> niladify(Seq(0, 1)),
+    "k±" -> niladify(Seq(1, 1)),
+    "k0" -> niladify(360),
     "k1" -> niladify(1000),
     "k2" -> niladify(10000),
     "k3" -> niladify(100000),
     "k4" -> niladify(1000000),
+    "k5" -> niladify(VNum("4294967296")),
     "k6" -> niladify("0123456789abcdef"),
     "kA" -> niladify("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
     "kB" -> niladify("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
@@ -1401,6 +1408,8 @@ object Elements:
       niladify(
         "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
       ),
+    "kV" -> niladify("AEIOU"),
+    "kY" -> niladify("AEIOUY"),
     "kZ" -> niladify("ZYXWVUTSRQPONMLKJIHGFEDCBA"),
     "k^" -> niladify("0123456789ABCDEF"),
     "ka" -> niladify("abcdefghijklmnopqrstuvwxyz"),
@@ -1409,6 +1418,7 @@ object Elements:
     "kg" -> niladify(spire.math.Real.phi),
     "kh" -> niladify("Hello World"),
     "ki" -> niladify(spire.math.Real.pi),
+    "kk" -> niladify("Hello, World!"),
     "kl" -> niladify("ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"),
     "ko" -> niladify("01234567"),
     "kp" ->
@@ -1422,7 +1432,41 @@ object Elements:
       niladify(
         "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
       ),
+    "kv" -> niladify("aeiou"),
+    "ky" -> niladify("aeiouy"),
     "kz" -> niladify("zyxwvutsrqponmlkjihgfedcba"),
+    "k⎶" -> niladify("{}[]<>()"),
+    "k☷" -> niladify("()[]{}"),
+    "k◲" -> niladify("()[]"),
+    "k∪" -> niladify("([{"),
+    "k∩" -> niladify(")]}"),
+    "k<" -> niladify("([{<"),
+    "k>" -> niladify(")]}>"),
+    "k⎀" -> niladify("aeiouAEIOU"),
+    "k⩔" -> niladify(Codepage),
+    "k½" -> niladify(Seq(1, 2)),
+    "k①" -> niladify(512),
+    "k②" -> niladify(1024),
+    "k③" -> niladify(2048),
+    "k④" -> niladify(4096),
+    "k⑤" -> niladify(8192),
+    "k⑥" -> niladify(16384),
+    "k⑦" -> niladify(32768),
+    "k⑧" -> niladify(65536),
+    "k⁰" -> niladify(VNum("2147483648")),
+    "kġ" -> niladify("bcdfghjklmnpqrstvwxyz"),
+    "kɠ" -> niladify("bcdfghjklmnpqrstvwxz"),
+    "kĠ" -> niladify("BCDFGHJKLMNPQRSTVWXYZ"),
+    "kƓ" -> niladify("BCDFGHJKLMNPQRSTVWXZ"),
+    "k⎘" -> niladify("[]<>-+.,"),
+    "k⌹" -> niladify("[(),[],{},<>]"),
+    "k¤" -> niladify("([{<>}])"),
+    "k²" -> niladify(VNum("1048576")),
+    "k³" -> niladify(VNum("1073741824")),
+    "kγ" -> niladify("aeiouyAEIOUY"),
+    "k◌" -> niladify(VList(Seq(Seq(0, 1), Seq(1, 0), Seq(0, -1), Seq(-1, 0)))),
+    "kℂ" -> niladify("IVXLCDM"),
+    "k•" -> niladify(Seq("qwertyuiop", "asdfghjkl", "zxcvbnm")),
     addPart("#C", Monad, true) {
       case VStr(a) => StringHelpers.compressDictionary(a)
     },
