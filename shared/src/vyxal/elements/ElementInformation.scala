@@ -1358,7 +1358,7 @@ object ElementInformation:
       Overload(
         name = "Wrap in List",
         args = Seq("any"),
-        description = "Wrap #1 in a list",
+        description = "Wrap #1 in a list (create singleton list [#1])",
       ),
     ),
     AddElement(
