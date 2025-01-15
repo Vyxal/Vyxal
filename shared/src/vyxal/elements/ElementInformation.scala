@@ -3914,7 +3914,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kæ",
-      keywords = Seq("all-primes", "primes"),
+      keywords = Seq("&ALL-PRIMES", "&PRIMES"),
       arity = 0,
       Options(
         vectorises = false
@@ -4060,7 +4060,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k6",
-      keywords = Seq("hex-digits"),
+      keywords = Seq("&HEX-DIGITS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4074,7 +4074,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kA",
-      keywords = Seq("uppercase-letters"),
+      keywords = Seq("&UPPERCASE-LETTERS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4088,7 +4088,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kB",
-      keywords = Seq("uppercase-lowercase"),
+      keywords = Seq("&UPPERCASE-LOWERCASE"),
       arity = 0,
       Options(
         vectorises = false
@@ -4103,7 +4103,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kD",
-      keywords = Seq("line-chars"),
+      keywords = Seq("&LINE-CHARS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4118,7 +4118,7 @@ object ElementInformation:
     AddElement(
       symbol = "kF",
       keywords = Seq(
-        "fizzbuzz-constant"
+        "&FIZZBUZZ"
       ),
       arity = 0,
       Options(
@@ -4133,7 +4133,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kH",
-      keywords = Seq("Hello-World"),
+      keywords = Seq("&HELLO-WORLD"),
       arity = 0,
       Options(
         vectorises = false
@@ -4147,7 +4147,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kL",
-      keywords = Seq("lowercase-uppercase"),
+      keywords = Seq("&LOWERCASE-UPPERCASE"),
       arity = 0,
       Options(
         vectorises = false
@@ -4162,7 +4162,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kN",
-      keywords = Seq("NN", "natural-numbers"),
+      keywords = Seq("&NN", "&NATURAL-NUMBERS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4176,7 +4176,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kP",
-      keywords = Seq("printable-ascii"),
+      keywords = Seq("&PRINTABLE-ASCII"),
       arity = 0,
       Options(
         vectorises = false
@@ -4190,7 +4190,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kR",
-      keywords = Seq("digits-uppercase-lowercase"),
+      keywords = Seq("&DIGITS-UPPERCASE-LOWERCASE"),
       arity = 0,
       Options(
         vectorises = false
@@ -4205,7 +4205,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kV",
-      keywords = Seq("uppercase-vowels"),
+      keywords = Seq("&UPPERCASE-VOWELS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4219,7 +4219,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kY",
-      keywords = Seq("uppercase-vowelsy"),
+      keywords = Seq("&UPPERCASE-VOWELSY"),
       arity = 0,
       Options(
         vectorises = false
@@ -4233,7 +4233,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kZ",
-      keywords = Seq("reverse-uppercase"),
+      keywords = Seq("&REVERSE-UPPERCASE"),
       arity = 0,
       Options(
         vectorises = false
@@ -4247,7 +4247,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k^",
-      keywords = Seq("uppercase-hex-digits"),
+      keywords = Seq("&UPPERCASE-HEX-DIGITS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4261,7 +4261,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ka",
-      keywords = Seq("lowercase-letters"),
+      keywords = Seq("&LOWERCASE-LETTERS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4275,7 +4275,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kd",
-      keywords = Seq("digits"),
+      keywords = Seq("&DIGITS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4289,7 +4289,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ke",
-      keywords = Seq("e-constant"),
+      keywords = Seq("&E-CONSTANT"),
       arity = 0,
       Options(
         vectorises = false
@@ -4303,7 +4303,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kg",
-      keywords = Seq("golden-ratio", "phi-constant"),
+      keywords = Seq("&GOLDEN-RATIO", "&PHI"),
       arity = 0,
       Options(
         vectorises = false
@@ -4317,7 +4317,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kh",
-      keywords = Seq("helloworld"),
+      keywords = Seq("&HELLOWORLD"),
       arity = 0,
       Options(
         vectorises = false
@@ -4331,7 +4331,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ki",
-      keywords = Seq("pi-constant"),
+      keywords = Seq("&PI"),
       arity = 0,
       Options(
         vectorises = false
@@ -4345,7 +4345,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kk",
-      keywords = Seq("rhhw-cheese"),
+      keywords = Seq("&RDHW"),
       arity = 0,
       Options(
         vectorises = false
@@ -4360,7 +4360,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kl",
-      keywords = Seq("reverse-uppercase-lowercase"),
+      keywords = Seq("&REVERSE-UPPERCASE-LOWERCASE"),
       arity = 0,
       Options(
         vectorises = false
@@ -4375,7 +4375,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ko",
-      keywords = Seq("octal-digits"),
+      keywords = Seq("&OCTAL-DIGITS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4389,7 +4389,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kp",
-      keywords = Seq("punctuation"),
+      keywords = Seq("&PUNCTUATION"),
       arity = 0,
       Options(
         vectorises = false
@@ -4403,7 +4403,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kr",
-      keywords = Seq("digits-lowercase-uppercase"),
+      keywords = Seq("&DIGITS-LOWERCASE-UPPERCASE"),
       arity = 0,
       Options(
         vectorises = false
@@ -4418,7 +4418,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kv",
-      keywords = Seq("lowercase-vowels"),
+      keywords = Seq("&LOWERCASE-VOWELS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4432,7 +4432,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ky",
-      keywords = Seq("lowercase-vowelsy"),
+      keywords = Seq("&LOWERCASE-VOWELSY"),
       arity = 0,
       Options(
         vectorises = false
@@ -4446,7 +4446,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kz",
-      keywords = Seq("reverse-lowercase"),
+      keywords = Seq("&REVERSE-LOWERCASE"),
       arity = 0,
       Options(
         vectorises = false
@@ -4460,7 +4460,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k⎶",
-      keywords = Seq("all-brackets"),
+      keywords = Seq("&ALL-BRACKETS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4474,7 +4474,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k☷",
-      keywords = Seq("brackets-without-<>"),
+      keywords = Seq("&BRACKETS-WITHOUT-<>"),
       arity = 0,
       Options(
         vectorises = false
@@ -4488,7 +4488,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k◲",
-      keywords = Seq("parens-squares"),
+      keywords = Seq("&PARENS-SQUARES"),
       arity = 0,
       Options(
         vectorises = false
@@ -4502,7 +4502,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k∪",
-      keywords = Seq("open-brackets"),
+      keywords = Seq("&OPEN-BRACKETS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4516,7 +4516,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k∩",
-      keywords = Seq("close-brackets"),
+      keywords = Seq("&CLOSE-BRACKETS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4530,7 +4530,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k<",
-      keywords = Seq("open-fish-brackets"),
+      keywords = Seq("&OPEN-FISH-BRACKETS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4544,7 +4544,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k>",
-      keywords = Seq("close-fish-brackets"),
+      keywords = Seq("&CLOSE-FISH-BRACKETS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4558,7 +4558,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k⎀",
-      keywords = Seq("lower-upper-vowels"),
+      keywords = Seq("&LOWER-UPPER-VOWELS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4572,7 +4572,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k⩔",
-      keywords = Seq("codepage"),
+      keywords = Seq("&CODEPAGE"),
       arity = 0,
       Options(
         vectorises = false
@@ -4726,7 +4726,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kġ",
-      keywords = Seq("lowercase-consonants"),
+      keywords = Seq("&LOWERCASE-CONSONANTS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4740,7 +4740,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kɠ",
-      keywords = Seq("lowercase-consonants-without-y"),
+      keywords = Seq("&LOWERCASE-CONSONANTS-WITHOUT-Y"),
       arity = 0,
       Options(
         vectorises = false
@@ -4754,7 +4754,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kĠ",
-      keywords = Seq("uppercase-consonants"),
+      keywords = Seq("&UPPERCASE-CONSONANTS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4768,7 +4768,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kƓ",
-      keywords = Seq("uppercase-consonants-without-y"),
+      keywords = Seq("&UPPERCASE-CONSONANTS-WITHOUT-Y"),
       arity = 0,
       Options(
         vectorises = false
@@ -4782,7 +4782,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k⎘",
-      keywords = Seq("brainf*ck-commands"),
+      keywords = Seq("&BRAINF*CK-COMMANDS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4796,7 +4796,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k⌹",
-      keywords = Seq("paired-brackets"),
+      keywords = Seq("&PAIRED-BRACKETS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4810,7 +4810,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k¤",
-      keywords = Seq("nested-brackets"),
+      keywords = Seq("&NESTED-BRACKETS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4852,7 +4852,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kγ",
-      keywords = Seq("lower-upper-vowelsy"),
+      keywords = Seq("&LOWER-UPPER-VOWELSY"),
       arity = 0,
       Options(
         vectorises = false
@@ -4866,7 +4866,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k◌",
-      keywords = Seq("directions-list"),
+      keywords = Seq("&DIRECTIONS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4880,7 +4880,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kℂ",
-      keywords = Seq("roman-numerals"),
+      keywords = Seq("&ROMAN-NUMERALS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4894,7 +4894,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k•",
-      keywords = Seq("qwerty-rows"),
+      keywords = Seq("&QWERTY-ROWS"),
       arity = 0,
       Options(
         vectorises = false
@@ -4909,7 +4909,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "kṬ",
-      keywords = Seq("ZZ", "integers"),
+      keywords = Seq("&ZZ", "&INTEGERS"),
       arity = 0,
       Options(
         vectorises = false
