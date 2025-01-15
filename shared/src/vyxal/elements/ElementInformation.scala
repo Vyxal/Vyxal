@@ -4500,7 +4500,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-   AddElement(
+    AddElement(
       symbol = "k∪",
       keywords = Seq("open-brackets"),
       arity = 0,
@@ -4514,7 +4514,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-   AddElement(
+    AddElement(
       symbol = "k∩",
       keywords = Seq("close-brackets"),
       arity = 0,
@@ -4528,7 +4528,7 @@ object ElementInformation:
         typeSwitchable = false,
       ),
     ),
-AddElement(
+    AddElement(
       symbol = "k<",
       keywords = Seq("open-fish-brackets"),
       arity = 0,
@@ -4542,7 +4542,7 @@ AddElement(
         typeSwitchable = false,
       ),
     ),
-   AddElement(
+    AddElement(
       symbol = "k>",
       keywords = Seq("close-fish-brackets"),
       arity = 0,
