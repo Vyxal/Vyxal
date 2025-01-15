@@ -526,7 +526,7 @@ abstract class LexerCommon:
 end LexerCommon
 
 def Codepage =
-  """λƛΛµξ⍾⎋⍟⎊⎄␤⩔Ẅ⊐⎇¿
+  """λƛʎµξ⍾⎋⍟⎊⎄␤⩔Ẅ⊐⎇¿
 ∥∦∺⁜⑴⑵⑶⑷⎂⟒ᛞ▦¨⊞×÷
  !"#$%&'()*+,-./
 0123456789:;<=>?
