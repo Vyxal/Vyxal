@@ -175,8 +175,8 @@ class ElementTests extends VyxalTests:
   describe("Element ⏚") {
     describe("As the vectorise overload") {
       testMulti(
-        "#[#[1|2|3#]|#[4|5|6#]#] #[#[7|8|9#]|#[1|2|3#]#] λ2|+2÷} ⏚" ->
-          vSeq(vSeq(4, 5, 6), vSeq(2.5, 3.5, 4.5))
+        "#[#[1|2|3#]|#[4|5|6#]#] #[#[7|8|9#]|#[2|1|0#]#] 2 λ3|++} ⏚" ->
+          vSeq(vSeq(9, 11, 13), vSeq(8, 8, 8))
       )
     }
   }

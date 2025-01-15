@@ -81,7 +81,7 @@ object FuncHelpers:
         ListHelpers.makeIterable(a).vmap { a =>
           Interpreter.executeFn(fn, args = List(b, a))
         }
-      case n => ListHelpers.zipValues(ctx.pop(n)*) { args =>
+      case n => ListHelpers.zipValues(ctx.pop(n)) { args =>
           Interpreter.executeFn(fn, args = args)
         }
 
@@ -89,7 +89,7 @@ object FuncHelpers:
   end each
 
   def deepVectorise(fn: VFun)(using ctx: Context): VAny =
-    def vecHelper(fn: VFun, iters: VAny*): VAny =
+    def vecHelper(fn: VFun, iters: Seq[VAny]): VAny =
       if iters.length == 1 then
         ListHelpers.makeIterable(iters.head, Some(true)).map {
           case VList(lst) => vecHelper(fn, lst)
@@ -99,12 +99,14 @@ object FuncHelpers:
         val res = iters.map(_.asInstanceOf[VVal])
         Interpreter.executeFn(fn, args = res)
       else
-        val zipped = iters.map(_.asInstanceOf[VList]).reduceLeft(_.vzip(_))
+        val zipped = ListHelpers.zipValues(iters) {
+          case lst => VList(lst)
+        }
         zipped.map {
           case VList(elem) =>
             if elem.forall(_.isInstanceOf[VVal]) then
-              Interpreter.executeFn(fn, args = elem.map(_.asInstanceOf[VVal]))
-            else vecHelper(fn, elem*)
+              Interpreter.executeFn(fn, args = elem)
+            else vecHelper(fn, elem)
           case _ => ???
         }
 
@@ -114,9 +116,8 @@ object FuncHelpers:
         })
       case n => vecHelper(
           fn,
-          ctx.pop(n).map(elem => ListHelpers.makeIterable(elem, Some(true)))*
+          ctx.pop(n).map(elem => ListHelpers.makeIterable(elem, Some(true))),
         )
-
     res
   end deepVectorise
 

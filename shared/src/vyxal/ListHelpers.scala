@@ -1287,7 +1287,7 @@ object ListHelpers:
     padded.transpose.map { lst => f(lst.filter(_ != null)) }
 
   /** Turn some VAnys into iterables, then zip them together with a function. */
-  def zipValues(values: VAny*)(f: PartialFunction[Seq[VAny], VAny])(using
+  def zipValues(values: Seq[VAny])(f: PartialFunction[Seq[VAny], VAny])(using
       ctx: Context
   ): Seq[VAny] =
     val filteredLists = values.collect { case VList(l) => l }
