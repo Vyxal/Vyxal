@@ -525,8 +525,7 @@ abstract class LexerCommon:
   def literateModeMappings: Map[String, String] = LiterateLexer().mapping
 end LexerCommon
 
-val Codepage =
-  """λƛʎµξ⍾⎋⍟⎊⎄␤⩔Ẅ⊐⎇¿
+val Codepage = """λƛʎµξ⍾⎋⍟⎊⎄␤⩔Ẅ⊐⎇¿
 ∥∦∺⁜⑴⑵⑶⑷⎂⟒ᛞ▦¨⊞×÷
  !"#$%&'()*+,-./
 0123456789:;<=>?
