@@ -1949,9 +1949,11 @@ object Elements:
     "#|permutations-map" ->
       direct(Monad) {
         val function = pop().asInstanceOf[VFun]
-        val list = pop().ritr
-        push(ListHelpers.permutations(list).map { perm =>
-          Interpreter.executeFn(function, args = Seq(perm))
+        val list = pop()
+        push(ListHelpers.permutations(list.ritr).map { perm =>
+          val arg =
+            if list.isInstanceOf[VStr] then VStr(perm.mkString) else perm
+          Interpreter.executeFn(function, args = Seq(arg))
         })
       },
   )
