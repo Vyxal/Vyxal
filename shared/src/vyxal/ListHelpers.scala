@@ -62,9 +62,9 @@ object ListHelpers:
       iterable: Seq[VAny],
       size: VNum,
       withReplacement: Boolean = false,
-  ): Seq[VAny] =
-    if withReplacement then combinationsWithReplacement(iterable, size).vs
-    else combinationsWithoutReplacement(iterable, size).vs
+  ): Seq[Seq[VAny]] =
+    if withReplacement then combinationsWithReplacement(iterable, size)
+    else combinationsWithoutReplacement(iterable, size)
 
   def combinationsWithReplacement(list: Seq[VAny], n: VNum): Seq[Seq[VAny]] =
     if n == VNum(0) then Seq(Seq()) // Base case: one combination of size 0

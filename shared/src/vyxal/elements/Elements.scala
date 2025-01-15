@@ -940,7 +940,7 @@ object Elements:
       case (VStr(itr), size: VNum) => VList(
           ListHelpers
             .combinations(itr.itr, size.toInt, withReplacement = true)
-            .map(x => x.asInstanceOf[VList].mkString)
+            .map(_.mkString)
         )
       case (itr: VList, size: VNum) =>
         ListHelpers.combinations(itr, size.toInt, withReplacement = true)
@@ -948,7 +948,7 @@ object Elements:
       case (size: VNum, VStr(itr)) => VList(
           ListHelpers
             .combinations(itr.itr, size.toInt, withReplacement = true)
-            .map(x => x.asInstanceOf[VList].mkString)
+            .map(_.mkString)
         )
       case (size: VNum, itr: VList) =>
         ListHelpers.combinations(itr, size.toInt, withReplacement = true)
@@ -960,19 +960,17 @@ object Elements:
       case (VStr(itr), size: VNum) => VList(
           ListHelpers
             .combinations(itr.itr, size.toInt, withReplacement = false)
-            .map(x => x.asInstanceOf[VList].mkString)
+            .map(_.mkString)
         )
-      case (itr: VList, size: VNum) => VList(
-          ListHelpers.combinations(itr, size.toInt, withReplacement = false)
-        )
+      case (itr: VList, size: VNum) =>
+        ListHelpers.combinations(itr, size.toInt, withReplacement = false).vs
       case (size: VNum, VStr(itr)) => VList(
           ListHelpers
             .combinations(itr.itr, size.toInt, withReplacement = false)
-            .map(x => x.asInstanceOf[VList].mkString)
+            .map(_.mkString)
         )
-      case (size: VNum, itr: VList) => VList(
-          ListHelpers.combinations(itr, size.toInt, withReplacement = false)
-        )
+      case (size: VNum, itr: VList) =>
+        ListHelpers.combinations(itr, size.toInt, withReplacement = false).vs
     },
     addPart("⦷", Monad, true) {
       case num: VNum => num.vabs
@@ -1261,13 +1259,17 @@ object Elements:
       case VList(a) => a.itr.filter(elem => elem.toBool)
     },
     addPart("≈", Monad, false) {
-      case iter: (VList | VStr | VNum) =>
+      case iter: VPhysical =>
         val lst = iter.itr
-        if lst.isEmpty then VNum(1) else lst.forall(_ === lst(0))
+        lst.isEmpty || lst.forall(_ === lst(0))
     },
     addPart("≊", Dyad, false) {
-      case (iter: (VList | VStr | VNum), item) => iter.itr.forall(_ === item)
-      case (item, iter: (VList | VStr | VNum)) => iter.itr.forall(_ === item)
+      case (iter: VPhysical, item) =>
+        val lst = iter.itr
+        lst.nonEmpty && lst.forall(_ == item)
+      case (item, iter: VPhysical) =>
+        val lst = iter.itr
+        lst.nonEmpty && lst.forall(_ == item)
     },
     "κ" ->
       direct(Dyad) {
