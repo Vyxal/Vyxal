@@ -2,6 +2,7 @@ package vyxal.elements
 
 case class Element(
     symbol: String,
+    /** Names that can be used for this in literate mode */
     keywords: Seq[String],
     arity: Int,
     options: Options,
@@ -10,7 +11,9 @@ case class Element(
 
 case class Modifier(
     symbol: String,
+    /** Names that can be used for this in literate mode */
     keywords: Seq[String],
+    /** How many elements this modifier accepts as input (its arity) */
     numberOfElements: Int,
     overloads: ModifierOverload*
 )
@@ -30,7 +33,7 @@ case class ModifierOverload(
 )
 
 case class Options(
-    vectorises: Boolean,
+    vectorises: Boolean = false,
     peeks: Boolean = false,
 )
 
@@ -68,28 +71,22 @@ object ElementInformation:
       symbol = "⊞",
       keywords = Seq("counts", "counts-of"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Counts of Items",
         args = Seq("lst"),
         description = "[#1.count(x) for x in set(#1)]",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "÷",
       keywords = Seq("divide", "string-pieces", "regex-split", "/", "div"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Division",
         args = Seq("num", "num"),
         description = "#1 / #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "String into N Pieces",
@@ -101,7 +98,6 @@ object ElementInformation:
         name = "Regex Split",
         args = Seq("str", "str"),
         description = "Split #1 by regex #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -109,14 +105,11 @@ object ElementInformation:
       keywords =
         Seq("multiply", "string-repeat", "ring-translate", "*", "times"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Multiplication",
         args = Seq("num", "num"),
         description = "#1 * #2 (#1 times #2)",
-        typeSwitchable = false,
       ),
       Overload(
         name = "String Repeat",
@@ -128,22 +121,18 @@ object ElementInformation:
         name = "Ring Translate",
         args = Seq("str", "str"),
         description = "Ring translate #1 according to #2. ",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "∧",
       keywords = Seq("and", "&&", "logical-and"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Logical And",
         args = Seq("nsl", "nsl"),
         description =
           "Python-style and - if #2 is false, return #2, else return #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Short Circuit And",
@@ -156,15 +145,12 @@ object ElementInformation:
       symbol = "∨",
       keywords = Seq("or", "!!", "logical-or"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Logical Or",
         args = Seq("any", "any"),
         description =
           "Python style or - if #2 is true, return #2, else return #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Short Circuit Or",
@@ -177,28 +163,22 @@ object ElementInformation:
       symbol = "¬",
       keywords = Seq("not", "~", "logical-not"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Not",
         args = Seq("any"),
         description = "if #1 is truthy, return False, else return True",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ʀ",
       keywords = Seq("0->n", "lowercase", "range-0->n", "nrange-0"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Range 0",
         args = Seq("num"),
         description = "Range from 0 to #1, exclusive",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Lowercase",
@@ -211,14 +191,11 @@ object ElementInformation:
       symbol = "ʁ",
       keywords = Seq("0->n++", "uppercase", "range-0->n++", "n+range-0"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Range 0 Inclusive",
         args = Seq("num"),
         description = "Range from 0 to #1, inclusive",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Uppercase",
@@ -231,14 +208,11 @@ object ElementInformation:
       symbol = "ɾ",
       keywords = Seq("1->n++", "is-alpha?"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Range 1 Inclusive",
         args = Seq("num"),
         description = "Range from 1 to #1, inclusive",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Is Character Alphabetical",
@@ -252,14 +226,11 @@ object ElementInformation:
       keywords =
         Seq("decrement", "--", "pad-to-8", "dec", "pad-8", "pad-to-byte"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Decrement",
         args = Seq("num"),
         description = "#1 - 1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Pad to 8",
@@ -273,14 +244,11 @@ object ElementInformation:
       keywords =
         Seq("increment", "++", "space-to-0", "replace-spaces-with-0s", "inc"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Increment",
         args = Seq("num"),
         description = "#1 + 1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Spaces to 0s",
@@ -293,14 +261,11 @@ object ElementInformation:
       symbol = "!",
       keywords = Seq("factorial", "!", "titlecase", "fact", "title", "fac"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Factorial",
         args = Seq("num"),
         description = "Factorial of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Titlecase",
@@ -313,28 +278,22 @@ object ElementInformation:
       symbol = "$",
       keywords = Seq("swap"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Swap",
         args = Seq("any", "any"),
         description = "Swap #1 and #2 on the stack: #1 #2 -> #2 #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "%",
       keywords = Seq("mod", "modulo", "%", "remainder"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Modulo",
         args = Seq("num", "num"),
         description = "#1 % #2 (remainder of #1 divided by #2)",
-        typeSwitchable = false,
       ),
       Overload(
         name = "String Format",
@@ -347,42 +306,33 @@ object ElementInformation:
       symbol = "&",
       keywords = Seq("append"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Append",
         args = Seq("any", "any"),
         description = "Append #2 to #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "*",
       keywords = Seq("exponentiate", "pow", "**", "power"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Exponentiation",
         args = Seq("num", "num"),
         description = "#1 ** #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "+",
       keywords = Seq("add", "+", "plus", "addition"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Addition",
         args = Seq("num", "num"),
         description = "#1 + #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "String and Number Concatenation",
@@ -394,35 +344,28 @@ object ElementInformation:
         name = "String Concatenation",
         args = Seq("str", "str"),
         description = "#1 + #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = ",",
       keywords = Seq("println", "stdout", "output", "out"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Print",
         args = Seq("any"),
         description = "Print #1 to stdout, followed by a newline",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "-",
       keywords = Seq("subtract", "-", "minus", "subtraction", "regex-remove"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Subtraction",
         args = Seq("num", "num"),
         description = "#1 - #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Prepend/Append Hyphens",
@@ -434,49 +377,39 @@ object ElementInformation:
         name = "Regex Remove",
         args = Seq("str", "str"),
         description = "Remove matches of #2 from #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       ":",
       Seq("dup", "duplicate"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Duplicate",
         args = Seq("any"),
         description = "Push #1 twice to the stack: #1 -> #1 #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = ";",
       keywords = Seq("pair", "cons"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Pair",
         args = Seq("any", "any"),
         description = "Push a list [#1, #2] to the stack: #1 #2 -> [#1, #2]",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "<",
       keywords = Seq("less-than", "<", "lt", "---until-false"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Less Than",
         args = Seq("scl", "scl"),
         description = "#1 < #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Decrement Until False",
@@ -489,28 +422,22 @@ object ElementInformation:
       symbol = "=",
       keywords = Seq("equals", "==", "eq"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Equals",
         args = Seq("scl", "scl"),
         description = "#1 == #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = ">",
       keywords = Seq("greater-than", ">", "gt", "++-until-false"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Greater Than",
         args = Seq("scl", "scl"),
         description = "#1 > #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Increment Until False",
@@ -523,14 +450,11 @@ object ElementInformation:
       symbol = "?",
       keywords = Seq("stdin", "input", "in"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Input",
         args = Seq(),
         description = "Get the next input item, evaluated.",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -542,7 +466,6 @@ object ElementInformation:
         name = "Inputs",
         args = Seq(),
         description = "Get all the global inputs as a list",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -550,20 +473,16 @@ object ElementInformation:
       keywords =
         Seq("absolute-difference", "abs-diff", "levenstein", "to-overpairs"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Absolute Difference",
         args = Seq("num", "num"),
         description = "Absolute difference between #1 and #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Levenstein Distance",
         args = Seq("str", "str"),
         description = "Levenstein distance between #1 and #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Reduce Overlapping Pairs",
@@ -575,28 +494,22 @@ object ElementInformation:
       symbol = "A",
       keywords = Seq("all", "all?", "vowel?", "is-vowel", "is-vowel?"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "All",
         args = Seq("any"),
         description = "Are all elements of #1 are truthy",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "B",
       keywords = Seq("to-binary"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "To Binary",
         args = Seq("num"),
         description = "Convert #1 to binary",
-        typeSwitchable = false,
       ),
       Overload(
         name = "String to Binary",
@@ -610,9 +523,7 @@ object ElementInformation:
       symbol = "C",
       keywords = Seq("count"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Count",
         args = Seq("lst", "scl"),
@@ -630,28 +541,22 @@ object ElementInformation:
       symbol = "D",
       keywords = Seq("triplicate"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Triplicate",
         args = Seq("any"),
         description = "Push #1 thrice to the stack: #1 -> #1 #1 #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "E",
       keywords = Seq("2**n", "2pow", "eval", "2**"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "2 to the Power of N",
         args = Seq("num"),
         description = "2 ** #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Eval",
@@ -664,9 +569,7 @@ object ElementInformation:
       symbol = "F",
       keywords = Seq("filter", "find", "index-of"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Filter",
         args = Seq("fun", "any"),
@@ -684,28 +587,22 @@ object ElementInformation:
       symbol = "G",
       keywords = Seq("max-of", "maximum-of"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Monadic Maximum",
         args = Seq("lst"),
         description = "Maximum of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "H",
       keywords = Seq("to-hex", "from-hex"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "To Hex",
         args = Seq("num"),
         description = "Convert #1 to hexadecimal",
-        typeSwitchable = false,
       ),
       Overload(
         name = "From Hex",
@@ -719,14 +616,11 @@ object ElementInformation:
       symbol = "I",
       keywords = Seq("interleave", "reject"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Interleave",
         args = Seq("any", "any"),
         description = "Interleave #1 and #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Reject",
@@ -740,9 +634,7 @@ object ElementInformation:
       symbol = "J",
       keywords = Seq("join", "concat"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Join",
         args = Seq("lst", "scl"),
@@ -753,34 +645,27 @@ object ElementInformation:
         name = "Join / Merge",
         args = Seq("lst", "lst"),
         description = "Add all elements of #2 to #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Number Pair",
         args = Seq("num", "num"),
         description = "Create a list of #1 and #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "String Concatenation",
         args = Seq("str|num", "str|num"),
-        description =
-          "string(#1) + string(#2) (if either #1 or #2 is a string)",
-        typeSwitchable = false,
+        description = "string(#1) + string(#2) (if either #1 or #2 is a string)",
       ),
     ),
     AddElement(
       symbol = "K",
       keywords = Seq("factors", "is-numeric?", "is-numeric"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Factors",
         args = Seq("num"),
         description = "Get the factors of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Is Numeric",
@@ -793,23 +678,18 @@ object ElementInformation:
       symbol = "L",
       keywords = Seq("length", "len"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Length",
         args = Seq("any"),
         description = "Length of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "M",
       keywords = Seq("map", "mold", "multiplicity", "regex-match"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Map",
         args = Seq("fun", "any"),
@@ -820,13 +700,11 @@ object ElementInformation:
         name = "Mold",
         args = Seq("lst", "lst"),
         description = "Reshape #1 to the shape of #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Multiplicity",
         args = Seq("num", "num"),
         description = "How many times #1 divides #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Regex Match",
@@ -838,225 +716,179 @@ object ElementInformation:
       symbol = "N",
       keywords = Seq("negate", "swapcase", "first>-1"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Negate",
         args = Seq("num"),
         description = "-#1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Negate",
         args = Seq("str"),
         description = "Swap the case of each letter #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "First Non-Negative Integer Where Predicate is True",
         args = Seq("fun"),
         description = "First non-negative integer where #1 is true",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "O",
       keywords = Seq("ord", "chr"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Character to Unicode",
         args = Seq("str"),
         description = "Unicode value of each letter in #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Unicode to Character",
         args = Seq("num"),
         description = "Character of each unicode value in #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "P",
       keywords = Seq("prefixes"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Prefixes",
         args = Seq("lst"),
         description =
           "Get all prefixes of #1. Treats numbers as a list of digits",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "Q",
       keywords = Seq("remove-at", "regex-groups"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Remove At",
         args = Seq("nsl", "num"),
         description = "Remove the element at index #2 from #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Regex Groups",
         args = Seq("str", "str"),
         description = "Return the groups of the first match of #2 in #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "R",
       keywords = Seq("range", "reduce", "regex-match?"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Range",
         args = Seq("num", "num"),
         description = "Range from #1 to #2, exclusive",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Reduce",
         args = Seq("lst", "fun"),
         description = "Reduce #1 by function #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Regex Match?",
         args = Seq("str", "str"),
         description = "Check if #2 matches #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "S",
       keywords = Seq("sort"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Sort",
         args = Seq("itr"),
         description = "Sort #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "T",
       keywords = Seq("transpose", "triple", "alpha-only?"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Transpose",
         args = Seq("lst"),
         description =
           "Transpose #1. Will not terminate on an infinite list of finite lists. Use ÞT if you need that.",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Triple",
         args = Seq("num"),
         description = "#1 * 3",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Does String Contain Only Alphabetic Characters",
         args = Seq("str"),
         description = "Check if #1 contains only alphabetic characters",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "U",
       keywords = Seq("uninterleave"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Uninterleave",
         args = Seq("lst"),
         description = "Uninterleave #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "V",
       keywords = Seq("vectorse-reverse", "1-x"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Vectorise Reverse",
         args = Seq("lst"),
         description = "Reverse each item in #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "1 - X",
         args = Seq("num"),
         description = "1 - #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "W",
       keywords = Seq("wrap"),
       arity = -1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Wrap",
         args = Seq(),
         description = "Wrap the entire stack into a list",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "X",
       keywords = Seq("cartesian-product"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Cartesian Product",
         args = Seq("lst", "lst"),
         description = "Cartesian product of #1 and #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "Y",
       keywords = Seq("list-repeat"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "List Repeat",
         args = Seq("num", "num"),
-        description =
-          "A list of #1 repeated #2 times. E.g. 3 4 -> [3, 3, 3, 3]",
-        typeSwitchable = false,
+        description = "A list of #1 repeated #2 times. E.g. 3 4 -> [3, 3, 3, 3]",
       ),
       Overload(
         name = "List Repeat",
@@ -1068,84 +900,67 @@ object ElementInformation:
         name = "Vectorised Repeat",
         args = Seq("itr", "lst[nsl]"),
         description = "Repeat each element of #2 (#1|#1.length) times",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "Z",
       keywords = Seq("zip"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Zip",
         args = Seq("lst", "lst"),
         description = "Zip #1 and #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "^",
       keywords = Seq("reverse-stack"),
       arity = -1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Reverse Stack",
         args = Seq(),
         description = "Reverse the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "_",
       keywords = Seq("pop", "discard"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Pop",
         args = Seq(),
         description = "Pop the top of the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "`",
       keywords = Seq("len-stack"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Length of Stack",
         args = Seq(),
         description = "Push the length of the stack to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "a",
       keywords = Seq("any", "any?", "uppercase?"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Any",
         args = Seq("num"),
         description = "Are any digits of #1 truthy",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Is Uppercase",
         args = Seq("str"),
         description =
           "Check if #1 is uppercase. With string.len > 1, vectorises over each character",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Any",
@@ -1157,9 +972,7 @@ object ElementInformation:
       symbol = "b",
       keywords = Seq("from-binary"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Binary Digits",
         args = Seq("num"),
@@ -1180,14 +993,11 @@ object ElementInformation:
       symbol = "c",
       keywords = Seq("contains", "contains?", "is-in"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Contains",
         args = Seq("scl", "scl"),
         description = "Is #2 in #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Contains",
@@ -1200,101 +1010,81 @@ object ElementInformation:
         args = Seq("lst", "lst"),
         description =
           "Is the list with shallower depth in the list with deeper depth",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "d",
       keywords = Seq("double"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Double",
         args = Seq("num"),
         description = "#1 * 2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Double",
         args = Seq("str"),
         description = "Append a copy of #1 to itself",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "e",
       keywords = Seq("even?", "is-even", "split-newlines", "/newline"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Is Even",
         args = Seq("num"),
         description = "Is #1 even",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Split Newlines",
         args = Seq("str"),
         description = "Split #1 by newlines",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "f",
       keywords = Seq("flatten"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "List of Digits",
         args = Seq("num"),
         description = "Push a list of the digits of #1 to the stack",
-        typeSwitchable = false,
       ),
       Overload(
         name = "List of Characters",
         args = Seq("str"),
         description = "Push a list of the characters of #1 to the stack",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Flatten",
         args = Seq("lst"),
         description = "Flatten #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "g",
       keywords = Seq("min-of", "minimum-of"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Monadic Minimum",
         args = Seq("lst"),
         description = "Minimum of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "h",
       keywords = Seq("head", "first"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Head",
         args = Seq("any"),
         description = "First element of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -1309,9 +1099,7 @@ object ElementInformation:
         "<**",
       ),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Nth AddElement",
         args = Seq("itr", "num"),
@@ -1322,14 +1110,12 @@ object ElementInformation:
         name = "Vectorised Index",
         args = Seq("itr", "lst[num]"),
         description = "[#1[_] for _ in #2]",
-        typeSwitchable = false,
       ),
       Overload(
         name = "String Enclose",
         args = Seq("str", "str"),
         description =
           "enclose #2 in #1 (#1[0:len(#1)//2] + #2 + #1[len(#1)//2:])",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Object Member Retrieval",
@@ -1348,9 +1134,7 @@ object ElementInformation:
       symbol = "j",
       keywords = Seq("join-on"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Join On",
         args = Seq("lst", "scl"),
@@ -1383,14 +1167,11 @@ object ElementInformation:
         "len-eq?",
       ),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Logarithm",
         args = Seq("num", "num"),
         description = "Log base #2 of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Scan Fixpoint",
@@ -1403,7 +1184,6 @@ object ElementInformation:
         name = "Same Length",
         args = Seq("str", "str"),
         description = "Are #1 and #2 the same length",
-        typeSwitchable = false,
       ),
       Overload(
         name = "String Length Equals",
@@ -1417,14 +1197,11 @@ object ElementInformation:
       keywords =
         Seq("ctx-secondary", "ctx2", "ctx-m", "context-m", "context-secondary"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Context Secondary",
         args = Seq(),
         description = "Push the secondary context variable to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -1432,14 +1209,11 @@ object ElementInformation:
       keywords =
         Seq("ctx-primary", "ctx", "ctx-n", "context-n", "context-primary"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Context Primary",
         args = Seq(),
         description = "Push the primary context variable to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -1450,14 +1224,11 @@ object ElementInformation:
         "reduce-overlaps-by",
       ),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Windows",
         args = Seq("lst", "lst[num]"),
         description = "Get overlapping windows of #1 with a window of size #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Overlapping Slices",
@@ -1478,56 +1249,45 @@ object ElementInformation:
         args = Seq("lst", "num", "fun"),
         description =
           "Reduce overlapping slices of length #2 in #1 by function #3",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Reduce Set-Sized Overlapping Slices",
         args = Seq("lst", "fun", "num"),
         description =
           "Reduce overlapping slices of length #3 in #1 by function #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "p",
       keywords = Seq("prepend"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Prepend",
         args = Seq("any", "any"),
         description = "Prepend #2 to #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "q",
       keywords = Seq("quotify"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Quotify",
         args = Seq("any"),
         description = "Cast #1 to a string and wrap in quotes",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "r",
       keywords = Seq("replace"),
       arity = 3,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Replace",
         args = Seq("nsl", "nsl", "nsl"),
         description = "Replace all occurrences of #2 in #1 with #3",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Zip-With",
@@ -1540,152 +1300,121 @@ object ElementInformation:
       symbol = "s",
       keywords = Seq("split"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Split",
         args = Seq("any", "any"),
         description = "Split #1 by #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "t",
       keywords = Seq("tail", "last"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Tail",
         args = Seq("any"),
         description = "Last element of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "u",
       keywords = Seq("unique"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Unique",
         args = Seq("lst"),
         description = "Unique elements of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Unique By Function",
         args = Seq("lst", "fun"),
         description = "Unique elements of #1 by applying #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "v",
       keywords = Seq("overlapping-pairs", "reduce-pairs-by"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Overlapping Pairs",
         args = Seq("lst"),
         description = "Get overlapping pairs of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Reduce Overlapping Pairs",
         args = Seq("lst", "fun"),
         description = "Reduce overlapping pairs in #1 by function #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "w",
       keywords = Seq("wrap-in-list"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Wrap in List",
         args = Seq("any"),
         description = "Wrap #1 in a list",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "x",
       keywords = Seq("recurse"),
       arity = -1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Recurse",
         args = Seq(),
         description =
           "Recursively call the current function (or the top-level program if not in a function)",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "y",
       keywords = Seq("transliterate", "call-while"),
       arity = 3,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Transliterate",
         args = Seq("nsl", "nsl", "nsl"),
         description = "Replace all occurrences of #2 in #1 with #3",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Call While",
         args = Seq("fun", "fun", "any"),
         description =
           "While #1(#3) is true, #3 = #2(#3). Return the result. Type switchable.",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "z",
       keywords = Seq("zip-with-filler"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Zip With Filler",
         args = Seq("lst", "any"),
         description = "Transpose #1, filling empty spaces with #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⨥",
       keywords = Seq("+2", "add-2", "++++", "inc-inc", "strlen==1"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Add 2",
         args = Seq("num"),
         description = "#1 + 2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "String Length Equals 1",
         args = Seq("str"),
         description = "Is the length of #1 equal to 1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -1693,179 +1422,142 @@ object ElementInformation:
       keywords =
         Seq("-2", "subtract-2", "----", "dec-dec", "flip-bracket-palindrome"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Subtract 2",
         args = Seq("num"),
         description = "#1 - 2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Flip Bracket Palindrome",
         args = Seq("str"),
         description =
           "Palindromise #1 by appending the reverse with brackets and slashes flipped",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "∑",
       keywords = Seq("sum", "sum-of", "+/", "/+", "sigma", "sigma-in-ohio"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Sum",
         args = Seq("lst"),
         description = "Sum of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Join and Evaluate",
         args = Seq("lst[at least 1 str]"),
         description = "Join #1 and evaluate the result",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "Π",
       keywords = Seq("product", "product-of", "*/", "first-int"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Product",
         args = Seq("lst"),
         description = "Product of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Number to Binary as String",
         args = Seq("num"),
         description = "Convert #1 to binary as a string",
-        typeSwitchable = false,
       ),
       Overload(
         name = "First Integer Where Predicate is True",
         args = Seq("fun"),
         description = "First integer where #1 is true (positive or negative)",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "σ",
       keywords = Seq("cumulative-sums", "cumsums", "cumsum", "cum-sum", "-_-"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Cumulative Sums",
         args = Seq("lst"),
         description = "Cumulative sums of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⇧",
       keywords = Seq("grade-up"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Grade Up",
         args = Seq("lst"),
         description = "Indices that would sort #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⇩",
       keywords = Seq("grade-down"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Grade Down",
         args = Seq("lst"),
         description = "Indices that would sort #1 in reverse",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "∪",
       keywords = Seq("union", "set-union"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Union",
         args = Seq("lst", "lst"),
         description = "Union of #1 and #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "∩",
       keywords = Seq("intersection", "set-intersection"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Intersection",
         args = Seq("lst", "lst"),
         description = "Intersection of #1 and #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⊍",
       keywords = Seq("set-xor"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Set XOR",
         args = Seq("lst", "lst"),
         description = "Set XOR of #1 and #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⦰",
       keywords = Seq("set-difference", "set-diff"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Set Difference",
         args = Seq("lst", "lst"),
         description = "Set difference of #1 and #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "«",
       keywords = Seq("left-shift", "<<"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Left Shift",
         args = Seq("num", "num"),
         description = "#1 << #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Prepend Spaces to Given Length",
@@ -1877,23 +1569,18 @@ object ElementInformation:
       Overload(
         name = "Prepend Spaces to Length of Second String",
         args = Seq("str", "str"),
-        description =
-          "Prepend spaces to string #1 until it is the length of #2",
-        typeSwitchable = false,
+        description = "Prepend spaces to string #1 until it is the length of #2",
       ),
     ),
     AddElement(
       symbol = "»",
       keywords = Seq("right-shift", ">>"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Right Shift",
         args = Seq("num", "num"),
         description = "#1 >> #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Append Spaces to Given Length",
@@ -1906,51 +1593,39 @@ object ElementInformation:
         name = "Append Spaces to Length of Second String",
         args = Seq("str", "str"),
         description = "Append spaces to string #1 until it is the length of #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "Ɠ",
       keywords = Seq("max-peek"),
       arity = 1,
-      Options(
-        vectorises = false,
-        peeks = true,
-      ),
+      Options(peeks = true),
       Overload(
         name = "Max Peek",
         args = Seq("lst"),
         description = "Maximum of #1 without popping",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ɠ",
       keywords = Seq("min-peek"),
       arity = 1,
-      Options(
-        vectorises = false,
-        peeks = true,
-      ),
+      Options(peeks = true),
       Overload(
         name = "Min Peek",
         args = Seq("lst"),
         description = "Minimum of #1 without popping",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "Ġ",
       keywords = Seq("zip-max", "max-dyad", "max-ab", "gen"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Zipped Maximum",
         args = Seq("lst", "lst"),
         description = "Maximum of corresponding elements of #1 and #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Vectorised Maximum",
@@ -1962,7 +1637,6 @@ object ElementInformation:
         name = "Dyadic Maximum",
         args = Seq("scl", "scl"),
         description = "Maximum of #1 and #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Generate Sequence",
@@ -1976,14 +1650,11 @@ object ElementInformation:
       symbol = "ġ",
       keywords = Seq("zip-min", "min-dyad", "min-ab", "2gen"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Zipped Minimum",
         args = Seq("lst", "lst"),
         description = "Minimum of corresponding elements of #1 and #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Vectorised Minimum",
@@ -1995,64 +1666,52 @@ object ElementInformation:
         name = "Dyadic Minimum",
         args = Seq("scl", "scl"),
         description = "Minimum of #1 and #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Generate Sequence",
         args = Seq("nls", "fun"),
         description =
           "Call #2 as a dyad infinitely with items of #1 as starting values",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⌈",
       keywords = Seq("ceil", "ceiling", "split-on-spaces"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Ceiling",
         args = Seq("num"),
         description = "Ceiling of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Split on Spaces",
         args = Seq("str"),
         description = "Split #1 by spaces",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⌊",
       keywords = Seq("floor", "str-to-num"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Floor",
         args = Seq("num"),
         description = "Floor of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "String to Number",
         args = Seq("str"),
         description =
           "Convert #1 to a number, ignoring non-digit characters. Returns 0 if no digits are found",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⊖",
       keywords = Seq("0-slice", "take", "0-take"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "0 Slice",
         args = Seq("itr", "num"),
@@ -2063,7 +1722,6 @@ object ElementInformation:
         name = "APL Style Take",
         args = Seq("lst", "lst[num]"),
         description = "APL style take",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Take While True",
@@ -2076,9 +1734,7 @@ object ElementInformation:
       symbol = "⌽",
       keywords = Seq("1-slice", "tail-take", "1-take"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "1 Slice",
         args = Seq("itr", "num"),
@@ -2090,174 +1746,140 @@ object ElementInformation:
       symbol = "£",
       keywords = Seq("set-register"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Set Register",
         args = Seq("any"),
         description = "Set the register to #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "¥",
       keywords = Seq("get-register"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Get Register",
         args = Seq(),
         description = "Push the register to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "↜",
       keywords = Seq("rotate-stack-left"),
       arity = -1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Rotate Stack Left",
         args = Seq(),
         description = "Rotate the stack left",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "↝",
       keywords = Seq("rotate-stack-right"),
       arity = -1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Rotate Stack Right",
         args = Seq(),
         description = "Rotate the stack right",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "↺",
       keywords = Seq("rot-left", "iterate-while-unique"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Rotate Left",
         args = Seq("lst|str"),
         description = "Rotate #1 left",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Rotate Left",
         args = Seq("lst|str", "num"),
         description = "Rotate #1 left #2 times. Right if #2 is negative",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Iterate While Unique",
         args = Seq("any", "fun"),
         description =
           "Repeatedly apply #2 to #1 until a result is repeated. Return all results",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "↻",
       keywords = Seq("rot-right"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Rotate Right",
         args = Seq("lst|str"),
         description = "Rotate #1 right",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Rotate Right",
         args = Seq("lst|str", "num"),
         description = "Rotate #1 right #2 times. Left if #2 is negative",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "≜",
       keywords = Seq("assign", "**>"),
       arity = 3,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "List Assign",
         args = Seq("any", "num", "nsl"),
         description = "#1[#2] = #3",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Augmented List Assignment",
         args = Seq("any", "num", "fun"),
         description = "#1[#2] = #3(#1[#2])",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Vectorised Augmented List Assignment",
         args = Seq("lst", "lst[num]", "fun"),
         description = "#1[_] = #3(#1[_]) for _ in #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Zipped Assignment",
         args = Seq("lst", "lst", "lst"),
         description = "#1[ind] = val for ind, val in zip(#2, #3)",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Regex String Replacement",
         args = Seq("str", "str", "str"),
         description = "Replace all occurrences of #2 in #1 with #3",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Regex Substitution",
         args = Seq("str", "str", "fun"),
         description =
           "Replace all occurrences of #2 in #1 with the result of #3",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Object Member Assignment",
         args = Seq("obj", "str", "any"),
         description = "#1.#2 = #3",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⎀",
       keywords = Seq("insert"),
       arity = 3,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Insert",
         args = Seq("any", "num", "any"),
         description = "Insert #3 into #1 at index #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Insert",
         args = Seq("any", "lst[num]", "scl"),
         description = "Insert #3 into #1 at indices #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Insert",
@@ -2269,82 +1891,67 @@ object ElementInformation:
       symbol = "◲",
       keywords = Seq("sublists"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Sublists",
         args = Seq("any"),
         description = "All sublists of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⊢",
       keywords = Seq("10-to-base", "all-regex-matches"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "10 to Base",
         args = Seq("num", "num"),
         description = "Convert #1 to base #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "10 to Base",
         args = Seq("num", "str|lst"),
         description = "Convert #1 to base len(#2) using the items of #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "10 to Base",
         args = Seq("lst", "num"),
         description = "Convert each item in #1 to base #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "10 to Base",
         args = Seq("lst", "lst"),
         description =
           "Convert each item in #1 to the base of the corresponding item in #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "All Regex Matches",
         args = Seq("str", "str"),
         description = "All matches of #2 in #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⊣",
       keywords = Seq("base-to-10", "first>n"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Base to 10",
         args = Seq("scl", "num"),
         description =
           "Convert #1 from base #2 to base 10, assuming a base that is a prefix of [0-9A-Z] for strings",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Base to 10",
         args = Seq("lst[num|str]", "num"),
         description =
           "Convert #1 from base #2 to base 10, using the items of #1 as digits",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Base to 10",
         args = Seq("lst", "num"),
         description =
           "Convert each item in #1 from base #2 to base 10, assuming a base that is a prefix of [0-9A-Z] for strings",
-        typeSwitchable = false,
       ),
       Overload(
         name = "First Number Greater Than Where Function is True",
@@ -2358,53 +1965,40 @@ object ElementInformation:
       symbol = "ɦ",
       keywords = Seq("head-peek"),
       arity = 1,
-      Options(
-        vectorises = false,
-        peeks = true,
-      ),
+      Options(peeks = true),
       Overload(
         name = "Head Peek",
         args = Seq("lst"),
         description = "First element of #1 without popping",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ʈ",
       keywords = Seq("tail-peek"),
       arity = 1,
-      Options(
-        vectorises = false,
-        peeks = true,
-      ),
+      Options(peeks = true),
       Overload(
         name = "Tail Peek",
         args = Seq("lst"),
         description = "Last element of #1 without popping",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ᐐ",
       keywords = Seq("init"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Init",
         args = Seq("any"),
         description = "All but the last element of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ᐵ",
       keywords = Seq("drop", "fixed-point-headless"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Drop",
         args = Seq("any", "num"),
@@ -2415,7 +2009,6 @@ object ElementInformation:
         name = "APL Style Drop",
         args = Seq("lst", "lst[num]"),
         description = "APL style drop",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Fixed Point Headless",
@@ -2429,130 +2022,103 @@ object ElementInformation:
       symbol = "ᐕ",
       keywords = Seq("behead"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Behead",
         args = Seq("any"),
         description = "All but the first element of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "½",
       keywords = Seq("half", "halve"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Halve",
         args = Seq("num"),
         description = "#1 / 2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Two String Halves",
         args = Seq("str"),
         description = "Split #1 in half",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ƶ",
       keywords = Seq("range-to-length"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Range to Length",
         args = Seq("lst"),
         description = "Range from 0 to len(#1) - 1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "Ƶ",
       keywords = Seq("range-to-length-1"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Range to Length 1",
         args = Seq("lst"),
         description = "Range from 1 to len(#1)",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⁰",
       keywords = Seq("first-input", "input-0"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "First Input",
         args = Seq(),
         description = "Push the first input to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "¹",
       keywords = Seq("second-input", "input-1"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Second Input",
         args = Seq(),
         description = "Push the second input to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "²",
       keywords = Seq("square", "string-pairs"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Square",
         args = Seq("num"),
         description = "#1 ** 2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "String Pairs",
         args = Seq("str"),
         description = "Split #1 into pairs of characters",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "³",
       keywords = Seq("cube", "string-triples"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Cube",
         args = Seq("num"),
         description = "#1 ** 3",
-        typeSwitchable = false,
       ),
       Overload(
         name = "String Triples",
         args = Seq("str"),
         description = "Split #1 into triples of characters",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -2566,102 +2132,81 @@ object ElementInformation:
         "spaceless",
       ),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Reciprocal",
         args = Seq("num"),
         description = "1 / #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Without Whitespace",
         args = Seq("str"),
         description = "Remove all whitespace from #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "※",
       keywords = Seq("group-by-consecutive"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Group by Consecutive",
         args = Seq("lst"),
         description = "Group consecutive equal elements of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Group Consecutive by Function",
         args = Seq("lst", "fun"),
         description = "Group elements of #1 by function #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⇄",
       keywords = Seq("reverse"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Reverse",
         args = Seq("any"),
         description = "Reverse #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⧖",
       keywords = Seq("permutations", "map-over-permutations", "map-perms"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Permutations",
         args = Seq("any"),
         description = "All permutations of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Map Over Permutations",
         args = Seq("any", "fun"),
         description = "Map #2 over all permutations of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "‰",
       keywords = Seq("divmod"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Divmod",
         args = Seq("num", "num"),
         description = "Divmod of #1 and #2 ([#1 // #2, #1 % #2])",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "≛",
       keywords = Seq("divides?", "append-spaces", "regex-span"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Divides?",
         args = Seq("num", "num"),
         description = "#2 % #1 == 0",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Append Spaces",
@@ -2673,16 +2218,13 @@ object ElementInformation:
         name = "Regex Span",
         args = Seq("str", "str"),
         description = "Span of regex match of pattern #2 in #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ℭ",
       keywords = Seq("combinations-with-replacement"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Combinations with Replacement",
         args = Seq("itr", "num"),
@@ -2695,16 +2237,13 @@ object ElementInformation:
         args = Seq("num", "num"),
         description =
           "All combinations of range(#1) of length #2 with replacement",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "℈",
       keywords = Seq("combinations-without-replacement"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Combinations without Replacement",
         args = Seq("itr", "num"),
@@ -2717,42 +2256,34 @@ object ElementInformation:
         args = Seq("num", "num"),
         description =
           "All combinations of range(#1) of length #2 without replacement",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⦷",
       keywords = Seq("abs", "absolute-value", "keep-letters", "first>0"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Absolute Value",
         args = Seq("num"),
         description = "Absolute value of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Keep Letters",
         args = Seq("str"),
         description = "Keep only the letters of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "First Positive Integer Where Function is True",
         args = Seq("fun"),
         description = "First positive integer where #1 is true (>= 1)",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "Ϣ",
       keywords = Seq("chunk-to-length", "partition-to-length", "first-n-true"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Chunk to Length",
         args = Seq("any", "num"),
@@ -2763,7 +2294,6 @@ object ElementInformation:
         name = "Partition to Lengths",
         args = Seq("itr", "lst[num]"),
         description = "Partition #1 into parts of lengths #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "First N Integers Where Function is True",
@@ -2776,76 +2306,60 @@ object ElementInformation:
       symbol = "≤",
       keywords = Seq("less-than-or-equal", "lte", "<="),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Less Than or Equal",
         args = Seq("scl", "scl"),
         description = "#1 <= #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "≥",
       keywords = Seq("greater-than-or-equal", "gte", ">="),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Greater Than or Equal",
         args = Seq("scl", "scl"),
         description = "#1 >= #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "≠",
       keywords = Seq("not-equal", "neq", "!=", "=n't", "eqn't", "equaln't"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Not Equal",
         args = Seq("scl", "scl"),
         description = "str(#1) != str(#2)",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "≡",
       keywords = Seq("exact-equals", "eq+", "==="),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Equals",
         args = Seq("any", "any"),
         description = "Does #1 exactly equal #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "•",
       keywords = Seq("dot-product", "bijective-base", "first-predicate-index"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Dot Product",
         args = Seq("lst", "lst"),
         description = "Dot product of #1 and #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Bijective Base Conversion",
         args = Seq("num", "num"),
         description = " Convert #1 to bijective base #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "First Index Where Predicate True",
@@ -2859,120 +2373,94 @@ object ElementInformation:
       symbol = "±",
       keywords = Seq("signum"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Signum",
         args = Seq("num"),
         description = "Sign of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "†",
       keywords = Seq("lengths-of-consecutives"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Lengths of Consecutives",
         args = Seq("lst"),
         description = "Lengths of consecutive runs of equal elements in #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⎙",
       keywords = Seq("peek-print"),
       arity = 1,
-      Options(
-        vectorises = false,
-        peeks = true,
-      ),
+      Options(peeks = true),
       Overload(
         name = "Peek Print",
         args = Seq("any"),
         description = "Print #1 without popping",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "#,",
       keywords = Seq("print"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Print",
         args = Seq("any"),
         description = "Print #1 without a trailing newline",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "≓",
       keywords = Seq("mirror"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Mirror",
         args = Seq("any"),
         description = "Mirror #1 (#1 + reverse(#1)), as the original type",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "Ͼ",
       keywords = Seq("vectorised-sums", "v/+"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Vectorised Sums",
         args = Seq("lst"),
         description = "Sum of each item in #1. Functionally equivalent to `¨∑`",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ᴥ",
       keywords = Seq("exec", "10**", "call", "@"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "10 to the Power of",
         args = Seq("num"),
         description = "10 ** #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Execute",
         args = Seq("str"),
         description = "Execute #1 as Vyxal code",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Call Function",
         args = Seq("fun"),
         description = "Call function #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ℳ",
       keywords = Seq("modular", "matrix-multiply", "regex-full-match?"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Every Nth AddElement",
         args = Seq("itr", "num"),
@@ -2983,74 +2471,60 @@ object ElementInformation:
         name = "Matrix Multiply",
         args = Seq("lst", "lst"),
         description = "Matrix multiply #1 and #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Regex Full Match?",
         args = Seq("str", "str"),
         description = "Does pattern #2 fully match #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "℗",
       keywords = Seq("is-prime", "prime?", "quine-cheese"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Is Prime",
         args = Seq("num"),
         description = "Is #1 a prime number?",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Quine Cheese",
         args = Seq("str"),
         description =
           "Quotify #1 and prepend it to #1. (Useful for quines like `\"℗\"℗`)",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⍢",
       keywords = Seq("parity", "bit", "last-half"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Parity",
         args = Seq("num"),
         description = "Parity of #1 (1 if odd, 0 if even) --> #1 % 2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Last String Half",
         args = Seq("str"),
         description = "Last half of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ℂ",
       keywords = Seq("ncr", "choose", "characters-same?", "fixpoint"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "NCR / N Choose R",
         args = Seq("num", "num"),
         description = "nCr of #1 and #2 (n choose r)",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Characters Same?",
         args = Seq("str", "str"),
         description = "Are all characters in #1 the same as #2?",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Fixpoint",
@@ -3064,40 +2538,32 @@ object ElementInformation:
       symbol = "⌹",
       keywords = Seq("list-partitions", "integer-partitions"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Integers Partitions",
         args = Seq("num"),
         description = "All possible ways to sum positive integers to #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "List Partitions",
         args = Seq("itr"),
         description = "All possible ways to partition #1 into sublists",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⏚",
       keywords = Seq("powerset", "vectorise"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Powerset",
         args = Seq("nsl"),
         description = "Powerset of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Vectorise",
         args = Seq("fun"),
         description = "Apply #1 as if it were a pervasive element",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -3105,14 +2571,11 @@ object ElementInformation:
       keywords =
         Seq("inclusive-range", "sort-by", "regex-split-keep-delimiters"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Inclusive Range",
         args = Seq("num", "num"),
         description = "Inclusive range from #1 to #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Sort By",
@@ -3124,16 +2587,13 @@ object ElementInformation:
         name = "Regex Split Keep Delimiters",
         args = Seq("str", "str"),
         description = "Split #1 by regex #2, keeping the delimiters",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⊠",
       keywords = Seq("cartesian-power", "regex-index"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Cartesian Power",
         args = Seq("any", "num"),
@@ -3145,34 +2605,28 @@ object ElementInformation:
         args = Seq("str", "str"),
         description =
           "Return first index of pattern match #2 in target string #1, -1 if not found",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Self-Cartesian Power",
         args = Seq("itr", "any"),
         description =
           "Push #1, and then push the cartesian product of #2 with itself",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⚅",
       keywords = Seq("random-choice", "random-element", "randint", "random"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Random Choice",
         args = Seq("itr"),
         description = "Random element of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Random Integer",
         args = Seq("num"),
         description = "Random integer from 0 to #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -3191,71 +2645,56 @@ object ElementInformation:
         "@@",
       ),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Bifurcate",
         args = Seq("any"),
         description = "Duplicate #1 and reverse the duplicate",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Call Function Without Popping",
         args = Seq("fun"),
         description = "Call #1 without popping its arguments",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "␣",
       keywords = Seq("space"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Space",
         args = Seq(),
         description = "Push a space to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "¶",
       keywords = Seq("newline"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Newline",
         args = Seq(),
         description = "Push a newline to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "★",
       keywords = Seq("asterisk"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Asterisk",
         args = Seq(),
         description = "Push an asterisk to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ᑂ",
       keywords = Seq("headless-top"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Head on Top, Rest on Bottom",
         args = Seq("any"),
@@ -3266,250 +2705,198 @@ object ElementInformation:
       symbol = "∻",
       keywords = Seq("integer-divide", "int-div", "//"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Integer Divide",
         args = Seq("num", "num"),
         description = "#1 // #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "√",
       keywords = Seq("square-root", "sqrt"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Square Root",
         args = Seq("num"),
         description = "Square root of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⍰",
       keywords = Seq("truthy?"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Truthy?",
         args = Seq("scl"),
         description = "Is #1 truthy? (Not 0, empty, or false)",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "◌",
       keywords = Seq("round"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Round",
         args = Seq("num"),
         description = "Round #1 to the nearest integer, half-up",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "δ",
       keywords = Seq("deltas", "differences"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Deltas",
         args = Seq("lst"),
         description =
           "Deltas/forward differences of #1 - [a - b, b - c, c - d, ...]",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "☷",
       keywords = Seq("partition-after-truthy", "group-by"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Partition After Truthy",
         args = Seq("lst", "lst"),
         description = " Partition #1 after truthy indices of #2.",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Group By",
         args = Seq("lst", "fun"),
         description = "Group elements of #1 by function #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "Þ⎶",
       keywords = Seq("edges", "ends", "real-imaginary"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Edges",
         args = Seq("itr"),
         description = "First and last element of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Real and Imaginary",
         args = Seq("num"),
         description = "Real and imaginary parts of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⎶",
       keywords = Seq("trim"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Trim",
         args = Seq("any", "any"),
         description = "Trim #1 of leading and trailing #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⊆",
       keywords = Seq("subset?"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Subset?",
         args = Seq("lst", "lst"),
         description =
           "Is the shallower list a subset of the deeper list? Checks windows corresponding to the length of the shallower list",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⍨",
       keywords = Seq("dump"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Dump",
         args = Seq("any"),
         description = "Push all items of #1 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "γ",
       keywords = Seq("wrap-len-2"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Wrap to Length 2",
         args = Seq("any"),
         description = "Wrap #1 into chunks of length 2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⎘",
       keywords = Seq("flatten-by-depth", "flatten-depth"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Flatten by Depth",
         args = Seq("lst", "num"),
         description = "Flatten #1 by #2 levels",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Flatten by Depth",
         args = Seq("lst"),
         description = "Flatten #1 by 1 level",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ꜝ",
       keywords = Seq("keep-truthy"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Keep Truthy",
         args = Seq("lst"),
         description = "Keep only the truthy elements of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "≈",
       keywords = Seq("all-same"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "All Same",
         args = Seq("any"),
         description = "Are all elements of #1 the same?",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "≊",
       keywords = Seq("all-equal-item"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "All Equal Item",
         args = Seq("lst", "any"),
         description = "Are all elements of #1 equal to #2?",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "κ",
       keywords = Seq("gcd"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "GCD",
         args = Seq("num", "num"),
         description = "GCD of #1 and #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "GCD of List",
         args = Seq("lst"),
         description = "GCD of all elements of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "GCD of List with Initial Value",
@@ -3521,100 +2908,80 @@ object ElementInformation:
       symbol = "#↸",
       keywords = Seq("retrieve-from-outer"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Retrieve Item at Index from Outer Stack",
         args = Seq("num"),
         description =
           "Retrieve the item at index #1 from the outer stack, current stack if at top level",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Retrieve Item at Index from Outer Stack N-Layers Up",
         args = Seq("lst[num, num]"),
         description =
           "Retrieve the item at index #2 from the stack #1 levels up",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⤻",
       keywords = Seq("over"),
       arity = -1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Over",
         args = Seq(),
         description =
           "Duplicate the item below the top of the stack -> #2 #1 #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⤺",
       keywords = Seq("around"),
       arity = -1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Around",
         args = Seq(),
         description =
           "Duplicate the top of the stack around the item below the top of the stack -> #1 #2 #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "↸",
       keywords = Seq("roll"),
       arity = 3,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Roll",
         args = Seq("any", "any", "any"),
         description = "#1 #2 #3 -> #3 #1 #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "”",
       keywords = Seq("join-on-newlines", "*newline", "one?->n"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Join on Newlines",
         args = Seq("lst"),
         description = "Join #1 on newlines",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Push Context Variable N if 1",
         args = Seq("num"),
         description = "Push the context variable N if #1 is 1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "„",
       keywords = Seq("join-on-spaces", "*space", "<0", "is-negative?"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Join on Spaces",
         args = Seq("lst"),
         description = "Join #1 on spaces",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Is negative?",
@@ -3633,32 +3000,26 @@ object ElementInformation:
         "first-n>0",
       ),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Join on Empty String",
         args = Seq("lst"),
         description = "Join #1 on the empty string",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Is alphanumeric?",
         args = Seq("str"),
         description = "Push 1 if #1 is alphanumeric, 0 otherwise",
-        typeSwitchable = false,
       ),
       Overload(
         name = "First Positive Integer Where Function is Truthy",
         args = Seq("fun"),
         description = "Push the first positive integer where #1 is truthy",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Is Insignificant?",
         args = Seq("num"),
         description = "abs(#1) <= 1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -3677,7 +3038,6 @@ object ElementInformation:
         name = "Split Number Into N Pieces",
         args = Seq("itr", "num"),
         description = "Listify {#1|#2} and split it into {#2|#1} pieces",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Fixpoint Unfold Without Initial Value",
@@ -3691,100 +3051,78 @@ object ElementInformation:
       symbol = "▲",
       keywords = Seq("mask"),
       arity = 2,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Mask",
         args = Seq("any", "any"),
         description =
           "Keep elements of #1 where the corresponding element of #2 is truthy",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "Ṭ",
       keywords = Seq("truthy-indexes"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Truthy Indexes",
         args = Seq("lst"),
         description = "Indexes of truthy elements in #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "Ṫ",
       keywords = Seq("untruth"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Untruth",
         args = Seq("lst"),
         description = "Create a list of 1s at indices in #1, 0s elsewhere",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "Ŀ",
       keywords = Seq("vlen", "lengths"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Vectorised Lengths",
         args = Seq("lst"),
         description = "Length of each element in #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "Ł",
       keywords = Seq("length-peek"),
       arity = 1,
-      Options(
-        vectorises = false,
-        peeks = true,
-      ),
+      Options(peeks = true),
       Overload(
         name = "Length Peek",
         args = Seq("any"),
         description = "Push the length of #1 without popping",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ḧ",
       keywords = Seq("heads", "head-each"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Heads",
         args = Seq("lst"),
         description = "First element of each element in #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "¤",
       keywords = Seq("stringify", "to-str", "str"),
       arity = 1,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Stringify",
         args = Seq("any"),
         description = "Stringify #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -3797,133 +3135,105 @@ object ElementInformation:
         args = Seq("fun"),
         description =
           "Call #1 with arguments that are peeked, not popped, from the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "①",
       keywords = Seq("10"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "10",
         args = Seq(),
         description = "Push 10 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "②",
       keywords = Seq("16"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "16",
         args = Seq(),
         description = "Push 16 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "③",
       keywords = Seq("32"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "32",
         args = Seq(),
         description = "Push 32 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "④",
       keywords = Seq("64"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "64",
         args = Seq(),
         description = "Push 64 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⑤",
       keywords = Seq("100"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "100",
         args = Seq(),
         description = "Push 100 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⑥",
       keywords = Seq("128"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "128",
         args = Seq(),
         description = "Push 128 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⑦",
       keywords = Seq("256"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "256",
         args = Seq(),
         description = "Push 256 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "⑧",
       keywords = Seq("-1"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "-1",
         args = Seq(),
         description = "Push -1 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kæ",
       keywords = Seq("&ALL-PRIMES", "&PRIMES"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "All Primes",
         args = Seq(),
         description = "Push a list of every prime number to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -3935,7 +3245,6 @@ object ElementInformation:
         name = "[-1, 1]",
         args = Seq(),
         description = "Push the list [-1, 1] to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -3947,7 +3256,6 @@ object ElementInformation:
         name = "[1, -1]",
         args = Seq(),
         description = "Push the list [1, -1] to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -3959,7 +3267,6 @@ object ElementInformation:
         name = "[0, 1]",
         args = Seq(),
         description = "Push the list [0, 1] to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -3971,148 +3278,117 @@ object ElementInformation:
         name = "[1, 1]",
         args = Seq(),
         description = "Push the list [1, 1] to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k0",
       keywords = Seq("360"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "360",
         args = Seq(),
         description = "Push 360 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k1",
       keywords = Seq("1000"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "1000",
         args = Seq(),
         description = "Push 1000 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k2",
       keywords = Seq("10000"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "10000",
         args = Seq(),
         description = "Push 10000 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k3",
       keywords = Seq("100000"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "100000",
         args = Seq(),
         description = "Push 100000 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k4",
       keywords = Seq("1000000"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "1000000",
         args = Seq(),
         description = "Push 1000000 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k5",
       keywords = Seq("4294967296"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "4294967296",
         args = Seq(),
         description = "Push 4294967296 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k6",
       keywords = Seq("&HEX-DIGITS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Hex Digits",
         args = Seq(),
         description = "Push \"0123456789abcdef\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kA",
       keywords = Seq("&UPPERCASE-LETTERS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Uppercase Letters",
         args = Seq(),
         description = "Push \"ABCDEFGHIJKLMNOPQRSTUVWXYZ\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kB",
       keywords = Seq("&UPPERCASE-LOWERCASE"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Uppercase and Lowercase",
         args = Seq(),
         description =
           "Push \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kD",
       keywords = Seq("&LINE-CHARS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Line Chars",
         args = Seq(),
         description = "Push \"\\|/-_\" to the stack - useful for drawing lines",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -4121,756 +3397,595 @@ object ElementInformation:
         "&FIZZBUZZ"
       ),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Fizzbuzz Constant",
         args = Seq(),
         description = "Push \"FizzBuzz\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kH",
       keywords = Seq("&HELLO-WORLD"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Hello, World!",
         args = Seq(),
         description = "Push \"Hello, World!\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kL",
       keywords = Seq("&LOWERCASE-UPPERCASE"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Lowercase and Uppercase",
         args = Seq(),
         description =
           "Push \"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kN",
       keywords = Seq("&NN", "&NATURAL-NUMBERS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Natural Numbers",
         args = Seq(),
         description = "Push a list of every natural number to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kP",
       keywords = Seq("&PRINTABLE-ASCII"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Printable ASCII",
         args = Seq(),
         description = "Push \"!\" to \"~\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kR",
       keywords = Seq("&DIGITS-UPPERCASE-LOWERCASE"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Digits, Uppercase, Lowercase",
         args = Seq(),
         description =
           "Push \"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kV",
       keywords = Seq("&UPPERCASE-VOWELS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Uppercase Vowels",
         args = Seq(),
         description = "Push \"AEIOU\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kY",
       keywords = Seq("&UPPERCASE-VOWELSY"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Uppercase Vowels and Y",
         args = Seq(),
         description = "Push \"AEIOUY\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kZ",
       keywords = Seq("&REVERSE-UPPERCASE"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Reverse Uppercase",
         args = Seq(),
         description = "Push \"ZYXWVUTSRQPONMLKJIHGFEDCBA\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k^",
       keywords = Seq("&UPPERCASE-HEX-DIGITS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Uppercase Hex Digits",
         args = Seq(),
         description = "Push \"0123456789ABCDEF\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ka",
       keywords = Seq("&LOWERCASE-LETTERS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Lowercase Letters",
         args = Seq(),
         description = "Push \"abcdefghijklmnopqrstuvwxyz\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kd",
       keywords = Seq("&DIGITS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Digits",
         args = Seq(),
         description = "Push \"0123456789\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ke",
       keywords = Seq("&E-CONSTANT"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "E Constant",
         args = Seq(),
         description = "Push 2.718281828459045 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kg",
       keywords = Seq("&GOLDEN-RATIO", "&PHI"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Golden Ratio",
         args = Seq(),
         description = "Push 1.618033988749895 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kh",
       keywords = Seq("&HELLOWORLD"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Hello World!",
         args = Seq(),
         description = "Push \"Hello World\" to the stack, no punctuation",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ki",
       keywords = Seq("&PI"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Pi Constant",
         args = Seq(),
         description = "Push 3.141592653589793 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kk",
       keywords = Seq("&RDHW"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Radiation Hardening Hello World cheese",
         args = Seq(),
         description =
           "Push \"Hello, World!\" to the stack. Useful for radiation hardening hello worlds, because you can submit kkH as your answer.",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kl",
       keywords = Seq("&REVERSE-UPPERCASE-LOWERCASE"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Reverse Uppercase and Lowercase",
         args = Seq(),
         description =
           "Push \"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ko",
       keywords = Seq("&OCTAL-DIGITS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Octal Digits",
         args = Seq(),
         description = "Push \"01234567\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kp",
       keywords = Seq("&PUNCTUATION"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Punctuation",
         args = Seq(),
         description = "Push all punctuation characters to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kr",
       keywords = Seq("&DIGITS-LOWERCASE-UPPERCASE"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Digits, Lowercase, Uppercase",
         args = Seq(),
         description =
           "Push \"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kv",
       keywords = Seq("&LOWERCASE-VOWELS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Lowercase Vowels",
         args = Seq(),
         description = "Push \"aeiou\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "ky",
       keywords = Seq("&LOWERCASE-VOWELSY"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Lowercase Vowels and Y",
         args = Seq(),
         description = "Push \"aeiouy\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kz",
       keywords = Seq("&REVERSE-LOWERCASE"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Reverse Lowercase",
         args = Seq(),
         description = "Push \"zyxwvutsrqponmlkjihgfedcba\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k⎶",
       keywords = Seq("&ALL-BRACKETS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "All Brackets",
         args = Seq(),
         description = "Push \"{}[]<>()\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k☷",
       keywords = Seq("&BRACKETS-WITHOUT-<>"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Brackets Without <>",
         args = Seq(),
         description = "Push \"{}[]()\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k◲",
       keywords = Seq("&PARENS-SQUARES"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Parens and Squares",
         args = Seq(),
         description = "Push \"()[]\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k∪",
       keywords = Seq("&OPEN-BRACKETS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Open Brackets",
         args = Seq(),
         description = "Push \"([{\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k∩",
       keywords = Seq("&CLOSE-BRACKETS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Close Brackets",
         args = Seq(),
         description = "Push \")]}\"",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k<",
       keywords = Seq("&OPEN-FISH-BRACKETS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Open Brackets",
         args = Seq(),
         description = "Push \"([{<\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k>",
       keywords = Seq("&CLOSE-FISH-BRACKETS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Close Brackets",
         args = Seq(),
         description = "Push \")]}>\"",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k⎀",
       keywords = Seq("&LOWER-UPPER-VOWELS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Lowercase and Uppercase Vowels",
         args = Seq(),
         description = "Push \"aeiouAEIOU\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k⩔",
       keywords = Seq("&CODEPAGE"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Codepage",
         args = Seq(),
         description = "Push the Vyxal codepage to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k½",
       keywords = Seq("1~2"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "[1, 2]",
         args = Seq(),
         description = "Push the list [1, 2] to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k①",
       keywords = Seq("512"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "512",
         args = Seq(),
         description = "Push 512 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k②",
       keywords = Seq("1024"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "1024",
         args = Seq(),
         description = "Push 1024 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k③",
       keywords = Seq("2048"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "2048",
         args = Seq(),
         description = "Push 2048 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k④",
       keywords = Seq("4096"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "4096",
         args = Seq(),
         description = "Push 4096 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k⑤",
       keywords = Seq("8192"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "8192",
         args = Seq(),
         description = "Push 8192 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k⑥",
       keywords = Seq("16384"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "16384",
         args = Seq(),
         description = "Push 16384 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k⑦",
       keywords = Seq("32768"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "32768",
         args = Seq(),
         description = "Push 32768 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k⑧",
       keywords = Seq("65536"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "65536",
         args = Seq(),
         description = "Push 65536 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k⁰",
       keywords = Seq("2147483648"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "2147483648",
         args = Seq(),
         description = "Push 2147483648 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kġ",
       keywords = Seq("&LOWERCASE-CONSONANTS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Lowercase Consonants",
         args = Seq(),
         description = "Push \"bcdfghjklmnpqrstvwxyz\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kɠ",
       keywords = Seq("&LOWERCASE-CONSONANTS-WITHOUT-Y"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Lowercase Consonants Without Y",
         args = Seq(),
         description = "Push \"bcdfghjklmnpqrstvwxz\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kĠ",
       keywords = Seq("&UPPERCASE-CONSONANTS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Uppercase Consonants",
         args = Seq(),
         description = "Push \"BCDFGHJKLMNPQRSTVWXYZ\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kƓ",
       keywords = Seq("&UPPERCASE-CONSONANTS-WITHOUT-Y"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Uppercase Consonants Without Y",
         args = Seq(),
         description = "Push \"BCDFGHJKLMNPQRSTVWXZ\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k⎘",
       keywords = Seq("&BRAINF*CK-COMMANDS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Brainf*ck Commands",
         args = Seq(),
         description = "Push \"[]<>-+.,\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k⌹",
       keywords = Seq("&PAIRED-BRACKETS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Paired Brackets",
         args = Seq(),
         description = "Push [\"()\", \"[]\", \"{}\", \"<>\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k¤",
       keywords = Seq("&NESTED-BRACKETS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Nested Brackets",
         args = Seq(),
         description = "Push \"([{<>}])\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k²",
       keywords = Seq("1048576", "2**20", "2^20"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "1048576 (2^20)",
         args = Seq(),
         description = "Push 1048576 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k³",
       keywords = Seq("1073741824", "2**30", "2^30"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "1073741824 (2^30)",
         args = Seq(),
         description = "Push 1073741824 to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kγ",
       keywords = Seq("&LOWER-UPPER-VOWELSY"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Lowercase and Uppercase Vowels and Y",
         args = Seq(),
         description = "Push \"aeiouyAEIOUY\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k◌",
       keywords = Seq("&DIRECTIONS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Directions List",
         args = Seq(),
@@ -4882,99 +3997,78 @@ object ElementInformation:
       symbol = "kℂ",
       keywords = Seq("&ROMAN-NUMERALS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Roman Numerals",
         args = Seq(),
         description = "Push \"IVXLCDM\" to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "k•",
       keywords = Seq("&QWERTY-ROWS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "QWERTY Rows",
         args = Seq(),
         description =
           "Push [\"qwertyuiop\", \"asdfghjkl\", \"zxcvbnm\"] to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "kṬ",
       keywords = Seq("&ZZ", "&INTEGERS"),
       arity = 0,
-      Options(
-        vectorises = false
-      ),
+      Options(),
       Overload(
         name = "Integers",
         args = Seq(),
         description = "Push a list of every integer to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "∆∧",
       keywords = Seq("bitwise-and"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Bitwise And",
         args = Seq("num", "num"),
         description = "#1 & #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "∆∨",
       keywords = Seq("bitwise-or"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Bitwise Or",
         args = Seq("num", "num"),
         description = "#1 | #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "∆¬",
       keywords = Seq("bitwise-not"),
       arity = 1,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Bitwise Not",
         args = Seq("num"),
         description = "~#1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
       symbol = "∆⊍",
       keywords = Seq("bitwise-xor"),
       arity = 2,
-      Options(
-        vectorises = true
-      ),
+      Options(vectorises = true),
       Overload(
         name = "Bitwise Xor",
         args = Seq("num", "num"),
         description = "#1 ^ #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -4986,7 +4080,6 @@ object ElementInformation:
         name = "Compress",
         args = Seq("str"),
         description = "Compress #1 using the Vyxal compression algorithm",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -4999,7 +4092,6 @@ object ElementInformation:
         args = Seq("str"),
         description =
           "Compress #1 using simple base 252 compression. Requires all characters to be lowercase letters, or spaces.",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Base 252 Compress Number",
@@ -5016,7 +4108,6 @@ object ElementInformation:
         name = "Quit",
         args = Seq(),
         description = "Quit the program",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5028,7 +4119,6 @@ object ElementInformation:
         name = "Break",
         args = Seq(),
         description = "Break out of the current loop",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5040,7 +4130,6 @@ object ElementInformation:
         name = "Continue",
         args = Seq(),
         description = "Continue to the next iteration of the current loop",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5052,7 +4141,6 @@ object ElementInformation:
         name = "Input Count",
         args = Seq(),
         description = "Push the number of inputs to the stack",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5065,7 +4153,6 @@ object ElementInformation:
         args = Seq("num"),
         description =
           "The angle (argument) between the positive real axis and the line joining the origin to #1 in the complex plane.",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5077,7 +4164,6 @@ object ElementInformation:
         name = "Arithmetic Mean",
         args = Seq("lst"),
         description = "Arithmetic mean of #1 (sum(#1) / len(#1))",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5089,7 +4175,6 @@ object ElementInformation:
         name = "Hyperbolic Cosine",
         args = Seq("num"),
         description = "Hyperbolic cosine of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5101,7 +4186,6 @@ object ElementInformation:
         name = "Geometric Mean",
         args = Seq("lst"),
         description = "Geometric mean of #1 (product(#1) ^ (1 / len(#1)))",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5113,7 +4197,6 @@ object ElementInformation:
         name = "Harmonic Mean",
         args = Seq("lst"),
         description = "Harmonic mean of #1 (len(#1) / sum(1 / #1))",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5125,7 +4208,6 @@ object ElementInformation:
         name = "Imaginary Part",
         args = Seq("num"),
         description = "Imaginary part of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5137,19 +4219,16 @@ object ElementInformation:
         name = "Least Common Multiple",
         args = Seq("num", "num"),
         description = "Least common multiple of #1 and #2",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Least Common Multiple of List",
         args = Seq("lst"),
         description = "Least common multiple of all elements of #1",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Least Common Multiple",
         args = Seq("lst", "num"),
         description = "Least common multiple of #1.append(#2)",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5161,7 +4240,6 @@ object ElementInformation:
         name = "Real Part",
         args = Seq("num"),
         description = "Real part of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5173,7 +4251,6 @@ object ElementInformation:
         name = "Hyperbolic Sine",
         args = Seq("num"),
         description = "Hyperbolic sine of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5185,7 +4262,6 @@ object ElementInformation:
         name = "Hyperbolic Tangent",
         args = Seq("num"),
         description = "Hyperbolic tangent of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5197,7 +4273,6 @@ object ElementInformation:
         name = "Cosine",
         args = Seq("num"),
         description = "Cosine of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5210,7 +4285,6 @@ object ElementInformation:
         args = Seq("num"),
         description =
           "push a list of the power of each prime in the prime factors of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5222,7 +4296,6 @@ object ElementInformation:
         name = "Sine",
         args = Seq("num"),
         description = "Sine of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5234,7 +4307,6 @@ object ElementInformation:
         name = "Tangent",
         args = Seq("num"),
         description = "Tangent of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5246,7 +4318,6 @@ object ElementInformation:
         name = "Polar Parts",
         args = Seq("num"),
         description = "Push the magnitude and argument of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5258,7 +4329,6 @@ object ElementInformation:
         name = "Complex Parts",
         args = Seq("num"),
         description = "Push the real and imaginary parts of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5270,7 +4340,6 @@ object ElementInformation:
         name = "Arctangent 2",
         args = Seq("num", "num"),
         description = "atan2(#1, #2)",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5282,7 +4351,6 @@ object ElementInformation:
         name = "Arcsine",
         args = Seq("num"),
         description = "Arcsine of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5294,7 +4362,6 @@ object ElementInformation:
         name = "Arccosine",
         args = Seq("num"),
         description = "Arccosine of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5306,7 +4373,6 @@ object ElementInformation:
         name = "Arctangent",
         args = Seq("num"),
         description = "Arctangent of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5318,7 +4384,6 @@ object ElementInformation:
         name = "Radians to Degrees",
         args = Seq("num"),
         description = "Convert #1 from radians to degrees",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5330,7 +4395,6 @@ object ElementInformation:
         name = "Degrees to Radians",
         args = Seq("num"),
         description = "Convert #1 from degrees to radians",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5343,7 +4407,6 @@ object ElementInformation:
         args = Seq("num"),
         description =
           "For all primes less than or equal to #1, push the power of that prime in the factorisation of #1",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5355,7 +4418,6 @@ object ElementInformation:
         name = "Principal Root of Unity",
         args = Seq("num"),
         description = "Principal #1-th root of unity (e^(2i * pi / #1))",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5373,13 +4435,11 @@ object ElementInformation:
         name = "Letter to Number",
         args = Seq("str"),
         description = "the index of #1 in the alphabet (one-indexed)",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Number to Letter",
         args = Seq("num"),
         description = "the letter at index #1 in the alphabet (one-indexed)",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5391,7 +4451,6 @@ object ElementInformation:
         name = "Surround",
         args = Seq("any", "any"),
         description = "#1 prepended and appended to #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5409,7 +4468,6 @@ object ElementInformation:
         name = "Zero Pad",
         args = Seq("itr", "itr"),
         description = "#1 zero-padded to length of #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5428,14 +4486,12 @@ object ElementInformation:
         args = Seq("lst"),
         description =
           "Grid neighbours of #1 - up, down, left, right - wrapping around",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Grid Neighbours Wrap With Starting Direction",
         args = Seq("lst", "num"),
         description =
           "Grid neighbours of cells in #1 - right, down, left, up - wrapping around and start from direction #2 => 0: right, 1: down, 2: left, 3: up. Negative #2 does not include middle, positive #2 does",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5447,7 +4503,6 @@ object ElementInformation:
         name = "Reshape",
         args = Seq("lst", "lst[num]"),
         description = "Reshape #1 to the shape #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5460,7 +4515,6 @@ object ElementInformation:
         args = Seq("lst"),
         description =
           "Transpose #1, does not hang on an infinite list of finite lists",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5478,7 +4532,6 @@ object ElementInformation:
         args = Seq("lst", "lst"),
         description =
           "Cartesian product of #1 and #2 in the standard order, but without accounting for infinite lists",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5491,7 +4544,6 @@ object ElementInformation:
         args = Seq("lst", "lst[num]"),
         description =
           "Index #1 at the multi-dimensional index #2 - #1[#2[0]][#2[1]]...[#2[n]]",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5509,14 +4561,12 @@ object ElementInformation:
         name = "Grid Neighbours",
         args = Seq("lst"),
         description = "Grid neighbours of #1 - up, down, left, right",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Grid Neighbours With Starting Direction",
         args = Seq("lst", "num"),
         description =
           "Grid neighbours of cells in #1 - right, down, left, up - start from direction #2 => 0: right, 1: down, 2: left, 3: up",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5529,13 +4579,11 @@ object ElementInformation:
         args = Seq("lst"),
         description =
           "Cycle #1 - Append all items of #1 to itself infinite times",
-        typeSwitchable = false,
       ),
       Overload(
         name = "List-Repeat Infinitely",
         args = Seq("num|str"),
         description = "Repeat #1 infinitely - [#1, #1, #1, ...]",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5555,14 +4603,12 @@ object ElementInformation:
         args = Seq("lst"),
         description =
           "Grid neighbours of #1 - up, down, left, right, and diagonals - wrapping around",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Grid Neighbours Diagonals Wrap With Starting Direction",
         args = Seq("lst", "num"),
         description =
           "Grid neighbours of cells in #1 - right, down, left, up, and diagonals - wrapping around and start from direction #2 => 0: right, 1: down, 2: left, 3: up. Negative #2 does not include middle, positive #2 does",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5574,7 +4620,6 @@ object ElementInformation:
         name = "Zero Lift",
         args = Seq("lst"),
         description = "Multiply each element of #1 by its 0-based index",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5586,7 +4631,6 @@ object ElementInformation:
         name = "One Lift",
         args = Seq("lst"),
         description = "Multiply each element of #1 by its 1-based index",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5598,7 +4642,6 @@ object ElementInformation:
         name = "Multiset XOR",
         args = Seq("lst", "lst"),
         description = "Multiset XOR of #1 and #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5610,7 +4653,6 @@ object ElementInformation:
         name = "Multiset Difference",
         args = Seq("lst", "lst"),
         description = "Multiset difference of #1 and #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5622,7 +4664,6 @@ object ElementInformation:
         name = "Multiset Intersection",
         args = Seq("lst", "lst"),
         description = "Multiset intersection of #1 and #2",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5635,7 +4676,6 @@ object ElementInformation:
         args = Seq("lst", "lst[num]", "any"),
         description =
           "Assign #3 to the multi-dimensional index #2 in #1 - #1[#2[0]][#2[1]]...[#2[n]] = #3",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5655,14 +4695,12 @@ object ElementInformation:
         args = Seq("lst"),
         description =
           "Grid neighbours of #1 - up, down, left, right, and diagonals",
-        typeSwitchable = false,
       ),
       Overload(
         name = "Grid Neighbours Diagonals With Starting Direction",
         args = Seq("lst", "num"),
         description =
           "Grid neighbours of cells in #1 - right, down, left, up, and diagonals - start from direction #2 => 0: right, 1: down, 2: left, 3: up",
-        typeSwitchable = false,
       ),
     ),
     AddElement(
@@ -5674,7 +4712,6 @@ object ElementInformation:
         name = "Matrix Inverse",
         args = Seq("lst[lst]"),
         description = "Inverse of #1",
-        typeSwitchable = false,
       ),
     ),
   )
