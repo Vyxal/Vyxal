@@ -218,7 +218,7 @@ Element, Modifier, and Syntax Reference
 | <code>#x</code> | <code>continue</code> | 0 |   | **Continue**: Continue to the next iteration of the current loop |
 | <code>#~</code> | <code>call-peek</code></br><code>call-no-pop</code> | 1 |   | **Call Without Popping** (`fun`): Call #1 with arguments that are peeked, not popped, from the stack |
 | <code>#↸</code> | <code>retrieve-from-outer</code> | 1 |   | **Retrieve Item at Index from Outer Stack** (`num`): Retrieve the item at index #1 from the outer stack, current stack if at top level</br>**Retrieve Item at Index from Outer Stack N-Layers Up** (`lst[num, num]`): Retrieve the item at index #2 from the stack #1 levels up |
-| <code>k⩔</code> | <code>codepage</code> | 0 |   | **Codepage**: Push the Vyxal codepage to the stack |
+| <code>k⩔</code> | <code>&CODEPAGE</code> | 0 |   | **Codepage**: Push the Vyxal codepage to the stack |
 | <code>k+</code> | <code>-1~1</code> | 0 |   | **[-1, 1]**: Push the list [-1, 1] to the stack |
 | <code>k-</code> | <code>1~-1</code> | 0 |   | **[1, -1]**: Push the list [1, -1] to the stack |
 | <code>k0</code> | <code>360</code> | 0 |   | **360**: Push 360 to the stack |
@@ -227,61 +227,61 @@ Element, Modifier, and Syntax Reference
 | <code>k3</code> | <code>100000</code> | 0 |   | **100000**: Push 100000 to the stack |
 | <code>k4</code> | <code>1000000</code> | 0 |   | **1000000**: Push 1000000 to the stack |
 | <code>k5</code> | <code>4294967296</code> | 0 |   | **4294967296**: Push 4294967296 to the stack |
-| <code>k6</code> | <code>hex-digits</code> | 0 |   | **Hex Digits**: Push "0123456789abcdef" to the stack |
-| <code>k<</code> | <code>open-fish-brackets</code> | 0 |   | **Open Brackets**: Push "([{<" to the stack |
-| <code>k></code> | <code>close-fish-brackets</code> | 0 |   | **Close Brackets**: Push ")]}>" |
-| <code>kA</code> | <code>uppercase-letters</code> | 0 |   | **Uppercase Letters**: Push "ABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
-| <code>kB</code> | <code>uppercase-lowercase</code> | 0 |   | **Uppercase and Lowercase**: Push "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" to the stack |
-| <code>kD</code> | <code>line-chars</code> | 0 |   | **Line Chars**: Push "\|/-_" to the stack - useful for drawing lines |
-| <code>kF</code> | <code>fizzbuzz-constant</code> | 0 |   | **Fizzbuzz Constant**: Push "FizzBuzz" to the stack |
-| <code>kH</code> | <code>Hello-World</code> | 0 |   | **Hello, World!**: Push "Hello, World!" to the stack |
-| <code>kL</code> | <code>lowercase-uppercase</code> | 0 |   | **Lowercase and Uppercase**: Push "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
-| <code>kN</code> | <code>NN</code></br><code>natural-numbers</code> | 0 |   | **Natural Numbers**: Push a list of every natural number to the stack |
-| <code>kP</code> | <code>printable-ascii</code> | 0 |   | **Printable ASCII**: Push "!" to "~" to the stack |
-| <code>kR</code> | <code>digits-uppercase-lowercase</code> | 0 |   | **Digits, Uppercase, Lowercase**: Push "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" to the stack |
-| <code>kV</code> | <code>uppercase-vowels</code> | 0 |   | **Uppercase Vowels**: Push "AEIOU" to the stack |
-| <code>kY</code> | <code>uppercase-vowelsy</code> | 0 |   | **Uppercase Vowels and Y**: Push "AEIOUY" to the stack |
-| <code>kZ</code> | <code>reverse-uppercase</code> | 0 |   | **Reverse Uppercase**: Push "ZYXWVUTSRQPONMLKJIHGFEDCBA" to the stack |
-| <code>k^</code> | <code>uppercase-hex-digits</code> | 0 |   | **Uppercase Hex Digits**: Push "0123456789ABCDEF" to the stack |
-| <code>ka</code> | <code>lowercase-letters</code> | 0 |   | **Lowercase Letters**: Push "abcdefghijklmnopqrstuvwxyz" to the stack |
-| <code>kd</code> | <code>digits</code> | 0 |   | **Digits**: Push "0123456789" to the stack |
-| <code>ke</code> | <code>e-constant</code> | 0 |   | **E Constant**: Push 2.718281828459045 to the stack |
-| <code>kg</code> | <code>golden-ratio</code></br><code>phi-constant</code> | 0 |   | **Golden Ratio**: Push 1.618033988749895 to the stack |
-| <code>kh</code> | <code>helloworld</code> | 0 |   | **Hello World!**: Push "Hello World" to the stack, no punctuation |
-| <code>ki</code> | <code>pi-constant</code> | 0 |   | **Pi Constant**: Push 3.141592653589793 to the stack |
-| <code>kk</code> | <code>rhhw-cheese</code> | 0 |   | **Radiation Hardening Hello World cheese**: Push "Hello, World!" to the stack. Useful for radiation hardening hello worlds, because you can submit kkH as your answer. |
-| <code>kl</code> | <code>reverse-uppercase-lowercase</code> | 0 |   | **Reverse Uppercase and Lowercase**: Push "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba" to the stack |
-| <code>ko</code> | <code>octal-digits</code> | 0 |   | **Octal Digits**: Push "01234567" to the stack |
-| <code>kp</code> | <code>punctuation</code> | 0 |   | **Punctuation**: Push all punctuation characters to the stack |
-| <code>kr</code> | <code>digits-lowercase-uppercase</code> | 0 |   | **Digits, Lowercase, Uppercase**: Push "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
-| <code>kv</code> | <code>lowercase-vowels</code> | 0 |   | **Lowercase Vowels**: Push "aeiou" to the stack |
-| <code>ky</code> | <code>lowercase-vowelsy</code> | 0 |   | **Lowercase Vowels and Y**: Push "aeiouy" to the stack |
-| <code>kz</code> | <code>reverse-lowercase</code> | 0 |   | **Reverse Lowercase**: Push "zyxwvutsrqponmlkjihgfedcba" to the stack |
-| <code>k◲</code> | <code>parens-squares</code> | 0 |   | **Parens and Squares**: Push "()[]" to the stack |
-| <code>k∪</code> | <code>open-brackets</code> | 0 |   | **Open Brackets**: Push "([{" to the stack |
-| <code>k∩</code> | <code>close-brackets</code> | 0 |   | **Close Brackets**: Push ")]}" |
-| <code>kƓ</code> | <code>uppercase-consonants-without-y</code> | 0 |   | **Uppercase Consonants Without Y**: Push "BCDFGHJKLMNPQRSTVWXZ" to the stack |
-| <code>kɠ</code> | <code>lowercase-consonants-without-y</code> | 0 |   | **Lowercase Consonants Without Y**: Push "bcdfghjklmnpqrstvwxz" to the stack |
-| <code>kĠ</code> | <code>uppercase-consonants</code> | 0 |   | **Uppercase Consonants**: Push "BCDFGHJKLMNPQRSTVWXYZ" to the stack |
-| <code>kġ</code> | <code>lowercase-consonants</code> | 0 |   | **Lowercase Consonants**: Push "bcdfghjklmnpqrstvwxyz" to the stack |
-| <code>k⎀</code> | <code>lower-upper-vowels</code> | 0 |   | **Lowercase and Uppercase Vowels**: Push "aeiouAEIOU" to the stack |
+| <code>k6</code> | <code>&HEX-DIGITS</code> | 0 |   | **Hex Digits**: Push "0123456789abcdef" to the stack |
+| <code>k<</code> | <code>&OPEN-FISH-BRACKETS</code> | 0 |   | **Open Brackets**: Push "([{<" to the stack |
+| <code>k></code> | <code>&CLOSE-FISH-BRACKETS</code> | 0 |   | **Close Brackets**: Push ")]}>" |
+| <code>kA</code> | <code>&UPPERCASE-LETTERS</code> | 0 |   | **Uppercase Letters**: Push "ABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
+| <code>kB</code> | <code>&UPPERCASE-LOWERCASE</code> | 0 |   | **Uppercase and Lowercase**: Push "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" to the stack |
+| <code>kD</code> | <code>&LINE-CHARS</code> | 0 |   | **Line Chars**: Push "\|/-_" to the stack - useful for drawing lines |
+| <code>kF</code> | <code>&FIZZBUZZ</code> | 0 |   | **Fizzbuzz Constant**: Push "FizzBuzz" to the stack |
+| <code>kH</code> | <code>&HELLO-WORLD</code> | 0 |   | **Hello, World!**: Push "Hello, World!" to the stack |
+| <code>kL</code> | <code>&LOWERCASE-UPPERCASE</code> | 0 |   | **Lowercase and Uppercase**: Push "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
+| <code>kN</code> | <code>&NN</code></br><code>&NATURAL-NUMBERS</code> | 0 |   | **Natural Numbers**: Push a list of every natural number to the stack |
+| <code>kP</code> | <code>&PRINTABLE-ASCII</code> | 0 |   | **Printable ASCII**: Push "!" to "~" to the stack |
+| <code>kR</code> | <code>&DIGITS-UPPERCASE-LOWERCASE</code> | 0 |   | **Digits, Uppercase, Lowercase**: Push "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" to the stack |
+| <code>kV</code> | <code>&UPPERCASE-VOWELS</code> | 0 |   | **Uppercase Vowels**: Push "AEIOU" to the stack |
+| <code>kY</code> | <code>&UPPERCASE-VOWELSY</code> | 0 |   | **Uppercase Vowels and Y**: Push "AEIOUY" to the stack |
+| <code>kZ</code> | <code>&REVERSE-UPPERCASE</code> | 0 |   | **Reverse Uppercase**: Push "ZYXWVUTSRQPONMLKJIHGFEDCBA" to the stack |
+| <code>k^</code> | <code>&UPPERCASE-HEX-DIGITS</code> | 0 |   | **Uppercase Hex Digits**: Push "0123456789ABCDEF" to the stack |
+| <code>ka</code> | <code>&LOWERCASE-LETTERS</code> | 0 |   | **Lowercase Letters**: Push "abcdefghijklmnopqrstuvwxyz" to the stack |
+| <code>kd</code> | <code>&DIGITS</code> | 0 |   | **Digits**: Push "0123456789" to the stack |
+| <code>ke</code> | <code>&E-CONSTANT</code> | 0 |   | **E Constant**: Push 2.718281828459045 to the stack |
+| <code>kg</code> | <code>&GOLDEN-RATIO</code></br><code>&PHI</code> | 0 |   | **Golden Ratio**: Push 1.618033988749895 to the stack |
+| <code>kh</code> | <code>&HELLOWORLD</code> | 0 |   | **Hello World!**: Push "Hello World" to the stack, no punctuation |
+| <code>ki</code> | <code>&PI</code> | 0 |   | **Pi Constant**: Push 3.141592653589793 to the stack |
+| <code>kk</code> | <code>&RDHW</code> | 0 |   | **Radiation Hardening Hello World cheese**: Push "Hello, World!" to the stack. Useful for radiation hardening hello worlds, because you can submit kkH as your answer. |
+| <code>kl</code> | <code>&REVERSE-UPPERCASE-LOWERCASE</code> | 0 |   | **Reverse Uppercase and Lowercase**: Push "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba" to the stack |
+| <code>ko</code> | <code>&OCTAL-DIGITS</code> | 0 |   | **Octal Digits**: Push "01234567" to the stack |
+| <code>kp</code> | <code>&PUNCTUATION</code> | 0 |   | **Punctuation**: Push all punctuation characters to the stack |
+| <code>kr</code> | <code>&DIGITS-LOWERCASE-UPPERCASE</code> | 0 |   | **Digits, Lowercase, Uppercase**: Push "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
+| <code>kv</code> | <code>&LOWERCASE-VOWELS</code> | 0 |   | **Lowercase Vowels**: Push "aeiou" to the stack |
+| <code>ky</code> | <code>&LOWERCASE-VOWELSY</code> | 0 |   | **Lowercase Vowels and Y**: Push "aeiouy" to the stack |
+| <code>kz</code> | <code>&REVERSE-LOWERCASE</code> | 0 |   | **Reverse Lowercase**: Push "zyxwvutsrqponmlkjihgfedcba" to the stack |
+| <code>k◲</code> | <code>&PARENS-SQUARES</code> | 0 |   | **Parens and Squares**: Push "()[]" to the stack |
+| <code>k∪</code> | <code>&OPEN-BRACKETS</code> | 0 |   | **Open Brackets**: Push "([{" to the stack |
+| <code>k∩</code> | <code>&CLOSE-BRACKETS</code> | 0 |   | **Close Brackets**: Push ")]}" |
+| <code>kƓ</code> | <code>&UPPERCASE-CONSONANTS-WITHOUT-Y</code> | 0 |   | **Uppercase Consonants Without Y**: Push "BCDFGHJKLMNPQRSTVWXZ" to the stack |
+| <code>kɠ</code> | <code>&LOWERCASE-CONSONANTS-WITHOUT-Y</code> | 0 |   | **Lowercase Consonants Without Y**: Push "bcdfghjklmnpqrstvwxz" to the stack |
+| <code>kĠ</code> | <code>&UPPERCASE-CONSONANTS</code> | 0 |   | **Uppercase Consonants**: Push "BCDFGHJKLMNPQRSTVWXYZ" to the stack |
+| <code>kġ</code> | <code>&LOWERCASE-CONSONANTS</code> | 0 |   | **Lowercase Consonants**: Push "bcdfghjklmnpqrstvwxyz" to the stack |
+| <code>k⎀</code> | <code>&LOWER-UPPER-VOWELS</code> | 0 |   | **Lowercase and Uppercase Vowels**: Push "aeiouAEIOU" to the stack |
 | <code>k½</code> | <code>1~2</code> | 0 |   | **[1, 2]**: Push the list [1, 2] to the stack |
 | <code>k⁰</code> | <code>2147483648</code> | 0 |   | **2147483648**: Push 2147483648 to the stack |
 | <code>k²</code> | <code>1048576</code></br><code>2**20</code></br><code>2^20</code> | 0 |   | **1048576 (2^20)**: Push 1048576 to the stack |
 | <code>k³</code> | <code>1073741824</code></br><code>2**30</code></br><code>2^30</code> | 0 |   | **1073741824 (2^30)**: Push 1073741824 to the stack |
-| <code>k•</code> | <code>qwerty-rows</code> | 0 |   | **QWERTY Rows**: Push ["qwertyuiop", "asdfghjkl", "zxcvbnm"] to the stack |
+| <code>k•</code> | <code>&QWERTY-ROWS</code> | 0 |   | **QWERTY Rows**: Push ["qwertyuiop", "asdfghjkl", "zxcvbnm"] to the stack |
 | <code>k±</code> | <code>1~1</code></br><code>f11</code> | 0 |   | **[1, 1]**: Push the list [1, 1] to the stack |
-| <code>kγ</code> | <code>lower-upper-vowelsy</code> | 0 |   | **Lowercase and Uppercase Vowels and Y**: Push "aeiouyAEIOUY" to the stack |
-| <code>kℂ</code> | <code>roman-numerals</code> | 0 |   | **Roman Numerals**: Push "IVXLCDM" to the stack |
-| <code>k⌹</code> | <code>paired-brackets</code> | 0 |   | **Paired Brackets**: Push ["()", "[]", "{}", "<>" to the stack |
-| <code>kæ</code> | <code>all-primes</code></br><code>primes</code> | 0 |   | **All Primes**: Push a list of every prime number to the stack |
-| <code>k◌</code> | <code>directions-list</code> | 0 |   | **Directions List**: Push [[0, 1], [0, -1], [1, 0], [-1, 0]] to the stack (up, down, right, left in a 2D grid) |
-| <code>k☷</code> | <code>brackets-without-<></code> | 0 |   | **Brackets Without <>**: Push "{}[]()" to the stack |
-| <code>k⎶</code> | <code>all-brackets</code> | 0 |   | **All Brackets**: Push "{}[]<>()" to the stack |
-| <code>k⎘</code> | <code>brainf*ck-commands</code> | 0 |   | **Brainf*ck Commands**: Push "[]<>-+.," to the stack |
+| <code>kγ</code> | <code>&LOWER-UPPER-VOWELSY</code> | 0 |   | **Lowercase and Uppercase Vowels and Y**: Push "aeiouyAEIOUY" to the stack |
+| <code>kℂ</code> | <code>&ROMAN-NUMERALS</code> | 0 |   | **Roman Numerals**: Push "IVXLCDM" to the stack |
+| <code>k⌹</code> | <code>&PAIRED-BRACKETS</code> | 0 |   | **Paired Brackets**: Push ["()", "[]", "{}", "<>" to the stack |
+| <code>kæ</code> | <code>&ALL-PRIMES</code></br><code>&PRIMES</code> | 0 |   | **All Primes**: Push a list of every prime number to the stack |
+| <code>k◌</code> | <code>&DIRECTIONS</code> | 0 |   | **Directions List**: Push [[0, 1], [0, -1], [1, 0], [-1, 0]] to the stack (up, down, right, left in a 2D grid) |
+| <code>k☷</code> | <code>&BRACKETS-WITHOUT-<></code> | 0 |   | **Brackets Without <>**: Push "{}[]()" to the stack |
+| <code>k⎶</code> | <code>&ALL-BRACKETS</code> | 0 |   | **All Brackets**: Push "{}[]<>()" to the stack |
+| <code>k⎘</code> | <code>&BRAINF*CK-COMMANDS</code> | 0 |   | **Brainf*ck Commands**: Push "[]<>-+.," to the stack |
 | <code>k≈</code> | <code>0~1</code> | 0 |   | **[0, 1]**: Push the list [0, 1] to the stack |
-| <code>kṬ</code> | <code>ZZ</code></br><code>integers</code> | 0 |   | **Integers**: Push a list of every integer to the stack |
-| <code>k¤</code> | <code>nested-brackets</code> | 0 |   | **Nested Brackets**: Push "([{<>}])" to the stack |
+| <code>kṬ</code> | <code>&ZZ</code></br><code>&INTEGERS</code> | 0 |   | **Integers**: Push a list of every integer to the stack |
+| <code>k¤</code> | <code>&NESTED-BRACKETS</code> | 0 |   | **Nested Brackets**: Push "([{<>}])" to the stack |
 | <code>k①</code> | <code>512</code> | 0 |   | **512**: Push 512 to the stack |
 | <code>k②</code> | <code>1024</code> | 0 |   | **1024**: Push 1024 to the stack |
 | <code>k③</code> | <code>2048</code> | 0 |   | **2048**: Push 2048 to the stack |
