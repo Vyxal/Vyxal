@@ -4557,6 +4557,357 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "k⎀",
+      keywords = Seq("lower-upper-vowels"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Lowercase and Uppercase Vowels",
+        args = Seq(),
+        description = "Push \"aeiouAEIOU\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k⩔",
+      keywords = Seq("codepage"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Codepage",
+        args = Seq(),
+        description = "Push the Vyxal codepage to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k½",
+      keywords = Seq("1~2"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "[1, 2]",
+        args = Seq(),
+        description = "Push the list [1, 2] to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k①",
+      keywords = Seq("512"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "512",
+        args = Seq(),
+        description = "Push 512 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k②",
+      keywords = Seq("1024"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "1024",
+        args = Seq(),
+        description = "Push 1024 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k③",
+      keywords = Seq("2048"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "2048",
+        args = Seq(),
+        description = "Push 2048 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k④",
+      keywords = Seq("4096"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "4096",
+        args = Seq(),
+        description = "Push 4096 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k⑤",
+      keywords = Seq("8192"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "8192",
+        args = Seq(),
+        description = "Push 8192 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k⑥",
+      keywords = Seq("16384"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "16384",
+        args = Seq(),
+        description = "Push 16384 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k⑦",
+      keywords = Seq("32768"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "32768",
+        args = Seq(),
+        description = "Push 32768 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k⑧",
+      keywords = Seq("65536"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "65536",
+        args = Seq(),
+        description = "Push 65536 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k⁰",
+      keywords = Seq("2147483648"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "2147483648",
+        args = Seq(),
+        description = "Push 2147483648 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "kġ",
+      keywords = Seq("lowercase-consonants"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Lowercase Consonants",
+        args = Seq(),
+        description = "Push \"bcdfghjklmnpqrstvwxyz\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "kɠ",
+      keywords = Seq("lowercase-consonants-without-y"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Lowercase Consonants Without Y",
+        args = Seq(),
+        description = "Push \"bcdfghjklmnpqrstvwxz\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "kĠ",
+      keywords = Seq("uppercase-consonants"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Uppercase Consonants",
+        args = Seq(),
+        description = "Push \"BCDFGHJKLMNPQRSTVWXYZ\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "kƓ",
+      keywords = Seq("uppercase-consonants-without-y"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Uppercase Consonants Without Y",
+        args = Seq(),
+        description = "Push \"BCDFGHJKLMNPQRSTVWXZ\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k⎘",
+      keywords = Seq("brainf*ck-commands"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Brainf*ck Commands",
+        args = Seq(),
+        description = "Push \"[]<>-+.,\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k⌹",
+      keywords = Seq("paired-brackets"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Paired Brackets",
+        args = Seq(),
+        description = "Push [\"()\", \"[]\", \"{}\", \"<>\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k¤",
+      keywords = Seq("nested-brackets"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Nested Brackets",
+        args = Seq(),
+        description = "Push \"([{<>}])\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k²",
+      keywords = Seq("1048576", "2**20", "2^20"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "1048576 (2^20)",
+        args = Seq(),
+        description = "Push 1048576 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k³",
+      keywords = Seq("1073741824", "2**30", "2^30"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "1073741824 (2^30)",
+        args = Seq(),
+        description = "Push 1073741824 to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "kγ",
+      keywords = Seq("lower-upper-vowelsy"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Lowercase and Uppercase Vowels and Y",
+        args = Seq(),
+        description = "Push \"aeiouyAEIOUY\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k◌",
+      keywords = Seq("directions-list"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Directions List",
+        args = Seq(),
+        description =
+          "Push [[0, 1], [0, -1], [1, 0], [-1, 0]] to the stack (up, down, right, left in a 2D grid)",
+      ),
+    ),
+    AddElement(
+      symbol = "kℂ",
+      keywords = Seq("roman-numerals"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "Roman Numerals",
+        args = Seq(),
+        description = "Push \"IVXLCDM\" to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
+      symbol = "k•",
+      keywords = Seq("qwerty-rows"),
+      arity = 0,
+      Options(
+        vectorises = false
+      ),
+      Overload(
+        name = "QWERTY Rows",
+        args = Seq(),
+        description =
+          "Push [\"qwertyuiop\", \"asdfghjkl\", \"zxcvbnm\"] to the stack",
+        typeSwitchable = false,
+      ),
+    ),
+    AddElement(
       symbol = "kṬ",
       keywords = Seq("ZZ", "integers"),
       arity = 0,

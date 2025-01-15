@@ -1459,7 +1459,7 @@ object Elements:
     "kĠ" -> niladify("BCDFGHJKLMNPQRSTVWXYZ"),
     "kƓ" -> niladify("BCDFGHJKLMNPQRSTVWXZ"),
     "k⎘" -> niladify("[]<>-+.,"),
-    "k⌹" -> niladify("[(),[],{},<>]"),
+    "k⌹" -> niladify(Seq("()", "[]", "{}", "<>")),
     "k¤" -> niladify("([{<>}])"),
     "k²" -> niladify(VNum("1048576")),
     "k³" -> niladify(VNum("1073741824")),
