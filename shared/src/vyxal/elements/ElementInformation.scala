@@ -4151,6 +4151,18 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "#w",
+      keywords = Seq("nest", "ensure-wrapped"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Ensure Wrapped",
+        args = Seq("any"),
+        description =
+          "Ensure #1 is wrapped in a list. Returns scalars wrapped in a list. Returns lists as-is",
+      ),
+    ),
+    AddElement(
       symbol = "#¿",
       keywords = Seq("input-count"),
       arity = 0,

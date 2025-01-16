@@ -1493,6 +1493,10 @@ object Elements:
       case VStr(a) => StringHelpers.compress252(a)
       case a: VNum => StringHelpers.compress252(a)
     },
+    addPart("#w", Monad, false) {
+      case scalar: VVal | VFun => VList(Seq(scalar))
+      case lst: VList => lst
+    },
     "#¿" ->
       direct(0) {
         summon[Context].globals.inputs.length
