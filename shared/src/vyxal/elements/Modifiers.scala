@@ -245,7 +245,7 @@ object Modifiers:
     "⎇" -> fullToImpl(Monadic, (ast) => Seq(ast.lam(-1), AST.Command("#|dip"))),
     addPart("~", Monadic) {
       case AST(predicate, 1) => Seq(predicate.lam, AST.Command("F"))
-      case command => Seq(command.lam, AST.Command("#~"))
+      case command => Seq(command.lam, AST.Command("æ"))
     },
     addPart("/", Monadic) {
       case AST(monad, 1) => Seq(monad.lam, AST.Command("#|invariant"))

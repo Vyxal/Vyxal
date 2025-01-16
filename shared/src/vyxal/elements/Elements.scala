@@ -1376,14 +1376,6 @@ object Elements:
       },
     "ḧ" ->
       fullToImpl(Monad, x => x.itr.map(_.itr.headOption.getOrElse(VNum(0)))),
-    "#~" ->
-      direct(Monad) {
-        pop() match
-          case f: VFun =>
-            val args = peek(f.arity)
-            push(f(args*))
-          case arg => throw UnimplementedOverloadException("#~", List(arg))
-      },
     "①" -> niladify(10),
     "②" -> niladify(16),
     "③" -> niladify(32),
