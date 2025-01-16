@@ -2377,13 +2377,18 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "±",
-      keywords = Seq("signum"),
+      keywords = Seq("signum", "case-of", "case", "sign"),
       arity = 1,
       Options(vectorises = true),
       Overload(
         name = "Signum",
         args = Seq("num"),
         description = "Sign of #1",
+      ),
+      Overload(
+        name = "Case of",
+        args = Seq("str"),
+        description = "Case of #1 (1 if positive, 0 if 0, -1 if negative)",
       ),
     ),
     AddElement(
@@ -2742,13 +2747,19 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "◌",
-      keywords = Seq("round"),
+      keywords = Seq("round", "lowercase?"),
       arity = 1,
       Options(vectorises = true),
       Overload(
         name = "Round",
         args = Seq("num"),
         description = "Round #1 to the nearest integer, half-up",
+      ),
+      Overload(
+        name = "Is Lowercase",
+        args = Seq("str"),
+        description =
+          "Check if #1 is lowercase. With string.len > 1, vectorises over each character",
       ),
     ),
     AddElement(

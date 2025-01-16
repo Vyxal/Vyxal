@@ -9,6 +9,10 @@ import scala.collection.mutable.StringBuilder
 import scala.util.matching.Regex
 
 object StringHelpers:
+  def caseOf(c: String): VNum =
+    if "ABCDEFGHIJKLMNOPQRSTUVWXYZ".contains(c) then VNum(1)
+    else if "abcdefghijklmnopqrstuvwxyz".contains(c) then VNum(0)
+    else VNum(-1)
 
   def chrord(c: VAny): VAny =
     (c: @unchecked) match

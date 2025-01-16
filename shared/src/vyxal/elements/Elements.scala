@@ -1029,6 +1029,9 @@ object Elements:
     },
     addPart("±", Monad, true) {
       case a: VNum => a.signum
+      case VStr(s) =>
+        if s.length() == 1 then StringHelpers.caseOf(s)
+        else s.map(c => StringHelpers.caseOf(c.toString))
     },
     "†" ->
       fullToImpl(
@@ -1181,6 +1184,8 @@ object Elements:
     },
     addPart("◌", Monad, true) {
       case a: VNum => NumberHelpers.round(a)
+      case VStr(s) if s.length() == 1 => VNum(s.head.isLower)
+      case VStr(s) => s.map(c => VNum(c.isLower))
     },
     "δ" -> fullToImpl(Monad, x => ListHelpers.deltas(x.itr)),
     addPart("☷", Dyad, false) {
