@@ -2189,13 +2189,19 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "‰",
-      keywords = Seq("divmod"),
+      keywords = Seq("divmod", "flatmap"),
       arity = 2,
       Options(vectorises = true),
       Overload(
         name = "Divmod",
         args = Seq("num", "num"),
         description = "Divmod of #1 and #2 ([#1 // #2, #1 % #2])",
+      ),
+      Overload(
+        name = "Flatmap",
+        args = Seq("lst", "fun"),
+        description = "Flatmap {#2|#1} over {#1|#2}",
+        typeSwitchable = true,
       ),
     ),
     AddElement(
@@ -3038,6 +3044,7 @@ object ElementInformation:
         name = "Split Number Into N Pieces",
         args = Seq("itr", "num"),
         description = "Listify {#1|#2} and split it into {#2|#1} pieces",
+        typeSwitchable = true,
       ),
       Overload(
         name = "Fixpoint Unfold Without Initial Value",

@@ -924,6 +924,8 @@ object Elements:
     addPart("‰", Dyad, true) {
       case (a: VNum, b: VNum) =>
         if b == VNum(0) then Seq(0, 0) else Seq((a / b).floor, a % b)
+      case (fn: VFun, iterable) => ListHelpers.flatten(iterable.itr.map(fn(_)))
+      case (iterable, fn: VFun) => ListHelpers.flatten(iterable.itr.map(fn(_)))
     },
     addPart("≛", Dyad, true) {
       case (a: VNum, b: VNum) => (a % b) == VNum(0)
