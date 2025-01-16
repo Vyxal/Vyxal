@@ -1494,7 +1494,7 @@ object Elements:
       case a: VNum => StringHelpers.compress252(a)
     },
     addPart("#w", Monad, false) {
-      case scalar: VVal | VFun => VList(Seq(scalar))
+      case scalar: (VVal | VFun) => VList(Seq(scalar))
       case lst: VList => lst
     },
     "#¿" ->
