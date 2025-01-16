@@ -3774,24 +3774,24 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k①",
-      keywords = Seq("512"),
+      keywords = Seq("180"),
       arity = 0,
       Options(),
       Overload(
-        name = "512",
+        name = "180",
         args = Seq(),
-        description = "Push 512 to the stack",
+        description = "Push 180 to the stack",
       ),
     ),
     AddElement(
       symbol = "k②",
-      keywords = Seq("1024"),
+      keywords = Seq("270"),
       arity = 0,
       Options(),
       Overload(
-        name = "1024",
+        name = "270",
         args = Seq(),
-        description = "Push 1024 to the stack",
+        description = "Push 270 to the stack",
       ),
     ),
     AddElement(
