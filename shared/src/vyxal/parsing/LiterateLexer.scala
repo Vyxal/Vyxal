@@ -9,6 +9,8 @@ import vyxal.VyxalException
 import scala.collection.mutable.ArrayBuffer
 import scala.util.matching.Regex
 
+import sttp.client4.quick
+
 class LiterateLexer extends LexerCommon:
   private val KeywordLetters = raw"a-zA-Z0-9_<>?!*+\-=&%@~"
   def headIsOpener: Boolean =
@@ -235,7 +237,9 @@ class LiterateLexer extends LexerCommon:
           )
           eat(GROUP_CLOSE)
         else throw new UnopenedGroupException(index)
-      else if headEqual(NEWLINE) then quickToken(Newline, NEWLINE)
+      else if headEqual(NEWLINE) then
+        pop()
+        if headEqual(NEWLINE) then quickToken(TokenType.Newline, NEWLINE)
       else if headIsWhitespace then pop(1)
       else if headEqual(SYMBOLIC_LAMBDA_OPEN) ||
         lambdaOpeners.contains(programStack.head)
