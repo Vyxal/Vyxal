@@ -56,7 +56,7 @@ class UnimplementedOverloadException(element: String, args: Seq[VAny])
 
 class UnimplementedModifierOverloadException(modifier: String, args: Seq[AST])
     extends VyxalRuntimeException(
-      s"$modifier not defined for input(s) ${args.map(arg => s"Function ${arg.toVyxal} (arity ${arg.arity})").mkString("[", ", ", "]")}"
+      s"$modifier not defined for input(s) ${args.map(arg => s"Function ${arg.toVyxal} (arity ${arg.arity.getOrElse(-1)})").mkString("[", ", ", "]")}"
     )
 
 class UnsupportedOverloadException(element: String, message: String)
