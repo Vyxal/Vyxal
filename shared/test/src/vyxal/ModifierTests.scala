@@ -103,7 +103,7 @@ class ModifierTests extends VyxalTests:
 
   describe("Modifier ⟒") {
     testMulti(
-      "3 4 ⟒+×" -> VNum(28)
+      "3 4 ⟒+×" -> VNum(21)
     )
   }
 

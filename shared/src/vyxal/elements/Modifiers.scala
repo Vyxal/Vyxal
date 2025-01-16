@@ -219,7 +219,9 @@ object Modifiers:
         (first) => Seq(first.lam, AST.Command("#|both")),
       ),
     addPart("⟒", Dyadic) {
-      case (DyadOrMore(ast1, _), DyadOrMore(ast2, _)) =>
+      case (AST(ast1, 1), DyadOrMore(ast2, _)) =>
+        Seq(ast1.lam, ast2.lam, AST.Command("#|fork"))
+      case (DyadOrMore(ast1, _), AST(ast2, _)) =>
         Seq(ast1.lam, ast2.lam, AST.Command("#|fork"))
     },
     addPart("ᛞ", Dyadic) {

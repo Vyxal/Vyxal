@@ -4848,7 +4848,7 @@ object ElementInformation:
         args = Seq("dyd+", "dyd+"),
         description =
           "Apply #1 but keep the under stack, and then apply #2. Effectively #2(#1(top, under), under)",
-        example = "3 4 ⟒+× -> 28",
+        example = "3 4 ⟒+× -> 21",
       ),
     ),
     AddModifier(

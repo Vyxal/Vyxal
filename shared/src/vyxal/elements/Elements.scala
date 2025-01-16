@@ -1841,7 +1841,7 @@ object Elements:
         val functionG = pop().asInstanceOf[VFun]
         val functionF = pop().asInstanceOf[VFun]
 
-        val y = peek()
+        val y = peek(functionF.arity).last
         val resF = Interpreter.executeFn(functionF)
         push(resF)
         push(y)
