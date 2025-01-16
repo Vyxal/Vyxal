@@ -4990,5 +4990,40 @@ object ElementInformation:
           "#[#[#[1|2|3#]|#[#[4|5|#[6|7|8#]#]#]#]#] ⩔L -> [[3, [[1, 1, 3]]]]",
       ),
     ),
+    AddModifier(
+      symbol = "\\",
+      keywords = Seq("reject-by:", "scanl:"),
+      numberOfElements = 1,
+      ModifierOverload(
+        name = "Reject By",
+        args = Seq("mon"),
+        description = "Reject items of the top of the stack by results of #1",
+        example = "#[1|3|4|5|2|4#] \\e -> [1, 3, 5]",
+      ),
+      ModifierOverload(
+        name = "Scanl",
+        args = Seq("dyd+"),
+        description = "Scan left with #1",
+        example = "#[1|2|3|4#] \\+ -> [1, 3, 6, 10]",
+      ),
+    ),
+    AddModifier(
+      symbol = "/",
+      keywords = Seq("invariant-by:", "foldl:"),
+      numberOfElements = 1,
+      ModifierOverload(
+        name = "Invariant By",
+        args = Seq("mon"),
+        description =
+          "Is the top of the stack invariant under #1? (i.e. #1(x) == x)",
+        example = "0 /d -> 1",
+      ),
+      ModifierOverload(
+        name = "Foldl",
+        args = Seq("dyd+"),
+        description = "Fold left with #1",
+        example = "#[1|2|3|4#] /+ -> 10",
+      ),
+    ),
   )
 end ElementInformation
