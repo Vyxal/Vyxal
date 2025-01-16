@@ -80,7 +80,7 @@ Element, Modifier, and Syntax Reference
 | <code>t</code> | <code>tail</code></br><code>last</code> | 1 |   | **Tail** (`any`): Last element of #1 |
 | <code>u</code> | <code>unique</code> | 1 |   | **Unique** (`lst`): Unique elements of #1</br>**Unique By Function** (`lst,fun`): Unique elements of #1 by applying #2 |
 | <code>v</code> | <code>overlapping-pairs</code></br><code>reduce-pairs-by</code> | 1 |   | **Overlapping Pairs** (`lst`): Get overlapping pairs of #1</br>**Reduce Overlapping Pairs** (`lst,fun`): Reduce overlapping pairs in #1 by function #2 |
-| <code>w</code> | <code>wrap-in-list</code> | 1 |   | **Wrap in List** (`any`): Wrap #1 in a list (create singleton list [#1]) |
+| <code>w</code> | <code>wrap-in-list</code></br><code>singleton</code> | 1 |   | **Wrap in List** (`any`): Wrap #1 in a singleton list, creating a half pair |
 | <code>x</code> | <code>recurse</code> | STACK |   | **Recurse**: Recursively call the current function (or the top-level program if not in a function) |
 | <code>y</code> | <code>transliterate</code></br><code>call-while</code> | 3 |   | **Transliterate** (`nsl,nsl,nsl`): Replace all occurrences of #2 in #1 with #3</br>**Call While** (`fun,fun,any`): While #1(#3) is true, #3 = #2(#3). Return the result. Type switchable. |
 | <code>z</code> | <code>zip-with-filler</code> | 2 |   | **Zip With Filler** (`lst,any`): Transpose #1, filling empty spaces with #2 |

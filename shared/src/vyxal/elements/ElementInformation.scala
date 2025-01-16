@@ -1352,13 +1352,13 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "w",
-      keywords = Seq("wrap-in-list"),
+      keywords = Seq("wrap-in-list", "singleton"),
       arity = 1,
       Options(),
       Overload(
         name = "Wrap in List",
         args = Seq("any"),
-        description = "Wrap #1 in a list (create singleton list [#1])",
+        description = "Wrap #1 in a singleton list, creating a half pair",
       ),
     ),
     AddElement(
