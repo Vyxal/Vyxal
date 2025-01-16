@@ -93,6 +93,11 @@ object StringHelpers:
         z1 = (z1 - 1) / 252
         compressed.append(Codepage(c.toInt))
       compressed
+        .toString()
+        .replace(
+          "\"",
+          "ø",
+        )
 
     val dp = Array.fill(s.length + 1)(BigInt(0))
     // scala equivalent of for i in range(len(str) -1,-1,-1)
@@ -294,7 +299,7 @@ object StringHelpers:
   // https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L1055
   def decompress(compressed: String): String =
     val decompressed = StringBuilder()
-    val comp = compressed.reverse
+    val comp = compressed.replace("ø", "\"").reverse
     var integer =
       comp.map(Codepage.indexOf(_) + 1).foldLeft(BigInt(0))(_ * 252 + _)
 
@@ -328,7 +333,7 @@ object StringHelpers:
       end if
     end while
 
-    decompressed.mkString.replace("¦", "\n")
+    decompressed.mkString.replace("◲", "\n")
   end decompress
 
   def quotify(s: String): String =
