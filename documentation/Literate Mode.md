@@ -64,6 +64,10 @@ backticks. For example, `` `f` `` will call the function stored in `f`.
 Only `##` comments are avaliable at the moment. This is planned to change once it's figured out how to
 do so.
 
+### Newlines
+
+When converting to SBCS form, single newlines are removed. If you want to keep a newline, use two newlines.
+
 ### Groups
 
 You can surround any series of tokens in `()`. Outside of token moving and modifier
