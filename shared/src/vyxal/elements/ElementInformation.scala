@@ -4850,6 +4850,13 @@ object ElementInformation:
           "Apply #1 but keep the under stack, and then apply #2. Effectively #2(#1(top, under), under)",
         example = "3 4 ⟒+× -> 21",
       ),
+      ModifierOverload(
+        name = "Left Fork",
+        args = Seq("mon", "dyd+"),
+        description =
+          "Apply #1 but keep the under stack, and then apply #2. Effectively #2(#1(top, under), under)",
+        example = "\"hEllO\"f ⟒ʀ= -> [1, 0, 1, 1, 0]",
+      ),
     ),
     AddModifier(
       symbol = "ᛞ",
