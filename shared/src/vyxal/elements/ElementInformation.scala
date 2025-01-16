@@ -659,7 +659,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "K",
-      keywords = Seq("factors", "is-numeric?", "is-numeric"),
+      keywords = Seq("factors", "divisors", "is-numeric?", "is-numeric"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -1985,7 +1985,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ᐐ",
-      keywords = Seq("init"),
+      keywords = Seq("init", "without-tail", "tailless"),
       arity = 1,
       Options(),
       Overload(
@@ -2020,7 +2020,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ᐕ",
-      keywords = Seq("behead"),
+      keywords = Seq("behead", "without-head", "headless"),
       arity = 1,
       Options(),
       Overload(
