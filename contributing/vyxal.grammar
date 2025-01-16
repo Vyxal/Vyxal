@@ -14,7 +14,7 @@ AnyString {
 }
 @tokens {
   Space { @whitespace+ }
-  Modifier {$[⑴⁜∦⎂⎇▦⑶¨~ᛞ⑵⟒¿∺⩔⑷Ẅ∥]}
+  Modifier {$[⑴⁜∦⎂▦⑶¨~\⎇ᛞ⑵⟒¿∺⩔/⑷Ẅ∥]}
   Comment {"##" (![
 ])*}
   Digraph { $[∆øÞk] _ | "#" ![[\]$!=#>@{:] }
@@ -30,7 +30,7 @@ AnyString {
   TwoCharNumber { "Ꮠ" _ _ }
   VariableThing { "#" ($[=$>]|":[") $[A-Z] $[a-zA-Z0-9_]* }
   ContextIndex { "#¤" @digit }
-  Element { ![λƛʎµξ⍾⎋⍟⎊⎄⩔Ẅ⎇¿∥∦∺⁜⑴⑵⑶⑷⎂⟒ᛞ▦¨"#'().0123456789[\]k{|}~ᏜᏐÞ∆ø„”“] }
+  Element { ![λƛʎµξ⍾⎋⍟⎊⎄⩔Ẅ⎇¿∥∦∺⁜⑴⑵⑶⑷⎂⟒ᛞ▦¨"#'()./0123456789[\\]k{|}~ᏜᏐÞ∆ø„”“] }
   @precedence { Space, Element }
 }  
     
