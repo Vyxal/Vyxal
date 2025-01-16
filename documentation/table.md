@@ -282,8 +282,8 @@ Element, Modifier, and Syntax Reference
 | <code>k≈</code> | <code>0~1</code> | 0 |   | **[0, 1]**: Push the list [0, 1] to the stack |
 | <code>kṬ</code> | <code>&ZZ</code></br><code>&INTEGERS</code> | 0 |   | **Integers**: Push a list of every integer to the stack |
 | <code>k¤</code> | <code>&NESTED-BRACKETS</code> | 0 |   | **Nested Brackets**: Push "([{<>}])" to the stack |
-| <code>k①</code> | <code>512</code> | 0 |   | **512**: Push 512 to the stack |
-| <code>k②</code> | <code>1024</code> | 0 |   | **1024**: Push 1024 to the stack |
+| <code>k①</code> | <code>180</code> | 0 |   | **180**: Push 180 to the stack |
+| <code>k②</code> | <code>270</code> | 0 |   | **270**: Push 270 to the stack |
 | <code>k③</code> | <code>2048</code> | 0 |   | **2048**: Push 2048 to the stack |
 | <code>k④</code> | <code>4096</code> | 0 |   | **4096**: Push 4096 to the stack |
 | <code>k⑤</code> | <code>8192</code> | 0 |   | **8192**: Push 8192 to the stack |
