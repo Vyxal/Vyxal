@@ -142,7 +142,7 @@ Element, Modifier, and Syntax Reference
 | <code>≠</code> | <code>not-equal</code></br><code>neq</code></br><code>!=</code></br><code>=n't</code></br><code>eqn't</code></br><code>equaln't</code> | 2 | vec  | **Not Equal** (`scl,scl`): str(#1) != str(#2) |
 | <code>≡</code> | <code>exact-equals</code></br><code>eq+</code></br><code>===</code> | 2 |   | **Equals** (`any,any`): Does #1 exactly equal #2 |
 | <code>•</code> | <code>dot-product</code></br><code>bijective-base</code></br><code>first-predicate-index</code> | 2 |   | **Dot Product** (`lst,lst`): Dot product of #1 and #2</br>**Bijective Base Conversion** (`num,num`):  Convert #1 to bijective base #2</br>**First Index Where Predicate True** (`nsl,fun`): Index of the first value in #1 where function #2 is true</br>**First Index Where Predicate True** (`fun,nsl`): Index of the first value in #2 where function #1 is true |
-| <code>±</code> | <code>signum</code> | 1 | vec  | **Signum** (`num`): Sign of #1 |
+| <code>±</code> | <code>signum</code></br><code>case-of</code></br><code>case</code></br><code>sign</code> | 1 | vec  | **Signum** (`num`): Sign of #1</br>**Case of** (`str`): Case of #1 (1 if positive, 0 if 0, -1 if negative) |
 | <code>†</code> | <code>lengths-of-consecutives</code> | 1 |   | **Lengths of Consecutives** (`lst`): Lengths of consecutive runs of equal elements in #1 |
 | <code>⎙</code> | <code>peek-print</code> | 1* |   | **Peek Print** (`any`): Print #1 without popping |
 | <code>γ</code> | <code>wrap-len-2</code> | 1 |   | **Wrap to Length 2** (`any`): Wrap #1 into chunks of length 2 |
@@ -167,7 +167,7 @@ Element, Modifier, and Syntax Reference
 | <code>∻</code> | <code>integer-divide</code></br><code>int-div</code></br><code>//</code> | 2 | vec  | **Integer Divide** (`num,num`): #1 // #2 |
 | <code>√</code> | <code>square-root</code></br><code>sqrt</code> | 1 | vec  | **Square Root** (`num`): Square root of #1 |
 | <code>⍰</code> | <code>truthy?</code> | 1 | vec  | **Truthy?** (`scl`): Is #1 truthy? (Not 0, empty, or false) |
-| <code>◌</code> | <code>round</code> | 1 | vec  | **Round** (`num`): Round #1 to the nearest integer, half-up |
+| <code>◌</code> | <code>round</code></br><code>lowercase?</code> | 1 | vec  | **Round** (`num`): Round #1 to the nearest integer, half-up</br>**Is Lowercase** (`str`): Check if #1 is lowercase. With string.len > 1, vectorises over each character |
 | <code>δ</code> | <code>deltas</code></br><code>differences</code> | 1 |   | **Deltas** (`lst`): Deltas/forward differences of #1 - [a - b, b - c, c - d, ...] |
 | <code>☷</code> | <code>partition-after-truthy</code></br><code>group-by</code> | 2 |   | **Partition After Truthy** (`lst,lst`):  Partition #1 after truthy indices of #2.</br>**Group By** (`lst,fun`): Group elements of #1 by function #2 |
 | <code>σ</code> | <code>cumulative-sums</code></br><code>cumsums</code></br><code>cumsum</code></br><code>cum-sum</code></br><code>-_-</code> | 1 |   | **Cumulative Sums** (`lst`): Cumulative sums of #1 |
