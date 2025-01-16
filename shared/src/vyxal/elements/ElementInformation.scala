@@ -4841,7 +4841,7 @@ object ElementInformation:
     ),
     AddModifier(
       symbol = "⟒",
-      keywords = Seq("left-fork:"),
+      keywords = Seq("left-fork:", "hook:"),
       numberOfElements = 2,
       ModifierOverload(
         name = "Left Fork",
