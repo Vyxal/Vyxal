@@ -2,7 +2,6 @@ package vyxal
 
 enum FlagCategory(val description: String) extends Enum[FlagCategory]:
   case RangeBehavior extends FlagCategory("Range behavior")
-  case DefaultArity extends FlagCategory("Default arity")
   case EndPrintMode extends FlagCategory("End print mode")
 
 object FlagCategory:
