@@ -4,7 +4,7 @@ enum FlagCategory(val description: String) extends Enum[FlagCategory]:
   case EndPrintMode extends FlagCategory("End print mode")
 
 object FlagCategory:
-  val categories = Seq(RangeBehavior, DefaultArity, EndPrintMode)
+  val categories = Seq(EndPrintMode)
 
 enum Flag(
     val short: Char,
