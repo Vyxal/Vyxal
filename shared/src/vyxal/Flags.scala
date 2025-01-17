@@ -31,16 +31,6 @@ enum Flag(
         "Literate mode",
         _.copy(literate = true),
       )
-  case RangeNone
-      extends Flag(
-        '\u0000',
-        "",
-        "Default behavior",
-        "Default behavior",
-        settings => settings,
-        Some(FlagCategory.RangeBehavior),
-        hidden = true,
-      )
   case InputAsStrings
       extends Flag(
         'Ṡ',
