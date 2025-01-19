@@ -136,8 +136,7 @@ case class VFun(
   /** Make a copy of this function with a different arity. */
   def withArity(newArity: Int): VFun = this.copy(arity = newArity)
 
-  /** Call this function on the given arguments, using custom context variables.
-    */
+  /** Call this function on the given arguments, using custom context variables. */
   def execute(
       contextVarPrimary: VAny,
       contextVarSecondary: VAny,

@@ -52,8 +52,7 @@ extension (ast: AST)
     ast.arity.getOrElse(-1) == 1 &&
       (ast match
         case f: AST.Lambda => f.params.isEmpty
-        case _ => true
-      )
+        case _ => true)
 
 object DyadOrMore:
   def unapply(ast: AST): Option[(AST, Int)] =

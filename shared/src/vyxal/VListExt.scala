@@ -96,8 +96,7 @@ extension (self: Seq[VAny])
       currSize += add
     ret
 
-  /** self isn't an overload of isDefinedAt because it needs to take a `BigInt`
-    */
+  /** self isn't an overload of isDefinedAt because it needs to take a `BigInt` */
   def hasIndex(ind: BigInt): Boolean =
     if ind <= Int.MaxValue && ind >= 0 then return self.isDefinedAt(ind.toInt)
     var pos = if ind < 0 then ind % self.length else ind

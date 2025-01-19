@@ -1554,9 +1554,8 @@ object Elements:
       case a: VNum =>
         val factors = NumberHelpers.primeFactors(a)
         val primes = factors.distinct
-        val exponents = primes.map(prime =>
-          NumberHelpers.multiplicity(a, prime.asInstanceOf[VNum])
-        )
+        val exponents = primes
+          .map(prime => NumberHelpers.multiplicity(a, prime.asInstanceOf[VNum]))
         VList(exponents)
     },
     addPart("∆L", Dyad, false) {
@@ -1746,17 +1745,15 @@ object Elements:
       fullToImpl(
         Monad,
         x =>
-          x.itr.zipWithIndex.map((value, index) =>
-            MiscHelpers.multiply(value, index)
-          ),
+          x.itr.zipWithIndex
+            .map((value, index) => MiscHelpers.multiply(value, index)),
       ),
     "Þ¹" ->
       fullToImpl(
         Monad,
         x =>
-          x.itr.zipWithIndex.map((value, index) =>
-            MiscHelpers.multiply(value, index + 1)
-          ),
+          x.itr.zipWithIndex
+            .map((value, index) => MiscHelpers.multiply(value, index + 1)),
       ),
     "Þ⊍" ->
       fullToImpl(

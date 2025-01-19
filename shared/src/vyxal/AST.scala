@@ -180,8 +180,7 @@ enum AST(val arity: Option[Int]) derives CanEqual:
         s"λ${if params.nonEmpty then params.mkString("", ",", "|")
           else
             lambdaArity match
-              case Some(arity) =>
-                s"${if arity == -1 then "!" else arity.toString}|"
+              case Some(arity) => s"${if arity == -1 then "!" else arity.toString}|"
               case None => ""
           }${body.map(_.toVyxal).mkString("|")}}"
       case FnDef(name, lam, _) => ???
@@ -193,8 +192,7 @@ end AST
 
 object AST:
 
-  /** Turn zero or more ASTs into one, wrapping in a [[AST.Group]] if necessary
-    */
+  /** Turn zero or more ASTs into one, wrapping in a [[AST.Group]] if necessary */
   def makeSingle(elems: AST*): AST =
     if elems.size == 1 then elems.head else AST.Group(elems.toList, None)
 
