@@ -48,8 +48,7 @@ class YamlTests extends AnyFunSpec:
   var usingNative = false
 
   try "(?!.*@)".r.findFirstMatchIn("h")
-  catch
-    case _ => usingNative = true
+  catch case _ => usingNative = true
 
     /** The file to load tests from */
   val TestsFile = "/tests.yaml"

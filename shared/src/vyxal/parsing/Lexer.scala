@@ -48,8 +48,7 @@ case class LitToken(
             case otherValue: String => otherValue ==
                 this.value.asInstanceOf[String]
             case otherValue: Seq[LitToken] => otherValue ==
-                this.value.asInstanceOf[List[LitToken]]
-          ))
+                this.value.asInstanceOf[List[LitToken]]))
 
       case _ => false
 
