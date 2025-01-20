@@ -364,7 +364,6 @@ abstract class LexerCommon:
         popped += '"'
         popped ++= stringToken()
         popped ++= stringTokenToQuote(tokens.last.tokenType)
-        dropLastToken()
       else if headIsBranch && !headEqual(",") then branchFound = true
 
       if !break && !stringPopped && !branchFound then popped ++= pop()
