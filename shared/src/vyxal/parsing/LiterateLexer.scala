@@ -253,7 +253,7 @@ class LiterateLexer extends LexerCommon:
             Range(index, index),
           )
         )
-        lambdaParameters
+        lambdaParameters(true)
       else if structOpeners.contains(programStack.head) then
         val tempRange = Range(index, index)
         addToken(TokenType.StructureOpen, structOpeners(pop()).open, tempRange)

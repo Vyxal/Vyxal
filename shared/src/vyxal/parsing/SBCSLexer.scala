@@ -121,7 +121,7 @@ class SBCSLexer extends LexerCommon:
         quickToken(TokenType.StructureOpen, s"${programStack.head}")
       else if headEqual(LAMBDA) then
         quickToken(TokenType.StructureOpen, LAMBDA)
-        lambdaParameters
+        lambdaParameters(false)
       else if headLookaheadEqual(IF_ELSE_OPENER) then
         quickToken(TokenType.StructureOpen, IF_ELSE_OPENER)
       else if headIn(MONADIC_MODIFIERS) then

@@ -349,7 +349,7 @@ abstract class LexerCommon:
     )
     return text
   end stringToken
-  protected def lambdaParameters: String =
+  protected def lambdaParameters(literate: Boolean = false): String =
     var break = false
     val popped = StringBuilder()
     val start = index
@@ -363,7 +363,9 @@ abstract class LexerCommon:
         stringPopped = true
         popped += '"'
         popped ++= stringToken()
-        popped ++= stringTokenToQuote(tokens.last.tokenType)
+        popped ++=
+          (if literate then "\"" else stringTokenToQuote(tokens.last.tokenType))
+        dropLastToken()
       else if headIsBranch && !headEqual(",") then branchFound = true
 
       if !break && !stringPopped && !branchFound then popped ++= pop()
