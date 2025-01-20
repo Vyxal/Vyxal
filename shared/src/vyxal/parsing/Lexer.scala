@@ -369,7 +369,7 @@ abstract class LexerCommon:
 
       if !break && !stringPopped && !branchFound then popped ++= pop()
     val params = popped.toString()
-    if !branchFound then
+    if !branchFound || stringPopped then
       for c <- params.reverse do programStack.push(c.toString())
       index -= popped.length
     else for tok <- extractParamters(popped.toString(), start) do addToken(tok)
