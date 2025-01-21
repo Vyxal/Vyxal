@@ -104,7 +104,7 @@ object Elements:
     addPart("&", Dyad, false) {
       case (a, b) => VList(a.itr :+ b)
     },
-    addPart("*", Dyad, false) {
+    addPart("*", Dyad, true) {
       case (a: VNum, b: VNum) => a ** b
     },
     "+" -> fullToImpl(Dyad, MiscHelpers.add),
