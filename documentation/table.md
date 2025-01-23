@@ -3,12 +3,16 @@ Element, Modifier, and Syntax Reference
 ## Elements
 
 - `nsl` = Number/String/List
+- `itr` = String/List
 - `any` = Any type
 - `num` = Number
 - `str` = String
 - `lst` = List
 - `fun` = Function
 - `obj` = User-defined object
+
+
+- _Where a list overload exists without an explicit number or string overload, it is assumed that the element casts to iterable first. For numbers, this usually means lists of digits, but some elements will cast to range 1 to n inclusive._
 
 | Symbol | Keywords | Arity | Vectorises | Overloads |
 |--------|--|------|-----------|-----------|
