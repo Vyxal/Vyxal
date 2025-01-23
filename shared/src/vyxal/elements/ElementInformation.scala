@@ -1016,7 +1016,7 @@ object ElementInformation:
       symbol = "d",
       keywords = Seq("double"),
       arity = 1,
-      Options(),
+      Options(vectorises = true),
       Overload(
         name = "Double",
         args = Seq("num"),
