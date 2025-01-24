@@ -844,7 +844,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "V",
-      keywords = Seq("vectorse-reverse", "1-x"),
+      keywords = Seq("vectorise-reverse", "1-x"),
       arity = 1,
       Options(),
       Overload(
