@@ -322,6 +322,7 @@ object Elements:
       },
     addPart("V", Monad, false) {
       case a: VList => VList(a.map(ListHelpers.reverse))
+      case VStr(a) => VList(a.split(" ").map(_.reverse))
       case a: VNum => 1 - a
     },
     "W" ->
