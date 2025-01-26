@@ -844,7 +844,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "V",
-      keywords = Seq("vectorise-reverse", "1-x"),
+      keywords = Seq("vectorise-reverse", "1-x", "split-spaces-reverse"),
       arity = 1,
       Options(),
       Overload(
@@ -857,6 +857,11 @@ object ElementInformation:
         args = Seq("num"),
         description = "1 - #1",
       ),
+      Overload(
+        name = "Split on Spaces and Reverse Each Substring",
+        args = Seq("str"),
+        description = "Split #1 on spaces and reverse each substring",
+      )
     ),
     AddElement(
       symbol = "W",
