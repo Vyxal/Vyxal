@@ -861,7 +861,7 @@ object ElementInformation:
         name = "Split on Spaces and Reverse Each Substring",
         args = Seq("str"),
         description = "Split #1 on spaces and reverse each substring",
-      )
+      ),
     ),
     AddElement(
       symbol = "W",
