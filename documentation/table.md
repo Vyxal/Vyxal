@@ -55,7 +55,7 @@ Element, Modifier, and Syntax Reference
 | <code>S</code> | <code>sort</code> | 1 |   | **Sort** (`itr`): Sort #1 |
 | <code>T</code> | <code>transpose</code></br><code>triple</code></br><code>alpha-only?</code> | 1 |   | **Transpose** (`lst`): Transpose #1. Will not terminate on an infinite list of finite lists. Use ÞT if you need that.</br>**Triple** (`num`): #1 * 3</br>**Does String Contain Only Alphabetic Characters** (`str`): Check if #1 contains only alphabetic characters |
 | <code>U</code> | <code>uninterleave</code> | 1 |   | **Uninterleave** (`lst`): Uninterleave #1 |
-| <code>V</code> | <code>vectorise-reverse</code></br><code>1-x</code> | 1 |   | **Vectorise Reverse** (`lst`): Reverse each item in #1</br>**1 - X** (`num`): 1 - #1 |
+| <code>V</code> | <code>vectorise-reverse</code></br><code>1-x</code></br><code>split-spaces-reverse</code> | 1 |   | **Vectorise Reverse** (`lst`): Reverse each item in #1</br>**1 - X** (`num`): 1 - #1</br>**Split on Spaces and Reverse Each Substring** (`str`): Split #1 on spaces and reverse each substring |
 | <code>W</code> | <code>wrap</code> | STACK |   | **Wrap**: Wrap the entire stack into a list |
 | <code>X</code> | <code>cartesian-product</code> | 2 |   | **Cartesian Product** (`lst,lst`): Cartesian product of #1 and #2 |
 | <code>Y</code> | <code>list-repeat</code> | 2 |   | **List Repeat** (`num,num`): A list of #1 repeated #2 times. E.g. 3 4 -> [3, 3, 3, 3]</br>**List Repeat** (`itr,num`): A list of #2 instances of string #1</br>**List Repeat** (`num,itr`): A list of #1 instances of string #2</br>**Vectorised Repeat** (`itr,lst[nsl]`): Repeat each element of #2 (#1|#1.length) times |
