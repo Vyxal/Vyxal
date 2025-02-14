@@ -1,5 +1,7 @@
 package vyxal.elements
 
+import scribe.writer.BrowserConsoleWriter.args
+
 case class Element(
     symbol: String,
     /** Names that can be used for this in literate mode */
@@ -311,6 +313,19 @@ object ElementInformation:
         name = "Append",
         args = Seq("any", "any"),
         description = "Append #2 to #1",
+      ),
+    ),
+    AddElement(
+      symbol = "'",
+      keywords =
+        Seq("join-sublists", "join-sublists-on-spaces-then-newlines", "grid"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Join Sublists on Spaces then Newlines (Element Form of ')",
+        args = Seq("lst"),
+        description =
+          "Join sublists of #1 on spaces, then join those on newlines",
       ),
     ),
     AddElement(
