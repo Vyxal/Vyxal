@@ -23,6 +23,7 @@ Element, Modifier, and Syntax Reference
 | <code>$</code> | <code>swap</code> | 2 |   | **Swap** (`any,any`): Swap #1 and #2 on the stack: #1 #2 -> #2 #1 |
 | <code>%</code> | <code>mod</code></br><code>modulo</code></br><code>%</code></br><code>remainder</code> | 2 | vec  | **Modulo** (`num,num`): #1 % #2 (remainder of #1 divided by #2)</br>**String Format** (`str,any`): Format #1 with #2</br>**String Format** (`any,str`): Format #2 with #1 |
 | <code>&</code> | <code>append</code> | 2 |   | **Append** (`any,any`): Append #2 to #1 |
+| <code>'</code> | <code>join-sublists</code></br><code>join-sublists-on-spaces-then-newlines</code></br><code>grid</code> | 1 |   | **Join Sublists on Spaces then Newlines (Element Form of ')** (`lst`): Join sublists of #1 on spaces, then join those on newlines |
 | <code>*</code> | <code>exponentiate</code></br><code>pow</code></br><code>**</code></br><code>power</code> | 2 | vec  | **Exponentiation** (`num,num`): #1 ** #2 |
 | <code>+</code> | <code>add</code></br><code>+</code></br><code>plus</code></br><code>addition</code> | 2 | vec  | **Addition** (`num,num`): #1 + #2</br>**String and Number Concatenation** (`str,num`): #1 + str(#2)</br>**String and Number Concatenation** (`num,str`): str(#1) + #2</br>**String Concatenation** (`str,str`): #1 + #2 |
 | <code>,</code> | <code>println</code></br><code>stdout</code></br><code>output</code></br><code>out</code> | 1 |   | **Print** (`any`): Print #1 to stdout, followed by a newline |
