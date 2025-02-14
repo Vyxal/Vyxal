@@ -1,7 +1,5 @@
 package vyxal.elements
 
-import scribe.writer.BrowserConsoleWriter.args
-
 case class Element(
     symbol: String,
     /** Names that can be used for this in literate mode */
