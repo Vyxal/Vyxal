@@ -104,6 +104,11 @@ object Elements:
     addPart("&", Dyad, false) {
       case (a, b) => VList(a.itr :+ b)
     },
+    "'" ->
+      fullToImpl(
+        Monad,
+        a => a.itr.map(v => v.itr.mkString(" ")).mkString("\n"),
+      ),
     addPart("*", Dyad, true) {
       case (a: VNum, b: VNum) => a ** b
     },
