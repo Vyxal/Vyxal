@@ -206,17 +206,17 @@
   - {in: [12,"12"], out: [1, 2, "1", "2"]}
   - {in: ["12",12], out: ["1","2",1,2]}
 
-"÷":
-  - {in: [5, 2], out: 2.5}
-  - {in: [5, 0], out: 0}
-  - {in: ["Shrek     rizz  sigma", " +"], out: ["Shrek", "rizz", "sigma"]}
-  - {in: ["Sigma rizz", 2], out: ["Sigma", " rizz"]}
-
 "×":
   - {in: [5, 2], out: 10}
   - {in: [5, 0], out: 0}
   - {in: ["Sus", 3], out: "SusSusSus"}
   - {in: ["Hello", "lo"], out: "Heool"}
+
+"÷":
+  - {in: [5, 2], out: 2.5}
+  - {in: [5, 0], out: 0}
+  - {in: ["Shrek     rizz  sigma", " +"], out: ["Shrek", "rizz", "sigma"]}
+  - {in: ["Sigma rizz", 2], out: ["Sigma", " rizz"]}
 
 "Þ÷":
   - {in: [[1,2,3,4,5,6], 3], out: [[1, 2], [3, 4], [5, 6]]}
