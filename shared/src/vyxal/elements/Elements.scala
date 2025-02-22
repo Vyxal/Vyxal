@@ -46,7 +46,7 @@ object Elements:
       case (a: VNum, b: VNum) => a / b
       case (VStr(a), b: VNum) => StringHelpers.intoNPieces(a, b)
       case (a: VNum, VStr(b)) => StringHelpers.intoNPieces(b, a)
-      case (VStr(a), VStr(b)) => StringHelpers.split(a, Regex.quote(b))
+      case (VStr(a), VStr(b)) => VList(a.split(b).toSeq.vs)
     },
     "×" -> fullToImpl(Dyad, MiscHelpers.multiply),
     addPart("∧", Dyad, true) {
