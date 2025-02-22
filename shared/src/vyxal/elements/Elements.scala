@@ -13,7 +13,6 @@ import vyxal.StringHelpers.padLeft
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
-import scala.util.matching.Regex
 
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
@@ -35,6 +34,11 @@ object Elements:
   )
 
   val elements: Map[String, Element] = Map(
+    "⊐" ->
+      direct(Monad) {
+        val a = pop().itr
+        push(a.init, a.last)
+      },
     "⊞" ->
       direct(Monad) {
         val iterable = ListHelpers.makeIterable(pop())
@@ -1173,8 +1177,7 @@ object Elements:
           case n: VNum =>
             val iter = n.ritr
             push(
-              iter.drop(1),
-              iter.headOption.getOrElse(ctx.settings.defaultValue),
+              iter.drop(1)
             )
           case arg => throw UnimplementedOverloadException("ᑂ", List(arg))
       },

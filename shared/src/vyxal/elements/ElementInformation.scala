@@ -68,6 +68,17 @@ object ElementInformation:
 
   val elements: Map[String, Element] = Map(
     AddElement(
+      symbol = "⊐",
+      keywords = Seq("tailless-top"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Tailless Top",
+        args = Seq("any"),
+        description = "Push #1[:-1], #1[-1] to the stack",
+      ),
+    ),
+    AddElement(
       symbol = "⊞",
       keywords = Seq("counts", "counts-of"),
       arity = 1,
@@ -2728,6 +2739,11 @@ object ElementInformation:
         name = "Head on Top, Rest on Bottom",
         args = Seq("any"),
         description = "Push #1[1:] and #1[0]",
+      ),
+      Overload(
+        name = "Range [2, n]",
+        args = Seq("num"),
+        description = "Range from 2 to #1 inclusive",
       ),
     ),
     AddElement(
