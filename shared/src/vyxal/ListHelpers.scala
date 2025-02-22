@@ -462,9 +462,11 @@ object ListHelpers:
         val l = sep match
           case VList(l) => l
           case sep => Seq(sep)
-        VList(
-          lst.map(makeIterable(_)).reduce((ret, item) => ret ++ l ++ item)
-        )
+        if lst.isEmpty then VList(Seq.empty)
+        else
+          VList(
+            lst.map(makeIterable(_)).reduce((ret, item) => ret ++ l ++ item)
+          )
       case _ => ??? // todo reduce?
 
   def matrixInverse(lst: Seq[VAny])(using Context): Option[VList] =
