@@ -34,7 +34,7 @@ object Elements:
   )
 
   val elements: Map[String, Element] = Map(
-    "⊐" ->
+    "Ƶ" ->
       direct(Monad) {
         val a = pop().itr
         push(a.init, a.last)
@@ -883,7 +883,7 @@ object Elements:
         Seq(fst, snd)
     },
     "ƶ" -> fullToImpl(Monad, x => NumberHelpers.range(0, x.itr.length - 1)),
-    "Ƶ" -> fullToImpl(Monad, x => NumberHelpers.range(1, x.itr.length)),
+    "ÞƵ" -> fullToImpl(Monad, x => NumberHelpers.range(1, x.itr.length)),
     "⁰" ->
       niladify(ctx ?=>
         if ctx.globals.inputs.nonEmpty then ctx.globals.inputs(0)
