@@ -68,7 +68,7 @@ object ElementInformation:
 
   val elements: Map[String, Element] = Map(
     AddElement(
-      symbol = "⊐",
+      symbol = "Ƶ",
       keywords = Seq("tailless-top"),
       arity = 1,
       Options(),
@@ -2086,7 +2086,7 @@ object ElementInformation:
       ),
     ),
     AddElement(
-      symbol = "Ƶ",
+      symbol = "ÞƵ",
       keywords = Seq("range-to-length-1"),
       arity = 1,
       Options(),
