@@ -16,6 +16,7 @@ Element, Modifier, and Syntax Reference
 
 | Symbol | Keywords | Arity | Vectorises | Overloads |
 |--------|--|------|-----------|-----------|
+| <code>⊐</code> | <code>tailless-top</code> | 1 |   | **Tailless Top** (`any`): Push #1[:-1], #1[-1] to the stack |
 | <code>⊞</code> | <code>counts</code></br><code>counts-of</code> | 1 |   | **Counts of Items** (`lst`): [#1.count(x) for x in set(#1)] |
 | <code>×</code> | <code>multiply</code></br><code>string-repeat</code></br><code>ring-translate</code></br><code>*</code></br><code>times</code> | 2 | vec  | **Multiplication** (`num,num`): #1 * #2 (#1 times #2)</br>**String Repeat** (`str,num`): Repeat string #1 #2 times</br>**String Repeat** (`num,str`): Repeat string #2 #1 times</br>**Ring Translate** (`str,str`): Ring translate #1 according to #2.  |
 | <code>÷</code> | <code>divide</code></br><code>string-pieces</code></br><code>regex-split</code></br><code>/</code></br><code>div</code> | 2 | vec  | **Division** (`num,num`): #1 / #2</br>**String into N Pieces** (`str,num`): Split string #1 into #2 pieces</br>**String into N Pieces** (`num,str`): Split string #2 into #1 pieces</br>**Regex Split** (`str,str`): Split #1 by regex #2 |
@@ -168,7 +169,7 @@ Element, Modifier, and Syntax Reference
 | <code>␣</code> | <code>space</code> | 0 |   | **Space**: Push a space to the stack |
 | <code>¶</code> | <code>newline</code> | 0 |   | **Newline**: Push a newline to the stack |
 | <code>★</code> | <code>asterisk</code> | 0 |   | **Asterisk**: Push an asterisk to the stack |
-| <code>ᑂ</code> | <code>headless-top</code> | 1 |   | **Head on Top, Rest on Bottom** (`any`): Push #1[1:] and #1[0] |
+| <code>ᑂ</code> | <code>headless-top</code> | 1 |   | **Head on Top, Rest on Bottom** (`any`): Push #1[1:] and #1[0]</br>**Range [2, n]** (`num`): Range from 2 to #1 inclusive |
 | <code>∻</code> | <code>integer-divide</code></br><code>int-div</code></br><code>//</code> | 2 | vec  | **Integer Divide** (`num,num`): #1 // #2 |
 | <code>√</code> | <code>square-root</code></br><code>sqrt</code> | 1 | vec  | **Square Root** (`num`): Square root of #1 |
 | <code>⍰</code> | <code>truthy?</code> | 1 | vec  | **Truthy?** (`scl`): Is #1 truthy? (Not 0, empty, or false) |
