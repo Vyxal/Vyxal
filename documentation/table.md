@@ -16,7 +16,6 @@ Element, Modifier, and Syntax Reference
 
 | Symbol | Keywords | Arity | Vectorises | Overloads |
 |--------|--|------|-----------|-----------|
-| <code>⊐</code> | <code>tailless-top</code> | 1 |   | **Tailless Top** (`any`): Push #1[:-1], #1[-1] to the stack |
 | <code>⊞</code> | <code>counts</code></br><code>counts-of</code> | 1 |   | **Counts of Items** (`lst`): [#1.count(x) for x in set(#1)] |
 | <code>×</code> | <code>multiply</code></br><code>string-repeat</code></br><code>ring-translate</code></br><code>*</code></br><code>times</code> | 2 | vec  | **Multiplication** (`num,num`): #1 * #2 (#1 times #2)</br>**String Repeat** (`str,num`): Repeat string #1 #2 times</br>**String Repeat** (`num,str`): Repeat string #2 #1 times</br>**Ring Translate** (`str,str`): Ring translate #1 according to #2.  |
 | <code>÷</code> | <code>divide</code></br><code>string-pieces</code></br><code>regex-split</code></br><code>/</code></br><code>div</code> | 2 | vec  | **Division** (`num,num`): #1 / #2</br>**String into N Pieces** (`str,num`): Split string #1 into #2 pieces</br>**String into N Pieces** (`num,str`): Split string #2 into #1 pieces</br>**Regex Split** (`str,str`): Split #1 by regex #2 |
@@ -128,7 +127,7 @@ Element, Modifier, and Syntax Reference
 | <code>ᐕ</code> | <code>behead</code></br><code>without-head</code></br><code>headless</code> | 1 |   | **Behead** (`any`): All but the first element of #1 |
 | <code>½</code> | <code>half</code></br><code>halve</code> | 1 | vec  | **Halve** (`num`): #1 / 2</br>**Two String Halves** (`str`): Split #1 in half |
 | <code>ƶ</code> | <code>range-to-length</code> | 1 |   | **Range to Length** (`lst`): Range from 0 to len(#1) - 1 |
-| <code>Ƶ</code> | <code>range-to-length-1</code> | 1 |   | **Range to Length 1** (`lst`): Range from 1 to len(#1) |
+| <code>Ƶ</code> | <code>tailless-top</code> | 1 |   | **Tailless Top** (`any`): Push #1[:-1], #1[-1] to the stack |
 | <code>⁰</code> | <code>first-input</code></br><code>input-0</code> | 0 |   | **First Input**: Push the first input to the stack |
 | <code>¹</code> | <code>second-input</code></br><code>input-1</code> | 0 |   | **Second Input**: Push the second input to the stack |
 | <code>²</code> | <code>square</code></br><code>string-pairs</code> | 1 | vec  | **Square** (`num`): #1 ** 2</br>**String Pairs** (`str`): Split #1 into pairs of characters |
@@ -308,6 +307,7 @@ Element, Modifier, and Syntax Reference
 | <code>Þ⦰</code> | <code>multiset-difference</code></br><code>mset-diff</code> | 2 |   | **Multiset Difference** (`lst,lst`): Multiset difference of #1 and #2 |
 | <code>Þ↻</code> | <code>cycle</code> | 1 |   | **Cycle** (`lst`): Cycle #1 - Append all items of #1 to itself infinite times</br>**List-Repeat Infinitely** (`num\|str`): Repeat #1 infinitely - [#1, #1, #1, ...] |
 | <code>Þ⎀</code> | <code>md-assign</code> | 3 |   | **Multi-Dimensional Assign** (`lst,lst[num],any`): Assign #3 to the multi-dimensional index #2 in #1 - #1[#2[0]][#2[1]]...[#2[n]] = #3 |
+| <code>ÞƵ</code> | <code>range-to-length-1</code> | 1 |   | **Range to Length 1** (`lst`): Range from 1 to len(#1) |
 | <code>Þ⁰</code> | <code>zero-lift</code> | 1 |   | **Zero Lift** (`lst`): Multiply each element of #1 by its 0-based index |
 | <code>Þ¹</code> | <code>one-lift</code> | 1 |   | **One Lift** (`lst`): Multiply each element of #1 by its 1-based index |
 | <code>Þ⅟</code> | <code>matrix-inverse</code></br><code>m**-1</code> | 1 |   | **Matrix Inverse** (`lst[lst]`): Inverse of #1 |
