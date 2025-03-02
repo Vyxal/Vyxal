@@ -1500,7 +1500,7 @@ object Elements:
     },
     "#¿" ->
       direct(0) {
-        summon[Context].globals.inputs.length
+        push(summon[Context].globals.inputs.length)
       },
     addPart("∆<", Monad, true) {
       case a: VNum => a.arg
