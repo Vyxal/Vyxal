@@ -37,7 +37,8 @@ object Elements:
     "Ƶ" ->
       direct(Monad) {
         val a = pop().itr
-        push(a.init, a.last)
+        if a.isEmpty then push(VList(Seq.Empty), 0)
+        else push(a.init, a.last)
       },
     "⊞" ->
       direct(Monad) {
