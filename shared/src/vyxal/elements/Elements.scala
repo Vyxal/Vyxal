@@ -663,11 +663,11 @@ object Elements:
       case (function: VFun, initial) =>
         ListHelpers.generateDyadic(function, initial.itr)
     },
-    addPart("⌈", Monad, false) {
+    addPart("⌈", Monad, true) {
       case a: VNum => a.ceil
       case VStr(a) => a.split(" ").toIndexedSeq
     },
-    addPart("⌊", Monad, false) {
+    addPart("⌊", Monad, true) {
       case a: VNum => a.floor
       case VStr(a) =>
         if a.isEmpty then 0
