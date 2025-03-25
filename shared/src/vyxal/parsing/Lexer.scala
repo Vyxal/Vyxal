@@ -325,7 +325,10 @@ abstract class LexerCommon:
     pop() // Pop the opening quote
 
     while programStack.nonEmpty && !headIn("\"„”“") do
-      if headEqual("\\") then stringVal ++= pop(2)
+      if headEqual("\\") then
+        val backslash = pop()
+        if headIn("„”“") then stringVal ++= backslash
+        else stringVal ++= backslash + pop()
       else stringVal ++= pop()
 
     var text =
