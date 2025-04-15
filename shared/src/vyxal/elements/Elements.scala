@@ -726,7 +726,7 @@ object Elements:
         summon[Context].rotateRight
       },
     "↺" ->
-      direct(Monad) {
+      direct(Dyad) {
         val top = pop()
         top match
           case a: VIter => push(ListHelpers.rotate(a, 1))
@@ -740,7 +740,7 @@ object Elements:
           case _ => throw UnsupportedOverloadException("↺", "function | object")
       },
     "↻" ->
-      direct(Monad) {
+      direct(Dyad) {
         val top = pop()
         top match
           case a: VIter => push(ListHelpers.rotate(a, -1))
