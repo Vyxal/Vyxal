@@ -61,12 +61,15 @@ object JSVyxal:
           printFunc(str)
           printRequestCount += 1,
     )
-    globals.inputs = Inputs(inputList)
 
-    val ctx = Context(
-      inputs = inputList,
-      globals = globals,
-    )
+    given ctx: Context =
+      Context(
+        inputs = inputList,
+        ctxArgs = Some(inputList),
+        globals = globals,
+      )
+
+    ctx.globals.inputs = ctx.inputs
     try Interpreter.execute(code)(using ctx)
     catch case ex: VyxalException => errorFunc(ex.getMessage(using ctx))
   end execute
