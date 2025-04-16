@@ -268,13 +268,12 @@ class SBCSLexer extends LexerCommon:
     val rangeStart = index
     pop() // Pop the token
     val char = pop(2)
+    val numValue = 255 * Codepage.indexOf(char.head) +
+      Codepage.indexOf(char.last)
     tokens +=
       Token(
         TokenType.Number,
-        char.zipWithIndex
-          .map((c, ind) => math.pow(Codepage.length, ind) * Codepage.indexOf(c))
-          .sum
-          .toString,
+        numValue.toString(),
         Range(rangeStart, index),
       )
 
