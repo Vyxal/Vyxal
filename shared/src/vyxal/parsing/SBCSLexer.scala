@@ -268,7 +268,7 @@ class SBCSLexer extends LexerCommon:
     val rangeStart = index
     pop() // Pop the token
     val char = pop(2)
-    val numValue = 255 * Codepage.indexOf(char.head) +
+    val numValue = 256 * Codepage.indexOf(char.head) +
       Codepage.indexOf(char.last)
     tokens +=
       Token(

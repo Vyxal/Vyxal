@@ -139,7 +139,7 @@ object SyntaxInfo:
       Syntax(
         "Two Byte Number",
         Seq(),
-        "Push the next two bytes as a number, converted from bijective base 255 using the codepage",
+        "Push the next two bytes as a number, converted from bijective base 256 using the codepage (max 65535). Use `#c` to compress a number if it is <= 65535 ",
         "Ꮠ<character><character>",
       ),
     "#[" ->

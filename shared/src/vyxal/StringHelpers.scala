@@ -36,11 +36,25 @@ object StringHelpers:
     s"\"$res„"
 
   def compress252(n: VNum)(using Context): String =
+    if n < 0 then
+      throw VyxalRuntimeException(
+        s"Cannot compress negative number: $n"
+      )
+    val MAX_TWO_BYTE_COMPRESSABLE = 65535
+    if n <= MAX_TWO_BYTE_COMPRESSABLE then
+      val indices = NumberHelpers.toBase(n, 256)
+      var res = indices
+        .asInstanceOf[VList]
+        .map(num => Codepage(num.asInstanceOf[VNum].toInt))
+        .mkString
+      if res.length == 1 then res = s"λ$res"
+      return s"Ꮠ$res"
     val res = NumberHelpers.toBaseAlphabet(
       n,
       Codepage.filterNot(Lexer.StringClosers.contains(_)),
     )
     s"\"$res“"
+  end compress252
 
   // https://codegolf.stackexchange.com/a/151721/78850
   def compressDictionary(s: String): String =
