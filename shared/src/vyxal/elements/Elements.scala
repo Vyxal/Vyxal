@@ -555,8 +555,7 @@ object Elements:
       case VStr(s) => s
           .split("\n")
           .map { line =>
-            val reversedFlipped =
-              StringHelpers.invertBrackets(s).reverse
+            val reversedFlipped = StringHelpers.invertBrackets(s).reverse
             s"$s${reversedFlipped.replace("/", "\\")}"
           }
           .mkString("\n")
