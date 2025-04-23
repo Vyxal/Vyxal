@@ -144,7 +144,7 @@ object CLI:
           return
         else
           config.filename.foreach { filename =>
-            val source = io.Source.fromFile(filename)
+            val source = io.Source.fromFile(filename, "UTF-8")
             try runCode(source.mkString)
             finally source.close()
           }
