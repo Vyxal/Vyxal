@@ -1242,7 +1242,8 @@ object ElementInformation:
       Overload(
         name = "Context Primary",
         args = Seq(),
-        description = "Push the primary context variable to the stack",
+        description =
+          "Push the primary context variable to the stack. If not in a function, push the string 'abcdefghijklmnopqrstuvwxyz'",
       ),
     ),
     AddElement(
