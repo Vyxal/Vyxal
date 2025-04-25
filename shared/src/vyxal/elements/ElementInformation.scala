@@ -3027,7 +3027,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "„",
-      keywords = Seq("join-on-spaces", "*space", "<0", "is-negative?"),
+      keywords = Seq("join-on-spaces", "*space", "<0", "is-negative?", "intesperse-spaces"),
       arity = 1,
       Options(),
       Overload(
@@ -3039,6 +3039,11 @@ object ElementInformation:
         name = "Is negative?",
         args = Seq("num"),
         description = "Push 1 if #1 < 0, 0 otherwise",
+      ),
+      Overload(
+        name = "Intersperse #1 with spaces",
+        args = Seq("str"),
+        description = "Insert spaces between each character of #1",
       ),
     ),
     AddElement(
