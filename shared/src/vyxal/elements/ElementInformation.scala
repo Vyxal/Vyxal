@@ -3027,7 +3027,13 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "„",
-      keywords = Seq("join-on-spaces", "*space", "<0", "is-negative?", "intesperse-spaces"),
+      keywords = Seq(
+        "join-on-spaces",
+        "*space",
+        "<0",
+        "is-negative?",
+        "intesperse-spaces",
+      ),
       arity = 1,
       Options(),
       Overload(
