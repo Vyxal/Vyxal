@@ -1797,6 +1797,7 @@
 "„":
   - {in: [["Hello", "World"]], out: "Hello World"}
   - {in: [[1, 2, 3]], out: "1 2 3"}
+  - {in: ["Hello"], out: "H e l l o"}
 
 "”":
   - {in: [["Hello", "World"]], out: "Hello\nWorld"}
