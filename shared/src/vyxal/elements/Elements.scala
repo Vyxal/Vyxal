@@ -1336,6 +1336,9 @@ object Elements:
     addPart("„", Monad, false) {
       case VList(lst) => ListHelpers.join(lst, " ")
       case num: VNum => num < 0
+      case VStr(str) => ListHelpers.join(str.itr, " ") match
+          case l: VList => l.mkString
+          case res => res
     },
     "“" -> fullToImpl(Monad, x => MiscHelpers.joinNothing(x)),
     "↸" ->
