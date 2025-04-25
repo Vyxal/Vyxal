@@ -3032,7 +3032,7 @@ object ElementInformation:
         "*space",
         "<0",
         "is-negative?",
-        "intesperse-spaces",
+        "intersperse-spaces",
       ),
       arity = 1,
       Options(),
