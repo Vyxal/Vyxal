@@ -1317,7 +1317,7 @@ object ElementInformation:
       Overload(
         name = "Replace",
         args = Seq("nsl", "nsl", "nsl"),
-        description = "Replace all occurrences of #2 in #1 with #3",
+        description = "Replace all occurrences of #2 in #3 with #1",
       ),
       Overload(
         name = "Zip-With",
