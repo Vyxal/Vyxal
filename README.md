@@ -10,7 +10,7 @@ Vyxal is an array programming language that is:
 
 There are a few methods:
 
-1. Head over to [the online interpreter](vyxal.github.io/latest) (this is the easiest).
+1. Head over to [the online interpreter](https://vyxal.github.io/latest) (this is the easiest).
 
 2. Download one of the release `jar` files, and run using
 
