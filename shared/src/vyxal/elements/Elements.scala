@@ -773,6 +773,12 @@ object Elements:
         val temp = ListHelpers.augmentAssign(ListHelpers.makeIterable(a), b, c)
         if a.isInstanceOf[VStr] then temp.mkString
         else temp
+      case (a, b: VList, c: VFun) =>
+        var temp = ListHelpers.makeIterable(a)
+        for index <- b.map(_.asInstanceOf[VNum]) do
+          temp = ListHelpers.augmentAssign(temp, index, c)
+        if a.isInstanceOf[VStr] then temp.mkString
+        else temp
       case (a, b: VList, c: VList) =>
         var temp = ListHelpers.makeIterable(a)
         for (i, j) <-
@@ -792,7 +798,7 @@ object Elements:
         val temp =
           ListHelpers.makeIterable(b).foldLeft(ListHelpers.makeIterable(a)) {
             case (temp, ind: VNum) => ListHelpers.assign(temp, ind, c)
-            case _ => throw InvalidListOverloadException("Ạ", b, "Number")
+            case _ => throw InvalidListOverloadException("≜", b, "Number")
           }
         if a.isInstanceOf[VStr] then temp.mkString
         else temp
