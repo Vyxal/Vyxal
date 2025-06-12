@@ -11,8 +11,11 @@ Element, Modifier, and Syntax Reference
 - `fun` = Function
 - `obj` = User-defined object
 
-
 - _Where a list overload exists without an explicit number or string overload, it is assumed that the element casts to iterable first. For numbers, this usually means lists of digits, but some elements will cast to range 1 to n inclusive._
+
+- Arguments are referred to as [#1, #2, #3, ...] relative to
+- how many arguments are popped from the stack. This is effectively
+- reverse order of stack order.
 
 | Symbol | Keywords | Arity | Vectorises | Overloads |
 |--------|--|------|-----------|-----------|
