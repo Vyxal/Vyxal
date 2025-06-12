@@ -732,7 +732,7 @@ object Elements:
           case a: VIter => push(ListHelpers.rotate(a, 1))
           case predicate: VFun =>
             val item = pop()
-            MiscHelpers.collectUnique(predicate, item).last
+            MiscHelpers.collectUnique(predicate, item)
           case a: VNum =>
             val times = a
             val iterable = pop()
