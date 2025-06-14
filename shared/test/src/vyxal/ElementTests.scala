@@ -407,7 +407,7 @@ class ElementTests extends VyxalTests:
 
   describe("Element ≥") {
     describe("Using it's 'max-by' overload") {
-      testMulti("#[1|2|3|4|5|6#] ⑴N ≥" -> VNum(6))
+      testMulti("#[1|2|3|4|5|6#] ⑴N ≥" -> VNum(1))
       testMulti("#[#] ⑴N ≥" -> VNum(0))
     }
   }
