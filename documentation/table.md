@@ -324,6 +324,7 @@ Element, Modifier, and Syntax Reference
 | <code>∆H</code> | <code>harmonic-mean</code> | 1 |   | **Harmonic Mean** (`lst`): Harmonic mean of #1 (len(#1) / sum(1 / #1)) |
 | <code>∆I</code> | <code>imaginary-part</code> | 1 | vec  | **Imaginary Part** (`num`): Imaginary part of #1 |
 | <code>∆L</code> | <code>least-common-multiple</code> | 2 | vec  | **Least Common Multiple** (`num,num`): Least common multiple of #1 and #2</br>**Least Common Multiple of List** (`lst`): Least common multiple of all elements of #1</br>**Least Common Multiple** (`lst,num`): Least common multiple of #1.append(#2) |
+| <code>∆M</code> | <code>mode</code> | 1 |   | **Mode** (`lst`): Mode of #1 (most common element in #1). If there are multiple modes, returns the first one. |
 | <code>∆R</code> | <code>real-part</code> | 1 | vec  | **Real Part** (`num`): Real part of #1 |
 | <code>∆S</code> | <code>sinh</code></br><code>hyperbolic-sine</code> | 1 | vec  | **Hyperbolic Sine** (`num`): Hyperbolic sine of #1 |
 | <code>∆T</code> | <code>tanh</code></br><code>hyperbolic-tangent</code> | 1 | vec  | **Hyperbolic Tangent** (`num`): Hyperbolic tangent of #1 |
