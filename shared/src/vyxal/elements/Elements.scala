@@ -1016,9 +1016,21 @@ object Elements:
       case (a: VNum, b: VFun) => MiscHelpers.predicateSlice(b, a, 0)
     },
     addPart("≤", Dyad, true) {
+      case (a, b: VFun) => a.itr.minByOption(x => b(x)) match
+          case Some(max) => max
+          case None => VNum(0)
+      case (b: VFun, a) => a.itr.minByOption(x => b(x)) match
+          case Some(min) => min
+          case None => VNum(0)
       case (a: VVal, b: VVal) => a <= b
     },
     addPart("≥", Dyad, true) {
+      case (a, b: VFun) => a.itr.maxByOption(x => b(x)) match
+          case Some(max) => max
+          case None => VNum(0)
+      case (b: VFun, a) => a.itr.maxByOption(x => b(x)) match
+          case Some(min) => min
+          case None => VNum(0)
       case (a: VVal, b: VVal) => a >= b
     },
     addPart("≠", Dyad, true) {

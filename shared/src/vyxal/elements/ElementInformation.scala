@@ -133,6 +133,13 @@ object ElementInformation:
         args = Seq("str", "str"),
         description = "Ring translate #1 according to #2. ",
       ),
+      Overload(
+        name = "Function Arity Change",
+        args = Seq("fun", "num"),
+        description =
+          "Change the arity of function {#1|#2} to {#2|#1}. If {#2|#1} is 0, returns a function that ignores its input.",
+        typeSwitchable = true,
+      ),
     ),
     AddElement(
       symbol = "∧",
@@ -2340,7 +2347,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "≤",
-      keywords = Seq("less-than-or-equal", "lte", "<="),
+      keywords = Seq("less-than-or-equal", "lte", "<=", "min-by"),
       arity = 2,
       Options(vectorises = true),
       Overload(
@@ -2348,16 +2355,28 @@ object ElementInformation:
         args = Seq("scl", "scl"),
         description = "#1 <= #2",
       ),
+      Overload(
+        name = "Min By",
+        args = Seq("nsl", "fun"),
+        description = "Minimum of list({#1|#2}) by function {#2|#1}",
+        typeSwitchable = true,
+      ),
     ),
     AddElement(
       symbol = "≥",
-      keywords = Seq("greater-than-or-equal", "gte", ">="),
+      keywords = Seq("greater-than-or-equal", "gte", ">=", "max-by"),
       arity = 2,
       Options(vectorises = true),
       Overload(
         name = "Greater Than or Equal",
         args = Seq("scl", "scl"),
         description = "#1 >= #2",
+      ),
+      Overload(
+        name = "Max By",
+        args = Seq("nsl", "fun"),
+        description = "Maximum of list({#1|#2}) by function {#2|#1}",
+        typeSwitchable = true,
       ),
     ),
     AddElement(
