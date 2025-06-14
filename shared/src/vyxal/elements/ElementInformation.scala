@@ -4242,11 +4242,12 @@ object ElementInformation:
       symbol = "∆A",
       keywords = Seq("arithmetic-mean"),
       arity = 1,
-      Options(vectorises = false),
+      Options(vectorises = true),
       Overload(
         name = "Arithmetic Mean",
         args = Seq("lst"),
-        description = "Arithmetic mean of #1 (sum(#1) / len(#1))",
+        description =
+          "Arithmetic mean of #1 (sum(#1) / len(#1)). Vectorises over lists of lists.",
       ),
     ),
     AddElement(

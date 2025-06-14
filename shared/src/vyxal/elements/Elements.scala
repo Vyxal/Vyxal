@@ -1621,6 +1621,7 @@ object Elements:
     },
     addPart("∆A", Monad, false) {
       case VListOf[VNum](numbers) => numbers.sum / numbers.length
+      case VListOf[VList](lists) => NumberHelpers.recursiveMean(lists)
       case a: VNum => a
     },
     addPart("∆G", Monad, false) {
