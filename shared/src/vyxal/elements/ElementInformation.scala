@@ -4315,6 +4315,18 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "∆M",
+      keywords = Seq("mode"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Mode",
+        args = Seq("lst"),
+        description =
+          "Mode of #1 (most common element in #1). If there are multiple modes, returns the first one.",
+      ),
+    ),
+    AddElement(
       symbol = "∆R",
       keywords = Seq("real-part"),
       arity = 1,

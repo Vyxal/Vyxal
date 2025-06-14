@@ -1656,6 +1656,14 @@ object Elements:
     addPart("∆⊍", Dyad, true) {
       case (a: VNum, b: VNum) => a.toBigInt ^ b.toBigInt
     },
+    "∆M" ->
+      fullToImpl(
+        Monad,
+        x =>
+          val iterable = x.itr
+          if iterable.isEmpty then VList(Seq.empty)
+          else iterable.vDistinct.maxBy(item => iterable.count(_ == item)),
+      ),
     addPart("øA", Monad, true) {
       case a: VNum =>
         "abcdefghijklmnopqrstuvwxyz".charAt(((a - 1) % 26).toInt).toString
