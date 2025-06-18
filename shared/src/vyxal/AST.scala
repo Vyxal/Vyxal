@@ -87,7 +87,7 @@ enum AST(val arity: Option[Int]) derives CanEqual:
       // (e.g. a quick lambda AST made by a modifier shouldn't be, while something
       // made by a λ should be)
       override val range: Range = Range.fake,
-  ) extends AST(Some(lambdaArity.getOrElse(-2)))
+  ) extends AST(lambdaArity)
 
   case DecisionStructure(
       predicate: AST,

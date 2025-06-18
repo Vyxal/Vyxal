@@ -99,6 +99,7 @@ class ModifierTests extends VyxalTests:
     testStackLike("⎂+")(
       List[VAny](1, 2, 3, 4) -> List[VAny](7, 3)
     )
+    testCode("★6⎂λnd};", VList(Seq(VStr("**"), VNum(12))), Seq())
   }
 
   describe("Modifier ⟒") {
