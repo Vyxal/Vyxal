@@ -297,13 +297,6 @@ object NumberHelpers:
       )
       .asInstanceOf[VList]
 
-  def recursiveMean(lst: VList): VList =
-    // Assumes a list of lists
-    VList(lst.map {
-      case VListOf[VNum](baseCase) => baseCase.sum / baseCase.length
-      case VListOf[VList](recursive) => recursive.map(recursiveMean)
-    })
-
   // Round half-up
   def round(a: VNum): VNum =
     val floor = a.floor

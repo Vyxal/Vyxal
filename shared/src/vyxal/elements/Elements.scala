@@ -1619,17 +1619,16 @@ object Elements:
       case a: VNum => VNum(spire.math.Real.e) **
           (VNum.complex(0, 2) * VNum(spire.math.Real.pi) / a)
     },
-    addPart("∆A", Monad, false) {
+    addPart("∆A", Monad, true) {
       case VListOf[VNum](numbers) => numbers.sum / numbers.length
-      case VListOf[VList](lists) => NumberHelpers.recursiveMean(lists)
       case a: VNum => a
     },
-    addPart("∆G", Monad, false) {
+    addPart("∆G", Monad, true) {
       case VListOf[VNum](numbers) => numbers.product **
           (1 / VNum(numbers.length))
       case a: VNum => a
     },
-    addPart("∆H", Monad, false) {
+    addPart("∆H", Monad, true) {
       case VListOf[VNum](numbers) => numbers.length / numbers.map(1 / _).sum
       case a: VNum => a
     },
