@@ -21,7 +21,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
     Agg(
       ivy"org.typelevel::spire::0.18.0",
       ivy"com.github.scopt::scopt::4.1.0",
-      ivy"com.outr::scribe::3.13.2",
+      ivy"com.outr::scribe::3.13.5",
       ivy"org.scala-lang::toolkit:0.6.0",
     )
 
@@ -94,7 +94,7 @@ trait JvmCommon extends VyxalModule {
           // For the REPL
           ivy"org.jline:jline:3.30.4",
           ivy"org.jline:jline-terminal-jansi:3.30.4",
-          ivy"org.fusesource.jansi:jansi:2.4.1",
+          ivy"org.fusesource.jansi:jansi:2.4.2",
         )
     }
 
