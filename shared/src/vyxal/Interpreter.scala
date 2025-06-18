@@ -256,8 +256,7 @@ object Interpreter:
           case 0 => ctx.settings.defaultValue
           case 1 => list.head
           case _ => list.init.last
-
-        val temp = generator(relationFn, firstN, firstM, arity, list)
+        val temp = generator(relationFn, firstN, firstM, arity, list.reverse)
 
         ctx.push(VList(list ++: temp))
       case AST.ContextIndex(index, _) =>
@@ -278,6 +277,7 @@ object Interpreter:
       arity: Int,
       previous: Seq[VAny] = Seq.empty,
   )(using ctx: Context): LazyList[VAny] =
+
     val next = executeFn(
       relation,
       ctxVarPrimary,
@@ -285,6 +285,7 @@ object Interpreter:
       args = previous.take(arity),
       overrideCtxArgs = previous,
     )
+
     next #:: generator(relation, next, ctxVarPrimary, arity, next +: previous)
 
   /** Execute a function and return what was on the top of the stack, if there
