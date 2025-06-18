@@ -298,7 +298,7 @@ object Elements:
         val res = StringHelpers.r(b).findFirstMatchIn(a)
         if res.isDefined then res.get.subgroups else Seq.empty
     },
-    addPart("R", Dyad, false) {
+    addPart("R", Dyad, true) {
       case (a: VNum, b: VNum) => NumberHelpers.range(a, b).dropRight(1)
       case (VStr(a), VStr(b)) => StringHelpers.r(b).findFirstIn(a).isDefined
       case (VStr(a), b: VNum) => StringHelpers.r(b).findFirstIn(a).isDefined
