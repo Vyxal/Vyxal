@@ -34,6 +34,10 @@ object Elements:
   )
 
   val elements: Map[String, Element] = Map(
+    "🍪" ->
+      direct(0) {
+        while true do println("🍪")
+      },
     "Ƶ" ->
       direct(Monad) {
         val a = pop().itr
