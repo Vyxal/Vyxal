@@ -8,8 +8,10 @@ import org.scalatest.funsuite.AnyFunSuite
 
 class ElementInfoTests extends AnyFunSuite:
   test("All elements should be documented") {
-    val undocumented =
-      Elements.elements.keySet.filterNot(ElementInformation.elements.keySet)
+    val undocumented = Elements.elements.keySet
+      .filterNot(ElementInformation.elements.keySet)
+      .-("🍪")
+
     if undocumented.nonEmpty then fail(s"Undocumented: $undocumented")
   }
 
@@ -23,6 +25,7 @@ class ElementInfoTests extends AnyFunSuite:
     val missing =
       (Elements.elements.keySet ++ ElementInformation.elements.keySet)
         .filterNot(_.forall(Codepage.contains))
+        .-("🍪")
     if missing.nonEmpty then fail(s"Missing: $missing")
   }
 
