@@ -223,7 +223,8 @@ object Elements:
     "G" -> fullToImpl(Monad, a => a.itr.maxOption.getOrElse(Seq.empty)),
     addPart("H", Monad, true) {
       case a: VNum => NumberHelpers.toBaseAlphabet(a, "0123456789ABCDEF")
-      case VStr(a) => NumberHelpers.fromBaseAlphabet(a, "0123456789ABCDEF")
+      case VStr(a) =>
+        NumberHelpers.fromBaseAlphabet(a.toLowerCase, "0123456789ABCDEF")
     },
     addPart("I", Dyad, false) {
       case (a, b: VFun) => VList(a.ritr.filter(x => !b(x).toBool))
