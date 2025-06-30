@@ -682,7 +682,7 @@ object Elements:
             s"${filtered.headOption.getOrElse(0)}${filtered.tail.replace("-", "")}"
           val decimaled = negated.splitAt(negated.indexOf('.')) match
             case ("", s) =>
-              if a.count('.' == _) > 1 then s.stripPrefix(".") else s
+              if a.count('.' == _) > 1 then ("." + s.dropWhile(_ == '.')) else s
             case (a, b) => a + "." + b.replace(".", "")
           val zeroless =
             if decimaled.startsWith("-") then
