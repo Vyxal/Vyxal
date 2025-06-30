@@ -3352,6 +3352,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "k=",
+      keywords = Seq("00", "zero-vector", "00;"),
+      arity = 0,
+      Options(vectorises = false),
+      Overload(
+        name = "[0,0]",
+        args = Seq(),
+        description = "Push the list [0,0] to the stack",
+      ),
+    ),
+    AddElement(
       symbol = "k0",
       keywords = Seq("360"),
       arity = 0,

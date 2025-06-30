@@ -237,6 +237,7 @@ Element, Modifier, and Syntax Reference
 | <code>k5</code> | <code>4294967296</code> | 0 |   | **4294967296**: Push 4294967296 to the stack |
 | <code>k6</code> | <code>&HEX-DIGITS</code> | 0 |   | **Hex Digits**: Push "0123456789abcdef" to the stack |
 | <code>k<</code> | <code>&OPEN-FISH-BRACKETS</code> | 0 |   | **Open Brackets**: Push "([{<" to the stack |
+| <code>k=</code> | <code>00</code></br><code>zero-vector</code></br><code>00;</code> | 0 |   | **[0,0]**: Push the list [0,0] to the stack |
 | <code>k></code> | <code>&CLOSE-FISH-BRACKETS</code> | 0 |   | **Close Brackets**: Push ")]}>" |
 | <code>kA</code> | <code>&UPPERCASE-LETTERS</code> | 0 |   | **Uppercase Letters**: Push "ABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
 | <code>kB</code> | <code>&UPPERCASE-LOWERCASE</code> | 0 |   | **Uppercase and Lowercase**: Push "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" to the stack |
