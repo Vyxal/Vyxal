@@ -1425,7 +1425,7 @@ object Elements:
     "k-" -> niladify(Seq(1, -1)),
     "k≈" -> niladify(Seq(0, 1)),
     "k±" -> niladify(Seq(1, 1)),
-    "k=" -> niladify(Seq(0,0)),
+    "k=" -> niladify(Seq(0, 0)),
     "k0" -> niladify(360),
     "k1" -> niladify(1000),
     "k2" -> niladify(10000),
