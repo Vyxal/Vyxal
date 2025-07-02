@@ -2414,7 +2414,8 @@ object ElementInformation:
       Overload(
         name = "String-repeat concatenate",
         args = Seq("lst[num]", "lst[str]"),
-        description = "Repeat each string in #2 #1[i] times, then concatenate the result",
+        description =
+          "Repeat each string in #2 #1[i] times, then concatenate the result",
       ),
       Overload(
         name = "Bijective Base Conversion",
