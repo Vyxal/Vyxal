@@ -2412,6 +2412,11 @@ object ElementInformation:
         description = "Dot product of #1 and #2",
       ),
       Overload(
+        name = "String-repeat concatenate",
+        args = Seq("lst[num]", "lst[str]"),
+        description = "Repeat each string in #2 #1[i] times, then concatenate the result",
+      ),
+      Overload(
         name = "Bijective Base Conversion",
         args = Seq("num", "num"),
         description = " Convert #1 to bijective base #2",
