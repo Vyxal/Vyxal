@@ -3075,6 +3075,7 @@ object ElementInformation:
       symbol = "“",
       keywords = Seq(
         "join-on-empty-string",
+        "join-on-nothing",
         "*empty",
         "is-alphanumeric?",
         "insignificant?",
@@ -3210,7 +3211,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "①",
-      keywords = Seq("10"),
+      keywords = Seq("10", "ten"),
       arity = 0,
       Options(),
       Overload(
@@ -3221,7 +3222,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "②",
-      keywords = Seq("16"),
+      keywords = Seq("16", "sixteen"),
       arity = 0,
       Options(),
       Overload(
@@ -3232,7 +3233,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "③",
-      keywords = Seq("32"),
+      keywords = Seq("32", "thirty-two"),
       arity = 0,
       Options(),
       Overload(
@@ -3243,7 +3244,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "④",
-      keywords = Seq("64"),
+      keywords = Seq("64", "sixty-four"),
       arity = 0,
       Options(),
       Overload(
@@ -3254,7 +3255,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⑤",
-      keywords = Seq("100"),
+      keywords = Seq("100", "one-hundred", "hundred"),
       arity = 0,
       Options(),
       Overload(
@@ -3265,7 +3266,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⑥",
-      keywords = Seq("128"),
+      keywords = Seq("128", "one-twenty-eight", "one-hundred-twenty-eight"),
       arity = 0,
       Options(),
       Overload(
@@ -3276,7 +3277,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⑦",
-      keywords = Seq("256"),
+      keywords = Seq("256", "two-fifty-six", "two-five-six", "pacman-number"),
       arity = 0,
       Options(),
       Overload(
@@ -3287,7 +3288,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⑧",
-      keywords = Seq("-1"),
+      keywords = Seq("-1", "minus-one", "negative-one"),
       arity = 0,
       Options(),
       Overload(
@@ -3309,7 +3310,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k+",
-      keywords = Seq("-1~1"),
+      keywords = Seq("-1~1", "neg-one-one", "NW", "northwest"),
       arity = 0,
       Options(vectorises = false),
       Overload(
@@ -3320,7 +3321,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k-",
-      keywords = Seq("1~-1"),
+      keywords = Seq("1~-1", "one-neg-one", "southeast", "SE"),
       arity = 0,
       Options(vectorises = false),
       Overload(
@@ -3331,7 +3332,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k≈",
-      keywords = Seq("0~1"),
+      keywords = Seq("0~1", "zero-one", "north"),
       arity = 0,
       Options(vectorises = false),
       Overload(
@@ -3342,7 +3343,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k±",
-      keywords = Seq("1~1", "f11"),
+      keywords = Seq("1~1", "one-one", "NE", "northeast"),
       arity = 0,
       Options(vectorises = false),
       Overload(
@@ -3353,7 +3354,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k=",
-      keywords = Seq("00", "zero-vector", "00;"),
+      keywords = Seq("zero-vector", "zero-zero"),
       arity = 0,
       Options(vectorises = false),
       Overload(
@@ -3364,7 +3365,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k0",
-      keywords = Seq("360"),
+      keywords = Seq("360", "three-sixty"),
       arity = 0,
       Options(),
       Overload(
@@ -3375,7 +3376,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k1",
-      keywords = Seq("1000"),
+      keywords = Seq("1000", "one-thousand", "thousand"),
       arity = 0,
       Options(),
       Overload(
@@ -3386,7 +3387,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k2",
-      keywords = Seq("10000"),
+      keywords = Seq("10000", "ten-thousand"),
       arity = 0,
       Options(),
       Overload(
@@ -3397,7 +3398,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k3",
-      keywords = Seq("100000"),
+      keywords = Seq("100000", "hundred-thousand"),
       arity = 0,
       Options(),
       Overload(
@@ -3408,7 +3409,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k4",
-      keywords = Seq("1000000"),
+      keywords = Seq("1000000", "million"),
       arity = 0,
       Options(),
       Overload(
@@ -3419,7 +3420,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k5",
-      keywords = Seq("4294967296"),
+      keywords = Seq("4294967296", "b32"),
       arity = 0,
       Options(),
       Overload(
@@ -3845,7 +3846,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k½",
-      keywords = Seq("1~2"),
+      keywords = Seq("1~2", "one-two"),
       arity = 0,
       Options(),
       Overload(
@@ -3856,7 +3857,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k①",
-      keywords = Seq("180"),
+      keywords = Seq("180", "one-eighty"),
       arity = 0,
       Options(),
       Overload(
@@ -3867,7 +3868,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k②",
-      keywords = Seq("270"),
+      keywords = Seq("270", "two-seventy"),
       arity = 0,
       Options(),
       Overload(
@@ -3878,7 +3879,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k③",
-      keywords = Seq("2048"),
+      keywords = Seq("2048", "twenty-forty-eight", "bit-11"),
       arity = 0,
       Options(),
       Overload(
@@ -3889,7 +3890,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k④",
-      keywords = Seq("4096"),
+      keywords = Seq("4096", "forty-ninety-six", "bit-12"),
       arity = 0,
       Options(),
       Overload(
@@ -3900,7 +3901,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k⑤",
-      keywords = Seq("8192"),
+      keywords = Seq("8192", "eighty-one-ninety-two", "bit-13"),
       arity = 0,
       Options(),
       Overload(
@@ -3911,7 +3912,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k⑥",
-      keywords = Seq("16384"),
+      keywords = Seq("16384", "sixteen-three-eight-four", "bit-14"),
       arity = 0,
       Options(),
       Overload(
@@ -3922,7 +3923,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k⑦",
-      keywords = Seq("32768"),
+      keywords = Seq("32768", "bit-15"),
       arity = 0,
       Options(),
       Overload(
@@ -3933,7 +3934,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k⑧",
-      keywords = Seq("65536"),
+      keywords = Seq("65536", "bit-16"),
       arity = 0,
       Options(),
       Overload(
@@ -3944,7 +3945,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k⁰",
-      keywords = Seq("2147483648"),
+      keywords = Seq("2147483648", "bit-31"),
       arity = 0,
       Options(),
       Overload(
@@ -4032,7 +4033,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k²",
-      keywords = Seq("1048576", "2**20", "2^20"),
+      keywords = Seq("1048576", "bit-20"),
       arity = 0,
       Options(),
       Overload(
@@ -4043,7 +4044,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k³",
-      keywords = Seq("1073741824", "2**30", "2^30"),
+      keywords = Seq("1073741824", "bit-30"),
       arity = 0,
       Options(),
       Overload(
