@@ -205,17 +205,17 @@ Element, Modifier, and Syntax Reference
 | <code>ḧ</code> | <code>heads</code></br><code>head-each</code> | 1 |   | **Heads** (`lst`): First element of each element in #1 |
 | <code>¤</code> | <code>stringify</code></br><code>to-str</code></br><code>str</code> | 1 |   | **Stringify** (`any`): Stringify #1 |
 | <code>⧢</code> | <code>into-n-pieces</code></br><code>split-into-n-pieces</code></br><code>fixpoint-collect-tail</code> | 2 |   | **Split Into N Pieces** (`itr,num`): Split #1 into #2 pieces</br>**Split Into N Pieces** (`num,itr`): Split #2 into #1 pieces</br>**Split Number Into N Pieces** (`itr,num`): Listify #1 and split it into #2 pieces</br>**Split Number Into N Pieces** (`num,itr`): Listify #2 and split it into #1 pieces</br>**Fixpoint Unfold Without Initial Value** (`fun,any`): Repeatedly apply #1 to #2, collecting results (not including initial value)</br>**Fixpoint Unfold Without Initial Value** (`any,fun`): Repeatedly apply #2 to #1, collecting results (not including initial value) |
-| <code>①</code> | <code>10</code> | 0 |   | **10**: Push 10 to the stack |
-| <code>②</code> | <code>16</code> | 0 |   | **16**: Push 16 to the stack |
-| <code>③</code> | <code>32</code> | 0 |   | **32**: Push 32 to the stack |
-| <code>④</code> | <code>64</code> | 0 |   | **64**: Push 64 to the stack |
-| <code>⑤</code> | <code>100</code> | 0 |   | **100**: Push 100 to the stack |
-| <code>⑥</code> | <code>128</code> | 0 |   | **128**: Push 128 to the stack |
-| <code>⑦</code> | <code>256</code> | 0 |   | **256**: Push 256 to the stack |
-| <code>⑧</code> | <code>-1</code> | 0 |   | **-1**: Push -1 to the stack |
+| <code>①</code> | <code>10</code></br><code>ten</code> | 0 |   | **10**: Push 10 to the stack |
+| <code>②</code> | <code>16</code></br><code>sixteen</code> | 0 |   | **16**: Push 16 to the stack |
+| <code>③</code> | <code>32</code></br><code>thirty-two</code> | 0 |   | **32**: Push 32 to the stack |
+| <code>④</code> | <code>64</code></br><code>sixty-four</code> | 0 |   | **64**: Push 64 to the stack |
+| <code>⑤</code> | <code>100</code></br><code>one-hundred</code></br><code>hundred</code> | 0 |   | **100**: Push 100 to the stack |
+| <code>⑥</code> | <code>128</code></br><code>one-twenty-eight</code></br><code>one-hundred-twenty-eight</code> | 0 |   | **128**: Push 128 to the stack |
+| <code>⑦</code> | <code>256</code></br><code>two-fifty-six</code></br><code>two-five-six</code></br><code>pacman-number</code> | 0 |   | **256**: Push 256 to the stack |
+| <code>⑧</code> | <code>-1</code></br><code>minus-one</code></br><code>negative-one</code> | 0 |   | **-1**: Push -1 to the stack |
 | <code>„</code> | <code>join-on-spaces</code></br><code>*space</code></br><code><0</code></br><code>is-negative?</code></br><code>intersperse-spaces</code> | 1 |   | **Join on Spaces** (`lst`): Join #1 on spaces</br>**Is negative?** (`num`): Push 1 if #1 < 0, 0 otherwise</br>**Intersperse #1 with spaces** (`str`): Insert spaces between each character of #1 |
 | <code>”</code> | <code>join-on-newlines</code></br><code>*newline</code></br><code>one?->n</code> | 1 |   | **Join on Newlines** (`lst`): Join #1 on newlines</br>**Push Context Variable N if 1** (`num`): Push the context variable N if #1 is 1 |
-| <code>“</code> | <code>join-on-empty-string</code></br><code>*empty</code></br><code>is-alphanumeric?</code></br><code>insignificant?</code></br><code>first-positive-integer</code></br><code>first-n>0</code> | 1 |   | **Join on Empty String** (`lst`): Join #1 on the empty string</br>**Is alphanumeric?** (`str`): Push 1 if #1 is alphanumeric, 0 otherwise</br>**First Positive Integer Where Function is Truthy** (`fun`): Push the first positive integer where #1 is truthy</br>**Is Insignificant?** (`num`): abs(#1) <= 1 |
+| <code>“</code> | <code>join-on-empty-string</code></br><code>join-on-nothing</code></br><code>*empty</code></br><code>is-alphanumeric?</code></br><code>insignificant?</code></br><code>first-positive-integer</code></br><code>first-n>0</code> | 1 |   | **Join on Empty String** (`lst`): Join #1 on the empty string</br>**Is alphanumeric?** (`str`): Push 1 if #1 is alphanumeric, 0 otherwise</br>**First Positive Integer Where Function is Truthy** (`fun`): Push the first positive integer where #1 is truthy</br>**Is Insignificant?** (`num`): abs(#1) <= 1 |
 | <code>#¿</code> | <code>input-count</code> | 0 |   | **Input Count**: Push the number of inputs to the stack |
 | <code>#,</code> | <code>print</code> | 1 |   | **Print** (`any`): Print #1 without a trailing newline |
 | <code>#?</code> | <code>inputs</code></br><code>all-inputs</code></br><code>all-stdin</code> | 0 |   | **Inputs**: Get all the global inputs as a list |
@@ -227,17 +227,17 @@ Element, Modifier, and Syntax Reference
 | <code>#x</code> | <code>continue</code> | 0 |   | **Continue**: Continue to the next iteration of the current loop |
 | <code>#↸</code> | <code>retrieve-from-outer</code> | 1 |   | **Retrieve Item at Index from Outer Stack** (`num`): Retrieve the item at index #1 from the outer stack, current stack if at top level</br>**Retrieve Item at Index from Outer Stack N-Layers Up** (`lst[num, num]`): Retrieve the item at index #2 from the stack #1 levels up |
 | <code>k⩔</code> | <code>&CODEPAGE</code> | 0 |   | **Codepage**: Push the Vyxal codepage to the stack |
-| <code>k+</code> | <code>-1~1</code> | 0 |   | **[-1, 1]**: Push the list [-1, 1] to the stack |
-| <code>k-</code> | <code>1~-1</code> | 0 |   | **[1, -1]**: Push the list [1, -1] to the stack |
-| <code>k0</code> | <code>360</code> | 0 |   | **360**: Push 360 to the stack |
-| <code>k1</code> | <code>1000</code> | 0 |   | **1000**: Push 1000 to the stack |
-| <code>k2</code> | <code>10000</code> | 0 |   | **10000**: Push 10000 to the stack |
-| <code>k3</code> | <code>100000</code> | 0 |   | **100000**: Push 100000 to the stack |
-| <code>k4</code> | <code>1000000</code> | 0 |   | **1000000**: Push 1000000 to the stack |
-| <code>k5</code> | <code>4294967296</code> | 0 |   | **4294967296**: Push 4294967296 to the stack |
+| <code>k+</code> | <code>-1~1</code></br><code>neg-one-one</code></br><code>NW</code></br><code>northwest</code> | 0 |   | **[-1, 1]**: Push the list [-1, 1] to the stack |
+| <code>k-</code> | <code>1~-1</code></br><code>one-neg-one</code></br><code>southeast</code></br><code>SE</code> | 0 |   | **[1, -1]**: Push the list [1, -1] to the stack |
+| <code>k0</code> | <code>360</code></br><code>three-sixty</code> | 0 |   | **360**: Push 360 to the stack |
+| <code>k1</code> | <code>1000</code></br><code>one-thousand</code></br><code>thousand</code> | 0 |   | **1000**: Push 1000 to the stack |
+| <code>k2</code> | <code>10000</code></br><code>ten-thousand</code> | 0 |   | **10000**: Push 10000 to the stack |
+| <code>k3</code> | <code>100000</code></br><code>hundred-thousand</code> | 0 |   | **100000**: Push 100000 to the stack |
+| <code>k4</code> | <code>1000000</code></br><code>million</code> | 0 |   | **1000000**: Push 1000000 to the stack |
+| <code>k5</code> | <code>4294967296</code></br><code>b32</code> | 0 |   | **4294967296**: Push 4294967296 to the stack |
 | <code>k6</code> | <code>&HEX-DIGITS</code> | 0 |   | **Hex Digits**: Push "0123456789abcdef" to the stack |
 | <code>k<</code> | <code>&OPEN-FISH-BRACKETS</code> | 0 |   | **Open Brackets**: Push "([{<" to the stack |
-| <code>k=</code> | <code>00</code></br><code>zero-vector</code></br><code>00;</code> | 0 |   | **[0,0]**: Push the list [0,0] to the stack |
+| <code>k=</code> | <code>zero-vector</code></br><code>zero-zero</code> | 0 |   | **[0,0]**: Push the list [0,0] to the stack |
 | <code>k></code> | <code>&CLOSE-FISH-BRACKETS</code> | 0 |   | **Close Brackets**: Push ")]}>" |
 | <code>kA</code> | <code>&UPPERCASE-LETTERS</code> | 0 |   | **Uppercase Letters**: Push "ABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
 | <code>kB</code> | <code>&UPPERCASE-LOWERCASE</code> | 0 |   | **Uppercase and Lowercase**: Push "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" to the stack |
@@ -274,12 +274,12 @@ Element, Modifier, and Syntax Reference
 | <code>kĠ</code> | <code>&UPPERCASE-CONSONANTS</code> | 0 |   | **Uppercase Consonants**: Push "BCDFGHJKLMNPQRSTVWXYZ" to the stack |
 | <code>kġ</code> | <code>&LOWERCASE-CONSONANTS</code> | 0 |   | **Lowercase Consonants**: Push "bcdfghjklmnpqrstvwxyz" to the stack |
 | <code>k⎀</code> | <code>&LOWER-UPPER-VOWELS</code> | 0 |   | **Lowercase and Uppercase Vowels**: Push "aeiouAEIOU" to the stack |
-| <code>k½</code> | <code>1~2</code> | 0 |   | **[1, 2]**: Push the list [1, 2] to the stack |
-| <code>k⁰</code> | <code>2147483648</code> | 0 |   | **2147483648**: Push 2147483648 to the stack |
-| <code>k²</code> | <code>1048576</code></br><code>2**20</code></br><code>2^20</code> | 0 |   | **1048576 (2^20)**: Push 1048576 to the stack |
-| <code>k³</code> | <code>1073741824</code></br><code>2**30</code></br><code>2^30</code> | 0 |   | **1073741824 (2^30)**: Push 1073741824 to the stack |
+| <code>k½</code> | <code>1~2</code></br><code>one-two</code> | 0 |   | **[1, 2]**: Push the list [1, 2] to the stack |
+| <code>k⁰</code> | <code>2147483648</code></br><code>bit-31</code> | 0 |   | **2147483648**: Push 2147483648 to the stack |
+| <code>k²</code> | <code>1048576</code></br><code>bit-20</code> | 0 |   | **1048576 (2^20)**: Push 1048576 to the stack |
+| <code>k³</code> | <code>1073741824</code></br><code>bit-30</code> | 0 |   | **1073741824 (2^30)**: Push 1073741824 to the stack |
 | <code>k•</code> | <code>&QWERTY-ROWS</code> | 0 |   | **QWERTY Rows**: Push ["qwertyuiop", "asdfghjkl", "zxcvbnm"] to the stack |
-| <code>k±</code> | <code>1~1</code></br><code>f11</code> | 0 |   | **[1, 1]**: Push the list [1, 1] to the stack |
+| <code>k±</code> | <code>1~1</code></br><code>one-one</code></br><code>NE</code></br><code>northeast</code> | 0 |   | **[1, 1]**: Push the list [1, 1] to the stack |
 | <code>kγ</code> | <code>&LOWER-UPPER-VOWELSY</code> | 0 |   | **Lowercase and Uppercase Vowels and Y**: Push "aeiouyAEIOUY" to the stack |
 | <code>kℂ</code> | <code>&ROMAN-NUMERALS</code> | 0 |   | **Roman Numerals**: Push "IVXLCDM" to the stack |
 | <code>k⌹</code> | <code>&PAIRED-BRACKETS</code> | 0 |   | **Paired Brackets**: Push ["()", "[]", "{}", "<>" to the stack |
@@ -288,17 +288,17 @@ Element, Modifier, and Syntax Reference
 | <code>k☷</code> | <code>&BRACKETS-WITHOUT-<></code> | 0 |   | **Brackets Without <>**: Push "{}[]()" to the stack |
 | <code>k⎶</code> | <code>&ALL-BRACKETS</code> | 0 |   | **All Brackets**: Push "{}[]<>()" to the stack |
 | <code>k⎘</code> | <code>&BRAINF*CK-COMMANDS</code> | 0 |   | **Brainf*ck Commands**: Push "[]<>-+.," to the stack |
-| <code>k≈</code> | <code>0~1</code> | 0 |   | **[0, 1]**: Push the list [0, 1] to the stack |
+| <code>k≈</code> | <code>0~1</code></br><code>zero-one</code></br><code>north</code> | 0 |   | **[0, 1]**: Push the list [0, 1] to the stack |
 | <code>kṬ</code> | <code>&ZZ</code></br><code>&INTEGERS</code> | 0 |   | **Integers**: Push a list of every integer to the stack |
 | <code>k¤</code> | <code>&NESTED-BRACKETS</code> | 0 |   | **Nested Brackets**: Push "([{<>}])" to the stack |
-| <code>k①</code> | <code>180</code> | 0 |   | **180**: Push 180 to the stack |
-| <code>k②</code> | <code>270</code> | 0 |   | **270**: Push 270 to the stack |
-| <code>k③</code> | <code>2048</code> | 0 |   | **2048**: Push 2048 to the stack |
-| <code>k④</code> | <code>4096</code> | 0 |   | **4096**: Push 4096 to the stack |
-| <code>k⑤</code> | <code>8192</code> | 0 |   | **8192**: Push 8192 to the stack |
-| <code>k⑥</code> | <code>16384</code> | 0 |   | **16384**: Push 16384 to the stack |
-| <code>k⑦</code> | <code>32768</code> | 0 |   | **32768**: Push 32768 to the stack |
-| <code>k⑧</code> | <code>65536</code> | 0 |   | **65536**: Push 65536 to the stack |
+| <code>k①</code> | <code>180</code></br><code>one-eighty</code> | 0 |   | **180**: Push 180 to the stack |
+| <code>k②</code> | <code>270</code></br><code>two-seventy</code> | 0 |   | **270**: Push 270 to the stack |
+| <code>k③</code> | <code>2048</code></br><code>twenty-forty-eight</code></br><code>bit-11</code> | 0 |   | **2048**: Push 2048 to the stack |
+| <code>k④</code> | <code>4096</code></br><code>forty-ninety-six</code></br><code>bit-12</code> | 0 |   | **4096**: Push 4096 to the stack |
+| <code>k⑤</code> | <code>8192</code></br><code>eighty-one-ninety-two</code></br><code>bit-13</code> | 0 |   | **8192**: Push 8192 to the stack |
+| <code>k⑥</code> | <code>16384</code></br><code>sixteen-three-eight-four</code></br><code>bit-14</code> | 0 |   | **16384**: Push 16384 to the stack |
+| <code>k⑦</code> | <code>32768</code></br><code>bit-15</code> | 0 |   | **32768**: Push 32768 to the stack |
+| <code>k⑧</code> | <code>65536</code></br><code>bit-16</code> | 0 |   | **65536**: Push 65536 to the stack |
 | <code>Þ0</code> | <code>zero-pad</code> | 2 |   | **Zero Pad** (`itr,num`): #1 zero-padded to length #2</br>**Zero Pad** (`num,itr`): #2 zero-padded to length #1</br>**Zero Pad** (`itr,itr`): #1 zero-padded to length of #2 |
 | <code>ÞO</code> | <code>grid-neighbours-wrap</code></br><code>grid-neighbors-wrap</code></br><code>adjacent-cells-wrap</code></br><code>adj-cells-wrap</code></br><code>surrounding-cells-wrap</code> | 1 |   | **Grid Neighbours Wrap** (`lst`): Grid neighbours of #1 - up, down, left, right - wrapping around</br>**Grid Neighbours Wrap With Starting Direction** (`lst,num`): Grid neighbours of cells in #1 - right, down, left, up - wrapping around and start from direction #2 => 0: right, 1: down, 2: left, 3: up. Negative #2 does not include middle, positive #2 does |
 | <code>ÞR</code> | <code>reshape</code> | 2 |   | **Reshape** (`lst,lst[num]`): Reshape #1 to the shape #2 |
