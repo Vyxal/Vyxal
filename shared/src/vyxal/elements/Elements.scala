@@ -561,8 +561,12 @@ object Elements:
           .split("\n")
           .map { line =>
             val reversedFlipped =
-              StringHelpers.invertBrackets(s).reverse.drop(1)
-            s"$s${reversedFlipped.replace("/", "\\")}"
+              StringHelpers.invertBrackets(s).reverse.drop(1).map {
+                case '/' => '\\'
+                case '\\' => '/'
+                case c => c
+              }
+            s"$s$reversedFlipped"
           }
           .mkString("\n")
     },
@@ -692,7 +696,11 @@ object Elements:
           else MiscHelpers.eval(zeroless)
     },
     addPart("⊖", Dyad, false) {
-      case (a, b: VNum) => ListHelpers.take(a.itr, b)
+      case (a, b: VNum) =>
+        val temp = ListHelpers.take(a.itr, b)
+        a match
+          case VStr(_) => temp.mkString
+          case _ => temp
       case (a: VNum, b: (VList | VStr)) => ListHelpers.take(b.itr, a)
       case (iterable, predicate: VFun) =>
         iterable.itr.takeWhile(predicate(_).toBool)
