@@ -1456,6 +1456,7 @@ object Elements:
     "ki" -> niladify(spire.math.Real.pi),
     "kk" -> niladify("Hello, World!"),
     "kl" -> niladify("ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"),
+    "kn" -> niladify("1234567890"),
     "ko" -> niladify("01234567"),
     "kp" ->
       niladify(

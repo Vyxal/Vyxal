@@ -3611,6 +3611,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "kn",
+      keywords = Seq("&DIGIT-ZERO"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Digits with ending zero",
+        args = Seq(),
+        description = "Push \"1234567890\" to the stack",
+      ),
+    ),
+    AddElement(
       symbol = "ke",
       keywords = Seq("&E-CONSTANT"),
       arity = 0,
