@@ -260,6 +260,7 @@ Element, Modifier, and Syntax Reference
 | <code>ki</code> | <code>&PI</code> | 0 |   | **Pi Constant**: Push 3.141592653589793 to the stack |
 | <code>kk</code> | <code>&RDHW</code> | 0 |   | **Radiation Hardening Hello World cheese**: Push "Hello, World!" to the stack. Useful for radiation hardening hello worlds, because you can submit kkH as your answer. |
 | <code>kl</code> | <code>&REVERSE-UPPERCASE-LOWERCASE</code> | 0 |   | **Reverse Uppercase and Lowercase**: Push "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba" to the stack |
+| <code>kn</code> | <code>&DIGIT-ZERO</code> | 0 |   | **Digits with ending zero**: Push "1234567890" to the stack |
 | <code>ko</code> | <code>&OCTAL-DIGITS</code> | 0 |   | **Octal Digits**: Push "01234567" to the stack |
 | <code>kp</code> | <code>&PUNCTUATION</code> | 0 |   | **Punctuation**: Push all punctuation characters to the stack |
 | <code>kr</code> | <code>&DIGITS-LOWERCASE-UPPERCASE</code> | 0 |   | **Digits, Lowercase, Uppercase**: Push "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
