@@ -69,7 +69,7 @@ object ElementInformation:
   val elements: Map[String, Element] = Map(
     AddElement(
       symbol = "Ƶ",
-      keywords = Seq("tailless-top"),
+      keywords = Seq("tailless-top", "tail-extract"),
       arity = 1,
       Options(),
       Overload(
@@ -207,7 +207,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ʁ",
-      keywords = Seq("0->n++", "uppercase", "range-0->n++", "n+range-0"),
+      keywords = Seq("0->n++", "uppercase", "range-0->n++", "n+range-0", "inclusive-range"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -412,7 +412,7 @@ object ElementInformation:
     ),
     AddElement(
       ":",
-      Seq("dup", "duplicate"),
+      Seq("dup", "duplicate", "dupe"),
       arity = 1,
       Options(),
       Overload(
@@ -581,7 +581,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "E",
-      keywords = Seq("2**n", "2pow", "eval", "2**"),
+      keywords = Seq("two-power", "eval"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -616,7 +616,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "G",
-      keywords = Seq("max-of", "maximum-of"),
+      keywords = Seq("max-of", "maximum-of", "max", "maximum"),
       arity = 1,
       Options(),
       Overload(
@@ -663,7 +663,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "J",
-      keywords = Seq("join", "concat"),
+      keywords = Seq("join", "concat", "merge"),
       arity = 2,
       Options(),
       Overload(
@@ -896,7 +896,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "W",
-      keywords = Seq("wrap"),
+      keywords = Seq("wrap", "stack-wrap"),
       arity = -1,
       Options(),
       Overload(
@@ -973,7 +973,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "`",
-      keywords = Seq("len-stack"),
+      keywords = Seq("len-stack", "stack-len"),
       arity = 0,
       Options(),
       Overload(
@@ -1103,7 +1103,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "g",
-      keywords = Seq("min-of", "minimum-of"),
+      keywords = Seq("min-of", "minimum-of", "min", "minimum"),
       arity = 1,
       Options(),
       Overload(
@@ -1137,7 +1137,7 @@ object ElementInformation:
       arity = 2,
       Options(),
       Overload(
-        name = "Nth AddElement",
+        name = "Nth Element",
         args = Seq("itr", "num"),
         description = "Get the {#2|#1}th element of {#1|#2}",
         typeSwitchable = true,
@@ -1237,7 +1237,7 @@ object ElementInformation:
       Overload(
         name = "Context Secondary",
         args = Seq(),
-        description = "Push the secondary context variable to the stack",
+        description = "Push the secondary context variable to the stack. If not in a function, push the string 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'",
       ),
     ),
     AddElement(
@@ -1357,7 +1357,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "u",
-      keywords = Seq("unique"),
+      keywords = Seq("unique", "uniquify"),
       arity = 1,
       Options(),
       Overload(
@@ -1389,7 +1389,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "w",
-      keywords = Seq("wrap-in-list", "singleton"),
+      keywords = Seq("wrap-in-list", "singleton", "wrap-self"),
       arity = 1,
       Options(),
       Overload(
@@ -1588,7 +1588,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "«",
-      keywords = Seq("left-shift", "<<"),
+      keywords = Seq("left-shift", "<<", "left-pad"),
       arity = 2,
       Options(vectorises = true),
       Overload(
@@ -1611,7 +1611,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "»",
-      keywords = Seq("right-shift", ">>"),
+      keywords = Seq("right-shift", ">>", "right-pad"),
       arity = 2,
       Options(vectorises = true),
       Overload(
@@ -1792,7 +1792,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "¥",
-      keywords = Seq("get-register"),
+      keywords = Seq("get-register", "push-register"),
       arity = 0,
       Options(),
       Overload(
@@ -1937,7 +1937,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⊢",
-      keywords = Seq("10-to-base", "all-regex-matches"),
+      keywords = Seq("ten-to-base", "all-regex-matches", "to-base"),
       arity = 2,
       Options(),
       Overload(
@@ -1969,7 +1969,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⊣",
-      keywords = Seq("base-to-10", "first>n"),
+      keywords = Seq("base-to-10", "from-base", "first>n"),
       arity = 2,
       Options(),
       Overload(
@@ -2167,6 +2167,7 @@ object ElementInformation:
         "without-whitespace",
         "no-space",
         "spaceless",
+        "remove-whitespace"
       ),
       arity = 1,
       Options(vectorises = true),
@@ -2403,7 +2404,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "•",
-      keywords = Seq("dot-product", "bijective-base", "first-predicate-index"),
+      keywords = Seq("dot-product", "string-repat", "bijective-base", "first-predicate-index"),
       arity = 2,
       Options(),
       Overload(
@@ -2438,12 +2439,12 @@ object ElementInformation:
       Overload(
         name = "Signum",
         args = Seq("num"),
-        description = "Sign of #1",
+        description = "Sign of #1 (1 if positive, 0 if 0, -1 if negative)",
       ),
       Overload(
         name = "Case of",
         args = Seq("str"),
-        description = "Case of #1 (1 if positive, 0 if 0, -1 if negative)",
+        description = "Case of #1 (1 if uppercase, 0 if lowercase, -1 if mixed)",
       ),
     ),
     AddElement(
@@ -2503,7 +2504,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ᴥ",
-      keywords = Seq("exec", "10**", "call", "@"),
+      keywords = Seq("exec", "ten-power", "call", "@"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -2528,7 +2529,7 @@ object ElementInformation:
       arity = 2,
       Options(),
       Overload(
-        name = "Every Nth AddElement",
+        name = "Every Nth Element",
         args = Seq("itr", "num"),
         description = "Every {#2|#1}th element of {#1|#2}",
         typeSwitchable = true,
@@ -2618,7 +2619,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⏚",
-      keywords = Seq("powerset", "vectorise"),
+      keywords = Seq("powerset", "vectorise-function"),
       arity = 1,
       Options(),
       Overload(
@@ -2758,7 +2759,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ᑂ",
-      keywords = Seq("headless-top"),
+      keywords = Seq("headless-top", "head-extract-under"),
       arity = 1,
       Options(),
       Overload(
@@ -2807,7 +2808,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "◌",
-      keywords = Seq("round", "lowercase?"),
+      keywords = Seq("round", "lowercase?", "is-lowercase"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -2902,7 +2903,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "γ",
-      keywords = Seq("wrap-len-2"),
+      keywords = Seq("wrap-len-2", "pairs"),
       arity = 1,
       Options(),
       Overload(
@@ -2913,7 +2914,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⎘",
-      keywords = Seq("flatten-by-depth", "flatten-depth"),
+      keywords = Seq("flatten-by-depth", "flatten-depth", "one-flatten"),
       arity = 2,
       Options(),
       Overload(
@@ -2951,7 +2952,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "≊",
-      keywords = Seq("all-equal-item"),
+      keywords = Seq("all-equal-item", "all-equal-to"),
       arity = 2,
       Options(),
       Overload(
@@ -3025,7 +3026,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "↸",
-      keywords = Seq("roll"),
+      keywords = Seq("roll", "bread"),
       arity = 3,
       Options(),
       Overload(
@@ -3151,7 +3152,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "Ṭ",
-      keywords = Seq("truthy-indexes"),
+      keywords = Seq("truthy-indexes", "truthy-indices"),
       arity = 1,
       Options(),
       Overload(
@@ -3195,7 +3196,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ḧ",
-      keywords = Seq("heads", "head-each"),
+      keywords = Seq("heads", "head-each", "vec-head"),
       arity = 1,
       Options(),
       Overload(
@@ -4173,7 +4174,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "#C",
-      keywords = Seq("compress"),
+      keywords = Seq("compress", "dictionary-compress", "dict-compress"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -4903,7 +4904,7 @@ object ElementInformation:
     ),
     AddModifier(
       symbol = "⑴",
-      keywords = Seq("*:"),
+      keywords = Seq("*:", "one-element-lambda:", "single-element-lambda:"),
       numberOfElements = 1,
       ModifierOverload(
         name = "Next Element as Lambda",
@@ -4914,7 +4915,7 @@ object ElementInformation:
     ),
     AddModifier(
       symbol = "⑵",
-      keywords = Seq("**:"),
+      keywords = Seq("**:", "two-element-lambda:"),
       numberOfElements = 2,
       ModifierOverload(
         name = "Next Two Elements as Lambda",
@@ -4925,7 +4926,7 @@ object ElementInformation:
     ),
     AddModifier(
       symbol = "⑶",
-      keywords = Seq("***:"),
+      keywords = Seq("***:", "three-element-lambda:"),
       numberOfElements = 3,
       ModifierOverload(
         name = "Next Three Elements as Lambda",
@@ -4936,7 +4937,7 @@ object ElementInformation:
     ),
     AddModifier(
       symbol = "⑷",
-      keywords = Seq("****:"),
+      keywords = Seq("****:", "four-element-lambda:"),
       numberOfElements = 4,
       ModifierOverload(
         name = "Next Four Elements as Lambda",
@@ -5012,7 +5013,7 @@ object ElementInformation:
     ),
     AddModifier(
       symbol = "Ẅ",
-      keywords = Seq("zip-with:"),
+      keywords = Seq("zip-with:", "zip-reduce:"),
       numberOfElements = 1,
       ModifierOverload(
         name = "Zip With",
@@ -5046,7 +5047,7 @@ object ElementInformation:
     ),
     AddModifier(
       symbol = "⎇",
-      keywords = Seq("dip:"),
+      keywords = Seq("dip:", "under:"),
       numberOfElements = 1,
       ModifierOverload(
         name = "Dip",
