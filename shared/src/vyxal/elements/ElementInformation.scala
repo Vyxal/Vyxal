@@ -207,7 +207,13 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ʁ",
-      keywords = Seq("0->n++", "uppercase", "range-0->n++", "n+range-0", "inclusive-range"),
+      keywords = Seq(
+        "0->n++",
+        "uppercase",
+        "range-0->n++",
+        "n+range-0",
+        "inclusive-range",
+      ),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -1237,7 +1243,8 @@ object ElementInformation:
       Overload(
         name = "Context Secondary",
         args = Seq(),
-        description = "Push the secondary context variable to the stack. If not in a function, push the string 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'",
+        description =
+          "Push the secondary context variable to the stack. If not in a function, push the string 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'",
       ),
     ),
     AddElement(
@@ -2167,7 +2174,7 @@ object ElementInformation:
         "without-whitespace",
         "no-space",
         "spaceless",
-        "remove-whitespace"
+        "remove-whitespace",
       ),
       arity = 1,
       Options(vectorises = true),
@@ -2404,7 +2411,12 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "•",
-      keywords = Seq("dot-product", "string-repat", "bijective-base", "first-predicate-index"),
+      keywords = Seq(
+        "dot-product",
+        "string-repat",
+        "bijective-base",
+        "first-predicate-index",
+      ),
       arity = 2,
       Options(),
       Overload(
