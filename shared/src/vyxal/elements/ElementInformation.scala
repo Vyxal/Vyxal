@@ -4567,7 +4567,7 @@ object ElementInformation:
         description = "the letter at index #1 in the alphabet (one-indexed)",
       ),
     ),
-     AddElement(
+    AddElement(
       symbol = "øa",
       keywords = Seq(
         "letter-to-index",
