@@ -1688,6 +1688,16 @@ object Elements:
         )
         if inds.length == 1 then inds.head else VList(inds)
     },
+     addPart("øa", Monad, true) {
+      case a: VNum =>
+        "abcdefghijklmnopqrstuvwxyz".charAt((a % 26).toInt).toString
+      case VStr(a) =>
+        val inds = a.map(char =>
+          VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower))
+        )
+        if inds.length == 1 then inds.head else VList(inds)
+    },
+
     addPart("ø◲", Dyad, false) {
       case (VList(a), b) => VList((b +: a) :+ b)
       case (VStr(a), VStr(b)) => b + a + b

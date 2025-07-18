@@ -4567,6 +4567,28 @@ object ElementInformation:
         description = "the letter at index #1 in the alphabet (one-indexed)",
       ),
     ),
+     AddElement(
+      symbol = "øa",
+      keywords = Seq(
+        "letter-to-index",
+        "index-to-letter",
+        "letter-index-swap",
+        "index-letter-swap",
+        "a0-swap",
+      ),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Letter to Index",
+        args = Seq("str"),
+        description = "the index of #1 in the alphabet (zero-indexed)",
+      ),
+      Overload(
+        name = "Index to Letter",
+        args = Seq("num"),
+        description = "the letter at index #1 in the alphabet (zero-indexed)",
+      ),
+    ),
     AddElement(
       symbol = "ø◲",
       keywords = Seq("surround"),
