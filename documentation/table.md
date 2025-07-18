@@ -349,6 +349,7 @@ Element, Modifier, and Syntax Reference
 | <code>∆∨</code> | <code>bitwise-or</code> | 2 | vec  | **Bitwise Or** (`num,num`): #1 | #2 |
 | <code>∆⧢</code> | <code>root-of-unity</code> | 1 | vec  | **Principal Root of Unity** (`num`): Principal #1-th root of unity (e^(2i * pi / #1)) |
 | <code>øA</code> | <code>letter-to-number</code></br><code>number-to-letter</code></br><code>letter-number-swap</code></br><code>number-letter-swap</code></br><code>a1-swap</code> | 1 | vec  | **Letter to Number** (`str`): the index of #1 in the alphabet (one-indexed)</br>**Number to Letter** (`num`): the letter at index #1 in the alphabet (one-indexed) |
+| <code>øa</code> | <code>letter-to-index</code></br><code>index-to-letter</code></br><code>letter-index-swap</code></br><code>index-letter-swap</code></br><code>a0-swap</code> | 1 | vec  | **Letter to Index** (`str`): the index of #1 in the alphabet (zero-indexed)</br>**Index to Letter** (`num`): the letter at index #1 in the alphabet (zero-indexed) |
 | <code>ø◲</code> | <code>surround</code> | 2 |   | **Surround** (`any,any`): #1 prepended and appended to #2 |
 
 ## Modifiers
