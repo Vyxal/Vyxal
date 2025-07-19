@@ -881,7 +881,12 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "V",
-      keywords = Seq("vectorise-reverse", "one-minus-x", "complement", "split-spaces-reverse"),
+      keywords = Seq(
+        "vectorise-reverse",
+        "one-minus-x",
+        "complement",
+        "split-spaces-reverse",
+      ),
       arity = 1,
       Options(),
       Overload(
