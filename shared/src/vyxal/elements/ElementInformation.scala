@@ -190,7 +190,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ʀ",
-      keywords = Seq("0->n", "lowercase", "range-0->n", "nrange-0"),
+      keywords = Seq("zero-range", "lowercase", "range-zero", "nrange-zero"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -212,7 +212,7 @@ object ElementInformation:
         "uppercase",
         "range-0->n++",
         "n+range-0",
-        "inclusive-range",
+        "inclusive-zero-range",
       ),
       arity = 1,
       Options(vectorises = true),
@@ -230,7 +230,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ɾ",
-      keywords = Seq("1->n++", "is-alpha?"),
+      keywords = Seq("one->n++", "inclusive-one-range", "is-alpha?"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -881,7 +881,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "V",
-      keywords = Seq("vectorise-reverse", "1-x", "split-spaces-reverse"),
+      keywords = Seq("vectorise-reverse", "one-minus-x", "complement", "split-spaces-reverse"),
       arity = 1,
       Options(),
       Overload(
@@ -1692,7 +1692,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ġ",
-      keywords = Seq("zip-min", "min-dyad", "min-ab", "2gen"),
+      keywords = Seq("zip-min", "min-dyad", "min-ab", "dyad-gen"),
       arity = 2,
       Options(vectorises = true),
       Overload(
@@ -1753,7 +1753,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⊖",
-      keywords = Seq("0-slice", "take", "0-take"),
+      keywords = Seq("zero-slice", "take", "zero-take"),
       arity = 2,
       Options(),
       Overload(
@@ -1776,7 +1776,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⌽",
-      keywords = Seq("1-slice", "tail-take", "1-take"),
+      keywords = Seq("one-slice", "tail-take", "one-take"),
       arity = 2,
       Options(),
       Overload(
