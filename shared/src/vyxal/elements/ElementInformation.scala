@@ -2418,7 +2418,7 @@ object ElementInformation:
       symbol = "•",
       keywords = Seq(
         "dot-product",
-        "string-repat",
+        "string-repeat-concat",
         "bijective-base",
         "first-predicate-index",
       ),
