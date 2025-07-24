@@ -170,7 +170,7 @@ Element, Modifier, and Syntax Reference
 | <code>æ</code> | <code>bifuricate</code></br><code>bifur</code></br><code>bif</code></br><code>furry</code></br><code>uwu</code></br><code>dup-rev</code></br><code>dup-reverse</code></br><code>owo</code></br><code>peek-function</code></br><code>peek-call</code></br><code>@@</code> | 1 |   | **Bifurcate** (`any`): Duplicate #1 and reverse the duplicate</br>**Call Function Without Popping** (`fun`): Call #1 without popping its arguments |
 | <code>␣</code> | <code>space</code> | 0 |   | **Space**: Push a space to the stack |
 | <code>¶</code> | <code>newline</code> | 0 |   | **Newline**: Push a newline to the stack |
-| <code>★</code> | <code>asterisk</code> | 0 |   | **Asterisk**: Push an asterisk to the stack |
+| <code>★</code> | <code>asterisk</code></br><code>star</code> | 0 |   | **Asterisk**: Push an asterisk to the stack |
 | <code>ᑂ</code> | <code>headless-top</code></br><code>head-extract-under</code> | 1 |   | **Head on Top, Rest on Bottom** (`any`): Push #1[1:] and #1[0]</br>**Range [2, n]** (`num`): Range from 2 to #1 inclusive |
 | <code>∻</code> | <code>integer-divide</code></br><code>int-div</code></br><code>//</code> | 2 | vec  | **Integer Divide** (`num,num`): #1 // #2 |
 | <code>√</code> | <code>square-root</code></br><code>sqrt</code> | 1 | vec  | **Square Root** (`num`): Square root of #1 |
