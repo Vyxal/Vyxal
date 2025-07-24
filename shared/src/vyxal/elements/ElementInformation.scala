@@ -2765,7 +2765,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "★",
-      keywords = Seq("asterisk"),
+      keywords = Seq("asterisk", "star"),
       arity = 0,
       Options(),
       Overload(
