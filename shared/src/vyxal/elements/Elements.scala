@@ -113,6 +113,11 @@ object Elements:
     addPart("&", Dyad, false) {
       case (a, b) => VList(a.itr :+ b)
     },
+    "\"" ->
+      fullToImpl(
+        Monad, 
+        a => a.itr.map(v => v.itr.mkString("")).mkString("\n"),
+      ),
     "'" ->
       fullToImpl(
         Monad,
