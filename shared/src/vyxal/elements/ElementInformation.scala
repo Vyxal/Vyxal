@@ -345,13 +345,13 @@ object ElementInformation:
       ),
     ),
     AddElement(
-      symbol = "\"",
+      symbol = "Ꮬ",
       keywords =
         Seq("concat-sublists", "concat-grid", "grid"),
       arity = 1,
       Options(),
       Overload(
-        name = "Concatenate sublists then join on Newlines (Element Form of \")",
+        name = "Concatenate sublists then join on Newlines (Element Form of Ꮬ)",
         args = Seq("lst"),
         description =
           "Concatenate sublists, then join those on newlines",
