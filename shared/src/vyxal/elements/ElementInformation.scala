@@ -333,8 +333,11 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "'",
-      keywords =
-        Seq("join-sublists", "join-sublists-on-spaces-then-newlines", "space-grid"),
+      keywords = Seq(
+        "join-sublists",
+        "join-sublists-on-spaces-then-newlines",
+        "space-grid",
+      ),
       arity = 1,
       Options(),
       Overload(
@@ -346,15 +349,13 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "Ꮬ",
-      keywords =
-        Seq("concat-sublists", "concat-grid", "grid"),
+      keywords = Seq("concat-sublists", "concat-grid", "grid"),
       arity = 1,
       Options(),
       Overload(
         name = "Concatenate sublists then join on Newlines (Element Form of Ꮬ)",
         args = Seq("lst"),
-        description =
-          "Concatenate sublists, then join those on newlines",
+        description = "Concatenate sublists, then join those on newlines",
       ),
     ),
     AddElement(

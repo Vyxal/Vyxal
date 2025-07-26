@@ -115,7 +115,7 @@ object Elements:
     },
     "Ꮬ" ->
       fullToImpl(
-        Monad, 
+        Monad,
         a => a.itr.map(v => v.itr.mkString("")).mkString("\n"),
       ),
     "'" ->
