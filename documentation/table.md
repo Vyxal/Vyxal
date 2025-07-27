@@ -237,6 +237,7 @@ Element, Modifier, and Syntax Reference
 | <code>k4</code> | <code>1000000</code></br><code>million</code> | 0 |   | **1000000**: Push 1000000 to the stack |
 | <code>k5</code> | <code>4294967296</code></br><code>b32</code> | 0 |   | **4294967296**: Push 4294967296 to the stack |
 | <code>k6</code> | <code>&HEX-DIGITS</code> | 0 |   | **Hex Digits**: Push "0123456789abcdef" to the stack |
+| <code>k9</code> | <code>&NON-ZERO-DIGITS</code> | 0 |   | **Non-Zero Digits**: Push "123456789" to the stack |
 | <code>k<</code> | <code>&OPEN-FISH-BRACKETS</code> | 0 |   | **Open Brackets**: Push "([{<" to the stack |
 | <code>k=</code> | <code>zero-vector</code></br><code>zero-zero</code> | 0 |   | **[0,0]**: Push the list [0,0] to the stack |
 | <code>k></code> | <code>&CLOSE-FISH-BRACKETS</code> | 0 |   | **Close Brackets**: Push ")]}>" |
@@ -280,6 +281,8 @@ Element, Modifier, and Syntax Reference
 | <code>k⁰</code> | <code>2147483648</code></br><code>bit-31</code> | 0 |   | **2147483648**: Push 2147483648 to the stack |
 | <code>k²</code> | <code>1048576</code></br><code>bit-20</code> | 0 |   | **1048576 (2^20)**: Push 1048576 to the stack |
 | <code>k³</code> | <code>1073741824</code></br><code>bit-30</code> | 0 |   | **1073741824 (2^30)**: Push 1073741824 to the stack |
+| <code>k⇄</code> | <code>&ARROWS</code></br><code>&DIRECTION-CHARS</code> | 0 |   | **Arrows**: Push "^>v<" |
+| <code>k≡</code> | <code>num-signs</code></br><code>neg-one-zero-one</code> | 0 |   | **[-1,0,1]**: Push the list [-1,0,1] to the stack |
 | <code>k•</code> | <code>&QWERTY-ROWS</code> | 0 |   | **QWERTY Rows**: Push ["qwertyuiop", "asdfghjkl", "zxcvbnm"] to the stack |
 | <code>k±</code> | <code>1~1</code></br><code>one-one</code></br><code>NE</code></br><code>northeast</code> | 0 |   | **[1, 1]**: Push the list [1, 1] to the stack |
 | <code>kγ</code> | <code>&LOWER-UPPER-VOWELSY</code> | 0 |   | **Lowercase and Uppercase Vowels and Y**: Push "aeiouyAEIOUY" to the stack |
