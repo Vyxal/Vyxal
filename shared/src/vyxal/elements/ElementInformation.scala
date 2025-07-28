@@ -3384,6 +3384,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "k≡",
+      keywords = Seq("num-signs", "neg-one-zero-one"),
+      arity = 0,
+      Options(vectorises = false),
+      Overload(
+        name = "[-1,0,1]",
+        args = Seq(),
+        description = "Push the list [-1,0,1] to the stack",
+      ),
+    ),
+    AddElement(
       symbol = "k0",
       keywords = Seq("360", "three-sixty"),
       arity = 0,
@@ -3458,6 +3469,17 @@ object ElementInformation:
         name = "Hex Digits",
         args = Seq(),
         description = "Push \"0123456789abcdef\" to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "k9",
+      keywords = Seq("&NON-ZERO-DIGITS"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Non-Zero Digits",
+        args = Seq(),
+        description = "Push \"123456789\" to the stack",
       ),
     ),
     AddElement(
@@ -3851,6 +3873,17 @@ object ElementInformation:
         name = "Close Brackets",
         args = Seq(),
         description = "Push \")]}>\"",
+      ),
+    ),
+    AddElement(
+      symbol = "k⇄",
+      keywords = Seq("&ARROWS", "&DIRECTION-CHARS"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Arrows",
+        args = Seq(),
+        description = "Push \"^>v<\"",
       ),
     ),
     AddElement(
