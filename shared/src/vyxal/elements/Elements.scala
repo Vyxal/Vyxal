@@ -1303,7 +1303,11 @@ object Elements:
           case layerCount: VNum =>
             val iterable = pop().itr
             push(ListHelpers.flattenByDepth(iterable, layerCount))
-          case VList(lst) => push(ListHelpers.flattenByDepth(lst, 1))
+          case VList(a) => 
+            if a.forall(_.isInstanceOf[(VStr | VNum)]) then
+              val t = a.map(x => VList(ListHelpers.flatten(x.itr)))
+              push(VList(t)) // there has GOT to be a better way to do this
+            else push(ListHelpers.flattenByDepth(a, 1))
           case _ => throw UnsupportedOverloadException("⎘", "String | Function")
       },
     addPart("ꜝ", Monad, false) {

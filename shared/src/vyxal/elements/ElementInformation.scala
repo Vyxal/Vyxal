@@ -2940,6 +2940,11 @@ object ElementInformation:
         args = Seq("lst"),
         description = "Flatten #1 by 1 level",
       ),
+        Overload(
+        name = "Flatten-each",
+        args = Seq("lst[num|str]"),
+        description = "Flattens each item in #1",
+      ),
     ),
     AddElement(
       symbol = "ꜝ",
