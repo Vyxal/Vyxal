@@ -2536,6 +2536,17 @@ object ElementInformation:
         description = "Call function #1",
       ),
     ),
+     AddElement(
+      symbol = "#ᴥ",
+      keywords = Seq("try-catch"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Try-Catch",
+        args = Seq("string"),
+        description = "returns 0 if exec'd code errors, 1 if successful",
+      ),
+    ),
     AddElement(
       symbol = "ℳ",
       keywords = Seq("modular", "matrix-multiply", "regex-full-match?"),
