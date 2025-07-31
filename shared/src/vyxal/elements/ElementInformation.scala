@@ -3044,13 +3044,13 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "↸",
-      keywords = Seq("roll"),
+      keywords = Seq("shift"),
       arity = 3,
       Options(),
       Overload(
-        name = "Roll",
+        name = "Shift",
         args = Seq("any", "any", "any"),
-        description = "#1 #2 #3 -> #3 #1 #2",
+        description = "Move the top of the stack down two places",
       ),
     ),
     AddElement(
