@@ -172,14 +172,15 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  
   describe("Element #ᴥ") {
-    describe("should identify valid vyxal code") { // keeping this in case I want to change it later or overload more
+    describe(
+      "should identify valid vyxal code"
+    ) { // keeping this in case I want to change it later or overload more
       testMulti("#ᴥ")(
         in("2 3+") -> 1,
         in("[]") -> 1,
-        in("") ->  1,
-        in("[]]") ->  0,
+        in("") -> 1,
+        in("[]]") -> 0,
         in("Ч") -> 0,
         in("⎂") -> 0,
       )

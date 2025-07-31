@@ -2536,7 +2536,7 @@ object ElementInformation:
         description = "Call function #1",
       ),
     ),
-     AddElement(
+    AddElement(
       symbol = "#ᴥ",
       keywords = Seq("try-catch"),
       arity = 1,

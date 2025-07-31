@@ -13,7 +13,7 @@ import vyxal.StringHelpers.padLeft
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
-import scala.util.{Try, Success, Failure}
+import scala.util.{Failure, Success, Try}
 
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
@@ -1552,22 +1552,19 @@ object Elements:
       direct(0) {
         push(summon[Context].globals.inputs.length)
       },
-
     "#ᴥ" ->
       direct(Monad) {
-        val top = pop() 
+        val top = pop()
         top match
           case a: VStr =>
-           val validCode = Try(MiscHelpers.exec(a))
-           validCode match {
-            case Success(str) => push(VNum(1))
-            case Failure(ex) =>
-              if ex.isInstanceOf[VyxalException] then push(VNum(0))
-              else throw ex
-           }
+            val validCode = Try(MiscHelpers.exec(a))
+            validCode match
+              case Success(str) => push(VNum(1))
+              case Failure(ex) =>
+                if ex.isInstanceOf[VyxalException] then push(VNum(0))
+                else throw ex
 
           case _ => ???
-        end match
       },
     addPart("∆<", Monad, true) {
       case a: VNum => a.arg
