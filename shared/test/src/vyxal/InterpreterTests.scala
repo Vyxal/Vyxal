@@ -45,7 +45,7 @@ class InterpreterTests extends VyxalTests:
       testMulti(
         """ "[]]"#T:|"error caught"} """ -> VStr("error caught"),
         """ "2 3+"#T:|"error caught"} """ -> VNum(5),
-        )
+      )
     }
 
     describe("For loops") {

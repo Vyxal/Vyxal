@@ -50,9 +50,10 @@ class SBCSLexer extends LexerCommon:
 
   def headIsOpener: Boolean =
     headIn(STRUCTURE_OPENERS) || headLookaheadEqual(LIST_OPEN) ||
-      headLookaheadEqual(IF_ELSE_OPENER) || headLookaheadEqual(RECORD_OPENER) || headLookaheadEqual(TRYCATCH_OPENER) ||
+      headLookaheadEqual(IF_ELSE_OPENER) || headLookaheadEqual(RECORD_OPENER) ||
+      headLookaheadEqual(TRYCATCH_OPENER) ||
       headLookaheadEqual(EXTENSION_OPENER) ||
-      headLookaheadMatch(CUSTOM_OPENER_REGEX) 
+      headLookaheadMatch(CUSTOM_OPENER_REGEX)
 
   def headIsBranch: Boolean = headEqual(BRANCH)
 

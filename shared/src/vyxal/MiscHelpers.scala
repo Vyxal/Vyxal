@@ -9,7 +9,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Stack
 import scala.math.Ordering.Implicits.infixOrderingOps
-import scala.util.{Try, Success, Failure}
+import scala.util.{Failure, Success, Try}
 
 object MiscHelpers:
   val add = Dyad.vectorise("add")(forkify {
@@ -128,8 +128,6 @@ object MiscHelpers:
             else throw ex
       case _ => ???
     end match
-  end validCode
-
 
   /** A generalised "count up until the first positive integer is found that
     * satisfies a function". Helpful because you might want different hardcoded
