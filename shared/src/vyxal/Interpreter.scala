@@ -148,6 +148,12 @@ object Interpreter:
       case AST.Ternary(thenBody, elseBody, _) =>
         if ctx.pop().toBool then execute(thenBody)
         else if elseBody.nonEmpty then execute(elseBody.get)
+      
+      case AST.TryCatch(success, error, _) =>
+        if MiscHelpers.validCode(ctx.peek.toString())(using ctx: Context).toBool then
+          ctx.push(MiscHelpers.exec(ctx.pop().toString()))
+          execute(success)(using ctx: Context)
+        else execute(error)
 
       case AST.IfStatement(conds, bodies, elseBody, _) =>
         var conditions = conds

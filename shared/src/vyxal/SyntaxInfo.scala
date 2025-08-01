@@ -110,6 +110,7 @@ object SyntaxInfo:
           "no?",
           "=>",
           "from",
+          "catch",
         ),
         "Delimit the next section in a structure.",
         "<structure open> <code> | <code> ...",
@@ -325,6 +326,15 @@ object SyntaxInfo:
         Seq(),
         "Decompress and push a number, converted from a bijective base 252 number using the codepage",
         "\"<compressed number>“",
+      ),
+    "#T" ->
+      Syntax(
+        "Try-Catch",
+        Seq("try"),
+        "Open a Try-Catch Structure",
+        "#T<success>|<exception>}",
+        structureOpener = true,
+        structureCloser = false,
       ),
     "#$" ->
       Syntax(

@@ -2538,11 +2538,11 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "#ᴥ",
-      keywords = Seq("try-catch"),
+      keywords = Seq("valid-exec", "valid-code"),
       arity = 1,
       Options(),
       Overload(
-        name = "Try-Catch",
+        name = "Valid Vyxal Code",
         args = Seq("string"),
         description = "returns 0 if exec'd code errors, 1 if successful",
       ),
