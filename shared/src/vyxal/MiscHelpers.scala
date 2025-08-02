@@ -126,7 +126,7 @@ object MiscHelpers:
           case Failure(ex) =>
             if ex.isInstanceOf[VyxalException] then VNum(0)
             else throw ex
-      case _ => ???
+      case _ => ??? // right now this is always a string
     end match
 
   /** A generalised "count up until the first positive integer is found that

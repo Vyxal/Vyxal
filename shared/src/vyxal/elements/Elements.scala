@@ -1551,7 +1551,9 @@ object Elements:
       direct(0) {
         push(summon[Context].globals.inputs.length)
       },
-    "#ᴥ" -> fullToImpl(Monad, top => MiscHelpers.validCode(top)),
+    addPart("#ᴥ", Monad, false) {
+      case top: VStr => MiscHelpers.validCode(top)
+    },
     addPart("∆<", Monad, true) {
       case a: VNum => a.arg
     },
