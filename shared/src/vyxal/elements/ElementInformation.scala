@@ -5104,7 +5104,7 @@ object ElementInformation:
     ),
     AddModifier(
       symbol = "¨",
-      keywords = Seq("each:"),
+      keywords = Seq("each:", "vectorise:"),
       numberOfElements = 1,
       ModifierOverload(
         name = "Each",
@@ -5178,7 +5178,7 @@ object ElementInformation:
     ),
     AddModifier(
       symbol = "⩔",
-      keywords = Seq("at-simple-levels:", "@simple:"),
+      keywords = Seq("at-simple-levels:", "@simple:", "deep-vectorise:"),
       numberOfElements = 1,
       ModifierOverload(
         name = "At Simple Levels",
