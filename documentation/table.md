@@ -226,7 +226,7 @@ Element, Modifier, and Syntax Reference
 | <code>#c</code> | <code>b252compress</code> | 1 | vec  | **Base 252 Compress String** (`str`): Compress #1 using simple base 252 compression. Requires all characters to be lowercase letters, or spaces.</br>**Base 252 Compress Number** (`num`): Convert #1 to base 252, using the codepage as the digits |
 | <code>#w</code> | <code>nest</code></br><code>ensure-wrapped</code> | 1 |   | **Ensure Wrapped** (`any`): Ensure #1 is wrapped in a list. Returns scalars wrapped in a list. Returns lists as-is |
 | <code>#x</code> | <code>continue</code> | 0 |   | **Continue**: Continue to the next iteration of the current loop |
-| <code>#ᴥ</code> | <code>valid-exec</code></br><code>valid-code</code> | 1 |   | **Valid Vyxal Code** (`string`): returns 0 if exec'd code errors, 1 if successful |
+| <code>#ᴥ</code> | <code>valid-exec</code></br><code>valid-code</code> | 1 |   | **Valid Vyxal Code** (`str`): returns 0 if exec'd code errors, 1 if successful |
 | <code>#↸</code> | <code>retrieve-from-outer</code> | 1 |   | **Retrieve Item at Index from Outer Stack** (`num`): Retrieve the item at index #1 from the outer stack, current stack if at top level</br>**Retrieve Item at Index from Outer Stack N-Layers Up** (`lst[num, num]`): Retrieve the item at index #2 from the stack #1 levels up |
 | <code>k⩔</code> | <code>&CODEPAGE</code> | 0 |   | **Codepage**: Push the Vyxal codepage to the stack |
 | <code>k+</code> | <code>-1~1</code></br><code>neg-one-one</code></br><code>NW</code></br><code>northwest</code> | 0 |   | **[-1, 1]**: Push the list [-1, 1] to the stack |
