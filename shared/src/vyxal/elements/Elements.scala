@@ -113,6 +113,11 @@ object Elements:
     addPart("&", Dyad, false) {
       case (a, b) => VList(a.itr :+ b)
     },
+    "Ꮬ" ->
+      fullToImpl(
+        Monad,
+        a => a.itr.map(v => v.itr.mkString("")).mkString("\n"),
+      ),
     "'" ->
       fullToImpl(
         Monad,
@@ -1298,7 +1303,11 @@ object Elements:
           case layerCount: VNum =>
             val iterable = pop().itr
             push(ListHelpers.flattenByDepth(iterable, layerCount))
-          case VList(lst) => push(ListHelpers.flattenByDepth(lst, 1))
+          case VList(a) =>
+            if a.forall(_.isInstanceOf[(VStr | VNum)]) then
+              val t = a.map(x => VList(ListHelpers.flatten(x.itr)))
+              push(VList(t)) // there has GOT to be a better way to do this
+            else push(ListHelpers.flattenByDepth(a, 1))
           case _ => throw UnsupportedOverloadException("⎘", "String | Function")
       },
     addPart("ꜝ", Monad, false) {
@@ -1376,8 +1385,8 @@ object Elements:
       direct(Triad) {
         val top = pop()
         val under = pop()
-        val kicker = pop()
-        push(top, kicker, under)
+        val bottom = pop()
+        push(top, bottom, under)
       },
     addPart("⧢", Dyad, false) {
       case (VList(lst), numberOfChunks: VNum) =>
@@ -1434,6 +1443,7 @@ object Elements:
     "k≈" -> niladify(Seq(0, 1)),
     "k±" -> niladify(Seq(1, 1)),
     "k=" -> niladify(Seq(0, 0)),
+    "k≡" -> niladify(Seq(-1, 0, 1)),
     "k0" -> niladify(360),
     "k1" -> niladify(1000),
     "k2" -> niladify(10000),
@@ -1441,9 +1451,10 @@ object Elements:
     "k4" -> niladify(1000000),
     "k5" -> niladify(VNum("4294967296")),
     "k6" -> niladify("0123456789abcdef"),
+    "k9" -> niladify("123456789"),
     "kA" -> niladify("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
     "kB" -> niladify("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
-    "kD" -> niladify("|/-_"),
+    "kD" -> niladify("\\|/-_"),
     "kF" -> niladify("FizzBuzz"),
     "kH" -> niladify("Hello, World!"),
     "kL" -> niladify("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"),
@@ -1487,6 +1498,7 @@ object Elements:
     "k∩" -> niladify(")]}"),
     "k<" -> niladify("([{<"),
     "k>" -> niladify(")]}>"),
+    "k⇄" -> niladify("^>v<"),
     "k⎀" -> niladify("aeiouAEIOU"),
     "k⩔" -> niladify(Codepage),
     "k½" -> niladify(Seq(1, 2)),
@@ -1539,6 +1551,7 @@ object Elements:
       direct(0) {
         push(summon[Context].globals.inputs.length)
       },
+    "#ᴥ" -> fullToImpl(Monad, top => MiscHelpers.validCode(top)),
     addPart("∆<", Monad, true) {
       case a: VNum => a.arg
     },

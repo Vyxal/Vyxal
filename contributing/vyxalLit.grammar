@@ -23,6 +23,7 @@ Word {
 
 Structure {
  structure<"for">
+structure<"try">
 structure<"if">
 structure<"do-to-each">
 structure<"for<">

@@ -14,7 +14,7 @@ class LiterateLexer extends LexerCommon:
   def headIsOpener: Boolean =
     structOpeners.exists((kw, _) =>
       headLookaheadMatch(s"${Regex.quote(kw)}([^$KeywordLetters]|$$)")
-    ) || headEqual("{") ||
+    ) || headEqual("{") || headEqual("#T") ||
       lambdaOpeners.exists((kw, _) =>
         headLookaheadMatch(s"${Regex.quote(kw)}([^$KeywordLetters]|$$)")
       )
@@ -132,6 +132,7 @@ class LiterateLexer extends LexerCommon:
     "yes?" -> StructureType.Ternary,
     "?" -> StructureType.Ternary,
     "if" -> StructureType.IfStatement,
+    "try" -> StructureType.TryCatch,
     "for" -> StructureType.For,
     "for<" -> StructureType.For,
     "do-to-each" -> StructureType.For,

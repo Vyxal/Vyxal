@@ -24,6 +24,7 @@ class SBCSLexer extends LexerCommon:
   private val LAMBDA = "λ"
   private val VARIABLE_UNPACK_OPENER = "#:["
   private val TERNARY_OPENER = "["
+  private val TRYCATCH_OPENER = "#T"
   private val VARIABLE_GET_SIGIL = "#$"
   private val VARIABLE_SET_SIGIL = "#="
   private val VARIABLE_SET_CONSTANT_SIGIL = "#!"
@@ -50,6 +51,7 @@ class SBCSLexer extends LexerCommon:
   def headIsOpener: Boolean =
     headIn(STRUCTURE_OPENERS) || headLookaheadEqual(LIST_OPEN) ||
       headLookaheadEqual(IF_ELSE_OPENER) || headLookaheadEqual(RECORD_OPENER) ||
+      headLookaheadEqual(TRYCATCH_OPENER) ||
       headLookaheadEqual(EXTENSION_OPENER) ||
       headLookaheadMatch(CUSTOM_OPENER_REGEX)
 
@@ -78,7 +80,11 @@ class SBCSLexer extends LexerCommon:
         if programStack.isEmpty then
           addToken(TokenType.Command, SINGLE_QUOTE, Range(index - 1, index))
         else oneCharStringToken
-      else if headEqual(TWO_CHAR_STRING) then twoCharStringToken
+      else if headEqual(TWO_CHAR_STRING) then
+        pop()
+        if programStack.isEmpty then
+          addToken(TokenType.Command, TWO_CHAR_STRING, Range(index - 1, index))
+        else twoCharStringToken
       else if headEqual(TWO_CHAR_NUMBER) then twoCharNumberToken
       else if headIn(DIGRAPH_CHARS)
       then digraphToken
@@ -124,6 +130,8 @@ class SBCSLexer extends LexerCommon:
         lambdaParameters(false)
       else if headLookaheadEqual(IF_ELSE_OPENER) then
         quickToken(TokenType.StructureOpen, IF_ELSE_OPENER)
+      else if headLookaheadEqual(TRYCATCH_OPENER) then
+        quickToken(TokenType.StructureOpen, TRYCATCH_OPENER)
       else if headIn(MONADIC_MODIFIERS) then
         if headEqual("#") then quickToken(TokenType.MonadicModifier, peek(2))
         else quickToken(TokenType.MonadicModifier, s"${programStack.head}")
@@ -254,8 +262,7 @@ class SBCSLexer extends LexerCommon:
       )
 
   private def twoCharStringToken: Unit =
-    val rangeStart = index
-    pop() // Pop the opening quote
+    val rangeStart = index - 1
     val char = pop(2)
     tokens +=
       Token(

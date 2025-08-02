@@ -339,8 +339,11 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "'",
-      keywords =
-        Seq("join-sublists", "join-sublists-on-spaces-then-newlines", "grid"),
+      keywords = Seq(
+        "join-sublists",
+        "join-sublists-on-spaces-then-newlines",
+        "space-grid",
+      ),
       arity = 1,
       Options(),
       Overload(
@@ -348,6 +351,17 @@ object ElementInformation:
         args = Seq("lst"),
         description =
           "Join sublists of #1 on spaces, then join those on newlines",
+      ),
+    ),
+    AddElement(
+      symbol = "Ꮬ",
+      keywords = Seq("concat-sublists", "concat-grid", "grid"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Concatenate sublists then join on Newlines (Element Form of Ꮬ)",
+        args = Seq("lst"),
+        description = "Concatenate sublists, then join those on newlines",
       ),
     ),
     AddElement(
@@ -2541,6 +2555,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "#ᴥ",
+      keywords = Seq("valid-exec", "valid-code"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Valid Vyxal Code",
+        args = Seq("string"),
+        description = "returns 0 if exec'd code errors, 1 if successful",
+      ),
+    ),
+    AddElement(
       symbol = "ℳ",
       keywords = Seq("modular", "matrix-multiply", "regex-full-match?"),
       arity = 2,
@@ -2944,6 +2969,11 @@ object ElementInformation:
         args = Seq("lst"),
         description = "Flatten #1 by 1 level",
       ),
+      Overload(
+        name = "Flatten-each",
+        args = Seq("lst[num|str]"),
+        description = "Flattens each item in #1",
+      ),
     ),
     AddElement(
       symbol = "ꜝ",
@@ -3043,13 +3073,13 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "↸",
-      keywords = Seq("roll", "bread"),
+      keywords = Seq("shift", "bread"),
       arity = 3,
       Options(),
       Overload(
-        name = "Roll",
+        name = "Shift",
         args = Seq("any", "any", "any"),
-        description = "#1 #2 #3 -> #3 #1 #2",
+        description = "Move the top of the stack down two places",
       ),
     ),
     AddElement(
@@ -3388,6 +3418,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "k≡",
+      keywords = Seq("num-signs", "neg-one-zero-one"),
+      arity = 0,
+      Options(vectorises = false),
+      Overload(
+        name = "[-1,0,1]",
+        args = Seq(),
+        description = "Push the list [-1,0,1] to the stack",
+      ),
+    ),
+    AddElement(
       symbol = "k0",
       keywords = Seq("360", "three-sixty"),
       arity = 0,
@@ -3462,6 +3503,17 @@ object ElementInformation:
         name = "Hex Digits",
         args = Seq(),
         description = "Push \"0123456789abcdef\" to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "k9",
+      keywords = Seq("&NON-ZERO-DIGITS"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Non-Zero Digits",
+        args = Seq(),
+        description = "Push \"123456789\" to the stack",
       ),
     ),
     AddElement(
@@ -3855,6 +3907,17 @@ object ElementInformation:
         name = "Close Brackets",
         args = Seq(),
         description = "Push \")]}>\"",
+      ),
+    ),
+    AddElement(
+      symbol = "k⇄",
+      keywords = Seq("&ARROWS", "&DIRECTION-CHARS"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Arrows",
+        args = Seq(),
+        description = "Push \"^>v<\"",
       ),
     ),
     AddElement(

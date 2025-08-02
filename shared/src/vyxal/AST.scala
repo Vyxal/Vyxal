@@ -67,6 +67,11 @@ enum AST(val arity: Option[Int]) derives CanEqual:
       elseBody: Option[AST],
       override val range: Range = Range.fake,
   ) extends AST(Some(1))
+  case TryCatch(
+      success: AST,
+      error: AST,
+      override val range: Range = Range.fake,
+  ) extends AST(Some(1))
   case For(
       loopVar: Option[String],
       body: AST,

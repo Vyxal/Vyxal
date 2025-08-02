@@ -26,7 +26,7 @@ Element, Modifier, and Syntax Reference
 | <code>$</code> | <code>swap</code> | 2 |   | **Swap** (`any,any`): Swap #1 and #2 on the stack: #1 #2 -> #2 #1 |
 | <code>%</code> | <code>mod</code></br><code>modulo</code></br><code>%</code></br><code>remainder</code> | 2 | vec  | **Modulo** (`num,num`): #1 % #2 (remainder of #1 divided by #2)</br>**String Format** (`str,any`): Format #1 with #2</br>**String Format** (`any,str`): Format #2 with #1 |
 | <code>&</code> | <code>append</code> | 2 |   | **Append** (`any,any`): Append #2 to #1 |
-| <code>'</code> | <code>join-sublists</code></br><code>join-sublists-on-spaces-then-newlines</code></br><code>grid</code> | 1 |   | **Join Sublists on Spaces then Newlines (Element Form of ')** (`lst`): Join sublists of #1 on spaces, then join those on newlines |
+| <code>'</code> | <code>join-sublists</code></br><code>join-sublists-on-spaces-then-newlines</code></br><code>space-grid</code> | 1 |   | **Join Sublists on Spaces then Newlines (Element Form of ')** (`lst`): Join sublists of #1 on spaces, then join those on newlines |
 | <code>*</code> | <code>exponentiate</code></br><code>pow</code></br><code>**</code></br><code>power</code> | 2 | vec  | **Exponentiation** (`num,num`): #1 ** #2 |
 | <code>+</code> | <code>add</code></br><code>+</code></br><code>plus</code></br><code>addition</code> | 2 | vec  | **Addition** (`num,num`): #1 + #2</br>**String and Number Concatenation** (`str,num`): #1 + str(#2)</br>**String and Number Concatenation** (`num,str`): str(#1) + #2</br>**String Concatenation** (`str,str`): #1 + #2 |
 | <code>,</code> | <code>println</code></br><code>stdout</code></br><code>output</code></br><code>out</code> | 1 |   | **Print** (`any`): Print #1 to stdout, followed by a newline |
@@ -159,7 +159,7 @@ Element, Modifier, and Syntax Reference
 | <code>ᴥ</code> | <code>exec</code></br><code>ten-power</code></br><code>call</code></br><code>@</code> | 1 | vec  | **10 to the Power of** (`num`): 10 ** #1</br>**Execute** (`str`): Execute #1 as Vyxal code</br>**Call Function** (`fun`): Call function #1 |
 | <code>ℳ</code> | <code>modular</code></br><code>matrix-multiply</code></br><code>regex-full-match?</code> | 2 |   | **Every Nth Element** (`itr,num`): Every #2th element of #1</br>**Every Nth Element** (`num,itr`): Every #1th element of #2</br>**Matrix Multiply** (`lst,lst`): Matrix multiply #1 and #2</br>**Regex Full Match?** (`str,str`): Does pattern #2 fully match #1 |
 | <code>℗</code> | <code>is-prime</code></br><code>prime?</code></br><code>quine-cheese</code> | 1 | vec  | **Is Prime** (`num`): Is #1 a prime number?</br>**Quine Cheese** (`str`): Quotify #1 and prepend it to #1. (Useful for quines like `"℗"℗`) |
-| <code>↸</code> | <code>roll</code></br><code>bread</code> | 3 |   | **Roll** (`any,any,any`): #1 #2 #3 -> #3 #1 #2 |
+| <code>↸</code> | <code>roll</code> | 3 |   | **Roll** (`any,any,any`): #1 #2 #3 -> #3 #1 #2 |
 | <code>⍢</code> | <code>parity</code></br><code>bit</code></br><code>last-half</code> | 1 | vec  | **Parity** (`num`): Parity of #1 (1 if odd, 0 if even) --> #1 % 2</br>**Last String Half** (`str`): Last half of #1 |
 | <code>ℂ</code> | <code>ncr</code></br><code>choose</code></br><code>characters-same?</code></br><code>fixpoint</code> | 2 | vec  | **NCR / N Choose R** (`num,num`): nCr of #1 and #2 (n choose r)</br>**Characters Same?** (`str,str`): Are all characters in #1 the same as #2?</br>**Fixpoint** (`fun,any`): Repeatedly apply #1 on #2 until a fixed point is reached</br>**Fixpoint** (`any,fun`): Repeatedly apply #2 on #1 until a fixed point is reached |
 | <code>⌹</code> | <code>list-partitions</code></br><code>integer-partitions</code> | 1 |   | **Integers Partitions** (`num`): All possible ways to sum positive integers to #1</br>**List Partitions** (`itr`): All possible ways to partition #1 into sublists |
@@ -182,7 +182,7 @@ Element, Modifier, and Syntax Reference
 | <code>⎶</code> | <code>trim</code> | 2 |   | **Trim** (`any,any`): Trim #1 of leading and trailing #2 |
 | <code>⊆</code> | <code>subset?</code> | 2 |   | **Subset?** (`lst,lst`): Is the shallower list a subset of the deeper list? Checks windows corresponding to the length of the shallower list |
 | <code>⍨</code> | <code>dump</code> | 1 |   | **Dump** (`any`): Push all items of #1 to the stack |
-| <code>⎘</code> | <code>flatten-by-depth</code></br><code>flatten-depth</code></br><code>one-flatten</code> | 2 |   | **Flatten by Depth** (`lst,num`): Flatten #1 by #2 levels</br>**Flatten by Depth** (`lst`): Flatten #1 by 1 level |
+| <code>⎘</code> | <code>flatten-by-depth</code></br><code>flatten-depth</code> | 2 |   | **Flatten by Depth** (`lst,num`): Flatten #1 by #2 levels</br>**Flatten by Depth** (`lst`): Flatten #1 by 1 level |
 | <code>ꜝ</code> | <code>keep-truthy</code> | 1 |   | **Keep Truthy** (`lst`): Keep only the truthy elements of #1 |
 | <code>≈</code> | <code>all-same</code> | 1 |   | **All Same** (`any`): Are all elements of #1 the same? |
 | <code>≊</code> | <code>all-equal-item</code></br><code>all-equal-to</code> | 2 |   | **All Equal Item** (`lst,any`): Are all elements of #1 equal to #2? |
@@ -202,7 +202,7 @@ Element, Modifier, and Syntax Reference
 | <code>∧</code> | <code>and</code></br><code>&&</code></br><code>logical-and</code> | 2 |   | **Logical And** (`nsl,nsl`): Python-style and - if #2 is false, return #2, else return #1</br>**Short Circuit And** (`fun,fun`): Short circuit and - if #2() is false, return #2(), else return #1() |
 | <code>∨</code> | <code>or</code></br><code>!!</code></br><code>logical-or</code> | 2 |   | **Logical Or** (`any,any`): Python style or - if #2 is true, return #2, else return #1</br>**Short Circuit Or** (`fun,fun`): Short circuit or - if #2() is true, return #2(), else return #1() |
 | <code>Ł</code> | <code>length-peek</code> | 1* |   | **Length Peek** (`any`): Push the length of #1 without popping |
-| <code>ḧ</code> | <code>heads</code></br><code>head-each</code></br><code>vec-head</code> | 1 |   | **Heads** (`lst`): First element of each element in #1 |
+| <code>ḧ</code> | <code>heads</code></br><code>head-each</code> | 1 |   | **Heads** (`lst`): First element of each element in #1 |
 | <code>¤</code> | <code>stringify</code></br><code>to-str</code></br><code>str</code> | 1 |   | **Stringify** (`any`): Stringify #1 |
 | <code>⧢</code> | <code>into-n-pieces</code></br><code>split-into-n-pieces</code></br><code>fixpoint-collect-tail</code> | 2 |   | **Split Into N Pieces** (`itr,num`): Split #1 into #2 pieces</br>**Split Into N Pieces** (`num,itr`): Split #2 into #1 pieces</br>**Split Number Into N Pieces** (`itr,num`): Listify #1 and split it into #2 pieces</br>**Split Number Into N Pieces** (`num,itr`): Listify #2 and split it into #1 pieces</br>**Fixpoint Unfold Without Initial Value** (`fun,any`): Repeatedly apply #1 to #2, collecting results (not including initial value)</br>**Fixpoint Unfold Without Initial Value** (`any,fun`): Repeatedly apply #2 to #1, collecting results (not including initial value) |
 | <code>①</code> | <code>10</code></br><code>ten</code> | 0 |   | **10**: Push 10 to the stack |
@@ -225,6 +225,7 @@ Element, Modifier, and Syntax Reference
 | <code>#c</code> | <code>b252compress</code> | 1 | vec  | **Base 252 Compress String** (`str`): Compress #1 using simple base 252 compression. Requires all characters to be lowercase letters, or spaces.</br>**Base 252 Compress Number** (`num`): Convert #1 to base 252, using the codepage as the digits |
 | <code>#w</code> | <code>nest</code></br><code>ensure-wrapped</code> | 1 |   | **Ensure Wrapped** (`any`): Ensure #1 is wrapped in a list. Returns scalars wrapped in a list. Returns lists as-is |
 | <code>#x</code> | <code>continue</code> | 0 |   | **Continue**: Continue to the next iteration of the current loop |
+| <code>#ᴥ</code> | <code>valid-exec</code></br><code>valid-code</code> | 1 |   | **Valid Vyxal Code** (`string`): returns 0 if exec'd code errors, 1 if successful |
 | <code>#↸</code> | <code>retrieve-from-outer</code> | 1 |   | **Retrieve Item at Index from Outer Stack** (`num`): Retrieve the item at index #1 from the outer stack, current stack if at top level</br>**Retrieve Item at Index from Outer Stack N-Layers Up** (`lst[num, num]`): Retrieve the item at index #2 from the stack #1 levels up |
 | <code>k⩔</code> | <code>&CODEPAGE</code> | 0 |   | **Codepage**: Push the Vyxal codepage to the stack |
 | <code>k+</code> | <code>-1~1</code></br><code>neg-one-one</code></br><code>NW</code></br><code>northwest</code> | 0 |   | **[-1, 1]**: Push the list [-1, 1] to the stack |
@@ -236,6 +237,7 @@ Element, Modifier, and Syntax Reference
 | <code>k4</code> | <code>1000000</code></br><code>million</code> | 0 |   | **1000000**: Push 1000000 to the stack |
 | <code>k5</code> | <code>4294967296</code></br><code>b32</code> | 0 |   | **4294967296**: Push 4294967296 to the stack |
 | <code>k6</code> | <code>&HEX-DIGITS</code> | 0 |   | **Hex Digits**: Push "0123456789abcdef" to the stack |
+| <code>k9</code> | <code>&NON-ZERO-DIGITS</code> | 0 |   | **Non-Zero Digits**: Push "123456789" to the stack |
 | <code>k<</code> | <code>&OPEN-FISH-BRACKETS</code> | 0 |   | **Open Brackets**: Push "([{<" to the stack |
 | <code>k=</code> | <code>zero-vector</code></br><code>zero-zero</code> | 0 |   | **[0,0]**: Push the list [0,0] to the stack |
 | <code>k></code> | <code>&CLOSE-FISH-BRACKETS</code> | 0 |   | **Close Brackets**: Push ")]}>" |
@@ -279,6 +281,8 @@ Element, Modifier, and Syntax Reference
 | <code>k⁰</code> | <code>2147483648</code></br><code>bit-31</code> | 0 |   | **2147483648**: Push 2147483648 to the stack |
 | <code>k²</code> | <code>1048576</code></br><code>bit-20</code> | 0 |   | **1048576 (2^20)**: Push 1048576 to the stack |
 | <code>k³</code> | <code>1073741824</code></br><code>bit-30</code> | 0 |   | **1073741824 (2^30)**: Push 1073741824 to the stack |
+| <code>k⇄</code> | <code>&ARROWS</code></br><code>&DIRECTION-CHARS</code> | 0 |   | **Arrows**: Push "^>v<" |
+| <code>k≡</code> | <code>num-signs</code></br><code>neg-one-zero-one</code> | 0 |   | **[-1,0,1]**: Push the list [-1,0,1] to the stack |
 | <code>k•</code> | <code>&QWERTY-ROWS</code> | 0 |   | **QWERTY Rows**: Push ["qwertyuiop", "asdfghjkl", "zxcvbnm"] to the stack |
 | <code>k±</code> | <code>1~1</code></br><code>one-one</code></br><code>NE</code></br><code>northeast</code> | 0 |   | **[1, 1]**: Push the list [1, 1] to the stack |
 | <code>kγ</code> | <code>&LOWER-UPPER-VOWELSY</code> | 0 |   | **Lowercase and Uppercase Vowels and Y**: Push "aeiouyAEIOUY" to the stack |
@@ -386,6 +390,7 @@ Element, Modifier, and Syntax Reference
 | <code>#]</code> | Close List | `]` | Close a list. Pushes the list to the stack when closed. | <code>#[item|item|item#]</code> |
 | <code>#:@</code> | Defined Element Call | `$@` | Call a defined element | <code>#:@<name></code> |
 | <code>#></code> | Augmented Assignment | `:>` | Apply a function to a variable value and store the result in the same variable. | <code><function> #> <variable></code> |
+| <code>#T</code> | Try-Catch | `try` | Open a Try-Catch Structure | <code>#T<success>|<exception>}</code> |
 | <code>#¤</code> | Context Paramter Index | ``n`` | Index into the list of context parameters. | <code>¤<number></code> |
 | <code>#=</code> | Assign Variable | `:=` | Assign a variable to a value. | <code>#=<variable></code> |
 | <code>#::R</code> | Record Definition | `record` | Define a record with members | <code>#:R<name>|#$restricted #=private #!public}</code> |
@@ -427,7 +432,7 @@ Element, Modifier, and Syntax Reference
 | <code>]</code> | Close All Structures | `close-all`</br>`end-all` | Match and close all open structures. | <code><structure openers>] <code not in structure></code> |
 | <code>k</code> | Constant Digraphs |  | Used for constant-related digraphs | <code>k<character></code> |
 | <code>{</code> | While Loop | `while`</br>`while<` | Open a while loop. While the top of the stack is truthy, execute code. | <code>{<condition>|<code>}</code> |
-| <code>\|</code> | Structure Branch | `:`</br>`->`</br>`else:`</br>`else`</br>`elif`</br>`else-if`</br>`body`</br>`do`</br>`branch`</br>`then`</br>`in`</br>`using`</br>`no?`</br>`=>`</br>`from` | Delimit the next section in a structure. | <code><structure open> <code> | <code> ...</code> |
+| <code>\|</code> | Structure Branch | `:`</br>`->`</br>`else:`</br>`else`</br>`elif`</br>`else-if`</br>`body`</br>`do`</br>`branch`</br>`then`</br>`in`</br>`using`</br>`no?`</br>`=>`</br>`from`</br>`catch` | Delimit the next section in a structure. | <code><structure open> <code> | <code> ...</code> |
 | <code>}</code> | Close A Structure | `end`</br>`endfor`</br>`end-for`</br>`endwhile`</br>`end-while`</br>`endlambda`</br>`end-lambda` | Match and close the nearest open structure. | <code><structure open> <code> } <code not in structure></code> |
 | <code>Ꮬ</code> | Two Character String |  | Push the next two characters as a string | <code>Ꮬ<character><character></code> |
 | <code>Ꮠ</code> | Two Byte Number |  | Push the next two bytes as a number, converted from bijective base 256 using the codepage (max 65535). Use `#c` to compress a number if it is <= 65535  | <code>Ꮠ<character><character></code> |

@@ -10,7 +10,7 @@ import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
 
 object Interpreter:
-  def version = "3.7.0"
+  def version = "3.8.0"
   def execute(code: String)(using ctx: Context): Unit =
 
     /** Attempt lexing */
@@ -148,6 +148,13 @@ object Interpreter:
       case AST.Ternary(thenBody, elseBody, _) =>
         if ctx.pop().toBool then execute(thenBody)
         else if elseBody.nonEmpty then execute(elseBody.get)
+
+      case AST.TryCatch(success, error, _) =>
+        if MiscHelpers.validCode(ctx.peek.toString())(using ctx: Context).toBool
+        then
+          ctx.push(MiscHelpers.exec(ctx.pop().toString()))
+          execute(success)(using ctx: Context)
+        else execute(error)
 
       case AST.IfStatement(conds, bodies, elseBody, _) =>
         var conditions = conds
