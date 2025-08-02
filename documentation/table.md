@@ -226,6 +226,7 @@ Element, Modifier, and Syntax Reference
 | <code>#c</code> | <code>b252compress</code> | 1 | vec  | **Base 252 Compress String** (`str`): Compress #1 using simple base 252 compression. Requires all characters to be lowercase letters, or spaces.</br>**Base 252 Compress Number** (`num`): Convert #1 to base 252, using the codepage as the digits |
 | <code>#w</code> | <code>nest</code></br><code>ensure-wrapped</code> | 1 |   | **Ensure Wrapped** (`any`): Ensure #1 is wrapped in a list. Returns scalars wrapped in a list. Returns lists as-is |
 | <code>#x</code> | <code>continue</code> | 0 |   | **Continue**: Continue to the next iteration of the current loop |
+| <code>#ᴥ</code> | <code>valid-exec</code></br><code>valid-code</code> | 1 |   | **Valid Vyxal Code** (`string`): returns 0 if exec'd code errors, 1 if successful |
 | <code>#↸</code> | <code>retrieve-from-outer</code> | 1 |   | **Retrieve Item at Index from Outer Stack** (`num`): Retrieve the item at index #1 from the outer stack, current stack if at top level</br>**Retrieve Item at Index from Outer Stack N-Layers Up** (`lst[num, num]`): Retrieve the item at index #2 from the stack #1 levels up |
 | <code>k⩔</code> | <code>&CODEPAGE</code> | 0 |   | **Codepage**: Push the Vyxal codepage to the stack |
 | <code>k+</code> | <code>-1~1</code></br><code>neg-one-one</code></br><code>NW</code></br><code>northwest</code> | 0 |   | **[-1, 1]**: Push the list [-1, 1] to the stack |
@@ -390,6 +391,7 @@ Element, Modifier, and Syntax Reference
 | <code>#]</code> | Close List | `]` | Close a list. Pushes the list to the stack when closed. | <code>#[item|item|item#]</code> |
 | <code>#:@</code> | Defined Element Call | `$@` | Call a defined element | <code>#:@<name></code> |
 | <code>#></code> | Augmented Assignment | `:>` | Apply a function to a variable value and store the result in the same variable. | <code><function> #> <variable></code> |
+| <code>#T</code> | Try-Catch | `try` | Open a Try-Catch Structure | <code>#T<success>|<exception>}</code> |
 | <code>#¤</code> | Context Paramter Index | ``n`` | Index into the list of context parameters. | <code>¤<number></code> |
 | <code>#=</code> | Assign Variable | `:=` | Assign a variable to a value. | <code>#=<variable></code> |
 | <code>#::R</code> | Record Definition | `record` | Define a record with members | <code>#:R<name>|#$restricted #=private #!public}</code> |
@@ -431,7 +433,7 @@ Element, Modifier, and Syntax Reference
 | <code>]</code> | Close All Structures | `close-all`</br>`end-all` | Match and close all open structures. | <code><structure openers>] <code not in structure></code> |
 | <code>k</code> | Constant Digraphs |  | Used for constant-related digraphs | <code>k<character></code> |
 | <code>{</code> | While Loop | `while`</br>`while<` | Open a while loop. While the top of the stack is truthy, execute code. | <code>{<condition>|<code>}</code> |
-| <code>\|</code> | Structure Branch | `:`</br>`->`</br>`else:`</br>`else`</br>`elif`</br>`else-if`</br>`body`</br>`do`</br>`branch`</br>`then`</br>`in`</br>`using`</br>`no?`</br>`=>`</br>`from` | Delimit the next section in a structure. | <code><structure open> <code> | <code> ...</code> |
+| <code>\|</code> | Structure Branch | `:`</br>`->`</br>`else:`</br>`else`</br>`elif`</br>`else-if`</br>`body`</br>`do`</br>`branch`</br>`then`</br>`in`</br>`using`</br>`no?`</br>`=>`</br>`from`</br>`catch` | Delimit the next section in a structure. | <code><structure open> <code> | <code> ...</code> |
 | <code>}</code> | Close A Structure | `end`</br>`endfor`</br>`end-for`</br>`endwhile`</br>`end-while`</br>`endlambda`</br>`end-lambda` | Match and close the nearest open structure. | <code><structure open> <code> } <code not in structure></code> |
 | <code>Ꮬ</code> | Two Character String |  | Push the next two characters as a string | <code>Ꮬ<character><character></code> |
 | <code>Ꮠ</code> | Two Byte Number |  | Push the next two bytes as a number, converted from bijective base 256 using the codepage (max 65535). Use `#c` to compress a number if it is <= 65535  | <code>Ꮠ<character><character></code> |

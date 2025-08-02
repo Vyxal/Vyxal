@@ -22,7 +22,7 @@ AnyString {
   SyntaxTrigraph { "#:" ![[] }
   Branch {"|"}
   ListStuff { "#[" | "#]"}
-  StructureOpen {"ξ" | "⎄" | "(" | "ƛ" | "#{" | "λ" | "⍾" | "{" | "ʎ" | "⎊" | "µ" | "["}
+  StructureOpen {"ξ" | "⎄" | "(" | "ƛ" | "λ" | "⍾" | "{" | "ʎ" | "#{" | "#T" | "⎊" | "µ" | "["}
   StructureClose {"}" | "]" | "⎋" | "⍟" | ")"}
   String {'"' (!["„”“\\] | "\\" _)* $["„”“]}
   SingleCharString { "'" _ }
