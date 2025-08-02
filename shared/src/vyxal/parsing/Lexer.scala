@@ -148,6 +148,7 @@ enum StructureType(val open: String) derives CanEqual:
   case LambdaStack extends StructureType("ξ")
   case LambdaMapEager extends StructureType("⍾")
   case IfStatement extends StructureType("#{")
+  case TryCatch extends StructureType("#T")
   case GeneratorStructure extends StructureType("⎄")
   case DefineStructure extends StructureType("#::")
   case LambdaMapPermutations extends StructureType("⎊")

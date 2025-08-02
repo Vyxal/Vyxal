@@ -532,6 +532,10 @@ private class Parser:
           case List(thenBranch, elseBranch) =>
             AST.Ternary(thenBranch, Some(elseBranch))
           case _ => throw BadStructureException("if")
+      case StructureType.TryCatch => branches match
+          case List(successBranch, errorBranch) =>
+            AST.TryCatch(successBranch, errorBranch)
+          case _ => throw BadStructureException("if")
       case StructureType.IfStatement =>
         if branches.sizeIs < 2 then throw BadStructureException("if")
         else
@@ -757,6 +761,7 @@ private class Parser:
               case Token(TokenType.UnpackVar, _, _) => depth += 1
               case Token(TokenType.StructureOpen, open, _) =>
                 if open == StructureType.Ternary.open then depth += 1
+                if open == StructureType.TryCatch.open then depth += 1
               case Token(TokenType.UnpackClose, _, _) => depth -= 1
               case Token(TokenType.StructureAllClose, _, _) => depth -= 1
               case _ =>
