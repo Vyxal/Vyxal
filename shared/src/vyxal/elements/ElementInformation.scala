@@ -2543,7 +2543,7 @@ object ElementInformation:
       Options(),
       Overload(
         name = "Valid Vyxal Code",
-        args = Seq("string"),
+        args = Seq("str"),
         description = "returns 0 if exec'd code errors, 1 if successful",
       ),
     ),
