@@ -119,13 +119,13 @@ object MiscHelpers:
 
   def validCode(value: VAny)(using ctx: Context): VAny =
     value match
-      case a: VStr =>
-        val validCode = Try(MiscHelpers.exec(a))
+      case VStr(a) =>
+        val validCode = Try(Interpreter.execute(a.toString)(using ctx))
         validCode match
-          case Success(str) => VNum(1)
+          case Success(str) => 1
           case Failure(ex) =>
-            if ex.isInstanceOf[VyxalException] then VNum(0)
-            else throw ex
+            if ex.isInstanceOf[VyxalException] then 0
+            else throw ex // idk how this might happen but you never know
       case _ => ??? // right now this is always a string
     end match
 

@@ -150,9 +150,10 @@ object Interpreter:
         else if elseBody.nonEmpty then execute(elseBody.get)
 
       case AST.TryCatch(success, error, _) =>
-        if MiscHelpers.validCode(ctx.peek.toString())(using ctx: Context).toBool
+        val evalCtx = ctx.makeChild().peek
+        if MiscHelpers.validCode(evalCtx).toBool
         then
-          ctx.push(MiscHelpers.exec(ctx.pop().toString()))
+          ctx.push(MiscHelpers.exec(evalCtx.toString()))
           execute(success)(using ctx: Context)
         else execute(error)
 

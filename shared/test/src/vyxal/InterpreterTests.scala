@@ -42,10 +42,15 @@ class InterpreterTests extends VyxalTests:
       )
     }
     describe("Try Catch") {
-      testMulti(
-        """ "[]]"#T:|"error caught"} """ -> VStr("error caught"),
-        """ "2 3+"#T:|"error caught"} """ -> VNum(5),
-      )
+      describe("Correctly catches errors") {
+        testMulti(
+          """ "[]]"#T:|"error caught"} """ -> VStr("error caught"),
+          """ "[]]"q#T:|"error caught"} """ -> VStr("[]]"), // unevald string
+          """ "2 3+"#T:|"error caught"} """ -> VNum(5),
+          """ "#Q"#T 2|"error caught"}  """ -> VStr("error caught"), 
+          // right now I think quit should count as an error but this can be changed
+        )
+      }
     }
 
     describe("For loops") {
