@@ -535,7 +535,7 @@ private class Parser:
       case StructureType.TryCatch => branches match
           case List(successBranch, errorBranch) =>
             AST.TryCatch(successBranch, errorBranch)
-          case _ => throw BadStructureException("if")
+          case _ => throw BadStructureException("try")
       case StructureType.IfStatement =>
         if branches.sizeIs < 2 then throw BadStructureException("if")
         else
