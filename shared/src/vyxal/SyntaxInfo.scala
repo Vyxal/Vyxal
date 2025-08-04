@@ -32,7 +32,7 @@ object SyntaxInfo:
     "(" ->
       Syntax(
         "For Loop",
-        Seq("for", "for<", "do-to-each", "each-as"),
+        Seq("for", "for<", "do-to-each", "each-as", "for-each"),
         "Open a for loop. For each item in the top of the stack, execute code, storing loop variable.",
         "<iterable> (<variable>|<code>}",
         structureOpener = true,
@@ -41,7 +41,7 @@ object SyntaxInfo:
     ")" ->
       Syntax(
         "Close Two Structures",
-        Seq("end-end"),
+        Seq("end-end", "close-two", "close-close"),
         "Match and close two open structures.",
         "<structure open><structure open> <code> ) <code not in structure>",
         structureOpener = false,
@@ -67,6 +67,7 @@ object SyntaxInfo:
           "end-while",
           "endlambda",
           "end-lambda",
+          "close",
         ),
         "Match and close the nearest open structure.",
         "<structure open> <code> } <code not in structure>",
@@ -76,7 +77,7 @@ object SyntaxInfo:
     "⎋" ->
       Syntax(
         "Close a Structure and Get the First Item",
-        Seq("end-and-head", "end-head"),
+        Seq("end-and-head", "end-head", "close-head", "close-top"),
         "Match and close the nearest open structure, then push the first item of the result to the stack",
         "<structure open> <code> ⎋ <code not in structure>",
         structureOpener = false,
@@ -85,7 +86,7 @@ object SyntaxInfo:
     "⍟" ->
       Syntax(
         "Close a Structure and Flatten",
-        Seq("end-and-flatten", "end-flatten"),
+        Seq("end-and-flatten", "end-flatten", "close-flatten"),
         "Match and close the nearest open structure, then flatten the result",
         "<structure open> <code> ⍟ <code not in structure>",
         structureOpener = false,
@@ -218,7 +219,7 @@ object SyntaxInfo:
     "ξ" ->
       Syntax(
         "Stack Lambda",
-        Seq("lambda-stack"),
+        Seq("lambda-stack", "stack<"),
         "Open a lambda that automatically takes arguments from the stack",
         "ξ<code>}",
         structureOpener = true,
