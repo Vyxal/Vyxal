@@ -1305,12 +1305,16 @@ object Elements:
             val iterable = pop().itr
             push(ListHelpers.flattenByDepth(iterable, layerCount))
           case s: VStr =>
-              val str = s.toString
-              push(str.split("\n") .map { 
-                line =>
-                val reversed = str.reverse.drop(1)
-                s"$str$reversed"
-              }.mkString("\n"))
+            val str = s.toString
+            push(
+              str
+                .split("\n")
+                .map { line =>
+                  val reversed = str.reverse.drop(1)
+                  s"$str$reversed"
+                }
+                .mkString("\n")
+            )
 
           case VList(a) =>
             if a.forall(_.isInstanceOf[(VStr | VNum)]) then
