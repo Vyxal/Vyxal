@@ -361,7 +361,7 @@ Element, Modifier, and Syntax Reference
 
 | Symbol | Keywords | Number of Elements | Overloads |
 |--------|--|------------------|-----------|
-| `⩔` | `at-simple-levels:`</br>`@simple:` | 1 | <table><tr><td>**At Simple Levels**</td><td>`mon`</td><td>Apply #1 at the simple levels of the top of the stack</td><td>`#[#[#[1\|2\|3#]\|#[#[4\|5\|#[6\|7\|8#]#]#]#]#] ⩔L -> [[3, [[1, 1, 3]]]]`</td></tr></table> |
+| `⩔` | `at-simple-levels:`</br>`@simple:`</br>`deep-vectorise:` | 1 | <table><tr><td>**At Simple Levels**</td><td>`mon`</td><td>Apply #1 at the simple levels of the top of the stack</td><td>`#[#[#[1\|2\|3#]\|#[#[4\|5\|#[6\|7\|8#]#]#]#]#] ⩔L -> [[3, [[1, 1, 3]]]]`</td></tr></table> |
 | `Ẅ` | `zip-with:`</br>`zip-reduce:` | 1 | <table><tr><td>**Zip With**</td><td>`dyd`</td><td>Pop two lists and zip them, reducing each pair with #1</td><td>`#[1\|2\|3#] #[4\|5\|6#] ¨; -> [[1, 4], [2, 5], [3, 6]]`</td></tr></table> |
 | `⎇` | `dip:`</br>`under:` | 1 | <table><tr><td>**Dip**</td><td>`mon`</td><td>Save the top stack item, apply #1, then push the saved item</td><td>`3 4 5 2 ⎇+ -> 3 9 2`</td></tr></table> |
 | `¿` | `if:` | 1 | <table><tr><td>**If**</td><td>`any`</td><td>If the top of the stack is truthy, apply #1</td><td>`3 1 ¿d -> 6`</td></tr></table> |
@@ -377,7 +377,7 @@ Element, Modifier, and Syntax Reference
 | `⟒` | `left-fork:`</br>`hook:` | 2 | <table><tr><td>**Left Fork**</td><td>`dyd+,dyd+`</td><td>Apply #1 but keep the under stack, and then apply #2. Effectively #2(#1(top, under), under)</td><td>`3 4 ⟒+× -> 28`</td></tr></br><tr><td>**Left Fork**</td><td>`mon,dyd+`</td><td>Apply #1 but keep the under stack, and then apply #2. Effectively #2(#1(top, under), under)</td><td>`"hEllO"f ⟒ʀ= -> [1, 0, 1, 1, 0]`</td></tr></table> |
 | `ᛞ` | `inner-product:` | 2 | <table><tr><td>**Inner Product**</td><td>`dyd,dyd`</td><td>Inner product of #1 and #2</td><td>`#[1\|2\|3#] #[4\|5\|6#] ᛞ×+ -> 32`</td></tr></table> |
 | `▦` | `outer-product:` | 1 | <table><tr><td>**Outer Product**</td><td>`dyd`</td><td>Outer product of #1 and #2</td><td>`#[1\|2\|3#] #[4\|5\|6#] ▦; -> [[[1,4],[1,5],[1,6]],[[2,4],[2,5],[2,6],[3,4],[3,5],[3,6]]]`</td></tr></table> |
-| `¨` | `each:` | 1 | <table><tr><td>**Each**</td><td>`any`</td><td>Map #1 over the top of the stack</td><td>`#[#[1\|2\|3#]\|#[4\|2\|3#]\|#[1\|5\|3#]#] ¨G -> [3, 4, 5]`</td></tr></table> |
+| `¨` | `each:`</br>`vectorise:` | 1 | <table><tr><td>**Each**</td><td>`any`</td><td>Map #1 over the top of the stack</td><td>`#[#[1\|2\|3#]\|#[4\|2\|3#]\|#[1\|5\|3#]#] ¨G -> [3, 4, 5]`</td></tr></table> |
 | `/` | `invariant-by:`</br>`foldl:` | 1 | <table><tr><td>**Invariant By**</td><td>`mon`</td><td>Is the top of the stack invariant under #1? (i.e. #1(x) == x)</td><td>`0 /d -> 1`</td></tr></br><tr><td>**Foldl**</td><td>`dyd+`</td><td>Fold left with #1</td><td>`#[1\|2\|3\|4#] /+ -> 10`</td></tr></table> |
 | `\\` | `reject-by:`</br>`scanl:` | 1 | <table><tr><td>**Reject By**</td><td>`mon`</td><td>Reject items of the top of the stack by results of #1</td><td>`#[1\|3\|4\|5\|2\|4#] \e -> [1, 3, 5]`</td></tr></br><tr><td>**Scanl**</td><td>`dyd+`</td><td>Scan left with #1</td><td>`#[1\|2\|3\|4#] \+ -> [1, 3, 6, 10]`</td></tr></table> |
 | `~` | `filter:`</br>`without-popping:`</br>`peek:` | 1 | <table><tr><td>**Filter**</td><td>`mon`</td><td>Filter the top of the stack with #1</td><td>`#[1\|2\|3\|4\|5#] ~2≛ -> [2, 4]`</td></tr></br><tr><td>**Peek**</td><td>`dyd+`</td><td>Apply #1 without popping</td><td>`3 4 5 ~+ -> 3 4 9`</td></tr></table> |
@@ -406,18 +406,18 @@ Element, Modifier, and Syntax Reference
 | <code>ƛ</code> | Open Map Lambda | `map-lam`</br>`map<`</br>`map-lambda` | Open a lambda that automatically maps its function to the top of the stack | <code>ƛ<code>}</code> |
 | <code>ʎ</code> | Open Filter Lambda | `filter-lam`</br>`filter<`</br>`filter-lambda` | Open a lambda that automatically filters the top of the stack by its function | <code>Ω<code>}</code> |
 | <code>µ</code> | Open Sort Lambda | `sort-lam`</br>`sort<`</br>`sort-lambda` | Open a lambda that automatically sorts the top of the stack by its function | <code>µ<code>}</code> |
-| <code>ξ</code> | Stack Lambda | `lambda-stack` | Open a lambda that automatically takes arguments from the stack | <code>ξ<code>}</code> |
+| <code>ξ</code> | Stack Lambda | `lambda-stack`</br>`stack<` | Open a lambda that automatically takes arguments from the stack | <code>ξ<code>}</code> |
 | <code>⍾</code> | Eager Map | `eager-map-lambda`</br>`eager-map-lam`</br>`eager-map<` | Open a lambda that maps its function to the top of the stack, but evaluates eagerly | <code>⍾<code>}</code> |
-| <code>⎋</code> | Close a Structure and Get the First Item | `end-and-head`</br>`end-head` | Match and close the nearest open structure, then push the first item of the result to the stack | <code><structure open> <code> ⎋ <code not in structure></code> |
-| <code>⍟</code> | Close a Structure and Flatten | `end-and-flatten`</br>`end-flatten` | Match and close the nearest open structure, then flatten the result | <code><structure open> <code> ⍟ <code not in structure></code> |
+| <code>⎋</code> | Close a Structure and Get the First Item | `end-and-head`</br>`end-head`</br>`close-head`</br>`close-top` | Match and close the nearest open structure, then push the first item of the result to the stack | <code><structure open> <code> ⎋ <code not in structure></code> |
+| <code>⍟</code> | Close a Structure and Flatten | `end-and-flatten`</br>`end-flatten`</br>`close-flatten` | Match and close the nearest open structure, then flatten the result | <code><structure open> <code> ⍟ <code not in structure></code> |
 | <code>⎊</code> | Open Map Over Permutations Lambda | `map-permutations`</br>`map-perms`</br>`map-permutations<`</br>`permutations<` | Open a lambda that automatically maps over the permutations of the top of the stack | <code>⎊<code>}</code> |
 | <code>⎄</code> | Generator Structure | `relation<`</br>`generate<`</br>`generate-from<` | Open a generator structure. Allows for generator expressions | <code>⎄<code>|<initial vector>}</code> |
 | <code>"</code> | Open/Close String |  | Open/close a string. If the string is closed, push it to the stack. Closes all string types | <code>"string contents"</code> |
 | <code>#$</code> | Retrieve Variable | `$` | Push the value of a variable. | <code>#$<variable></code> |
 | <code>#</code> | Miscellaneous Digraphs |  | Used for miscellaneous digraphs | <code>#<character></code> |
 | <code>'</code> | One Character String |  | Push the next character as a string | <code>'<character></code> |
-| <code>(</code> | For Loop | `for`</br>`for<`</br>`do-to-each`</br>`each-as` | Open a for loop. For each item in the top of the stack, execute code, storing loop variable. | <code><iterable> (<variable>|<code>}</code> |
-| <code>)</code> | Close Two Structures | `end-end` | Match and close two open structures. | <code><structure open><structure open> <code> ) <code not in structure></code> |
+| <code>(</code> | For Loop | `for`</br>`for<`</br>`do-to-each`</br>`each-as`</br>`for-each` | Open a for loop. For each item in the top of the stack, execute code, storing loop variable. | <code><iterable> (<variable>|<code>}</code> |
+| <code>)</code> | Close Two Structures | `end-end`</br>`close-two`</br>`close-close` | Match and close two open structures. | <code><structure open><structure open> <code> ) <code not in structure></code> |
 | <code>.</code> | Decimal Separator |  | Used to separate the integer and fractional parts of a number | <code><integer>.<fractional></code> |
 | <code>0</code> | Numeric Literal |  | The number 0 | <code>0</code> |
 | <code>1</code> | Numeric Literal |  | The number 1 | <code>1</code> |
@@ -434,7 +434,7 @@ Element, Modifier, and Syntax Reference
 | <code>k</code> | Constant Digraphs |  | Used for constant-related digraphs | <code>k<character></code> |
 | <code>{</code> | While Loop | `while`</br>`while<` | Open a while loop. While the top of the stack is truthy, execute code. | <code>{<condition>|<code>}</code> |
 | <code>\|</code> | Structure Branch | `:`</br>`->`</br>`else:`</br>`else`</br>`elif`</br>`else-if`</br>`body`</br>`do`</br>`branch`</br>`then`</br>`in`</br>`using`</br>`no?`</br>`=>`</br>`from`</br>`catch` | Delimit the next section in a structure. | <code><structure open> <code> | <code> ...</code> |
-| <code>}</code> | Close A Structure | `end`</br>`endfor`</br>`end-for`</br>`endwhile`</br>`end-while`</br>`endlambda`</br>`end-lambda` | Match and close the nearest open structure. | <code><structure open> <code> } <code not in structure></code> |
+| <code>}</code> | Close A Structure | `end`</br>`endfor`</br>`end-for`</br>`endwhile`</br>`end-while`</br>`endlambda`</br>`end-lambda`</br>`close` | Match and close the nearest open structure. | <code><structure open> <code> } <code not in structure></code> |
 | <code>Ꮬ</code> | Two Character String |  | Push the next two characters as a string | <code>Ꮬ<character><character></code> |
 | <code>Ꮠ</code> | Two Byte Number |  | Push the next two bytes as a number, converted from bijective base 256 using the codepage (max 65535). Use `#c` to compress a number if it is <= 65535  | <code>Ꮠ<character><character></code> |
 | <code>Þ</code> | List Digraphs |  | Used for list-related digraphs | <code>Þ<character></code> |
