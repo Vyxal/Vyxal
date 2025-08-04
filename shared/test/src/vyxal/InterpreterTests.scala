@@ -47,7 +47,7 @@ class InterpreterTests extends VyxalTests:
           """ "[]]"#T:|"error caught"} """ -> VStr("error caught"),
           """ "[]]"q#T:|"error caught"} """ -> VStr("[]]"), // unevald string
           """ "2 3+"#T:|"error caught"} """ -> VNum(5),
-          """ "#Q"#T 2|"error caught"}  """ -> VStr("error caught"), 
+          """ "#Q"#T 2|"error caught"}  """ -> VStr("error caught"),
           // right now I think quit should count as an error but this can be changed
         )
       }
