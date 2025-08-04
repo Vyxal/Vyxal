@@ -2956,7 +2956,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⎘",
-      keywords = Seq("flatten-by-depth", "flatten-depth", "one-flatten"),
+      keywords = Seq("flatten-by-depth", "flatten-depth", "one-flatten", "palindromise"),
       arity = 2,
       Options(),
       Overload(
@@ -2973,6 +2973,11 @@ object ElementInformation:
         name = "Flatten-each",
         args = Seq("lst[num|str]"),
         description = "Flattens each item in #1",
+      ),
+      Overload(
+        name = "Palindromise String",
+        args = Seq("str"),
+        description = "Palindromise #1",
       ),
     ),
     AddElement(

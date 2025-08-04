@@ -1223,6 +1223,7 @@ object Elements:
     },
     addPart("√", Monad, true) {
       case a: VNum => a.sqrt
+      // VStr
     },
     addPart("⍰", Monad, true) {
       case a: VNum => a != VNum(0)
@@ -1303,12 +1304,20 @@ object Elements:
           case layerCount: VNum =>
             val iterable = pop().itr
             push(ListHelpers.flattenByDepth(iterable, layerCount))
+          case s: VStr =>
+              val str = s.toString
+              push(str.split("\n") .map { 
+                line =>
+                val reversed = str.reverse.drop(1)
+                s"$str$reversed"
+              }.mkString("\n"))
+
           case VList(a) =>
             if a.forall(_.isInstanceOf[(VStr | VNum)]) then
               val t = a.map(x => VList(ListHelpers.flatten(x.itr)))
               push(VList(t)) // there has GOT to be a better way to do this
             else push(ListHelpers.flattenByDepth(a, 1))
-          case _ => throw UnsupportedOverloadException("⎘", "String | Function")
+          case _ => throw UnsupportedOverloadException("⎘", "Function")
       },
     addPart("ꜝ", Monad, false) {
       case a: VNum => VNum(a.itr.filter(x => x != VNum(0)).mkString)
