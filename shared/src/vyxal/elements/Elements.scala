@@ -1385,8 +1385,8 @@ object Elements:
       direct(Triad) {
         val top = pop()
         val under = pop()
-        val kicker = pop()
-        push(top, kicker, under)
+        val bottom = pop()
+        push(top, bottom, under)
       },
     addPart("⧢", Dyad, false) {
       case (VList(lst), numberOfChunks: VNum) =>
