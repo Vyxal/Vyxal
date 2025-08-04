@@ -1021,8 +1021,7 @@ object Elements:
       case (a: VList, b: VNum) => ListHelpers.wrapLength(a, b)
       case (a: VNum, b: VNum) =>
         if b <= 0 then Seq.empty
-        else
-          a.toString.grouped(b.toInt).toSeq.map(n => VNum(n))
+        else a.toString.grouped(b.toInt).toSeq.map(n => VNum(n))
       case (VStr(a), b: VNum) =>
         if b <= 0 then Seq.empty
         else a.grouped(b.toInt).toSeq
@@ -1297,12 +1296,11 @@ object Elements:
 
     },
     "⍨" -> direct(Monad) { pop().itr.foreach(push(_)) },
-    addPart("γ", Monad, false) { 
+    addPart("γ", Monad, false) {
       case VStr(str) => str.grouped(2).toSeq
       case VList(lst) => ListHelpers.wrapLength(lst, 2)
       case num: VNum => num.toString.grouped(2).toSeq.map(n => VNum(n))
     },
-    
     "⎘" ->
       direct(Monad) {
         pop() match
