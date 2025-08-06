@@ -1224,13 +1224,14 @@ object Elements:
     addPart("√", Monad, true) {
       case a: VNum => a.sqrt
       case s: VStr =>
-          val str = s.toString
-            str.split("\n")
-              .map { line =>
-                val reversed = str.reverse.drop(1)
-                s"$str$reversed"
-              }
-              .mkString("\n")
+        val str = s.toString
+        str
+          .split("\n")
+          .map { line =>
+            val reversed = str.reverse.drop(1)
+            s"$str$reversed"
+          }
+          .mkString("\n")
     },
     addPart("⍰", Monad, true) {
       case a: VNum => a != VNum(0)

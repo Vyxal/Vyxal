@@ -2961,8 +2961,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⎘",
-      keywords =
-        Seq("flatten-by-depth", "flatten-depth", "one-flatten"),
+      keywords = Seq("flatten-by-depth", "flatten-depth", "one-flatten"),
       arity = 2,
       Options(),
       Overload(
