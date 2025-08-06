@@ -236,7 +236,7 @@ Element, Modifier, and Syntax Reference
 | <code>k2</code> | <code>10000</code></br><code>ten-thousand</code> | 0 |   | **10000**: Push 10000 to the stack |
 | <code>k3</code> | <code>100000</code></br><code>hundred-thousand</code> | 0 |   | **100000**: Push 100000 to the stack |
 | <code>k4</code> | <code>1000000</code></br><code>million</code> | 0 |   | **1000000**: Push 1000000 to the stack |
-| <code>k5</code> | <code>4294967296</code></br><code>b32</code> | 0 |   | **4294967296**: Push 4294967296 to the stack |
+| <code>k5</code> | <code>4294967296</code></br><code>bit-32</code> | 0 |   | **4294967296**: Push 4294967296 to the stack |
 | <code>k6</code> | <code>&HEX-DIGITS</code> | 0 |   | **Hex Digits**: Push "0123456789abcdef" to the stack |
 | <code>k9</code> | <code>&NON-ZERO-DIGITS</code> | 0 |   | **Non-Zero Digits**: Push "123456789" to the stack |
 | <code>k<</code> | <code>&OPEN-FISH-BRACKETS</code> | 0 |   | **Open Brackets**: Push "([{<" to the stack |
