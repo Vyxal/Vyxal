@@ -3485,7 +3485,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "k5",
-      keywords = Seq("4294967296", "b32"),
+      keywords = Seq("4294967296", "bit-32"),
       arity = 0,
       Options(),
       Overload(
