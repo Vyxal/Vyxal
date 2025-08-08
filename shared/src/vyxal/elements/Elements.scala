@@ -1226,6 +1226,15 @@ object Elements:
     },
     addPart("√", Monad, true) {
       case a: VNum => a.sqrt
+      case s: VStr =>
+        val str = s.toString
+        str
+          .split("\n")
+          .map { line =>
+            val reversed = str.reverse.drop(1)
+            s"$str$reversed"
+          }
+          .mkString("\n")
     },
     addPart("⍰", Monad, true) {
       case a: VNum => a != VNum(0)
@@ -1312,7 +1321,7 @@ object Elements:
               val t = a.map(x => VList(ListHelpers.flatten(x.itr)))
               push(VList(t)) // there has GOT to be a better way to do this
             else push(ListHelpers.flattenByDepth(a, 1))
-          case _ => throw UnsupportedOverloadException("⎘", "String | Function")
+          case _ => throw UnsupportedOverloadException("⎘", "Function")
       },
     addPart("ꜝ", Monad, false) {
       case a: VNum => VNum(a.itr.filter(x => x != VNum(0)).mkString)

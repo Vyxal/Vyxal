@@ -2828,13 +2828,18 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "√",
-      keywords = Seq("square-root", "sqrt"),
+      keywords = Seq("square-root", "sqrt", "palindromise"),
       arity = 1,
       Options(vectorises = true),
       Overload(
         name = "Square Root",
         args = Seq("num"),
         description = "Square root of #1",
+      ),
+      Overload(
+        name = "Palindromise String",
+        args = Seq("str"),
+        description = "Palindromise #1",
       ),
     ),
     AddElement(

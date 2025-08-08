@@ -1632,6 +1632,7 @@
   - in:
     - -1
     out: !num 0j1
+  - {in: ["hello"], out: "hellolleh"}
 
 "◌":
   - {in: [2.3], out: 2}
