@@ -157,7 +157,7 @@ Element, Modifier, and Syntax Reference
 | <code>≓</code> | <code>mirror</code> | 1 |   | **Mirror** (`any`): Mirror #1 (#1 + reverse(#1)), as the original type |
 | <code>Ͼ</code> | <code>vectorised-sums</code></br><code>v/+</code> | 1 | vec  | **Vectorised Sums** (`lst`): Sum of each item in #1. Functionally equivalent to `¨∑` |
 | <code>ᴥ</code> | <code>exec</code></br><code>ten-power</code></br><code>call</code></br><code>@</code> | 1 | vec  | **10 to the Power of** (`num`): 10 ** #1</br>**Execute** (`str`): Execute #1 as Vyxal code</br>**Call Function** (`fun`): Call function #1 |
-| <code>ℳ</code> | <code>modular</code></br><code>matrix-multiply</code></br><code>regex-full-match?</code> | 2 |   | **Every Nth Element** (`itr,num`): Every #2th element of #1</br>**Every Nth Element** (`num,itr`): Every #1th element of #2</br>**Matrix Multiply** (`lst,lst`): Matrix multiply #1 and #2</br>**Regex Full Match?** (`str,str`): Does pattern #2 fully match #1 |
+| <code>ℳ</code> | <code>modular</code></br><code>matrix-multiply</code></br><code>regex-full-match?</code></br><code>round-to</code></br><code>n-places</code> | 2 |   | **Every Nth Element** (`itr,num`): Every #2th element of #1</br>**Every Nth Element** (`num,itr`): Every #1th element of #2</br>**Matrix Multiply** (`lst,lst`): Matrix multiply #1 and #2</br>**Round to N places** (`num,num`): Round #1 to #2 decimal places. Negative values of #2 will round to that power of 10</br>**Regex Full Match?** (`str,str`): Does pattern #2 fully match #1 |
 | <code>℗</code> | <code>is-prime</code></br><code>prime?</code></br><code>quine-cheese</code> | 1 | vec  | **Is Prime** (`num`): Is #1 a prime number?</br>**Quine Cheese** (`str`): Quotify #1 and prepend it to #1. (Useful for quines like `"℗"℗`) |
 | <code>↸</code> | <code>shift</code></br><code>bread</code> | 3 |   | **Shift** (`any,any,any`): Move the top of the stack down two places |
 | <code>⍢</code> | <code>parity</code></br><code>bit</code></br><code>last-half</code> | 1 | vec  | **Parity** (`num`): Parity of #1 (1 if odd, 0 if even) --> #1 % 2</br>**Last String Half** (`str`): Last half of #1 |
@@ -173,7 +173,7 @@ Element, Modifier, and Syntax Reference
 | <code>★</code> | <code>asterisk</code></br><code>star</code> | 0 |   | **Asterisk**: Push an asterisk to the stack |
 | <code>ᑂ</code> | <code>headless-top</code></br><code>head-extract-under</code> | 1 |   | **Head on Top, Rest on Bottom** (`any`): Push #1[1:] and #1[0]</br>**Range [2, n]** (`num`): Range from 2 to #1 inclusive |
 | <code>∻</code> | <code>integer-divide</code></br><code>int-div</code></br><code>//</code> | 2 | vec  | **Integer Divide** (`num,num`): #1 // #2 |
-| <code>√</code> | <code>square-root</code></br><code>sqrt</code> | 1 | vec  | **Square Root** (`num`): Square root of #1 |
+| <code>√</code> | <code>square-root</code></br><code>sqrt</code></br><code>palindromise</code> | 1 | vec  | **Square Root** (`num`): Square root of #1</br>**Palindromise String** (`str`): Palindromise #1 |
 | <code>⍰</code> | <code>truthy?</code> | 1 | vec  | **Truthy?** (`scl`): Is #1 truthy? (Not 0, empty, or false) |
 | <code>◌</code> | <code>round</code></br><code>lowercase?</code></br><code>is-lowercase</code> | 1 | vec  | **Round** (`num`): Round #1 to the nearest integer, half-up</br>**Is Lowercase** (`str`): Check if #1 is lowercase. With string.len > 1, vectorises over each character |
 | <code>δ</code> | <code>deltas</code></br><code>differences</code> | 1 |   | **Deltas** (`lst`): Deltas/forward differences of #1 - [a - b, b - c, c - d, ...] |
