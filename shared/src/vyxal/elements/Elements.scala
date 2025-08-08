@@ -1119,6 +1119,9 @@ object Elements:
       case (a: (VList | VStr), b: VNum) => ListHelpers.nthItems(a, b)
       case (a: VNum, b: (VList | VStr)) => ListHelpers.nthItems(b, a)
       case (a: VList, b: VList) => ListHelpers.matrixMultiply(a, b)
+      case (a: VNum, b: VNum) =>
+        if b == VNum(0) then NumberHelpers.round(a)
+        else a - (a % (10 ** -(b.toInt)))
       case (VStr(a), VStr(b)) => StringHelpers.r(b).matches(a)
     },
     addPart("℗", Monad, true) {

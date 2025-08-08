@@ -2567,7 +2567,13 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ℳ",
-      keywords = Seq("modular", "matrix-multiply", "regex-full-match?"),
+      keywords = Seq(
+        "modular",
+        "matrix-multiply",
+        "regex-full-match?",
+        "round-to",
+        "n-places",
+      ),
       arity = 2,
       Options(),
       Overload(
@@ -2580,6 +2586,12 @@ object ElementInformation:
         name = "Matrix Multiply",
         args = Seq("lst", "lst"),
         description = "Matrix multiply #1 and #2",
+      ),
+      Overload(
+        name = "Round to N places",
+        args = Seq("num", "num"),
+        description =
+          "Round #1 to #2 decimal places. Negative values of #2 will round to that power of 10",
       ),
       Overload(
         name = "Regex Full Match?",
