@@ -2567,7 +2567,13 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ℳ",
-      keywords = Seq("modular", "matrix-multiply", "regex-full-match?", "round-to", "n-places"),
+      keywords = Seq(
+        "modular",
+        "matrix-multiply",
+        "regex-full-match?",
+        "round-to",
+        "n-places",
+      ),
       arity = 2,
       Options(),
       Overload(
