@@ -2582,6 +2582,11 @@ object ElementInformation:
         description = "Matrix multiply #1 and #2",
       ),
       Overload(
+        name = "Round to N places",
+        args = Seq("num", "num"),
+        description = "Round #1 to #2 decimal places. Negative values of #2 will round to that power of 10",
+      ),
+      Overload(
         name = "Regex Full Match?",
         args = Seq("str", "str"),
         description = "Does pattern #2 fully match #1",
