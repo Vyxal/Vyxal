@@ -1017,7 +1017,11 @@ object Elements:
         while !predicate(VNum(res)).toBool do res += 1
         res
     },
-    addPart("Ϣ", Dyad, false) { // Wrap to length of string in progress
+    addPart(
+      "Ϣ",
+      Dyad,
+      false,
+    ) { // Wrap to length of string in progress
       case (a: VList, b: VNum) => ListHelpers.wrapLength(a, b)
       case (a: VNum, b: VNum) =>
         if b <= 0 then Seq.empty
@@ -1326,7 +1330,7 @@ object Elements:
             else push(ListHelpers.flattenByDepth(a, 1))
           case _ => throw UnsupportedOverloadException("⎘", "Function")
       },
-    addPart("ꜝ", Monad, false) { //split on whitespace?
+    addPart("ꜝ", Monad, false) { // split on whitespace?
       case a: VNum => VNum(a.itr.filter(x => x != VNum(0)).mkString)
       case VStr(a) => a // TODO: Better overload
       case VList(a) => a.itr.filter(elem => elem.toBool)
