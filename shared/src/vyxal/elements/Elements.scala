@@ -582,6 +582,7 @@ object Elements:
     },
     addPart("Π", Monad, false) {
       case VList(itr) => ListHelpers.product(itr)
+      case VStr(s) => StringHelpers.isAscii(s)
       case num: VNum => NumberHelpers.toBinary(num).mkString
       case predicate: VFun =>
         // Amusingly, copilot originally tried to put a `getOrElse` here

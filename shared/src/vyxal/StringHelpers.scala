@@ -214,6 +214,8 @@ object StringHelpers:
     }.mkString
 
   def isAlphaNumeric(s: String): Boolean = s.matches("^[0-9A-Za-z]*$")
+  
+  def isAscii(s: String): Boolean = s.matches("^[ -~]*$")
 
   def isVowel(c: Char): VNum = "aeiouAEIOU".contains(c)
 
