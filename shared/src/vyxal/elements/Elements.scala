@@ -307,6 +307,10 @@ object Elements:
       case (VStr(a), VStr(b)) =>
         val res = StringHelpers.r(b).findFirstMatchIn(a)
         if res.isDefined then res.get.subgroups else Seq.empty
+      case (a: VPhysical, b: VFun) =>
+          VList(0 +: FuncHelpers.reduceOverPairs(b, makeIterable(a)))
+      case (a: VFun, b: VPhysical) =>
+          VList(0 +: FuncHelpers.reduceOverPairs(a, makeIterable(b)))
     },
     addPart("R", Dyad, true) {
       case (a: VNum, b: VNum) => NumberHelpers.range(a, b).dropRight(1)
