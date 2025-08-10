@@ -2994,7 +2994,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ꜝ",
-      keywords = Seq("keep-truthy"),
+      keywords = Seq("keep-truthy", "split-whitespace"),
       arity = 1,
       Options(),
       Overload(
