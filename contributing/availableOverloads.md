@@ -6,7 +6,7 @@ What monographs are missing specific overloads if someone is looking to add a ne
 | Vectorizes? | Num                            | Str                                                          |
 |-------------|--------------------------------|--------------------------------------------------------------|
 | Yes         |               |          |
-| No          | <code>Ͼ</code>, <code>Ṫ</code> | <code>Π</code>,<code>Ͼ</code>, <code>Ṫ</code> |
+| No          | <code>Ͼ</code>, <code>Ṫ</code> | <code>Π</code>,<code>Ͼ</code>,<code>ꜝ</code>, <code>Ṫ</code> |
 
 
 ## Dyads
