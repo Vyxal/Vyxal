@@ -1326,9 +1326,9 @@ object Elements:
             else push(ListHelpers.flattenByDepth(a, 1))
           case _ => throw UnsupportedOverloadException("⎘", "Function")
       },
-    addPart("ꜝ", Monad, false) { // split on whitespace?
+    addPart("ꜝ", Monad, false) { 
       case a: VNum => VNum(a.itr.filter(x => x != VNum(0)).mkString)
-      case VStr(a) => a // TODO: Better overload
+      case VStr(a) => a
       case VList(a) => a.itr.filter(elem => elem.toBool)
     },
     addPart("≈", Monad, false) {
