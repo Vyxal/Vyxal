@@ -1017,11 +1017,7 @@ object Elements:
         while !predicate(VNum(res)).toBool do res += 1
         res
     },
-    addPart(
-      "Ϣ",
-      Dyad,
-      false,
-    ) { // Wrap to length of string in progress
+    addPart("Ϣ", Dyad, false) {
       case (a: VList, b: VNum) => ListHelpers.wrapLength(a, b)
       case (a: VNum, b: VNum) =>
         if b <= 0 then Seq.empty
