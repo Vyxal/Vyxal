@@ -1338,7 +1338,7 @@ object Elements:
       },
     addPart("ꜝ", Monad, false) {
       case a: VNum => VNum(a.itr.filter(x => x != VNum(0)).mkString)
-      case VStr(a) => a // TODO: Better overload
+      case VStr(a) => a.split("\n").toSeq.map(b => b.split(" ").toSeq)
       case VList(a) => a.itr.filter(elem => elem.toBool)
     },
     addPart("≈", Monad, false) {
