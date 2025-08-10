@@ -2356,7 +2356,7 @@ object ElementInformation:
       Options(),
       Overload(
         name = "Chunk to Length",
-        args = Seq("any", "num"),
+        args = Seq("any", "num|str"),
         description = "Chunk {#1|#2} into parts of length {#2|#1}",
         typeSwitchable = true,
       ),

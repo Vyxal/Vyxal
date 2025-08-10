@@ -1029,6 +1029,16 @@ object Elements:
         if a <= 0 then Seq.empty
         else b.grouped(a.toInt).toSeq
       case (a: VNum, b: VList) => ListHelpers.wrapLength(b, a)
+      case (VStr(a), b: VList) =>
+        if a.length == 0 then Seq.empty
+        else ListHelpers.wrapLength(b, VNum(a.length))
+      case (a: VList, VStr(b)) => 
+        if b.length == 0 then Seq.empty
+        else ListHelpers.wrapLength(a, VNum(b.length))
+      case (VStr(a), VStr(b)) =>
+        if (a.length == 0 || b.length == 0) then Seq.empty
+        else if b.length < a.length then a.grouped(b.length).toSeq // always chunk to the shorter length
+        else b.grouped(a.length).toSeq
       case (a: VList, b: VList) =>
         if b.forall(_.isInstanceOf[VNum]) then
           ListHelpers.partitionBy(a, b.map(_.asInstanceOf[VNum]))
