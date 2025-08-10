@@ -2999,8 +2999,13 @@ object ElementInformation:
       Options(),
       Overload(
         name = "Keep Truthy",
-        args = Seq("lst"),
+        args = Seq("lst|num"),
         description = "Keep only the truthy elements of #1",
+      ),
+      Overload(
+        name = "Split whitespace",
+        args = Seq("str"),
+        description = "Equivalent to `e⌈`",
       ),
     ),
     AddElement(
