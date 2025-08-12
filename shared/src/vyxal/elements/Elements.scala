@@ -1232,6 +1232,10 @@ object Elements:
             push(
               iter.drop(1)
             )
+          case fn: VFun =>
+            val iter = pop().itr
+            push(ListHelpers.augmentAssign(iter, 0, fn))
+            
           case arg => throw UnimplementedOverloadException("ᑂ", List(arg))
       },
     addPart("∻", Dyad, true) {
