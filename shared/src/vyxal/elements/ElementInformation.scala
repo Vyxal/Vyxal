@@ -814,7 +814,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "Q",
-      keywords = Seq("remove-at", "regex-groups"),
+      keywords = Seq("remove-at", "regex-groups", "overpairs-prepend-zero"),
       arity = 2,
       Options(),
       Overload(
@@ -826,6 +826,11 @@ object ElementInformation:
         name = "Regex Groups",
         args = Seq("str", "str"),
         description = "Return the groups of the first match of #2 in #1",
+      ),
+      Overload(
+        name = "Reduce Overlapping Pairs",
+        args = Seq("lst", "fun"),
+        description = "Reduce overlapping pairs in {#1|#2} by function {#2|#1} and prepend 0",
       ),
     ),
     AddElement(
