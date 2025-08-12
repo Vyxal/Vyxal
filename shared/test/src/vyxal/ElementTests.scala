@@ -352,6 +352,12 @@ class ElementTests extends VyxalTests:
     )
   }
 
+  describe("Element ᑂ") {
+    testMulti(
+      " #[5|4|3|2|1#] ⑵½⌊ᑂ" -> vSeq(2, 4, 3, 2, 1)
+    )
+  }
+
   describe("Element ℂ") {
     testMulti(
       "9⑵½⌊ℂ" -> VNum(0)
