@@ -38495,4 +38495,21 @@ def test_ParseIntoList():
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
+def test_LazyListConvert():
+
+    stack = [vyxalify(lambda x: (x + 1)**2)] # Equivalent to x**2 + 2x + 1
+    expected_slice = vyxalify([1, 4, 9, 16, 25, 36, 49, 64, 81, 100]) # Should be 0-indexed
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile("ÞL")
+    exec(code)
+
+    ctx.stacks.pop()
+    actual_slice = vyxalify(stack[-1][:10])
+
+    print(simplify(expected_slice), simplify(actual_slice))
+
+    assert equals(actual_slice, expected_slice, ctx), f"Expected slice to be {str(expected_slice)}, got slice {str(actual_slice)}"
 
