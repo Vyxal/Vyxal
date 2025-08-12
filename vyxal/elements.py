@@ -7946,6 +7946,12 @@ def zfiller(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(zfiller, lhs, rhs, ctx=ctx))()
 
 
+@element("ÞL", 1)
+def lazylistconvert(lhs, ctx):
+    """Element ÞL
+    Turns the functon at the top of the stack into a lazylist.
+    """
+    
 modifiers: dict[str, str] = {
     "&": (
         "stack.append(ctx.register)\n"
