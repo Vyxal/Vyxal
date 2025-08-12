@@ -7949,9 +7949,10 @@ def zfiller(lhs, rhs, ctx):
 @element("ÞL", 1)
 def lazylistconvert(lhs, ctx):
     """Element ÞL
-    Turns the functon at the top of the stack into a lazylist.
+    Turns the functon at the top of the stack into a lazylist. The function must have an arity of 1.
     """
-    
+    if type(lhs) == types.FunctionType: # Is this the right way to make sure something is a function?
+        return vectorize(lhs, infinite_positives(ctx), ctx=ctx) # So it turns out vyxal functions are stored like normal functions.
 modifiers: dict[str, str] = {
     "&": (
         "stack.append(ctx.register)\n"
