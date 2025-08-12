@@ -13,6 +13,7 @@ import vyxal.StringHelpers.padLeft
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
+import vyxal.ListHelpers.truthyIndices
 
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
@@ -1996,6 +1997,34 @@ object Elements:
               Interpreter.executeFn(function, args = Seq(right, left))
           }
         )
+      },
+      "#|apply-at-truthy" ->
+      direct(Dyad) {
+        val function = pop().asInstanceOf[VFun]
+        val arg1 = pop()
+        val arg2 = pop()
+        var truthyList = VList(Seq(0))
+        var argument: VPhysical = VNum(0)
+
+        (arg1, arg2) match
+          case (arg1: VList, arg2: VList) => 
+            truthyList = arg1
+            argument = arg2
+          case (arg1: VPhysical, arg2: VList) => 
+            truthyList = arg2
+            argument = arg1
+          case (arg1: VList, arg2: VPhysical) => 
+            truthyList = arg1
+            argument = arg2
+          case arg => throw UnimplementedOverloadException("#|apply-at-truthy", List(arg1, arg2))
+
+        val indices = ListHelpers.truthyIndices(truthyList)
+        var temp = ListHelpers.makeIterable(argument)
+        for index <- indices do
+          temp = ListHelpers.augmentAssign(temp, index, function)
+        if argument.isInstanceOf[VStr] then push(temp.mkString)
+        else push(temp)
+
       },
     "#|if" ->
       direct(Monad) {

@@ -5163,6 +5163,17 @@ object ElementInformation:
           "If the top of the stack is truthy, apply #1, else apply #2",
         example = "3 1 #⍰d½ -> 6",
       ),
+    ),AddModifier(
+      symbol = "#Ṭ",
+      keywords = Seq("apply-truthy:", "map-at-truthy:", "at-truthy-indices:"),
+      numberOfElements = 1,
+      ModifierOverload(
+        name = "Apply at Truthy Indices",
+        args = Seq("any"),
+        description =
+          "Given a list and an argument, pop both and apply #1 to the argument at truthy indices in the list",
+        example = """ "hello" #[1|0|0|1|1#] #Ṭʁ -> HelLO"""
+      ),
     ),
     AddModifier(
       symbol = "⎇",
