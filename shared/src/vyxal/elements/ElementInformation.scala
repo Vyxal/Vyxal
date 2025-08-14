@@ -2818,7 +2818,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ᑂ",
-      keywords = Seq("headless-top", "head-extract-under"),
+      keywords = Seq("headless-top", "head-extract-under", "apply-at-head", "apply-to-head", "head-apply"),
       arity = 1,
       Options(),
       Overload(
@@ -2830,6 +2830,11 @@ object ElementInformation:
         name = "Range [2, n]",
         args = Seq("num"),
         description = "Range from 2 to #1 inclusive",
+      ),
+      Overload(
+        name = "Apply to Head",
+        args = Seq("fun"),
+        description = "Apply #1 to the first item in the item underneath",
       ),
     ),
     AddElement(

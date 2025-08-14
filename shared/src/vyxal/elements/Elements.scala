@@ -9,11 +9,9 @@ import vyxal.parsing.Codepage
 import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.defaultEmpty
-import vyxal.StringHelpers.padLeft
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
-import vyxal.ListHelpers.truthyIndices
 
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
@@ -297,9 +295,17 @@ object Elements:
         if index < 0 then
           a.take(a.length + index) + a.drop(a.length + index + 1)
         else a.take(index) + a.drop(index + 1)
-      case (a, b: VNum) =>
+      case (a:VPhysical, b: VNum) =>
         val lst = a.itr
         val index = b.toInt
+        if index < 0 then
+          VList(
+            lst.take(lst.length + index) ++ lst.drop(lst.length + index + 1)
+          )
+        else VList(lst.take(index) ++ lst.drop(index + 1))
+      case (a: VNum, b: VPhysical) =>
+        val lst = b.itr
+        val index = a.toInt
         if index < 0 then
           VList(
             lst.take(lst.length + index) ++ lst.drop(lst.length + index + 1)
@@ -1238,11 +1244,10 @@ object Elements:
               iter.drop(1)
             )
           case fn: VFun =>
-            val iter = pop().itr
-            iter match
-              case itr: VPhysical =>
-                push(ListHelpers.augmentAssign(iter, 0, fn))
-              case arg => throw  UnimplementedOverloadException("ᑂ", List(arg))      
+            val iter = pop()
+            if iter.isInstanceOf[VPhysical] then
+                push(ListHelpers.augmentAssign(iter.itr, 0, fn))
+            else throw  UnimplementedOverloadException("ᑂ", List(fn, iter))      
           case arg => throw UnimplementedOverloadException("ᑂ", List(arg))
       },
     addPart("∻", Dyad, true) {
