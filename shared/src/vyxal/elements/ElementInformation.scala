@@ -4291,6 +4291,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "#D",
+      keywords = Seq("decompress", "uncompress", "dict-decompress"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Decompress",
+        args = Seq("str"),
+        description = "Decompress #1 using the Vyxal compression algorithm",
+      ),
+    ),
+    AddElement(
       symbol = "#c",
       keywords = Seq("b252compress"),
       arity = 1,
