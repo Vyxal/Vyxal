@@ -1569,6 +1569,10 @@ object Elements:
     addPart("#C", Monad, true) {
       case VStr(a) => StringHelpers.compressDictionary(a)
     },
+    addPart("#D", Monad, true) {
+      case VStr(a) => StringHelpers.decompress(a)
+    },
+    
     "#Q" ->
       direct(0) {
         throw QuitException()
