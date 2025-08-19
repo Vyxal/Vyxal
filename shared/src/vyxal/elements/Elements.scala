@@ -366,11 +366,11 @@ object Elements:
       case (a, b: VFun) => MiscHelpers.scanl(a.ritr, b)
       case (a, b: VNum) => Seq.fill(b.toInt)(a)
       case (a: VNum, b) => Seq.fill(a.toInt)(b)
-      case (a: (VList | VStr), b: VList) =>
+      case (a: VIter, b: VList) =>
         val temp = b
           .map {
             case n: VNum => n.toInt
-            case l: (VStr | VList) => ListHelpers.makeIterable(l).length
+            case l: VIter => ListHelpers.makeIterable(l).length
             case _ =>
               // Function / Object, which doesn't have a reasonable
               // way to convert to a number
@@ -475,7 +475,7 @@ object Elements:
           .map(overlap => ListHelpers.reduce(overlap, b))
     },
     addPart("p", Dyad, false) {
-      case (VStr(a), b: (VStr | VNum)) => b.toString + a
+      case (VStr(a), b: VVal) => b.toString + a
       case (a: VNum, VStr(b)) => b + a.toString
       case (a: VNum, b: VNum) => MiscHelpers.eval(b.toString + a.toString)
       case (a: VList, b) => VList(b +: a)
@@ -546,11 +546,8 @@ object Elements:
         FuncHelpers.recursion()
       },
     addPart("y", Triad, false) {
-      case (
-            VStr(a),
-            b: (VList | VNum | VStr),
-            c: (VList | VNum | VStr),
-          ) => StringHelpers.transliterate(
+      case (VStr(a), b: VPhysical, c: VPhysical) => 
+        StringHelpers.transliterate(
           a,
           ListHelpers.makeIterable(b),
           ListHelpers.makeIterable(c),
@@ -628,8 +625,8 @@ object Elements:
     },
     addPart("⦰", Dyad, false) {
       case (VStr(a), VStr(b)) => a.filterNot(b.contains(_))
-      case (a: VList, b: (VNum | VStr)) => a.filter(_ != b)
-      case (a: (VNum | VStr), b: VList) => b.filter(_ != a)
+      case (a: VList, b: VVal) => a.filter(_ != b)
+      case (a: VVal, b: VList) => b.filter(_ != a)
       case (a, b) =>
         val left = ListHelpers.makeIterable(a)
         val right = ListHelpers.makeIterable(b)
@@ -717,7 +714,7 @@ object Elements:
         a match
           case VStr(_) => temp.mkString
           case _ => temp
-      case (a: VNum, b: (VList | VStr)) => ListHelpers.take(b.itr, a)
+      case (a: VNum, b: VIter) => ListHelpers.take(b.itr, a)
       case (iterable, predicate: VFun) =>
         iterable.itr.takeWhile(predicate(_).toBool)
       case (predicate: VFun, iterable) =>
@@ -1137,8 +1134,8 @@ object Elements:
     },
     "ᴥ" -> fullToImpl(Monad, x => MiscHelpers.exec(x)),
     addPart("ℳ", Dyad, false) {
-      case (a: (VList | VStr), b: VNum) => ListHelpers.nthItems(a, b)
-      case (a: VNum, b: (VList | VStr)) => ListHelpers.nthItems(b, a)
+      case (a: VIter, b: VNum) => ListHelpers.nthItems(a, b)
+      case (a: VNum, b: VIter) => ListHelpers.nthItems(b, a)
       case (a: VList, b: VList) => ListHelpers.matrixMultiply(a, b)
       case (a: VNum, b: VNum) =>
         if b == VNum(0) then NumberHelpers.round(a)
@@ -1346,7 +1343,7 @@ object Elements:
             val iterable = pop().itr
             push(ListHelpers.flattenByDepth(iterable, layerCount))
           case VList(a) =>
-            if a.forall(_.isInstanceOf[(VStr | VNum)]) then
+            if a.forall(_.isInstanceOf[VVal]) then
               val t = a.map(x => VList(ListHelpers.flatten(x.itr)))
               push(VList(t)) // there has GOT to be a better way to do this
             else push(ListHelpers.flattenByDepth(a, 1))
