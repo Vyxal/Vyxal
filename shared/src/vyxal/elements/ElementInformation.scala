@@ -4532,6 +4532,41 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "∆p",
+      keywords = Seq("prime-factors"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Prime Factors",
+        args = Seq("num"),
+        description =
+          "Prime factors of #1",
+      ),
+    ),
+    AddElement(
+      symbol = "∆P",
+      keywords = Seq("unique-prime-factors", "unique-primes"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Unique Prime Factors",
+        args = Seq("num"),
+        description =
+          "Unique prime factors of #1",
+      ),
+    ),
+    AddElement(
+      symbol = "∆-",
+      keywords = Seq("minus-one-power"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "-1 ** n",
+        args = Seq("num"),
+        description = "-1 ** n",
+      ),
+    ),
+    AddElement(
       symbol = "∆s",
       keywords = Seq("sin", "sine"),
       arity = 1,

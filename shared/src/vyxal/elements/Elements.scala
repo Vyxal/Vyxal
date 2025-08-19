@@ -1665,6 +1665,14 @@ object Elements:
           .map(prime => NumberHelpers.multiplicity(a, prime.asInstanceOf[VNum]))
         VList(exponents)
     },
+    addPart("∆p", Monad, true) { // I wish we had a vectorizing monad that didn't do anything useful to numbers
+      case a: VNum =>
+        NumberHelpers.primeFactors(a)
+    },
+    addPart("∆P", Monad, true) { // One of these can be a digraph
+      case a: VNum =>
+        NumberHelpers.primeFactors(a).distinct
+    },
     addPart("∆L", Dyad, false) {
       case (a: VNum, b: VNum) => NumberHelpers.lcm(a, b)
       case (a: VList, b: VNum) => NumberHelpers.lcm(b +: a)
@@ -1695,6 +1703,10 @@ object Elements:
       case a: VNum => VNum(spire.math.Real.e) **
           (VNum.complex(0, 2) * VNum(spire.math.Real.pi) / a)
     },
+    addPart("∆-", Monad, true) { // because * does powers in the wrong order for -1* to work
+      case a: VNum => -1 ** a
+    },
+    
     addPart("∆A", Monad, true) {
       case VListOf[VNum](numbers) => numbers.sum / numbers.length
       case a: VNum => a
