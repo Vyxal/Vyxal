@@ -295,7 +295,7 @@ object Elements:
         if index < 0 then
           a.take(a.length + index) + a.drop(a.length + index + 1)
         else a.take(index) + a.drop(index + 1)
-      case (a:VPhysical, b: VNum) =>
+      case (a: VPhysical, b: VNum) =>
         val lst = a.itr
         val index = b.toInt
         if index < 0 then
@@ -315,9 +315,9 @@ object Elements:
         val res = StringHelpers.r(b).findFirstMatchIn(a)
         if res.isDefined then res.get.subgroups else Seq.empty
       case (a: VPhysical, b: VFun) =>
-          VList(0 +: FuncHelpers.reduceOverPairs(b, makeIterable(a)))
+        VList(0 +: FuncHelpers.reduceOverPairs(b, makeIterable(a)))
       case (a: VFun, b: VPhysical) =>
-          VList(0 +: FuncHelpers.reduceOverPairs(a, makeIterable(b)))
+        VList(0 +: FuncHelpers.reduceOverPairs(a, makeIterable(b)))
     },
     addPart("R", Dyad, true) {
       case (a: VNum, b: VNum) => NumberHelpers.range(a, b).dropRight(1)
@@ -546,8 +546,7 @@ object Elements:
         FuncHelpers.recursion()
       },
     addPart("y", Triad, false) {
-      case (VStr(a), b: VPhysical, c: VPhysical) => 
-        StringHelpers.transliterate(
+      case (VStr(a), b: VPhysical, c: VPhysical) => StringHelpers.transliterate(
           a,
           ListHelpers.makeIterable(b),
           ListHelpers.makeIterable(c),
@@ -1040,12 +1039,13 @@ object Elements:
       case (VStr(a), b: VList) =>
         if a.isEmpty then Seq.empty
         else ListHelpers.wrapLength(b, VNum(a.length))
-      case (a: VList, VStr(b)) => 
+      case (a: VList, VStr(b)) =>
         if b.isEmpty then Seq.empty
         else ListHelpers.wrapLength(a, VNum(b.length))
       case (VStr(a), VStr(b)) =>
-        if (a.isEmpty || b.isEmpty) then Seq.empty
-        else if b.length < a.length then a.grouped(b.length).toSeq // always chunk to the shorter length
+        if a.isEmpty || b.isEmpty then Seq.empty
+        else if b.length < a.length then
+          a.grouped(b.length).toSeq // always chunk to the shorter length
         else b.grouped(a.length).toSeq
       case (a: VList, b: VList) =>
         if b.forall(_.isInstanceOf[VNum]) then
@@ -1243,9 +1243,10 @@ object Elements:
           case fn: VFun =>
             val iter = pop()
             if iter.isInstanceOf[VPhysical] then
-                push(ListHelpers.augmentAssign(iter.itr, 0, fn))
-            else throw  UnimplementedOverloadException("ᑂ", List(fn, iter))      
+              push(ListHelpers.augmentAssign(iter.itr, 0, fn))
+            else throw UnimplementedOverloadException("ᑂ", List(fn, iter))
           case arg => throw UnimplementedOverloadException("ᑂ", List(arg))
+        end match
       },
     addPart("∻", Dyad, true) {
       case (a: VNum, b: VNum) => (a / b).floor
@@ -1349,7 +1350,7 @@ object Elements:
             else push(ListHelpers.flattenByDepth(a, 1))
           case _ => throw UnsupportedOverloadException("⎘", "Function")
       },
-    addPart("ꜝ", Monad, false) { 
+    addPart("ꜝ", Monad, false) {
       case a: VNum => VNum(a.itr.filter(x => x != VNum(0)).mkString)
       case VStr(a) => a
       case VList(a) => a.itr.filter(elem => elem.toBool)
@@ -1569,7 +1570,6 @@ object Elements:
     addPart("#D", Monad, true) {
       case VStr(a) => StringHelpers.decompress(a)
     },
-    
     "#Q" ->
       direct(0) {
         throw QuitException()
@@ -1662,13 +1662,15 @@ object Elements:
           .map(prime => NumberHelpers.multiplicity(a, prime.asInstanceOf[VNum]))
         VList(exponents)
     },
-    addPart("∆p", Monad, true) { // I wish we had a vectorizing monad that didn't do anything useful to numbers
-      case a: VNum =>
-        NumberHelpers.primeFactors(a)
+    addPart(
+      "∆p",
+      Monad,
+      true,
+    ) { // I wish we had a vectorizing monad that didn't do anything useful to numbers
+      case a: VNum => NumberHelpers.primeFactors(a)
     },
     addPart("∆P", Monad, true) { // One of these can be a digraph
-      case a: VNum =>
-        NumberHelpers.primeFactors(a).distinct
+      case a: VNum => NumberHelpers.primeFactors(a).distinct
     },
     addPart("∆L", Dyad, false) {
       case (a: VNum, b: VNum) => NumberHelpers.lcm(a, b)
@@ -1700,10 +1702,13 @@ object Elements:
       case a: VNum => VNum(spire.math.Real.e) **
           (VNum.complex(0, 2) * VNum(spire.math.Real.pi) / a)
     },
-    addPart("∆-", Monad, true) { // because * does powers in the wrong order for -1* to work
+    addPart(
+      "∆-",
+      Monad,
+      true,
+    ) { // because * does powers in the wrong order for -1* to work
       case a: VNum => -1 ** a
     },
-    
     addPart("∆A", Monad, true) {
       case VListOf[VNum](numbers) => numbers.sum / numbers.length
       case a: VNum => a
@@ -2026,7 +2031,7 @@ object Elements:
           }
         )
       },
-      "#|apply-at-truthy" ->
+    "#|apply-at-truthy" ->
       direct(Dyad) {
         val function = pop().asInstanceOf[VFun]
         val arg1 = pop()
@@ -2035,16 +2040,19 @@ object Elements:
         var argument: VPhysical = VNum(0)
 
         (arg1, arg2) match
-          case (arg1: VList, arg2: VList) => 
+          case (arg1: VList, arg2: VList) =>
             truthyList = arg1
             argument = arg2
-          case (arg1: VPhysical, arg2: VList) => 
+          case (arg1: VPhysical, arg2: VList) =>
             truthyList = arg2
             argument = arg1
-          case (arg1: VList, arg2: VPhysical) => 
+          case (arg1: VList, arg2: VPhysical) =>
             truthyList = arg1
             argument = arg2
-          case arg => throw UnimplementedOverloadException("#|apply-at-truthy", List(arg1, arg2))
+          case arg => throw UnimplementedOverloadException(
+              "#|apply-at-truthy",
+              List(arg1, arg2),
+            )
 
         val indices = ListHelpers.truthyIndices(truthyList)
         var temp = ListHelpers.makeIterable(argument)

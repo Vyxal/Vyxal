@@ -830,7 +830,8 @@ object ElementInformation:
       Overload(
         name = "Reduce Overlapping Pairs",
         args = Seq("lst", "fun"),
-        description = "Reduce overlapping pairs in {#1|#2} by function {#2|#1} and prepend 0",
+        description =
+          "Reduce overlapping pairs in {#1|#2} by function {#2|#1} and prepend 0",
       ),
     ),
     AddElement(
@@ -2818,7 +2819,13 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ᑂ",
-      keywords = Seq("headless-top", "head-extract-under", "apply-at-head", "apply-to-head", "head-apply"),
+      keywords = Seq(
+        "headless-top",
+        "head-extract-under",
+        "apply-at-head",
+        "apply-to-head",
+        "head-apply",
+      ),
       arity = 1,
       Options(),
       Overload(
@@ -4539,8 +4546,7 @@ object ElementInformation:
       Overload(
         name = "Prime Factors",
         args = Seq("num"),
-        description =
-          "Prime factors of #1",
+        description = "Prime factors of #1",
       ),
     ),
     AddElement(
@@ -4551,8 +4557,7 @@ object ElementInformation:
       Overload(
         name = "Unique Prime Factors",
         args = Seq("num"),
-        description =
-          "Unique prime factors of #1",
+        description = "Unique prime factors of #1",
       ),
     ),
     AddElement(
@@ -5219,7 +5224,8 @@ object ElementInformation:
           "If the top of the stack is truthy, apply #1, else apply #2",
         example = "3 1 #⍰d½ -> 6",
       ),
-    ),AddModifier(
+    ),
+    AddModifier(
       symbol = "#Ṭ",
       keywords = Seq("apply-truthy:", "map-at-truthy:", "at-truthy-indices:"),
       numberOfElements = 1,
@@ -5228,7 +5234,7 @@ object ElementInformation:
         args = Seq("any"),
         description =
           "Given a list and an argument, pop both and apply #1 to the argument at truthy indices in the list",
-        example = """ "hello" #[1|0|0|1|1#] #Ṭʁ -> HelLO"""
+        example = """ "hello" #[1|0|0|1|1#] #Ṭʁ -> HelLO""",
       ),
     ),
     AddModifier(

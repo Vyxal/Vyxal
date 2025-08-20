@@ -183,7 +183,7 @@ class ModifierTests extends VyxalTests:
 
   describe("Modifier #Ṭ") {
     testMulti(
-      "#[1|2|3|4|5#] #[1|0|0|1|1#] #Ṭ›" -> vSeq(2,2,3,5,6),
+      "#[1|2|3|4|5#] #[1|0|0|1|1#] #Ṭ›" -> vSeq(2, 2, 3, 5, 6),
       """ "hello" #[1|0|0|1|1#] #Ṭʁ""" -> "HelLO",
       """ #[1|0|0|1|1#] "hello" #Ṭʁ""" -> "HelLO",
     )
