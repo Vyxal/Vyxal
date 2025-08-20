@@ -152,7 +152,6 @@ object jvm extends JvmCommon {
     T {
       jvm.runMain(
         "vyxal.gen.generateTheseus",
-        (build.millSourcePath / "pages" / "parsed_yaml.js").toString,
         (build.millSourcePath / "pages" / "theseus.json").toString,
       )()
     }
