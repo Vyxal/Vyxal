@@ -1,0 +1,3 @@
+# this directory should always be empty. data files for theseus are placed here by a workflow
+*
+!.gitignore
