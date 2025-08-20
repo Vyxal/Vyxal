@@ -235,8 +235,8 @@ object js extends VyxalModule with ScalaJSModule {
       val resources = build.millSourcePath / "shared" / "resources"
       val short = "ShortDictionary.txt"
       val long = "LongDictionary.txt"
-      os.copy.over(resources / short, pagesDir / short)
-      os.copy.over(resources / long, pagesDir / long)
+      os.copy(resources / short, pagesDir / short)
+      os.copy(resources / long, pagesDir / long)
       Seq(PathRef(pagesDir / short), PathRef(pagesDir / long))
     }
 
