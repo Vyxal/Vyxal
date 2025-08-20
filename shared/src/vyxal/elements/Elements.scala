@@ -1078,6 +1078,12 @@ object Elements:
     "≡" -> fullToImpl(Dyad, (a, b) => a === b),
     addPart("•", Dyad, false) {
       case (a: VList, b: VList) => ListHelpers.dotProduct(a, b)
+      case (VStr(a), VStr(b)) => 
+        if (a.length > b.length) then 
+          StringHelpers.extendString(a,b)
+        else
+          StringHelpers.extendString(b,a)
+
       case (number: VNum, base: VNum) =>
         NumberHelpers.toBijectiveBase(number, base)
       case (itr, predicate: VFun) =>
@@ -1252,13 +1258,11 @@ object Elements:
     },
     addPart("√", Monad, true) {
       case a: VNum => a.sqrt
-      case s: VStr =>
-        val str = s.toString
-        str
-          .split("\n")
+      case VStr(s) =>
+        s.split("\n")
           .map { line =>
-            val reversed = str.reverse.drop(1)
-            s"$str$reversed"
+            val reversed = s.reverse.drop(1)
+            s"$s$reversed"
           }
           .mkString("\n")
     },
@@ -1595,7 +1599,7 @@ object Elements:
         push(summon[Context].globals.inputs.length)
       },
     addPart("#ᴥ", Monad, false) {
-      case top: VStr => MiscHelpers.validCode(top)
+      case VStr(top) => MiscHelpers.validCode(top)
     },
     addPart("∆<", Monad, true) {
       case a: VNum => a.arg
