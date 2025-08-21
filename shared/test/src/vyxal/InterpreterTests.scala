@@ -487,7 +487,7 @@ class InterpreterTests extends VyxalTests:
       "5Þ£9::++" -> VNum(27),
       "5Þ£9::++Þ¥" -> List[VAny](5),
       "5ʁ¨Þ£ Þ&" -> VNum(5),
-      "5ʁ¨Þ£ Þ& Þ¥;" -> List[VAny](5, vSeq(0,1,2,3,4)),
+      "5ʁ¨Þ£ Þ& Þ¥;" -> List[VAny](5, vSeq(0, 1, 2, 3, 4)),
     )
   }
 
