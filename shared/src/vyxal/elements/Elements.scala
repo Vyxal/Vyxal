@@ -874,6 +874,9 @@ object Elements:
         )
       case (VStr(haystack), VStr(needle)) =>
         needle.r.findAllIn(haystack).toList.vs
+      case (a, b: VFun) => ListHelpers.truthyIndices(ListHelpers.map(b, a.itr))
+      case (a: VFun, b) => ListHelpers.truthyIndices(ListHelpers.map(a, b.itr))
+
     },
     "⊣" ->
       fullToImpl(Dyad, (number, base) => NumberHelpers.fromBase(number, base)),
@@ -1076,7 +1079,13 @@ object Elements:
       case (a: VVal, b: VVal) => a.toString != b.toString
     },
     "≡" -> fullToImpl(Dyad, (a, b) => a === b),
-    addPart("•", Dyad, false) {
+    addPart(
+      "•",
+      Dyad,
+      false,
+    ) { // welcome back multi-command
+      case (a: VList, b: VVal) => VList(a.map(x => VList(Seq(x, b))))
+      case (a: VVal, b: VList) => VList(b.map(x => VList(Seq(x, a))))
       case (a: VList, b: VList) => ListHelpers.dotProduct(a, b)
       case (VStr(a), VStr(b)) =>
         if a.length > b.length then StringHelpers.extendString(a, b)
@@ -1134,6 +1143,7 @@ object Elements:
       case lst: VList => VList(lst ++ lst.reverse)
     },
     addPart("Ͼ", Monad, false) {
+      case num: VNum => " " * num.toInt // hallelujah
       case lst: VList => VList(lst.map(item => ListHelpers.sum(item.itr)))
     },
     "ᴥ" -> fullToImpl(Monad, x => MiscHelpers.exec(x)),
@@ -1254,6 +1264,10 @@ object Elements:
       },
     addPart("∻", Dyad, true) {
       case (a: VNum, b: VNum) => (a / b).floor
+      case (VStr(a), VStr(b)) =>
+        if a.length > b.length then b + a.slice(b.length, a.length)
+        else a + b.slice(a.length, b.length)
+
     },
     addPart("√", Monad, true) {
       case a: VNum => a.sqrt
@@ -1542,6 +1556,8 @@ object Elements:
     "k>" -> niladify(")]}>"),
     "k⇄" -> niladify("^>v<"),
     "k⎀" -> niladify("aeiouAEIOU"),
+    "k/" -> niladify("/\\"),
+    "k⍾" -> niladify("ඞ"), // this setup will save us 2 bytes
     "k⩔" -> niladify(Codepage),
     "k½" -> niladify(Seq(1, 2)),
     "k①" -> niladify(180),
