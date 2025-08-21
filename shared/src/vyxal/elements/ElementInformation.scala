@@ -2449,7 +2449,7 @@ object ElementInformation:
         "extend",
         "to-length",
         "vectorised-pair",
-        "vec-pair"
+        "vec-pair",
       ),
       arity = 2,
       Options(),
@@ -2484,8 +2484,7 @@ object ElementInformation:
       Overload(
         name = "Vectorised Pair",
         args = Seq("lst", "str|num"),
-        description =
-          "Pair each item in {#1|#2} with {#2|#1}",
+        description = "Pair each item in {#1|#2} with {#2|#1}",
       ),
     ),
     AddElement(
@@ -2866,7 +2865,8 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "∻",
-      keywords = Seq("integer-divide", "int-div", "//", "overwrite", "vertical-merge"),
+      keywords =
+        Seq("integer-divide", "int-div", "//", "overwrite", "vertical-merge"),
       arity = 2,
       Options(vectorises = true),
       Overload(
@@ -2877,7 +2877,8 @@ object ElementInformation:
       Overload(
         name = "Vertical Merge",
         args = Seq("str", "str"),
-        description = "overwrite the start of the shorter string with the longer one",
+        description =
+          "overwrite the start of the shorter string with the longer one",
       ),
     ),
     AddElement(
@@ -3653,8 +3654,7 @@ object ElementInformation:
       Overload(
         name = "Slashes",
         args = Seq(),
-        description =
-          "Push \"/\\\" to the stack",
+        description = "Push \"/\\\" to the stack",
       ),
     ),
     AddElement(

@@ -874,10 +874,8 @@ object Elements:
         )
       case (VStr(haystack), VStr(needle)) =>
         needle.r.findAllIn(haystack).toList.vs
-      case (a, b: VFun) =>
-        ListHelpers.truthyIndices(ListHelpers.map(b, a.itr))
-      case (a: VFun, b) =>
-        ListHelpers.truthyIndices(ListHelpers.map(a, b.itr))
+      case (a, b: VFun) => ListHelpers.truthyIndices(ListHelpers.map(b, a.itr))
+      case (a: VFun, b) => ListHelpers.truthyIndices(ListHelpers.map(a, b.itr))
 
     },
     "⊣" ->
@@ -1081,11 +1079,13 @@ object Elements:
       case (a: VVal, b: VVal) => a.toString != b.toString
     },
     "≡" -> fullToImpl(Dyad, (a, b) => a === b),
-    addPart("•", Dyad, false) { // welcome back multi-command
-      case (a: VList, b: VVal) =>
-        VList(a.map(x => VList(Seq(x,b))))
-      case (a: VVal, b: VList) =>  
-        VList(b.map(x => VList(Seq(x,a))))
+    addPart(
+      "•",
+      Dyad,
+      false,
+    ) { // welcome back multi-command
+      case (a: VList, b: VVal) => VList(a.map(x => VList(Seq(x, b))))
+      case (a: VVal, b: VList) => VList(b.map(x => VList(Seq(x, a))))
       case (a: VList, b: VList) => ListHelpers.dotProduct(a, b)
       case (VStr(a), VStr(b)) =>
         if a.length > b.length then StringHelpers.extendString(a, b)
@@ -1264,11 +1264,9 @@ object Elements:
       },
     addPart("∻", Dyad, true) {
       case (a: VNum, b: VNum) => (a / b).floor
-      case (VStr(a), VStr(b)) => 
-        if a.length > b.length then
-          b + a.slice(b.length, a.length)
-        else
-           a + b.slice(a.length, b.length)
+      case (VStr(a), VStr(b)) =>
+        if a.length > b.length then b + a.slice(b.length, a.length)
+        else a + b.slice(a.length, b.length)
 
     },
     addPart("√", Monad, true) {
