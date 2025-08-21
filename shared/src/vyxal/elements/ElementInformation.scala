@@ -1472,7 +1472,8 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⨥",
-      keywords = Seq("plus-two", "add-two", "++++", "inc-inc", "strlen-one", "len-one"),
+      keywords =
+        Seq("plus-two", "add-two", "++++", "inc-inc", "strlen-one", "len-one"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -2363,7 +2364,13 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⦷",
-      keywords = Seq("abs", "absolute-value", "keep-letters", "first-positive", "first>zero"),
+      keywords = Seq(
+        "abs",
+        "absolute-value",
+        "keep-letters",
+        "first-positive",
+        "first>zero",
+      ),
       arity = 1,
       Options(vectorises = true),
       Overload(
