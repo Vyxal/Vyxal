@@ -1998,6 +1998,11 @@ object ElementInformation:
         args = Seq("str", "str"),
         description = "All matches of #2 in #1",
       ),
+      Overload(
+        name = "Truthy After",
+        args = Seq("any", "fun"),
+        description = "Truthy indices after mapping {#2|#1} over {#1|#2}",
+      ),
     ),
     AddElement(
       symbol = "⊣",
@@ -2443,6 +2448,8 @@ object ElementInformation:
         "first-predicate-index",
         "extend",
         "to-length",
+        "vectorised-pair",
+        "vec-pair"
       ),
       arity = 2,
       Options(),
@@ -2473,6 +2480,12 @@ object ElementInformation:
         name = "Extend String",
         args = Seq("str", "str"),
         description = "Repeat {#1|#2} until length {#2|#1}",
+      ),
+      Overload(
+        name = "Vectorised Pair",
+        args = Seq("lst", "str|num"),
+        description =
+          "Pair each item in {#1|#2} with {#2|#1}",
       ),
     ),
     AddElement(
@@ -2853,13 +2866,18 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "∻",
-      keywords = Seq("integer-divide", "int-div", "//"),
+      keywords = Seq("integer-divide", "int-div", "//", "overwrite", "vertical-merge"),
       arity = 2,
       Options(vectorises = true),
       Overload(
         name = "Integer Divide",
         args = Seq("num", "num"),
         description = "#1 // #2",
+      ),
+      Overload(
+        name = "Vertical Merge",
+        args = Seq("str", "str"),
+        description = "overwrite the start of the shorter string with the longer one",
       ),
     ),
     AddElement(
@@ -3628,6 +3646,18 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "k/",
+      keywords = Seq("&slashes"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Slashes",
+        args = Seq(),
+        description =
+          "Push \"/\\\" to the stack",
+      ),
+    ),
+    AddElement(
       symbol = "kN",
       keywords = Seq("&NN", "&NATURAL-NUMBERS"),
       arity = 0,
@@ -3893,6 +3923,17 @@ object ElementInformation:
         name = "Brackets Without <>",
         args = Seq(),
         description = "Push \"{}[]()\" to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "k⍾",
+      keywords = Seq("amogus"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Amogus",
+        args = Seq(),
+        description = "Sus",
       ),
     ),
     AddElement(
