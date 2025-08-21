@@ -1836,7 +1836,7 @@ object Elements:
     addPart("Þe", Monad, false) {
       case a: VPhysical =>
         val iter = ListHelpers.makeIterable(a)
-        VList(iter.vzip(NumberHelpers.range(0, iter.length-1)))
+        VList(iter.vzip(NumberHelpers.range(0, iter.length - 1)))
     },
     addPart("ÞE", Monad, false) {
       case a: VPhysical =>
