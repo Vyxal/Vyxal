@@ -2442,7 +2442,7 @@ object ElementInformation:
         "bijective-base",
         "first-predicate-index",
         "extend",
-        "to-length"
+        "to-length",
       ),
       arity = 2,
       Options(),

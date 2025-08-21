@@ -477,7 +477,7 @@ object StringHelpers:
         .toInt
     )
     if n > 0 then zeros + s else s + zeros
-  
+
   def extendString(long: String, short: String): String =
     val repeat: Int = (long.length.toFloat / short.length).ceil.toInt
     (short * repeat).slice(0, long.length)

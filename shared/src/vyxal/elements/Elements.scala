@@ -1078,11 +1078,9 @@ object Elements:
     "≡" -> fullToImpl(Dyad, (a, b) => a === b),
     addPart("•", Dyad, false) {
       case (a: VList, b: VList) => ListHelpers.dotProduct(a, b)
-      case (VStr(a), VStr(b)) => 
-        if (a.length > b.length) then 
-          StringHelpers.extendString(a,b)
-        else
-          StringHelpers.extendString(b,a)
+      case (VStr(a), VStr(b)) =>
+        if a.length > b.length then StringHelpers.extendString(a, b)
+        else StringHelpers.extendString(b, a)
 
       case (number: VNum, base: VNum) =>
         NumberHelpers.toBijectiveBase(number, base)
@@ -1259,8 +1257,8 @@ object Elements:
     },
     addPart("√", Monad, true) {
       case a: VNum => a.sqrt
-      case VStr(s) =>
-        s.split("\n")
+      case VStr(s) => s
+          .split("\n")
           .map { line =>
             val reversed = s.reverse.drop(1)
             s"$s$reversed"
