@@ -482,6 +482,15 @@ class InterpreterTests extends VyxalTests:
     )
   }
 
+  describe("Global Array Shenanigans") {
+    testMulti(
+      "5Þ£9::++" -> VNum(27),
+      "5Þ£9::++Þ¥" -> List[VAny](5),
+      "5ʁ¨Þ£ Þ&" -> VNum(5),
+      "5ʁ¨Þ£ Þ& Þ¥;" -> List[VAny](5, vSeq(0,1,2,3,4)),
+    )
+  }
+
   describe("Stack Rotating Chicanery") {
     testStackLike("↜")(
       List[VAny](1, 2, 3, 9) -> List[VAny](1, 9, 3, 2),

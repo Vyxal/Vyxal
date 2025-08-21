@@ -4,6 +4,7 @@ import vyxal.conversions.given
 
 import scala.collection.immutable.ArraySeq
 import scala.collection.mutable as mut
+import mut.ArrayBuffer
 
 /** Stuff that's shared across all contexts
   *
@@ -18,6 +19,7 @@ case class Globals(
     callStack: mut.Stack[VFun] = mut.Stack(),
 ):
   var register: VAny = settings.defaultValue
+  var globalArray: mut.ArrayBuffer[VAny] = ArrayBuffer.empty
   var debug: Boolean = false
   var originalProgram: AST = null
   var printed: Boolean = false

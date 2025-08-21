@@ -1838,6 +1838,7 @@ object Elements:
         val iter = ListHelpers.makeIterable(a)
         VList(iter.vzip(NumberHelpers.range(0, iter.length - 1)))
     },
+
     addPart("ÞE", Monad, false) {
       case a: VPhysical =>
         val iter = ListHelpers.makeIterable(a)
@@ -1850,6 +1851,31 @@ object Elements:
     addPart("Þi", Dyad, true) {
       case (a, VList(b)) => ListHelpers.multiDimIndex(makeIterable(a), b)
     },
+
+    // global array stuff
+    "Þ£" -> 
+      direct(Monad) {
+        val top = pop()
+        summon[Context].globals.globalArray += top
+      },
+    "Þ¥" -> 
+      direct(0) {
+        push(summon[Context].globals.globalArray.toSeq)
+      },
+    "Þ_" -> 
+      direct(0) {
+        summon[Context].globals.globalArray = ArrayBuffer.empty[VAny]
+      },
+    "Þ&" ->
+      direct(0) {
+        push(summon[Context].globals.globalArray.last)
+        summon[Context].globals.globalArray.dropRightInPlace(1)
+      },
+    "Þ`" ->
+      direct(0) {
+         push(summon[Context].globals.globalArray.length)
+      },
+    
     "Þo" ->
       direct(Monad) {
         val top = pop()
