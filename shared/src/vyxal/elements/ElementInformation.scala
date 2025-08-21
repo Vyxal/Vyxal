@@ -2441,6 +2441,8 @@ object ElementInformation:
         "string-repeat-concat",
         "bijective-base",
         "first-predicate-index",
+        "extend",
+        "to-length"
       ),
       arity = 2,
       Options(),
@@ -2466,6 +2468,11 @@ object ElementInformation:
         description =
           "Index of the first value in {#1|#2} where function {#2|#1} is true",
         typeSwitchable = true,
+      ),
+      Overload(
+        name = "Extend String",
+        args = Seq("str", "str"),
+        description = "Repeat {#1|#2} until length {#2|#1}",
       ),
     ),
     AddElement(

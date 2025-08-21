@@ -1521,6 +1521,8 @@
   - {in: [[1,"sussy"], [4,5,6]], out: "4sussysussysussysussysussy0"}
   - {in: [10, 5], out: [1, 5]}
   - {in: [120, 43], out: [2, 34]}
+  - {in: ["hi", "hello world"], out: "hihihihihih"}
+  - {in: ["hello world", "hi"], out: "hihihihihih"}
 
 "±":
   - {in: [[-5, 0, 5]], out: [-1, 0, 1]}
