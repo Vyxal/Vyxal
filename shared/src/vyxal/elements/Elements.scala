@@ -1833,6 +1833,16 @@ object Elements:
         ListHelpers.reshape(a.itr, b.map(_.asInstanceOf[VNum]))
       case (a, b: VNum) => ListHelpers.reshape(a.itr, Seq(b))
     },
+    addPart("Þe", Monad, false) {
+      case a: VPhysical =>
+        val iter = ListHelpers.makeIterable(a)
+        VList(iter.vzip(NumberHelpers.range(0, iter.length-1)))
+    },
+    addPart("ÞE", Monad, false) {
+      case a: VPhysical =>
+        val iter = ListHelpers.makeIterable(a)
+        VList(iter.vzip(NumberHelpers.range(1, iter.length)))
+    },
     addPart("ÞT", Monad, false) {
       case a: VFun => throw UnimplementedOverloadException("ÞT", List(a))
       case a => ListHelpers.transposeSafe(ListHelpers.makeIterable(a))

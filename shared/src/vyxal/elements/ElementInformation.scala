@@ -765,7 +765,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "N",
-      keywords = Seq("negate", "swapcase", "first>-1"),
+      keywords = Seq("negate", "swapcase", "first-negative"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -1472,7 +1472,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⨥",
-      keywords = Seq("+2", "add-2", "++++", "inc-inc", "strlen==1"),
+      keywords = Seq("plus-two", "add-two", "++++", "inc-inc", "strlen-one", "len-one"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -2006,7 +2006,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⊣",
-      keywords = Seq("base-to-10", "from-base", "first>n"),
+      keywords = Seq("base-to-ten", "from-base", "first>n"),
       arity = 2,
       Options(),
       Overload(
@@ -2132,7 +2132,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ÞƵ",
-      keywords = Seq("range-to-length-1"),
+      keywords = Seq("range-to-length-one"),
       arity = 1,
       Options(),
       Overload(
@@ -2142,8 +2142,30 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "Þe",
+      keywords = Seq("enumerate"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Enumerate",
+        args = Seq("any"),
+        description = "Zip with range of length #1",
+      ),
+    ),
+    AddElement(
+      symbol = "ÞE",
+      keywords = Seq("enumerate-one"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Enumerate 1-indexed",
+        args = Seq("any"),
+        description = "Zip with range of length #1, one-indexed",
+      ),
+    ),
+    AddElement(
       symbol = "⁰",
-      keywords = Seq("first-input", "input-0"),
+      keywords = Seq("first-input", "input-zero"),
       arity = 0,
       Options(),
       Overload(
@@ -2154,7 +2176,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "¹",
-      keywords = Seq("second-input", "input-1"),
+      keywords = Seq("second-input", "input-one"),
       arity = 0,
       Options(),
       Overload(
@@ -2341,7 +2363,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⦷",
-      keywords = Seq("abs", "absolute-value", "keep-letters", "first>0"),
+      keywords = Seq("abs", "absolute-value", "keep-letters", "first-positive", "first>zero"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -3005,7 +3027,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "γ",
-      keywords = Seq("wrap-len-2", "pairs"),
+      keywords = Seq("wrap-len-two", "pairs"),
       arity = 1,
       Options(),
       Overload(
