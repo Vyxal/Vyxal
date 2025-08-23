@@ -734,14 +734,52 @@ object Elements:
           case VStr(_) => temp.mkString
           case _ => temp
     },
+
+    // global array stuff
+
+    /* should probably have 
+    - vectorise push
+    - pop all as list
+    - return all as list
+    - index into
+    - dump
+    - pop n items, default 1(?)
+    - apply function to head probably as monograph overload
+    - apply function to all items
+    */
     "£" ->
       direct(Monad) {
-        summon[Context].globals.register = pop()
+        ???
       },
     "¥" ->
       direct(0) {
-        push(summon[Context].globals.register)
+        ???
       },
+    "`" -> 
+      direct(0) {
+        ???
+      },
+    "Þ£" -> 
+      direct(Monad) {
+        ???
+      },
+    "Þ¥" -> 
+      direct(0) {
+        ???
+      },
+    "Þ_" -> 
+      direct(0) {
+        ???
+      },
+    "Þ&" ->
+      direct(0) {
+       ???
+      },
+    "Þ`" ->
+      direct(0) {
+        ???
+      }, 
+
     "↜" ->
       direct(-1) {
         summon[Context].rotateLeft
@@ -1851,31 +1889,7 @@ object Elements:
     addPart("Þi", Dyad, true) {
       case (a, VList(b)) => ListHelpers.multiDimIndex(makeIterable(a), b)
     },
-
-    // global array stuff
-    "Þ£" -> 
-      direct(Monad) {
-        val top = pop()
-        summon[Context].globals.globalArray += top
-      },
-    "Þ¥" -> 
-      direct(0) {
-        push(summon[Context].globals.globalArray.toSeq)
-      },
-    "Þ_" -> 
-      direct(0) {
-        summon[Context].globals.globalArray = ArrayBuffer.empty[VAny]
-      },
-    "Þ&" ->
-      direct(0) {
-        push(summon[Context].globals.globalArray.last)
-        summon[Context].globals.globalArray.dropRightInPlace(1)
-      },
-    "Þ`" ->
-      direct(0) {
-         push(summon[Context].globals.globalArray.length)
-      },
-    
+      
     "Þo" ->
       direct(Monad) {
         val top = pop()

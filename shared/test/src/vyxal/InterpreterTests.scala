@@ -476,20 +476,20 @@ class InterpreterTests extends VyxalTests:
   }
 
   describe("Register chicanery") {
-    testMulti(
-      "5£9::++" -> VNum(27),
-      "5£9::++¥" -> VNum(5),
-    )
+    describe("Regular Register Usage") {
+      testMulti(
+        "5£9::++" -> VNum(27),
+        "5£9::++¥" -> VNum(5),
+      )
+    }
+    describe("Stack Register Stuff"){
+      testMulti(
+      "5£ 6£ Þ¥" -> List[VAny](5),
+      "5ʁÞ£ ¥ Þ¥;" -> List[VAny](5, vSeq(0,1,2,3,4,5)),
+      )
+    }
   }
 
-  describe("Global Array Shenanigans") {
-    testMulti(
-      "5Þ£9::++" -> VNum(27),
-      "5Þ£9::++Þ¥" -> List[VAny](5),
-      "5ʁ¨Þ£ Þ&" -> VNum(5),
-      "5ʁ¨Þ£ Þ& Þ¥;" -> List[VAny](5, vSeq(0,1,2,3,4)),
-    )
-  }
 
   describe("Stack Rotating Chicanery") {
     testStackLike("↜")(
