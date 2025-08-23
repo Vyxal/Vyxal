@@ -13,7 +13,7 @@ import mill.scalanativelib.api._
 trait VyxalModule extends ScalaModule with ScalafmtModule {
   override def scalaVersion = "3.3.1"
 
-  def vyxalVersion = "3.8.0"
+  def vyxalVersion = "3.9.0"
 
   def platform: String
 
@@ -152,7 +152,6 @@ object jvm extends JvmCommon {
     T {
       jvm.runMain(
         "vyxal.gen.generateTheseus",
-        (build.millSourcePath / "pages" / "parsed_yaml.js").toString,
         (build.millSourcePath / "pages" / "theseus.json").toString,
       )()
     }
@@ -235,8 +234,8 @@ object js extends VyxalModule with ScalaJSModule {
       val resources = build.millSourcePath / "shared" / "resources"
       val short = "ShortDictionary.txt"
       val long = "LongDictionary.txt"
-      os.copy.over(resources / short, pagesDir / short)
-      os.copy.over(resources / long, pagesDir / long)
+      os.copy(resources / short, pagesDir / short)
+      os.copy(resources / long, pagesDir / long)
       Seq(PathRef(pagesDir / short), PathRef(pagesDir / long))
     }
 

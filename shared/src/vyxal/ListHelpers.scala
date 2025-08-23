@@ -681,7 +681,7 @@ object ListHelpers:
           case ind => rightMut.take(ind) ++ rightMut.drop(ind + 1)
     out.toSeq
 
-  def nthItems(iterable: VList | VStr, index: VNum): VAny =
+  def nthItems(iterable: VIter, index: VNum): VAny =
     val temp = iterable match
       case VStr(s) => s.map(c => VStr(c.toString))
       case VList(l) => l

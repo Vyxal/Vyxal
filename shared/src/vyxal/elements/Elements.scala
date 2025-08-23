@@ -9,7 +9,6 @@ import vyxal.parsing.Codepage
 import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.defaultEmpty
-import vyxal.StringHelpers.padLeft
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
@@ -296,9 +295,17 @@ object Elements:
         if index < 0 then
           a.take(a.length + index) + a.drop(a.length + index + 1)
         else a.take(index) + a.drop(index + 1)
-      case (a, b: VNum) =>
+      case (a: VPhysical, b: VNum) =>
         val lst = a.itr
         val index = b.toInt
+        if index < 0 then
+          VList(
+            lst.take(lst.length + index) ++ lst.drop(lst.length + index + 1)
+          )
+        else VList(lst.take(index) ++ lst.drop(index + 1))
+      case (a: VNum, b: VPhysical) =>
+        val lst = b.itr
+        val index = a.toInt
         if index < 0 then
           VList(
             lst.take(lst.length + index) ++ lst.drop(lst.length + index + 1)
@@ -307,6 +314,10 @@ object Elements:
       case (VStr(a), VStr(b)) =>
         val res = StringHelpers.r(b).findFirstMatchIn(a)
         if res.isDefined then res.get.subgroups else Seq.empty
+      case (a: VPhysical, b: VFun) =>
+        VList(0 +: FuncHelpers.reduceOverPairs(b, makeIterable(a)))
+      case (a: VFun, b: VPhysical) =>
+        VList(0 +: FuncHelpers.reduceOverPairs(a, makeIterable(b)))
     },
     addPart("R", Dyad, true) {
       case (a: VNum, b: VNum) => NumberHelpers.range(a, b).dropRight(1)
@@ -355,11 +366,11 @@ object Elements:
       case (a, b: VFun) => MiscHelpers.scanl(a.ritr, b)
       case (a, b: VNum) => Seq.fill(b.toInt)(a)
       case (a: VNum, b) => Seq.fill(a.toInt)(b)
-      case (a: (VList | VStr), b: VList) =>
+      case (a: VIter, b: VList) =>
         val temp = b
           .map {
             case n: VNum => n.toInt
-            case l: (VStr | VList) => ListHelpers.makeIterable(l).length
+            case l: VIter => ListHelpers.makeIterable(l).length
             case _ =>
               // Function / Object, which doesn't have a reasonable
               // way to convert to a number
@@ -464,7 +475,7 @@ object Elements:
           .map(overlap => ListHelpers.reduce(overlap, b))
     },
     addPart("p", Dyad, false) {
-      case (VStr(a), b: (VStr | VNum)) => b.toString + a
+      case (VStr(a), b: VVal) => b.toString + a
       case (a: VNum, VStr(b)) => b + a.toString
       case (a: VNum, b: VNum) => MiscHelpers.eval(b.toString + a.toString)
       case (a: VList, b) => VList(b +: a)
@@ -535,11 +546,7 @@ object Elements:
         FuncHelpers.recursion()
       },
     addPart("y", Triad, false) {
-      case (
-            VStr(a),
-            b: (VList | VNum | VStr),
-            c: (VList | VNum | VStr),
-          ) => StringHelpers.transliterate(
+      case (VStr(a), b: VPhysical, c: VPhysical) => StringHelpers.transliterate(
           a,
           ListHelpers.makeIterable(b),
           ListHelpers.makeIterable(c),
@@ -617,8 +624,8 @@ object Elements:
     },
     addPart("⦰", Dyad, false) {
       case (VStr(a), VStr(b)) => a.filterNot(b.contains(_))
-      case (a: VList, b: (VNum | VStr)) => a.filter(_ != b)
-      case (a: (VNum | VStr), b: VList) => b.filter(_ != a)
+      case (a: VList, b: VVal) => a.filter(_ != b)
+      case (a: VVal, b: VList) => b.filter(_ != a)
       case (a, b) =>
         val left = ListHelpers.makeIterable(a)
         val right = ListHelpers.makeIterable(b)
@@ -706,7 +713,7 @@ object Elements:
         a match
           case VStr(_) => temp.mkString
           case _ => temp
-      case (a: VNum, b: (VList | VStr)) => ListHelpers.take(b.itr, a)
+      case (a: VNum, b: VIter) => ListHelpers.take(b.itr, a)
       case (iterable, predicate: VFun) =>
         iterable.itr.takeWhile(predicate(_).toBool)
       case (predicate: VFun, iterable) =>
@@ -867,6 +874,9 @@ object Elements:
         )
       case (VStr(haystack), VStr(needle)) =>
         needle.r.findAllIn(haystack).toList.vs
+      case (a, b: VFun) => ListHelpers.truthyIndices(ListHelpers.map(b, a.itr))
+      case (a: VFun, b) => ListHelpers.truthyIndices(ListHelpers.map(a, b.itr))
+
     },
     "⊣" ->
       fullToImpl(Dyad, (number, base) => NumberHelpers.fromBase(number, base)),
@@ -1030,14 +1040,15 @@ object Elements:
         else b.grouped(a.toInt).toSeq
       case (a: VNum, b: VList) => ListHelpers.wrapLength(b, a)
       case (VStr(a), b: VList) =>
-        if a.length == 0 then Seq.empty
+        if a.isEmpty then Seq.empty
         else ListHelpers.wrapLength(b, VNum(a.length))
-      case (a: VList, VStr(b)) => 
-        if b.length == 0 then Seq.empty
+      case (a: VList, VStr(b)) =>
+        if b.isEmpty then Seq.empty
         else ListHelpers.wrapLength(a, VNum(b.length))
       case (VStr(a), VStr(b)) =>
-        if (a.length == 0 || b.length == 0) then Seq.empty
-        else if b.length < a.length then a.grouped(b.length).toSeq // always chunk to the shorter length
+        if a.isEmpty || b.isEmpty then Seq.empty
+        else if b.length < a.length then
+          a.grouped(b.length).toSeq // always chunk to the shorter length
         else b.grouped(a.length).toSeq
       case (a: VList, b: VList) =>
         if b.forall(_.isInstanceOf[VNum]) then
@@ -1068,8 +1079,18 @@ object Elements:
       case (a: VVal, b: VVal) => a.toString != b.toString
     },
     "≡" -> fullToImpl(Dyad, (a, b) => a === b),
-    addPart("•", Dyad, false) {
+    addPart(
+      "•",
+      Dyad,
+      false,
+    ) { // welcome back multi-command
+      case (a: VList, b: VVal) => VList(a.map(x => VList(Seq(x, b))))
+      case (a: VVal, b: VList) => VList(b.map(x => VList(Seq(x, a))))
       case (a: VList, b: VList) => ListHelpers.dotProduct(a, b)
+      case (VStr(a), VStr(b)) =>
+        if a.length > b.length then StringHelpers.extendString(a, b)
+        else StringHelpers.extendString(b, a)
+
       case (number: VNum, base: VNum) =>
         NumberHelpers.toBijectiveBase(number, base)
       case (itr, predicate: VFun) =>
@@ -1122,12 +1143,13 @@ object Elements:
       case lst: VList => VList(lst ++ lst.reverse)
     },
     addPart("Ͼ", Monad, false) {
+      case num: VNum => " " * num.toInt // hallelujah
       case lst: VList => VList(lst.map(item => ListHelpers.sum(item.itr)))
     },
     "ᴥ" -> fullToImpl(Monad, x => MiscHelpers.exec(x)),
     addPart("ℳ", Dyad, false) {
-      case (a: (VList | VStr), b: VNum) => ListHelpers.nthItems(a, b)
-      case (a: VNum, b: (VList | VStr)) => ListHelpers.nthItems(b, a)
+      case (a: VIter, b: VNum) => ListHelpers.nthItems(a, b)
+      case (a: VNum, b: VIter) => ListHelpers.nthItems(b, a)
       case (a: VList, b: VList) => ListHelpers.matrixMultiply(a, b)
       case (a: VNum, b: VNum) =>
         if b == VNum(0) then NumberHelpers.round(a)
@@ -1232,20 +1254,28 @@ object Elements:
             push(
               iter.drop(1)
             )
+          case fn: VFun =>
+            val iter = pop()
+            if iter.isInstanceOf[VPhysical] then
+              push(ListHelpers.augmentAssign(iter.itr, 0, fn))
+            else throw UnimplementedOverloadException("ᑂ", List(fn, iter))
           case arg => throw UnimplementedOverloadException("ᑂ", List(arg))
+        end match
       },
     addPart("∻", Dyad, true) {
       case (a: VNum, b: VNum) => (a / b).floor
+      case (VStr(a), VStr(b)) =>
+        if a.length > b.length then b + a.slice(b.length, a.length)
+        else a + b.slice(a.length, b.length)
+
     },
     addPart("√", Monad, true) {
       case a: VNum => a.sqrt
-      case s: VStr =>
-        val str = s.toString
-        str
+      case VStr(s) => s
           .split("\n")
           .map { line =>
-            val reversed = str.reverse.drop(1)
-            s"$str$reversed"
+            val reversed = s.reverse.drop(1)
+            s"$s$reversed"
           }
           .mkString("\n")
     },
@@ -1330,7 +1360,7 @@ object Elements:
             val iterable = pop().itr
             push(ListHelpers.flattenByDepth(iterable, layerCount))
           case VList(a) =>
-            if a.forall(_.isInstanceOf[(VStr | VNum)]) then
+            if a.forall(_.isInstanceOf[VVal]) then
               val t = a.map(x => VList(ListHelpers.flatten(x.itr)))
               push(VList(t)) // there has GOT to be a better way to do this
             else push(ListHelpers.flattenByDepth(a, 1))
@@ -1526,6 +1556,8 @@ object Elements:
     "k>" -> niladify(")]}>"),
     "k⇄" -> niladify("^>v<"),
     "k⎀" -> niladify("aeiouAEIOU"),
+    "k/" -> niladify("/\\"),
+    "k⍾" -> niladify("ඞ"), // this setup will save us 2 bytes
     "k⩔" -> niladify(Codepage),
     "k½" -> niladify(Seq(1, 2)),
     "k①" -> niladify(180),
@@ -1553,6 +1585,9 @@ object Elements:
     addPart("#C", Monad, true) {
       case VStr(a) => StringHelpers.compressDictionary(a)
     },
+    addPart("#D", Monad, true) {
+      case VStr(a) => StringHelpers.decompress(a)
+    },
     "#Q" ->
       direct(0) {
         throw QuitException()
@@ -1578,7 +1613,7 @@ object Elements:
         push(summon[Context].globals.inputs.length)
       },
     addPart("#ᴥ", Monad, false) {
-      case top: VStr => MiscHelpers.validCode(top)
+      case VStr(top) => MiscHelpers.validCode(top)
     },
     addPart("∆<", Monad, true) {
       case a: VNum => a.arg
@@ -1645,6 +1680,16 @@ object Elements:
           .map(prime => NumberHelpers.multiplicity(a, prime.asInstanceOf[VNum]))
         VList(exponents)
     },
+    addPart(
+      "∆p",
+      Monad,
+      true,
+    ) { // I wish we had a vectorizing monad that didn't do anything useful to numbers
+      case a: VNum => NumberHelpers.primeFactors(a)
+    },
+    addPart("∆P", Monad, true) { // One of these can be a digraph
+      case a: VNum => NumberHelpers.primeFactors(a).distinct
+    },
     addPart("∆L", Dyad, false) {
       case (a: VNum, b: VNum) => NumberHelpers.lcm(a, b)
       case (a: VList, b: VNum) => NumberHelpers.lcm(b +: a)
@@ -1674,6 +1719,13 @@ object Elements:
     addPart("∆⧢", Monad, true) {
       case a: VNum => VNum(spire.math.Real.e) **
           (VNum.complex(0, 2) * VNum(spire.math.Real.pi) / a)
+    },
+    addPart(
+      "∆-",
+      Monad,
+      true,
+    ) { // because * does powers in the wrong order for -1* to work
+      case a: VNum => -1 ** a
     },
     addPart("∆A", Monad, true) {
       case VListOf[VNum](numbers) => numbers.sum / numbers.length
@@ -1780,6 +1832,16 @@ object Elements:
           throw InvalidListOverloadException("ÞR", b, "Number")
         ListHelpers.reshape(a.itr, b.map(_.asInstanceOf[VNum]))
       case (a, b: VNum) => ListHelpers.reshape(a.itr, Seq(b))
+    },
+    addPart("Þe", Monad, false) {
+      case a: VPhysical =>
+        val iter = ListHelpers.makeIterable(a)
+        VList(iter.vzip(NumberHelpers.range(0, iter.length - 1)))
+    },
+    addPart("ÞE", Monad, false) {
+      case a: VPhysical =>
+        val iter = ListHelpers.makeIterable(a)
+        VList(iter.vzip(NumberHelpers.range(1, iter.length)))
     },
     addPart("ÞT", Monad, false) {
       case a: VFun => throw UnimplementedOverloadException("ÞT", List(a))
@@ -1996,6 +2058,37 @@ object Elements:
               Interpreter.executeFn(function, args = Seq(right, left))
           }
         )
+      },
+    "#|apply-at-truthy" ->
+      direct(Dyad) {
+        val function = pop().asInstanceOf[VFun]
+        val arg1 = pop()
+        val arg2 = pop()
+        var truthyList = VList(Seq(0))
+        var argument: VPhysical = VNum(0)
+
+        (arg1, arg2) match
+          case (arg1: VList, arg2: VList) =>
+            truthyList = arg1
+            argument = arg2
+          case (arg1: VPhysical, arg2: VList) =>
+            truthyList = arg2
+            argument = arg1
+          case (arg1: VList, arg2: VPhysical) =>
+            truthyList = arg1
+            argument = arg2
+          case arg => throw UnimplementedOverloadException(
+              "#|apply-at-truthy",
+              List(arg1, arg2),
+            )
+
+        val indices = ListHelpers.truthyIndices(truthyList)
+        var temp = ListHelpers.makeIterable(argument)
+        for index <- indices do
+          temp = ListHelpers.augmentAssign(temp, index, function)
+        if argument.isInstanceOf[VStr] then push(temp.mkString)
+        else push(temp)
+
       },
     "#|if" ->
       direct(Monad) {

@@ -14,88 +14,11 @@ import scala.collection.mutable.{HashMap, ListBuffer}
 
 import upickle.default.*
 
-@main def generateTheseus(descriptionFile: String, dataFile: String) =
-  Files.write(
-    Paths.get(descriptionFile),
-    generateDescriptions().getBytes(StandardCharsets.UTF_8),
-  )
+@main def generateTheseus(dataFile: String) =
   Files.write(
     Paths.get(dataFile),
     generateData().getBytes(StandardCharsets.UTF_8),
   )
-
-/** Generate keyboard data (parsed_yaml.js) */
-def generateDescriptions(): String =
-  val data = HashMap[Int, ListBuffer[Map[String, String]]]()
-  for
-    (symbol, element) <- ElementInformation.elements
-    if Codepage.contains(symbol.last)
-  do
-    val token = symbol
-    val index = if token == " " then 32 else Codepage.indexOf(token.last)
-
-    val thisElement = HashMap[String, String]()
-    thisElement("name") = element.overloads.map(_.name).mkString(" / ")
-    thisElement("description") = element.keywords.mkString(" ")
-    thisElement("overloads") = element.overloads
-      .map(overload => DocsUtils.overloadToString(overload))
-      .foldLeft(Seq.empty[String]) {
-        case (acc, s: String) => acc :+ s
-        case (acc, s: Seq[String]) => acc ++ s
-      }
-      .mkString("\n")
-    thisElement("token") = token
-
-    if data.contains(index) then data(index) += thisElement.toMap
-    else data(index) = ListBuffer(thisElement.toMap)
-  end for
-
-  for modifier <- ElementInformation.modifiers do
-    val (symbol, info) = modifier
-    info match
-      case Modifier(symbol, keywords, numberOfElements, overloads*) =>
-        val token = symbol
-        val index = if token == " " then 32 else Codepage.indexOf(token.last)
-        val thisElement = HashMap[String, String]()
-        val overloadsSeq = Seq(overloads*)
-        thisElement("name") = overloadsSeq.map(_.name).mkString(" / ")
-        thisElement("description") =
-          overloadsSeq.map(_.description).mkString(" / ")
-        thisElement("keywords") = keywords.mkString(" ")
-        thisElement("overloads") = overloadsSeq
-          .map(overload => DocsUtils.overloadToString(overload))
-          .mkString("\n")
-        thisElement("token") = symbol
-
-        if data.contains(index) then data(index) += thisElement.toMap
-        else data(index) = ListBuffer(thisElement.toMap)
-    end match
-  end for
-
-  for syntax <- SyntaxInfo.info do
-    val (symbol, info) = syntax
-    info match
-      case Syntax(name, literate, description, usage, _, _) =>
-        val token = symbol
-        val index = if token == " " then 32 else Codepage.indexOf(token.last)
-        val thisElement = HashMap[String, String]()
-        thisElement("name") = name
-        thisElement("description") = s"${literate.mkString(" ")}\n$description"
-        thisElement("overloads") = usage
-        thisElement("token") = symbol
-
-        if data.contains(index) then data(index) += thisElement.toMap
-        else data(index) = ListBuffer(thisElement.toMap)
-
-  val finalData = data.map(_ -> _.toList).toMap
-
-  val escapedCodepage =
-    Codepage.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n")
-  val header =
-    s"var codepage = \"$escapedCodepage\";\nvar codepage_descriptions ="
-
-  header + write(finalData)
-end generateDescriptions
 
 /** Generate theseus data (theseus.json) */
 def generateData(): String =

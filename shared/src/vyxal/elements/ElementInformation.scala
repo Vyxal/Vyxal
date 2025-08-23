@@ -765,7 +765,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "N",
-      keywords = Seq("negate", "swapcase", "first>-1"),
+      keywords = Seq("negate", "swapcase", "first-negative"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -814,7 +814,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "Q",
-      keywords = Seq("remove-at", "regex-groups"),
+      keywords = Seq("remove-at", "regex-groups", "overpairs-prepend-zero"),
       arity = 2,
       Options(),
       Overload(
@@ -826,6 +826,12 @@ object ElementInformation:
         name = "Regex Groups",
         args = Seq("str", "str"),
         description = "Return the groups of the first match of #2 in #1",
+      ),
+      Overload(
+        name = "Reduce Overlapping Pairs",
+        args = Seq("lst", "fun"),
+        description =
+          "Reduce overlapping pairs in {#1|#2} by function {#2|#1} and prepend 0",
       ),
     ),
     AddElement(
@@ -1466,7 +1472,8 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⨥",
-      keywords = Seq("+2", "add-2", "++++", "inc-inc", "strlen==1"),
+      keywords =
+        Seq("plus-two", "add-two", "++++", "inc-inc", "strlen-one", "len-one"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -1992,10 +1999,15 @@ object ElementInformation:
         args = Seq("str", "str"),
         description = "All matches of #2 in #1",
       ),
+      Overload(
+        name = "Truthy After",
+        args = Seq("any", "fun"),
+        description = "Truthy indices after mapping {#2|#1} over {#1|#2}",
+      ),
     ),
     AddElement(
       symbol = "⊣",
-      keywords = Seq("base-to-10", "from-base", "first>n"),
+      keywords = Seq("base-to-ten", "from-base", "first>n"),
       arity = 2,
       Options(),
       Overload(
@@ -2121,7 +2133,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ÞƵ",
-      keywords = Seq("range-to-length-1"),
+      keywords = Seq("range-to-length-one"),
       arity = 1,
       Options(),
       Overload(
@@ -2131,8 +2143,30 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "Þe",
+      keywords = Seq("enumerate"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Enumerate",
+        args = Seq("any"),
+        description = "Zip with range of length #1",
+      ),
+    ),
+    AddElement(
+      symbol = "ÞE",
+      keywords = Seq("enumerate-one"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Enumerate 1-indexed",
+        args = Seq("any"),
+        description = "Zip with range of length #1, one-indexed",
+      ),
+    ),
+    AddElement(
       symbol = "⁰",
-      keywords = Seq("first-input", "input-0"),
+      keywords = Seq("first-input", "input-zero"),
       arity = 0,
       Options(),
       Overload(
@@ -2143,7 +2177,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "¹",
-      keywords = Seq("second-input", "input-1"),
+      keywords = Seq("second-input", "input-one"),
       arity = 0,
       Options(),
       Overload(
@@ -2330,7 +2364,13 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⦷",
-      keywords = Seq("abs", "absolute-value", "keep-letters", "first>0"),
+      keywords = Seq(
+        "abs",
+        "absolute-value",
+        "keep-letters",
+        "first-positive",
+        "first>zero",
+      ),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -2435,6 +2475,10 @@ object ElementInformation:
         "string-repeat-concat",
         "bijective-base",
         "first-predicate-index",
+        "extend",
+        "to-length",
+        "vectorised-pair",
+        "vec-pair",
       ),
       arity = 2,
       Options(),
@@ -2460,6 +2504,16 @@ object ElementInformation:
         description =
           "Index of the first value in {#1|#2} where function {#2|#1} is true",
         typeSwitchable = true,
+      ),
+      Overload(
+        name = "Extend String",
+        args = Seq("str", "str"),
+        description = "Repeat {#1|#2} until length {#2|#1}",
+      ),
+      Overload(
+        name = "Vectorised Pair",
+        args = Seq("lst", "str|num"),
+        description = "Pair each item in {#1|#2} with {#2|#1}",
       ),
     ),
     AddElement(
@@ -2813,7 +2867,13 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ᑂ",
-      keywords = Seq("headless-top", "head-extract-under"),
+      keywords = Seq(
+        "headless-top",
+        "head-extract-under",
+        "apply-at-head",
+        "apply-to-head",
+        "head-apply",
+      ),
       arity = 1,
       Options(),
       Overload(
@@ -2826,16 +2886,28 @@ object ElementInformation:
         args = Seq("num"),
         description = "Range from 2 to #1 inclusive",
       ),
+      Overload(
+        name = "Apply to Head",
+        args = Seq("fun"),
+        description = "Apply #1 to the first item in the item underneath",
+      ),
     ),
     AddElement(
       symbol = "∻",
-      keywords = Seq("integer-divide", "int-div", "//"),
+      keywords =
+        Seq("integer-divide", "int-div", "//", "overwrite", "vertical-merge"),
       arity = 2,
       Options(vectorises = true),
       Overload(
         name = "Integer Divide",
         args = Seq("num", "num"),
         description = "#1 // #2",
+      ),
+      Overload(
+        name = "Vertical Merge",
+        args = Seq("str", "str"),
+        description =
+          "overwrite the start of the shorter string with the longer one",
       ),
     ),
     AddElement(
@@ -2962,7 +3034,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "γ",
-      keywords = Seq("wrap-len-2", "pairs"),
+      keywords = Seq("wrap-len-two", "pairs"),
       arity = 1,
       Options(),
       Overload(
@@ -3609,6 +3681,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "k/",
+      keywords = Seq("&slashes"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Slashes",
+        args = Seq(),
+        description = "Push \"/\\\" to the stack",
+      ),
+    ),
+    AddElement(
       symbol = "kN",
       keywords = Seq("&NN", "&NATURAL-NUMBERS"),
       arity = 0,
@@ -3874,6 +3957,17 @@ object ElementInformation:
         name = "Brackets Without <>",
         args = Seq(),
         description = "Push \"{}[]()\" to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "k⍾",
+      keywords = Seq("amogus"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Amogus",
+        args = Seq(),
+        description = "Sus",
       ),
     ),
     AddElement(
@@ -4286,6 +4380,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "#D",
+      keywords = Seq("decompress", "uncompress", "dict-decompress"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Decompress",
+        args = Seq("str"),
+        description = "Decompress #1 using the Vyxal compression algorithm",
+      ),
+    ),
+    AddElement(
       symbol = "#c",
       keywords = Seq("b252compress"),
       arity = 1,
@@ -4513,6 +4618,39 @@ object ElementInformation:
         args = Seq("num"),
         description =
           "push a list of the power of each prime in the prime factors of #1",
+      ),
+    ),
+    AddElement(
+      symbol = "∆p",
+      keywords = Seq("prime-factors"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Prime Factors",
+        args = Seq("num"),
+        description = "Prime factors of #1",
+      ),
+    ),
+    AddElement(
+      symbol = "∆P",
+      keywords = Seq("unique-prime-factors", "unique-primes"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Unique Prime Factors",
+        args = Seq("num"),
+        description = "Unique prime factors of #1",
+      ),
+    ),
+    AddElement(
+      symbol = "∆-",
+      keywords = Seq("minus-one-power"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "-1 ** n",
+        args = Seq("num"),
+        description = "-1 ** n",
       ),
     ),
     AddElement(
@@ -5167,6 +5305,18 @@ object ElementInformation:
         description =
           "If the top of the stack is truthy, apply #1, else apply #2",
         example = "3 1 #⍰d½ -> 6",
+      ),
+    ),
+    AddModifier(
+      symbol = "#Ṭ",
+      keywords = Seq("apply-truthy:", "map-at-truthy:", "at-truthy-indices:"),
+      numberOfElements = 1,
+      ModifierOverload(
+        name = "Apply at Truthy Indices",
+        args = Seq("any"),
+        description =
+          "Given a list and an argument, pop both and apply #1 to the argument at truthy indices in the list",
+        example = """ "hello" #[1|0|0|1|1#] #Ṭʁ -> HelLO""",
       ),
     ),
     AddModifier(

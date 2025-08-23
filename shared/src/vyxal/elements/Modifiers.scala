@@ -259,6 +259,9 @@ object Modifiers:
         Monadic,
         (ast) => Seq(ast.lam, AST.Command("#|at-simple-levels")),
       ),
+    addPart("#Ṭ", Monadic) {
+      case AST(monad, 1) => Seq(monad.lam, AST.Command("#|apply-at-truthy"))
+    },
   )
 
   def addPart[P, F](name: String, arity: ModifierHelpers[P, F])(impl: P) =

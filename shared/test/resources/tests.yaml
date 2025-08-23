@@ -672,7 +672,15 @@
   - {in: ["abcdef", 3], out: "abcef"}
   - {in: [[1,2,3,4,5], 0], out: [2,3,4,5]}
   - {in: [[1,2,3,4,5], -1], out: [1,2,3,4]}
+  - {in: [0, [1,2,3,4,5]], out: [2,3,4,5]}
+  - {in: [-1, [1,2,3,4,5]], out: [1,2,3,4]}
   - {in: ["username@domain.com", "([a-z]+)@([a-z]+)\.co(m)"], out: ["username", "domain", "m"]}
+  - in:
+    - !vany "λ+}"
+    - - 1
+      - 2
+      - 3
+    out: [0, 3, 5]
 
 "R":
   When given two numbers:
@@ -923,6 +931,12 @@
   - in:
     - "hello\nworld"
     out: ["hello", "world"]
+
+"Þe":
+  - {in: ["abc"], out: [["a",0], ["b",1], ["c",2]]}
+  - {in: ["a"], out: [["a",0]]}
+  - {in: [[1,2,3]], out: [[1,0], [2,1], [3,2]]}
+  - {in: [468], out: [[4,0], [6,1], [8,2]]}
 
 "f":
   - {in: [[[1, 2, 2], 7, [8, [9]]]], out: [1, 2, 2, 7, 8, 9]}
@@ -1327,15 +1341,21 @@
   - {in: [[], 5, 69], out: [0, 0, 0, 0, 0, 69]}
 
 "⊢":
-  - {in: [50, 2], out: [1, 1, 0, 0, 1, 0]}
-  - {in: [50, "shrek"], out: "rss"}
-  - {in: [92331, [6, 9, 4, 2, 0, "nice"]], out: [9, "nice", "nice", 9, 4, 0, 2]}
-  - {in: [92331, 0], out: 0}
-  - {in: [50, ""], out: 0}
-  - {in: [[42, 54, 12, 69, 43], 2], out: [[1, 0, 1, 0, 1, 0], [1, 1, 0, 1, 1, 0], [1, 1, 0, 0], [1, 0, 0, 0, 1, 0, 1], [1, 0, 1, 0, 1, 1]]}
-  - {in: [[42, 54, 12, 69, 43], "shrek"], out: ["her", "rsk", "rr", "rek", "hee"]}
-  - {in: [[42, 54, 12, 69, 43], [2, 4, [4, 2, 0], "rizZ", 8]], out: [[1, 0, 1, 0, 1, 0], [3, 1, 2], [2, 2, 4], "irii", [5, 3]]}
-  - {in: ["It seems today that all you see is violence in movies, and sex on TV but where are those good old fashioned values on which we used to rely", ".(e|o){2}[^ ]*"], out: ["seems", "see", "good"]}
+  Base Stuff:
+    - {in: [50, 2], out: [1, 1, 0, 0, 1, 0]}
+    - {in: [50, "shrek"], out: "rss"}
+    - {in: [92331, [6, 9, 4, 2, 0, "nice"]], out: [9, "nice", "nice", 9, 4, 0, 2]}
+    - {in: [92331, 0], out: 0}
+    - {in: [50, ""], out: 0}
+    - {in: [[42, 54, 12, 69, 43], 2], out: [[1, 0, 1, 0, 1, 0], [1, 1, 0, 1, 1, 0], [1, 1, 0, 0], [1, 0, 0, 0, 1, 0, 1], [1, 0, 1, 0, 1, 1]]}
+    - {in: [[42, 54, 12, 69, 43], "shrek"], out: ["her", "rsk", "rr", "rek", "hee"]}
+    - {in: [[42, 54, 12, 69, 43], [2, 4, [4, 2, 0], "rizZ", 8]], out: [[1, 0, 1, 0, 1, 0], [3, 1, 2], [2, 2, 4], "irii", [5, 3]]}
+    - {in: ["It seems today that all you see is violence in movies, and sex on TV but where are those good old fashioned values on which we used to rely", ".(e|o){2}[^ ]*"], out: ["seems", "see", "good"]}
+  With a function:
+    - in:
+        - [1,"3 ",3,3,4,5]
+        - !vany "λ3=}"
+      out: [2,3]
 
 "⊣":
   - {in: [[1, 1, 0, 0, 1, 0], 2], out: 50}
@@ -1508,12 +1528,20 @@
   - {in: [[1, 2, 3], [4, 5, 6]], out: 0}
 
 "•":
+  Dot Product:
   - {in: [[1,2,3], [4,5,6]], out: 32}
   - {in: [[1,2], [4,5,6]], out: 14}
   - {in: [[1,"sussy"], [4,5,6]], out: "4sussysussysussysussysussy0"}
   - {in: [10, 5], out: [1, 5]}
   - {in: [120, 43], out: [2, 34]}
-
+  String Extending:
+  - {in: ["hi", "hello world"], out: "hihihihihih"}
+  - {in: ["hello world", "hi"], out: "hihihihihih"}
+  Vectorized Pair:
+  - {in: [["hi", "hello world"], 4], out: [["hi", 4], ["hello world", 4]]}
+  - {in: ["sus", ["hi", "hello world"]], out: [["hi", "sus"], ["hello world", "sus"]]}
+  
+  
 "±":
   - {in: [[-5, 0, 5]], out: [-1, 0, 1]}
   - in:
@@ -1635,8 +1663,11 @@
   - {in: [[]], stack: [0, []]}
 
 "∻":
+  Division:
   - {in: [[1,2,3,4,5,6,7,8,9,10], 2], out: [0, 1, 1, 2, 2, 3, 3, 4, 4, 5]}
   - {in: [45, 6], out: 7}
+  String Merging:
+  - {in: ["Hello world!", "sus"], out: "suslo world!"}
 
 "√":
   - {in: [25], out: 5.0}
