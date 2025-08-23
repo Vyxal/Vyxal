@@ -5,6 +5,7 @@ import vyxal.conversions.given
 import scala.collection.immutable.ArraySeq
 import scala.collection.mutable as mut
 import mut.ArrayBuffer
+import algebra.lattice.Bool
 
 /** Stuff that's shared across all contexts
   *
@@ -158,6 +159,7 @@ case class Settings(
     limitPrint: Boolean = false,
     dontEvalInputs: Boolean = false,
     recursionLimit: Int = 100,
+    popSetRegister: Boolean = false,
     wrapStack: Boolean = false,
 ):
   /** Set an end print mode based */

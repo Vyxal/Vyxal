@@ -749,7 +749,7 @@ object Elements:
     */
     "£" ->
       direct(Monad) {
-        ???
+        summon[Context].globals.globalArray.append(pop())
       },
     "¥" ->
       direct(0) {
