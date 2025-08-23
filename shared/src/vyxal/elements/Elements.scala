@@ -737,7 +737,7 @@ object Elements:
 
     // global array stuff
 
-    /* should probably have 
+    /* should probably have
     - vectorise push
     - pop all as list
     - return all as list
@@ -746,7 +746,7 @@ object Elements:
     - pop n items, default 1(?)
     - apply function to head probably as monograph overload
     - apply function to all items
-    */
+     */
     "£" ->
       direct(Monad) {
         summon[Context].globals.globalArray.append(pop())
@@ -755,31 +755,30 @@ object Elements:
       direct(0) {
         ???
       },
-    "`" -> 
+    "`" ->
       direct(0) {
         ???
       },
-    "Þ£" -> 
+    "Þ£" ->
       direct(Monad) {
         ???
       },
-    "Þ¥" -> 
+    "Þ¥" ->
       direct(0) {
         ???
       },
-    "Þ_" -> 
+    "Þ_" ->
       direct(0) {
         ???
       },
     "Þ&" ->
       direct(0) {
-       ???
+        ???
       },
     "Þ`" ->
       direct(0) {
         ???
-      }, 
-
+      },
     "↜" ->
       direct(-1) {
         summon[Context].rotateLeft
