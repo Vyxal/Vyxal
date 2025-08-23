@@ -75,6 +75,11 @@ object Elements:
     addPart("ʀ", Monad, true) {
       case a: VNum => NumberHelpers.range(0, a - a.signum)
       case VStr(a) => a.toLowerCase()
+      case f: VFun =>
+        val reg = f(summon[Context].globals.globalArray.last)
+        summon[Context].globals.globalArray.update(-1, reg)
+        val doNothing = pop() // is there a better way to take a function and not do anything
+        doNothing
     },
     addPart("ʁ", Monad, true) {
       case a: VNum =>
@@ -738,9 +743,7 @@ object Elements:
     // global array stuff
 
     /* should probably have 
-    - vectorise push
     - pop all as list
-    - return all as list
     - index into
     - dump
     - pop n items, default 1(?)
@@ -749,31 +752,45 @@ object Elements:
     */
     "£" ->
       direct(Monad) {
-        summon[Context].globals.globalArray.append(pop())
+        val top = pop()
+        summon[Context].globals.globalArray.append(top)
+        if summon[Context].settings.registerPeek then push(top)
       },
-    "¥" ->
+    "`" ->
       direct(0) {
-        ???
+        val globalArray = summon[Context].globals.globalArray
+        if globalArray.length == 0 then push(0)
+        else
+          val last = globalArray.last 
+          globalArray.dropRightInPlace(1)
+          push(last)
       },
-    "`" -> 
+    "¥" -> 
       direct(0) {
-        ???
-      },
-    "Þ£" -> 
-      direct(Monad) {
-        ???
+        if summon[Context].globals.globalArray.length == 0 then push(0)
+        else push(summon[Context].globals.globalArray.last)
       },
     "Þ¥" -> 
       direct(0) {
-        ???
+        if summon[Context].globals.globalArray.length == 0 then push(VList(Seq(0)))
+        else 
+          val arr = summon[Context].globals.globalArray
+          push(arr.toList)
       },
-    "Þ_" -> 
+    "Þ_" ->
       direct(0) {
-        ???
+        val arr = summon[Context].globals.globalArray
+        arr.clear()
+        arr.append(0)
       },
-    "Þ&" ->
-      direct(0) {
-       ???
+    "Þ⦷" ->
+      direct(Monad) {
+        val ind = pop()
+        ind match
+          case i: VNum =>
+            val arr = summon[Context].globals.globalArray
+            push(arr.apply(i.toInt))
+          case _ => throw UnsupportedOverloadException("Þ⦷", "non-number")
       },
     "Þ`" ->
       direct(0) {
@@ -1888,30 +1905,6 @@ object Elements:
     addPart("Þi", Dyad, true) {
       case (a, VList(b)) => ListHelpers.multiDimIndex(makeIterable(a), b)
     },
-
-    // global array stuff
-    "Þ£" ->
-      direct(Monad) {
-        val top = pop()
-        summon[Context].globals.globalArray += top
-      },
-    "Þ¥" ->
-      direct(0) {
-        push(summon[Context].globals.globalArray.toSeq)
-      },
-    "Þ_" ->
-      direct(0) {
-        summon[Context].globals.globalArray = ArrayBuffer.empty[VAny]
-      },
-    "Þ&" ->
-      direct(0) {
-        push(summon[Context].globals.globalArray.last)
-        summon[Context].globals.globalArray.dropRightInPlace(1)
-      },
-    "Þ`" ->
-      direct(0) {
-        push(summon[Context].globals.globalArray.length)
-      },
     "Þo" ->
       direct(Monad) {
         val top = pop()

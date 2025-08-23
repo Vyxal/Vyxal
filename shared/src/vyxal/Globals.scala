@@ -160,7 +160,7 @@ case class Settings(
     limitPrint: Boolean = false,
     dontEvalInputs: Boolean = false,
     recursionLimit: Int = 100,
-    popSetRegister: Boolean = false,
+    registerPeek: Boolean = false,
     wrapStack: Boolean = false,
 ):
   /** Set an end print mode based */

@@ -485,7 +485,7 @@ class InterpreterTests extends VyxalTests:
     describe("Stack Register Stuff"){
       testMulti(
       "5£ 6£ Þ¥" -> List[VAny](5),
-      "5ʁÞ£ ¥ Þ¥;" -> List[VAny](5, vSeq(0,1,2,3,4,5)),
+      "5ʁ ¨£ ¥ Þ¥;" -> List[VAny](5, vSeq(0,1,2,3,4,5)),
       )
     }
   }
