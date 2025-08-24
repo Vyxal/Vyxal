@@ -20,8 +20,7 @@ case class Globals(
     printFn: String => Unit = print,
     callStack: mut.Stack[VFun] = mut.Stack(),
 ):
-  var register: VAny = settings.defaultValue
-  var globalArray: mut.ArrayBuffer[VAny] = ArrayBuffer.empty
+  var register: mut.ArrayBuffer[VAny] = ArrayBuffer.empty
   var debug: Boolean = false
   var originalProgram: AST = null
   var printed: Boolean = false
@@ -106,7 +105,11 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
 
   override def toString = origArr.mkString("Inputs(", ", ", ")")
 end Inputs
-
+/** Stores the register as a global array
+ * 
+ */
+class Register()
+ 
 /** What kind of implicit output is wanted at the end */
 enum EndPrintMode:
 

@@ -75,11 +75,6 @@ object Elements:
     addPart("ʀ", Monad, true) {
       case a: VNum => NumberHelpers.range(0, a - a.signum)
       case VStr(a) => a.toLowerCase()
-      case f: VFun =>
-        val reg = f(summon[Context].globals.globalArray.last)
-        summon[Context].globals.globalArray.update(-1, reg)
-        val doNothing = pop() // is there a better way to take a function and not do anything
-        doNothing
     },
     addPart("ʁ", Monad, true) {
       case a: VNum =>
@@ -1418,7 +1413,9 @@ object Elements:
               val t = a.map(x => VList(ListHelpers.flatten(x.itr)))
               push(VList(t)) // there has GOT to be a better way to do this
             else push(ListHelpers.flattenByDepth(a, 1))
-          case _ => throw UnsupportedOverloadException("⎘", "Function")
+          case f: VFun if f.arity == 1  =>
+            RegisterHelpers.applyFunction(f)
+          case _ => throw UnsupportedOverloadException("⎘","Function Arity != 1")
       },
     addPart("ꜝ", Monad, false) {
       case a: VNum => VNum(a.itr.filter(x => x != VNum(0)).mkString)
@@ -1481,7 +1478,7 @@ object Elements:
           case VStr(str) => push(str)
           case num: VNum =>
             if num == VNum(1) then push(summon[Context].ctxVarPrimary)
-          case _ => throw UnsupportedOverloadException("”", "Function | Object")
+          case _ => throw UnsupportedOverloadException("”", "Function Arity != 1")
       },
     addPart("„", Monad, false) {
       case VList(lst) => ListHelpers.join(lst, " ")
