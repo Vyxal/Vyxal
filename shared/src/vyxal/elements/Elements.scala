@@ -749,7 +749,7 @@ object Elements:
     - pop n items, default 1(?)
     - apply function to head probably as monograph overload
     - apply function to all items
-    */
+     */
     "£" ->
       direct(Monad) {
         val top = pop()
@@ -770,7 +770,7 @@ object Elements:
         if summon[Context].globals.globalArray.length == 0 then push(0)
         else push(summon[Context].globals.globalArray.last)
       },
-    "Þ¥" -> 
+    "Þ¥" ->
       direct(0) {
         if summon[Context].globals.globalArray.length == 0 then push(VList(Seq(0)))
         else 
@@ -795,8 +795,7 @@ object Elements:
     "Þ`" ->
       direct(0) {
         ???
-      }, 
-
+      },
     "↜" ->
       direct(-1) {
         summon[Context].rotateLeft
