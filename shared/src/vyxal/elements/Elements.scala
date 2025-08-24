@@ -737,59 +737,43 @@ object Elements:
 
     // global array stuff
 
-    /* should probably have 
-    - pop all as list
-    - index into
-    - dump
-    - pop n items, default 1(?)
-    - apply function to head probably as monograph overload
-    - apply function to all items
-     */
     "£" ->
       direct(Monad) {
         val top = pop()
-        summon[Context].globals.globalArray.append(top)
-        if summon[Context].settings.registerPeek then push(top)
+        top match
+          case a: VPhysical =>
+            RegisterHelpers.push(a)
+            if summon[Context].settings.registerPeek then push(a)
+          case _ => throw UnsupportedOverloadException("£", "Function")
       },
     "`" ->
       direct(0) {
-        val globalArray = summon[Context].globals.globalArray
-        if globalArray.length == 0 then push(0)
-        else
-          val last = globalArray.last 
-          globalArray.dropRightInPlace(1)
-          push(last)
+        push(RegisterHelpers.peek())
       },
     "¥" -> 
       direct(0) {
-        if summon[Context].globals.globalArray.length == 0 then push(0)
-        else push(summon[Context].globals.globalArray.last)
+        push(RegisterHelpers.pop())
+      },
+    "Þ⍨" ->
+      direct(0) {
+        for x <- RegisterHelpers.register.reverse do
+          push(RegisterHelpers.pop())
       },
     "Þ¥" ->
       direct(0) {
-        if summon[Context].globals.globalArray.length == 0 then push(VList(Seq(0)))
-        else 
-          val arr = summon[Context].globals.globalArray
-          push(arr.toList)
-      },
-    "Þ_" ->
-      direct(0) {
-        val arr = summon[Context].globals.globalArray
-        arr.clear()
-        arr.append(0)
-      },
-    "Þ⦷" ->
-      direct(Monad) {
-        val ind = pop()
-        ind match
-          case i: VNum =>
-            val arr = summon[Context].globals.globalArray
-            push(arr.apply(i.toInt))
-          case _ => throw UnsupportedOverloadException("Þ⦷", "non-number")
+        push(RegisterHelpers.pop(allVals = true))
       },
     "Þ`" ->
       direct(0) {
-        ???
+        push(RegisterHelpers.peek(allVals = true))
+      },
+    "Þ_" ->
+      direct(0) {
+        RegisterHelpers.pop(allVals=true)
+      },
+    addPart("Þ⦷", Monad, true) {
+      case i: VNum =>
+        RegisterHelpers.index(i.toInt)
       },
     "↜" ->
       direct(-1) {

@@ -2,19 +2,38 @@ package vyxal
 
 import vyxal.conversions.{*, given}
 
-import scala.annotation.unchecked.uncheckedVariance
 import scala.collection.mutable.ArrayBuffer
-import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
 
 
 object RegisterHelpers:
-	var register  = Context().globals.register
-	if register.length == 0 then register.append(0)
 
+	var register: mut.ArrayBuffer[VAny] = Context().globals.register
+
+	def isEmpty: Boolean = register.length == 0
+		
+	/** Apply a monadic function to the last item in the register */	
 	def applyFunction(fn: VFun)(using Context): Unit =
 		register.update(register.length - 1, fn(register.last))
+	
+	def push(a: VPhysical)(using Context): Unit =
+		register.append(a)
 
-	def registerPop()(using Context): VAny
+	def pop(c: Int = 1, allVals: Boolean = false)(using Context): VAny =
+		val n = if allVals then register.length else c
+		val top = register.takeRight(n)
+		register.dropRightInPlace(n)
+		if register.isEmpty then register.append(0)
+		if top.length == 1 then top.head
+		else top.toList
+	
+	def peek(c: Int = 1, allVals: Boolean = false)(using Context): VAny =
+		val n = if allVals then register.length else c
+		val top = register.takeRight(n)
+		top.toList
+
+	def index(i: Int): VAny =
+		register.toIndexedSeq(i)
+	
 
 end RegisterHelpers
