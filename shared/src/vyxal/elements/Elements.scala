@@ -742,50 +742,50 @@ object Elements:
         val top = pop()
         top match
           case a: VPhysical =>
-            Register.push(a)
+            RegisterHelpers.push(a)
             if summon[Context].settings.registerPeek then push(a)
           case _ => throw UnsupportedOverloadException("£", "Function")
       },
     "¥" -> 
       direct(0) {
-        push(Register.peek())
+        push(RegisterHelpers.peek())
       },
     "`" ->
       direct(0) {
-        push(Register.pop())
+        push(RegisterHelpers.pop())
       },
     "Þ⍨" ->
       direct(0) {
-        for x <- Register.register.reverse do
-          push(Register.pop())
+        for x <- RegisterHelpers.register.reverse do
+          push(RegisterHelpers.pop())
       },
     "Þ¥" ->
       direct(0) {
-        push(Register.pop(allVals = true))
+        push(RegisterHelpers.pop(1, allVals = true))
       },
     "Þw" -> 
       direct(0) {
-        push(Register.peek(allVals = true))
+        push(RegisterHelpers.peek(allVals = true))
       },
     "Þ`" ->
       direct(0) {
-        push(Register.length)
+        push(RegisterHelpers.length)
       },
     "Þ_" ->
       direct(0) {
-        Register.pop(allVals=true)
+        RegisterHelpers.pop(allVals=true)
       },
     addPart("Þ⦷", Monad, true) {
       case i: VNum =>
-        Register.index(i.toInt)
+        RegisterHelpers.index(i.toInt)
       },
     addPart("Þ⊖", Monad, false) {
       case n: VNum =>
-        Register.pop(n)
+        RegisterHelpers.pop(n)
     },
     addPart("Þ⌽", Monad, false) {
       case n: VNum =>
-        Register.peek(n)
+        RegisterHelpers.peek(n)
     },
     "↜" ->
       direct(-1) {
@@ -1410,7 +1410,7 @@ object Elements:
               push(VList(t)) // there has GOT to be a better way to do this
             else push(ListHelpers.flattenByDepth(a, 1))
           case f: VFun if f.arity == 1  =>
-            Register.applyFunction(f)
+            RegisterHelpers.applyFunction(f)
           case _ => throw UnsupportedOverloadException("⎘","Function Arity != 1")
       },
     addPart("ꜝ", Monad, false) {

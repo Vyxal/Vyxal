@@ -6,10 +6,13 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable as mut
 
 
-object Register:
+trait Register()(using Context):
+	var register = summon[Context].globals.register
+end Register
 
-	var register: mut.ArrayBuffer[VAny] = Context().globals.register
 
+object RegisterHelpers extends Register()(using Context()):
+	
 	def isEmpty: Boolean = register.length == 0
 
 	def length: VNum = VNum(register.length)
@@ -35,8 +38,7 @@ object Register:
 		if top.length == 1 then top.head
 		else top.toList
 
-	def index(i: Int): VAny =
+	def index(i: Int)(using Context): VAny =
 		register.reverse.toIndexedSeq(i)
-	
 
-end Register
+end RegisterHelpers
