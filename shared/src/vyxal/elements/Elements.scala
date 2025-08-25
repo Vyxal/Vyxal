@@ -742,39 +742,51 @@ object Elements:
         val top = pop()
         top match
           case a: VPhysical =>
-            RegisterHelpers.push(a)
+            Register.push(a)
             if summon[Context].settings.registerPeek then push(a)
           case _ => throw UnsupportedOverloadException("£", "Function")
       },
-    "`" ->
-      direct(0) {
-        push(RegisterHelpers.peek())
-      },
     "¥" -> 
       direct(0) {
-        push(RegisterHelpers.pop())
+        push(Register.peek())
+      },
+    "`" ->
+      direct(0) {
+        push(Register.pop())
       },
     "Þ⍨" ->
       direct(0) {
-        for x <- RegisterHelpers.register.reverse do
-          push(RegisterHelpers.pop())
+        for x <- Register.register.reverse do
+          push(Register.pop())
       },
     "Þ¥" ->
       direct(0) {
-        push(RegisterHelpers.pop(allVals = true))
+        push(Register.pop(allVals = true))
+      },
+    "Þw" -> 
+      direct(0) {
+        push(Register.peek(allVals = true))
       },
     "Þ`" ->
       direct(0) {
-        push(RegisterHelpers.peek(allVals = true))
+        push(Register.length)
       },
     "Þ_" ->
       direct(0) {
-        RegisterHelpers.pop(allVals=true)
+        Register.pop(allVals=true)
       },
     addPart("Þ⦷", Monad, true) {
       case i: VNum =>
-        RegisterHelpers.index(i.toInt)
+        Register.index(i.toInt)
       },
+    addPart("Þ⊖", Monad, false) {
+      case n: VNum =>
+        Register.pop(n)
+    },
+    addPart("Þ⌽", Monad, false) {
+      case n: VNum =>
+        Register.peek(n)
+    },
     "↜" ->
       direct(-1) {
         summon[Context].rotateLeft
@@ -1398,7 +1410,7 @@ object Elements:
               push(VList(t)) // there has GOT to be a better way to do this
             else push(ListHelpers.flattenByDepth(a, 1))
           case f: VFun if f.arity == 1  =>
-            RegisterHelpers.applyFunction(f)
+            Register.applyFunction(f)
           case _ => throw UnsupportedOverloadException("⎘","Function Arity != 1")
       },
     addPart("ꜝ", Monad, false) {
