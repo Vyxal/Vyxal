@@ -769,15 +769,6 @@ object Elements:
       direct(0) {
         push(RegisterHelpers.pop(1, allVals = true))
       },
-    "Þ⏚" ->
-      direct(1) {
-        val top = pop()
-        top match
-          case VListOf[VPhysical](n) =>
-            for x <- n do
-              RegisterHelpers.push(x)
-          case _ => throw UnsupportedOverloadException("Þ⏚", "Function")
-      },
     "Þw" -> 
       direct(0) {
         push(RegisterHelpers.peek(1, allVals = true))

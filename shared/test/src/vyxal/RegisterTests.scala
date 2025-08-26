@@ -29,16 +29,16 @@ class RegisterTests extends VyxalTests:
         checkpoint.reportAll()
       }
     }
-    describe("Should behave like the stack does") {
+    describe("Stack Register Stuff") {
       testMulti(
         "5£ 6£ Þ¥ Þ¥;" -> vSeq(vSeq(5,6), 0),
-        "Þ_ 5ʁ Þ⏚ ¥ Þ¥;" -> vSeq(5, vSeq(0,1,2,3,4,5)),
+        "Þ_ 5ʁ ¨£ ¥ Þ¥;" -> vSeq(5, vSeq(0,1,2,3,4,5)), // this fails if I don't clear the register between them
       )
     }
     describe("Register Index") {
-      it("Index the same way stack indexing works") {
+      it("Should Index like the stack") {
         given ctx: Context = Context(testMode = true)
-        Interpreter.execute("5ʁ Þ⏚ 1Þ⦷")
+        Interpreter.execute("5ʁ ¨£ 1Þ⦷")
         assertResult(VNum(1))(ctx.pop())
       }
     }

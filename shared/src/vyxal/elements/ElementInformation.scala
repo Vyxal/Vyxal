@@ -1884,6 +1884,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "Þ^",
+      keywords = Seq("reverse-register"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Reverse register",
+        args = Seq(),
+        description = "Reverse the register",
+      ),
+    ),
+    AddElement(
       symbol = "Þ`",
       keywords = Seq("register-length", "reg-len"),
       arity = 0,
