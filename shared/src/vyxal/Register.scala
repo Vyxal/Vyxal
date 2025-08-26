@@ -6,13 +6,12 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable as mut
 
 
-trait Register()(using Context):
-	var register = summon[Context].globals.register
-end Register
+object RegisterHelpers:
 
+	val register = Context().globals.register
 
-object RegisterHelpers extends Register()(using Context()):
-	
+	def clear(): Unit = register.clearAndShrink(1)
+
 	def isEmpty: Boolean = register.length == 0
 
 	def length: VNum = VNum(register.length)
@@ -24,13 +23,15 @@ object RegisterHelpers extends Register()(using Context()):
 	def push(a: VPhysical)(using Context): Unit =
 		register.append(a)
 
-	def pop(c: VNum = 1, allVals: Boolean = false)(using Context): VAny =
+	def pop(c: VNum = 1, allVals: Boolean = false)(using ctx: Context): VAny =
 		val n = if allVals then register.length else c.toInt
-		val top = register.takeRight(n)
-		register.dropRightInPlace(n)
-		if register.isEmpty then register.append(0)
-		if top.length == 1 then top.head
-		else top.toList
+		if register.isEmpty then VNum(0)
+		else
+			val top = register.takeRight(n)
+			register.dropRightInPlace(n)
+			register.trimToSize()
+			if top.length == 1 then top.head
+			else top.toList
 	
 	def peek(c: VNum = 1, allVals: Boolean = false)(using Context): VAny =
 		val n = if allVals then register.length else c.toInt

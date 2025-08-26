@@ -738,7 +738,7 @@ object Elements:
     // global array stuff
 
     "£" ->
-      direct(Monad) {
+      direct(1) {
         val top = pop()
         top match
           case a: VPhysical =>
@@ -765,7 +765,7 @@ object Elements:
       },
     "Þw" -> 
       direct(0) {
-        push(RegisterHelpers.peek(allVals = true))
+        push(RegisterHelpers.peek(1, allVals = true))
       },
     "Þ`" ->
       direct(0) {

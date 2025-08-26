@@ -5,6 +5,7 @@ import vyxal.elements.Elements
 import vyxal.VyxalTests.testContext
 import vyxal.elements.Modifiers
 
+import org.scalatest.Checkpoints.Checkpoint
 import org.scalatest.funspec.AnyFunSpec
 
 class RegisterTests extends VyxalTests:
@@ -14,19 +15,24 @@ class RegisterTests extends VyxalTests:
     describe("Regular Register Usage") {
       testMulti(
         "5£9::++" -> VNum(27),
-        "5£9::++¥" -> VNum(5),
+        "5£9::++`" -> VNum(5),
       )
       it("Should push zero if empty") {
+        RegisterHelpers.clear()
         given ctx: Context = Context(testMode = true)
-        Interpreter.execute(AST.Command("¥"))
-        ctx.peek
-        assertResult(0)(0)
+        ctx.push(5)
+        Interpreter.execute("£")
+        val checkpoint = Checkpoint()
+        checkpoint { assert(ctx.isStackEmpty) }
+        Interpreter.execute("``")
+        checkpoint { assertResult(Seq[VAny](0,5))(Seq(ctx.pop(), ctx.pop())) }
+        checkpoint.reportAll()
       }
     }
     describe("Stack Register Stuff") {
       testMulti(
-      "5£ 6£,#Q Þ¥" -> List[VAny](5),
-      "5ʁ ¨£ ¥ Þ¥;" -> List[VAny](5, vSeq(0,1,2,3,4,5)),
+        "5£ 6£ Þ¥ Þ¥;" -> vSeq(vSeq(5,6), 0),
+        "Þ_ 5ʁ ¨£ ¥ Þ¥;" -> vSeq(5, vSeq(0,1,2,3,4,5)),
       )
     }
 end RegisterTests

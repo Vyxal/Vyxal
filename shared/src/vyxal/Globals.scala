@@ -20,7 +20,7 @@ case class Globals(
     printFn: String => Unit = print,
     callStack: mut.Stack[VFun] = mut.Stack(),
 ):
-  var register: mut.ArrayBuffer[VAny] = ArrayBuffer.empty.append(0)
+  var register: mut.ArrayBuffer[VAny] = ArrayBuffer.empty
   var debug: Boolean = false
   var originalProgram: AST = null
   var printed: Boolean = false
