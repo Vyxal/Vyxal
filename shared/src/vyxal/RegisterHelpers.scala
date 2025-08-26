@@ -15,6 +15,11 @@ object RegisterHelpers:
 	def isEmpty: Boolean = register.length == 0
 
 	def length: VNum = VNum(register.length)
+
+	def reverseRegister(): Unit = 
+		val rev = register.reverse
+		for i <- 0 to register.length do
+			register.update(i, rev(i))
 		
 	/** Apply a monadic function to the last item in the register */	
 	def applyFunction(fn: VFun)(using Context): Unit =
@@ -40,6 +45,6 @@ object RegisterHelpers:
 		else top.toList
 
 	def index(i: Int)(using Context): VAny =
-		register.reverse.toIndexedSeq(i)
+		register.toIndexedSeq(i)
 
 end RegisterHelpers

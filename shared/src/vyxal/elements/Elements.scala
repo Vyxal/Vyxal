@@ -744,7 +744,9 @@ object Elements:
           case a: VPhysical =>
             RegisterHelpers.push(a)
             if summon[Context].settings.registerPeek then push(a)
-          case _ => throw UnsupportedOverloadException("£", "Function")
+          case f: VFun if f.arity == 1  =>
+            RegisterHelpers.applyFunction(f)
+          case _ => throw UnsupportedOverloadException("£", "Function arity !=1")
       },
     "¥" -> 
       direct(0) {
@@ -754,6 +756,10 @@ object Elements:
       direct(0) {
         push(RegisterHelpers.pop())
       },
+    "Þ^" ->
+      direct(0) {
+        RegisterHelpers.reverseRegister()
+      },
     "Þ⍨" ->
       direct(0) {
         for x <- RegisterHelpers.register.reverse do
@@ -762,6 +768,15 @@ object Elements:
     "Þ¥" ->
       direct(0) {
         push(RegisterHelpers.pop(1, allVals = true))
+      },
+    "Þ⏚" ->
+      direct(1) {
+        val top = pop()
+        top match
+          case VListOf[VPhysical](n) =>
+            for x <- n do
+              RegisterHelpers.push(x)
+          case _ => throw UnsupportedOverloadException("Þ⏚", "Function")
       },
     "Þw" -> 
       direct(0) {
@@ -773,7 +788,7 @@ object Elements:
       },
     "Þ_" ->
       direct(0) {
-        RegisterHelpers.pop(allVals=true)
+        RegisterHelpers.clear()
       },
     addPart("Þ⦷", Monad, true) {
       case i: VNum =>
@@ -1409,9 +1424,7 @@ object Elements:
               val t = a.map(x => VList(ListHelpers.flatten(x.itr)))
               push(VList(t)) // there has GOT to be a better way to do this
             else push(ListHelpers.flattenByDepth(a, 1))
-          case f: VFun if f.arity == 1  =>
-            RegisterHelpers.applyFunction(f)
-          case _ => throw UnsupportedOverloadException("⎘","Function Arity != 1")
+          case _ => throw UnsupportedOverloadException("⎘","Function")
       },
     addPart("ꜝ", Monad, false) {
       case a: VNum => VNum(a.itr.filter(x => x != VNum(0)).mkString)

@@ -1814,13 +1814,18 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "£",
-      keywords = Seq("set-register"),
+      keywords = Seq("set-register", "apply-to-register"),
       arity = 1,
       Options(),
       Overload(
         name = "Set Register",
-        args = Seq("any"),
+        args = Seq("nsl"),
         description = "Push #1 to the register",
+      ),
+       Overload(
+        name = "Apply to Register",
+        args = Seq("fun"),
+        description = "Apply #1 to the top of the register",
       ),
     ),
     AddElement(
