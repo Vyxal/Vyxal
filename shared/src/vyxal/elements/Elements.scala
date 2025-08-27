@@ -72,9 +72,14 @@ object Elements:
     addPart("¬", Monad, false) { a =>
       VNum(!a.toBool)
     },
-    addPart("ʀ", Monad, true) {
-      case a: VNum => NumberHelpers.range(0, a - a.signum)
-      case VStr(a) => a.toLowerCase()
+    "ʀ" ->
+      direct(1) {
+        val top = pop()
+        top match 
+          case a: VNum => push(NumberHelpers.range(0, a - a.signum))
+          case VStr(a) => a.toLowerCase()
+          case f: VFun =>
+            RegisterHelpers.applyFunction(f)
     },
     addPart("ʁ", Monad, true) {
       case a: VNum =>
@@ -739,14 +744,9 @@ object Elements:
 
     "£" ->
       direct(1) {
-        val top = pop()
-        top match
-          case a: VPhysical =>
-            RegisterHelpers.push(a)
-            if summon[Context].settings.registerPeek then push(a)
-          case f: VFun if f.arity == 1  =>
-            RegisterHelpers.applyFunction(f)
-          case _ => throw UnsupportedOverloadException("£", "Function arity !=1")
+        val a = pop()
+        RegisterHelpers.push(a)
+        if summon[Context].settings.registerPeek then push(a)
       },
     "¥" -> 
       direct(0) {
