@@ -25,7 +25,7 @@ object RegisterHelpers:
 	def applyFunction(fn: VFun)(using Context): Unit =
 		if !register.last.isInstanceOf[VFun] then register.update(register.length - 1, fn(register.last))
 	
-	def push(a: VPhysical)(using Context): Unit =
+	def push(a: VAny)(using Context): Unit =
 		register.append(a)
 
 	def pop(c: VNum = 1, allVals: Boolean = false)(using ctx: Context): VAny =
