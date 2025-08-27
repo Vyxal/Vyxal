@@ -47,8 +47,10 @@ class RegisterTests extends VyxalTests:
         testMulti(
           "Þ_ 5£ 6£ λ2+}Ͼ ` `;" -> vSeq(8,5),
           "Þ_ 5 6;£ λ2+}Ͼ `" -> vSeq(7,8),
-          "Þ_ 5ʁ ¨£ λ2+}£  Þ¥" -> vSeq(0,1,2,3,4,5), // don't pop functions
         )
+      }
+      describe("Don't Pop Functions") {
+        testCode("Þ_ 5ʁ ¨£ λ2+}£  Þ¥", vSeq(0,1,2,3,4,5))
       }
 
       it("Should apply functions after popping them") {
