@@ -3,7 +3,6 @@ package vyxal
 import vyxal.conversions.{*, given}
 
 import scala.collection.mutable.ArrayBuffer
-import scala.collection.mutable as mut
 
 
 object RegisterHelpers:
@@ -22,9 +21,14 @@ object RegisterHelpers:
 			register.update(i, rev(i))
 		
 	/** Apply a monadic function to the last item in the register */	
-	def applyFunction(fn: VFun)(using Context): Unit =
-		if !register.last.isInstanceOf[VFun] then register.update(register.length - 1, fn(register.last))
-	
+	def applyFunction(fn: VFun)(using ctx: Context): Unit =
+		if register.last.isInstanceOf[VPhysical]
+		then
+			ctx.push(register.last)
+			val c = Interpreter.executeFn(fn)
+			register.update(register.length-1 , c)
+
+
 	def push(a: VAny)(using Context): Unit =
 		register.append(a)
 
@@ -35,13 +39,21 @@ object RegisterHelpers:
 			val top = register.takeRight(n)
 			register.dropRightInPlace(n)
 			register.trimToSize()
-			if top.length == 1 then top.head
+			if top.length == 1 then 
+				val c = top.head
+				c match
+					case c: VFun => Interpreter.executeFn(c)
+					case _ => c
 			else top.toList.filterNot(_.isInstanceOf[VFun])
 	
-	def peek(c: VNum = 1, allVals: Boolean = false)(using Context): VAny =
+	def peek(c: VNum = 1, allVals: Boolean = false)(using ctx: Context): VAny =
 		val n = if allVals then register.length else c.toInt
 		val top = register.takeRight(n)
-		if top.length == 1 then top.head
+		if top.length == 1 then
+			val c = top.head
+				c match
+					case c: VFun => Interpreter.executeFn(c)
+					case _ => c
 		else top.toList.filterNot(_.isInstanceOf[VFun])
 
 	def index(i: Int)(using Context): VAny =

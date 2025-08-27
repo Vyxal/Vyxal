@@ -72,14 +72,9 @@ object Elements:
     addPart("¬", Monad, false) { a =>
       VNum(!a.toBool)
     },
-    "ʀ" ->
-      direct(1) {
-        val top = pop()
-        top match 
-          case a: VNum => push(NumberHelpers.range(0, a - a.signum))
-          case VStr(a) => a.toLowerCase()
-          case f: VFun =>
-            RegisterHelpers.applyFunction(f)
+    addPart("ʀ", Monad, true) {
+      case a: VNum => NumberHelpers.range(0, a - a.signum)
+      case VStr(a) => a.toLowerCase()
     },
     addPart("ʁ", Monad, true) {
       case a: VNum =>
@@ -1193,9 +1188,15 @@ object Elements:
       case VStr(str) => str + str.reverse
       case lst: VList => VList(lst ++ lst.reverse)
     },
-    addPart("Ͼ", Monad, false) {
-      case num: VNum => " " * num.toInt // hallelujah
-      case lst: VList => VList(lst.map(item => ListHelpers.sum(item.itr)))
+    "Ͼ" ->
+      direct(1) {
+        val top = pop()
+        top match
+          case num: VNum => push(" " * num.toInt) // hallelujah
+          case lst: VList => push(VList(lst.map(item => ListHelpers.sum(item.itr))))
+          case f: VFun if f.arity == 1 =>
+            RegisterHelpers.applyFunction(f)
+          case _ => throw UnsupportedOverloadException("Ͼ", "Function arity !=1")
     },
     "ᴥ" -> fullToImpl(Monad, x => MiscHelpers.exec(x)),
     addPart("ℳ", Dyad, false) {

@@ -42,4 +42,22 @@ class RegisterTests extends VyxalTests:
         assertResult(VNum(1))(ctx.pop())
       }
     }
+    describe("Function behavior") {
+      describe("Applying to head") {
+        testMulti(
+          "Þ_ 5£ 6£ λ2+}Ͼ ` `;" -> vSeq(8,5),
+          "Þ_ 5 6;£ λ2+}Ͼ `" -> vSeq(7,8),
+        )
+      }
+
+      it("Should apply functions after popping them") {
+        given ctx: Context = Context(testMode = true)
+        Interpreter.execute(" Þ_ λ2+}£ 6 5+:")
+        val cp = Checkpoint()
+        cp { assertResult(VNum(11))(ctx.pop()) }
+        Interpreter.execute("¥")
+        cp { assertResult(VNum(13))(ctx.pop()) }
+        cp.reportAll()
+      }
+    }
 end RegisterTests
