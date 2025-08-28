@@ -783,7 +783,7 @@ object Elements:
       },
     addPart("Þ⦷", Monad, true) {
       case i: VNum =>
-        RegisterHelpers.index(i.toInt)
+        RegisterHelpers.index(i)
       },
     addPart("Þ⊖", Monad, false) {
       case n: VNum =>

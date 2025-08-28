@@ -54,8 +54,8 @@ object RegisterHelpers:
 			else top.toList.filterNot(_.isInstanceOf[VFun])
 	
 
-	def index(i: Int)(using Context): VAny =
-		val l = register.length
-		register.toIndexedSeq((i + l) % l)
+	def index(i: VNum)(using Context): VAny =
+		val idx = (i % VNum(register.length)).toInt
+		register.toIndexedSeq(idx) // scala modulo doesn't always return positive vales 
 
 end RegisterHelpers
