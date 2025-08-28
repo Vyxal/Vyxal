@@ -1058,7 +1058,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "c",
-      keywords = Seq("contains", "contains?", "is-in"),
+      keywords = Seq("contains", "contains?", "is-in", "fixpoint-length"),
       arity = 2,
       Options(),
       Overload(
@@ -1077,6 +1077,19 @@ object ElementInformation:
         args = Seq("lst", "lst"),
         description =
           "Is the list with shallower depth in the list with deeper depth",
+      ),
+      Overload(
+        name = "Contains",
+        args = Seq("lst", "scl"),
+        description = "Is {#2|#1} in {#1|#2}",
+        typeSwitchable = true,
+      ),
+      Overload(
+        name = "Fixed Point Length",
+        args = Seq("fun", "any"),
+        description =
+          "Repeatedly apply {#1|#2} to {#2|#1} until it doesn't change. Return the length of the sequence.",
+        typeSwitchable = true,
       ),
     ),
     AddElement(
@@ -1880,7 +1893,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "↻",
-      keywords = Seq("rot-right"),
+      keywords = Seq("rot-right", "iterate-unique-length"),
       arity = 1,
       Options(),
       Overload(
@@ -1892,6 +1905,12 @@ object ElementInformation:
         name = "Rotate Right",
         args = Seq("lst|str", "num"),
         description = "Rotate #1 right #2 times. Left if #2 is negative",
+      ),
+       Overload(
+        name = "Iterate while Unique",
+        args = Seq("any", "fun"),
+        description =
+          "Repeatedly apply #2 to #1 until a result is repeated, return the length",
       ),
     ),
     AddElement(
