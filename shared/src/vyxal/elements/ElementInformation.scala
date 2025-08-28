@@ -1832,13 +1832,8 @@ object ElementInformation:
       Options(),
       Overload(
         name = "Set Register",
-        args = Seq("nsl"),
+        args = Seq("any"),
         description = "Push #1 to the register",
-      ),
-       Overload(
-        name = "Apply to Register",
-        args = Seq("fun"),
-        description = "Apply #1 to the top of the register",
       ),
     ),
     AddElement(
@@ -1871,7 +1866,7 @@ object ElementInformation:
       Overload(
         name = "Dump Register",
         args = Seq(),
-        description = "Pop each item in the register to the stack, the last item on the bottom",
+        description = "Pop each item in the register to the stack",
       ),
     ),
     AddElement(
@@ -1938,7 +1933,7 @@ object ElementInformation:
       Overload(
         name = "Register Index",
         args = Seq("num"),
-        description = "Get item in the register at index #1 where the top is index 0",
+        description = "Get item in the register at index #1",
       ),
     ),
     AddElement(
@@ -2713,13 +2708,18 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "Ͼ",
-      keywords = Seq("vectorised-sums", "v/+"),
+      keywords = Seq("vectorised-sums", "register-apply-head"),
       arity = 1,
       Options(vectorises = true),
       Overload(
         name = "Vectorised Sums",
         args = Seq("lst"),
         description = "Sum of each item in #1. Functionally equivalent to `¨∑`",
+      ),
+      Overload(
+        name = "Apply to Register",
+        args = Seq("fun"),
+        description = "Apply #1 to the top of the register",
       ),
     ),
     AddElement(
@@ -3180,7 +3180,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⎘",
-      keywords = Seq("flatten-by-depth", "flatten-depth", "one-flatten"),
+      keywords = Seq("flatten-by-depth", "flatten-depth", "one-flatten", "register-map"),
       arity = 2,
       Options(),
       Overload(
@@ -3197,6 +3197,11 @@ object ElementInformation:
         name = "Flatten-each",
         args = Seq("lst[num|str]"),
         description = "Flattens each item in #1",
+      ),
+      Overload(
+        name = "Register Map",
+        args = Seq("fun"),
+        description = "Map #1 over the register",
       ),
     ),
     AddElement(
