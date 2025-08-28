@@ -1906,7 +1906,7 @@ object ElementInformation:
         args = Seq("lst|str", "num"),
         description = "Rotate #1 right #2 times. Left if #2 is negative",
       ),
-       Overload(
+      Overload(
         name = "Iterate while Unique",
         args = Seq("any", "fun"),
         description =

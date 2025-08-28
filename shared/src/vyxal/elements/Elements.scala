@@ -417,7 +417,7 @@ object Elements:
             (a, b)
           else (b, a)
         haystack.contains(needle)
-      
+
       case (predicate: VFun, initial) =>
         MiscHelpers.untilNoChange(predicate, initial).length
       case (initial, predicate: VFun) =>
@@ -781,7 +781,7 @@ object Elements:
             val times = a
             val iterable = pop()
             push(ListHelpers.rotate(iterable, -times))
-          
+
           case _ => throw UnsupportedOverloadException("↻", "function | object")
       },
     addPart("≜", Triad, false) {
