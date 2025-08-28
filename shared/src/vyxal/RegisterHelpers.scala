@@ -38,15 +38,15 @@ object RegisterHelpers:
 	def push(a: VAny)(using Context): Unit =
 		register.append(a)
 
-	def pop(c: VNum = 1, allVals: Boolean = false, peek: Boolean = false)(using ctx: Context): VAny =
-		val n = if allVals then register.length else c.toInt
+	def pop(j: VNum = 1, allVals: Boolean = false, peek: Boolean = false)(using ctx: Context): VAny =
+		val n = if allVals then register.length else j.toInt
 		if register.isEmpty then VNum(0)
 		else
 			val top = register.takeRight(n)
 			if !peek then 
 				register.dropRightInPlace(n)
 				register.trimToSize()
-			if top.length == 1 then 
+			if top.length == 1 && !allVals then 
 				val c = top.head
 				c match
 					case c: VFun => Interpreter.executeFn(c)

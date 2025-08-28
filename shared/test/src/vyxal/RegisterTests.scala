@@ -16,11 +16,13 @@ class RegisterTests extends VyxalTests:
     describe("Regular Register Usage") {
       testMulti(
         "5£9::++" -> VNum(27),
-        "5£9::++`" -> VNum(5),
-        """ "hello" £ " world"`$+ """ -> VStr("hello world"),
-        "4 5; £ 1 2; ` " -> vSeq(4,5),
-        "4 5; £ 1 2; " -> vSeq(1,2),
-        """ "vyxal " "cool" "is "⎇ £ J ¥ J """ -> VStr("vyxal is cool")
+        "Þ_ 5£9::++`" -> VNum(5),
+        """ Þ_ "hello" £ " world"`$+ """ -> VStr("hello world"),
+        "Þ_ 4w £ Þ¥ " -> vSeq(vSeq(4)),
+        "Þ_ 4 5; £ 1 2; ` " -> vSeq(4,5),
+        "Þ_ 4 5; £ 1 2; " -> vSeq(1,2),
+        """ Þ_ "vyxal " "cool" "is "⎇ £ J ¥ J """ -> VStr("vyxal is cool")
+
       )
       it("Should push zero if empty") {
         RegisterHelpers.clear()
