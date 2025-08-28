@@ -37,12 +37,12 @@ class RegisterTests extends VyxalTests:
         "Þ_ 5ʁ ¨£ Þ^ Þ¥" -> vSeq(5,4,3,2,1,0)
       )
     }
-    describe("Register Index") {
-      it("Should Index like the stack") {
-        given ctx: Context = Context(testMode = true)
-        Interpreter.execute("5ʁ ¨£ 1Þ⦷")
-        assertResult(VNum(1))(ctx.pop())
-      }
+    describe("Indexing") {
+      testMulti(
+        "Þ_ 5ʁ ¨£ 1Þ⦷" -> VNum(1),
+        "Þ_ 5ʁ ¨£ 13Þ⦷" -> VNum(1),
+        "Þ_ 5ʁ ¨£ 1N Þ⦷" -> VNum(5),
+      )
     }
     describe("Function behavior") {
       describe("Applying to head") {
@@ -73,6 +73,10 @@ class RegisterTests extends VyxalTests:
         Interpreter.execute("¥")
         cp { assertResult(VNum(13))(ctx.pop()) }
         cp.reportAll()
+      }
+      
+      it("Global context") {
+        testCode("Þ_ 5ʁ ¨£ 5 11R Þ^ƛ`}", vSeq(0,1,2,3,4,5))
       }
     }
 end RegisterTests

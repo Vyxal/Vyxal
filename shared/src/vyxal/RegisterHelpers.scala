@@ -3,7 +3,6 @@ package vyxal
 import vyxal.conversions.{*, given}
 
 import scala.collection.mutable.ArrayBuffer
-import vyxal.MiscHelpers.typesOf
 
 
 object RegisterHelpers:
@@ -56,6 +55,7 @@ object RegisterHelpers:
 	
 
 	def index(i: Int)(using Context): VAny =
-		register.toIndexedSeq(i)
+		val l = register.length
+		register.toIndexedSeq((i + l) % l)
 
 end RegisterHelpers

@@ -417,6 +417,11 @@ object Elements:
             (a, b)
           else (b, a)
         haystack.contains(needle)
+
+      case (predicate: VFun, initial) =>
+        MiscHelpers.untilNoChange(predicate, initial).length
+      case (initial, predicate: VFun) =>
+        MiscHelpers.untilNoChange(predicate, initial).length
     },
     addPart("d", Monad, true) {
       case a: VNum => a + a
@@ -803,7 +808,7 @@ object Elements:
           case a: VIter => push(ListHelpers.rotate(a, 1))
           case predicate: VFun =>
             val item = pop()
-            MiscHelpers.collectUnique(predicate, item)
+            push(MiscHelpers.collectUnique(predicate, item))
           case a: VNum =>
             val times = a
             val iterable = pop()
@@ -815,10 +820,14 @@ object Elements:
         val top = pop()
         top match
           case a: VIter => push(ListHelpers.rotate(a, -1))
+          case predicate: VFun =>
+            val item = pop()
+            push(MiscHelpers.collectUnique(predicate, item).length)
           case a: VNum =>
             val times = a
             val iterable = pop()
             push(ListHelpers.rotate(iterable, -times))
+
           case _ => throw UnsupportedOverloadException("↻", "function | object")
       },
     addPart("≜", Triad, false) {
