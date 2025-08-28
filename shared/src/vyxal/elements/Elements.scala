@@ -1418,7 +1418,6 @@ object Elements:
             else push(ListHelpers.flattenByDepth(a, 1))
           case fn: VFun if fn.arity <= 1 => 
             RegisterHelpers.map(fn)
-
           case _ => throw UnsupportedOverloadException("⎘","Dyadic Function")
       },
     addPart("ꜝ", Monad, false) {

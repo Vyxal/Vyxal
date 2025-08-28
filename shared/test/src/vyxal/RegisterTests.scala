@@ -54,10 +54,15 @@ class RegisterTests extends VyxalTests:
       describe("Don't Pop Functions") {
         testCode("Þ_ 5ʁ ¨£ λ2+}£  Þ¥", vSeq(0,1,2,3,4,5))
       }
-      it("Function Mapping") {
+      it("Monadic Function Mapping") {
           given ctx: Context = Context(testMode = true)
           Interpreter.execute("Þ_ 5ʁ ¨£ λ2+}⎘Þ¥")
           assertResult(vSeq(2,3,4,5,6,7))(ctx.pop().itr)
+      }
+      it("Niladic Function Mapping") {
+          given ctx: Context = Context(testMode = true)
+          Interpreter.execute("Þ_ 5ʁ ¨£ λ2}⎘Þ¥")
+          assertResult(vSeq(2,2,2,2,2,2))(ctx.pop().itr)
       }
 
       it("Should apply functions after popping them") {
