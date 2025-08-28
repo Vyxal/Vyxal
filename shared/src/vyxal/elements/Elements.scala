@@ -735,7 +735,7 @@ object Elements:
           case _ => temp
     },
 
-    // global array stuff
+    // Register stuff, see Ͼ for apply-to-head
 
     "£" ->
       direct(1) {
@@ -745,7 +745,7 @@ object Elements:
       },
     "¥" -> 
       direct(0) {
-        push(RegisterHelpers.peek())
+        push(RegisterHelpers.pop(peek=true))
       },
     "`" ->
       direct(0) {
@@ -762,11 +762,11 @@ object Elements:
       },
     "Þ¥" ->
       direct(0) {
-        push(RegisterHelpers.pop(1, allVals = true))
+        push(RegisterHelpers.pop(allVals = true))
       },
     "Þw" -> 
       direct(0) {
-        push(RegisterHelpers.peek(1, allVals = true))
+        push(RegisterHelpers.pop(allVals = true, peek=true))
       },
     "Þ`" ->
       direct(0) {
@@ -786,7 +786,7 @@ object Elements:
     },
     addPart("Þ⌽", Monad, false) {
       case n: VNum =>
-        RegisterHelpers.peek(n)
+        RegisterHelpers.pop(n, peek=true)
     },
     "↜" ->
       direct(-1) {
@@ -1195,7 +1195,7 @@ object Elements:
           case num: VNum => push(" " * num.toInt) // hallelujah
           case lst: VList => push(VList(lst.map(item => ListHelpers.sum(item.itr))))
           case f: VFun if f.arity == 1 =>
-            RegisterHelpers.applyFunction(f)
+            RegisterHelpers.applyFunction(f, RegisterHelpers.length - 1)
           case _ => throw UnsupportedOverloadException("Ͼ", "Function arity !=1")
     },
     "ᴥ" -> fullToImpl(Monad, x => MiscHelpers.exec(x)),
@@ -1416,7 +1416,10 @@ object Elements:
               val t = a.map(x => VList(ListHelpers.flatten(x.itr)))
               push(VList(t)) // there has GOT to be a better way to do this
             else push(ListHelpers.flattenByDepth(a, 1))
-          case _ => throw UnsupportedOverloadException("⎘","Function")
+          case fn: VFun if fn.arity <= 1 => 
+            RegisterHelpers.map(fn)
+
+          case _ => throw UnsupportedOverloadException("⎘","Dyadic Function")
       },
     addPart("ꜝ", Monad, false) {
       case a: VNum => VNum(a.itr.filter(x => x != VNum(0)).mkString)

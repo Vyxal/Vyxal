@@ -3,6 +3,7 @@ package vyxal
 import vyxal.conversions.{*, given}
 
 import scala.collection.mutable.ArrayBuffer
+import vyxal.MiscHelpers.typesOf
 
 
 object RegisterHelpers:
@@ -17,28 +18,35 @@ object RegisterHelpers:
 
 	def reverseRegister(): Unit = 
 		val rev = register.reverse
-		for i <- 0 to register.length do
+		for i <- 0 to register.length - 1 do
 			register.update(i, rev(i))
 		
-	/** Apply a monadic function to the last item in the register */	
-	def applyFunction(fn: VFun)(using ctx: Context): Unit =
+	/** Apply a monadic function to an item in the register */	
+	def applyFunction(fn: VFun, idx: VNum)(using ctx: Context): Unit =
 		if register.last.isInstanceOf[VPhysical]
 		then
-			ctx.push(register.last)
+			ctx.push(register(idx.toInt))
 			val c = Interpreter.executeFn(fn)
-			register.update(register.length-1 , c)
+			register.update(idx.toInt, c)
+
+	def map(fn: VFun)(using ctx: Context): Unit =
+		for x <- 0 to register.length - 1 do
+			if register(x).isInstanceOf[VPhysical] then applyFunction(fn, VNum(x)) 
+			else register(x)
+
 
 
 	def push(a: VAny)(using Context): Unit =
 		register.append(a)
 
-	def pop(c: VNum = 1, allVals: Boolean = false)(using ctx: Context): VAny =
+	def pop(c: VNum = 1, allVals: Boolean = false, peek: Boolean = false)(using ctx: Context): VAny =
 		val n = if allVals then register.length else c.toInt
 		if register.isEmpty then VNum(0)
 		else
 			val top = register.takeRight(n)
-			register.dropRightInPlace(n)
-			register.trimToSize()
+			if !peek then 
+				register.dropRightInPlace(n)
+				register.trimToSize()
 			if top.length == 1 then 
 				val c = top.head
 				c match
@@ -46,15 +54,6 @@ object RegisterHelpers:
 					case _ => c
 			else top.toList.filterNot(_.isInstanceOf[VFun])
 	
-	def peek(c: VNum = 1, allVals: Boolean = false)(using ctx: Context): VAny =
-		val n = if allVals then register.length else c.toInt
-		val top = register.takeRight(n)
-		if top.length == 1 then
-			val c = top.head
-				c match
-					case c: VFun => Interpreter.executeFn(c)
-					case _ => c
-		else top.toList.filterNot(_.isInstanceOf[VFun])
 
 	def index(i: Int)(using Context): VAny =
 		register.toIndexedSeq(i)

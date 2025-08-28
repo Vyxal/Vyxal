@@ -7,6 +7,7 @@ import vyxal.elements.Modifiers
 
 import org.scalatest.Checkpoints.Checkpoint
 import org.scalatest.funspec.AnyFunSpec
+import vyxal.elements.itr
 
 class RegisterTests extends VyxalTests:
 
@@ -33,6 +34,7 @@ class RegisterTests extends VyxalTests:
       testMulti(
         "5£ 6£ Þ¥ Þ¥;" -> vSeq(vSeq(5,6), 0),
         "Þ_ 5ʁ ¨£ ¥ Þ¥;" -> vSeq(5, vSeq(0,1,2,3,4,5)), // this fails if I don't clear the register between them
+        "Þ_ 5ʁ ¨£ Þ^ Þ¥" -> vSeq(5,4,3,2,1,0)
       )
     }
     describe("Register Index") {
@@ -51,6 +53,11 @@ class RegisterTests extends VyxalTests:
       }
       describe("Don't Pop Functions") {
         testCode("Þ_ 5ʁ ¨£ λ2+}£  Þ¥", vSeq(0,1,2,3,4,5))
+      }
+      it("Function Mapping") {
+          given ctx: Context = Context(testMode = true)
+          Interpreter.execute("Þ_ 5ʁ ¨£ λ2+}⎘Þ¥")
+          assertResult(vSeq(2,3,4,5,6,7))(ctx.pop().itr)
       }
 
       it("Should apply functions after popping them") {
