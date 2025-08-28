@@ -401,7 +401,7 @@ Element, Modifier, and Syntax Reference
 | <code>#:@</code> | Defined Element Call | `$@` | Call a defined element | <code>#:@<name></code> |
 | <code>#></code> | Augmented Assignment | `:>` | Apply a function to a variable value and store the result in the same variable. | <code><function> #> <variable></code> |
 | <code>#T</code> | Try-Catch | `try` | Open a Try-Catch Structure | <code>#T<success>|<exception>}</code> |
-| <code>#¤</code> | Context Paramter Index | ``n`` | Index into the list of context parameters. | <code>¤<number></code> |
+| <code>#¤</code> | Context Paramter Index | ``n`` | Index into the list of context parameters. If no index is provided, push the entire context list. Useful for generator structures. | <code>#¤<number></code> |
 | <code>#=</code> | Assign Variable | `:=` | Assign a variable to a value. | <code>#=<variable></code> |
 | <code>#::R</code> | Record Definition | `record` | Define a record with members | <code>#:R<name>|#$restricted #=private #!public}</code> |
 | <code>#::+</code> | Extension Method | `extension` | Define an overload on a custom element based on types. Requires at least one type to be specified. | <code>#::+<name>|<arg1>|<type1>|<arg2>|<type2>...|<impl>}</code> |

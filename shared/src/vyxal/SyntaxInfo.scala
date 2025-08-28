@@ -369,8 +369,8 @@ object SyntaxInfo:
       Syntax(
         "Context Paramter Index",
         Seq("`n`"),
-        "Index into the list of context parameters.",
-        "¤<number>",
+        "Index into the list of context parameters. If no index is provided, push the entire context list. Useful for generator structures.",
+        "#¤<number>",
       ),
     "#::" ->
       Syntax(
