@@ -17,6 +17,10 @@ class RegisterTests extends VyxalTests:
       testMulti(
         "5£9::++" -> VNum(27),
         "5£9::++`" -> VNum(5),
+        """ "hello" £ " world"`$+ """ -> VStr("hello world"),
+        "4 5; £ 1 2; ` " -> vSeq(4,5),
+        "4 5; £ 1 2; " -> vSeq(1,2),
+        """ "vyxal " "cool" "is "⎇ £ J ¥ J """ -> VStr("vyxal is cool")
       )
       it("Should push zero if empty") {
         RegisterHelpers.clear()
@@ -49,10 +53,15 @@ class RegisterTests extends VyxalTests:
         testMulti(
           "Þ_ 5£ 6£ λ2+}Ͼ ` `;" -> vSeq(8,5),
           "Þ_ 5 6;£ λ2+}Ͼ `" -> vSeq(7,8),
+          "Þ_ nf £ λλ+}R}Ͼ `" -> VStr("abcdefghijklmnopqrstuvwxyz")
         )
       }
       describe("Don't Pop Functions") {
-        testCode("Þ_ 5ʁ ¨£ λ2+}£  Þ¥", vSeq(0,1,2,3,4,5))
+        testMulti(
+          "Þ_ 5ʁ ¨£ λ2+}£  Þ¥" -> vSeq(0,1,2,3,4,5),
+          "Þ_ λ2+}£ λ2+}£  Þ¥" -> Seq.empty
+        )
+
       }
       it("Monadic Function Mapping") {
           given ctx: Context = Context(testMode = true)
