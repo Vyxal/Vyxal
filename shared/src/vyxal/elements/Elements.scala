@@ -1204,7 +1204,7 @@ object Elements:
           case num: VNum => push(" " * num.toInt) // hallelujah
           case lst: VList => push(VList(lst.map(item => ListHelpers.sum(item.itr))))
           case f: VFun if f.arity == 1 =>
-            RegisterHelpers.applyFunction(f, RegisterHelpers.length - 1)
+            RegisterHelpers.applyFn(f, RegisterHelpers.length - 1)
           case _ => throw UnsupportedOverloadException("Ͼ", "Function arity !=1")
     },
     "ᴥ" -> fullToImpl(Monad, x => MiscHelpers.exec(x)),
