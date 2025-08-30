@@ -25,7 +25,6 @@ class RegisterTests extends VyxalTests:
 
       )
       it("Should push zero if empty") {
-        RegisterHelpers.clear()
         given ctx: Context = Context(testMode = true)
         ctx.push(5)
         Interpreter.execute("£")

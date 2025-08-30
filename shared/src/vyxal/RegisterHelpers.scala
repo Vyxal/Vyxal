@@ -7,15 +7,13 @@ import scala.collection.mutable.ArrayBuffer
 
 object RegisterHelpers:
 
-	val register = Context().globals.register
+	def register(using ctx: Context): ArrayBuffer[VAny] = ctx.globals.register
+	def clear(using Context) = register.length == 0
+	def length(using Context) = VNum(register.length)
 
-	def clear(): Unit = register.clearAndShrink(1)
+	def isEmpty(using Context): Boolean = register.length == 0
 
-	def isEmpty: Boolean = register.length == 0
-
-	def length: VNum = VNum(register.length)
-
-	def reverseRegister(): Unit = 
+	def reverseRegister(using ctx: Context): Unit = 
 		val rev = register.reverse
 		for i <- 0 to register.length - 1 do
 			register.update(i, rev(i))
@@ -28,13 +26,10 @@ object RegisterHelpers:
 			register.update(idx.toInt, c)
 
 
-	/** Map a function over the entire register */
+	/** Apply a function to all elements in the register */
 	def map(fn: VFun)(using ctx: Context): Unit =
-		for x <- 0 to register.length - 1 do
-			if register(x).isInstanceOf[VPhysical] then applyFn(fn, VNum(x)) 
-			else register(x)
-
-
+		for x <- 0 until register.length do
+			applyFn(fn, VNum(x)) 
 
 	def push(a: VAny)(using Context): Unit =
 		register.append(a)
@@ -48,14 +43,12 @@ object RegisterHelpers:
 				register.dropRightInPlace(n)
 				register.trimToSize()
 			if top.length == 1 && !allVals then 
-				val c = top.head
-				c match
-					case c: VFun => Interpreter.executeFn(c)
-					case _ => c
+				top.head match
+					case f: VFun => Interpreter.executeFn(f)
+					case _ => top.head
 			else top.toList.filterNot(_.isInstanceOf[VFun])
 
 			
-	
 	/** Indexing is cyclical and always relative to current array length*/
 	def index(i: VNum)(using Context): VAny =
 		val idx = (i % VNum(register.length)).toInt

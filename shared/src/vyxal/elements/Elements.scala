@@ -748,39 +748,14 @@ object Elements:
         RegisterHelpers.push(a)
         if summon[Context].settings.registerPeek then push(a)
       },
-    "¥" -> 
-      direct(0) {
-        push(RegisterHelpers.pop(peek=true))
-      },
-    "`" ->
-      direct(0) {
-        push(RegisterHelpers.pop())
-      },
-    "Þ^" ->
-      direct(0) {
-        RegisterHelpers.reverseRegister()
-      },
-    "Þ⍨" ->
-      direct(0) {
-        for x <- RegisterHelpers.register.reverse do
-          push(RegisterHelpers.pop())
-      },
-    "Þ¥" ->
-      direct(0) {
-        push(RegisterHelpers.pop(allVals = true))
-      },
-    "Þw" -> 
-      direct(0) {
-        push(RegisterHelpers.pop(allVals = true, peek=true))
-      },
-    "Þ`" ->
-      direct(0) {
-        push(RegisterHelpers.length)
-      },
-    "Þ_" ->
-      direct(0) {
-        RegisterHelpers.clear()
-      },
+    "¥" -> niladify(ctx ?=> RegisterHelpers.pop(peek=true)),
+    "`" -> niladify(ctx ?=> RegisterHelpers.pop()),
+    "Þ¥" -> niladify(ctx ?=> RegisterHelpers.pop(allVals = true)),
+    "Þw" -> niladify(ctx ?=> RegisterHelpers.pop(allVals = true, peek = true)),
+    "Þ`" -> niladify(ctx ?=> RegisterHelpers.length),
+    "Þ_" -> direct(0){RegisterHelpers.clear},
+    "Þ^" ->  direct(0){RegisterHelpers.reverseRegister},
+    "Þ⍨" -> direct(0){RegisterHelpers.pop(allVals = true).itr.foreach(push(_))},
     addPart("Þ⦷", Monad, true) {
       case i: VNum =>
         RegisterHelpers.index(i)
@@ -1205,7 +1180,7 @@ object Elements:
           case lst: VList => push(VList(lst.map(item => ListHelpers.sum(item.itr))))
           case f: VFun if f.arity == 1 =>
             RegisterHelpers.applyFn(f, RegisterHelpers.length - 1)
-          case _ => throw UnsupportedOverloadException("Ͼ", "Function arity !=1")
+          case _ => throw UnsupportedOverloadException("Ͼ", "String")
     },
     "ᴥ" -> fullToImpl(Monad, x => MiscHelpers.exec(x)),
     addPart("ℳ", Dyad, false) {
@@ -1297,9 +1272,9 @@ object Elements:
             push(value)
             push(ListHelpers.reverse(value))
       },
-    "␣" -> niladify(" "),
-    "¶" -> niladify("\n"),
-    "★" -> niladify("*"),
+    "␣" -> constant(" "),
+    "¶" -> constant("\n"),
+    "★" -> constant("*"),
     "ᑂ" ->
       direct(Monad) {
         val ctx = summon[Context]
@@ -1548,103 +1523,103 @@ object Elements:
       },
     "ḧ" ->
       fullToImpl(Monad, x => x.itr.map(_.itr.headOption.getOrElse(VNum(0)))),
-    "①" -> niladify(10),
-    "②" -> niladify(16),
-    "③" -> niladify(32),
-    "④" -> niladify(64),
-    "⑤" -> niladify(100),
-    "⑥" -> niladify(128),
-    "⑦" -> niladify(256),
-    "⑧" -> niladify(-1),
+    "①" -> constant(10),
+    "②" -> constant(16),
+    "③" -> constant(32),
+    "④" -> constant(64),
+    "⑤" -> constant(100),
+    "⑥" -> constant(128),
+    "⑦" -> constant(256),
+    "⑧" -> constant(-1),
     "kæ" -> niladify(NumberHelpers.probablePrimes),
-    "k+" -> niladify(Seq(-1, 1)),
-    "k-" -> niladify(Seq(1, -1)),
-    "k≈" -> niladify(Seq(0, 1)),
-    "k±" -> niladify(Seq(1, 1)),
-    "k=" -> niladify(Seq(0, 0)),
-    "k≡" -> niladify(Seq(-1, 0, 1)),
-    "k0" -> niladify(360),
-    "k1" -> niladify(1000),
-    "k2" -> niladify(10000),
-    "k3" -> niladify(100000),
-    "k4" -> niladify(1000000),
-    "k5" -> niladify(VNum("4294967296")),
-    "k6" -> niladify("0123456789abcdef"),
-    "k9" -> niladify("123456789"),
-    "kA" -> niladify("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
-    "kB" -> niladify("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
-    "kD" -> niladify("\\|/-_"),
-    "kF" -> niladify("FizzBuzz"),
-    "kH" -> niladify("Hello, World!"),
-    "kL" -> niladify("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"),
-    "kP" -> niladify(((' ' to '~').toList).mkString),
+    "k+" -> constant(Seq(-1, 1)),
+    "k-" -> constant(Seq(1, -1)),
+    "k≈" -> constant(Seq(0, 1)),
+    "k±" -> constant(Seq(1, 1)),
+    "k=" -> constant(Seq(0, 0)),
+    "k≡" -> constant(Seq(-1, 0, 1)),
+    "k0" -> constant(360),
+    "k1" -> constant(1000),
+    "k2" -> constant(10000),
+    "k3" -> constant(100000),
+    "k4" -> constant(1000000),
+    "k5" -> constant(VNum("4294967296")),
+    "k6" -> constant("0123456789abcdef"),
+    "k9" -> constant("123456789"),
+    "kA" -> constant("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
+    "kB" -> constant("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
+    "kD" -> constant("\\|/-_"),
+    "kF" -> constant("FizzBuzz"),
+    "kH" -> constant("Hello, World!"),
+    "kL" -> constant("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"),
+    "kP" -> constant(((' ' to '~').toList).mkString),
     "kR" ->
-      niladify(
+      constant(
         "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
       ),
-    "kV" -> niladify("AEIOU"),
-    "kY" -> niladify("AEIOUY"),
-    "kZ" -> niladify("ZYXWVUTSRQPONMLKJIHGFEDCBA"),
-    "k^" -> niladify("0123456789ABCDEF"),
-    "ka" -> niladify("abcdefghijklmnopqrstuvwxyz"),
-    "kd" -> niladify("0123456789"),
-    "ke" -> niladify(spire.math.Real.e),
-    "kg" -> niladify(spire.math.Real.phi),
-    "kh" -> niladify("Hello World"),
-    "ki" -> niladify(spire.math.Real.pi),
-    "kk" -> niladify("Hello, World!"),
-    "kl" -> niladify("ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"),
-    "kn" -> niladify("1234567890"),
-    "ko" -> niladify("01234567"),
+    "kV" -> constant("AEIOU"),
+    "kY" -> constant("AEIOUY"),
+    "kZ" -> constant("ZYXWVUTSRQPONMLKJIHGFEDCBA"),
+    "k^" -> constant("0123456789ABCDEF"),
+    "ka" -> constant("abcdefghijklmnopqrstuvwxyz"),
+    "kd" -> constant("0123456789"),
+    "ke" -> constant(spire.math.Real.e),
+    "kg" -> constant(spire.math.Real.phi),
+    "kh" -> constant("Hello World"),
+    "ki" -> constant(spire.math.Real.pi),
+    "kk" -> constant("Hello, World!"),
+    "kl" -> constant("ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"),
+    "kn" -> constant("1234567890"),
+    "ko" -> constant("01234567"),
     "kp" ->
-      niladify(
+      constant(
         ((' ' to '/').toList ++:
           (':' to '@').toList ++:
           ('[' to '`').toList ++:
           ('{' to '~').toList).mkString
       ),
     "kr" ->
-      niladify(
+      constant(
         "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
       ),
-    "kv" -> niladify("aeiou"),
-    "ky" -> niladify("aeiouy"),
-    "kz" -> niladify("zyxwvutsrqponmlkjihgfedcba"),
-    "k⎶" -> niladify("{}[]<>()"),
-    "k☷" -> niladify("()[]{}"),
-    "k◲" -> niladify("()[]"),
-    "k∪" -> niladify("([{"),
-    "k∩" -> niladify(")]}"),
-    "k<" -> niladify("([{<"),
-    "k>" -> niladify(")]}>"),
-    "k⇄" -> niladify("^>v<"),
-    "k⎀" -> niladify("aeiouAEIOU"),
-    "k/" -> niladify("/\\"),
-    "k⍾" -> niladify("ඞ"), // this setup will save us 2 bytes
-    "k⩔" -> niladify(Codepage),
-    "k½" -> niladify(Seq(1, 2)),
-    "k①" -> niladify(180),
-    "k②" -> niladify(270),
-    "k③" -> niladify(2048),
-    "k④" -> niladify(4096),
-    "k⑤" -> niladify(8192),
-    "k⑥" -> niladify(16384),
-    "k⑦" -> niladify(32768),
-    "k⑧" -> niladify(65536),
-    "k⁰" -> niladify(VNum("2147483648")),
-    "kġ" -> niladify("bcdfghjklmnpqrstvwxyz"),
-    "kɠ" -> niladify("bcdfghjklmnpqrstvwxz"),
-    "kĠ" -> niladify("BCDFGHJKLMNPQRSTVWXYZ"),
-    "kƓ" -> niladify("BCDFGHJKLMNPQRSTVWXZ"),
-    "k⎘" -> niladify("[]<>-+.,"),
-    "k⌹" -> niladify(Seq("()", "[]", "{}", "<>")),
-    "k¤" -> niladify("([{<>}])"),
-    "k²" -> niladify(VNum("1048576")),
-    "k³" -> niladify(VNum("1073741824")),
-    "kγ" -> niladify("aeiouyAEIOUY"),
-    "k◌" -> niladify(VList(Seq(Seq(0, 1), Seq(1, 0), Seq(0, -1), Seq(-1, 0)))),
-    "kℂ" -> niladify("IVXLCDM"),
-    "k•" -> niladify(Seq("qwertyuiop", "asdfghjkl", "zxcvbnm")),
+    "kv" -> constant("aeiou"),
+    "ky" -> constant("aeiouy"),
+    "kz" -> constant("zyxwvutsrqponmlkjihgfedcba"),
+    "k⎶" -> constant("{}[]<>()"),
+    "k☷" -> constant("()[]{}"),
+    "k◲" -> constant("()[]"),
+    "k∪" -> constant("([{"),
+    "k∩" -> constant(")]}"),
+    "k<" -> constant("([{<"),
+    "k>" -> constant(")]}>"),
+    "k⇄" -> constant("^>v<"),
+    "k⎀" -> constant("aeiouAEIOU"),
+    "k/" -> constant("/\\"),
+    "k⍾" -> constant("ඞ"), // this setup will save us 2 bytes
+    "k⩔" -> constant(Codepage),
+    "k½" -> constant(Seq(1, 2)),
+    "k①" -> constant(180),
+    "k②" -> constant(270),
+    "k③" -> constant(2048),
+    "k④" -> constant(4096),
+    "k⑤" -> constant(8192),
+    "k⑥" -> constant(16384),
+    "k⑦" -> constant(32768),
+    "k⑧" -> constant(65536),
+    "k⁰" -> constant(VNum("2147483648")),
+    "kġ" -> constant("bcdfghjklmnpqrstvwxyz"),
+    "kɠ" -> constant("bcdfghjklmnpqrstvwxz"),
+    "kĠ" -> constant("BCDFGHJKLMNPQRSTVWXYZ"),
+    "kƓ" -> constant("BCDFGHJKLMNPQRSTVWXZ"),
+    "k⎘" -> constant("[]<>-+.,"),
+    "k⌹" -> constant(Seq("()", "[]", "{}", "<>")),
+    "k¤" -> constant("([{<>}])"),
+    "k²" -> constant(VNum("1048576")),
+    "k³" -> constant(VNum("1073741824")),
+    "kγ" -> constant("aeiouyAEIOUY"),
+    "k◌" -> constant(VList(Seq(Seq(0, 1), Seq(1, 0), Seq(0, -1), Seq(-1, 0)))),
+    "kℂ" -> constant("IVXLCDM"),
+    "k•" -> constant(Seq("qwertyuiop", "asdfghjkl", "zxcvbnm")),
     addPart("#C", Monad, true) {
       case VStr(a) => StringHelpers.compressDictionary(a)
     },
@@ -2217,7 +2192,7 @@ object Elements:
       },
   )
 
-  private def niladify(value: VAny): Element =
+  private def constant(value: VAny): Element =
     Element(0, () => (ctx: Context) ?=> ctx.push(value))
 
   private def niladify(function: Context ?=> VAny): Element =
