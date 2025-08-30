@@ -740,7 +740,7 @@ object Elements:
           case _ => temp
     },
 
-    // Register stuff, see Ͼ for apply-to-head
+    // Register stuff, see Ͼ for apply-to-head and ⎘ for map
 
     "£" ->
       direct(1) {

@@ -21,16 +21,17 @@ object RegisterHelpers:
 			register.update(i, rev(i))
 		
 	/** Apply a monadic function to an item in the register */	
-	def applyFunction(fn: VFun, idx: VNum)(using ctx: Context): Unit =
+	def applyFn(fn: VFun, idx: VNum)(using ctx: Context): Unit =
 		if register.last.isInstanceOf[VPhysical]
 		then
-			ctx.push(register(idx.toInt))
-			val c = Interpreter.executeFn(fn)
+			val c = Interpreter.executeFn(fn, args = Seq(register(idx.toInt)))
 			register.update(idx.toInt, c)
 
+
+	/** Map a function over the entire register */
 	def map(fn: VFun)(using ctx: Context): Unit =
 		for x <- 0 to register.length - 1 do
-			if register(x).isInstanceOf[VPhysical] then applyFunction(fn, VNum(x)) 
+			if register(x).isInstanceOf[VPhysical] then applyFn(fn, VNum(x)) 
 			else register(x)
 
 
@@ -52,8 +53,10 @@ object RegisterHelpers:
 					case c: VFun => Interpreter.executeFn(c)
 					case _ => c
 			else top.toList.filterNot(_.isInstanceOf[VFun])
-	
 
+			
+	
+	/** Indexing is cyclical and always relative to current array length*/
 	def index(i: VNum)(using Context): VAny =
 		val idx = (i % VNum(register.length)).toInt
 		register.toIndexedSeq(idx) // scala modulo doesn't always return positive vales 
