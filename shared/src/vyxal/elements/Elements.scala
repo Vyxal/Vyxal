@@ -748,14 +748,14 @@ object Elements:
         RegisterHelpers.push(a)
         if summon[Context].settings.registerPeek then push(a)
       },
-    "¥" -> niladify(ctx ?=> RegisterHelpers.pop(peek=true)),
-    "`" -> niladify(ctx ?=> RegisterHelpers.pop()),
-    "Þ¥" -> niladify(ctx ?=> RegisterHelpers.pop(allVals = true)),
-    "Þw" -> niladify(ctx ?=> RegisterHelpers.pop(allVals = true, peek = true)),
-    "Þ`" -> niladify(ctx ?=> RegisterHelpers.length),
+    "¥" -> niladify { RegisterHelpers.pop(peek=true) },
+    "`" -> niladify { RegisterHelpers.pop() },
+    "Þ¥" -> niladify { RegisterHelpers.popAll() },
+    "Þw" -> niladify { RegisterHelpers.popAll(peek = true) },
+    "Þ`" -> niladify { RegisterHelpers.length },
     "Þ_" -> direct(0){RegisterHelpers.clear},
     "Þ^" ->  direct(0){RegisterHelpers.reverseRegister},
-    "Þ⍨" -> direct(0){RegisterHelpers.pop(allVals = true).itr.foreach(push(_))},
+    "Þ⍨" -> direct(0){RegisterHelpers.popAll().itr.foreach(push(_))},
     addPart("Þ⦷", Monad, true) {
       case i: VNum =>
         RegisterHelpers.index(i)

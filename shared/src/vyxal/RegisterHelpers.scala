@@ -8,7 +8,7 @@ import scala.collection.mutable.ArrayBuffer
 object RegisterHelpers:
 
 	def register(using ctx: Context): ArrayBuffer[VAny] = ctx.globals.register
-	def clear(using Context) = register.length == 0
+	def clear(using Context) = register.clear()
 	def length(using Context) = VNum(register.length)
 
 	def isEmpty(using Context): Boolean = register.length == 0
@@ -18,7 +18,7 @@ object RegisterHelpers:
 		for i <- 0 to register.length - 1 do
 			register.update(i, rev(i))
 		
-	/** Apply a monadic function to an item in the register */	
+	/** Apply a monadic function to the item in the register at the specified index */	
 	def applyFn(fn: VFun, idx: VNum)(using ctx: Context): Unit =
 		if register.last.isInstanceOf[VPhysical]
 		then
@@ -34,21 +34,21 @@ object RegisterHelpers:
 	def push(a: VAny)(using Context): Unit =
 		register.append(a)
 
-	def pop(j: VNum = 1, allVals: Boolean = false, peek: Boolean = false)(using ctx: Context): VAny =
-		val n = if allVals then register.length else j.toInt
+	def pop(n: VNum = 1, peek: Boolean = false)(using ctx: Context): VAny =
 		if register.isEmpty then VNum(0)
 		else
-			val top = register.takeRight(n)
+			val top = register.takeRight(n.toInt)
 			if !peek then 
-				register.dropRightInPlace(n)
-				register.trimToSize()
-			if top.length == 1 && !allVals then 
+				register.dropRightInPlace(n.toInt)
+			if top.length == 1 then 
 				top.head match
 					case f: VFun => Interpreter.executeFn(f)
 					case _ => top.head
 			else top.toList.filterNot(_.isInstanceOf[VFun])
 
-			
+	def popAll(peek: Boolean = false)(using Context): VAny = pop(register.length, peek = peek)
+
+
 	/** Indexing is cyclical and always relative to current array length*/
 	def index(i: VNum)(using Context): VAny =
 		val idx = (i % VNum(register.length)).toInt
