@@ -2198,10 +2198,7 @@ object Elements:
   private def niladify(function: Context ?=> VAny): Element =
     Element(0, () => (ctx: Context) ?=> ctx.push(function))
   
-  /** Take no input and do nothing with the stack
-   * 
-   * Shortcut for `direct(0)` and currently only used for register helpers
-  */
+  /** Take no input and do nothing with the stack*/
   private def nop()(impl: Context ?=> Unit): Element =
     Element(0, () => impl)
 
