@@ -34,19 +34,19 @@ object RegisterHelpers:
 	def push(a: VAny)(using Context): Unit =
 		register.append(a)
 
-	def pop(n: VNum = 1, peek: Boolean = false)(using ctx: Context): VAny =
+	def pop(n: VNum = 1, peek: Boolean = false, all: Boolean = false)(using ctx: Context): VAny =
 		if register.isEmpty then VNum(0)
 		else
 			val top = register.takeRight(n.toInt)
 			if !peek then 
 				register.dropRightInPlace(n.toInt)
-			if top.length == 1 then 
+			if top.length == 1 && !all  then 
 				top.head match
 					case f: VFun => Interpreter.executeFn(f)
 					case _ => top.head
 			else top.toList.filterNot(_.isInstanceOf[VFun])
 
-	def popAll(peek: Boolean = false)(using Context): VAny = pop(register.length, peek = peek)
+	def popAll(peek: Boolean = false)(using Context): VAny = pop(register.length, peek = peek, all = true)
 
 
 	/** Indexing is cyclical and always relative to current array length*/
