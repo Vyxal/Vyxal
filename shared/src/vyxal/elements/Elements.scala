@@ -753,8 +753,8 @@ object Elements:
     "Þ¥" -> niladify { RegisterHelpers.popAll() },
     "Þw" -> niladify { RegisterHelpers.popAll(peek = true) },
     "Þ`" -> niladify { RegisterHelpers.length },
-    "Þ_" -> direct(0){RegisterHelpers.clear},
-    "Þ^" ->  direct(0){RegisterHelpers.reverseRegister},
+    "Þ_" -> nop(){RegisterHelpers.clear},
+    "Þ^" ->  nop(){RegisterHelpers.reverseRegister},
     "Þ⍨" -> direct(0){RegisterHelpers.popAll().itr.foreach(push(_))},
     addPart("Þ⦷", Monad, true) {
       case i: VNum =>
@@ -1647,9 +1647,7 @@ object Elements:
       case lst: VList => lst
     },
     "#¿" ->
-      direct(0) {
-        push(summon[Context].globals.inputs.length)
-      },
+      niladify {summon[Context].globals.inputs.length},
     addPart("#ᴥ", Monad, false) {
       case VStr(top) => MiscHelpers.validCode(top)
     },
@@ -2192,11 +2190,20 @@ object Elements:
       },
   )
 
+ /** Take no input and push a constant to the stack*/
   private def constant(value: VAny): Element =
     Element(0, () => (ctx: Context) ?=> ctx.push(value))
-
+    
+ /** Take no input and push something to the stack based on Context*/
   private def niladify(function: Context ?=> VAny): Element =
     Element(0, () => (ctx: Context) ?=> ctx.push(function))
+  
+  /** Take no input and do nothing with the stack
+   * 
+   * Shortcut for `direct(0)` and currently only used for register helpers
+  */
+  private def nop()(impl: Context ?=> Unit): Element =
+    Element(0, () => impl)
 
   /** Add an element that handles all `VAny`s (it doesn't take a
     * `PartialFunction`, hence "Full")
