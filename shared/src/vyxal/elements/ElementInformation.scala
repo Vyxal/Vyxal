@@ -1827,13 +1827,24 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "£",
-      keywords = Seq("set-register", "apply-to-register"),
+      keywords = Seq("set-register"),
       arity = 1,
       Options(),
       Overload(
         name = "Set Register",
         args = Seq("any"),
         description = "Push #1 to the register",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ£",
+      keywords = Seq("vectorised-set-register", "vec-set-register"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Vectorised Set Register",
+        args = Seq("any"),
+        description = "Push each item of #1 to the register",
       ),
     ),
     AddElement(

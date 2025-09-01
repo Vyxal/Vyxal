@@ -759,6 +759,12 @@ object Elements:
     addPart("Þ⦷", Monad, true) {
       case i: VNum => RegisterHelpers.index(i)
     },
+    "Þ£" ->
+      direct(1) {
+        val a = pop()
+        for v <- ListHelpers.flatten(a.itr) do RegisterHelpers.push(v)
+        if summon[Context].settings.registerPeek then push(a)
+      },
     "ÞϾ" ->
       direct(2) {
         val (top, under) = (pop(), pop())
