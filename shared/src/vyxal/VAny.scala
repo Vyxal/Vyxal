@@ -115,8 +115,9 @@ object conversions:
   given Conversion[Boolean, VNum] = b => if b then 1 else 0
 end conversions
 
-case class VNull(n: VAny) extends VAny:
-  def nullify(n: VAny): VNull = VNull(0)
+case class VNull(n: VAny) extends VAny
+object VNull: 
+  def nullify(n: VAny) = VNull(0) 
 
 final case class VStr(s: String) extends VAny:
   override def toString: String = s

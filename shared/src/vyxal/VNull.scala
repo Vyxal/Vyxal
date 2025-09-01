@@ -38,7 +38,7 @@ object NullMonad extends NullImplHelpers[PartialNullMonad, NullMonad](1):
   override def vectorise(name: String)(f: PartialNullMonad) =
     lazy val res: NullMonad = {
       case lhs if f.isDefinedAt(lhs) => f(lhs)
-      case lst: VList => VNull(lst.vmap(res))
+      case lst: VList => VNull.nullify(lst.vmap(res))
       case lhs => throw UnimplementedOverloadException(name, List(lhs))
     }
     res
@@ -55,9 +55,9 @@ object NullDyad extends NullImplHelpers[PartialNullDyad, NullDyad](2):
   override def vectorise(name: String)(f: PartialNullDyad) =
     lazy val res: NullDyad = {
       case args if f.isDefinedAt(args) => f(args)
-      case (lhs: VList, rhs: VList) => VNull(lhs.zipWith(rhs)(res(_, _)))
-      case (lhs, rhs: VList) => VNull(rhs.vmap(res(lhs, _)))
-      case (lhs: VList, rhs) => VNull(lhs.vmap(res(_, rhs)))
+      case (lhs: VList, rhs: VList) => VNull.nullify(lhs.zipWith(rhs)(res(_, _)))
+      case (lhs, rhs: VList) => VNull.nullify(rhs.vmap(res(lhs, _)))
+      case (lhs: VList, rhs) => VNull.nullify(lhs.vmap(res(_, rhs)))
       case args => throw UnimplementedOverloadException(name, args.toList)
     }
 

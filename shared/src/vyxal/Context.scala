@@ -56,8 +56,8 @@ class Context private (
     * inputs, read a line of input from stdin.
     */
   def pop(): VAny =
+    stack = stack.filterNot(_.isInstanceOf[VNull])
     if useStack && parent.isDefined then return parent.getOrElse(this).pop()
-    if stack
     val elem: VAny =
       if stack.nonEmpty then stack.remove(stack.size - 1)
       else if isTopCtx && globals.inputs.nonEmpty then globals.inputs.next()
@@ -106,7 +106,9 @@ class Context private (
     else stack.toList.reverse ::: globals.inputs.peek(n - stack.length)
 
   /** Push items onto the stack. The first argument will be pushed first. */
-  def push(items: VAny*): Unit =
+  def push(itms: VAny*): Unit =
+    val items = itms.filterNot(_.isInstanceOf[VNull])
+    if items.isEmpty || items.isInstanceOf[VNull] then return
     if useStack && parent.isDefined then parent.getOrElse(this).push(items*)
     else stack ++= items
 

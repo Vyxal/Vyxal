@@ -760,9 +760,17 @@ object Elements:
     addPart("Þ⦷", Monad, true) {
       case i: VNum => RegisterHelpers.index(i)
     },
-    addPart("ÞϾ", Dyad, true) {
-      case (idx: VNum, fn: VFun) => RegisterHelpers.applyFn(fn, idx)
+    addPart("ÞϾ", Dyad, false) {
+      case (idx: VNum , fn: VFun) => RegisterHelpers.applyFn(fn, idx)
       case (fn: VFun, idx: VNum) => RegisterHelpers.applyFn(fn, idx)
+      case (VListOf[VNum](lst), fn: VFun) => 
+        for num <- lst do
+          RegisterHelpers.applyFn(fn, num)
+        VNull(0)
+      case (fn: VFun, VListOf[VNum](lst)) => 
+        for num <- lst do
+          RegisterHelpers.applyFn(fn, num)
+        VNull(0)
     },
     addPart("Þ⊖", Monad, false) {
       case n: VNum => RegisterHelpers.pop(n)

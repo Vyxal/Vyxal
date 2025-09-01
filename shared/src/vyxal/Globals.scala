@@ -5,7 +5,6 @@ import vyxal.conversions.given
 import scala.collection.immutable.ArraySeq
 import scala.collection.mutable as mut
 
-import algebra.lattice.Bool
 import mut.ArrayBuffer
 
 /** Stuff that's shared across all contexts
