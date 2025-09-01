@@ -762,8 +762,7 @@ object Elements:
     "Þ£" ->
       direct(1) {
         val a = pop()
-        for v <- ListHelpers.flatten(a.itr) do
-          RegisterHelpers.push(v)
+        for v <- ListHelpers.flatten(a.itr) do RegisterHelpers.push(v)
         if summon[Context].settings.registerPeek then push(a)
       },
     "ÞϾ" ->
