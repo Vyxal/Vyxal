@@ -5,6 +5,9 @@ import vyxal.conversions.given
 import scala.collection.immutable.ArraySeq
 import scala.collection.mutable as mut
 
+import algebra.lattice.Bool
+import mut.ArrayBuffer
+
 /** Stuff that's shared across all contexts
   *
   * @param inputs
@@ -17,7 +20,7 @@ case class Globals(
     printFn: String => Unit = print,
     callStack: mut.Stack[VFun] = mut.Stack(),
 ):
-  var register: VAny = settings.defaultValue
+  var register: mut.ArrayBuffer[VAny] = ArrayBuffer.empty
   var debug: Boolean = false
   var originalProgram: AST = null
   var printed: Boolean = false
@@ -156,6 +159,7 @@ case class Settings(
     limitPrint: Boolean = false,
     dontEvalInputs: Boolean = false,
     recursionLimit: Int = 100,
+    registerPeek: Boolean = false,
     wrapStack: Boolean = false,
 ):
   /** Set an end print mode based */

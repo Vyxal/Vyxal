@@ -1003,7 +1003,7 @@ object ElementInformation:
       ),
     ),
     AddElement(
-      symbol = "`",
+      symbol = "#`",
       keywords = Seq("len-stack", "stack-len"),
       arity = 0,
       Options(),
@@ -1827,13 +1827,13 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "£",
-      keywords = Seq("set-register"),
+      keywords = Seq("set-register", "apply-to-register"),
       arity = 1,
       Options(),
       Overload(
         name = "Set Register",
         args = Seq("any"),
-        description = "Set the register to #1",
+        description = "Push #1 to the register",
       ),
     ),
     AddElement(
@@ -1844,7 +1844,131 @@ object ElementInformation:
       Overload(
         name = "Get Register",
         args = Seq(),
-        description = "Push the register to the stack",
+        description = "Push the top of the register to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "`",
+      keywords = Seq("pop-register"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Pop Register",
+        args = Seq(),
+        description = "Pop the top of the register to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ⍨",
+      keywords = Seq("register-dump", "dump-register"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Dump Register",
+        args = Seq(),
+        description = "Pop each item in the register ",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ¥",
+      keywords = Seq("pop-all-register", "wrap-register-pop"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Pop Register as list",
+        args = Seq(),
+        description = "Pop the entire register wrapped in a list",
+      ),
+    ),
+    AddElement(
+      symbol = "Þw",
+      keywords = Seq("push-all-register", "wrap-register"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Peek Register as List",
+        args = Seq(),
+        description = "Push the entire register to the stack, wrapped in a list",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ^",
+      keywords = Seq("reverse-register"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Reverse register",
+        args = Seq(),
+        description = "Reverse the register",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ`",
+      keywords = Seq("register-length", "reg-len"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Register Length",
+        args = Seq(),
+        description = "Push the length of the register",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ_",
+      keywords = Seq("clear-register", "empty-register"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Clear Register",
+        args = Seq(),
+        description = "Clear the register",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ⦷",
+      keywords = Seq("register-index"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Register Index",
+        args = Seq("num"),
+        description = "Get item in the register at index #1",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ⊖",
+      keywords = Seq("reg-pop-n", "register-pop-n"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Pop n from Register",
+        args = Seq("num"),
+        description =
+          "Pop the first #1 items from the register to the stack as a list",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ⌽",
+      keywords = Seq("reg-peek-n", "register-peek-n"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Peek n from Register",
+        args = Seq("num"),
+        description =
+          "Get the first #1 items from the register to the stack as a list",
+      ),
+    ),
+    AddElement(
+      symbol = "ÞϾ",
+      keywords = Seq("register-apply-at-indices"),
+      arity = 2,
+      Options(),
+      Overload(
+        name = "Apply to register at indices",
+        args = Seq("fun", "num|lst[num]"),
+        description =
+          "Get the first #1 items from the register to the stack as a list",
       ),
     ),
     AddElement(
@@ -2597,13 +2721,18 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "Ͼ",
-      keywords = Seq("vectorised-sums", "v/+"),
+      keywords = Seq("vectorised-sums", "register-apply-head"),
       arity = 1,
       Options(vectorises = true),
       Overload(
         name = "Vectorised Sums",
         args = Seq("lst"),
         description = "Sum of each item in #1. Functionally equivalent to `¨∑`",
+      ),
+      Overload(
+        name = "Apply to Register",
+        args = Seq("fun"),
+        description = "Apply #1 to the top of the register",
       ),
     ),
     AddElement(
@@ -3064,7 +3193,8 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⎘",
-      keywords = Seq("flatten-by-depth", "flatten-depth", "one-flatten"),
+      keywords =
+        Seq("flatten-by-depth", "flatten-depth", "one-flatten", "register-map"),
       arity = 2,
       Options(),
       Overload(
@@ -3081,6 +3211,11 @@ object ElementInformation:
         name = "Flatten-each",
         args = Seq("lst[num|str]"),
         description = "Flattens each item in #1",
+      ),
+      Overload(
+        name = "Register Map",
+        args = Seq("fun"),
+        description = "Apply #1 to each item in the register",
       ),
     ),
     AddElement(

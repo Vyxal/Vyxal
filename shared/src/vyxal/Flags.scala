@@ -120,6 +120,14 @@ enum Flag(
         "Wrap stack",
         _.copy(wrapStack = true),
       )
+  case RegisterPeek
+      extends Flag(
+        'R',
+        "register-peek",
+        "Don't pop from the stack when pushing to register",
+        "Peek for Register",
+        _.copy(registerPeek = true),
+      )
 end Flag
 
 object Flag:
