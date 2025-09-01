@@ -1924,7 +1924,6 @@ object ElementInformation:
         description = "Clear the register",
       ),
     ),
-
     AddElement(
       symbol = "Þ⦷",
       keywords = Seq("register-index"),
@@ -1944,7 +1943,8 @@ object ElementInformation:
       Overload(
         name = "Pop n from Register",
         args = Seq("num"),
-        description = "Pop the first #1 items from the register to the stack as a list",
+        description =
+          "Pop the first #1 items from the register to the stack as a list",
       ),
     ),
     AddElement(
@@ -1955,7 +1955,8 @@ object ElementInformation:
       Overload(
         name = "Peek n from Register",
         args = Seq("num"),
-        description = "Get the first #1 items from the register to the stack as a list",
+        description =
+          "Get the first #1 items from the register to the stack as a list",
       ),
     ),
     AddElement(
@@ -1966,7 +1967,8 @@ object ElementInformation:
       Overload(
         name = "Apply to register at indices",
         args = Seq("fun", "num|lst[num]"),
-        description = "Get the first #1 items from the register to the stack as a list",
+        description =
+          "Get the first #1 items from the register to the stack as a list",
       ),
     ),
     AddElement(
@@ -3191,7 +3193,8 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⎘",
-      keywords = Seq("flatten-by-depth", "flatten-depth", "one-flatten", "register-map"),
+      keywords =
+        Seq("flatten-by-depth", "flatten-depth", "one-flatten", "register-map"),
       arity = 2,
       Options(),
       Overload(

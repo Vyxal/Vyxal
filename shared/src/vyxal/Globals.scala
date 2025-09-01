@@ -105,7 +105,7 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
 
   override def toString = origArr.mkString("Inputs(", ", ", ")")
 end Inputs
- 
+
 /** What kind of implicit output is wanted at the end */
 enum EndPrintMode:
 

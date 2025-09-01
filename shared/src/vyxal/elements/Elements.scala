@@ -748,41 +748,37 @@ object Elements:
         RegisterHelpers.push(a)
         if summon[Context].settings.registerPeek then push(a)
       },
-    "¥" -> niladify { RegisterHelpers.pop(peek=true) },
+    "¥" -> niladify { RegisterHelpers.pop(peek = true) },
     "`" -> niladify { RegisterHelpers.pop() },
     "Þ¥" -> niladify { RegisterHelpers.popAll() },
     "Þw" -> niladify { RegisterHelpers.popAll(peek = true) },
     "Þ`" -> niladify { RegisterHelpers.length },
-    "Þ_" -> nop(){RegisterHelpers.clear},
-    "Þ^" ->  nop(){RegisterHelpers.reverseRegister},
-    "Þ⍨" -> direct(0){RegisterHelpers.popAll().itr.foreach(push(_))},
+    "Þ_" -> nop() { RegisterHelpers.clear },
+    "Þ^" -> nop() { RegisterHelpers.reverseRegister },
+    "Þ⍨" -> direct(0) { RegisterHelpers.popAll().itr.foreach(push(_)) },
     addPart("Þ⦷", Monad, true) {
-      case i: VNum =>
-        RegisterHelpers.index(i)
-      },
-    "ÞϾ" -> direct(2) {
-      val (top, under) = (pop(), pop())
-      (top, under) match
-
-        case (idx: VNum, fn: VFun) => RegisterHelpers.applyFn(fn, idx)
-
-        case (fn: VFun, idx: VNum) => RegisterHelpers.applyFn(fn, idx)
-        case (VListOf[VNum](lst), fn: VFun) => 
-          for index <- lst do
-              RegisterHelpers.applyFn(fn, index)
-        case (fn: VFun, VListOf[VNum](lst)) => 
-          for index <- lst do
-            RegisterHelpers.applyFn(fn, index)
-
-        case _ => throw UnsupportedOverloadException("ÞϾ", "String")
+      case i: VNum => RegisterHelpers.index(i)
     },
+    "ÞϾ" ->
+      direct(2) {
+        val (top, under) = (pop(), pop())
+        (top, under) match
+
+          case (idx: VNum, fn: VFun) => RegisterHelpers.applyFn(fn, idx)
+
+          case (fn: VFun, idx: VNum) => RegisterHelpers.applyFn(fn, idx)
+          case (VListOf[VNum](lst), fn: VFun) =>
+            for index <- lst do RegisterHelpers.applyFn(fn, index)
+          case (fn: VFun, VListOf[VNum](lst)) =>
+            for index <- lst do RegisterHelpers.applyFn(fn, index)
+
+          case _ => throw UnsupportedOverloadException("ÞϾ", "String")
+      },
     addPart("Þ⊖", Monad, false) {
-      case n: VNum =>
-        RegisterHelpers.pop(n)
+      case n: VNum => RegisterHelpers.pop(n)
     },
     addPart("Þ⌽", Monad, false) {
-      case n: VNum =>
-        RegisterHelpers.pop(n, peek=true)
+      case n: VNum => RegisterHelpers.pop(n, peek = true)
     },
     "↜" ->
       direct(-1) {
@@ -1193,11 +1189,11 @@ object Elements:
         val top = pop()
         top match
           case num: VNum => push(" " * num.toInt) // hallelujah
-          case lst: VList => push(VList(lst.map(item => ListHelpers.sum(item.itr))))
-          case f: VFun => 
-           RegisterHelpers.applyFn(f, RegisterHelpers.length - 1)
+          case lst: VList =>
+            push(VList(lst.map(item => ListHelpers.sum(item.itr))))
+          case f: VFun => RegisterHelpers.applyFn(f, RegisterHelpers.length - 1)
           case _ => throw UnsupportedOverloadException("Ͼ", "String")
-    },
+      },
     "ᴥ" -> fullToImpl(Monad, x => MiscHelpers.exec(x)),
     addPart("ℳ", Dyad, false) {
       case (a: VIter, b: VNum) => ListHelpers.nthItems(a, b)
@@ -1416,9 +1412,8 @@ object Elements:
               val t = a.map(x => VList(ListHelpers.flatten(x.itr)))
               push(VList(t)) // there has GOT to be a better way to do this
             else push(ListHelpers.flattenByDepth(a, 1))
-          case fn: VFun => 
-              RegisterHelpers.map(fn)
-          case _ => throw UnsupportedOverloadException("⎘","Object")
+          case fn: VFun => RegisterHelpers.map(fn)
+          case _ => throw UnsupportedOverloadException("⎘", "Object")
       },
     addPart("ꜝ", Monad, false) {
       case a: VNum => VNum(a.itr.filter(x => x != VNum(0)).mkString)
@@ -1662,8 +1657,7 @@ object Elements:
       case scalar: (VVal | VFun) => VList(Seq(scalar))
       case lst: VList => lst
     },
-    "#¿" ->
-      niladify {summon[Context].globals.inputs.length},
+    "#¿" -> niladify { summon[Context].globals.inputs.length },
     addPart("#ᴥ", Monad, false) {
       case VStr(top) => MiscHelpers.validCode(top)
     },
@@ -2206,17 +2200,16 @@ object Elements:
       },
   )
 
- /** Take no input and push a constant to the stack*/
+  /** Take no input and push a constant to the stack */
   private def constant(value: VAny): Element =
     Element(0, () => (ctx: Context) ?=> ctx.push(value))
-    
- /** Take no input and push something to the stack based on Context*/
+
+  /** Take no input and push something to the stack based on Context */
   private def niladify(function: Context ?=> VAny): Element =
     Element(0, () => (ctx: Context) ?=> ctx.push(function))
-  
-  /** Take no input and do nothing with the stack*/
-  private def nop()(impl: Context ?=> Unit): Element =
-    Element(0, () => impl)
+
+  /** Take no input and do nothing with the stack */
+  private def nop()(impl: Context ?=> Unit): Element = Element(0, () => impl)
 
   /** Add an element that handles all `VAny`s (it doesn't take a
     * `PartialFunction`, hence "Full")
