@@ -57,6 +57,7 @@ class Context private (
     */
   def pop(): VAny =
     if useStack && parent.isDefined then return parent.getOrElse(this).pop()
+    if stack
     val elem: VAny =
       if stack.nonEmpty then stack.remove(stack.size - 1)
       else if isTopCtx && globals.inputs.nonEmpty then globals.inputs.next()

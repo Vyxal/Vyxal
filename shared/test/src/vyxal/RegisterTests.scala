@@ -64,7 +64,12 @@ class RegisterTests extends VyxalTests:
           "5ʁ ¨£ 2 λT} ÞϾ Þ¥" -> vSeq(0,1,6,3,4,5),
           "5ʁ ¨£ λT} 2 ÞϾ Þ¥" -> vSeq(0,1,6,3,4,5),
           "5ʁ ¨£ λT} 1 2; ÞϾ Þ¥" -> vSeq(0,3,6,3,4,5),
-          "5ʁ ¨£ 1 2; λT} ÞϾ Þ¥" -> vSeq(0,3,6,3,4,5),
+          "5ʁ ¨£ 1 2; λT} ÞϾ , Þ¥" -> vSeq(0,3,6,3,4,5),
+        )
+      }
+      describe("Null behavior") {
+        testMulti(
+          "1 5ʁ ¨£ 1 2; λT} ÞϾ" -> VNum(1)
         )
       }
       describe("Mapping") {

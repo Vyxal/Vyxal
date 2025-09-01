@@ -26,6 +26,7 @@ import spire.math.{Complex, Real}
   *   - [[VFun]]
   *   - [[VConstructor]]
   *   - [[VObject]]
+  *   - [[VNull]]
   *
   * We derive [[CanEqual]] so that if you compare a `VAny`s to another type, the
   * compiler will complain
@@ -44,6 +45,8 @@ sealed trait VAny derives CanEqual:
         scribe.warn(s"Tried comparing $this to function $that")
         false
       case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) == 0
+      case (a: VNull, _) => throw NullValueException()
+      case (_, b: VNull) => throw NullValueException()
       case _ => false
 
   @targetName("vNotEquals")
@@ -63,6 +66,7 @@ sealed trait VAny derives CanEqual:
       case l: VList => l.nonEmpty
       case c: VConstructor => true
       case o: VObject => true
+      case _: VNull => throw NullValueException()
 end VAny
 
 object VAny:
@@ -111,7 +115,8 @@ object conversions:
   given Conversion[Boolean, VNum] = b => if b then 1 else 0
 end conversions
 
-case class VNull(n: VAny) extends VAny
+case class VNull(n: VAny) extends VAny:
+  def nullify(n: VAny): VNull = VNull(0)
 
 final case class VStr(s: String) extends VAny:
   override def toString: String = s

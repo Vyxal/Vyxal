@@ -756,27 +756,14 @@ object Elements:
     "Þ_" -> nop() { RegisterHelpers.clear },
     "Þ^" -> nop() { RegisterHelpers.reverseRegister },
     "Þ⍨" -> direct(0) { RegisterHelpers.popAll().itr.foreach(push(_)) },
+
     addPart("Þ⦷", Monad, true) {
       case i: VNum => RegisterHelpers.index(i)
     },
-    addNullPart("ÞϾ", NullDyad, true) {
+    addPart("ÞϾ", Dyad, true) {
       case (idx: VNum, fn: VFun) => RegisterHelpers.applyFn(fn, idx)
+      case (fn: VFun, idx: VNum) => RegisterHelpers.applyFn(fn, idx)
     },
-    "ÞϾ" ->
-      direct(2) {
-        val (top, under) = (pop(), pop())
-        (top, under) match
-
-          case (idx: VNum, fn: VFun) => RegisterHelpers.applyFn(fn, idx)
-
-          case (fn: VFun, idx: VNum) => RegisterHelpers.applyFn(fn, idx)
-          case (VListOf[VNum](lst), fn: VFun) =>
-            for index <- lst do RegisterHelpers.applyFn(fn, index)
-          case (fn: VFun, VListOf[VNum](lst)) =>
-            for index <- lst do RegisterHelpers.applyFn(fn, index)
-
-          case _ => throw UnsupportedOverloadException("ÞϾ", "String")
-      },
     addPart("Þ⊖", Monad, false) {
       case n: VNum => RegisterHelpers.pop(n)
     },
@@ -2241,19 +2228,6 @@ object Elements:
         ),
       )
 
-  private def addNullPart[P, F](
-      symbol: String,
-      arity: NullImplHelpers[P, F],
-      vectorises: Boolean,
-  )(impl: P): (String, Element) =
-    symbol ->
-      Element(
-        arity.arity,
-        arity.toDirectFn(
-          if vectorises then arity.vectorise(symbol)(impl)
-          else arity.fill(symbol)(impl)
-        ),
-      )
 
   private def direct[P, F](arity: ImplHelpers[P, F])(
       impl: Context ?=> Unit

@@ -29,6 +29,7 @@ object RegisterHelpers:
   /** Apply a function to all elements in the register */
   def map(fn: VFun)(using ctx: Context): VNull =
     for x <- 0 until register.length do applyFn(fn, VNum(x))
+    
     VNull(0)
 
   def push(a: VAny)(using Context): Unit = register.append(a)

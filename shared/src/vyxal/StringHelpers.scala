@@ -279,6 +279,7 @@ object StringHelpers:
       case f: VFun => "λ...}"
       case c: VConstructor => "#$" + c
       case o: VObject => o.toString
+      case _: VNull => throw NullValueException()
       // TODO make a strict mode in which it can throw
       // throw VyxalException(s"Cannot get repr for function: $f")
 
@@ -408,11 +409,13 @@ object StringHelpers:
       case f: VFun => f.toString
       case c: VConstructor => s"$c()"
       case o: VObject => o.toString
+      case _: VNull => throw NullValueException()
 
   def prettyPrint(item: VAny)(using Context): String =
     def go(item: VAny, indentation: Int)(using Context): (String, Boolean) =
       item match
         case n: VNum => (NumberHelpers.numToString(n), false)
+        case _: VNull => throw NullValueException()
         case VStr(s) => (s, false)
         case f: VFun => (vyToString(f), false)
         case c: VConstructor => (c.toString, false)

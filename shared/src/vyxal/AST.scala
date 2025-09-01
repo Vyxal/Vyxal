@@ -155,6 +155,7 @@ enum AST(val arity: Option[Int]) derives CanEqual:
   def toVyxal: String =
     this match
       case Number(n, _) => n.toString
+      case Null() => throw NullValueException()
       case Str(value, _) => s"\"$value\""
       case Lst(elems, _) => elems.map(_.toVyxal).mkString("#[", "|", "#]")
       case Command(value, _, _) => value
