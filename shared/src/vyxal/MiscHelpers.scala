@@ -114,6 +114,7 @@ object MiscHelpers:
         res
       case _: VObject => throw BadArgumentException("exec", "object")
       case con: VConstructor => Interpreter.createObject(con)
+      case VNull(_) => VNull(0)
     end match
   end exec
 

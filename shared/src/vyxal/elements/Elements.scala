@@ -759,6 +759,9 @@ object Elements:
     addPart("Þ⦷", Monad, true) {
       case i: VNum => RegisterHelpers.index(i)
     },
+    addNullPart("ÞϾ", NullDyad, true) {
+      case (idx: VNum, fn: VFun) => RegisterHelpers.applyFn(fn, idx)
+    },
     "ÞϾ" ->
       direct(2) {
         val (top, under) = (pop(), pop())
@@ -2227,6 +2230,20 @@ object Elements:
   private def addPart[P, F](
       symbol: String,
       arity: ImplHelpers[P, F],
+      vectorises: Boolean,
+  )(impl: P): (String, Element) =
+    symbol ->
+      Element(
+        arity.arity,
+        arity.toDirectFn(
+          if vectorises then arity.vectorise(symbol)(impl)
+          else arity.fill(symbol)(impl)
+        ),
+      )
+
+  private def addNullPart[P, F](
+      symbol: String,
+      arity: NullImplHelpers[P, F],
       vectorises: Boolean,
   )(impl: P): (String, Element) =
     symbol ->

@@ -74,6 +74,7 @@ type VPhysical = VNum | VStr | VList
 type VIter = VList | VStr
 
 object conversions:
+  given Conversion[VAny, VNull] = VNull(_)
   given Conversion[String, VAny] = VStr(_)
   given Conversion[VList, Seq[VAny]] = _.lst
   given Conversion[Seq[VAny], VList] = VList(_)
@@ -109,6 +110,8 @@ object conversions:
   given Conversion[Complex[Real], VNum] = new VNum(_)
   given Conversion[Boolean, VNum] = b => if b then 1 else 0
 end conversions
+
+case class VNull(n: VAny) extends VAny
 
 final case class VStr(s: String) extends VAny:
   override def toString: String = s

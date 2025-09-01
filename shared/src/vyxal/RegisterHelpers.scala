@@ -19,15 +19,17 @@ object RegisterHelpers:
   /** Apply a monadic function to the item in the register at the specified
     * index
     */
-  def applyFn(fn: VFun, idx: VNum)(using ctx: Context): Unit =
+  def applyFn(fn: VFun, idx: VNum)(using ctx: Context): VNull =
     if register.last.isInstanceOf[VPhysical]
     then
       val c = Interpreter.executeFn(fn, args = Seq(register(idx.toInt)))
       register.update(idx.toInt, c)
+    VNull(0)
 
   /** Apply a function to all elements in the register */
-  def map(fn: VFun)(using ctx: Context): Unit =
+  def map(fn: VFun)(using ctx: Context): VNull =
     for x <- 0 until register.length do applyFn(fn, VNum(x))
+    VNull(0)
 
   def push(a: VAny)(using Context): Unit = register.append(a)
 

@@ -99,6 +99,7 @@ object Interpreter:
     ast match
       case AST.Number(value, _) => ctx.push(value)
       case AST.Str(value, _) => ctx.push(value)
+      case AST.Null() => ctx.nop()
       case AST.DictionaryString(value, _) =>
         ctx.push(StringHelpers.decompress(value))
       case AST.CompressedNumber(value, _) =>

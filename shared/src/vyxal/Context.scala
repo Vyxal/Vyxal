@@ -123,6 +123,8 @@ class Context private (
   /** Whether the stack is empty */
   def isStackEmpty: Boolean = stack.isEmpty
 
+  def nop(): Unit = ()
+
   /** Get the context variable N for this scope if it exists. If it doesn't, get
     * its parent's. If there's no parent Context, just get the default value (0)
     *
