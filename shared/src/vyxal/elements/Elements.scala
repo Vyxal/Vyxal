@@ -760,6 +760,22 @@ object Elements:
       case i: VNum =>
         RegisterHelpers.index(i)
       },
+    "ÞϾ" -> direct(2) {
+      val (top, under) = (pop(), pop())
+      (top, under) match
+
+        case (idx: VNum, fn: VFun) => RegisterHelpers.applyFn(fn, idx)
+
+        case (fn: VFun, idx: VNum) => RegisterHelpers.applyFn(fn, idx)
+        case (VListOf[VNum](lst), fn: VFun) => 
+          for index <- lst do
+              RegisterHelpers.applyFn(fn, index)
+        case (fn: VFun, VListOf[VNum](lst)) => 
+          for index <- lst do
+            RegisterHelpers.applyFn(fn, index)
+
+        case _ => throw UnsupportedOverloadException("ÞϾ", "String")
+    },
     addPart("Þ⊖", Monad, false) {
       case n: VNum =>
         RegisterHelpers.pop(n)
@@ -1178,8 +1194,8 @@ object Elements:
         top match
           case num: VNum => push(" " * num.toInt) // hallelujah
           case lst: VList => push(VList(lst.map(item => ListHelpers.sum(item.itr))))
-          case f: VFun if f.arity == 1 =>
-            RegisterHelpers.applyFn(f, RegisterHelpers.length - 1)
+          case f: VFun => 
+           RegisterHelpers.applyFn(f, RegisterHelpers.length - 1)
           case _ => throw UnsupportedOverloadException("Ͼ", "String")
     },
     "ᴥ" -> fullToImpl(Monad, x => MiscHelpers.exec(x)),
@@ -1400,9 +1416,9 @@ object Elements:
               val t = a.map(x => VList(ListHelpers.flatten(x.itr)))
               push(VList(t)) // there has GOT to be a better way to do this
             else push(ListHelpers.flattenByDepth(a, 1))
-          case fn: VFun if fn.arity <= 1 => 
-            RegisterHelpers.map(fn)
-          case _ => throw UnsupportedOverloadException("⎘","Dyadic Function")
+          case fn: VFun => 
+              RegisterHelpers.map(fn)
+          case _ => throw UnsupportedOverloadException("⎘","Object")
       },
     addPart("ꜝ", Monad, false) {
       case a: VNum => VNum(a.itr.filter(x => x != VNum(0)).mkString)
@@ -1465,7 +1481,7 @@ object Elements:
           case VStr(str) => push(str)
           case num: VNum =>
             if num == VNum(1) then push(summon[Context].ctxVarPrimary)
-          case _ => throw UnsupportedOverloadException("”", "Function Arity != 1")
+          case _ => throw UnsupportedOverloadException("”", "Function")
       },
     addPart("„", Monad, false) {
       case VList(lst) => ListHelpers.join(lst, " ")

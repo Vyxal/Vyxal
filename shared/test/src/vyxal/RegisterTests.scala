@@ -1,13 +1,9 @@
 package vyxal
 
 import vyxal.conversions.{*, given}
-import vyxal.elements.Elements
-import vyxal.VyxalTests.testContext
-import vyxal.elements.Modifiers
-
 import org.scalatest.Checkpoints.Checkpoint
 import org.scalatest.funspec.AnyFunSpec
-import vyxal.elements.itr
+
 
 class RegisterTests extends VyxalTests:
 
@@ -16,77 +12,76 @@ class RegisterTests extends VyxalTests:
     describe("Regular Register Usage") {
       testMulti(
         "5£9::++" -> VNum(27),
-        "Þ_ 5£9::++`" -> VNum(5),
-        """ Þ_ "hello" £ " world"`$+ """ -> VStr("hello world"),
-        "Þ_ 4w £ Þ¥ " -> vSeq(vSeq(4)),
-        "Þ_ 4 5; £ 1 2; ` " -> vSeq(4,5),
-        "Þ_ 4 5; £ 1 2; " -> vSeq(1,2),
-        """ Þ_ "vyxal " "cool" "is "⎇ £ J ¥ J """ -> VStr("vyxal is cool")
+        "5£9::++`" -> VNum(5),
+        """ "hello" £ " world"`$+ """ -> VStr("hello world"),
+        "4w £ Þ¥ " -> vSeq(vSeq(4)),
+        "4 5; £ 1 2; ` " -> vSeq(4,5),
+        "4 5; £ 1 2; " -> vSeq(1,2),
+        """  "vyxal " "cool" "is "⎇ £ J ¥ J """ -> VStr("vyxal is cool")
 
       )
       it("Should push zero if empty") {
         given ctx: Context = Context(testMode = true)
-        ctx.push(5)
-        Interpreter.execute("£")
-        val checkpoint = Checkpoint()
-        checkpoint { assert(ctx.isStackEmpty) }
+        Interpreter.execute("5£")
+        val cpt = Checkpoint()
+        cpt { assert(ctx.isStackEmpty) }
         Interpreter.execute("``")
-        checkpoint { assertResult(Seq[VAny](0,5))(Seq(ctx.pop(), ctx.pop())) }
-        checkpoint.reportAll()
-      }
+        cpt { assertResult(Seq[VAny](0,5))(Seq(ctx.pop(), ctx.pop())) }
+        cpt.reportAll()
+        }
     }
     describe("Stack Register Stuff") {
       testMulti(
         "5£ 6£ Þ¥ Þ¥;" -> vSeq(vSeq(5,6), 0),
-        "Þ_ 5ʁ ¨£ ¥ Þ¥;" -> vSeq(5, vSeq(0,1,2,3,4,5)), // this fails if I don't clear the register between them
-        "Þ_ 5ʁ ¨£ Þ^ Þ¥" -> vSeq(5,4,3,2,1,0)
+        "5ʁ ¨£ ¥ Þ¥;" -> vSeq(5, vSeq(0,1,2,3,4,5)),
+        "5ʁ ¨£ Þ^ Þ¥" -> vSeq(5,4,3,2,1,0),
+        "5ʁ ¨£ Þ_ Þ¥" -> VNum(0)
       )
     }
     describe("Indexing") {
       testMulti(
-        "Þ_ 5ʁ ¨£ 1Þ⦷" -> VNum(1),
-        "Þ_ 5ʁ ¨£ 13Þ⦷" -> VNum(1),
-        "Þ_ 5ʁ ¨£ 1N Þ⦷" -> VNum(5),
+        "5ʁ ¨£ 1Þ⦷" -> VNum(1),
+        "5ʁ ¨£ 13Þ⦷" -> VNum(1),
+        "5ʁ ¨£ 1N Þ⦷" -> VNum(5),
       )
     }
     describe("Function behavior") {
       describe("Applying to head") {
         testMulti(
-          "Þ_ 5£ 6£ λ2+}Ͼ ` `;" -> vSeq(8,5),
-          "Þ_ 5 6;£ λ2+}Ͼ `" -> vSeq(7,8),
-          "Þ_ nf £ λλ+}R}Ͼ `" -> VStr("abcdefghijklmnopqrstuvwxyz")
+          "5£ 6£ λ2+}Ͼ ` `;" -> vSeq(8,5),
+          "5 6;£ λ2+}Ͼ `" -> vSeq(7,8),
+          "nf £ λλ+}RN}Ͼ `" -> VStr("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
         )
       }
       describe("Don't Pop Functions") {
         testMulti(
-          "Þ_ 5ʁ ¨£ λ2+}£  Þ¥" -> vSeq(0,1,2,3,4,5),
-          "Þ_ λ2+}£ λ2+}£  Þ¥" -> Seq.empty
+          "5ʁ ¨£ λ2+}£  Þ¥" -> vSeq(0,1,2,3,4,5),
+          "λ2+}£ λ2+}£  Þ¥" -> Seq.empty
         )
-
       }
-      it("Monadic Function Mapping") {
-          given ctx: Context = Context(testMode = true)
-          Interpreter.execute("Þ_ 5ʁ ¨£ λ2+}⎘Þ¥")
-          assertResult(vSeq(2,3,4,5,6,7))(ctx.pop().itr)
+      describe("Apply to specific indexes") {
+        testMulti(
+          "5ʁ ¨£ 2 λT} ÞϾ Þ¥" -> vSeq(0,1,6,3,4,5),
+          "5ʁ ¨£ λT} 2 ÞϾ Þ¥" -> vSeq(0,1,6,3,4,5),
+          "5ʁ ¨£ λT} 1 2; ÞϾ Þ¥" -> vSeq(0,3,6,3,4,5),
+          "5ʁ ¨£ 1 2; λT} ÞϾ Þ¥" -> vSeq(0,3,6,3,4,5),
+        )
       }
-      it("Niladic Function Mapping") {
-          given ctx: Context = Context(testMode = true)
-          Interpreter.execute("Þ_ 5ʁ ¨£ λ2}⎘Þ¥")
-          assertResult(vSeq(2,2,2,2,2,2))(ctx.pop().itr)
+      describe("Mapping") {
+        testMulti(
+          "5ʁ ¨£ λ2+}⎘Þ¥" -> vSeq(2,3,4,5,6,7),
+          "5ʁ ¨£ λ2}⎘Þ¥" -> vSeq(2,2,2,2,2,2)
+        )
       }
-
-      it("Should apply functions after popping them") {
-        given ctx: Context = Context(testMode = true)
-        Interpreter.execute(" Þ_ λ2+}£ 6 5+:")
-        val cp = Checkpoint()
-        cp { assertResult(VNum(11))(ctx.pop()) }
-        Interpreter.execute("¥")
-        cp { assertResult(VNum(13))(ctx.pop()) }
-        cp.reportAll()
+      describe("Should apply functions after popping them") {
+        testMulti(
+          " Þ_ λ2+}£ 6 5+:" -> VNum(11),
+          " Þ_ λ2+}£ 6 5+:¥" -> VNum(13)
+        )
       }
       
       it("Global context") {
-        testCode("Þ_ 5ʁ ¨£ 5 11R Þ^ƛ`}", vSeq(0,1,2,3,4,5))
+        testCode("5ʁ ¨£ 5 11R Þ^ƛ`}", vSeq(0,1,2,3,4,5))
       }
     }
 end RegisterTests

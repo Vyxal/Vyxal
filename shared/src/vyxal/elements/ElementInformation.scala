@@ -1959,6 +1959,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "ÞϾ",
+      keywords = Seq("register-apply-at-indices"),
+      arity = 2,
+      Options(),
+      Overload(
+        name = "Apply to register at indices",
+        args = Seq("fun", "num|lst[num]"),
+        description = "Get the first #1 items from the register to the stack as a list",
+      ),
+    ),
+    AddElement(
       symbol = "↜",
       keywords = Seq("rotate-stack-left"),
       arity = -1,
