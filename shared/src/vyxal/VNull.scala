@@ -55,7 +55,8 @@ object NullDyad extends NullImplHelpers[PartialNullDyad, NullDyad](2):
   override def vectorise(name: String)(f: PartialNullDyad) =
     lazy val res: NullDyad = {
       case args if f.isDefinedAt(args) => f(args)
-      case (lhs: VList, rhs: VList) => VNull.nullify(lhs.zipWith(rhs)(res(_, _)))
+      case (lhs: VList, rhs: VList) =>
+        VNull.nullify(lhs.zipWith(rhs)(res(_, _)))
       case (lhs, rhs: VList) => VNull.nullify(rhs.vmap(res(lhs, _)))
       case (lhs: VList, rhs) => VNull.nullify(lhs.vmap(res(_, rhs)))
       case args => throw UnimplementedOverloadException(name, args.toList)

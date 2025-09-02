@@ -116,8 +116,8 @@ object conversions:
 end conversions
 
 case class VNull(n: VAny) extends VAny
-object VNull: 
-  def nullify(n: VAny) = VNull(0) 
+object VNull:
+  def nullify(n: VAny) = VNull(0)
 
 final case class VStr(s: String) extends VAny:
   override def toString: String = s

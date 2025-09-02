@@ -756,20 +756,23 @@ object Elements:
     "Þ_" -> nop() { RegisterHelpers.clear },
     "Þ^" -> nop() { RegisterHelpers.reverseRegister },
     "Þ⍨" -> direct(0) { RegisterHelpers.popAll().itr.foreach(push(_)) },
-
     addPart("Þ⦷", Monad, true) {
       case i: VNum => RegisterHelpers.index(i)
     },
+    "Þ£" ->
+      direct(1) {
+        val a = pop()
+        for v <- ListHelpers.flatten(a.itr) do RegisterHelpers.push(v)
+        if summon[Context].settings.registerPeek then push(a)
+      },
     addPart("ÞϾ", Dyad, false) {
-      case (idx: VNum , fn: VFun) => RegisterHelpers.applyFn(fn, idx)
+      case (idx: VNum, fn: VFun) => RegisterHelpers.applyFn(fn, idx)
       case (fn: VFun, idx: VNum) => RegisterHelpers.applyFn(fn, idx)
-      case (VListOf[VNum](lst), fn: VFun) => 
-        for num <- lst do
-          RegisterHelpers.applyFn(fn, num)
+      case (VListOf[VNum](lst), fn: VFun) =>
+        for num <- lst do RegisterHelpers.applyFn(fn, num)
         VNull(0)
-      case (fn: VFun, VListOf[VNum](lst)) => 
-        for num <- lst do
-          RegisterHelpers.applyFn(fn, num)
+      case (fn: VFun, VListOf[VNum](lst)) =>
+        for num <- lst do RegisterHelpers.applyFn(fn, num)
         VNull(0)
     },
     addPart("Þ⊖", Monad, false) {
@@ -2235,7 +2238,6 @@ object Elements:
           else arity.fill(symbol)(impl)
         ),
       )
-
 
   private def direct[P, F](arity: ImplHelpers[P, F])(
       impl: Context ?=> Unit
