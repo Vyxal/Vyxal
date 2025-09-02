@@ -1827,13 +1827,24 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "£",
-      keywords = Seq("set-register", "apply-to-register"),
+      keywords = Seq("set-register"),
       arity = 1,
       Options(),
       Overload(
         name = "Set Register",
         args = Seq("any"),
         description = "Push #1 to the register",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ£",
+      keywords = Seq("vectorised-set-register", "vec-set-register"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Vectorised Set Register",
+        args = Seq("any"),
+        description = "Push each item of #1 to the register",
       ),
     ),
     AddElement(
@@ -2031,7 +2042,7 @@ object ElementInformation:
         description = "Rotate #1 right #2 times. Left if #2 is negative",
       ),
       Overload(
-        name = "Iterate while Unique",
+        name = "Iterate while Unique Length",
         args = Seq("any", "fun"),
         description =
           "Repeatedly apply #2 to #1 until a result is repeated, return the length",
@@ -3055,7 +3066,7 @@ object ElementInformation:
         name = "Vertical Merge",
         args = Seq("str", "str"),
         description =
-          "overwrite the start of the shorter string with the longer one",
+          "overwrite the start of the longer string with the shorter one",
       ),
     ),
     AddElement(
