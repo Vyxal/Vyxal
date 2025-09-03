@@ -56,7 +56,7 @@ class Context private (
     * inputs, read a line of input from stdin.
     */
   def pop(): VAny =
-    if useStack && parent.isDefined then return parent.getOrElse(this).pop()
+    if useStack && parent.isDefined then return parent.get.pop()
     val elem: VAny =
       if stack.nonEmpty then stack.remove(stack.size - 1)
       else if isTopCtx && globals.inputs.nonEmpty then globals.inputs.next()
@@ -79,12 +79,12 @@ class Context private (
     * start of the list.
     */
   def pop(n: Int): Seq[VAny] =
-    if useStack then return parent.getOrElse(this).pop(n)
+    if useStack && parent.isDefined then return parent.get.pop(n)
     Seq.fill(n)(this.pop())
 
   /** Get the top element on the stack without popping */
   def peek: VAny =
-    if useStack && parent.isDefined then parent.getOrElse(this).peek
+    if useStack && parent.isDefined then parent.get.peek
     else if stack.nonEmpty then stack.last
     else if inputs.nonEmpty then inputs.peek
     else settings.defaultValue
@@ -93,20 +93,20 @@ class Context private (
     * will be at the start of the list.
     */
   def peek(n: Int): List[VAny] =
-    if useStack && parent.isDefined then parent.getOrElse(this).peek(n)
+    if useStack && parent.isDefined then parent.get.peek(n)
     else if n <= stack.length then
       stack.slice(stack.length - n, stack.length).toList.reverse
     else stack.toList.reverse ::: inputs.peek(n - stack.length)
 
   def peekInTest(n: Int): List[VAny] =
-    if useStack && parent.isDefined then parent.getOrElse(this).peekInTest(n)
+    if useStack && parent.isDefined then parent.get.peekInTest(n)
     else if n <= stack.length then
       stack.slice(stack.length - n, stack.length).toList.reverse
     else stack.toList.reverse ::: globals.inputs.peek(n - stack.length)
 
   /** Push items onto the stack. The first argument will be pushed first. */
   def push(items: VAny*): Unit =
-    if useStack && parent.isDefined then parent.getOrElse(this).push(items*)
+    if useStack && parent.isDefined then parent.get.push(items*)
     else stack ++= items
 
   def length: Int = stack.length
