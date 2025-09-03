@@ -1,6 +1,7 @@
 package vyxal
 import vyxal.conversions.{*, given}
 
+
 type NullMonad = VAny => Context ?=> Unit
 type NullDyad = (VAny, VAny) => Context ?=> Unit
 type PartialNullMonad = Context ?=> PartialFunction[VAny, Unit]
@@ -45,3 +46,10 @@ object NullDyad extends NullImplHelpers[PartialNullDyad, NullDyad](2):
       else throw UnimplementedOverloadException(name, args.toList)
     
 end NullDyad
+
+object NullHelpers:
+  /** NullMonad and NullDyad will pop args automatically, use this instead of ctx.pop()*/
+  def popArgs(m: VAny)(using ctx: Context): Unit =
+    ctx.nop()
+
+end NullHelpers

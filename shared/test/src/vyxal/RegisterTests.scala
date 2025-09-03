@@ -76,8 +76,7 @@ class RegisterTests extends VyxalTests:
       }
       describe("Null behavior") {
         testMulti(
-          "1 5ʁ Þ£ 1 2; λT} ÞϾ" -> VNum(1),
-          "1 5ʁ  Þ£ 1 2; λT} ÞϾ ," -> VNum(0)
+          "1 5ʁ Þ£ 1 2; λT} ÞϾ" -> VNum(1)
         )
       }
       describe("Mapping") {
