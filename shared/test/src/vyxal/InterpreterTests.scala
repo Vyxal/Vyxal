@@ -472,7 +472,7 @@ class InterpreterTests extends VyxalTests:
   }
 
   describe("Vectorised recursion") {
-    testCode("#[#[1|2|3#]|#[4|5|6#]#]λ¤\"[\"c[¨x∑}}ᴥ", VNum(21), Seq())
+    testCode(""" #[#[1|2|3#]|#[4|5|6#]#]λ¤ "["c[¨x∑)ᴥ """, VNum(21), Seq())
   }
 
 

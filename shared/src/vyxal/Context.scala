@@ -56,8 +56,8 @@ class Context private (
     * inputs, read a line of input from stdin.
     */
   def pop(): VAny =
-    stack = stack.filterNot(_.isInstanceOf[VNull])
     if useStack && parent.isDefined then return parent.getOrElse(this).pop()
+    stack.filterInPlace(!_.isInstanceOf[VNull])
     val elem: VAny =
       if stack.nonEmpty then stack.remove(stack.size - 1)
       else if isTopCtx && globals.inputs.nonEmpty then globals.inputs.next()
@@ -85,6 +85,7 @@ class Context private (
 
   /** Get the top element on the stack without popping */
   def peek: VAny =
+    stack.filterInPlace(!_.isInstanceOf[VNull])
     if useStack && parent.isDefined then parent.getOrElse(this).peek
     else if stack.nonEmpty then stack.last
     else if inputs.nonEmpty then inputs.peek

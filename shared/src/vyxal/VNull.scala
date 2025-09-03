@@ -1,10 +1,10 @@
 package vyxal
 import vyxal.conversions.{*, given}
 
-type NullMonad = VAny => Context ?=> VNull
-type NullDyad = (VAny, VAny) => Context ?=> VNull
-type PartialNullMonad = Context ?=> PartialFunction[VAny, VNull]
-type PartialNullDyad = Context ?=> PartialFunction[(VAny, VAny), VNull]
+type NullMonad = VAny => Context ?=> Unit
+type NullDyad = (VAny, VAny) => Context ?=> Unit
+type PartialNullMonad = Context ?=> PartialFunction[VAny, Unit]
+type PartialNullDyad = Context ?=> PartialFunction[(VAny, VAny), Unit]
 
 /** Meta-helper for creating the helpers to add element implementations
   * @tparam P
@@ -24,44 +24,24 @@ sealed abstract class NullImplHelpers[P, F](val arity: Int):
     */
   def fill(symbol: String)(impl: P): F
 
-  /** Vectorise a function. There's no need to call [[fill]] first */
-  def vectorise(symbol: String)(impl: P): F
 
 object NullMonad extends NullImplHelpers[PartialNullMonad, NullMonad](1):
-  override def toDirectFn(impl: NullMonad) = () => ctx ?=> ctx.nop()
+  override def toDirectFn(impl: NullMonad) = () => ctx ?=> impl(ctx.pop())
 
   override def fill(name: String)(fn: PartialNullMonad) =
     arg =>
-      if fn.isDefinedAt(arg) then VNull(fn(arg))
+      if fn.isDefinedAt(arg) then fn(arg)
       else throw UnimplementedOverloadException(name, Seq(arg))
 
-  override def vectorise(name: String)(f: PartialNullMonad) =
-    lazy val res: NullMonad = {
-      case lhs if f.isDefinedAt(lhs) => f(lhs)
-      case lst: VList => VNull.nullify(lst.vmap(res))
-      case lhs => throw UnimplementedOverloadException(name, List(lhs))
-    }
-    res
 
 object NullDyad extends NullImplHelpers[PartialNullDyad, NullDyad](2):
-  override def toDirectFn(impl: NullDyad): DirectFn = () => ctx ?=> ctx.nop()
-
+  override def toDirectFn(impl: NullDyad): DirectFn = () => ctx ?=> 
+    val arg2, arg1 = ctx.pop() 
+    impl(arg1, arg2)
   override def fill(name: String)(fn: PartialNullDyad): NullDyad =
     (a, b) =>
       val args = (a, b)
       if fn.isDefinedAt(args) then fn(args)
       else throw UnimplementedOverloadException(name, args.toList)
-
-  override def vectorise(name: String)(f: PartialNullDyad) =
-    lazy val res: NullDyad = {
-      case args if f.isDefinedAt(args) => f(args)
-      case (lhs: VList, rhs: VList) =>
-        VNull.nullify(lhs.zipWith(rhs)(res(_, _)))
-      case (lhs, rhs: VList) => VNull.nullify(rhs.vmap(res(lhs, _)))
-      case (lhs: VList, rhs) => VNull.nullify(lhs.vmap(res(_, rhs)))
-      case args => throw UnimplementedOverloadException(name, args.toList)
-    }
-
-    res
-
+    
 end NullDyad

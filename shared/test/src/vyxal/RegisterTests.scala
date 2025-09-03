@@ -12,7 +12,7 @@ class RegisterTests extends VyxalTests:
     describe("Regular Register Usage") {
       testMulti(
         "5£9::++" -> VNum(27),
-        "1 5ʁ ¨£" -> VNum(1),
+        "1 5ʁ Þ£" -> VNum(1),
         "5£9::++`" -> VNum(5),
         """ "hello" £ " world"`$+ """ -> VStr("hello world"),
         "4w £ Þ¥ " -> vSeq(vSeq(4)),

@@ -18,8 +18,6 @@ enum AST(val arity: Option[Int]) derives CanEqual:
   case Lst(elems: List[AST], override val range: Range = Range.fake)
       extends AST(Some(0))
 
-  case Null() extends AST(Some(0))
-
   case Command(
       value: String,
       override val range: Range = Range.fake,
@@ -155,7 +153,6 @@ enum AST(val arity: Option[Int]) derives CanEqual:
   def toVyxal: String =
     this match
       case Number(n, _) => n.toString
-      case Null() => throw NullValueException()
       case Str(value, _) => s"\"$value\""
       case Lst(elems, _) => elems.map(_.toVyxal).mkString("#[", "|", "#]")
       case Command(value, _, _) => value

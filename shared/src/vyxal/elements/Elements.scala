@@ -765,15 +765,13 @@ object Elements:
         for v <- ListHelpers.flatten(a.itr) do RegisterHelpers.push(v)
         if summon[Context].settings.registerPeek then push(a)
       },
-    addPart("ÞϾ", Dyad, false) {
+    addNullPart("ÞϾ", NullDyad) {
       case (idx: VNum, fn: VFun) => RegisterHelpers.applyFn(fn, idx)
       case (fn: VFun, idx: VNum) => RegisterHelpers.applyFn(fn, idx)
       case (VListOf[VNum](lst), fn: VFun) =>
         for num <- lst do RegisterHelpers.applyFn(fn, num)
-        VNull(0)
       case (fn: VFun, VListOf[VNum](lst)) =>
         for num <- lst do RegisterHelpers.applyFn(fn, num)
-        VNull(0)
     },
     addPart("Þ⊖", Monad, false) {
       case n: VNum => RegisterHelpers.pop(n)
@@ -2236,6 +2234,18 @@ object Elements:
         arity.toDirectFn(
           if vectorises then arity.vectorise(symbol)(impl)
           else arity.fill(symbol)(impl)
+        ),
+      )
+
+  private def addNullPart[P, F](
+      symbol: String,
+      arity: NullImplHelpers[P, F],
+  )(impl: P): (String, Element) =
+    symbol ->
+      Element(
+        arity.arity,
+        arity.toDirectFn(
+          arity.fill(symbol)(impl)
         ),
       )
 
