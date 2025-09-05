@@ -1732,6 +1732,12 @@ object Elements:
           .map(prime => NumberHelpers.multiplicity(a, prime.asInstanceOf[VNum]))
         VList(exponents)
     },
+    addPart("∆⌊", Triad, false) {
+      case (a: VNum, b: VNum, c: VNum) =>
+        NumberHelpers.clamp(a,b,c)
+      case (VListOf[VNum](a), b: VNum, c: VNum) =>
+        a.map(n => NumberHelpers.clamp(n,b,c))
+    },
     addPart(
       "∆p",
       Monad,

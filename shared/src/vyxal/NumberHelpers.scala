@@ -305,6 +305,14 @@ object NumberHelpers:
     else if a - floor < ceil - a then floor
     else ceil
 
+  // clamp a between b and c, order of b/c is irrelevant
+  def clamp(a: VNum, b: VNum, c: VNum): VNum =
+    val upper = if b > c then b else c
+    val lower = if c > b then b else c
+    if (a < lower) then lower
+    else if (a > upper) then upper
+    else a
+  
   def toBinary(a: VAny)(using Context): VList =
     a match
       case n: VNum =>
