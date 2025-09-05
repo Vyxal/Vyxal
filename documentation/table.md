@@ -183,7 +183,7 @@ Element, Modifier, and Syntax Reference
 | <code>⊆</code> | <code>subset?</code> | 2 |   | **Subset?** (`lst,lst`): Is the shallower list a subset of the deeper list? Checks windows corresponding to the length of the shallower list |
 | <code>⍨</code> | <code>dump</code> | 1 |   | **Dump** (`any`): Push all items of #1 to the stack |
 | <code>⎘</code> | <code>flatten-by-depth</code></br><code>flatten-depth</code></br><code>one-flatten</code></br><code>register-map</code> | 2 |   | **Flatten by Depth** (`lst,num`): Flatten #1 by #2 levels</br>**Flatten by Depth** (`lst`): Flatten #1 by 1 level</br>**Flatten-each** (`lst[num\|str]`): Flattens each item in #1</br>**Register Map** (`fun`): Apply #1 to each item in the register |
-| <code>ꜝ</code> | <code>keep-truthy</code> | 1 |   | **Keep Truthy** (`lst`): Keep only the truthy elements of #1 |
+| <code>ꜝ</code> | <code>keep-truthy</code></br><code>split-commas</code></br><code>comma-split</code> | 1 |   | **Keep Truthy** (`lst`): Keep only the truthy elements of #1</br>**Split on Commas** (`str`): Split #1 on commas |
 | <code>≈</code> | <code>all-same</code> | 1 |   | **All Same** (`any`): Are all elements of #1 the same? |
 | <code>≊</code> | <code>all-equal-item</code></br><code>all-equal-to</code> | 2 |   | **All Equal Item** (`lst,any`): Are all elements of #1 equal to #2? |
 | <code>κ</code> | <code>gcd</code> | 2 | vec  | **GCD** (`num,num`): GCD of #1 and #2</br>**GCD of List** (`lst`): GCD of all elements of #1</br>**GCD of List with Initial Value** (`lst,num`): GCD of all elements of #1.append(#2) |
