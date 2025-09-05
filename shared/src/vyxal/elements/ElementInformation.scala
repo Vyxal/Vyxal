@@ -4788,8 +4788,7 @@ object ElementInformation:
       Overload(
         name = "Clamp",
         args = Seq("num", "num", "num"),
-        description =
-          "Clamp #1 between #2 and #3",
+        description = "Clamp #1 between #2 and #3",
       ),
     ),
     AddElement(

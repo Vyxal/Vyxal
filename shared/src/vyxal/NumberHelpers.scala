@@ -309,10 +309,10 @@ object NumberHelpers:
   def clamp(a: VNum, b: VNum, c: VNum): VNum =
     val upper = if b > c then b else c
     val lower = if c > b then b else c
-    if (a < lower) then lower
-    else if (a > upper) then upper
+    if a < lower then lower
+    else if a > upper then upper
     else a
-  
+
   def toBinary(a: VAny)(using Context): VList =
     a match
       case n: VNum =>
