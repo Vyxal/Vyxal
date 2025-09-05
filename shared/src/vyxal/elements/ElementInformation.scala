@@ -3231,13 +3231,18 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ꜝ",
-      keywords = Seq("keep-truthy"),
+      keywords = Seq("keep-truthy", "split-commas", "comma-split"),
       arity = 1,
       Options(),
       Overload(
         name = "Keep Truthy",
         args = Seq("lst"),
         description = "Keep only the truthy elements of #1",
+      ),
+      Overload(
+        name = "Split on Commas",
+        args = Seq("str"),
+        description = "Split #1 on commas",
       ),
     ),
     AddElement(

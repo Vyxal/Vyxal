@@ -1423,7 +1423,7 @@ object Elements:
       },
     addPart("ꜝ", Monad, false) {
       case a: VNum => VNum(a.itr.filter(x => x != VNum(0)).mkString)
-      case VStr(a) => a
+      case VStr(a) => a.split(",").toIndexedSeq
       case VList(a) => a.itr.filter(elem => elem.toBool)
     },
     addPart("≈", Monad, false) {
