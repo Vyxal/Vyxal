@@ -362,6 +362,7 @@ Element, Modifier, and Syntax Reference
 | <code>∆s</code> | <code>sin</code></br><code>sine</code> | 1 | vec  | **Sine** (`num`): Sine of #1 |
 | <code>∆t</code> | <code>tan</code></br><code>tangent</code> | 1 | vec  | **Tangent** (`num`): Tangent of #1 |
 | <code>∆⊍</code> | <code>bitwise-xor</code> | 2 | vec  | **Bitwise Xor** (`num,num`): #1 ^ #2 |
+| <code>∆⌊</code> | <code>clamp</code> | 3 | vec  | **Clamp** (`num,num,num`): Clamp #1 between #2 and #3 |
 | <code>∆⎀</code> | <code>polar-parts</code> | 1 | vec  | **Polar Parts** (`num`): Push the magnitude and argument of #1 |
 | <code>∆ʈ</code> | <code>arctan</code></br><code>arctangent</code> | 1 | vec  | **Arctangent** (`num`): Arctangent of #1 |
 | <code>∆ℭ</code> | <code>arccos</code></br><code>arccosine</code> | 1 | vec  | **Arccosine** (`num`): Arccosine of #1 |
