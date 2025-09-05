@@ -10,7 +10,7 @@ object RegisterHelpers:
   def clear(using Context) = register.clear()
   def length(using Context) = VNum(register.length)
 
-  def isEmpty(using Context): Boolean = register.length == 0
+  def isEmpty(using Context): Boolean = register.isEmpty
 
   def reverseRegister(using ctx: Context): Unit =
     val rev = register.reverse
