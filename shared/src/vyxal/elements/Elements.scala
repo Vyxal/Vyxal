@@ -1071,7 +1071,7 @@ object Elements:
       case num: VNum => num.vabs
       case VStr(str) => str.filter(_.isLetter)
       case predicate: VFun =>
-        var res = 1
+        var res = 0
         while !predicate(VNum(res)).toBool do res += 1
         res
     },
