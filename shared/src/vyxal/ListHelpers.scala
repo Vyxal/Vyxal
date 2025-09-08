@@ -1230,6 +1230,19 @@ object ListHelpers:
         case a: VVal => MiscHelpers.dyadicMinimum(a, b)
     }
 
+  def maximumIndices(iter: Seq[VAny])(using Context): Seq[VAny] =
+    if iter.isEmpty then iter
+    else
+      val max = iter.max
+      ListHelpers.truthyIndices(iter.map(_.equals(max)))
+
+
+  def minimumIndices(iter: Seq[VAny])(using Context): Seq[VAny] =
+    if iter.isEmpty then iter
+    else
+      val min = iter.min
+      ListHelpers.truthyIndices(iter.map(_.equals(min)))
+
   def gradeUp(iterable: VAny)(using Context): Seq[VAny] =
     makeIterable(iterable).zipWithIndex.sortBy(_._1).map(_._2)
 
