@@ -564,10 +564,9 @@ object ListHelpers:
   def itemDepth(lst: Seq[VAny], n: Int = 1)(using Context): Seq[VAny] =
     val d: Int = n
     lst.map {
-      case VList(s) => itemDepth(s, d+1)
+      case VList(s) => itemDepth(s, d + 1)
       case _ => VNum(d)
     }
-
 
   /** Merge a possibly infinite list of possibly infinite lists diagonally */
   def mergeInfLists[T](lists: Seq[Seq[T]]): LazyList[T] =
