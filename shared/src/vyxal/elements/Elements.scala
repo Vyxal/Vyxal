@@ -1970,12 +1970,10 @@ object Elements:
       case (a, b: VNum, c: VNum) => Seq.fill(c.toInt)(Seq.fill(b.toInt)(a))
     },
     addPart("Þ≤", Monad, false) {
-      case a: VPhysical => 
-       ListHelpers.minimumIndices(a.itr)
+      case a: VPhysical => ListHelpers.minimumIndices(a.itr)
     },
     addPart("Þ≥", Monad, false) {
-      case a: VPhysical => 
-        ListHelpers.maximumIndices(a.itr)
+      case a: VPhysical => ListHelpers.maximumIndices(a.itr)
     },
     "Þ⁰" ->
       fullToImpl(
