@@ -1963,6 +1963,13 @@ object Elements:
         (left, right) =>
           ListHelpers.cartesianProduct(left, right, unsafe = true),
       ),
+    addPart("Þ⊞", Monad, false) {
+      case VList(lst) => ListHelpers.itemDepth(lst)
+    },
+    addPart("ÞY", Triad, false) {
+      case (a, b: VNum, c: VNum) =>
+        Seq.fill(c.toInt)(Seq.fill(b.toInt)(a))
+    },
     "Þ⁰" ->
       fullToImpl(
         Monad,

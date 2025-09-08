@@ -560,6 +560,15 @@ object ListHelpers:
         MiscHelpers.dyadicMaximum(_, _).asInstanceOf[VNum]
       ) // Guaranteed to be a VNum
 
+  /** Depth of element in nested list */
+  def itemDepth(lst: Seq[VAny], n: Int = 1)(using Context): Seq[VAny] =
+    val d: Int = n
+    lst.map {
+      case VList(s) => itemDepth(s, d+1)
+      case _ => VNum(d)
+    }
+
+
   /** Merge a possibly infinite list of possibly infinite lists diagonally */
   def mergeInfLists[T](lists: Seq[Seq[T]]): LazyList[T] =
     // Based off of https://stackoverflow.com/a/20516638
@@ -1306,4 +1315,5 @@ object ListHelpers:
             Seq.fill(maxSize)(x)
         }
     ListHelpers.zipMulti(lists*)(f)
+
 end ListHelpers

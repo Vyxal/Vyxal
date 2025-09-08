@@ -5070,6 +5070,28 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "Þ⊞",
+      keywords = Seq("item-depth"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Depth",
+        args = Seq("lst"),
+        description = "Depth of each item in #1",
+      ),
+    ),
+    AddElement(
+      symbol = "ÞY",
+      keywords = Seq("grid-fill"),
+      arity = 3,
+      Options(),
+      Overload(
+        name = "Grid Fill",
+        args = Seq("any, num, num"),
+        description = "Fill a grid of size #2 x #3 with #1",
+      ),
+    ),
+    AddElement(
       symbol = "ÞT",
       keywords = Seq("transpose-safe"),
       arity = 1,
