@@ -1967,8 +1967,7 @@ object Elements:
       case VList(lst) => ListHelpers.itemDepth(lst)
     },
     addPart("ÞY", Triad, false) {
-      case (a, b: VNum, c: VNum) =>
-        Seq.fill(c.toInt)(Seq.fill(b.toInt)(a))
+      case (a, b: VNum, c: VNum) => Seq.fill(c.toInt)(Seq.fill(b.toInt)(a))
     },
     addPart("Þ≤", Monad, false) {
       case a: VPhysical => 
