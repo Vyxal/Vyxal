@@ -366,13 +366,24 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "*",
-      keywords = Seq("exponentiate", "pow", "**", "power"),
+      keywords = Seq("exponentiate", "pow", "**", "power", "string-extend", "extend-string", "to-length"),
       arity = 2,
       Options(vectorises = true),
       Overload(
         name = "Exponentiation",
         args = Seq("num", "num"),
         description = "#1 ** #2",
+      ),
+      Overload(
+        name = "Extend String",
+        args = Seq("str", "str"),
+        description = "Repeat {#1|#2} until length {#2|#1}",
+      ),
+      Overload(
+        name = "Extend String",
+        args = Seq("str", "num"),
+        description = "Repeat {#1|#2} until length {#2|#1}",
+        typeSwitchable = true
       ),
     ),
     AddElement(
@@ -2629,8 +2640,6 @@ object ElementInformation:
         "string-repeat-concat",
         "bijective-base",
         "first-predicate-index",
-        "extend",
-        "to-length",
         "vectorised-pair",
         "vec-pair",
       ),
@@ -2658,11 +2667,6 @@ object ElementInformation:
         description =
           "Index of the first value in {#1|#2} where function {#2|#1} is true",
         typeSwitchable = true,
-      ),
-      Overload(
-        name = "Extend String",
-        args = Seq("str", "str"),
-        description = "Repeat {#1|#2} until length {#2|#1}",
       ),
       Overload(
         name = "Vectorised Pair",
