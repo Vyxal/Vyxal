@@ -1194,6 +1194,10 @@ object ListHelpers:
     if rows.exists(_.size != numRows) then None
     else if rows.exists(_.exists(!_.isInstanceOf[VNum])) then None
     else Some(rows.asInstanceOf[Seq[Seq[VNum]]])
+  
+  def isRectangle(lst: Seq[VAny])(using Context): Boolean =
+    val rowlen = lst.map(ListHelpers.makeIterable(_).size)
+    rowlen.forall(_ === rowlen(0))
 
   def wrapLength(iterable: Seq[VAny], length: VNum): Seq[VAny] =
     if length <= 0 then Seq.empty
@@ -1242,6 +1246,25 @@ object ListHelpers:
       val min = iter.min
       ListHelpers.truthyIndices(iter.map(_.equals(min)))
 
+
+  // diagonals from top right to bottom left
+  def diagonals(iter: Seq[VAny])(using Context): Seq[VAny] =
+   iter
+
+
+
+  // antidiagonals from top left to bottom right
+  def antiDiagonals(iter: Seq[VAny])(using Context): Seq[VAny] =
+    if !isRectangle(iter) then return iter
+    else
+      val grid = transposeSafe(iter.map(ListHelpers.makeIterable(_))).toIndexedSeq
+      var offset = IndexedSeq[VAny | Null].empty
+
+      for i <- 0 until grid.length do
+        var w = IndexedSeq.tabulate(i){_ => Null}
+        offset = offset.appended(w)
+      
+  
   def gradeUp(iterable: VAny)(using Context): Seq[VAny] =
     makeIterable(iterable).zipWithIndex.sortBy(_._1).map(_._2)
 

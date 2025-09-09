@@ -5081,6 +5081,28 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "Þ≤",
+      keywords = Seq("min-indices", "minimum-indices"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Minimum Indices",
+        args = Seq("lst"),
+        description = "Indices where #1 is minimal",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ≥",
+      keywords = Seq("max-indices", "maximum-indices"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Maximum Indices",
+        args = Seq("lst"),
+        description = "Indices where #1 is maximal",
+      ),
+    ),
+    AddElement(
       symbol = "ÞY",
       keywords = Seq("grid-fill"),
       arity = 3,

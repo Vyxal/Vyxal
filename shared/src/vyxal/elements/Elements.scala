@@ -1977,6 +1977,14 @@ object Elements:
       case a: VPhysical => 
         ListHelpers.maximumIndices(a.itr)
     },
+    addPart("Þ/", Monad, false) {
+      case VList(lst) => 
+        ListHelpers.antiDiagonals(lst)
+    },
+    addPart("Þ\\", Monad, false) {
+      case VList(lst) => 
+        ListHelpers.diagonals(lst)
+    },
     "Þ⁰" ->
       fullToImpl(
         Monad,
