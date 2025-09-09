@@ -281,17 +281,11 @@
     - { in: [5.1, 4.2], out: 937.11899215207 }
     - { in: [3, 0], out: 1 }
     - { in: [0, 0], out: 1 }
-    #  when given a string and a number:
-    #    - { in: ["the fitnessgram pacer test", 6], out: "the finessgram pacer test" }
-    #    - { in: [4.2, "airpod shotty"], out: "airpd shotty" }
-    #    - { in: ["sussy baka", 0], out: "ussy baka" }
-    #    - { in: ["sussy baka", -1], out: "sussy bak" }
-    #    - { in: ["vyxal", 7], out: "vyal" }
-    #  when given two strings:
-    #    - { in: ["abcdefabc", "abc"], out: "def" }
-    #    - { in: ["abc", "abcdefabc"], out: "abc" }
-    #    - { in: ["abc", "abc"], out: "" }
-    #    - { in: ["abcdefabc", ""], out: "abcdefabc" }
+  String Extending:
+    - {in: ["hi", 11], out: "hihihihihih"}
+    - {in: ["hi", "hello world"], out: "hihihihihih"}
+    - {in: ["hello world", "hi"], out: "hihihihihih"}
+
 
 "+":
   - { in: ["1", 2], out: "12" }
@@ -1539,9 +1533,6 @@
   - {in: [[1,"sussy"], [4,5,6]], out: "4sussysussysussysussysussy0"}
   - {in: [10, 5], out: [1, 5]}
   - {in: [120, 43], out: [2, 34]}
-  String Extending:
-  - {in: ["hi", "hello world"], out: "hihihihihih"}
-  - {in: ["hello world", "hi"], out: "hihihihihih"}
   Vectorized Pair:
   - {in: [["hi", "hello world"], 4], out: [["hi", 4], ["hello world", 4]]}
   - {in: ["sus", ["hi", "hello world"]], out: [["hi", "sus"], ["hello world", "sus"]]}
