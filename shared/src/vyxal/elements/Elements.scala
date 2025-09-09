@@ -124,6 +124,11 @@ object Elements:
       ),
     addPart("*", Dyad, true) {
       case (a: VNum, b: VNum) => a ** b
+      case (VStr(a), b: VNum) => StringHelpers.extendString(b, a)
+      case (a: VNum, VStr(b)) => StringHelpers.extendString(a, b)
+      case (VStr(a), VStr(b)) =>
+        if a.length > b.length then StringHelpers.extendString(a, b)
+        else StringHelpers.extendString(b, a)
     },
     "+" -> fullToImpl(Dyad, MiscHelpers.add),
     "," ->
@@ -1135,9 +1140,6 @@ object Elements:
       case (a: VList, b: VVal) => VList(a.map(x => VList(Seq(x, b))))
       case (a: VVal, b: VList) => VList(b.map(x => VList(Seq(x, a))))
       case (a: VList, b: VList) => ListHelpers.dotProduct(a, b)
-      case (VStr(a), VStr(b)) =>
-        if a.length > b.length then StringHelpers.extendString(a, b)
-        else StringHelpers.extendString(b, a)
 
       case (number: VNum, base: VNum) =>
         NumberHelpers.toBijectiveBase(number, base)

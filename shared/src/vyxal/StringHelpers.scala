@@ -482,4 +482,8 @@ object StringHelpers:
     val repeat: Int = (long.length.toFloat / short.length).ceil.toInt
     (short * repeat).slice(0, long.length)
 
+  def extendString(len: VNum, str: String): String =
+    val repeat: Int = (len.toDouble / str.length).ceil.toInt
+    (str * repeat).slice(0, len.toInt)
+
 end StringHelpers
