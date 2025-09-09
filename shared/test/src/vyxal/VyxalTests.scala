@@ -176,4 +176,5 @@ object VyxalTests:
       case _ => throw IllegalArgumentException(asserts.show)
     end match
   end groupImpl
+
 end VyxalTests
