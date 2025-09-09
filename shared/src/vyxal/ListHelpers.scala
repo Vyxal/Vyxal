@@ -1239,7 +1239,6 @@ object ListHelpers:
       val max = iter.max
       ListHelpers.truthyIndices(iter.map(_.equals(max)))
 
-
   def minimumIndices(iter: Seq[VAny])(using Context): Seq[VAny] =
     if iter.isEmpty then iter
     else
