@@ -129,8 +129,8 @@ class ElementTests extends VyxalTests:
       testCode("5 λ0=[1|1-x×}}ᴥ", 120)
       testCode("0 λ0=[1|1-x×}}ᴥ", 1)
     }
-  } 
- 
+  }
+
   describe("Element Þ↻") {
     it("should work on lists") {
       testCode("#[1|2|3#] Þ↻ 10 ⊖", vSeq(1, 2, 3, 1, 2, 3, 1, 2, 3, 1))

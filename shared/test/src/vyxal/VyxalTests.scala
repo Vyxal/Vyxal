@@ -128,7 +128,7 @@ trait VyxalTests extends AnyFunSpec:
     * ```
     */
   inline def group(inline asserts: Unit): Unit = VyxalTests.group(asserts)
-  
+
 end VyxalTests
 
 object VyxalTests:

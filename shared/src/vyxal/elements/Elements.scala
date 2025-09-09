@@ -395,7 +395,11 @@ object Elements:
       direct(-1) {
         summon[Context].reverse()
       },
-    "_" -> fullToNullImpl(NullMonad, NullHelpers.popArgs(_)), // null objects pop args and return nothing
+    "_" ->
+      fullToNullImpl(
+        NullMonad,
+        NullHelpers.popArgs(_),
+      ), // null objects pop args and return nothing
     "#`" -> niladify(ctx ?=> ctx.getStack.bigLength),
     addPart("a", Monad, false) {
       case a: VNum => a.itr.exists(_ == VNum(0))
@@ -2217,9 +2221,11 @@ object Elements:
     */
   private def fullToImpl[F](arity: ImplHelpers[?, F], impl: F): Element =
     Element(arity.arity, arity.toDirectFn(impl))
-  
-  private def fullToNullImpl[F](arity: NullImplHelpers[?, F], impl: F): Element =
-    Element(arity.arity, arity.toDirectFn(impl))
+
+  private def fullToNullImpl[F](
+      arity: NullImplHelpers[?, F],
+      impl: F,
+  ): Element = Element(arity.arity, arity.toDirectFn(impl))
 
   /** Define an element that doesn't necessarily work on all inputs
     *

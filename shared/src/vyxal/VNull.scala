@@ -1,7 +1,6 @@
 package vyxal
 import vyxal.conversions.{*, given}
 
-
 type NullMonad = VAny => Context ?=> Unit
 type NullDyad = (VAny, VAny) => Context ?=> Unit
 type PartialNullMonad = Context ?=> PartialFunction[VAny, Unit]
@@ -25,7 +24,6 @@ sealed abstract class NullImplHelpers[P, F](val arity: Int):
     */
   def fill(symbol: String)(impl: P): F
 
-
 object NullMonad extends NullImplHelpers[PartialNullMonad, NullMonad](1):
   override def toDirectFn(impl: NullMonad) = () => ctx ?=> impl(ctx.pop())
 
@@ -34,22 +32,20 @@ object NullMonad extends NullImplHelpers[PartialNullMonad, NullMonad](1):
       if fn.isDefinedAt(arg) then fn(arg)
       else throw UnimplementedOverloadException(name, Seq(arg))
 
-
 object NullDyad extends NullImplHelpers[PartialNullDyad, NullDyad](2):
-  override def toDirectFn(impl: NullDyad): DirectFn = () => ctx ?=> 
-    val arg2, arg1 = ctx.pop() 
-    impl(arg1, arg2)
+  override def toDirectFn(impl: NullDyad): DirectFn =
+    () =>
+      ctx ?=>
+        val arg2, arg1 = ctx.pop()
+        impl(arg1, arg2)
   override def fill(name: String)(fn: PartialNullDyad): NullDyad =
     (a, b) =>
       val args = (a, b)
       if fn.isDefinedAt(args) then fn(args)
       else throw UnimplementedOverloadException(name, args.toList)
-    
-end NullDyad
 
 object NullHelpers:
-  /** NullMonad and NullDyad will pop args automatically, use this instead of ctx.pop()*/
-  def popArgs(m: VAny)(using ctx: Context): Unit =
-    ctx.nop()
-
-end NullHelpers
+  /** NullMonad and NullDyad will pop args automatically, use this instead of
+    * ctx.pop()
+    */
+  def popArgs(m: VAny)(using ctx: Context): Unit = ctx.nop()
