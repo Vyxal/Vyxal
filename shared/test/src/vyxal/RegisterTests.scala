@@ -1,13 +1,13 @@
 package vyxal
 
 import vyxal.conversions.{*, given}
-import org.scalatest.Checkpoints.Checkpoint
-import org.scalatest.funspec.AnyFunSpec
 
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.Checkpoints.Checkpoint
 
 class RegisterTests extends VyxalTests:
 
-    def vSeq(elems: VAny*): Seq[VAny] = elems
+  def vSeq(elems: VAny*): Seq[VAny] = elems
 
     describe("Regular Register Usage") {
       testMulti(

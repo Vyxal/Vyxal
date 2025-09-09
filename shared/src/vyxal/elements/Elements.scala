@@ -1061,7 +1061,7 @@ object Elements:
       case num: VNum => num.vabs
       case VStr(str) => str.filter(_.isLetter)
       case predicate: VFun =>
-        var res = 1
+        var res = 0
         while !predicate(VNum(res)).toBool do res += 1
         res
     },
@@ -1413,7 +1413,7 @@ object Elements:
       },
     addPart("ꜝ", Monad, false) {
       case a: VNum => VNum(a.itr.filter(x => x != VNum(0)).mkString)
-      case VStr(a) => a
+      case VStr(a) => a.split(",").toIndexedSeq
       case VList(a) => a.itr.filter(elem => elem.toBool)
     },
     addPart("≈", Monad, false) {
@@ -1721,6 +1721,11 @@ object Elements:
         val exponents = primes
           .map(prime => NumberHelpers.multiplicity(a, prime.asInstanceOf[VNum]))
         VList(exponents)
+    },
+    addPart("∆⌊", Triad, false) {
+      case (a: VNum, b: VNum, c: VNum) => NumberHelpers.clamp(a, b, c)
+      case (VListOf[VNum](a), b: VNum, c: VNum) =>
+        a.map(n => NumberHelpers.clamp(n, b, c))
     },
     addPart(
       "∆p",

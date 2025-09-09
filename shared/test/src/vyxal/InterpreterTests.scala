@@ -475,7 +475,6 @@ class InterpreterTests extends VyxalTests:
     testCode(""" #[#[1|2|3#]|#[4|5|6#]#]λ¤ "["c[¨x∑)ᴥ """, VNum(21), Seq())
   }
 
-
   describe("Stack Rotating Chicanery") {
     testStackLike("↜")(
       List[VAny](1, 2, 3, 9) -> List[VAny](1, 9, 3, 2),

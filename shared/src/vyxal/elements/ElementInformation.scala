@@ -2538,9 +2538,9 @@ object ElementInformation:
         description = "Keep only the letters of #1",
       ),
       Overload(
-        name = "First Positive Integer Where Function is True",
+        name = "First Non-Negative Integer Where Function is True",
         args = Seq("fun"),
-        description = "First positive integer where #1 is true (>= 1)",
+        description = "First non-negative integer where #1 is true (>= 0)",
       ),
     ),
     AddElement(
@@ -3231,13 +3231,18 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "ꜝ",
-      keywords = Seq("keep-truthy"),
+      keywords = Seq("keep-truthy", "split-commas", "comma-split"),
       arity = 1,
       Options(),
       Overload(
         name = "Keep Truthy",
         args = Seq("lst"),
         description = "Keep only the truthy elements of #1",
+      ),
+      Overload(
+        name = "Split on Commas",
+        args = Seq("str"),
+        description = "Split #1 on commas",
       ),
     ),
     AddElement(
@@ -4778,6 +4783,17 @@ object ElementInformation:
         args = Seq("num"),
         description =
           "push a list of the power of each prime in the prime factors of #1",
+      ),
+    ),
+    AddElement(
+      symbol = "∆⌊",
+      keywords = Seq("clamp"),
+      arity = 3,
+      Options(vectorises = true),
+      Overload(
+        name = "Clamp",
+        args = Seq("num", "num", "num"),
+        description = "Clamp #1 between #2 and #3",
       ),
     ),
     AddElement(
