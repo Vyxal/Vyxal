@@ -5230,7 +5230,7 @@ object ElementInformation:
         description = "Matrix antidiagonals from top left to bottom right",
       ),
     ),
-     AddElement(
+    AddElement(
       symbol = "Þ\\",
       keywords = Seq("diagonals"),
       arity = 1,
@@ -5239,6 +5239,28 @@ object ElementInformation:
         name = "Diagonals of a matrix",
         args = Seq("lst"),
         description = "Matrix diagonals from top right to bottom left",
+      ),
+     ),
+    AddElement(
+      symbol = "Þ„",
+      keywords = Seq("from-diagonals"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "List from diagonals",
+        args = Seq("lst"),
+        description = "Matrix from list of its diagonals",
+      ),
+     ),
+     AddElement(
+      symbol = "Þ”",
+      keywords = Seq("from-antidiagonals"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "List from antidiagonals",
+        args = Seq("lst"),
+        description = "Matrix from list of its antidiagonals",
       ),
      ),
     AddElement(

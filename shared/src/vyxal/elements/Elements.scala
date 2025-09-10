@@ -1983,6 +1983,12 @@ object Elements:
     addPart("Þ\\", Monad, false) {
       case VList(lst) => ListHelpers.diagonals(lst)
     },
+    addPart("Þ„", Monad, false) {
+      case VList(lst) => ListHelpers.fromDiagonals(lst)
+    },
+    addPart("Þ”", Monad, false) {
+      case VList(lst) => ListHelpers.fromAntiDiagonals(lst)
+    },
     "Þ⁰" ->
       fullToImpl(
         Monad,

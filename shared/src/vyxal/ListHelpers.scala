@@ -1287,6 +1287,13 @@ object ListHelpers:
       spaces.map(r => trimList(makeIterable(r), pattern=Seq("   "), trimleft = false))
     else iter
 
+  // given in format from above
+  def fromDiagonals(iter: Seq[VAny])(using Context): Seq[VAny] =
+    iter
+
+  def fromAntiDiagonals(iter: Seq[VAny])(using Context): Seq[VAny] =
+    iter
+  
   def gradeUp(iterable: VAny)(using Context): Seq[VAny] =
     makeIterable(iterable).zipWithIndex.sortBy(_._1).map(_._2)
 

@@ -2,9 +2,8 @@ package vyxal
 
 import vyxal.conversions.given
 import vyxal.elements.Elements
-import vyxal.VyxalTests.testContext
-
 import org.scalatest.funspec.AnyFunSpec
+import VyxalTests.testContext
 
 /** Tests for specific elements */
 class ElementTests extends VyxalTests:
