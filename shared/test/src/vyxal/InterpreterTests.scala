@@ -4,9 +4,11 @@ import vyxal.conversions.{*, given}
 import vyxal.elements.Modifiers
 import vyxal.parsing.{Lexer, Parser}
 
+
 import org.scalatest.tagobjects.Slow
 
 class InterpreterTests extends VyxalTests:
+
   def testCodeAsLiterate(input: String, expected: VAny): Unit =
     val literate = Lexer.lexLiterate(input)
     testInterpreter(Parser.parse(literate), expected)

@@ -5219,6 +5219,28 @@ object ElementInformation:
           "Grid neighbours of cells in #1 - right, down, left, up, and diagonals - wrapping around and start from direction #2 => 0: right, 1: down, 2: left, 3: up. Negative #2 does not include middle, positive #2 does",
       ),
     ),
+     AddElement(
+      symbol = "Þ/",
+      keywords = Seq("antidiagonals"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Antidiagonals of a matrix",
+        args = Seq("lst"),
+        description = "Matrix antidiagonals from top left to bottom right",
+      ),
+    ),
+     AddElement(
+      symbol = "Þ\\",
+      keywords = Seq("diagonals"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Diagonals of a matrix",
+        args = Seq("lst"),
+        description = "Matrix diagonals from top right to bottom left",
+      ),
+     ),
     AddElement(
       symbol = "Þ⁰",
       keywords = Seq("zero-lift"),

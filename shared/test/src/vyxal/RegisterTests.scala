@@ -89,4 +89,5 @@ class RegisterTests extends VyxalTests:
       testCode("5ʁ Þ£ 5 11R Þ^ƛ`}", vSeq(0, 1, 2, 3, 4, 5))
     }
   }
+  
 end RegisterTests
