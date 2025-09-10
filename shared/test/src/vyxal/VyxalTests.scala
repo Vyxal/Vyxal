@@ -132,7 +132,7 @@ trait VyxalTests extends AnyFunSpec:
 end VyxalTests
 
 object VyxalTests:
-  
+
   /** A Context with settings appropriate for tests */
   def testContext(
       inputs: Seq[VAny] = Seq.empty,

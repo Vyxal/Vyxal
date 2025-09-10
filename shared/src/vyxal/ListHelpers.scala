@@ -1138,20 +1138,19 @@ object ListHelpers:
     out
   end transpose
 
-  /** Transpose a matrix given it is already in matrix form*/
+  /** Transpose a matrix given it is already in matrix form */
   def transposeGiven(mat: Seq[Seq[VAny]])(using
       ctx: Context
   ): Seq[VAny] =
     val matrix = mat.asInstanceOf[Seq[Seq[VAny]]]
     val out = LazyList.unfold(matrix) { matrix =>
-          val remaining = matrix.filter(_.nonEmpty)
-          Option.when(remaining.nonEmpty) {
-            val col = VList(remaining.map(_.head))
-            (col, remaining.map(_.tail))
-          }
-        }
+      val remaining = matrix.filter(_.nonEmpty)
+      Option.when(remaining.nonEmpty) {
+        val col = VList(remaining.map(_.head))
+        (col, remaining.map(_.tail))
+      }
+    }
     out
-  end transposeGiven
 
   /** Transpose a matrix. Uses the length of the first row of the inputted
     * matrix as the number of columns in the resulting matrix.
@@ -1191,15 +1190,21 @@ object ListHelpers:
     val trimmed = temp.dropWhile(_ == value).reverse.dropWhile(_ == value)
     trimmed.reverse
 
-  def trimList(iterable: Seq[VAny], pattern: Seq[VAny], trimleft: Boolean = true, trimright: Boolean = true)(using
+  def trimList(
+      iterable: Seq[VAny],
+      pattern: Seq[VAny],
+      trimleft: Boolean = true,
+      trimright: Boolean = true,
+  )(using
       ctx: Context
   ): Seq[VAny] =
     var temp = iterable.toList
-    if trimleft then while temp.startsWith(pattern) do temp = temp.drop(pattern.length)
-    if trimright then while temp.endsWith(pattern) do temp = temp.dropRight(pattern.length)
+    if trimleft then
+      while temp.startsWith(pattern) do temp = temp.drop(pattern.length)
+    if trimright then
+      while temp.endsWith(pattern) do temp = temp.dropRight(pattern.length)
     temp
 
-    
   /** Ensure that a VList is a matrix */
   def validateMatrix(lst: Seq[VAny])(using
       Context
@@ -1265,35 +1270,39 @@ object ListHelpers:
   def diagonals(iter: Seq[VAny])(using Context): Seq[VAny] =
     if isRectangle(iter) then
       val max = iter.length
-      val grid = transpose(iter).zipWithIndex.map{(value, idx) => 
-        val buffered = Seq.fill(max - idx -1)(VStr("   ")) :+ value
+      val grid = transpose(iter).zipWithIndex.map { (value, idx) =>
+        val buffered = Seq.fill(max - idx - 1)(VStr("   ")) :+ value
         flattenByDepth(buffered, 1)
       }
       val spaces = transposeGiven(grid)
 
-      trimList(spaces.map(r => 
-        trimList(makeIterable(r), pattern=Seq("   "), trimright = false)
-       ), pattern=Seq(Seq.empty), trimright = false)
+      trimList(
+        spaces.map(r =>
+          trimList(makeIterable(r), pattern = Seq("   "), trimright = false)
+        ),
+        pattern = Seq(Seq.empty),
+        trimright = false,
+      )
     else iter
 
   // antidiagonals from top left to bottom right
   def antiDiagonals(iter: Seq[VAny])(using Context): Seq[VAny] =
     if isRectangle(iter) then
-      val grid = transpose(iter).zipWithIndex.map{(value, idx) => 
+      val grid = transpose(iter).zipWithIndex.map { (value, idx) =>
         val buffered = Seq.fill(idx)(VStr("   ")) :+ value
         flattenByDepth(buffered, 1)
       }
       val spaces = transposeGiven(grid)
-      spaces.map(r => trimList(makeIterable(r), pattern=Seq("   "), trimleft = false))
+      spaces.map(r =>
+        trimList(makeIterable(r), pattern = Seq("   "), trimleft = false)
+      )
     else iter
 
   // given in format from above
-  def fromDiagonals(iter: Seq[VAny])(using Context): Seq[VAny] =
-    iter
+  def fromDiagonals(iter: Seq[VAny])(using Context): Seq[VAny] = iter
 
-  def fromAntiDiagonals(iter: Seq[VAny])(using Context): Seq[VAny] =
-    iter
-  
+  def fromAntiDiagonals(iter: Seq[VAny])(using Context): Seq[VAny] = iter
+
   def gradeUp(iterable: VAny)(using Context): Seq[VAny] =
     makeIterable(iterable).zipWithIndex.sortBy(_._1).map(_._2)
 

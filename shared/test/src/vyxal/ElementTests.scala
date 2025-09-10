@@ -2,6 +2,7 @@ package vyxal
 
 import vyxal.conversions.given
 import vyxal.elements.Elements
+
 import org.scalatest.funspec.AnyFunSpec
 import VyxalTests.testContext
 
@@ -435,22 +436,47 @@ class ElementTests extends VyxalTests:
 
   describe("Element Þ/") {
     testMulti(
-      """ #[#[1|2|3#]|#[4|5|6#]|#[7|8|9#]|#["a"|"b"|"c"#]#] Þ/ """ -> 
-        vSeq(vSeq(1), vSeq(4, 2), vSeq(7, 5, 3), vSeq("a", 8, 6), vSeq("b",9), vSeq("c")),
-      "k=w0J Þ/" -> vSeq(vSeq(0,0), 0),
-      "9ɾ¨w3Ϣ Þ/" -> 
-        vSeq(vSeq(vSeq(1)), vSeq(vSeq(4), vSeq(2)), vSeq(vSeq(7), vSeq(5), vSeq(3)), vSeq(vSeq(8),vSeq(6)), vSeq(vSeq(9)))
+      """ #[#[1|2|3#]|#[4|5|6#]|#[7|8|9#]|#["a"|"b"|"c"#]#] Þ/ """ ->
+        vSeq(
+          vSeq(1),
+          vSeq(4, 2),
+          vSeq(7, 5, 3),
+          vSeq("a", 8, 6),
+          vSeq("b", 9),
+          vSeq("c"),
+        ),
+      "k=w0J Þ/" -> vSeq(vSeq(0, 0), 0),
+      "9ɾ¨w3Ϣ Þ/" ->
+        vSeq(
+          vSeq(vSeq(1)),
+          vSeq(vSeq(4), vSeq(2)),
+          vSeq(vSeq(7), vSeq(5), vSeq(3)),
+          vSeq(vSeq(8), vSeq(6)),
+          vSeq(vSeq(9)),
+        ),
     )
   }
   describe("Element Þ\\") {
     testMulti(
-      """ #[#[1|2|3#]|#[4|5|6#]|#[7|8|9#]|#["a"|"b"|"c"#]#] Þ\ """ -> 
-        vSeq(vSeq(3), vSeq(2, 6), vSeq(1, 5, 9), vSeq(4, 8, "c"), vSeq(7, "b"), vSeq("a")),
-      "k=w0J Þ\\ " -> vSeq(vSeq(0,0), 0),
-      "9ɾ¨w3Ϣ Þ\\ " -> 
-        vSeq(vSeq(vSeq(3)), vSeq(vSeq(2), vSeq(6)), vSeq(vSeq(1), vSeq(5), vSeq(9)), vSeq(vSeq(4),vSeq(8)), vSeq(vSeq(7)))
+      """ #[#[1|2|3#]|#[4|5|6#]|#[7|8|9#]|#["a"|"b"|"c"#]#] Þ\ """ ->
+        vSeq(
+          vSeq(3),
+          vSeq(2, 6),
+          vSeq(1, 5, 9),
+          vSeq(4, 8, "c"),
+          vSeq(7, "b"),
+          vSeq("a"),
+        ),
+      "k=w0J Þ\\ " -> vSeq(vSeq(0, 0), 0),
+      "9ɾ¨w3Ϣ Þ\\ " ->
+        vSeq(
+          vSeq(vSeq(3)),
+          vSeq(vSeq(2), vSeq(6)),
+          vSeq(vSeq(1), vSeq(5), vSeq(9)),
+          vSeq(vSeq(4), vSeq(8)),
+          vSeq(vSeq(7)),
+        ),
     )
   }
 
 end ElementTests
-
