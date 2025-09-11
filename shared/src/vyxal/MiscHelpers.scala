@@ -353,8 +353,8 @@ object MiscHelpers:
       case _ => ctx.globals.printFn(StringHelpers.vyToString(x))
 
   def vyPrintln(x: VAny)(using ctx: Context): Unit =
-      vyPrint(x)
-      vyPrint("\n")
+    vyPrint(x)
+    vyPrint("\n")
 
   def scanl(iterable: Seq[VAny], function: VFun)(using
       ctx: Context
