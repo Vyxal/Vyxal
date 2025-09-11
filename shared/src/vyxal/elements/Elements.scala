@@ -1985,28 +1985,31 @@ object Elements:
     },
     "Þ„" ->
       direct(Monad) {
-      val top = pop()
-      top match
-        case VList(lst) => push(ListHelpers.fromDiagonals(lst))
-        case n: VNum =>
-          val under = pop()
-          under match
-            case VList(lst) => push(ListHelpers.fromDiagonals(lst, Some(n)))
-            case _ => throw UnimplementedOverloadException("Þ„", List(under, n))
-        case _ => throw UnimplementedOverloadException("Þ„", List(top))
-    },
+        val top = pop()
+        top match
+          case VList(lst) => push(ListHelpers.fromDiagonals(lst))
+          case n: VNum =>
+            val under = pop()
+            under match
+              case VList(lst) => push(ListHelpers.fromDiagonals(lst, Some(n)))
+              case _ =>
+                throw UnimplementedOverloadException("Þ„", List(under, n))
+          case _ => throw UnimplementedOverloadException("Þ„", List(top))
+      },
     "Þ”" ->
       direct(Monad) {
-      val top = pop()
-      top match
-        case VList(lst) => push(ListHelpers.fromAntiDiagonals(lst))
-        case n: VNum =>
-          val under = pop()
-          under match
-            case VList(lst) => push(ListHelpers.fromAntiDiagonals(lst, Some(n)))
-            case _ => throw UnimplementedOverloadException("Þ„", List(under, n))
-        case _ => throw UnimplementedOverloadException("Þ„", List(top))
-    },
+        val top = pop()
+        top match
+          case VList(lst) => push(ListHelpers.fromAntiDiagonals(lst))
+          case n: VNum =>
+            val under = pop()
+            under match
+              case VList(lst) =>
+                push(ListHelpers.fromAntiDiagonals(lst, Some(n)))
+              case _ =>
+                throw UnimplementedOverloadException("Þ„", List(under, n))
+          case _ => throw UnimplementedOverloadException("Þ„", List(top))
+      },
     "Þ⁰" ->
       fullToImpl(
         Monad,
