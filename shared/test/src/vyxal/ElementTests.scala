@@ -480,24 +480,31 @@ class ElementTests extends VyxalTests:
   }
   describe("Element Þ„") {
     testStackLike("Þ„")(
-      in(vSeq(
+      in(
+        vSeq(
           vSeq(3),
           vSeq(2, 6),
           vSeq(1, 5, 9),
           vSeq(4, 8, "c"),
           vSeq(7, "b"),
           vSeq("a"),
-        )) -> 
-        vSeq(vSeq(1,2,3),vSeq(4,5,6),vSeq(7,8,9),vSeq("a","b","c")),
-
-      in(vSeq(
+        )
+      ) ->
+        vSeq(vSeq(1, 2, 3), vSeq(4, 5, 6), vSeq(7, 8, 9), vSeq("a", "b", "c")),
+      in(
+        vSeq(
           vSeq(vSeq(3)),
           vSeq(vSeq(2), vSeq(6)),
           vSeq(vSeq(1), vSeq(5), vSeq(9)),
           vSeq(vSeq(4), vSeq(8)),
           vSeq(vSeq(7)),
-        )) ->
-        vSeq(vSeq(vSeq(1),vSeq(2),vSeq(3)),vSeq(vSeq(4),vSeq(5),vSeq(6)),vSeq(vSeq(7),vSeq(8),vSeq(9)))
+        )
+      ) ->
+        vSeq(
+          vSeq(vSeq(1), vSeq(2), vSeq(3)),
+          vSeq(vSeq(4), vSeq(5), vSeq(6)),
+          vSeq(vSeq(7), vSeq(8), vSeq(9)),
+        ),
     )
   }
 
