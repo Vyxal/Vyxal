@@ -1995,9 +1995,17 @@ object Elements:
             case _ => throw UnimplementedOverloadException("Þ„", List(under, n))
         case _ => throw UnimplementedOverloadException("Þ„", List(top))
     },
-    addPart("Þ”", Monad, false) {
-      case VList(lst) => 
-        ListHelpers.fromAntiDiagonals(lst)
+    "Þ”" ->
+      direct(Monad) {
+      val top = pop()
+      top match
+        case VList(lst) => push(ListHelpers.fromAntiDiagonals(lst))
+        case n: VNum =>
+          val under = pop()
+          under match
+            case VList(lst) => push(ListHelpers.fromAntiDiagonals(lst, Some(n)))
+            case _ => throw UnimplementedOverloadException("Þ„", List(under, n))
+        case _ => throw UnimplementedOverloadException("Þ„", List(top))
     },
     "Þ⁰" ->
       fullToImpl(

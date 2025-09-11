@@ -5264,8 +5264,13 @@ object ElementInformation:
       Options(vectorises = false),
       Overload(
         name = "List from antidiagonals",
-        args = Seq("lst"),
-        description = "Matrix from list of its antidiagonals",
+          args = Seq("lst"),
+        description = "M x N matrix from antidiagonals, assumes m>n ",
+      ),
+      Overload(
+        name = "List from antidiagonals",
+        args = Seq("num, lst"),
+        description = "Matrix from list of antidiagonals with width #1",
       ),
     ),
     AddElement(
