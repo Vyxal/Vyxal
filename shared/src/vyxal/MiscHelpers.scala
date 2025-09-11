@@ -114,7 +114,6 @@ object MiscHelpers:
         res
       case _: VObject => throw BadArgumentException("exec", "object")
       case con: VConstructor => Interpreter.createObject(con)
-      case n: VNull => n
     end match
   end exec
 
@@ -292,7 +291,6 @@ object MiscHelpers:
       case _: VFun => "fun"
       case _: VConstructor => "con"
       case o: VObject => o.className
-      case _: VNull => throw NullValueException()
     }.toList
 
   /** For pattern-matching. Unpacks the top of the stack into some variables */
@@ -337,9 +335,7 @@ object MiscHelpers:
 
   def vyPrint(x: VAny)(using ctx: Context): Unit =
     x match
-      case VList(list) =>
-        val lst = list.filterNot(_.isInstanceOf[VNull])
-        if list.forall(_.isInstanceOf[VNull]) then return ctx.pop()
+      case VList(lst) =>
         ctx.globals.printFn("[")
         var temp = if ctx.settings.limitPrint then lst.take(100) else lst
         while temp.nonEmpty do
@@ -350,7 +346,6 @@ object MiscHelpers:
             case f: VFun => vyPrint(executeFn(f))
             case c: VConstructor => vyPrint(c.toString)
             case o: VObject => vyPrint(o.toString)
-            case _ => throw VyxalRuntimeException("Unprintable type")
           temp = temp.tail
           if temp.nonEmpty then vyPrint(", ")
         vyPrint("]")
@@ -358,8 +353,6 @@ object MiscHelpers:
       case _ => ctx.globals.printFn(StringHelpers.vyToString(x))
 
   def vyPrintln(x: VAny)(using ctx: Context): Unit =
-    if x.isInstanceOf[VNull] then ctx.pop()
-    else
       vyPrint(x)
       vyPrint("\n")
 

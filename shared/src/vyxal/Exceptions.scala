@@ -63,8 +63,6 @@ class UnsupportedOverloadException(element: String, message: String)
     extends VyxalRuntimeException(
       s"$element not supported for type $message"
     )
-class NullValueException()
-    extends VyxalRuntimeException("Null value found on stack")
 
 class VyxalRecursionException()
     extends VyxalRuntimeException("Too many recursions")
