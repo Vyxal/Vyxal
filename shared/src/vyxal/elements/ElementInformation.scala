@@ -5249,7 +5249,7 @@ object ElementInformation:
       Overload(
         name = "List from diagonals",
         args = Seq("lst"),
-        description = "Matrix from list of its diagonals",
+        description = "M x N matrix from diagonals, assumes m>n ",
       ),
       Overload(
         name = "List from diagonals",
