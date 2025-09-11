@@ -1316,9 +1316,9 @@ object ListHelpers:
           row.append(v)
       res.append(row.toSeq)
   
-    val mat = transpose(res.toSeq).toList
-    println(mat.toSeq)
-    mat.toSeq
+    val mat = transpose(res.toSeq).toList.toSeq
+    println(mat)
+    mat
 
   def fromAntiDiagonals(iter: Seq[VAny])(using Context): Seq[VAny] = iter
 
