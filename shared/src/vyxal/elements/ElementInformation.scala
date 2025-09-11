@@ -5251,6 +5251,11 @@ object ElementInformation:
         args = Seq("lst"),
         description = "Matrix from list of its diagonals",
       ),
+      Overload(
+        name = "List from diagonals",
+        args = Seq("num, lst"),
+        description = "Matrix from list of diagonals with width #1",
+      ),
     ),
     AddElement(
       symbol = "Þ”",

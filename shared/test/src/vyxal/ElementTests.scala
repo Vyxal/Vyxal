@@ -479,32 +479,13 @@ class ElementTests extends VyxalTests:
     )
   }
   describe("Element Þ„") {
-    testStackLike("Þ„")(
-      in(
-        vSeq(
-          vSeq(3),
-          vSeq(2, 6),
-          vSeq(1, 5, 9),
-          vSeq(4, 8, "c"),
-          vSeq(7, "b"),
-          vSeq("a"),
-        )
-      ) ->
+    testMulti(
+      """ #[#[3#]|#[2|6#]|#[1|5|9#]|#[4|8|"c"#]|#[7|"b"#]|#["a"#]#] Þ„"""-> 
         vSeq(vSeq(1, 2, 3), vSeq(4, 5, 6), vSeq(7, 8, 9), vSeq("a", "b", "c")),
-      in(
-        vSeq(
-          vSeq(vSeq(3)),
-          vSeq(vSeq(2), vSeq(6)),
-          vSeq(vSeq(1), vSeq(5), vSeq(9)),
-          vSeq(vSeq(4), vSeq(8)),
-          vSeq(vSeq(7)),
-        )
-      ) ->
-        vSeq(
-          vSeq(vSeq(1), vSeq(2), vSeq(3)),
-          vSeq(vSeq(4), vSeq(5), vSeq(6)),
-          vSeq(vSeq(7), vSeq(8), vSeq(9)),
-        ),
+      """#[#[#[3#]#]|#[#[2#]|#[6#]#]|#[#[1#]|#[5#]|#[9#]#]|#[#[4#]|#[8#]#]|#[#[7#]#]#] Þ„"""-> 
+        vSeq(vSeq(vSeq(1), vSeq(2), vSeq(3)),vSeq(vSeq(4), vSeq(5), vSeq(6)),vSeq(vSeq(7), vSeq(8), vSeq(9))),
+      """ #[#[4#]|#[3|8#]|#[2|7|"c"#]|#[1|6|"b"#]|#[5|"a"#]|#[9#]#] 4 Þ„""" -> 
+        vSeq(vSeq(1, 2, 3, 4), vSeq(5, 6, 7, 8), vSeq(9, "a", "b", "c")),
     )
   }
 

@@ -1983,11 +1983,21 @@ object Elements:
     addPart("Þ\\", Monad, false) {
       case VList(lst) => ListHelpers.diagonals(lst)
     },
-    addPart("Þ„", Monad, false) {
-      case VList(lst) => ListHelpers.fromDiagonals(lst)
+    "Þ„" ->
+      direct(Monad) {
+      val top = pop()
+      top match
+        case VList(lst) => push(ListHelpers.fromDiagonals(lst))
+        case n: VNum =>
+          val under = pop()
+          under match
+            case VList(lst) => push(ListHelpers.fromDiagonals(lst, Some(n)))
+            case _ => throw UnimplementedOverloadException("Þ„", List(under, n))
+        case _ => throw UnimplementedOverloadException("Þ„", List(top))
     },
     addPart("Þ”", Monad, false) {
-      case VList(lst) => ListHelpers.fromAntiDiagonals(lst)
+      case VList(lst) => 
+        ListHelpers.fromAntiDiagonals(lst)
     },
     "Þ⁰" ->
       fullToImpl(
