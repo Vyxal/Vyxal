@@ -1301,24 +1301,27 @@ object ListHelpers:
   // given in format from above
   def fromDiagonals(iter: Seq[VAny])(using Context): Seq[VAny] =
     val p1 = iter.map(makeIterable(_).size).max
-    val p2 = ((iter.length/2).floor + 1).toInt
+    val p2 = ((iter.length / 2).floor + 1).toInt
 
     val w = if p1 >= p2 then p2 else p1
     val l = if p2 > p1 then p2 else p1
 
     val res = ArrayBuffer.empty[VAny]
     for a <- 0 until w do
-      val row =  ArrayBuffer.empty[VAny]
+      val row = ArrayBuffer.empty[VAny]
       for b <- 0 until l do
-          val index = (w - 1) + b - a
-          val r = makeIterable(iter(index))
-          val v = r(MiscHelpers.dyadicMinimum(VNum(a), VNum(b)).asInstanceOf[VNum].toInt)
-          row.append(v)
+        val index = (w - 1) + b - a
+        val r = makeIterable(iter(index))
+        val v = r(
+          MiscHelpers.dyadicMinimum(VNum(a), VNum(b)).asInstanceOf[VNum].toInt
+        )
+        row.append(v)
       res.append(row.toSeq)
-  
+
     val mat = transpose(res.toSeq).toList
     println(mat.toSeq)
     mat.toSeq
+  end fromDiagonals
 
   def fromAntiDiagonals(iter: Seq[VAny])(using Context): Seq[VAny] = iter
 
