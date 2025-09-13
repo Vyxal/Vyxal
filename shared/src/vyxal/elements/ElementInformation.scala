@@ -2549,9 +2549,9 @@ object ElementInformation:
         description = "Keep only the letters of #1",
       ),
       Overload(
-        name = "First Positive Integer Where Function is True",
+        name = "First Non-Negative Integer Where Function is True",
         args = Seq("fun"),
-        description = "First positive integer where #1 is true (>= 1)",
+        description = "First non-negative integer where #1 is true (>= 0)",
       ),
     ),
     AddElement(
