@@ -366,7 +366,15 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "*",
-      keywords = Seq("exponentiate", "pow", "**", "power", "string-extend", "extend-string", "to-length"),
+      keywords = Seq(
+        "exponentiate",
+        "pow",
+        "**",
+        "power",
+        "string-extend",
+        "extend-string",
+        "to-length",
+      ),
       arity = 2,
       Options(vectorises = true),
       Overload(
@@ -383,7 +391,7 @@ object ElementInformation:
         name = "Extend String",
         args = Seq("str", "num"),
         description = "Repeat {#1|#2} until length {#2|#1}",
-        typeSwitchable = true
+        typeSwitchable = true,
       ),
     ),
     AddElement(
