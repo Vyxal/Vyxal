@@ -1323,7 +1323,6 @@ object Elements:
       case (VStr(a), VStr(b)) =>
         if a.length > b.length then b + a.slice(b.length, a.length)
         else a + b.slice(a.length, b.length)
-
     },
     addPart("√", Monad, true) {
       case a: VNum => a.sqrt
@@ -1847,6 +1846,16 @@ object Elements:
         val inds = a
           .map(char => VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower)))
         if inds.length == 1 then inds.head else VList(inds)
+    },
+    addPart("ø»", Triad, false) {
+      case(VStr(a), b: VNum, c: VPhysical) => 
+        c match
+          case pad: VVal => StringHelpers.padRightWith(a, b, pad.toString())
+          case 
+      case(VStr(a), b: VPhysical, c: VNum) => ???
+    },
+    addPart("ø«", Triad, false) {
+      case(VStr(a), VStr(b), c: VNum) => ???
     },
     addPart("ø◲", Dyad, false) {
       case (VList(a), b) => VList((b +: a) :+ b)
