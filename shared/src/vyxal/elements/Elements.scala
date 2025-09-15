@@ -1848,12 +1848,16 @@ object Elements:
         if inds.length == 1 then inds.head else VList(inds)
     },
     addPart("ø»", Triad, true) {
-      case(VStr(s), len: VNum, VStr(padwith)) => StringHelpers.padLeftWith(s, len, padwith)
-      case(VStr(s), VStr(padwith), len: VNum) => StringHelpers.padLeftWith(s, len, padwith)
+      case (VStr(s), len: VNum, VStr(padwith)) =>
+        StringHelpers.padLeftWith(s, len, padwith)
+      case (VStr(s), VStr(padwith), len: VNum) =>
+        StringHelpers.padLeftWith(s, len, padwith)
     },
     addPart("ø«", Triad, false) {
-      case(VStr(s), len: VNum, VStr(padwith)) => StringHelpers.padRightWith(s, len, padwith)
-      case(VStr(s), VStr(padwith), len: VNum) => StringHelpers.padRightWith(s, len, padwith)
+      case (VStr(s), len: VNum, VStr(padwith)) =>
+        StringHelpers.padRightWith(s, len, padwith)
+      case (VStr(s), VStr(padwith), len: VNum) =>
+        StringHelpers.padRightWith(s, len, padwith)
     },
     addPart("ø◲", Dyad, false) {
       case (VList(a), b) => VList((b +: a) :+ b)

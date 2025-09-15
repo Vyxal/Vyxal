@@ -5287,7 +5287,7 @@ object ElementInformation:
         name = "Custom Right Pad",
         args = Seq("str, num|str, str|num"),
         description = "Right-pad #1 to length {#2|#3} with {#3|#2}",
-        typeSwitchable = true
+        typeSwitchable = true,
       ),
     ),
     AddElement(
@@ -5299,7 +5299,7 @@ object ElementInformation:
         name = "Custom Left Pad",
         args = Seq("str, num|str, str|num"),
         description = "Left-pad #1 to length {#2|#3} with {#3|#2}",
-        typeSwitchable = true
+        typeSwitchable = true,
       ),
     ),
     AddElement(

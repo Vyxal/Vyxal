@@ -1,13 +1,13 @@
 package vyxal
 
 import vyxal.conversions.{*, given}
+import vyxal.elements.itr
 import vyxal.parsing.{Codepage, Lexer}
 
 import java.util.regex.PatternSyntaxException
 import scala.annotation.tailrec
 import scala.collection.mutable.StringBuilder
 import scala.util.matching.Regex
-import vyxal.elements.itr
 
 object StringHelpers:
   def caseOf(c: String): VNum =
@@ -248,17 +248,23 @@ object StringHelpers:
     if to < 0 then padRight(s, to.vabs)
     else s.padTo(to.toInt, ' ')
 
-  def padLeftWith(s: String, endlen: VNum, padwith: String)(using Context): String =
+  def padLeftWith(s: String, endlen: VNum, padwith: String)(using
+      Context
+  ): String =
     if endlen < 0 then padRightWith(s, endlen.vabs, padwith)
     else
       val extra = endlen.toInt - s.length
       (s ++ (padwith * extra)).slice(0, endlen.toInt.max(s.length))
-      
-  def padRightWith(s: String, endlen: VNum, padwith: String)(using Context): String =
+
+  def padRightWith(s: String, endlen: VNum, padwith: String)(using
+      Context
+  ): String =
     if endlen < 0 then padLeftWith(s, endlen.vabs, padwith)
     else
       val extra = endlen.toInt - s.length
-      ((padwith * extra) ++ s).reverse.slice(0, endlen.toInt.max(s.length)).reverse
+      ((padwith * extra) ++ s).reverse
+        .slice(0, endlen.toInt.max(s.length))
+        .reverse
 
   def r(s: VAny): Regex =
     try s.toString.r
