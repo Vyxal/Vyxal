@@ -1323,7 +1323,6 @@ object Elements:
       case (VStr(a), VStr(b)) =>
         if a.length > b.length then b + a.slice(b.length, a.length)
         else a + b.slice(a.length, b.length)
-
     },
     addPart("√", Monad, true) {
       case a: VNum => a.sqrt
@@ -1848,6 +1847,18 @@ object Elements:
           .map(char => VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower)))
         if inds.length == 1 then inds.head else VList(inds)
     },
+    addPart("ø»", Triad, true) {
+      case (VStr(s), len: VNum, VStr(padwith)) =>
+        StringHelpers.padLeftWith(s, len, padwith)
+      case (VStr(s), VStr(padwith), len: VNum) =>
+        StringHelpers.padLeftWith(s, len, padwith)
+    },
+    addPart("ø«", Triad, false) {
+      case (VStr(s), len: VNum, VStr(padwith)) =>
+        StringHelpers.padRightWith(s, len, padwith)
+      case (VStr(s), VStr(padwith), len: VNum) =>
+        StringHelpers.padRightWith(s, len, padwith)
+    },
     addPart("ø◲", Dyad, false) {
       case (VList(a), b) => VList((b +: a) :+ b)
       case (VStr(a), VStr(b)) => b + a + b
@@ -1965,6 +1976,51 @@ object Elements:
         (left, right) =>
           ListHelpers.cartesianProduct(left, right, unsafe = true),
       ),
+    addPart("Þ⊞", Monad, false) {
+      case VList(lst) => ListHelpers.itemDepth(lst)
+    },
+    addPart("ÞY", Triad, false) {
+      case (a, b: VNum, c: VNum) => Seq.fill(c.toInt)(Seq.fill(b.toInt)(a))
+    },
+    addPart("Þ≤", Monad, false) {
+      case a: VPhysical => ListHelpers.minimumIndices(a.itr)
+    },
+    addPart("Þ≥", Monad, false) {
+      case a: VPhysical => ListHelpers.maximumIndices(a.itr)
+    },
+    addPart("Þ/", Monad, false) {
+      case VList(lst) => ListHelpers.antiDiagonals(lst)
+    },
+    addPart("Þ\\", Monad, false) {
+      case VList(lst) => ListHelpers.diagonals(lst)
+    },
+    "Þ„" ->
+      direct(Monad) {
+        val top = pop()
+        top match
+          case VList(lst) => push(ListHelpers.fromDiagonals(lst))
+          case n: VNum =>
+            val under = pop()
+            under match
+              case VList(lst) => push(ListHelpers.fromDiagonals(lst, Some(n)))
+              case _ =>
+                throw UnimplementedOverloadException("Þ„", List(under, n))
+          case _ => throw UnimplementedOverloadException("Þ„", List(top))
+      },
+    "Þ”" ->
+      direct(Monad) {
+        val top = pop()
+        top match
+          case VList(lst) => push(ListHelpers.fromAntiDiagonals(lst))
+          case n: VNum =>
+            val under = pop()
+            under match
+              case VList(lst) =>
+                push(ListHelpers.fromAntiDiagonals(lst, Some(n)))
+              case _ =>
+                throw UnimplementedOverloadException("Þ„", List(under, n))
+          case _ => throw UnimplementedOverloadException("Þ„", List(top))
+      },
     "Þ⁰" ->
       fullToImpl(
         Monad,

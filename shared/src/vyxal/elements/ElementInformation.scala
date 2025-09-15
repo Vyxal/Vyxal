@@ -2741,6 +2741,11 @@ object ElementInformation:
         description = "Sum of each item in #1. Functionally equivalent to `¨∑`",
       ),
       Overload(
+        name = "Push N spaces",
+        args = Seq("num"),
+        description = "Push #1 spaces to the stack",
+      ),
+      Overload(
         name = "Apply to Register",
         args = Seq("fun"),
         description = "Apply #1 to the top of the register",
@@ -5070,6 +5075,50 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "Þ⊞",
+      keywords = Seq("item-depth"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Depth",
+        args = Seq("lst"),
+        description = "Depth of each item in #1",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ≤",
+      keywords = Seq("min-indices", "minimum-indices"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Minimum Indices",
+        args = Seq("lst"),
+        description = "Indices where #1 is minimal",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ≥",
+      keywords = Seq("max-indices", "maximum-indices"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Maximum Indices",
+        args = Seq("lst"),
+        description = "Indices where #1 is maximal",
+      ),
+    ),
+    AddElement(
+      symbol = "ÞY",
+      keywords = Seq("grid-fill"),
+      arity = 3,
+      Options(),
+      Overload(
+        name = "Grid Fill",
+        args = Seq("any, num, num"),
+        description = "Fill a grid of size #2 x #3 with #1",
+      ),
+    ),
+    AddElement(
       symbol = "ÞT",
       keywords = Seq("transpose-safe"),
       arity = 1,
@@ -5173,6 +5222,84 @@ object ElementInformation:
         args = Seq("lst", "num"),
         description =
           "Grid neighbours of cells in #1 - right, down, left, up, and diagonals - wrapping around and start from direction #2 => 0: right, 1: down, 2: left, 3: up. Negative #2 does not include middle, positive #2 does",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ/",
+      keywords = Seq("antidiagonals"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Antidiagonals of a matrix",
+        args = Seq("lst"),
+        description = "Matrix antidiagonals from top left to bottom right",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ\\",
+      keywords = Seq("diagonals"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Diagonals of a matrix",
+        args = Seq("lst"),
+        description = "Matrix diagonals from top right to bottom left",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ„",
+      keywords = Seq("from-diagonals"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "List from diagonals",
+        args = Seq("lst"),
+        description = "M x N matrix from diagonals, assumes m>n ",
+      ),
+      Overload(
+        name = "List from diagonals",
+        args = Seq("num, lst"),
+        description = "Matrix from list of diagonals with width #1",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ”",
+      keywords = Seq("from-antidiagonals"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "List from antidiagonals",
+        args = Seq("lst"),
+        description = "M x N matrix from antidiagonals, assumes m>n ",
+      ),
+      Overload(
+        name = "List from antidiagonals",
+        args = Seq("num, lst"),
+        description = "Matrix from list of antidiagonals with width #1",
+      ),
+    ),
+    AddElement(
+      symbol = "ø»",
+      keywords = Seq("pad-right-with", "custom-right-pad", "custom-pad-right"),
+      arity = 3,
+      Options(vectorises = true),
+      Overload(
+        name = "Custom Right Pad",
+        args = Seq("str, num|str, str|num"),
+        description = "Right-pad #1 to length {#2|#3} with {#3|#2}",
+        typeSwitchable = true,
+      ),
+    ),
+    AddElement(
+      symbol = "ø«",
+      keywords = Seq("pad-left-with", "custom-left-pad", "custom-pad-left"),
+      arity = 3,
+      Options(vectorises = true),
+      Overload(
+        name = "Custom Left Pad",
+        args = Seq("str, num|str, str|num"),
+        description = "Left-pad #1 to length {#2|#3} with {#3|#2}",
+        typeSwitchable = true,
       ),
     ),
     AddElement(
