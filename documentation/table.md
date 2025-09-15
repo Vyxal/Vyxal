@@ -155,7 +155,7 @@ Element, Modifier, and Syntax Reference
 | <code>⎙</code> | <code>peek-print</code> | 1* |   | **Peek Print** (`any`): Print #1 without popping |
 | <code>γ</code> | <code>wrap-len-two</code></br><code>pairs</code> | 1 |   | **Wrap to Length 2** (`any`): Wrap #1 into chunks of length 2 |
 | <code>≓</code> | <code>mirror</code> | 1 |   | **Mirror** (`any`): Mirror #1 (#1 + reverse(#1)), as the original type |
-| <code>Ͼ</code> | <code>vectorised-sums</code></br><code>register-apply-head</code> | 1 | vec  | **Vectorised Sums** (`lst`): Sum of each item in #1. Functionally equivalent to `¨∑`</br>**Apply to Register** (`fun`): Apply #1 to the top of the register |
+| <code>Ͼ</code> | <code>vectorised-sums</code></br><code>register-apply-head</code> | 1 | vec  | **Vectorised Sums** (`lst`): Sum of each item in #1. Functionally equivalent to `¨∑`</br>**Push N spaces** (`num`): Push #1 spaces to the stack</br>**Apply to Register** (`fun`): Apply #1 to the top of the register |
 | <code>ᴥ</code> | <code>exec</code></br><code>ten-power</code></br><code>call</code></br><code>@</code> | 1 | vec  | **10 to the Power of** (`num`): 10 ** #1</br>**Execute** (`str`): Execute #1 as Vyxal code</br>**Call Function** (`fun`): Call function #1 |
 | <code>ℳ</code> | <code>modular</code></br><code>matrix-multiply</code></br><code>regex-full-match?</code></br><code>round-to</code></br><code>n-places</code> | 2 |   | **Every Nth Element** (`itr,num`): Every #2th element of #1</br>**Every Nth Element** (`num,itr`): Every #1th element of #2</br>**Matrix Multiply** (`lst,lst`): Matrix multiply #1 and #2</br>**Round to N places** (`num,num`): Round #1 to #2 decimal places. Negative values of #2 will round to that power of 10</br>**Regex Full Match?** (`str,str`): Does pattern #2 fully match #1 |
 | <code>℗</code> | <code>is-prime</code></br><code>prime?</code></br><code>quine-cheese</code> | 1 | vec  | **Is Prime** (`num`): Is #1 a prime number?</br>**Quine Cheese** (`str`): Quotify #1 and prepend it to #1. (Useful for quines like `"℗"℗`) |
@@ -347,8 +347,8 @@ Element, Modifier, and Syntax Reference
 | <code>Þ⎶</code> | <code>edges</code></br><code>ends</code></br><code>real-imaginary</code> | 1 |   | **Edges** (`itr`): First and last element of #1</br>**Real and Imaginary** (`num`): Real and imaginary parts of #1 |
 | <code>Þ⍨</code> | <code>register-dump</code></br><code>dump-register</code> | 0 |   | **Dump Register**: Pop each item in the register  |
 | <code>Þ¤</code> | <code>grid-neighbours-diagonals-wrap</code></br><code>grid-neighbors-diagonals-wrap</code></br><code>adjacent-cells-diagonals-wrap</code></br><code>adj-cells-diagonals-wrap</code></br><code>surrounding-cells-diagonals-wrap</code></br><code>eight-cells-wrap</code> | 1 |   | **Grid Neighbours Diagonals Wrap** (`lst`): Grid neighbours of #1 - up, down, left, right, and diagonals - wrapping around</br>**Grid Neighbours Diagonals Wrap With Starting Direction** (`lst,num`): Grid neighbours of cells in #1 - right, down, left, up, and diagonals - wrapping around and start from direction #2 => 0: right, 1: down, 2: left, 3: up. Negative #2 does not include middle, positive #2 does |
-| <code>Þ„</code> | <code>from-diagonals</code> | 1 |   | **List from diagonals** (`lst`): Matrix from list of its diagonals |
-| <code>Þ”</code> | <code>from-antidiagonals</code> | 1 |   | **List from antidiagonals** (`lst`): Matrix from list of its antidiagonals |
+| <code>Þ„</code> | <code>from-diagonals</code> | 1 |   | **List from diagonals** (`lst`): M x N matrix from diagonals, assumes m>n </br>**List from diagonals** (`num, lst`): Matrix from list of diagonals with width #1 |
+| <code>Þ”</code> | <code>from-antidiagonals</code> | 1 |   | **List from antidiagonals** (`lst`): M x N matrix from antidiagonals, assumes m>n </br>**List from antidiagonals** (`num, lst`): Matrix from list of antidiagonals with width #1 |
 | <code>∆-</code> | <code>minus-one-power</code> | 1 | vec  | **-1 ** n** (`num`): -1 ** n |
 | <code>∆<</code> | <code>arg</code></br><code>phase</code></br><code>angle</code> | 1 | vec  | **Argument** (`num`): The angle (argument) between the positive real axis and the line joining the origin to #1 in the complex plane. |
 | <code>∆A</code> | <code>arithmetic-mean</code> | 1 | vec  | **Arithmetic Mean** (`lst`): Arithmetic mean of #1 (sum(#1) / len(#1)). Vectorises over lists of lists. |
@@ -385,6 +385,8 @@ Element, Modifier, and Syntax Reference
 | <code>øA</code> | <code>letter-to-number</code></br><code>number-to-letter</code></br><code>letter-number-swap</code></br><code>number-letter-swap</code></br><code>a1-swap</code> | 1 | vec  | **Letter to Number** (`str`): the index of #1 in the alphabet (one-indexed)</br>**Number to Letter** (`num`): the letter at index #1 in the alphabet (one-indexed) |
 | <code>øa</code> | <code>letter-to-index</code></br><code>index-to-letter</code></br><code>letter-index-swap</code></br><code>index-letter-swap</code></br><code>a0-swap</code> | 1 | vec  | **Letter to Index** (`str`): the index of #1 in the alphabet (zero-indexed)</br>**Index to Letter** (`num`): the letter at index #1 in the alphabet (zero-indexed) |
 | <code>ø◲</code> | <code>surround</code> | 2 |   | **Surround** (`any,any`): #1 prepended and appended to #2 |
+| <code>ø«</code> | <code>pad-left-with</code></br><code>custom-left-pad</code></br><code>custom-pad-left</code> | 3 | vec  | **Custom Left Pad** (`str, num\|str, str\|num`): Left-pad #1 to length #2 with #3 |
+| <code>ø»</code> | <code>pad-right-with</code></br><code>custom-right-pad</code></br><code>custom-pad-right</code> | 3 | vec  | **Custom Right Pad** (`str, num\|str, str\|num`): Right-pad #1 to length #2 with #3 |
 
 ## Modifiers
 
