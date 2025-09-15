@@ -1,7 +1,6 @@
 package vyxal
 
 import vyxal.conversions.{*, given}
-import vyxal.elements.itr
 import vyxal.parsing.{Codepage, Lexer}
 
 import java.util.regex.PatternSyntaxException

@@ -99,6 +99,10 @@ object ListHelpers:
         true
     }
 
+  def classify(iterable: Seq[VAny])(using Context): Seq[VAny] =
+    val set = iterable.vDistinct
+    iterable.map(set.indexOf(_))
+
   /** Matrix determinant */
   def determinant(mat: Seq[Seq[VNum]]): VNum =
     if mat.isEmpty then 0
