@@ -248,15 +248,17 @@ object StringHelpers:
     if to < 0 then padRight(s, to.vabs)
     else s.padTo(to.toInt, ' ')
 
-  def padLeftWith(s: String, to: VNum, padwith: String)(using Context): String =
-    if to < 0 then padLeftWith(s, to.vabs, padwith)
-    else 
-      val padchar = padwith.charAt(0)
-      s.reverse.padTo(to.toInt, padchar).reverse
-    
-  def padRightWith(s: String, to: VNum, padwith: String)(using Context): String =
-    if to < 0 then padRight(s, to.vabs)
-    else s.padTo(to.toInt, padwith.charAt(0))
+  def padLeftWith(s: String, endlen: VNum, padwith: String)(using Context): String =
+    if endlen < 0 then padRightWith(s, endlen.vabs, padwith)
+    else
+      val extra = endlen.toInt - s.length
+      (s ++ (padwith * extra)).slice(0, endlen.toInt.max(s.length))
+      
+  def padRightWith(s: String, endlen: VNum, padwith: String)(using Context): String =
+    if endlen < 0 then padLeftWith(s, endlen.vabs, padwith)
+    else
+      val extra = endlen.toInt - s.length
+      ((padwith * extra) ++ s).reverse.slice(0, endlen.toInt.max(s.length)).reverse
 
   def r(s: VAny): Regex =
     try s.toString.r

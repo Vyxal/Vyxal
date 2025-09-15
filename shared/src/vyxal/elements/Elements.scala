@@ -1847,15 +1847,13 @@ object Elements:
           .map(char => VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower)))
         if inds.length == 1 then inds.head else VList(inds)
     },
-    addPart("ø»", Triad, false) {
-      case(VStr(a), b: VNum, c: VPhysical) => 
-        c match
-          case pad: VVal => StringHelpers.padRightWith(a, b, pad.toString())
-          case 
-      case(VStr(a), b: VPhysical, c: VNum) => ???
+    addPart("ø»", Triad, true) {
+      case(VStr(s), len: VNum, VStr(padwith)) => StringHelpers.padLeftWith(s, len, padwith)
+      case(VStr(s), VStr(padwith), len: VNum) => StringHelpers.padLeftWith(s, len, padwith)
     },
     addPart("ø«", Triad, false) {
-      case(VStr(a), VStr(b), c: VNum) => ???
+      case(VStr(s), len: VNum, VStr(padwith)) => StringHelpers.padRightWith(s, len, padwith)
+      case(VStr(s), VStr(padwith), len: VNum) => StringHelpers.padRightWith(s, len, padwith)
     },
     addPart("ø◲", Dyad, false) {
       case (VList(a), b) => VList((b +: a) :+ b)

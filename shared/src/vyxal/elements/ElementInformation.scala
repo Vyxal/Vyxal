@@ -2741,6 +2741,11 @@ object ElementInformation:
         description = "Sum of each item in #1. Functionally equivalent to `¨∑`",
       ),
       Overload(
+        name = "Push N spaces",
+        args = Seq("num"),
+        description = "Push #1 spaces to the stack",
+      ),
+      Overload(
         name = "Apply to Register",
         args = Seq("fun"),
         description = "Apply #1 to the top of the register",
@@ -5271,6 +5276,30 @@ object ElementInformation:
         name = "List from antidiagonals",
         args = Seq("num, lst"),
         description = "Matrix from list of antidiagonals with width #1",
+      ),
+    ),
+    AddElement(
+      symbol = "ø»",
+      keywords = Seq("pad-right-with", "custom-right-pad", "custom-pad-right"),
+      arity = 3,
+      Options(vectorises = true),
+      Overload(
+        name = "Custom Right Pad",
+        args = Seq("str, num|str, str|num"),
+        description = "Right-pad #1 to length {#2|#3} with {#3|#2}",
+        typeSwitchable = true
+      ),
+    ),
+    AddElement(
+      symbol = "ø«",
+      keywords = Seq("pad-left-with", "custom-left-pad", "custom-pad-left"),
+      arity = 3,
+      Options(vectorises = true),
+      Overload(
+        name = "Custom Left Pad",
+        args = Seq("str, num|str, str|num"),
+        description = "Left-pad #1 to length {#2|#3} with {#3|#2}",
+        typeSwitchable = true
       ),
     ),
     AddElement(

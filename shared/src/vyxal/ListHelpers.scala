@@ -1395,7 +1395,7 @@ object ListHelpers:
     }
     if length < 0 then temp ++ zeros
     else zeros ++ temp
-
+  
   def truthyIndices(lst: Seq[VAny]): Seq[VNum] =
     lst.zipWithIndex.filter { case (v, idx) => v.toBool }.map {
       case (_, idx) => VNum(idx)
