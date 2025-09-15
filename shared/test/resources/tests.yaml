@@ -1249,6 +1249,14 @@
   - {in: ["hello", 5], out: "hello"}
   - {in: ["hello", -7], out: "  hello"}
 
+"ø«":
+   - {in: ["Hello", 9, ">"], out: ">>>>Hello"}
+   - {in: ["Hehe", "<--", 11], out: "-<--<--Hehe"}
+   - {in: ["verylongstring", "pad", 4], out: "verylongstring"}
+   - {in: ["leftpad", -10, ">"], out: "leftpad>>>"}
+
+
+  
 "»":
   - {in: [100, 3], out: 12}
   - {in: [-1.23, 0], out: -1}
@@ -1256,6 +1264,12 @@
   - {in: ["hello", 0], out: "hello"}
   - {in: ["hello", 5], out: "hello"}
   - {in: ["hello", -7], out: "hello  "}
+
+"ø»":
+   - {in: ["Hello", 9, "<"], out: "Hello<<<<"}
+   - {in: ["Hehe", "-->", 11], out: "Hehe-->-->-"}
+   - {in: ["verylongstring", "pad", 4], out: "verylongstring"}
+   - {in: ["rightpad", -10, ">"], out: ">>rightpad"}
 
 "Ɠ":
   - {in: [[1, 2, 3]], stack: [3, [1, 2, 3]]}
@@ -1890,18 +1904,4 @@
     - {in: [-0.69], out: 1}
     - {in: [-1], out: 1}
     - {in: [-2], out: 0}
-  
-"ø»":
-   - {in: ["Hello", 9, "<"], out: "Hello<<<<"}
-   - {in: ["Hehe", "-->", 11], out: "Hehe-->-->-"}
-   - {in: ["verylongstring", "pad", 4], out: "verylongstring"}
-   - {in: ["rightpad", -10, ">"], out: ">>rightpad"}
-
-"ø«":
-   - {in: ["Hello", 9, ">"], out: ">>>>Hello"}
-   - {in: ["Hehe", "<--", 11], out: "-<--<--Hehe"}
-   - {in: ["verylongstring", "pad", 4], out: "verylongstring"}
-   - {in: ["leftpad", -10, ">"], out: "leftpad>>>"}
-
-
   
