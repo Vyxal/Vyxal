@@ -560,6 +560,14 @@ object ListHelpers:
         MiscHelpers.dyadicMaximum(_, _).asInstanceOf[VNum]
       ) // Guaranteed to be a VNum
 
+  /** Depth of element in nested list */
+  def itemDepth(lst: Seq[VAny], n: Int = 1)(using Context): Seq[VAny] =
+    val d: Int = n
+    lst.map {
+      case VList(s) => itemDepth(s, d + 1)
+      case _ => VNum(d)
+    }
+
   /** Merge a possibly infinite list of possibly infinite lists diagonally */
   def mergeInfLists[T](lists: Seq[Seq[T]]): LazyList[T] =
     // Based off of https://stackoverflow.com/a/20516638
@@ -1130,6 +1138,20 @@ object ListHelpers:
     out
   end transpose
 
+  /** Transpose a matrix given it is already in matrix form */
+  def transposeGiven(mat: Seq[Seq[VAny]])(using
+      ctx: Context
+  ): Seq[VAny] =
+    val matrix = mat.asInstanceOf[Seq[Seq[VAny]]]
+    val out = LazyList.unfold(matrix) { matrix =>
+      val remaining = matrix.filter(_.nonEmpty)
+      Option.when(remaining.nonEmpty) {
+        val col = VList(remaining.map(_.head))
+        (col, remaining.map(_.tail))
+      }
+    }
+    out
+
   /** Transpose a matrix. Uses the length of the first row of the inputted
     * matrix as the number of columns in the resulting matrix.
     *
@@ -1168,12 +1190,19 @@ object ListHelpers:
     val trimmed = temp.dropWhile(_ == value).reverse.dropWhile(_ == value)
     trimmed.reverse
 
-  def trimList(iterable: Seq[VAny], pattern: Seq[VAny])(using
+  def trimList(
+      iterable: Seq[VAny],
+      pattern: Seq[VAny],
+      trimleft: Boolean = true,
+      trimright: Boolean = true,
+  )(using
       ctx: Context
   ): Seq[VAny] =
     var temp = iterable.toList
-    while temp.startsWith(pattern) do temp = temp.drop(pattern.length)
-    while temp.endsWith(pattern) do temp = temp.dropRight(pattern.length)
+    if trimleft then
+      while temp.startsWith(pattern) do temp = temp.drop(pattern.length)
+    if trimright then
+      while temp.endsWith(pattern) do temp = temp.dropRight(pattern.length)
     temp
 
   /** Ensure that a VList is a matrix */
@@ -1186,6 +1215,10 @@ object ListHelpers:
     if rows.exists(_.size != numRows) then None
     else if rows.exists(_.exists(!_.isInstanceOf[VNum])) then None
     else Some(rows.asInstanceOf[Seq[Seq[VNum]]])
+
+  def isRectangle(lst: Seq[VAny])(using Context): Boolean =
+    val rowlen = lst.map(ListHelpers.makeIterable(_).length)
+    rowlen.forall(_ === rowlen(0))
 
   def wrapLength(iterable: Seq[VAny], length: VNum): Seq[VAny] =
     if length <= 0 then Seq.empty
@@ -1220,6 +1253,101 @@ object ListHelpers:
         case a: VList => vectorisedMinimum(a, b)
         case a: VVal => MiscHelpers.dyadicMinimum(a, b)
     }
+
+  def maximumIndices(iter: Seq[VAny])(using Context): Seq[VAny] =
+    if iter.isEmpty then iter
+    else
+      val max = iter.max
+      ListHelpers.truthyIndices(iter.map(_.equals(max)))
+
+  def minimumIndices(iter: Seq[VAny])(using Context): Seq[VAny] =
+    if iter.isEmpty then iter
+    else
+      val min = iter.min
+      ListHelpers.truthyIndices(iter.map(_.equals(min)))
+
+  // diagonals from top right to bottom left
+  def diagonals(iter: Seq[VAny])(using Context): Seq[VAny] =
+    if isRectangle(iter) then
+      val max = iter.length
+      val grid = transpose(iter).zipWithIndex.map { (value, idx) =>
+        val buffered = Seq.fill(max - idx - 1)(VStr("   ")) :+ value
+        flattenByDepth(buffered, 1)
+      }
+      val spaces = transposeGiven(grid)
+
+      trimList(
+        spaces.map(r =>
+          trimList(makeIterable(r), pattern = Seq("   "), trimright = false)
+        ),
+        pattern = Seq(Seq.empty),
+        trimright = false,
+      )
+    else iter
+
+  // antidiagonals from top left to bottom right
+  def antiDiagonals(iter: Seq[VAny])(using Context): Seq[VAny] =
+    if isRectangle(iter) then
+      val grid = transpose(iter).zipWithIndex.map { (value, idx) =>
+        val buffered = Seq.fill(idx)(VStr("   ")) :+ value
+        flattenByDepth(buffered, 1)
+      }
+      val spaces = transposeGiven(grid)
+      spaces.map(r =>
+        trimList(makeIterable(r), pattern = Seq("   "), trimleft = false)
+      )
+    else iter
+
+  // given in format from above
+  def fromDiagonals(iter: Seq[VAny], width: Option[VNum] = None)(using
+      Context
+  ): Seq[VAny] =
+    val p1 = iter.map(makeIterable(_).size).max
+    val p2 = ((iter.length / 2).floor + 1).toInt
+
+    val w = width match
+      case Some(d) => d.toInt
+      case _ => if p1 >= p2 then p2 else p1
+    val l = width match
+      case Some(_) => (ListHelpers.flatten(iter).size / w)
+      case _ => if p2 > p1 then p2 else p1
+    val res = ArrayBuffer.empty[VAny]
+    val row = ArrayBuffer.empty[VAny]
+    for a <- 0 until w do
+      for b <- 0 until l do
+        val index = (w - 1) + b - a
+        val r = makeIterable(iter(index))
+        row.append(r(a.min(b)))
+      res.append(row.toSeq)
+      row.clear()
+    val mat = transpose(res.toSeq)
+    mat
+  end fromDiagonals
+
+  def fromAntiDiagonals(iter: Seq[VAny], width: Option[VNum] = None)(using
+      Context
+  ): Seq[VAny] =
+    val p1 = iter.map(makeIterable(_).size).max
+    val p2 = ((iter.length / 2).floor + 1).toInt
+
+    val w = width match
+      case Some(d) => d.toInt
+      case _ => if p1 >= p2 then p2 else p1
+    val l = width match
+      case Some(_) => (ListHelpers.flatten(iter).size / w)
+      case _ => if p2 > p1 then p2 else p1
+    val res = ArrayBuffer.empty[VAny]
+    val row = ArrayBuffer.empty[VAny]
+    for a <- 0 until w do
+      for b <- 0 until l do
+        val index = (w - 1) + b - a
+        val r = makeIterable(iter(index))
+        row.append(r(a.min(b)))
+      res.append(row.toSeq)
+      row.clear()
+    val mat = transpose(res.toSeq).map(reverse(_))
+    mat
+  end fromAntiDiagonals
 
   def gradeUp(iterable: VAny)(using Context): Seq[VAny] =
     makeIterable(iterable).zipWithIndex.sortBy(_._1).map(_._2)
@@ -1306,4 +1434,5 @@ object ListHelpers:
             Seq.fill(maxSize)(x)
         }
     ListHelpers.zipMulti(lists*)(f)
+
 end ListHelpers

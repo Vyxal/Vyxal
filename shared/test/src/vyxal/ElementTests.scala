@@ -2,12 +2,13 @@ package vyxal
 
 import vyxal.conversions.given
 import vyxal.elements.Elements
-import vyxal.VyxalTests.testContext
 
 import org.scalatest.funspec.AnyFunSpec
+import VyxalTests.testContext
 
 /** Tests for specific elements */
 class ElementTests extends VyxalTests:
+
   /** Helper to avoid doing List[VAny](...) */
   private def in(inputs: VAny*): Seq[VAny] = inputs
 
@@ -431,6 +432,80 @@ class ElementTests extends VyxalTests:
       testMulti("#[1|2|3|4|5|6#] ⑴N ≥" -> VNum(1))
       testMulti("#[#] ⑴N ≥" -> VNum(0))
     }
+  }
+
+  describe("Element Þ/") {
+    testMulti(
+      """ #[#[1|2|3#]|#[4|5|6#]|#[7|8|9#]|#["a"|"b"|"c"#]#] Þ/ """ ->
+        vSeq(
+          vSeq(1),
+          vSeq(4, 2),
+          vSeq(7, 5, 3),
+          vSeq("a", 8, 6),
+          vSeq("b", 9),
+          vSeq("c"),
+        ),
+      "k=w0J Þ/" -> vSeq(vSeq(0, 0), 0),
+      "9ɾ¨w3Ϣ Þ/" ->
+        vSeq(
+          vSeq(vSeq(1)),
+          vSeq(vSeq(4), vSeq(2)),
+          vSeq(vSeq(7), vSeq(5), vSeq(3)),
+          vSeq(vSeq(8), vSeq(6)),
+          vSeq(vSeq(9)),
+        ),
+    )
+  }
+  describe("Element Þ\\") {
+    testMulti(
+      """ #[#[1|2|3#]|#[4|5|6#]|#[7|8|9#]|#["a"|"b"|"c"#]#] Þ\ """ ->
+        vSeq(
+          vSeq(3),
+          vSeq(2, 6),
+          vSeq(1, 5, 9),
+          vSeq(4, 8, "c"),
+          vSeq(7, "b"),
+          vSeq("a"),
+        ),
+      "k=w0J Þ\\ " -> vSeq(vSeq(0, 0), 0),
+      "9ɾ¨w3Ϣ Þ\\ " ->
+        vSeq(
+          vSeq(vSeq(3)),
+          vSeq(vSeq(2), vSeq(6)),
+          vSeq(vSeq(1), vSeq(5), vSeq(9)),
+          vSeq(vSeq(4), vSeq(8)),
+          vSeq(vSeq(7)),
+        ),
+    )
+  }
+  describe("Element Þ„") {
+    testMulti(
+      """ #[#[3#]|#[2|6#]|#[1|5|9#]|#[4|8|"c"#]|#[7|"b"#]|#["a"#]#] Þ„""" ->
+        vSeq(vSeq(1, 2, 3), vSeq(4, 5, 6), vSeq(7, 8, 9), vSeq("a", "b", "c")),
+      """#[#[#[3#]#]|#[#[2#]|#[6#]#]|#[#[1#]|#[5#]|#[9#]#]|#[#[4#]|#[8#]#]|#[#[7#]#]#] Þ„""" ->
+        vSeq(
+          vSeq(vSeq(1), vSeq(2), vSeq(3)),
+          vSeq(vSeq(4), vSeq(5), vSeq(6)),
+          vSeq(vSeq(7), vSeq(8), vSeq(9)),
+        ),
+      """ #[#[4#]|#[3|8#]|#[2|7|"c"#]|#[1|6|"b"#]|#[5|"a"#]|#[9#]#] 4 Þ„""" ->
+        vSeq(vSeq(1, 2, 3, 4), vSeq(5, 6, 7, 8), vSeq(9, "a", "b", "c")),
+    )
+  }
+
+  describe("Element Þ”") {
+    testMulti(
+      """ #[#[3#]|#[2|6#]|#[1|5|9#]|#[4|8|"c"#]|#[7|"b"#]|#["a"#]#] Þ”""" ->
+        vSeq(vSeq(3, 2, 1), vSeq(6, 5, 4), vSeq(9, 8, 7), vSeq("c", "b", "a")),
+      """#[#[#[3#]#]|#[#[2#]|#[6#]#]|#[#[1#]|#[5#]|#[9#]#]|#[#[4#]|#[8#]#]|#[#[7#]#]#] Þ”""" ->
+        vSeq(
+          vSeq(vSeq(3), vSeq(2), vSeq(1)),
+          vSeq(vSeq(6), vSeq(5), vSeq(4)),
+          vSeq(vSeq(9), vSeq(8), vSeq(7)),
+        ),
+      """ #[#[4#]|#[3|8#]|#[2|7|"c"#]|#[1|6|"b"#]|#[5|"a"#]|#[9#]#] 4 Þ”""" ->
+        vSeq(vSeq(4, 3, 2, 1), vSeq(8, 7, 6, 5), vSeq("c", "b", "a", 9)),
+    )
   }
 
 end ElementTests

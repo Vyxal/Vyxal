@@ -128,9 +128,11 @@ trait VyxalTests extends AnyFunSpec:
     * ```
     */
   inline def group(inline asserts: Unit): Unit = VyxalTests.group(asserts)
+
 end VyxalTests
 
 object VyxalTests:
+
   /** A Context with settings appropriate for tests */
   def testContext(
       inputs: Seq[VAny] = Seq.empty,
@@ -175,4 +177,5 @@ object VyxalTests:
       case _ => throw IllegalArgumentException(asserts.show)
     end match
   end groupImpl
+
 end VyxalTests
