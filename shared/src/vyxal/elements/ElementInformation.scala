@@ -5195,6 +5195,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "Þ⧖",
+      keywords = Seq("classify"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Classify",
+        args = Seq("nsl"),
+        description = "Classify from Uiua",
+      ),
+    ),
+    AddElement(
       symbol = "Þ↻",
       keywords = Seq("cycle"),
       arity = 1,

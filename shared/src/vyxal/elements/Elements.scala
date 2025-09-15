@@ -2043,6 +2043,9 @@ object Elements:
     addPart("Þ⎀", Triad, false) {
       case (a, VList(b), c) => ListHelpers.multiDimAssign(a.itr, b, c)
     },
+    addPart("Þ⧖", Monad, false) {
+      case a: VPhysical => ListHelpers.classify(a.itr)
+    },
     "Þ◌" ->
       direct(Monad) {
         val top = pop()
