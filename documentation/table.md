@@ -339,6 +339,7 @@ Element, Modifier, and Syntax Reference
 | <code>Þ⁰</code> | <code>zero-lift</code> | 1 |   | **Zero Lift** (`lst`): Multiply each element of #1 by its 0-based index |
 | <code>Þ¹</code> | <code>one-lift</code> | 1 |   | **One Lift** (`lst`): Multiply each element of #1 by its 1-based index |
 | <code>Þ⅟</code> | <code>matrix-inverse</code></br><code>m**-1</code> | 1 |   | **Matrix Inverse** (`lst[lst]`): Inverse of #1 |
+| <code>Þ⧖</code> | <code>classify</code> | 1 |   | **Classify** (`nsl`): Classify from Uiua |
 | <code>Þ⦷</code> | <code>register-index</code> | 1 |   | **Register Index** (`num`): Get item in the register at index #1 |
 | <code>Þ≤</code> | <code>min-indices</code></br><code>minimum-indices</code> | 1 |   | **Minimum Indices** (`lst`): Indices where #1 is minimal |
 | <code>Þ≥</code> | <code>max-indices</code></br><code>maximum-indices</code> | 1 |   | **Maximum Indices** (`lst`): Indices where #1 is maximal |
