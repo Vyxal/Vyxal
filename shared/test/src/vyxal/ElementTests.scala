@@ -126,8 +126,10 @@ class ElementTests extends VyxalTests:
   }
 
   describe("Element x") {
-    testCode("5 λ0=[1|1-x×}}ᴥ", 120)
-    testCode("0 λ0=[1|1-x×}}ᴥ", 1)
+    it("recursion") {
+      testCode("5 λ0=[1|1-x×}}ᴥ", 120)
+      testCode("0 λ0=[1|1-x×}}ᴥ", 1)
+    }
   }
 
   describe("Element Þ↻") {

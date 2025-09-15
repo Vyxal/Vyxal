@@ -4,6 +4,7 @@ import vyxal.conversions.{*, given}
 import vyxal.elements.Modifiers
 import vyxal.parsing.{Lexer, Parser}
 
+import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.tagobjects.Slow
 
 class InterpreterTests extends VyxalTests:
@@ -473,7 +474,7 @@ class InterpreterTests extends VyxalTests:
   }
 
   describe("Vectorised recursion") {
-    testCode("#[#[1|2|3#]|#[4|5|6#]#]λ¤\"[\"c[¨x∑}}ᴥ", VNum(21), Seq())
+    testCode(""" #[#[1|2|3#]|#[4|5|6#]#]λ¤ "["c[¨x∑)ᴥ """, VNum(21), Seq())
   }
 
   describe("Stack Rotating Chicanery") {

@@ -12,6 +12,7 @@ class RegisterTests extends VyxalTests:
   describe("Regular Register Usage") {
     testMulti(
       "5£9::++" -> VNum(27),
+      "1 5ʁ Þ£" -> VNum(1),
       "5£9::++`" -> VNum(5),
       """ "hello" £ " world"`$+ """ -> VStr("hello world"),
       "4w £ Þ¥ " -> vSeq(vSeq(4)),
@@ -70,6 +71,11 @@ class RegisterTests extends VyxalTests:
         "5ʁ Þ£ λT} 2 ÞϾ Þ¥" -> vSeq(0, 1, 6, 3, 4, 5),
         "5ʁ Þ£ λT} 1 2; ÞϾ Þ¥" -> vSeq(0, 3, 6, 3, 4, 5),
         "5ʁ Þ£ 1 2; λT} ÞϾ Þ¥" -> vSeq(0, 3, 6, 3, 4, 5),
+      )
+    }
+    describe("Null behavior") {
+      testMulti(
+        "1 5ʁ Þ£ 1 2; λT} ÞϾ" -> VNum(1)
       )
     }
     describe("Mapping") {

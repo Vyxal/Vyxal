@@ -17,6 +17,7 @@ enum AST(val arity: Option[Int]) derives CanEqual:
       extends AST(Some(0))
   case Lst(elems: List[AST], override val range: Range = Range.fake)
       extends AST(Some(0))
+
   case Command(
       value: String,
       override val range: Range = Range.fake,
