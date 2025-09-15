@@ -98,7 +98,7 @@ object ListHelpers:
         seen += res
         true
     }
-  
+
   def classify(iterable: Seq[VAny])(using Context): Seq[VAny] =
     val set = iterable.vDistinct
     iterable.map(set.indexOf(_))
