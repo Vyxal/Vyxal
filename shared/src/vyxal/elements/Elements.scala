@@ -401,9 +401,10 @@ object Elements:
         summon[Context].reverse()
       },
     "_" ->
-      direct(Monad) {
-        pop()
-      },
+      fullToNullImpl(
+        NullMonad,
+        NullHelpers.popArgs(_),
+      ), // null objects pop args and return nothing
     "#`" -> niladify(ctx ?=> ctx.getStack.bigLength),
     addPart("a", Monad, false) {
       case a: VNum => a.itr.exists(_ == VNum(0))
@@ -770,21 +771,14 @@ object Elements:
         for v <- ListHelpers.flatten(a.itr) do RegisterHelpers.push(v)
         if summon[Context].settings.registerPeek then push(a)
       },
-    "ÞϾ" ->
-      direct(2) {
-        val (top, under) = (pop(), pop())
-        (top, under) match
-
-          case (idx: VNum, fn: VFun) => RegisterHelpers.applyFn(fn, idx)
-
-          case (fn: VFun, idx: VNum) => RegisterHelpers.applyFn(fn, idx)
-          case (VListOf[VNum](lst), fn: VFun) =>
-            for index <- lst do RegisterHelpers.applyFn(fn, index)
-          case (fn: VFun, VListOf[VNum](lst)) =>
-            for index <- lst do RegisterHelpers.applyFn(fn, index)
-
-          case _ => throw UnsupportedOverloadException("ÞϾ", "String")
-      },
+    addNullPart("ÞϾ", NullDyad) {
+      case (idx: VNum, fn: VFun) => RegisterHelpers.applyFn(fn, idx)
+      case (fn: VFun, idx: VNum) => RegisterHelpers.applyFn(fn, idx)
+      case (VListOf[VNum](lst), fn: VFun) =>
+        for num <- lst do RegisterHelpers.applyFn(fn, num)
+      case (fn: VFun, VListOf[VNum](lst)) =>
+        for num <- lst do RegisterHelpers.applyFn(fn, num)
+    },
     addPart("Þ⊖", Monad, false) {
       case n: VNum => RegisterHelpers.pop(n)
     },
@@ -2286,6 +2280,11 @@ object Elements:
   private def fullToImpl[F](arity: ImplHelpers[?, F], impl: F): Element =
     Element(arity.arity, arity.toDirectFn(impl))
 
+  private def fullToNullImpl[F](
+      arity: NullImplHelpers[?, F],
+      impl: F,
+  ): Element = Element(arity.arity, arity.toDirectFn(impl))
+
   /** Define an element that doesn't necessarily work on all inputs
     *
     * If using this method, make sure to use `case` to define the function,
@@ -2304,6 +2303,18 @@ object Elements:
         arity.toDirectFn(
           if vectorises then arity.vectorise(symbol)(impl)
           else arity.fill(symbol)(impl)
+        ),
+      )
+
+  private def addNullPart[P, F](
+      symbol: String,
+      arity: NullImplHelpers[P, F],
+  )(impl: P): (String, Element) =
+    symbol ->
+      Element(
+        arity.arity,
+        arity.toDirectFn(
+          arity.fill(symbol)(impl)
         ),
       )
 

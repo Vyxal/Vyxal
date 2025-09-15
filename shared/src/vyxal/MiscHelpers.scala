@@ -346,14 +346,13 @@ object MiscHelpers:
             case f: VFun => vyPrint(executeFn(f))
             case c: VConstructor => vyPrint(c.toString)
             case o: VObject => vyPrint(o.toString)
-
           temp = temp.tail
           if temp.nonEmpty then vyPrint(", ")
         vyPrint("]")
       case f: VFun => vyPrint(executeFn(f))
       case _ => ctx.globals.printFn(StringHelpers.vyToString(x))
 
-  def vyPrintln(x: VAny)(using Context): Unit =
+  def vyPrintln(x: VAny)(using ctx: Context): Unit =
     vyPrint(x)
     vyPrint("\n")
 
