@@ -475,7 +475,7 @@ object ListHelpers:
           .mkString("\n")
       case x =>
         val s = x.toString
-        val iter = s.grouped(w.toInt).toSeq
+        val iter = s.grouped(w.toInt).toSeq.map(makeIterable(_))
         iter.map(v => StringHelpers.padRight(v.mkString(" "), w)).mkString("\n")
 
   def intoNPieces(iterable: Seq[VAny], pieces: VNum)(using
