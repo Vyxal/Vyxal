@@ -5,6 +5,7 @@ import scala.language.implicitConversions
 import vyxal.*
 import vyxal.{Dyad, ImplHelpers, Monad, Triad}
 import vyxal.conversions.{*, given}
+import vyxal.elements.Modifiers.fullToImpl
 import vyxal.parsing.Codepage
 import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
@@ -12,7 +13,6 @@ import vyxal.MiscHelpers.defaultEmpty
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
-import vyxal.elements.Modifiers.fullToImpl
 
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
@@ -121,7 +121,7 @@ object Elements:
     "Ꮠ" ->
       fullToImpl(
         Monad,
-        a => ListHelpers.gridify(a)
+        a => ListHelpers.gridify(a),
       ),
     "'" ->
       fullToImpl(

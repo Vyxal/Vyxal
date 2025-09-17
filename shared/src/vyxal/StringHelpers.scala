@@ -194,8 +194,6 @@ object StringHelpers:
     sb.toString
   end formatString
 
-   
-
   def intoNPieces(s: String, n: VNum)(using Context): Seq[String] =
     val chars = ListHelpers.makeIterable(s)
     val pieces = ListHelpers.intoNPieces(chars, n)

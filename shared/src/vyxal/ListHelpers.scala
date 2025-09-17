@@ -445,13 +445,19 @@ object ListHelpers:
     n match
       case VListOf[VList](lsts) =>
         val pad = flatten(lsts).map(makeIterable(_).length).max
-        lsts.map(_.map(a => StringHelpers.padLeft(a.toString(), pad))).map(v => v.mkString(" ")).mkString("\n")
-      case VList(lst) => 
+        lsts
+          .map(_.map(a => StringHelpers.padLeft(a.toString(), pad)))
+          .map(v => v.mkString(" "))
+          .mkString("\n")
+      case VList(lst) =>
         val h = (lst.length ** 0.5).floor
         val iter = intoNPieces(lst, h).map(VList(_))
         val pad = flatten(iter).map(makeIterable(_).length).max
-        iter.map(_.map(a => StringHelpers.padLeft(a.toString(), pad))).map(v => v.mkString(" ")).mkString("\n") 
-      case x => 
+        iter
+          .map(_.map(a => StringHelpers.padLeft(a.toString(), pad)))
+          .map(v => v.mkString(" "))
+          .mkString("\n")
+      case x =>
         val s = x.toString
         val h = (s.length ** 0.5).floor
         val iter = intoNPieces(makeIterable(s), h).map(VList(_))
