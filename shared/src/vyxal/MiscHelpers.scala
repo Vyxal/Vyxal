@@ -3,6 +3,8 @@ package vyxal
 import vyxal.conversions.{*, given}
 import vyxal.parsing.Lexer
 import vyxal.Interpreter.executeFn
+import vyxal.RegisterHelpers.length
+import vyxal.StringHelpers.padLeft
 
 import scala.annotation.tailrec
 import scala.collection.mutable.ArrayBuffer
@@ -10,8 +12,6 @@ import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Stack
 import scala.math.Ordering.Implicits.infixOrderingOps
 import scala.util.{Failure, Success, Try}
-import vyxal.RegisterHelpers.length
-import vyxal.StringHelpers.padLeft
 
 object MiscHelpers:
   val add = Dyad.vectorise("add")(forkify {
@@ -217,8 +217,6 @@ object MiscHelpers:
     end while
     depth == 0
   end isList
-
- 
 
   val joinNothing: Monad = Monad.fill("joinNothing") {
     // ALTERNATIVE (No vectorisation):
