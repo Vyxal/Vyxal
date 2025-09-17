@@ -118,11 +118,11 @@ object Elements:
         Monad,
         a => a.itr.map(v => v.itr.mkString("")).mkString("\n"),
       ),
-    addPart("Ꮠ", Monad, false) {
-      case VList(lst) => MiscHelpers.gridify(lst)
-      case q: VVal => MiscHelpers.gridify(q)
-    },
-
+    "Ꮠ" ->
+      fullToImpl(
+        Monad,
+        a => ListHelpers.gridify(a)
+      ),
     "'" ->
       fullToImpl(
         Monad,

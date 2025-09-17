@@ -218,15 +218,7 @@ object MiscHelpers:
     depth == 0
   end isList
 
-  def gridify(n: VAny)(using Context): String =
-    n match
-      case VListOf[VList](lsts) => 
-        val pad = lsts.map(_.length).max
-        lsts.map(_.map(a => StringHelpers.padLeft(a.toString(), pad))).map(v => v.mkString(" ")).mkString("\n")
-      case VList(lst) => " "
-      case s: VVal => " "
-    
-
+ 
 
   val joinNothing: Monad = Monad.fill("joinNothing") {
     // ALTERNATIVE (No vectorisation):
