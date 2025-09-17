@@ -12,6 +12,7 @@ import vyxal.MiscHelpers.defaultEmpty
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
+import vyxal.elements.Modifiers.fullToImpl
 
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
@@ -117,6 +118,11 @@ object Elements:
         Monad,
         a => a.itr.map(v => v.itr.mkString("")).mkString("\n"),
       ),
+    addPart("Ꮠ", Monad, false) {
+      case VList(lst) => MiscHelpers.gridify(lst)
+      case q: VVal => MiscHelpers.gridify(q)
+    },
+
     "'" ->
       fullToImpl(
         Monad,

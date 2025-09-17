@@ -10,6 +10,8 @@ import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Stack
 import scala.math.Ordering.Implicits.infixOrderingOps
 import scala.util.{Failure, Success, Try}
+import vyxal.RegisterHelpers.length
+import vyxal.StringHelpers.padLeft
 
 object MiscHelpers:
   val add = Dyad.vectorise("add")(forkify {
@@ -215,6 +217,16 @@ object MiscHelpers:
     end while
     depth == 0
   end isList
+
+  def gridify(n: VAny)(using Context): String =
+    n match
+      case VListOf[VList](lsts) => 
+        val pad = lsts.map(_.length).max
+        lsts.map(_.map(a => StringHelpers.padLeft(a.toString(), pad))).map(v => v.mkString(" ")).mkString("\n")
+      case VList(lst) => " "
+      case s: VVal => " "
+    
+
 
   val joinNothing: Monad = Monad.fill("joinNothing") {
     // ALTERNATIVE (No vectorisation):

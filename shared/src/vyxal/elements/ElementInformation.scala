@@ -355,13 +355,24 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "Ꮬ",
-      keywords = Seq("concat-sublists", "concat-grid", "grid"),
+      keywords = Seq("concat-sublists", "concat-grid"),
       arity = 1,
       Options(),
       Overload(
         name = "Concatenate sublists then join on Newlines (Element Form of Ꮬ)",
         args = Seq("lst"),
         description = "Concatenate sublists, then join those on newlines",
+      ),
+    ),
+    AddElement(
+      symbol = "Ꮠ",
+      keywords = Seq("gridify", "pad-grid"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Gridify padded (Element Form of Ꮠ)",
+        args = Seq("lst"),
+        description = "pad each item to the same length, join of spaces and newlines",
       ),
     ),
     AddElement(
