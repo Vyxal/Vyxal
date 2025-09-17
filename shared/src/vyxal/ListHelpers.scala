@@ -466,15 +466,18 @@ object ListHelpers:
 
   def gridifyDim(n: VAny, w: VNum)(using Context): String =
     n match
-      case VList(lst) => 
+      case VList(lst) =>
         val iter = lst.grouped(w.toInt).toSeq.map(VList(_))
         val pad = flatten(iter).map(makeIterable(_).length).max
-        iter.map(_.map(a => StringHelpers.padLeft(a.toString(), pad))).map(v => v.mkString(" ")).mkString("\n") 
-      case x => 
+        iter
+          .map(_.map(a => StringHelpers.padLeft(a.toString(), pad)))
+          .map(v => v.mkString(" "))
+          .mkString("\n")
+      case x =>
         val s = x.toString
         val iter = s.grouped(w.toInt).toSeq
         iter.map(v => StringHelpers.padRight(v.mkString(" "), w)).mkString("\n")
-    
+
   def intoNPieces(iterable: Seq[VAny], pieces: VNum)(using
       Context
   ): Seq[Seq[VAny]] =

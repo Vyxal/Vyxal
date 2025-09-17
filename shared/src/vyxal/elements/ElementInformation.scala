@@ -372,7 +372,8 @@ object ElementInformation:
       Overload(
         name = "Gridify padded (Element Form of Ꮠ)",
         args = Seq("any"),
-        description = "Pad each item to the same length, join of spaces and newlines",
+        description =
+          "Pad each item to the same length, join of spaces and newlines",
       ),
     ),
     AddElement(
