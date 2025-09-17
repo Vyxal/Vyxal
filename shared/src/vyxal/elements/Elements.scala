@@ -1920,6 +1920,9 @@ object Elements:
     addPart("Þi", Dyad, true) {
       case (a, VList(b)) => ListHelpers.multiDimIndex(makeIterable(a), b)
     },
+    addPart("ÞG", Dyad, false) {
+      case (a, b: VNum) => ListHelpers.gridifyDim(a, b)
+    },
     "Þo" ->
       direct(Monad) {
         val top = pop()

@@ -371,8 +371,19 @@ object ElementInformation:
       Options(),
       Overload(
         name = "Gridify padded (Element Form of Ꮠ)",
-        args = Seq("lst"),
-        description = "pad each item to the same length, join of spaces and newlines",
+        args = Seq("any"),
+        description = "Pad each item to the same length, join of spaces and newlines",
+      ),
+    ),
+    AddElement(
+      symbol = "ÞG",
+      keywords = Seq("gridify-dimension", "pad-grid-dimension"),
+      arity = 2,
+      Options(),
+      Overload(
+        name = "Gridify padded to width",
+        args = Seq("any, num"),
+        description = "Gridify Pad #1 but each row has #2 items",
       ),
     ),
     AddElement(
