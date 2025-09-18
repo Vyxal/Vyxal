@@ -5,7 +5,6 @@ import scala.language.implicitConversions
 import vyxal.*
 import vyxal.{Dyad, ImplHelpers, Monad, Triad}
 import vyxal.conversions.{*, given}
-import vyxal.elements.Modifiers.fullToImpl
 import vyxal.parsing.Codepage
 import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
@@ -1186,11 +1185,21 @@ object Elements:
       case num: VNum =>
         val temp = num.toString
         val reversed =
-          if temp.startsWith("-") then temp + temp.reverse.tail
+          if temp.startsWith("-") then temp.tail.reverse
           else temp.reverse
         VNum(temp + reversed)
       case VStr(str) => str + str.reverse
       case lst: VList => VList(lst ++ lst.reverse)
+    },
+    addPart("Þ≓", Monad, false) {
+      case num: VNum =>
+        val temp = num.toString
+        val reversed =
+          if temp.startsWith("-") then temp.tail.reverse
+          else temp.reverse
+        VNum(temp + reversed.tail)
+      case VStr(str) => str + str.reverse.tail
+      case lst: VList => VList(lst ++ lst.reverse.tail)
     },
     "Ͼ" ->
       direct(1) {

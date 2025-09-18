@@ -2765,6 +2765,17 @@ object ElementInformation:
         description = "Mirror #1 (#1 + reverse(#1)), as the original type",
       ),
     ),
+     AddElement(
+      symbol = "Þ≓",
+      keywords = Seq("palindromise"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Palindromise",
+        args = Seq("any"),
+        description = "Palindromise #1 as the original type",
+      ),
+    ),
     AddElement(
       symbol = "Ͼ",
       keywords = Seq("vectorised-sums", "register-apply-head"),
