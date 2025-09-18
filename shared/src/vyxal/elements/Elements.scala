@@ -1883,6 +1883,12 @@ object Elements:
       case (VStr(a), VStr(b)) => b + a + b
       case (a, VList(b)) => VList((a +: b) :+ a)
     },
+    addPart("ø⊠", Dyad, false) { // 2D surround
+      case (VListOf[VList](lst), b: VPhysical) =>
+        val inner = lst.map(i => VList((b +: i) :+ b))
+        val outer = VList(Seq.fill(inner.length)(b))
+        VList((outer +: inner) :+ outer)
+    },
     addPart("Þ0", Dyad, false) {
       case (a: VList, b: VNum) => ListHelpers.zeroPad(a, b)
       case (VStr(a), b: VNum) => StringHelpers.zeroPad(a, b)

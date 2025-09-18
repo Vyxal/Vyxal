@@ -2673,6 +2673,7 @@ object ElementInformation:
         "first-predicate-index",
         "vectorised-pair",
         "vec-pair",
+        "capitalization-transfer"
       ),
       arity = 2,
       Options(),
@@ -2704,6 +2705,12 @@ object ElementInformation:
         args = Seq("lst", "str|num"),
         description = "Pair each item in {#1|#2} with {#2|#1}",
       ),
+      Overload(
+        name = "Transfer Capitalization",
+        args = Seq("str", "str"),
+        description = "Change characters in #1 to the case of the character at that index in #2 ",
+      ),
+
     ),
     AddElement(
       symbol = "±",
@@ -5066,6 +5073,17 @@ object ElementInformation:
         name = "Surround",
         args = Seq("any", "any"),
         description = "#1 prepended and appended to #2",
+      ),
+    ),
+    AddElement(
+      symbol = "ø⊠",
+      keywords = Seq("surround-grid", "outline", "border"),
+      arity = 2,
+      Options(vectorises = false),
+      Overload(
+        name = "2D Surround",
+        args = Seq("lst[lst]", "nsl"),
+        description = "#1 surrounded by #2",
       ),
     ),
     AddElement(
