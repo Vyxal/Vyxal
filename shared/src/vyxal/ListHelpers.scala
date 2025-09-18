@@ -441,6 +441,43 @@ object ListHelpers:
 
     out.toSeq
 
+  def gridify(n: VAny)(using Context): String =
+    n match
+      case VListOf[VList](lsts) =>
+        val pad = flatten(lsts).map(makeIterable(_).length).max
+        lsts
+          .map(_.map(a => StringHelpers.padLeft(a.toString(), pad)))
+          .map(v => v.mkString(" "))
+          .mkString("\n")
+      case VList(lst) =>
+        val h = (lst.length ** 0.5).floor
+        val iter = intoNPieces(lst, h).map(VList(_))
+        val pad = flatten(iter).map(makeIterable(_).length).max
+        iter
+          .map(_.map(a => StringHelpers.padLeft(a.toString(), pad)))
+          .map(v => v.mkString(" "))
+          .mkString("\n")
+      case x =>
+        val s = x.toString
+        val h = (s.length ** 0.5).floor
+        val iter = intoNPieces(makeIterable(s), h).map(VList(_))
+        val w = iter(0).length
+        iter.map(v => StringHelpers.padRight(v.mkString(" "), w)).mkString("\n")
+
+  def gridifyDim(n: VAny, w: VNum)(using Context): String =
+    n match
+      case VList(lst) =>
+        val iter = lst.grouped(w.toInt).toSeq.map(VList(_))
+        val pad = flatten(iter).map(makeIterable(_).length).max
+        iter
+          .map(_.map(a => StringHelpers.padLeft(a.toString(), pad)))
+          .map(v => v.mkString(" "))
+          .mkString("\n")
+      case x =>
+        val s = x.toString
+        val iter = s.grouped(w.toInt).toSeq.map(makeIterable(_))
+        iter.map(v => StringHelpers.padRight(v.mkString(" "), w)).mkString("\n")
+
   def intoNPieces(iterable: Seq[VAny], pieces: VNum)(using
       Context
   ): Seq[Seq[VAny]] =

@@ -85,7 +85,11 @@ class SBCSLexer extends LexerCommon:
         if programStack.isEmpty then
           addToken(TokenType.Command, TWO_CHAR_STRING, Range(index - 1, index))
         else twoCharStringToken
-      else if headEqual(TWO_CHAR_NUMBER) then twoCharNumberToken
+      else if headEqual(TWO_CHAR_NUMBER) then
+        pop()
+        if programStack.isEmpty then
+          addToken(TokenType.Command, TWO_CHAR_NUMBER, Range(index - 1, index))
+        else twoCharNumberToken
       else if headIn(DIGRAPH_CHARS)
       then digraphToken
       else if headLookaheadEqual(COMMENT) then

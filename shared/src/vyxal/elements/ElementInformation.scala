@@ -355,13 +355,36 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "Ꮬ",
-      keywords = Seq("concat-sublists", "concat-grid", "grid"),
+      keywords = Seq("concat-sublists", "concat-grid"),
       arity = 1,
       Options(),
       Overload(
         name = "Concatenate sublists then join on Newlines (Element Form of Ꮬ)",
         args = Seq("lst"),
         description = "Concatenate sublists, then join those on newlines",
+      ),
+    ),
+    AddElement(
+      symbol = "Ꮠ",
+      keywords = Seq("gridify", "pad-grid"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Gridify padded (Element Form of Ꮠ)",
+        args = Seq("any"),
+        description =
+          "Pad each item to the same length, join of spaces and newlines",
+      ),
+    ),
+    AddElement(
+      symbol = "ÞG",
+      keywords = Seq("gridify-dimension", "pad-grid-dimension"),
+      arity = 2,
+      Options(),
+      Overload(
+        name = "Gridify padded to width",
+        args = Seq("any, num"),
+        description = "Gridify Pad #1 but each row has #2 items",
       ),
     ),
     AddElement(
@@ -2740,6 +2763,17 @@ object ElementInformation:
         name = "Mirror",
         args = Seq("any"),
         description = "Mirror #1 (#1 + reverse(#1)), as the original type",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ≓",
+      keywords = Seq("palindromise"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Palindromise",
+        args = Seq("any"),
+        description = "Palindromise #1 as the original type",
       ),
     ),
     AddElement(

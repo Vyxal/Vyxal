@@ -117,6 +117,11 @@ object Elements:
         Monad,
         a => a.itr.map(v => v.itr.mkString("")).mkString("\n"),
       ),
+    "Ꮠ" ->
+      fullToImpl(
+        Monad,
+        a => ListHelpers.gridify(a),
+      ),
     "'" ->
       fullToImpl(
         Monad,
@@ -1180,11 +1185,21 @@ object Elements:
       case num: VNum =>
         val temp = num.toString
         val reversed =
-          if temp.startsWith("-") then temp + temp.reverse.tail
+          if temp.startsWith("-") then temp.tail.reverse
           else temp.reverse
         VNum(temp + reversed)
       case VStr(str) => str + str.reverse
       case lst: VList => VList(lst ++ lst.reverse)
+    },
+    addPart("Þ≓", Monad, false) {
+      case num: VNum =>
+        val temp = num.toString
+        val reversed =
+          if temp.startsWith("-") then temp.tail.reverse
+          else temp.reverse
+        VNum(temp + reversed.tail)
+      case VStr(str) => str + str.reverse.tail
+      case lst: VList => VList(lst ++ lst.reverse.tail)
     },
     "Ͼ" ->
       direct(1) {
@@ -1913,6 +1928,9 @@ object Elements:
     },
     addPart("Þi", Dyad, true) {
       case (a, VList(b)) => ListHelpers.multiDimIndex(makeIterable(a), b)
+    },
+    addPart("ÞG", Dyad, false) {
+      case (a, b: VNum) => ListHelpers.gridifyDim(a, b)
     },
     "Þo" ->
       direct(Monad) {
