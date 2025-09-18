@@ -1888,8 +1888,13 @@ object Elements:
     addPart("ø⊠", Dyad, false) { // 2D surround
       case (VListOf[VList](lst), b: VPhysical) =>
         val inner = lst.map(i => VList((b +: i) :+ b))
-        val outer = VList(Seq.fill(inner.length)(b))
+        val outer = VList(Seq.fill(inner(0).length)(b))
         VList((outer +: inner) :+ outer)
+    },
+    addPart("ø⩔", Monad, true) {
+      case n: VNum => Codepage(n.toInt).toString()
+      case VStr(s) if s.length == 1 => Codepage.indexOf(s)
+      case VStr(s) => VList(s.map(c => VNum(Codepage.indexOf(c))))
     },
     addPart("Þ0", Dyad, false) {
       case (a: VList, b: VNum) => ListHelpers.zeroPad(a, b)

@@ -2785,7 +2785,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "Ͼ",
-      keywords = Seq("vectorised-sums", "register-apply-head"),
+      keywords = Seq("vectorised-sums", "register-apply-head", "n-spaces"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -3129,7 +3129,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "√",
-      keywords = Seq("square-root", "sqrt", "palindromise"),
+      keywords = Seq("square-root", "sqrt", "palindromise-string"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -5084,6 +5084,22 @@ object ElementInformation:
         name = "2D Surround",
         args = Seq("lst[lst]", "nsl"),
         description = "#1 surrounded by #2",
+      ),
+    ),
+    AddElement(
+      symbol = "ø⩔",
+      keywords = Seq("codepage-find", "codepage-index"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Codepage Character",
+        args = Seq("num"),
+        description = "Get char at codepage index #1",
+      ),
+      Overload(
+        name = "Index in Codepage",
+        args = Seq("str"),
+        description = "Index of #1 in codepage. With string.len > 1, vectorises over each character",
       ),
     ),
     AddElement(
