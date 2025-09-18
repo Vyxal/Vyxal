@@ -345,6 +345,7 @@ Element, Modifier, and Syntax Reference
 | <code>Þ⦷</code> | <code>register-index</code> | 1 |   | **Register Index** (`num`): Get item in the register at index #1 |
 | <code>Þ≤</code> | <code>min-indices</code></br><code>minimum-indices</code> | 1 |   | **Minimum Indices** (`lst`): Indices where #1 is minimal |
 | <code>Þ≥</code> | <code>max-indices</code></br><code>maximum-indices</code> | 1 |   | **Maximum Indices** (`lst`): Indices where #1 is maximal |
+| <code>Þ≓</code> | <code>palindromise</code> | 1 |   | **Palindromise** (`any`): Palindromise #1 as the original type |
 | <code>ÞϾ</code> | <code>register-apply-at-indices</code> | 2 |   | **Apply to register at indices** (`fun,num\|lst[num]`): Get the first #1 items from the register to the stack as a list |
 | <code>Þ◌</code> | <code>grid-neighbours-diagonals</code></br><code>grid-neighbors-diagonals</code></br><code>adjacent-cells-diagonals</code></br><code>adj-cells-diagonals</code></br><code>surrounding-cells-diagonals</code></br><code>eight-cells</code> | 1 |   | **Grid Neighbours Diagonals** (`lst`): Grid neighbours of #1 - up, down, left, right, and diagonals</br>**Grid Neighbours Diagonals With Starting Direction** (`lst,num`): Grid neighbours of cells in #1 - right, down, left, up, and diagonals - start from direction #2 => 0: right, 1: down, 2: left, 3: up |
 | <code>Þ⎶</code> | <code>edges</code></br><code>ends</code></br><code>real-imaginary</code> | 1 |   | **Edges** (`itr`): First and last element of #1</br>**Real and Imaginary** (`num`): Real and imaginary parts of #1 |
