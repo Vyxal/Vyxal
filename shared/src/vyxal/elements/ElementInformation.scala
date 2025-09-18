@@ -5099,7 +5099,8 @@ object ElementInformation:
       Overload(
         name = "Index in Codepage",
         args = Seq("str"),
-        description = "Index of #1 in codepage. With string.len > 1, vectorises over each character",
+        description =
+          "Index of #1 in codepage. With string.len > 1, vectorises over each character",
       ),
     ),
     AddElement(
