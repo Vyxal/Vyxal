@@ -2673,7 +2673,7 @@ object ElementInformation:
         "first-predicate-index",
         "vectorised-pair",
         "vec-pair",
-        "capitalization-transfer"
+        "capitalization-transfer",
       ),
       arity = 2,
       Options(),
@@ -2708,9 +2708,9 @@ object ElementInformation:
       Overload(
         name = "Transfer Capitalization",
         args = Seq("str", "str"),
-        description = "Change characters in #1 to the case of the character at that index in #2 ",
+        description =
+          "Change characters in #1 to the case of the character at that index in #2 ",
       ),
-
     ),
     AddElement(
       symbol = "±",
