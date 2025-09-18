@@ -9,10 +9,10 @@ import vyxal.parsing.Codepage
 import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.defaultEmpty
+import vyxal.StringHelpers.caseOf
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
-import vyxal.StringHelpers.caseOf
 
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
@@ -1143,12 +1143,14 @@ object Elements:
 
       case (VStr(a), VStr(b)) =>
         val capitals = a.map(l => StringHelpers.caseOf(l.toString))
-        b.zip(capitals).map{(char: Char, upper: VNum) => 
-          if char.isLetter then 
-            if upper.toBool then char.toString().toUpperCase() 
-            else char.toString().toLowerCase()
-          else char
-        }.mkString
+        b.zip(capitals)
+          .map { (char: Char, upper: VNum) =>
+            if char.isLetter then
+              if upper.toBool then char.toString().toUpperCase()
+              else char.toString().toLowerCase()
+            else char
+          }
+          .mkString
 
       case (number: VNum, base: VNum) =>
         NumberHelpers.toBijectiveBase(number, base)
