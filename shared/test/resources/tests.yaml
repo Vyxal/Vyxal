@@ -1573,6 +1573,8 @@
   Vectorized Pair:
   - {in: [["hi", "hello world"], 4], out: [["hi", 4], ["hello world", 4]]}
   - {in: ["sus", ["hi", "hello world"]], out: [["hi", "sus"], ["hello world", "sus"]]}
+  Capitalization:
+  - {in: ["Hello World!", "vYXaL RoCKs."], out: "Vyxal Rocks."}
   
   
 "±":
