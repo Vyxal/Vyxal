@@ -8,12 +8,12 @@ import vyxal.conversions.{*, given}
 import vyxal.parsing.Codepage
 import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
+import vyxal.ListHelpers.maxDepth
 import vyxal.MiscHelpers.defaultEmpty
 import vyxal.StringHelpers.caseOf
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
-import vyxal.ListHelpers.maxDepth
 
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
@@ -1957,8 +1957,7 @@ object Elements:
       case (a, b: VNum) => ListHelpers.gridifyDim(a, b)
     },
     addPart("ÞṬ", Monad, false) {
-      case VList(lst) => 
-        ListHelpers.multiDimTruthyIndices(lst)
+      case VList(lst) => ListHelpers.multiDimTruthyIndices(lst)
     },
     "Þo" ->
       direct(Monad) {

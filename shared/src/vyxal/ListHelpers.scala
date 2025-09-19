@@ -600,7 +600,6 @@ object ListHelpers:
       .foldLeft(VNum(0))(
         MiscHelpers.dyadicMaximum(_, _).asInstanceOf[VNum]
       ) // Guaranteed to be a VNum
-  
 
   /** Depth of element in nested list */
   def itemDepth(lst: Seq[VAny], n: Int = 1)(using Context): Seq[VAny] =
@@ -1450,26 +1449,28 @@ object ListHelpers:
     lst.zipWithIndex.filter { case (v, idx) => v.toBool }.map {
       case (_, idx) => VNum(idx)
     }
-  
+
   def multiDimTruthyIndices(lst: Seq[VAny])(using Context): Seq[VAny] =
     def getIdx(lst: Seq[VAny], depth: Seq[VNum] = Seq.empty): Seq[VAny] =
-      lst.zipWithIndex.collect { 
+      lst.zipWithIndex.collect {
         case (VList(sub), idx) if !sub.isEmpty =>
-            val i = depth.appended(VNum(idx))
-            getIdx(sub, i)
+          val i = depth.appended(VNum(idx))
+          getIdx(sub, i)
         case (x: VVal, idx) if x.toBool => depth.appended(VNum(idx))
       }
     def flatHelper(lst: Seq[VAny])(using Context): Seq[VAny] =
-      lst.map{ iter =>
+      lst.map { iter =>
         iter match
           case VListOf[VVal](l) => l.length
           case VList(l2) => flatHelper(l2)
           case _: VVal => 1
-          case a => throw VyxalRuntimeException("This is just a list of numbers")
+          case a =>
+            throw VyxalRuntimeException("This is just a list of numbers")
       }
     val idx = getIdx(lst)
     val sep = flatten(flatHelper(idx))
     partitionBy(flatten(idx), sep.map(_.asInstanceOf[VNum]))
+  end multiDimTruthyIndices
 
   /** Zip multiple VLists together with a function.
     *
