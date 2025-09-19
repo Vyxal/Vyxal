@@ -3526,6 +3526,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "ÞṬ",
+      keywords = Seq("multi-dim-truthy-indexes"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Multidimensional Truthy Indexes",
+        args = Seq("lst"),
+        description = "Indexes of truthy elements in #1",
+      ),
+    ),
+    AddElement(
       symbol = "Ṫ",
       keywords = Seq("untruth"),
       arity = 1,
