@@ -4414,6 +4414,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "k¹",
+      keywords = Seq("empty-list"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Empty List",
+        args = Seq(),
+        description = "Push the empty list to the stack",
+      ),
+    ),
+    AddElement(
       symbol = "kġ",
       keywords = Seq("&LOWERCASE-CONSONANTS"),
       arity = 0,
@@ -4695,6 +4706,18 @@ object ElementInformation:
         args = Seq("any"),
         description =
           "Ensure #1 is wrapped in a list. Returns scalars wrapped in a list. Returns lists as-is",
+      ),
+    ),
+    AddElement(
+      symbol = "#W",
+      keywords = Seq("wrap-last-n"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Wrap last N",
+        args = Seq("num"),
+        description =
+          "Wrap last #1 items from the stack ",
       ),
     ),
     AddElement(

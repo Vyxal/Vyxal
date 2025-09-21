@@ -14,6 +14,7 @@ import vyxal.StringHelpers.caseOf
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
+import vyxal.MiscHelpers.vyPrintln
 
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
@@ -1639,6 +1640,7 @@ object Elements:
     "k⍾" -> constant("ඞ"), // this setup will save us 2 bytes
     "k⩔" -> constant(Codepage),
     "k½" -> constant(Seq(1, 2)),
+    "k¹" -> constant(Seq.empty), // empty list for multiple inputs
     "k①" -> constant(180),
     "k②" -> constant(270),
     "k③" -> constant(2048),
@@ -1686,6 +1688,15 @@ object Elements:
     addPart("#w", Monad, false) {
       case scalar: (VVal | VFun) => VList(Seq(scalar))
       case lst: VList => lst
+    },
+    "#W" -> direct(Monad) {
+      pop() match
+        case n: VNum =>
+          val ctx = summon[Context]
+          val l = Seq(VNum(ctx.getStack.bigLength), n).minOption.getOrElse(VNum(0))
+          val wrapped = Seq.fill(l.toInt)(ctx.pop())
+          push(VList(wrapped.padTo(n.toInt, 0)))
+        case _ => throw UnsupportedOverloadException("#W", "String | List | Function")
     },
     "#¿" -> niladify { summon[Context].globals.inputs.length },
     addPart("#ᴥ", Monad, false) {
