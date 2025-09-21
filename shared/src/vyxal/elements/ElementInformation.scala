@@ -4480,6 +4480,50 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "k(",
+      keywords = Seq("&PARENTHESES", "&PARENS"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Parentheses",
+        args = Seq(),
+        description = "Push \"()\" to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "k[",
+      keywords = Seq("&BRACKETS", "&SQUARE-BRACKETS"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Square Brackets",
+        args = Seq(),
+        description = "Push \"[]\" to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "k{",
+      keywords = Seq("&BRACES", "&CURLY-BRACES"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Braces",
+        args = Seq(),
+        description = "Push \"{}\" to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "k×",
+      keywords = Seq("&ANGLE-BRACKETS"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Angle Brackets",
+        args = Seq(),
+        description = "Push \"<>\" to the stack",
+      ),
+    ),
+    AddElement(
       symbol = "k⌹",
       keywords = Seq("&PAIRED-BRACKETS"),
       arity = 0,
