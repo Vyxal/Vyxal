@@ -276,8 +276,7 @@ class SBCSLexer extends LexerCommon:
       )
 
   private def twoCharNumberToken: Unit =
-    val rangeStart = index
-    pop() // Pop the token
+    val rangeStart = index - 1
     val char = pop(2)
     val numValue = 256 * Codepage.indexOf(char.head) +
       Codepage.indexOf(char.last)
