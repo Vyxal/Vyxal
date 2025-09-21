@@ -53,8 +53,7 @@ object RegisterHelpers:
     register.toIndexedSeq(
       idx
     ) // scala modulo doesn't always return positive vales
-  
-  def contains(a: VAny)(using Context): VAny =
-    register.exists(_ === a)
+
+  def contains(a: VAny)(using Context): VAny = register.exists(_ === a)
 
 end RegisterHelpers
