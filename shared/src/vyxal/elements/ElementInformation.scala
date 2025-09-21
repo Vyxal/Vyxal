@@ -4760,8 +4760,7 @@ object ElementInformation:
       Overload(
         name = "Wrap last N",
         args = Seq("num"),
-        description =
-          "Wrap last #1 items from the stack ",
+        description = "Wrap last #1 items from the stack ",
       ),
     ),
     AddElement(

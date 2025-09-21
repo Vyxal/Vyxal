@@ -10,11 +10,11 @@ import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
 import vyxal.ListHelpers.maxDepth
 import vyxal.MiscHelpers.defaultEmpty
+import vyxal.MiscHelpers.vyPrintln
 import vyxal.StringHelpers.caseOf
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
-import vyxal.MiscHelpers.vyPrintln
 
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
@@ -1693,15 +1693,18 @@ object Elements:
       case scalar: (VVal | VFun) => VList(Seq(scalar))
       case lst: VList => lst
     },
-    "#W" -> direct(Monad) {
-      pop() match
-        case n: VNum =>
-          val ctx = summon[Context]
-          val l = Seq(VNum(ctx.getStack.bigLength), n).minOption.getOrElse(VNum(0))
-          val wrapped = Seq.fill(l.toInt)(ctx.pop())
-          push(VList(wrapped.padTo(n.toInt, 0)))
-        case _ => throw UnsupportedOverloadException("#W", "String | List | Function")
-    },
+    "#W" ->
+      direct(Monad) {
+        pop() match
+          case n: VNum =>
+            val ctx = summon[Context]
+            val l =
+              Seq(VNum(ctx.getStack.bigLength), n).minOption.getOrElse(VNum(0))
+            val wrapped = Seq.fill(l.toInt)(ctx.pop())
+            push(VList(wrapped.padTo(n.toInt, 0)))
+          case _ =>
+            throw UnsupportedOverloadException("#W", "String | List | Function")
+      },
     "#¿" -> niladify { summon[Context].globals.inputs.length },
     addPart("#ᴥ", Monad, false) {
       case VStr(top) => MiscHelpers.validCode(top)

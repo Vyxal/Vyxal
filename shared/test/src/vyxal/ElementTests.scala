@@ -512,8 +512,8 @@ class ElementTests extends VyxalTests:
 
   describe("Element #W") {
     testMulti(
-      "7ʀ⍨3#W" -> vSeq(6,5,4),
-      "7ʀ⍨9#W" -> vSeq(6,5,4,3,2,1,0,0,0),
+      "7ʀ⍨3#W" -> vSeq(6, 5, 4),
+      "7ʀ⍨9#W" -> vSeq(6, 5, 4, 3, 2, 1, 0, 0, 0),
     )
   }
 
