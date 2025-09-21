@@ -772,6 +772,7 @@ object Elements:
     addPart("Þ⦷", Monad, true) {
       case i: VNum => RegisterHelpers.index(i)
     },
+    "Þc" -> fullToImpl(Monad, x => RegisterHelpers.contains(x)),
     "Þ£" ->
       direct(1) {
         val a = pop()

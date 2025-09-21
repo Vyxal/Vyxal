@@ -1956,6 +1956,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "Þc",
+      keywords = Seq("register-contains"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Register Contains",
+        args = Seq("any"),
+        description = "Is #1 in the register?",
+      ),
+    ),
+    AddElement(
       symbol = "Þ`",
       keywords = Seq("register-length", "reg-len"),
       arity = 0,
