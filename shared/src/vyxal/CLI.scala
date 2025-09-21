@@ -34,6 +34,7 @@ object CLI:
       inputs: List[String] = List.empty,
       litInfoFor: Option[String] = None,
       printHelp: Boolean = false,
+      printVersion: Boolean = false,
       runLexer: Boolean = false,
       runParser: Boolean = false,
       settings: Settings = Settings(),
@@ -89,6 +90,10 @@ object CLI:
 
         if config.printHelp then
           println(OParser.usage(parser))
+          return
+
+        if config.printVersion then
+          println(CLI.version)
           return
 
         if config.litInfoFor.nonEmpty then
@@ -183,6 +188,10 @@ object CLI:
         opt[Unit]('h', "help")
           .action((_, cfg) => cfg.copy(printHelp = true))
           .text("Print this help message and exit")
+          .optional(),
+        opt[Unit]('v', "version")
+          .action((_, cfg) => cfg.copy(printVersion = true))
+          .text("Print version information")
           .optional(),
         opt[String]("file")
           .action((file, cfg) => cfg.copy(filename = Some(file)))
