@@ -3953,7 +3953,18 @@ object ElementInformation:
       arity = 0,
       Options(),
       Overload(
-        name = "Printable ASCII",
+        name = "Printable ASCII with Space",
+        args = Seq(),
+        description = "Push \" \" to \"~\" to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "kQ",
+      keywords = Seq("&PRINTABLE-ASCII-NO-SPACE"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Printable ASCII without Space",
         args = Seq(),
         description = "Push \"!\" to \"~\" to the stack",
       ),
