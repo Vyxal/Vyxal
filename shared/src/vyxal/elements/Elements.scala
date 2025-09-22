@@ -1565,7 +1565,6 @@ object Elements:
       },
     "ḧ" ->
       fullToImpl(Monad, x => x.itr.map(_.itr.headOption.getOrElse(VNum(0)))),
-
     "①" -> constant(10),
     "②" -> constant(16),
     "③" -> constant(32),
