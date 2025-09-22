@@ -1682,6 +1682,8 @@ object Elements:
     "k¹" -> constant(Seq.empty), // empty list for multiple inputs
     "k⎘" -> constant("[]<>-+.,"),
     "kℂ" -> constant("IVXLCDM"),
+
+    // other digraphs
     addPart("#C", Monad, true) {
       case VStr(a) => StringHelpers.compressDictionary(a)
     },
