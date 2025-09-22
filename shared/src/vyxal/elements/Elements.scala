@@ -1596,7 +1596,7 @@ object Elements:
     "k³" -> constant(VNum("1073741824")),
     "k⁰" -> constant(VNum("2147483648")),
     "k5" -> constant(VNum("4294967296")),
-    
+
     // List of numbers
     "k+" -> constant(Seq(-1, 1)),
     "k-" -> constant(Seq(1, -1)),
@@ -1606,7 +1606,7 @@ object Elements:
     "k½" -> constant(Seq(1, 2)),
     "k≡" -> constant(Seq(-1, 0, 1)),
     "k◌" -> constant(VList(Seq(Seq(0, 1), Seq(1, 0), Seq(0, -1), Seq(-1, 0)))),
-    
+
     // Alphanumerics
     "kA" -> constant("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
     "kZ" -> constant("ZYXWVUTSRQPONMLKJIHGFEDCBA"),
@@ -1616,8 +1616,14 @@ object Elements:
     "kL" -> constant("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"),
     "kl" -> constant("ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"),
     "kb" -> constant("zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA"),
-    "kr" -> constant("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"),
-    "kR" -> constant("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
+    "kr" ->
+      constant(
+        "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      ),
+    "kR" ->
+      constant(
+        "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+      ),
     "k^" -> constant("0123456789ABCDEF"),
     "k6" -> constant("0123456789abcdef"),
     "kd" -> constant("0123456789"),
@@ -1655,7 +1661,7 @@ object Elements:
     "kD" -> constant("\\|/-_"),
     "k/" -> constant("/\\"),
     "k⇄" -> constant("^>v<"),
- 
+
     // Ascii stuff
     "kP" -> constant(((' ' to '~').toList).mkString),
     "kQ" -> constant((('!' to '~').toList).mkString),
@@ -1666,7 +1672,7 @@ object Elements:
           ('[' to '`').toList ++:
           ('{' to '~').toList).mkString
       ),
-    
+
     // Misc Constants
     "kH" -> constant("Hello, World!"),
     "kh" -> constant("Hello World"),
@@ -1677,7 +1683,6 @@ object Elements:
     "k¹" -> constant(Seq.empty), // empty list for multiple inputs
     "k⎘" -> constant("[]<>-+.,"),
     "kℂ" -> constant("IVXLCDM"),
-    
     addPart("#C", Monad, true) {
       case VStr(a) => StringHelpers.compressDictionary(a)
     },
