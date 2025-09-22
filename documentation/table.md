@@ -257,7 +257,8 @@ Element, Modifier, and Syntax Reference
 | <code>kH</code> | <code>&HELLO-WORLD</code> | 0 |   | **Hello, World!**: Push "Hello, World!" to the stack |
 | <code>kL</code> | <code>&LOWERCASE-UPPERCASE</code> | 0 |   | **Lowercase and Uppercase**: Push "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
 | <code>kN</code> | <code>&NN</code></br><code>&NATURAL-NUMBERS</code> | 0 |   | **Natural Numbers**: Push a list of every natural number to the stack |
-| <code>kP</code> | <code>&PRINTABLE-ASCII</code> | 0 |   | **Printable ASCII**: Push "!" to "~" to the stack |
+| <code>kP</code> | <code>&PRINTABLE-ASCII</code> | 0 |   | **Printable ASCII with Space**: Push " " to "~" to the stack |
+| <code>kQ</code> | <code>&PRINTABLE-ASCII-NO-SPACE</code> | 0 |   | **Printable ASCII without Space**: Push "!" to "~" to the stack |
 | <code>kR</code> | <code>&DIGITS-UPPERCASE-LOWERCASE</code> | 0 |   | **Digits, Uppercase, Lowercase**: Push "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" to the stack |
 | <code>kV</code> | <code>&UPPERCASE-VOWELS</code> | 0 |   | **Uppercase Vowels**: Push "AEIOU" to the stack |
 | <code>kY</code> | <code>&UPPERCASE-VOWELSY</code> | 0 |   | **Uppercase Vowels and Y**: Push "AEIOUY" to the stack |
@@ -265,6 +266,7 @@ Element, Modifier, and Syntax Reference
 | <code>k[</code> | <code>&BRACKETS</code></br><code>&SQUARE-BRACKETS</code> | 0 |   | **Square Brackets**: Push "[]" to the stack |
 | <code>k^</code> | <code>&UPPERCASE-HEX-DIGITS</code> | 0 |   | **Uppercase Hex Digits**: Push "0123456789ABCDEF" to the stack |
 | <code>ka</code> | <code>&LOWERCASE-LETTERS</code> | 0 |   | **Lowercase Letters**: Push "abcdefghijklmnopqrstuvwxyz" to the stack |
+| <code>kb</code> | <code>&REVERSE-LOWERCASE-UPPERCASE</code> | 0 |   | **Reverse Lowercase and Uppercase**: Push "zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA" to the stack |
 | <code>kd</code> | <code>&DIGITS</code> | 0 |   | **Digits**: Push "0123456789" to the stack |
 | <code>ke</code> | <code>&E-CONSTANT</code> | 0 |   | **E Constant**: Push 2.718281828459045 to the stack |
 | <code>kg</code> | <code>&GOLDEN-RATIO</code></br><code>&PHI</code> | 0 |   | **Golden Ratio**: Push 1.618033988749895 to the stack |
