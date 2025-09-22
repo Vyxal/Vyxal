@@ -4116,6 +4116,18 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "kb",
+      keywords = Seq("&REVERSE-LOWERCASE-UPPERCASE"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Reverse Lowercase and Uppercase",
+        args = Seq(),
+        description =
+          "Push \"zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA\" to the stack",
+      ),
+    ),
+    AddElement(
       symbol = "ko",
       keywords = Seq("&OCTAL-DIGITS"),
       arity = 0,
