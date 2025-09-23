@@ -554,10 +554,10 @@ object Elements:
       case a => ListHelpers.overlaps(a.itr, 2)
     },
     addPart("Þv", Monad, false) {
-      case VStr(a) =>   
+      case VStr(a) =>
         val v = ListHelpers.overlaps(a, 2).map(VStr(_))
-          VList(0 +: v)
-      case a =>  
+        VList(0 +: v)
+      case a =>
         val v = ListHelpers.overlaps(a.itr, 2).map(VList(_))
         VList(0 +: v)
     },
@@ -1911,7 +1911,6 @@ object Elements:
           .map(char => VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower)))
         if inds.length == 1 then inds.head else VList(inds)
     },
-
     addPart("ø»", Triad, true) {
       case (VStr(s), len: VNum, VStr(padwith)) =>
         StringHelpers.padLeftWith(s, len, padwith)
@@ -1929,7 +1928,7 @@ object Elements:
         StringHelpers.stripRight(a.toString(), b.toString())
     },
     addPart("ø>", Dyad, true) {
-     case (a: VVal, b: VVal) =>
+      case (a: VVal, b: VVal) =>
         StringHelpers.stripLeft(a.toString(), b.toString())
     },
     addPart("øS", Monad, true) {
@@ -2021,10 +2020,10 @@ object Elements:
     },
     addPart("Þ▲", Dyad, false) {
       case (a: VPhysical, b: VPhysical) =>
-        a.itr.zip(b.itr).map((i,j) => if j.toBool then i else VNum(0))
-      case (a: VPhysical, f: VFun) => // mask after applying 
+        a.itr.zip(b.itr).map((i, j) => if j.toBool then i else VNum(0))
+      case (a: VPhysical, f: VFun) => // mask after applying
         val mask = f(a.itr)
-        a.itr.zip(mask.itr).map((i,j) => if j.toBool then i else VNum(0))
+        a.itr.zip(mask.itr).map((i, j) => if j.toBool then i else VNum(0))
     },
     "Þo" ->
       direct(Monad) {

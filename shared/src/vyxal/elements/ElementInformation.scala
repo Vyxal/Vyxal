@@ -1482,7 +1482,8 @@ object ElementInformation:
       Overload(
         name = "Overlapping Pairs Prepend Zero",
         args = Seq("nsl"),
-        description = "Get overlapping pairs of #1 and prepend zero. Shortcut for `v0p`",
+        description =
+          "Get overlapping pairs of #1 and prepend zero. Shortcut for `v0p`",
       ),
     ),
     AddElement(
@@ -5500,7 +5501,8 @@ object ElementInformation:
       Overload(
         name = "Mask keep all",
         args = Seq("nsl, nsl"),
-        description = "Item in #1 if corresponding item #2 is truthy, 0 otherwise. Similar to `Ẅ∧`",
+        description =
+          "Item in #1 if corresponding item #2 is truthy, 0 otherwise. Similar to `Ẅ∧`",
       ),
       Overload(
         name = "List from antidiagonals",
@@ -5543,7 +5545,7 @@ object ElementInformation:
         description = "Strip #2 from the left of #1",
       ),
     ),
-     AddElement(
+    AddElement(
       symbol = "ø<",
       keywords = Seq("strip-right", "right-strip"),
       arity = 2,
@@ -5587,7 +5589,6 @@ object ElementInformation:
         description = "Does #1 end with #2?",
       ),
     ),
-
     AddElement(
       symbol = "Þ⁰",
       keywords = Seq("zero-lift"),

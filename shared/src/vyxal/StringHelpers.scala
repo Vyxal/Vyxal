@@ -265,23 +265,19 @@ object StringHelpers:
         .slice(0, endlen.toInt.max(s.length))
         .reverse
 
-
   def stripRight(s: String, r: String)(using Context): String =
     if r.isEmpty then return s
     else
       var tr = s
-      while tr.endsWith(r) do 
-        tr = tr.dropRight(r.length())
+      while tr.endsWith(r) do tr = tr.dropRight(r.length())
       tr
 
   def stripLeft(s: String, r: String)(using Context): String =
     if r.isEmpty then return s
     else
       var tr = s
-      while tr.startsWith(r) do 
-        tr = tr.drop(r.length())
+      while tr.startsWith(r) do tr = tr.drop(r.length())
       tr
-
 
   def r(s: VAny): Regex =
     try s.toString.r
