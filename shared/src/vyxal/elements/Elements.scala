@@ -8,10 +8,7 @@ import vyxal.conversions.{*, given}
 import vyxal.parsing.Codepage
 import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
-import vyxal.ListHelpers.maxDepth
 import vyxal.MiscHelpers.defaultEmpty
-import vyxal.MiscHelpers.vyPrintln
-import vyxal.StringHelpers.caseOf
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
@@ -555,6 +552,14 @@ object Elements:
         val lst = pop()
         FuncHelpers.reduceOverPairs(fn, lst.itr)
       case a => ListHelpers.overlaps(a.itr, 2)
+    },
+    addPart("Þv", Monad, false) {
+      case VStr(a) =>   
+        val v = ListHelpers.overlaps(a, 2).map(VStr(_))
+          VList(0 +: v)
+      case a =>  
+        val v = ListHelpers.overlaps(a.itr, 2).map(VList(_))
+        VList(0 +: v)
     },
     "w" ->
       direct(Monad) {
@@ -1906,6 +1911,7 @@ object Elements:
           .map(char => VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower)))
         if inds.length == 1 then inds.head else VList(inds)
     },
+
     addPart("ø»", Triad, true) {
       case (VStr(s), len: VNum, VStr(padwith)) =>
         StringHelpers.padLeftWith(s, len, padwith)
@@ -1917,6 +1923,23 @@ object Elements:
         StringHelpers.padRightWith(s, len, padwith)
       case (VStr(s), VStr(padwith), len: VNum) =>
         StringHelpers.padRightWith(s, len, padwith)
+    },
+    addPart("ø<", Dyad, true) {
+      case (a: VVal, b: VVal) =>
+        StringHelpers.stripRight(a.toString(), b.toString())
+    },
+    addPart("ø>", Dyad, true) {
+     case (a: VVal, b: VVal) =>
+        StringHelpers.stripLeft(a.toString(), b.toString())
+    },
+    addPart("øS", Monad, true) {
+      case VStr(a) => a.strip()
+    },
+    addPart("øh", Dyad, true) {
+      case (a: VVal, b: VVal) => a.toString().startsWith(b.toString())
+    },
+    addPart("øt", Dyad, true) {
+      case (a: VVal, b: VVal) => a.toString().endsWith(b.toString())
     },
     addPart("ø◲", Dyad, false) {
       case (VList(a), b) => VList((b +: a) :+ b)
@@ -1995,6 +2018,13 @@ object Elements:
     },
     addPart("ÞṬ", Monad, false) {
       case VList(lst) => ListHelpers.multiDimTruthyIndices(lst)
+    },
+    addPart("Þ▲", Dyad, false) {
+      case (a: VPhysical, b: VPhysical) =>
+        a.itr.zip(b.itr).map((i,j) => if j.toBool then i else VNum(0))
+      case (a: VPhysical, f: VFun) => // mask after applying 
+        val mask = f(a.itr)
+        a.itr.zip(mask.itr).map((i,j) => if j.toBool then i else VNum(0))
     },
     "Þo" ->
       direct(Monad) {

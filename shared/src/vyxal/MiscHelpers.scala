@@ -3,8 +3,6 @@ package vyxal
 import vyxal.conversions.{*, given}
 import vyxal.parsing.Lexer
 import vyxal.Interpreter.executeFn
-import vyxal.RegisterHelpers.length
-import vyxal.StringHelpers.padLeft
 
 import scala.annotation.tailrec
 import scala.collection.mutable.ArrayBuffer

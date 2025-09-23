@@ -510,6 +510,13 @@ class ElementTests extends VyxalTests:
     )
   }
 
+  describe("Element Þ▲") {
+    testMulti(
+      """ "hello world" 10010101101 Þ▲""" -> vSeq("h", 0, 0, "l", 0, " ", 0, "o", "r", 0, "d"),
+      """ k⁰ λ⍢] Þ▲ """ -> vSeq(0, 1, 0, 7, 0, 0, 3, 0, 0, 0),
+    )
+  }
+
   describe("Element #W") {
     testMulti(
       "7ʀ⍨3#W" -> vSeq(6, 5, 4),

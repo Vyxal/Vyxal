@@ -1475,6 +1475,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "Þv",
+      keywords = Seq("overlapping-pairs-prepend-zero"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Overlapping Pairs Prepend Zero",
+        args = Seq("nsl"),
+        description = "Get overlapping pairs of #1 and prepend zero. Shortcut for `v0p`",
+      ),
+    ),
+    AddElement(
       symbol = "w",
       keywords = Seq("wrap-in-list", "singleton", "wrap-self"),
       arity = 1,
@@ -5482,6 +5493,22 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "Þ▲",
+      keywords = Seq("mask-keep"),
+      arity = 2,
+      Options(vectorises = false),
+      Overload(
+        name = "Mask keep all",
+        args = Seq("nsl, nsl"),
+        description = "Item in #1 if corresponding item #2 is truthy, 0 otherwise. Similar to `Ẅ∧`",
+      ),
+      Overload(
+        name = "List from antidiagonals",
+        args = Seq("nsl, fun"),
+        description = "#1[i] if #2(#1[i]) is truthy, 0 otherwise",
+      ),
+    ),
+    AddElement(
       symbol = "ø»",
       keywords = Seq("pad-right-with", "custom-right-pad", "custom-pad-right"),
       arity = 3,
@@ -5505,6 +5532,62 @@ object ElementInformation:
         typeSwitchable = true,
       ),
     ),
+    AddElement(
+      symbol = "ø>",
+      keywords = Seq("strip-left", "left-strip"),
+      arity = 2,
+      Options(vectorises = true),
+      Overload(
+        name = "Strip Left",
+        args = Seq("str, str"),
+        description = "Strip #2 from the left of #1",
+      ),
+    ),
+     AddElement(
+      symbol = "ø<",
+      keywords = Seq("strip-right", "right-strip"),
+      arity = 2,
+      Options(vectorises = true),
+      Overload(
+        name = "Strip Right",
+        args = Seq("str, str"),
+        description = "Strip #2 from the right of #1",
+      ),
+    ),
+    AddElement(
+      symbol = "øS",
+      keywords = Seq("strip-whitespace"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Strip Whitespace",
+        args = Seq("str"),
+        description = "Strip leading and trailing whitespace",
+      ),
+    ),
+    AddElement(
+      symbol = "øh",
+      keywords = Seq("starts-with"),
+      arity = 2,
+      Options(vectorises = true),
+      Overload(
+        name = "Starts With",
+        args = Seq("str", "str"),
+        description = "Does #1 start with #2?",
+      ),
+    ),
+    AddElement(
+      symbol = "øt",
+      keywords = Seq("ends-with"),
+      arity = 2,
+      Options(vectorises = true),
+      Overload(
+        name = "Ends With",
+        args = Seq("str", "str"),
+        description = "Does #1 end with #2?",
+      ),
+    ),
+
     AddElement(
       symbol = "Þ⁰",
       keywords = Seq("zero-lift"),

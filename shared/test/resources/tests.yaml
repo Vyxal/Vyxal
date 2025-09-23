@@ -1259,7 +1259,11 @@
    - {in: ["verylongstring", "pad", 4], out: "verylongstring"}
    - {in: ["leftpad", -10, ">"], out: "leftpad>>>"}
 
-
+"ø>":
+  - {in: ["111234567", "1"], out: "234567"}
+  
+"ø<":
+  - {in: ["1234567777", "7"], out: "123456"}
   
 "»":
   - {in: [100, 3], out: 12}
