@@ -189,7 +189,7 @@ object CLI:
           .action((_, cfg) => cfg.copy(printHelp = true))
           .text("Print this help message and exit")
           .optional(),
-        opt[Unit]('v', "version")
+        opt[Unit]("version")
           .action((_, cfg) => cfg.copy(printVersion = true))
           .text("Print version information")
           .optional(),
