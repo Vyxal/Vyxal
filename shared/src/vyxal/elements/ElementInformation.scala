@@ -2797,7 +2797,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "Þ≓",
-      keywords = Seq("palindromise"),
+      keywords = Seq("palindromise-any"),
       arity = 1,
       Options(),
       Overload(
