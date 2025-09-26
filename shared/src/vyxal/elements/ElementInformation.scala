@@ -5505,7 +5505,7 @@ object ElementInformation:
           "Item in #1 if corresponding item #2 is truthy, 0 otherwise. Similar to `Ẅ∧`",
       ),
       Overload(
-        name = "List from antidiagonals",
+        name = "Mask keep all by function",
         args = Seq("nsl, fun"),
         description = "#1[i] if #2(#1[i]) is truthy, 0 otherwise",
       ),
