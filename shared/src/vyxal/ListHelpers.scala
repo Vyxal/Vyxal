@@ -609,6 +609,14 @@ object ListHelpers:
       case _ => VNum(d)
     }
 
+  def listDepth(lst: Seq[VAny], n: Int = 0)(using Context): Seq[VAny] =
+    val d: Int = n
+    lst.map {
+      case VListOf[VVal](s) => VNum(d)
+      case VList(s) => itemDepth(s, d + 1)
+      case _ => VNum(d)
+    }
+
   /** Merge a possibly infinite list of possibly infinite lists diagonally */
   def mergeInfLists[T](lists: Seq[Seq[T]]): LazyList[T] =
     // Based off of https://stackoverflow.com/a/20516638
@@ -1441,6 +1449,28 @@ object ListHelpers:
     lst.zipWithIndex.filter { case (v, idx) => v.toBool }.map {
       case (_, idx) => VNum(idx)
     }
+
+  def multiDimTruthyIndices(lst: Seq[VAny])(using Context): Seq[VAny] =
+    def getIdx(lst: Seq[VAny], depth: Seq[VNum] = Seq.empty): Seq[VAny] =
+      lst.zipWithIndex.collect {
+        case (VList(sub), idx) if !sub.isEmpty =>
+          val i = depth.appended(VNum(idx))
+          getIdx(sub, i)
+        case (x: VVal, idx) if x.toBool => depth.appended(VNum(idx))
+      }
+    def flatHelper(lst: Seq[VAny])(using Context): Seq[VAny] =
+      lst.map { iter =>
+        iter match
+          case VListOf[VVal](l) => l.length
+          case VList(l2) => flatHelper(l2)
+          case _: VVal => 1
+          case a =>
+            throw VyxalRuntimeException("This is just a list of numbers")
+      }
+    val idx = getIdx(lst)
+    val sep = flatten(flatHelper(idx))
+    partitionBy(flatten(idx), sep.map(_.asInstanceOf[VNum]))
+  end multiDimTruthyIndices
 
   /** Zip multiple VLists together with a function.
     *

@@ -1475,6 +1475,18 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "Þv",
+      keywords = Seq("overlapping-pairs-prepend-zero"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Overlapping Pairs Prepend Zero",
+        args = Seq("nsl"),
+        description =
+          "Get overlapping pairs of #1 and prepend zero. Shortcut for `v0p`",
+      ),
+    ),
+    AddElement(
       symbol = "w",
       keywords = Seq("wrap-in-list", "singleton", "wrap-self"),
       arity = 1,
@@ -1953,6 +1965,17 @@ object ElementInformation:
         name = "Reverse register",
         args = Seq(),
         description = "Reverse the register",
+      ),
+    ),
+    AddElement(
+      symbol = "Þc",
+      keywords = Seq("register-contains"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Register Contains",
+        args = Seq("any"),
+        description = "Is #1 in the register?",
       ),
     ),
     AddElement(
@@ -2673,6 +2696,7 @@ object ElementInformation:
         "first-predicate-index",
         "vectorised-pair",
         "vec-pair",
+        "capitalization-transfer",
       ),
       arity = 2,
       Options(),
@@ -2703,6 +2727,12 @@ object ElementInformation:
         name = "Vectorised Pair",
         args = Seq("lst", "str|num"),
         description = "Pair each item in {#1|#2} with {#2|#1}",
+      ),
+      Overload(
+        name = "Transfer Capitalization",
+        args = Seq("str", "str"),
+        description =
+          "Change characters in #1 to the case of the character at that index in #2 ",
       ),
     ),
     AddElement(
@@ -2767,7 +2797,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "Þ≓",
-      keywords = Seq("palindromise"),
+      keywords = Seq("palindromise-any"),
       arity = 1,
       Options(),
       Overload(
@@ -2778,7 +2808,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "Ͼ",
-      keywords = Seq("vectorised-sums", "register-apply-head"),
+      keywords = Seq("vectorised-sums", "register-apply-head", "n-spaces"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -3122,7 +3152,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "√",
-      keywords = Seq("square-root", "sqrt", "palindromise"),
+      keywords = Seq("square-root", "sqrt", "palindromise-string"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -3514,6 +3544,17 @@ object ElementInformation:
       Options(),
       Overload(
         name = "Truthy Indexes",
+        args = Seq("lst"),
+        description = "Indexes of truthy elements in #1",
+      ),
+    ),
+    AddElement(
+      symbol = "ÞṬ",
+      keywords = Seq("multi-dim-truthy-indexes"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Multidimensional Truthy Indexes",
         args = Seq("lst"),
         description = "Indexes of truthy elements in #1",
       ),
@@ -3924,7 +3965,18 @@ object ElementInformation:
       arity = 0,
       Options(),
       Overload(
-        name = "Printable ASCII",
+        name = "Printable ASCII with Space",
+        args = Seq(),
+        description = "Push \" \" to \"~\" to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "kQ",
+      keywords = Seq("&PRINTABLE-ASCII-NO-SPACE"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Printable ASCII without Space",
         args = Seq(),
         description = "Push \"!\" to \"~\" to the stack",
       ),
@@ -4084,6 +4136,18 @@ object ElementInformation:
         args = Seq(),
         description =
           "Push \"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba\" to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "kb",
+      keywords = Seq("&REVERSE-LOWERCASE-UPPERCASE"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Reverse Lowercase and Uppercase",
+        args = Seq(),
+        description =
+          "Push \"zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA\" to the stack",
       ),
     ),
     AddElement(
@@ -4385,6 +4449,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "k¹",
+      keywords = Seq("empty-list"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Empty List",
+        args = Seq(),
+        description = "Push the empty list to the stack",
+      ),
+    ),
+    AddElement(
       symbol = "kġ",
       keywords = Seq("&LOWERCASE-CONSONANTS"),
       arity = 0,
@@ -4437,6 +4512,50 @@ object ElementInformation:
         name = "Brainf*ck Commands",
         args = Seq(),
         description = "Push \"[]<>-+.,\" to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "k(",
+      keywords = Seq("&PARENTHESES", "&PARENS"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Parentheses",
+        args = Seq(),
+        description = "Push \"()\" to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "k[",
+      keywords = Seq("&BRACKETS", "&SQUARE-BRACKETS"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Square Brackets",
+        args = Seq(),
+        description = "Push \"[]\" to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "k{",
+      keywords = Seq("&BRACES", "&CURLY-BRACES"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Braces",
+        args = Seq(),
+        description = "Push \"{}\" to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "k×",
+      keywords = Seq("&ANGLE-BRACKETS"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Angle Brackets",
+        args = Seq(),
+        description = "Push \"<>\" to the stack",
       ),
     ),
     AddElement(
@@ -4666,6 +4785,17 @@ object ElementInformation:
         args = Seq("any"),
         description =
           "Ensure #1 is wrapped in a list. Returns scalars wrapped in a list. Returns lists as-is",
+      ),
+    ),
+    AddElement(
+      symbol = "#W",
+      keywords = Seq("wrap-last-n"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Wrap last N",
+        args = Seq("num"),
+        description = "Wrap last #1 items from the stack ",
       ),
     ),
     AddElement(
@@ -5069,6 +5199,34 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "ø⊠",
+      keywords = Seq("surround-grid", "outline", "border"),
+      arity = 2,
+      Options(vectorises = false),
+      Overload(
+        name = "2D Surround",
+        args = Seq("lst[lst]", "nsl"),
+        description = "#1 surrounded by #2",
+      ),
+    ),
+    AddElement(
+      symbol = "ø⩔",
+      keywords = Seq("codepage-find", "codepage-index"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Codepage Character",
+        args = Seq("num"),
+        description = "Get char at codepage index #1",
+      ),
+      Overload(
+        name = "Index in Codepage",
+        args = Seq("str"),
+        description =
+          "Index of #1 in codepage. With string.len > 1, vectorises over each character",
+      ),
+    ),
+    AddElement(
       symbol = "Þ0",
       keywords = Seq("zero-pad"),
       arity = 2,
@@ -5336,6 +5494,23 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "Þ▲",
+      keywords = Seq("mask-keep"),
+      arity = 2,
+      Options(vectorises = false),
+      Overload(
+        name = "Mask keep all",
+        args = Seq("nsl, nsl"),
+        description =
+          "Item in #1 if corresponding item #2 is truthy, 0 otherwise. Similar to `Ẅ∧`",
+      ),
+      Overload(
+        name = "Mask keep all by function",
+        args = Seq("nsl, fun"),
+        description = "#1[i] if #2(#1[i]) is truthy, 0 otherwise",
+      ),
+    ),
+    AddElement(
       symbol = "ø»",
       keywords = Seq("pad-right-with", "custom-right-pad", "custom-pad-right"),
       arity = 3,
@@ -5357,6 +5532,61 @@ object ElementInformation:
         args = Seq("str, num|str, str|num"),
         description = "Left-pad #1 to length {#2|#3} with {#3|#2}",
         typeSwitchable = true,
+      ),
+    ),
+    AddElement(
+      symbol = "ø>",
+      keywords = Seq("strip-left", "left-strip"),
+      arity = 2,
+      Options(vectorises = true),
+      Overload(
+        name = "Strip Left",
+        args = Seq("str, str"),
+        description = "Strip #2 from the left of #1",
+      ),
+    ),
+    AddElement(
+      symbol = "ø<",
+      keywords = Seq("strip-right", "right-strip"),
+      arity = 2,
+      Options(vectorises = true),
+      Overload(
+        name = "Strip Right",
+        args = Seq("str, str"),
+        description = "Strip #2 from the right of #1",
+      ),
+    ),
+    AddElement(
+      symbol = "øS",
+      keywords = Seq("strip-whitespace"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Strip Whitespace",
+        args = Seq("str"),
+        description = "Strip leading and trailing whitespace",
+      ),
+    ),
+    AddElement(
+      symbol = "øh",
+      keywords = Seq("starts-with"),
+      arity = 2,
+      Options(vectorises = true),
+      Overload(
+        name = "Starts With",
+        args = Seq("str", "str"),
+        description = "Does #1 start with #2?",
+      ),
+    ),
+    AddElement(
+      symbol = "øt",
+      keywords = Seq("ends-with"),
+      arity = 2,
+      Options(vectorises = true),
+      Overload(
+        name = "Ends With",
+        args = Seq("str", "str"),
+        description = "Does #1 end with #2?",
       ),
     ),
     AddElement(

@@ -149,13 +149,13 @@ Element, Modifier, and Syntax Reference
 | <code>≥</code> | <code>greater-than-or-equal</code></br><code>gte</code></br><code>>=</code></br><code>max-by</code> | 2 | vec  | **Greater Than or Equal** (`scl,scl`): #1 >= #2</br>**Max By** (`nsl,fun`): Maximum of list(#1) by function #2</br>**Max By** (`fun,nsl`): Maximum of list(#2) by function #1 |
 | <code>≠</code> | <code>not-equal</code></br><code>neq</code></br><code>!=</code></br><code>=n't</code></br><code>eqn't</code></br><code>equaln't</code> | 2 | vec  | **Not Equal** (`scl,scl`): str(#1) != str(#2) |
 | <code>≡</code> | <code>exact-equals</code></br><code>eq+</code></br><code>===</code> | 2 |   | **Equals** (`any,any`): Does #1 exactly equal #2 |
-| <code>•</code> | <code>dot-product</code></br><code>string-repeat-concat</code></br><code>bijective-base</code></br><code>first-predicate-index</code></br><code>vectorised-pair</code></br><code>vec-pair</code> | 2 |   | **Dot Product** (`lst,lst`): Dot product of #1 and #2</br>**String-repeat concatenate** (`lst[num],lst[str]`): Repeat each string in #2 #1[i] times, then concatenate the result</br>**Bijective Base Conversion** (`num,num`):  Convert #1 to bijective base #2</br>**First Index Where Predicate True** (`nsl,fun`): Index of the first value in #1 where function #2 is true</br>**First Index Where Predicate True** (`fun,nsl`): Index of the first value in #2 where function #1 is true</br>**Vectorised Pair** (`lst,str\|num`): Pair each item in {#1|#2} with {#2|#1} |
+| <code>•</code> | <code>dot-product</code></br><code>string-repeat-concat</code></br><code>bijective-base</code></br><code>first-predicate-index</code></br><code>vectorised-pair</code></br><code>vec-pair</code></br><code>capitalization-transfer</code> | 2 |   | **Dot Product** (`lst,lst`): Dot product of #1 and #2</br>**String-repeat concatenate** (`lst[num],lst[str]`): Repeat each string in #2 #1[i] times, then concatenate the result</br>**Bijective Base Conversion** (`num,num`):  Convert #1 to bijective base #2</br>**First Index Where Predicate True** (`nsl,fun`): Index of the first value in #1 where function #2 is true</br>**First Index Where Predicate True** (`fun,nsl`): Index of the first value in #2 where function #1 is true</br>**Vectorised Pair** (`lst,str\|num`): Pair each item in {#1|#2} with {#2|#1}</br>**Transfer Capitalization** (`str,str`): Change characters in #1 to the case of the character at that index in #2  |
 | <code>±</code> | <code>signum</code></br><code>case-of</code></br><code>case</code></br><code>sign</code> | 1 | vec  | **Signum** (`num`): Sign of #1 (1 if positive, 0 if 0, -1 if negative)</br>**Case of** (`str`): Case of #1 (1 if uppercase, 0 if lowercase, -1 if mixed) |
 | <code>†</code> | <code>lengths-of-consecutives</code> | 1 |   | **Lengths of Consecutives** (`lst`): Lengths of consecutive runs of equal elements in #1 |
 | <code>⎙</code> | <code>peek-print</code> | 1* |   | **Peek Print** (`any`): Print #1 without popping |
 | <code>γ</code> | <code>wrap-len-two</code></br><code>pairs</code> | 1 |   | **Wrap to Length 2** (`any`): Wrap #1 into chunks of length 2 |
 | <code>≓</code> | <code>mirror</code> | 1 |   | **Mirror** (`any`): Mirror #1 (#1 + reverse(#1)), as the original type |
-| <code>Ͼ</code> | <code>vectorised-sums</code></br><code>register-apply-head</code> | 1 | vec  | **Vectorised Sums** (`lst`): Sum of each item in #1. Functionally equivalent to `¨∑`</br>**Push N spaces** (`num`): Push #1 spaces to the stack</br>**Apply to Register** (`fun`): Apply #1 to the top of the register |
+| <code>Ͼ</code> | <code>vectorised-sums</code></br><code>register-apply-head</code></br><code>n-spaces</code> | 1 | vec  | **Vectorised Sums** (`lst`): Sum of each item in #1. Functionally equivalent to `¨∑`</br>**Push N spaces** (`num`): Push #1 spaces to the stack</br>**Apply to Register** (`fun`): Apply #1 to the top of the register |
 | <code>ᴥ</code> | <code>exec</code></br><code>ten-power</code></br><code>call</code></br><code>@</code> | 1 | vec  | **10 to the Power of** (`num`): 10 ** #1</br>**Execute** (`str`): Execute #1 as Vyxal code</br>**Call Function** (`fun`): Call function #1 |
 | <code>ℳ</code> | <code>modular</code></br><code>matrix-multiply</code></br><code>regex-full-match?</code></br><code>round-to</code></br><code>n-places</code> | 2 |   | **Every Nth Element** (`itr,num`): Every #2th element of #1</br>**Every Nth Element** (`num,itr`): Every #1th element of #2</br>**Matrix Multiply** (`lst,lst`): Matrix multiply #1 and #2</br>**Round to N places** (`num,num`): Round #1 to #2 decimal places. Negative values of #2 will round to that power of 10</br>**Regex Full Match?** (`str,str`): Does pattern #2 fully match #1 |
 | <code>℗</code> | <code>is-prime</code></br><code>prime?</code></br><code>quine-cheese</code> | 1 | vec  | **Is Prime** (`num`): Is #1 a prime number?</br>**Quine Cheese** (`str`): Quotify #1 and prepend it to #1. (Useful for quines like `"℗"℗`) |
@@ -173,7 +173,7 @@ Element, Modifier, and Syntax Reference
 | <code>★</code> | <code>asterisk</code></br><code>star</code> | 0 |   | **Asterisk**: Push an asterisk to the stack |
 | <code>ᑂ</code> | <code>headless-top</code></br><code>head-extract-under</code></br><code>apply-at-head</code></br><code>apply-to-head</code></br><code>head-apply</code> | 1 |   | **Head on Top, Rest on Bottom** (`any`): Push #1[1:] and #1[0]</br>**Range [2, n]** (`num`): Range from 2 to #1 inclusive</br>**Apply to Head** (`fun`): Apply #1 to the first item in the item underneath |
 | <code>∻</code> | <code>integer-divide</code></br><code>int-div</code></br><code>//</code></br><code>overwrite</code></br><code>vertical-merge</code> | 2 | vec  | **Integer Divide** (`num,num`): #1 // #2</br>**Vertical Merge** (`str,str`): overwrite the start of the longer string with the shorter one |
-| <code>√</code> | <code>square-root</code></br><code>sqrt</code></br><code>palindromise</code> | 1 | vec  | **Square Root** (`num`): Square root of #1</br>**Palindromise String** (`str`): Palindromise #1 |
+| <code>√</code> | <code>square-root</code></br><code>sqrt</code></br><code>palindromise-string</code> | 1 | vec  | **Square Root** (`num`): Square root of #1</br>**Palindromise String** (`str`): Palindromise #1 |
 | <code>⍰</code> | <code>truthy?</code> | 1 | vec  | **Truthy?** (`scl`): Is #1 truthy? (Not 0, empty, or false) |
 | <code>◌</code> | <code>round</code></br><code>lowercase?</code></br><code>is-lowercase</code> | 1 | vec  | **Round** (`num`): Round #1 to the nearest integer, half-up</br>**Is Lowercase** (`str`): Check if #1 is lowercase. With string.len > 1, vectorises over each character |
 | <code>δ</code> | <code>deltas</code></br><code>differences</code> | 1 |   | **Deltas** (`lst`): Deltas/forward differences of #1 - [a - b, b - c, c - d, ...] |
@@ -224,6 +224,7 @@ Element, Modifier, and Syntax Reference
 | <code>#C</code> | <code>compress</code></br><code>dictionary-compress</code></br><code>dict-compress</code> | 1 | vec  | **Compress** (`str`): Compress #1 using the Vyxal compression algorithm |
 | <code>#D</code> | <code>decompress</code></br><code>uncompress</code></br><code>dict-decompress</code> | 1 | vec  | **Decompress** (`str`): Decompress #1 using the Vyxal compression algorithm |
 | <code>#Q</code> | <code>quit</code> | 0 |   | **Quit**: Quit the program |
+| <code>#W</code> | <code>wrap-last-n</code> | 1 |   | **Wrap last N** (`num`): Wrap last #1 items from the stack  |
 | <code>#X</code> | <code>break</code> | 0 |   | **Break**: Break out of the current loop |
 | <code>#`</code> | <code>len-stack</code></br><code>stack-len</code> | 0 |   | **Length of Stack**: Push the length of the stack to the stack |
 | <code>#c</code> | <code>b252compress</code> | 1 | vec  | **Base 252 Compress String** (`str`): Compress #1 using simple base 252 compression. Requires all characters to be lowercase letters, or spaces.</br>**Base 252 Compress Number** (`num`): Convert #1 to base 252, using the codepage as the digits |
@@ -233,6 +234,8 @@ Element, Modifier, and Syntax Reference
 | <code>#↸</code> | <code>retrieve-from-outer</code> | 1 |   | **Retrieve Item at Index from Outer Stack** (`num`): Retrieve the item at index #1 from the outer stack, current stack if at top level</br>**Retrieve Item at Index from Outer Stack N-Layers Up** (`lst[num, num]`): Retrieve the item at index #2 from the stack #1 levels up |
 | <code>k⍾</code> | <code>amogus</code> | 0 |   | **Amogus**: Sus |
 | <code>k⩔</code> | <code>&CODEPAGE</code> | 0 |   | **Codepage**: Push the Vyxal codepage to the stack |
+| <code>k×</code> | <code>&ANGLE-BRACKETS</code> | 0 |   | **Angle Brackets**: Push "<>" to the stack |
+| <code>k(</code> | <code>&PARENTHESES</code></br><code>&PARENS</code> | 0 |   | **Parentheses**: Push "()" to the stack |
 | <code>k+</code> | <code>-1~1</code></br><code>neg-one-one</code></br><code>NW</code></br><code>northwest</code> | 0 |   | **[-1, 1]**: Push the list [-1, 1] to the stack |
 | <code>k-</code> | <code>1~-1</code></br><code>one-neg-one</code></br><code>southeast</code></br><code>SE</code> | 0 |   | **[1, -1]**: Push the list [1, -1] to the stack |
 | <code>k/</code> | <code>&slashes</code> | 0 |   | **Slashes**: Push "/\" to the stack |
@@ -254,13 +257,16 @@ Element, Modifier, and Syntax Reference
 | <code>kH</code> | <code>&HELLO-WORLD</code> | 0 |   | **Hello, World!**: Push "Hello, World!" to the stack |
 | <code>kL</code> | <code>&LOWERCASE-UPPERCASE</code> | 0 |   | **Lowercase and Uppercase**: Push "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
 | <code>kN</code> | <code>&NN</code></br><code>&NATURAL-NUMBERS</code> | 0 |   | **Natural Numbers**: Push a list of every natural number to the stack |
-| <code>kP</code> | <code>&PRINTABLE-ASCII</code> | 0 |   | **Printable ASCII**: Push "!" to "~" to the stack |
+| <code>kP</code> | <code>&PRINTABLE-ASCII</code> | 0 |   | **Printable ASCII with Space**: Push " " to "~" to the stack |
+| <code>kQ</code> | <code>&PRINTABLE-ASCII-NO-SPACE</code> | 0 |   | **Printable ASCII without Space**: Push "!" to "~" to the stack |
 | <code>kR</code> | <code>&DIGITS-UPPERCASE-LOWERCASE</code> | 0 |   | **Digits, Uppercase, Lowercase**: Push "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" to the stack |
 | <code>kV</code> | <code>&UPPERCASE-VOWELS</code> | 0 |   | **Uppercase Vowels**: Push "AEIOU" to the stack |
 | <code>kY</code> | <code>&UPPERCASE-VOWELSY</code> | 0 |   | **Uppercase Vowels and Y**: Push "AEIOUY" to the stack |
 | <code>kZ</code> | <code>&REVERSE-UPPERCASE</code> | 0 |   | **Reverse Uppercase**: Push "ZYXWVUTSRQPONMLKJIHGFEDCBA" to the stack |
+| <code>k[</code> | <code>&BRACKETS</code></br><code>&SQUARE-BRACKETS</code> | 0 |   | **Square Brackets**: Push "[]" to the stack |
 | <code>k^</code> | <code>&UPPERCASE-HEX-DIGITS</code> | 0 |   | **Uppercase Hex Digits**: Push "0123456789ABCDEF" to the stack |
 | <code>ka</code> | <code>&LOWERCASE-LETTERS</code> | 0 |   | **Lowercase Letters**: Push "abcdefghijklmnopqrstuvwxyz" to the stack |
+| <code>kb</code> | <code>&REVERSE-LOWERCASE-UPPERCASE</code> | 0 |   | **Reverse Lowercase and Uppercase**: Push "zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA" to the stack |
 | <code>kd</code> | <code>&DIGITS</code> | 0 |   | **Digits**: Push "0123456789" to the stack |
 | <code>ke</code> | <code>&E-CONSTANT</code> | 0 |   | **E Constant**: Push 2.718281828459045 to the stack |
 | <code>kg</code> | <code>&GOLDEN-RATIO</code></br><code>&PHI</code> | 0 |   | **Golden Ratio**: Push 1.618033988749895 to the stack |
@@ -275,6 +281,7 @@ Element, Modifier, and Syntax Reference
 | <code>kv</code> | <code>&LOWERCASE-VOWELS</code> | 0 |   | **Lowercase Vowels**: Push "aeiou" to the stack |
 | <code>ky</code> | <code>&LOWERCASE-VOWELSY</code> | 0 |   | **Lowercase Vowels and Y**: Push "aeiouy" to the stack |
 | <code>kz</code> | <code>&REVERSE-LOWERCASE</code> | 0 |   | **Reverse Lowercase**: Push "zyxwvutsrqponmlkjihgfedcba" to the stack |
+| <code>k{</code> | <code>&BRACES</code></br><code>&CURLY-BRACES</code> | 0 |   | **Braces**: Push "{}" to the stack |
 | <code>k◲</code> | <code>&PARENS-SQUARES</code> | 0 |   | **Parens and Squares**: Push "()[]" to the stack |
 | <code>k∪</code> | <code>&OPEN-BRACKETS</code> | 0 |   | **Open Brackets**: Push "([{" to the stack |
 | <code>k∩</code> | <code>&CLOSE-BRACKETS</code> | 0 |   | **Close Brackets**: Push ")]}" |
@@ -285,6 +292,7 @@ Element, Modifier, and Syntax Reference
 | <code>k⎀</code> | <code>&LOWER-UPPER-VOWELS</code> | 0 |   | **Lowercase and Uppercase Vowels**: Push "aeiouAEIOU" to the stack |
 | <code>k½</code> | <code>1~2</code></br><code>one-two</code> | 0 |   | **[1, 2]**: Push the list [1, 2] to the stack |
 | <code>k⁰</code> | <code>2147483648</code></br><code>bit-31</code> | 0 |   | **2147483648**: Push 2147483648 to the stack |
+| <code>k¹</code> | <code>empty-list</code> | 0 |   | **Empty List**: Push the empty list to the stack |
 | <code>k²</code> | <code>1048576</code></br><code>bit-20</code> | 0 |   | **1048576 (2^20)**: Push 1048576 to the stack |
 | <code>k³</code> | <code>1073741824</code></br><code>bit-30</code> | 0 |   | **1073741824 (2^30)**: Push 1073741824 to the stack |
 | <code>k⇄</code> | <code>&ARROWS</code></br><code>&DIRECTION-CHARS</code> | 0 |   | **Arrows**: Push "^>v<" |
@@ -324,6 +332,7 @@ Element, Modifier, and Syntax Reference
 | <code>Þ^</code> | <code>reverse-register</code> | 0 |   | **Reverse register**: Reverse the register |
 | <code>Þ_</code> | <code>clear-register</code></br><code>empty-register</code> | 0 |   | **Clear Register**: Clear the register |
 | <code>Þ`</code> | <code>register-length</code></br><code>reg-len</code> | 0 |   | **Register Length**: Push the length of the register |
+| <code>Þc</code> | <code>register-contains</code> | 1 |   | **Register Contains** (`any`): Is #1 in the register? |
 | <code>Þe</code> | <code>enumerate</code> | 1 |   | **Enumerate** (`any`): Zip with range of length #1 |
 | <code>Þi</code> | <code>md-index</code> | 2 |   | **Multi-Dimensional Index** (`lst,lst[num]`): Index #1 at the multi-dimensional index #2 - #1[#2[0]][#2[1]]...[#2[n]] |
 | <code>Þo</code> | <code>grid-neighbours</code></br><code>grid-neighbors</code></br><code>adjacent-cells</code></br><code>adj-cells</code></br><code>surrounding-cells</code> | 1 |   | **Grid Neighbours** (`lst`): Grid neighbours of #1 - up, down, left, right</br>**Grid Neighbours With Starting Direction** (`lst,num`): Grid neighbours of cells in #1 - right, down, left, up - start from direction #2 => 0: right, 1: down, 2: left, 3: up |
@@ -350,6 +359,7 @@ Element, Modifier, and Syntax Reference
 | <code>Þ◌</code> | <code>grid-neighbours-diagonals</code></br><code>grid-neighbors-diagonals</code></br><code>adjacent-cells-diagonals</code></br><code>adj-cells-diagonals</code></br><code>surrounding-cells-diagonals</code></br><code>eight-cells</code> | 1 |   | **Grid Neighbours Diagonals** (`lst`): Grid neighbours of #1 - up, down, left, right, and diagonals</br>**Grid Neighbours Diagonals With Starting Direction** (`lst,num`): Grid neighbours of cells in #1 - right, down, left, up, and diagonals - start from direction #2 => 0: right, 1: down, 2: left, 3: up |
 | <code>Þ⎶</code> | <code>edges</code></br><code>ends</code></br><code>real-imaginary</code> | 1 |   | **Edges** (`itr`): First and last element of #1</br>**Real and Imaginary** (`num`): Real and imaginary parts of #1 |
 | <code>Þ⍨</code> | <code>register-dump</code></br><code>dump-register</code> | 0 |   | **Dump Register**: Pop each item in the register  |
+| <code>ÞṬ</code> | <code>multi-dim-truthy-indexes</code> | 1 |   | **Multidimensional Truthy Indexes** (`lst`): Indexes of truthy elements in #1 |
 | <code>Þ¤</code> | <code>grid-neighbours-diagonals-wrap</code></br><code>grid-neighbors-diagonals-wrap</code></br><code>adjacent-cells-diagonals-wrap</code></br><code>adj-cells-diagonals-wrap</code></br><code>surrounding-cells-diagonals-wrap</code></br><code>eight-cells-wrap</code> | 1 |   | **Grid Neighbours Diagonals Wrap** (`lst`): Grid neighbours of #1 - up, down, left, right, and diagonals - wrapping around</br>**Grid Neighbours Diagonals Wrap With Starting Direction** (`lst,num`): Grid neighbours of cells in #1 - right, down, left, up, and diagonals - wrapping around and start from direction #2 => 0: right, 1: down, 2: left, 3: up. Negative #2 does not include middle, positive #2 does |
 | <code>Þ„</code> | <code>from-diagonals</code> | 1 |   | **List from diagonals** (`lst`): M x N matrix from diagonals, assumes m>n </br>**List from diagonals** (`num, lst`): Matrix from list of diagonals with width #1 |
 | <code>Þ”</code> | <code>from-antidiagonals</code> | 1 |   | **List from antidiagonals** (`lst`): M x N matrix from antidiagonals, assumes m>n </br>**List from antidiagonals** (`num, lst`): Matrix from list of antidiagonals with width #1 |
@@ -386,11 +396,13 @@ Element, Modifier, and Syntax Reference
 | <code>∆∧</code> | <code>bitwise-and</code> | 2 | vec  | **Bitwise And** (`num,num`): #1 & #2 |
 | <code>∆∨</code> | <code>bitwise-or</code> | 2 | vec  | **Bitwise Or** (`num,num`): #1 | #2 |
 | <code>∆⧢</code> | <code>root-of-unity</code> | 1 | vec  | **Principal Root of Unity** (`num`): Principal #1-th root of unity (e^(2i * pi / #1)) |
+| <code>ø⩔</code> | <code>codepage-find</code></br><code>codepage-index</code> | 1 | vec  | **Codepage Character** (`num`): Get char at codepage index #1</br>**Index in Codepage** (`str`): Index of #1 in codepage. With string.len > 1, vectorises over each character |
 | <code>øA</code> | <code>letter-to-number</code></br><code>number-to-letter</code></br><code>letter-number-swap</code></br><code>number-letter-swap</code></br><code>a1-swap</code> | 1 | vec  | **Letter to Number** (`str`): the index of #1 in the alphabet (one-indexed)</br>**Number to Letter** (`num`): the letter at index #1 in the alphabet (one-indexed) |
 | <code>øa</code> | <code>letter-to-index</code></br><code>index-to-letter</code></br><code>letter-index-swap</code></br><code>index-letter-swap</code></br><code>a0-swap</code> | 1 | vec  | **Letter to Index** (`str`): the index of #1 in the alphabet (zero-indexed)</br>**Index to Letter** (`num`): the letter at index #1 in the alphabet (zero-indexed) |
 | <code>ø◲</code> | <code>surround</code> | 2 |   | **Surround** (`any,any`): #1 prepended and appended to #2 |
 | <code>ø«</code> | <code>pad-left-with</code></br><code>custom-left-pad</code></br><code>custom-pad-left</code> | 3 | vec  | **Custom Left Pad** (`str, num\|str, str\|num`): Left-pad #1 to length #2 with #3 |
 | <code>ø»</code> | <code>pad-right-with</code></br><code>custom-right-pad</code></br><code>custom-pad-right</code> | 3 | vec  | **Custom Right Pad** (`str, num\|str, str\|num`): Right-pad #1 to length #2 with #3 |
+| <code>ø⊠</code> | <code>surround-grid</code></br><code>outline</code></br><code>border</code> | 2 |   | **2D Surround** (`lst[lst],nsl`): #1 surrounded by #2 |
 
 ## Modifiers
 
