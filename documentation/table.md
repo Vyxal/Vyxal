@@ -336,6 +336,7 @@ Element, Modifier, and Syntax Reference
 | <code>Þe</code> | <code>enumerate</code> | 1 |   | **Enumerate** (`any`): Zip with range of length #1 |
 | <code>Þi</code> | <code>md-index</code> | 2 |   | **Multi-Dimensional Index** (`lst,lst[num]`): Index #1 at the multi-dimensional index #2 - #1[#2[0]][#2[1]]...[#2[n]] |
 | <code>Þo</code> | <code>grid-neighbours</code></br><code>grid-neighbors</code></br><code>adjacent-cells</code></br><code>adj-cells</code></br><code>surrounding-cells</code> | 1 |   | **Grid Neighbours** (`lst`): Grid neighbours of #1 - up, down, left, right</br>**Grid Neighbours With Starting Direction** (`lst,num`): Grid neighbours of cells in #1 - right, down, left, up - start from direction #2 => 0: right, 1: down, 2: left, 3: up |
+| <code>Þv</code> | <code>overlapping-pairs-prepend-zero</code> | 1 |   | **Overlapping Pairs Prepend Zero** (`nsl`): Get overlapping pairs of #1 and prepend zero. Shortcut for `v0p` |
 | <code>Þw</code> | <code>push-all-register</code></br><code>wrap-register</code> | 0 |   | **Peek Register as List**: Push the entire register to the stack, wrapped in a list |
 | <code>Þ∩</code> | <code>multiset-intersection</code></br><code>mset-isect</code> | 2 |   | **Multiset Intersection** (`lst,lst`): Multiset intersection of #1 and #2 |
 | <code>Þ⊍</code> | <code>multiset-xor</code></br><code>mset-xor</code> | 2 |   | **Multiset XOR** (`lst,lst`): Multiset XOR of #1 and #2 |
@@ -354,11 +355,12 @@ Element, Modifier, and Syntax Reference
 | <code>Þ⦷</code> | <code>register-index</code> | 1 |   | **Register Index** (`num`): Get item in the register at index #1 |
 | <code>Þ≤</code> | <code>min-indices</code></br><code>minimum-indices</code> | 1 |   | **Minimum Indices** (`lst`): Indices where #1 is minimal |
 | <code>Þ≥</code> | <code>max-indices</code></br><code>maximum-indices</code> | 1 |   | **Maximum Indices** (`lst`): Indices where #1 is maximal |
-| <code>Þ≓</code> | <code>palindromise</code> | 1 |   | **Palindromise** (`any`): Palindromise #1 as the original type |
+| <code>Þ≓</code> | <code>palindromise-any</code> | 1 |   | **Palindromise** (`any`): Palindromise #1 as the original type |
 | <code>ÞϾ</code> | <code>register-apply-at-indices</code> | 2 |   | **Apply to register at indices** (`fun,num\|lst[num]`): Get the first #1 items from the register to the stack as a list |
 | <code>Þ◌</code> | <code>grid-neighbours-diagonals</code></br><code>grid-neighbors-diagonals</code></br><code>adjacent-cells-diagonals</code></br><code>adj-cells-diagonals</code></br><code>surrounding-cells-diagonals</code></br><code>eight-cells</code> | 1 |   | **Grid Neighbours Diagonals** (`lst`): Grid neighbours of #1 - up, down, left, right, and diagonals</br>**Grid Neighbours Diagonals With Starting Direction** (`lst,num`): Grid neighbours of cells in #1 - right, down, left, up, and diagonals - start from direction #2 => 0: right, 1: down, 2: left, 3: up |
 | <code>Þ⎶</code> | <code>edges</code></br><code>ends</code></br><code>real-imaginary</code> | 1 |   | **Edges** (`itr`): First and last element of #1</br>**Real and Imaginary** (`num`): Real and imaginary parts of #1 |
 | <code>Þ⍨</code> | <code>register-dump</code></br><code>dump-register</code> | 0 |   | **Dump Register**: Pop each item in the register  |
+| <code>Þ▲</code> | <code>mask-keep</code> | 2 |   | **Mask keep all** (`nsl, nsl`): Item in #1 if corresponding item #2 is truthy, 0 otherwise. Similar to `Ẅ∧`</br>**Mask keep all by function** (`nsl, fun`): #1[i] if #2(#1[i]) is truthy, 0 otherwise |
 | <code>ÞṬ</code> | <code>multi-dim-truthy-indexes</code> | 1 |   | **Multidimensional Truthy Indexes** (`lst`): Indexes of truthy elements in #1 |
 | <code>Þ¤</code> | <code>grid-neighbours-diagonals-wrap</code></br><code>grid-neighbors-diagonals-wrap</code></br><code>adjacent-cells-diagonals-wrap</code></br><code>adj-cells-diagonals-wrap</code></br><code>surrounding-cells-diagonals-wrap</code></br><code>eight-cells-wrap</code> | 1 |   | **Grid Neighbours Diagonals Wrap** (`lst`): Grid neighbours of #1 - up, down, left, right, and diagonals - wrapping around</br>**Grid Neighbours Diagonals Wrap With Starting Direction** (`lst,num`): Grid neighbours of cells in #1 - right, down, left, up, and diagonals - wrapping around and start from direction #2 => 0: right, 1: down, 2: left, 3: up. Negative #2 does not include middle, positive #2 does |
 | <code>Þ„</code> | <code>from-diagonals</code> | 1 |   | **List from diagonals** (`lst`): M x N matrix from diagonals, assumes m>n </br>**List from diagonals** (`num, lst`): Matrix from list of diagonals with width #1 |
@@ -397,8 +399,13 @@ Element, Modifier, and Syntax Reference
 | <code>∆∨</code> | <code>bitwise-or</code> | 2 | vec  | **Bitwise Or** (`num,num`): #1 | #2 |
 | <code>∆⧢</code> | <code>root-of-unity</code> | 1 | vec  | **Principal Root of Unity** (`num`): Principal #1-th root of unity (e^(2i * pi / #1)) |
 | <code>ø⩔</code> | <code>codepage-find</code></br><code>codepage-index</code> | 1 | vec  | **Codepage Character** (`num`): Get char at codepage index #1</br>**Index in Codepage** (`str`): Index of #1 in codepage. With string.len > 1, vectorises over each character |
+| <code>ø<</code> | <code>strip-right</code></br><code>right-strip</code> | 2 | vec  | **Strip Right** (`str, str`): Strip #2 from the right of #1 |
+| <code>ø></code> | <code>strip-left</code></br><code>left-strip</code> | 2 | vec  | **Strip Left** (`str, str`): Strip #2 from the left of #1 |
 | <code>øA</code> | <code>letter-to-number</code></br><code>number-to-letter</code></br><code>letter-number-swap</code></br><code>number-letter-swap</code></br><code>a1-swap</code> | 1 | vec  | **Letter to Number** (`str`): the index of #1 in the alphabet (one-indexed)</br>**Number to Letter** (`num`): the letter at index #1 in the alphabet (one-indexed) |
+| <code>øS</code> | <code>strip-whitespace</code> | 1 | vec  | **Strip Whitespace** (`str`): Strip leading and trailing whitespace |
 | <code>øa</code> | <code>letter-to-index</code></br><code>index-to-letter</code></br><code>letter-index-swap</code></br><code>index-letter-swap</code></br><code>a0-swap</code> | 1 | vec  | **Letter to Index** (`str`): the index of #1 in the alphabet (zero-indexed)</br>**Index to Letter** (`num`): the letter at index #1 in the alphabet (zero-indexed) |
+| <code>øh</code> | <code>starts-with</code> | 2 | vec  | **Starts With** (`str,str`): Does #1 start with #2? |
+| <code>øt</code> | <code>ends-with</code> | 2 | vec  | **Ends With** (`str,str`): Does #1 end with #2? |
 | <code>ø◲</code> | <code>surround</code> | 2 |   | **Surround** (`any,any`): #1 prepended and appended to #2 |
 | <code>ø«</code> | <code>pad-left-with</code></br><code>custom-left-pad</code></br><code>custom-pad-left</code> | 3 | vec  | **Custom Left Pad** (`str, num\|str, str\|num`): Left-pad #1 to length #2 with #3 |
 | <code>ø»</code> | <code>pad-right-with</code></br><code>custom-right-pad</code></br><code>custom-pad-right</code> | 3 | vec  | **Custom Right Pad** (`str, num\|str, str\|num`): Right-pad #1 to length #2 with #3 |
