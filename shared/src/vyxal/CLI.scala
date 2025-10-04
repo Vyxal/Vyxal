@@ -93,8 +93,7 @@ object CLI:
           return
 
         if config.printVersion then
-          println(CLI.version)
-          return
+          return println(version)
 
         if config.litInfoFor.nonEmpty then
           // val keywords = Lexer.literateModeMappings(config.litInfoFor.get)
@@ -190,8 +189,8 @@ object CLI:
           .text("Print this help message and exit")
           .optional(),
         opt[Unit]("version")
-          .action((_, cfg) => cfg.copy(printVersion = true))
-          .text("Print version information")
+          .action((_, cfg) => cfg.copy(printVersion = !cfg.settings.online))
+          .text("Print version information (offline mode only)")
           .optional(),
         opt[String]("file")
           .action((file, cfg) => cfg.copy(filename = Some(file)))
