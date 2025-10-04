@@ -553,6 +553,14 @@ object Elements:
         FuncHelpers.reduceOverPairs(fn, lst.itr)
       case a => ListHelpers.overlaps(a.itr, 2)
     },
+    addPart("Þv", Monad, false) {
+      case VStr(a) =>
+        val v = ListHelpers.overlaps(a, 2).map(VStr(_))
+        VList(0 +: v)
+      case a =>
+        val v = ListHelpers.overlaps(a.itr, 2).map(VList(_))
+        VList(0 +: v)
+    },
     "w" ->
       direct(Monad) {
         push(Seq(pop())) // Tacit!
@@ -770,6 +778,7 @@ object Elements:
     addPart("Þ⦷", Monad, true) {
       case i: VNum => RegisterHelpers.index(i)
     },
+    "Þc" -> fullToImpl(Monad, x => RegisterHelpers.contains(x)),
     "Þ£" ->
       direct(1) {
         val a = pop()
@@ -1139,6 +1148,17 @@ object Elements:
       case (a: VList, b: VVal) => VList(a.map(x => VList(Seq(x, b))))
       case (a: VVal, b: VList) => VList(b.map(x => VList(Seq(x, a))))
       case (a: VList, b: VList) => ListHelpers.dotProduct(a, b)
+
+      case (VStr(a), VStr(b)) =>
+        val capitals = a.map(l => StringHelpers.caseOf(l.toString))
+        b.zip(capitals)
+          .map { (char: Char, upper: VNum) =>
+            if char.isLetter then
+              if upper.toBool then char.toString().toUpperCase()
+              else char.toString().toLowerCase()
+            else char
+          }
+          .mkString
 
       case (number: VNum, base: VNum) =>
         NumberHelpers.toBijectiveBase(number, base)
@@ -1558,46 +1578,97 @@ object Elements:
     "⑥" -> constant(128),
     "⑦" -> constant(256),
     "⑧" -> constant(-1),
-    "kæ" -> niladify(NumberHelpers.probablePrimes),
+
+    // 2 byte numerical constants
+    "ke" -> constant(spire.math.Real.e),
+    "kg" -> constant(spire.math.Real.phi),
+    "ki" -> constant(spire.math.Real.pi),
+    "k1" -> constant(1000),
+    "k2" -> constant(10000),
+    "k3" -> constant(100000),
+    "k4" -> constant(1000000),
+    "k①" -> constant(180),
+    "k②" -> constant(270),
+    "k0" -> constant(360),
+    "k③" -> constant(2048),
+    "k④" -> constant(4096),
+    "k⑤" -> constant(8192),
+    "k⑥" -> constant(16384),
+    "k⑦" -> constant(32768),
+    "k⑧" -> constant(65536),
+    "k²" -> constant(VNum("1048576")),
+    "k³" -> constant(VNum("1073741824")),
+    "k⁰" -> constant(VNum("2147483648")),
+    "k5" -> constant(VNum("4294967296")),
+
+    // List of numbers
     "k+" -> constant(Seq(-1, 1)),
     "k-" -> constant(Seq(1, -1)),
     "k≈" -> constant(Seq(0, 1)),
     "k±" -> constant(Seq(1, 1)),
     "k=" -> constant(Seq(0, 0)),
+    "k½" -> constant(Seq(1, 2)),
     "k≡" -> constant(Seq(-1, 0, 1)),
-    "k0" -> constant(360),
-    "k1" -> constant(1000),
-    "k2" -> constant(10000),
-    "k3" -> constant(100000),
-    "k4" -> constant(1000000),
-    "k5" -> constant(VNum("4294967296")),
-    "k6" -> constant("0123456789abcdef"),
-    "k9" -> constant("123456789"),
+    "k◌" -> constant(VList(Seq(Seq(0, 1), Seq(1, 0), Seq(0, -1), Seq(-1, 0)))),
+
+    // Alphanumerics
     "kA" -> constant("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
+    "kZ" -> constant("ZYXWVUTSRQPONMLKJIHGFEDCBA"),
+    "ka" -> constant("abcdefghijklmnopqrstuvwxyz"),
+    "kz" -> constant("zyxwvutsrqponmlkjihgfedcba"),
     "kB" -> constant("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"),
-    "kD" -> constant("\\|/-_"),
-    "kF" -> constant("FizzBuzz"),
-    "kH" -> constant("Hello, World!"),
     "kL" -> constant("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"),
-    "kP" -> constant(((' ' to '~').toList).mkString),
+    "kl" -> constant("ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"),
+    "kb" -> constant("zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA"),
+    "kr" ->
+      constant(
+        "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      ),
     "kR" ->
       constant(
         "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
       ),
+    "k^" -> constant("0123456789ABCDEF"),
+    "k6" -> constant("0123456789abcdef"),
+    "kd" -> constant("0123456789"),
+    "kn" -> constant("1234567890"),
+    "k9" -> constant("123456789"),
+    "ko" -> constant("01234567"),
+    "k•" -> constant(Seq("qwertyuiop", "asdfghjkl", "zxcvbnm")),
+
+    // Consonants and vowels
     "kV" -> constant("AEIOU"),
     "kY" -> constant("AEIOUY"),
-    "kZ" -> constant("ZYXWVUTSRQPONMLKJIHGFEDCBA"),
-    "k^" -> constant("0123456789ABCDEF"),
-    "ka" -> constant("abcdefghijklmnopqrstuvwxyz"),
-    "kd" -> constant("0123456789"),
-    "ke" -> constant(spire.math.Real.e),
-    "kg" -> constant(spire.math.Real.phi),
-    "kh" -> constant("Hello World"),
-    "ki" -> constant(spire.math.Real.pi),
-    "kk" -> constant("Hello, World!"),
-    "kl" -> constant("ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"),
-    "kn" -> constant("1234567890"),
-    "ko" -> constant("01234567"),
+    "kv" -> constant("aeiou"),
+    "ky" -> constant("aeiouy"),
+    "k⎀" -> constant("aeiouAEIOU"),
+    "kγ" -> constant("aeiouyAEIOUY"),
+    "kġ" -> constant("bcdfghjklmnpqrstvwxyz"),
+    "kɠ" -> constant("bcdfghjklmnpqrstvwxz"),
+    "kĠ" -> constant("BCDFGHJKLMNPQRSTVWXYZ"),
+    "kƓ" -> constant("BCDFGHJKLMNPQRSTVWXZ"),
+
+    // Brackets, lines and arrows
+    "k⎶" -> constant("{}[]<>()"),
+    "k☷" -> constant("()[]{}"),
+    "k◲" -> constant("()[]"),
+    "k(" -> constant("()"),
+    "k[" -> constant("[]"),
+    "k{" -> constant("{}"),
+    "k×" -> constant("<>"),
+    "k∪" -> constant("([{"),
+    "k∩" -> constant(")]}"),
+    "k<" -> constant("([{<"),
+    "k>" -> constant(")]}>"),
+    "k¤" -> constant("([{<>}])"),
+    "k⌹" -> constant(Seq("()", "[]", "{}", "<>")),
+    "kD" -> constant("\\|/-_"),
+    "k/" -> constant("/\\"),
+    "k⇄" -> constant("^>v<"),
+
+    // Ascii stuff
+    "kP" -> constant(((' ' to '~').toList).mkString),
+    "kQ" -> constant((('!' to '~').toList).mkString),
     "kp" ->
       constant(
         ((' ' to '/').toList ++:
@@ -1605,48 +1676,19 @@ object Elements:
           ('[' to '`').toList ++:
           ('{' to '~').toList).mkString
       ),
-    "kr" ->
-      constant(
-        "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-      ),
-    "kv" -> constant("aeiou"),
-    "ky" -> constant("aeiouy"),
-    "kz" -> constant("zyxwvutsrqponmlkjihgfedcba"),
-    "k⎶" -> constant("{}[]<>()"),
-    "k☷" -> constant("()[]{}"),
-    "k◲" -> constant("()[]"),
-    "k∪" -> constant("([{"),
-    "k∩" -> constant(")]}"),
-    "k<" -> constant("([{<"),
-    "k>" -> constant(")]}>"),
-    "k⇄" -> constant("^>v<"),
-    "k⎀" -> constant("aeiouAEIOU"),
-    "k/" -> constant("/\\"),
+
+    // Misc Constants
+    "kH" -> constant("Hello, World!"),
+    "kh" -> constant("Hello World"),
+    "kk" -> constant("Hello, World!"),
+    "kF" -> constant("FizzBuzz"),
     "k⍾" -> constant("ඞ"), // this setup will save us 2 bytes
     "k⩔" -> constant(Codepage),
-    "k½" -> constant(Seq(1, 2)),
-    "k①" -> constant(180),
-    "k②" -> constant(270),
-    "k③" -> constant(2048),
-    "k④" -> constant(4096),
-    "k⑤" -> constant(8192),
-    "k⑥" -> constant(16384),
-    "k⑦" -> constant(32768),
-    "k⑧" -> constant(65536),
-    "k⁰" -> constant(VNum("2147483648")),
-    "kġ" -> constant("bcdfghjklmnpqrstvwxyz"),
-    "kɠ" -> constant("bcdfghjklmnpqrstvwxz"),
-    "kĠ" -> constant("BCDFGHJKLMNPQRSTVWXYZ"),
-    "kƓ" -> constant("BCDFGHJKLMNPQRSTVWXZ"),
+    "k¹" -> constant(Seq.empty), // empty list for multiple inputs
     "k⎘" -> constant("[]<>-+.,"),
-    "k⌹" -> constant(Seq("()", "[]", "{}", "<>")),
-    "k¤" -> constant("([{<>}])"),
-    "k²" -> constant(VNum("1048576")),
-    "k³" -> constant(VNum("1073741824")),
-    "kγ" -> constant("aeiouyAEIOUY"),
-    "k◌" -> constant(VList(Seq(Seq(0, 1), Seq(1, 0), Seq(0, -1), Seq(-1, 0)))),
     "kℂ" -> constant("IVXLCDM"),
-    "k•" -> constant(Seq("qwertyuiop", "asdfghjkl", "zxcvbnm")),
+
+    // other digraphs
     addPart("#C", Monad, true) {
       case VStr(a) => StringHelpers.compressDictionary(a)
     },
@@ -1673,6 +1715,18 @@ object Elements:
       case scalar: (VVal | VFun) => VList(Seq(scalar))
       case lst: VList => lst
     },
+    "#W" ->
+      direct(Monad) {
+        pop() match
+          case n: VNum =>
+            val ctx = summon[Context]
+            val l =
+              Seq(VNum(ctx.getStack.bigLength), n).minOption.getOrElse(VNum(0))
+            val wrapped = Seq.fill(l.toInt)(ctx.pop())
+            push(VList(wrapped.padTo(n.toInt, 0)))
+          case _ =>
+            throw UnsupportedOverloadException("#W", "String | List | Function")
+      },
     "#¿" -> niladify { summon[Context].globals.inputs.length },
     addPart("#ᴥ", Monad, false) {
       case VStr(top) => MiscHelpers.validCode(top)
@@ -1680,6 +1734,7 @@ object Elements:
     addPart("∆<", Monad, true) {
       case a: VNum => a.arg
     },
+    "kæ" -> niladify(NumberHelpers.probablePrimes),
     "kN" ->
       niladify(VList(LazyList.unfold(VNum(1)) {
         case VNum(n, _) => Some((VNum(n), VNum(n + 1)))
@@ -1868,10 +1923,38 @@ object Elements:
       case (VStr(s), VStr(padwith), len: VNum) =>
         StringHelpers.padRightWith(s, len, padwith)
     },
+    addPart("ø<", Dyad, true) {
+      case (a: VVal, b: VVal) =>
+        StringHelpers.stripRight(a.toString(), b.toString())
+    },
+    addPart("ø>", Dyad, true) {
+      case (a: VVal, b: VVal) =>
+        StringHelpers.stripLeft(a.toString(), b.toString())
+    },
+    addPart("øS", Monad, true) {
+      case VStr(a) => a.strip()
+    },
+    addPart("øh", Dyad, true) {
+      case (a: VVal, b: VVal) => a.toString().startsWith(b.toString())
+    },
+    addPart("øt", Dyad, true) {
+      case (a: VVal, b: VVal) => a.toString().endsWith(b.toString())
+    },
     addPart("ø◲", Dyad, false) {
       case (VList(a), b) => VList((b +: a) :+ b)
       case (VStr(a), VStr(b)) => b + a + b
       case (a, VList(b)) => VList((a +: b) :+ a)
+    },
+    addPart("ø⊠", Dyad, false) { // 2D surround
+      case (VListOf[VList](lst), b: VPhysical) =>
+        val inner = lst.map(i => VList((b +: i) :+ b))
+        val outer = VList(Seq.fill(inner(0).length)(b))
+        VList((outer +: inner) :+ outer)
+    },
+    addPart("ø⩔", Monad, true) {
+      case n: VNum => Codepage(n.toInt).toString()
+      case VStr(s) if s.length == 1 => Codepage.indexOf(s)
+      case VStr(s) => VList(s.map(c => VNum(Codepage.indexOf(c))))
     },
     addPart("Þ0", Dyad, false) {
       case (a: VList, b: VNum) => ListHelpers.zeroPad(a, b)
@@ -1931,6 +2014,16 @@ object Elements:
     },
     addPart("ÞG", Dyad, false) {
       case (a, b: VNum) => ListHelpers.gridifyDim(a, b)
+    },
+    addPart("ÞṬ", Monad, false) {
+      case VList(lst) => ListHelpers.multiDimTruthyIndices(lst)
+    },
+    addPart("Þ▲", Dyad, false) {
+      case (a: VPhysical, b: VPhysical) =>
+        a.itr.zip(b.itr).map((i, j) => if j.toBool then i else VNum(0))
+      case (a: VPhysical, f: VFun) => // mask after applying
+        val mask = f(a.itr)
+        a.itr.zip(mask.itr).map((i, j) => if j.toBool then i else VNum(0))
     },
     "Þo" ->
       direct(Monad) {
