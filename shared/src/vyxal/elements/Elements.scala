@@ -1940,7 +1940,7 @@ object Elements:
     addPart("øt", Dyad, true) {
       case (a: VVal, b: VVal) => a.toString().endsWith(b.toString())
     },
-    addPart("ø◲", Dyad, false) { //1D surround
+    addPart("ø◲", Dyad, false) { // 1D surround
       case (VList(a), b) => VList((b +: a) :+ b)
       case (VStr(a), VStr(b)) => b + a + b
       case (a, VList(b)) => VList((a +: b) :+ a)
