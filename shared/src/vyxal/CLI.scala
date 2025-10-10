@@ -92,8 +92,7 @@ object CLI:
           println(OParser.usage(parser))
           return
 
-        if config.printVersion then
-          return println(version)
+        if config.printVersion then return println(version)
 
         if config.litInfoFor.nonEmpty then
           // val keywords = Lexer.literateModeMappings(config.litInfoFor.get)
