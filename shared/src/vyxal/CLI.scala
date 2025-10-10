@@ -34,6 +34,7 @@ object CLI:
       inputs: List[String] = List.empty,
       litInfoFor: Option[String] = None,
       printHelp: Boolean = false,
+      printVersion: Boolean = false,
       runLexer: Boolean = false,
       runParser: Boolean = false,
       settings: Settings = Settings(),
@@ -90,6 +91,9 @@ object CLI:
         if config.printHelp then
           println(OParser.usage(parser))
           return
+
+        if config.printVersion then
+          return println(version)
 
         if config.litInfoFor.nonEmpty then
           // val keywords = Lexer.literateModeMappings(config.litInfoFor.get)
@@ -183,6 +187,10 @@ object CLI:
         opt[Unit]('h', "help")
           .action((_, cfg) => cfg.copy(printHelp = true))
           .text("Print this help message and exit")
+          .optional(),
+        opt[Unit]("version")
+          .action((_, cfg) => cfg.copy(printVersion = !cfg.settings.online))
+          .text("Print version information (offline mode only)")
           .optional(),
         opt[String]("file")
           .action((file, cfg) => cfg.copy(filename = Some(file)))
