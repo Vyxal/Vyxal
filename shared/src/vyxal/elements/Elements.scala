@@ -1487,8 +1487,16 @@ object Elements:
           case simpleOuter: VNum =>
             val ctx = summon[Context]
             val parentCtx = ctx.getParentCtx.getOrElse(ctx)
-            val value = parentCtx.getStack.vlst.indexBig(simpleOuter.toBigInt)
-            push(value)
+            val stack = parentCtx.getStack
+            if stack.length == 1 then
+              push(
+                parentCtx.ctxArgs
+                  .flatMap(args =>
+                    Some(args.vlst.indexBig(simpleOuter.toBigInt))
+                  )
+                  .getOrElse(VNum(0))
+              )
+            else push(stack.indexBig(simpleOuter.toBigInt))
           case VList(coordinates) =>
             if coordinates.length != 2 then
               throw InvalidListOverloadException("#↸", coordinates, "2")
@@ -1949,10 +1957,11 @@ object Elements:
     addPart("øC", Monad, false) {
       case VListOf[VVal](lst) => StringHelpers.center(lst)
     },
-    addPart("ø◲", Dyad, false) {
+    addPart("ø◲", Dyad, false) { // 1D surround
       case (VList(a), b) => VList((b +: a) :+ b)
       case (VStr(a), VStr(b)) => b + a + b
       case (a, VList(b)) => VList((a +: b) :+ a)
+      case (a, b) => Seq(b, a, b)
     },
     addPart("ø⊠", Dyad, false) { // 2D surround
       case (VListOf[VList](lst), b: VPhysical) =>
