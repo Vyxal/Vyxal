@@ -524,5 +524,9 @@ class ElementTests extends VyxalTests:
       "7ʀ⍨9#W" -> vSeq(6, 5, 4, 3, 2, 1, 0, 0, 0),
     )
   }
-
+  describe("Element øE") {
+    testMulti(
+      "101001000000000110110øE;" -> vSeq(vSeq("1", "0", "1", "0", "1", "0", "1", "0", "1", "0"), vSeq(1, 1, 1, 2, 1, 9, 2, 1, 2, 1))
+    )
+  }
 end ElementTests
