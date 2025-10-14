@@ -12,12 +12,6 @@
 "Þι":
   - {in: [[1,3,5,7,9]], out: [0, 3, 10, 21, 36]}
 
-"øC":
-  - in: [["0qwertyuiop", "asdfghjkl", "zxcvbnm"]] 
-    out: "0qwertyuiop\n asdfghjkl\n  zxcvbnm"
-  - in: [["qwertyuiop", "asdfghjkl", "zxcvbnm"]] 
-    out: "qwertyuiop\n asdfghjkl\n  zxcvbnm"
-    
 "∆ḋ":
   - in:
     - - 3.1415926535897932384626433832795028841971693993751058209749445923 # π
@@ -475,6 +469,12 @@
     - { in: [12341234, 2], out: 2 }
     - { in: [23432423, "3"], out: 3 }
 
+"øC":
+  - in: [["0qwertyuiop", "asdfghjkl", "zxcvbnm"]] 
+    out: "0qwertyuiop\n asdfghjkl\n  zxcvbnm"
+  - in: [["qwertyuiop", "asdfghjkl", "zxcvbnm"]] 
+    out: "qwertyuiop\n asdfghjkl\n  zxcvbnm"
+    
 "∆C":
   - in:
     - - 0
