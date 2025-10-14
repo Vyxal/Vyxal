@@ -5299,7 +5299,7 @@ object ElementInformation:
         args = Seq("lst"),
         description = "Make #1 rectangular as a 2D list, padded with zeros",
       ),
-       Overload(
+      Overload(
         name = "Make Rectangular With",
         args = Seq("lst", "str|num"),
         description = "Make #1 rectangular as a 2D list, padded with #2",
@@ -5668,7 +5668,8 @@ object ElementInformation:
       Overload(
         name = "Separated Run Length Encoding",
         args = Seq("str"),
-        description = "Separate run length encode #1, pushing list of lengths and characters to the stack",
+        description =
+          "Separate run length encode #1, pushing list of lengths and characters to the stack",
       ),
     ),
     AddElement(
@@ -5679,7 +5680,8 @@ object ElementInformation:
       Overload(
         name = "Dyadic Run Length Decode",
         args = Seq("lst, lst"),
-        description = "Run-length decode string with characters in {#1|#2} and lengths in {#2|#1}",
+        description =
+          "Run-length decode string with characters in {#1|#2} and lengths in {#2|#1}",
       ),
     ),
     AddElement(

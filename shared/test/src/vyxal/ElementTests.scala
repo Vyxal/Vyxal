@@ -526,7 +526,11 @@ class ElementTests extends VyxalTests:
   }
   describe("Element øE") {
     testMulti(
-      "101001000000000110110øE;" -> vSeq(vSeq("1", "0", "1", "0", "1", "0", "1", "0", "1", "0"), vSeq(1, 1, 1, 2, 1, 9, 2, 1, 2, 1))
+      "101001000000000110110øE;" ->
+        vSeq(
+          vSeq("1", "0", "1", "0", "1", "0", "1", "0", "1", "0"),
+          vSeq(1, 1, 1, 2, 1, 9, 2, 1, 2, 1),
+        )
     )
   }
 end ElementTests

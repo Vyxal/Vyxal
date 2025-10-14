@@ -509,7 +509,7 @@ object StringHelpers:
         .toInt
     )
     if n > 0 then zeros + s else s + zeros
-  
+
   def extendString(long: String, short: String): String =
     val repeat: Int = (long.length.toFloat / short.length).ceil.toInt
     (short * repeat).slice(0, long.length)
@@ -519,10 +519,12 @@ object StringHelpers:
     (str * repeat).slice(0, len.toInt)
 
   def center(lst: Seq[VVal])(using Context): String =
-      val strs = lst.map(_.toString())
-      val longest = strs.map(_.length.toFloat).max
-      strs.map{ s=>
-        " " * ((longest - s.length)/2).ceil.toInt + s
-        }.mkString("\n")
+    val strs = lst.map(_.toString())
+    val longest = strs.map(_.length.toFloat).max
+    strs
+      .map { s =>
+        " " * ((longest - s.length) / 2).ceil.toInt + s
+      }
+      .mkString("\n")
 
 end StringHelpers

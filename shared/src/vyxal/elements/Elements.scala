@@ -1991,31 +1991,30 @@ object Elements:
       case n: VNum => "<" + n.toString() + ">"
     },
     addPart("øe", Monad, true) {
-      case s: VVal => 
-          val groups = ListHelpers.groupConsecutive(s.toString().itr)
-          val lengths = groups.map(g => VNum(g.itr.bigLength))
-          groups.map(_.itr.headOption.getOrElse(VStr(""))).vzip(lengths)
+      case s: VVal =>
+        val groups = ListHelpers.groupConsecutive(s.toString().itr)
+        val lengths = groups.map(g => VNum(g.itr.bigLength))
+        groups.map(_.itr.headOption.getOrElse(VStr(""))).vzip(lengths)
     },
-    addPart("ød", Monad, false) { 
-      case VListOf[VList](lst) => 
-        ListHelpers.runLengthDecode(lst)
+    addPart("ød", Monad, false) {
+      case VListOf[VList](lst) => ListHelpers.runLengthDecode(lst)
     },
-    addPart("øD", Dyad, false) { 
-      case (VListOf[VNum](a), VListOf[VStr](b)) => 
+    addPart("øD", Dyad, false) {
+      case (VListOf[VNum](a), VListOf[VStr](b)) =>
         ListHelpers.runLengthDecode(b.vzip(a).map(_.asInstanceOf[VList]))
-      case (VListOf[VStr](a), VListOf[VNum](b)) => ListHelpers.runLengthDecode(a.vzip(b).map(_.asInstanceOf[VList]))
+      case (VListOf[VStr](a), VListOf[VNum](b)) =>
+        ListHelpers.runLengthDecode(a.vzip(b).map(_.asInstanceOf[VList]))
     },
-
-    "øE" -> direct(Monad) {
-      val top = pop()
-      top match
-        case s: VVal =>
-          val groups = ListHelpers.groupConsecutive(s.toString().itr)
-          val lengths = groups.map(g => VNum(g.itr.bigLength))
-          push(groups.map(_.itr.headOption.getOrElse(VStr(""))), lengths)
-        case _ => throw UnsupportedOverloadException("øE", "List | Function")
-    },
-
+    "øE" ->
+      direct(Monad) {
+        val top = pop()
+        top match
+          case s: VVal =>
+            val groups = ListHelpers.groupConsecutive(s.toString().itr)
+            val lengths = groups.map(g => VNum(g.itr.bigLength))
+            push(groups.map(_.itr.headOption.getOrElse(VStr(""))), lengths)
+          case _ => throw UnsupportedOverloadException("øE", "List | Function")
+      },
     addPart("Þ0", Dyad, false) {
       case (a: VList, b: VNum) => ListHelpers.zeroPad(a, b)
       case (VStr(a), b: VNum) => StringHelpers.zeroPad(a, b)
@@ -2114,18 +2113,19 @@ object Elements:
           VList(temp)
       case other => LazyList.continually(other)
     },
-    "Þ≡" -> 
+    "Þ≡" ->
       direct(Monad) {
         val top = pop()
         top match
-          case VList(lst) =>
-            push(ListHelpers.makeRectangle(lst))
+          case VList(lst) => push(ListHelpers.makeRectangle(lst))
           case _ =>
             val next = pop()
             (top, next) match
-              case (v: VVal, VList(lst)) => push(ListHelpers.makeRectangle(lst, v))
-              case _ => throw UnimplementedOverloadException("Þ≡", List(top, next))
-    },
+              case (v: VVal, VList(lst)) =>
+                push(ListHelpers.makeRectangle(lst, v))
+              case _ =>
+                throw UnimplementedOverloadException("Þ≡", List(top, next))
+      },
     "Þ¤" ->
       direct(Monad) {
         val top = pop()
