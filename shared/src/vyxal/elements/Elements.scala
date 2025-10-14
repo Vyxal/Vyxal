@@ -1946,6 +1946,9 @@ object Elements:
     addPart("øt", Dyad, true) {
       case (a: VVal, b: VVal) => a.toString().endsWith(b.toString())
     },
+    addPart("øC", Monad, false) {
+      case VListOf[VVal](lst) => StringHelpers.center(lst)
+    },
     addPart("ø◲", Dyad, false) {
       case (VList(a), b) => VList((b +: a) :+ b)
       case (VStr(a), VStr(b)) => b + a + b

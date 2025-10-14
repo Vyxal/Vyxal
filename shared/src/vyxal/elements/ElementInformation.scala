@@ -5199,6 +5199,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "øC",
+      keywords = Seq("center"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Center",
+        args = Seq("any"),
+        description = "Center a list of strings",
+      ),
+    ),
+    AddElement(
       symbol = "ø⊠",
       keywords = Seq("surround-grid", "outline", "border"),
       arity = 2,
