@@ -234,6 +234,7 @@ Element, Modifier, and Syntax Reference
 | <code>#↸</code> | <code>retrieve-from-outer</code> | 1 |   | **Retrieve Item at Index from Outer Stack** (`num`): Retrieve the item at index #1 from the outer stack, current stack if at top level</br>**Retrieve Item at Index from Outer Stack N-Layers Up** (`lst[num, num]`): Retrieve the item at index #2 from the stack #1 levels up |
 | <code>k⍾</code> | <code>amogus</code> | 0 |   | **Amogus**: Sus |
 | <code>k⩔</code> | <code>&CODEPAGE</code> | 0 |   | **Codepage**: Push the Vyxal codepage to the stack |
+| <code>kẄ</code> | <code>&B64</code></br><code>&BASE64-ALPHABET</code></br><code>base64</code></br><code>base-sixty-four</code> | 0 |   | **Base 64 alphabet**: Push the base64 alphabet to the stack ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") |
 | <code>k×</code> | <code>&ANGLE-BRACKETS</code> | 0 |   | **Angle Brackets**: Push "<>" to the stack |
 | <code>k(</code> | <code>&PARENTHESES</code></br><code>&PARENS</code> | 0 |   | **Parentheses**: Push "()" to the stack |
 | <code>k+</code> | <code>-1~1</code></br><code>neg-one-one</code></br><code>NW</code></br><code>northwest</code> | 0 |   | **[-1, 1]**: Push the list [-1, 1] to the stack |
