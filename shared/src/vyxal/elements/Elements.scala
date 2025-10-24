@@ -1695,6 +1695,10 @@ object Elements:
     "k¹" -> constant(Seq.empty), // empty list for multiple inputs
     "k⎘" -> constant("[]<>-+.,"),
     "kℂ" -> constant("IVXLCDM"),
+    "kẄ" ->
+      constant(
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+      ),
 
     // other digraphs
     addPart("#C", Monad, true) {

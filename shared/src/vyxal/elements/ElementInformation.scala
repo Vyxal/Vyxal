@@ -4660,6 +4660,18 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "kẄ",
+      keywords = Seq("&B64", "&BASE64-ALPHABET", "base64", "base-sixty-four"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Base 64 alphabet",
+        args = Seq(),
+        description =
+          "Push the base64 alphabet to the stack (\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/\")",
+      ),
+    ),
+    AddElement(
       symbol = "∆∧",
       keywords = Seq("bitwise-and"),
       arity = 2,
