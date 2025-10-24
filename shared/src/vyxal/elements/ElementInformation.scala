@@ -4667,7 +4667,8 @@ object ElementInformation:
       Overload(
         name = "Base 64 alphabet",
         args = Seq(),
-        description = "Push the base64 alphabet to the stack (\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/\")",
+        description =
+          "Push the base64 alphabet to the stack (\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/\")",
       ),
     ),
     AddElement(
