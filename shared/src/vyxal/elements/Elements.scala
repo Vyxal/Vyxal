@@ -2008,6 +2008,8 @@ object Elements:
         ListHelpers.runLengthDecode(b.vzip(a).map(_.asInstanceOf[VList]))
       case (VListOf[VStr](a), VListOf[VNum](b)) =>
         ListHelpers.runLengthDecode(a.vzip(b).map(_.asInstanceOf[VList]))
+      case (VListOf[VNum](a), VListOf[VNum](b)) =>
+        ListHelpers.runLengthDecode(a.map((x:VNum) => VStr(x.toString())).vzip(b).map(_.asInstanceOf[VList]))
     },
     "øE" ->
       direct(Monad) {
