@@ -110,7 +110,9 @@ object Elements:
       },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
     addPart("&", Dyad, false) {
-      case (a, b) => VList(a.itr :+ b)
+      case (VList(a), b) => VList(a.itr :+ b)
+      case (VStr(a), b) => VList(a.itr :+ b)
+      case (a, b) => VList(Seq(a) :+ b)
     },
     "Ꮬ" ->
       fullToImpl(
