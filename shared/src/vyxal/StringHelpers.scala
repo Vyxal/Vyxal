@@ -518,4 +518,13 @@ object StringHelpers:
     val repeat: Int = (len.toDouble / str.length).ceil.toInt
     (str * repeat).slice(0, len.toInt)
 
+  def center(lst: Seq[VVal])(using Context): String =
+    val strs = lst.map(_.toString())
+    val longest = strs.map(_.length.toFloat).max
+    strs
+      .map { s =>
+        " " * ((longest - s.length) / 2).ceil.toInt + s
+      }
+      .mkString("\n")
+
 end StringHelpers

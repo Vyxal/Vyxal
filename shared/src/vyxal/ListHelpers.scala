@@ -1506,4 +1506,28 @@ object ListHelpers:
         }
     ListHelpers.zipMulti(lists*)(f)
 
+  def runLengthDecode(lst: Seq[VList]): String =
+    if lst.forall(_.length == 2) then
+      lst
+        .map { pair =>
+          (pair(0), pair(1)) match
+            case (VStr(c), l: VNum) => c * l.toInt
+            case (l: VNum, VStr(c)) => c * l.toInt
+            case _ => throw BadArgumentException("Run length decode", lst)
+        }
+        .mkString("")
+    else throw BadArgumentException("Run length decode", lst)
+
+  def makeRectangle(lst: Seq[VAny], fill: VVal = 0)(using Context): Seq[VAny] =
+    val ragged = lst.map { i =>
+      i match
+        case VList(lst) => lst
+        case n: VVal => flatten(makeIterable(n))
+        case arg => throw BadArgumentException("Make Rectangular", arg)
+    }
+    val padto = ragged.map(_.length).maxOption.getOrElse(0)
+    ragged.map(iter =>
+      VList(iter.appended(Seq.fill(padto - iter.length)(fill)))
+    )
+
 end ListHelpers

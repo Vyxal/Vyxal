@@ -234,6 +234,7 @@ Element, Modifier, and Syntax Reference
 | <code>#↸</code> | <code>retrieve-from-outer</code> | 1 |   | **Retrieve Item at Index from Outer Stack** (`num`): Retrieve the item at index #1 from the outer stack, current stack if at top level</br>**Retrieve Item at Index from Outer Stack N-Layers Up** (`lst[num, num]`): Retrieve the item at index #2 from the stack #1 levels up |
 | <code>k⍾</code> | <code>amogus</code> | 0 |   | **Amogus**: Sus |
 | <code>k⩔</code> | <code>&CODEPAGE</code> | 0 |   | **Codepage**: Push the Vyxal codepage to the stack |
+| <code>kẄ</code> | <code>&B64</code></br><code>&BASE64-ALPHABET</code></br><code>base64</code></br><code>base-sixty-four</code> | 0 |   | **Base 64 alphabet**: Push the base64 alphabet to the stack ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") |
 | <code>k×</code> | <code>&ANGLE-BRACKETS</code> | 0 |   | **Angle Brackets**: Push "<>" to the stack |
 | <code>k(</code> | <code>&PARENTHESES</code></br><code>&PARENS</code> | 0 |   | **Parentheses**: Push "()" to the stack |
 | <code>k+</code> | <code>-1~1</code></br><code>neg-one-one</code></br><code>NW</code></br><code>northwest</code> | 0 |   | **[-1, 1]**: Push the list [-1, 1] to the stack |
@@ -355,6 +356,7 @@ Element, Modifier, and Syntax Reference
 | <code>Þ⦷</code> | <code>register-index</code> | 1 |   | **Register Index** (`num`): Get item in the register at index #1 |
 | <code>Þ≤</code> | <code>min-indices</code></br><code>minimum-indices</code> | 1 |   | **Minimum Indices** (`lst`): Indices where #1 is minimal |
 | <code>Þ≥</code> | <code>max-indices</code></br><code>maximum-indices</code> | 1 |   | **Maximum Indices** (`lst`): Indices where #1 is maximal |
+| <code>Þ≡</code> | <code>make-rectangular</code> | 1 |   | **Make Rectangular** (`lst`): Make #1 rectangular as a 2D list, padded with zeros</br>**Make Rectangular With** (`lst,str\|num`): Make #1 rectangular as a 2D list, padded with #2 |
 | <code>Þ≓</code> | <code>palindromise-any</code> | 1 |   | **Palindromise** (`any`): Palindromise #1 as the original type |
 | <code>ÞϾ</code> | <code>register-apply-at-indices</code> | 2 |   | **Apply to register at indices** (`fun,num\|lst[num]`): Get the first #1 items from the register to the stack as a list |
 | <code>Þ◌</code> | <code>grid-neighbours-diagonals</code></br><code>grid-neighbors-diagonals</code></br><code>adjacent-cells-diagonals</code></br><code>adj-cells-diagonals</code></br><code>surrounding-cells-diagonals</code></br><code>eight-cells</code> | 1 |   | **Grid Neighbours Diagonals** (`lst`): Grid neighbours of #1 - up, down, left, right, and diagonals</br>**Grid Neighbours Diagonals With Starting Direction** (`lst,num`): Grid neighbours of cells in #1 - right, down, left, up, and diagonals - start from direction #2 => 0: right, 1: down, 2: left, 3: up |
@@ -399,17 +401,28 @@ Element, Modifier, and Syntax Reference
 | <code>∆∨</code> | <code>bitwise-or</code> | 2 | vec  | **Bitwise Or** (`num,num`): #1 | #2 |
 | <code>∆⧢</code> | <code>root-of-unity</code> | 1 | vec  | **Principal Root of Unity** (`num`): Principal #1-th root of unity (e^(2i * pi / #1)) |
 | <code>ø⩔</code> | <code>codepage-find</code></br><code>codepage-index</code> | 1 | vec  | **Codepage Character** (`num`): Get char at codepage index #1</br>**Index in Codepage** (`str`): Index of #1 in codepage. With string.len > 1, vectorises over each character |
-| <code>ø<</code> | <code>strip-right</code></br><code>right-strip</code> | 2 | vec  | **Strip Right** (`str, str`): Strip #2 from the right of #1 |
-| <code>ø></code> | <code>strip-left</code></br><code>left-strip</code> | 2 | vec  | **Strip Left** (`str, str`): Strip #2 from the left of #1 |
+| <code>ø(</code> | <code>parenthesise</code> | 1 | vec  | **Parenthesise** (`str`): Surround #1 with parentheses |
+| <code>ø<</code> | <code>angle-bracketify</code> | 1 | vec  | **Angle Bracketify** (`str`): Surround #1 with angle brackets |
 | <code>øA</code> | <code>letter-to-number</code></br><code>number-to-letter</code></br><code>letter-number-swap</code></br><code>number-letter-swap</code></br><code>a1-swap</code> | 1 | vec  | **Letter to Number** (`str`): the index of #1 in the alphabet (one-indexed)</br>**Number to Letter** (`num`): the letter at index #1 in the alphabet (one-indexed) |
+| <code>øC</code> | <code>center</code> | 1 |   | **Center** (`any`): Center a list of strings |
+| <code>øD</code> | <code>dyadic-run-length-decode</code> | 2 | vec  | **Dyadic Run Length Decode** (`lst, lst`): Run-length decode string with characters in {#1|#2} and lengths in {#2|#1} |
+| <code>øE</code> | <code>sep-run-length-encode</code> | 1 | vec  | **Separated Run Length Encoding** (`str`): Separate run length encode #1, pushing list of lengths and characters to the stack |
+| <code>øL</code> | <code>strip-whitespace-left</code></br><code>leading-whitespace</code> | 1 | vec  | **Strip Whitespace** (`str`): Strip leading whitespace |
+| <code>øR</code> | <code>strip-whitespace-right</code></br><code>trailing-whitespace</code> | 1 | vec  | **Strip Whitespace** (`str`): Strip leading and trailing whitespace |
 | <code>øS</code> | <code>strip-whitespace</code> | 1 | vec  | **Strip Whitespace** (`str`): Strip leading and trailing whitespace |
+| <code>ø[</code> | <code>bracketify</code> | 1 | vec  | **Bracketify** (`str`): Surround #1 with brackets |
 | <code>øa</code> | <code>letter-to-index</code></br><code>index-to-letter</code></br><code>letter-index-swap</code></br><code>index-letter-swap</code></br><code>a0-swap</code> | 1 | vec  | **Letter to Index** (`str`): the index of #1 in the alphabet (zero-indexed)</br>**Index to Letter** (`num`): the letter at index #1 in the alphabet (zero-indexed) |
+| <code>ød</code> | <code>run-length-decode</code> | 1 | vec  | **Run Length Decode** (`lst`): Run length decode #1 |
+| <code>øe</code> | <code>run-length-encode</code> | 1 | vec  | **Run Length Encoding** (`str`): Run length encode #1 |
 | <code>øh</code> | <code>starts-with</code> | 2 | vec  | **Starts With** (`str,str`): Does #1 start with #2? |
 | <code>øt</code> | <code>ends-with</code> | 2 | vec  | **Ends With** (`str,str`): Does #1 end with #2? |
+| <code>ø{</code> | <code>curly-bracketify</code></br><code>bracify</code> | 1 | vec  | **Curly Bracketify** (`str`): Surround #1 with curly braces |
 | <code>ø◲</code> | <code>surround</code> | 2 |   | **Surround** (`any,any`): #1 prepended and appended to #2 |
 | <code>ø«</code> | <code>pad-left-with</code></br><code>custom-left-pad</code></br><code>custom-pad-left</code> | 3 | vec  | **Custom Left Pad** (`str, num\|str, str\|num`): Left-pad #1 to length #2 with #3 |
 | <code>ø»</code> | <code>pad-right-with</code></br><code>custom-right-pad</code></br><code>custom-pad-right</code> | 3 | vec  | **Custom Right Pad** (`str, num\|str, str\|num`): Right-pad #1 to length #2 with #3 |
 | <code>ø⊠</code> | <code>surround-grid</code></br><code>outline</code></br><code>border</code> | 2 |   | **2D Surround** (`lst[lst],nsl`): #1 surrounded by #2 |
+| <code>ø‹</code> | <code>strip-right</code></br><code>right-strip</code> | 2 | vec  | **Strip Right** (`str, str`): Strip #2 from the right of #1 |
+| <code>ø›</code> | <code>strip-left</code></br><code>left-strip</code> | 2 | vec  | **Strip Left** (`str, str`): Strip #2 from the left of #1 |
 
 ## Modifiers
 

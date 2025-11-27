@@ -110,7 +110,9 @@ object Elements:
       },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
     addPart("&", Dyad, false) {
-      case (a, b) => VList(a.itr :+ b)
+      case (VList(a), b) => VList(a.itr :+ b)
+      case (VStr(a), b) => VList(a.itr :+ b)
+      case (a, b) => VList(Seq(a) :+ b)
     },
     "Ꮬ" ->
       fullToImpl(
@@ -1487,8 +1489,16 @@ object Elements:
           case simpleOuter: VNum =>
             val ctx = summon[Context]
             val parentCtx = ctx.getParentCtx.getOrElse(ctx)
-            val value = parentCtx.getStack.vlst.indexBig(simpleOuter.toBigInt)
-            push(value)
+            val stack = parentCtx.getStack
+            if stack.length == 1 then
+              push(
+                parentCtx.ctxArgs
+                  .flatMap(args =>
+                    Some(args.vlst.indexBig(simpleOuter.toBigInt))
+                  )
+                  .getOrElse(VNum(0))
+              )
+            else push(stack.indexBig(simpleOuter.toBigInt))
           case VList(coordinates) =>
             if coordinates.length != 2 then
               throw InvalidListOverloadException("#↸", coordinates, "2")
@@ -1687,6 +1697,10 @@ object Elements:
     "k¹" -> constant(Seq.empty), // empty list for multiple inputs
     "k⎘" -> constant("[]<>-+.,"),
     "kℂ" -> constant("IVXLCDM"),
+    "kẄ" ->
+      constant(
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+      ),
 
     // other digraphs
     addPart("#C", Monad, true) {
@@ -1923,16 +1937,22 @@ object Elements:
       case (VStr(s), VStr(padwith), len: VNum) =>
         StringHelpers.padRightWith(s, len, padwith)
     },
-    addPart("ø<", Dyad, true) {
+    addPart("ø‹", Dyad, true) {
       case (a: VVal, b: VVal) =>
         StringHelpers.stripRight(a.toString(), b.toString())
     },
-    addPart("ø>", Dyad, true) {
+    addPart("ø›", Dyad, true) {
       case (a: VVal, b: VVal) =>
         StringHelpers.stripLeft(a.toString(), b.toString())
     },
     addPart("øS", Monad, true) {
       case VStr(a) => a.strip()
+    },
+    addPart("øR", Monad, true) {
+      case VStr(a) => a.stripTrailing()
+    },
+    addPart("øL", Monad, true) {
+      case VStr(a) => a.stripLeading()
     },
     addPart("øh", Dyad, true) {
       case (a: VVal, b: VVal) => a.toString().startsWith(b.toString())
@@ -1940,10 +1960,14 @@ object Elements:
     addPart("øt", Dyad, true) {
       case (a: VVal, b: VVal) => a.toString().endsWith(b.toString())
     },
-    addPart("ø◲", Dyad, false) {
+    addPart("øC", Monad, false) {
+      case VListOf[VVal](lst) => StringHelpers.center(lst)
+    },
+    addPart("ø◲", Dyad, false) { // 1D surround
       case (VList(a), b) => VList((b +: a) :+ b)
       case (VStr(a), VStr(b)) => b + a + b
       case (a, VList(b)) => VList((a +: b) :+ a)
+      case (a, b) => Seq(b, a, b)
     },
     addPart("ø⊠", Dyad, false) { // 2D surround
       case (VListOf[VList](lst), b: VPhysical) =>
@@ -1956,6 +1980,52 @@ object Elements:
       case VStr(s) if s.length == 1 => Codepage.indexOf(s)
       case VStr(s) => VList(s.map(c => VNum(Codepage.indexOf(c))))
     },
+    addPart("ø(", Monad, true) {
+      case VStr(s) => "(" + s + ")"
+      case n: VNum => "(" + n.toString() + ")"
+    },
+    addPart("ø[", Monad, true) {
+      case VStr(s) => "[" + s + "]"
+      case n: VNum => "[" + n.toString() + "]"
+    },
+    addPart("ø{", Monad, true) {
+      case VStr(s) => "{" + s + "}"
+      case n: VNum => "{" + n.toString() + "}"
+    },
+    addPart("ø<", Monad, true) {
+      case VStr(s) => "<" + s + ">"
+      case n: VNum => "<" + n.toString() + ">"
+    },
+    addPart("øe", Monad, true) {
+      case s: VVal =>
+        val groups = ListHelpers.groupConsecutive(s.toString().itr)
+        val lengths = groups.map(g => VNum(g.itr.bigLength))
+        groups.map(_.itr.headOption.getOrElse(VStr(""))).vzip(lengths)
+    },
+    addPart("ød", Monad, false) {
+      case VListOf[VList](lst) => ListHelpers.runLengthDecode(lst)
+    },
+    addPart("øD", Dyad, false) {
+      case (VListOf[VNum](a), VListOf[VStr](b)) =>
+        ListHelpers.runLengthDecode(b.vzip(a).map(_.asInstanceOf[VList]))
+      case (VListOf[VStr](a), VListOf[VNum](b)) =>
+        ListHelpers.runLengthDecode(a.vzip(b).map(_.asInstanceOf[VList]))
+      case (VListOf[VNum](a), VListOf[VNum](b)) => ListHelpers.runLengthDecode(
+          a.map((x: VNum) => VStr(x.toString()))
+            .vzip(b)
+            .map(_.asInstanceOf[VList])
+        )
+    },
+    "øE" ->
+      direct(Monad) {
+        val top = pop()
+        top match
+          case s: VVal =>
+            val groups = ListHelpers.groupConsecutive(s.toString().itr)
+            val lengths = groups.map(g => VNum(g.itr.bigLength))
+            push(groups.map(_.itr.headOption.getOrElse(VStr(""))), lengths)
+          case _ => throw UnsupportedOverloadException("øE", "List | Function")
+      },
     addPart("Þ0", Dyad, false) {
       case (a: VList, b: VNum) => ListHelpers.zeroPad(a, b)
       case (VStr(a), b: VNum) => StringHelpers.zeroPad(a, b)
@@ -2054,6 +2124,19 @@ object Elements:
           VList(temp)
       case other => LazyList.continually(other)
     },
+    "Þ≡" ->
+      direct(Monad) {
+        val top = pop()
+        top match
+          case VList(lst) => push(ListHelpers.makeRectangle(lst))
+          case _ =>
+            val next = pop()
+            (top, next) match
+              case (v: VVal, VList(lst)) =>
+                push(ListHelpers.makeRectangle(lst, v))
+              case _ =>
+                throw UnimplementedOverloadException("Þ≡", List(top, next))
+      },
     "Þ¤" ->
       direct(Monad) {
         val top = pop()

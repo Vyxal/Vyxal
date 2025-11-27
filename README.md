@@ -31,10 +31,10 @@ how the interpreter works, see the [`contributing`](/contributing/) folder.
 
 - [Repository](https://github.com/Vyxal/Vyxal)
 - [Online Interpreter](http://vyxal.github.io)
-- [Tutorial](https://vyxapedia.hyperneutrino.xyz/beginners)
+- [Tutorial](https://github.com/Vyxal/Vyxal/blob/version-3/documentation/Tour.md) and [Tips](https://github.com/Vyxal/Vyxal/blob/version-3/documentation/tipsandtricks.md) ([Vyxal 2 Tutorial](https://vyxapedia.hyperneutrino.xyz/beginners))
 - [Main Chat Room (SE Chat)](https://chat.stackexchange.com/rooms/106764/vyxal)
 - [Vycord (Discord)](https://discord.gg/hER4Avd6fz)
 - [Elements](https://github.com/Vyxal/Vyxal/blob/version-3/documentation/table.md)
-- [Vyxapedia](https://vyxapedia.hyperneutrino.xyz/)
+- [Vyxapedia - v2 centric](https://vyxapedia.hyperneutrino.xyz/)
 
 Enjoy the cookies.

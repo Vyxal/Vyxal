@@ -4660,6 +4660,18 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "kẄ",
+      keywords = Seq("&B64", "&BASE64-ALPHABET", "base64", "base-sixty-four"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Base 64 alphabet",
+        args = Seq(),
+        description =
+          "Push the base64 alphabet to the stack (\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/\")",
+      ),
+    ),
+    AddElement(
       symbol = "∆∧",
       keywords = Seq("bitwise-and"),
       arity = 2,
@@ -5199,6 +5211,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "øC",
+      keywords = Seq("center"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Center",
+        args = Seq("any"),
+        description = "Center a list of strings",
+      ),
+    ),
+    AddElement(
       symbol = "ø⊠",
       keywords = Seq("surround-grid", "outline", "border"),
       arity = 2,
@@ -5276,6 +5299,22 @@ object ElementInformation:
         name = "Reshape",
         args = Seq("lst", "lst[num]"),
         description = "Reshape #1 to the shape #2",
+      ),
+    ),
+    AddElement(
+      symbol = "Þ≡",
+      keywords = Seq("make-rectangular"),
+      arity = 1,
+      Options(vectorises = false),
+      Overload(
+        name = "Make Rectangular",
+        args = Seq("lst"),
+        description = "Make #1 rectangular as a 2D list, padded with zeros",
+      ),
+      Overload(
+        name = "Make Rectangular With",
+        args = Seq("lst", "str|num"),
+        description = "Make #1 rectangular as a 2D list, padded with #2",
       ),
     ),
     AddElement(
@@ -5535,7 +5574,7 @@ object ElementInformation:
       ),
     ),
     AddElement(
-      symbol = "ø>",
+      symbol = "ø›",
       keywords = Seq("strip-left", "left-strip"),
       arity = 2,
       Options(vectorises = true),
@@ -5546,7 +5585,7 @@ object ElementInformation:
       ),
     ),
     AddElement(
-      symbol = "ø<",
+      symbol = "ø‹",
       keywords = Seq("strip-right", "right-strip"),
       arity = 2,
       Options(vectorises = true),
@@ -5559,6 +5598,28 @@ object ElementInformation:
     AddElement(
       symbol = "øS",
       keywords = Seq("strip-whitespace"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Strip Whitespace",
+        args = Seq("str"),
+        description = "Strip leading and trailing whitespace",
+      ),
+    ),
+    AddElement(
+      symbol = "øL",
+      keywords = Seq("strip-whitespace-left", "leading-whitespace"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Strip Whitespace",
+        args = Seq("str"),
+        description = "Strip leading whitespace",
+      ),
+    ),
+    AddElement(
+      symbol = "øR",
+      keywords = Seq("strip-whitespace-right", "trailing-whitespace"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -5587,6 +5648,96 @@ object ElementInformation:
         name = "Ends With",
         args = Seq("str", "str"),
         description = "Does #1 end with #2?",
+      ),
+    ),
+    AddElement(
+      symbol = "øe",
+      keywords = Seq("run-length-encode"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Run Length Encoding",
+        args = Seq("str"),
+        description = "Run length encode #1",
+      ),
+    ),
+    AddElement(
+      symbol = "ød",
+      keywords = Seq("run-length-decode"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Run Length Decode",
+        args = Seq("lst"),
+        description = "Run length decode #1",
+      ),
+    ),
+    AddElement(
+      symbol = "øE",
+      keywords = Seq("sep-run-length-encode"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Separated Run Length Encoding",
+        args = Seq("str"),
+        description =
+          "Separate run length encode #1, pushing list of lengths and characters to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "øD",
+      keywords = Seq("dyadic-run-length-decode"),
+      arity = 2,
+      Options(vectorises = true),
+      Overload(
+        name = "Dyadic Run Length Decode",
+        args = Seq("lst, lst"),
+        description =
+          "Run-length decode string with characters in {#1|#2} and lengths in {#2|#1}",
+      ),
+    ),
+    AddElement(
+      symbol = "ø(",
+      keywords = Seq("parenthesise"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Parenthesise",
+        args = Seq("str"),
+        description = "Surround #1 with parentheses",
+      ),
+    ),
+    AddElement(
+      symbol = "ø[",
+      keywords = Seq("bracketify"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Bracketify",
+        args = Seq("str"),
+        description = "Surround #1 with brackets",
+      ),
+    ),
+    AddElement(
+      symbol = "ø{",
+      keywords = Seq("curly-bracketify", "bracify"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Curly Bracketify",
+        args = Seq("str"),
+        description = "Surround #1 with curly braces",
+      ),
+    ),
+    AddElement(
+      symbol = "ø<",
+      keywords = Seq("angle-bracketify"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Angle Bracketify",
+        args = Seq("str"),
+        description = "Surround #1 with angle brackets",
       ),
     ),
     AddElement(
