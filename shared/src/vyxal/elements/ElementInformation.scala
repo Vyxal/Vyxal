@@ -2088,7 +2088,7 @@ object ElementInformation:
         name = "Iterate While Unique",
         args = Seq("any", "fun"),
         description =
-          "Repeatedly apply #2 to #1 until a result is repeated. Return all results",
+          "Repeatedly apply #2 to #1 until a result is repeated. Return all unique results",
       ),
     ),
     AddElement(
