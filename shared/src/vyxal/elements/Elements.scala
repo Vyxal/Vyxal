@@ -1241,7 +1241,8 @@ object Elements:
       case (a: VNum, b: VNum) =>
         if b == VNum(0) then NumberHelpers.round(a)
         else if b.toInt <= 9 then a - (a % (10 ** -(b.toInt)))
-          else NumberHelpers.round((a * (10**b.toInt))).toString().patch(NumberHelpers.log(a,10).toInt +1, ".", 0) //fallback to return the string representation if the precision is too high
+          else if a == VNum(0) then a else
+            NumberHelpers.round((a * (10**b.toInt))).toString().patch(NumberHelpers.round(NumberHelpers.log(a,10) + 0.5).toInt, ".", 0) //fallback to return the string representation if the precision is too high
       case (VStr(a), VStr(b)) => StringHelpers.r(b).matches(a)
     },
     addPart("℗", Monad, true) {
