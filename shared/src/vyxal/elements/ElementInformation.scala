@@ -2885,7 +2885,7 @@ object ElementInformation:
         name = "Round to N places",
         args = Seq("num", "num"),
         description =
-          "Round #1 to #2 decimal places. Negative values of #2 will round to that power of 10",
+          "Round #1 to #2 decimal places. Negative values of #2 will round to that power of 10. Returns the string representation if #2 > 9",
       ),
       Overload(
         name = "Regex Full Match?",
