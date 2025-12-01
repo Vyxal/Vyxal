@@ -133,7 +133,7 @@ object FuncHelpers:
       Interpreter.execute(ctx.globals.originalProgram)(using ctx)
     else
       ctx.push(
-        Interpreter.executeFn(ctx.globals.callStack.top)(using
+        Interpreter.executeFn(ctx.globals.callStack.last)(using
           ctx.makeChild()
         )
       )
