@@ -54,41 +54,45 @@ object Interpreter:
         if ctx.settings.wrapStack then ctx.wrap()
 
         if ctx.settings.endPrintMode == EndPrintMode.Default then
-          vyPrintln(ctx.pop())
+          vyPrintln(ctx.pop(), true)
         else if ctx.settings.endPrintMode == EndPrintMode.Pretty then
-          vyPrintln(prettyPrint(ctx.pop()))
+          vyPrintln(prettyPrint(ctx.pop()), true)
         else if ctx.settings.endPrintMode == EndPrintMode.JoinNewlines then
-          vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString("\n"))
+          vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString("\n"), true)
         else if ctx.settings.endPrintMode == EndPrintMode.Sum then
-          vyPrintln(ListHelpers.sum(ListHelpers.makeIterable(ctx.pop())))
+          vyPrintln(ListHelpers.sum(ListHelpers.makeIterable(ctx.pop())), true)
         else if ctx.settings.endPrintMode == EndPrintMode.DeepSum then
           vyPrintln(
             ListHelpers.sum(
               ListHelpers.flatten(ListHelpers.makeIterable(ctx.pop()))
-            )
+            ),
+            true,
           )
         else if ctx.settings.endPrintMode == EndPrintMode.Length then
           vyPrintln(
             VNum(
               ListHelpers.makeIterable(ctx.pop()).length
-            )
+            ),
+            true,
           )
         else if ctx.settings.endPrintMode == EndPrintMode.Maximum then
           vyPrintln(
-            ListHelpers.makeIterable(ctx.pop()).maxOption.getOrElse(Seq())
+            ListHelpers.makeIterable(ctx.pop()).maxOption.getOrElse(Seq()),
+            true,
           )
         else if ctx.settings.endPrintMode == EndPrintMode.Minimum then
           vyPrintln(
-            ListHelpers.makeIterable(ctx.pop()).minOption.getOrElse(Seq())
+            ListHelpers.makeIterable(ctx.pop()).minOption.getOrElse(Seq()),
+            true,
           )
         else if ctx.settings.endPrintMode == EndPrintMode.JoinSpaces then
-          vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString(" "))
+          vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString(" "), true)
         else if ctx.settings.endPrintMode == EndPrintMode.JoinNothing then
-          vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString)
+          vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString, true)
         end if
       end if
       if ctx.settings.endPrintMode == EndPrintMode.Force then
-        vyPrintln(ctx.pop())
+        vyPrintln(ctx.pop(), true)
     catch
       case ex: VyxalException => throw ex
       case ex: Throwable => throw UnknownRuntimeException(ex)

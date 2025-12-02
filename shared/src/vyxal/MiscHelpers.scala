@@ -333,7 +333,9 @@ object MiscHelpers:
           case _ => unpackHelper(l, Seq(value))
   end unpackHelper
 
-  def vyPrint(x: VAny)(using ctx: Context): Unit =
+  def vyPrint(x: VAny, endOfProgram: Boolean = false)(using
+      ctx: Context
+  ): Unit =
     x match
       case VList(lst) =>
         ctx.globals.printFn("[")
@@ -343,17 +345,23 @@ object MiscHelpers:
             case n: VNum => vyPrint(n)
             case VStr(s) => vyPrint(StringHelpers.quotify(s))
             case l: VList => vyPrint(l)
-            case f: VFun => vyPrint(executeFn(f))
+            case f: VFun =>
+              val res = executeFn(f)
+              if !endOfProgram then vyPrint(res)
             case c: VConstructor => vyPrint(c.toString)
             case o: VObject => vyPrint(o.toString)
           temp = temp.tail
           if temp.nonEmpty then vyPrint(", ")
         vyPrint("]")
-      case f: VFun => vyPrint(executeFn(f))
+      case f: VFun =>
+        val res = executeFn(f)
+        if !endOfProgram then vyPrint(res)
       case _ => ctx.globals.printFn(StringHelpers.vyToString(x))
 
-  def vyPrintln(x: VAny)(using ctx: Context): Unit =
-    vyPrint(x)
+  def vyPrintln(x: VAny, endOfProgram: Boolean = false)(using
+      ctx: Context
+  ): Unit =
+    vyPrint(x, endOfProgram)
     vyPrint("\n")
 
   def scanl(iterable: Seq[VAny], function: VFun)(using
