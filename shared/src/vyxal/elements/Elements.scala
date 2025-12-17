@@ -1857,8 +1857,9 @@ object Elements:
     },
     addPart("∆½", Monad, true) {
       case a: VNum => 
-        val asRational = a.real.toRational
-        VList(Seq(VNum(asRational.numerator.toInt), VNum(asRational.denominator.toInt)))
+        case a.isReal =>
+          val asRational = a.real.toRational
+          VList(Seq(VNum(asRational.numerator.toInt), VNum(asRational.denominator.toInt)))
     },
     addPart("ÞR", Dyad, false) {
       case (a, VListOf[VNum](b)) =>
