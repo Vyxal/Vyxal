@@ -5845,7 +5845,14 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "∆½",
-      keywords = Seq("as-ratio", "rational", "to-Q", "to-rational", "numerator", "denominator"),
+      keywords = Seq(
+        "as-ratio",
+        "rational",
+        "to-Q",
+        "to-rational",
+        "numerator",
+        "denominator",
+      ),
       arity = 1,
       Options(vectorises = true),
       Overload(
