@@ -1857,7 +1857,6 @@ object Elements:
     },
     addPart("∆½", Monad, true) {
       case a: VNum =>
-      case a.isReal =>
         val asRational = a.real.toRational
         VList(
           Seq(
