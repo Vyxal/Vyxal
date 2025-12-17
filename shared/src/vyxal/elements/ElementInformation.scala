@@ -5843,6 +5843,17 @@ object ElementInformation:
         description = "Inverse of #1",
       ),
     ),
+    AddElement(
+      symbol = "∆½",
+      keywords = Seq("as-ratio", "rational", "to-Q", "to-rational", "numerator", "denominator"),
+      arity = 1,
+      Options(vectorises = true),
+      Overload(
+        name = "Convert to ratio",
+        args = Seq("num"),
+        description = "[n, d] where n/d = #1 and n,d are minimal ints",
+      ),
+    ),
   )
 
   val modifiers: Map[String, Modifier] = Map(
