@@ -1855,6 +1855,16 @@ object Elements:
     addPart("∆d", Monad, true) {
       case a: VNum => a / VNum(spire.math.Real.pi) * VNum(180)
     },
+    addPart("∆½", Monad, true) {
+      case a: VNum =>
+        val asRational = a.real.toRational
+        VList(
+          Seq(
+            VNum(asRational.numerator.toInt),
+            VNum(asRational.denominator.toInt),
+          )
+        )
+    },
     addPart("ÞR", Dyad, false) {
       case (a, VListOf[VNum](b)) =>
         val shape = b

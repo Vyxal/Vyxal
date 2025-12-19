@@ -391,6 +391,7 @@ Element, Modifier, and Syntax Reference
 | <code>∆⌊</code> | <code>clamp</code> | 3 | vec  | **Clamp** (`num,num,num`): Clamp #1 between #2 and #3 |
 | <code>∆⎀</code> | <code>polar-parts</code> | 1 | vec  | **Polar Parts** (`num`): Push the magnitude and argument of #1 |
 | <code>∆ʈ</code> | <code>arctan</code></br><code>arctangent</code> | 1 | vec  | **Arctangent** (`num`): Arctangent of #1 |
+| <code>∆½</code> | <code>as-ratio</code></br><code>rational</code></br><code>to-Q</code></br><code>to-rational</code></br><code>numerator</code></br><code>denominator</code> | 1 | vec  | **Convert to ratio** (`num`): [n, d] where n/d = #1 and n,d are minimal ints |
 | <code>∆ℭ</code> | <code>arccos</code></br><code>arccosine</code> | 1 | vec  | **Arccosine** (`num`): Arccosine of #1 |
 | <code>∆⌹</code> | <code>complex-parts</code> | 1 | vec  | **Complex Parts** (`num`): Push the real and imaginary parts of #1 |
 | <code>∆↯</code> | <code>arcsin</code></br><code>arcsine</code> | 1 | vec  | **Arcsine** (`num`): Arcsine of #1 |
