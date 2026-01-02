@@ -86,7 +86,10 @@ object MiscHelpers:
     if a < b then a else b
 
   def eval(s: String)(using ctx: Context): VAny =
-    if "^0+$".r.matches(s) then VNum(0) //special case: if the number is made up of only 0s, it will get destroyed by the next line
+    if "^0+$".r.matches(s) then
+      VNum(
+        0
+      ) // special case: if the number is made up of only 0s, it will get destroyed by the next line
     else if VNum.NumRegex.matches(StringHelpers.stripLeft(s, "0")) then VNum(s)
     else if s.matches("""("(?:[^"\\]|\\.)*["])""") then
       s.substring(1, s.length - 1)
