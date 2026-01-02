@@ -10,6 +10,7 @@ import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Stack
 import scala.math.Ordering.Implicits.infixOrderingOps
 import scala.util.{Failure, Success, Try}
+import vyxal.StringHelpers.stripLeft
 
 object MiscHelpers:
   val add = Dyad.vectorise("add")(forkify {
@@ -86,7 +87,7 @@ object MiscHelpers:
     if a < b then a else b
 
   def eval(s: String)(using ctx: Context): VAny =
-    if VNum.NumRegex.matches(s) then VNum(s)
+    if VNum.NumRegex.matches(stripLeft(s,"0")) then VNum(s)
     else if s.matches("""("(?:[^"\\]|\\.)*["])""") then
       s.substring(1, s.length - 1)
     else if isList(s) then
