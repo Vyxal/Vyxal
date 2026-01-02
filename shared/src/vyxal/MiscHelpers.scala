@@ -3,7 +3,6 @@ package vyxal
 import vyxal.conversions.{*, given}
 import vyxal.parsing.Lexer
 import vyxal.Interpreter.executeFn
-import vyxal.StringHelpers.stripLeft
 
 import scala.annotation.tailrec
 import scala.collection.mutable.ArrayBuffer
@@ -87,7 +86,8 @@ object MiscHelpers:
     if a < b then a else b
 
   def eval(s: String)(using ctx: Context): VAny =
-    if VNum.NumRegex.matches(stripLeft(s, "0")) then VNum(s)
+    if "^0+$".r.matches(s) then VNum(0) //special case: if the number is made up of only 0s, it will get destroyed by the next line
+    else if VNum.NumRegex.matches(StringHelpers.stripLeft(s, "0")) then VNum(s)
     else if s.matches("""("(?:[^"\\]|\\.)*["])""") then
       s.substring(1, s.length - 1)
     else if isList(s) then
