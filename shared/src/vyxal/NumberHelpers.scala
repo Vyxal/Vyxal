@@ -231,7 +231,8 @@ object NumberHelpers:
     result.toList
 
   def probablePrimes: LazyList[VNum] =
-    LazyList.iterate(VNum(2))(_ + 1).filter(isMostLikelyPrime(_))
+    VNum(2) #:: LazyList.iterate(VNum(3))(_ + 2)
+  .filter(isMostLikelyPrime)
 
   def primeFactors(a: VNum): Seq[VNum] =
     val result = mutable.ListBuffer.empty[VNum]
