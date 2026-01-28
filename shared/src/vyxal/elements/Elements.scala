@@ -12,6 +12,7 @@ import vyxal.MiscHelpers.defaultEmpty
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
+import vyxal.elements.Modifiers.addPart
 
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
@@ -39,9 +40,17 @@ object Elements:
       },
     "Ƶ" ->
       direct(Monad) {
-        val a = pop().itr
-        if a.isEmpty then push(VList(Seq.empty), 0)
-        else push(a.init, a.last)
+        val ctx = summon[Context]
+        pop() match
+          case fn: VFun =>
+            val iter = pop()
+            if iter.isInstanceOf[VPhysical] then
+              push(ListHelpers.augmentAssign(iter.itr, -1, fn))
+            else throw UnimplementedOverloadException("ᑂ", List(fn, iter))
+          case a: VPhysical =>
+            val iter = a.itr
+            if iter.isEmpty then push(VList(Seq.empty), 0)
+            else push(iter.init, iter.last)
       },
     "⊞" ->
       direct(Monad) {

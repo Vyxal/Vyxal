@@ -69,13 +69,18 @@ object ElementInformation:
   val elements: Map[String, Element] = Map(
     AddElement(
       symbol = "Ƶ",
-      keywords = Seq("tailless-top", "tail-extract"),
+      keywords = Seq("tailless-top", "tail-extract", "tail-apply", "apply-to-tail", "apply-at-tail"),
       arity = 1,
       Options(),
       Overload(
         name = "Tailless Top",
         args = Seq("any"),
         description = "Push #1[:-1], #1[-1] to the stack",
+      ),
+      Overload(
+        name = "Apply to tail",
+        args = Seq("any", "fun"),
+        description = "Apply #2 to the last element of #1. #1[:-1] + #2(#1[-1])"
       ),
     ),
     AddElement(
