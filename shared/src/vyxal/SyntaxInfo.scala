@@ -192,7 +192,12 @@ object SyntaxInfo:
     "⊐" ->
       Syntax(
         "All until previous newline as lambda",
-        Seq("back-lambda", "wrap-lambda", "lambda-to-previous-newline", "lambda-newline"),
+        Seq(
+          "back-lambda",
+          "wrap-lambda",
+          "lambda-to-previous-newline",
+          "lambda-newline",
+        ),
         "Wraps the entire line up to this symbol in a lambda",
         "<code>⊐ == λ<code>}",
         structureOpener = false,
