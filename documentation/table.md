@@ -130,7 +130,7 @@ Element, Modifier, and Syntax Reference
 | <code>ᐕ</code> | <code>behead</code></br><code>without-head</code></br><code>headless</code> | 1 |   | **Behead** (`any`): All but the first element of #1 |
 | <code>½</code> | <code>half</code></br><code>halve</code> | 1 | vec  | **Halve** (`num`): #1 / 2</br>**Two String Halves** (`str`): Split #1 in half |
 | <code>ƶ</code> | <code>range-to-length</code> | 1 |   | **Range to Length** (`lst`): Range from 0 to len(#1) - 1 |
-| <code>Ƶ</code> | <code>tailless-top</code></br><code>tail-extract</code> | 1 |   | **Tailless Top** (`any`): Push #1[:-1], #1[-1] to the stack |
+| <code>Ƶ</code> | <code>tailless-top</code></br><code>tail-extract</code></br><code>tail-apply</code></br><code>apply-to-tail</code></br><code>apply-at-tail</code> | 1 |   | **Tailless Top** (`any`): Push #1[:-1], #1[-1] to the stack</br>**Apply to tail** (`any,fun`): Apply #2 to the last element of #1. #1[:-1] + #2(#1[-1]) |
 | <code>⁰</code> | <code>first-input</code></br><code>input-zero</code> | 0 |   | **First Input**: Push the first input to the stack |
 | <code>¹</code> | <code>second-input</code></br><code>input-one</code> | 0 |   | **Second Input**: Push the second input to the stack |
 | <code>²</code> | <code>square</code></br><code>string-pairs</code> | 1 | vec  | **Square** (`num`): #1 ** 2</br>**String Pairs** (`str`): Split #1 into pairs of characters |
@@ -186,7 +186,7 @@ Element, Modifier, and Syntax Reference
 | <code>ꜝ</code> | <code>keep-truthy</code></br><code>split-commas</code></br><code>comma-split</code> | 1 |   | **Keep Truthy** (`lst`): Keep only the truthy elements of #1</br>**Split on Commas** (`str`): Split #1 on commas |
 | <code>≈</code> | <code>all-same</code> | 1 |   | **All Same** (`any`): Are all elements of #1 the same? |
 | <code>≊</code> | <code>all-equal-item</code></br><code>all-equal-to</code> | 2 |   | **All Equal Item** (`lst,any`): Are all elements of #1 equal to #2? |
-| <code>κ</code> | <code>gcd</code> | 2 | vec  | **GCD** (`num,num`): GCD of #1 and #2</br>**GCD of List** (`lst`): GCD of all elements of #1</br>**GCD of List with Initial Value** (`lst,num`): GCD of all elements of #1.append(#2) |
+| <code>κ</code> | <code>gcd</code> | 2 | vec  | **GCD** (`num,num`): GCD of #1 and #2</br>**GCD of List** (`lst`): GCD of all elements of #1</br>**GCD of List with Initial Value** (`lst,num`): GCD of all elements of #1.append(#2)</br>**Truthy Head Extract** (`lst,fun`): Extract the first element of #1 such that #2 is truthy, and leave #1 without that element below. Similar to ᑂ but for arbitrary elements. `123f λe} κ => [2,[1,3]]` |
 | <code>‹</code> | <code>decrement</code></br><code>--</code></br><code>pad-to-8</code></br><code>dec</code></br><code>pad-8</code></br><code>pad-to-byte</code> | 1 | vec  | **Decrement** (`num`): #1 - 1</br>**Pad to 8** (`str`): Pad #1 to a length that is a multiple of 8 with '0's |
 | <code>›</code> | <code>increment</code></br><code>++</code></br><code>space-to-0</code></br><code>replace-spaces-with-0s</code></br><code>inc</code> | 1 | vec  | **Increment** (`num`): #1 + 1</br>**Spaces to 0s** (`str`): Replace spaces in #1 with '0's |
 | <code>ʀ</code> | <code>zero-range</code></br><code>lowercase</code></br><code>range-zero</code></br><code>nrange-zero</code> | 1 | vec  | **Range 0** (`num`): Range from 0 to #1, exclusive</br>**Lowercase** (`str`): Lowercase #1 |
@@ -456,9 +456,9 @@ Element, Modifier, and Syntax Reference
         
 | Symbol | Name | Keywords | Description | Usage |
 |--------|----|--|-----------|------|
-| <code>#:~</code> | Retrieve Original Element | `$.` | Call the original, vyxal defined, meaning of an element. Useful for when you want to define a new element with the same name as a built-in one | <code>#:~<name></code> |
 | <code>#]</code> | Close List | `]` | Close a list. Pushes the list to the stack when closed. | <code>#[item|item|item#]</code> |
 | <code>#:@</code> | Defined Element Call | `$@` | Call a defined element | <code>#:@<name></code> |
+| <code>#:~</code> | Retrieve Original Element | `$.` | Call the original, vyxal defined, meaning of an element. Useful for when you want to define a new element with the same name as a built-in one | <code>#:~<name></code> |
 | <code>#></code> | Augmented Assignment | `:>` | Apply a function to a variable value and store the result in the same variable. | <code><function> #> <variable></code> |
 | <code>#T</code> | Try-Catch | `try` | Open a Try-Catch Structure | <code>#T<success>|<exception>}</code> |
 | <code>#¤</code> | Context Paramter Index | ``n`` | Index into the list of context parameters. If no index is provided, push the entire context list. Useful for generator structures. | <code>#¤<number></code> |
@@ -481,6 +481,7 @@ Element, Modifier, and Syntax Reference
 | <code>⍟</code> | Close a Structure and Flatten | `end-and-flatten`</br>`end-flatten`</br>`close-flatten` | Match and close the nearest open structure, then flatten the result | <code><structure open> <code> ⍟ <code not in structure></code> |
 | <code>⎊</code> | Open Map Over Permutations Lambda | `map-permutations`</br>`map-perms`</br>`map-permutations<`</br>`permutations<` | Open a lambda that automatically maps over the permutations of the top of the stack | <code>⎊<code>}</code> |
 | <code>⎄</code> | Generator Structure | `relation<`</br>`generate<`</br>`generate-from<` | Open a generator structure. Allows for generator expressions | <code>⎄<code>|<initial vector>}</code> |
+| <code>⊐</code> | All until previous newline as lambda | `back-lambda`</br>`wrap-lambda`</br>`lambda-to-previous-newline`</br>`lambda-newline` | Wraps the entire line up to this symbol in a lambda | <code><code>⊐ == λ<code>}</code> |
 | <code>"</code> | Open/Close String |  | Open/close a string. If the string is closed, push it to the stack. Closes all string types | <code>"string contents"</code> |
 | <code>#$</code> | Retrieve Variable | `$` | Push the value of a variable. | <code>#$<variable></code> |
 | <code>#</code> | Miscellaneous Digraphs |  | Used for miscellaneous digraphs | <code>#<character></code> |
