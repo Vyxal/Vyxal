@@ -46,7 +46,7 @@ object Elements:
             val iter = pop()
             if iter.isInstanceOf[VPhysical] then
               push(ListHelpers.augmentAssign(iter.itr, -1, fn))
-            else throw UnimplementedOverloadException("ᑂ", List(fn, iter))
+            else throw UnimplementedOverloadException("Ƶ", List(fn, iter))
           case a: VPhysical =>
             val iter = a.itr
             if iter.isEmpty then push(VList(Seq.empty), 0)
@@ -1499,6 +1499,13 @@ object Elements:
               case VList(lst) => push(NumberHelpers.gcd(lst :+ rhs))
               case _ =>
                 throw UnsupportedOverloadException("κ", "String | Function")
+          case predicate: VFun =>
+              pop() match
+                  case VList(lst) => 
+                    val ret = lst.find(predicate(_).toBool).getOrElse(null)
+                    val (before, atAndAfter) = lst.span(_ != ret)
+                    push(before.appendedAll(atAndAfter.drop(1)))
+                    push(if(ret != null) ret else VNum(0))
           case _ => throw UnsupportedOverloadException("κ", "String | Function")
       },
     "#↸" ->
