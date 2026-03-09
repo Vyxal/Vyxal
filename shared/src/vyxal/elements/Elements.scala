@@ -1499,12 +1499,14 @@ object Elements:
               case VList(lst) => push(NumberHelpers.gcd(lst :+ rhs))
               case _ =>
                 throw UnsupportedOverloadException("κ", "String | Function")
-          case predicate: VFun => pop() match
-              case VList(lst) =>
-                val ret = lst.find(predicate(_).toBool).getOrElse(null)
-                val (before, atAndAfter) = lst.span(_ != ret)
-                push(before.appendedAll(atAndAfter.drop(1)))
-                push(if ret != null then ret else VNum(0))
+          case predicate: VFun =>
+              pop() match
+                  case VList(lst) => 
+                    val ret = lst.find(predicate(_).toBool).getOrElse(null)
+                    val (before, atAndAfter) = lst.span(_ != ret)
+                    push(before.appendedAll(atAndAfter.drop(1)))
+                    push(if(ret != null) ret else VNum(0))
+                  case _ => throw UnsupportedOverloadException("κ", "Truthy head extract only works on lists")
           case _ => throw UnsupportedOverloadException("κ", "String | Function")
       },
     "#↸" ->
