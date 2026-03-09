@@ -3382,7 +3382,8 @@ object ElementInformation:
       Overload(
         name = "Truthy Head Extract",
         args = Seq("lst", "fun"),
-        description = "Extract the first element of #1 such that #2 is truthy, and leave #1 without that element below. Similar to ᑂ but for arbitrary elements. `123f λe} κ => [2,[1,3]]`"
+        description =
+          "Extract the first element of #1 such that #2 is truthy, and leave #1 without that element below. Similar to ᑂ but for arbitrary elements. `123f λe} κ => [2,[1,3]]`",
       ),
     ),
     AddElement(
