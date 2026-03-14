@@ -5,6 +5,7 @@ import scala.language.implicitConversions
 import vyxal.*
 import vyxal.{Dyad, ImplHelpers, Monad, Triad}
 import vyxal.conversions.{*, given}
+import vyxal.elements.Modifiers.addPart
 import vyxal.parsing.Codepage
 import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
@@ -39,9 +40,17 @@ object Elements:
       },
     "Ƶ" ->
       direct(Monad) {
-        val a = pop().itr
-        if a.isEmpty then push(VList(Seq.empty), 0)
-        else push(a.init, a.last)
+        val ctx = summon[Context]
+        pop() match
+          case fn: VFun =>
+            val iter = pop()
+            if iter.isInstanceOf[VPhysical] then
+              push(ListHelpers.augmentAssign(iter.itr, -1, fn))
+            else throw UnimplementedOverloadException("Ƶ", List(fn, iter))
+          case a: VPhysical =>
+            val iter = a.itr
+            if iter.isEmpty then push(VList(Seq.empty), 0)
+            else push(iter.init, iter.last)
       },
     "⊞" ->
       direct(Monad) {
@@ -1490,6 +1499,16 @@ object Elements:
               case VList(lst) => push(NumberHelpers.gcd(lst :+ rhs))
               case _ =>
                 throw UnsupportedOverloadException("κ", "String | Function")
+          case predicate: VFun => pop() match
+              case VList(lst) =>
+                val ret = lst.find(predicate(_).toBool).getOrElse(null)
+                val (before, atAndAfter) = lst.span(_ != ret)
+                push(before.appendedAll(atAndAfter.drop(1)))
+                push(if ret != null then ret else VNum(0))
+              case _ => throw UnsupportedOverloadException(
+                  "κ",
+                  "Truthy head extract only works on lists",
+                )
           case _ => throw UnsupportedOverloadException("κ", "String | Function")
       },
     "#↸" ->
