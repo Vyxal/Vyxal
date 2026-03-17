@@ -1,5 +1,7 @@
 package vyxal.elements
 
+import sttp.client4.DuplicateHeaderBehavior.Add
+
 case class Element(
     symbol: String,
     /** Names that can be used for this in literate mode */
@@ -1629,6 +1631,17 @@ object ElementInformation:
         name = "Cumulative Sums",
         args = Seq("lst"),
         description = "Cumulative sums of #1",
+      ),
+    ),
+    AddElement(
+      symbol = "∆σ",
+      keywords = Seq("undelta","cumulative-sum-prepend-zero"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Undelta",
+        args = Seq("lst"),
+        description = "Cumulative sums of #1 with 0 prepended. Shortcut for `0pσ`"
       ),
     ),
     AddElement(
@@ -4674,6 +4687,28 @@ object ElementInformation:
         name = "Integers",
         args = Seq(),
         description = "Push a list of every integer to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "kt",
+      keywords = Seq("&DIGITS-LOWER"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Digits and Lowercase",
+        args = Seq(),
+        description = "Push `0123456789abcdefghijklmnopqrstuvwxyz` to the stack"
+      ),
+    ),
+    AddElement(
+      symbol = "kT",
+      keywords = Seq("&DIGITS-UPPER"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Digits and Uppercase",
+        args = Seq(),
+        description = "Push `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ` to the stack"
       ),
     ),
     AddElement(

@@ -643,6 +643,19 @@ object Elements:
             )((x, y) => MiscHelpers.add(x, y))
           )
     },
+    addPart("∆σ", Monad, false) {
+      case a =>
+        val list = ListHelpers.makeIterable(a)
+        if list.isEmpty then Seq(0)
+        else if list.tail.isEmpty then Seq(VNum(0), list.head)
+        else
+          val sums = VList(
+            list.tail.scanLeft(
+              list.head
+            )((x, y) => MiscHelpers.add(x, y))
+          )
+          VList(VNum(0) +: sums)
+    },
     "⇧" -> fullToImpl(Monad, lhs => ListHelpers.gradeUp(lhs.itr)),
     "⇩" -> fullToImpl(Monad, lhs => ListHelpers.gradeDown(lhs.itr)),
     addPart("∪", Dyad, false) {
@@ -1667,6 +1680,8 @@ object Elements:
       constant(
         "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
       ),
+    "kt" -> constant("0123456789abcdefghijklmnopqrstuvwxyz"),
+    "kT" -> constant("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
     "k^" -> constant("0123456789ABCDEF"),
     "k6" -> constant("0123456789abcdef"),
     "kd" -> constant("0123456789"),
