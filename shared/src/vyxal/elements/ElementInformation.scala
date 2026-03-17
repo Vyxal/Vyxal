@@ -1635,13 +1635,14 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "∆σ",
-      keywords = Seq("undelta","cumulative-sum-prepend-zero"),
+      keywords = Seq("undelta", "cumulative-sum-prepend-zero"),
       arity = 1,
       Options(),
       Overload(
         name = "Undelta",
         args = Seq("lst"),
-        description = "Cumulative sums of #1 with 0 prepended. Shortcut for `0pσ`"
+        description =
+          "Cumulative sums of #1 with 0 prepended. Shortcut for `0pσ`",
       ),
     ),
     AddElement(
@@ -4697,7 +4698,7 @@ object ElementInformation:
       Overload(
         name = "Digits and Lowercase",
         args = Seq(),
-        description = "Push `0123456789abcdefghijklmnopqrstuvwxyz` to the stack"
+        description = "Push `0123456789abcdefghijklmnopqrstuvwxyz` to the stack",
       ),
     ),
     AddElement(
@@ -4708,7 +4709,7 @@ object ElementInformation:
       Overload(
         name = "Digits and Uppercase",
         args = Seq(),
-        description = "Push `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ` to the stack"
+        description = "Push `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ` to the stack",
       ),
     ),
     AddElement(
