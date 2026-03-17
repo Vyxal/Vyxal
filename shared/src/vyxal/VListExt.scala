@@ -52,7 +52,7 @@ extension (self: Seq[VAny])
     ind match
       case ind: VNum => self.indexBig(ind.real.toBigInt)
       case inds: VList => VList(inds.vmap(self.index))
-      case _ => throw new Exception("Index must be a number or list")
+      case _ => throw BadArgumentException("Index must be a number or list", ind)
 
   private def indexBig(ind: BigInt): VAny =
     if self.isEmpty then return 0
