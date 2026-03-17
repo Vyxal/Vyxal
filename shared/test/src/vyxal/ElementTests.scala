@@ -534,15 +534,15 @@ class ElementTests extends VyxalTests:
     )
   }
   describe("Element i") {
-    it("should still error if neither input is a list of numbers"){
+    it("should still error if neither input is a list of numbers") {
       given ctx: Context = Context()
-        assertThrows[Exception] {
-          Interpreter.execute("kvfkẄf$i")
-        }
+      assertThrows[Exception] {
+        Interpreter.execute("kvfkẄf$i")
+      }
     }
     testMulti(
-      "2 12 5 22Wnfi" -> vSeq("c","m","f","w"),
-      "2 12 5 22Wnf$i" -> vSeq("c","m","f","w")
+      "2 12 5 22Wnfi" -> vSeq("c", "m", "f", "w"),
+      "2 12 5 22Wnf$i" -> vSeq("c", "m", "f", "w"),
     )
   }
 end ElementTests

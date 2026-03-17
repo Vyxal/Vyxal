@@ -155,13 +155,17 @@ object MiscHelpers:
       case _ => throw AttemptedReadPrivateException(obj.className, name)
 
   val index: Dyad = Dyad.fill("index") {
-    case (a: VList, b: VList) => 
+    case (a: VList, b: VList) =>
       try a.index(b)
-      catch case _: BadArgumentException => 
-        try b.index(a)
-        catch case _: BadArgumentException => 
-          throw BadArgumentException("Index must be a number or list", Seq(a,b))
-          
+      catch
+        case _: BadArgumentException =>
+          try b.index(a)
+          catch
+            case _: BadArgumentException => throw BadArgumentException(
+                "Index must be a number or list",
+                Seq(a, b),
+              )
+
     case (VStr(a), VList(b)) =>
       val temp = b.vmap(MiscHelpers.index(a, _))
       if b.forall(_.isInstanceOf[VNum]) then temp.mkString
