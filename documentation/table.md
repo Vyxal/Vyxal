@@ -261,6 +261,7 @@ Element, Modifier, and Syntax Reference
 | <code>kP</code> | <code>&PRINTABLE-ASCII</code> | 0 |   | **Printable ASCII with Space**: Push " " to "~" to the stack |
 | <code>kQ</code> | <code>&PRINTABLE-ASCII-NO-SPACE</code> | 0 |   | **Printable ASCII without Space**: Push "!" to "~" to the stack |
 | <code>kR</code> | <code>&DIGITS-UPPERCASE-LOWERCASE</code> | 0 |   | **Digits, Uppercase, Lowercase**: Push "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" to the stack |
+| <code>kT</code> | <code>&DIGITS-UPPER</code> | 0 |   | **Digits and Uppercase**: Push `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ` to the stack |
 | <code>kV</code> | <code>&UPPERCASE-VOWELS</code> | 0 |   | **Uppercase Vowels**: Push "AEIOU" to the stack |
 | <code>kY</code> | <code>&UPPERCASE-VOWELSY</code> | 0 |   | **Uppercase Vowels and Y**: Push "AEIOUY" to the stack |
 | <code>kZ</code> | <code>&REVERSE-UPPERCASE</code> | 0 |   | **Reverse Uppercase**: Push "ZYXWVUTSRQPONMLKJIHGFEDCBA" to the stack |
@@ -279,6 +280,7 @@ Element, Modifier, and Syntax Reference
 | <code>ko</code> | <code>&OCTAL-DIGITS</code> | 0 |   | **Octal Digits**: Push "01234567" to the stack |
 | <code>kp</code> | <code>&PUNCTUATION</code> | 0 |   | **Punctuation**: Push all punctuation characters to the stack |
 | <code>kr</code> | <code>&DIGITS-LOWERCASE-UPPERCASE</code> | 0 |   | **Digits, Lowercase, Uppercase**: Push "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" to the stack |
+| <code>kt</code> | <code>&DIGITS-LOWER</code> | 0 |   | **Digits and Lowercase**: Push `0123456789abcdefghijklmnopqrstuvwxyz` to the stack |
 | <code>kv</code> | <code>&LOWERCASE-VOWELS</code> | 0 |   | **Lowercase Vowels**: Push "aeiou" to the stack |
 | <code>ky</code> | <code>&LOWERCASE-VOWELSY</code> | 0 |   | **Lowercase Vowels and Y**: Push "aeiouy" to the stack |
 | <code>kz</code> | <code>&REVERSE-LOWERCASE</code> | 0 |   | **Reverse Lowercase**: Push "zyxwvutsrqponmlkjihgfedcba" to the stack |
@@ -396,6 +398,7 @@ Element, Modifier, and Syntax Reference
 | <code>∆⌹</code> | <code>complex-parts</code> | 1 | vec  | **Complex Parts** (`num`): Push the real and imaginary parts of #1 |
 | <code>∆↯</code> | <code>arcsin</code></br><code>arcsine</code> | 1 | vec  | **Arcsine** (`num`): Arcsine of #1 |
 | <code>∆æ</code> | <code>all-prime-exponents</code></br><code>all-prime-exps</code> | 1 | vec  | **All Prime Exponents** (`num`): For all primes less than or equal to #1, push the power of that prime in the factorisation of #1 |
+| <code>∆σ</code> | <code>undelta</code></br><code>cumulative-sum-prepend-zero</code> | 1 |   | **Undelta** (`lst`): Cumulative sums of #1 with 0 prepended. Shortcut for `0pσ` |
 | <code>∆Ṭ</code> | <code>atan2</code></br><code>arctan2</code></br><code>arctangent2</code> | 2 | vec  | **Arctangent 2** (`num,num`): atan2(#1, #2) |
 | <code>∆¬</code> | <code>bitwise-not</code> | 1 | vec  | **Bitwise Not** (`num`): ~#1 |
 | <code>∆∧</code> | <code>bitwise-and</code> | 2 | vec  | **Bitwise And** (`num,num`): #1 & #2 |
