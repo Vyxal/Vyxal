@@ -370,6 +370,7 @@ object MiscHelpers:
       case f: VFun =>
         val res = executeFn(f)
         if !endOfProgram then vyPrint(res)
+        else if !ctx.globals.printed then vyPrint(res)
       case _ => ctx.globals.printFn(StringHelpers.vyToString(x))
 
   def vyPrintln(x: VAny, endOfProgram: Boolean = false)(using
