@@ -21,7 +21,7 @@ object RegisterHelpers:
     */
   def applyFn(fn: VFun, idx: VNum)(using ctx: Context): Unit =
     var true_idx = idx.toInt
-    if register.length == 0 then
+    if register.isEmpty then
       register.append(VNum(0))
       true_idx = 0
     if register.last.isInstanceOf[VPhysical]
