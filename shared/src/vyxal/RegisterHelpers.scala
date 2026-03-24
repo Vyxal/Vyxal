@@ -20,10 +20,14 @@ object RegisterHelpers:
     * index
     */
   def applyFn(fn: VFun, idx: VNum)(using ctx: Context): Unit =
+    var true_idx = idx.toInt
+    if register.length == 0 then
+      register.append(VNum(0))
+      true_idx = 0
     if register.last.isInstanceOf[VPhysical]
     then
-      val c = Interpreter.executeFn(fn, args = Seq(register(idx.toInt)))
-      register.update(idx.toInt, c)
+      val c = Interpreter.executeFn(fn, args = Seq(register(true_idx)))
+      register.update(true_idx, c)
 
   /** Apply a function to all elements in the register */
   def map(fn: VFun)(using ctx: Context): Unit =
