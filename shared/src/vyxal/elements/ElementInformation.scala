@@ -5794,15 +5794,16 @@ object ElementInformation:
       ),
     ),
     AddElement(
-      symbol="øJ",
+      symbol = "øJ",
       keywords = Seq("multiline-join", "2D-join", "side-by-side"),
       arity = 2,
       Options(vectorises = false),
       Overload(
         name = "Multiline join strings",
         args = Seq("str", "str"),
-        description = "Join #1 and #2, such that each line of #2 is at the end of a line of #1. Extra lines in #2 are discarded. Equivalent to ⎂eẄJ”"
-      )
+        description =
+          "Join #1 and #2, such that each line of #2 is at the end of a line of #1. Extra lines in #2 are discarded. Equivalent to ⎂eẄJ”",
+      ),
     ),
     AddElement(
       symbol = "Þ⁰",

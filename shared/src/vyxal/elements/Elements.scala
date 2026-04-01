@@ -2081,8 +2081,14 @@ object Elements:
           case _ => throw UnsupportedOverloadException("øE", "List | Function")
       },
     addPart("øJ", Dyad, false) {
-      case (VStr(a), VStr(b)) =>
-        VStr(StringHelpers.split(a,"\n").map(_.toString()).zip(StringHelpers.split(b,"\n").map(_.toString())).map((a,b)=>s"$a$b").mkString("\n"))
+      case (VStr(a), VStr(b)) => VStr(
+          StringHelpers
+            .split(a, "\n")
+            .map(_.toString())
+            .zip(StringHelpers.split(b, "\n").map(_.toString()))
+            .map((a, b) => s"$a$b")
+            .mkString("\n")
+        )
 
     },
     addPart("Þ0", Dyad, false) {
