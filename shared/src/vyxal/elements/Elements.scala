@@ -2080,6 +2080,11 @@ object Elements:
             push(groups.map(_.itr.headOption.getOrElse(VStr(""))), lengths)
           case _ => throw UnsupportedOverloadException("øE", "List | Function")
       },
+    addPart("øJ", Dyad, false) {
+      case (VStr(a), VStr(b)) =>
+        VStr(StringHelpers.split(a,"\n").map(_.toString()).zip(StringHelpers.split(b,"\n").map(_.toString())).map((a,b)=>s"$a$b").mkString("\n"))
+
+    },
     addPart("Þ0", Dyad, false) {
       case (a: VList, b: VNum) => ListHelpers.zeroPad(a, b)
       case (VStr(a), b: VNum) => StringHelpers.zeroPad(a, b)
