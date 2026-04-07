@@ -123,6 +123,16 @@ object ElementInformation:
         args = Seq("str", "str"),
         description = "Split #1 by regex #2",
       ),
+      Overload(
+        name = "Duration Division",
+        args = Seq("dur", "num"),
+        description = "Divide duration #1 by scalar #2",
+      ),
+      Overload(
+        name = "Duration Ratio",
+        args = Seq("dur", "dur"),
+        description = "Ratio of duration #1 to duration #2",
+      ),
     ),
     AddElement(
       symbol = "×",
@@ -275,6 +285,16 @@ object ElementInformation:
         description = "Pad #1 to a length that is a multiple of 8 with '0's",
         typeSwitchable = true,
       ),
+      Overload(
+        name = "Decrement Date",
+        args = Seq("date"),
+        description = "#1 minus 1 day",
+      ),
+      Overload(
+        name = "Decrement Duration",
+        args = Seq("dur"),
+        description = "#1 minus 1 day",
+      ),
     ),
     AddElement(
       symbol = "›",
@@ -292,6 +312,16 @@ object ElementInformation:
         args = Seq("str"),
         description = "Replace spaces in #1 with '0's",
         typeSwitchable = true,
+      ),
+      Overload(
+        name = "Increment Date",
+        args = Seq("date"),
+        description = "#1 plus 1 day",
+      ),
+      Overload(
+        name = "Increment Duration",
+        args = Seq("dur"),
+        description = "#1 plus 1 day",
       ),
     ),
     AddElement(
@@ -324,13 +354,23 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "%",
-      keywords = Seq("mod", "modulo", "%", "remainder"),
+      keywords = Seq("mod", "modulo", "%", "remainder", "date-format"),
       arity = 2,
       Options(vectorises = true),
       Overload(
         name = "Modulo",
         args = Seq("num", "num"),
         description = "#1 % #2 (remainder of #1 divided by #2)",
+      ),
+      Overload(
+        name = "Date Format",
+        args = Seq("date", "str"),
+        description = "Format date #1 using pattern #2 (e.g. 'yyyy-MM-dd')",
+      ),
+      Overload(
+        name = "Duration Modulo",
+        args = Seq("dur", "dur"),
+        description = "Remainder of duration #1 divided by duration #2",
       ),
       Overload(
         name = "String Format",
@@ -595,6 +635,16 @@ object ElementInformation:
         args = Seq("lst", "fun"),
         description = "Reduce overlapping pairs in {#1|#2} by function {#2|#1}",
       ),
+      Overload(
+        name = "Absolute Date Difference",
+        args = Seq("date", "date"),
+        description = "Absolute duration between date #1 and date #2",
+      ),
+      Overload(
+        name = "Absolute Duration Difference",
+        args = Seq("dur", "dur"),
+        description = "Absolute difference between duration #1 and duration #2",
+      ),
     ),
     AddElement(
       symbol = "A",
@@ -669,6 +719,11 @@ object ElementInformation:
         args = Seq("str"),
         description = "Evaluate #1",
         typeSwitchable = true,
+      ),
+      Overload(
+        name = "Date Components",
+        args = Seq("date"),
+        description = "Extract [year, month, day, hour, minute, second] from date #1",
       ),
     ),
     AddElement(
@@ -790,6 +845,11 @@ object ElementInformation:
         args = Seq("any"),
         description = "Length of #1",
       ),
+      Overload(
+        name = "Duration in Seconds",
+        args = Seq("dur"),
+        description = "Total seconds in duration #1",
+      ),
     ),
     AddElement(
       symbol = "M",
@@ -837,6 +897,11 @@ object ElementInformation:
         name = "First Non-Negative Integer Where Predicate is True",
         args = Seq("fun"),
         description = "First non-negative integer where #1 is true",
+      ),
+      Overload(
+        name = "Negate Duration",
+        args = Seq("dur"),
+        description = "Negate duration #1",
       ),
     ),
     AddElement(
@@ -909,6 +974,11 @@ object ElementInformation:
         args = Seq("str", "str"),
         description = "Check if #2 matches #1",
       ),
+      Overload(
+        name = "Date Range",
+        args = Seq("date", "date"),
+        description = "Range of dates from #1 to #2, exclusive, one per day",
+      ),
     ),
     AddElement(
       symbol = "S",
@@ -941,6 +1011,11 @@ object ElementInformation:
         name = "Does String Contain Only Alphabetic Characters",
         args = Seq("str"),
         description = "Check if #1 contains only alphabetic characters",
+      ),
+      Overload(
+        name = "Date Triple",
+        args = Seq("date"),
+        description = "Extract [year, month, day] from date #1",
       ),
     ),
     AddElement(
@@ -1162,10 +1237,15 @@ object ElementInformation:
         args = Seq("str"),
         description = "Append a copy of #1 to itself",
       ),
+      Overload(
+        name = "Double Duration",
+        args = Seq("dur"),
+        description = "Double the duration #1",
+      ),
     ),
     AddElement(
       symbol = "e",
-      keywords = Seq("even?", "is-even", "split-newlines", "/newline"),
+      keywords = Seq("even?", "is-even", "split-newlines", "/newline", "leap-year?"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -1177,6 +1257,11 @@ object ElementInformation:
         name = "Split Newlines",
         args = Seq("str"),
         description = "Split #1 by newlines",
+      ),
+      Overload(
+        name = "Is Leap Year",
+        args = Seq("date"),
+        description = "Is the year of date #1 a leap year?",
       ),
     ),
     AddElement(
@@ -1851,16 +1936,26 @@ object ElementInformation:
         args = Seq("str"),
         description = "Split #1 by spaces",
       ),
+      Overload(
+        name = "Date Components",
+        args = Seq("date"),
+        description = "Extract [year, month, day, hour, minute, second] from date #1",
+      ),
     ),
     AddElement(
       symbol = "⌊",
-      keywords = Seq("floor", "str-to-num"),
+      keywords = Seq("floor", "str-to-num", "date-to-unix"),
       arity = 1,
       Options(vectorises = true),
       Overload(
         name = "Floor",
         args = Seq("num"),
         description = "Floor of #1",
+      ),
+      Overload(
+        name = "Date to Unix Timestamp",
+        args = Seq("date"),
+        description = "Convert date #1 to Unix epoch seconds",
       ),
       Overload(
         name = "String to Number",
@@ -2199,6 +2294,11 @@ object ElementInformation:
         name = "Insert",
         args = Seq("any", "lst[num]", "lst"),
         description = "Insert items of #3 into #1 at indices #2",
+      ),
+      Overload(
+        name = "Date Between?",
+        args = Seq("date", "date", "date"),
+        description = "Is date #1 between dates #2 and #3 (inclusive)?",
       ),
     ),
     AddElement(
@@ -3028,6 +3128,11 @@ object ElementInformation:
         args = Seq("str", "str"),
         description = "Split #1 by regex #2, keeping the delimiters",
       ),
+      Overload(
+        name = "Inclusive Date Range",
+        args = Seq("date", "date"),
+        description = "Inclusive range of dates from #1 to #2, one per day",
+      ),
     ),
     AddElement(
       symbol = "⊠",
@@ -3592,9 +3697,19 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "Ṫ",
-      keywords = Seq("untruth"),
+      keywords = Seq("untruth", "parse-date", "from-epoch"),
       arity = 1,
       Options(),
+      Overload(
+        name = "Parse Date",
+        args = Seq("str"),
+        description = "Parse string #1 as a date/time",
+      ),
+      Overload(
+        name = "Date from Epoch",
+        args = Seq("num"),
+        description = "Create a date from Unix epoch seconds #1",
+      ),
       Overload(
         name = "Untruth",
         args = Seq("lst"),
@@ -4872,6 +4987,50 @@ object ElementInformation:
         name = "Input Count",
         args = Seq(),
         description = "Push the number of inputs to the stack",
+      ),
+    ),
+    AddElement(
+      symbol = "#n",
+      keywords = Seq("now", "current-date", "current-time", "datetime-now"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Now",
+        args = Seq(),
+        description = "Push the current date and time as a VDate",
+      ),
+    ),
+    AddElement(
+      symbol = "#d",
+      keywords = Seq("today", "today-midnight", "start-of-day"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Today at Midnight",
+        args = Seq(),
+        description = "Push today's date at midnight as a VDate",
+      ),
+    ),
+    AddElement(
+      symbol = "#m",
+      keywords = Seq("start-of-month", "month-start"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Start of Month",
+        args = Seq(),
+        description = "Push the first day of the current month at midnight as a VDate",
+      ),
+    ),
+    AddElement(
+      symbol = "#y",
+      keywords = Seq("start-of-year", "year-start"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "Start of Year",
+        args = Seq(),
+        description = "Push the first day of the current year at midnight as a VDate",
       ),
     ),
     AddElement(
