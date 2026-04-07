@@ -88,7 +88,7 @@ object VAny:
   given (using Context): Ordering[VAny] with
     override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
 
-type VVal = VNum | VStr
+type VVal = VNum | VStr | VDate | VDuration
 type VPhysical = VNum | VStr | VList
 type VIter = VList | VStr
 type VTemporal = VDate | VDuration
@@ -347,6 +347,12 @@ end VDuration
 
 object VDuration:
   def ofDays(n: Long): VDuration = VDuration(JDuration.ofDays(n))
+
+  /** Create a duration from a fractional number of days. Supports decimals
+    * (e.g., 0.5 = 12 hours, 1.5 = 36 hours).
+    */
+  def ofDaysDecimal(n: Double): VDuration =
+    VDuration(JDuration.ofMillis((n * 86_400_000L).toLong))
   def ofHours(n: Long): VDuration = VDuration(JDuration.ofHours(n))
   def ofMinutes(n: Long): VDuration = VDuration(JDuration.ofMinutes(n))
   def ofSeconds(n: Long): VDuration = VDuration(JDuration.ofSeconds(n))

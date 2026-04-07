@@ -5,6 +5,7 @@ import vyxal.parsing.Lexer
 import vyxal.Interpreter.executeFn
 
 import java.time.{Duration as JDuration}
+import java.time.format.DateTimeFormatter
 
 import scala.annotation.tailrec
 import scala.collection.mutable.ArrayBuffer
@@ -23,9 +24,9 @@ object MiscHelpers:
     case (a: VDuration, b: VDate) => VDate(b.dt.plus(a.dur))
     case (a: VDuration, b: VDuration) => VDuration(a.dur.plus(b.dur))
     case (a: VDate, b: VNum) =>
-      VDate(a.dt.plus(JDuration.ofDays(b.toLong)))
+      VDate(a.dt.plus(VDuration.ofDaysDecimal(b.toDouble).dur))
     case (a: VNum, b: VDate) =>
-      VDate(b.dt.plus(JDuration.ofDays(a.toLong)))
+      VDate(b.dt.plus(VDuration.ofDaysDecimal(a.toDouble).dur))
   })
 
   def callWhile(pred: VFun, transform: VFun, value: VAny)(using Context): VAny =
@@ -261,6 +262,11 @@ object MiscHelpers:
     case (a: VList, b: VNum) => a.vmap(MiscHelpers.modulo(_, b))
     case (a: VNum, b: VList) => b.vmap(MiscHelpers.modulo(a, _))
     case (a: VList, b: VList) => a.zipWith(b)(MiscHelpers.modulo)
+    case (a: VDate, VStr(b)) =>
+      VStr(a.dt.format(DateTimeFormatter.ofPattern(b)))
+    case (a: VDuration, b: VDuration) =>
+      val millis = a.dur.toMillis % b.dur.toMillis
+      VDuration(JDuration.ofMillis(millis))
     case (VStr(a), b: VList) => StringHelpers.formatString(a, b*)
     case (a: VList, VStr(b)) => StringHelpers.formatString(b, a*)
     case (VStr(a), b) => StringHelpers.formatString(a, b)
@@ -419,7 +425,7 @@ object MiscHelpers:
       VDuration(JDuration.between(b.dt, a.dt))
     case (a: VDuration, b: VDuration) => VDuration(a.dur.minus(b.dur))
     case (a: VDate, b: VNum) =>
-      VDate(a.dt.minus(JDuration.ofDays(b.toLong)))
+      VDate(a.dt.minus(VDuration.ofDaysDecimal(b.toDouble).dur))
   }
 
   /** Generate a LazyList by repeatedly applying the given function to the given
