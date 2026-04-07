@@ -15,6 +15,8 @@ import scala.math.Ordered
 import scala.reflect.TypeTest
 import scala.util.matching.Regex
 
+import java.time.{Duration as JDuration, LocalDateTime, ZoneOffset}
+
 import spire.math.{Complex, Real}
 
 /** A Vyxal value, represented as an ADT.
@@ -26,6 +28,8 @@ import spire.math.{Complex, Real}
   *   - [[VFun]]
   *   - [[VConstructor]]
   *   - [[VObject]]
+  *   - [[VDate]]
+  *   - [[VDuration]]
   *
   * We derive [[CanEqual]] so that if you compare a `VAny`s to another type, the
   * compiler will complain
@@ -43,6 +47,8 @@ sealed trait VAny derives CanEqual:
       case (_, _: VFun) =>
         scribe.warn(s"Tried comparing $this to function $that")
         false
+      case (a: VDate, b: VDate) => a.dt == b.dt
+      case (a: VDuration, b: VDuration) => a.dur == b.dur
       case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) == 0
       case _ => false
 
@@ -63,6 +69,8 @@ sealed trait VAny derives CanEqual:
       case l: VList => l.nonEmpty
       case c: VConstructor => true
       case o: VObject => true
+      case d: VDate => true
+      case d: VDuration => d.dur != JDuration.ZERO
 end VAny
 
 object VAny:
@@ -72,6 +80,7 @@ object VAny:
 type VVal = VNum | VStr
 type VPhysical = VNum | VStr | VList
 type VIter = VList | VStr
+type VTemporal = VDate | VDuration
 
 object conversions:
   given Conversion[String, VAny] = VStr(_)
@@ -108,6 +117,8 @@ object conversions:
   given Conversion[Real, VNum] = n => VNum.complex(n, 0)
   given Conversion[Complex[Real], VNum] = new VNum(_)
   given Conversion[Boolean, VNum] = b => if b then 1 else 0
+  given Conversion[LocalDateTime, VDate] = VDate(_)
+  given Conversion[JDuration, VDuration] = VDuration(_)
 end conversions
 
 final case class VStr(s: String) extends VAny:
@@ -220,7 +231,61 @@ case class VObject(
     }
     s"$className { ${fs.mkString(", ")} }"
 
-  /** A Vyxal list. It simply wraps around another list and could represent a
+/** A Vyxal date/time value wrapping a [[java.time.LocalDateTime]]. */
+final case class VDate(dt: LocalDateTime) extends VAny, Ordered[VDate]:
+  def year: VNum = VNum(dt.getYear)
+  def month: VNum = VNum(dt.getMonthValue)
+  def day: VNum = VNum(dt.getDayOfMonth)
+  def hour: VNum = VNum(dt.getHour)
+  def minute: VNum = VNum(dt.getMinute)
+  def second: VNum = VNum(dt.getSecond)
+
+  override def compare(that: VDate): Int = dt.compareTo(that.dt)
+  override def toString: String = dt.toString
+end VDate
+
+object VDate:
+  def now(): VDate = VDate(LocalDateTime.now())
+
+  def of(
+      year: Int,
+      month: Int,
+      day: Int,
+      hour: Int = 0,
+      minute: Int = 0,
+      second: Int = 0,
+  ): VDate =
+    VDate(LocalDateTime.of(year, month, day, hour, minute, second))
+
+  def parse(s: String): VDate = VDate(LocalDateTime.parse(s))
+
+  def fromEpochSecond(epoch: Long): VDate =
+    VDate(LocalDateTime.ofEpochSecond(epoch, 0, ZoneOffset.UTC))
+end VDate
+
+/** A Vyxal duration value wrapping a [[java.time.Duration]]. */
+final case class VDuration(dur: JDuration) extends VAny, Ordered[VDuration]:
+  def toDays: VNum = VNum(dur.toDays)
+  def toHours: VNum = VNum(dur.toHours)
+  def toMinutes: VNum = VNum(dur.toMinutes)
+  def toSeconds: VNum = VNum(dur.getSeconds)
+  def toMillis: VNum = VNum(dur.toMillis)
+
+  override def compare(that: VDuration): Int = dur.compareTo(that.dur)
+  override def toString: String = dur.toString
+end VDuration
+
+object VDuration:
+  def ofDays(n: Long): VDuration = VDuration(JDuration.ofDays(n))
+  def ofHours(n: Long): VDuration = VDuration(JDuration.ofHours(n))
+  def ofMinutes(n: Long): VDuration = VDuration(JDuration.ofMinutes(n))
+  def ofSeconds(n: Long): VDuration = VDuration(JDuration.ofSeconds(n))
+  def ofMillis(n: Long): VDuration = VDuration(JDuration.ofMillis(n))
+  def parse(s: String): VDuration = VDuration(JDuration.parse(s))
+  val Zero: VDuration = VDuration(JDuration.ZERO)
+end VDuration
+
+/** A Vyxal list. It simply wraps around another list and could represent a
     * completely evaluated list, a finite lazy list that is in the process of
     * being evaluated, or an infinite list.
     *
