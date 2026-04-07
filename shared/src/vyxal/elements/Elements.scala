@@ -12,7 +12,6 @@ import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.defaultEmpty
 
 import java.time.{Duration as JDuration, ZoneId, ZonedDateTime}
-
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
 
@@ -248,9 +247,16 @@ object Elements:
     addPart("E", Monad, true) {
       case a: VNum => VNum(2) ** a
       case VStr(a) => MiscHelpers.eval(a)
-      case a: VDate => VList(Seq(
-          a.year, a.month, a.day, a.hour, a.minute, a.second
-        ))
+      case a: VDate => VList(
+          Seq(
+            a.year,
+            a.month,
+            a.day,
+            a.hour,
+            a.minute,
+            a.second,
+          )
+        )
     },
     addPart("F", Dyad, false) {
       case (a: VFun, b) => ListHelpers.filter(b.ritr, a)
@@ -773,9 +779,16 @@ object Elements:
     addPart("⌈", Monad, true) {
       case a: VNum => a.ceil
       case VStr(a) => a.split(" ").toIndexedSeq
-      case a: VDate => VList(Seq(
-          a.year, a.month, a.day, a.hour, a.minute, a.second
-        ))
+      case a: VDate => VList(
+          Seq(
+            a.year,
+            a.month,
+            a.day,
+            a.hour,
+            a.minute,
+            a.second,
+          )
+        )
     },
     addPart("⌊", Monad, true) {
       case a: VNum => a.floor

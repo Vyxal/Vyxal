@@ -4,9 +4,8 @@ import vyxal.conversions.{*, given}
 import vyxal.parsing.Lexer
 import vyxal.Interpreter.executeFn
 
-import java.time.{Duration as JDuration}
 import java.time.format.DateTimeFormatter
-
+import java.time.Duration as JDuration
 import scala.annotation.tailrec
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.ListBuffer
@@ -423,8 +422,7 @@ object MiscHelpers:
       if a.toInt > 0 then "-" * a.toInt + b else b + "-" * a.toInt.abs
     case (VStr(a), VStr(b)) => a.replaceAll(b, "")
     case (a: VDate, b: VDuration) => VDate(a.dt.minus(b.dur))
-    case (a: VDate, b: VDate) =>
-      VDuration(JDuration.between(b.dt, a.dt))
+    case (a: VDate, b: VDate) => VDuration(JDuration.between(b.dt, a.dt))
     case (a: VDuration, b: VDuration) => VDuration(a.dur.minus(b.dur))
     case (a: VDate, b: VNum) =>
       VDate(a.dt.minus(VDuration.ofDaysDecimal(b.toDouble).dur))

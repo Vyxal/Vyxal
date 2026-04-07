@@ -1,8 +1,8 @@
 package vyxal
 
-import java.time.{Duration as JDuration, ZonedDateTime, ZoneId, ZoneOffset}
-
 import vyxal.conversions.given
+
+import java.time.{Duration as JDuration, ZoneId, ZoneOffset, ZonedDateTime}
 
 class DateTimeTests extends VyxalTests:
 
@@ -64,8 +64,7 @@ class DateTimeTests extends VyxalTests:
         val d = VDate.fromEpochSecond(0)
         // The exact date/time depends on the system zone, but the point
         // in time should be the Unix epoch
-        val expected = java.time.Instant.EPOCH
-          .atZone(ZoneId.systemDefault())
+        val expected = java.time.Instant.EPOCH.atZone(ZoneId.systemDefault())
         assertResult(VNum(expected.getYear))(d.year)
         assertResult(VNum(expected.getMonthValue))(d.month)
         assertResult(VNum(expected.getDayOfMonth))(d.day)
@@ -390,8 +389,7 @@ class DateTimeTests extends VyxalTests:
         assertResult(dur1h)(ctx.peek)
       }
       it("should get ratio of two durations") {
-        given ctx: Context =
-          VyxalTests.testContext(inputs = Seq(dur2h, dur1h))
+        given ctx: Context = VyxalTests.testContext(inputs = Seq(dur2h, dur1h))
         Interpreter.execute("÷")(using ctx)
         assertResult(VNum(2.0))(ctx.peek)
       }
@@ -399,17 +397,18 @@ class DateTimeTests extends VyxalTests:
 
     describe("Modulo (%)") {
       it("should format date with pattern") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VDate.of(2024, 3, 15), VStr("yyyy-MM-dd"))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VDate.of(2024, 3, 15), VStr("yyyy-MM-dd"))
+          )
         Interpreter.execute("%")(using ctx)
         assertResult(VStr("2024-03-15"))(ctx.peek)
       }
       it("should compute duration modulo") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs =
-            Seq(VDuration.ofHours(5), VDuration.ofHours(3))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VDuration.ofHours(5), VDuration.ofHours(3))
+          )
         Interpreter.execute("%")(using ctx)
         assertResult(VDuration.ofHours(2))(ctx.peek)
       }
@@ -417,8 +416,7 @@ class DateTimeTests extends VyxalTests:
 
     describe("Negate (N)") {
       it("should negate a duration") {
-        given ctx: Context =
-          VyxalTests.testContext(inputs = Seq(dur1h))
+        given ctx: Context = VyxalTests.testContext(inputs = Seq(dur1h))
         Interpreter.execute("N")(using ctx)
         val result = ctx.peek.asInstanceOf[VDuration]
         assertResult(VDuration.ofHours(-1))(result)
@@ -427,8 +425,7 @@ class DateTimeTests extends VyxalTests:
 
     describe("Double (d)") {
       it("should double a duration") {
-        given ctx: Context =
-          VyxalTests.testContext(inputs = Seq(dur1h))
+        given ctx: Context = VyxalTests.testContext(inputs = Seq(dur1h))
         Interpreter.execute("d")(using ctx)
         assertResult(dur2h)(ctx.peek)
       }
@@ -448,8 +445,7 @@ class DateTimeTests extends VyxalTests:
         assertResult(VDate.of(2024, 1, 14))(ctx.peek)
       }
       it("› should add 1 day to a duration") {
-        given ctx: Context =
-          VyxalTests.testContext(inputs = Seq(dur1h))
+        given ctx: Context = VyxalTests.testContext(inputs = Seq(dur1h))
         Interpreter.execute("›")(using ctx)
         assertResult(VDuration(dur1h.dur.plus(JDuration.ofDays(1))))(ctx.peek)
       }
@@ -457,9 +453,10 @@ class DateTimeTests extends VyxalTests:
 
     describe("Floor (⌊) - Date to Unix") {
       it("should convert date to unix timestamp") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VDate.fromEpochSecond(1000))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VDate.fromEpochSecond(1000))
+          )
         Interpreter.execute("⌊")(using ctx)
         assertResult(VNum(1000))(ctx.peek)
       }
@@ -467,21 +464,25 @@ class DateTimeTests extends VyxalTests:
 
     describe("Ceil (⌈) - Date Components") {
       it("should extract date components") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VDate.of(2024, 3, 15, 10, 30, 45))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VDate.of(2024, 3, 15, 10, 30, 45))
+          )
         Interpreter.execute("⌈")(using ctx)
         assertResult(
-          VList(Seq(VNum(2024), VNum(3), VNum(15), VNum(10), VNum(30), VNum(45)))
+          VList(
+            Seq(VNum(2024), VNum(3), VNum(15), VNum(10), VNum(30), VNum(45))
+          )
         )(ctx.peek)
       }
     }
 
     describe("Make Date (#t) - Date from Components") {
       it("should create date from [year] — Jan 1 midnight") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VList(Seq(VNum(2024))))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VList(Seq(VNum(2024))))
+          )
         Interpreter.execute("#t")(using ctx)
         val result = ctx.peek.asInstanceOf[VDate]
         assertResult(VNum(2024))(result.year)
@@ -492,9 +493,10 @@ class DateTimeTests extends VyxalTests:
         assertResult(VNum(0))(result.second)
       }
       it("should create date from [year, month]") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VList(Seq(VNum(2024), VNum(5))))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VList(Seq(VNum(2024), VNum(5))))
+          )
         Interpreter.execute("#t")(using ctx)
         val result = ctx.peek.asInstanceOf[VDate]
         assertResult(VNum(2024))(result.year)
@@ -503,9 +505,10 @@ class DateTimeTests extends VyxalTests:
         assertResult(VNum(0))(result.hour)
       }
       it("should create date from [year, month, day]") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VList(Seq(VNum(2024), VNum(7), VNum(4))))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VList(Seq(VNum(2024), VNum(7), VNum(4))))
+          )
         Interpreter.execute("#t")(using ctx)
         val result = ctx.peek.asInstanceOf[VDate]
         assertResult(VNum(2024))(result.year)
@@ -513,9 +516,21 @@ class DateTimeTests extends VyxalTests:
         assertResult(VNum(4))(result.day)
       }
       it("should create date from [year, month, day, hour, minute, second]") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VList(Seq(VNum(2024), VNum(12), VNum(25), VNum(10), VNum(30), VNum(45))))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(
+              VList(
+                Seq(
+                  VNum(2024),
+                  VNum(12),
+                  VNum(25),
+                  VNum(10),
+                  VNum(30),
+                  VNum(45),
+                )
+              )
+            )
+          )
         Interpreter.execute("#t")(using ctx)
         val result = ctx.peek.asInstanceOf[VDate]
         assertResult(VNum(2024))(result.year)
@@ -526,9 +541,10 @@ class DateTimeTests extends VyxalTests:
         assertResult(VNum(45))(result.second)
       }
       it("should parse date from string") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VStr("2024-03-15"))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VStr("2024-03-15"))
+          )
         Interpreter.execute("#t")(using ctx)
         val result = ctx.peek.asInstanceOf[VDate]
         assertResult(VNum(2024))(result.year)
@@ -536,17 +552,19 @@ class DateTimeTests extends VyxalTests:
         assertResult(VNum(15))(result.day)
       }
       it("should create date from epoch seconds") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VNum(0))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VNum(0))
+          )
         Interpreter.execute("#t")(using ctx)
         val result = ctx.peek.asInstanceOf[VDate]
         assertResult(VNum(0))(result.toUnixTime)
       }
       it("should round-trip with ⌈ date decomposition") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VDate.of(2024, 3, 15, 10, 30, 45))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VDate.of(2024, 3, 15, 10, 30, 45))
+          )
         Interpreter.execute("⌈#t")(using ctx)
         val result = ctx.peek.asInstanceOf[VDate]
         assertResult(VNum(2024))(result.year)
@@ -560,36 +578,40 @@ class DateTimeTests extends VyxalTests:
 
     describe("Make Duration (#U)") {
       it("should parse an ISO-8601 duration string") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VStr("PT2H30M"))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VStr("PT2H30M"))
+          )
         Interpreter.execute("#U")(using ctx)
         val result = ctx.peek.asInstanceOf[VDuration]
         // 2 hours 30 minutes = 9000 seconds
         assertResult(VNum(9000L))(result.toSeconds)
       }
       it("should parse a day duration string") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VStr("P2D"))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VStr("P2D"))
+          )
         Interpreter.execute("#U")(using ctx)
         val result = ctx.peek.asInstanceOf[VDuration]
         // 2 days = 172800 seconds
         assertResult(VNum(172800L))(result.toSeconds)
       }
       it("should create a duration from a numeric value") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VNum(0.5))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VNum(0.5))
+          )
         Interpreter.execute("#U")(using ctx)
         val result = ctx.peek.asInstanceOf[VDuration]
         // 0.5 days = 12 hours = 43200000 millis
         assertResult(VNum(43200000L))(result.toMillis)
       }
       it("should create zero duration from 0") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VNum(0))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VNum(0))
+          )
         Interpreter.execute("#U")(using ctx)
         val result = ctx.peek.asInstanceOf[VDuration]
         assertResult(VNum(0L))(result.toMillis)
@@ -598,9 +620,10 @@ class DateTimeTests extends VyxalTests:
 
     describe("E - Date Components") {
       it("should extract date components") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VDate.of(2024, 12, 25, 8, 0, 0))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VDate.of(2024, 12, 25, 8, 0, 0))
+          )
         Interpreter.execute("E")(using ctx)
         assertResult(
           VList(Seq(VNum(2024), VNum(12), VNum(25), VNum(8), VNum(0), VNum(0)))
@@ -610,9 +633,10 @@ class DateTimeTests extends VyxalTests:
 
     describe("Range (R) - Date Range") {
       it("should create exclusive date range") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VDate.of(2024, 1, 1), VDate.of(2024, 1, 4))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VDate.of(2024, 1, 1), VDate.of(2024, 1, 4))
+          )
         Interpreter.execute("R")(using ctx)
         assertResult(
           VList(
@@ -628,9 +652,10 @@ class DateTimeTests extends VyxalTests:
 
     describe("Inclusive Range (↯) - Date Range") {
       it("should create inclusive date range") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VDate.of(2024, 1, 1), VDate.of(2024, 1, 3))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VDate.of(2024, 1, 1), VDate.of(2024, 1, 3))
+          )
         Interpreter.execute("↯")(using ctx)
         assertResult(
           VList(
@@ -646,9 +671,10 @@ class DateTimeTests extends VyxalTests:
 
     describe("Triple (T) - Date Triple") {
       it("should extract year, month, day") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VDate.of(2024, 7, 4))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VDate.of(2024, 7, 4))
+          )
         Interpreter.execute("T")(using ctx)
         assertResult(
           VList(Seq(VNum(2024), VNum(7), VNum(4)))
@@ -658,16 +684,18 @@ class DateTimeTests extends VyxalTests:
 
     describe("Absolute Difference (@)") {
       it("should compute absolute date difference") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VDate.of(2024, 1, 1), VDate.of(2024, 1, 4))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VDate.of(2024, 1, 1), VDate.of(2024, 1, 4))
+          )
         Interpreter.execute("@")(using ctx)
         assertResult(VDuration.ofDays(3))(ctx.peek)
       }
       it("should compute absolute difference in reverse order") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VDate.of(2024, 1, 4), VDate.of(2024, 1, 1))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VDate.of(2024, 1, 4), VDate.of(2024, 1, 1))
+          )
         Interpreter.execute("@")(using ctx)
         assertResult(VDuration.ofDays(3))(ctx.peek)
       }
@@ -675,9 +703,10 @@ class DateTimeTests extends VyxalTests:
 
     describe("Length (L) - Duration Seconds") {
       it("should return total seconds of duration") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VDuration.ofHours(2))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VDuration.ofHours(2))
+          )
         Interpreter.execute("L")(using ctx)
         assertResult(VNum(7200))(ctx.peek)
       }
@@ -685,30 +714,34 @@ class DateTimeTests extends VyxalTests:
 
     describe("Is Leap Year (e)") {
       it("should return 1 for leap year") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VDate.of(2024, 6, 15))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VDate.of(2024, 6, 15))
+          )
         Interpreter.execute("e")(using ctx)
         assertResult(VNum(1))(ctx.peek)
       }
       it("should return 0 for non-leap year") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VDate.of(2023, 6, 15))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VDate.of(2023, 6, 15))
+          )
         Interpreter.execute("e")(using ctx)
         assertResult(VNum(0))(ctx.peek)
       }
       it("should handle century leap year rules") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VDate.of(2000, 1, 1))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VDate.of(2000, 1, 1))
+          )
         Interpreter.execute("e")(using ctx)
         assertResult(VNum(1))(ctx.peek)
       }
       it("should handle century non-leap year") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VDate.of(1900, 1, 1))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VDate.of(1900, 1, 1))
+          )
         Interpreter.execute("e")(using ctx)
         assertResult(VNum(0))(ctx.peek)
       }
@@ -716,9 +749,10 @@ class DateTimeTests extends VyxalTests:
 
     describe("Untruth/Parse Date (Ṫ)") {
       it("should parse date from string") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VStr("2024-03-15"))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VStr("2024-03-15"))
+          )
         Interpreter.execute("Ṫ")(using ctx)
         val result = ctx.peek.asInstanceOf[VDate]
         assertResult(VNum(2024))(result.year)
@@ -726,17 +760,19 @@ class DateTimeTests extends VyxalTests:
         assertResult(VNum(15))(result.day)
       }
       it("should create date from epoch seconds") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VNum(0))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VNum(0))
+          )
         Interpreter.execute("Ṫ")(using ctx)
         val result = ctx.peek.asInstanceOf[VDate]
         assertResult(VNum(0))(result.toUnixTime)
       }
       it("should still do untruth for lists") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VList(Seq(VNum(0), VNum(2), VNum(4))))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VList(Seq(VNum(0), VNum(2), VNum(4))))
+          )
         Interpreter.execute("Ṫ")(using ctx)
         assertResult(
           VList(Seq(VNum(1), VNum(0), VNum(1), VNum(0), VNum(1)))
@@ -746,35 +782,38 @@ class DateTimeTests extends VyxalTests:
 
     describe("Date Between (⎀)") {
       it("should return 1 when date is between") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(
-            VDate.of(2024, 6, 15),
-            VDate.of(2024, 1, 1),
-            VDate.of(2024, 12, 31),
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(
+              VDate.of(2024, 6, 15),
+              VDate.of(2024, 1, 1),
+              VDate.of(2024, 12, 31),
+            )
           )
-        )
         Interpreter.execute("⎀")(using ctx)
         assertResult(VNum(1))(ctx.peek)
       }
       it("should return 0 when date is not between") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(
-            VDate.of(2025, 1, 1),
-            VDate.of(2024, 1, 1),
-            VDate.of(2024, 12, 31),
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(
+              VDate.of(2025, 1, 1),
+              VDate.of(2024, 1, 1),
+              VDate.of(2024, 12, 31),
+            )
           )
-        )
         Interpreter.execute("⎀")(using ctx)
         assertResult(VNum(0))(ctx.peek)
       }
       it("should return 1 when date equals boundary") {
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(
-            VDate.of(2024, 1, 1),
-            VDate.of(2024, 1, 1),
-            VDate.of(2024, 12, 31),
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(
+              VDate.of(2024, 1, 1),
+              VDate.of(2024, 1, 1),
+              VDate.of(2024, 12, 31),
+            )
           )
-        )
         Interpreter.execute("⎀")(using ctx)
         assertResult(VNum(1))(ctx.peek)
       }
@@ -816,23 +855,31 @@ class DateTimeTests extends VyxalTests:
         // Should contain well-known zones
         val strs = result.lst.collect { case VStr(s) => s }
         assert(strs.contains("UTC"), "Should contain UTC")
-        assert(strs.contains("America/New_York"), "Should contain America/New_York")
+        assert(
+          strs.contains("America/New_York"),
+          "Should contain America/New_York",
+        )
         assert(strs.contains("Europe/London"), "Should contain Europe/London")
         // Should be sorted
         assert(strs == strs.sorted, "Zone IDs should be sorted")
         // All elements should be VStr
-        assert(result.lst.forall(_.isInstanceOf[VStr]), "All elements should be VStr")
+        assert(
+          result.lst.forall(_.isInstanceOf[VStr]),
+          "All elements should be VStr",
+        )
       }
     }
 
     describe("Timezone Conversion (⊢ with VDate)") {
       it("should convert a date to UTC timezone") {
         val date = VDate(
-          ZonedDateTime.of(2024, 3, 15, 10, 30, 0, 0, ZoneId.of("America/New_York"))
+          ZonedDateTime
+            .of(2024, 3, 15, 10, 30, 0, 0, ZoneId.of("America/New_York"))
         )
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(date, VStr("UTC"))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(date, VStr("UTC"))
+          )
         Interpreter.execute("⊢")(using ctx)
         val result = ctx.peek.asInstanceOf[VDate]
         // 10:30 EST = 14:30 UTC (EST is UTC-5 in March, but DST so EDT = UTC-4)
@@ -844,9 +891,10 @@ class DateTimeTests extends VyxalTests:
         val date = VDate(
           ZonedDateTime.of(2024, 6, 1, 12, 0, 0, 0, ZoneId.of("UTC"))
         )
-        given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(date, VStr("Asia/Tokyo"))
-        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(date, VStr("Asia/Tokyo"))
+          )
         Interpreter.execute("⊢")(using ctx)
         val result = ctx.peek.asInstanceOf[VDate]
         // Same instant, different zone
