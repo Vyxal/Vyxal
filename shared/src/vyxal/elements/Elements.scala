@@ -11,7 +11,7 @@ import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.defaultEmpty
 
-import java.time.{Duration as JDuration, ZonedDateTime}
+import java.time.{Duration as JDuration, ZoneId, ZonedDateTime}
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
@@ -1858,6 +1858,12 @@ object Elements:
       val now = ZonedDateTime.now()
       VDate(
         now.withDayOfYear(1).toLocalDate.atStartOfDay(now.getZone)
+      )
+    },
+    "#z" -> niladify {
+      import scala.jdk.CollectionConverters.*
+      VList(
+        ZoneId.getAvailableZoneIds.asScala.toSeq.sorted.map(VStr(_))
       )
     },
     addPart("#t", Monad, false) {

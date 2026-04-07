@@ -68,7 +68,9 @@ object ElementInformation:
       .find((_, mod) => mod.keywords.contains(keyword))
       .map((_, mod) => mod.symbol)
 
-  val elements: Map[String, Element] = Map(
+  val elements: Map[String, Element] = elements1 ++ elements2
+
+  private def elements1: Map[String, Element] = Map(
     AddElement(
       symbol = "Ƶ",
       keywords = Seq(
@@ -3606,6 +3608,9 @@ object ElementInformation:
         description = "Insert spaces between each character of #1",
       ),
     ),
+  )
+
+  private def elements2: Map[String, Element] = Map(
     AddElement(
       symbol = "“",
       keywords = Seq(
@@ -5036,6 +5041,17 @@ object ElementInformation:
         name = "Start of Year",
         args = Seq(),
         description = "Push the first day of the current year at midnight as a VDate",
+      ),
+    ),
+    AddElement(
+      symbol = "#z",
+      keywords = Seq("all-timezones", "zone-ids", "available-zones"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "All Timezone IDs",
+        args = Seq(),
+        description = "Push a sorted list of all available timezone ID strings (e.g., \"UTC\", \"America/New_York\")",
       ),
     ),
     AddElement(

@@ -809,6 +809,20 @@ class DateTimeTests extends VyxalTests:
         assertResult(VNum(1))(result.day)
         assertResult(VNum(0))(result.hour)
       }
+      it("#z should return a sorted list of all timezone IDs") {
+        given ctx: Context = VyxalTests.testContext()
+        Interpreter.execute("#z")(using ctx)
+        val result = ctx.peek.asInstanceOf[VList]
+        // Should contain well-known zones
+        val strs = result.lst.collect { case VStr(s) => s }
+        assert(strs.contains("UTC"), "Should contain UTC")
+        assert(strs.contains("America/New_York"), "Should contain America/New_York")
+        assert(strs.contains("Europe/London"), "Should contain Europe/London")
+        // Should be sorted
+        assert(strs == strs.sorted, "Zone IDs should be sorted")
+        // All elements should be VStr
+        assert(result.lst.forall(_.isInstanceOf[VStr]), "All elements should be VStr")
+      }
     }
 
     describe("Timezone Conversion (⊢ with VDate)") {
