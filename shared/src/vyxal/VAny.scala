@@ -15,7 +15,17 @@ import scala.math.Ordered
 import scala.reflect.TypeTest
 import scala.util.matching.Regex
 
-import java.time.{Duration as JDuration, LocalDateTime, ZoneOffset}
+import java.time.{
+  Duration as JDuration,
+  Instant,
+  LocalDateTime,
+  Period,
+  ZonedDateTime,
+  ZoneId,
+  ZoneOffset,
+}
+import java.time.format.DateTimeFormatter
+import scala.util.Try
 
 import spire.math.{Complex, Real}
 
@@ -47,7 +57,8 @@ sealed trait VAny derives CanEqual:
       case (_, _: VFun) =>
         scribe.warn(s"Tried comparing $this to function $that")
         false
-      case (a: VDate, b: VDate) => a.dt == b.dt
+      case (a: VDate, b: VDate) =>
+        a.dt.toInstant == b.dt.toInstant
       case (a: VDuration, b: VDuration) => a.dur == b.dur
       case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) == 0
       case _ => false
@@ -117,7 +128,7 @@ object conversions:
   given Conversion[Real, VNum] = n => VNum.complex(n, 0)
   given Conversion[Complex[Real], VNum] = new VNum(_)
   given Conversion[Boolean, VNum] = b => if b then 1 else 0
-  given Conversion[LocalDateTime, VDate] = VDate(_)
+  given Conversion[ZonedDateTime, VDate] = VDate(_)
   given Conversion[JDuration, VDuration] = VDuration(_)
 end conversions
 
@@ -231,21 +242,41 @@ case class VObject(
     }
     s"$className { ${fs.mkString(", ")} }"
 
-/** A Vyxal date/time value wrapping a [[java.time.LocalDateTime]]. */
-final case class VDate(dt: LocalDateTime) extends VAny, Ordered[VDate]:
+/** A Vyxal date/time value wrapping a [[java.time.ZonedDateTime]].
+  *
+  * Every VDate carries a timezone. The default is the system local zone.
+  * Comparison is based on the underlying [[java.time.Instant]] so that two
+  * VDates representing the same point in time are equal regardless of zone.
+  */
+final case class VDate(dt: ZonedDateTime) extends VAny, Ordered[VDate]:
   def year: VNum = VNum(dt.getYear)
   def month: VNum = VNum(dt.getMonthValue)
   def day: VNum = VNum(dt.getDayOfMonth)
   def hour: VNum = VNum(dt.getHour)
   def minute: VNum = VNum(dt.getMinute)
   def second: VNum = VNum(dt.getSecond)
+  def zone: String = dt.getZone.getId
 
-  override def compare(that: VDate): Int = dt.compareTo(that.dt)
+  /** Calendar-aware: add whole months. */
+  def plusMonths(n: Long): VDate = VDate(dt.plusMonths(n))
+
+  /** Calendar-aware: add whole years. */
+  def plusYears(n: Long): VDate = VDate(dt.plusYears(n))
+
+  /** Calendar-aware: add whole weeks. */
+  def plusWeeks(n: Long): VDate = VDate(dt.plusWeeks(n))
+
+  /** Compare by instant (absolute point in time). */
+  override def compare(that: VDate): Int =
+    dt.toInstant.compareTo(that.dt.toInstant)
   override def toString: String = dt.toString
 end VDate
 
 object VDate:
-  def now(): VDate = VDate(LocalDateTime.now())
+  /** The zone used when none is specified. */
+  private def defaultZone: ZoneId = ZoneId.systemDefault()
+
+  def now(): VDate = VDate(ZonedDateTime.now())
 
   def of(
       year: Int,
@@ -255,17 +286,48 @@ object VDate:
       minute: Int = 0,
       second: Int = 0,
   ): VDate =
-    VDate(LocalDateTime.of(year, month, day, hour, minute, second))
+    VDate(
+      ZonedDateTime.of(year, month, day, hour, minute, second, 0, defaultZone)
+    )
 
-  def parse(s: String): VDate = VDate(LocalDateTime.parse(s))
+  /** Parse a date/time string.  Accepts any format the underlying library
+    * can handle — ISO-8601 with or without timezone, RFC-1123, basic ISO,
+    * date-only, etc.  If the parsed result has no zone information the
+    * system default zone is assumed.
+    */
+  def parse(s: String): VDate =
+    // Chain of attempts — first success wins
+    val attempts: LazyList[Try[ZonedDateTime]] = LazyList(
+      // Try ZonedDateTime directly (includes zone info)
+      Try(ZonedDateTime.parse(s)),
+      // Common formatters that include a zone
+      Try(ZonedDateTime.parse(s, DateTimeFormatter.RFC_1123_DATE_TIME)),
+      Try(ZonedDateTime.parse(s, DateTimeFormatter.ISO_ZONED_DATE_TIME)),
+      Try(ZonedDateTime.parse(s, DateTimeFormatter.ISO_OFFSET_DATE_TIME)),
+      // LocalDateTime (no zone) — attach default zone
+      Try(LocalDateTime.parse(s).atZone(defaultZone)),
+      // Date-only — midnight in default zone
+      Try(java.time.LocalDate.parse(s).atStartOfDay(defaultZone)),
+      // Instant — convert to default zone
+      Try(Instant.parse(s).atZone(defaultZone)),
+    )
 
-  /** Creates a [[VDate]] from a Unix epoch second, interpreting the timestamp
-    * in UTC. Note that the resulting [[LocalDateTime]] has no timezone
-    * information attached — it simply represents the wall-clock date/time at
-    * UTC for the given epoch second.
+    attempts
+      .collectFirst { case scala.util.Success(zdt) => VDate(zdt) }
+      // Last resort: let java.time throw a descriptive exception
+      .getOrElse(VDate(ZonedDateTime.parse(s)))
+  end parse
+
+  /** Creates a [[VDate]] from a Unix epoch second in the system default zone.
     */
   def fromEpochSecond(epoch: Long): VDate =
-    VDate(LocalDateTime.ofEpochSecond(epoch, 0, ZoneOffset.UTC))
+    VDate(
+      ZonedDateTime.ofInstant(Instant.ofEpochSecond(epoch), defaultZone)
+    )
+
+  /** Creates a [[VDate]] from a Unix epoch second in a specific zone. */
+  def fromEpochSecond(epoch: Long, zone: ZoneId): VDate =
+    VDate(ZonedDateTime.ofInstant(Instant.ofEpochSecond(epoch), zone))
 end VDate
 
 /** A Vyxal duration value wrapping a [[java.time.Duration]]. */
@@ -286,6 +348,7 @@ object VDuration:
   def ofMinutes(n: Long): VDuration = VDuration(JDuration.ofMinutes(n))
   def ofSeconds(n: Long): VDuration = VDuration(JDuration.ofSeconds(n))
   def ofMillis(n: Long): VDuration = VDuration(JDuration.ofMillis(n))
+  def ofWeeks(n: Long): VDuration = VDuration(JDuration.ofDays(n * 7))
   def parse(s: String): VDuration = VDuration(JDuration.parse(s))
   val Zero: VDuration = VDuration(JDuration.ZERO)
 end VDuration

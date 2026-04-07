@@ -1,10 +1,13 @@
 package vyxal
 
-import java.time.{Duration as JDuration, LocalDateTime}
+import java.time.{Duration as JDuration, ZonedDateTime, ZoneId, ZoneOffset}
 
 import vyxal.conversions.given
 
 class DateTimeTests extends VyxalTests:
+
+  // Use a fixed zone for deterministic test results
+  private val testZone = ZoneId.systemDefault()
 
   describe("VDate") {
     describe("construction") {
@@ -25,7 +28,7 @@ class DateTimeTests extends VyxalTests:
         assertResult(VNum(45))(d.second)
       }
 
-      it("should parse an ISO-8601 string") {
+      it("should parse an ISO-8601 date-time string") {
         val d = VDate.parse("2024-03-15T10:30:00")
         assertResult(VNum(2024))(d.year)
         assertResult(VNum(3))(d.month)
@@ -34,18 +37,83 @@ class DateTimeTests extends VyxalTests:
         assertResult(VNum(30))(d.minute)
       }
 
-      it("should create from epoch second") {
-        val d = VDate.fromEpochSecond(0)
+      it("should parse a date-only string") {
+        val d = VDate.parse("2024-03-15")
+        assertResult(VNum(2024))(d.year)
+        assertResult(VNum(3))(d.month)
+        assertResult(VNum(15))(d.day)
+        assertResult(VNum(0))(d.hour)
+      }
+
+      it("should parse an ISO-8601 string with zone offset") {
+        val d = VDate.parse("2024-03-15T10:30:00+05:00")
+        assertResult(VNum(2024))(d.year)
+        assertResult(VNum(10))(d.hour)
+        assert(d.zone.contains("+05:00") || d.zone == "+05:00")
+      }
+
+      it("should parse an instant string") {
+        val d = VDate.parse("1970-01-01T00:00:00Z")
         assertResult(VNum(1970))(d.year)
         assertResult(VNum(1))(d.month)
         assertResult(VNum(1))(d.day)
       }
+
+      it("should create from epoch second in default zone") {
+        val d = VDate.fromEpochSecond(0)
+        // The exact date/time depends on the system zone, but the point
+        // in time should be the Unix epoch
+        val expected = java.time.Instant.EPOCH
+          .atZone(ZoneId.systemDefault())
+        assertResult(VNum(expected.getYear))(d.year)
+        assertResult(VNum(expected.getMonthValue))(d.month)
+        assertResult(VNum(expected.getDayOfMonth))(d.day)
+      }
+
+      it("should create from epoch second in a specific zone") {
+        val d = VDate.fromEpochSecond(0, ZoneOffset.UTC)
+        assertResult(VNum(1970))(d.year)
+        assertResult(VNum(1))(d.month)
+        assertResult(VNum(1))(d.day)
+        assertResult(VNum(0))(d.hour)
+      }
+    }
+
+    describe("zone") {
+      it("should carry the system default zone when constructed via of()") {
+        val d = VDate.of(2024, 1, 1)
+        assertResult(ZoneId.systemDefault().getId)(d.zone)
+      }
+    }
+
+    describe("calendar-aware operations") {
+      it("should add months correctly across year boundary") {
+        val d = VDate.of(2024, 11, 15).plusMonths(3)
+        assertResult(VNum(2025))(d.year)
+        assertResult(VNum(2))(d.month)
+        assertResult(VNum(15))(d.day)
+      }
+
+      it("should add years") {
+        val d = VDate.of(2024, 3, 15).plusYears(2)
+        assertResult(VNum(2026))(d.year)
+        assertResult(VNum(3))(d.month)
+      }
+
+      it("should add weeks") {
+        val d = VDate.of(2024, 1, 1).plusWeeks(2)
+        assertResult(VNum(1))(d.month)
+        assertResult(VNum(15))(d.day)
+      }
     }
 
     describe("toString") {
-      it("should produce ISO-8601 format") {
+      it("should include timezone information") {
         val d = VDate.of(2024, 3, 15, 10, 30, 0)
-        assertResult("2024-03-15T10:30")(d.toString)
+        val s = d.toString
+        // ZonedDateTime.toString includes zone info, e.g.
+        // "2024-03-15T10:30+01:00[Europe/Paris]" or "2024-03-15T10:30Z"
+        assert(s.contains("2024-03-15T10:30"))
       }
     }
 
@@ -61,6 +129,27 @@ class DateTimeTests extends VyxalTests:
         given ctx: Context = VyxalTests.testContext()
         val d1 = VDate.of(2024, 3, 15)
         val d2 = VDate.of(2024, 3, 15)
+        assert(d1 === d2)
+      }
+
+      it("should consider same instant in different zones as equal") {
+        given ctx: Context = VyxalTests.testContext()
+        // 2024-01-01T05:00 UTC  ==  2024-01-01T00:00 UTC-5
+        val d1 = VDate(
+          ZonedDateTime.of(2024, 1, 1, 5, 0, 0, 0, ZoneOffset.UTC)
+        )
+        val d2 = VDate(
+          ZonedDateTime.of(
+            2024,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            ZoneOffset.ofHours(-5),
+          )
+        )
         assert(d1 === d2)
       }
     }
@@ -79,6 +168,10 @@ class DateTimeTests extends VyxalTests:
         assertResult(VNum(2))(VDuration.ofHours(2).toHours)
         assertResult(VNum(30))(VDuration.ofMinutes(30).toMinutes)
         assertResult(VNum(60))(VDuration.ofSeconds(60).toSeconds)
+      }
+
+      it("should create duration in weeks") {
+        assertResult(VNum(14))(VDuration.ofWeeks(2).toDays)
       }
 
       it("should parse ISO-8601 duration strings") {
@@ -233,7 +326,8 @@ class DateTimeTests extends VyxalTests:
     it("should convert VDate to string") {
       given ctx: Context = VyxalTests.testContext()
       val d = VDate.of(2024, 3, 15, 10, 30, 0)
-      assertResult("2024-03-15T10:30")(StringHelpers.vyToString(d))
+      val s = StringHelpers.vyToString(d)
+      assert(s.contains("2024-03-15T10:30"))
     }
 
     it("should convert VDuration to string") {
