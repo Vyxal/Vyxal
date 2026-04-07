@@ -558,6 +558,44 @@ class DateTimeTests extends VyxalTests:
       }
     }
 
+    describe("Make Duration (#U) - Duration from Decimal Days") {
+      it("should create a duration from a decimal day string") {
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(VStr("1.5"))
+        )
+        Interpreter.execute("#U")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDuration]
+        // 1.5 days = 36 hours = 129600000 millis
+        assertResult(VNum(129600000L))(result.toMillis)
+      }
+      it("should create a duration from an integer day string") {
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(VStr("2"))
+        )
+        Interpreter.execute("#U")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDuration]
+        // 2 days = 172800000 millis
+        assertResult(VNum(172800000L))(result.toMillis)
+      }
+      it("should create a duration from a numeric value") {
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(VNum(0.5))
+        )
+        Interpreter.execute("#U")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDuration]
+        // 0.5 days = 12 hours = 43200000 millis
+        assertResult(VNum(43200000L))(result.toMillis)
+      }
+      it("should create zero duration from 0") {
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(VNum(0))
+        )
+        Interpreter.execute("#U")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDuration]
+        assertResult(VNum(0L))(result.toMillis)
+      }
+    }
+
     describe("E - Date Components") {
       it("should extract date components") {
         given ctx: Context = VyxalTests.testContext(

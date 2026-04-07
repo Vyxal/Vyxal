@@ -5056,6 +5056,22 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "#U",
+      keywords = Seq("make-duration", "to-duration", "duration-from-days", "decimal-days-to-duration"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Duration from Decimal Days (String)",
+        args = Seq("str"),
+        description = "Parse string #1 as a decimal number of days and create a duration",
+      ),
+      Overload(
+        name = "Duration from Decimal Days (Number)",
+        args = Seq("num"),
+        description = "Create a duration from #1 decimal days (e.g., 1.5 = 36 hours)",
+      ),
+    ),
+    AddElement(
       symbol = "∆<",
       keywords = Seq("arg", "phase", "angle"),
       arity = 1,

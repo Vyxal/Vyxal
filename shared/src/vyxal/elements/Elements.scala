@@ -1864,6 +1864,10 @@ object Elements:
       case a: VNum => VDate.fromEpochSecond(a.toLong)
       case a: VList => VDate.fromComponents(a.lst)
     },
+    addPart("#U", Monad, false) {
+      case VStr(s) => VDuration.ofDaysDecimal(s.toDouble)
+      case a: VNum => VDuration.ofDaysDecimal(a.toDouble)
+    },
     addPart("∆<", Monad, true) {
       case a: VNum => a.arg
     },
