@@ -558,6 +558,44 @@ class DateTimeTests extends VyxalTests:
       }
     }
 
+    describe("Make Duration (#U)") {
+      it("should parse an ISO-8601 duration string") {
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(VStr("PT2H30M"))
+        )
+        Interpreter.execute("#U")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDuration]
+        // 2 hours 30 minutes = 9000 seconds
+        assertResult(VNum(9000L))(result.toSeconds)
+      }
+      it("should parse a day duration string") {
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(VStr("P2D"))
+        )
+        Interpreter.execute("#U")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDuration]
+        // 2 days = 172800 seconds
+        assertResult(VNum(172800L))(result.toSeconds)
+      }
+      it("should create a duration from a numeric value") {
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(VNum(0.5))
+        )
+        Interpreter.execute("#U")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDuration]
+        // 0.5 days = 12 hours = 43200000 millis
+        assertResult(VNum(43200000L))(result.toMillis)
+      }
+      it("should create zero duration from 0") {
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(VNum(0))
+        )
+        Interpreter.execute("#U")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDuration]
+        assertResult(VNum(0L))(result.toMillis)
+      }
+    }
+
     describe("E - Date Components") {
       it("should extract date components") {
         given ctx: Context = VyxalTests.testContext(
@@ -770,6 +808,52 @@ class DateTimeTests extends VyxalTests:
         assertResult(VNum(1))(result.month)
         assertResult(VNum(1))(result.day)
         assertResult(VNum(0))(result.hour)
+      }
+      it("#z should return a sorted list of all timezone IDs") {
+        given ctx: Context = VyxalTests.testContext()
+        Interpreter.execute("#z")(using ctx)
+        val result = ctx.peek.asInstanceOf[VList]
+        // Should contain well-known zones
+        val strs = result.lst.collect { case VStr(s) => s }
+        assert(strs.contains("UTC"), "Should contain UTC")
+        assert(strs.contains("America/New_York"), "Should contain America/New_York")
+        assert(strs.contains("Europe/London"), "Should contain Europe/London")
+        // Should be sorted
+        assert(strs == strs.sorted, "Zone IDs should be sorted")
+        // All elements should be VStr
+        assert(result.lst.forall(_.isInstanceOf[VStr]), "All elements should be VStr")
+      }
+    }
+
+    describe("Timezone Conversion (⊢ with VDate)") {
+      it("should convert a date to UTC timezone") {
+        val date = VDate(
+          ZonedDateTime.of(2024, 3, 15, 10, 30, 0, 0, ZoneId.of("America/New_York"))
+        )
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(date, VStr("UTC"))
+        )
+        Interpreter.execute("⊢")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDate]
+        // 10:30 EST = 14:30 UTC (EST is UTC-5 in March, but DST so EDT = UTC-4)
+        assertResult(VNum(14))(result.hour)
+        assertResult(VNum(30))(result.minute)
+        assertResult(VStr("UTC"))(result.zone)
+      }
+      it("should preserve the same instant") {
+        val date = VDate(
+          ZonedDateTime.of(2024, 6, 1, 12, 0, 0, 0, ZoneId.of("UTC"))
+        )
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(date, VStr("Asia/Tokyo"))
+        )
+        Interpreter.execute("⊢")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDate]
+        // Same instant, different zone
+        assertResult(date.toUnixTime)(result.toUnixTime)
+        assertResult(VStr("Asia/Tokyo"))(result.zone)
+        // UTC 12:00 = Tokyo 21:00 (UTC+9)
+        assertResult(VNum(21))(result.hour)
       }
     }
   }

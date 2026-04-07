@@ -68,7 +68,9 @@ object ElementInformation:
       .find((_, mod) => mod.keywords.contains(keyword))
       .map((_, mod) => mod.symbol)
 
-  val elements: Map[String, Element] = Map(
+  val elements: Map[String, Element] = elements1 ++ elements2
+
+  private def elements1: Map[String, Element] = Map(
     AddElement(
       symbol = "Ƶ",
       keywords = Seq(
@@ -2314,9 +2316,14 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⊢",
-      keywords = Seq("ten-to-base", "all-regex-matches", "to-base"),
+      keywords = Seq("ten-to-base", "all-regex-matches", "to-base", "to-timezone"),
       arity = 2,
       Options(),
+      Overload(
+        name = "Convert Timezone",
+        args = Seq("date", "str"),
+        description = "Convert date #1 to timezone #2 (e.g., \"UTC\", \"America/New_York\")",
+      ),
       Overload(
         name = "10 to Base",
         args = Seq("num", "num"),
@@ -3601,6 +3608,9 @@ object ElementInformation:
         description = "Insert spaces between each character of #1",
       ),
     ),
+  )
+
+  private def elements2: Map[String, Element] = Map(
     AddElement(
       symbol = "“",
       keywords = Seq(
@@ -5034,6 +5044,17 @@ object ElementInformation:
       ),
     ),
     AddElement(
+      symbol = "#z",
+      keywords = Seq("all-timezones", "zone-ids", "available-zones"),
+      arity = 0,
+      Options(),
+      Overload(
+        name = "All Timezone IDs",
+        args = Seq(),
+        description = "Push a sorted list of all available timezone ID strings (e.g., \"UTC\", \"America/New_York\")",
+      ),
+    ),
+    AddElement(
       symbol = "#t",
       keywords = Seq("make-date", "date-from-components", "to-date", "construct-date"),
       arity = 1,
@@ -5053,6 +5074,22 @@ object ElementInformation:
         args = Seq("lst"),
         description =
           "Create a date from [year, month?, day?, hour?, minute?, second?]. Missing components default to 1 (month/day) or 0 (time).",
+      ),
+    ),
+    AddElement(
+      symbol = "#U",
+      keywords = Seq("make-duration", "to-duration", "parse-duration", "duration-from-days"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Parse Duration",
+        args = Seq("str"),
+        description = "Parse string #1 as an ISO-8601 duration (e.g., \"PT2H30M\" for 2 hours 30 minutes)",
+      ),
+      Overload(
+        name = "Duration from Decimal Days (Number)",
+        args = Seq("num"),
+        description = "Create a duration from #1 decimal days (e.g., 1.5 = 36 hours)",
       ),
     ),
     AddElement(

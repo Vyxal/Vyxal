@@ -11,7 +11,7 @@ import vyxal.Context.{peek, pop, push}
 import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.defaultEmpty
 
-import java.time.{Duration as JDuration, ZonedDateTime}
+import java.time.{Duration as JDuration, ZoneId, ZonedDateTime}
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
@@ -988,6 +988,7 @@ object Elements:
           ),
       ),
     addPart("⊢", Dyad, false) {
+      case (date: VDate, VStr(tz)) => date.withZone(tz)
       case (number: VNum, base: VNum) => NumberHelpers.toBase(number, base)
       case (number: VNum, baseAlphabet: VIter) =>
         NumberHelpers.toBase(number, baseAlphabet)
@@ -1859,10 +1860,20 @@ object Elements:
         now.withDayOfYear(1).toLocalDate.atStartOfDay(now.getZone)
       )
     },
+    "#z" -> niladify {
+      import scala.jdk.CollectionConverters.*
+      VList(
+        ZoneId.getAvailableZoneIds.asScala.toSeq.sorted.map(VStr(_))
+      )
+    },
     addPart("#t", Monad, false) {
       case VStr(s) => VDate.parse(s)
       case a: VNum => VDate.fromEpochSecond(a.toLong)
       case a: VList => VDate.fromComponents(a.lst)
+    },
+    addPart("#U", Monad, false) {
+      case VStr(s) => VDuration.parse(s)
+      case a: VNum => VDuration.ofDaysDecimal(a.toDouble)
     },
     addPart("∆<", Monad, true) {
       case a: VNum => a.arg

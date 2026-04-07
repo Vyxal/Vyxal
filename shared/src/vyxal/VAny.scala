@@ -266,6 +266,10 @@ final case class VDate(dt: ZonedDateTime) extends VAny, Ordered[VDate]:
   /** Calendar-aware: add whole weeks. */
   def plusWeeks(n: Long): VDate = VDate(dt.plusWeeks(n))
 
+  /** Convert to a different timezone, preserving the same instant. */
+  def withZone(zoneId: String): VDate =
+    VDate(dt.withZoneSameInstant(ZoneId.of(zoneId)))
+
   /** Unix epoch second for this date/time. */
   def toUnixTime: VNum = VNum(dt.toEpochSecond)
 
