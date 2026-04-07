@@ -988,6 +988,7 @@ object Elements:
           ),
       ),
     addPart("⊢", Dyad, false) {
+      case (date: VDate, VStr(tz)) => date.withZone(tz)
       case (number: VNum, base: VNum) => NumberHelpers.toBase(number, base)
       case (number: VNum, baseAlphabet: VIter) =>
         NumberHelpers.toBase(number, baseAlphabet)

@@ -810,6 +810,38 @@ class DateTimeTests extends VyxalTests:
         assertResult(VNum(0))(result.hour)
       }
     }
+
+    describe("Timezone Conversion (⊢ with VDate)") {
+      it("should convert a date to UTC timezone") {
+        val date = VDate(
+          ZonedDateTime.of(2024, 3, 15, 10, 30, 0, 0, ZoneId.of("America/New_York"))
+        )
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(date, VStr("UTC"))
+        )
+        Interpreter.execute("⊢")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDate]
+        // 10:30 EST = 14:30 UTC (EST is UTC-5 in March, but DST so EDT = UTC-4)
+        assertResult(VNum(14))(result.hour)
+        assertResult(VNum(30))(result.minute)
+        assertResult(VStr("UTC"))(result.zone)
+      }
+      it("should preserve the same instant") {
+        val date = VDate(
+          ZonedDateTime.of(2024, 6, 1, 12, 0, 0, 0, ZoneId.of("UTC"))
+        )
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(date, VStr("Asia/Tokyo"))
+        )
+        Interpreter.execute("⊢")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDate]
+        // Same instant, different zone
+        assertResult(date.toUnixTime)(result.toUnixTime)
+        assertResult(VStr("Asia/Tokyo"))(result.zone)
+        // UTC 12:00 = Tokyo 21:00 (UTC+9)
+        assertResult(VNum(21))(result.hour)
+      }
+    }
   }
 
 end DateTimeTests

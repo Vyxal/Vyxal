@@ -2314,9 +2314,14 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⊢",
-      keywords = Seq("ten-to-base", "all-regex-matches", "to-base"),
+      keywords = Seq("ten-to-base", "all-regex-matches", "to-base", "to-timezone"),
       arity = 2,
       Options(),
+      Overload(
+        name = "Convert Timezone",
+        args = Seq("date", "str"),
+        description = "Convert date #1 to timezone #2 (e.g., \"UTC\", \"America/New_York\")",
+      ),
       Overload(
         name = "10 to Base",
         args = Seq("num", "num"),
