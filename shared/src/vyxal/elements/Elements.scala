@@ -776,7 +776,6 @@ object Elements:
       case a: VDate => VList(Seq(
           a.year, a.month, a.day, a.hour, a.minute, a.second
         ))
-      case a: VList => VDate.fromComponents(a.lst)
     },
     addPart("⌊", Monad, true) {
       case a: VNum => a.floor
@@ -1859,6 +1858,11 @@ object Elements:
       VDate(
         now.withDayOfYear(1).toLocalDate.atStartOfDay(now.getZone)
       )
+    },
+    addPart("#t", Monad, false) {
+      case VStr(s) => VDate.parse(s)
+      case a: VNum => VDate.fromEpochSecond(a.toLong)
+      case a: VList => VDate.fromComponents(a.lst)
     },
     addPart("∆<", Monad, true) {
       case a: VNum => a.arg

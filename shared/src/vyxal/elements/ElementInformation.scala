@@ -1923,7 +1923,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⌈",
-      keywords = Seq("ceil", "ceiling", "split-on-spaces", "date-from-components"),
+      keywords = Seq("ceil", "ceiling", "split-on-spaces"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -1940,12 +1940,6 @@ object ElementInformation:
         name = "Date Components",
         args = Seq("date"),
         description = "Extract [year, month, day, hour, minute, second] from date #1",
-      ),
-      Overload(
-        name = "Date from Components",
-        args = Seq("lst"),
-        description =
-          "Create a date from [year, month?, day?, hour?, minute?, second?]. Missing components default to 1 (month/day) or 0 (time).",
       ),
     ),
     AddElement(
@@ -5037,6 +5031,28 @@ object ElementInformation:
         name = "Start of Year",
         args = Seq(),
         description = "Push the first day of the current year at midnight as a VDate",
+      ),
+    ),
+    AddElement(
+      symbol = "#t",
+      keywords = Seq("make-date", "date-from-components", "to-date", "construct-date"),
+      arity = 1,
+      Options(),
+      Overload(
+        name = "Parse Date",
+        args = Seq("str"),
+        description = "Parse string #1 as a date/time",
+      ),
+      Overload(
+        name = "Date from Epoch",
+        args = Seq("num"),
+        description = "Create a date from Unix epoch seconds #1",
+      ),
+      Overload(
+        name = "Date from Components",
+        args = Seq("lst"),
+        description =
+          "Create a date from [year, month?, day?, hour?, minute?, second?]. Missing components default to 1 (month/day) or 0 (time).",
       ),
     ),
     AddElement(

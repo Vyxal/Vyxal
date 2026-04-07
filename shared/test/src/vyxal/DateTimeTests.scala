@@ -477,12 +477,12 @@ class DateTimeTests extends VyxalTests:
       }
     }
 
-    describe("Ceil (⌈) - Date from Components") {
+    describe("Make Date (#t) - Date from Components") {
       it("should create date from [year] — Jan 1 midnight") {
         given ctx: Context = VyxalTests.testContext(
           inputs = Seq(VList(Seq(VNum(2024))))
         )
-        Interpreter.execute("⌈")(using ctx)
+        Interpreter.execute("#t")(using ctx)
         val result = ctx.peek.asInstanceOf[VDate]
         assertResult(VNum(2024))(result.year)
         assertResult(VNum(1))(result.month)
@@ -495,7 +495,7 @@ class DateTimeTests extends VyxalTests:
         given ctx: Context = VyxalTests.testContext(
           inputs = Seq(VList(Seq(VNum(2024), VNum(5))))
         )
-        Interpreter.execute("⌈")(using ctx)
+        Interpreter.execute("#t")(using ctx)
         val result = ctx.peek.asInstanceOf[VDate]
         assertResult(VNum(2024))(result.year)
         assertResult(VNum(5))(result.month)
@@ -506,7 +506,7 @@ class DateTimeTests extends VyxalTests:
         given ctx: Context = VyxalTests.testContext(
           inputs = Seq(VList(Seq(VNum(2024), VNum(7), VNum(4))))
         )
-        Interpreter.execute("⌈")(using ctx)
+        Interpreter.execute("#t")(using ctx)
         val result = ctx.peek.asInstanceOf[VDate]
         assertResult(VNum(2024))(result.year)
         assertResult(VNum(7))(result.month)
@@ -516,7 +516,7 @@ class DateTimeTests extends VyxalTests:
         given ctx: Context = VyxalTests.testContext(
           inputs = Seq(VList(Seq(VNum(2024), VNum(12), VNum(25), VNum(10), VNum(30), VNum(45))))
         )
-        Interpreter.execute("⌈")(using ctx)
+        Interpreter.execute("#t")(using ctx)
         val result = ctx.peek.asInstanceOf[VDate]
         assertResult(VNum(2024))(result.year)
         assertResult(VNum(12))(result.month)
@@ -525,11 +525,29 @@ class DateTimeTests extends VyxalTests:
         assertResult(VNum(30))(result.minute)
         assertResult(VNum(45))(result.second)
       }
-      it("should round-trip with date decomposition") {
+      it("should parse date from string") {
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(VStr("2024-03-15"))
+        )
+        Interpreter.execute("#t")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDate]
+        assertResult(VNum(2024))(result.year)
+        assertResult(VNum(3))(result.month)
+        assertResult(VNum(15))(result.day)
+      }
+      it("should create date from epoch seconds") {
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(VNum(0))
+        )
+        Interpreter.execute("#t")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDate]
+        assertResult(VNum(0))(result.toUnixTime)
+      }
+      it("should round-trip with ⌈ date decomposition") {
         given ctx: Context = VyxalTests.testContext(
           inputs = Seq(VDate.of(2024, 3, 15, 10, 30, 45))
         )
-        Interpreter.execute("⌈⌈")(using ctx)
+        Interpreter.execute("⌈#t")(using ctx)
         val result = ctx.peek.asInstanceOf[VDate]
         assertResult(VNum(2024))(result.year)
         assertResult(VNum(3))(result.month)
