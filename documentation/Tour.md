@@ -43,6 +43,8 @@ The stack can contain any type of value supported by Vyxal, those being:
 
 - Numbers (integers and floats)
 - Strings
+- Dates
+- Durations
 - Lists (of any type, including nested lists)
 - Functions
 
@@ -141,6 +143,55 @@ Finally, if a string is at the end of a program, it can be left unterminated. Fo
 ```
 
 at the end of a program will automatically fill in the missing `"`.
+
+## Dates and Durations
+
+Dates and Durations are 2 separate types that simplify greatly everything that has to do with time and dates.
+You can get the current dateTime with `#n`, the start of the current day with `#d`, the first of the month at midnight with `#m`, and same for the year with `#y`.
+Dates automatically handle leap years, 
+Most of the operations that work on strings and numbers also work with dates, for example:
+
+```
+#n 1+
+```
+returns the date of tomorrow, same time, by simply adding 1 to the date. 
+Dates have their own sets of operations. For example, it doesn't make sense to check whether or not a date is even using `e`, so
+```
+#y e
+```
+will return 1 if the current year is a leap year.
+
+Note that unlike operations numbers which generally result in other numbers, some operations on dates do not result in another date, but instead result in a Duration.
+
+Durations are a companion type to dates. They represent abstract spans of time, for example "one day and 5 hours".
+Durations can be obtained using `#U`:
+```
+1#U  ## a duration of one day
+"PT2H30M" #U  ## a duration from an ISO-8601 string, of 2 hours 30 minutes
+2 30 60÷+ 24÷ #U ## the same duration of 2 hours 30 minutes, computed from a decimal number of days (here, ~0.10416)
+```
+Substracting a date from another:
+```
+#n:‹-
+```
+also yields a duration, in this instance one day.
+Durations are used to compute operations on Dates, because adding two dates together doesn't really make sense.
+```
+7.5#U #n +
+```
+returns the date it will be in 7 days.
+
+### TimeZones
+By default, all Dates are in the timezone local to your computer. You may obtain a Date in another timezone by either parsing a string using `Ṫ`:
+```
+"2024-03-15T10:30:00GMT"Ṫ ## explicit GMT
+""2024-03-15T10:30:00+05:00"Ṫ  ## explicit UTC+5
+```
+or by changing the timezone of an existing Date using `⊢`:
+
+```
+#n "Asia/Tokyo"⊢ ## What time is it in Japan?
+```
 
 ## Lists
 
