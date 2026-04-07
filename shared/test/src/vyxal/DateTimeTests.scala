@@ -477,6 +477,69 @@ class DateTimeTests extends VyxalTests:
       }
     }
 
+    describe("Ceil (⌈) - Date from Components") {
+      it("should create date from [year] — Jan 1 midnight") {
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(VList(Seq(VNum(2024))))
+        )
+        Interpreter.execute("⌈")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDate]
+        assertResult(VNum(2024))(result.year)
+        assertResult(VNum(1))(result.month)
+        assertResult(VNum(1))(result.day)
+        assertResult(VNum(0))(result.hour)
+        assertResult(VNum(0))(result.minute)
+        assertResult(VNum(0))(result.second)
+      }
+      it("should create date from [year, month]") {
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(VList(Seq(VNum(2024), VNum(5))))
+        )
+        Interpreter.execute("⌈")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDate]
+        assertResult(VNum(2024))(result.year)
+        assertResult(VNum(5))(result.month)
+        assertResult(VNum(1))(result.day)
+        assertResult(VNum(0))(result.hour)
+      }
+      it("should create date from [year, month, day]") {
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(VList(Seq(VNum(2024), VNum(7), VNum(4))))
+        )
+        Interpreter.execute("⌈")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDate]
+        assertResult(VNum(2024))(result.year)
+        assertResult(VNum(7))(result.month)
+        assertResult(VNum(4))(result.day)
+      }
+      it("should create date from [year, month, day, hour, minute, second]") {
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(VList(Seq(VNum(2024), VNum(12), VNum(25), VNum(10), VNum(30), VNum(45))))
+        )
+        Interpreter.execute("⌈")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDate]
+        assertResult(VNum(2024))(result.year)
+        assertResult(VNum(12))(result.month)
+        assertResult(VNum(25))(result.day)
+        assertResult(VNum(10))(result.hour)
+        assertResult(VNum(30))(result.minute)
+        assertResult(VNum(45))(result.second)
+      }
+      it("should round-trip with date decomposition") {
+        given ctx: Context = VyxalTests.testContext(
+          inputs = Seq(VDate.of(2024, 3, 15, 10, 30, 45))
+        )
+        Interpreter.execute("⌈⌈")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDate]
+        assertResult(VNum(2024))(result.year)
+        assertResult(VNum(3))(result.month)
+        assertResult(VNum(15))(result.day)
+        assertResult(VNum(10))(result.hour)
+        assertResult(VNum(30))(result.minute)
+        assertResult(VNum(45))(result.second)
+      }
+    }
+
     describe("E - Date Components") {
       it("should extract date components") {
         given ctx: Context = VyxalTests.testContext(

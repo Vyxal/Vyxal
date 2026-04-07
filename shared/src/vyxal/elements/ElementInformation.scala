@@ -1923,7 +1923,7 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "⌈",
-      keywords = Seq("ceil", "ceiling", "split-on-spaces"),
+      keywords = Seq("ceil", "ceiling", "split-on-spaces", "date-from-components"),
       arity = 1,
       Options(vectorises = true),
       Overload(
@@ -1940,6 +1940,12 @@ object ElementInformation:
         name = "Date Components",
         args = Seq("date"),
         description = "Extract [year, month, day, hour, minute, second] from date #1",
+      ),
+      Overload(
+        name = "Date from Components",
+        args = Seq("lst"),
+        description =
+          "Create a date from [year, month?, day?, hour?, minute?, second?]. Missing components default to 1 (month/day) or 0 (time).",
       ),
     ),
     AddElement(

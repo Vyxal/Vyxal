@@ -776,6 +776,7 @@ object Elements:
       case a: VDate => VList(Seq(
           a.year, a.month, a.day, a.hour, a.minute, a.second
         ))
+      case a: VList => VDate.fromComponents(a.lst)
     },
     addPart("⌊", Monad, true) {
       case a: VNum => a.floor
