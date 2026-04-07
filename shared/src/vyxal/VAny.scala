@@ -331,6 +331,28 @@ object VDate:
   /** Creates a [[VDate]] from a Unix epoch second in a specific zone. */
   def fromEpochSecond(epoch: Long, zone: ZoneId): VDate =
     VDate(ZonedDateTime.ofInstant(Instant.ofEpochSecond(epoch), zone))
+
+  /** Creates a [[VDate]] from a list of numeric components starting from year.
+    *
+    * Components are filled in order: year, month, day, hour, minute, second.
+    * Missing components default to 1 for month/day and 0 for hour/minute/second.
+    * An empty list returns midnight Jan 1, year 0.
+    */
+  def fromComponents(components: Seq[VAny]): VDate =
+    val nums = components.map {
+      case n: VNum => n.toInt
+      case other =>
+        throw new IllegalArgumentException(
+          s"Expected VNum in date component list, got ${other.getClass.getSimpleName}"
+        )
+    }
+    val year   = nums.headOption.getOrElse(0)
+    val month  = nums.lift(1).getOrElse(1)
+    val day    = nums.lift(2).getOrElse(1)
+    val hour   = nums.lift(3).getOrElse(0)
+    val minute = nums.lift(4).getOrElse(0)
+    val second = nums.lift(5).getOrElse(0)
+    VDate.of(year, month, day, hour, minute, second)
 end VDate
 
 /** A Vyxal duration value wrapping a [[java.time.Duration]]. */
