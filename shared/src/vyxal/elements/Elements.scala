@@ -67,9 +67,11 @@ object Elements:
       case (a: VNum, VStr(b)) => StringHelpers.intoNPieces(b, a)
       case (VStr(a), VStr(b)) => VList(a.split(b).toSeq.vs)
       case (a: VDuration, b: VNum) =>
-        VDuration(JDuration.ofMillis(a.dur.toMillis / b.toLong))
+        if b.toLong == 0 then VDuration.Zero
+        else VDuration(JDuration.ofMillis(a.dur.toMillis / b.toLong))
       case (a: VDuration, b: VDuration) =>
-        VNum(a.dur.toMillis.toDouble / b.dur.toMillis.toDouble)
+        if b.dur.toMillis == 0 then VNum(0)
+        else VNum(a.dur.toMillis.toDouble / b.dur.toMillis.toDouble)
     },
     "×" -> fullToImpl(Dyad, MiscHelpers.multiply),
     addPart("∧", Dyad, true) {

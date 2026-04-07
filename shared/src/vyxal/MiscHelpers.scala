@@ -265,8 +265,10 @@ object MiscHelpers:
     case (a: VDate, VStr(b)) =>
       VStr(a.dt.format(DateTimeFormatter.ofPattern(b)))
     case (a: VDuration, b: VDuration) =>
-      val millis = a.dur.toMillis % b.dur.toMillis
-      VDuration(JDuration.ofMillis(millis))
+      if b.dur.toMillis == 0 then VDuration.Zero
+      else
+        val millis = a.dur.toMillis % b.dur.toMillis
+        VDuration(JDuration.ofMillis(millis))
     case (VStr(a), b: VList) => StringHelpers.formatString(a, b*)
     case (a: VList, VStr(b)) => StringHelpers.formatString(b, a*)
     case (VStr(a), b) => StringHelpers.formatString(a, b)
