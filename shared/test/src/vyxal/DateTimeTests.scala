@@ -558,24 +558,24 @@ class DateTimeTests extends VyxalTests:
       }
     }
 
-    describe("Make Duration (#U) - Duration from Decimal Days") {
-      it("should create a duration from a decimal day string") {
+    describe("Make Duration (#U)") {
+      it("should parse an ISO-8601 duration string") {
         given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VStr("1.5"))
+          inputs = Seq(VStr("PT2H30M"))
         )
         Interpreter.execute("#U")(using ctx)
         val result = ctx.peek.asInstanceOf[VDuration]
-        // 1.5 days = 36 hours = 129600000 millis
-        assertResult(VNum(129600000L))(result.toMillis)
+        // 2 hours 30 minutes = 9000 seconds
+        assertResult(VNum(9000L))(result.toSeconds)
       }
-      it("should create a duration from an integer day string") {
+      it("should parse a day duration string") {
         given ctx: Context = VyxalTests.testContext(
-          inputs = Seq(VStr("2"))
+          inputs = Seq(VStr("P2D"))
         )
         Interpreter.execute("#U")(using ctx)
         val result = ctx.peek.asInstanceOf[VDuration]
-        // 2 days = 172800000 millis
-        assertResult(VNum(172800000L))(result.toMillis)
+        // 2 days = 172800 seconds
+        assertResult(VNum(172800L))(result.toSeconds)
       }
       it("should create a duration from a numeric value") {
         given ctx: Context = VyxalTests.testContext(

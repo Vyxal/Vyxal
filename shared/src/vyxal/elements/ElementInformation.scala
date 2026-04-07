@@ -5057,13 +5057,13 @@ object ElementInformation:
     ),
     AddElement(
       symbol = "#U",
-      keywords = Seq("make-duration", "to-duration", "duration-from-days", "decimal-days-to-duration"),
+      keywords = Seq("make-duration", "to-duration", "parse-duration", "duration-from-days"),
       arity = 1,
       Options(),
       Overload(
-        name = "Duration from Decimal Days (String)",
+        name = "Parse Duration",
         args = Seq("str"),
-        description = "Parse string #1 as a decimal number of days and create a duration",
+        description = "Parse string #1 as an ISO-8601 duration (e.g., \"PT2H30M\" for 2 hours 30 minutes)",
       ),
       Overload(
         name = "Duration from Decimal Days (Number)",
