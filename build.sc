@@ -23,6 +23,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
       ivy"com.github.scopt::scopt::4.1.0",
       ivy"com.outr::scribe::3.13.5",
       ivy"org.scala-lang::toolkit:0.6.0",
+      ivy"io.github.cquiroz::scala-java-time::2.6.0",
     )
 
   override def scalacOptions =

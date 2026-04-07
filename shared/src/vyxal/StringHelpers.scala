@@ -440,6 +440,8 @@ object StringHelpers:
       case f: VFun => f.toString
       case c: VConstructor => s"$c()"
       case o: VObject => o.toString
+      case d: VDate => d.toString
+      case d: VDuration => d.toString
 
   def prettyPrint(item: VAny)(using Context): String =
     def go(item: VAny, indentation: Int)(using Context): (String, Boolean) =
@@ -479,6 +481,8 @@ object StringHelpers:
                 true,
               )
             else (s"${o.className} { ${entries.mkString(", ")} }", true)
+        case d: VDate => (d.toString, false)
+        case d: VDuration => (d.toString, false)
     go(item, 0)._1
   end prettyPrint
 

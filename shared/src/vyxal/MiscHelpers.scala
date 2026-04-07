@@ -4,6 +4,9 @@ import vyxal.conversions.{*, given}
 import vyxal.parsing.Lexer
 import vyxal.Interpreter.executeFn
 
+import java.time.{Duration as JDuration}
+import java.time.format.DateTimeFormatter
+
 import scala.annotation.tailrec
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.ListBuffer
@@ -17,6 +20,13 @@ object MiscHelpers:
     case (VStr(a), b: VNum) => s"$a$b"
     case (a: VNum, VStr(b)) => s"$a$b"
     case (VStr(a), VStr(b)) => s"$a$b"
+    case (a: VDate, b: VDuration) => VDate(a.dt.plus(b.dur))
+    case (a: VDuration, b: VDate) => VDate(b.dt.plus(a.dur))
+    case (a: VDuration, b: VDuration) => VDuration(a.dur.plus(b.dur))
+    case (a: VDate, b: VNum) =>
+      VDate(a.dt.plus(VDuration.ofDaysDecimal(b.toDouble).dur))
+    case (a: VNum, b: VDate) =>
+      VDate(b.dt.plus(VDuration.ofDaysDecimal(a.toDouble).dur))
   })
 
   def callWhile(pred: VFun, transform: VFun, value: VAny)(using Context): VAny =
@@ -57,6 +67,8 @@ object MiscHelpers:
       case (VStr(a), b: VNum) => a.compareTo(b.toString)
       case (a: VNum, VStr(b)) => a.toString.compareTo(b)
       case (VStr(a), VStr(b)) => a.compareTo(b)
+      case (a: VDate, b: VDate) => a.compare(b)
+      case (a: VDuration, b: VDuration) => a.compare(b)
       case (a, b) =>
         // Lexographically compare the two values after converting both to iterable
         val aIter = ListHelpers.makeIterable(a)
@@ -77,6 +89,7 @@ object MiscHelpers:
       case _: VNum => VNum(0)
       case VStr(_) => ""
       case _: VList => 0
+      case _: VDuration => VDuration.Zero
       case _ => throw NoDefaultException(a)
 
   def dyadicMaximum(a: VAny, b: VAny)(using Context): VAny =
@@ -118,6 +131,8 @@ object MiscHelpers:
         res
       case _: VObject => throw BadArgumentException("exec", "object")
       case con: VConstructor => Interpreter.createObject(con)
+      case _: VDate => throw BadArgumentException("exec", "date")
+      case _: VDuration => throw BadArgumentException("exec", "duration")
     end match
   end exec
 
@@ -247,6 +262,13 @@ object MiscHelpers:
     case (a: VList, b: VNum) => a.vmap(MiscHelpers.modulo(_, b))
     case (a: VNum, b: VList) => b.vmap(MiscHelpers.modulo(a, _))
     case (a: VList, b: VList) => a.zipWith(b)(MiscHelpers.modulo)
+    case (a: VDate, VStr(b)) =>
+      VStr(a.dt.format(DateTimeFormatter.ofPattern(b)))
+    case (a: VDuration, b: VDuration) =>
+      if b.dur.toMillis == 0 then VDuration.Zero
+      else
+        val millis = a.dur.toMillis % b.dur.toMillis
+        VDuration(JDuration.ofMillis(millis))
     case (VStr(a), b: VList) => StringHelpers.formatString(a, b*)
     case (a: VList, VStr(b)) => StringHelpers.formatString(b, a*)
     case (VStr(a), b) => StringHelpers.formatString(a, b)
@@ -260,6 +282,8 @@ object MiscHelpers:
     case (VStr(a), VStr(b)) => StringHelpers.ringTranslate(a, b)
     case (a: VFun, b: VNum) => a.withArity(b.toInt)
     case (a: VNum, b: VFun) => b.withArity(a.toInt)
+    case (a: VDuration, b: VNum) => VDuration(a.dur.multipliedBy(b.toLong))
+    case (a: VNum, b: VDuration) => VDuration(b.dur.multipliedBy(a.toLong))
   }
 
   def predicateSlice(predicate: VFun, limit: VNum, startFrom: VNum)(using
@@ -305,6 +329,8 @@ object MiscHelpers:
       case _: VFun => "fun"
       case _: VConstructor => "con"
       case o: VObject => o.className
+      case _: VDate => "date"
+      case _: VDuration => "dur"
     }.toList
 
   /** For pattern-matching. Unpacks the top of the stack into some variables */
@@ -364,6 +390,8 @@ object MiscHelpers:
               if !endOfProgram then vyPrint(res)
             case c: VConstructor => vyPrint(c.toString)
             case o: VObject => vyPrint(o.toString)
+            case d: VDate => vyPrint(d.toString)
+            case d: VDuration => vyPrint(d.toString)
           temp = temp.tail
           if temp.nonEmpty then vyPrint(", ")
         vyPrint("]")
@@ -394,6 +422,12 @@ object MiscHelpers:
     case (a: VNum, VStr(b)) =>
       if a.toInt > 0 then "-" * a.toInt + b else b + "-" * a.toInt.abs
     case (VStr(a), VStr(b)) => a.replaceAll(b, "")
+    case (a: VDate, b: VDuration) => VDate(a.dt.minus(b.dur))
+    case (a: VDate, b: VDate) =>
+      VDuration(JDuration.between(b.dt, a.dt))
+    case (a: VDuration, b: VDuration) => VDuration(a.dur.minus(b.dur))
+    case (a: VDate, b: VNum) =>
+      VDate(a.dt.minus(VDuration.ofDaysDecimal(b.toDouble).dur))
   }
 
   /** Generate a LazyList by repeatedly applying the given function to the given
