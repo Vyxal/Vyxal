@@ -259,6 +259,11 @@ object VDate:
 
   def parse(s: String): VDate = VDate(LocalDateTime.parse(s))
 
+  /** Creates a [[VDate]] from a Unix epoch second, interpreting the timestamp
+    * in UTC. Note that the resulting [[LocalDateTime]] has no timezone
+    * information attached — it simply represents the wall-clock date/time at
+    * UTC for the given epoch second.
+    */
   def fromEpochSecond(epoch: Long): VDate =
     VDate(LocalDateTime.ofEpochSecond(epoch, 0, ZoneOffset.UTC))
 end VDate
