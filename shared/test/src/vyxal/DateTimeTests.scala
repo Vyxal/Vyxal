@@ -49,7 +49,8 @@ class DateTimeTests extends VyxalTests:
         val d = VDate.parse("2024-03-15T10:30:00+05:00")
         assertResult(VNum(2024))(d.year)
         assertResult(VNum(10))(d.hour)
-        assert(d.zone.contains("+05:00") || d.zone == "+05:00")
+        val z = d.zone.s
+        assert(z.contains("+05:00") || z == "+05:00")
       }
 
       it("should parse an instant string") {
@@ -82,7 +83,21 @@ class DateTimeTests extends VyxalTests:
     describe("zone") {
       it("should carry the system default zone when constructed via of()") {
         val d = VDate.of(2024, 1, 1)
-        assertResult(ZoneId.systemDefault().getId)(d.zone)
+        assertResult(VStr(ZoneId.systemDefault().getId))(d.zone)
+      }
+    }
+
+    describe("toUnixTime") {
+      it("should return epoch second for UTC epoch") {
+        val d = VDate.fromEpochSecond(0, ZoneOffset.UTC)
+        assertResult(VNum(0))(d.toUnixTime)
+      }
+
+      it("should return correct epoch second for a known date") {
+        val d = VDate(
+          ZonedDateTime.of(2024, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
+        )
+        assertResult(VNum(1704067200L))(d.toUnixTime)
       }
     }
 

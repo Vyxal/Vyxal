@@ -255,7 +255,7 @@ final case class VDate(dt: ZonedDateTime) extends VAny, Ordered[VDate]:
   def hour: VNum = VNum(dt.getHour)
   def minute: VNum = VNum(dt.getMinute)
   def second: VNum = VNum(dt.getSecond)
-  def zone: String = dt.getZone.getId
+  def zone: VStr = VStr(dt.getZone.getId)
 
   /** Calendar-aware: add whole months. */
   def plusMonths(n: Long): VDate = VDate(dt.plusMonths(n))
@@ -265,6 +265,9 @@ final case class VDate(dt: ZonedDateTime) extends VAny, Ordered[VDate]:
 
   /** Calendar-aware: add whole weeks. */
   def plusWeeks(n: Long): VDate = VDate(dt.plusWeeks(n))
+
+  /** Unix epoch second for this date/time. */
+  def toUnixTime: VNum = VNum(dt.toEpochSecond)
 
   /** Compare by instant (absolute point in time). */
   override def compare(that: VDate): Int =
