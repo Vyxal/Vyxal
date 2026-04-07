@@ -291,18 +291,18 @@ object VDate:
     )
 
   /** Parse a date/time string.  Accepts any format the underlying library
-    * can handle — ISO-8601 with or without timezone, RFC-1123, basic ISO,
+    * can handle — ISO-8601 with or without timezone, RFC-1123,
     * date-only, etc.  If the parsed result has no zone information the
     * system default zone is assumed.
     */
   def parse(s: String): VDate =
     // Chain of attempts — first success wins
     val attempts: LazyList[Try[ZonedDateTime]] = LazyList(
-      // Try ZonedDateTime directly (includes zone info)
+      // Try ZonedDateTime directly (uses ISO_ZONED_DATE_TIME internally)
       Try(ZonedDateTime.parse(s)),
-      // Common formatters that include a zone
+      // RFC-1123 (e.g. "Tue, 3 Jun 2008 11:05:30 GMT")
       Try(ZonedDateTime.parse(s, DateTimeFormatter.RFC_1123_DATE_TIME)),
-      Try(ZonedDateTime.parse(s, DateTimeFormatter.ISO_ZONED_DATE_TIME)),
+      // Offset date-time without zone id (e.g. "2024-03-15T10:30+05:00")
       Try(ZonedDateTime.parse(s, DateTimeFormatter.ISO_OFFSET_DATE_TIME)),
       // LocalDateTime (no zone) — attach default zone
       Try(LocalDateTime.parse(s).atZone(defaultZone)),
