@@ -10,13 +10,17 @@ import vyxal.Interpreter.executeFn
 import java.time.{
   Duration as JDuration,
   Instant,
+  LocalDate,
   LocalDateTime,
+  LocalTime,
   Period,
   ZoneId,
   ZoneOffset,
   ZonedDateTime,
 }
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
+import java.time.temporal.ChronoField
 import scala.annotation.targetName
 import scala.collection.immutable.NumericRange
 import scala.collection.immutable.NumericRange.Inclusive
@@ -268,6 +272,10 @@ final case class VDate(dt: ZonedDateTime) extends VAny, Ordered[VDate]:
   def withZone(zoneId: String): VDate =
     VDate(dt.withZoneSameInstant(ZoneId.of(zoneId)))
 
+  /** Change the timezone label without adjusting the local time. */
+  def withZoneSameLocal(zoneId: String): VDate =
+    VDate(dt.withZoneSameLocal(ZoneId.of(zoneId)))
+
   /** Unix epoch second for this date/time. */
   def toUnixTime: VNum = VNum(dt.toEpochSecond)
 
@@ -278,10 +286,15 @@ final case class VDate(dt: ZonedDateTime) extends VAny, Ordered[VDate]:
 end VDate
 
 object VDate:
-  /** The zone used when none is specified. */
-  private def defaultZone: ZoneId = ZoneId.systemDefault()
+  /** The zone used when none is specified. Mutable so programs can override. */
+  private var _defaultZone: Option[ZoneId] = None
+  private def defaultZone: ZoneId = _defaultZone.getOrElse(ZoneId.systemDefault())
 
-  def now(): VDate = VDate(ZonedDateTime.now())
+  /** Update the default timezone used for all future VDate operations. */
+  def setDefaultZone(zoneId: String): Unit =
+    _defaultZone = Some(ZoneId.of(zoneId))
+
+  def now(): VDate = VDate(ZonedDateTime.now(defaultZone))
 
   def of(
       year: Int,
@@ -295,10 +308,43 @@ object VDate:
       ZonedDateTime.of(year, month, day, hour, minute, second, 0, defaultZone)
     )
 
+  /** Formatter for 12-hour time like "4:45 PM" or "4:45:30 PM". */
+  private val TIME_12H: DateTimeFormatter =
+    new DateTimeFormatterBuilder()
+      .appendValue(ChronoField.CLOCK_HOUR_OF_AMPM)
+      .appendLiteral(':')
+      .appendValue(ChronoField.MINUTE_OF_HOUR, 2)
+      .optionalStart()
+      .appendLiteral(':')
+      .appendValue(ChronoField.SECOND_OF_MINUTE, 2)
+      .optionalEnd()
+      .appendLiteral(' ')
+      .appendText(ChronoField.AMPM_OF_DAY)
+      .toFormatter(java.util.Locale.ENGLISH)
+
+  /** Try to parse a timezone identifier from a string, handling common
+    * abbreviations.
+    */
+  private def parseZone(tz: String): ZoneId =
+    val trimmed = tz.trim
+    Try(ZoneId.of(trimmed)).getOrElse(
+      ZoneId.of(trimmed, java.util.TimeZone.getAvailableIDs.nn
+        .collect { case id if id != null => id }
+        .map(id => java.util.TimeZone.getTimeZone(id).nn)
+        .collect {
+          case tz if tz.getDisplayName(false, java.util.TimeZone.SHORT) == trimmed =>
+            tz.getDisplayName(false, java.util.TimeZone.SHORT).nn -> tz.getID.nn
+        }
+        .headOption
+        .map((abbr, id) => java.util.Map.of(abbr, id))
+        .getOrElse(java.util.Map.of[String, String]())
+      )
+    )
+
   /** Parse a date/time string. Accepts any format the underlying library can
-    * handle — ISO-8601 with or without timezone, RFC-1123, date-only, etc. If
-    * the parsed result has no zone information the system default zone is
-    * assumed.
+    * handle — ISO-8601 with or without timezone, RFC-1123, date-only,
+    * time-only (defaulting to today), time with timezone, etc. If the parsed
+    * result has no zone information the default zone is assumed.
     */
   def parse(s: String): VDate =
     // Chain of attempts — first success wins
@@ -312,9 +358,30 @@ object VDate:
       // LocalDateTime (no zone) — attach default zone
       Try(LocalDateTime.parse(s).atZone(defaultZone)),
       // Date-only — midnight in default zone
-      Try(java.time.LocalDate.parse(s).atStartOfDay(defaultZone)),
+      Try(LocalDate.parse(s).atStartOfDay(defaultZone)),
       // Instant — convert to default zone
       Try(Instant.parse(s).atZone(defaultZone)),
+      // Time-only (ISO: "16:45" or "16:45:30") — today in default zone
+      Try(LocalTime.parse(s).atDate(LocalDate.now(defaultZone)).atZone(defaultZone)),
+      // 12-hour time ("4:45 PM") — today in default zone
+      Try(LocalTime.parse(s.trim, TIME_12H).atDate(LocalDate.now(defaultZone)).atZone(defaultZone)),
+      // "HH:mm ZONE" or "HH:mm:ss ZONE" — time + timezone
+      Try {
+        val lastSpace = s.lastIndexOf(' ')
+        if lastSpace < 0 then throw new Exception("not a time+timezone string")
+        val timePart = s.substring(0, lastSpace).trim
+        val zonePart = s.substring(lastSpace + 1).trim
+        val zone = parseZone(zonePart)
+        val time = Try(LocalTime.parse(timePart))
+          .getOrElse(LocalTime.parse(timePart.trim, TIME_12H))
+        time.atDate(LocalDate.now(zone)).atZone(zone)
+      },
+      // Common date formats: "MM/dd/yyyy", "dd-MM-yyyy", "dd.MM.yyyy"
+      Try(LocalDate.parse(s, DateTimeFormatter.ofPattern("M/d/yyyy")).atStartOfDay(defaultZone)),
+      Try(LocalDate.parse(s, DateTimeFormatter.ofPattern("d-M-yyyy")).atStartOfDay(defaultZone)),
+      Try(LocalDate.parse(s, DateTimeFormatter.ofPattern("d.M.yyyy")).atStartOfDay(defaultZone)),
+      // Date + time with common separators: "MM/dd/yyyy HH:mm:ss"
+      Try(LocalDateTime.parse(s, DateTimeFormatter.ofPattern("M/d/yyyy H:mm[:ss]")).atZone(defaultZone)),
     )
 
     attempts
