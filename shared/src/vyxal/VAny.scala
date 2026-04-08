@@ -7,6 +7,16 @@ import vyxal.elements.ElementInformation
 import vyxal.elements.Elements
 import vyxal.Interpreter.executeFn
 
+import java.time.{
+  Duration as JDuration,
+  Instant,
+  LocalDateTime,
+  Period,
+  ZoneId,
+  ZoneOffset,
+  ZonedDateTime,
+}
+import java.time.format.DateTimeFormatter
 import scala.annotation.targetName
 import scala.collection.immutable.NumericRange
 import scala.collection.immutable.NumericRange.Inclusive
@@ -14,17 +24,6 @@ import scala.collection.mutable as mut
 import scala.math.Ordered
 import scala.reflect.TypeTest
 import scala.util.matching.Regex
-
-import java.time.{
-  Duration as JDuration,
-  Instant,
-  LocalDateTime,
-  Period,
-  ZonedDateTime,
-  ZoneId,
-  ZoneOffset,
-}
-import java.time.format.DateTimeFormatter
 import scala.util.Try
 
 import spire.math.{Complex, Real}
@@ -57,8 +56,7 @@ sealed trait VAny derives CanEqual:
       case (_, _: VFun) =>
         scribe.warn(s"Tried comparing $this to function $that")
         false
-      case (a: VDate, b: VDate) =>
-        a.dt.toInstant == b.dt.toInstant
+      case (a: VDate, b: VDate) => a.dt.toInstant == b.dt.toInstant
       case (a: VDuration, b: VDuration) => a.dur == b.dur
       case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) == 0
       case _ => false
@@ -297,10 +295,10 @@ object VDate:
       ZonedDateTime.of(year, month, day, hour, minute, second, 0, defaultZone)
     )
 
-  /** Parse a date/time string.  Accepts any format the underlying library
-    * can handle — ISO-8601 with or without timezone, RFC-1123,
-    * date-only, etc.  If the parsed result has no zone information the
-    * system default zone is assumed.
+  /** Parse a date/time string. Accepts any format the underlying library can
+    * handle — ISO-8601 with or without timezone, RFC-1123, date-only, etc. If
+    * the parsed result has no zone information the system default zone is
+    * assumed.
     */
   def parse(s: String): VDate =
     // Chain of attempts — first success wins
@@ -325,8 +323,7 @@ object VDate:
       .getOrElse(VDate(ZonedDateTime.parse(s)))
   end parse
 
-  /** Creates a [[VDate]] from a Unix epoch second in the system default zone.
-    */
+  /** Creates a [[VDate]] from a Unix epoch second in the system default zone. */
   def fromEpochSecond(epoch: Long): VDate =
     VDate(
       ZonedDateTime.ofInstant(Instant.ofEpochSecond(epoch), defaultZone)
@@ -339,21 +336,20 @@ object VDate:
   /** Creates a [[VDate]] from a list of numeric components starting from year.
     *
     * Components are filled in order: year, month, day, hour, minute, second.
-    * Missing components default to 1 for month/day and 0 for hour/minute/second.
-    * An empty list returns midnight Jan 1, year 0.
+    * Missing components default to 1 for month/day and 0 for
+    * hour/minute/second. An empty list returns midnight Jan 1, year 0.
     */
   def fromComponents(components: Seq[VAny]): VDate =
     val nums = components.map {
       case n: VNum => n.toInt
-      case other =>
-        throw new IllegalArgumentException(
+      case other => throw new IllegalArgumentException(
           s"Expected VNum in date component list, got ${other.getClass.getSimpleName}"
         )
     }
-    val year   = nums.headOption.getOrElse(0)
-    val month  = nums.lift(1).getOrElse(1)
-    val day    = nums.lift(2).getOrElse(1)
-    val hour   = nums.lift(3).getOrElse(0)
+    val year = nums.headOption.getOrElse(0)
+    val month = nums.lift(1).getOrElse(1)
+    val day = nums.lift(2).getOrElse(1)
+    val hour = nums.lift(3).getOrElse(0)
     val minute = nums.lift(4).getOrElse(0)
     val second = nums.lift(5).getOrElse(0)
     VDate.of(year, month, day, hour, minute, second)
@@ -369,7 +365,6 @@ final case class VDuration(dur: JDuration) extends VAny, Ordered[VDuration]:
 
   override def compare(that: VDuration): Int = dur.compareTo(that.dur)
   override def toString: String = dur.toString
-end VDuration
 
 object VDuration:
   def ofDays(n: Long): VDuration = VDuration(JDuration.ofDays(n))
@@ -386,16 +381,15 @@ object VDuration:
   def ofWeeks(n: Long): VDuration = VDuration(JDuration.ofDays(n * 7))
   def parse(s: String): VDuration = VDuration(JDuration.parse(s))
   val Zero: VDuration = VDuration(JDuration.ZERO)
-end VDuration
 
 /** A Vyxal list. It simply wraps around another list and could represent a
-    * completely evaluated list, a finite lazy list that is in the process of
-    * being evaluated, or an infinite list.
-    *
-    * To construct a VList, use VList.apply or VList
-    * @param lst
-    *   The wrapped list actually holdings this VList's elements.
-    */
+  * completely evaluated list, a finite lazy list that is in the process of
+  * being evaluated, or an infinite list.
+  *
+  * To construct a VList, use VList.apply or VList
+  * @param lst
+  *   The wrapped list actually holdings this VList's elements.
+  */
 final case class VList(lst: Seq[VAny]) extends VAny:
   override def toString(): String =
     lst.map(_.toString).mkString("[ ", " | ", " ]")
