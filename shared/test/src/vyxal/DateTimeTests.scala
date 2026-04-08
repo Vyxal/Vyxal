@@ -908,8 +908,7 @@ class DateTimeTests extends VyxalTests:
     describe("Set Timezone Same Local (⊣ with VDate)") {
       it("should change timezone without adjusting time") {
         val date = VDate(
-          ZonedDateTime
-            .of(2025, 1, 31, 1, 0, 0, 0, ZoneId.of("Europe/Berlin"))
+          ZonedDateTime.of(2025, 1, 31, 1, 0, 0, 0, ZoneId.of("Europe/Berlin"))
         )
         given ctx: Context =
           VyxalTests.testContext(
@@ -927,8 +926,7 @@ class DateTimeTests extends VyxalTests:
       }
       it("should differ from ⊢ which adjusts the time") {
         val date = VDate(
-          ZonedDateTime
-            .of(2024, 6, 1, 12, 0, 0, 0, ZoneId.of("UTC"))
+          ZonedDateTime.of(2024, 6, 1, 12, 0, 0, 0, ZoneId.of("UTC"))
         )
         given ctx: Context =
           VyxalTests.testContext(
