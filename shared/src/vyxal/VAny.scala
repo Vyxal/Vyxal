@@ -327,25 +327,16 @@ object VDate:
     */
   private def parseZone(tz: String): ZoneId =
     val trimmed = tz.trim
-    Try(ZoneId.of(trimmed)).getOrElse(
-      ZoneId.of(
-        trimmed,
-        java.util.TimeZone.getAvailableIDs.nn
-          .collect { case id if id != null => id }
-          .map(id => java.util.TimeZone.getTimeZone(id).nn)
-          .collect {
-            case tz
-                if tz.getDisplayName(false, java.util.TimeZone.SHORT) ==
-                  trimmed =>
-              tz.getDisplayName(false, java.util.TimeZone.SHORT).nn ->
-                tz.getID.nn
-          }
-          .headOption
-          .map((abbr, id) => java.util.Map.of(abbr, id))
-          .getOrElse(java.util.Map.of[String, String]()),
-      )
-    )
-  end parseZone
+    Try(ZoneId.of(trimmed)).getOrElse {
+      val fullId = java.util.TimeZone.getAvailableIDs.nn
+        .collect { case id if id != null => id }
+        .map(id => java.util.TimeZone.getTimeZone(id).nn)
+        .collectFirst {
+          case tz if tz.getDisplayName(false, java.util.TimeZone.SHORT) == trimmed =>
+            tz.getID.nn
+        }
+      ZoneId.of(fullId.getOrElse(trimmed))
+    }
 
   /** Parse a date/time string. Accepts any format the underlying library can
     * handle — ISO-8601 with or without timezone, RFC-1123, date-only, time-only
