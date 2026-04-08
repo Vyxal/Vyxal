@@ -332,8 +332,9 @@ object VDate:
         .collect { case id if id != null => id }
         .map(id => java.util.TimeZone.getTimeZone(id).nn)
         .collectFirst {
-          case tz if tz.getDisplayName(false, java.util.TimeZone.SHORT) == trimmed =>
-            tz.getID.nn
+          case tz
+              if tz.getDisplayName(false, java.util.TimeZone.SHORT) ==
+                trimmed => tz.getID.nn
         }
       ZoneId.of(fullId.getOrElse(trimmed))
     }
