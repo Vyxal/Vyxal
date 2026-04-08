@@ -180,7 +180,10 @@ object js extends VyxalModule with ScalaJSModule {
 
   def ivyDeps =
     T {
-      super.ivyDeps() ++ Seq(ivy"org.scala-js::scalajs-dom::2.8.0")
+      super.ivyDeps() ++ Seq(
+        ivy"org.scala-js::scalajs-dom::2.8.0",
+        ivy"io.github.cquiroz::scala-java-time-tzdb::2.6.0",
+      )
     }
 
   def pagesDir = build.millSourcePath / "pages"
