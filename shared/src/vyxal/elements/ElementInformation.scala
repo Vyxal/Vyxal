@@ -2390,12 +2390,6 @@ object ElementInformation:
         arity = 2,
         Options(),
         Overload(
-          name = "Set Timezone (same local time)",
-          args = Seq("date", "str"),
-          description =
-            "Change the timezone of date #1 to #2 without adjusting the local time (e.g., keep 01:00 but label it UTC)",
-        ),
-        Overload(
           name = "Base to 10",
           args = Seq("scl", "num"),
           description =
@@ -2419,6 +2413,12 @@ object ElementInformation:
           description =
             "The first number greater than {#2|#1} where {#1|#2} returns true",
           typeSwitchable = true,
+        ),
+        Overload(
+          name = "Set Timezone (same local time)",
+          args = Seq("date", "str"),
+          description =
+            "Change the timezone of date #1 to #2 without adjusting the local time (e.g., keep 01:00 but label it UTC)",
         ),
       ),
       AddElement(
@@ -5142,7 +5142,7 @@ object ElementInformation:
           name = "Set Default Timezone",
           args = Seq("str"),
           description =
-            "Set the default timezone to #1 (e.g. \"UTC\", \"America/New_York\"). All future VDates created without an explicit timezone will use this zone. Returns the timezone ID.",
+            "Set the default timezone to #1 (e.g. \"UTC\", \"America/New_York\"). All future VDates created without an explicit timezone will use this zone.",
         ),
       ),
       AddElement(

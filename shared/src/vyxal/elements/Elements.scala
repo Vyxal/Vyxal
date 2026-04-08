@@ -1888,11 +1888,10 @@ object Elements:
         // If the list contains strings, join with spaces and parse
         VDate.parse(a.lst.map(StringHelpers.vyToString(_)).mkString(" "))
     },
-    addPart("#Z", Monad, false) {
-      case VStr(s) =>
-        VDate.setDefaultZone(s)
-        VStr(s)
-    },
+    "#Z" ->
+      direct(Monad) {
+        VDate.setDefaultZone(pop().asInstanceOf[VStr].s)
+      },
     addPart("#U", Monad, false) {
       case VStr(s) => VDuration.parse(s)
       case a: VNum => VDuration.ofDaysDecimal(a.toDouble)

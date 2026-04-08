@@ -946,7 +946,7 @@ class DateTimeTests extends VyxalTests:
       it("should set the default timezone") {
         given ctx: Context = VyxalTests.testContext(inputs = Seq(VStr("UTC")))
         Interpreter.execute("#Z")(using ctx)
-        assertResult(VStr("UTC"))(ctx.peek)
+        assert(ctx.isStackEmpty)
       }
     }
 
