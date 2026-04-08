@@ -904,6 +904,105 @@ class DateTimeTests extends VyxalTests:
         assertResult(VNum(21))(result.hour)
       }
     }
+
+    describe("Set Timezone Same Local (⊣ with VDate)") {
+      it("should change timezone without adjusting time") {
+        val date = VDate(
+          ZonedDateTime
+            .of(2025, 1, 31, 1, 0, 0, 0, ZoneId.of("Europe/Berlin"))
+        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(date, VStr("UTC"))
+          )
+        Interpreter.execute("⊣")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDate]
+        // Same local time, different zone
+        assertResult(VNum(1))(result.hour)
+        assertResult(VNum(0))(result.minute)
+        assertResult(VStr("UTC"))(result.zone)
+        assertResult(VNum(2025))(result.year)
+        assertResult(VNum(1))(result.month)
+        assertResult(VNum(31))(result.day)
+      }
+      it("should differ from ⊢ which adjusts the time") {
+        val date = VDate(
+          ZonedDateTime
+            .of(2024, 6, 1, 12, 0, 0, 0, ZoneId.of("UTC"))
+        )
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(date, VStr("Asia/Tokyo"))
+          )
+        Interpreter.execute("⊣")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDate]
+        // Same local time, just relabeled
+        assertResult(VNum(12))(result.hour)
+        assertResult(VStr("Asia/Tokyo"))(result.zone)
+      }
+    }
+
+    describe("Set Default Timezone (#Z)") {
+      it("should set the default timezone") {
+        given ctx: Context = VyxalTests.testContext(inputs = Seq(VStr("UTC")))
+        Interpreter.execute("#Z")(using ctx)
+        assertResult(VStr("UTC"))(ctx.peek)
+      }
+    }
+
+    describe("Flexible Date Parsing (#t)") {
+      it("should parse time-only string") {
+        val d = VDate.parse("16:45")
+        assertResult(VNum(16))(d.hour)
+        assertResult(VNum(45))(d.minute)
+      }
+      it("should parse time-only with seconds") {
+        val d = VDate.parse("16:45:30")
+        assertResult(VNum(16))(d.hour)
+        assertResult(VNum(45))(d.minute)
+        assertResult(VNum(30))(d.second)
+      }
+      it("should parse time with UTC timezone") {
+        val d = VDate.parse("16:45 UTC")
+        assertResult(VNum(16))(d.hour)
+        assertResult(VNum(45))(d.minute)
+        assertResult(VStr("UTC"))(d.zone)
+      }
+      it("should parse time with named timezone") {
+        val d = VDate.parse("10:30 America/New_York")
+        assertResult(VNum(10))(d.hour)
+        assertResult(VNum(30))(d.minute)
+        assertResult(VStr("America/New_York"))(d.zone)
+      }
+      it("should parse list [time, timezone] via #t") {
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VList(Seq(VStr("16:45"), VStr("UTC"))))
+          )
+        Interpreter.execute("#t")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDate]
+        assertResult(VNum(16))(result.hour)
+        assertResult(VNum(45))(result.minute)
+        assertResult(VStr("UTC"))(result.zone)
+      }
+      it("should still parse numeric component lists via #t") {
+        given ctx: Context =
+          VyxalTests.testContext(
+            inputs = Seq(VList(Seq(VNum(2024), VNum(3), VNum(15))))
+          )
+        Interpreter.execute("#t")(using ctx)
+        val result = ctx.peek.asInstanceOf[VDate]
+        assertResult(VNum(2024))(result.year)
+        assertResult(VNum(3))(result.month)
+        assertResult(VNum(15))(result.day)
+      }
+      it("should parse M/d/yyyy format") {
+        val d = VDate.parse("3/15/2024")
+        assertResult(VNum(2024))(d.year)
+        assertResult(VNum(3))(d.month)
+        assertResult(VNum(15))(d.day)
+      }
+    }
   }
 
 end DateTimeTests
