@@ -368,7 +368,7 @@ object VDate:
       // "HH:mm ZONE" or "HH:mm:ss ZONE" — time + timezone
       Try {
         val lastSpace = s.lastIndexOf(' ')
-        if lastSpace < 0 then throw new Exception("no space")
+        if lastSpace < 0 then throw new Exception("not a time+timezone string")
         val timePart = s.substring(0, lastSpace).trim
         val zonePart = s.substring(lastSpace + 1).trim
         val zone = parseZone(zonePart)
