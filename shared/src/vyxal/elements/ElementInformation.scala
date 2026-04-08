@@ -2385,7 +2385,8 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "⊣",
-        keywords = Seq("base-to-ten", "from-base", "first>n"),
+        keywords =
+          Seq("base-to-ten", "from-base", "first>n", "set-timezone-local"),
         arity = 2,
         Options(),
         Overload(
@@ -2412,6 +2413,12 @@ object ElementInformation:
           description =
             "The first number greater than {#2|#1} where {#1|#2} returns true",
           typeSwitchable = true,
+        ),
+        Overload(
+          name = "Set Timezone (same local time)",
+          args = Seq("date", "str"),
+          description =
+            "Change the timezone of date #1 to #2 without adjusting the local time (e.g., keep 01:00 but label it UTC)",
         ),
       ),
       AddElement(
@@ -5105,7 +5112,8 @@ object ElementInformation:
         Overload(
           name = "Parse Date",
           args = Seq("str"),
-          description = "Parse string #1 as a date/time",
+          description =
+            "Parse string #1 as a date/time. Accepts ISO-8601, RFC-1123, date-only, time-only (defaults to today), time+timezone (e.g. \"16:45 UTC\"), 12-hour time (e.g. \"4:45 PM\"), and common date formats (M/d/yyyy, d-M-yyyy, d.M.yyyy).",
         ),
         Overload(
           name = "Date from Epoch",
@@ -5113,10 +5121,28 @@ object ElementInformation:
           description = "Create a date from Unix epoch seconds #1",
         ),
         Overload(
-          name = "Date from Components",
-          args = Seq("lst"),
+          name = "Date from Numeric Components",
+          args = Seq("lst[num]"),
           description =
             "Create a date from [year, month?, day?, hour?, minute?, second?]. Missing components default to 1 (month/day) or 0 (time).",
+        ),
+        Overload(
+          name = "Date from Mixed Components",
+          args = Seq("lst"),
+          description =
+            "Join list items with spaces and parse as a date/time string. Useful for [\"16:45\", \"UTC\"] or similar.",
+        ),
+      ),
+      AddElement(
+        symbol = "#Z",
+        keywords = Seq("set-default-timezone", "set-timezone", "default-zone"),
+        arity = 1,
+        Options(),
+        Overload(
+          name = "Set Default Timezone",
+          args = Seq("str"),
+          description =
+            "Set the default timezone to #1 (e.g. \"UTC\", \"America/New_York\"). All future VDates created without an explicit timezone will use this zone.",
         ),
       ),
       AddElement(

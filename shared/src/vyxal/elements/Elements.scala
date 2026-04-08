@@ -1882,8 +1882,16 @@ object Elements:
     addPart("#t", Monad, false) {
       case VStr(s) => VDate.parse(s)
       case a: VNum => VDate.fromEpochSecond(a.toLong)
-      case a: VList => VDate.fromComponents(a.lst)
+      case a: VList if a.lst.forall(_.isInstanceOf[VNum]) =>
+        VDate.fromComponents(a.lst)
+      case a: VList =>
+        // If the list contains strings, join with spaces and parse
+        VDate.parse(a.lst.map(StringHelpers.vyToString(_)).mkString(" "))
     },
+    "#Z" ->
+      direct(Monad) {
+        VDate.setDefaultZone(pop().asInstanceOf[VStr].s)
+      },
     addPart("#U", Monad, false) {
       case VStr(s) => VDuration.parse(s)
       case a: VNum => VDuration.ofDaysDecimal(a.toDouble)
