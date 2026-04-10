@@ -496,6 +496,11 @@ object ElementInformation:
           args = Seq("str", "str"),
           description = "#1 + #2",
         ),
+        Overload(
+          name = "Add duration",
+          args = Seq("date", "dur"),
+          description = "add duration to date",
+        ),
       ),
       AddElement(
         symbol = ",",
