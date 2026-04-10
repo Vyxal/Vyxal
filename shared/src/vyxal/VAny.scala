@@ -409,7 +409,7 @@ object VDate:
       // Just the year
       Try(
         LocalDate
-          .parse(s+"-01-01", DateTimeFormatter.ofPattern("yyyy-M-d"))
+          .parse(s + "-01-01", DateTimeFormatter.ofPattern("yyyy-M-d"))
           .atStartOfDay(defaultZone)
       ),
     )
