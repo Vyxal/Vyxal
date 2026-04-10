@@ -406,6 +406,12 @@ object VDate:
           .parse(s, DateTimeFormatter.ofPattern("M/d/yyyy H:mm[:ss]"))
           .atZone(defaultZone)
       ),
+      // Just the year
+      Try(
+        LocalDate
+          .parse(s+"-01-01", DateTimeFormatter.ofPattern("yyyy-M-d"))
+          .atStartOfDay(defaultZone)
+      ),
     )
 
     attempts
