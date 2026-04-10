@@ -9,19 +9,20 @@ literate mode, see the [Literate Mode help file](./Literate%20Mode.md)._
 1. [Stacks](#stacks)
 2. [Numeric Literals](#numeric-literals)
 3. [Strings](#strings)
-4. [Lists](#lists)
-5. [Basic Operations](#basic-operations)
-6. [Vectorisation](#vectorisation)
-7. [Control Flow](#control-flow)
-8. [Stack Control](#stack-control)
-9. [Input/Output](#io)
-10. [Functions](#functions)
-11. [Context](#context)
-12. [Specialised Structures](#specialised-structures)
-13. [Modifiers](#modifiers)
-14. [Arity Grouping](#arity-grouping)
-15. [Variables](#variables)
-16. [What is a SBCS?](#single-byte-character-set)
+4. [Dates and durations](#dates-and-durations)
+5. [Lists](#lists)
+6. [Basic Operations](#basic-operations)
+7. [Vectorisation](#vectorisation)
+8. [Control Flow](#control-flow)
+9. [Stack Control](#stack-control)
+10. [Input/Output](#io)
+11. [Functions](#functions)
+12. [Context](#context)
+13. [Specialised Structures](#specialised-structures)
+14. [Modifiers](#modifiers)
+15. [Arity Grouping](#arity-grouping)
+16. [Variables](#variables)
+17. [What is a SBCS?](#single-byte-character-set)
 
 ## Introduction
 
@@ -148,13 +149,25 @@ at the end of a program will automatically fill in the missing `"`.
 
 Dates and Durations are 2 separate types that simplify greatly everything that has to do with time and dates.
 You can get the current dateTime with `#n`, the start of the current day with `#d`, the first of the month at midnight with `#m`, and same for the year with `#y`.
-Dates automatically handle leap years, 
+Dates automatically handle leap years.
 Most of the operations that work on strings and numbers also work with dates, for example:
 
 ```
 #n 1+
 ```
 returns the date of tomorrow, same time, by simply adding 1 to the date. 
+Dates may be parsed from a string using `Ṫ`:
+```
+"2025-05-26"Ṫ ## -> 2025-05-26T00:00+02:00[Europe/Berlin]
+```
+The parser is intended to be as flexible as possible, so several formats are tried in succession and the first format that sucessfully parses wins:
+```
+"01/05/2025 20:45:34"Ṫ
+"07.12.2006"Ṫ
+"1984"Ṫ
+"4:55 PM"Ṫ
+```
+Will all sucessfully parse.
 Dates have their own sets of operations. For example, it doesn't make sense to check whether or not a date is even using `e`, so
 ```
 #y e
@@ -179,7 +192,9 @@ Durations are used to compute operations on Dates, because adding two dates toge
 ```
 7.5#U #n +
 ```
-returns the date it will be in 7 days.
+returns the date it will be in 7 days and 12 hours.
+
+Because a Duration exists independent of a year, it's not a good idea to simply add 365 days to a date to get the same date next year. You can use `↺` and `↻` to add and remove a calendar-aware amount of years (1 in their monad overload).
 
 ### TimeZones
 By default, all Dates are in the timezone local to your computer. You may obtain a Date in another timezone by either parsing a string using `Ṫ`:
@@ -192,6 +207,12 @@ or by changing the timezone of an existing Date using `⊢`:
 ```
 #n "Asia/Tokyo"⊢ ## What time is it in Japan?
 ```
+You may also change the default timezone of your program using `#Z`:
+```
+"Asia/Katmandu"#Z #n
+```
+When you do this, you may still specify a timezone in a parsed date, which will take priority.
+You may obtain a list of all supported timezones using `#z`.
 
 ## Lists
 
