@@ -500,6 +500,13 @@ object ElementInformation:
           name = "Add duration",
           args = Seq("date", "dur"),
           description = "add duration to date",
+          typeSwitchable = true,
+        ),
+        Overload(
+          name = "Add duration as string",
+          args = Seq("date", "str"),
+          description = "parse string as a duration, then add it to date",
+          typeSwitchable = true,
         ),
       ),
       AddElement(

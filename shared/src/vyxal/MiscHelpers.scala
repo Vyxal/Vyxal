@@ -26,6 +26,10 @@ object MiscHelpers:
       VDate(a.dt.plus(VDuration.ofDaysDecimal(b.toDouble).dur))
     case (a: VNum, b: VDate) =>
       VDate(b.dt.plus(VDuration.ofDaysDecimal(a.toDouble).dur))
+    case (a: VStr, b: VDate) =>
+      VDate(b.dt.plus(VDuration.parse(a.toString).dur))
+    case (a: VDate, b: VStr) =>
+      VDate(a.dt.plus(VDuration.parse(b.toString).dur))
   })
 
   def callWhile(pred: VFun, transform: VFun, value: VAny)(using Context): VAny =
