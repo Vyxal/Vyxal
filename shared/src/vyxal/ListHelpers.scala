@@ -1060,6 +1060,8 @@ object ListHelpers:
           val str = num.toString
           if direction == 1 then VNum(str.tail + str.head)
           else VNum(s"${str.last}${str.init}")
+        case date: VDate =>
+          date.plusYears(amount.toLong)
         case _ => throw BadArgumentException("rotate", iterable)
       counter += 1
 

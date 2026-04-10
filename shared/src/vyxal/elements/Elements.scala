@@ -898,6 +898,8 @@ object Elements:
             val times = a
             val iterable = pop()
             push(ListHelpers.rotate(iterable, times))
+          case a: VDate =>
+            push(a.plusYears(1))
           case _ => throw UnsupportedOverloadException("↺", "function | object")
       },
     "↻" ->
@@ -912,7 +914,8 @@ object Elements:
             val times = a
             val iterable = pop()
             push(ListHelpers.rotate(iterable, -times))
-
+          case a: VDate =>
+            push(a.plusYears(-1))
           case _ => throw UnsupportedOverloadException("↻", "function | object")
       },
     addPart("≜", Triad, false) {

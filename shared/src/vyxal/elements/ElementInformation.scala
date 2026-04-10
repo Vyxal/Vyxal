@@ -2249,6 +2249,16 @@ object ElementInformation:
           description =
             "Repeatedly apply #2 to #1 until a result is repeated. Return all unique results",
         ),
+        Overload(
+          name = "Add 1 year",
+          args = Seq("date"),
+          description = "add 1 calendar-aware year to #1",
+        ),
+        Overload(
+          name = "Add years",
+          args = Seq("date", "num"),
+          description = "Add #2 calendar-aware years to #1",
+        ),
       ),
       AddElement(
         symbol = "↻",
@@ -2270,6 +2280,16 @@ object ElementInformation:
           args = Seq("any", "fun"),
           description =
             "Repeatedly apply #2 to #1 until a result is repeated, return the length",
+        ),
+        Overload(
+          name = "Remove 1 year",
+          args = Seq("date"),
+          description = "remove 1 calendar-aware year to #1",
+        ),
+        Overload(
+          name = "Remove years",
+          args = Seq("date", "num"),
+          description = "Remove #2 calendar-aware years to #1",
         ),
       ),
       AddElement(
