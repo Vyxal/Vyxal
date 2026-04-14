@@ -232,6 +232,7 @@ object Elements:
       case VStr(a) => VList(
           a.map(x => NumberHelpers.toBinary(StringHelpers.chrord(x.toString)))
         )
+      case d: VDate => d.dayOfWeek
     },
     addPart("C", Dyad, false) {
       case (a: VList, b: VVal) => a.count(_ === b)

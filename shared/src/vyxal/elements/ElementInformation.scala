@@ -678,7 +678,7 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "B",
-        keywords = Seq("to-binary"),
+        keywords = Seq("to-binary", "human-day-of-week"),
         arity = 1,
         Options(vectorises = true),
         Overload(
@@ -692,6 +692,11 @@ object ElementInformation:
           description =
             "Convert each character in #1 to a binary representation of its unicode value",
           typeSwitchable = true,
+        ),
+        Overload(
+          name = "Human readable day of week",
+          args = Seq("date"),
+          description = "Get the human-readable day of the week for #1 (e.g. \"Monday\")"
         ),
       ),
       AddElement(
