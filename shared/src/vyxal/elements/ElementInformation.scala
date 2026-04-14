@@ -218,7 +218,7 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "ʀ",
-        keywords = Seq("zero-range", "lowercase", "range-zero", "nrange-zero"),
+        keywords = Seq("zero-range", "lowercase", "range-zero", "nrange-zero", "each-month", "all-months"),
         arity = 1,
         Options(vectorises = true),
         Overload(
@@ -232,6 +232,11 @@ object ElementInformation:
           description = "Lowercase #1",
           typeSwitchable = true,
         ),
+        Overload(
+          name = "Each month of the year",
+          args = Seq("date"),
+          description = "The day of month of #1, for each month in the same year. `\"2026-04-14\"#tʀ` -> [2026-01-14, 2026-02-14, 2026-03-14,...]"
+        )
       ),
       AddElement(
         symbol = "ʁ",

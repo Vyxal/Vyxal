@@ -91,6 +91,8 @@ object Elements:
     addPart("ʀ", Monad, true) {
       case a: VNum => NumberHelpers.range(0, a - a.signum)
       case VStr(a) => a.toLowerCase()
+      case d: VDate => 
+        NumberHelpers.range(1,12).asInstanceOf[Seq[VNum]].map((m:VNum)=> VDate.of(d.year.toInt, m.toInt , d.day.toInt, d.hour.toInt, d.minute.toInt, d.second.toInt))
     },
     addPart("ʁ", Monad, true) {
       case a: VNum =>
