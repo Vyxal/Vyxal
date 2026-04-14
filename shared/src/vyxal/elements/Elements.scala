@@ -1467,6 +1467,8 @@ object Elements:
     addPart("⍰", Monad, true) {
       case a: VNum => a != VNum(0)
       case VStr(a) => a.nonEmpty
+      case d: VDate => d.toBool
+      case dur: VDuration => dur.toBool
     },
     addPart("◌", Monad, true) {
       case a: VNum => NumberHelpers.round(a)
