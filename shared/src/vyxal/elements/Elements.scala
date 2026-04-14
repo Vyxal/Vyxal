@@ -91,8 +91,19 @@ object Elements:
     addPart("ʀ", Monad, true) {
       case a: VNum => NumberHelpers.range(0, a - a.signum)
       case VStr(a) => a.toLowerCase()
-      case d: VDate => 
-        NumberHelpers.range(1,12).asInstanceOf[Seq[VNum]].map((m:VNum)=> VDate.of(d.year.toInt, m.toInt , d.day.toInt, d.hour.toInt, d.minute.toInt, d.second.toInt))
+      case d: VDate => NumberHelpers
+          .range(1, 12)
+          .asInstanceOf[Seq[VNum]]
+          .map((m: VNum) =>
+            VDate.of(
+              d.year.toInt,
+              m.toInt,
+              d.day.toInt,
+              d.hour.toInt,
+              d.minute.toInt,
+              d.second.toInt,
+            )
+          )
     },
     addPart("ʁ", Monad, true) {
       case a: VNum =>
@@ -473,8 +484,8 @@ object Elements:
     },
     "b" -> fullToImpl(Monad, NumberHelpers.fromBinary),
     addPart("c", Dyad, false) {
-      case (a:VDate, b:VNum) => a.plusMonths(b.toLong)
-      case (a:VNum, b:VDate) => b.plusMonths(a.toLong)
+      case (a: VDate, b: VNum) => a.plusMonths(b.toLong)
+      case (a: VNum, b: VDate) => b.plusMonths(a.toLong)
       case (a: VVal, b: VVal) => a.toString().contains(b.toString())
       case (a: VList, b: VVal) => a.contains(b)
       case (a: VVal, b: VList) => b.contains(a)
@@ -1273,9 +1284,8 @@ object Elements:
         if s.length() == 1 then StringHelpers.caseOf(s)
         else s.map(c => StringHelpers.caseOf(c.toString))
     },
-    addPart("†", Monad, false){
-      case x: VPhysical =>
-        VList(
+    addPart("†", Monad, false) {
+      case x: VPhysical => VList(
           ListHelpers
             .groupConsecutive(x.itr)
             .map(group => VNum(group.itr.bigLength))

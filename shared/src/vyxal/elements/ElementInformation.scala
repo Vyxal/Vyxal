@@ -1,7 +1,8 @@
 package vyxal.elements
 
-import sttp.client4.DuplicateHeaderBehavior.Add
 import vyxal.MiscHelpers.typesOf
+
+import sttp.client4.DuplicateHeaderBehavior.Add
 
 case class Element(
     symbol: String,
@@ -218,7 +219,14 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "ʀ",
-        keywords = Seq("zero-range", "lowercase", "range-zero", "nrange-zero", "each-month", "all-months"),
+        keywords = Seq(
+          "zero-range",
+          "lowercase",
+          "range-zero",
+          "nrange-zero",
+          "each-month",
+          "all-months",
+        ),
         arity = 1,
         Options(vectorises = true),
         Overload(
@@ -235,8 +243,9 @@ object ElementInformation:
         Overload(
           name = "Each month of the year",
           args = Seq("date"),
-          description = "The day of month of #1, for each month in the same year. `\"2026-04-14\"#tʀ` -> [2026-01-14, 2026-02-14, 2026-03-14,...]"
-        )
+          description =
+            "The day of month of #1, for each month in the same year. `\"2026-04-14\"#tʀ` -> [2026-01-14, 2026-02-14, 2026-03-14,...]",
+        ),
       ),
       AddElement(
         symbol = "ʁ",
@@ -702,7 +711,8 @@ object ElementInformation:
         Overload(
           name = "Human readable day of week",
           args = Seq("date"),
-          description = "Get the human-readable day of the week for #1 (e.g. \"Monday\")"
+          description =
+            "Get the human-readable day of the week for #1 (e.g. \"Monday\")",
         ),
       ),
       AddElement(
@@ -1221,7 +1231,14 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "c",
-        keywords = Seq("contains", "contains?", "is-in", "fixpoint-length", "plus-months", "months-add"),
+        keywords = Seq(
+          "contains",
+          "contains?",
+          "is-in",
+          "fixpoint-length",
+          "plus-months",
+          "months-add",
+        ),
         arity = 2,
         Options(),
         Overload(
@@ -1259,7 +1276,7 @@ object ElementInformation:
           args = Seq("date", "num"),
           description = "Add {#1|#2} calendar-aware months to {#2|#1}.",
           typeSwitchable = true,
-        )
+        ),
       ),
       AddElement(
         symbol = "d",
@@ -3146,7 +3163,8 @@ object ElementInformation:
         Overload(
           name = "Day of week as number",
           args = Seq("date"),
-          description = "Get the day of the week this date refers to. Monday = 1, Sunday = 7",
+          description =
+            "Get the day of the week this date refers to. Monday = 1, Sunday = 7",
         ),
       ),
       AddElement(
