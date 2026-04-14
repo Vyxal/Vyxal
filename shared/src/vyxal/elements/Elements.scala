@@ -477,7 +477,7 @@ object Elements:
       ), // null objects pop args and return nothing
     "#`" -> niladify(ctx ?=> ctx.getStack.bigLength),
     addPart("a", Monad, false) {
-      case a: VNum => a.itr.exists(_ == VNum(0))
+      case a: VNum => a.itr.exists(_ != VNum(0))
       case VStr(a) if a.length == 1 => a.head.isUpper
       case VStr(a) => VList(a.map(c => VNum(c.isUpper)))
       case a: VList => a.itr.exists(_.toBool)
