@@ -258,6 +258,8 @@ final case class VDate(dt: ZonedDateTime) extends VAny, Ordered[VDate]:
   def minute: VNum = VNum(dt.getMinute)
   def second: VNum = VNum(dt.getSecond)
   def zone: VStr = VStr(dt.getZone.getId)
+  def dayOfWeek: VStr = VStr(dt.getDayOfWeek.toString)
+  def numDayOfWeek: VNum = VNum(dt.getDayOfWeek.getValue)
 
   /** Calendar-aware: add whole months. */
   def plusMonths(n: Long): VDate = VDate(dt.plusMonths(n))

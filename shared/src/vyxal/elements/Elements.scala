@@ -1268,16 +1268,16 @@ object Elements:
         if s.length() == 1 then StringHelpers.caseOf(s)
         else s.map(c => StringHelpers.caseOf(c.toString))
     },
-    "†" ->
-      fullToImpl(
-        Monad,
-        x =>
-          VList(
-            ListHelpers
-              .groupConsecutive(x.itr)
-              .map(group => VNum(group.itr.bigLength))
-          ),
-      ),
+    addPart("†", Monad, false){
+      case x: VPhysical =>
+        VList(
+          ListHelpers
+            .groupConsecutive(x.itr)
+            .map(group => VNum(group.itr.bigLength))
+        )
+      case d: VDate => 
+        d.numDayOfWeek
+    },
     "⎙" ->
       direct(Monad) {
         MiscHelpers.vyPrintln(peek())

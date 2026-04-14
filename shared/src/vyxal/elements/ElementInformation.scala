@@ -2958,8 +2958,13 @@ object ElementInformation:
         Options(),
         Overload(
           name = "Lengths of Consecutives",
-          args = Seq("lst"),
+          args = Seq("lst/str/num"),
           description = "Lengths of consecutive runs of equal elements in #1",
+        ),
+        Overload(
+          name = "Day of week as number",
+          args = Seq("date"),
+          description = "Get the day of the week this date refers to. Monday = 1, Sunday = 7",
         ),
       ),
       AddElement(
