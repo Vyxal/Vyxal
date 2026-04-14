@@ -2961,11 +2961,6 @@ object ElementInformation:
           args = Seq("lst/str/num"),
           description = "Lengths of consecutive runs of equal elements in #1",
         ),
-        Overload(
-          name = "Day of week as number",
-          args = Seq("date"),
-          description = "Get the day of the week this date refers to. Monday = 1, Sunday = 7",
-        ),
       ),
       AddElement(
         symbol = "⎙",
@@ -3118,7 +3113,7 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "⍢",
-        keywords = Seq("parity", "bit", "last-half"),
+        keywords = Seq("parity", "bit", "last-half", "day-of-week"),
         arity = 1,
         Options(vectorises = true),
         Overload(
@@ -3130,6 +3125,11 @@ object ElementInformation:
           name = "Last String Half",
           args = Seq("str"),
           description = "Last half of #1",
+        ),
+        Overload(
+          name = "Day of week as number",
+          args = Seq("date"),
+          description = "Get the day of the week this date refers to. Monday = 1, Sunday = 7",
         ),
       ),
       AddElement(

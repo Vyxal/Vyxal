@@ -1275,8 +1275,6 @@ object Elements:
             .groupConsecutive(x.itr)
             .map(group => VNum(group.itr.bigLength))
         )
-      case d: VDate => 
-        d.numDayOfWeek
     },
     "⎙" ->
       direct(Monad) {
@@ -1355,6 +1353,7 @@ object Elements:
     addPart("⍢", Monad, true) {
       case a: VNum => a % 2
       case VStr(a) => a.slice(a.length / 2, a.length)
+      case d: VDate => d.numDayOfWeek
     },
     addPart("ℂ", Dyad, true) {
       case (a: VNum, b: VNum) => NumberHelpers.nChooseK(a, b)
