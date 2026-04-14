@@ -1,6 +1,7 @@
 package vyxal.elements
 
 import sttp.client4.DuplicateHeaderBehavior.Add
+import vyxal.MiscHelpers.typesOf
 
 case class Element(
     symbol: String,
@@ -1215,7 +1216,7 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "c",
-        keywords = Seq("contains", "contains?", "is-in", "fixpoint-length"),
+        keywords = Seq("contains", "contains?", "is-in", "fixpoint-length", "plus-months", "months-add"),
         arity = 2,
         Options(),
         Overload(
@@ -1248,6 +1249,12 @@ object ElementInformation:
             "Repeatedly apply {#1|#2} to {#2|#1} until it doesn't change. Return the length of the sequence.",
           typeSwitchable = true,
         ),
+        Overload(
+          name = "Add Months",
+          args = Seq("date", "num"),
+          description = "Add {#1|#2} calendar-aware months to {#2|#1}.",
+          typeSwitchable = true,
+        )
       ),
       AddElement(
         symbol = "d",

@@ -471,6 +471,8 @@ object Elements:
     },
     "b" -> fullToImpl(Monad, NumberHelpers.fromBinary),
     addPart("c", Dyad, false) {
+      case (a:VDate, b:VNum) => a.plusMonths(b.toLong)
+      case (a:VNum, b:VDate) => b.plusMonths(a.toLong)
       case (a: VVal, b: VVal) => a.toString().contains(b.toString())
       case (a: VList, b: VVal) => a.contains(b)
       case (a: VVal, b: VList) => b.contains(a)
