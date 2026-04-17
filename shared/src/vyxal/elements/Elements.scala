@@ -225,11 +225,11 @@ object Elements:
         var res = b
         while a(res).toBool do res += 1
         res
-      case (a: VFun, b: VDate)=>
+      case (a: VFun, b: VDate) =>
         var res = b
         while a(res).toBool do res = VDate(res.dt.plusDays(1))
         res
-      case (b: VDate, a: VFun)=>
+      case (b: VDate, a: VFun) =>
         var res = b
         while a(res).toBool do res = VDate(res.dt.plusDays(1))
         res
