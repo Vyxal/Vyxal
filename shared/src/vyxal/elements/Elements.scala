@@ -190,9 +190,21 @@ object Elements:
       },
     addPart("<", Dyad, true) {
       case (a: VVal, b: VVal) => a < b
+      case (b: VNum, a: VFun) =>
+        var res = b
+        while !a(res).toBool do res -= 1
+        res
       case (a: VFun, b: VNum) =>
         var res = b
         while !a(res).toBool do res -= 1
+        res
+      case (b: VDate, a: VFun) =>
+        var res = b
+        while !a(res).toBool do res = VDate(res.dt.minusDays(1))
+        res
+      case (a: VFun, b: VDate) =>
+        var res = b
+        while !a(res).toBool do res = VDate(res.dt.minusDays(1))
         res
     },
     addPart("=", Dyad, true) {
@@ -208,6 +220,18 @@ object Elements:
       case (a: VFun, b: VNum) =>
         var res = b
         while a(res).toBool do res += 1
+        res
+      case (b: VNum, a: VFun) =>
+        var res = b
+        while a(res).toBool do res += 1
+        res
+      case (a: VFun, b: VDate)=>
+        var res = b
+        while a(res).toBool do res = VDate(res.dt.plusDays(1))
+        res
+      case (b: VDate, a: VFun)=>
+        var res = b
+        while a(res).toBool do res = VDate(res.dt.plusDays(1))
         res
     },
     "?" ->

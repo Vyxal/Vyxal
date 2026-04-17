@@ -595,6 +595,12 @@ object ElementInformation:
           description = "Decrement {#2|#1} until {#1|#2} is false",
           typeSwitchable = true,
         ),
+        Overload(
+          name = "Yesterday Until False",
+          args = Seq("fun", "date"),
+          description = "Remove a day from {#2|#1} until {#1|#2} is false",
+          typeSwitchable = true,
+        ),
       ),
       AddElement(
         symbol = "=",
@@ -621,6 +627,12 @@ object ElementInformation:
           name = "Increment Until False",
           args = Seq("fun", "num"),
           description = "Increment {#2|#1} until {#1|#2} is false",
+          typeSwitchable = true,
+        ),
+        Overload(
+          name = "Tomorrow Until False",
+          args = Seq("fun", "date"),
+          description = "Add a day to {#2|#1} until {#1|#2} is false",
           typeSwitchable = true,
         ),
       ),
