@@ -853,6 +853,10 @@
     - { in: ["y"], out: 0 }
   when given a multi-character string:
     - { in: ["asdEy"], out: [0, 0, 0, 1, 0] }
+    - { in: [123456789], out: 1 }
+    - { in: [0], out: 0 }
+    - { in: [1234567890], out: 1 }
+    
 
 "øa":
   - {in: [7], out: "h"}
