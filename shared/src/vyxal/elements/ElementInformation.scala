@@ -2218,7 +2218,7 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "Þ⊖",
-        keywords = Seq("reg-pop-n", "register-pop-n"),
+        keywords = Seq("reg-pop-n", "register-pop-n", "solve", "solve-poly", "poly-solve", "polynomial-roots", "roots"),
         arity = 1,
         Options(),
         Overload(
@@ -2227,6 +2227,12 @@ object ElementInformation:
           description =
             "Pop the first #1 items from the register to the stack as a list",
         ),
+        Overload(
+          name = "Solve polynomial roots",
+          args = Seq("lst[num]"),
+          description = 
+            "Returns the roots of the polynomial expressed by `#1[0] + #1[1]x + #1[2]x^2 ...`. Discards imaginary part."
+        )
       ),
       AddElement(
         symbol = "Þ⌽",

@@ -14,6 +14,8 @@ import vyxal.MiscHelpers.defaultEmpty
 import java.time.{Duration as JDuration, ZoneId, ZonedDateTime}
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
+import spire.math.Polynomial
+
 
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
@@ -914,6 +916,7 @@ object Elements:
     },
     addPart("Þ⊖", Monad, false) {
       case n: VNum => RegisterHelpers.pop(n)
+      case VListOf[VNum](lst) => VList(Polynomial.dense(lst.map(_.real).toArray).roots.map(VNum(_)).toSeq)
     },
     addPart("Þ⌽", Monad, false) {
       case n: VNum => RegisterHelpers.pop(n, peek = true)
@@ -1367,9 +1370,9 @@ object Elements:
             .round((a * (10 ** b.toInt)))
             .toString()
             .patch(
-              NumberHelpers.round(NumberHelpers.log(a, 10) + 0.5).toInt,
+              NumberHelpers.round(NumberHelpers.log(a.vabs, 10) + 0.5).toInt + if a < 0 then 1 else 0,
               ".",
-              0,
+              0
             ) // fallback to return the string representation if the precision is too high
       case (VStr(a), VStr(b)) => StringHelpers.r(b).matches(a)
     },
