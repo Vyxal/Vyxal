@@ -1370,7 +1370,7 @@ object Elements:
             .round((a * (10 ** b.toInt)))
             .toString()
             .patch(
-              NumberHelpers.round(NumberHelpers.log(a.vabs, 10) + 0.5).toInt + if a < 0 then 1 else 0,
+              NumberHelpers.round(NumberHelpers.log(a.vabs, 10) + 0.5).toInt + (if a < 0 then 1 else 0),
               ".",
               0
             ) // fallback to return the string representation if the precision is too high
