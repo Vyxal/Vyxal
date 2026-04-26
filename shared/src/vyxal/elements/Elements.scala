@@ -1247,6 +1247,20 @@ object Elements:
         else throw InvalidListOverloadException("Ϣ", b, "Number")
       case (a: VFun, b: VNum) => MiscHelpers.predicateSlice(a, b, 0)
       case (a: VNum, b: VFun) => MiscHelpers.predicateSlice(b, a, 0)
+      case (a: VFun, b: VList) =>
+        // All permutations where the function is true.
+        ListHelpers
+          .permutations(b)
+          .filter { perm =>
+            a(perm).toBool
+          }
+          .toSeq
+      case (a: VList, b: VFun) => ListHelpers
+          .permutations(a)
+          .filter { perm =>
+            b(perm).toBool
+          }
+          .toSeq
     },
     addPart("≤", Dyad, true) {
       case (a, b: VFun) => a.itr.minByOption(x => b(x)) match
@@ -1578,6 +1592,16 @@ object Elements:
             case value => value == needle
           }
         contains(needle, haystack)
+      case (fn: VFun, iter: VList) =>
+        // Get the first permutation of iter that satisfies fn, if it exists
+        ListHelpers
+          .permutations(iter)
+          .find(permutation => fn(permutation).toBool)
+          .getOrElse(Seq.empty)
+      case (iter: VList, fn: VFun) => ListHelpers
+          .permutations(iter)
+          .find(permutation => fn(permutation).toBool)
+          .getOrElse(Seq.empty)
 
     },
     "⍨" -> direct(Monad) { pop().itr.foreach(push(_)) },

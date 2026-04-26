@@ -2868,8 +2868,12 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "Ϣ",
-        keywords =
-          Seq("chunk-to-length", "partition-to-length", "first-n-true"),
+        keywords = Seq(
+          "chunk-to-length",
+          "partition-to-length",
+          "first-n-true",
+          "permutations-where",
+        ),
         arity = 2,
         Options(),
         Overload(
@@ -2887,6 +2891,12 @@ object ElementInformation:
           name = "First N Integers Where Function is True",
           args = Seq("num", "fun"),
           description = "First {#1|#2} integers where function {#2|#1} is true",
+          typeSwitchable = true,
+        ),
+        Overload(
+          name = "Permutations Where Truthy",
+          args = Seq("any", "fun"),
+          description = "All permutations of {#1|#2} where {#2|#1} is true",
           typeSwitchable = true,
         ),
       ),
@@ -3523,7 +3533,7 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "⊆",
-        keywords = Seq("subset?"),
+        keywords = Seq("subset?", "first-permutation-where"),
         arity = 2,
         Options(),
         Overload(
@@ -3531,6 +3541,12 @@ object ElementInformation:
           args = Seq("lst", "lst"),
           description =
             "Is the shallower list a subset of the deeper list? Checks windows corresponding to the length of the shallower list",
+        ),
+        Overload(
+          name = "First Permutation Where Truthy",
+          args = Seq("lst", "fun"),
+          description = "First permutation of {#1|#2} where {#2|#1} is truthy",
+          typeSwitchable = true,
         ),
       ),
       AddElement(
