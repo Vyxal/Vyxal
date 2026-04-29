@@ -122,3 +122,6 @@ class ReturnFromFunctionException
   */
 class VyxalYikesException(message: String)
     extends VyxalException(s"Something is very yikes: $message", report = true)
+
+class UserYikesException(message: String)
+    extends VyxalException(s"Something you did is very yikes: $message. Don't do that.", report = false)
