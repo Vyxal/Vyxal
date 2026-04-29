@@ -2071,13 +2071,14 @@ object Elements:
     addPart("∆½", Monad, true) {
       case a: VNum =>
         val asRational = a.real.toRational
-        if asRational.denominator.toLong != 0 then //TODO: make a better rationality test. i'm not good enough at whatever branch of maths this is to figure it out.
-        VList(
-          Seq(
-            VNum(asRational.numerator.toLong),
-            VNum(asRational.denominator.toLong),
+        if asRational.denominator.toLong != 0
+        then // TODO: make a better rationality test. i'm not good enough at whatever branch of maths this is to figure it out.
+          VList(
+            Seq(
+              VNum(asRational.numerator.toLong),
+              VNum(asRational.denominator.toLong),
+            )
           )
-        )
         else throw UserYikesException("Tried to convert irrational to rational")
 
     },
