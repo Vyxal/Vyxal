@@ -545,4 +545,12 @@ class ElementTests extends VyxalTests:
       "2 12 5 22Wnf$i" -> vSeq("c", "m", "f", "w"),
     )
   }
+
+  describe("Element ℳ") {
+    describe("given pi and a number >9"){
+      testMulti(
+        "ki3-10÷N15ℳ" -> VStr("-0.014159265358979")
+      )
+    }
+  }
 end ElementTests
