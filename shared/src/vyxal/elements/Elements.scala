@@ -14,8 +14,8 @@ import vyxal.MiscHelpers.defaultEmpty
 import java.time.{Duration as JDuration, ZoneId, ZonedDateTime}
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
-import spire.math.Polynomial
 
+import spire.math.Polynomial
 
 given (using Context): Ordering[VAny] with
   override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
@@ -916,7 +916,9 @@ object Elements:
     },
     addPart("Þ⊖", Monad, false) {
       case n: VNum => RegisterHelpers.pop(n)
-      case VListOf[VNum](lst) => VList(Polynomial.dense(lst.map(_.real).toArray).roots.map(VNum(_)).toSeq)
+      case VListOf[VNum](lst) => VList(
+          Polynomial.dense(lst.map(_.real).toArray).roots.map(VNum(_)).toSeq
+        )
     },
     addPart("Þ⌽", Monad, false) {
       case n: VNum => RegisterHelpers.pop(n, peek = true)
@@ -1245,6 +1247,20 @@ object Elements:
         else throw InvalidListOverloadException("Ϣ", b, "Number")
       case (a: VFun, b: VNum) => MiscHelpers.predicateSlice(a, b, 0)
       case (a: VNum, b: VFun) => MiscHelpers.predicateSlice(b, a, 0)
+      case (a: VFun, b: VList) =>
+        // All permutations where the function is true.
+        ListHelpers
+          .permutations(b)
+          .filter { perm =>
+            a(perm).toBool
+          }
+          .toSeq
+      case (a: VList, b: VFun) => ListHelpers
+          .permutations(a)
+          .filter { perm =>
+            b(perm).toBool
+          }
+          .toSeq
     },
     addPart("≤", Dyad, true) {
       case (a, b: VFun) => a.itr.minByOption(x => b(x)) match
@@ -1370,9 +1386,11 @@ object Elements:
             .round((a * (10 ** b.toInt)))
             .toString()
             .patch(
-              NumberHelpers.round(NumberHelpers.log(a.vabs, 10) + 0.5).toInt + (if a < 0 then 1 else 0),
+              NumberHelpers
+                .round(NumberHelpers.log(a.vabs, 10) + 0.5)
+                .toInt + (if a < 0 then 1 else 0),
               ".",
-              0
+              0,
             ) // fallback to return the string representation if the precision is too high
       case (VStr(a), VStr(b)) => StringHelpers.r(b).matches(a)
     },
@@ -1574,6 +1592,16 @@ object Elements:
             case value => value == needle
           }
         contains(needle, haystack)
+      case (fn: VFun, iter: VList) =>
+        // Get the first permutation of iter that satisfies fn, if it exists
+        ListHelpers
+          .permutations(iter)
+          .find(permutation => fn(permutation).toBool)
+          .getOrElse(Seq.empty)
+      case (iter: VList, fn: VFun) => ListHelpers
+          .permutations(iter)
+          .find(permutation => fn(permutation).toBool)
+          .getOrElse(Seq.empty)
 
     },
     "⍨" -> direct(Monad) { pop().itr.foreach(push(_)) },
