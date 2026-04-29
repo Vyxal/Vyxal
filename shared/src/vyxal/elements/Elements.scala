@@ -1382,18 +1382,17 @@ object Elements:
         else if b.toInt <= 9 then a - (a % (10 ** -(b.toInt)))
         else if a == VNum(0) then a
         else
-          val intLogA = NumberHelpers.round(NumberHelpers.log(a.vabs, 10) + 0.5).toInt
-          val sign = if a <0 then "-" else ""
-          val leadingZeroes = "0" * (if a < 1 then -intLogA +1 else 0)
-          (sign + leadingZeroes + 
-            NumberHelpers
-            .round((a.vabs * (10 ** b.toInt)))
-            .toString()
-          ).patch( //insert the decimal dot
-              (if intLogA >0 then intLogA else 1) + (a < 0).toInt,
+          val intLogA =
+            NumberHelpers.round(NumberHelpers.log(a.vabs, 10) + 0.5).toInt
+          val sign = if a < 0 then "-" else ""
+          val leadingZeroes = "0" * (if a < 1 then -intLogA + 1 else 0)
+          (sign + leadingZeroes +
+            NumberHelpers.round((a.vabs * (10 ** b.toInt))).toString())
+            .patch( // insert the decimal dot
+              (if intLogA > 0 then intLogA else 1) + (a < 0).toInt,
               ".",
               0,
-          ) // fallback to return the string representation if the precision is too high
+            ) // fallback to return the string representation if the precision is too high
       case (VStr(a), VStr(b)) => StringHelpers.r(b).matches(a)
     },
     addPart("℗", Monad, true) {
