@@ -7664,6 +7664,12 @@ def vy_str(lhs, ctx=None):
     (any) -> str(s)
     """
     ts = vy_type(lhs)
+
+    def handle_number():
+        lhs = sympy.nsimplify(lhs, rational=True)
+        if not lhs.is_Integer: return str(lhs.evalf())
+        else: return str(lhs)
+
     return {
         (NUMBER_TYPE): lambda: str(sympy.sympify(lhs, rational=True).evalf()),
         (str): lambda: lhs,  # wow so complex and hard to understand /s
