@@ -7542,19 +7542,10 @@ def vy_print(lhs, end="\n", ctx=None):
         vy_print(res, ctx=ctx)
     else:
         if is_sympy(lhs):
-            if ctx.print_decimals and not lhs.is_Integer:
-                if isinstance(
-                    lhs, complex
-                ):  # Complex numbers can't be converted to float,
-                    lhs = str(complex.evalf())  # so we have to handle them separately
-                else:
-                    lhs = str(float(lhs))
-            else:
-                # Determine if the number is a imaginary sympy literal
-                if not lhs.is_real:
-                    lhs = sympy.S(lhs).evalf()
-                else:
-                    lhs = str(lhs)
+            lhs = sympy.nsimplify(lhs, rational=True)
+            lhs = sympy.simplify(lhs).evalf()
+        else:
+            lhs = str(lhs)
         if ctx.online:
             ctx.online_output[1] += vy_str(lhs, ctx=ctx) + end
         else:
@@ -7667,7 +7658,7 @@ def vy_str(lhs, ctx=None):
 
     def handle_number(lhs):
         lhs = sympy.nsimplify(lhs, rational=True)
-        if not lhs.is_Integer: return str(lhs.evalf())
+        if not lhs.is_Integer: return str(sympy.simplify(lhs, chop=True).evalf())
         else: return str(lhs)
 
     return {
