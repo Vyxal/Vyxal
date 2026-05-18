@@ -7546,20 +7546,13 @@ def vy_print(lhs, end="\n", ctx=None):
                 if isinstance(
                     lhs, complex
                 ):  # Complex numbers can't be converted to float,
-                    lhs = str(complex)  # so we have to handle them separately
+                    lhs = str(complex.evalf())  # so we have to handle them separately
                 else:
                     lhs = str(float(lhs))
             else:
                 # Determine if the number is a imaginary sympy literal
                 if not lhs.is_real:
-                    if ctx.print_decimals:
-                        lhs = sympy.S(lhs)
-                    else:
-                        lhs = (
-                            str(lhs.as_real_imag()[0])
-                            + "°"
-                            + str(lhs.as_real_imag()[1])
-                        )
+                    lhs = sympy.S(lhs).evalf()
                 else:
                     lhs = str(lhs)
         if ctx.online:
@@ -7672,7 +7665,7 @@ def vy_str(lhs, ctx=None):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: str(sympy.sympify(lhs, rational=True)),
+        (NUMBER_TYPE): lambda: str(sympy.sympify(lhs, rational=True).evalf()),
         (str): lambda: lhs,  # wow so complex and hard to understand /s
         (types.FunctionType): lambda: vy_str(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
