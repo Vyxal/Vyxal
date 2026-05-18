@@ -7665,13 +7665,13 @@ def vy_str(lhs, ctx=None):
     """
     ts = vy_type(lhs)
 
-    def handle_number():
+    def handle_number(lhs):
         lhs = sympy.nsimplify(lhs, rational=True)
         if not lhs.is_Integer: return str(lhs.evalf())
         else: return str(lhs)
 
     return {
-        (NUMBER_TYPE): lambda: handle_number(),
+        (NUMBER_TYPE): lambda: handle_number(lhs),
         (str): lambda: lhs,  # wow so complex and hard to understand /s
         (types.FunctionType): lambda: vy_str(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
