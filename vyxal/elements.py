@@ -5299,22 +5299,12 @@ def polynomial_roots(lhs, ctx):
     """Element ∆P
     (lst) -> roots(a)
     """
-    x = sympy.symbols("x")
-
-    equation = make_expression(
-        " + ".join(
-            map(
-                lambda power: "("
-                + str(power[1])
-                + ")x^("
-                + str(power[0])
-                + ")",
-                enumerate(reverse(iterable(lhs, ctx=ctx), ctx=ctx)),
-            )
-        )
+    # Get all roots of polynomial lhs[0]x^n + lhs[1]x^(n-1) + ... + lhs[n]
+    return vyxalify(
+        sympy.Poly(
+            sum(c * sympy.symbols("x")**i for i, c in enumerate(reversed(lhs)))
+        ).all_roots()
     )
-
-    return vyxalify(sympy.solve(sympy.Eq(equation, 0), x))
 
 
 @element("ṗ", 1)
