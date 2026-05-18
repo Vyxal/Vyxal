@@ -5304,7 +5304,7 @@ def polynomial_roots(lhs, ctx):
         sympy.sympify(c) * x**i
         for i, c in enumerate(lhs[::-1])
     ))
-    return vyxalify(expr.all_roots())
+    return vyxalify(sympy.Poly(expr).all_roots())
 
 
 @element("ṗ", 1)
