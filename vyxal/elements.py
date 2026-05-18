@@ -7671,7 +7671,7 @@ def vy_str(lhs, ctx=None):
         else: return str(lhs)
 
     return {
-        (NUMBER_TYPE): lambda: str(sympy.sympify(lhs, rational=True).evalf()),
+        (NUMBER_TYPE): lambda: handle_number(),
         (str): lambda: lhs,  # wow so complex and hard to understand /s
         (types.FunctionType): lambda: vy_str(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
