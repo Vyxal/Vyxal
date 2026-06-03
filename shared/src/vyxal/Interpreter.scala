@@ -10,7 +10,7 @@ import scala.collection.mutable.ListBuffer
 import scala.collection.mutable as mut
 
 object Interpreter:
-  def version = "3.11.0"
+  def version = "3.12.0"
   def execute(code: String)(using ctx: Context): Unit =
 
     /** Attempt lexing */
