@@ -53,6 +53,21 @@ class InterpreterTests extends VyxalTests:
           // right now I think quit should count as an error but this can be changed
         )
       }
+      describe("Runs the code in place on success") {
+        testMulti(
+          // The code consumes args already on the stack and is executed once.
+          """ 5 3 "+"#T :|"error caught"} """ -> VNum(8),
+        )
+      }
+      describe("Rolls the stack back on error") {
+        testMulti(
+          // The sentinel pushed before #T survives; the error branch drops the
+          // pushed error message and returns the restored sentinel.
+          """ 42 "#Q"#T 0|_} """ -> VNum(42),
+          // The error branch can inspect the pushed error message.
+          """ "#Q"#T 0|:} """ -> VStr("Program quit using Q"),
+        )
+      }
     }
 
     describe("For loops") {

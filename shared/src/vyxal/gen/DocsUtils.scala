@@ -199,7 +199,7 @@ object DocsUtils:
       |  VariableThing { "#" ($$[=$$>]|":[") $$[A-Z] $$[a-zA-Z0-9_]* }
       |  ContextIndex { "#¤" @digit }
       |  Element { ![$nonElementChars] }
-      |  @precedence { Space, Element }
+      |  @precedence { StructureOpen, Digraph, Space, Element }
       |}  
     """.stripMargin('|')
   end genSBCSGrammar

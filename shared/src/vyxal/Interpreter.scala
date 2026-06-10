@@ -154,12 +154,21 @@ object Interpreter:
         else if elseBody.nonEmpty then execute(elseBody.get)
 
       case AST.TryCatch(success, error, _) =>
-        val evalCtx = ctx.makeChild().peek
-        if MiscHelpers.validCode(evalCtx).toBool
-        then
-          ctx.push(MiscHelpers.exec(evalCtx.toString()))
-          execute(success)(using ctx: Context)
-        else execute(error)
+        val code = ctx.pop()
+        val savedStack = ctx.getStack // stack below the consumed code value
+        try
+          code match
+            case VStr(s) => Interpreter.execute(s)(using ctx) // run in place
+            case other => ctx.push(MiscHelpers.exec(other))
+          execute(success)
+        catch
+          case ex: VyxalException =>
+            // Roll the stack back (the code value stays consumed) and expose the
+            // caught error to the catch branch.
+            ctx.clear()
+            ctx.push(savedStack*)
+            ctx.push(VStr(ex.getMessage()))
+            execute(error)
 
       case AST.IfStatement(conds, bodies, elseBody, _) =>
         var conditions = conds
