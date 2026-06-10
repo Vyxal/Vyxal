@@ -56,7 +56,7 @@ class InterpreterTests extends VyxalTests:
       describe("Runs the code in place on success") {
         testMulti(
           // The code consumes args already on the stack and is executed once.
-          """ 5 3 "+"#T :|"error caught"} """ -> VNum(8),
+          """ 5 3 "+"#T :|"error caught"} """ -> VNum(8)
         )
       }
       describe("Rolls the stack back on error") {
