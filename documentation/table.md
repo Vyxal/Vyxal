@@ -421,7 +421,7 @@ Element, Modifier, and Syntax Reference
 | <code>øE</code> | <code>sep-run-length-encode</code> | 1 | vec  | **Separated Run Length Encoding** (`str`): Separate run length encode #1, pushing list of lengths and characters to the stack |
 | <code>øJ</code> | <code>multiline-join</code></br><code>2D-join</code></br><code>side-by-side</code> | 2 |   | **Multiline join strings** (`str,str`): Join #1 and #2, such that each line of #2 is at the end of a line of #1. Extra lines in #2 are discarded. Equivalent to ⎂eẄJ” |
 | <code>øL</code> | <code>strip-whitespace-left</code></br><code>leading-whitespace</code> | 1 | vec  | **Strip Whitespace** (`str`): Strip leading whitespace |
-| <code>øR</code> | <code>strip-whitespace-right</code></br><code>trailing-whitespace</code> | 1 | vec  | **Strip Whitespace** (`str`): Strip leading and trailing whitespace |
+| <code>øR</code> | <code>strip-whitespace-right</code></br><code>trailing-whitespace</code> | 1 | vec  | **Strip Whitespace** (`str`): Strip trailing whitespace |
 | <code>øS</code> | <code>strip-whitespace</code> | 1 | vec  | **Strip Whitespace** (`str`): Strip leading and trailing whitespace |
 | <code>ø[</code> | <code>bracketify</code> | 1 | vec  | **Bracketify** (`str`): Surround #1 with brackets |
 | <code>øa</code> | <code>letter-to-index</code></br><code>index-to-letter</code></br><code>letter-index-swap</code></br><code>index-letter-swap</code></br><code>a0-swap</code> | 1 | vec  | **Letter to Index** (`str`): the index of #1 in the alphabet (zero-indexed)</br>**Index to Letter** (`num`): the letter at index #1 in the alphabet (zero-indexed) |
