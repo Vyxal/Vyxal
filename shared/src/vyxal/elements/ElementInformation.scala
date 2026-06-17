@@ -6087,7 +6087,7 @@ object ElementInformation:
         Overload(
           name = "Strip Whitespace",
           args = Seq("str"),
-          description = "Strip leading and trailing whitespace",
+          description = "Strip trailing whitespace",
         ),
       ),
       AddElement(
