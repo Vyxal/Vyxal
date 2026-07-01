@@ -89,6 +89,8 @@ object Interpreter:
           vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString(" "), true)
         else if ctx.settings.endPrintMode == EndPrintMode.JoinNothing then
           vyPrintln(ListHelpers.makeIterable(ctx.pop()).mkString, true)
+          else if ctx.settings.endPrintMode == EndPrintMode.LogicalNot then
+          vyPrintln(!ctx.pop().toBool, true)
         end if
       end if
       if ctx.settings.endPrintMode == EndPrintMode.Force then
