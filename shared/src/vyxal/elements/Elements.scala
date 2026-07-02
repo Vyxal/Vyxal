@@ -2148,7 +2148,7 @@ object Elements:
           else iterable.vDistinct.maxBy(item => iterable.count(_ == item)),
       ),
     addPart("∆ℳ", Monad, true) {
-      case VList(a) =>
+      case a: VList[VNum] =>
         val length = a.itr.length
         if length == 0 then 0
         else
@@ -2160,7 +2160,7 @@ object Elements:
         val (length: VNum, l: VNum) = NumberHelpers.cantorUnpair(a)
         var listNums = l
         var resultList = List()
-        for i <- 1 until length.underlying.real do
+        for i <- 1 until length.underlying.real.toDouble.toInt do
           val tup = NumberHelpers.cantorUnpair(listNums)
           listNums = tup._2
           resultList = resultList :+ tup._1
