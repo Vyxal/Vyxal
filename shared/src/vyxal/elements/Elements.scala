@@ -2153,14 +2153,14 @@ object Elements:
         if length == 0 then 0
         else
           var initial = a.itr(0)
-          for n <- a.itr.take(1) do initial = cantorPair(n, initial)
-          VNum(cantorPair(length, initial))
+          for n <- a.itr.take(1) do initial = NumberHelpers.cantorPair(n, initial)
+          VNum(NumberHelpers.cantorPair(length, initial))
       case a: VNum =>
-        val (length, l) = cantorUnpair(a)
+        val (length: VNum, l: VNum) = NumberHelpers.cantorUnpair(a)
         var listNums = l
         var resultList = List()
-        for i <- 1 until length do
-          val tup = cantorUnpair(listNums)
+        for i <- 1 until length.underlying.real do
+          val tup = NumberHelpers.cantorUnpair(listNums)
           listNums = tup._2
           resultList = resultList :+ tup._1
         resultList = resultList :+ listNums
