@@ -2165,16 +2165,16 @@ object Elements:
           resultList = resultList :+ tup._1
         resultList = resultList :+ listNums
         VList(resultList)
-    }
-      addPart ("øA", Monad, true) {
-        case a: VNum =>
-          "abcdefghijklmnopqrstuvwxyz".charAt(((a - 1) % 26).toInt).toString
-        case VStr(a) =>
-          val inds = a.map(char =>
-            VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower) + 1)
-          )
-          if inds.length == 1 then inds.head else VList(inds)
-      },
+    },
+    addPart("øA", Monad, true) {
+      case a: VNum =>
+        "abcdefghijklmnopqrstuvwxyz".charAt(((a - 1) % 26).toInt).toString
+      case VStr(a) =>
+        val inds = a.map(char =>
+          VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower) + 1)
+        )
+        if inds.length == 1 then inds.head else VList(inds)
+    },
     addPart("øa", Monad, true) {
       case a: VNum =>
         "abcdefghijklmnopqrstuvwxyz".charAt((a % 26).toInt).toString
