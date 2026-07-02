@@ -455,10 +455,10 @@ object NumberHelpers:
     ((x + y) * (x + y + 1) / 2) + y
 
   def cantorUnpair(n: VNum)(using Context): Tuple =
-    val w = ((scala.math.sqrt(8 * n + 1) - 1) / 2).floor.toInt
+    val w = ((scala.math.sqrt(8 * n.underlying.real + 1) - 1) / 2).floor.toInt
     val t = ((w * w + w) / 2).toInt
     val y = n - t
     val x = w - y
-    (x, y)
+    (VNum(x), VNum(y))
 
 end NumberHelpers
