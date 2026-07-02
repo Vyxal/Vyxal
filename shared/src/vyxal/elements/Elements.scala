@@ -2074,6 +2074,7 @@ object Elements:
         val asRational = a.real.toRational
         if asRational.denominator.toLong != 0
         then // TODO: make a better rationality test. i'm not good enough at whatever branch of maths this is to figure it out.
+        // I'm pretty sure you could scan the decimal places, it is only rational if it terminates or has a repeating series of digits.
           VList(
             Seq(
               VNum(asRational.numerator.toLong),
@@ -2146,6 +2147,28 @@ object Elements:
           if iterable.isEmpty then VList(Seq.empty)
           else iterable.vDistinct.maxBy(item => iterable.count(_ == item)),
       ),
+    addPart("∆ℳ", Monad, true) {
+      case VList(a) =>
+        val length = a.itr.length
+        if length == 0 then 0
+        else
+          var initial = a.itr(0)
+          for (n <- a.itr.take(1)) {
+            initial = cantorPair(n, initial)
+          }
+          VNum(cantorPair(length, initial))
+      case a: VNum =>
+        val (length, l) = cantorUnpair(a)
+        var listNums = l
+        var resultList = List()
+        for (i <- 1 until length) {
+          val tup = cantorUnpair(listNums)
+          listNums = tup._2
+          resultList = resultList :+ tup._1
+        }
+        resultList = resultList :+ listNums
+        VList(resultList)
+    }
     addPart("øA", Monad, true) {
       case a: VNum =>
         "abcdefghijklmnopqrstuvwxyz".charAt(((a - 1) % 26).toInt).toString
