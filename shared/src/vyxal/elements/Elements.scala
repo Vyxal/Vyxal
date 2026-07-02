@@ -2074,7 +2074,7 @@ object Elements:
         val asRational = a.real.toRational
         if asRational.denominator.toLong != 0
         then // TODO: make a better rationality test. i'm not good enough at whatever branch of maths this is to figure it out.
-        // I'm pretty sure you could scan the decimal places, it is only rational if it terminates or has a repeating series of digits.
+          // I'm pretty sure you could scan the decimal places, it is only rational if it terminates or has a repeating series of digits.
           VList(
             Seq(
               VNum(asRational.numerator.toLong),
@@ -2153,31 +2153,28 @@ object Elements:
         if length == 0 then 0
         else
           var initial = a.itr(0)
-          for (n <- a.itr.take(1)) {
-            initial = cantorPair(n, initial)
-          }
+          for n <- a.itr.take(1) do initial = cantorPair(n, initial)
           VNum(cantorPair(length, initial))
       case a: VNum =>
         val (length, l) = cantorUnpair(a)
         var listNums = l
         var resultList = List()
-        for (i <- 1 until length) {
+        for i <- 1 until length do
           val tup = cantorUnpair(listNums)
           listNums = tup._2
           resultList = resultList :+ tup._1
-        }
         resultList = resultList :+ listNums
         VList(resultList)
     }
-    addPart("øA", Monad, true) {
-      case a: VNum =>
-        "abcdefghijklmnopqrstuvwxyz".charAt(((a - 1) % 26).toInt).toString
-      case VStr(a) =>
-        val inds = a.map(char =>
-          VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower) + 1)
-        )
-        if inds.length == 1 then inds.head else VList(inds)
-    },
+      addPart ("øA", Monad, true) {
+        case a: VNum =>
+          "abcdefghijklmnopqrstuvwxyz".charAt(((a - 1) % 26).toInt).toString
+        case VStr(a) =>
+          val inds = a.map(char =>
+            VNum("abcdefghijklmnopqrstuvwxyz".indexOf(char.toLower) + 1)
+          )
+          if inds.length == 1 then inds.head else VList(inds)
+      },
     addPart("øa", Monad, true) {
       case a: VNum =>
         "abcdefghijklmnopqrstuvwxyz".charAt((a % 26).toInt).toString
