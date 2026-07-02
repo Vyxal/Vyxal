@@ -2148,7 +2148,7 @@ object Elements:
           else iterable.vDistinct.maxBy(item => iterable.count(_ == item)),
       ),
     addPart("∆ℳ", Monad, true) {
-      case a: VList[VNum] =>
+      case VListOf[VNum](a) =>
         val length = a.itr.length
         if length == 0 then 0
         else
