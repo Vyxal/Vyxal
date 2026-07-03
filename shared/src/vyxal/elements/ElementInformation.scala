@@ -5400,7 +5400,8 @@ object ElementInformation:
           description =
             "Reverses the algorithm used to encode the number.",
         ),
-      ) AddElement
+      ),
+      AddElement(
         (
           symbol = "∆R",
           keywords = Seq("real-part"),
@@ -5412,6 +5413,7 @@ object ElementInformation:
             description = "Real part of #1",
           ),
         ),
+      ),
       AddElement(
         symbol = "∆S",
         keywords = Seq("sinh", "hyperbolic-sine"),
