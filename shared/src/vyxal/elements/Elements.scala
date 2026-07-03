@@ -2158,14 +2158,16 @@ object Elements:
           NumberHelpers.cantorPair(VNum(length), initial)
       case a: VNum =>
         val (length, l): (VNum, VNum) = NumberHelpers.cantorUnpair(a)
-        var listNums: VNum = l
-        var resultList = List[VNum]()
-        for i <- 1 until length.underlying.real.toDouble.toInt do
-          val tup = NumberHelpers.cantorUnpair(listNums)
-          listNums = tup(1)
-          resultList = resultList :+ tup(0)
-        resultList = resultList :+ listNums
-        VList(resultList)
+        if length == VNum(0) then VList(Seq.empty)
+        else
+          var listNums: VNum = l
+          var resultList = List[VNum]()
+          for i <- 1 until length.underlying.real.toDouble.toInt do
+            val tup = NumberHelpers.cantorUnpair(listNums)
+            listNums = tup(1)
+            resultList = resultList :+ tup(0)
+          resultList = resultList :+ listNums
+          VList(resultList)
     },
     addPart("øA", Monad, true) {
       case a: VNum =>
