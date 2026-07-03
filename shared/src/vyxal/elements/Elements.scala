@@ -2162,7 +2162,7 @@ object Elements:
         else
           var listNums: VNum = l
           var resultList = List[VNum]()
-          for i <- 1 until length.underlying.real.toDouble.toInt do
+          for i <- 1 until length.underlying.real.toBigInt do
             val tup = NumberHelpers.cantorUnpair(listNums)
             listNums = tup(1)
             resultList = resultList :+ tup(0)
