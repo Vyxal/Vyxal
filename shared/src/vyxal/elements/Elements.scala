@@ -2173,13 +2173,13 @@ object Elements:
           VList(resultList)
     },
     "∆^" ->
-      direct(Dyad){
+      direct(Dyad) {
         val y = pop()
         val x = pop()
         push(NumberHelpers.cantorPair(x, y))
       },
     "∆v" ->
-      direct(Monad){
+      direct(Monad) {
         val n = pop()
         val (x, y) = NumberHelpers.cantorUnpair(n)
         push(x, y)

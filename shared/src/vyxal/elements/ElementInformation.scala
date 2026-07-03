@@ -5397,7 +5397,8 @@ object ElementInformation:
         Overload(
           name = "Cantor Decode Numeric List",
           args = Seq("num"),
-          description = "Reverses the algorithm used to Cantor Encode the number.",
+          description =
+            "Reverses the algorithm used to Cantor Encode the number.",
         ),
       ),
       AddElement(
@@ -5419,7 +5420,8 @@ object ElementInformation:
         Overload(
           name = "Cantor Unpair",
           args = Seq("num"),
-          description = "Cantor Unpair #1 and push it as two numbers on the stack. Must be a natural number.",
+          description =
+            "Cantor Unpair #1 and push it as two numbers on the stack. Must be a natural number.",
         ),
       ),
       AddElement(
