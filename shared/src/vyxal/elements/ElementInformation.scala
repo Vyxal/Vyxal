@@ -5411,7 +5411,7 @@ object ElementInformation:
             args = Seq("num"),
             description = "Real part of #1",
           ),
-        ),
+        )
       ),
       AddElement(
         symbol = "∆S",
