@@ -2150,20 +2150,20 @@ object Elements:
     addPart("∆ℳ", Monad, true) {
       case VListOf[VNum](a) =>
         val length = a.itr.length
-        if length == 0 then 0
+        if length == 0 then VNum(0)
         else
-          var initial = a.itr(0)
+          var initial: VNum = a.itr(0)
           for n <- a.itr.take(1) do
-            initial = NumberHelpers.cantorPair(n, initial)
-          VNum(NumberHelpers.cantorPair(length, initial))
+            initial = NumberHelpers.cantorPair(VNum(n), initial)
+          VNum(NumberHelpers.cantorPair(VNum(length), initial))
       case a: VNum =>
-        val (length: VNum, l: VNum) = NumberHelpers.cantorUnpair(a)
-        var listNums = l
-        var resultList = List()
+        val (length, l): (VNum, VNum) = NumberHelpers.cantorUnpair(a)
+        var listNums: VNum = l
+        var resultList = List[VNum]()
         for i <- 1 until length.underlying.real.toDouble.toInt do
           val tup = NumberHelpers.cantorUnpair(listNums)
-          listNums = tup._2
-          resultList = resultList :+ tup._1
+          listNums = tup(1)
+          resultList = resultList :+ tup(0)
         resultList = resultList :+ listNums
         VList(resultList)
     },
