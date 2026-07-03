@@ -2153,7 +2153,8 @@ object Elements:
         if length == 0 then VNum(0)
         else
           var initial = a.itr.last
-          for n <- a.itr.init.reverse do initial = NumberHelpers.cantorPair(n, initial)
+          for n <- a.itr.init.reverse do
+            initial = NumberHelpers.cantorPair(n, initial)
           NumberHelpers.cantorPair(VNum(length), initial)
       case a: VNum =>
         val (length, l): (VNum, VNum) = NumberHelpers.cantorUnpair(a)

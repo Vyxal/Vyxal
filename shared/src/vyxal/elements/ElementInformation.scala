@@ -5391,25 +5391,26 @@ object ElementInformation:
         Overload(
           name = "Cantor Encode Numeric List",
           args = Seq("lst[num]"),
-          description = "Prepends the length of #1, then recursively evaluates Cantor pairing the last two elements until a single number is obtained."
+          description =
+            "Prepends the length of #1, then recursively evaluates Cantor pairing the last two elements until a single number is obtained.",
         ),
         Overload(
           name = "Cantor Decode Numeric List",
-          args = Seq("num")
-          description = "Reverses the algorithm used to encode the number."
+          args = Seq("num") description =
+            "Reverses the algorithm used to encode the number.",
         ),
-      )
-      AddElement(
-        symbol = "∆R",
-        keywords = Seq("real-part"),
-        arity = 1,
-        Options(vectorises = true),
-        Overload(
-          name = "Real Part",
-          args = Seq("num"),
-          description = "Real part of #1",
+      ) AddElement
+        (
+          symbol = "∆R",
+          keywords = Seq("real-part"),
+          arity = 1,
+          Options(vectorises = true),
+          Overload(
+            name = "Real Part",
+            args = Seq("num"),
+            description = "Real part of #1",
+          ),
         ),
-      ),
       AddElement(
         symbol = "∆S",
         keywords = Seq("sinh", "hyperbolic-sine"),
