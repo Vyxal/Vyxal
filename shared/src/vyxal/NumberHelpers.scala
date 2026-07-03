@@ -471,7 +471,9 @@ object NumberHelpers:
     n match
       case n: VNum =>
         if n.isNatural then
-          val w = (((BigInt(8) * n.toBigInt + BigInt(1)).sqrt - BigInt(1)) / BigInt(2)).floor.toBigInt
+          val w =
+            (((BigInt(8) * n.toBigInt + BigInt(1)).sqrt - BigInt(1)) /
+              BigInt(2)).floor.toBigInt
           val t = ((w * w + w) / BigInt(2)).toBigInt
           val y = n.toBigInt - t
           val x = w - y

@@ -2162,9 +2162,7 @@ object Elements:
         else
           var listNums: VNum = l
           var resultList = List[VNum]()
-          for i <- Iterator
-              .iterate(1)(_ + 1)
-              .takeWhile(_ < length.toBigInt)
+          for i <- Iterator.iterate(1)(_ + 1).takeWhile(_ < length.toBigInt)
           do
             val tup = NumberHelpers.cantorUnpair(listNums)
             listNums = tup(1)
