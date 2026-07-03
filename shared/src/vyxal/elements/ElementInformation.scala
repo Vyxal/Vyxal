@@ -5396,7 +5396,8 @@ object ElementInformation:
         ),
         Overload(
           name = "Cantor Decode Numeric List",
-          args = Seq("num") description =
+          args = Seq("num"),
+          description =
             "Reverses the algorithm used to encode the number.",
         ),
       ) AddElement
