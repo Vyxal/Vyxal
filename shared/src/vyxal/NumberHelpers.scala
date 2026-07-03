@@ -453,17 +453,19 @@ object NumberHelpers:
 
   def cantorPair(x: VAny, y: VAny)(using Context): VNum =
     (x, y) match
-      case (x: VNum, y: VNum) => ((x + y) * (x + y + 1) / 2) + y
+      case (x: VNum, y: VNum) => if x.isNatural && y.isNatural then ((x + y) * (x + y + 1) / 2) + y else throw BadArgumentException("CantorPair not supported for non-natural numbers:", VList(List(x, y)))
       case _ => throw UnimplementedOverloadException("cantorPair", List(x, y))
 
   def cantorUnpair(n: VAny)(using Context): (VNum, VNum) =
     n match
       case n: VNum =>
-        val w = (((8 * n.underlying.real + 1).sqrt - 1) / 2).floor.toBigInt
-        val t = ((w * w + w) / 2).toBigInt
-        val y = n - t
-        val x = w - y
-        (x, y)
+        if n.isNatural then
+          val w = (((8 * n.underlying.real + 1).sqrt - 1) / 2).floor.toBigInt
+          val t = ((w * w + w) / 2).toBigInt
+          val y = n - t
+          val x = w - y
+          (x, y)
+        else throw BadArgumentException("CantorUnpair not supported for non-natural numbers.", n)
       case _ => throw UnimplementedOverloadException("cantorUnpair", List(n))
 
 end NumberHelpers

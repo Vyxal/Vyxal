@@ -5392,12 +5392,34 @@ object ElementInformation:
           name = "Cantor Encode Numeric List",
           args = Seq("lst[num]"),
           description =
-            "Prepends the length of #1, then recursively evaluates Cantor pairing the last two elements until a single number is obtained.",
+            "Prepends the length of #1, then recursively evaluates Cantor pairing the last two elements until a single number is obtained. Must be natural numbers.",
         ),
         Overload(
           name = "Cantor Decode Numeric List",
           args = Seq("num"),
-          description = "Reverses the algorithm used to encode the number.",
+          description = "Reverses the algorithm used to Cantor Encode the number.",
+        ),
+      ),
+      AddElement(
+        symbol = "∆^",
+        keywords = Seq("cantor-pair"),
+        arity = 2,
+        Options(vectorises = false),
+        Overload(
+          name = "Cantor Pair",
+          args = Seq("num, num"),
+          description = "Cantor Pair #1 and #2. Must be natural numbers.",
+        ),
+      ),
+      AddElement(
+        symbol = "∆v",
+        keywords = Seq("cantor-unpair"),
+        arity = 1,
+        Options(vectorises = false),
+        Overload(
+          name = "Cantor Unpair",
+          args = Seq("num"),
+          description = "Cantor Unpair #1 and push it as two numbers on the stack. Must be a natural number.",
         ),
       ),
       AddElement(

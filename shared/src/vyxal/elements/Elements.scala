@@ -2172,6 +2172,18 @@ object Elements:
           resultList = resultList :+ listNums
           VList(resultList)
     },
+    "∆^" ->
+      direct(Dyad){
+        val y = pop()
+        val x = pop()
+        push(NumberHelpers.cantorPair(x, y))
+      },
+    "∆v" ->
+      direct(Monad){
+        val n = pop()
+        val (x, y) = NumberHelpers.cantorUnpair(n)
+        push(x, y)
+      },
     addPart("øA", Monad, true) {
       case a: VNum =>
         "abcdefghijklmnopqrstuvwxyz".charAt(((a - 1) % 26).toInt).toString
