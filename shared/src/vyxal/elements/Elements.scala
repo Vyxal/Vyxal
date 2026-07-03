@@ -2164,7 +2164,7 @@ object Elements:
           var resultList = List[VNum]()
           for i <- Iterator
               .iterate(1)(_ + 1)
-              .takeWhile(_ < length.underlying.real.toBigInt)
+              .takeWhile(_ < length.toBigInt)
           do
             val tup = NumberHelpers.cantorUnpair(listNums)
             listNums = tup(1)

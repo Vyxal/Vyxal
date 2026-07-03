@@ -8,6 +8,7 @@ import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.math
+import scala.math.BigInt
 
 import spire.*
 import spire.math.Real
@@ -470,11 +471,11 @@ object NumberHelpers:
     n match
       case n: VNum =>
         if n.isNatural then
-          val w = (((8 * n.toBigInt + 1).sqrt - 1) / 2).floor.toBigInt
-          val t = ((w * w + w) / 2).toBigInt
-          val y = n - t
+          val w = (((BigInt(8) * n.toBigInt + BigInt(1)).sqrt - BigInt(1)) / BigInt(2)).floor.toBigInt
+          val t = ((w * w + w) / BigInt(2)).toBigInt
+          val y = n.toBigInt - t
           val x = w - y
-          (x, y)
+          (VNum(x), VNum(y))
         else
           throw BadArgumentException(
             "CantorUnpair not supported for non-natural numbers.",
