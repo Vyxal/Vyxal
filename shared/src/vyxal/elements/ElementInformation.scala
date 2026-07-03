@@ -5401,6 +5401,7 @@ object ElementInformation:
         ),
       ),
       AddElement(
+<<<<<<< HEAD
         symbol = "∆R",
         keywords = Seq("real-part"),
         arity = 1,
@@ -5410,6 +5411,19 @@ object ElementInformation:
           args = Seq("num"),
           description = "Real part of #1",
         ),
+=======
+        (
+          symbol = "∆R",
+          keywords = Seq("real-part"),
+          arity = 1,
+          Options(vectorises = true),
+          Overload(
+            name = "Real Part",
+            args = Seq("num"),
+            description = "Real part of #1",
+          ),
+        )
+>>>>>>> 5a62a24e9e9cd55ee48490414f422bda2e1e226c
       ),
       AddElement(
         symbol = "∆S",
