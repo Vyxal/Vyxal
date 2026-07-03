@@ -2149,11 +2149,11 @@ object Elements:
       ),
     addPart("∆ℳ", Monad, true) {
       case VListOf[VNum](a) =>
-        val length = a.itr.length
+        val length = a.length
         if length == 0 then VNum(0)
         else
-          var initial: VNum = a.itr(0)
-          for n <- a.itr.take(1) do
+          var initial: VNum = a.itr.headOption.getOrElse(VNum(0))
+          for n <- a.tail.itr do
             initial = NumberHelpers.cantorPair(VNum(n), initial)
           VNum(NumberHelpers.cantorPair(VNum(length), initial))
       case a: VNum =>
