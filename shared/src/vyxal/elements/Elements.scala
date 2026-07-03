@@ -2152,10 +2152,10 @@ object Elements:
         val length = a.length
         if length == 0 then VNum(0)
         else
-          var initial: VNum = a.itr.headOption.getOrElse(VNum(0))
+          var initial = a.itr.headOption.getOrElse(VNum(0))
           for n <- a.tail.itr do
-            initial = NumberHelpers.cantorPair(VNum(n), initial)
-          VNum(NumberHelpers.cantorPair(VNum(length), initial))
+            initial = NumberHelpers.cantorPair(n, initial)
+          NumberHelpers.cantorPair(VNum(length), initial)
       case a: VNum =>
         val (length, l): (VNum, VNum) = NumberHelpers.cantorUnpair(a)
         var listNums: VNum = l
