@@ -5401,16 +5401,14 @@ object ElementInformation:
         ),
       ),
       AddElement(
-        (
-          symbol = "∆R",
-          keywords = Seq("real-part"),
-          arity = 1,
-          Options(vectorises = true),
-          Overload(
-            name = "Real Part",
-            args = Seq("num"),
-            description = "Real part of #1",
-          ),
+        symbol = "∆R",
+        keywords = Seq("real-part"),
+        arity = 1,
+        Options(vectorises = true),
+        Overload(
+          name = "Real Part",
+          args = Seq("num"),
+          description = "Real part of #1",
         ),
       ),
       AddElement(
