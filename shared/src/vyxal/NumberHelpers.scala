@@ -454,7 +454,7 @@ object NumberHelpers:
   def cantorPair(x: VAny, y: VAny)(using Context): VNum =
     (x, y) match
       case (x: VNum, y: VNum) =>
-        if x.isNatural && y.isNatural then ((x + y) * (x + y + 1) / 2) + y
+        if x.isNatural && y.isNatural then VNum(((x.toBigInt + y.toBigInt) * (x.toBigInt + y.toBigInt + 1) / 2) + y.toBigInt)
         else
           throw BadArgumentException(
             "CantorPair not supported for non-natural numbers:",
@@ -466,7 +466,7 @@ object NumberHelpers:
     n match
       case n: VNum =>
         if n.isNatural then
-          val w = (((8 * n.underlying.real + 1).sqrt - 1) / 2).floor.toBigInt
+          val w = (((8 * n.toBigInt + 1).sqrt - 1) / 2).floor.toBigInt
           val t = ((w * w + w) / 2).toBigInt
           val y = n - t
           val x = w - y
