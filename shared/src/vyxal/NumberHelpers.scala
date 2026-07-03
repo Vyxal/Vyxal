@@ -454,7 +454,11 @@ object NumberHelpers:
   def cantorPair(x: VAny, y: VAny)(using Context): VNum =
     (x, y) match
       case (x: VNum, y: VNum) =>
-        if x.isNatural && y.isNatural then VNum(((x.toBigInt + y.toBigInt) * (x.toBigInt + y.toBigInt + 1) / 2) + y.toBigInt)
+        if x.isNatural && y.isNatural then
+          VNum(
+            ((x.toBigInt + y.toBigInt) * (x.toBigInt + y.toBigInt + 1) / 2) +
+              y.toBigInt
+          )
         else
           throw BadArgumentException(
             "CantorPair not supported for non-natural numbers:",
