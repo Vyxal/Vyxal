@@ -451,14 +451,18 @@ object NumberHelpers:
       case (a, b: VList) => b.vmap(divides(a, _))
       case _ => throw UnimplementedOverloadException("divides", List(a, b))
 
-  def cantorPair(x: VNum, y: VNum)(using Context): VNum =
-    ((x + y) * (x + y + 1) / 2) + y
+  def cantorPair(x: VAny, y: VAny)(using Context): VNum =
+    case (x: VNum, y: VNum) => ((x + y) * (x + y + 1) / 2) + y
+    case _ => throw UnimplementedOverloadException("cantorPair", List(x, y))
 
-  def cantorUnpair(n: VNum)(using Context): (VNum, VNum) =
-    val w = (((8 * n.underlying.real + 1).sqrt - 1) / 2).floor.toInt
-    val t = ((w * w + w) / 2).toInt
-    val y = n - t
-    val x = w - y
-    (x, y)
+  def cantorUnpair(n: VAny)(using Context): (VNum, VNum) =
+    case n: VNum => {
+      val w = (((8 * n.underlying.real + 1).sqrt - 1) / 2).floor.toInt
+      val t = ((w * w + w) / 2).toInt
+      val y = n - t
+      val x = w - y
+      (x, y)
+    }
+    case _ => throw UnimplementedOverloadException("cantorUnpair", List(n))
 
 end NumberHelpers
