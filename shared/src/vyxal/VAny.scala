@@ -519,6 +519,12 @@ class VNum(val underlying: Complex[Real]) extends VAny, Ordered[VNum]:
   /** Round the real and imaginary parts */
   def toIntegral: VNum = underlying.round
 
+  /** Whether it is a non-negative integer */
+  def isNatural: Boolean =
+    (underlying.isReal &&
+      (underlying.abs == underlying) &&
+      (underlying.floor == underlying.ceil))
+
   def floor: VNum = underlying.floor
   def ceil: VNum = underlying.ceil
 

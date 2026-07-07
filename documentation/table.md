@@ -390,6 +390,7 @@ Element, Modifier, and Syntax Reference
 | <code>∆R</code> | <code>real-part</code> | 1 | vec  | **Real Part** (`num`): Real part of #1 |
 | <code>∆S</code> | <code>sinh</code></br><code>hyperbolic-sine</code> | 1 | vec  | **Hyperbolic Sine** (`num`): Hyperbolic sine of #1 |
 | <code>∆T</code> | <code>tanh</code></br><code>hyperbolic-tangent</code> | 1 | vec  | **Hyperbolic Tangent** (`num`): Hyperbolic tangent of #1 |
+| <code>∆^</code> | <code>cantor-pair</code> | 2 |   | **Cantor Pair** (`num, num`): Cantor Pair #1 and #2. Must be natural numbers. |
 | <code>∆c</code> | <code>cos</code></br><code>cosine</code> | 1 | vec  | **Cosine** (`num`): Cosine of #1 |
 | <code>∆d</code> | <code>rad2deg</code></br><code>rad-to-deg</code> | 1 | vec  | **Radians to Degrees** (`num`): Convert #1 from radians to degrees |
 | <code>∆p</code> | <code>prime-factors</code> | 1 | vec  | **Prime Factors** (`num`): Prime factors of #1 |
@@ -397,12 +398,14 @@ Element, Modifier, and Syntax Reference
 | <code>∆r</code> | <code>deg2rad</code></br><code>deg-to-rad</code> | 1 | vec  | **Degrees to Radians** (`num`): Convert #1 from degrees to radians |
 | <code>∆s</code> | <code>sin</code></br><code>sine</code> | 1 | vec  | **Sine** (`num`): Sine of #1 |
 | <code>∆t</code> | <code>tan</code></br><code>tangent</code> | 1 | vec  | **Tangent** (`num`): Tangent of #1 |
+| <code>∆v</code> | <code>cantor-unpair</code> | 1 |   | **Cantor Unpair** (`num`): Cantor Unpair #1 and push it as two numbers on the stack. Must be a natural number. |
 | <code>∆⊍</code> | <code>bitwise-xor</code> | 2 | vec  | **Bitwise Xor** (`num,num`): #1 ^ #2 |
 | <code>∆⌊</code> | <code>clamp</code> | 3 | vec  | **Clamp** (`num,num,num`): Clamp #1 between #2 and #3 |
 | <code>∆⎀</code> | <code>polar-parts</code> | 1 | vec  | **Polar Parts** (`num`): Push the magnitude and argument of #1 |
 | <code>∆ʈ</code> | <code>arctan</code></br><code>arctangent</code> | 1 | vec  | **Arctangent** (`num`): Arctangent of #1 |
 | <code>∆½</code> | <code>as-ratio</code></br><code>rational</code></br><code>to-Q</code></br><code>to-rational</code></br><code>numerator</code></br><code>denominator</code> | 1 | vec  | **Convert to ratio** (`num`): [n, d] where n/d = #1 and n,d are minimal ints |
 | <code>∆ℭ</code> | <code>arccos</code></br><code>arccosine</code> | 1 | vec  | **Arccosine** (`num`): Arccosine of #1 |
+| <code>∆ℳ</code> | <code>cantor-list-encode</code></br><code>cantor-list-decode</code> | 1 |   | **Cantor Encode Numeric List** (`lst[num]`): Prepends the length of #1, then recursively evaluates Cantor pairing the last two elements until a single number is obtained. Must be natural numbers.</br>**Cantor Decode Numeric List** (`num`): Reverses the algorithm used to Cantor Encode the number. |
 | <code>∆⌹</code> | <code>complex-parts</code> | 1 | vec  | **Complex Parts** (`num`): Push the real and imaginary parts of #1 |
 | <code>∆↯</code> | <code>arcsin</code></br><code>arcsine</code> | 1 | vec  | **Arcsine** (`num`): Arcsine of #1 |
 | <code>∆æ</code> | <code>all-prime-exponents</code></br><code>all-prime-exps</code> | 1 | vec  | **All Prime Exponents** (`num`): For all primes less than or equal to #1, push the power of that prime in the factorisation of #1 |

@@ -2074,6 +2074,7 @@ object Elements:
         val asRational = a.real.toRational
         if asRational.denominator.toLong != 0
         then // TODO: make a better rationality test. i'm not good enough at whatever branch of maths this is to figure it out.
+          // I'm pretty sure you could scan the decimal places, it is only rational if it terminates or has a repeating series of digits.
           VList(
             Seq(
               VNum(asRational.numerator.toLong),
@@ -2146,6 +2147,41 @@ object Elements:
           if iterable.isEmpty then VList(Seq.empty)
           else iterable.vDistinct.maxBy(item => iterable.count(_ == item)),
       ),
+    addPart("∆ℳ", Monad, true) {
+      case VListOf[VNum](a) =>
+        val length = a.length
+        if length == 0 then VNum(0)
+        else
+          var initial = a.itr.last
+          for n <- a.itr.init.reverse do
+            initial = NumberHelpers.cantorPair(n, initial)
+          NumberHelpers.cantorPair(VNum(length), initial)
+      case a: VNum =>
+        val (length, l): (VNum, VNum) = NumberHelpers.cantorUnpair(a)
+        if length == VNum(0) then VList(Seq.empty)
+        else
+          var listNums: VNum = l
+          var resultList = List[VNum]()
+          for i <- Iterator.iterate(1)(_ + 1).takeWhile(_ < length.toBigInt)
+          do
+            val tup = NumberHelpers.cantorUnpair(listNums)
+            listNums = tup(1)
+            resultList = resultList :+ tup(0)
+          resultList = resultList :+ listNums
+          VList(resultList)
+    },
+    "∆^" ->
+      direct(Dyad) {
+        val y = pop()
+        val x = pop()
+        push(NumberHelpers.cantorPair(x, y))
+      },
+    "∆v" ->
+      direct(Monad) {
+        val n = pop()
+        val (x, y) = NumberHelpers.cantorUnpair(n)
+        push(x, y)
+      },
     addPart("øA", Monad, true) {
       case a: VNum =>
         "abcdefghijklmnopqrstuvwxyz".charAt(((a - 1) % 26).toInt).toString

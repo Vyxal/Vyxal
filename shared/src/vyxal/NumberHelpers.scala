@@ -8,6 +8,7 @@ import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.math
+import scala.math.BigInt
 
 import spire.*
 import spire.math.Real
@@ -450,5 +451,38 @@ object NumberHelpers:
       case (a: VList, b) => a.vmap(divides(_, b))
       case (a, b: VList) => b.vmap(divides(a, _))
       case _ => throw UnimplementedOverloadException("divides", List(a, b))
+
+  def cantorPair(x: VAny, y: VAny)(using Context): VNum =
+    (x, y) match
+      case (x: VNum, y: VNum) =>
+        if x.isNatural && y.isNatural then
+          VNum(
+            ((x.toBigInt + y.toBigInt) * (x.toBigInt + y.toBigInt + 1) / 2) +
+              y.toBigInt
+          )
+        else
+          throw BadArgumentException(
+            "CantorPair not supported for non-natural numbers:",
+            VList(List(x, y)),
+          )
+      case _ => throw UnimplementedOverloadException("cantorPair", List(x, y))
+
+  def cantorUnpair(n: VAny)(using Context): (VNum, VNum) =
+    n match
+      case n: VNum =>
+        if n.isNatural then
+          val w =
+            (((BigInt(8) * n.toBigInt + BigInt(1)).sqrt - BigInt(1)) /
+              BigInt(2)).floor.toBigInt
+          val t = ((w * w + w) / BigInt(2)).toBigInt
+          val y = n.toBigInt - t
+          val x = w - y
+          (VNum(x), VNum(y))
+        else
+          throw BadArgumentException(
+            "CantorUnpair not supported for non-natural numbers.",
+            n,
+          )
+      case _ => throw UnimplementedOverloadException("cantorUnpair", List(n))
 
 end NumberHelpers
