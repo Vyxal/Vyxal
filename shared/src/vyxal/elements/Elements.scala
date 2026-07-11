@@ -143,6 +143,10 @@ object Elements:
         val b, a = pop()
         push(b, a)
       },
+    addPart("#@", Monad, false) {
+      case a: VDuration => Thread.sleep(a.toMillis.toBigInt)
+      case a: VNum => Thread.sleep(a.toBigInt)
+    },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
     addPart("&", Dyad, false) {
       case (VList(a), b) => VList(a.itr :+ b)
