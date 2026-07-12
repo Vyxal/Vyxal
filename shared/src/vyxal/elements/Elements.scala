@@ -152,8 +152,8 @@ object Elements:
         VNum(1)
     },
     addPart("ø⑦", Monad, true) {
-      case VStr(a) => VList(StringHelpers.hash(a))
-      case VListOf[VStr](a) => VList(a.itr.map(StringHelpers.hash(_)).toArray)
+      case VStr(a) => VList(StringHelpers.hash(a.toString))
+      case VListOf[VStr](a) => VList(a.itr.map(StringHelpers.hash(_.toString)).toArray)
       case VListOf[VNum](a) => VList(StringHelpers.hash(a.itr.map(_.toByte).toArray))
     },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
