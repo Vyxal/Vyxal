@@ -154,9 +154,9 @@ object Elements:
     addPart("ø⑦", Monad, true) {
       case VStr(a) => VList(StringHelpers.hash(a.toString))
       case VListOf[VStr](a) =>
-        VList(a.itr.map(StringHelpers.hash(_.toString)).toArray)
+        VList(a.itr.map((x: VStr) => StringHelpers.hash(x.toString)).toArray)
       case VListOf[VNum](a) =>
-        VList(StringHelpers.hash(a.itr.map(_.toByte).toArray))
+        VList(StringHelpers.hash(a.itr.map((x: VNum) => x.toByte).toArray))
     },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
     addPart("&", Dyad, false) {
