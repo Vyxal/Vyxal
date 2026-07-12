@@ -457,7 +457,8 @@ object NumberHelpers:
       case (x: VNum, y: VNum) =>
         if x.isNatural && y.isNatural then
           VNum(
-            ((x.toMaybeSafeBigInt + y.toMaybeSafeBigInt) * (x.toMaybeSafeBigInt + y.toMaybeSafeBigInt + 1) / 2) +
+            ((x.toMaybeSafeBigInt + y.toMaybeSafeBigInt) *
+              (x.toMaybeSafeBigInt + y.toMaybeSafeBigInt + 1) / 2) +
               y.toMaybeSafeBigInt
           )
         else

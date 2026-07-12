@@ -501,7 +501,11 @@ class VNum(val underlying: Complex[Real]) extends VAny, Ordered[VNum]:
   def toDouble: Double = underlying.real.toDouble
   def toLong: Long = underlying.toLong
   def toBigInt: BigInt = underlying.real.toRational.toBigInt
-  def toMaybeSafeBigInt: BigInt = underlying.real.toBigDecimal(java.math.MathContext.UNLIMITED).setScale(0, java.math.RoundingMode.HALF_UP).toBigInt
+  def toMaybeSafeBigInt: BigInt =
+    underlying.real
+      .toBigDecimal(java.math.MathContext.UNLIMITED)
+      .setScale(0, java.math.RoundingMode.HALF_UP)
+      .toBigInt
 
   def signum: VNum = underlying.complexSignum
 
