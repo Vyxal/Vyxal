@@ -144,10 +144,10 @@ object Elements:
         push(b, a)
       },
     addPart("#@", Monad, false) {
-      case a: VDuration => 
+      case a: VDuration =>
         val x = Thread.sleep(a.toMillis.toLong)
         VNum(1)
-      case a: VNum => 
+      case a: VNum =>
         val x = Thread.sleep(a.toLong)
         VNum(1)
     },
