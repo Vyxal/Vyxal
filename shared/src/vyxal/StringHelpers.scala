@@ -543,6 +543,9 @@ object StringHelpers:
       .map((x: Byte) => VNum(x & 0xff))
 
   def hashBytes(a: Array[Byte], hashAlgo: String = "SHA-256"): Array[VNum] =
-    MessageDigest.getInstance(hashAlgo).digest(a).map((x: Byte) => VNum(x & 0xff))
+    MessageDigest
+      .getInstance(hashAlgo)
+      .digest(a)
+      .map((x: Byte) => VNum(x & 0xff))
 
 end StringHelpers
