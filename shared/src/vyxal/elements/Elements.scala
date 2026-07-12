@@ -144,8 +144,17 @@ object Elements:
         push(b, a)
       },
     addPart("#@", Monad, false) {
-      case a: VDuration => Thread.sleep(a.toMillis.toBigInt)
-      case a: VNum => Thread.sleep(a.toBigInt)
+      case a: VDuration => 
+        val x = Thread.sleep(a.toMillis.toLong)
+        VNum(1)
+      case a: VNum => 
+        val x = Thread.sleep(a.toLong)
+        VNum(1)
+    },
+    addPart("ø⑦", Monad, true) {
+      case VStr(a) => VList(StringHelpers.hash(a))
+      case VListOf[VStr](a) => VList(a.itr.map(StringHelpers.hash(_)).toArray)
+      case VListOf[VNum](a) => VList(StringHelpers.hash(a.itr.map(_.toByte).toArray))
     },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
     addPart("&", Dyad, false) {
