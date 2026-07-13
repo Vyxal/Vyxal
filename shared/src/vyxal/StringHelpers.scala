@@ -547,7 +547,7 @@ object StringHelpers:
     a match
       case VListOf[VNum](a) => MessageDigest
         .getInstance(hashAlgo)
-        .digest(a.map(_.toByte).itr.toArray)
+        .digest(a.map(_.toByte).toArray)
         .map((x: Byte) => VNum(x & 0xff))
 
 end StringHelpers
