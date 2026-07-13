@@ -533,19 +533,13 @@ object StringHelpers:
       .mkString("\n")
 
   def hash(
-      s: String,
+      s: VAny,
       encoding: String = "UTF-8",
       hashAlgo: String = "SHA-256",
   ): Array[VNum] =
-    MessageDigest
-      .getInstance(hashAlgo)
-      .digest(s.getBytes(encoding))
-      .map((x: Byte) => VNum(x & 0xff))
+    case VStr(s) => MessageDigest.getInstance(hashAlgo).digest(s.toString.getBytes(encoding)).map((x: Byte) => VNum(x & 0xff))
 
-  def hashBytes(a: Array[Byte], hashAlgo: String = "SHA-256"): Array[VNum] =
-    MessageDigest
-      .getInstance(hashAlgo)
-      .digest(a)
-      .map((x: Byte) => VNum(x & 0xff))
+  def hashBytes(a: VList, hashAlgo: String = "SHA-256"): Array[VNum] =
+    case VListOf[VNum](a) => MessageDigest.getInstance(hashAlgo).digest(a.map(_.toByte).itr.toArray).map((x: Byte) => VNum(x & 0xff))
 
 end StringHelpers
