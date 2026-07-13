@@ -64,10 +64,12 @@ object MiscHelpers:
           Some(next -> next)
       }
 
-  def sleep(millis: Long): Long = // TODO: Implement something that's actually better than blocking up the webpage
+  def sleep(
+      millis: Long
+  ): Long = // TODO: Implement something that's actually better than blocking up the webpage
     val start = System.currentTimeMillis()
     val stop = start + millis
-    while (System.currentTimeMillis() < stop) {}
+    while System.currentTimeMillis() < stop do {}
     System.currentTimeMillis() - start
 
   def compare(a: VAny, b: VAny)(using ctx: Context): Int =

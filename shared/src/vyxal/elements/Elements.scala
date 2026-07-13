@@ -144,10 +144,8 @@ object Elements:
         push(b, a)
       },
     addPart("#@", Monad, false) {
-      case a: VDuration =>
-        VNum(MiscHelpers.sleep(a.toMillis.toLong))
-      case a: VNum =>
-        VNum(MiscHelpers.sleep(a.toLong * 1000L))
+      case a: VDuration => VNum(MiscHelpers.sleep(a.toMillis.toLong))
+      case a: VNum => VNum(MiscHelpers.sleep(a.toLong * 1000L))
     },
     addPart("ø⑦", Monad, true) {
       case VStr(a) => VList(StringHelpers.hash(a))
