@@ -3,6 +3,8 @@ package vyxal
 import vyxal.conversions.given
 import vyxal.elements.Elements
 
+import java.time.Duration
+
 import org.scalatest.funspec.AnyFunSpec
 import VyxalTests.testContext
 
@@ -458,6 +460,7 @@ class ElementTests extends VyxalTests:
         ),
     )
   }
+
   describe("Element Þ\\") {
     testMulti(
       """ #[#[1|2|3#]|#[4|5|6#]|#[7|8|9#]|#["a"|"b"|"c"#]#] Þ\ """ ->
@@ -480,6 +483,7 @@ class ElementTests extends VyxalTests:
         ),
     )
   }
+
   describe("Element Þ„") {
     testMulti(
       """ #[#[3#]|#[2|6#]|#[1|5|9#]|#[4|8|"c"#]|#[7|"b"#]|#["a"#]#] Þ„""" ->
@@ -524,6 +528,7 @@ class ElementTests extends VyxalTests:
       "7ʀ⍨9#W" -> vSeq(6, 5, 4, 3, 2, 1, 0, 0, 0),
     )
   }
+
   describe("Element øE") {
     testMulti(
       "101001000000000110110øE;" ->
@@ -533,6 +538,7 @@ class ElementTests extends VyxalTests:
         )
     )
   }
+
   describe("Element i") {
     it("should still error if neither input is a list of numbers") {
       given ctx: Context = Context()
@@ -551,6 +557,32 @@ class ElementTests extends VyxalTests:
       testMulti(
         "ki3-10÷N15ℳ" -> VStr("-0.014159265358979")
       )
+    }
+  }
+
+  describe("Element #@") {
+    describe("when given a number") {
+      it("should wait that number of seconds") {
+        given ctx: Context = Context(testMode = true)
+        ctx.push(5)
+        val tbefore = System.currentTimeMillis()
+        Interpreter.execute(AST.Command("#@"))
+        val tafter = System.currentTimeMillis()
+        val delta = tafter - tbefore
+        assert(delta >= 5000 && delta <= 5100)
+      }
+    }
+
+    describe("when given a duration") {
+      it("should wait for that duration") {
+        given ctx: Context = Context(testMode = true)
+        ctx.push(Duration.ofMillis(800))
+        val tbefore = System.currentTimeMillis()
+        Interpreter.execute(AST.Command("#@"))
+        val tafter = System.currentTimeMillis()
+        val delta = tafter - tbefore
+        assert(delta >= 800 && delta <= 850)
+      }
     }
   }
 end ElementTests

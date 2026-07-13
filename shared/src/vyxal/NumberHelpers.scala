@@ -457,8 +457,9 @@ object NumberHelpers:
       case (x: VNum, y: VNum) =>
         if x.isNatural && y.isNatural then
           VNum(
-            ((x.toBigInt + y.toBigInt) * (x.toBigInt + y.toBigInt + 1) / 2) +
-              y.toBigInt
+            ((x.toMaybeSafeBigInt + y.toMaybeSafeBigInt) *
+              (x.toMaybeSafeBigInt + y.toMaybeSafeBigInt + 1) / 2) +
+              y.toMaybeSafeBigInt
           )
         else
           throw BadArgumentException(
@@ -472,10 +473,10 @@ object NumberHelpers:
       case n: VNum =>
         if n.isNatural then
           val w =
-            (((BigInt(8) * n.toBigInt + BigInt(1)).sqrt - BigInt(1)) /
+            (((BigInt(8) * n.toMaybeSafeBigInt + BigInt(1)).sqrt - BigInt(1)) /
               BigInt(2)).floor.toBigInt
           val t = ((w * w + w) / BigInt(2)).toBigInt
-          val y = n.toBigInt - t
+          val y = n.toMaybeSafeBigInt - t
           val x = w - y
           (VNum(x), VNum(y))
         else

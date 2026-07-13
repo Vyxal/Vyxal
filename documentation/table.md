@@ -221,6 +221,7 @@ Element, Modifier, and Syntax Reference
 | <code>#¿</code> | <code>input-count</code> | 0 |   | **Input Count**: Push the number of inputs to the stack |
 | <code>#,</code> | <code>print</code> | 1 |   | **Print** (`any`): Print #1 without a trailing newline |
 | <code>#?</code> | <code>inputs</code></br><code>all-inputs</code></br><code>all-stdin</code> | 0 |   | **Inputs**: Get all the global inputs as a list |
+| <code>#@</code> | <code>sleep</code></br><code>wait</code></br><code>pause</code></br><code>delay</code></br><code>pause-execution</code> | 1 |   | **Pause Execution** (`num`): Wait for #1 seconds</br>**Pause Execution** (`dur`): Wait for the duration of #1 |
 | <code>#C</code> | <code>compress</code></br><code>dictionary-compress</code></br><code>dict-compress</code> | 1 | vec  | **Compress** (`str`): Compress #1 using the Vyxal compression algorithm |
 | <code>#D</code> | <code>decompress</code></br><code>uncompress</code></br><code>dict-decompress</code> | 1 | vec  | **Decompress** (`str`): Decompress #1 using the Vyxal compression algorithm |
 | <code>#Q</code> | <code>quit</code> | 0 |   | **Quit**: Quit the program |
@@ -439,6 +440,7 @@ Element, Modifier, and Syntax Reference
 | <code>ø⊠</code> | <code>surround-grid</code></br><code>outline</code></br><code>border</code> | 2 |   | **2D Surround** (`lst[lst],nsl`): #1 surrounded by #2 |
 | <code>ø‹</code> | <code>strip-right</code></br><code>right-strip</code> | 2 | vec  | **Strip Right** (`str, str`): Strip #2 from the right of #1 |
 | <code>ø›</code> | <code>strip-left</code></br><code>left-strip</code> | 2 | vec  | **Strip Left** (`str, str`): Strip #2 from the left of #1 |
+| <code>ø⑦</code> | <code>sha-256</code></br><code>sha256</code> | 1 | vec  | **SHA256** (`str`): Get the SHA256 hash of UTF-8 encoding of #1</br>**SHA256** (`lst[num]`): Get the SHA256 hash of the bytes represented by the numbers in #1 |
 
 ## Modifiers
 

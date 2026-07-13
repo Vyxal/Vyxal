@@ -3,6 +3,7 @@ package vyxal
 import vyxal.conversions.{*, given}
 import vyxal.parsing.{Codepage, Lexer}
 
+import java.security.MessageDigest
 import java.util.regex.PatternSyntaxException
 import scala.annotation.tailrec
 import scala.collection.mutable.StringBuilder
@@ -530,5 +531,23 @@ object StringHelpers:
         " " * ((longest - s.length) / 2).ceil.toInt + s
       }
       .mkString("\n")
+
+  def hash(
+      s: VAny,
+      encoding: String = "UTF-8",
+      hashAlgo: String = "SHA-256",
+  ): Array[VNum] =
+    s match
+      case VStr(s) => MessageDigest
+          .getInstance(hashAlgo)
+          .digest(s.toString.getBytes(encoding))
+          .map((x: Byte) => VNum(x & 0xff))
+
+  def hashBytes(a: VList, hashAlgo: String = "SHA-256"): Array[VNum] =
+    a match
+      case VListOf[VNum](a) => MessageDigest
+          .getInstance(hashAlgo)
+          .digest(a.map(_.toByte).toArray)
+          .map((x: Byte) => VNum(x & 0xff))
 
 end StringHelpers
