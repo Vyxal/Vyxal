@@ -64,6 +64,14 @@ object MiscHelpers:
           Some(next -> next)
       }
 
+  def sleep(
+      millis: Long
+  ): Long = // TODO: Implement something that doesn't freeze the webpage completely to sleep
+    val start = System.currentTimeMillis()
+    val stop = start + millis
+    while System.currentTimeMillis() < stop do {}
+    System.currentTimeMillis() - start
+
   def compare(a: VAny, b: VAny)(using ctx: Context): Int =
     (a, b) match
       case (a: VNum, b: VNum) => a.compare(b)
