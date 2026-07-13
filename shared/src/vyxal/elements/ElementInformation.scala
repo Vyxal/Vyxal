@@ -231,7 +231,7 @@ object ElementInformation:
           name = "Pause Execution",
           args = Seq("dur"),
           description = "Wait for the duration of #1",
-        )
+        ),
       ),
       AddElement(
         symbol = "ø⑦",
@@ -246,7 +246,8 @@ object ElementInformation:
         Overload(
           name = "SHA256",
           args = Seq("lst[num]"),
-          description = "Get the SHA256 hash of the bytes represented by the numbers in #1",
+          description =
+            "Get the SHA256 hash of the bytes represented by the numbers in #1",
         ),
       ),
       AddElement(

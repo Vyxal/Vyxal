@@ -3,8 +3,9 @@ package vyxal
 import vyxal.conversions.given
 import vyxal.elements.Elements
 
+import scala.concurrent.duration.*
+
 import org.scalatest.funspec.AnyFunSpec
-import scala.concurrent.duration._
 import VyxalTests.testContext
 
 /** Tests for specific elements */
