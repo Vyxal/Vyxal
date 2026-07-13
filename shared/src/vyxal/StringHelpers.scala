@@ -546,8 +546,8 @@ object StringHelpers:
   def hashBytes(a: VList, hashAlgo: String = "SHA-256"): Array[VNum] =
     a match
       case VListOf[VNum](a) => MessageDigest
-        .getInstance(hashAlgo)
-        .digest(a.map(_.toByte).toArray)
-        .map((x: Byte) => VNum(x & 0xff))
+          .getInstance(hashAlgo)
+          .digest(a.map(_.toByte).toArray)
+          .map((x: Byte) => VNum(x & 0xff))
 
 end StringHelpers
