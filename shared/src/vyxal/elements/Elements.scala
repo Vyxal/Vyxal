@@ -145,11 +145,9 @@ object Elements:
       },
     addPart("#@", Monad, false) {
       case a: VDuration =>
-        val x = Thread.sleep(a.toMillis.toLong)
-        VNum(1)
+        VNum(MiscHelpers.sleep(a.toMillis.toLong))
       case a: VNum =>
-        val x = Thread.sleep(a.toLong * 1000L)
-        VNum(1)
+        VNum(MiscHelpers.sleep(a.toLong * 1000L))
     },
     addPart("ø⑦", Monad, true) {
       case VStr(a) => VList(StringHelpers.hash(a))

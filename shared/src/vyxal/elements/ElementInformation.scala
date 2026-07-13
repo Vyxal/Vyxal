@@ -225,12 +225,12 @@ object ElementInformation:
         Overload(
           name = "Pause Execution",
           args = Seq("num"),
-          description = "Wait for #1 seconds",
+          description = "Wait for roughly #1 seconds and return the number of milliseconds actually spent.",
         ),
         Overload(
           name = "Pause Execution",
           args = Seq("dur"),
-          description = "Wait for the duration of #1",
+          description = "Wait for roughly the duration of #1 and return the number of milliseconds actually spent.",
         ),
       ),
       AddElement(
