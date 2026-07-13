@@ -460,6 +460,7 @@ class ElementTests extends VyxalTests:
         ),
     )
   }
+
   describe("Element Þ\\") {
     testMulti(
       """ #[#[1|2|3#]|#[4|5|6#]|#[7|8|9#]|#["a"|"b"|"c"#]#] Þ\ """ ->
@@ -482,6 +483,7 @@ class ElementTests extends VyxalTests:
         ),
     )
   }
+
   describe("Element Þ„") {
     testMulti(
       """ #[#[3#]|#[2|6#]|#[1|5|9#]|#[4|8|"c"#]|#[7|"b"#]|#["a"#]#] Þ„""" ->
@@ -526,6 +528,7 @@ class ElementTests extends VyxalTests:
       "7ʀ⍨9#W" -> vSeq(6, 5, 4, 3, 2, 1, 0, 0, 0),
     )
   }
+
   describe("Element øE") {
     testMulti(
       "101001000000000110110øE;" ->
@@ -535,6 +538,7 @@ class ElementTests extends VyxalTests:
         )
     )
   }
+
   describe("Element i") {
     it("should still error if neither input is a list of numbers") {
       given ctx: Context = Context()
@@ -568,6 +572,7 @@ class ElementTests extends VyxalTests:
         assert(delta >= 5000 && delta <= 5100)
       }
     }
+
     describe("when given a duration") {
       it("should wait for that duration") {
         given ctx: Context = Context(testMode = true)
