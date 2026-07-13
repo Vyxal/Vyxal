@@ -66,7 +66,7 @@ object MiscHelpers:
 
   def sleep(
       millis: Long
-  ): Long = // TODO: Implement something that's actually better than blocking up the webpage
+  ): Long = // TODO: Implement something that doesn't freeze the webpage completely to sleep
     val start = System.currentTimeMillis()
     val stop = start + millis
     while System.currentTimeMillis() < stop do {}
