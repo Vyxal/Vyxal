@@ -153,10 +153,8 @@ object Elements:
     },
     addPart("ø⑦", Monad, true) {
       case VStr(a) => VList(StringHelpers.hash(a))
-      case VListOf[VStr](a) =>
-        a.map(VList(StringHelpers.hash(_)))
-      case VListOf[VNum](a) =>
-        VList(StringHelpers.hashBytes(a))
+      case VListOf[VStr](a) => a.map(VList(StringHelpers.hash(_)))
+      case VListOf[VNum](a) => VList(StringHelpers.hashBytes(a))
     },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
     addPart("&", Dyad, false) {
