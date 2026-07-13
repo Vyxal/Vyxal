@@ -3,7 +3,7 @@ package vyxal
 import vyxal.conversions.given
 import vyxal.elements.Elements
 
-import scala.concurrent.duration.*
+import java.time.Duration
 
 import org.scalatest.funspec.AnyFunSpec
 import VyxalTests.testContext
@@ -571,7 +571,7 @@ class ElementTests extends VyxalTests:
     describe("when given a duration") {
       it("should wait for that duration") {
         given ctx: Context = Context(testMode = true)
-        ctx.push(800.millis)
+        ctx.push(Duration.ofMillis(800))
         val tbefore = System.currentTimeMillis()
         Interpreter.execute(AST.Command("#@"))
         val tafter = System.currentTimeMillis()
