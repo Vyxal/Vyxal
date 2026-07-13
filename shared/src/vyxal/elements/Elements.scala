@@ -148,12 +148,11 @@ object Elements:
         val x = Thread.sleep(a.toMillis.toLong)
         VNum(1)
       case a: VNum =>
-        val x = Thread.sleep(a.toLong)
+        val x = Thread.sleep(a.toLong * 1000L)
         VNum(1)
     },
     addPart("ø⑦", Monad, true) {
       case VStr(a) => VList(StringHelpers.hash(a))
-      case VListOf[VStr](a) => a.map((x: VAny) => VList(StringHelpers.hash(x)))
       case VListOf[VNum](a) => VList(StringHelpers.hashBytes(a))
     },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
