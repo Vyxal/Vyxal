@@ -539,15 +539,15 @@ object StringHelpers:
   ): Array[VNum] =
     s match
       case VStr(s) => MessageDigest
-        .getInstance(hashAlgo)
-        .digest(s.toString.getBytes(encoding))
-        .map((x: Byte) => VNum(x & 0xff))
+          .getInstance(hashAlgo)
+          .digest(s.toString.getBytes(encoding))
+          .map((x: Byte) => VNum(x & 0xff))
 
   def hashBytes(a: VList, hashAlgo: String = "SHA-256"): Array[VNum] =
     a match
       case VListOf[VNum](a) => MessageDigest
-        .getInstance(hashAlgo)
-        .digest(a.map(_.toByte).itr.toArray)
-        .map((x: Byte) => VNum(x & 0xff))
+          .getInstance(hashAlgo)
+          .digest(a.map(_.toByte).itr.toArray)
+          .map((x: Byte) => VNum(x & 0xff))
 
 end StringHelpers
