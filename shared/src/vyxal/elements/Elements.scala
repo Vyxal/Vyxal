@@ -149,7 +149,11 @@ object Elements:
     },
     addPart("ø⑦", Monad, true) {
       case VStr(a) => VList(StringHelpers.hash(a))
-      case VListOf[VNum](a) => if (a.itr.forall(case x: VNum => x.toInt < 256 && x.toInt >= 0 && x.isNatural case _ => false)) then VList(StringHelpers.hashBytes(a)) else throw new Exceptions.BadLHSException("ø⑦", a)
+      case VListOf[VNum](a) =>
+        if (a.itr.forall(x.toInt < 256 && x.toInt >= 0 && x.isNatural)) then
+          VList(StringHelpers.hashBytes(a))
+        else
+          throw new Exceptions.BadLHSException("ø⑦", a)
     },
     addPart("øH", Monad, true) {
       case VStr(a) =>
