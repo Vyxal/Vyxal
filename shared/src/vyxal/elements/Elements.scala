@@ -162,8 +162,8 @@ object Elements:
         else 
           throw new Exceptions.BadLHSException("øH", a)
       case VListOf[VNum](a) =>
-        if (a.itr.forall(x: VNum => x.toInt < 256 && x.toInt >= 0 && x.isNatural)) then
-          VStr(a.map(x: VNum => String.format("%02x", x)).mkString)
+        if (a.itr.forall((x: VNum) => x.toInt < 256 && x.toInt >= 0 && x.isNatural)) then
+          VStr(a.map((x: VNum) => String.format("%02x", x)).mkString)
         else
           throw new Exceptions.BadLHSException("øH", a)
     }
