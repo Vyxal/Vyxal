@@ -143,7 +143,7 @@ object Elements:
         val b, a = pop()
         push(b, a)
       },
-    addPart("#@", Monad, false) {
+    addPart("#.", Monad, false) {
       case a: VDuration => VNum(MiscHelpers.sleep(a.toMillis.toLong))
       case a: VNum => VNum(MiscHelpers.sleep(a.toLong * 1000L))
     },

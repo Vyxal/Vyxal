@@ -560,13 +560,13 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  describe("Element #@") {
+  describe("Element #.") {
     describe("when given a number") {
       it("should wait that number of seconds") {
         given ctx: Context = Context(testMode = true)
         ctx.push(5)
         val tbefore = System.currentTimeMillis()
-        Interpreter.execute(AST.Command("#@"))
+        Interpreter.execute(AST.Command("#."))
         val tafter = System.currentTimeMillis()
         val delta = tafter - tbefore
         assert(delta >= 5000 && delta <= 5100)
@@ -578,7 +578,7 @@ class ElementTests extends VyxalTests:
         given ctx: Context = Context(testMode = true)
         ctx.push(Duration.ofMillis(800))
         val tbefore = System.currentTimeMillis()
-        Interpreter.execute(AST.Command("#@"))
+        Interpreter.execute(AST.Command("#."))
         val tafter = System.currentTimeMillis()
         val delta = tafter - tbefore
         assert(delta >= 800 && delta <= 850)
