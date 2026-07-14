@@ -166,7 +166,7 @@ object Elements:
           VStr(a.map((x: VNum) => String.format("%02x", x)).mkString)
         else
           throw new Exceptions.BadLHSException("øH", a)
-    }
+    },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
     addPart("&", Dyad, false) {
       case (VList(a), b) => VList(a.itr :+ b)
