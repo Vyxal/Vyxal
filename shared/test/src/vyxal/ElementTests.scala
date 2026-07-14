@@ -616,7 +616,7 @@ class ElementTests extends VyxalTests:
         assertThrows[Exception] {
           Interpreter.execute(
             "\"6ab23a-b-c\"øH"
-          ) // The algorithm could interpret "-c" as being -12 for example
+          ) // The algorithm, if incorrect, might interpret, for example, "-c" as being -12
         }
       }
     }
