@@ -149,8 +149,12 @@ object Elements:
     },
     addPart("ø⑦", Monad, true) {
       case VStr(a) => VList(StringHelpers.hash(a))
-      case VListOf[VNum](a) => VList(StringHelpers.hashBytes(a))
+      case VListOf[VNum](a) => if a.itr.forall(case x: VNum => x.toInt < 256 && x.toInt >= 0 && x.isNatural case _ => false) then VList(StringHelpers.hashBytes(a)) else throw Exceptions.BadLHSException("ø⑦", a)
     },
+    addPart("øH", Monad, true) {
+      case VStr(a) => if a.toString.matches("^[0123456789abcdefABCDEF]*$") then VList(a.toString.grouped(2).map((x: String) => VNum(Integer.parseInt(x, 16)))) else throw Exceptions.BadLHSException("øH", a)
+      case VListOf[VNum](a) => if a.itr.forall(case x: VNum => x.toInt < 256 && x.toInt >= 0 && x.isNatural case _ => false) then VStr(a.map(case x: VNum => String.format("%02x", x)).mkString) else throw Exceptions.BadLHSException("øH", a)
+    }
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
     addPart("&", Dyad, false) {
       case (VList(a), b) => VList(a.itr :+ b)

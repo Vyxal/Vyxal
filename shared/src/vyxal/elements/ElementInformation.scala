@@ -226,13 +226,13 @@ object ElementInformation:
           name = "Pause Execution",
           args = Seq("num"),
           description =
-            "Wait for roughly #1 seconds and return the number of milliseconds actually spent.",
+            "Wait for roughly #1 seconds and return the number of milliseconds actually spent",
         ),
         Overload(
           name = "Pause Execution",
           args = Seq("dur"),
           description =
-            "Wait for roughly the duration of #1 and return the number of milliseconds actually spent.",
+            "Wait for roughly the duration of #1 and return the number of milliseconds actually spent",
         ),
       ),
       AddElement(
@@ -250,6 +250,22 @@ object ElementInformation:
           args = Seq("lst[num]"),
           description =
             "Get the SHA256 hash of the bytes represented by the numbers in #1",
+        ),
+      ),
+      AddElement(
+        symbol = "øH",
+        keywords = Seq("nums-to-hex", "hex-to-nums", "bytes-to-hex", "hex-to-bytes"),
+        arity = 1,
+        Options(vectorises = true),
+        Overload(
+          name = "Bytes to Hex",
+          args = Seq("lst[num]"),
+          description = "Convert #1 as a list of numbers representing bytes into a hex string",
+        ),
+        Overload(
+          name = "Hex to Bytes",
+          args = Seq("str"),
+          description = "Convert #1 as a hex string into a list of numbers representing bytes"
         ),
       ),
       AddElement(
