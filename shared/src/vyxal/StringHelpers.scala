@@ -544,9 +544,9 @@ object StringHelpers:
         ).grouped(8)
           .map((x: Int) =>
             VNum(
-              x.zipWithIndex
-                .map { case (item, index) => item << (7 - index) }
-                .sum
+              x.zipWithIndex.map {
+                case (item, index) => item << (7 - index)
+              }.sum
             )
           )
           .toArray
