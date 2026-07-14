@@ -3,7 +3,6 @@ package vyxal
 import vyxal.conversions.{*, given}
 import vyxal.parsing.{Codepage, Lexer}
 
-import java.security.MessageDigest
 import java.util.regex.PatternSyntaxException
 import scala.annotation.tailrec
 import scala.collection.mutable.StringBuilder
@@ -535,19 +534,281 @@ object StringHelpers:
   def hash(
       s: VAny,
       encoding: String = "UTF-8",
-      hashAlgo: String = "SHA-256",
   ): Array[VNum] =
     s match
-      case VStr(s) => MessageDigest
-          .getInstance(hashAlgo)
-          .digest(s.toString.getBytes(encoding))
-          .map((x: Byte) => VNum(x & 0xff))
+      case VStr(s) => binArraySha256(
+          s.toString
+            .getBytes(encoding)
+            .flatMap(b => (7 to 0 by -1).map(i => (b >> i) & 1))
+            .toArray
+        ).grouped(8)
+          .map((x: Array[Int]) =>
+            VNum(
+              x.zipWithIndex.map {
+                case (item, index) => item << (7 - index)
+              }.sum
+            )
+          )
+          .toArray
 
-  def hashBytes(a: VList, hashAlgo: String = "SHA-256"): Array[VNum] =
+  def hashBytes(a: VList): Array[VNum] =
     a match
-      case VListOf[VNum](a) => MessageDigest
-          .getInstance(hashAlgo)
-          .digest(a.map(_.toByte).toArray)
-          .map((x: Byte) => VNum(x & 0xff))
+      case VListOf[VNum](a) => binArraySha256(
+          a.flatMap(b => (7 to 0 by -1).map(i => (b.toInt >> i) & 1)).toArray
+        ).grouped(8)
+          .map((x: Array[Int]) =>
+            VNum(
+              x.zipWithIndex.map {
+                case (item, index) => item << (7 - index)
+              }.sum
+            )
+          )
+          .toArray
 
+  def binArraySha256(a: Array[Int]): Array[Int] =
+    def rightShift(x: Array[Int], a: Int): Array[Int] =
+      Array.fill(a)(0) ++ x.dropRight(a)
+    end rightShift
+    def rightRotate(x: Array[Int], a: Int): Array[Int] =
+      x.takeRight(a) ++ x.dropRight(a)
+    end rightRotate
+    def add2(a: Array[Int], b: Array[Int]): Array[Int] =
+      var carry = 0
+      var res = Array[Int]()
+      val findCarry = Array(0, 0, 1, 1)
+      (a.reverse lazyZip b.reverse).foreach { (x, y) =>
+        val result = x + y + carry
+        val digit = result % 2
+        carry = result / 2
+        res = digit +: res
+      }
+      res
+    def add4(
+        a: Array[Int],
+        b: Array[Int],
+        c: Array[Int],
+        d: Array[Int],
+    ): Array[Int] = add2(add2(a, b), add2(c, d))
+    end add4
+    def add5(
+        a: Array[Int],
+        b: Array[Int],
+        c: Array[Int],
+        d: Array[Int],
+        e: Array[Int],
+    ): Array[Int] = add2(add2(add2(a, b), add2(c, d)), e)
+    end add5
+    def choice(s: Array[Int], a: Array[Int], b: Array[Int]): Array[Int] =
+      (s lazyZip a lazyZip b).map((x, y, z) => (x & y) | ((x ^ 1) & z))
+    end choice
+    def maj3(a: Array[Int], b: Array[Int], c: Array[Int]): Array[Int] =
+      (a lazyZip b lazyZip c).map((x: Int, y: Int, z: Int) => (x + y + z) / 2)
+    end maj3
+    val K = Array(
+      Array(0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1,
+        1, 1, 0, 0, 1, 1, 0, 0, 0),
+      Array(0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0,
+        0, 1, 0, 0, 1, 0, 0, 0, 1),
+      Array(1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1,
+        1, 1, 1, 0, 0, 1, 1, 1, 1),
+      Array(1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1,
+        1, 1, 0, 1, 0, 0, 1, 0, 1),
+      Array(0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1,
+        0, 0, 1, 0, 1, 1, 0, 1, 1),
+      Array(0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+        1, 1, 1, 1, 1, 0, 0, 0, 1),
+      Array(1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1,
+        0, 1, 0, 1, 0, 0, 1, 0, 0),
+      Array(1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1,
+        0, 1, 1, 0, 1, 0, 1, 0, 1),
+      Array(1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1,
+        0, 1, 0, 0, 1, 1, 0, 0, 0),
+      Array(0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1,
+        1, 0, 0, 0, 0, 0, 0, 0, 1),
+      Array(0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0,
+        1, 1, 0, 1, 1, 1, 1, 1, 0),
+      Array(0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0,
+        1, 1, 1, 0, 0, 0, 0, 1, 1),
+      Array(0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0,
+        1, 0, 1, 1, 1, 0, 1, 0, 0),
+      Array(1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0,
+        1, 1, 1, 1, 1, 1, 1, 1, 0),
+      Array(1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+        0, 1, 0, 1, 0, 0, 1, 1, 1),
+      Array(1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+        1, 0, 1, 1, 1, 0, 1, 0, 0),
+      Array(1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0,
+        1, 1, 1, 0, 0, 0, 0, 0, 1),
+      Array(1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1,
+        1, 1, 0, 0, 0, 0, 1, 1, 0),
+      Array(0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0,
+        1, 1, 1, 0, 0, 0, 1, 1, 0),
+      Array(0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0,
+        1, 1, 1, 0, 0, 1, 1, 0, 0),
+      Array(0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0,
+        0, 0, 1, 1, 0, 1, 1, 1, 1),
+      Array(0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0,
+        0, 1, 0, 1, 0, 1, 0, 1, 0),
+      Array(0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0,
+        1, 1, 1, 0, 1, 1, 1, 0, 0),
+      Array(0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0,
+        0, 1, 1, 0, 1, 1, 0, 1, 0),
+      Array(1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0,
+        1, 0, 1, 0, 1, 0, 0, 1, 0),
+      Array(1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1,
+        0, 0, 1, 1, 0, 1, 1, 0, 1),
+      Array(1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1,
+        1, 1, 1, 0, 0, 1, 0, 0, 0),
+      Array(1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 0, 0, 0, 1, 1, 1),
+      Array(1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1,
+        1, 1, 1, 1, 1, 0, 0, 1, 1),
+      Array(1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0,
+        1, 0, 1, 0, 0, 0, 1, 1, 1),
+      Array(0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1,
+        1, 0, 1, 0, 1, 0, 0, 0, 1),
+      Array(0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0,
+        1, 0, 1, 1, 0, 0, 1, 1, 1),
+      Array(0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1,
+        0, 1, 0, 0, 0, 0, 1, 0, 1),
+      Array(0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0,
+        1, 0, 0, 1, 1, 1, 0, 0, 0),
+      Array(0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0,
+        1, 1, 1, 1, 1, 1, 1, 0, 0),
+      Array(0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0,
+        1, 0, 0, 0, 1, 0, 0, 1, 1),
+      Array(0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1,
+        1, 0, 1, 0, 1, 0, 1, 0, 0),
+      Array(0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1,
+        0, 1, 0, 1, 1, 1, 0, 1, 1),
+      Array(1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0,
+        1, 0, 0, 1, 0, 1, 1, 1, 0),
+      Array(1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0,
+        0, 1, 0, 0, 0, 0, 1, 0, 1),
+      Array(1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
+        0, 1, 0, 1, 0, 0, 0, 0, 1),
+      Array(1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1,
+        0, 0, 1, 0, 0, 1, 0, 1, 1),
+      Array(1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1,
+        1, 0, 1, 1, 1, 0, 0, 0, 0),
+      Array(1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0,
+        1, 1, 0, 1, 0, 0, 0, 1, 1),
+      Array(1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0,
+        0, 0, 0, 0, 1, 1, 0, 0, 1),
+      Array(1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1,
+        0, 0, 0, 1, 0, 0, 1, 0, 0),
+      Array(1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0,
+        1, 1, 0, 0, 0, 0, 1, 0, 1),
+      Array(0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0,
+        0, 0, 1, 1, 1, 0, 0, 0, 0),
+      Array(0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0,
+        1, 0, 0, 0, 1, 0, 1, 1, 0),
+      Array(0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0,
+        0, 0, 0, 0, 0, 1, 0, 0, 0),
+      Array(0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1,
+        1, 0, 1, 0, 0, 1, 1, 0, 0),
+      Array(0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0,
+        0, 1, 0, 1, 1, 0, 1, 0, 1),
+      Array(0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0,
+        0, 1, 0, 1, 1, 0, 0, 1, 1),
+      Array(0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1,
+        0, 0, 1, 0, 0, 1, 0, 1, 0),
+      Array(0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1,
+        0, 0, 1, 0, 0, 1, 1, 1, 1),
+      Array(0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1,
+        1, 1, 1, 1, 1, 0, 0, 1, 1),
+      Array(0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1,
+        0, 1, 1, 1, 0, 1, 1, 1, 0),
+      Array(0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1,
+        1, 0, 1, 1, 0, 1, 1, 1, 1),
+      Array(1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0,
+        0, 0, 0, 0, 1, 0, 1, 0, 0),
+      Array(1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1,
+        0, 0, 0, 0, 0, 1, 0, 0, 0),
+      Array(1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 0, 1, 0),
+      Array(1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0,
+        0, 1, 1, 1, 0, 1, 0, 1, 1),
+      Array(1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1,
+        1, 1, 1, 1, 1, 0, 1, 1, 1),
+      Array(1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0,
+        0, 1, 1, 1, 1, 0, 0, 1, 0),
+    )
+    val message = a :+ 1
+    val length = String
+      .format("%64s", a.length.toBinaryString)
+      .replace(" ", "0")
+      .map(_.asDigit)
+      .toArray
+    val zeroes =
+      Array.fill(512 - ((message.length + length.length - 1) % 512 + 1))(0)
+    val block = Array.concat(message, zeroes, length)
+    val blocks = block.grouped(512)
+    var h0 = Array(0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0,
+      0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1)
+    var h1 = Array(1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0,
+      1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1)
+    var h2 = Array(0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1,
+      0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0)
+    var h3 = Array(1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+      0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0)
+    var h4 = Array(0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1,
+      0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1)
+    var h5 = Array(1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0,
+      1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+    var h6 = Array(0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1,
+      1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1)
+    var h7 = Array(0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0,
+      1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1)
+    blocks.foreach { bl =>
+      val schedule = bl.grouped(32).toArray ++ Array.fill(48)(Array.fill(32)(0))
+      for i <- 0 until 48 do
+        val s0 = schedule(i)
+        val s1 = schedule(i + 1)
+        val s9 = schedule(i + 9)
+        val s14 = schedule(i + 14)
+        val o0 =
+          (rightRotate(s1, 7) lazyZip rightRotate(s1, 18) lazyZip
+            rightShift(s1, 3)).map(_ ^ _ ^ _)
+        val o1 =
+          (rightRotate(s14, 17) lazyZip rightRotate(s14, 19) lazyZip
+            rightShift(s14, 10)).map(_ ^ _ ^ _)
+        schedule(i + 16) = add4(s0, o0, s9, o1)
+      var a = h0
+      var b = h1
+      var c = h2
+      var d = h3
+      var e = h4
+      var f = h5
+      var g = h6
+      var h = h7
+      for (s, i) <- schedule.zipWithIndex do
+        val E0 =
+          (rightRotate(a, 2) lazyZip rightRotate(a, 13) lazyZip
+            rightRotate(a, 22)).map(_ ^ _ ^ _)
+        val E1 =
+          (rightRotate(e, 6) lazyZip rightRotate(e, 11) lazyZip
+            rightRotate(e, 25)).map(_ ^ _ ^ _)
+        val T1 = add5(h, E1, choice(e, f, g), K(i), s)
+        val T2 = add2(E0, maj3(a, b, c))
+        h = g
+        g = f
+        f = e
+        e = add2(d, T1)
+        d = c
+        c = b
+        b = a
+        a = add2(T1, T2)
+      end for
+      h0 = add2(h0, a)
+      h1 = add2(h1, b)
+      h2 = add2(h2, c)
+      h3 = add2(h3, d)
+      h4 = add2(h4, e)
+      h5 = add2(h5, f)
+      h6 = add2(h6, g)
+      h7 = add2(h7, h)
+    }
+    Array.concat(h0, h1, h2, h3, h4, h5, h6, h7)
+  end binArraySha256
 end StringHelpers
