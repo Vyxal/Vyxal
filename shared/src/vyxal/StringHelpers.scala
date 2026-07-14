@@ -561,7 +561,6 @@ object StringHelpers:
               x.zipWithIndex
                 .map { case (item, index) => item << (7 - index) }
                 .sum
-                .toByte
             )
           )
           .toArray
