@@ -149,7 +149,33 @@ object Elements:
     },
     addPart("ø⑦", Monad, true) {
       case VStr(a) => VList(StringHelpers.hash(a))
-      case VListOf[VNum](a) => VList(StringHelpers.hashBytes(a))
+      case VListOf[VNum](a) =>
+        if a.itr.forall((x: VAny) =>
+            x.isInstanceOf[VNum] && x.asInstanceOf[VNum].toInt < 256 && x
+              .asInstanceOf[VNum]
+              .toInt >= 0 && x.asInstanceOf[VNum].isNatural
+          )
+        then VList(StringHelpers.hashBytes(a))
+        else throw new BadLHSException("ø⑦", a)
+    },
+    addPart("øH", Monad, true) {
+      case VStr(a) =>
+        if a.toString.matches("^[0123456789abcdefABCDEF]*$") then
+          VList(
+            a.toString
+              .grouped(2)
+              .map((x: String) => VNum(Integer.parseInt(x, 16)))
+              .toSeq
+          )
+        else throw new BadLHSException("øH", a)
+      case VListOf[VNum](a) =>
+        if a.itr.forall((x: VAny) =>
+            x.isInstanceOf[VNum] && x.asInstanceOf[VNum].toInt < 256 && x
+              .asInstanceOf[VNum]
+              .toInt >= 0 && x.asInstanceOf[VNum].isNatural
+          )
+        then VStr(a.map((x: VNum) => String.format("%02x", x.toInt)).mkString)
+        else throw new BadLHSException("øH", a)
     },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
     addPart("&", Dyad, false) {

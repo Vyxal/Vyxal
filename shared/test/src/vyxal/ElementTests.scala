@@ -585,4 +585,62 @@ class ElementTests extends VyxalTests:
       }
     }
   }
+
+  describe("Element øH") {
+    describe("when given a list containing invalid numbers") {
+      it("should error") {
+        given ctx: Context = Context(testMode = true)
+        assertThrows[Exception] {
+          Interpreter.execute("#[1|5|89|256#]øH")
+        }
+        assertThrows[Exception] {
+          Interpreter.execute("#[1|5|89|3.45#]øH")
+        }
+        assertThrows[Exception] {
+          Interpreter.execute("#[1|5|89|-1#]øH")
+        }
+        assertThrows[Exception] {
+          Interpreter.execute("#[1|5|89|-256#]øH")
+        }
+        assertThrows[Exception] {
+          Interpreter.execute("#[1|5|89|2570#]øH")
+        }
+      }
+    }
+    describe("when given an invalid hex string") {
+      it("should error") {
+        given ctx: Context = Context(testMode = true)
+        assertThrows[Exception] {
+          Interpreter.execute("\"cookie3ab35b\"øH")
+        }
+        assertThrows[Exception] {
+          Interpreter.execute(
+            "\"6ab23a-b-c\"øH"
+          ) // The algorithm, if incorrect, might interpret, for example, "-c" as being -12
+        }
+      }
+    }
+  }
+  describe("Element ø⑦") {
+    describe("when given a list containing invalid numbers") {
+      it("should error") {
+        given ctx: Context = Context(testMode = true)
+        assertThrows[Exception] {
+          Interpreter.execute("#[1|5|89|256#]ø⑦")
+        }
+        assertThrows[Exception] {
+          Interpreter.execute("#[1|5|89|3.45#]ø⑦")
+        }
+        assertThrows[Exception] {
+          Interpreter.execute("#[1|5|89|-1#]ø⑦")
+        }
+        assertThrows[Exception] {
+          Interpreter.execute("#[1|5|89|-256#]ø⑦")
+        }
+        assertThrows[Exception] {
+          Interpreter.execute("#[1|5|89|2570#]ø⑦")
+        }
+      }
+    }
+  }
 end ElementTests
