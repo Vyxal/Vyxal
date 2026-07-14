@@ -536,11 +536,35 @@ object StringHelpers:
       encoding: String = "UTF-8",
   ): Array[VNum] =
     s match
-      case VStr(s) => binArraySha256(s.toString.getBytes(encoding).flatMap(b => (7 to 0 by -1).map(i => (b >> i) & 1)).toArray).group(8).map(VNum(_.zipWithIndex.map{case (item, index) => item << (7-index)}.sum)).toArray
+      case VStr(s) => binArraySha256(
+          s.toString
+            .getBytes(encoding)
+            .flatMap(b => (7 to 0 by -1).map(i => (b >> i) & 1))
+            .toArray
+        ).group(8)
+          .map(
+            VNum(
+              _.zipWithIndex
+                .map { case (item, index) => item << (7 - index) }
+                .sum
+            )
+          )
+          .toArray
 
   def hashBytes(a: VList): Array[VNum] =
     a match
-      case VListOf[VNum](a) => binArraySha256(a.flatMap(b => (7 to 0 by -1).map(i => (b.toInt >> i) & 1)).toArray).group(8).map(VNum(_.zipWithIndex.map{case (item, index) => item << (7-index)}.sum.toByte)).toArray
+      case VListOf[VNum](a) => binArraySha256(
+          a.flatMap(b => (7 to 0 by -1).map(i => (b.toInt >> i) & 1)).toArray
+        ).group(8)
+          .map(
+            VNum(
+              _.zipWithIndex
+                .map { case (item, index) => item << (7 - index) }
+                .sum
+                .toByte
+            )
+          )
+          .toArray
 
   def binArraySha256(a: Array[Int]): Array[Int] =
     def rightShift(x: Array[Int], a: Int): Array[Int] =
@@ -560,18 +584,26 @@ object StringHelpers:
         res = digit +: res
       }
       res
-    end add2
-    def add4(a: Array[Int], b: Array[Int], c: Array[Int], d: Array[Int]): Array[Int] =
-      add2(add2(a, b), add2(c, d))
+    def add4(
+        a: Array[Int],
+        b: Array[Int],
+        c: Array[Int],
+        d: Array[Int],
+    ): Array[Int] = add2(add2(a, b), add2(c, d))
     end add4
-    def add5(a: Array[Int], b: Array[Int], c: Array[Int], d: Array[Int], e: Array[Int]): Array[Int] =
-      add2(add2(add2(a, b), add2(c, d)), e)
+    def add5(
+        a: Array[Int],
+        b: Array[Int],
+        c: Array[Int],
+        d: Array[Int],
+        e: Array[Int],
+    ): Array[Int] = add2(add2(add2(a, b), add2(c, d)), e)
     end add5
-    def choice(s: Array[Int], a: Array[Int], b: Array[Int]): Array[Int] = 
-      (s lazyZip a lazyZip b).map((x, y, z) => (x & y) | ((x^1) & z))
+    def choice(s: Array[Int], a: Array[Int], b: Array[Int]): Array[Int] =
+      (s lazyZip a lazyZip b).map((x, y, z) => (x & y) | ((x ^ 1) & z))
     end choice
     def maj3(a: Array[Int], b: Array[Int], c: Array[Int]): Array[Int] =
-      (a lazyZip b lazyZip c).map((_ + _ + _)/2)
+      (a lazyZip b lazyZip c).map((_ + _ + _) / 2)
     end maj3
     val K = Array(
       Array(0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1,
