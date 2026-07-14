@@ -150,22 +150,24 @@ object Elements:
     addPart("ø⑦", Monad, true) {
       case VStr(a) => VList(StringHelpers.hash(a))
       case VListOf[VNum](a) =>
-        if (a.itr.forall(x.toInt < 256 && x.toInt >= 0 && x.isNatural)) then
+        if a.itr.forall(x.toInt < 256 && x.toInt >= 0 && x.isNatural) then
           VList(StringHelpers.hashBytes(a))
-        else
-          throw new Exceptions.BadLHSException("ø⑦", a)
+        else throw new Exceptions.BadLHSException("ø⑦", a)
     },
     addPart("øH", Monad, true) {
       case VStr(a) =>
-        if (a.toString.matches("^[0123456789abcdefABCDEF]*$")) then 
-          VList(a.toString.grouped(2).map((x: String) => VNum(Integer.parseInt(x, 16))))
-        else 
-          throw new Exceptions.BadLHSException("øH", a)
+        if a.toString.matches("^[0123456789abcdefABCDEF]*$") then
+          VList(
+            a.toString
+              .grouped(2)
+              .map((x: String) => VNum(Integer.parseInt(x, 16)))
+          )
+        else throw new Exceptions.BadLHSException("øH", a)
       case VListOf[VNum](a) =>
-        if (a.itr.forall((x: VNum) => x.toInt < 256 && x.toInt >= 0 && x.isNatural)) then
-          VStr(a.map((x: VNum) => String.format("%02x", x)).mkString)
-        else
-          throw new Exceptions.BadLHSException("øH", a)
+        if a.itr
+            .forall((x: VNum) => x.toInt < 256 && x.toInt >= 0 && x.isNatural)
+        then VStr(a.map((x: VNum) => String.format("%02x", x)).mkString)
+        else throw new Exceptions.BadLHSException("øH", a)
     },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
     addPart("&", Dyad, false) {

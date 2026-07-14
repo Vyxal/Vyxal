@@ -614,7 +614,9 @@ class ElementTests extends VyxalTests:
           Interpreter.execute("\"cookie3ab35b\"øH")
         }
         assertThrows[Exception] {
-          Interpreter.execute("\"6ab23a-b-c\"øH") // The algorithm could interpret "-c" as being -12 for example
+          Interpreter.execute(
+            "\"6ab23a-b-c\"øH"
+          ) // The algorithm could interpret "-c" as being -12 for example
         }
       }
     }
