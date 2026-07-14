@@ -218,7 +218,7 @@ object ElementInformation:
         ),
       ),
       AddElement(
-        symbol = "#@",
+        symbol = "#.",
         keywords = Seq("sleep", "wait", "pause", "delay", "pause-execution"),
         arity = 1,
         Options(),
