@@ -542,9 +542,9 @@ object StringHelpers:
             .flatMap(b => (7 to 0 by -1).map(i => (b >> i) & 1))
             .toArray
         ).grouped(8)
-          .map(
+          .map((x: Int) =>
             VNum(
-              _.zipWithIndex
+              x.zipWithIndex
                 .map { case (item, index) => item << (7 - index) }
                 .sum
             )
@@ -556,9 +556,9 @@ object StringHelpers:
       case VListOf[VNum](a) => binArraySha256(
           a.flatMap(b => (7 to 0 by -1).map(i => (b.toInt >> i) & 1)).toArray
         ).grouped(8)
-          .map(
+          .map((x: Int) =>
             VNum(
-              _.zipWithIndex
+              x.zipWithIndex
                 .map { case (item, index) => item << (7 - index) }
                 .sum
                 .toByte
