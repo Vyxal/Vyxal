@@ -541,7 +541,7 @@ object StringHelpers:
             .getBytes(encoding)
             .flatMap(b => (7 to 0 by -1).map(i => (b >> i) & 1))
             .toArray
-        ).group(8)
+        ).grouped(8)
           .map(
             VNum(
               _.zipWithIndex
@@ -555,7 +555,7 @@ object StringHelpers:
     a match
       case VListOf[VNum](a) => binArraySha256(
           a.flatMap(b => (7 to 0 by -1).map(i => (b.toInt >> i) & 1)).toArray
-        ).group(8)
+        ).grouped(8)
           .map(
             VNum(
               _.zipWithIndex
@@ -575,7 +575,7 @@ object StringHelpers:
     end rightRotate
     def add2(a: Array[Int], b: Array[Int]): Array[Int] =
       var carry = 0
-      var res = Array()
+      var res = Array[Int]()
       val findCarry = Array(0, 0, 1, 1)
       (a.reverse lazyZip b.reverse).foreach { (x, y) =>
         val result = x + y + carry
@@ -603,7 +603,7 @@ object StringHelpers:
       (s lazyZip a lazyZip b).map((x, y, z) => (x & y) | ((x ^ 1) & z))
     end choice
     def maj3(a: Array[Int], b: Array[Int], c: Array[Int]): Array[Int] =
-      (a lazyZip b lazyZip c).map((_ + _ + _) / 2)
+      (a lazyZip b lazyZip c).map((x: Int, y: Int, z: Int) => (x + y + z) / 2)
     end maj3
     val K = Array(
       Array(0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1,
@@ -761,8 +761,8 @@ object StringHelpers:
       1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1)
     var h7 = Array(0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0,
       1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1)
-    blocks.foreach { b =>
-      val schedule = b.group(32).toArray ++ Array.fill(48)(Array.fill(32)(0))
+    blocks.foreach { bl =>
+      val schedule = bl.grouped(32).toArray ++ Array.fill(48)(Array.fill(32)(0))
       for i <- 0 until 48 do
         val s0 = schedule(i)
         val s1 = schedule(i + 1)
