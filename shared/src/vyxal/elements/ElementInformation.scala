@@ -254,18 +254,21 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "øH",
-        keywords = Seq("nums-to-hex", "hex-to-nums", "bytes-to-hex", "hex-to-bytes"),
+        keywords =
+          Seq("nums-to-hex", "hex-to-nums", "bytes-to-hex", "hex-to-bytes"),
         arity = 1,
         Options(vectorises = true),
         Overload(
           name = "Bytes to Hex",
           args = Seq("lst[num]"),
-          description = "Convert #1 as a list of numbers representing bytes into a hex string",
+          description =
+            "Convert #1 as a list of numbers representing bytes into a hex string",
         ),
         Overload(
           name = "Hex to Bytes",
           args = Seq("str"),
-          description = "Convert #1 as a hex string into a list of numbers representing bytes"
+          description =
+            "Convert #1 as a hex string into a list of numbers representing bytes",
         ),
       ),
       AddElement(
