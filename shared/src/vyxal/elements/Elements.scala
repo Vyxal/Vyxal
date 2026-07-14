@@ -174,7 +174,7 @@ object Elements:
               .asInstanceOf[VNum]
               .toInt >= 0 && x.asInstanceOf[VNum].isNatural
           )
-        then VStr(a.map((x: VNum) => String.format("%02x", x)).mkString)
+        then VStr(a.map((x: VNum) => String.format("%02x", x.toInt)).mkString)
         else throw new BadLHSException("øH", a)
     },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
