@@ -621,6 +621,43 @@ class ElementTests extends VyxalTests:
       }
     }
   }
+
+  describe("Element ø6") {
+    describe("when given a list containing invalid numbers") {
+      it("should error") {
+        given ctx: Context = Context(testMode = true)
+        assertThrows[Exception] {
+          Interpreter.execute("#[1|5|89|256#]ø6")
+        }
+        assertThrows[Exception] {
+          Interpreter.execute("#[1|5|89|3.45#]ø6")
+        }
+        assertThrows[Exception] {
+          Interpreter.execute("#[1|5|89|-1#]ø6")
+        }
+        assertThrows[Exception] {
+          Interpreter.execute("#[1|5|89|-256#]ø6")
+        }
+        assertThrows[Exception] {
+          Interpreter.execute("#[1|5|89|2570#]ø6")
+        }
+      }
+    }
+    describe("when given an invalid hex string") {
+      it("should error") {
+        given ctx: Context = Context(testMode = true)
+        assertThrows[Exception] {
+          Interpreter.execute("\"cookie3ab^<>^35b\"ø6")
+        }
+        assertThrows[Exception] {
+          Interpreter.execute(
+            "\"6ab23a-b-c--)\"ø6"
+          )
+        }
+      }
+    }
+  }
+
   describe("Element ø⑦") {
     describe("when given a list containing invalid numbers") {
       it("should error") {

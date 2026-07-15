@@ -418,6 +418,7 @@ Element, Modifier, and Syntax Reference
 | <code>∆⧢</code> | <code>root-of-unity</code> | 1 | vec  | **Principal Root of Unity** (`num`): Principal #1-th root of unity (e^(2i * pi / #1)) |
 | <code>ø⩔</code> | <code>codepage-find</code></br><code>codepage-index</code> | 1 | vec  | **Codepage Character** (`num`): Get char at codepage index #1</br>**Index in Codepage** (`str`): Index of #1 in codepage. With string.len > 1, vectorises over each character |
 | <code>ø(</code> | <code>parenthesise</code> | 1 | vec  | **Parenthesise** (`str`): Surround #1 with parentheses |
+| <code>ø6</code> | <code>nums-to-base64</code></br><code>bytes-to-base64</code></br><code>base64-to-nums</code></br><code>base64-to-bytes</code> | 1 | vec  | **Bytes to Base64** (`lst[num]`): Convert #1 as a list of numbers representing bytes into a base64 string</br>**Base64 to Bytes** (`str`): Convert #1 as a base64 string into a list of numbers representing bytes |
 | <code>ø<</code> | <code>angle-bracketify</code> | 1 | vec  | **Angle Bracketify** (`str`): Surround #1 with angle brackets |
 | <code>øA</code> | <code>letter-to-number</code></br><code>number-to-letter</code></br><code>letter-number-swap</code></br><code>number-letter-swap</code></br><code>a1-swap</code> | 1 | vec  | **Letter to Number** (`str`): the index of #1 in the alphabet (one-indexed)</br>**Number to Letter** (`num`): the letter at index #1 in the alphabet (one-indexed) |
 | <code>øC</code> | <code>center</code> | 1 |   | **Center** (`any`): Center a list of strings |

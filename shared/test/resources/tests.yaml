@@ -346,6 +346,18 @@
   - {in: [[6, 9], "0"], out: [6, 9]}
   - {in: [[6, 9], [1, 2, 3, 4, 5]], out: [0, 0, 0, 6, 9]}
 
+"ø6":
+  Bytes-to-64:
+    - {in: [[99, 111, 111, 107, 105, 101]], out: "Y29va2ll"}
+    - {in: [[99, 111, 111, 107, 105, 101, 70]], out: "Y29va2llRg=="}
+    - {in: [[99, 111, 111, 107, 105, 101, 70, 51]], out: "Y29va2llRjM="}
+    - {in: [[]], out: ""}
+  64-to-Bytes:
+    - {in: ["Y29va2ll"], out: [99, 111, 111, 107, 105, 101]}
+    - {in: ["Y29va2llRg=="], out: [99, 111, 111, 107, 105, 101, 70]}
+    - {in: ["Y29va2llRjM="], out: [99, 111, 111, 107, 105, 101, 70, 51]}
+    - {in: [""], out: []}
+
 ":":
   # todo(lyxal): make flag to give default value when popping off empty stack
   #              without having to set online = true
