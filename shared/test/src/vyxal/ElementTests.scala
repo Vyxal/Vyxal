@@ -622,7 +622,7 @@ class ElementTests extends VyxalTests:
     }
   }
 
-describe("Element ø6") {
+  describe("Element ø6") {
     describe("when given a list containing invalid numbers") {
       it("should error") {
         given ctx: Context = Context(testMode = true)
