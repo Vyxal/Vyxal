@@ -1,6 +1,6 @@
 ## Elements
 
-- base64 encode/decode - Seggan
+- ~~base64 encode/decode - Seggan~~ Implemented by PlaceReporter99/The Empty String Photographer
 - cumulative right reduce - Steffan
 - a.center(b, filler=c) - Steffan
 - deck shuffle (interleave both halves of list together) (we already have deck unshuffle, uninterleave, `y`) - Steffan
