@@ -193,7 +193,7 @@ object Elements:
           )
         then VStr(Base64.getEncoder.encodeToString(a.map((x: VNum) => x.toByte).itr.toArray))
         else throw new BadLHSException("ø6", a)
-    }
+    },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
     addPart("&", Dyad, false) {
       case (VList(a), b) => VList(a.itr :+ b)
