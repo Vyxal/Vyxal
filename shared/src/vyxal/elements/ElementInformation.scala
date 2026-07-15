@@ -273,8 +273,12 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "ø6",
-        keywords =
-          Seq("nums-to-base64", "bytes-to-base64", "base64-to-nums", "base64-to-bytes"),
+        keywords = Seq(
+          "nums-to-base64",
+          "bytes-to-base64",
+          "base64-to-nums",
+          "base64-to-bytes",
+        ),
         arity = 1,
         Options(vectorises = true),
         Overload(
