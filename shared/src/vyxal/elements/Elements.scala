@@ -181,9 +181,9 @@ object Elements:
     addPart("ø6", Monad, true) {
       case VStr(a) =>
         try {
-          VList(Base64.getDecoder.decode(a.toString).map((x: Byte) => x & 0xFF).toSeq)
+          VList(Base64.getDecoder.decode(a.toString).map((x: Byte) => VNum(x & 0xFF)).toSeq)
         } catch {
-          case NonFatal(e) => throw new BadLHSException("ø6", a)
+          case _ => throw new BadLHSException("ø6", a)
         }
       case VListOf[VNum](a) =>
         if a.itr.forall((x: VAny) =>
@@ -191,7 +191,7 @@ object Elements:
               .asInstanceOf[VNum]
               .toInt >= 0 && x.asInstanceOf[VNum].isNatural
           )
-        then VStr(Base64.getEncoder.encodeToString(a.map((x: VNum) => x.toByte).itr.toArray))
+        then VStr(Base64.getEncoder.encodeToString(a.map((x: VNum) => if x.toByte).toArray))
         else throw new BadLHSException("ø6", a)
     },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
