@@ -12,6 +12,7 @@ import vyxal.ListHelpers.makeIterable
 import vyxal.MiscHelpers.defaultEmpty
 
 import java.time.{Duration as JDuration, ZoneId, ZonedDateTime}
+import java.util.Base64
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn
 
@@ -177,6 +178,22 @@ object Elements:
         then VStr(a.map((x: VNum) => String.format("%02x", x.toInt)).mkString)
         else throw new BadLHSException("øH", a)
     },
+    addPart("ø6", Monad, true) {
+      case VStr(a) =>
+        try {
+          VList(Base64.getDecoder.decode(a.toString).map((x: Byte) => x & 0xFF).toSeq)
+        } catch {
+          case NonFatal(e) => throw new BadLHSException("ø6", a)
+        }
+      case VListOf[VNum](a) =>
+        if a.itr.forall((x: VAny) =>
+            x.isInstanceOf[VNum] && x.asInstanceOf[VNum].toInt < 256 && x
+              .asInstanceOf[VNum]
+              .toInt >= 0 && x.asInstanceOf[VNum].isNatural
+          )
+        then VStr(Base64.getEncoder.encodeToString(a.map((x: VNum) => x.toByte).itr.toArray))
+        else throw new BadLHSException("ø6", a)
+    }
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
     addPart("&", Dyad, false) {
       case (VList(a), b) => VList(a.itr :+ b)

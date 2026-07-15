@@ -272,6 +272,25 @@ object ElementInformation:
         ),
       ),
       AddElement(
+        symbol = "ø6",
+        keywords =
+          Seq("nums-to-base64", "bytes-to-base64", "base64-to-nums", "base64-to-bytes"),
+        arity = 1,
+        Options(vectorises = true),
+        Overload(
+          name = "Bytes to Base64",
+          args = Seq("lst[num]"),
+          description =
+            "Convert #1 as a list of numbers representing bytes into a base64 string",
+        ),
+        Overload(
+          name = "Base64 to Bytes",
+          args = Seq("str"),
+          description =
+            "Convert #1 as a base64 string into a list of numbers representing bytes",
+        ),
+      ),
+      AddElement(
         symbol = "ʀ",
         keywords = Seq(
           "zero-range",
