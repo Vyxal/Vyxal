@@ -191,7 +191,7 @@ object Elements:
               .asInstanceOf[VNum]
               .toInt >= 0 && x.asInstanceOf[VNum].isNatural
           )
-        then VStr(Base64.getEncoder.encodeToString(a.map((x: VNum) => if x.toByte).toArray))
+        then VStr(Base64.getEncoder.encodeToString(a.map((x: VNum) => x.toByte).toArray))
         else throw new BadLHSException("ø6", a)
     },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
