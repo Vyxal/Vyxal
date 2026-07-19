@@ -538,7 +538,10 @@ case class VTimer(dur: VDuration) extends VAny, Ordered[VTimer]:
     timeRemaining.compare(that.timeRemaining)
   override def equals(obj: Any): Boolean =
     obj match
-      case a: VTimer => (paused == a.paused) && (startDuration == a.startDuration) && (timeRemainingAfterLastPause == a.timeRemainingAfterLastPause) && (lastUnpause == a.lastUnpause)
+      case a: VTimer => (paused == a.paused) &&
+        (startDuration == a.startDuration) &&
+        (timeRemainingAfterLastPause == a.timeRemainingAfterLastPause) &&
+        (lastUnpause == a.lastUnpause)
       case _ => false
 
   override def toString: String =
@@ -548,14 +551,10 @@ case class VTimer(dur: VDuration) extends VAny, Ordered[VTimer]:
 end VTimer
 
 object VTimer:
-  def apply(d: VNum): VTimer =
-    VTimer(VDuration(JDuration.ofMillis(d.toLong)))
-  def apply(d: Long): VTimer =
-    VTimer(VDuration(JDuration.ofMillis(d)))
-  def apply(d: JDuration): VTimer =
-    VTimer(VDuration(d))
-  def apply(d: VDuration): VTimer =
-    VTimer(d)
+  def apply(d: VNum): VTimer = VTimer(VDuration(JDuration.ofMillis(d.toLong)))
+  def apply(d: Long): VTimer = VTimer(VDuration(JDuration.ofMillis(d)))
+  def apply(d: JDuration): VTimer = VTimer(VDuration(d))
+  def apply(d: VDuration): VTimer = VTimer(d)
   def stopwatch: VTimer = VTimer(VDuration(JDuration.ofMillis(Long.MaxValue)))
 
 class VNum(val underlying: Complex[Real]) extends VAny, Ordered[VNum]:
