@@ -94,6 +94,8 @@ type VVal = VNum | VStr | VDate | VDuration
 type VPhysical = VNum | VStr | VList
 type VIter = VList | VStr
 type VTemporal = VDate | VDuration
+type VWaiter = VNum | VDuration | VTimer
+type VDynamic = VTimer
 
 object conversions:
   given Conversion[String, VAny] = VStr(_)
@@ -492,6 +494,68 @@ object VDuration:
 final case class VList(lst: Seq[VAny]) extends VAny:
   override def toString(): String =
     lst.map(_.toString).mkString("[ ", " | ", " ]")
+
+case class VTimer(dur: VDuration) extends VAny, Ordered[VTimer]:
+  val startDuration = dur.toMillis.toLong
+  private[this] var _timeRemainingAfterLastPause: Long = dur.toMillis.toLong
+  private[this] var _paused: Boolean = true
+  private[this] var _lastUnpause: Long = System.currentTimeMillis
+  def paused: Boolean = _paused
+  def running: Boolean = !_paused
+  def timeRemaining: Long = 
+    if _paused then
+      _timeRemainingAfterLastPause
+    else _timeRemainingAfterLastPause - (System.currentTimeMillis - _lastUnpause)
+  def timeElapsed: Long = startDuration - timeRemaining
+  def timeRemainingAfterLastPause: Long = _timeRemainingAfterLastPause
+  def lastUnpause: Long = _lastUnpause
+  def actualTimeRemaining: Long = timeRemaining max 0L
+  def unpause: VNum = 
+    if _paused then
+      _lastUnpause = System.currentTimeMillis
+      _paused = false
+      VNum(1)
+    else VNum(0)
+  def pause: VNum = 
+    if (!_paused) then
+      _timeRemainingAfterLastPause = timeRemaining
+      _paused = true
+      VNum(1)
+    else VNum(0)
+  def toggle: VNum = 
+    if _paused then
+      unpause
+      VNum(1)
+    else
+      pause
+      VNum(0)
+  def restart: VNum =
+    pause
+    _timeRemainingAfterLastPause = startDuration
+    unpause
+    VNum(1)
+  override def compare(that: VTimer): Int =
+    timeRemaining.compare(that.timeRemaining)
+  override def equals(obj: Any): Boolean =
+    obj match
+      case a => VTimer => (paused == a.paused) && (startDuration == a.startDuration) && (timeRemainingAfterLastPause == a.timeRemainingAfterLastPause) && (lastUnpause == a.lastUnpause)
+      case _ => false
+
+  override def toString: String =
+    s"${JDuration.ofMillis(startDuration)} timer with ${JDuration.ofMillis(timeRemaining)} remaining"
+
+  override def toBool: Boolean =
+    timeRemaining > 0
+
+object VTimer:
+  def apply(d: Long): VTimer =
+    VDuration(JDuration.ofMillis(d))
+  def apply(d: JDuration): VTimer =
+    VDuration(d)
+  def apply(d: VDuration): VTimer =
+    d
+  def stopwatch: VTimer = VTimer(VDuration(JDuration.ofMillis(Long.MaxValue)))
+
 
 class VNum(val underlying: Complex[Real]) extends VAny, Ordered[VNum]:
   def real: Real = underlying.real

@@ -1588,6 +1588,7 @@ object Elements:
       case VStr(a) => a.nonEmpty
       case d: VDate => d.toBool
       case dur: VDuration => dur.toBool
+      case t: VTimer => t.toBool
     },
     addPart("◌", Monad, true) {
       case a: VNum => NumberHelpers.round(a)
@@ -2018,6 +2019,23 @@ object Elements:
       case a: VList =>
         // If the list contains strings, join with spaces and parse
         VDate.parse(a.lst.map(StringHelpers.vyToString(_)).mkString(" "))
+    },
+    addPart("#T", Monad, true) {
+      case a: VNum => VTimer(a)
+      case a: VDuration => VTimer(a)
+      case a: VTimer =>
+        a.toggle
+        a
+    },
+    addPart("#^", Monad, true) {
+      case a: VTimer =>
+        a.unpause
+        a
+    },
+    addPart("#v", Monad, true) {
+      case a: VTimer =>
+        a.pause
+        a
     },
     "#Z" ->
       direct(Monad) {
