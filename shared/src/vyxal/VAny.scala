@@ -502,27 +502,27 @@ case class VTimer(dur: VDuration) extends VAny, Ordered[VTimer]:
   private[this] var _lastUnpause: Long = System.currentTimeMillis
   def paused: Boolean = _paused
   def running: Boolean = !_paused
-  def timeRemaining: Long = 
-    if _paused then
-      _timeRemainingAfterLastPause
-    else _timeRemainingAfterLastPause - (System.currentTimeMillis - _lastUnpause)
+  def timeRemaining: Long =
+    if _paused then _timeRemainingAfterLastPause
+    else
+      _timeRemainingAfterLastPause - (System.currentTimeMillis - _lastUnpause)
   def timeElapsed: Long = startDuration - timeRemaining
   def timeRemainingAfterLastPause: Long = _timeRemainingAfterLastPause
   def lastUnpause: Long = _lastUnpause
   def actualTimeRemaining: Long = timeRemaining max 0L
-  def unpause: VNum = 
+  def unpause: VNum =
     if _paused then
       _lastUnpause = System.currentTimeMillis
       _paused = false
       VNum(1)
     else VNum(0)
-  def pause: VNum = 
-    if (!_paused) then
+  def pause: VNum =
+    if !_paused then
       _timeRemainingAfterLastPause = timeRemaining
       _paused = true
       VNum(1)
     else VNum(0)
-  def toggle: VNum = 
+  def toggle: VNum =
     if _paused then
       unpause
       VNum(1)
@@ -544,8 +544,8 @@ case class VTimer(dur: VDuration) extends VAny, Ordered[VTimer]:
   override def toString: String =
     s"${JDuration.ofMillis(startDuration)} timer with ${JDuration.ofMillis(timeRemaining)} remaining"
 
-  override def toBool: Boolean =
-    timeRemaining > 0
+  override def toBool: Boolean = timeRemaining > 0
+end VTimer
 
 object VTimer:
   def apply(d: VNum): VTimer =
@@ -557,7 +557,6 @@ object VTimer:
   def apply(d: VDuration): VTimer =
     VTimer(d)
   def stopwatch: VTimer = VTimer(VDuration(JDuration.ofMillis(Long.MaxValue)))
-
 
 class VNum(val underlying: Complex[Real]) extends VAny, Ordered[VNum]:
   def real: Real = underlying.real
