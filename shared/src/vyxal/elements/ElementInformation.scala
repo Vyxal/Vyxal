@@ -295,6 +295,60 @@ object ElementInformation:
         ),
       ),
       AddElement(
+        symbol = "#T",
+        keywords = Seq("set-timer", "toggle-timer"),
+        arity = 1,
+        Options(vectorises = true),
+        Overload(
+          name = "Set timer",
+          args = Seq("num"),
+          description = "Create a (paused) timer for the given number of milliseconds",
+        ),
+        Overload(
+          name = "Set timer",
+          args = Seq("dur"),
+          description = "Create a (paused) timer for the given duration",
+        ),
+        Overload(
+          name = "Toggle timer",
+          args = Seq("timer"),
+          description = "Toggles whether the timer is paused or not",
+        ),
+      ),
+      AddElement(
+        symbol = "#^",
+        keywords = Seq("start-timer", "unpause-timer"),
+        arity = 1,
+        Options(vectorises = true),
+        Overload(
+          name = "Unpause timer",
+          args = Seq("timer"),
+          description = "Unpauses timer if paused, does nothing otherwise",
+        ),
+      ),
+      AddElement(
+        symbol = "#v",
+        keywords = Seq("stop-timer", "pause-timer"),
+        arity = 1,
+        Options(vectorises = true),
+        Overload(
+          name = "Pause timer",
+          args = Seq("timer"),
+          description = "Pauses timer if unpaused, does nothing otherwise",
+        ),
+      ),
+      AddElement(
+        symbol = "#>",
+        keywords = Seq("timer-info"),
+        arity = 1,
+        Options(vectorises = true),
+        Overload(
+          name = "Get timer info",
+          args = Seq("timer"),
+          description = "Get timer info as a list: VList(timeElapsed: dur, timeRemaining: dur, paused: VNum)"
+        ),
+      ),
+      AddElement(
         symbol = "ʀ",
         keywords = Seq(
           "zero-range",

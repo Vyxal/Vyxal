@@ -545,7 +545,7 @@ case class VTimer(dur: VDuration) extends VAny, Ordered[VTimer]:
       case _ => false
 
   override def toString: String =
-    s"${JDuration.ofMillis(startDuration)} timer with ${JDuration.ofMillis(timeRemaining)} remaining"
+    s"${JDuration.ofMillis(startDuration)} timer${if paused then " (paused)" else ""} with ${JDuration.ofMillis(timeRemaining)} remaining"
 
   override def toBool: Boolean = timeRemaining > 0
 end VTimer
