@@ -696,7 +696,7 @@ class ElementTests extends VyxalTests:
                 VNum(1),
               )
             )
-          )(l)
+          )(VList(l))
         case res => fail(s"Expected a list, got $res")
     }
     it("should be able to time things correctly") {
