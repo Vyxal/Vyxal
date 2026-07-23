@@ -723,7 +723,7 @@ class ElementTests extends VyxalTests:
                 VNum(0),
               )
             )
-          )(l)
+          )(VList(l))
         case res => fail(s"Expected a list, got $res")
       Interpreter.execute(AST.Command("#v"))
       Interpreter.execute(AST.Command("#v"))
@@ -738,7 +738,7 @@ class ElementTests extends VyxalTests:
                 VNum(1),
               )
             )
-          )(l)
+          )(VList(l))
         case res => fail(s"Expected a list, got $res")
       Interpreter.execute(AST.Command("#T"))
       val a3 = ctx.pop()
@@ -752,7 +752,7 @@ class ElementTests extends VyxalTests:
                 VNum(0),
               )
             )
-          )(l)
+          )(VList(l))
         case res => fail(s"Expected a list, got $res")
       Interpreter.execute(AST.Command("#T"))
       val a4 = ctx.pop()
@@ -766,7 +766,7 @@ class ElementTests extends VyxalTests:
                 VNum(1),
               )
             )
-          )(l)
+          )(VList(l))
         case res => fail(s"Expected a list, got $res")
     }
   }
