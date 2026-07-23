@@ -688,7 +688,15 @@ class ElementTests extends VyxalTests:
       Interpreter.execute(AST.Command("#T"))
       Interpreter.execute(AST.Command("#>"))
       ctx.pop() match
-        case VList(l) => assertResult(VList(Seq(VDuration(JDuration.ofMillis(0)), VDuration(JDuration.ofmillis(1000)), VNum(1))))(l)
+        case VList(l) => assertResult(
+            VList(
+              Seq(
+                VDuration(JDuration.ofMillis(0)),
+                VDuration(JDuration.ofmillis(1000)),
+                VNum(1),
+              )
+            )
+          )(l)
         case res => fail(s"Expected a list, got $res")
     }
     it("should be able to time things correctly") {
@@ -703,20 +711,52 @@ class ElementTests extends VyxalTests:
       Interpreter.execute(AST.Command("#^"))
       Interpreter.execute(AST.Command("#^"))
       ctx.peek() match
-        case VList(l) => assertResult(VList(Seq(VDuration(JDuration.ofMillis(0)), VDuration(JDuration.ofmillis(1000)), VNum(0))))(l)
+        case VList(l) => assertResult(
+            VList(
+              Seq(
+                VDuration(JDuration.ofMillis(0)),
+                VDuration(JDuration.ofmillis(1000)),
+                VNum(0),
+              )
+            )
+          )(l)
         case res => fail(s"Expected a list, got $res")
       Interpreter.execute(AST.Command("#v"))
       Interpreter.execute(AST.Command("#v"))
       ctx.peek() match
-        case VList(l) => assertResult(VList(Seq(VDuration(JDuration.ofMillis(0)), VDuration(JDuration.ofmillis(1000)), VNum(1))))(l)
+        case VList(l) => assertResult(
+            VList(
+              Seq(
+                VDuration(JDuration.ofMillis(0)),
+                VDuration(JDuration.ofmillis(1000)),
+                VNum(1),
+              )
+            )
+          )(l)
         case res => fail(s"Expected a list, got $res")
       Interpreter.execute(AST.Command("#T"))
       ctx.peek() match
-        case VList(l) => assertResult(VList(Seq(VDuration(JDuration.ofMillis(0)), VDuration(JDuration.ofmillis(1000)), VNum(0))))(l)
+        case VList(l) => assertResult(
+            VList(
+              Seq(
+                VDuration(JDuration.ofMillis(0)),
+                VDuration(JDuration.ofmillis(1000)),
+                VNum(0),
+              )
+            )
+          )(l)
         case res => fail(s"Expected a list, got $res")
       Interpreter.execute(AST.Command("#T"))
       ctx.peek() match
-        case VList(l) => assertResult(VList(Seq(VDuration(JDuration.ofMillis(0)), VDuration(JDuration.ofmillis(1000)), VNum(1))))(l)
+        case VList(l) => assertResult(
+            VList(
+              Seq(
+                VDuration(JDuration.ofMillis(0)),
+                VDuration(JDuration.ofmillis(1000)),
+                VNum(1),
+              )
+            )
+          )(l)
         case res => fail(s"Expected a list, got $res")
     }
   }
