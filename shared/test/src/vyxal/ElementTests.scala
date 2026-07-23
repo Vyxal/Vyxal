@@ -685,8 +685,8 @@ class ElementTests extends VyxalTests:
     it("should be able to convert nums/durs to timers") {
       given ctx: Context = Context(testMode = true)
       ctx.push(1000)
-      Interpreter.execute(AST.command("#T"))
-      Interpreter.execute(AST.command("#>"))
+      Interpreter.execute(AST.Command("#T"))
+      Interpreter.execute(AST.Command("#>"))
       ctx.pop() match
         case VList(l) => assertResult(VList(Seq(VDuration(JDuration.ofMillis(0)), VDuration(JDuration.ofmillis(1000)), VNum(1))))(l)
         case res => fail(s"Expected a list, got $res")
@@ -699,22 +699,22 @@ class ElementTests extends VyxalTests:
     }
     it("unpausing and pausing should be idempotent, but toggling shouldn't") {
       ctx.push(1000)
-      Interpreter.execute(AST.command("#T"))
-      Interpreter.execute(AST.command("#^"))
-      Interpreter.execute(AST.command("#^"))
+      Interpreter.execute(AST.Command("#T"))
+      Interpreter.execute(AST.Command("#^"))
+      Interpreter.execute(AST.Command("#^"))
       ctx.peek() match
         case VList(l) => assertResult(VList(Seq(VDuration(JDuration.ofMillis(0)), VDuration(JDuration.ofmillis(1000)), VNum(0))))(l)
         case res => fail(s"Expected a list, got $res")
-      Interpreter.execute(AST.command("#v"))
-      Interpreter.execute(AST.command("#v"))
+      Interpreter.execute(AST.Command("#v"))
+      Interpreter.execute(AST.Command("#v"))
       ctx.peek() match
         case VList(l) => assertResult(VList(Seq(VDuration(JDuration.ofMillis(0)), VDuration(JDuration.ofmillis(1000)), VNum(1))))(l)
         case res => fail(s"Expected a list, got $res")
-      Interpreter.execute(AST.command("#T"))
+      Interpreter.execute(AST.Command("#T"))
       ctx.peek() match
         case VList(l) => assertResult(VList(Seq(VDuration(JDuration.ofMillis(0)), VDuration(JDuration.ofmillis(1000)), VNum(0))))(l)
         case res => fail(s"Expected a list, got $res")
-      Interpreter.execute(AST.command("#T"))
+      Interpreter.execute(AST.Command("#T"))
       ctx.peek() match
         case VList(l) => assertResult(VList(Seq(VDuration(JDuration.ofMillis(0)), VDuration(JDuration.ofmillis(1000)), VNum(1))))(l)
         case res => fail(s"Expected a list, got $res")
