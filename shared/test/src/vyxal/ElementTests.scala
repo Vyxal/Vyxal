@@ -691,8 +691,8 @@ class ElementTests extends VyxalTests:
         case VList(l) => assertResult(
             VList(
               Seq(
-                VDuration(JDuration.ofMillis(0)),
-                VDuration(JDuration.ofmillis(1000)),
+                VDuration(Duration.ofMillis(0)),
+                VDuration(Duration.ofmillis(1000)),
                 VNum(1),
               )
             )
@@ -700,12 +700,14 @@ class ElementTests extends VyxalTests:
         case res => fail(s"Expected a list, got $res")
     }
     it("should be able to time things correctly") {
+      given ctx: Context = Context(testMode = true)
       Interpreter.execute("{5500#T#>|1000#.¥›£}¥")
       ctx.pop() match
-        case n: VNum => assertResult(5)(l)
+        case n: VNum => assertResult(5)(n)
         case res => fail(s"Expected a number, got $res")
     }
     it("unpausing and pausing should be idempotent, but toggling shouldn't") {
+      given ctx: Context = Context(testMode = true)
       ctx.push(1000)
       Interpreter.execute(AST.Command("#T"))
       Interpreter.execute(AST.Command("#^"))
@@ -714,8 +716,8 @@ class ElementTests extends VyxalTests:
         case VList(l) => assertResult(
             VList(
               Seq(
-                VDuration(JDuration.ofMillis(0)),
-                VDuration(JDuration.ofmillis(1000)),
+                VDuration(Duration.ofMillis(0)),
+                VDuration(Duration.ofmillis(1000)),
                 VNum(0),
               )
             )
@@ -727,8 +729,8 @@ class ElementTests extends VyxalTests:
         case VList(l) => assertResult(
             VList(
               Seq(
-                VDuration(JDuration.ofMillis(0)),
-                VDuration(JDuration.ofmillis(1000)),
+                VDuration(Duration.ofMillis(0)),
+                VDuration(Duration.ofmillis(1000)),
                 VNum(1),
               )
             )
@@ -739,8 +741,8 @@ class ElementTests extends VyxalTests:
         case VList(l) => assertResult(
             VList(
               Seq(
-                VDuration(JDuration.ofMillis(0)),
-                VDuration(JDuration.ofmillis(1000)),
+                VDuration(Duration.ofMillis(0)),
+                VDuration(Duration.ofmillis(1000)),
                 VNum(0),
               )
             )
@@ -751,8 +753,8 @@ class ElementTests extends VyxalTests:
         case VList(l) => assertResult(
             VList(
               Seq(
-                VDuration(JDuration.ofMillis(0)),
-                VDuration(JDuration.ofmillis(1000)),
+                VDuration(Duration.ofMillis(0)),
+                VDuration(Duration.ofmillis(1000)),
                 VNum(1),
               )
             )
