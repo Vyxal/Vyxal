@@ -302,7 +302,8 @@ object ElementInformation:
         Overload(
           name = "Set timer",
           args = Seq("num"),
-          description = "Create a (paused) timer for the given number of milliseconds",
+          description =
+            "Create a (paused) timer for the given number of milliseconds",
         ),
         Overload(
           name = "Set timer",
@@ -345,7 +346,8 @@ object ElementInformation:
         Overload(
           name = "Get timer info",
           args = Seq("timer"),
-          description = "Get timer info as a list: VList(timeElapsed: dur, timeRemaining: dur, paused: VNum)"
+          description =
+            "Get timer info as a list: VList(timeElapsed: dur, timeRemaining: dur, paused: VNum)",
         ),
       ),
       AddElement(

@@ -2038,7 +2038,13 @@ object Elements:
         a
     },
     addPart("#>", Monad, true) {
-      case a: VTimer => VList(Seq(VDuration(JDuration.ofMillis(a.timeElapsed)), VDuration(JDuration.ofMillis(a.timeRemaining)), if a.paused then VNum(1) else VNum(0)))
+      case a: VTimer => VList(
+          Seq(
+            VDuration(JDuration.ofMillis(a.timeElapsed)),
+            VDuration(JDuration.ofMillis(a.timeRemaining)),
+            if a.paused then VNum(1) else VNum(0),
+          )
+        )
     },
     "#Z" ->
       direct(Monad) {
