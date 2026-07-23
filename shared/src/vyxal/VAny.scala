@@ -554,7 +554,6 @@ object VTimer:
   def apply(d: VNum): VTimer = VTimer(VDuration(JDuration.ofMillis(d.toLong)))
   def apply(d: Long): VTimer = VTimer(VDuration(JDuration.ofMillis(d)))
   def apply(d: JDuration): VTimer = VTimer(VDuration(d))
-  def apply(d: VDuration): VTimer = VTimer(d)
   def stopwatch: VTimer = VTimer(VDuration(JDuration.ofMillis(Long.MaxValue)))
 
 class VNum(val underlying: Complex[Real]) extends VAny, Ordered[VNum]:
