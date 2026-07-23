@@ -692,7 +692,7 @@ class ElementTests extends VyxalTests:
             VList(
               Seq(
                 VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofmillis(1000)),
+                VDuration(Duration.ofMillis(1000)),
                 VNum(1),
               )
             )
@@ -703,7 +703,7 @@ class ElementTests extends VyxalTests:
       given ctx: Context = Context(testMode = true)
       Interpreter.execute("{5500#T#>|1000#.¥›£}¥")
       ctx.pop() match
-        case n: VNum => assertResult(5)(n)
+        case n: VNum => assertResult(VNum(5))(n)
         case res => fail(s"Expected a number, got $res")
     }
     it("unpausing and pausing should be idempotent, but toggling shouldn't") {
@@ -712,12 +712,14 @@ class ElementTests extends VyxalTests:
       Interpreter.execute(AST.Command("#T"))
       Interpreter.execute(AST.Command("#^"))
       Interpreter.execute(AST.Command("#^"))
-      ctx.peek() match
+      val a1 = ctx.pop()
+      ctx.push(a1)
+      a1 match
         case VList(l) => assertResult(
             VList(
               Seq(
                 VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofmillis(1000)),
+                VDuration(Duration.ofMillis(1000)),
                 VNum(0),
               )
             )
@@ -725,36 +727,42 @@ class ElementTests extends VyxalTests:
         case res => fail(s"Expected a list, got $res")
       Interpreter.execute(AST.Command("#v"))
       Interpreter.execute(AST.Command("#v"))
-      ctx.peek() match
+      val a2 = ctx.pop()
+      ctx.push(a2)
+      a2 match
         case VList(l) => assertResult(
             VList(
               Seq(
                 VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofmillis(1000)),
+                VDuration(Duration.ofMillis(1000)),
                 VNum(1),
               )
             )
           )(l)
         case res => fail(s"Expected a list, got $res")
       Interpreter.execute(AST.Command("#T"))
-      ctx.peek() match
+      val a3 = ctx.pop()
+      ctx.push(a3)
+      a3 match
         case VList(l) => assertResult(
             VList(
               Seq(
                 VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofmillis(1000)),
+                VDuration(Duration.ofMillis(1000)),
                 VNum(0),
               )
             )
           )(l)
         case res => fail(s"Expected a list, got $res")
       Interpreter.execute(AST.Command("#T"))
-      ctx.peek() match
+      val a4 = ctx.pop()
+      ctx.push(a4)
+      a4 match
         case VList(l) => assertResult(
             VList(
               Seq(
                 VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofmillis(1000)),
+                VDuration(Duration.ofMillis(1000)),
                 VNum(1),
               )
             )
