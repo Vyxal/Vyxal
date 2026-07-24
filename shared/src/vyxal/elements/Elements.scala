@@ -2041,13 +2041,15 @@ object Elements:
       val a = pop()
       push(a)
       a match
-        case t: VTimer => push(VList(
-          Seq(
-            VDuration(JDuration.ofMillis(t.timeElapsed)),
-            VDuration(JDuration.ofMillis(t.timeRemaining)),
-            if t.paused then VNum(1) else VNum(0),
+        case t: VTimer => push(
+            VList(
+              Seq(
+                VDuration(JDuration.ofMillis(t.timeElapsed)),
+                VDuration(JDuration.ofMillis(t.timeRemaining)),
+                if t.paused then VNum(1) else VNum(0),
+              )
+            )
           )
-        ))
     },
     "#Z" ->
       direct(Monad) {
