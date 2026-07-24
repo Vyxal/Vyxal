@@ -701,7 +701,7 @@ class ElementTests extends VyxalTests:
     }
     it("should be able to time things correctly") {
       testCode(
-        "{5500#T#^|1000#.¥›£}¥",
+        "5500#T#^ #=a {#$a|1000#.¥›£}¥",
         VNum(6),
       )
     }
