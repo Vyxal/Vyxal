@@ -2037,14 +2037,17 @@ object Elements:
         a.pause
         a
     },
-    addPart("#>", Monad, true) {
-      case a: VTimer => VList(
+    "#›" -> direct(Monad) {
+      val a = pop()
+      push(a)
+      a match
+        case t: VTimer => push(VList(
           Seq(
-            VDuration(JDuration.ofMillis(a.timeElapsed)),
-            VDuration(JDuration.ofMillis(a.timeRemaining)),
-            if a.paused then VNum(1) else VNum(0),
+            VDuration(JDuration.ofMillis(t.timeElapsed)),
+            VDuration(JDuration.ofMillis(t.timeRemaining)),
+            if t.paused then VNum(1) else VNum(0),
           )
-        )
+        ))
     },
     "#Z" ->
       direct(Monad) {

@@ -681,12 +681,12 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  describe("Elements #T, #^, #v, #>") {
+  describe("Elements #T, #^, #v, #›") {
     it("should be able to convert nums/durs to timers") {
       given ctx: Context = Context(testMode = true)
       ctx.push(1000)
       Interpreter.execute(AST.Command("#T"))
-      Interpreter.execute(AST.Command("#>"))
+      Interpreter.execute(AST.Command("#›"))
       ctx.pop() match
         case VList(l) => assertResult(
             VList(
@@ -701,7 +701,7 @@ class ElementTests extends VyxalTests:
     }
     it("should be able to time things correctly") {
       given ctx: Context = Context(testMode = true)
-      Interpreter.execute("{5500#T#>|1000#.¥›£}¥")
+      Interpreter.execute("{5500#T#›|1000#.¥›£}¥")
       ctx.pop() match
         case n: VNum => assertResult(VNum(5))(n)
         case res => fail(s"Expected a number, got $res")
@@ -711,10 +711,21 @@ class ElementTests extends VyxalTests:
       ctx.push(1000)
       Interpreter.execute(AST.Command("#T"))
       Interpreter.execute(AST.Command("#^"))
+      Interpreter.execute(AST.Command("#›"))
+      ctx.pop() match
+        case VList(l) => assertResult(
+            VList(
+              Seq(
+                VDuration(Duration.ofMillis(0)),
+                VDuration(Duration.ofMillis(1000)),
+                VNum(0),
+              )
+            )
+          )(VList(l))
+        case res => fail(s"Expected a list, got $res")
       Interpreter.execute(AST.Command("#^"))
-      val a1 = ctx.pop()
-      ctx.push(a1)
-      a1 match
+      Interpreter.execute(AST.Command("#›"))
+      ctx.pop() match
         case VList(l) => assertResult(
             VList(
               Seq(
@@ -726,10 +737,21 @@ class ElementTests extends VyxalTests:
           )(VList(l))
         case res => fail(s"Expected a list, got $res")
       Interpreter.execute(AST.Command("#v"))
+      Interpreter.execute(AST.Command("#›"))
+      ctx.pop() match
+        case VList(l) => assertResult(
+            VList(
+              Seq(
+                VDuration(Duration.ofMillis(0)),
+                VDuration(Duration.ofMillis(1000)),
+                VNum(1),
+              )
+            )
+          )(VList(l))
+        case res => fail(s"Expected a list, got $res")
       Interpreter.execute(AST.Command("#v"))
-      val a2 = ctx.pop()
-      ctx.push(a2)
-      a2 match
+      Interpreter.execute(AST.Command("#›"))
+      ctx.pop() match
         case VList(l) => assertResult(
             VList(
               Seq(
@@ -741,9 +763,8 @@ class ElementTests extends VyxalTests:
           )(VList(l))
         case res => fail(s"Expected a list, got $res")
       Interpreter.execute(AST.Command("#T"))
-      val a3 = ctx.pop()
-      ctx.push(a3)
-      a3 match
+      Interpreter.execute(AST.Command("#›"))
+      ctx.pop() match
         case VList(l) => assertResult(
             VList(
               Seq(
@@ -755,9 +776,8 @@ class ElementTests extends VyxalTests:
           )(VList(l))
         case res => fail(s"Expected a list, got $res")
       Interpreter.execute(AST.Command("#T"))
-      val a4 = ctx.pop()
-      ctx.push(a4)
-      a4 match
+      Interpreter.execute(AST.Command("#›"))
+      ctx.pop() match
         case VList(l) => assertResult(
             VList(
               Seq(

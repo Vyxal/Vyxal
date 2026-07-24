@@ -339,7 +339,7 @@ object ElementInformation:
         ),
       ),
       AddElement(
-        symbol = "#>",
+        symbol = "#›",
         keywords = Seq("timer-info"),
         arity = 1,
         Options(vectorises = true),
