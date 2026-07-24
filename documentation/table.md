@@ -221,7 +221,6 @@ Element, Modifier, and Syntax Reference
 | <code>#¿</code> | <code>input-count</code> | 0 |   | **Input Count**: Push the number of inputs to the stack |
 | <code>#,</code> | <code>print</code> | 1 |   | **Print** (`any`): Print #1 without a trailing newline |
 | <code>#.</code> | <code>sleep</code></br><code>wait</code></br><code>pause</code></br><code>delay</code></br><code>pause-execution</code> | 1 |   | **Pause Execution** (`num`): Wait for roughly #1 seconds and return the number of milliseconds actually spent</br>**Pause Execution** (`dur`): Wait for roughly the duration of #1 and return the number of milliseconds actually spent |
-| <code>#></code> | <code>timer-info</code> | 1 | vec  | **Get timer info** (`timer`): Get timer info as a list: VList(timeElapsed: dur, timeRemaining: dur, paused: VNum) |
 | <code>#?</code> | <code>inputs</code></br><code>all-inputs</code></br><code>all-stdin</code> | 0 |   | **Inputs**: Get all the global inputs as a list |
 | <code>#C</code> | <code>compress</code></br><code>dictionary-compress</code></br><code>dict-compress</code> | 1 | vec  | **Compress** (`str`): Compress #1 using the Vyxal compression algorithm |
 | <code>#D</code> | <code>decompress</code></br><code>uncompress</code></br><code>dict-decompress</code> | 1 | vec  | **Decompress** (`str`): Decompress #1 using the Vyxal compression algorithm |
@@ -245,6 +244,7 @@ Element, Modifier, and Syntax Reference
 | <code>#z</code> | <code>all-timezones</code></br><code>zone-ids</code></br><code>available-zones</code> | 0 |   | **All Timezone IDs**: Push a sorted list of all available timezone ID strings (e.g., "UTC", "America/New_York") |
 | <code>#ᴥ</code> | <code>valid-exec</code></br><code>valid-code</code> | 1 |   | **Valid Vyxal Code** (`str`): returns 0 if exec'd code errors, 1 if successful |
 | <code>#↸</code> | <code>retrieve-from-outer</code> | 1 |   | **Retrieve Item at Index from Outer Stack** (`num`): Retrieve the item at index #1 from the outer stack, current stack if at top level</br>**Retrieve Item at Index from Outer Stack N-Layers Up** (`lst[num, num]`): Retrieve the item at index #2 from the stack #1 levels up |
+| <code>#›</code> | <code>timer-info</code> | 1 | vec  | **Get timer info** (`timer`): Get timer info as a list: VList(timeElapsed: dur, timeRemaining: dur, paused: VNum) |
 | <code>k⍾</code> | <code>amogus</code> | 0 |   | **Amogus**: Sus |
 | <code>k⩔</code> | <code>&CODEPAGE</code> | 0 |   | **Codepage**: Push the Vyxal codepage to the stack |
 | <code>kẄ</code> | <code>&B64</code></br><code>&BASE64-ALPHABET</code></br><code>base64</code></br><code>base-sixty-four</code> | 0 |   | **Base 64 alphabet**: Push the base64 alphabet to the stack ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") |
