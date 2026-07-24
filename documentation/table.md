@@ -224,8 +224,8 @@ Element, Modifier, and Syntax Reference
 | <code>#?</code> | <code>inputs</code></br><code>all-inputs</code></br><code>all-stdin</code> | 0 |   | **Inputs**: Get all the global inputs as a list |
 | <code>#C</code> | <code>compress</code></br><code>dictionary-compress</code></br><code>dict-compress</code> | 1 | vec  | **Compress** (`str`): Compress #1 using the Vyxal compression algorithm |
 | <code>#D</code> | <code>decompress</code></br><code>uncompress</code></br><code>dict-decompress</code> | 1 | vec  | **Decompress** (`str`): Decompress #1 using the Vyxal compression algorithm |
+| <code>#O</code> | <code>set-timer</code></br><code>toggle-timer</code> | 1 | vec  | **Set timer** (`num`): Create a (paused) timer for the given number of milliseconds</br>**Set timer** (`dur`): Create a (paused) timer for the given duration</br>**Toggle timer** (`timer`): Toggles whether the timer is paused or not |
 | <code>#Q</code> | <code>quit</code> | 0 |   | **Quit**: Quit the program |
-| <code>#T</code> | <code>set-timer</code></br><code>toggle-timer</code> | 1 | vec  | **Set timer** (`num`): Create a (paused) timer for the given number of milliseconds</br>**Set timer** (`dur`): Create a (paused) timer for the given duration</br>**Toggle timer** (`timer`): Toggles whether the timer is paused or not |
 | <code>#U</code> | <code>make-duration</code></br><code>to-duration</code></br><code>parse-duration</code></br><code>duration-from-days</code> | 1 |   | **Parse Duration** (`str`): Parse string #1 as an ISO-8601 duration (e.g., "PT2H30M" for 2 hours 30 minutes)</br>**Duration from Decimal Days (Number)** (`num`): Create a duration from #1 decimal days (e.g., 1.5 = 36 hours) |
 | <code>#W</code> | <code>wrap-last-n</code> | 1 |   | **Wrap last N** (`num`): Wrap last #1 items from the stack  |
 | <code>#X</code> | <code>break</code> | 0 |   | **Break**: Break out of the current loop |
