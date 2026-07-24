@@ -681,11 +681,11 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  describe("Elements #T, #^, #v, #›") {
+  describe("Elements #O, #^, #v, #›") {
     it("should be able to convert nums/durs to timers") {
       given ctx: Context = Context(testMode = true)
       ctx.push(1000)
-      Interpreter.execute(AST.Command("#T"))
+      Interpreter.execute(AST.Command("#O"))
       Interpreter.execute(AST.Command("#›"))
       ctx.pop() match
         case VList(l) => assertResult(
@@ -701,14 +701,14 @@ class ElementTests extends VyxalTests:
     }
     it("should be able to time things correctly") {
       testCode(
-        "5500#T#^ #=a {#$a|1000#.¥›£}¥",
+        "5500#O#^ #=a {#$a|1000#.¥›£}¥",
         VNum(6),
       )
     }
     it("unpausing and pausing should be idempotent, but toggling shouldn't") {
       given ctx: Context = Context(testMode = true)
       ctx.push(1000)
-      Interpreter.execute(AST.Command("#T"))
+      Interpreter.execute(AST.Command("#O"))
       Interpreter.execute(AST.Command("#^"))
       Interpreter.execute(AST.Command("#›"))
       ctx.pop() match
@@ -761,7 +761,7 @@ class ElementTests extends VyxalTests:
             )
           )(VList(l))
         case res => fail(s"Expected a list, got $res")
-      Interpreter.execute(AST.Command("#T"))
+      Interpreter.execute(AST.Command("#O"))
       Interpreter.execute(AST.Command("#›"))
       ctx.pop() match
         case VList(l) => assertResult(
@@ -774,7 +774,7 @@ class ElementTests extends VyxalTests:
             )
           )(VList(l))
         case res => fail(s"Expected a list, got $res")
-      Interpreter.execute(AST.Command("#T"))
+      Interpreter.execute(AST.Command("#O"))
       Interpreter.execute(AST.Command("#›"))
       ctx.pop() match
         case VList(l) => assertResult(

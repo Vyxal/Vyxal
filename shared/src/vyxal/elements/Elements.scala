@@ -2020,7 +2020,7 @@ object Elements:
         // If the list contains strings, join with spaces and parse
         VDate.parse(a.lst.map(StringHelpers.vyToString(_)).mkString(" "))
     },
-    addPart("#T", Monad, true) {
+    addPart("#O", Monad, true) {
       case a: VNum => VTimer(a)
       case a: VDuration => VTimer(a)
       case a: VTimer =>

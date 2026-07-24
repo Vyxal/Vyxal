@@ -295,7 +295,7 @@ object ElementInformation:
         ),
       ),
       AddElement(
-        symbol = "#T",
+        symbol = "#O",
         keywords = Seq("set-timer", "toggle-timer"),
         arity = 1,
         Options(vectorises = true),
