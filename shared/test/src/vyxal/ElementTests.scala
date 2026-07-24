@@ -700,11 +700,10 @@ class ElementTests extends VyxalTests:
         case res => fail(s"Expected a list, got $res")
     }
     it("should be able to time things correctly") {
-      given ctx: Context = Context(testMode = true)
-      Interpreter.execute("{5500#T#›|1000#.¥›£}¥")
-      ctx.pop() match
-        case n: VNum => assertResult(VNum(5))(n)
-        case res => fail(s"Expected a number, got $res")
+      testCode(
+        "{5500#T#^|1000#.¥›£}¥",
+        VNum(6),
+      )
     }
     it("unpausing and pausing should be idempotent, but toggling shouldn't") {
       given ctx: Context = Context(testMode = true)
