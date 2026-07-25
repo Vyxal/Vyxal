@@ -562,14 +562,14 @@ class ElementTests extends VyxalTests:
 
   describe("Element #.") {
     describe("when given a number") {
-      it("should wait that number of seconds") {
+      it("should wait that number of milliseconds") {
         given ctx: Context = Context(testMode = true)
-        ctx.push(5)
+        ctx.push(5000)
         val tbefore = System.currentTimeMillis()
         Interpreter.execute(AST.Command("#."))
         val tafter = System.currentTimeMillis()
         val delta = tafter - tbefore
-        assert(delta >= 5000 && delta <= 5100)
+        assert(delta >= 5000 && delta <= 5005)
       }
     }
 
@@ -581,7 +581,7 @@ class ElementTests extends VyxalTests:
         Interpreter.execute(AST.Command("#."))
         val tafter = System.currentTimeMillis()
         val delta = tafter - tbefore
-        assert(delta >= 800 && delta <= 850)
+        assert(delta >= 800 && delta <= 805)
       }
     }
   }
@@ -678,6 +678,115 @@ class ElementTests extends VyxalTests:
           Interpreter.execute("#[1|5|89|2570#]ø⑦")
         }
       }
+    }
+  }
+
+  describe("Elements #O, #^, #v, #›") {
+    it("should be able to convert nums/durs to timers") {
+      given ctx: Context = Context(testMode = true)
+      ctx.push(1000)
+      Interpreter.execute(AST.Command("#O"))
+      Interpreter.execute(AST.Command("#›"))
+      ctx.pop() match
+        case VList(l) => assertResult(
+            VList(
+              Seq(
+                VDuration(Duration.ofMillis(0)),
+                VDuration(Duration.ofMillis(1000)),
+                VNum(1),
+              )
+            )
+          )(VList(l))
+        case res => fail(s"Expected a list, got $res")
+    }
+    it("should be able to time things correctly") {
+      testCode(
+        "5500#O#^ #=a {#$a|1000#.¥›£}¥",
+        VNum(6),
+      )
+    }
+    it("unpausing and pausing should be idempotent, but toggling shouldn't") {
+      given ctx: Context = Context(testMode = true)
+      ctx.push(1000)
+      Interpreter.execute(AST.Command("#O"))
+      Interpreter.execute(AST.Command("#^"))
+      Interpreter.execute(AST.Command("#›"))
+      ctx.pop() match
+        case VList(l) => assertResult(
+            VList(
+              Seq(
+                VDuration(Duration.ofMillis(0)),
+                VDuration(Duration.ofMillis(1000)),
+                VNum(0),
+              )
+            )
+          )(VList(l))
+        case res => fail(s"Expected a list, got $res")
+      Interpreter.execute(AST.Command("#^"))
+      Interpreter.execute(AST.Command("#›"))
+      ctx.pop() match
+        case VList(l) => assertResult(
+            VList(
+              Seq(
+                VDuration(Duration.ofMillis(0)),
+                VDuration(Duration.ofMillis(1000)),
+                VNum(0),
+              )
+            )
+          )(VList(l))
+        case res => fail(s"Expected a list, got $res")
+      Interpreter.execute(AST.Command("#v"))
+      Interpreter.execute(AST.Command("#›"))
+      ctx.pop() match
+        case VList(l) => assertResult(
+            VList(
+              Seq(
+                VDuration(Duration.ofMillis(0)),
+                VDuration(Duration.ofMillis(1000)),
+                VNum(1),
+              )
+            )
+          )(VList(l))
+        case res => fail(s"Expected a list, got $res")
+      Interpreter.execute(AST.Command("#v"))
+      Interpreter.execute(AST.Command("#›"))
+      ctx.pop() match
+        case VList(l) => assertResult(
+            VList(
+              Seq(
+                VDuration(Duration.ofMillis(0)),
+                VDuration(Duration.ofMillis(1000)),
+                VNum(1),
+              )
+            )
+          )(VList(l))
+        case res => fail(s"Expected a list, got $res")
+      Interpreter.execute(AST.Command("#O"))
+      Interpreter.execute(AST.Command("#›"))
+      ctx.pop() match
+        case VList(l) => assertResult(
+            VList(
+              Seq(
+                VDuration(Duration.ofMillis(0)),
+                VDuration(Duration.ofMillis(1000)),
+                VNum(0),
+              )
+            )
+          )(VList(l))
+        case res => fail(s"Expected a list, got $res")
+      Interpreter.execute(AST.Command("#O"))
+      Interpreter.execute(AST.Command("#›"))
+      ctx.pop() match
+        case VList(l) => assertResult(
+            VList(
+              Seq(
+                VDuration(Duration.ofMillis(0)),
+                VDuration(Duration.ofMillis(1000)),
+                VNum(1),
+              )
+            )
+          )(VList(l))
+        case res => fail(s"Expected a list, got $res")
     }
   }
 end ElementTests

@@ -146,7 +146,7 @@ object Elements:
       },
     addPart("#.", Monad, false) {
       case a: VDuration => VNum(MiscHelpers.sleep(a.toMillis.toLong))
-      case a: VNum => VNum(MiscHelpers.sleep(a.toLong * 1000L))
+      case a: VNum => VNum(MiscHelpers.sleep(a.toLong))
     },
     addPart("ø⑦", Monad, true) {
       case VStr(a) => VList(StringHelpers.hash(a))
@@ -1588,6 +1588,7 @@ object Elements:
       case VStr(a) => a.nonEmpty
       case d: VDate => d.toBool
       case dur: VDuration => dur.toBool
+      case t: VTimer => t.toBool
     },
     addPart("◌", Monad, true) {
       case a: VNum => NumberHelpers.round(a)
@@ -2018,6 +2019,37 @@ object Elements:
       case a: VList =>
         // If the list contains strings, join with spaces and parse
         VDate.parse(a.lst.map(StringHelpers.vyToString(_)).mkString(" "))
+    },
+    addPart("#O", Monad, true) {
+      case a: VNum => VTimer(a)
+      case a: VDuration => VTimer(a)
+      case a: VTimer =>
+        a.toggle
+        a
+    },
+    addPart("#^", Monad, true) {
+      case a: VTimer =>
+        a.unpause
+        a
+    },
+    addPart("#v", Monad, true) {
+      case a: VTimer =>
+        a.pause
+        a
+    },
+    "#›" -> direct(Monad) {
+      val a = pop()
+      push(a)
+      a match
+        case t: VTimer => push(
+            VList(
+              Seq(
+                VDuration(JDuration.ofMillis(t.timeElapsed)),
+                VDuration(JDuration.ofMillis(t.timeRemaining)),
+                if t.paused then VNum(1) else VNum(0),
+              )
+            )
+          )
     },
     "#Z" ->
       direct(Monad) {
