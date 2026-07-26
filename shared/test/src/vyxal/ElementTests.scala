@@ -682,31 +682,7 @@ class ElementTests extends VyxalTests:
   }
 
   describe("Elements #O, #^, #v, #›") {
-    it("should be able to convert nums/durs to timers") {
-      given ctx: Context = Context(testMode = true)
-      ctx.push(1000)
-      Interpreter.execute(AST.Command("#O"))
-      Interpreter.execute(AST.Command("#›"))
-      ctx.pop() match
-        case VList(l) => assertResult(
-            VList(
-              Seq(
-                VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofMillis(1000)),
-                VNum(1),
-              )
-            )
-          )(VList(l))
-        case res => fail(s"Expected a list, got $res")
-    }
-    it("should be able to time things correctly") {
-      testCode(
-        "5500#O#^ #=a {#$a|1000#.¥›£}¥",
-        VNum(6),
-      )
-    }
-    it("unpausing and pausing should be idempotent, but toggling shouldn't") {
-      def checkTimer(paused: Int, obj: VAny): Unit =
+    def checkTimer(paused: Int, obj: VAny): Unit =
         val (_, timeElapsed) = obj.asInstanceOf[VObject].fields("timeElapsed")
         val (_, timeRemaining) =
           obj.asInstanceOf[VObject].fields("timeRemaining")
@@ -718,6 +694,20 @@ class ElementTests extends VyxalTests:
             timeElapsed.asInstanceOf[VDuration].toMillis.toInt +
             timeRemaining.asInstanceOf[VDuration].toMillis.toInt == 1000
         )
+    it("should be able to convert nums/durs to timers") {
+      given ctx: Context = Context(testMode = true)
+      ctx.push(1000)
+      Interpreter.execute(AST.Command("#O"))
+      Interpreter.execute(AST.Command("#›"))
+      checkTimer(1, ctx.pop())
+    }
+    it("should be able to time things correctly") {
+      testCode(
+        "5500#O#^ #=a {#$a|1000#.¥›£}¥",
+        VNum(6),
+      )
+    }
+    it("unpausing and pausing should be idempotent, but toggling shouldn't") {
       given ctx: Context = Context(testMode = true)
       ctx.push(1000)
       Interpreter.execute(AST.Command("#O"))
