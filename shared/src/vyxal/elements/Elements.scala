@@ -2042,7 +2042,7 @@ object Elements:
       push(a)
       a match
         case t: VTimer => push(
-            VObject(
+            VObject("TimerInfo",
               Map(
                 "timeElapsed" -> (
                   Visibility.Restricted,

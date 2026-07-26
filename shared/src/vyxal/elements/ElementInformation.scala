@@ -347,7 +347,7 @@ object ElementInformation:
           name = "Get timer info",
           args = Seq("timer"),
           description =
-            "Get timer info as a record with fields: timeElapsed, timeRemaining, isPaused",
+            "Get timer info as a record named TimerInfo with fields: timeElapsed, timeRemaining, isPaused",
         ),
       ),
       AddElement(
