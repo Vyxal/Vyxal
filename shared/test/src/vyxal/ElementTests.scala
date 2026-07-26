@@ -747,8 +747,7 @@ class ElementTests extends VyxalTests:
   }
 
   describe("elements #Y and #ɦ") {
-    it("#Y should successfully get the type of objects") {
-      testMulti(
+    testMulti(
         "5#Y" -> VType(classOf[VNum]),
         "\"banana\"#Y" -> VType(classOf[VStr]),
         "λ\"banana\",}#Y" -> VType(classOf[VFun]),
@@ -761,10 +760,6 @@ class ElementTests extends VyxalTests:
         "#[1|2|3#]#Y" -> VType(classOf[VList]),
         "500#O#Y" -> VType(classOf[VTimer]),
         "5#Y#Y" -> VType(classOf[VType]),
-      )
-    }
-    it("#ɦ should successfully get all Vyxal types") {
-      testMulti(
         "\"VNum\"#ɦ" -> VType(classOf[VNum]),
         "\"VStr\"#ɦ" -> VType(classOf[VStr]),
         "\"VFun\"#ɦ" -> VType(classOf[VFun]),
@@ -776,8 +771,7 @@ class ElementTests extends VyxalTests:
         "\"VTimer\"#ɦ" -> VType(classOf[VTimer]),
         "\"VType\"#ɦ" -> VType(classOf[VType]),
         "\"VAny\"#ɦ" -> VType(classOf[VAny]),
-      )
-    }
+    )
     it("#ɦ should not be able to get non-Vyxal types") {
       given ctx: Context = Context(testMode = true)
       assertThrows[Exception] {
