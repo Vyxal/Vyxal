@@ -748,29 +748,29 @@ class ElementTests extends VyxalTests:
 
   describe("elements #Y and #ɦ") {
     testMulti(
-        "5#Y" -> VType(classOf[VNum]),
-        "\"banana\"#Y" -> VType(classOf[VStr]),
-        "λ\"banana\",}#Y" -> VType(classOf[VFun]),
-        "#::R banana | 3 #!monkey_count} #$banana #Y" ->
-          VType(classOf[VConstructor]),
-        "#::R banana | 3 #!monkey_count} #$banana ᴥ #Y" ->
-          VType(classOf[VObject]),
-        "\"02/02/2020\"Ṫ#Y" -> VType(classOf[VDate]),
-        "\"PT1.5S\"#U#Y" -> VType(classOf[VDuration]),
-        "#[1|2|3#]#Y" -> VType(classOf[VList]),
-        "500#O#Y" -> VType(classOf[VTimer]),
-        "5#Y#Y" -> VType(classOf[VType]),
-        "\"VNum\"#ɦ" -> VType(classOf[VNum]),
-        "\"VStr\"#ɦ" -> VType(classOf[VStr]),
-        "\"VFun\"#ɦ" -> VType(classOf[VFun]),
-        "\"VConstructor\"#ɦ" -> VType(classOf[VConstructor]),
-        "\"VObject\"#ɦ" -> VType(classOf[VObject]),
-        "\"VDate\"#ɦ" -> VType(classOf[VDate]),
-        "\"VDuration\"#ɦ" -> VType(classOf[VDuration]),
-        "\"VList\"#ɦ" -> VType(classOf[VList]),
-        "\"VTimer\"#ɦ" -> VType(classOf[VTimer]),
-        "\"VType\"#ɦ" -> VType(classOf[VType]),
-        "\"VAny\"#ɦ" -> VType(classOf[VAny]),
+      "5#Y" -> VType(classOf[VNum]),
+      "\"banana\"#Y" -> VType(classOf[VStr]),
+      "λ\"banana\",}#Y" -> VType(classOf[VFun]),
+      "#::R banana | 3 #!monkey_count} #$banana #Y" ->
+        VType(classOf[VConstructor]),
+      "#::R banana | 3 #!monkey_count} #$banana ᴥ #Y" ->
+        VType(classOf[VObject]),
+      "\"02/02/2020\"Ṫ#Y" -> VType(classOf[VDate]),
+      "\"PT1.5S\"#U#Y" -> VType(classOf[VDuration]),
+      "#[1|2|3#]#Y" -> VType(classOf[VList]),
+      "500#O#Y" -> VType(classOf[VTimer]),
+      "5#Y#Y" -> VType(classOf[VType]),
+      "\"VNum\"#ɦ" -> VType(classOf[VNum]),
+      "\"VStr\"#ɦ" -> VType(classOf[VStr]),
+      "\"VFun\"#ɦ" -> VType(classOf[VFun]),
+      "\"VConstructor\"#ɦ" -> VType(classOf[VConstructor]),
+      "\"VObject\"#ɦ" -> VType(classOf[VObject]),
+      "\"VDate\"#ɦ" -> VType(classOf[VDate]),
+      "\"VDuration\"#ɦ" -> VType(classOf[VDuration]),
+      "\"VList\"#ɦ" -> VType(classOf[VList]),
+      "\"VTimer\"#ɦ" -> VType(classOf[VTimer]),
+      "\"VType\"#ɦ" -> VType(classOf[VType]),
+      "\"VAny\"#ɦ" -> VType(classOf[VAny]),
     )
     it("#ɦ should not be able to get non-Vyxal types") {
       given ctx: Context = Context(testMode = true)
