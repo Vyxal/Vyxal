@@ -715,6 +715,7 @@ class ElementTests extends VyxalTests:
             isPaused.asInstanceOf[VNum] == VNum(paused) &&
             (timeElapsed.asInstanceOf[VDuration] + timeRemaining.asInstanceOf[VDuration]).toMillis.toInt == 1000
         )
+      end checkTimer
       given ctx: Context = Context(testMode = true)
       ctx.push(1000)
       Interpreter.execute(AST.Command("#O"))
