@@ -683,17 +683,16 @@ class ElementTests extends VyxalTests:
 
   describe("Elements #O, #^, #v, #›") {
     def checkTimer(paused: Int, obj: VAny): Unit =
-        val (_, timeElapsed) = obj.asInstanceOf[VObject].fields("timeElapsed")
-        val (_, timeRemaining) =
-          obj.asInstanceOf[VObject].fields("timeRemaining")
-        val (_, isPaused) = obj.asInstanceOf[VObject].fields("isPaused")
-        assert(
-          timeElapsed.asInstanceOf[VDuration].toMillis.toInt >= 0 &&
-            5 >= timeElapsed.asInstanceOf[VDuration].toMillis.toInt &&
-            isPaused.asInstanceOf[VNum] == VNum(paused) &&
-            timeElapsed.asInstanceOf[VDuration].toMillis.toInt +
-            timeRemaining.asInstanceOf[VDuration].toMillis.toInt == 1000
-        )
+      val (_, timeElapsed) = obj.asInstanceOf[VObject].fields("timeElapsed")
+      val (_, timeRemaining) = obj.asInstanceOf[VObject].fields("timeRemaining")
+      val (_, isPaused) = obj.asInstanceOf[VObject].fields("isPaused")
+      assert(
+        timeElapsed.asInstanceOf[VDuration].toMillis.toInt >= 0 &&
+          5 >= timeElapsed.asInstanceOf[VDuration].toMillis.toInt &&
+          isPaused.asInstanceOf[VNum] == VNum(paused) &&
+          timeElapsed.asInstanceOf[VDuration].toMillis.toInt +
+          timeRemaining.asInstanceOf[VDuration].toMillis.toInt == 1000
+      )
     it("should be able to convert nums/durs to timers") {
       given ctx: Context = Context(testMode = true)
       ctx.push(1000)
