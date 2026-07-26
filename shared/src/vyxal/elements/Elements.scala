@@ -1583,13 +1583,7 @@ object Elements:
           }
           .mkString("\n")
     },
-    addPart("⍰", Monad, true) {
-      case a: VNum => a != VNum(0)
-      case VStr(a) => a.nonEmpty
-      case d: VDate => d.toBool
-      case dur: VDuration => dur.toBool
-      case t: VTimer => t.toBool
-    },
+    "⍰" -> fullToImpl(Monad, x => MiscHelpers.isTruthy(x)),
     addPart("◌", Monad, true) {
       case a: VNum => NumberHelpers.round(a)
       case VStr(s) if s.length() == 1 => VNum(s.head.isLower)
@@ -1966,6 +1960,25 @@ object Elements:
       direct(0) {
         throw ContinueLoopException()
       },
+    "#q" ->
+      direct(2) {
+        val (b, a) = (pop(), pop())
+        (a, b) match
+          case (x, y: VException) if (y.arity == 0) =>
+            push(x)
+            y.error(x)
+          case (x, y: VException) =>
+            y.error(x)
+          case (x, y: VObject) =>
+            push(x)
+            push(VException(y))
+          case (x, y: VStr) =>
+            push(x)
+            push(VException(y))
+      }
+    addPart("#ꜝ", Monad, false) {
+      case a => if !MiscHelpers.isTruthy(a) then throw AssertionException(a) else a
+    }
     addPart("#c", Monad, true) {
       case VStr(a) => StringHelpers.compress252(a)
       case a: VNum => StringHelpers.compress252(a)

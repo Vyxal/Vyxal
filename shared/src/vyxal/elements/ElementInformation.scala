@@ -347,7 +347,34 @@ object ElementInformation:
           name = "Get timer info",
           args = Seq("timer"),
           description =
-            "Get timer info as a record named TimerInfo with fields: timeElapsed, timeRemaining, isPaused",
+            "Get info of timer #1 as a record named TimerInfo with these fields: `timeElapsed`, `timeRemaining`, `isPaused`",
+        ),
+      ),
+      AddElement(
+        symbol = "#q",
+        keywords = Seq("object-to-exception", "throw-exception", "raise-exception", "string-to-exception")
+        arity = 2,
+        Options(),
+        Overload(
+          name = "Convert to exception",
+          args = Seq("obj|str"),
+          description = "Convert #1 to an exception. If an object is passed, it must contain the field `message`.",
+        ),
+        Overload(
+          name = "Throw exception",
+          args = Seq("any","exc"),
+          description = "Throw #2 while formatting the message string with contents of #1"
+        ),
+      ),
+      AddElement(
+        symbol = "#ꜝ",
+        keywords = Seq("assert", "error-if-falsy"),
+        arity = 1,
+        Options(),
+        Overload(
+          name = "Assert",
+          args = Seq("any"),
+          description = "Asserts #1 is truthy (i.e. throws AssertionException if falsy)"
         ),
       ),
       AddElement(

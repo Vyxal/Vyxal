@@ -577,6 +577,19 @@ object VType:
       case e: ClassCastException =>
         throw new UserYikesException(s"Managed to obtain non-vyxal type $s")
 
+case class VException(val name: String, val messageFormat: String) extends VAny:
+  val arity = messageFormat.count(_ == "%")
+  @throws[VyxalUserThrownException] def error(arr: VList) = throw new VyxalUserThrownException(name, StringHelpers.formatString(messageFormat, *arr))
+  override def toString: String = s"$name($messageFormat)"
+  override def toBool: Boolean = false // Exceptions should never be truthy as you would not want assert to let them pass most of the time
+
+object VException:
+  def apply(obj: VObject): VException =
+    VException(obj.className, obj.fields("message")._2.asInstanceOf[VAny].toString)
+
+  def apply(s: VStr): VException =
+    VException("exception", s.s)
+
 class VNum(val underlying: Complex[Real]) extends VAny, Ordered[VNum]:
   def real: Real = underlying.real
   def imag: Real = underlying.imag

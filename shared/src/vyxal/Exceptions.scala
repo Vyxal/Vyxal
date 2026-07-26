@@ -24,8 +24,12 @@ sealed class VyxalRuntimeException(message: String)
     extends VyxalException(s"RuntimeException: $message")
 sealed class VyxalUnknownException(location: String, ex: Throwable)
     extends VyxalException(s"Unknown $location Exception", ex, true, true)
+sealed class VyxalUserThrownException(errType: String, message: String)
+    extends VyxalException(s"User thrown $errType: $message")
 
 /** VyxalRuntimeExceptions */
+class AssertionException(expr: Any)
+    extends VyxalRuntimeException(s"Assertion failed: $expr")
 class BadRegexException(regex: String)
     extends VyxalRuntimeException(s"Invalid regex syntax: /$regex/")
 class ConstantAssignmentException(name: String)

@@ -749,6 +749,7 @@ class ElementTests extends VyxalTests:
       "#[1|2|3#]#Y" -> VType(classOf[VList]),
       "500#O#Y" -> VType(classOf[VTimer]),
       "5#Y#Y" -> VType(classOf[VType]),
+      "\"banana\"#q#Y" -> VType(classOf[VException]),
       "\"VNum\"#ɦ" -> VType(classOf[VNum]),
       "\"VStr\"#ɦ" -> VType(classOf[VStr]),
       "\"VFun\"#ɦ" -> VType(classOf[VFun]),
@@ -760,6 +761,7 @@ class ElementTests extends VyxalTests:
       "\"VTimer\"#ɦ" -> VType(classOf[VTimer]),
       "\"VType\"#ɦ" -> VType(classOf[VType]),
       "\"VAny\"#ɦ" -> VType(classOf[VAny]),
+      "\"VException\"" -> VType(classOf[VException]),
     )
     it("#ɦ should not be able to get non-Vyxal types") {
       given ctx: Context = Context(testMode = true)
@@ -774,6 +776,52 @@ class ElementTests extends VyxalTests:
       given ctx: Context = Context(testMode = true)
       Interpreter.execute("\"VAny\"#ɦ,")
       Interpreter.execute("5#Y,")
+    }
+  }
+  describe("Element #q") {
+    testMulti(
+      "\"banana\"#q#Y" -> VType(classOf[VException]),
+      "#::R banana | \"Pooped on %\" #$message} #$banana ᴥ#q#Y" -> VType(classOf[VException]),
+    )
+    it("misformed object should error") {
+      given ctx: Context = Context(testMode = true)
+      assertThrows[Exception] {
+        Interpreter.execute("#::R banana | \"Pooped on %\" #$incorrectField} #$banana ᴥ#q")
+      }
+    }
+    it("user exceptions should be raised") {
+      given ctx: Context = Context(testMode = true)
+      assertThrows[VyxalUserThrownException] {
+        Interpreter.execute("\"banana\"#q#q")
+      }
+      assertThrows[VyxalUserThrownException] {
+        Interpreter.execute("#::R banana | \"Pooped on %\" #$message} #$banana ᴥ#q#q")
+      }
+      assertThrows[VyxalUserThrownException] {
+        Interpreter.execute("#[3#]\"banana %\"#q#q")
+      }
+      assertThrows[VyxalUserThrownException] {
+        Interpreter.execute("#[\"the toilet\"#] #::R banana | \"Pooped on %\" #$message} #$banana ᴥ#q#q")
+      }
+    }
+  }
+  describe("Element #ꜝ") {
+    it("should not error on truthy inputs") {
+      given ctx: Context = Context(testMode = true)
+      Interpreter.execute("1#ꜝ")
+      Interpreter.execute("\"banana cookie\"#ꜝ")
+      Interpreter.execute("#[1|2|3|\"Go!\"#]#ꜝ")
+    }
+    it("should error on falsy inputs") {
+      assertThrows[AssertionException] {
+        Interpreter.execute("0#ꜝ")
+      }
+      assertThrows[AssertionException] {
+        Interpreter.execute("\"\"#ꜝ")
+      }
+      assertThrows[AssertionException] {
+        Interpreter.execute("#[#]#ꜝ")
+      }
     }
   }
 end ElementTests
