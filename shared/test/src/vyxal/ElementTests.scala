@@ -749,8 +749,10 @@ class ElementTests extends VyxalTests:
         "5#Y" -> VType(classOf[VNum]),
         "\"banana\"#Y" -> VType(classOf[VStr]),
         "λ\"banana\",}#Y" -> VType(classOf[VFun]),
-        "#::R banana | 3 #!monkey_count} #$banana #Y" -> VType(classOf[VConstructor]),
-        "#::R banana | 3 #!monkey_count} #$banana ᴥ #Y" -> VType(classOf[VObject]),
+        "#::R banana | 3 #!monkey_count} #$banana #Y" ->
+          VType(classOf[VConstructor]),
+        "#::R banana | 3 #!monkey_count} #$banana ᴥ #Y" ->
+          VType(classOf[VObject]),
         "\"02/02/2020\"Ṫ#Y" -> VType(classOf[VDate]),
         "\"PT1.5S\"#U#Y" -> VType(classOf[VDuration]),
         "#[1|2|3#]#Y" -> VType(classOf[VList]),
