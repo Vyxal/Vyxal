@@ -781,12 +781,15 @@ class ElementTests extends VyxalTests:
   describe("Element #q") {
     testMulti(
       "\"banana\"#q#Y" -> VType(classOf[VException]),
-      "#::R banana | \"Pooped on %\" #$message} #$banana ᴥ#q#Y" -> VType(classOf[VException]),
+      "#::R banana | \"Pooped on %\" #$message} #$banana ᴥ#q#Y" ->
+        VType(classOf[VException]),
     )
     it("misformed object should error") {
       given ctx: Context = Context(testMode = true)
       assertThrows[Exception] {
-        Interpreter.execute("#::R banana | \"Pooped on %\" #$incorrectField} #$banana ᴥ#q")
+        Interpreter.execute(
+          "#::R banana | \"Pooped on %\" #$incorrectField} #$banana ᴥ#q"
+        )
       }
     }
     it("user exceptions should be raised") {
@@ -795,13 +798,17 @@ class ElementTests extends VyxalTests:
         Interpreter.execute("\"banana\"#q#q")
       }
       assertThrows[VyxalUserThrownException] {
-        Interpreter.execute("#::R banana | \"Pooped on %\" #$message} #$banana ᴥ#q#q")
+        Interpreter.execute(
+          "#::R banana | \"Pooped on %\" #$message} #$banana ᴥ#q#q"
+        )
       }
       assertThrows[VyxalUserThrownException] {
         Interpreter.execute("#[3#]\"banana %\"#q#q")
       }
       assertThrows[VyxalUserThrownException] {
-        Interpreter.execute("#[\"the toilet\"#] #::R banana | \"Pooped on %\" #$message} #$banana ᴥ#q#q")
+        Interpreter.execute(
+          "#[\"the toilet\"#] #::R banana | \"Pooped on %\" #$message} #$banana ᴥ#q#q"
+        )
       }
     }
   }

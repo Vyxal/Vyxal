@@ -352,18 +352,24 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "#q",
-        keywords = Seq("object-to-exception", "throw-exception", "raise-exception", "string-to-exception")
-        arity = 2,
+        keywords = Seq(
+          "object-to-exception",
+          "throw-exception",
+          "raise-exception",
+          "string-to-exception",
+        ) arity = 2,
         Options(),
         Overload(
           name = "Convert to exception",
           args = Seq("obj|str"),
-          description = "Convert #1 to an exception. If an object is passed, it must contain the field `message`.",
+          description =
+            "Convert #1 to an exception. If an object is passed, it must contain the field `message`.",
         ),
         Overload(
           name = "Throw exception",
-          args = Seq("any","exc"),
-          description = "Throw #2 while formatting the message string with contents of #1"
+          args = Seq("any", "exc"),
+          description =
+            "Throw #2 while formatting the message string with contents of #1",
         ),
       ),
       AddElement(
@@ -374,7 +380,8 @@ object ElementInformation:
         Overload(
           name = "Assert",
           args = Seq("any"),
-          description = "Asserts #1 is truthy (i.e. throws AssertionException if falsy)"
+          description =
+            "Asserts #1 is truthy (i.e. throws AssertionException if falsy)",
         ),
       ),
       AddElement(
