@@ -1966,23 +1966,23 @@ object Elements:
         (a, b) match
           case (x, y: VException) if (y.arity == 0) =>
             push(x)
-            y.error(x)
-          case (x, y: VException) => y.error(x)
+            y.error(VList(Seq.empty))
+          case (x: VList, y: VException) => y.error(x)
           case (x, y: VObject) =>
             push(x)
             push(VException(y))
           case (x, y: VStr) =>
             push(x)
             push(VException(y))
-      }
-      addPart ("#ꜝ", Monad, false) {
-        case a =>
-          if !MiscHelpers.isTruthy(a) then throw AssertionException(a) else a
-      }
-      addPart ("#c", Monad, true) {
-        case VStr(a) => StringHelpers.compress252(a)
-        case a: VNum => StringHelpers.compress252(a)
       },
+    addPart("#ꜝ", Monad, false) {
+      case a =>
+        if !MiscHelpers.isTruthy(a) then throw AssertionException(a) else a
+    },
+    addPart("#c", Monad, true) {
+      case VStr(a) => StringHelpers.compress252(a)
+      case a: VNum => StringHelpers.compress252(a)
+    },
     addPart("#w", Monad, false) {
       case scalar: (VVal | VFun) => VList(Seq(scalar))
       case lst: VList => lst

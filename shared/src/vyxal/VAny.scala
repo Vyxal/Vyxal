@@ -578,12 +578,12 @@ object VType:
         throw new UserYikesException(s"Managed to obtain non-vyxal type $s")
 
 case class VException(val name: String, val messageFormat: String) extends VAny:
-  val arity = messageFormat.count(_ == "%")
+  val arity = messageFormat.count(_ == '%')
   @throws[VyxalUserThrownException]
   def error(arr: VList) =
     throw new VyxalUserThrownException(
       name,
-      StringHelpers.formatString(messageFormat, * arr),
+      StringHelpers.formatString(messageFormat, *arr),
     )
   override def toString: String = s"$name($messageFormat)"
   override def toBool: Boolean =
