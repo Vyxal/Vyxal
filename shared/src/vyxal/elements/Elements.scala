@@ -2042,7 +2042,8 @@ object Elements:
       push(a)
       a match
         case t: VTimer => push(
-            VObject("TimerInfo",
+            VObject(
+              "TimerInfo",
               Map(
                 "timeElapsed" -> (
                   Visibility.Restricted,
@@ -2056,7 +2057,7 @@ object Elements:
                   Visibility.Restricted,
                   (if t.paused then VNum(1) else VNum(0)),
                 ),
-              )
+              ),
             )
           )
       end match
