@@ -708,14 +708,16 @@ class ElementTests extends VyxalTests:
     it("unpausing and pausing should be idempotent, but toggling shouldn't") {
       def checkTimer(paused: Int, obj: VAny): Unit =
         val (_, timeElapsed) = obj.asInstanceOf[VObject].fields("timeElapsed")
-        val (_, timeRemaining) = obj.asInstanceOf[VObject].fields("timeRemaining")
+        val (_, timeRemaining) =
+          obj.asInstanceOf[VObject].fields("timeRemaining")
         val (_, isPaused) = obj.asInstanceOf[VObject].fields("isPaused")
         assert(
-          timeElapsed.asInstanceOf[VDuration].toMillis.toInt >= 0 && 5 >= timeElapsed.asInstanceOf[VDuration].toMillis.toInt &&
+          timeElapsed.asInstanceOf[VDuration].toMillis.toInt >= 0 &&
+            5 >= timeElapsed.asInstanceOf[VDuration].toMillis.toInt &&
             isPaused.asInstanceOf[VNum] == VNum(paused) &&
-            (timeElapsed.asInstanceOf[VDuration] + timeRemaining.asInstanceOf[VDuration]).toMillis.toInt == 1000
+            (timeElapsed.asInstanceOf[VDuration] +
+              timeRemaining.asInstanceOf[VDuration]).toMillis.toInt == 1000
         )
-      end checkTimer
       given ctx: Context = Context(testMode = true)
       ctx.push(1000)
       Interpreter.execute(AST.Command("#O"))
