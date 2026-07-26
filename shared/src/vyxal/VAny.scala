@@ -574,7 +574,8 @@ object VType:
     try Class.forName(s"vyxal.$s").asInstanceOf[Class[? <: VAny]]
     catch
       case e: ClassNotFoundException => throw new NonExistentTypeException(s)
-      case e: ClassCastException => throw new UserYikesException(s"Managed to obtain non-vyxal type $s")
+      case e: ClassCastException =>
+        throw new UserYikesException(s"Managed to obtain non-vyxal type $s")
 
 class VNum(val underlying: Complex[Real]) extends VAny, Ordered[VNum]:
   def real: Real = underlying.real
