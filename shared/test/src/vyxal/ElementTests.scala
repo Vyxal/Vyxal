@@ -715,7 +715,8 @@ class ElementTests extends VyxalTests:
           timeElapsed.asInstanceOf[VDuration].toMillis.toInt >= 0 &&
             5 >= timeElapsed.asInstanceOf[VDuration].toMillis.toInt &&
             isPaused.asInstanceOf[VNum] == VNum(paused) &&
-            timeElapsed.asInstanceOf[VDuration].toMillis.toInt + timeRemaining.asInstanceOf[VDuration].toMillis.toInt == 1000
+            timeElapsed.asInstanceOf[VDuration].toMillis.toInt +
+            timeRemaining.asInstanceOf[VDuration].toMillis.toInt == 1000
         )
       given ctx: Context = Context(testMode = true)
       ctx.push(1000)
