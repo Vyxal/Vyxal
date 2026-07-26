@@ -583,7 +583,7 @@ case class VException(val name: String, val messageFormat: String) extends VAny:
   def error(arr: VList) =
     throw new VyxalUserThrownException(
       name,
-      StringHelpers.formatString(messageFormat, *arr),
+      StringHelpers.formatString(messageFormat, * arr),
     )
   override def toString: String = s"$name($messageFormat)"
   override def toBool: Boolean =
