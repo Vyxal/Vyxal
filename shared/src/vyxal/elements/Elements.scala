@@ -2057,10 +2057,10 @@ object Elements:
       },
     addPart("#Y", Monad, false) {
       case a => VType(a)
-    }
+    },
     addPart("#ɦ", Monad, true) {
-      case VStr(s) => VType(s) // We cannot overload #Y to convert a string to a type because #Y has to output the type of it (which would be VStr)
-    }
+      case VStr(a) => VType(a) // We cannot overload #Y to convert a string to a type because #Y has to output the type of it (which would be VStr)
+    },
     addPart("#U", Monad, false) {
       case VStr(s) => VDuration.parse(s)
       case a: VNum => VDuration.ofDaysDecimal(a.toDouble)
