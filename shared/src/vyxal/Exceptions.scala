@@ -96,6 +96,9 @@ class AttemptedWriteRestrictedException(className: String, fieldName: String)
 class ReservedClassNameException(className: String)
     extends VyxalRuntimeException(s"Class name $className is reserved")
 
+class NonExistentTypeException(attemptedType: String)
+    extends VyxalRuntimeException(s"Type $attemptedType does not exist")
+
 class UnopenedGroupException(index: Int)
     extends VyxalRuntimeException(
       s"Unopened group at index $index"

@@ -347,7 +347,29 @@ object ElementInformation:
           name = "Get timer info",
           args = Seq("timer"),
           description =
-            "Get timer info as a list: VList(timeElapsed: dur, timeRemaining: dur, paused: VNum)",
+            "Get timer info as a record with fields: timeElapsed, timeRemaining, isPaused",
+        ),
+      ),
+      AddElement(
+        symbol = "#Y",
+        keywords = Seq("type", "type-of"),
+        arity = 1,
+        Options(),
+        Overload(
+          name = "Get type",
+          args = Seq("any"),
+          description = "Get the type of #1",
+        ),
+      ),
+      AddElement(
+        symbol = "#ɦ",
+        keywords = Seq("string-to-type", "get-type-by-name"),
+        arity = 1,
+        Options(),
+        Overload(
+          name = "Get type by name",
+          args = Seq("str"),
+          description = "Get the type with the name specified in #1",
         ),
       ),
       AddElement(

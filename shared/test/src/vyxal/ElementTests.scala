@@ -706,87 +706,82 @@ class ElementTests extends VyxalTests:
       )
     }
     it("unpausing and pausing should be idempotent, but toggling shouldn't") {
+      def checkTimer(paused: Int, obj: VObject): Unit =
+        val (_, timeElapsed) = obj.fields("timeElapsed")
+        val (_, timeRemaining) = obj.fields("timeRemaining")
+        val (_, isPaused) = obj.fields("isPaused")
+        assert(timeElapsed.toMillis.toInt >= 0 && 5 >= timeElapsed.toMillis.toInt && isPaused == VNum(paused) && (timeElapsed + timeRemaining).toMillis.toInt == 1000)
       given ctx: Context = Context(testMode = true)
       ctx.push(1000)
       Interpreter.execute(AST.Command("#O"))
       Interpreter.execute(AST.Command("#^"))
       Interpreter.execute(AST.Command("#›"))
-      ctx.pop() match
-        case VList(l) => assertResult(
-            VList(
-              Seq(
-                VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofMillis(1000)),
-                VNum(0),
-              )
-            )
-          )(VList(l))
-        case res => fail(s"Expected a list, got $res")
+      checkTimer(0, ctx.pop())
       Interpreter.execute(AST.Command("#^"))
       Interpreter.execute(AST.Command("#›"))
-      ctx.pop() match
-        case VList(l) => assertResult(
-            VList(
-              Seq(
-                VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofMillis(1000)),
-                VNum(0),
-              )
-            )
-          )(VList(l))
-        case res => fail(s"Expected a list, got $res")
+      checkTimer(0, ctx.pop())
       Interpreter.execute(AST.Command("#v"))
       Interpreter.execute(AST.Command("#›"))
-      ctx.pop() match
-        case VList(l) => assertResult(
-            VList(
-              Seq(
-                VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofMillis(1000)),
-                VNum(1),
-              )
-            )
-          )(VList(l))
-        case res => fail(s"Expected a list, got $res")
+      checkTimer(1, ctx.pop())
       Interpreter.execute(AST.Command("#v"))
       Interpreter.execute(AST.Command("#›"))
-      ctx.pop() match
-        case VList(l) => assertResult(
-            VList(
-              Seq(
-                VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofMillis(1000)),
-                VNum(1),
-              )
-            )
-          )(VList(l))
-        case res => fail(s"Expected a list, got $res")
+      checkTimer(1, ctx.pop())
       Interpreter.execute(AST.Command("#O"))
       Interpreter.execute(AST.Command("#›"))
-      ctx.pop() match
-        case VList(l) => assertResult(
-            VList(
-              Seq(
-                VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofMillis(1000)),
-                VNum(0),
-              )
-            )
-          )(VList(l))
-        case res => fail(s"Expected a list, got $res")
+      checkTimer(0, ctx.pop())
       Interpreter.execute(AST.Command("#O"))
       Interpreter.execute(AST.Command("#›"))
-      ctx.pop() match
-        case VList(l) => assertResult(
-            VList(
-              Seq(
-                VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofMillis(1000)),
-                VNum(1),
-              )
-            )
-          )(VList(l))
-        case res => fail(s"Expected a list, got $res")
+      checkTimer(1, ctx.pop())
+    }
+    it("timers should be printable") {
+      given ctx: Context = Context(testMode = true)
+      Interpreter.execute("500#O,")
+    }
+  }
+
+  describe("elements #Y and #ɦ") {
+    it("#Y should successfully get the type of objects") {
+      testMulti(
+        "5#Y" -> VType[VNum],
+        "\"banana\"#Y" -> VType[VStr],
+        "λ\"banana\",}#Y" -> VType[VFun],
+        "#::R banana | 3 #!monkey_count} #$banana #Y" -> VType[VConstructor],
+        "#::R banana | 3 #!monkey_count} #$banana ᴥ #Y" -> VType[VObject],
+        "\"02/02/2020\"Ṫ#Y" -> VType[VDate],
+        "\"PT1.5S\"#U#Y" -> VType[VDuration],
+        "#[1|2|3#]#Y" -> VType[VList],
+        "500#O#Y" -> VType[VTimer],
+        "5#Y#Y" -> VType[VType],
+      )
+    }
+    it("#ɦ should successfully get all Vyxal types") {
+      testMulti(
+        "\"VNum\"#ɦ" -> VType[VNum],
+        "\"VStr\"#ɦ" -> VType[VStr],
+        "\"VFun\"#ɦ" -> VType[VFun],
+        "\"VConstructor\"#ɦ" -> VType[VConstructor],
+        "\"VObject\"#ɦ" -> VType[VObject],
+        "\"VDate\"#ɦ" -> VType[VDate],
+        "\"VDuration\"#ɦ" -> VType[VDuration],
+        "\"VList\"#ɦ" -> VType[VList],
+        "\"VTimer\"#ɦ" -> VType[VTimer],
+        "\"VType\"#ɦ" -> VType[VType],
+        "\"VAny\"#ɦ" -> VType[VAny],
+      )
+    }
+    it("#ɦ should not be able to get non-Vyxal types") {
+      given ctx: Context = Context(testMode = true)
+      assertThrows[Exception] {
+        Interpreter.execute("\"String\"#ɦ")
+      }
+      assertThrows[Exception] {
+        Interpreter.execute("\"MonkeyCookie\"#ɦ")
+      }
+    }
+    it("types should be printable") {
+      given ctx: Context = Context(testMode = true)
+      Interpreter.execute("\"VAny\"#ɦ,")
+      Interpreter.execute("5#Y,")
     }
   }
 end ElementTests

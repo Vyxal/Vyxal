@@ -442,6 +442,9 @@ object StringHelpers:
       case o: VObject => o.toString
       case d: VDate => d.toString
       case d: VDuration => d.toString
+      case t: VTimer => t.toString
+      case t: VType => t.toString
+      case a => a.toString
 
   def prettyPrint(item: VAny)(using Context): String =
     def go(item: VAny, indentation: Int)(using Context): (String, Boolean) =
@@ -483,6 +486,9 @@ object StringHelpers:
             else (s"${o.className} { ${entries.mkString(", ")} }", true)
         case d: VDate => (d.toString, false)
         case d: VDuration => (d.toString, false)
+        case t: VTimer => (t.toString, false)
+        case t: VType => (t.toString, false)
+        case a => (a.toString, false)
     go(item, 0)._1
   end prettyPrint
 

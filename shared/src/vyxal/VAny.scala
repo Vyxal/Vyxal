@@ -43,6 +43,8 @@ import spire.math.{Complex, Real}
   *   - [[VObject]]
   *   - [[VDate]]
   *   - [[VDuration]]
+  *   - [[VTimer]]
+  *   - [[VType]]
   *
   * We derive [[CanEqual]] so that if you compare a `VAny`s to another type, the
   * compiler will complain
@@ -90,7 +92,7 @@ object VAny:
   given (using Context): Ordering[VAny] with
     override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
 
-type VVal = VNum | VStr | VDate | VDuration
+type VVal = VNum | VStr | VDate | VDuration | VType
 type VPhysical = VNum | VStr | VList
 type VIter = VList | VStr
 type VTemporal = VDate | VDuration
@@ -132,8 +134,10 @@ object conversions:
   given Conversion[Real, VNum] = n => VNum.complex(n, 0)
   given Conversion[Complex[Real], VNum] = new VNum(_)
   given Conversion[Boolean, VNum] = b => if b then 1 else 0
+  given Conversion[Byte, VNum] = n => n & 0xff
   given Conversion[ZonedDateTime, VDate] = VDate(_)
   given Conversion[JDuration, VDuration] = VDuration(_)
+  given Conversion[Class[_ <: VAny], VType] = t => VType(t)
 end conversions
 
 final case class VStr(s: String) extends VAny:
@@ -555,6 +559,25 @@ object VTimer:
   def apply(d: Long): VTimer = VTimer(VDuration(JDuration.ofMillis(d)))
   def apply(d: JDuration): VTimer = VTimer(VDuration(d))
   def stopwatch: VTimer = VTimer(VDuration(JDuration.ofMillis(Long.MaxValue)))
+
+case class VType(val underlyingClass: Class[_ <: VAny]) extends VAny:
+  override def toBool: Boolean = true
+  override def toString: String = underlyingClass.getSimpleName
+  override def equals(obj: Any): Boolean =
+    obj match
+      case VType(t) => underlyingClass == t
+      case _ => false
+
+object VType:
+  def apply(a: VAny): VType = a.getClass
+  def apply(s: String): VType =
+    try {
+      Class.forName(s"vyxal.$s").asInstanceOf[Class[_ <: VAny]]
+    } catch {
+      case e: ClassNotFoundException => throw new NonExistentTypeException(s)
+      case e: ClassCastException => throw new UserYikesException(s"Managed to obtain non-vyxal type $s")
+    }
+  def apply[T]: VType = VType(classOf[T])
 
 class VNum(val underlying: Complex[Real]) extends VAny, Ordered[VNum]:
   def real: Real = underlying.real
