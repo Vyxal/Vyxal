@@ -560,7 +560,7 @@ object VTimer:
   def apply(d: JDuration): VTimer = VTimer(VDuration(d))
   def stopwatch: VTimer = VTimer(VDuration(JDuration.ofMillis(Long.MaxValue)))
 
-case class VType(val underlyingClass: Class[_ <: VAny]) extends VAny:
+case class VType(val underlyingClass: Class[? <: VAny]) extends VAny:
   override def toBool: Boolean = true
   override def toString: String = underlyingClass.getSimpleName
   override def equals(obj: Any): Boolean =
@@ -571,12 +571,11 @@ case class VType(val underlyingClass: Class[_ <: VAny]) extends VAny:
 object VType:
   def apply(a: VAny): VType = a.getClass
   def apply(s: String): VType =
-    try {
-      Class.forName(s"vyxal.$s").asInstanceOf[Class[_ <: VAny]]
-    } catch {
+    try Class.forName(s"vyxal.$s").asInstanceOf[Class[? <: VAny]]
+    catch
       case e: ClassNotFoundException => throw new NonExistentTypeException(s)
-      case e: ClassCastException => throw new UserYikesException(s"Managed to obtain non-vyxal type $s")
-    }
+      case e: ClassCastException =>
+        throw new UserYikesException(s"Managed to obtain non-vyxal type $s")
   def apply[T]: VType = VType(classOf[T])
 
 class VNum(val underlying: Complex[Real]) extends VAny, Ordered[VNum]:

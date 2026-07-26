@@ -710,7 +710,11 @@ class ElementTests extends VyxalTests:
         val (_, timeElapsed) = obj.fields("timeElapsed")
         val (_, timeRemaining) = obj.fields("timeRemaining")
         val (_, isPaused) = obj.fields("isPaused")
-        assert(timeElapsed.toMillis.toInt >= 0 && 5 >= timeElapsed.toMillis.toInt && isPaused == VNum(paused) && (timeElapsed + timeRemaining).toMillis.toInt == 1000)
+        assert(
+          timeElapsed.toMillis.toInt >= 0 && 5 >= timeElapsed.toMillis.toInt &&
+            isPaused == VNum(paused) &&
+            (timeElapsed + timeRemaining).toMillis.toInt == 1000
+        )
       given ctx: Context = Context(testMode = true)
       ctx.push(1000)
       Interpreter.execute(AST.Command("#O"))

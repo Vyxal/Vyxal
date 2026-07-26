@@ -2044,12 +2044,22 @@ object Elements:
         case t: VTimer => push(
             VObject(
               Map(
-                "timeElapsed" -> (Visibility("$"), VDuration(JDuration.ofMillis(t.timeElapsed))),
-                "timeRemaining" -> (Visibility("$"), VDuration(JDuration.ofMillis(t.timeRemaining))),
-                "isPaused" -> (Visibility("$"), (if t.paused then VNum(1) else VNum(0))),
+                "timeElapsed" -> (
+                  Visibility("$"),
+                  VDuration(JDuration.ofMillis(t.timeElapsed)),
+                ),
+                "timeRemaining" -> (
+                  Visibility("$"),
+                  VDuration(JDuration.ofMillis(t.timeRemaining)),
+                ),
+                "isPaused" -> (
+                  Visibility("$"),
+                  (if t.paused then VNum(1) else VNum(0)),
+                ),
               )
             )
           )
+      end match
     },
     "#Z" ->
       direct(Monad) {
@@ -2058,13 +2068,14 @@ object Elements:
     addPart("#Y", Monad, false) {
       case a => VType(a)
     }
-    addPart("#ɦ", Monad, true) {
-      case VStr(s) => VType(s) // We cannot overload #Y to convert a string to a type because #Y has to output the type of it (which would be VStr)
-    }
-    addPart("#U", Monad, false) {
-      case VStr(s) => VDuration.parse(s)
-      case a: VNum => VDuration.ofDaysDecimal(a.toDouble)
-    },
+      addPart ("#ɦ", Monad, true) {
+        case VStr(s) =>
+          VType(s) // We cannot overload #Y to convert a string to a type because #Y has to output the type of it (which would be VStr)
+      }
+      addPart ("#U", Monad, false) {
+        case VStr(s) => VDuration.parse(s)
+        case a: VNum => VDuration.ofDaysDecimal(a.toDouble)
+      },
     addPart("∆<", Monad, true) {
       case a: VNum => a.arg
     },
