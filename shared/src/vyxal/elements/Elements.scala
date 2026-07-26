@@ -2045,15 +2045,15 @@ object Elements:
             VObject(
               Map(
                 "timeElapsed" -> (
-                  Visibility("$"),
+                  Visibility.Restricted,
                   VDuration(JDuration.ofMillis(t.timeElapsed)),
                 ),
                 "timeRemaining" -> (
-                  Visibility("$"),
+                  Visibility.Restricted,
                   VDuration(JDuration.ofMillis(t.timeRemaining)),
                 ),
                 "isPaused" -> (
-                  Visibility("$"),
+                  Visibility.Restricted,
                   (if t.paused then VNum(1) else VNum(0)),
                 ),
               )
