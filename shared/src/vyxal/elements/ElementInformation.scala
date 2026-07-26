@@ -357,7 +357,8 @@ object ElementInformation:
           "throw-exception",
           "raise-exception",
           "string-to-exception",
-        ) arity = 2,
+        ),
+        arity = 2,
         Options(),
         Overload(
           name = "Convert to exception",
