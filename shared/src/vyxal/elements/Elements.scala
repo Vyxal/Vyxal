@@ -2044,12 +2044,22 @@ object Elements:
         case t: VTimer => push(
             VObject(
               Map(
-                "timeElapsed" -> (Visibility("$"), VDuration(JDuration.ofMillis(t.timeElapsed))),
-                "timeRemaining" -> (Visibility("$"), VDuration(JDuration.ofMillis(t.timeRemaining))),
-                "isPaused" -> (Visibility("$"), (if t.paused then VNum(1) else VNum(0))),
+                "timeElapsed" -> (
+                  Visibility("$"),
+                  VDuration(JDuration.ofMillis(t.timeElapsed)),
+                ),
+                "timeRemaining" -> (
+                  Visibility("$"),
+                  VDuration(JDuration.ofMillis(t.timeRemaining)),
+                ),
+                "isPaused" -> (
+                  Visibility("$"),
+                  (if t.paused then VNum(1) else VNum(0)),
+                ),
               )
             )
           )
+      end match
     },
     "#Z" ->
       direct(Monad) {
