@@ -713,7 +713,7 @@ class ElementTests extends VyxalTests:
         assert(
           timeElapsed.asInstanceOf[VDuration].toMillis.toInt >= 0 && 5 >= timeElapsed.asInstanceOf[VDuration].toMillis.toInt &&
             isPaused.asInstanceOf[VNum] == VNum(paused) &&
-            (timeElapsed.asInstanceOf[VDuration] + timeRemaining.asInstanceOf[VDuration]).toMillis.toInt == 1000
+            timeElapsed.asInstanceOf[VDuration].toMillis.toInt + timeRemaining.asInstanceOf[VDuration].toMillis.toInt == 1000
         )
       end checkTimer
       given ctx: Context = Context(testMode = true)
