@@ -820,6 +820,7 @@ class ElementTests extends VyxalTests:
       Interpreter.execute("#[1|2|3|\"Go!\"#]#ꜝ")
     }
     it("should error on falsy inputs") {
+      given ctx: Context = Context(testMode = true)
       assertThrows[AssertionException] {
         Interpreter.execute("0#ꜝ")
       }
