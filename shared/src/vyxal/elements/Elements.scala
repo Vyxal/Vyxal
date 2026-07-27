@@ -1965,8 +1965,7 @@ object Elements:
         val (b, a) = (pop(), pop())
         (a, b) match
           case (x: VList, y: VException) => y.error(x)
-          case (x, y: VException) =>
-            y.error(VList(Seq.fill(y.arity)(x)))
+          case (x, y: VException) => y.error(VList(Seq.fill(y.arity)(x)))
           case (x, y: VObject) =>
             push(x)
             push(VException(y))
