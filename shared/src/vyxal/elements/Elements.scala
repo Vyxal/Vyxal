@@ -1964,10 +1964,9 @@ object Elements:
       direct(2) {
         val (b, a) = (pop(), pop())
         (a, b) match
-          case (x, y: VException) if (y.arity == 0) =>
-            push(x)
-            y.error(VList(Seq.empty))
           case (x: VList, y: VException) => y.error(x)
+          case (x, y: VException) =>
+            y.error(VList(Seq.fill(y.arity)(x)))
           case (x, y: VObject) =>
             push(x)
             push(VException(y))

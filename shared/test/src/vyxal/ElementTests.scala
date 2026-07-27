@@ -749,7 +749,7 @@ class ElementTests extends VyxalTests:
       "#[1|2|3#]#Y" -> VType(classOf[VList]),
       "500#O#Y" -> VType(classOf[VTimer]),
       "5#Y#Y" -> VType(classOf[VType]),
-      "\"banana\"#q#Y" -> VType(classOf[VException]),
+      "#[1|2#]\"% monkey ate % bananas\"#q#Y" -> VType(classOf[VException]),
       "\"VNum\"#ɦ" -> VType(classOf[VNum]),
       "\"VStr\"#ɦ" -> VType(classOf[VStr]),
       "\"VFun\"#ɦ" -> VType(classOf[VFun]),
@@ -761,7 +761,7 @@ class ElementTests extends VyxalTests:
       "\"VTimer\"#ɦ" -> VType(classOf[VTimer]),
       "\"VType\"#ɦ" -> VType(classOf[VType]),
       "\"VAny\"#ɦ" -> VType(classOf[VAny]),
-      "\"VException\"" -> VType(classOf[VException]),
+      "\"VException\"#ɦ" -> VType(classOf[VException]),
     )
     it("#ɦ should not be able to get non-Vyxal types") {
       given ctx: Context = Context(testMode = true)
@@ -780,8 +780,8 @@ class ElementTests extends VyxalTests:
   }
   describe("Element #q") {
     testMulti(
-      "\"banana\"#q#Y" -> VType(classOf[VException]),
-      "#::R banana | \"Pooped on %\" #$message} #$banana ᴥ#q#Y" ->
+      "#[1|2#]\"% monkey ate % bananas\"#q#Y" -> VType(classOf[VException]),
+      "\"poor little monkey\"#::R banana | \"Stole the banana from %\" #$message} #$banana ᴥ#q#Y" ->
         VType(classOf[VException]),
     )
     it("misformed object should error") {
@@ -795,19 +795,11 @@ class ElementTests extends VyxalTests:
     it("user exceptions should be raised") {
       given ctx: Context = Context(testMode = true)
       assertThrows[VyxalUserThrownException] {
-        Interpreter.execute("\"banana\"#q#q")
+        Interpreter.execute("#[1|2#]\"% monkey ate % bananas\"#q#q")
       }
       assertThrows[VyxalUserThrownException] {
         Interpreter.execute(
-          "#::R banana | \"Pooped on %\" #$message} #$banana ᴥ#q#q"
-        )
-      }
-      assertThrows[VyxalUserThrownException] {
-        Interpreter.execute("#[3#]\"banana %\"#q#q")
-      }
-      assertThrows[VyxalUserThrownException] {
-        Interpreter.execute(
-          "#[\"the toilet\"#] #::R banana | \"Pooped on %\" #$message} #$banana ᴥ#q#q"
+          "\"poor little monkey\"#::R banana | \"Stole the banana from %\" #$message} #$banana ᴥ#q#q"
         )
       }
     }
