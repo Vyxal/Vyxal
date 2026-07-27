@@ -788,7 +788,7 @@ class ElementTests extends VyxalTests:
       given ctx: Context = Context(testMode = true)
       assertThrows[Exception] {
         Interpreter.execute(
-          "#::R banana | \"Pooped on %\" #$incorrectField} #$banana ᴥ#q"
+          "#[1#]# ::R banana | \"Pooped on %\" #$incorrectField} #$banana ᴥ#q"
         )
       }
     }
