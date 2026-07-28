@@ -157,7 +157,7 @@ object Elements:
               .toInt >= 0 && x.asInstanceOf[VNum].isNatural
           )
         then VList(StringHelpers.hashBytes(a))
-        else throw new BadLHSException("ø⑦", a)
+        else throw new BadArgumentException("ø⑦", a)
     },
     addPart("øH", Monad, true) {
       case VStr(a) =>
@@ -168,7 +168,7 @@ object Elements:
               .map((x: String) => VNum(Integer.parseInt(x, 16)))
               .toSeq
           )
-        else throw new BadLHSException("øH", a)
+        else throw new BadArgumentException("øH", a)
       case VListOf[VNum](a) =>
         if a.itr.forall((x: VAny) =>
             x.isInstanceOf[VNum] && x.asInstanceOf[VNum].toInt < 256 && x
@@ -176,7 +176,7 @@ object Elements:
               .toInt >= 0 && x.asInstanceOf[VNum].isNatural
           )
         then VStr(a.map((x: VNum) => String.format("%02x", x.toInt)).mkString)
-        else throw new BadLHSException("øH", a)
+        else throw new BadArgumentException("øH", a)
     },
     addPart("ø6", Monad, true) {
       case VStr(a) =>
@@ -187,7 +187,7 @@ object Elements:
               .map((x: Byte) => VNum(x & 0xff))
               .toSeq
           )
-        catch case _ => throw new BadLHSException("ø6", a)
+        catch case _ => throw new BadArgumentException("ø6", a)
       case VListOf[VNum](a) =>
         if a.itr.forall((x: VAny) =>
             x.isInstanceOf[VNum] && x.asInstanceOf[VNum].toInt < 256 && x
@@ -199,7 +199,7 @@ object Elements:
             Base64.getEncoder
               .encodeToString(a.map((x: VNum) => x.toByte).toArray)
           )
-        else throw new BadLHSException("ø6", a)
+        else throw new BadArgumentException("ø6", a)
     },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
     addPart("&", Dyad, false) {

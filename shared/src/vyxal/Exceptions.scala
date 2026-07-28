@@ -20,100 +20,100 @@ class VyxalException private[vyxal] (
     message
 
 class QuitException extends VyxalException("Program quit using Q")
-sealed class VyxalRuntimeException(message: String)
-    extends VyxalException(s"RuntimeException: $message")
-sealed class VyxalUnknownException(location: String, ex: Throwable)
+sealed class VyxalRuntimeException(val errorMessage: String)
+    extends VyxalException(s"RuntimeException: $errorMessage")
+sealed class VyxalUnknownException(val location: String, val ex: Throwable)
     extends VyxalException(s"Unknown $location Exception", ex, true, true)
-sealed class VyxalUserThrownException(errType: String, message: String)
-    extends VyxalException(s"User thrown $errType: $message")
+sealed class VyxalUserThrownException(val errType: String, val userMessage: String)
+    extends VyxalException(s"User thrown $errType: $userMessage")
 
 /** VyxalRuntimeExceptions */
-class AssertionException(expr: Any)
+class AssertionException(val expr: Any)
     extends VyxalRuntimeException(s"Assertion failed: $expr")
-class BadRegexException(regex: String)
+class BadRegexException(val regex: String)
     extends VyxalRuntimeException(s"Invalid regex syntax: /$regex/")
-class ConstantAssignmentException(name: String)
+class ConstantAssignmentException(val name: String)
     extends VyxalRuntimeException(s"Variable $name is constant")
-class ConstantDuplicateException(name: String)
+class ConstantDuplicateException(val name: String)
     extends VyxalRuntimeException(s"Constant $name already exists")
-class InvalidCompressionCharException(char: Char)
+class InvalidCompressionCharException(val char: Char)
     extends VyxalRuntimeException(s"Unable to compress character '$char'")
 class InvalidListOverloadException(
-    element: String,
-    list: VList,
-    expected: String,
+    val element: String,
+    val list: VList,
+    val expected: String,
 ) extends VyxalRuntimeException(
       s"List $list contains invalid values. Element $element expected $expected values"
     )
-class BadLHSException(element: String, lhs: VAny)
+class BadLHSException(val element: String, val lhs: VAny)
     extends VyxalRuntimeException(s"Element $element received bad LHS: $lhs")
 
-class BadRHSException(element: String, rhs: VAny)
+class BadRHSException(val element: String, val rhs: VAny)
     extends VyxalRuntimeException(s"Element $element received bad RHS: $rhs")
 
-class NoDefaultException(value: VAny)
+class NoDefaultException(val value: VAny)
     extends VyxalRuntimeException(s"No default value exists for $value")
-class UnimplementedOverloadException(element: String, args: Seq[VAny])
+class UnimplementedOverloadException(val element: String, val args: Seq[VAny])
     extends VyxalRuntimeException(
       s"$element not supported for input(s) ${args.mkString("[", ", ", "]")}"
     )
 
-class UnimplementedModifierOverloadException(modifier: String, args: Seq[AST])
+class UnimplementedModifierOverloadException(val modifier: String, val args: Seq[AST])
     extends VyxalRuntimeException(
       s"$modifier not defined for input(s) ${args.map(arg => s"Function ${arg.toVyxal} (arity ${arg.arity.getOrElse(-1)})").mkString("[", ", ", "]")}"
     )
 
-class UnsupportedOverloadException(element: String, message: String)
+class UnsupportedOverloadException(val element: String, val typeName: String)
     extends VyxalRuntimeException(
-      s"$element not supported for type $message"
+      s"$element not supported for type $typeName"
     )
 
 class VyxalRecursionException()
     extends VyxalRuntimeException("Too many recursions")
 
-class IterificationOfNonIterableException(value: VAny)
+class IterificationOfNonIterableException(val value: VAny)
     extends VyxalRuntimeException(s"Cannot iterify $value")
 
-class BadArgumentException(message: String, arg: VAny)
-    extends VyxalRuntimeException(s"$message received bad argument: $arg")
+class BadArgumentException(val functionOrElem: String, val arg: VAny)
+    extends VyxalRuntimeException(s"$functionOrElem received bad argument: $arg")
 
 /** Class related exceptions */
 
-class FieldNotFoundException(className: String, fieldName: String)
+class FieldNotFoundException(val className: String, val fieldName: String)
     extends VyxalRuntimeException(s"Field $fieldName not found in $className")
 
-class AttemptedReadPrivateException(className: String, fieldName: String)
+class AttemptedReadPrivateException(val className: String, val fieldName: String)
     extends VyxalRuntimeException(
       s"Attempted to read private field $fieldName of $className outside of class"
     )
 
-class AttemptedWritePrivateException(className: String, fieldName: String)
+class AttemptedWritePrivateException(val className: String, val fieldName: String)
     extends VyxalRuntimeException(
       s"Attempted to write private field $fieldName of $className outside of class"
     )
 
-class AttemptedWriteRestrictedException(className: String, fieldName: String)
+class AttemptedWriteRestrictedException(val className: String, val fieldName: String)
     extends VyxalRuntimeException(
       s"Attempted to write restricted field $fieldName of $className outside of class"
     )
 
-class ReservedClassNameException(className: String)
+class ReservedClassNameException(val className: String)
     extends VyxalRuntimeException(s"Class name $className is reserved")
 
-class NonExistentTypeException(attemptedType: String)
+class NonExistentTypeException(val attemptedType: String)
     extends VyxalRuntimeException(s"Type $attemptedType does not exist")
 
-class UnopenedGroupException(index: Int)
+class UnopenedGroupException(val index: Int)
     extends VyxalRuntimeException(
       s"Unopened group at index $index"
     )
 
 /** Unrecognized Exceptions */
-class UnknownLexingException(ex: Throwable)
+class UnknownLexingException(val lexEx: Throwable)
     extends VyxalUnknownException("Lexing", ex)
-class UnknownParsingException(ex: Throwable)
+class UnknownParsingException(val parsEx: Throwable)
     extends VyxalUnknownException("Parsing", ex)
-class UnknownRuntimeException(ex: Throwable)
+class UnknownRuntimeException(val runEx: Throwable)
     extends VyxalUnknownException("Runtime", ex)
 
 /** These exceptions should never be unhandled */
@@ -127,11 +127,11 @@ class ReturnFromFunctionException
 /** This is for any errors that are caught, but should NEVER happen. If this
   * gets thrown, somebody done messed up
   */
-class VyxalYikesException(message: String)
-    extends VyxalException(s"Something is very yikes: $message", report = true)
+class VyxalYikesException(val yikesMessage: String)
+    extends VyxalException(s"Something is very yikes: $yikesMessage", report = true)
 
-class UserYikesException(message: String)
+class UserYikesException(val yikesMessage: String)
     extends VyxalException(
-      s"Something you did is very yikes: $message. Don't do that.",
+      s"Something you did is very yikes: $yikesMessage. Don't do that.",
       report = false,
     )

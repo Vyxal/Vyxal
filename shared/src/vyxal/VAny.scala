@@ -575,7 +575,7 @@ object VType:
     catch
       case e: ClassNotFoundException => throw new NonExistentTypeException(s)
       case e: ClassCastException =>
-        throw new UserYikesException(s"Managed to obtain non-vyxal type $s")
+        throw UserYikesException(s"Managed to obtain non-vyxal type $s")
 
 case class VException(val name: String, val messageFormat: String) extends VAny:
   val arity = messageFormat.count(_ == '%')
