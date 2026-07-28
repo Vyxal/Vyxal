@@ -463,16 +463,14 @@ object MiscHelpers:
       case dur: VDuration => dur.toBool
       case t: VTimer => t.toBool
       case wildcard => wildcard.toBool
-  
-  def getConstructorParams(ex: VyxalException): Map[VStr, Tuple[Visibility, VStr]] = { // Thanks Gemini!
-  ex.getClass.getDeclaredFields.flatMap { field =>
-    val name = field.getName
-    if (name.contains("$")) {
-      None
-    } else {
-      Some(name -> (Visibility.Restricted, VStr(field.get(ex).toString)))
-    }
-  }.toMap
-}
+
+  def getConstructorParams(
+      ex: VyxalException
+  ): Map[VStr, Tuple[Visibility, VStr]] = // Thanks Gemini!
+    ex.getClass.getDeclaredFields.flatMap { field =>
+      val name = field.getName
+      if name.contains("$") then None
+      else Some(name -> (Visibility.Restricted, VStr(field.get(ex).toString)))
+    }.toMap
 
 end MiscHelpers

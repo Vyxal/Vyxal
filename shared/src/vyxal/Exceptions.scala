@@ -24,8 +24,10 @@ sealed class VyxalRuntimeException(val errorMessage: String)
     extends VyxalException(s"RuntimeException: $errorMessage")
 sealed class VyxalUnknownException(val location: String, val ex: Throwable)
     extends VyxalException(s"Unknown $location Exception", ex, true, true)
-sealed class VyxalUserThrownException(val errType: String, val userMessage: String)
-    extends VyxalException(s"User thrown $errType: $userMessage")
+sealed class VyxalUserThrownException(
+    val errType: String,
+    val userMessage: String,
+) extends VyxalException(s"User thrown $errType: $userMessage")
 
 /** VyxalRuntimeExceptions */
 class AssertionException(val expr: Any)
@@ -58,8 +60,10 @@ class UnimplementedOverloadException(val element: String, val args: Seq[VAny])
       s"$element not supported for input(s) ${args.mkString("[", ", ", "]")}"
     )
 
-class UnimplementedModifierOverloadException(val modifier: String, val args: Seq[AST])
-    extends VyxalRuntimeException(
+class UnimplementedModifierOverloadException(
+    val modifier: String,
+    val args: Seq[AST],
+) extends VyxalRuntimeException(
       s"$modifier not defined for input(s) ${args.map(arg => s"Function ${arg.toVyxal} (arity ${arg.arity.getOrElse(-1)})").mkString("[", ", ", "]")}"
     )
 
@@ -75,25 +79,33 @@ class IterificationOfNonIterableException(val value: VAny)
     extends VyxalRuntimeException(s"Cannot iterify $value")
 
 class BadArgumentException(val functionOrElem: String, val arg: VAny)
-    extends VyxalRuntimeException(s"$functionOrElem received bad argument: $arg")
+    extends VyxalRuntimeException(
+      s"$functionOrElem received bad argument: $arg"
+    )
 
 /** Class related exceptions */
 
 class FieldNotFoundException(val className: String, val fieldName: String)
     extends VyxalRuntimeException(s"Field $fieldName not found in $className")
 
-class AttemptedReadPrivateException(val className: String, val fieldName: String)
-    extends VyxalRuntimeException(
+class AttemptedReadPrivateException(
+    val className: String,
+    val fieldName: String,
+) extends VyxalRuntimeException(
       s"Attempted to read private field $fieldName of $className outside of class"
     )
 
-class AttemptedWritePrivateException(val className: String, val fieldName: String)
-    extends VyxalRuntimeException(
+class AttemptedWritePrivateException(
+    val className: String,
+    val fieldName: String,
+) extends VyxalRuntimeException(
       s"Attempted to write private field $fieldName of $className outside of class"
     )
 
-class AttemptedWriteRestrictedException(val className: String, val fieldName: String)
-    extends VyxalRuntimeException(
+class AttemptedWriteRestrictedException(
+    val className: String,
+    val fieldName: String,
+) extends VyxalRuntimeException(
       s"Attempted to write restricted field $fieldName of $className outside of class"
     )
 
@@ -128,7 +140,10 @@ class ReturnFromFunctionException
   * gets thrown, somebody done messed up
   */
 class VyxalYikesException(val yikesMessage: String)
-    extends VyxalException(s"Something is very yikes: $yikesMessage", report = true)
+    extends VyxalException(
+      s"Something is very yikes: $yikesMessage",
+      report = true,
+    )
 
 class UserYikesException(val yikesMessage: String)
     extends VyxalException(
