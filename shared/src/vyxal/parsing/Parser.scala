@@ -775,39 +775,39 @@ private class Parser:
   end preprocess
 end Parser
 
-enum ParsingException(msg: String) extends VyxalException(msg):
+enum ParsingException(val msg: String) extends VyxalException(msg):
   case BadAugmentedAssignException()
       extends ParsingException("Missing element for augmented assign")
-  case BadModifierException(modifier: String)
+  case BadModifierException(val modifier: String)
       extends ParsingException(
         s"Modifier '$modifier' is missing arguments"
       )
-  case BadStructureException(structure: String)
+  case BadStructureException(val structure: String)
       extends ParsingException(s"Invalid $structure statement")
-  case ModifierArityException(modifier: String, arity: Option[Int])
+  case ModifierArityException(val modifier: String, val arity: Option[Int])
       extends ParsingException(
         s"Modifier '$modifier' does not support elements of arity ${arity.getOrElse("None")}"
       )
-  case NoSuchElementException(element: String)
+  case NoSuchElementException(val element: String)
       extends ParsingException(s"No such element: $element")
-  case TokensFailedParsingException(tokens: List[Token])
+  case TokensFailedParsingException(val tokens: List[Token])
       extends ParsingException(s"Some elements failed to parse: $tokens")
-  case UnmatchedCloserException(closer: Token)
+  case UnmatchedCloserException(val closer: Token)
       extends ParsingException(
         s"A closer/branch was found outside of a structure: ${closer.value}"
       )
-  case UndefinedCustomModifierException(modifier: String)
+  case UndefinedCustomModifierException(val modifier: String)
       extends ParsingException(s"Custom modifier '$modifier' not defined")
 
-  case UndefinedCustomElementException(element: String)
+  case UndefinedCustomElementException(val element: String)
       extends ParsingException(s"Custom element '$element' not defined")
 
-  case CustomModifierActuallyElementException(modifier: String)
+  case CustomModifierActuallyElementException(val modifier: String)
       extends ParsingException(
         s"Custom modifier '$modifier' is actually a custom element"
       )
 
-  case CustomElementActuallyModifierException(element: String)
+  case CustomElementActuallyModifierException(val element: String)
       extends ParsingException(
         s"Custom element '$element' is actually a custom modifier"
       )
@@ -817,7 +817,7 @@ enum ParsingException(msg: String) extends VyxalException(msg):
         "Redefine statement is empty. Requires at least name and implementation."
       )
 
-  case BadRedefineMode(mode: String)
+  case BadRedefineMode(val mode: String)
       extends ParsingException(
         s"Invalid redefine mode: '$mode'. Should either be E for element, or Ms for modifier"
       )
