@@ -169,7 +169,7 @@ object Interpreter:
             // caught error to the catch branch.
             ctx.clear()
             ctx.push(savedStack*)
-            ctx.push(VObject(ex.getClass.getSimpleName, getConstructorParams(ex) + ("message" -> (Visibility.Restricted, ex.getMessage()))))
+            ctx.push(VObject(ex.getClass.getSimpleName, MiscHelpers.getConstructorParams(ex) + ("message" -> (Visibility.Restricted, VStr(ex.getMessage())))))
             execute(error)
 
       case AST.IfStatement(conds, bodies, elseBody, _) =>

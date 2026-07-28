@@ -110,11 +110,11 @@ class UnopenedGroupException(val index: Int)
 
 /** Unrecognized Exceptions */
 class UnknownLexingException(val lexEx: Throwable)
-    extends VyxalUnknownException("Lexing", ex)
-class UnknownParsingException(val parsEx: Throwable)
-    extends VyxalUnknownException("Parsing", ex)
+    extends VyxalUnknownException("Lexing", lexEx)
+class UnknownParsingException(val parEx: Throwable)
+    extends VyxalUnknownException("Parsing", parEx)
 class UnknownRuntimeException(val runEx: Throwable)
-    extends VyxalUnknownException("Runtime", ex)
+    extends VyxalUnknownException("Runtime", runEx)
 
 /** These exceptions should never be unhandled */
 class ContinueLoopException
