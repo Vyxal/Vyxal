@@ -468,6 +468,7 @@ object MiscHelpers:
       ex: VyxalException
   ): Map[String, (Visibility, VStr)] = // Thanks Gemini!
     ex.getClass.getDeclaredFields.flatMap { field =>
+      field.setAccessible(true)
       val name = field.getName
       if name.contains("$") then None
       else Some(name -> (Visibility.Restricted, VStr(field.get(ex).toString)))
