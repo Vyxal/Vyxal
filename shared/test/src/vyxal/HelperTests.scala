@@ -71,7 +71,9 @@ class HelperTests extends VyxalTests:
       val cp = Checkpoint()
       cp { assertResult(VNum(21))(func.execute(0, 0, Seq(VNum(3), VNum(7)))) }
       cp {
-        assertResult(VNum(2))(func.execute(0, 0, Seq(VStr("monday"), VStr("monkey"))))
+        assertResult(VNum(2))(
+          func.execute(0, 0, Seq(VStr("monday"), VStr("monkey")))
+        )
       }
       cp {
         assertResult(VList(Seq(VType(classOf[VNum]), VType(classOf[VNum]))))(
