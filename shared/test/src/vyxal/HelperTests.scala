@@ -57,12 +57,26 @@ class HelperTests extends VyxalTests:
   describe("Collect By Annotations") {
     it("should collect functions correctly") {
       given Context = VyxalTests.testContext()
-      val func = FuncHelpers.collectByAnnotation(VFun.fromElement("×"), VFun.fromElement("@"), VFun.fromElement(";"))(VList(Seq(VType(VNum), VType(VNum))), VList(Seq(VType(VStr), VType(VStr))), VList(Seq(VType(VAny), VType(VAny))))
+      val func = FuncHelpers.collectByAnnotation(
+        VFun.fromElement("×"),
+        VFun.fromElement("@"),
+        VFun.fromElement(";"),
+      )(
+        VList(Seq(VType(VNum), VType(VNum))),
+        VList(Seq(VType(VStr), VType(VStr))),
+        VList(Seq(VType(VAny), VType(VAny))),
+      )
       // Multiplication, Levenstein Distance, Pair
       val cp = Checkpoint()
-      cp {assertResult(21)(func.execute(0, 0, Seq(VNum(3), VNum(7))))}
-      cp {assertResult(2)(func.execute(0, 0, Seq(VStr("monday"), VStr("monkey"))))}
-      cp {assertResult(VList(Seq(VType(VNum), VType(VNum))))(func.execute(0, 0, Seq(VType(VNum), VType(VNum))))}
+      cp { assertResult(21)(func.execute(0, 0, Seq(VNum(3), VNum(7)))) }
+      cp {
+        assertResult(2)(func.execute(0, 0, Seq(VStr("monday"), VStr("monkey"))))
+      }
+      cp {
+        assertResult(VList(Seq(VType(VNum), VType(VNum))))(
+          func.execute(0, 0, Seq(VType(VNum), VType(VNum)))
+        )
+      }
 
       cp.reportAll()
     }

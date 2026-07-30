@@ -1,7 +1,10 @@
 package vyxal
 
 import vyxal.conversions.given
-import scala.util.boundary, boundary.break
+
+import scala.util.boundary
+
+import boundary.break
 
 /** Helpers for function-related stuff */
 object FuncHelpers:
@@ -147,7 +150,7 @@ object FuncHelpers:
         case Seq(left: VAny, right: VAny) =>
           Interpreter.executeFn(fn, left, right, Seq(left, right))
     }
-  
+
   def collectByAnnotation(fns: VFun*)(lsts: VList*)(using ctx: Context): VFun =
     if (fns.map((f: Any) => f.asInstanceOf[VFun].arity).distinct.size != 1) then // Ensure arities are the same
       throw BadArgumentException("collectByAnnotation", VList(Seq(fns, lsts)))
@@ -163,8 +166,15 @@ object FuncHelpers:
       def implFunc()(using implCtx: Context): Unit =
         val args = implCtx.peek(fns.head.arity)
         for (t, f) <- lsts zip fns do
-          if (t.asInstanceOf[VList].lst zip args).forall((t: VAny, a: VAny) => t.asInstanceOf[VType].underlyingClass.isInstance(a)) then
-            return f.impl()(using implCtx)
-      VFun(implFunc, fns.head.arity, List.fill(fns.head.arity)("<auto type composed function argument>"), ctx)
+          if (t.asInstanceOf[VList].lst zip args).forall((t: VAny, a: VAny) =>
+              t.asInstanceOf[VType].underlyingClass.isInstance(a)
+            )
+          then return f.impl()(using implCtx)
+      VFun(
+        implFunc,
+        fns.head.arity,
+        List.fill(fns.head.arity)("<auto type composed function argument>"),
+        ctx,
+      )
 
 end FuncHelpers
