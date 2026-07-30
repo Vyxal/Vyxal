@@ -861,7 +861,9 @@ class ElementTests extends VyxalTests:
       ctx.push(VType(classOf[VStr]))
       ctx.push(func)
       Interpreter.execute(AST.Command("ᴥ"))
-      assertResult(VList(Seq(VType(classOf[VNum]), VType(classOf[VStr]))))(ctx.pop())
+      assertResult(VList(Seq(VType(classOf[VNum]), VType(classOf[VStr]))))(
+        ctx.pop()
+      )
 
     }
   }

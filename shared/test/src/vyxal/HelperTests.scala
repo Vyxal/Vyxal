@@ -69,10 +69,11 @@ class HelperTests extends VyxalTests:
       )
       // Multiplication, Levenstein Distance, Pair
       val cp = Checkpoint()
-      cp { 
+      cp {
         ctx.push(VNum(3))
         ctx.push(VNum(7))
-        assertResult(VNum(21))(Interpreter.executeFn(func)) }
+        assertResult(VNum(21))(Interpreter.executeFn(func))
+      }
       cp {
         ctx.push(VStr("monday"))
         ctx.push(VStr("monkey"))

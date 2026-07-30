@@ -151,7 +151,9 @@ object FuncHelpers:
           Interpreter.executeFn(fn, left, right, Seq(left, right))
     }
 
-  def collectByAnnotation(fns: VFun*)(lsts: VList*)(using context: Context): VFun =
+  def collectByAnnotation(
+      fns: VFun*
+  )(lsts: VList*)(using context: Context): VFun =
     if fns.map((f: Any) => f.asInstanceOf[VFun].arity).distinct.size != 1
     then // Ensure arities are the same
       throw BadArgumentException("collectByAnnotation", VList(Seq(fns, lsts)))
@@ -185,7 +187,7 @@ object FuncHelpers:
         implFunc,
         fns.head.arity,
         List.empty,
-        context
+        context,
       )
 
 end FuncHelpers
