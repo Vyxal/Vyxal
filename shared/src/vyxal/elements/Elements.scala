@@ -1792,9 +1792,7 @@ object Elements:
       case (initial, predicate: VFun) =>
         MiscHelpers.untilNoChange(predicate, initial).tail
       case (VListOf[VFun](fns), VListOf[VList](types)) =>
-        if types.forall((x: VAny) =>
-            x.asInstanceOf[VList].lst.forall((y: VAny) => y.isInstanceOf[VType])
-          )
+        if types.forall(_.asInstanceOf[VList].lst.forall(_.isInstanceOf[VType]))
         then
           try FuncHelpers.collectByAnnotation(fns*)(types*)
           catch
@@ -1990,8 +1988,7 @@ object Elements:
       },
     "#q" ->
       direct(2) {
-        val (b, a) = (pop(), pop())
-        (a, b) match
+        (pop(), pop()) match
           case (x: VList, y: VException) => y.error(x)
           case (x, y: VException) => y.error(VList(Seq.fill(y.arity)(x)))
           case (x, y: VObject) =>
@@ -2094,7 +2091,7 @@ object Elements:
                 ),
                 "isPaused" -> (
                   Visibility.Restricted,
-                  (if t.paused then VNum(1) else VNum(0)),
+                  VNum(t.paused),
                 ),
               ),
             )
