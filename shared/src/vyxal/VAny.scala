@@ -45,6 +45,7 @@ import spire.math.{Complex, Real}
   *   - [[VDuration]]
   *   - [[VTimer]]
   *   - [[VType]]
+  *   - [[VException]]
   *
   * We derive [[CanEqual]] so that if you compare a `VAny`s to another type, the
   * compiler will complain
@@ -92,7 +93,7 @@ object VAny:
   given (using Context): Ordering[VAny] with
     override def compare(x: VAny, y: VAny): Int = MiscHelpers.compare(x, y)
 
-type VVal = VNum | VStr | VDate | VDuration | VType
+type VVal = VNum | VStr | VDate | VDuration
 type VPhysical = VNum | VStr | VList
 type VIter = VList | VStr
 type VTemporal = VDate | VDuration

@@ -74,6 +74,8 @@ object Elements:
       case (a: VDuration, b: VDuration) =>
         if b.dur.toMillis == 0 then VNum(0)
         else VNum(a.dur.toMillis.toDouble / b.dur.toMillis.toDouble)
+      case (a: VAny, VType(b)) => b.isInstance(a)
+      case (VType(a), b: VAny) => a.isInstance(b)
     },
     "×" -> fullToImpl(Dyad, MiscHelpers.multiply),
     addPart("∧", Dyad, true) {
@@ -178,7 +180,7 @@ object Elements:
         then VStr(a.map((x: VNum) => String.format("%02x", x.toInt)).mkString)
         else throw new BadArgumentException("øH", a)
     },
-    addPart("ø6", Monad, true) {
+    addPart("ø④", Monad, true) {
       case VStr(a) =>
         try
           VList(
@@ -187,7 +189,7 @@ object Elements:
               .map((x: Byte) => VNum(x & 0xff))
               .toSeq
           )
-        catch case _ => throw new BadArgumentException("ø6", a)
+        catch case _ => throw new BadArgumentException("ø④", a)
       case VListOf[VNum](a) =>
         if a.itr.forall((x: VAny) =>
             x.isInstanceOf[VNum] && x.asInstanceOf[VNum].toInt < 256 && x
@@ -199,7 +201,7 @@ object Elements:
             Base64.getEncoder
               .encodeToString(a.map((x: VNum) => x.toByte).toArray)
           )
-        else throw new BadArgumentException("ø6", a)
+        else throw new BadArgumentException("ø④", a)
     },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
     addPart("&", Dyad, false) {
@@ -274,6 +276,7 @@ object Elements:
       case (VStr(a), VStr(b)) => a == b
       case (a: VDate, b: VDate) => a === b
       case (a: VDuration, b: VDuration) => a === b
+      case (VType(a), VType(b)) => a == b
     },
     addPart(">", Dyad, true) {
       case (a: VVal, b: VVal) => a > b
@@ -1248,7 +1251,6 @@ object Elements:
         )
       case (size: VNum, itr: VList) =>
         ListHelpers.combinations(itr, size.toInt, withReplacement = true)
-
     },
     addPart("℈", Dyad, false) {
       case (itr: VNum, size: VNum) =>
@@ -1789,6 +1791,10 @@ object Elements:
         MiscHelpers.untilNoChange(predicate, initial).tail
       case (initial, predicate: VFun) =>
         MiscHelpers.untilNoChange(predicate, initial).tail
+      case (fns: VListOf[VFun], types: VListOf[VListOf[VType]]) =>
+        FuncHelpers.collectByAnnotation(fns.lst*)(types.lst*)
+      case (types: VListOf[VListOf[VType]], fns: VListOf[VFun]) =>
+        FuncHelpers.collectByAnnotation(fns.lst*)(types.lst*)
     },
     "▲" ->
       fullToImpl(

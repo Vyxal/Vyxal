@@ -110,7 +110,7 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "÷",
-        keywords = Seq("divide", "string-pieces", "regex-split", "/", "div"),
+        keywords = Seq("divide", "string-pieces", "regex-split", "/", "div", "type-check"),
         arity = 2,
         Options(vectorises = true),
         Overload(
@@ -139,6 +139,11 @@ object ElementInformation:
           args = Seq("dur", "dur"),
           description = "Ratio of duration #1 to duration #2",
         ),
+        Overload(
+          name = "Type Check",
+          args = Seq("any, type"),
+          description = "Check if #1 is an instance of or an instance of a descendant of #2"
+        )
       ),
       AddElement(
         symbol = "×",
@@ -272,7 +277,7 @@ object ElementInformation:
         ),
       ),
       AddElement(
-        symbol = "ø6",
+        symbol = "ø④",
         keywords = Seq(
           "nums-to-base64",
           "bytes-to-base64",
@@ -4016,6 +4021,12 @@ object ElementInformation:
             "Repeatedly apply {#1|#2} to {#2|#1}, collecting results (not including initial value)",
           typeSwitchable = true,
         ),
+        Overload(
+          name = "Collect Function Overloads",
+          args = Seq("lst[fun]", "lst[lst[type]]"),
+          description = "Create a single function that executes a particular function in the list if its corresponding type annotation is matched, with earlier functions taking priority.",
+          typeSwitchable = true,
+        )
       ),
       AddElement(
         symbol = "▲",
