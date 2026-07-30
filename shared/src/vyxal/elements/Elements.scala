@@ -1989,12 +1989,12 @@ object Elements:
     "#q" ->
       direct(2) {
         (pop(), pop()) match
-          case (x: VList, y: VException) => y.error(x)
-          case (x, y: VException) => y.error(VList(Seq.fill(y.arity)(x)))
-          case (x, y: VObject) =>
+          case (y: VException, x: VList) => y.error(x)
+          case (y: VException, x) => y.error(VList(Seq.fill(y.arity)(x)))
+          case (y: VObject, x) =>
             push(x)
             push(VException(y))
-          case (x, y: VStr) =>
+          case (y: VStr, x) =>
             push(x)
             push(VException(y))
       },
