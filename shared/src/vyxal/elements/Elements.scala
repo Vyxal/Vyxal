@@ -1804,6 +1804,7 @@ object Elements:
         } catch {
           case ClassCastException => throw BadArgumentException("collectByAnnotation", VList(Seq(fns, types)))
           case ex => throw ex
+        }
     },
     "▲" ->
       fullToImpl(
