@@ -1792,19 +1792,17 @@ object Elements:
       case (initial, predicate: VFun) =>
         MiscHelpers.untilNoChange(predicate, initial).tail
       case (fns: VListOf[VFun], types: VListOf[VListOf[VType]]) =>
-        try {
-          FuncHelpers.collectByAnnotation(fns.lst*)(types.lst*)
-        } catch {
-          case ClassCastException => throw BadArgumentException("collectByAnnotation", (fns, types))
+        try FuncHelpers.collectByAnnotation(fns.lst*)(types.lst*)
+        catch
+          case ClassCastException =>
+            throw BadArgumentException("collectByAnnotation", (fns, types))
           case ex => throw ex
-        }
       case (types: VListOf[VListOf[VType]], fns: VListOf[VFun]) =>
-        try {
-          FuncHelpers.collectByAnnotation(fns.lst*)(types.lst*)
-        } catch {
-          case ClassCastException => throw BadArgumentException("collectByAnnotation", (fns, types))
+        try FuncHelpers.collectByAnnotation(fns.lst*)(types.lst*)
+        catch
+          case ClassCastException =>
+            throw BadArgumentException("collectByAnnotation", (fns, types))
           case ex => throw ex
-        }
     },
     "▲" ->
       fullToImpl(
