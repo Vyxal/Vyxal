@@ -1798,7 +1798,7 @@ object Elements:
         then
           try FuncHelpers.collectByAnnotation(fns*)(types*)
           catch
-            case ClassCastException => throw BadArgumentException(
+            case _: ClassCastException => throw BadArgumentException(
                 "collectByAnnotation",
                 VList(Seq(fns, types)),
               )
@@ -1810,7 +1810,7 @@ object Elements:
         then
           try FuncHelpers.collectByAnnotation(fns*)(types*)
           catch
-            case ClassCastException => throw BadArgumentException(
+            case _: ClassCastException => throw BadArgumentException(
                 "collectByAnnotation",
                 VList(Seq(fns, types)),
               )
