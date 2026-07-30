@@ -828,16 +828,20 @@ class ElementTests extends VyxalTests:
   describe("Element ⧢") {
     it("should combine functions correctly") {
       given ctx: Context = Context(testMode = true)
-      ctx.push(Seq(
-        VFun.fromElement("×"),
-        VFun.fromElement("@"),
-        VFun.fromElement(";"),
-      ))
-      ctx.push(Seq(
-        VList(Seq(VType(classOf[VNum]), VType(classOf[VNum]))),
-        VList(Seq(VType(classOf[VStr]), VType(classOf[VStr]))),
-        VList(Seq(VType(classOf[VAny]), VType(classOf[VAny]))),
-      ))
+      ctx.push(
+        Seq(
+          VFun.fromElement("×"),
+          VFun.fromElement("@"),
+          VFun.fromElement(";"),
+        )
+      )
+      ctx.push(
+        Seq(
+          VList(Seq(VType(classOf[VNum]), VType(classOf[VNum]))),
+          VList(Seq(VType(classOf[VStr]), VType(classOf[VStr]))),
+          VList(Seq(VType(classOf[VAny]), VType(classOf[VAny]))),
+        )
+      )
       Interpreter.execute(AST.Command("⧢"))
 
       val func = ctx.pop()
