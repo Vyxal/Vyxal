@@ -824,6 +824,7 @@ class ElementTests extends VyxalTests:
       }
     }
   }
+
   describe("Element ⧢") {
     it("should combine functions correctly") {
       given ctx: Context = Context(testMode = true)
@@ -833,9 +834,9 @@ class ElementTests extends VyxalTests:
         VFun.fromElement(";"),
       ))
       ctx.push(Seq(
-        VList(Seq(VType(VNum), VType(VNum))),
-        VList(Seq(VType(VStr), VType(VStr))),
-        VList(Seq(VType(VAny), VType(VAny))),
+        VList(Seq(VType(classOf[VNum]), VType(classOf[VNum]))),
+        VList(Seq(VType(classOf[VStr]), VType(classOf[VStr]))),
+        VList(Seq(VType(classOf[VAny]), VType(classOf[VAny]))),
       ))
       Interpreter.execute(AST.Command("⧢"))
 
@@ -843,8 +844,8 @@ class ElementTests extends VyxalTests:
 
       assertResult(21)(func.execute(0, 0, Seq(VNum(3), VNum(7))))
       assertResult(2)(func.execute(0, 0, Seq(VStr("monday"), VStr("monkey"))))
-      assertResult(VList(Seq(VType(VNum), VType(VNum))))(
-        func.execute(0, 0, Seq(VType(VNum), VType(VNum)))
+      assertResult(VList(Seq(VType(classOf[VNum]), VType(classOf[VNum]))))(
+        func.execute(0, 0, Seq(VType(classOf[VNum]), VType(classOf[VNum])))
       )
     }
   }
