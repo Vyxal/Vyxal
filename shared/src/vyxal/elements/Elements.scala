@@ -1792,21 +1792,29 @@ object Elements:
       case (initial, predicate: VFun) =>
         MiscHelpers.untilNoChange(predicate, initial).tail
       case (VListOf[VFun](fns), VListOf[VList](types)) =>
-        if types.forall((x: VAny) => x.asInstanceOf[VList].lst.forall((y: VAny) => y.isInstanceOf[VType])) then
-          try {
-            FuncHelpers.collectByAnnotation(fns*)(types*)
-          } catch {
-            case ClassCastException => throw BadArgumentException("collectByAnnotation", VList(Seq(fns, types)))
+        if types.forall((x: VAny) =>
+            x.asInstanceOf[VList].lst.forall((y: VAny) => y.isInstanceOf[VType])
+          )
+        then
+          try FuncHelpers.collectByAnnotation(fns*)(types*)
+          catch
+            case ClassCastException => throw BadArgumentException(
+                "collectByAnnotation",
+                VList(Seq(fns, types)),
+              )
             case ex => throw ex
-          }
       case (VListOf[VList](types), VListOf[VFun](fns)) =>
-        if types.forall((x: VAny) => x.asInstanceOf[VList].lst.forall((y: VAny) => y.isInstanceOf[VType])) then
-          try {
-            FuncHelpers.collectByAnnotation(fns*)(types*)
-          } catch {
-            case ClassCastException => throw BadArgumentException("collectByAnnotation", VList(Seq(fns, types)))
+        if types.forall((x: VAny) =>
+            x.asInstanceOf[VList].lst.forall((y: VAny) => y.isInstanceOf[VType])
+          )
+        then
+          try FuncHelpers.collectByAnnotation(fns*)(types*)
+          catch
+            case ClassCastException => throw BadArgumentException(
+                "collectByAnnotation",
+                VList(Seq(fns, types)),
+              )
             case ex => throw ex
-          }
     },
     "▲" ->
       fullToImpl(
