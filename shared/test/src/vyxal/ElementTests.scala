@@ -840,10 +840,10 @@ class ElementTests extends VyxalTests:
       ))
       Interpreter.execute(AST.Command("⧢"))
 
-      val func = ctx.pop()
+      val func: VFun = ctx.pop().asInstanceOf[VFun]
 
-      assertResult(21)(func.execute(0, 0, Seq(VNum(3), VNum(7))))
-      assertResult(2)(func.execute(0, 0, Seq(VStr("monday"), VStr("monkey"))))
+      assertResult(VNum(21))(func.execute(0, 0, Seq(VNum(3), VNum(7))))
+      assertResult(VNum(2))(func.execute(0, 0, Seq(VStr("monday"), VStr("monkey"))))
       assertResult(VList(Seq(VType(classOf[VNum]), VType(classOf[VNum]))))(
         func.execute(0, 0, Seq(VType(classOf[VNum]), VType(classOf[VNum])))
       )

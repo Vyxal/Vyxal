@@ -174,11 +174,13 @@ object FuncHelpers:
     else // Everything is A-OK
       def implFunc()(using implCtx: Context): Unit =
         val args = implCtx.peek(fns.head.arity)
+        boundary {
         for (t, f) <- lsts zip fns do
           if (t.asInstanceOf[VList].lst zip args).forall((t: VAny, a: VAny) =>
               t.asInstanceOf[VType].underlyingClass.isInstance(a)
             )
-          then return f.impl()(using implCtx)
+          then break(f.impl()(using implCtx))
+        }
       VFun(
         implFunc,
         fns.head.arity,
