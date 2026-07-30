@@ -1803,6 +1803,8 @@ object Elements:
                 VList(Seq(fns, types)),
               )
             case ex => throw ex
+        else
+          throw BadArgumentException("⧢", VList(Seq(fns, types)))
       case (VListOf[VList](types), VListOf[VFun](fns)) =>
         if types.forall((x: VAny) =>
             x.asInstanceOf[VList].lst.forall((y: VAny) => y.isInstanceOf[VType])
@@ -1815,6 +1817,8 @@ object Elements:
                 VList(Seq(fns, types)),
               )
             case ex => throw ex
+        else
+          throw BadArgumentException("⧢", VList(Seq(fns, types)))
     },
     "▲" ->
       fullToImpl(

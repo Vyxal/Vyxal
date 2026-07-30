@@ -824,4 +824,28 @@ class ElementTests extends VyxalTests:
       }
     }
   }
+  describe("Element ⧢") {
+    it("should combine functions correctly") {
+      given ctx: Context = Context(testMode = true)
+      ctx.push(Seq(
+        VFun.fromElement("×"),
+        VFun.fromElement("@"),
+        VFun.fromElement(";"),
+      ))
+      ctx.push(Seq(
+        VList(Seq(VType(VNum), VType(VNum))),
+        VList(Seq(VType(VStr), VType(VStr))),
+        VList(Seq(VType(VAny), VType(VAny))),
+      ))
+      Interpreter.execute(AST.Command("⧢"))
+
+      val func = ctx.pop()
+
+      assertResult(21)(func.execute(0, 0, Seq(VNum(3), VNum(7))))
+      assertResult(2)(func.execute(0, 0, Seq(VStr("monday"), VStr("monkey"))))
+      assertResult(VList(Seq(VType(VNum), VType(VNum))))(
+        func.execute(0, 0, Seq(VType(VNum), VType(VNum)))
+      )
+    }
+  }
 end ElementTests
