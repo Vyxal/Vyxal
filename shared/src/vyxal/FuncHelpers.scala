@@ -148,12 +148,12 @@ object FuncHelpers:
           Interpreter.executeFn(fn, left, right, Seq(left, right))
     }
   
-  def collectByAnnotation(fns: VFun*)(lsts: VListOf[VType]*)(using ctx: Context): VFun =
+  def collectByAnnotation(fns: VFun*)(lsts: VList*)(using ctx: Context): VFun =
     if (fns.map((f: Any) => f.asInstanceOf[VFun].arity).distinct.size != 1) then // Ensure arities are the same
       throw BadArgumentException("collectByAnnotation", (fns, lsts))
     else if (fns.head.arity == -1) then // Ensure no arity is -1
       throw BadArgumentException("collectByAnnotation", (fns, lsts))
-    else if (fns.size != lsts.size || fns.size == 0 || lsts.size == 0) then // Ensure each annotation has 1-to-1 correspondence with a function and that there are actually annotations as well as functions
+    else if (fns.size != lsts.size || fns.isEmpty || lsts.isEmpty) then // Ensure each annotation has 1-to-1 correspondence with a function and that there are actually annotations as well as functions
       throw BadArgumentException("collectByAnnotation", (fns, lsts))
     else if (lsts.map((l: Any) => l.asInstanceOf[VList].lst.size).distinct.size != 1) then // Ensure list lengths are the same
       throw BadArgumentException("collectByAnnotation", (fns, lsts))
@@ -165,6 +165,6 @@ object FuncHelpers:
         for (t, f) <- lsts zip fns do
           if (t.asInstanceOf[VList].lst zip args).forall((t: VAny, a: VAny) => t.asInstanceOf[VType].underlyingClass.isInstance(a)) then
             return f.impl()(using implCtx)
-      VFun(implFunc, fns.head.arity, List.fill("<auto type composed function argument>")(fns.head.arity), ctx)
+      VFun(implFunc, fns.head.arity, List.fill(fns.head.arity)("<auto type composed function argument>"), ctx)
 
 end FuncHelpers
