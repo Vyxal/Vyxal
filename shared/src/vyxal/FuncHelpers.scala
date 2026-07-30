@@ -152,15 +152,24 @@ object FuncHelpers:
     }
 
   def collectByAnnotation(fns: VFun*)(lsts: VList*)(using ctx: Context): VFun =
-    if (fns.map((f: Any) => f.asInstanceOf[VFun].arity).distinct.size != 1) then // Ensure arities are the same
+    if fns.map((f: Any) => f.asInstanceOf[VFun].arity).distinct.size != 1
+    then // Ensure arities are the same
       throw BadArgumentException("collectByAnnotation", VList(Seq(fns, lsts)))
-    else if (fns.head.arity == -1) then // Ensure no arity is -1
+    else if fns.head.arity == -1 then // Ensure no arity is -1
       throw BadArgumentException("collectByAnnotation", VList(Seq(fns, lsts)))
-    else if (fns.size != lsts.size || fns.isEmpty || lsts.isEmpty) then // Ensure each annotation has 1-to-1 correspondence with a function and that there are actually annotations as well as functions
+    else if fns.size != lsts.size || fns.isEmpty || lsts.isEmpty
+    then // Ensure each annotation has 1-to-1 correspondence with a function and that there are actually annotations as well as functions
       throw BadArgumentException("collectByAnnotation", VList(Seq(fns, lsts)))
-    else if (lsts.map((l: Any) => l.asInstanceOf[VList].lst.size).distinct.size != 1) then // Ensure list lengths are the same
+    else if lsts
+        .map((l: Any) => l.asInstanceOf[VList].lst.size)
+        .distinct
+        .size != 1
+    then // Ensure list lengths are the same
       throw BadArgumentException("collectByAnnotation", VList(Seq(fns, lsts)))
-    else if (!((fns lazyZip lsts).forall((x, y) => x.asInstanceOf[VFun].arity == y.asInstanceOf[VList].lst.size))) then // Ensure each list has the same length as its corresponding function's arity
+    else if !((fns lazyZip lsts).forall((x, y) =>
+        x.asInstanceOf[VFun].arity == y.asInstanceOf[VList].lst.size
+      ))
+    then // Ensure each list has the same length as its corresponding function's arity
       throw BadArgumentException("collectByAnnotation", VList(Seq(fns, lsts)))
     else // Everything is A-OK
       def implFunc()(using implCtx: Context): Unit =
