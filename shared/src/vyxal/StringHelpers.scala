@@ -531,6 +531,98 @@ object StringHelpers:
       }
       .mkString("\n")
 
+  /** Object fields that can hold the coordinates of an SVG polyline */
+  private val SvgPointFields = Seq("points", "coords", "coordinates")
+
+  private def escapeXml(s: String): String =
+    s.replace("&", "&amp;")
+      .replace("<", "&lt;")
+      .replace(">", "&gt;")
+      .replace("\"", "&quot;")
+
+  /** Turn a list of coordinates into the `points` attribute of an SVG polyline
+    *
+    * The coordinates are either a list of points or a flat list of numbers. A
+    * flat list of complex numbers is one point per number, taking the real part
+    * as x and the imaginary part as y; a flat list of real numbers is in the
+    * order the coordinates show up in the SVG itself (`x, y, x, y, ...`).
+    */
+  def svgPoints(coords: Seq[VAny])(using Context): String =
+    val points = coords match
+      case VListOf[VList](points) => points.map(_.lst)
+      case VListOf[VNum](flat) =>
+        if flat.exists(!_.isReal) then flat.map(Seq(_))
+        else if flat.length % 2 != 0 then
+          throw BadArgumentException(
+            "A flat list of real SVG coordinates needs an even length",
+            VList(coords),
+          )
+        else flat.grouped(2).toSeq
+      case _ => throw BadArgumentException(
+          "SVG coordinates must be either all points or all numbers",
+          VList(coords),
+        )
+
+    points.map(svgPoint).mkString(" ")
+  end svgPoints
+
+  /** Turn a single SVG point, which is either a real x and y or a lone complex
+    * number, into `x,y`
+    */
+  private def svgPoint(point: Seq[VAny])(using Context): String =
+    point match
+      case Seq(n: VNum) =>
+        s"${svgCoord(VNum.complex(n.real, 0))},${svgCoord(VNum.complex(n.imag, 0))}"
+      case Seq(x: VNum, y: VNum) => s"${svgCoord(x)},${svgCoord(y)}"
+      case _ => throw BadArgumentException(
+          "An SVG point needs either two real coordinates or one complex number",
+          VList(point),
+        )
+
+  private def svgCoord(coord: VNum)(using Context): String =
+    if coord.isReal then NumberHelpers.numToString(coord)
+    else throw BadArgumentException("An SVG coordinate must be real", coord)
+
+  /** Turn a list of coordinates into an SVG polyline element */
+  def svgPolyline(coords: Seq[VAny], stroke: String, fill: String)(using
+      Context
+  ): String =
+    s"""<polyline points="${escapeXml(svgPoints(coords))}" stroke="${escapeXml(
+        stroke
+      )}" fill="${escapeXml(fill)}" />"""
+
+  /** Turn an object into an SVG polyline element
+    *
+    * The coordinates come from the object's `points`, `coords`, or
+    * `coordinates` field, and the stroke and fill from its `stroke` and `fill`
+    * fields, defaulting to black and none respectively.
+    */
+  def svgPolyline(obj: VObject)(using Context): String =
+    val coords = SvgPointFields.find(obj.fields.contains) match
+      case Some(field) => MiscHelpers.getObjectMember(obj, field) match
+          case lst: VList => lst.lst
+          case other => throw BadArgumentException(
+              "SVG coordinates must be a list",
+              other,
+            )
+      case None => throw FieldNotFoundException(obj.className, "points")
+
+    svgPolyline(
+      coords,
+      svgAttribute(obj, "stroke", "black"),
+      svgAttribute(obj, "fill", "none"),
+    )
+
+  /** Read an SVG attribute off an object, falling back to a default when the
+    * object doesn't have that field
+    */
+  private def svgAttribute(obj: VObject, name: String, default: String)(using
+      Context
+  ): String =
+    if obj.fields.contains(name) then
+      vyToString(MiscHelpers.getObjectMember(obj, name))
+    else default
+
   def hash(
       s: VAny,
       encoding: String = "UTF-8",

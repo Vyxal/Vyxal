@@ -1549,6 +1549,37 @@
   - {in: ["Sussyy", "y"], out: ["Suss", "", ""]}
   - {in: ["A|B|C", "|"], out: ["A", "B", "C"]}
 
+"øs":
+  Points:
+    - {in: [[[1, 2], [3, 4]]], out: '<polyline points="1,2 3,4" stroke="black" fill="none" />'}
+    - {in: [[[0, 0]]], out: '<polyline points="0,0" stroke="black" fill="none" />'}
+    - {in: [[[1.5, -2], [-3, 4.25]]], out: '<polyline points="1.5,-2 -3,4.25" stroke="black" fill="none" />'}
+  Flat:
+    - {in: [[1, 2, 3, 4]], out: '<polyline points="1,2 3,4" stroke="black" fill="none" />'}
+    - {in: [[1, 2]], out: '<polyline points="1,2" stroke="black" fill="none" />'}
+    - {in: [[1.5, -2, -3, 4.25]], out: '<polyline points="1.5,-2 -3,4.25" stroke="black" fill="none" />'}
+  Complex:
+    - in:
+      - - !num 1j2
+        - !num 3j4
+      out: '<polyline points="1,2 3,4" stroke="black" fill="none" />'
+    - in: # Real numbers alongside complex ones sit on the x axis
+      - - !num 1j2
+        - 3
+      out: '<polyline points="1,2 3,0" stroke="black" fill="none" />'
+    - in:
+      - - !num 0j1
+      out: '<polyline points="0,1" stroke="black" fill="none" />'
+    - in:
+      - - !num -1.5j-2
+      out: '<polyline points="-1.5,-2" stroke="black" fill="none" />'
+    - in: # A point can also be a complex number on its own
+      - - - !num 1j2
+        - - !num 3j4
+      out: '<polyline points="1,2 3,4" stroke="black" fill="none" />'
+  Empty:
+    - {in: [[]], out: '<polyline points="" stroke="black" fill="none" />'}
+
 "∆s":
   - in:
     - - 3.1415926535897932384626433832795028841971693993751058209749445923 # π

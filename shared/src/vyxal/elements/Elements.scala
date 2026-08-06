@@ -201,6 +201,10 @@ object Elements:
           )
         else throw new BadLHSException("ø6", a)
     },
+    addPart("øs", Monad, false) {
+      case a: VList => VStr(StringHelpers.svgPolyline(a.lst, "black", "none"))
+      case a: VObject => VStr(StringHelpers.svgPolyline(a))
+    },
     "%" -> fullToImpl(Dyad, MiscHelpers.modulo),
     addPart("&", Dyad, false) {
       case (VList(a), b) => VList(a.itr :+ b)
