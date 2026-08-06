@@ -295,6 +295,24 @@ object ElementInformation:
         ),
       ),
       AddElement(
+        symbol = "øs",
+        keywords = Seq("svg", "to-svg", "svg-polyline", "polyline"),
+        arity = 1,
+        Options(),
+        Overload(
+          name = "SVG Polyline",
+          args = Seq("lst"),
+          description =
+            "Turn #1 into an SVG polyline with stroke black and fill none. #1 is either a list of points ([x, y] or a single complex number), a flat list of complex numbers (one point each, real part x and imaginary part y), or a flat list of real numbers in the order they show up in the SVG (x, y, x, y, ...)",
+        ),
+        Overload(
+          name = "SVG Polyline from Object",
+          args = Seq("obj"),
+          description =
+            "Turn #1 into an SVG polyline, taking the coordinates from #1's points/coords/coordinates field, and the stroke and fill from #1's stroke and fill fields (defaulting to black and none)",
+        ),
+      ),
+      AddElement(
         symbol = "#O",
         keywords = Seq("set-timer", "toggle-timer"),
         arity = 1,
