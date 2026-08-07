@@ -1095,7 +1095,7 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "K",
-        keywords = Seq("factors", "divisors", "is-numeric?", "is-numeric"),
+        keywords = Seq("factors", "divisors", "is-numeric?", "is-numeric", "object-keys", "object-variables"),
         arity = 1,
         Options(vectorises = true),
         Overload(
@@ -1108,6 +1108,11 @@ object ElementInformation:
           args = Seq("str"),
           description = "Check if #1 is numeric",
           typeSwitchable = true,
+        ),
+        Overload(
+          name = "Object Variables",
+          args = Seq("obj"),
+          description = "Get the names of the non-private variables",
         ),
       ),
       AddElement(
@@ -1311,6 +1316,7 @@ object ElementInformation:
           "one-minus-x",
           "complement",
           "split-spaces-reverse",
+          "object-values",
         ),
         arity = 1,
         Options(),
@@ -1328,6 +1334,11 @@ object ElementInformation:
           name = "Split on Spaces and Reverse Each Substring",
           args = Seq("str"),
           description = "Split #1 on spaces and reverse each substring",
+        ),
+        Overload(
+          name = "Object values",
+          args = Seq("obj"),
+          description = "Get all values of the object assigned to non-private variables",
         ),
       ),
       AddElement(

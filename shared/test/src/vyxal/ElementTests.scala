@@ -958,4 +958,11 @@ class ElementTests extends VyxalTests:
 
     }
   }
+
+  describe("Elements K and V") {
+    testMulti(
+      "#::R tag| \"monkey\" #$animal \"banana\" #!food \"fdab9023\" #=id} #$tagᴥ K" -> vSeq("animal", "food"),
+      "#::R tag| \"monkey\" #$animal \"banana\" #!food \"fdab9023\" #=id} #$tagᴥ V" -> vSeq("monkey", "banana"),
+    )
+  }
 end ElementTests

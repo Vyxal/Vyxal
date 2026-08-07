@@ -404,8 +404,8 @@ object Elements:
       case VStr(a) => VNum(VNum.DecimalRegex.matches(a))
       case a: VObject => VList(a.fields.flatMap {
           case (name, (vis, value)) =>
-            if vis == Visibility.Private then None else Some(name)
-        })
+            if vis == Visibility.Private then None else Some(VStr(name))
+        }.toSeq)
     },
     "L" ->
       direct(Monad) {
@@ -528,7 +528,7 @@ object Elements:
       case a: VObject => VList(a.fields.flatMap {
           case (name, (vis, value)) =>
             if vis == Visibility.Private then None else Some(value)
-        })
+        }.toSeq)
     },
     "W" ->
       direct(-1) {
