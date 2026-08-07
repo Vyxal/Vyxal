@@ -74,6 +74,8 @@ object Elements:
       case (a: VDuration, b: VDuration) =>
         if b.dur.toMillis == 0 then VNum(0)
         else VNum(a.dur.toMillis.toDouble / b.dur.toMillis.toDouble)
+      case (a: VAny, VType(b)) => b.isInstance(a)
+      case (VType(a), b: VAny) => a.isInstance(b)
     },
     "×" -> fullToImpl(Dyad, MiscHelpers.multiply),
     addPart("∧", Dyad, true) {
@@ -157,7 +159,7 @@ object Elements:
               .toInt >= 0 && x.asInstanceOf[VNum].isNatural
           )
         then VList(StringHelpers.hashBytes(a))
-        else throw new BadLHSException("ø⑦", a)
+        else throw new BadArgumentException("ø⑦", a)
     },
     addPart("øH", Monad, true) {
       case VStr(a) =>
@@ -168,7 +170,7 @@ object Elements:
               .map((x: String) => VNum(Integer.parseInt(x, 16)))
               .toSeq
           )
-        else throw new BadLHSException("øH", a)
+        else throw new BadArgumentException("øH", a)
       case VListOf[VNum](a) =>
         if a.itr.forall((x: VAny) =>
             x.isInstanceOf[VNum] && x.asInstanceOf[VNum].toInt < 256 && x
@@ -176,9 +178,9 @@ object Elements:
               .toInt >= 0 && x.asInstanceOf[VNum].isNatural
           )
         then VStr(a.map((x: VNum) => String.format("%02x", x.toInt)).mkString)
-        else throw new BadLHSException("øH", a)
+        else throw new BadArgumentException("øH", a)
     },
-    addPart("ø6", Monad, true) {
+    addPart("ø④", Monad, true) {
       case VStr(a) =>
         try
           VList(
@@ -187,7 +189,7 @@ object Elements:
               .map((x: Byte) => VNum(x & 0xff))
               .toSeq
           )
-        catch case _ => throw new BadLHSException("ø6", a)
+        catch case _ => throw new BadArgumentException("ø④", a)
       case VListOf[VNum](a) =>
         if a.itr.forall((x: VAny) =>
             x.isInstanceOf[VNum] && x.asInstanceOf[VNum].toInt < 256 && x
@@ -199,7 +201,7 @@ object Elements:
             Base64.getEncoder
               .encodeToString(a.map((x: VNum) => x.toByte).toArray)
           )
-        else throw new BadLHSException("ø6", a)
+        else throw new BadArgumentException("ø④", a)
     },
     addPart("øs", Monad, false) {
       case a: VList => VStr(StringHelpers.svgPolyline(a.lst, "black", "none"))
@@ -278,6 +280,7 @@ object Elements:
       case (VStr(a), VStr(b)) => a == b
       case (a: VDate, b: VDate) => a === b
       case (a: VDuration, b: VDuration) => a === b
+      case (VType(a), VType(b)) => a == b
     },
     addPart(">", Dyad, true) {
       case (a: VVal, b: VVal) => a > b
@@ -399,6 +402,10 @@ object Elements:
     addPart("K", Monad, true) {
       case a: VNum => NumberHelpers.factors(a)
       case VStr(a) => VNum(VNum.DecimalRegex.matches(a))
+      case a: VObject => VList(a.fields.flatMap {
+          case (name, (vis, value)) =>
+            if vis == Visibility.Private then None else Some(VStr(name))
+        }.toSeq)
     },
     "L" ->
       direct(Monad) {
@@ -518,6 +525,10 @@ object Elements:
       case a: VList => VList(a.map(ListHelpers.reverse))
       case VStr(a) => VList(a.split(" ").map(_.reverse).toSeq.map(VStr(_)))
       case a: VNum => 1 - a
+      case a: VObject => VList(a.fields.flatMap {
+          case (name, (vis, value)) =>
+            if vis == Visibility.Private then None else Some(value)
+        }.toSeq)
     },
     "W" ->
       direct(-1) {
@@ -1252,7 +1263,6 @@ object Elements:
         )
       case (size: VNum, itr: VList) =>
         ListHelpers.combinations(itr, size.toInt, withReplacement = true)
-
     },
     addPart("℈", Dyad, false) {
       case (itr: VNum, size: VNum) =>
@@ -1587,13 +1597,7 @@ object Elements:
           }
           .mkString("\n")
     },
-    addPart("⍰", Monad, true) {
-      case a: VNum => a != VNum(0)
-      case VStr(a) => a.nonEmpty
-      case d: VDate => d.toBool
-      case dur: VDuration => dur.toBool
-      case t: VTimer => t.toBool
-    },
+    "⍰" -> fullToImpl(Monad, x => MiscHelpers.isTruthy(x)),
     addPart("◌", Monad, true) {
       case a: VNum => NumberHelpers.round(a)
       case VStr(s) if s.length() == 1 => VNum(s.head.isLower)
@@ -1799,6 +1803,30 @@ object Elements:
         MiscHelpers.untilNoChange(predicate, initial).tail
       case (initial, predicate: VFun) =>
         MiscHelpers.untilNoChange(predicate, initial).tail
+      case (VListOf[VFun](fns), VListOf[VList](types)) =>
+        if types.forall(_.asInstanceOf[VList].lst.forall(_.isInstanceOf[VType]))
+        then
+          try FuncHelpers.collectByAnnotation(fns*)(types*)
+          catch
+            case _: ClassCastException => throw BadArgumentException(
+                "collectByAnnotation",
+                VList(Seq(fns, types)),
+              )
+            case ex => throw ex
+        else throw BadArgumentException("⧢", VList(Seq(fns, types)))
+      case (VListOf[VList](types), VListOf[VFun](fns)) =>
+        if types.forall((x: VAny) =>
+            x.asInstanceOf[VList].lst.forall((y: VAny) => y.isInstanceOf[VType])
+          )
+        then
+          try FuncHelpers.collectByAnnotation(fns*)(types*)
+          catch
+            case _: ClassCastException => throw BadArgumentException(
+                "collectByAnnotation",
+                VList(Seq(fns, types)),
+              )
+            case ex => throw ex
+        else throw BadArgumentException("⧢", VList(Seq(fns, types)))
     },
     "▲" ->
       fullToImpl(
@@ -1970,6 +1998,22 @@ object Elements:
       direct(0) {
         throw ContinueLoopException()
       },
+    "#q" ->
+      direct(2) {
+        (pop(), pop()) match
+          case (y: VException, x: VList) => y.error(x)
+          case (y: VException, x) => y.error(VList(Seq.fill(y.arity)(x)))
+          case (y: VObject, x) =>
+            push(x)
+            push(VException(y))
+          case (y: VStr, x) =>
+            push(x)
+            push(VException(y))
+      },
+    addPart("#ꜝ", Monad, false) {
+      case a =>
+        if !MiscHelpers.isTruthy(a) then throw AssertionException(a) else a
+    },
     addPart("#c", Monad, true) {
       case VStr(a) => StringHelpers.compress252(a)
       case a: VNum => StringHelpers.compress252(a)
@@ -2046,19 +2090,38 @@ object Elements:
       push(a)
       a match
         case t: VTimer => push(
-            VList(
-              Seq(
-                VDuration(JDuration.ofMillis(t.timeElapsed)),
-                VDuration(JDuration.ofMillis(t.timeRemaining)),
-                if t.paused then VNum(1) else VNum(0),
-              )
+            VObject(
+              "TimerInfo",
+              Map(
+                "timeElapsed" -> (
+                  Visibility.Restricted,
+                  VDuration(JDuration.ofMillis(t.timeElapsed)),
+                ),
+                "timeRemaining" -> (
+                  Visibility.Restricted,
+                  VDuration(JDuration.ofMillis(t.timeRemaining)),
+                ),
+                "isPaused" -> (
+                  Visibility.Restricted,
+                  VNum(t.paused),
+                ),
+              ),
             )
           )
+      end match
     },
     "#Z" ->
       direct(Monad) {
         VDate.setDefaultZone(pop().asInstanceOf[VStr].s)
       },
+    addPart("#Y", Monad, false) {
+      case a => VType(a)
+    },
+    addPart("#ɦ", Monad, true) {
+      case VStr(a) => VType(
+          a
+        ) // We cannot overload #Y to convert a string to a type because #Y has to output the type of it (which would be VStr)
+    },
     addPart("#U", Monad, false) {
       case VStr(s) => VDuration.parse(s)
       case a: VNum => VDuration.ofDaysDecimal(a.toDouble)

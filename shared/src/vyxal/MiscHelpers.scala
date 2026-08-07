@@ -455,4 +455,23 @@ object MiscHelpers:
       Context
   ): Seq[VAny] = left.zipWith(right) { (a, b) => function(a, b) }
 
+  def isTruthy(value: VAny): Boolean =
+    value match
+      case a: VNum => a != VNum(0)
+      case VStr(a) => a.nonEmpty
+      case d: VDate => d.toBool
+      case dur: VDuration => dur.toBool
+      case t: VTimer => t.toBool
+      case wildcard => wildcard.toBool
+
+  def getConstructorParams(
+      ex: VyxalException
+  ): Map[String, (Visibility, VStr)] = // Thanks Gemini!
+    ex.getClass.getDeclaredFields.flatMap { field =>
+      field.setAccessible(true)
+      val name = field.getName
+      if name.contains("$") then None
+      else Some(name -> (Visibility.Restricted, VStr(field.get(ex).toString)))
+    }.toMap
+
 end MiscHelpers

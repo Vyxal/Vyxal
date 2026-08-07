@@ -2,6 +2,10 @@ package vyxal
 
 import vyxal.conversions.given
 
+import scala.util.boundary
+
+import boundary.break
+
 /** Helpers for function-related stuff */
 object FuncHelpers:
 
@@ -146,4 +150,44 @@ object FuncHelpers:
         case Seq(left: VAny, right: VAny) =>
           Interpreter.executeFn(fn, left, right, Seq(left, right))
     }
+
+  def collectByAnnotation(
+      fns: VFun*
+  )(lsts: VList*)(using context: Context): VFun =
+    if fns.map((f: Any) => f.asInstanceOf[VFun].arity).distinct.size != 1
+    then // Ensure arities are the same
+      throw BadArgumentException("collectByAnnotation", VList(Seq(fns, lsts)))
+    else if fns.head.arity == -1 then // Ensure no arity is -1
+      throw BadArgumentException("collectByAnnotation", VList(Seq(fns, lsts)))
+    else if fns.size != lsts.size || fns.isEmpty || lsts.isEmpty
+    then // Ensure each annotation has 1-to-1 correspondence with a function and that there are actually annotations as well as functions
+      throw BadArgumentException("collectByAnnotation", VList(Seq(fns, lsts)))
+    else if lsts
+        .map((l: Any) => l.asInstanceOf[VList].lst.size)
+        .distinct
+        .size != 1
+    then // Ensure list lengths are the same
+      throw BadArgumentException("collectByAnnotation", VList(Seq(fns, lsts)))
+    else if !((fns lazyZip lsts).forall((x, y) =>
+        x.asInstanceOf[VFun].arity == y.asInstanceOf[VList].lst.size
+      ))
+    then // Ensure each list has the same length as its corresponding function's arity
+      throw BadArgumentException("collectByAnnotation", VList(Seq(fns, lsts)))
+    else // Everything is A-OK
+      def implFunc()(using ctx: Context): Unit =
+        val args = ctx.peek(fns.head.arity)
+        boundary {
+          for (t, f) <- lsts zip fns do
+            if (t.asInstanceOf[VList].lst zip args).forall((t: VAny, a: VAny) =>
+                t.asInstanceOf[VType].underlyingClass.isInstance(a)
+              )
+            then break(f.impl()(using ctx))
+        }
+      VFun(
+        implFunc,
+        fns.head.arity,
+        List.empty,
+        context,
+      )
+
 end FuncHelpers

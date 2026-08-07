@@ -110,7 +110,14 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "÷",
-        keywords = Seq("divide", "string-pieces", "regex-split", "/", "div"),
+        keywords = Seq(
+          "divide",
+          "string-pieces",
+          "regex-split",
+          "/",
+          "div",
+          "type-check",
+        ),
         arity = 2,
         Options(vectorises = true),
         Overload(
@@ -138,6 +145,12 @@ object ElementInformation:
           name = "Duration Ratio",
           args = Seq("dur", "dur"),
           description = "Ratio of duration #1 to duration #2",
+        ),
+        Overload(
+          name = "Type Check",
+          args = Seq("any, type"),
+          description =
+            "Check if #1 is an instance of or an instance of a descendant of #2",
         ),
       ),
       AddElement(
@@ -272,7 +285,7 @@ object ElementInformation:
         ),
       ),
       AddElement(
-        symbol = "ø6",
+        symbol = "ø④",
         keywords = Seq(
           "nums-to-base64",
           "bytes-to-base64",
@@ -365,7 +378,64 @@ object ElementInformation:
           name = "Get timer info",
           args = Seq("timer"),
           description =
-            "Get timer info as a list: VList(timeElapsed: dur, timeRemaining: dur, paused: VNum)",
+            "Get info of timer #1 as a record named TimerInfo with these fields: `timeElapsed`, `timeRemaining`, `isPaused`",
+        ),
+      ),
+      AddElement(
+        symbol = "#q",
+        keywords = Seq(
+          "object-to-exception",
+          "throw-exception",
+          "raise-exception",
+          "string-to-exception",
+        ),
+        arity = 2,
+        Options(),
+        Overload(
+          name = "Convert to exception",
+          args = Seq("obj|str"),
+          description =
+            "Convert #1 to an exception. If an object is passed, it must contain the field `message`.",
+        ),
+        Overload(
+          name = "Throw exception",
+          args = Seq("any", "exc"),
+          description =
+            "Throw #2 while formatting the message string with contents of #1",
+        ),
+      ),
+      AddElement(
+        symbol = "#ꜝ",
+        keywords = Seq("assert", "error-if-falsy"),
+        arity = 1,
+        Options(),
+        Overload(
+          name = "Assert",
+          args = Seq("any"),
+          description =
+            "Asserts #1 is truthy (i.e. throws AssertionException if falsy)",
+        ),
+      ),
+      AddElement(
+        symbol = "#Y",
+        keywords = Seq("type", "type-of"),
+        arity = 1,
+        Options(),
+        Overload(
+          name = "Get type",
+          args = Seq("any"),
+          description = "Get the type of #1",
+        ),
+      ),
+      AddElement(
+        symbol = "#ɦ",
+        keywords = Seq("string-to-type", "get-type-by-name"),
+        arity = 1,
+        Options(),
+        Overload(
+          name = "Get type by name",
+          args = Seq("str"),
+          description = "Get the type with the name specified in #1",
         ),
       ),
       AddElement(
@@ -1025,7 +1095,14 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "K",
-        keywords = Seq("factors", "divisors", "is-numeric?", "is-numeric"),
+        keywords = Seq(
+          "factors",
+          "divisors",
+          "is-numeric?",
+          "is-numeric",
+          "object-keys",
+          "object-variables",
+        ),
         arity = 1,
         Options(vectorises = true),
         Overload(
@@ -1038,6 +1115,11 @@ object ElementInformation:
           args = Seq("str"),
           description = "Check if #1 is numeric",
           typeSwitchable = true,
+        ),
+        Overload(
+          name = "Object Variables",
+          args = Seq("obj"),
+          description = "Get the names of the non-private variables",
         ),
       ),
       AddElement(
@@ -1241,6 +1323,7 @@ object ElementInformation:
           "one-minus-x",
           "complement",
           "split-spaces-reverse",
+          "object-values",
         ),
         arity = 1,
         Options(),
@@ -1258,6 +1341,12 @@ object ElementInformation:
           name = "Split on Spaces and Reverse Each Substring",
           args = Seq("str"),
           description = "Split #1 on spaces and reverse each substring",
+        ),
+        Overload(
+          name = "Object values",
+          args = Seq("obj"),
+          description =
+            "Get all values of the object assigned to non-private variables",
         ),
       ),
       AddElement(
@@ -3975,6 +4064,13 @@ object ElementInformation:
           args = Seq("fun", "any"),
           description =
             "Repeatedly apply {#1|#2} to {#2|#1}, collecting results (not including initial value)",
+          typeSwitchable = true,
+        ),
+        Overload(
+          name = "Collect Function Overloads",
+          args = Seq("lst[fun]", "lst[lst[type]]"),
+          description =
+            "Create a single function that executes a particular function in the list if its corresponding type annotation is matched, with earlier functions taking priority.",
           typeSwitchable = true,
         ),
       ),

@@ -12,6 +12,7 @@ hs_err_pid*
 .bsp/
 .metals/
 .vscode/
+.scala-build/
 null/
 out/
 project/project/

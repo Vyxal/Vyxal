@@ -43,6 +43,9 @@ import spire.math.{Complex, Real}
   *   - [[VObject]]
   *   - [[VDate]]
   *   - [[VDuration]]
+  *   - [[VTimer]]
+  *   - [[VType]]
+  *   - [[VException]]
   *
   * We derive [[CanEqual]] so that if you compare a `VAny`s to another type, the
   * compiler will complain
@@ -132,8 +135,10 @@ object conversions:
   given Conversion[Real, VNum] = n => VNum.complex(n, 0)
   given Conversion[Complex[Real], VNum] = new VNum(_)
   given Conversion[Boolean, VNum] = b => if b then 1 else 0
+  given Conversion[Byte, VNum] = n => n & 0xff
   given Conversion[ZonedDateTime, VDate] = VDate(_)
   given Conversion[JDuration, VDuration] = VDuration(_)
+  given Conversion[Class[_ <: VAny], VType] = t => VType(t)
 end conversions
 
 final case class VStr(s: String) extends VAny:
@@ -555,6 +560,44 @@ object VTimer:
   def apply(d: Long): VTimer = VTimer(VDuration(JDuration.ofMillis(d)))
   def apply(d: JDuration): VTimer = VTimer(VDuration(d))
   def stopwatch: VTimer = VTimer(VDuration(JDuration.ofMillis(Long.MaxValue)))
+
+case class VType(val underlyingClass: Class[? <: VAny]) extends VAny:
+  override def toBool: Boolean = true
+  override def toString: String = underlyingClass.getSimpleName
+  override def equals(obj: Any): Boolean =
+    obj match
+      case VType(t) => underlyingClass == t
+      case _ => false
+
+object VType:
+  def apply(a: VAny): VType = a.getClass
+  def apply(s: String): VType =
+    try Class.forName(s"vyxal.$s").asInstanceOf[Class[? <: VAny]]
+    catch
+      case e: ClassNotFoundException => throw new NonExistentTypeException(s)
+      case e: ClassCastException =>
+        throw UserYikesException(s"Managed to obtain non-vyxal type $s")
+
+case class VException(val name: String, val messageFormat: String) extends VAny:
+  val arity = messageFormat.count(_ == '%')
+  @throws[VyxalUserThrownException]
+  def error(arr: VList) =
+    throw new VyxalUserThrownException(
+      name,
+      StringHelpers.formatString(messageFormat, arr.lst*),
+    )
+  override def toString: String = s"$name($messageFormat)"
+  override def toBool: Boolean =
+    false // Exceptions should never be truthy as you would not want assert to let them pass most of the time
+
+object VException:
+  def apply(obj: VObject): VException =
+    VException(
+      obj.className,
+      obj.fields("message")._2.asInstanceOf[VAny].toString,
+    )
+
+  def apply(s: VStr): VException = VException("exception", s.s)
 
 class VNum(val underlying: Complex[Real]) extends VAny, Ordered[VNum]:
   def real: Real = underlying.real

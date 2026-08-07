@@ -54,4 +54,40 @@ class HelperTests extends VyxalTests:
       cp.reportAll()
     }
   }
+
+  describe("Collect By Annotations") {
+    it("should collect functions correctly") {
+      given ctx: Context = Context(testMode = true)
+      val func = FuncHelpers.collectByAnnotation(
+        VFun.fromElement("×"),
+        VFun.fromElement("@"),
+        VFun.fromElement(";"),
+      )(
+        VList(Seq(VType(classOf[VNum]), VType(classOf[VNum]))),
+        VList(Seq(VType(classOf[VStr]), VType(classOf[VStr]))),
+        VList(Seq(VType(classOf[VAny]), VType(classOf[VAny]))),
+      )
+      // Multiplication, Levenstein Distance, Pair
+      val cp = Checkpoint()
+      cp {
+        ctx.push(VNum(3))
+        ctx.push(VNum(7))
+        assertResult(VNum(21))(Interpreter.executeFn(func))
+      }
+      cp {
+        ctx.push(VStr("monday"))
+        ctx.push(VStr("monkey"))
+        assertResult(VNum(2))(Interpreter.executeFn(func))
+      }
+      cp {
+        ctx.push(VType(classOf[VNum]))
+        ctx.push(VType(classOf[VStr]))
+        assertResult(VList(Seq(VType(classOf[VNum]), VType(classOf[VStr]))))(
+          Interpreter.executeFn(func)
+        )
+      }
+
+      cp.reportAll()
+    }
+  }
 end HelperTests

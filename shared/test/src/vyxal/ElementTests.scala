@@ -773,22 +773,23 @@ class ElementTests extends VyxalTests:
   }
 
   describe("Elements #O, #^, #v, #›") {
+    def checkTimer(paused: Int, obj: VAny): Unit =
+      val (_, timeElapsed) = obj.asInstanceOf[VObject].fields("timeElapsed")
+      val (_, timeRemaining) = obj.asInstanceOf[VObject].fields("timeRemaining")
+      val (_, isPaused) = obj.asInstanceOf[VObject].fields("isPaused")
+      assert(
+        timeElapsed.asInstanceOf[VDuration].toMillis.toInt >= 0 &&
+          5 >= timeElapsed.asInstanceOf[VDuration].toMillis.toInt &&
+          isPaused.asInstanceOf[VNum] == VNum(paused) &&
+          timeElapsed.asInstanceOf[VDuration].toMillis.toInt +
+          timeRemaining.asInstanceOf[VDuration].toMillis.toInt == 1000
+      )
     it("should be able to convert nums/durs to timers") {
       given ctx: Context = Context(testMode = true)
       ctx.push(1000)
       Interpreter.execute(AST.Command("#O"))
       Interpreter.execute(AST.Command("#›"))
-      ctx.pop() match
-        case VList(l) => assertResult(
-            VList(
-              Seq(
-                VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofMillis(1000)),
-                VNum(1),
-              )
-            )
-          )(VList(l))
-        case res => fail(s"Expected a list, got $res")
+      checkTimer(1, ctx.pop())
     }
     it("should be able to time things correctly") {
       testCode(
@@ -802,82 +803,168 @@ class ElementTests extends VyxalTests:
       Interpreter.execute(AST.Command("#O"))
       Interpreter.execute(AST.Command("#^"))
       Interpreter.execute(AST.Command("#›"))
-      ctx.pop() match
-        case VList(l) => assertResult(
-            VList(
-              Seq(
-                VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofMillis(1000)),
-                VNum(0),
-              )
-            )
-          )(VList(l))
-        case res => fail(s"Expected a list, got $res")
+      checkTimer(0, ctx.pop())
       Interpreter.execute(AST.Command("#^"))
       Interpreter.execute(AST.Command("#›"))
-      ctx.pop() match
-        case VList(l) => assertResult(
-            VList(
-              Seq(
-                VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofMillis(1000)),
-                VNum(0),
-              )
-            )
-          )(VList(l))
-        case res => fail(s"Expected a list, got $res")
+      checkTimer(0, ctx.pop())
       Interpreter.execute(AST.Command("#v"))
       Interpreter.execute(AST.Command("#›"))
-      ctx.pop() match
-        case VList(l) => assertResult(
-            VList(
-              Seq(
-                VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofMillis(1000)),
-                VNum(1),
-              )
-            )
-          )(VList(l))
-        case res => fail(s"Expected a list, got $res")
+      checkTimer(1, ctx.pop())
       Interpreter.execute(AST.Command("#v"))
       Interpreter.execute(AST.Command("#›"))
-      ctx.pop() match
-        case VList(l) => assertResult(
-            VList(
-              Seq(
-                VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofMillis(1000)),
-                VNum(1),
-              )
-            )
-          )(VList(l))
-        case res => fail(s"Expected a list, got $res")
+      checkTimer(1, ctx.pop())
       Interpreter.execute(AST.Command("#O"))
       Interpreter.execute(AST.Command("#›"))
-      ctx.pop() match
-        case VList(l) => assertResult(
-            VList(
-              Seq(
-                VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofMillis(1000)),
-                VNum(0),
-              )
-            )
-          )(VList(l))
-        case res => fail(s"Expected a list, got $res")
+      checkTimer(0, ctx.pop())
       Interpreter.execute(AST.Command("#O"))
       Interpreter.execute(AST.Command("#›"))
-      ctx.pop() match
-        case VList(l) => assertResult(
-            VList(
-              Seq(
-                VDuration(Duration.ofMillis(0)),
-                VDuration(Duration.ofMillis(1000)),
-                VNum(1),
-              )
-            )
-          )(VList(l))
-        case res => fail(s"Expected a list, got $res")
+      checkTimer(1, ctx.pop())
     }
+    it("timers should be printable") {
+      given ctx: Context = Context(testMode = true)
+      Interpreter.execute("500#O,")
+    }
+  }
+
+  describe("elements #Y and #ɦ") {
+    testMulti(
+      "5#Y" -> VType(classOf[VNum]),
+      "\"banana\"#Y" -> VType(classOf[VStr]),
+      "λ\"banana\",}#Y" -> VType(classOf[VFun]),
+      "#::R banana | 3 #!monkey_count} #$banana #Y" ->
+        VType(classOf[VConstructor]),
+      "#::R banana | 3 #!monkey_count} #$banana ᴥ #Y" ->
+        VType(classOf[VObject]),
+      "\"02/02/2020\"Ṫ#Y" -> VType(classOf[VDate]),
+      "\"PT1.5S\"#U#Y" -> VType(classOf[VDuration]),
+      "#[1|2|3#]#Y" -> VType(classOf[VList]),
+      "500#O#Y" -> VType(classOf[VTimer]),
+      "5#Y#Y" -> VType(classOf[VType]),
+      "#[1|2#]\"% monkey ate % bananas\"#q#Y" -> VType(classOf[VException]),
+      "\"VNum\"#ɦ" -> VType(classOf[VNum]),
+      "\"VStr\"#ɦ" -> VType(classOf[VStr]),
+      "\"VFun\"#ɦ" -> VType(classOf[VFun]),
+      "\"VConstructor\"#ɦ" -> VType(classOf[VConstructor]),
+      "\"VObject\"#ɦ" -> VType(classOf[VObject]),
+      "\"VDate\"#ɦ" -> VType(classOf[VDate]),
+      "\"VDuration\"#ɦ" -> VType(classOf[VDuration]),
+      "\"VList\"#ɦ" -> VType(classOf[VList]),
+      "\"VTimer\"#ɦ" -> VType(classOf[VTimer]),
+      "\"VType\"#ɦ" -> VType(classOf[VType]),
+      "\"VAny\"#ɦ" -> VType(classOf[VAny]),
+      "\"VException\"#ɦ" -> VType(classOf[VException]),
+    )
+    it("#ɦ should not be able to get non-Vyxal types") {
+      given ctx: Context = Context(testMode = true)
+      assertThrows[Exception] {
+        Interpreter.execute("\"String\"#ɦ")
+      }
+      assertThrows[Exception] {
+        Interpreter.execute("\"MonkeyCookie\"#ɦ")
+      }
+    }
+    it("types should be printable") {
+      given ctx: Context = Context(testMode = true)
+      Interpreter.execute("\"VAny\"#ɦ,")
+      Interpreter.execute("5#Y,")
+    }
+  }
+  describe("Element #q") {
+    testMulti(
+      "#[1|2#]\"% monkey ate % bananas\"#q#Y" -> VType(classOf[VException]),
+      "\"poor little monkey\"#::R banana | \"Stole the banana from %\" #$message} #$banana ᴥ#q#Y" ->
+        VType(classOf[VException]),
+    )
+    it("misformed object should error") {
+      given ctx: Context = Context(testMode = true)
+      assertThrows[Exception] {
+        Interpreter.execute(
+          "#[1#]# ::R banana | \"Pooped on %\" #$incorrectField} #$banana ᴥ#q"
+        )
+      }
+    }
+    it("user exceptions should be raised") {
+      given ctx: Context = Context(testMode = true)
+      assertThrows[VyxalUserThrownException] {
+        Interpreter.execute("#[1|2#]\"% monkey ate % bananas\"#q#q")
+      }
+      assertThrows[VyxalUserThrownException] {
+        Interpreter.execute(
+          "\"poor little monkey\"#::R banana | \"Stole the banana from %\" #$message} #$banana ᴥ#q#q"
+        )
+      }
+    }
+  }
+  describe("Element #ꜝ") {
+    it("should not error on truthy inputs") {
+      given ctx: Context = Context(testMode = true)
+      Interpreter.execute("1#ꜝ")
+      Interpreter.execute("\"banana cookie\"#ꜝ")
+      Interpreter.execute("#[1|2|3|\"Go!\"#]#ꜝ")
+    }
+    it("should error on falsy inputs") {
+      given ctx: Context = Context(testMode = true)
+      assertThrows[AssertionException] {
+        Interpreter.execute("0#ꜝ")
+      }
+      assertThrows[AssertionException] {
+        Interpreter.execute("\"\"#ꜝ")
+      }
+      assertThrows[AssertionException] {
+        Interpreter.execute("#[#]#ꜝ")
+      }
+    }
+  }
+
+  describe("Element ⧢") {
+    it("should combine functions correctly") {
+      given ctx: Context = Context(testMode = true)
+      ctx.push(
+        Seq(
+          VFun.fromElement("×"),
+          VFun.fromElement("@"),
+          VFun.fromElement(";"),
+        )
+      )
+      ctx.push(
+        Seq(
+          VList(Seq(VType(classOf[VNum]), VType(classOf[VNum]))),
+          VList(Seq(VType(classOf[VStr]), VType(classOf[VStr]))),
+          VList(Seq(VType(classOf[VAny]), VType(classOf[VAny]))),
+        )
+      )
+      Interpreter.execute(AST.Command("⧢"))
+      val func = ctx.pop().asInstanceOf[VFun]
+
+      ctx.push(VNum(3))
+      ctx.push(VNum(7))
+      ctx.push(func)
+      Interpreter.execute(AST.Command("ᴥ"))
+      assertResult(VNum(21))(ctx.pop())
+
+      ctx.push(VStr("monday"))
+      ctx.push(VStr("monkey"))
+      ctx.push(func)
+      Interpreter.execute(AST.Command("ᴥ"))
+      assertResult(VNum(2))(ctx.pop())
+
+      ctx.push(VType(classOf[VNum]))
+      ctx.push(VType(classOf[VStr]))
+      ctx.push(func)
+      Interpreter.execute(AST.Command("ᴥ"))
+      assertResult(VList(Seq(VType(classOf[VNum]), VType(classOf[VStr]))))(
+        ctx.pop()
+      )
+
+    }
+  }
+
+  describe("Elements K and V") {
+    testMulti(
+      "#::R tag| \"monkey\" #$animal \"banana\" #!food \"fdab9023\" #=id} #$tagᴥ K" ->
+        vSeq("animal", "food"),
+      "#::R tag| \"monkey\" #$animal \"banana\" #!food \"fdab9023\" #=id} #$tagᴥ V" ->
+        vSeq("monkey", "banana"),
+    )
   }
 end ElementTests
