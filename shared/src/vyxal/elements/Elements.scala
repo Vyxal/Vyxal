@@ -402,6 +402,9 @@ object Elements:
     addPart("K", Monad, true) {
       case a: VNum => NumberHelpers.factors(a)
       case VStr(a) => VNum(VNum.DecimalRegex.matches(a))
+      case a: VObject => VList(a.fields.flatMap {
+        case (name, (vis, value)) => if vis == Visibility.Private then None else Some(name)
+      })
     },
     "L" ->
       direct(Monad) {
@@ -521,6 +524,9 @@ object Elements:
       case a: VList => VList(a.map(ListHelpers.reverse))
       case VStr(a) => VList(a.split(" ").map(_.reverse).toSeq.map(VStr(_)))
       case a: VNum => 1 - a
+      case a: VObject => VList(a.fields.flatMap {
+        case (name, (vis, value)) => if vis == Visibility.Private then None else Some(value)
+      })
     },
     "W" ->
       direct(-1) {
