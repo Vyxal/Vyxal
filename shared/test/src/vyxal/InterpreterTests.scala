@@ -65,7 +65,7 @@ class InterpreterTests extends VyxalTests:
           // pushed error message and returns the restored sentinel.
           """ 42 "#Q"#T 0|_} """ -> VNum(42),
           // The error branch can inspect the pushed error message.
-          """ "#Q"#T 0|_} """ -> VStr("Program quit using Q"),
+          """ "#Q"#T 0|:} """ -> VStr("Program quit using Q"),
         )
       }
     }
