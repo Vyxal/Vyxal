@@ -1095,7 +1095,14 @@ object ElementInformation:
       ),
       AddElement(
         symbol = "K",
-        keywords = Seq("factors", "divisors", "is-numeric?", "is-numeric", "object-keys", "object-variables"),
+        keywords = Seq(
+          "factors",
+          "divisors",
+          "is-numeric?",
+          "is-numeric",
+          "object-keys",
+          "object-variables",
+        ),
         arity = 1,
         Options(vectorises = true),
         Overload(
@@ -1338,7 +1345,8 @@ object ElementInformation:
         Overload(
           name = "Object values",
           args = Seq("obj"),
-          description = "Get all values of the object assigned to non-private variables",
+          description =
+            "Get all values of the object assigned to non-private variables",
         ),
       ),
       AddElement(
