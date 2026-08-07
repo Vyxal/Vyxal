@@ -441,6 +441,7 @@ Element, Modifier, and Syntax Reference
 | <code>ød</code> | <code>run-length-decode</code> | 1 | vec  | **Run Length Decode** (`lst`): Run length decode #1 |
 | <code>øe</code> | <code>run-length-encode</code> | 1 | vec  | **Run Length Encoding** (`str`): Run length encode #1 |
 | <code>øh</code> | <code>starts-with</code> | 2 | vec  | **Starts With** (`str,str`): Does #1 start with #2? |
+| <code>øs</code> | <code>svg</code></br><code>to-svg</code></br><code>svg-polyline</code></br><code>polyline</code> | 1 |   | **SVG Polyline** (`lst`): Turn #1 into an SVG polyline with stroke black and fill none. #1 is either a list of points ([x, y] or a single complex number), a flat list of complex numbers (one point each, real part x and imaginary part y), or a flat list of real numbers in the order they show up in the SVG (x, y, x, y, ...)</br>**SVG Polyline from Object** (`obj`): Turn #1 into an SVG polyline, taking the coordinates from #1's points/coords/coordinates field, and the stroke and fill from #1's stroke and fill fields (defaulting to black and none) |
 | <code>øt</code> | <code>ends-with</code> | 2 | vec  | **Ends With** (`str,str`): Does #1 end with #2? |
 | <code>ø{</code> | <code>curly-bracketify</code></br><code>bracify</code> | 1 | vec  | **Curly Bracketify** (`str`): Surround #1 with curly braces |
 | <code>ø◲</code> | <code>surround</code> | 2 |   | **Surround** (`any,any`): #1 prepended and appended to #2 |

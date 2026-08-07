@@ -2,6 +2,7 @@ package vyxal
 
 import vyxal.conversions.given
 import vyxal.elements.Elements
+import vyxal.parsing.{Lexer, Parser}
 
 import java.time.Duration
 
@@ -15,6 +16,10 @@ class ElementTests extends VyxalTests:
   private def in(inputs: VAny*): Seq[VAny] = inputs
 
   private def vSeq(elems: VAny*) = VList(elems)
+
+  /** Helper for elements that are easier to write in literate mode */
+  private def testLiterate(code: String, expected: VAny): Unit =
+    testInterpreter(Parser.parse(Lexer.lexLiterate(code)), expected)
 
   describe("Element +") {
 
@@ -653,6 +658,92 @@ class ElementTests extends VyxalTests:
           Interpreter.execute(
             "\"6ab23a-b-c--)\"ø6"
           )
+        }
+      }
+    }
+  }
+
+  describe("Element øs") {
+    describe("when given an object") {
+      it("should take the coordinates, stroke, and fill from its fields") {
+        testLiterate(
+          """record Poly => [[1,2],[3,4]] $points "red" $stroke "blue" $fill end `Poly` svg""",
+          VStr("""<polyline points="1,2 3,4" stroke="red" fill="blue" />"""),
+        )
+      }
+      it("should accept flat coordinates") {
+        testLiterate(
+          """record Poly => [1,2,3,4] $coordinates end `Poly` svg""",
+          VStr("""<polyline points="1,2 3,4" stroke="black" fill="none" />"""),
+        )
+      }
+      it("should default to a black stroke and no fill") {
+        testLiterate(
+          """record Poly => [[1,2],[3,4]] $coords end `Poly` svg""",
+          VStr("""<polyline points="1,2 3,4" stroke="black" fill="none" />"""),
+        )
+      }
+      it("should error when it has no coordinates") {
+        assertThrows[Exception] {
+          testLiterate(
+            """record Poly => "red" $stroke end `Poly` svg""",
+            VStr(""),
+          )
+        }
+      }
+      it("should error when its coordinates aren't a list") {
+        assertThrows[Exception] {
+          testLiterate("""record Poly => 5 $points end `Poly` svg""", VStr(""))
+        }
+      }
+    }
+    describe("when given complex numbers") {
+      it("should use each one as a point") {
+        testCode(
+          "#[1 2j|3 4j#]øs",
+          VStr("""<polyline points="1,2 3,4" stroke="black" fill="none" />"""),
+        )
+      }
+      it("should treat real numbers in the same list as points on the x axis") {
+        testCode(
+          "#[1 2j|3#]øs",
+          VStr("""<polyline points="1,2 3,0" stroke="black" fill="none" />"""),
+        )
+      }
+    }
+    describe("when given bad coordinates") {
+      it("should error") {
+        given ctx: Context = Context(testMode = true)
+        // A point that isn't a pair
+        assertThrows[Exception] {
+          Interpreter.execute("#[#[1|2#]|#[3|4|5#]#]øs")
+        }
+        // Points mixed with bare numbers
+        assertThrows[Exception] {
+          Interpreter.execute("#[#[1|2#]|3#]øs")
+        }
+        // An odd number of flat coordinates
+        assertThrows[Exception] {
+          Interpreter.execute("#[1|2|3#]øs")
+        }
+        // A coordinate that isn't a number
+        assertThrows[Exception] {
+          Interpreter.execute("#[#[1|\"a\"#]#]øs")
+        }
+        // A complex number used as one of a point's two coordinates
+        assertThrows[Exception] {
+          Interpreter.execute("#[#[1 2j|3#]#]øs")
+        }
+      }
+    }
+    describe("when given something that isn't a list or an object") {
+      it("should error") {
+        given ctx: Context = Context(testMode = true)
+        assertThrows[Exception] {
+          Interpreter.execute("\"1,2 3,4\"øs")
+        }
+        assertThrows[Exception] {
+          Interpreter.execute("5øs")
         }
       }
     }
