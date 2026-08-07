@@ -49,25 +49,25 @@ import spire.math.{Complex, Real}
   *
   * We derive [[CanEqual]] so that if you compare a `VAny`s to another type, the
   * compiler will complain.
-  *
-  * If you implement a new type, please add it to the bullet list above and add
-  * it to the map below, like this: "Type" -> classOf[Type]
+  * 
+  * If you implement a new type, please add it to the bullet list above and add it to the map below, like this:
+  * "Type" -> classOf[Type]
   */
 
 val classes = Map(
-  "VAny" -> classOf[VAny],
-  "VStr" -> classOf[VStr],
-  "VNum" -> classOf[VNum],
-  "VList" -> classOf[VList],
-  "VFun" -> classOf[VFun],
-  "VConstructor" -> classOf[VConstructor],
-  "VObject" -> classOf[VObject],
-  "VDate" -> classOf[VDate],
-  "VTimer" -> classOf[VTimer],
-  "VDuration" -> classOf[VDuration],
-  "VType" -> classOf[VType],
-  "VException" -> classOf[VException],
-)
+        "VAny" -> classOf[VAny],
+        "VStr" -> classOf[VStr],
+        "VNum" -> classOf[VNum],
+        "VList" -> classOf[VList],
+        "VFun" -> classOf[VFun],
+        "VConstructor" -> classOf[VConstructor],
+        "VObject" -> classOf[VObject],
+        "VDate" -> classOf[VDate],
+        "VTimer" -> classOf[VTimer],
+        "VDuration" -> classOf[VDuration],
+        "VType" -> classOf[VType],
+        "VException" -> classOf[VException],
+      )
 
 sealed trait VAny derives CanEqual:
   @targetName("vEquals")
@@ -589,7 +589,7 @@ case class VType(val underlyingClass: Class[? <: VAny]) extends VAny:
 
 object VType:
   def apply(a: VAny): VType = a.getClass
-  def apply(s: String): VType =
+  def apply(s: String): VType = 
     classes.get(s) match
       case Some(c) => c
       case None => throw NonExistentTypeException(s)
