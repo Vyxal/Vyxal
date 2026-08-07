@@ -48,8 +48,27 @@ import spire.math.{Complex, Real}
   *   - [[VException]]
   *
   * We derive [[CanEqual]] so that if you compare a `VAny`s to another type, the
-  * compiler will complain
+  * compiler will complain.
+  * 
+  * If you implement a new type, please add it to the bullet list above and add it to the map below, like this:
+  * "Type" -> classOf[Type]
   */
+
+val classes = Map(
+        "VAny" -> classOf[VAny],
+        "VStr" -> classOf[VStr],
+        "VNum" -> classOf[VNum],
+        "VList" -> classOf[VList],
+        "VFun" -> classOf[VFun],
+        "VConstructor" -> classOf[VConstructor],
+        "VObject" -> classOf[VObject],
+        "VDate" -> classOf[VDate],
+        "VTimer" -> classOf[VTimer],
+        "VDuration" -> classOf[VDuration],
+        "VType" -> classOf[VType],
+        "VException" -> classOf[VException],
+      )
+
 sealed trait VAny derives CanEqual:
   @targetName("vEquals")
   def ===(that: VAny)(using Context): Boolean =
@@ -106,7 +125,6 @@ object conversions:
   given Conversion[Seq[VAny], VList] = VList(_)
   given [T](using c: Conversion[T, VAny]): Conversion[Seq[T], VList] =
     seq => VList(seq.map(c))
-
   trait ToVyxal[T, V]:
     def apply(t: T): V
   extension [T](t: T)
@@ -571,12 +589,10 @@ case class VType(val underlyingClass: Class[? <: VAny]) extends VAny:
 
 object VType:
   def apply(a: VAny): VType = a.getClass
-  def apply(s: String): VType =
-    try Class.forName(s"vyxal.$s").asInstanceOf[Class[? <: VAny]]
-    catch
-      case e: ClassNotFoundException => throw new NonExistentTypeException(s)
-      case e: ClassCastException =>
-        throw UserYikesException(s"Managed to obtain non-vyxal type $s")
+  def apply(s: String): VType = 
+    classes.get(s) match
+      case Some(c) => c
+      case None => throw NonExistentTypeException(s)
 
 case class VException(val name: String, val messageFormat: String) extends VAny:
   val arity = messageFormat.count(_ == '%')

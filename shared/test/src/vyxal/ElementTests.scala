@@ -856,10 +856,10 @@ class ElementTests extends VyxalTests:
     )
     it("#ɦ should not be able to get non-Vyxal types") {
       given ctx: Context = Context(testMode = true)
-      assertThrows[Exception] {
+      assertThrows[NonExistentTypeException] {
         Interpreter.execute("\"String\"#ɦ")
       }
-      assertThrows[Exception] {
+      assertThrows[NonExistentTypeException] {
         Interpreter.execute("\"MonkeyCookie\"#ɦ")
       }
     }
