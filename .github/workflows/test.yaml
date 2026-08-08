@@ -35,7 +35,7 @@ jobs:
         with:
           java-version: "17"
           distribution: "adopt"
-      - name: Compile (as if it were being deployed to GH pages)
+      - name: Compile
         run: |
           ./mill js.fullLinkJS
           ./mill jvm.theseus
