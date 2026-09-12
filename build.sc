@@ -22,7 +22,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
       ivy"org.typelevel::spire::0.18.0",
       ivy"com.github.scopt::scopt::4.1.0",
       ivy"com.outr::scribe::3.13.5",
-      ivy"org.scala-lang::toolkit:0.6.0",
+      ivy"org.scala-lang::toolkit:0.9.2",
       ivy"io.github.cquiroz::scala-java-time::2.6.0",
     )
 
@@ -63,7 +63,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
       Agg(
         ivy"org.scalatest::scalatest::3.2.19",
         ivy"org.scala-sbt:test-interface:1.0",
-        ivy"org.virtuslab::scala-yaml::0.0.8",
+        ivy"org.virtuslab::scala-yaml::0.3.3",
       )
 
     // Task to only show output from failed tests
@@ -180,10 +180,11 @@ object js extends VyxalModule with ScalaJSModule {
 
   def ivyDeps =
     T {
-      super.ivyDeps() ++ Seq(
-        ivy"org.scala-js::scalajs-dom::2.8.0",
-        ivy"io.github.cquiroz::scala-java-time-tzdb::2.6.0",
-      )
+      super.ivyDeps() ++
+        Seq(
+          ivy"org.scala-js::scalajs-dom::2.8.0",
+          ivy"io.github.cquiroz::scala-java-time-tzdb::2.6.0",
+        )
     }
 
   def pagesDir = build.millSourcePath / "pages"
