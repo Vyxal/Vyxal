@@ -182,7 +182,7 @@ object js extends VyxalModule with ScalaJSModule {
     T {
       super.ivyDeps() ++
         Seq(
-          ivy"org.scala-js::scalajs-dom::2.8.0",
+          ivy"org.scala-js::scalajs-dom::2.8.1",
           ivy"io.github.cquiroz::scala-java-time-tzdb::2.6.0",
         )
     }
