@@ -81,7 +81,6 @@ class Debugger(code: AST)(using rootCtx: Context):
       frame.stepStack.pop() match
         case Some(nextStep) => removeBadSteps(nextStep)
         case None => popUntilNext()
-  end popUntilNext
 
   /** Get rid of Lazy, Hidden, and StepSeq steps, because they aren't proper
     * steps

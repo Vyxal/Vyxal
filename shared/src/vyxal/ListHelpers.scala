@@ -55,7 +55,7 @@ object ListHelpers:
 
   def cartesianProductMultiSeqs[T <: VAny](lists: Seq[Seq[T]]): Seq[Seq[T]] =
     lists.foldRight(Seq(Seq.empty[T])) { (lst, acc) =>
-      for (l <- lst; r <- acc) yield l +: r
+      for l <- lst; r <- acc yield l +: r
     }
 
   def combinations(

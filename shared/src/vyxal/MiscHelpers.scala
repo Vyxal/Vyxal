@@ -382,7 +382,6 @@ object MiscHelpers:
             val v2 = l.indices.map(i => v(i % v.length))
             l.lazyZip(v2).foreach { (a, b) => unpackHelper(a, b) }
           case _ => unpackHelper(l, Seq(value))
-  end unpackHelper
 
   def vyPrint(x: VAny, endOfProgram: Boolean = false)(using
       ctx: Context
