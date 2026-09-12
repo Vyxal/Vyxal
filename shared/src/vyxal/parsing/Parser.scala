@@ -365,7 +365,6 @@ private class Parser:
               val modifierArgs = List.fill(arity)(finalAsts.pop())
               finalAsts.push(modifier.from(modifierArgs))
             else throw UndefinedCustomModifierException(name)
-            end if
         case AST.SpecialModifier(name, _) => (name: @unchecked) match
             case "⊐" =>
               val lambdaAsts = Stack[AST]()
