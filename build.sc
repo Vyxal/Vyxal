@@ -63,7 +63,7 @@ trait VyxalModule extends ScalaModule with ScalafmtModule {
       Agg(
         ivy"org.scalatest::scalatest::3.2.19",
         ivy"org.scala-sbt:test-interface:1.0",
-        ivy"org.virtuslab::scala-yaml::0.0.8",
+        ivy"org.virtuslab::scala-yaml::0.3.3",
       )
 
     // Task to only show output from failed tests
