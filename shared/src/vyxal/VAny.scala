@@ -666,7 +666,29 @@ class VNum(val underlying: Complex[Real]) extends VAny, Ordered[VNum]:
   def /(rhs: VNum): VNum =
     if rhs == VNum(0) then 0 else underlying / rhs.underlying
   @targetName("pow")
-  def **(rhs: VNum): VNum = underlying ** rhs.underlying
+  def **(rhs: VNum): VNum =
+    val a = underlying
+    val b = rhs.underlying
+
+    if b.isWhole && b.toBigInt.isValidInt then
+      val exponent = b.toBigInt.toInt
+      if a.isWhole && exponent >= 0 then VNum(a.toBigInt.pow(exponent))
+      else if a.isReal then
+        val rational = a.real.toRational
+        if rational == 0 && exponent < 0 then VNum(0)
+        else VNum(Real(rational.pow(exponent)))
+      else VNum(a ** b)
+    else if a.isReal && b.isReal then
+      val exponent = b.real.toRational
+      val base = a.real.toRational
+      if base >= 0 && exponent.numerator.isValidInt then
+        VNum.exactRoot(base, exponent.denominator.toBigInt) match
+          case Some(root) => VNum(Real(root.pow(exponent.numerator.toInt)))
+          case None => VNum(a ** b)
+      else VNum(a ** b)
+    else VNum(a ** b)
+    end if
+  end **
 
   /** Floating-point floored modulus, not Java's `%` */
   @targetName("mod")
@@ -737,6 +759,32 @@ object VNum:
   def apply[T](n: T)(using Conversion[T, VNum]): VNum = n
 
   def complex(real: Real, imag: Real) = new VNum(Complex(real, imag))
+
+  private def exactNthRoot(value: BigInt, degree: BigInt): Option[BigInt] =
+    if value < 0 || degree <= 0 || !degree.isValidInt then None
+    else if value == 0 || value == 1 then Some(value)
+    else
+      val n = degree.toInt
+      var low = BigInt(1)
+      var high = value min BigInt(2).pow((value.bitLength + n - 1) / n + 1)
+      while low <= high do
+        val mid = (low + high) / 2
+        val power = mid.pow(n)
+        if power == value then return Some(mid)
+        else if power < value then low = mid + 1
+        else high = mid - 1
+      None
+
+  private def exactRoot(
+      value: spire.math.Rational,
+      degree: BigInt,
+  ): Option[spire.math.Rational] =
+    if degree == 1 then Some(value)
+    else
+      for
+        numerator <- exactNthRoot(value.numerator.toBigInt, degree)
+        denominator <- exactNthRoot(value.denominator.toBigInt, degree)
+      yield spire.math.Rational(numerator, denominator)
 
   /** Parse a number from a string */
   def apply(s: String): VNum = apply(s, 10)
