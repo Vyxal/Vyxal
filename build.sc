@@ -95,7 +95,7 @@ trait JvmCommon extends VyxalModule {
           // For the REPL
           ivy"org.jline:jline:3.30.4",
           ivy"org.jline:jline-terminal-jansi:3.30.4",
-          ivy"org.fusesource.jansi:jansi:2.4.2",
+          ivy"org.fusesource.jansi:jansi:2.4.3",
         )
     }
 
@@ -180,10 +180,11 @@ object js extends VyxalModule with ScalaJSModule {
 
   def ivyDeps =
     T {
-      super.ivyDeps() ++ Seq(
-        ivy"org.scala-js::scalajs-dom::2.8.0",
-        ivy"io.github.cquiroz::scala-java-time-tzdb::2.6.0",
-      )
+      super.ivyDeps() ++
+        Seq(
+          ivy"org.scala-js::scalajs-dom::2.8.0",
+          ivy"io.github.cquiroz::scala-java-time-tzdb::2.6.0",
+        )
     }
 
   def pagesDir = build.millSourcePath / "pages"
