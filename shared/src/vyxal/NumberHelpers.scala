@@ -104,10 +104,9 @@ object NumberHelpers:
       "0.0000036899182659531622704",
     )
 
-    val coefficents =
-      colist.map(g =>
-        VNum(g)
-      ) // from http://www.mrob.com/pub/ries/lanczos-gamma.html
+    val coefficents = colist.map(g =>
+      VNum(g)
+    ) // from http://www.mrob.com/pub/ries/lanczos-gamma.html
 
     val A_g = VNum("0.99999999999999709182") +
       coefficents.zipWithIndex

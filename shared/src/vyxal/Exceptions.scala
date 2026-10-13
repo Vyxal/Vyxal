@@ -15,8 +15,8 @@ class VyxalException private[vyxal] (
       message += "\nUse 'X' flag for full traceback"
     if ctx.settings.fullTrace || report then
       if !ex.isInstanceOf[VyxalException] then message += "\n" + ex.getMessage()
-      message += "\n" +
-        super.getCause().getStackTrace.mkString("  ", "\n  ", "")
+      message +=
+        "\n" + super.getCause().getStackTrace.mkString("  ", "\n  ", "")
     message
 
 class QuitException extends VyxalException("Program quit using Q")

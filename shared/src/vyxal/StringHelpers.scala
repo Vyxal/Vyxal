@@ -666,10 +666,8 @@ object StringHelpers:
   def binArraySha256(a: Array[Int]): Array[Int] =
     def rightShift(x: Array[Int], a: Int): Array[Int] =
       Array.fill(a)(0) ++ x.dropRight(a)
-    end rightShift
     def rightRotate(x: Array[Int], a: Int): Array[Int] =
       x.takeRight(a) ++ x.dropRight(a)
-    end rightRotate
     def add2(a: Array[Int], b: Array[Int]): Array[Int] =
       var carry = 0
       var res = Array[Int]()
@@ -687,7 +685,6 @@ object StringHelpers:
         c: Array[Int],
         d: Array[Int],
     ): Array[Int] = add2(add2(a, b), add2(c, d))
-    end add4
     def add5(
         a: Array[Int],
         b: Array[Int],
@@ -695,13 +692,10 @@ object StringHelpers:
         d: Array[Int],
         e: Array[Int],
     ): Array[Int] = add2(add2(add2(a, b), add2(c, d)), e)
-    end add5
     def choice(s: Array[Int], a: Array[Int], b: Array[Int]): Array[Int] =
       (s lazyZip a lazyZip b).map((x, y, z) => (x & y) | ((x ^ 1) & z))
-    end choice
     def maj3(a: Array[Int], b: Array[Int], c: Array[Int]): Array[Int] =
       (a lazyZip b lazyZip c).map((x: Int, y: Int, z: Int) => (x + y + z) / 2)
-    end maj3
     val K = Array(
       Array(0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1,
         1, 1, 0, 0, 1, 1, 0, 0, 0),

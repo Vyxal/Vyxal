@@ -101,7 +101,6 @@ object DocsUtils:
     else if overload.args.isEmpty then s"**${overload.name}**: $description"
     else
       s"**${overload.name}** (`${overload.args.map(_.replace("|", "\\|")).mkString(",")}`): $description"
-    end if
   end overloadToString
 
   def overloadToString(overload: ModifierOverload): String =
