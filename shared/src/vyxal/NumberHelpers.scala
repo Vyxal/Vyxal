@@ -82,7 +82,7 @@ object NumberHelpers:
   def fromBinary(a: VAny)(using ctx: Context): VAny =
     a match
       case n: VNum => fromBinary(n.toString())
-      case l: VList => fromBase(l, 2)
+      case l: VList => l.foldLeft(0: VAny) { (ret, digit) => 2 *~ ret +~ VNum(digit) }
       case VStr(s) => toInt(s, 2)
       case arg => throw UnimplementedOverloadException("fromBinary", List(arg))
 
