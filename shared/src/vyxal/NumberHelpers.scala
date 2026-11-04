@@ -83,7 +83,7 @@ object NumberHelpers:
     a match
       case n: VNum => fromBinary(n.toString())
       case l: VList => l.foldLeft(0: VAny) { (ret, digit) =>
-          2 *~ ret +~ VNum(digit)
+          2 *~ ret +~ toInt(digit, 10)
         }
       case VStr(s) => toInt(s, 2)
       case arg => throw UnimplementedOverloadException("fromBinary", List(arg))
